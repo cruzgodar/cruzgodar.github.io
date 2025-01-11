@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Mary&#x2019;s 3-Manifold: The Value of Mathematical Visualization</title>
+
+	<meta property="og:title" content="Mary&#x2019;s 3-Manifold: The Value of Mathematical Visualization"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://cruzgodar.com/slides/marys-3-manifold/"/>
+	<meta property="og:image" content="https://cruzgodar.com/slides/marys-3-manifold/cover.webp"/>
+	<meta property="og:locale" content="en_US"/>
+	<meta property="og:site_name" content="Cruz Godar"/>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#181818">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" as="font">
+
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+
+	<style>
+		#s2 #canvas-bundle
+		{
+			top: 0;
+		}
+
+		#demo-canvas
+		{
+			width: 40vw;
+			height: 3vw;
+			border-radius: 1vw;
+		}
+
+		.lapsa-slide:not(#s2) #canvas-bundle > *:last-child
+		{
+			display: none;
+		}
+
+		p strong
+		{
+			color: rgb(255, 255, 255) !important;
+		}
+
+		@media (min-aspect-ratio: 152/89)
+		{
+			#demo-canvas
+			{
+				width: calc(40 * var(--safe-vh) * 152 / 89);
+				height: calc(3 * var(--safe-vh) * 152 / 89);
+				border-radius: calc(1 * var(--safe-vh) * 152 / 89);
+			}
+		}
+	</style>
+</head>
+
+<body>	
+	<div id="lapsa-slide-container">
+		<div id="title" class="full-canvas under-text">
+			<h1>Mary&#x2019;s 3-Manifold: The Value of Mathematical Visualization</h1>
+			
+			<h2>Cruz Godar</h2>
+
+			<div id="canvas-bundle" style="opacity: 0">
+				<canvas id="output-canvas"></canvas>
+				<canvas id="demo-canvas"></canvas>
+			</div>
+		</div>
+
+		<div>
+			<h1>Mary&#x2019;s Compact Room</h1>
+			
+			<p class="build">Australian philosopher Frank Jackson proposed the thought experiment of a scientist who is devoted to gathering all the knowledge she can about color, despite being stuck in a strictly black-and-white room.</p>
+
+			<p class="build">After learning all there is know about color, save for directly witnessing it, Mary leaves the room. Does she learn anything new?</p>
+
+			<p class="build">The thought experiment points to a notion of direct experience conferring a type of understanding that can&#x2019;t be substituted, and I feel the same notion can apply to math.</p>
+		</div>
+
+		<div>
+			<h1>What&#x2019;s a Geometry, Anyway?</h1>
+
+			<p class="build">A <strong>geometry</strong> on a smooth manifold $X$ is a maximal Lie group $G$ acting transitively on $X$ with compact point stabilizers, which implies the existence of a $G$-invariant Riemannian metric.</p>
+
+			<p class="build">The uniformization theorem classifies simply connected Riemannian 2-manifolds into three classes up to conformal mapping: the sphere, the torus (the euclidean plane), and the open disk (the hyperbolic plane).</p>
+
+			<p class="build">Since the metric on a Riemannian manifold induces a metric on its universal cover, the geometry on a Riemannian manifold is classified by the induced geometry on its universal cover.</p>
+		</div>
+
+		<div id="s2" class="medium-canvas">
+			<p class="left-text">By simulating light traveling along geodesics, we can render a scene <em>inside</em> of a 2-manifold like the sphere.</p>
+
+			<p class="left-text">The rendered image is 1-dimensional, with each point corresponding to a unit vector in the tangent plane at the camera&#x2019;s position (represented by the small white sphere).</p>
+		</div>
+
+		<div>
+			<h1>What About 3-Manifolds?</h1>
+	
+			<p class="build">Thurston&#x2019;s geometrization conjecture is an analogue of the uniformization theorem for oriented and closed 3-manifolds.</p>
+
+			<p class="build">Unlike 2-manifolds, not every closed 3-manifold is diffeomorphic to one with a single geometric structure. Instead, oriented and closed 3-manifolds decompose as connected sums of prime 3-manifolds, each of which has one of eight geometric structures.</p>
+
+			<p class="build">We&#x2019;ll render scenes inside of each, which will be 2-dimensional since the tangent spaces are now $\mathbb{R}^3$, and see how curved geodesics give rise to strange and surprising results.</p>
+		</div>
+
+		<div id="e3-axes" class="medium-canvas">
+			<h1>$\mathbb{E}^3$: Euclidean Space</h1>
+	
+			<p class="build left-text">Our model space is $\mathbb{R}^3$ with the usual Euclidean metric, and geodesics are straight lines.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually abelian (i.e. contains an abelian subgroup of finite index) but not virtually cyclic, then $M$ has $\mathbb{E}^3$ geometry.</p>
+		</div>
+
+		<div id="e3" class="full-canvas"></div>
+
+		<div id="s3-axes" class="medium-canvas">
+			<h1>$S^3$: The 3-Sphere</h1>
+
+			<p class="build left-text">Our model space is the length-1 elements of $\mathbb{R}^4$ with the usual Euclidean metric, and geodesics are great circles.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is finite, then $M$ has $S^3$ geometry.</p>
+		</div>
+
+		<div id="s3" class="full-canvas"></div>
+
+		<div id="s3-hopf-fibration" class="full-canvas"></div>
+
+		<div id="h3-axes" class="medium-canvas">
+			<h1>$\mathbb{H}^3$: Hyperbolic Space</h1>
+
+			<p class="build left-text">Our model space is the top sheet of the hyperboloid $x^2 + y^2 + z^2 - w^2 = -1$, and geodesics are hyperbolas.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ has no infinite normal cyclic subgroup and is not virtually solvable, then $M$ has $\mathbb{H}^3$ geometry (effectively the catch-all case).</p>
+		</div>
+
+		<div id="h3" class="full-canvas"></div>
+
+		<div id="s2xe-axes" class="medium-canvas">
+			<h1>$S^2 \times \mathbb{E}$</h1>
+
+			<p class="build left-text">Our model space is the cylinder $S^2 \times \mathbb{R} \subseteq \mathbb{R}^4$; geodesics are formed from lower-dimensional geodesics in the factors.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually cyclic but not finite, then $M$ has $S^2 \times \mathbb{E}$ geometry.</p>
+		</div>
+
+		<div id="s2xe" class="full-canvas"></div>
+
+		<div id="h2xe-axes" class="medium-canvas">
+			<h1>$\mathbb{H}^2 \times \mathbb{E}$</h1>
+
+			<p class="build left-text">Our model space is exactly analogous to that of $S^2 \times \mathbb{E}$.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ has an infinite normal cyclic subgroup but is not virtually solvable, then $M$ has either $\mathbb{H}^2 \times \mathbb{E}$ geometry or that of $\widetilde{\operatorname{SL}}(2, \mathbb{R})$.</p>
+		</div>
+
+		<div id="h2xe" class="full-canvas"></div>
+
+		<div id="nil-axes" class="medium-canvas">
+			<h1>Nil</h1>
+
+			<p class="build left-text">Our model space is $\mathbb{R}^3$ with isometry group given by the Heisenberg group, and geodesics are helices about lines parallel to the $z$-axis.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually nilpotent but not virtually abelian, then $M$ has Nil geometry.</p>
+		</div>
+
+		<div id="nil" class="full-canvas"></div>
+
+		<div id="sl2r-axes" class="medium-canvas">
+			<h1>$\widetilde{\operatorname{SL}}(2, \mathbb{R})$</h1>
+
+			<p class="build left-text">Our model space is given by identifying $\operatorname{SL}(2, \mathbb{R})$ with $\mathbb{R}^4$ and passing to the universal cover; geodesics are helices parallel to the vertical axis.</p>
+
+			<p class="build left-text">Any finite-volume manifold with this geometry has a fundamental group that has an infinite normal cyclic subgroup but is not virtually solvable.</p>
+		</div>
+
+		<div id="sl2r" class="full-canvas"></div>
+
+		<div id="sol-axes" class="medium-canvas">
+			<h1>Sol</h1>
+
+			<p class="build left-text">Our model space is $\mathbb{R}^3$ with a solvable group structure, and geodesics are variously helices, exponential curves, and straight lines.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually solvable but not virtually nilpotent, then $M$ has Sol geometry.</p>
+		</div>
+
+		<div id="sol" class="full-canvas"></div>
+
+		<div>
+			<h1>Further Fields</h1>
+
+			<p class="build">In the future, I&#x2019;d like to develop a framework to teleport not just between positions within a manifold, but between any two arbitrary manifolds, effectively rendering portals between geometries.</p>
+
+			<p class="build">A much more difficult undertaking that I&#x2019;d like to work on eventually is to render the 18 maximal 4-dimensional geometries by taking 3D slices of the tangent spaces.</p>
+		</div>
+
+		<div style="display: flex; flex-direction: column; justify-content: center">
+			<h1 style="text-align: center">Thank You!</h1>
+		</div>
+	</div>
+	
+	<script>
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<div id="banner">
+	<div id="banner-small"></div>
+	<div id="banner-large"></div>
+</div>
+
+<div class="name-text-container" style="position: fixed">
+	<p id="cruz-text" class="name-text" style="opacity: 0; transform: translateX(100px)">Cruz</p>
+</div>
+
+<div class="name-text-container" style="position: fixed">
+	<p id="godar-text" class="name-text" style="opacity: 0; transform: translateX(100px)">Godar</p>
+</div>
+
+<div class="name-text"></div>
+
+<div id="content-container">
+	<div id="content">
+		<main>
+			<header>
+				<div id="logo-no-link">
+					<img src="/graphics/general-icons/logo.webp" alt="Logo" tabindex="1"></img>
+				</div>
+					
+				<div style="height: 20px"></div>
+
+				<div>
+					<h1 class="title-text">Teacher, Developer, Mathematical Illustrator</h1>
+				</div>
+
+				<div style="height: 20px"></div>
+
+				<div>
+					<p class="body-text center-if-needed" id="intro-text">
+						<span>Hello! My name is Cruz, and I&#x2019;m a graduate student in math at the University of Oregon. I&#x2019;m particularly drawn to the beautiful visualizations that math can often create, and I&#x2019;ve built a number of polished, high-performance web apps for exploring them. I&#x2019;ve also created interactive notes for many of the classes I&#x2019;ve taught in pursuit of quality teaching, and occasionally I&#x2019;ve found time to practice creative writing. All of that is collected here, and no matter what you&#x2019;re looking for, I think you&#x2019;ll find something you enjoy.</span>
+					</p>
+				</div>
+				
+				<div class="narrow-image-links" style="margin-top: 20px">
+					### image-links
+						/gallery/
+						
+						/applets/
+						
+						/teaching/
+						
+						/slides/
+						
+						/writing/
+						
+						/about/
+					###
+				</div>
+			</header>
+		</main>
+	</div>
+</div>

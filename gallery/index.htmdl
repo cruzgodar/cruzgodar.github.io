@@ -1,0 +1,97 @@
+<p class="body-text">A selection of generative art, all created with the applets on this site. Click on an image to see more details and view or download a high-resolution lossless version.</p>
+
+<div id="gallery">
+	### gallery-block
+		double-pendulum-fractal-2 2
+		finite-subdivision 1
+		generalized-julia-set-2 1
+		hitomezashi-pattern 1
+		aztec-diamond 1
+		quasi-fuchsian-group 1
+	###
+	
+	### gallery-block
+		brownian-tree 1
+		chaos-game 1
+		strange-attractor 1
+		menger-sponge 2
+		kaleidoscopic-ifs-2 1
+		julia-set 1
+	###
+	
+	### gallery-block
+		quaternionic-julia-set 3
+	###
+	
+	### gallery-block
+		voronoi-diagram 1
+		kaleidoscopic-ifs 2
+		newtons-method 1
+		kicked-rotator 1
+		secant-method 1
+		generalized-julia-set 1
+	###
+	
+	### gallery-block
+		thurston-geometry-e3 3
+	###
+	
+	### gallery-block
+		juliabulb-zoom-2 2
+		barnsley-fern 1
+		generalized-julia-set-3 1
+		juliabulb-zoom 1
+		kaleidoscopic-ifs-3 1
+		hopf-fibration 1
+	###
+
+	### gallery-block
+		thurston-geometry-sol 2
+		thurston-geometry-nil 1
+		thurston-geometry-h2xe 1
+		thurston-geometry-h3 1
+		thurston-geometry-s2xe 1
+		thurston-geometry-s3 1
+	###
+	
+	### gallery-block
+		wilsons-algorithm 3
+	###
+	
+	### gallery-block
+		magic-carpet 1
+		thurston-geometry-sl2r 2
+		newtons-method-extended 1
+		lyapunov-fractal 1
+		abelian-sandpile 1
+		juliabulb-power-2 1
+	###
+
+	### gallery-block
+		mandelbulb 3
+	###
+
+	### gallery-block
+		snowflake 2
+		juliabulb 1
+		juliabulb-2 1
+		extruded-cube 1
+		menger-sponge-2 1
+		juliabulb-3 1
+	###
+
+	### gallery-block
+		double-pendulum-fractal 3
+	###
+</div>
+
+### card high-res-viewer "Title"
+	<div class="center-content" style="margin-bottom: 16px">
+		<img></img>
+	</div>
+	
+	<p class="body-text center-if-needed"><span id="description-text">Description</span></p>
+	<p class="body-text center-if-needed"><span id="featured-text">Featured</span></p>
+	<p class="body-text" style="text-align: center"><a id="applet-link">Open applet</a></p>
+	<p class="body-text" style="text-align: center"><a id="full-res-link">Download full resolution</a></p>
+###

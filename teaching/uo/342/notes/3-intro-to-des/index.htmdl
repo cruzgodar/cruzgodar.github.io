@@ -1,0 +1,227 @@
+### nav-buttons
+
+With the theory of eigenvectors and eigenvalues largely complete, let's return to one of our motivating examples: dynamical systems. As a quick reminder, a **differential equation**, or **DE**, is an equation involving a function $x(t)$ and its derivatives, and a solution is a formula for $x(t)$. For example, $x' = 2t$ has a general solution of $x = t^2 + c$, and $x' = 2x$ has a general solution of $x = ce^{2t}$. We'll be dealing with **linear systems** of DEs, which are those of the form
+
+$$
+	\vec{x}' = A\vec{x}
+$$
+
+for a matrix $A$ with real (and constant) entries. In two variables, this is just
+
+$$
+	x' &= ax + by
+
+	y' &= cx + dy
+$$
+
+for constants $a$, $b$, $c$, and $d$. The most natural way to visualize these is as **vector fields**: since $(x', y')$ is the velocity at $(x, y)$, we can draw a grid of vectors arrows, where the arrow at $(x, y)$ is given by $(x', y')$. For example, the system
+
+$$
+	x' &= x + 3y
+
+	y' &= 4x + 2y
+$$
+
+has the following vector field plot.
+
+### desmos vectorField
+
+Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
+
+### canvas vector-field
+
+This time, a solution is just the path that one specific particle takes over its lifetime.
+
+Let's see if we can solve these systems in general. If $A$ is a $1 \times 1$ matrix (i.e. a number), then the "system" is of the form $x' = ax$, and the general solution is $x = ce^{at}$ for any constant $c$ (we can derive this by the technique of separation of variables from calculus II). Inspired by this, let's guess that a solution to a generic system $\vec{x}' = A\vec{x}$ is of the form $ce^{\lambda t}\vec{v}$ for some fixed number $\lambda$, an arbitrary constant $c$, and a vector $\vec{v}$. If that's the case, then we have
+
+$$
+	\vec{x}' &= A\vec{x}
+
+	c \lambda e^{\lambda t}\vec{v} &= ce^{\lambda t}A\vec{v}
+
+	\lambda \vec{v} &= A\vec{v}.
+$$
+
+In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. All of the eigenvector-eigenvalue pairs will be solutions, as will linear combinations, since the derivative splits over addition and scalar multiplication, and so solving a system usually boils down to diagonalizing the underlying matrix.
+
+### ex "multiple tanks"
+	
+	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
+	
+	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank. Those rates have units of grams per second, so each one is the liquid flow rate in liters per second times the concentration in grams per liter (which is the mass divided by the total volume).
+	
+	$$
+		x_1' &= -2\frac{x_1}{100} = -\frac{1}{50}x_1
+		
+		x_2' &= 2\frac{x_1}{100} - 2\frac{x_2}{1} = \frac{1}{50}x_1 - 2x_2
+		
+		x_3' &= 2\frac{x_2}{1} - 2\frac{x_3}{50} = 2x_2 - \frac{1}{25}x_3.
+	$$
+	
+	In total, our matrix equation is
+	
+	$$
+		\vec{x}' = [[ -\frac{1}{50}, 0, 0 ; \frac{1}{50}, -2, 0 ; 0, 2, -\frac{1}{25} ]]\vec{x}.
+	$$
+	
+	Solving for the eigenvalues, we have
+	
+	$$
+		\det [[ -\frac{1}{50} - \lambda, 0, 0 ; \frac{1}{50}, -2 - \lambda, 0 ; 0, 2, -\frac{1}{25} - \lambda ]] = 0.
+	$$
+	
+	To take this determinant, let's expand along the first row.
+	
+	$$
+		\left(-\frac{1}{50} - \lambda\right) \left( \left(-2 - \lambda\right)\left(-\frac{1}{25} - \lambda\right) - 0 \right) &= 0
+		
+		\lambda = -\frac{1}{50}, \quad \lambda = -2, \quad \lambda &= -\frac{1}{25}.
+	$$
+	
+	Now each of these gets plugged back in to solve for the corresponding eigenvector.
+	
+	$$
+		[[ -\frac{1}{50} + \frac{1}{50}, 0, 0 | 0 ; \frac{1}{50}, -2 + \frac{1}{50}, 0 | 0 ; 0, 2, -\frac{1}{25} + \frac{1}{50} | 0 ]] & 
+		
+		[[ 0, 0, 0 | 0 ; \frac{1}{50}, \frac{-99}{50}, 0 | 0 ; 0, 2, -\frac{1}{50} | 0 ]] & 
+		
+		[[ 0, 0, 0 | 0 ; 1, -99, 0 | 0 ; 0, -100, 1 | 0 ]] & \qquad :: \vec{r_2} \te 50 ; \vec{r_3} \te -50 ::
+		
+		v_1 = 99v_2, & \quad v_3 = 100v_2.
+	$$
+	
+	Taking $v_2 = 1$, our first eigenvector is
+	
+	$$
+		\vec{v} = [[ 99 ; 1 ; 100 ]].
+	$$
+	
+	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, we have
+	
+	$$
+		[[ -\frac{1}{50} + 2, 0, 0 | 0 ; \frac{1}{50}, -2 + 2, 0 | 0 ; 0, 2, -\frac{1}{25} + 2 | 0 ]] & 
+		
+		[[ \frac{99}{50}, 0, 0 | 0 ; \frac{1}{50}, 0, 0 | 0 ; 0, 2, \frac{49}{25} | 0 ]] & 
+		
+		[[ 1, 0, 0 | 0 ; 1, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad :: \vec{r_1} \te \frac{50}{99} ; \vec{r_2} \te 50 ; \vec{r_3} \te 25 ::
+		
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad \vec{r_2} \pe -\vec{r_1}
+		
+		v_1 = 0, & \quad v_2 = -\frac{49}{50} v_3.
+	$$
+	
+	With $v_3 = 50$, we have an eigenvector of
+	
+	$$
+		\vec{v} = [[ 0 ; -49 ; 50 ]].
+	$$
+	
+	Finally, we have $\lambda = \frac{1}{25}$:
+	
+	$$
+		[[ -\frac{1}{50} + \frac{1}{25}, 0, 0 | 0 ; \frac{1}{50}, -2 + \frac{1}{25}, 0 | 0 ; 0, 2, -\frac{1}{25} + \frac{1}{25} | 0 ]] & 
+		
+		[[ \frac{1}{50}, 0, 0 | 0 ; \frac{1}{50}, -\frac{49}{25}, 0 | 0 ; 0, 2, 0 | 0 ]] & 
+		
+		[[ 1, 0, 0 | 0 ; 1, -98, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad :: \vec{r_1} \te 50 ; \vec{r_2} \te 50 ; \vec{r_3} \te \frac{1}{2} ::
+		
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad :: \vec{r_2} \pe -\vec{r_1} ; \vec{r_2} \pe 98\vec{r_3} ::
+		
+		v_1 = 0, & \quad v_2 = 0.
+	$$
+	
+	That leaves $v_3$ undetermined, so let's just set $v_3 = 1$. Then our eigenvector is
+	
+	$$
+		\vec{v} = [[ 0 ; 0 ; 1 ]].
+	$$
+	
+	At long last, we're done! Our general solution is
+	
+	$$
+		\vec{x} = c_1 e^{-t / 50} [[ 99 ; 1 ; 100 ]] + c_2 e^{-2t} [[ 0 ; -49 ; 50 ]] + c_3 e^{-t / 25} [[ 0 ; 0 ; 1 ]].
+	$$
+	
+	The problem asked for a particular solution, though: since we know that the masses in each tank at time $t = 0$ are $990$, $500$, and $0$, we can plug those values into our general solution to solve for $c_1$, $c_2$, and $c_3$:
+	
+	$$
+		c_1 e^{0} [[ 99 ; 1 ; 100 ]] + c_2 e^{0} [[ 0 ; -49 ; 50 ]] + c_3 e^{0} [[ 0 ; 0 ; 1 ]] &= [[ 990 ; 500 ; 0 ]]
+		
+		[[ 99, 0, 0 | 990 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & 
+		
+		[[ 1, 0, 0 | 10 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_1} \te \frac{1}{99}
+		
+		[[ 1, 0, 0 | 10 ; 0, -49, 0 | 490 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_2} \pe -\vec{r_1}
+		
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_2} \te -\frac{1}{49}
+		
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 0, 0, 1 | -500 ]] & \qquad :: \vec{r_3} \pe -100\vec{r_1} ; \vec{r_3} \pe -50\vec{r_2} ::
+		
+		c_1 = 10, \quad c_2 = -10, & \quad c_3 = -500.
+	$$
+	
+	Finally, the problem asked for the masses of salt after 5 minutes, which is when $t = 300$:
+	
+	$$
+		\vec{x} &= 10 e^{-300 / 50} [[ 99 ; 1 ; 100 ]] -10 e^{-2(300)} [[ 0 ; -49 ; 50 ]] - 500 e^{-300 / 25} [[ 0 ; 0 ; 1 ]]
+		
+		&\approx [[ 2.454 ; 0.025 ; 2.479 ]] + [[ 0 ; 0 ; 0 ]] + [[ 0 ; 0 ; -0.003 ]]
+		
+		&= [[ 2.454 ; 0.025 ; 2.482 ]].
+	$$
+	
+	As we might expect, not much salt is left after so much time has passed.
+	
+###
+
+### exc "$\text{TREE}(3)$"
+	
+	The life cycle of trees in a forest can be divided into three sections: when they're alive, when they've died, and when they've then decomposed into soil. Suppose $m_1(t)$, $m_2(t)$, and $m_3(t)$ give the mass of living trees, fallen trees, and soil from fallen trees in century $t$, respectively, and that they satisfy the following system of DEs:
+	
+	$$
+		m_1' &= -3m_1
+		
+		m_2' &= 3m_1 - 2m_2
+		
+		m_3' &= 2m_2 - m_3.
+	$$
+	
+	Find the general solution to the system.
+	
+###
+
+When the eigenvalues of the matrix $A$ are complex or repeated, the solution to the system $\vec{x}' = A\vec{x}$ is unfortunately a little out of the scope of our class. Instead, let's close the section by focusing on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. If $A$ is diagonalizable with real eigenvalues $\lambda_1$ and $\lambda_2$ and corresponding linearly independent eigenvectors $\vec{v_1}$ and $\vec{v_2}$, then the general solution of 
+
+$$
+	\vec{x} = c_1e^{\lambda_1 t}\vec{v_1} + c_2e^{\lambda_2 t}\vec{v_2}
+$$
+
+means that when $\vec{x}$ is parallel to either $\vec{v_1}$ or $\vec{v_2}$, so is its velocity, so it stays on that line. The result is equilibrium solutions lying on lines perpendicular to the eigenvectors. Moreover, as $t \to \infty$, the factor of $e^{\lambda t}$ approaches zero for negative $\lambda$ and $\infty$ for positive $\lambda$, and so the sign of the eigenvalue determines the direction of flow along the line perpendicular to the eigenvector --- either toward the origin or away from it. The opening example of
+
+$$
+	[[ x' ; y' ]] &= [[ 1, 3 ; 4, 2 ]] [[ x ; y ]],
+$$
+
+for instance, has eigenvectors of $[[ 3 ; 4 ]]$ and $[[ -1 ; -1 ]]$ with eigenvalues of $5$ and $-2$, respectively.
+
+Let's close the section by examining a matrix that can exhibit all possible configurations of eigenvalues to see how the vector field differs. With draggable points $(a, b)$ and $(c, d)$, the system
+
+$$
+	x' &= ax + by
+
+	y' &= cx + dy
+$$
+
+is plotted below.
+
+### canvas eigenvector-axes
+
+If you'd like to see more of this content, consider taking Math 256! Alternatively, I have a full set of notes for the course, including many more of these vector field animations.
+
+### image-links
+	/teaching/uo/256/ "Math 256 Notes"
+###
+
+<div style="height: 32px"></div>
+
+### nav-buttons

@@ -1,0 +1,54 @@
+Mathematicians rarely pass up the opportunity to choose an entertaining name, and this is one of the most famous examples. If we place a continuous <a href="/applets/vector-fields/">vector field</a> on an $n$-dimensional sphere (a circle for $n = 1$, a hollow ball for $n = 2$, the <a href="/applets/thurston-geometries/">three-sphere</a> for $n = 3$, and so on), then whenever $n$ is even, that vector field can't be nonzero everywhere. Put more literally, it's impossible to comb a hairy ball without at least one hair sticking straight up.
+
+
+
+### dropdown examples
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### textarea glsl
+
+### checkboxes
+	raw-glsl
+###
+
+### buttons
+	generate
+###
+
+### text-boxes
+	resolution
+	vector-field-resolution
+###
+
+### sliders
+	vector-field-dilation
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+### card applet-controls "Controls"
+	Drag on the scene to look around. In the Generating code box, use `x`, `y`, and `z` to refer to the cooridnates on the sphere, which range from $-1$ to $1$.
+###

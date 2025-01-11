@@ -1,0 +1,968 @@
+Welcome to Math 256! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
+
+
+
+## General Resources
+
+### image-links
+	
+	syllabus -c "Syllabus"
+	extra/practice-midterm-1/practice-midterm-1.pdf "Practice Midterm 1"
+	extra/practice-midterm-1-solutions/practice-midterm-1.pdf "Practice Midterm 1 Solutions"
+	extra/practice-midterm-2/practice-midterm-2.pdf "Practice Midterm 2"
+	extra/practice-midterm-2-solutions/practice-midterm-2.pdf "Practice Midterm 2 Solutions"
+	extra/practice-final/practice-final.pdf "Practice Final Exam"
+	
+###
+
+
+
+## Interactive Notes
+
+### image-links
+	
+	notes/0-calc-review/
+	notes/1-intro-to-des/
+	notes/2-if-and-sep/
+	notes/3-existence-and-exactness/
+	notes/4-intro-to-second-order-linear/
+	notes/5-complex-and-repeated-roots/
+	notes/6-nonhomogeneous-second-order-des/
+	notes/7-higher-order-des/
+	notes/8-intro-to-linear-algebra/
+	notes/9-systems-and-inverses/
+	notes/10-determinants-and-eigenthings/
+	notes/11-intro-to-systems/
+	notes/12-complex-and-repeated-eigenvectors/
+	notes/13-phase-portraits-and-stability/
+	
+###
+
+
+
+## Homework
+
+### image-links
+	
+	homework-1 -c "Homework 1"
+	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
+	homework-4 -c "Homework 4"
+	homework-5 -c "Homework 5"
+	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
+	homework-8 -c "Homework 8"
+	homework-9 -c "Homework 9"
+
+###
+
+
+
+### card homework-9 "Homework 9"
+	
+	*Due Friday of Week 10 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-9
+	###
+
+
+
+	## Section 11
+	
+	In problems 4#, solve the system of DEs.
+	
+	#.
+	
+	$$
+		x_1' &= 2x_1 - x_2
+		
+		x_2' &= 3x_1 - 2x_2.
+	$$
+	
+	For this problem, also sketch a vector field.
+	
+	#.
+	
+	$$
+		x_1' &= 19x_1 - 4x_2 + 8x_3
+		
+		x_2' &= -8x_1 + 5x_2 - 10x_3
+		
+		x_3' &= -x_1 - 2x_2 + 4x_3.
+	$$
+	
+	#.
+	
+	$$
+		x' &= 2x + 2y - 2z
+		
+		y' &= -3x + 7y + 3z
+		
+		z' &= -5x + 5y + 5z.
+	$$
+	
+	#.
+	
+	$$
+		a' &= 5a + 6b + 4c - 4d
+		
+		b' &= 3a + 8b - 2c + 2d
+		
+		c' &= 3a - 3b + 9c + 2d
+		
+		d' &= 11d.
+	$$
+	
+
+
+	- - -
+
+	#. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows *back* into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
+	
+
+
+	- - -
+
+	#. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
+	
+	$$
+		**C**(f) = [[0, -b ; 1, -a]].
+	$$
+	
+	Show that the characteristic polynomial of $**C**(f)$ is $f$.
+
+	#. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
+	
+	> a) $\lambda_1 = 1, \quad \lambda_2 = 1$.
+	
+	> b) $\lambda_1 = 1, \quad \lambda_2 = -1$.
+	
+	> c) $\lambda_1 = -1, \quad \lambda_2 = -1$.
+	
+	> d) $\lambda_1 = 1 + 2i, \quad \lambda_2 = 1 - 2i$.
+	
+	> e) $\lambda_1 = -1 + 2i, \quad \lambda_2 = -1 - 2i$.
+	
+	> f) $\lambda_1 = i, \quad \lambda_2 = -i$.
+	
+	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields/">vector fields applet</a> --- for example, to plot
+	
+	$$
+		x' &= 2x - y
+		
+		y' &= x + 4y,
+	$$
+	
+	enter `(2x - y, x + 4y)` in the box and hit generate.
+	
+	
+	
+	
+	<!-- ## Section 12 -->
+	
+	<!-- In problems 3#, solve the system of DEs. -->
+	
+	<!-- #. -->
+	
+	<!-- $$ -->
+	<!-- 	x_1' &= 2x_1 - 8x_2 -->
+		
+	<!-- 	x_2' &= x_1 - 2x_2. -->
+	<!-- $$ -->
+	
+	<!-- For this problem, also sketch a vector field. -->
+	
+	<!-- #. -->
+	
+	<!-- $$ -->
+	<!-- 	x_1' &= 2x_1 - 4x_2 -->
+		
+	<!-- 	x_2' &= 2x_1 - 3x_2 - x_3 -->
+		
+	<!-- 	x_3' &= x_1 - x_2 - x_3 -->
+	<!-- $$ -->
+	
+	<!-- #. -->
+	
+	<!-- $$ -->
+		<!-- x' &= 5x - 3y -->
+
+		<!-- y' &= 3x - y -->
+	<!-- $$ -->
+	
+
+
+	## Section 13
+	
+	In problems 4#, solve the system of DEs for an implicit function of $x$ and $y$, and determine the critical points. Verify your answers with the <a href="/applets/vector-fields/">vector fields applet</a>, and use it to classify the critical points as stable, unstable, or neither.
+
+	#.
+
+	$$
+		x' &= xy
+
+		y' &= 2x - 1
+	$$
+
+	#.
+
+	$$
+		x' &= x - xy
+
+		y' &= xy - y
+	$$
+	
+	#.
+
+	$$
+		x' &= (y - 1)(y + 1)
+
+		y' &= (x - 1)(x + 1)
+	$$
+	
+	#.
+
+	$$
+		x' &= x
+
+		y' &= y\log|x|
+	$$
+
+###
+
+
+
+### card homework-8 "Homework 8"
+	
+	*Due Wednesday of Week 9 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-8
+	###
+
+
+
+	## Section 10
+	
+	In problems 5#, find the determinant of the given matrix.
+	
+	#. $$**A** = [[2, -1 ; 3, -2]].$$
+	
+	#. $$**B** = [[1, -1 ; 1, 3]].$$
+	
+	#. $$**C** = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
+	
+	#. $$**D** = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
+	
+	#. $$**E** = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
+	
+
+
+	- - -
+
+	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
+	
+	#. $**A**$ from problem 1.
+	
+	#. $**B**$ from problem 2.
+	
+	#. $**C**$ from problem 3.
+	
+	#. $**D**$ from problem 4.
+	
+	#. $**E**$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
+	
+
+
+	- - -
+
+	#. With $**A**$ from problem 1, find the following:
+	
+	> a) $$**A**^{100} [[1 ; 3]].$$
+	
+	> b) $$**A**^{100} [[-2 ; -6]].$$
+	
+	> c) $$**A**^{100} [[0 ; -4]].$$
+	
+
+
+	- - -
+
+	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $**A**$ and $**B**$, $\det (**AB**) = \left( \det **A** \right)\left( \det **B** \right)$. Use this property to answer the following questions.
+	
+	> a) What is $\det **I**$? Hint: $**IA** = **A**$ for any matrix $**A**$ for which the product makes sense.
+	
+	> b) Let $**A**$ be an invertible matrix. What is $\det \left(**A**^{-1}\right)$ in terms of $\det **A**$?
+	
+
+
+	- - -
+
+	#. Suppose $**A**$ is an invertible matrix with eigenvectors $**v_1**, ..., **v_n**$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
+	
+	> a) For $**A**$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
+	
+	> b) What are the eigenvectors and eigenvalues of $**A**^{-1}$? Hint: start with $**Av_i** = \lambda_i **v_i**$ and find a way to introduce $**A**^{-1}$ into the equation.
+
+###
+
+
+
+### card homework-7 "Homework 7"
+	
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-7
+	###
+
+
+
+	## Section 9
+	
+	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	
+	#.
+	
+	$$
+		3x - y &= 14
+		
+		4x + 2y &= 2.
+	$$
+	
+	#.
+	
+	$$
+		x + 2z &= 8
+		
+		-x + 2y + 6z &= 6
+		
+		4x + y + 3z &= 21.
+	$$
+	
+	#.
+	
+	$$
+		3x_1 + x_2 + x_3 &= 1
+		
+		x_2 + x_3 &= -4
+		
+		6x_1 + 5x_2 + 8x_3 &= -10.
+	$$
+	
+	#.
+	
+	$$
+		x_1 + x_2 - 4x_3 &= -11
+		
+		-3x_1 + 2x_3 &= 3
+		
+		2x_1 + 2x_2 + 2x_3 &= 8
+		
+		-x_1 + 2x_2 &= 1.
+	$$
+	
+	#.
+	
+	$$
+		a + c &= 2
+		
+		b + d &= 1
+		
+		a + 2b + 3c + 4d &= 10
+		
+		4a + 3b + 2c + d &= 5.
+	$$
+	
+
+
+	- - -
+
+	In problems 5#, invert the matrix.
+	
+	#. $$[[4, 1 ; -1, 2]].$$
+	
+	#. $$[[1, 0, -1 ; 4, 5, 6 ; 0, -1, 2]].$$
+	
+	#. $$[[2, 1, 3 ; 3, -1, 2 ; 1, 0, 1]].$$
+	
+	#. $$[[4]].$$
+	
+	#. $$[[1, 0, 0, 0 ; 0, 1, 0, 1 ; 0, 0, 1, 0 ; 1, 0, 1, 1]].$$
+	
+
+
+	- - -
+
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $**A**$, find the following:
+	
+	> a) A matrix $**S_{1, 2}**$ so that $**S_{1, 2}A**$ is the same as $**A**$, but with rows $1$ and $2$ swapped. Similarly, find $**S_{1, 3}**$ and $**S_{2, 3}**$.
+	
+	> b) A matrix $**M_{1, c}**$ so that $**M_{1, c}A**$ is same as $**A**$, but with row $1$ multiplied by $c$. Similarly, find $**M_{2, c}**$ and $**M_{3, c}**$.
+	
+	> c) A matrix $**P_{1, 2, c}**$ so that $**P_{1, 2, c}A**$ is same as $**A**$, but with $c$ times row $2$ added to row $1$. Similarly, find $**P_{1, 3, c}**$, $**P_{2, 3, c}**$, as well as $**P_{2, 1, c}**$, $**P_{3, 1, c}**$, and $**P_{3, 2, c}**$.
+	
+
+
+	- - -
+
+	#. Let $$**A** = [[a, b ; c, d]]$$ be a generic $2 \times 2$ matrix. Find $**A**^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+
+###
+
+
+
+### card homework-6 "Homework 6"
+	
+	*Due Wednesday of Week 7 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-6
+	###
+
+
+	
+	<!-- ## Section 7 -->
+	
+	<!-- In problems 5#, find the general solution of the given DE. -->
+	
+	<!-- #. $$y''' + 4y' = 0.$$ -->
+	
+	<!-- #. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$ -->
+	
+	<!-- #. $$y^{(4)} = -16y.$$ -->
+	
+	<!-- #. $$y^{(8)} - 2y^{(4)} + y = 0.$$ -->
+	
+	<!-- #. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$. -->
+	
+
+
+	<!-- - - - -->
+
+	<!-- #. Consider the DE $$y''' + y' = 0$$. -->
+	
+	<!-- > a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$ -->
+	
+	<!-- > b) The Wronskian for a third-order DE is defined as -->
+	
+	<!-- $$ -->
+	<!-- 	W[y_1, y_2, y_3] = \det [[y_1, y_2, y_3 ; y_1', y_2', y_3' ; y_1'', y_2'', y_3'' ]]. -->
+	<!-- $$ -->
+	
+	<!-- > Write out this matrix (but don't take any determinants yet). -->
+	
+	<!-- > c) For a $3 \times 3$ matrix $**A**$, we can find $\det **A**$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing -->
+	
+	<!-- $$ -->
+	<!-- 	\det **A** = (-1)^{j + 1} (a_{1j} \det **A_{1j}** - a_{2j} \det **A_{2j}** + a_{3j} \det **A_{3j}**), -->
+	<!-- $$ -->
+	
+	<!-- > where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others! -->
+	
+	<!-- > d) Interpret the Wronskian: did you successfully find the general solution in part a)? -->
+
+	## Section 8
+	
+	In problems 5#, evaluate the product.
+	
+	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
+	
+	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
+	
+	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
+	
+
+
+	- - -
+
+	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
+	
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+	
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+###
+
+
+
+### card homework-5 "Homework 5"
+	
+	*Due Wednesday of Week 6 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-5
+	###
+
+
+
+	## Section 5
+	
+	In problems 6#, solve the DE. If possible, verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 6y' + 9y = 0.$$
+
+	#. $$ty'' + y' = 0.$$
+	
+	#. $$y'' + 10y' + 26y = 0.$$
+
+	#. $$y'' - 2y' - 8y = 0.$$
+	
+	#. $$y'' - 100y = 0.$$
+	
+	#. $$y'' + 100y = 0.$$
+	
+
+
+	- - -
+
+	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+	
+	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
+	
+	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
+	
+
+
+	- - -
+
+	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
+
+	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
+
+
+
+	## Section 6
+	
+	In problems 8#, find the general solution to the DE.
+	
+	#. $$y'' - 2y' - 3y = 8e^t.$$
+	
+	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
+	
+	#. $$y'' + y = 3\sin(t) + e^t.$$
+	
+	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
+	
+	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
+	
+	#. $$y'' + 2y' + y = 2t\sin(t).$$
+	
+	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
+	
+	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
+	
+###
+
+
+
+### card homework-4 "Homework 4"
+	
+	*Due Wednesday of Week 5 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-4
+	###
+
+
+
+	## Section 4
+	
+	In problems 5#, solve the DE and verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 2y' - 3y = 0.$$
+	
+	#. $$y'' + 3y' = 0.$$
+	
+	#. $$4y'' - 9y = 0.$$
+	
+	#. $$y'' - y' - y = 0.$$
+	
+	#. $$y'' = y'.$$
+	
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
+	
+	#. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
+	
+	#. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
+	
+	#. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
+	
+
+
+	- - -
+
+	#. Consider the DE $$2t^2y'' - ty' + y = 0.$$
+
+	> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
+	
+	> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
+	
+	> c) Why is $t = t_0$ a problem?
+	
+
+
+	- - -
+
+	#. Let $y = a(t) + b(t)i$ be a solution to
+	
+	$$
+		y'' + p(t)y' + q(t)y = 0,
+	$$
+	
+	where $a$, $b$, $p$, and $q$ are all real-valued functions. Show that both $a$ and $b$ must be solutions to $y'' + p(t)y' + q(t)y = 0$ themselves.
+	
+
+
+	- - -
+
+	#. Consider the DE $$y'' - yy' = 0.$$
+
+	> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
+	
+	> b) Show that
+	
+	$$
+		y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
+	$$
+	
+	is *not* a solution in general. Why does this not contradict the results of section 4?
+	
+###
+
+
+
+### card homework-3 "Homework 3"
+	
+	*Due Wednesday of Week 4 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-3
+	###
+	
+	
+	## Section 3
+	
+	In problems 3#, find the indicated derivative.
+	
+	#. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
+	
+	#. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
+	
+	#. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
+	
+
+
+	- - -
+
+	#. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
+	
+
+
+	- - -
+
+	In problems 3#, find the indicated integral. Make sure to express the constant as a function of the correct variable.
+	
+	#. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
+	
+	#. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
+	
+	#. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
+	
+
+
+	- - -
+
+	In problems 7#, solve the the given DE.
+	
+	#. $$2y + 1 + (2x + 1)y' = 0,$$ $$y(1) = 1.$$
+	
+	#. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
+
+	#. $$\sin(y)y' - te^t\cos(y) = 0.$$
+	
+	#. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
+
+	#. $$ty' + y + t^{-2} = 0,$$ $$y(2) = 2.$$
+	
+	#. $$(10t + t^2) - 2\sin(y)y' = 0,$$ $$y(0) = 1.$$
+	
+	#.
+	
+	$$
+		\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
+	$$
+	
+###
+
+
+
+### card homework-2 "Homework 2"
+	
+	*Due Wednesday of Week 3 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-2
+	###
+	
+	
+	
+	## Section 2
+	
+	In problems 10#, solve the DE. Whenever possible, fully evaluate all integrals.
+	
+	#. $$y' + 2y = e^{-2t},$$ $$y(0) = -1.$$
+	
+	#. $$y' + \frac{y}{t} = \sin(t),$$ $$y(\pi) = 0.$$
+	
+	#. $$xy' = \sqrt{y^2x^2 - y^2}.$$ Hint: during the integration, you'll want to set $x = \sec(\theta)$ and use trig sub.
+	
+	#. $$y' = y + t^2e^t.$$
+	
+	#. $$y' = \frac{t}{1 + y},$$ $$y(0) = -2.$$
+	
+	#. $$y' + ty^2 + ty + 2y^2 + 2y = 0.$$
+	
+	#. $$ty' + (t + 1)y = t + 2,$$ $$y(1) = 2.$$
+	
+	#. $$\cos^2(t)y' = 1 + y.$$
+	
+	#. $$y' = t + \frac{t}{y}.$$
+	
+	#. $$y' = e^{x + y},$$ $$y(0) = 0.$$
+	
+
+
+	- - -
+
+	#. You invest $\$1000$ into an account which compounds interest **continuously** --- in other words, your balance is constantly increasing at a rate proportional to its current value. If the continuous interest rate is $0.2\%$ per year, how much money will be in the account after 10 years?
+	
+
+
+	- - -
+
+	#. The population $P(t)$ of a colony of bacteria after $t$ hours (in thousands) follows the equation $$P' + P = 2^{-t} + 1.$$ After enough time, what will the population settle down to?
+	
+
+
+	- - -
+
+	#. The function $y$ satisfies $y' = y\log(x)$ with $$y(1) = \frac{1}{e}.$$
+	
+	> a) Express $y''$ in terms of $x, y$, and $y'$.
+	
+	> b) Solve the original DE, find $y''$ in terms of $x$ only, and verify that your answer to part a) was correct.
+	
+
+
+	- - -
+
+	#. Solve the DE $$y' + xy = x$$ in two ways: first with integrating factors and then with separation of variables. Make sure your answers are the same!
+	
+
+
+	- - -
+	
+	#. True or false: if a DE is separable, then its direction field is symmetric about the origin  --- i.e. the slope at $(x, y)$ is the same as the slope at $(-x, -y)$. If it's true, briefly explain why, and if it's false, give a counterexample.
+
+
+
+	- - -
+	
+	#. A tank is filled with $1\,\text{L}$ of water. We begin pouring in a salt solution with a concentration of $2\,\frac{\text{g}}{\text{mL}}$ at a rate of $10\,\frac{\text{mL}}{\text{s}}$, and also begin draining the tank at a rate of $10\,\frac{\text{mL}}{\text{s}}$. What will the concentration of salt be after an hour?
+	
+	#. A tank is filled with $100\,\text{L}$ of uncolored paint. We begin pouring in a solution of red paint, which contains $0.5\,\frac{\text{kg}}{\text{L}}$ of dye, at a rate of $1\,\frac{\text{L}}{\text{s}}$. We also begin draining the well-mixed paint from the bottom of the tank at a rate of $1\,\frac{\text{L}}{\text{s}}$. How long will it take for the paint in the tank to have half the concentration of dye that the incoming red paint does?
+	
+###
+
+
+
+### card homework-1 "Homework 1"
+	
+	*Due Wednesday of Week 2 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-1
+	###
+	
+	
+	
+	## Section 1
+	
+	In problems 3#, find the order of the DE, state whether it's linear, and verify that the given function solves it.
+	
+	#. $$y'' + y' + y = 0,$$ $$y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right).$$
+	
+	#. $$y''' = t,$$ $$y(t) = \frac{t^4}{24}.$$
+	
+	#. $$(y'')^2 = e^t,$$ $$y(t) = t - 4e^{t / 2}.$$
+	
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
+	
+	#. $$\frac{y'}{\tan(t)} = \sec(t),$$ $$y(0) = 1.$$
+	
+	#. $$y' = y,$$ $$y(1) = 1.$$
+	
+	#. $$r' = t^2\sin(t),$$ $$r(0) = 0.$$
+	
+
+
+	- - -
+
+	In problems 4#, draw the direction field for the given DE and sketch a solution curve. Find all the equilibria and classify them as stable, unstable, or neither.
+	
+	#. $$y' = \sin(t).$$
+	
+	#. $$y' = (y^2 - 1)(t^2 - 1).$$
+	
+	#. $$y' = y.$$
+	
+	#. $$(y')^2 = |yt|.$$
+	
+###
+
+
+
+### card syllabus "Math 256: Intro to Ordinary Differential Equations"
+	
+	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
+
+	Class meetings: 11--11:50 MTWF in Peterson 105
+	
+	Office hours: M 4--4:50, T 10--10:50, RF 1--1:50 in the Fenton Hall atrium (the middle of the third floor).
+	
+	
+	
+	## What materials will I need?
+	
+	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's *Elementary Differential Equations, 11th edition*, by William Boyce.
+	
+	A scientific calculator can save you time with simple calculations, but it's not required. You can always leave your final answers unsimplified, and the quizzes and exams are written so that necessary computations are doable by hand. No graphing calculators are allowed.
+	
+	
+	
+	## What will I be graded on?
+	
+	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
+	
+	> In-class participation: 5%
+	> Reading quizzes: 5%
+	> In-class quizzes: 10%
+	> Homework: 20%
+	> Midterms: 20% each (40% total)
+	> Final: 20%
+	
+	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
+	
+	
+	
+	## What will classes be like?
+	
+	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions and theorem statements, and are there so that you've seen the material at least once before lecture.
+	
+	Many of the examples in the notes have exercises following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper from your notebook, and then turn it in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	
+	
+	
+	## What will the homework be like?
+	
+	The homework is available on this site, and there will be roughly 30 problems due each week. Your grade is out of 16 points --- 4 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	
+	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	
+	
+	
+	## What should I expect from the quizzes and exams?
+	
+	We have quizzes on Wednesdays during the last 20 minutes of class. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies.
+	
+	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative, and typically have multiple-choice and short-answer portions as well as longer, multi-part questions. You can use a handwritten, two-sided, $3 \times 5$ inch index card for notes on the midterms and final.
+	
+	Our final exam is also cumulative and is from 10:15 AM to 12:15 PM on Thursday, December 12th.
+	
+	
+	
+	## What are the best things I can do to succeed?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
+	
+	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late --- Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	
+	
+	
+	## What if I'm registered with the AEC or think I should be?
+	
+	Please have the AEC send me the accommodations email as soon as possible, ideally in week 1. If you think you should be registered with the AEC, it's a good idea to start the process as soon as possible --- it can take a few weeks before everything goes through, so the sooner the better.
+	
+	
+	
+	## What are the skills I can expect to learn from this course?
+	
+	We will learn how to:
+	
+	> - Recognize ODEs
+	
+	> - Solve many types of them
+	
+	> - Identify when they can and can't be solved uniquely
+	
+	> - Use linear algebra to solve systems of first-order ODEs
+	
+	> - Analyze the stability and limiting behavior of solutions
+	
+	> - Use ODEs to model and predict the behavior of physical systems
+	
+	
+	
+	## Is there anything else I should know?
+	
+	Like most graduate students, I am a <a href="https://investigations.uoregon.edu/employee-responsibilities">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
+	
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
+	
+###

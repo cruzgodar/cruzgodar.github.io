@@ -1,0 +1,184 @@
+### nav-buttons
+
+
+
+Welcome to Math 112! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before most lectures. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+
+$$
+	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+### desmos testGraph
+
+If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
+
+Trigonometry is Latin for the study of triangles, but it goes quite a bit further. During our course, we'll learn how to transform functions to vastly extend their possible applications, introduce functions to measure points on the unit circle, and use vectors to represent quantities with magnitudes and directions. This is one of the most broadly-used math courses there is, and its tools and techniques extend to dozens of other math courses.
+
+
+
+## Parent Functions
+
+We'll begin with a review of function transformations, which are straightforward ways in which we can modify the input or output of a function $y = f(x)$ to change its behavior. Before we can talk about transforming graphs, though, we'll need to know a handful of graphs of simple functions to start from. We'll call these **parent functions**, and they'll form the foundation for this section.
+
+**Lines:** the classic equation for a line is $f(x) = mx + b$ for a slope $m$ and $y$-intercept $b$. We can also use **point-slope** form: a line with slope $m$ passing through $(x_0, y_0)$ has equation $f(x) = m(x - x_0) + y_0$ (this may look more familiar when we replace $f(x)$ with $y$ and write $y - y_0 = m(x - x_0)$).
+
+**Power functions:** the graph of $f(x) = x^a$ for an integer $a \geq 1$ is a line when $a = 1$, a parabola when $a = 2$, a cubic S-shape when $a = 3$, and similar but more angular shapes for larger values of $a$, depending on whether $a$ is even or odd. For any value of $a$, the graph passes through $(0, 0)$ and $(1, 1)$.
+
+### desmos powerFunctions
+
+If you haven't already, use the chevron button to expand the list of equations in any Desmos graph! I've set them up so that only the ones that can be safely changed are visible, and you can also turn off different equations to reduce the visual clutter.
+
+**Negative powers:** the graph of $f(x) = x^{-a} = \frac{1}{x^a}$ for an integer $a \geq 1$ is a hyperbola when $a = 1$, a volcano-shaped graph when $a = 2$, and similar but more angular shapes for larger values of $a$, depending on whether $a$ is even or odd.
+
+### desmos negativePowerFunctions
+
+**Fractional powers:** the graph of $f(x) = x^{1/a} = \sqrt[a]{x}$ for an integer $a \geq 2$ is half of a horizontal parabola when $a = 2$, a horizontal cubic S-curve when $a = 3$, and similar but more angular shapes for larger values of $a$, depending on whether $a$ is even or odd. For any value of $a$, the graph passes through $(0, 0)$ and $(1, 1)$.
+
+### desmos fractionalPowerFunctions
+
+The graph of $x^{1/a}$ looks quite a bit like the graph of $x^a$, and that's no coincidence: if $f(x) = x^a$ for $x \geq 0$, then $f^{-1}(x) = x^{1/a}$ is the **inverse function** to $f$, meaning $f^{-1}(f(x)) = x$ and $f(f^{-1}(x)) = x$ --- in other words, the two functions undo one another. When $a$ is odd, we don't need to insist that $x \geq 0$, but for even values, like $a = 2$, we run into a problem if we don't. For example, $4^2 = (-4)^2 = 16$, and so if we're trying to define $f^{-1}(16)$, we don't know which value to pick. The fundamental issue with $f(x) = x^2$ is that it's not **one-to-one**, meaning there are multiple inputs (like $4$ and $-4$) that are sent to the same output. Visually, that means there are two points with different $x$-coordinates but the same $y$-coordinate, so the function fails the horizontal line test. For any one-to-one function $y = f(x)$, we can solve for $x$ to write $x = f^{-1}(y)$, and so $y = f^{-1}(x)$ just reverses the role of $x$ and $y$. That means the graph of $y = f^{-1}(x)$ is the same as the graph of $y = f(x)$, but flipped about the diagonal line $y = x$. Any function $f$ that failed the horizontal line test would then have an inverse that failed the **vertical** line test, meaning it's not a function at all.
+
+### desmos inverses
+
+**Exponentials and logarithms:** we'll briefly touch on one more group of parent functions. The function $f(x) = e^x$ is an **exponential function** --- it's always positive, approaches $y = 0$ as $x$ decreases, and rapidly increases when $x$ is positive and increasing. The base $e$ is an irrational mathematical constant, like $\pi$, and is roughly equal to $2.71828$. It has a stunning amount of mathematical significance, but unfortunately, that importance is not revealed until calculus. For our purposes, we won't often need to use exponentials in general or $e$ in particular, and so we won't spend too much time on it.
+
+### desmos exponentials
+
+Logarithms are infamous in algebra, but they don't need to be! When we say that the square root function $\sqrt{x}$ *undoes* the square function $x^2$, we can think of it as extracting the base of a number that's been squared: for example, $25 = 5^2$, and so the square root function extracts the base of $5$. A **logarithm** is an inverse function to an exponential, like $5^x$, and so rather than extract a base, it extracts a power. For example, $\log_5(25) = \log_5\left( 5^2 \right) = 2$, $\log_5(5) = \log_5\left( 5^1 \right) = 1$, and $\log_5\left( \frac{1}{5} \right) = \log_5\left( 5^{-1} \right) = -1$. When the base of a logarithm is $e$, we typically write it as $\ln$ instead of $\log_e$.
+
+### exc "logarithms"
+
+	1. Evaluate $\log_3(8)$, $\log_2\left( \frac{1}{4} \right)$, and $\ln(e)$.
+
+	2. Let $b > 0$ be a real number. What is $\log_b\left( b^x \right)$ for any value of $x$? What about $b^{\log_b(x)}$? Briefly explain your answers.
+
+	3. What does the graph of $\ln(x)$ look like? Plot a few points and sketch a graph. Does it make sense with the context of the graph of $e^x$?
+
+	4. Can all real numbers $x$ can be plugged into $\ln(x)$? If not, which types of numbers are okay to plug in?
+
+###
+
+
+
+## Vertical Transformations
+
+Let's take a close look at the function $f(x) = x^2$. Much like the formula $y = mx + b$ for a line, we can add a constant value $b$ to $x^2$ to produce $f(x) = x^2 + b$. Any point $(x, x^2)$ in the graph is now $(x, x^2 + b)$, so the graph has been shifted upward by $b$ units. There's nothing particularly special about $x^2$ in this example, and in fact, any function $y = f(x) + b$ has a graph that is equal to the graph of $y = f(x)$, but shifted up by $b$.
+
+### desmos verticalShift
+
+Similarly, if we multiply a function $y = f(x)$ by a factor $a$ to produce $y = a \cdot f(x)$, the result is that every point $(x, f(x))$ is replaced with $(x, a \cdot f(x))$, and so the graph is *stretched* vertically by a factor of $a$. If $a$ is less than $1$, then the stretch is more of a squish, and if $a$ is negative, then the graph is flipped vertically in addition to being stretched.
+
+### desmos verticalStretch
+
+### exc "vertical transformations"
+	
+	1. Let $P(c)$ give the total profit made from selling $c$ cookies at a bakery (in dollars), including factors like operating costs and ingredient prices, and assuming the bakery sells nothing else. Sketch a rough picture of what the graph of $P(c)$ might look like.
+
+	2. In terms of $P(c)$, what is an equation for a function whose graph is the same as the graph of $P$, but shifted down $4$ units? What about vertically stretched by a factor of $2$?
+
+	3. What might be plausible real-world effects that could lead to the profit function being transformed in these two ways?
+
+###
+
+We can combine both types of vertical transformations by applying both a factor $a$ and a shift $b$. We follow the order of operations, so the graph of $y = af(x) + b$ is the same as the graph of $y = f(x)$, but first stretched by a factor of $a$, and then moved up by $b$ units. We could just as well write it as $y = a\left( f(x) + \frac{1}{b} \right)$, but then the stretch involves something that's already been shifted vertically, and it ends up being quite a bit more error-prone.
+
+### ex "combined transformations"
+
+	Sketch a graph of $f(x) = \frac{1}{5}e^x - 2$, plotting one transformation at a time and tracking at least two points through each.
+
+	Beginning with $y = e^x$ (in purple below), we might choose the points $(0, 1)$ and $(1, e)$ to plot. First, we vertically stretch the graph by a factor of $\frac{1}{5}$, producing the graph in blue and the points $\left( 0, \frac{1}{5} \right)$ and $\left( 1, \frac{e}{5} \right) \approx \left( 1, 0.5436 \right)$. Finally, we shift the graph down $2$ units, producing the red graph and the points $\left( 0, \frac{1}{5} - 2 \right)$ and $\left( 1, \frac{e}{5} - 2 \right) \approx \left( 1, -1.4564 \right)$.
+
+	### desmos combinedTransformations
+
+###
+
+
+
+## Horizontal Transformations
+
+For the most part, vertical transformations work as we'd like them to: multiply and/or add to an entire function, and the $y$-coordinates are transformed accordingly, following the order of operations if necessary. We might expect that horizontal transformations work in a similar manner, but by modifying the $x$-coordinate.
+
+### exc "horizontal transformations"
+
+	1. Let $f(t) = t^{-2}$. Sketch a graph of $f$.
+
+	2. Sketch a graph of $(t + 2)^{-2}$ by plotting 3--5 points and connecting them. How has the graph been transformed?
+
+	3. Do the same for $(4t)^{-2}$.
+
+###
+
+The fundamental complication with horizontal transformations compared to vertical ones is that beginning with an equation $y = f(x)$ and transforming it to $y = a \cdot f(x) + b$ genuinely replaces each point $(x, f(x))$ with $(x, a \cdot f(x) + b)$. In contrast, replacing $x$ with $c \cdot x + d$ does *not* change each point's $x$-coordinate in the same way, as the previous exercise shows. However, if we expressed $x$ as a function of $y$, then we could apply the same logic. Let's use $y = x^{1/3}$ as an example: we can express it as $x = y^3$, and so $x = cy^3 + d$ is the same graph, but first stretched horizontally by a factor of $c$, then shifted $d$ units to the right.
+
+### desmos intuitiveHorizontalTransformations
+
+We don't particularly want to express a function in terms of $y$, though --- and in many cases, like $y = x^2$, we can't since it's not one-to-one. Instead, let's solve for $y$ once again to return to a more intuitive presentation. We have
+$$
+	cy^3 + d &= x
+
+	cy^3 &= x - d
+
+	y^3 &= \frac{1}{c}\left( x - d \right)
+
+	y &= \left( \frac{1}{c}\left( x - d \right) \right)^{1/3}.
+$$
+
+In total, we've arrived at a slightly strange conclusion:
+
+### prop "horizontal transformations"
+
+	Let $y = f(x)$ be a function. The graph of $y = f\left( \frac{1}{c}\left( x - d \right) \right)$ is the same as the graph of $f$, but first horizontally stretched by a factor of $c$, then shifted to the right $d$ units.
+
+###
+
+Of note here is that we not only stretch by dividing and shift right with negative numbers, but we also don't follow the order of operations! In order for this form to work, we need to factor out any coefficient on $x$.
+
+### exc "horizontal transformations"
+
+	Each of the four graphs in the Desmos plot below is a transformation of the parent function $y = \ln(x)$. Find a formula for each of them (you'll need to toggle them on).
+
+	### desmos identifyFormulaFromGraph
+
+###
+
+
+
+## Even and Odd Functions
+
+When we vertically or horizontally stretch a function by a negative factor, we reflect its graph either vertically or horizontally, or potentially both. If we stretch by specifically a factor of $-1$ (producing $y = -f(x)$ or $y = f(-x)$), then we exclusively reflect, and don't stretch at all. We'll occasionally have use for functions that interact nicely with reflections; let's take a moment to look into them.
+
+### exc "functions and reflections"
+
+	1. What is an example of a function $f$ for which $f(-x) = f(x)$? What does its graph look like?
+
+	2. What is an example of a function $f$ for which $f(x) = -f(x)$? What does its graph look like?
+
+	3. What is an example of a function $f$ for which $f(-x) = -f(x)$? What does its graph look like?
+
+	4. Which of the past three types of functions would be interesting to look more into? Why?
+
+###
+
+With the results of this exercise in mind, let's define a few terms and see some examples.
+
+### def "even and odd functions"
+
+	A function $f(x)$ is **even** if $f(-x) = f(x)$ for all valid values of $x$ where both are defined, and **odd** if $f(-x) = -f(x)$. In other words, even functions are those that whose graphs are the same when horizontally reflected, and odd ones are those whose graphs are the same when horizontally and vertically reflected.
+
+###
+
+These are certainly some strange names! As a very brief example, $f(x) = x^2$ is even since $f(-x) = (-x)^2 = x^2$, and $g(x) = x^3$ is odd since $g(-x) = (-x)^3 = -x^3$.
+
+### exc "even and odd functions"
+
+	1. Give another example of an even function and an odd one.
+
+	2. Let $p$ be an integer. When is $f(x) = x^p$ even, odd, and neither? Does this help explain why we call functions even and odd?
+
+	3. If $a$ and $b$ are integers, describe when $a + b$ is even or odd based on whether $a$ and $b$ are even or odd. Is the same true for adding functions? What about multiplying them?
+
+###
+
+
+
+### nav-buttons

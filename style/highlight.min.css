@@ -42,7 +42,8 @@
 pre code.highlightable {
   font-size: 15px;
   display: block;
-  overflow-x:auto;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
   background: rgb(44, 44, 44);
   color: #cccccc;
   font-family: Menlo, Monaco, Consolas, monospace;

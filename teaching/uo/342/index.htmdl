@@ -1,0 +1,691 @@
+Welcome to Math 342! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
+
+
+
+## General Resources
+
+### image-links
+	
+	syllabus -c "Syllabus"
+	
+###
+
+
+
+## Interactive Notes
+
+### image-links
+	
+	notes/0-linear-algebra-1-review/
+	notes/1-eigenvectors-and-eigenvalues/
+	notes/2-diagonalization/
+	notes/3-intro-to-des/
+	notes/4-the-dot-product/
+	notes/5-least-squares/
+	notes/6-inner-product-spaces/
+	notes/7-the-spectral-theorems/
+	notes/8-jordan-normal-form/
+	notes/9-singular-value-decompositions/
+	
+###
+
+
+
+## Homework
+
+### image-links
+	
+	homework-1 -c "Homework 1"
+	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
+	homework-4 -c "Homework 4"
+	homework-5 -c "Homework 5"
+	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
+	homework-8 -c "Homework 8"
+	
+###
+
+
+
+### card homework-8 "Homework 8"
+
+	*Due Wednesday of Week 10 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-8
+	###
+
+	- - -
+
+	In problems 5#, do the following:
+
+	> a) Find the eigenvalues of $A$.
+
+	> b) Find the corresponding eigenvectors and generalized eigenvectors of $A$.
+
+	> c) Determine if $A$ is diagonalizable. If it is, write $A = BDB^{-1}$ for a diagonal matrix $D$, and if not, write $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form (you don't need to invert $B$).
+
+	> d) If $A$ is diagonalizable, determine if there is an orthonormal basis of eigenvectors; if so, find it.
+
+	> e) If the eigenvalues of $A$ are distinct, find the general solution to the system of differential equations $\vec{x}' = A\vec{x}$.
+
+	#. $A = [[ 3, 1 ; -1, 1 ]]$.
+
+	#. $A = [[ 2, 1, 0 ; 0, 1, 0 ; 1, -1, 3 ]]$.
+
+	#. $A = [[ -3, -1, -3 ; -8, -3, -8 ; 4, 1, 3 ]]$.
+
+	#. $A = [[ -9, -10, -10 ; 4, 4, 3 ; 1, 2, 3 ]]$.
+
+	#. $A = [[ 1, 3, 0, 0 ; 3, 1, 0, 0 ; 0, 0, 1, -3 ; 0, 0, -3, 1 ]]$.
+
+	- - -
+
+	In problems 3#, do the following:
+
+	> a) Find a singular value decomposition $A = U \Sigma V^T$.
+
+	> b) Find a least-squares solution to $A\vec{x} = \vec{b}$.
+
+	> c) Determine if the least-squares solution is unique.
+
+	#. $A = [[ 1, 2 ; 2, 1 ; 1, 1 ]]$ and $\vec{b} = [[ 1 ; 2 ; 2 ]]$.
+
+	#. $A = [[ 3, 1, 4 ; 2, 0, 1 ]]$ and $\vec{b} = [[ 1 ; -2 ]]$.
+
+	#. $A = [[ 1, -1, 0 ; 1, 0, 1 ; 2, -1, 1 ]]$ and $\vec{b} = [[ 1 ; 2 ; -1 ]]$.
+
+	- - -
+
+	In problems 4#, do the following:
+
+	> a) Find an orthonormal basis for the given inner product space $X$, and then extend it to an orthonormal basis for $V$.
+
+	> b) Find the orthogonal decomposition of the vector $\vec{v}$ as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+	#. $V = #R#^3$ with $\left< \vec{v}, \vec{w} \right> = \vec{v} \bullet \vec{w}$, $X = \span\left\{ [[ 1 ; 2 ; 0 ]], [[ -1 ; 3 ; 1 ]] \right\}$, and $\vec{v} = [[ 4 ; 5 ; 2 ]]$.
+
+	#. $V = \span\left\{ 1, x, x^2 \right\}$ with $\left< p, q \right> = \sum_{n = 0}^2 p(n)q(n)$, $X$ is the subspace of polynomials $p$ with $p'(0) = 0$, and $\vec{v} = 1 + 2x + x^2$.
+
+	#. (optional) $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,dx$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+
+	#. (optional; more recommended than the previous problem) $V = \span\left\{ 1, \cos(x) \right\}$ with $\left< f, g \right> = \int_0^{\pi/2} f(x)g(x)\,dx$, $X = \span\{1\}$, and $\vec{v} = \cos(x) - 2$.
+
+###
+
+
+
+### card homework-7 "Homework 7"
+
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-7
+	###
+	
+	## Section 7
+
+	#. Let $A$ be a real $m \times n$ matrix. Explain why $A^T\!A$ is guaranteed to be diagonalizable.
+
+	#. Let $A$ be a symmetric (i.e. $A^T = A$), $n \times n$, real matrix with all positive eigenvalues and define $\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}$ for $\vec{v}, \vec{w} \in #R#^n$.
+
+	> a) Show from the formula that this is symmetric --- that $\left< \vec{v}, \vec{w} \right> = \left< \vec{w}, \vec{v} \right>$.
+
+	> b) Show that it's also bilinear --- that $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
+
+	> c) Setting $\vec{v} = \vec{w} = \vec{0}$, we have that $\left< \vec{0}, \vec{0} \right> = 0$. Explain why for any nonzero vector $\vec{v} \in #R#^n$, $\left< \vec{v}, \vec{v} \right> > 0$.
+
+	## Section 8
+
+	In problems 3#, write the matrix as $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+
+	#. $A = [[ 0, -5, -2 ; 2, 6, 1 ; -2, -3, 2 ]]$.
+
+	#. $A = [[ -3, -1, -2 ; -1, -1, -1 ; 2, 1, 1 ]]$.
+
+	#. $A = [[ 12, 4, 4 ; -24, -8, -8 ; -3, -1, 0 ]]$.
+
+###
+
+
+
+### card homework-6 "Homework 6"
+	
+	*Due Wednesday of Week 7 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-6
+	###
+
+
+
+	## Section 5
+
+	In problems 4#, find the least-squares solution $\vec{x}'$ to the matrix equation $A\vec{x} = \vec{b}$ and the distance between $A\vec{x}'$ and $\vec{b}$. Also determine if that least-squares solution is unique.
+
+	#. $[[ 1, 1 ; 2, 3 ; 0, 2 ]]\vec{x} = [[ 1 ; 0 ; 2 ]]$.
+
+	#. $[[ 1, 2, 3 ; -1, 3, 2 ; 0, 2, 2 ]]\vec{x} = [[ 3 ; 1 ; 6 ]]$.
+
+	#. $[[ 1, 2, 1 ; 4, 2, -1 ; 3, 0, 1 ]]\vec{x} = [[ 8 ; 5 ; 6 ]]$.
+
+	#. $[[ 1, 0, 2 ; 2, 0, 1 ; 1, 1, 2 ; 3, 1, 1 ]]\vec{x} = [[ 1 ; 1 ; -2 ; -3 ]]$.
+
+	- - -
+
+	#. Let $A$ be an $m \times n$ unitary matrix (i.e. not necessarily square). What is the least-squares solution to $A\vec{x} = \vec{b}$ in terms of $A$ and $\vec{b}$?
+
+
+
+	## Section 6
+
+	In problems 3#, compute $\left< \vec{v}, \vec{w} \right>$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, and the angle between $\vec{v}$ and $\vec{w}$ for the given inner product $V$.
+
+	#. $\vec{v} = 1 + 2x$ and $\vec{w} = 2x + x^2 - x^3$ for $V = \span\left\{ 1, x, x^2, x^3 \right\}$ with the inner product
+
+	$$
+		\left< p, q \right> = \sum_{n = 0}^3 p(n)q(n).
+	$$
+
+	#. $\vec{v} = [[ 1 ; 2 ; -1 ]]$ and $\vec{w} = [[ 2 ; 1 ; 0 ]]$ for $V = #R#^3$ with the inner product
+
+	$$
+		\left< \vec{v}, \vec{w} \right> = 2v_1w_1 + v_2w_2 + 50v_3w_3.
+	$$
+
+	#. $\vec{v}(x) = e^x$ and $\vec{w}(x) = x$ for $V = C[0, 1]$ with the inner product
+
+	$$
+		\left< f, g \right> = \int_0^1 f(x)g(x)\,dx.
+	$$
+
+	- - -
+
+	#. Let $V = C[0, 1]$. For each of the following possible inner product formulas, give an example showing that it does not define an inner product.
+
+	> a) $$\left< f, g \right> = \int_0^1 |f(x) + g(x)|\,dx.$$
+
+	> b) $$\left< f, g \right> = \int_0^1 (f(x)g(x))^2\,dx.$$
+
+	> c) $$\left< f, g \right> = \int_0^1 f(g(x))\,dx.$$
+
+	> d) $$\left< f, g \right> = \int_{1/4}^{3/4} f(x)g(x)\,dx.$$
+
+###
+
+
+
+### card homework-5 "Homework 5"
+	
+	*Due Wednesday of Week 6 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-5
+	###
+
+
+
+	## Section 4
+
+	In problems 3#, use the Gram-Schmidt process to produce an orthonormal basis for the given subspace $X$. Then find the orthogonal decomposition of given vector $\vec{v}$ as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x'} \in X^\perp$.
+
+	#. $X = \span\left\{ [[ 1 ; 2 ; 0 ]], [[ -1 ; 1 ; 4 ]] \right\}$ and $\vec{v} = [[ 1 ; 2 ; 3 ]]$.
+
+	#. $X = \span\left\{ [[ 2 ; -4 ; 1 ; 3 ]], [[ 1 ; 1 ; 1 ; 2 ]], [[ 0 ; 1 ; 2 ; 6 ]] \right\}$ and $\vec{v} = [[ -1 ; 1 ; 0 ; 3 ]]$.
+
+	#. $X = \span\left\{ [[ 0 ; 1 ; 0 ; 1 ]], [[ 1 ; 1 ; 0 ; 0 ]]\right\}$ and $\vec{v} = [[ -1 ; 1 ; 0 ; 3 ]]$.
+
+	- - -
+
+	In problems 2#, find the closest vector $\vec{x} \in X$ to $\vec{v}$, and compute the distance between the two.
+
+	#. $X = \span\left\{ [[ 1 ; 2 ; 2 ]] \right\}$ and $\vec{v} = [[ 3 ; 1 ; 4 ]]$.
+
+	#. $X = \span\left\{ [[ 4 ; 2 ; 1 ]], [[ -1 ; -1 ; 1 ]] \right\}$ and $\vec{v} = [[ 1 ; 0 ; 0 ]]$.
+
+	- - -
+
+	#. Let $A = [[ 1, -1 ; 2, 1 ; 0, 4 ]]$ be the matrix whose columns are the basis vectors from problem 1. By using the data from the Gram-Schmidt process, write $A = QR$ for a $3 \times 2$ unitary matrix $Q$ and a $2 \times 2$ upper triangular matrix $R$ whose eigenvalues are all positive. This is known as a **$\mathbf{QR}$ factorization** of $A$ --- write a brief sentence explaining why this is always possible for a matrix with linearly independent columns.
+
+	#. Find a $QR$ factorization of $A = [[ 2, 1, 0 ; -4, 1, 1 ; 1, 1, 2 ; 3, 2, 6 ]]$.
+
+	#. Find a $QR$ factorization of $A = [[ 0, 1 ; 1, 1 ; 0, 0 ; 1, 0 ]]$.
+
+	- - -
+
+	#. Let $X$ be a subspace of $#R#^n$. What is the kernel of the map $\proj_X$? (This should be a brief answer.)
+
+	#. True or false: for any subspace $X$ of $#R#^n$ and any $\vec{v} \in #R#^n$, $\left| \left| \proj_X\left( \vec{v} \right) \right| \right| \leq \left| \left| \vec{v} \right| \right|$. If true, briefly explain why, and if not, provide a short counterexample.
+
+###
+
+
+
+### card homework-4 "Homework 4"
+	
+	*Due Wednesday of Week 5 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-4
+	###
+
+
+
+	## Section 4
+
+	In problems 3#, compute $\vec{v} \bullet \vec{w}$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, the distance between $\vec{v}$ and $\vec{w}$, and the angle between them (in radians).
+	
+	#. $\vec{v} = [[ 1 ; 2 ]]$ and $\vec{w} = [[ -3 ; 2 ]]$.
+	
+	#. $\vec{v} = [[ -7 ; 2 ; 0 ]]$ and $\vec{w} = [[ -1 ; 1 ; 1 ]]$.
+
+	#. $\vec{v} = [[ 1 ; 2 ; 4 ; 3 ]]$ and $\vec{w} = [[ 2 ; -1 ; 3 ; -4 ]]$.
+
+	- - -
+
+	#. Let $X = \span \left\{ [[ 1 ; 1 ; 1 ]] \right\}$. Find a basis for $X^\perp$.
+
+	#. Let $X = \span \left\{ [[ 1 ; 2 ; 1 ; 1 ]], [[ 2 ; 3 ; 0 ; -1 ]] \right\}$. Find a basis for $X^\perp$.
+
+	#. Let $X$ be a subspace of $#R#^n$. Show that $\dim X + \dim X^\perp = n$ by constructing a linear map whose kernel is exactly $X^\perp$. You may find it useful to recall that a matrix's image has dimension equal to the number of linearly independent rows.
+
+	- - -
+
+	In problems 3#, show that the set of vectors is orthogonal and then normalize them all to produce an orthonormal basis. Then express the given vector $\vec{v}$ in that basis.
+
+	#. $\vec{v_1} = [[ 1 ; 2 ]]$, $\vec{v_2} = [[ -6 ; 3 ]]$, and $\vec{v} = [[ 4 ; 0 ]]$.
+
+	#. $\vec{v_1} = [[ 2 ; 3 ; 1 ]]$, $\vec{v_2} = [[ -1 ; 2 ; -4 ]]$, $\vec{v_3} = [[ -2 ; 1 ; 1 ]]$, and $\vec{v} = [[ 1 ; 1 ; 2 ]]$.
+
+	#. $\vec{v_1} = [[ 1 ; 2 ; 0 ; -1 ]]$, $\vec{v_2} = [[ 1 ; 2 ; -6 ; 5 ]]$, $\vec{v_3} = [[ -2 ; 7 ; 12 ; 12 ]]$, $\vec{v_4} = [[ 5 ; -2 ; 1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 1 ; 2 ; 1 ]]$.
+
+	- - -
+
+	#. Let $A$ and $B$ be $n \times n$ unitary matrices. Is $AB$ always unitary? If so, explain why, and if not, give a brief counterexample.
+
+	#. Let $A$ be a matrix whose columns are orthogonal (but not necessarily orthonormal). Does $A$ still preserve lengths? If so, explain why, and if not, give a brief counterexample.
+
+	#. Continuing with the idea from the previous problem, let $A$ be a matrix whose columns are orthogonal, but not necessarily orthonormal. Is $A$ still necessarily invertible? If so, explain why, and if not, give a brief counterexample.
+
+###
+
+
+
+### card homework-3 "Homework 3"
+	
+	*Due Wednesday of Week 4 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-3
+	###
+
+
+
+	## Section 3
+
+	In problems 3#, find the general solution to the system of differential equations.
+	
+	#.
+	
+	$$
+		x_1' &= 2x_1 - x_2
+		
+		x_2' &= 3x_1 - 2x_2.
+	$$
+	
+	For this problem, also sketch a vector field.
+	
+	#.
+	
+	$$
+		x_1' &= 19x_1 - 4x_2 + 8x_3
+		
+		x_2' &= -8x_1 + 5x_2 - 10x_3
+		
+		x_3' &= -x_1 - 2x_2 + 4x_3.
+	$$
+	
+	#.
+	
+	$$
+		x' &= 2x + 2y - 2z
+		
+		y' &= -3x + 7y + 3z
+		
+		z' &= -5x + 5y + 5z.
+	$$
+	
+
+
+	- - -
+
+	#. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows *back* into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
+	
+
+
+	- - -
+
+	#. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
+	
+	$$
+		C(f) = [[0, -b ; 1, -a]].
+	$$
+	
+	Show that the characteristic polynomial $\chi_{C(f)}$ is $f$.
+
+	#. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
+	
+	> a) $\lambda_1 = 1, \quad \lambda_2 = 1$.
+	
+	> b) $\lambda_1 = 1, \quad \lambda_2 = -1$.
+	
+	> c) $\lambda_1 = -1, \quad \lambda_2 = -1$.
+	
+	> d) $\lambda_1 = 1 + 2i, \quad \lambda_2 = 1 - 2i$.
+	
+	> e) $\lambda_1 = -1 + 2i, \quad \lambda_2 = -1 - 2i$.
+	
+	> f) $\lambda_1 = i, \quad \lambda_2 = -i$.
+	
+	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields/">vector fields applet</a> --- for example, to plot
+	
+	$$
+		x' &= 2x - y
+		
+		y' &= x + 4y,
+	$$
+	
+	enter `(2x - y, x + 4y)` in the box and hit generate.
+
+###
+
+
+
+### card homework-2 "Homework 2"
+	
+	*Due Wednesday of Week 3 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-2
+	###
+
+
+
+	## Section 1
+
+	#. Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time?
+
+
+
+	## Section 2
+
+	In problems 6#, find the eigenvalues and eigenvectors of $A$ and the algebraic and geometric multiplicity of the eigenvalues. Then diagonalize $A$ if possible, using block diagonalization with at most $2 \times 2$ blocks if necessary.
+
+	#. $A = [[ -8, 10 ; -5, 7 ]]$.
+
+	#. $A = [[ -1, -1 ; 10, 5 ]]$.
+
+	#. $A = [[ -4, -6, 12 ; 9, 11, -18 ; 3, 3, -4 ]]$.
+
+	#. $A = [[ -10, 4, -4 ; -13, 4, -10 ; 1, 0, 2 ]]$
+
+	#. $A = [[ 11, -6, -4, -8 ; -4, 1, -12, -4 ; -12, 6, 3, 8 ; 20, -10, 0, -11 ]]$.
+
+	#. $A = [[ 10, 6, -7, 12 ; -4, -3, 4, -12 ; 7, 6, -4, 12 ; -1, 0, 1, 3 ]]$.
+
+	- - -
+
+	#. Let $A = BDB^{-1}$ be a diagonalized $n \times n$ matrix, so that the columns of $B$ are eigenvectors of $A$. Use this factorization to describe the eigenvectors of $A^T$ (remember that transposing a product reverses the order of the factors).
+
+	#. Give an example of an invertible $3 \times 3$ matrix that is not diagonalizable, and an example of a diagonalizable $3 \times 3$ matrix that is not invertible.
+
+###
+
+
+
+### card homework-1 "Homework 1"
+	
+	*Due Wednesday of Week 2 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-1
+	###
+
+
+
+	## Section 0
+
+	In problems 3#, do the following:
+
+	> a) Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
+
+	> b) Augment $A$ with $\vec{b}$ and row reduce the system to solve for $\vec{x}$.
+
+	> c) If $A$ is square, find $\det A$.
+
+	> d) Let $T$ be the linear transformation corresponding to the matrix $A$. Write down the domain and codomain for $T$.
+
+	> e) Find a basis for $\ker T$ and use it to find a basis for $\image T$ using the fundamental theorem of linear algebra.
+
+	> f) Determine if $T$ is one-to-one, onto, both, or neither. If it's both one-to-one and onto, find a formula for $T^{-1}$.
+
+	#.
+
+	$$
+		x + y &= 1
+		
+		x - y &= 3	
+	$$
+
+	#.
+
+	$$
+		x + 2y - z &= -1
+		
+		2x + 3y - w &= -2
+	$$
+
+	#.
+
+	$$
+		x + y + 2z &= 4
+		
+		2x + y - z &= 2
+		
+		-3x - y + 4z &= 0
+	$$
+
+	- - -
+
+	In problems 4#, do the following:
+	
+	> a) The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
+	
+	> b) Determine whether the function $T : V \to W$ is a linear transformation. If it is, show it satisfies the two properties, and if not, give a specific example showing one of them fails.
+	
+	> c) If $T$ is a linear transformation, find the matrix for $T$ with respect to the standard bases for $V$ and $W$.
+	
+	> d) If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\image T$ using the fundamental theorem of linear algebra. Then extend the basis for $\image T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
+	
+	#. $V = #R#^4$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of vectors $[[ x ; y ; z ; w ]] \in #R#^4$ such that $x + 2y = w$, and $T : V \to W$ is defined by
+	
+	$$
+		T\left( [[ x ; y ; z ; w ]] \right) = [[ 0, x ; y + z, 2w ]].
+	$$
+	
+	#. $V = M_{2 \times 2}(#R#)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of matrices $A$ such that $\det A = 0$, and $T : V \to W$ is defined by
+	
+	$$
+		T(A) = A^T,
+	$$
+
+	where $A^T$ is the **transpose** of $A$, defined by $(A^T)_{ij} = A_{ji}$ (it effectively flips $A$ across its diagonal).
+	
+	#. $V$ is the space of polynomials with degree at most 3, $W = #R#^2$, $X$ is the set of polynomials $p(x)$ such that $p'(x) = 1$, and $T : V \to W$ is defined by
+	
+	$$
+		T(a + bx + cx^2 + dx^3) = [[ a + b ; c + d ]].
+	$$
+	
+	#. $V = \mathcal{L}(#R#, #R#^2)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of linear transformations $S : #R# \to #R#^2$ such that $S(1) = [[ 0 ; 0 ]]$, and $T : V \to W$ is defined by
+	
+	$$
+		T(S) = [[ \mid, \mid ; S(1), S(-1) ; \mid, \mid ]],
+	$$
+	
+	i.e. the outputs of $S$ are placed as columns in a $2 \times 2$ matrix.
+
+
+
+	## Section 1
+
+	In problems 3#, find the eigenvalues and eigenvectors of the matrix.
+
+	#. $A = [[ 2, -1 ; 3, -2 ]]$.
+
+	#. $B = [[ -1, 2 ; 0, -3 ]]$.
+
+	#. $C = [[ 2, 2, -2 ; -3, 7, 3 ; -5, 5, 5 ]]$.
+
+	- - -
+
+
+
+	#. Let $A = [a_{ij}]$ be an $n \times n$ matrix that is upper triangular --- that is, $a_{ij} = 0$ whenever $i > j$. What are the eigenvalues of $A$ in terms of the entries $a_{ij}$? Justify your answer.
+
+	#. Let $A$ be an $n \times n$ matrix with eigenvectors $\vec{v_1}, ..., \vec{v_n}$ and corresponding eigenvalues $\lambda_1, ..., \lambda_n$. If $A$ is invertible, what are the eigenvectors and eigenvalues of $A^{-1}$? Justify your answer.
+
+	#. Let $A$ be an $n \times n$ matrix with eigenvalues $\lambda_1, ..., \lambda_n$. What are the eigenvalues of $A^T$? Justify your answer.
+
+###
+
+
+
+### card syllabus "Math 342: Elementary Linear Algebra"
+	
+	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
+
+	Class meetings: 9--9:50 MTWF in Peterson 107
+	
+	Office hours: M 10--11:50, W 2--2:50, and F 1--1:50 in the Fenton Hall atrium (the middle of the third floor).
+	
+	
+	
+	## What materials will I need?
+	
+	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying more in sync with the course. If you'd like the book regardless, either for extra practice problems or just a different perspective on the course material, it's *Linear Algebra and its Applications, 5th edition*, by David and Steven Lay and Judi McDonald.
+	
+	A scientific calculator might save you time with simple calculations, but it's not required. You can always leave your final answers unsimplified, and the quizzes and exams are written so that necessary computations are doable by hand. No graphing calculators are allowed.
+	
+	
+	
+	## What will I be graded on?
+	
+	Your grade is determined by your scores on a number of different assignments, weighted as follows:
+	
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - In-class quizzes: 10%
+	> - Homework: 15%
+	> - Midterms: 20% each (40% total)
+	> - Final: 25%
+	
+	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
+	
+	
+	
+	## What will classes be like?
+	
+	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions and theorem statements, and are there so that you've seen the material at least once before lecture.
+	
+	Many of the examples in the notes have exercises (colored blue) following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper from your notebook, and then turn it in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	
+	
+	
+	## What should I expect from the quizzes and exams?
+	
+	We have quizzes on Wednesdays during the last 20 minutes of class. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies. You can use your handwritten notes (i.e. not the online notes) on the quizzes, but no other resources (calculators, internet, other people, etc.)
+	
+	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative, and typically have multiple-choice and short-answer portions as well as longer, multi-part questions. You can use a handwritten, two-sided, 3x5 inch index card for notes on the midterms and final.
+	
+	Our final exam is also cumulative and is from 10:15 AM to 12:15 PM on Wednesday, June 12th.
+	
+
+
+	## What will the homework be like?
+	
+	The homework is available on this site, and there will be roughly 20 problems due each week. Your grade on each is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	
+	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+
+	As a high-level math class in the 21st century, I expect you to be able to make use of technology, but in a judicious and responsible manner. Unlike the quizzes and exams, which are closed to all resources except your handwritten notes, it's a good idea to make use of all the resources available on the homework --- but in the right order. To this end, please follow these rough steps when you're working on a homework problem:
+
+	Start by working on it with no outside resources other than your handwritten notes. If you get stuck on a step *for 10--15 minutes*, look at the online notes. If you're still stuck after another 5--10 minutes, then ask someone else in the class (either a friend or me). If you've exhausted all those options and aren't able to make progress, looking up similar problems online *can* be helpful, but carries the potential risks of finding incorrect information and/or undermining learning. If you decide to consult the internet, make sure you're aware of your sources and their reliability!
+	
+	
+	
+	## What are the best things I can do to succeed?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
+	
+	I also highly recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late --- Canvas is set to deduct 2% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	
+	
+	
+	## What if I'm registered with the AEC or think I should be?
+	
+	Please have the AEC send me the accommodations email as soon as possible, ideally in week 1. If you think you should be registered with the AEC, it's a good idea to start the process as soon as possible --- it can take a few weeks before everything goes through, so the sooner the better.
+	
+	
+	## What are the skills I can expect to learn from this course?
+	
+	We will learn how to:
+	
+	> - Find and apply change-of-basis matrices
+	
+	> - Find eigenvectors, eigenvalues, and eigenspaces of matrices
+	
+	> - Diagonalize matrices and use the process to solve systems of equations
+	
+	> - Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
+	
+	> - Understand and generate orthonormal bases for vector spaces
+	
+	> - Apply and understand the Real Spectral Theorem
+
+	> - Apply and understand the singular value decomposition of a matrix
+
+	> - Apply and understand the Complex Spectral Theorem (if time permits)
+	
+	
+	
+	## Is there anything else I should know?
+	
+	Like most graduate students, I am a <a href="https://titleix.uoregon.edu/employee-reporting-obligations">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
+	
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
+	
+###

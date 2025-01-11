@@ -1,0 +1,77 @@
+### nav-buttons
+
+
+
+In the last section, we introduced even and odd functions as those whose graphs didn't change after applying different types of reflections. We might also wonder if there are functions that are preserved by other kinds of transformations, like shifts and stretches --- let's investigate!
+
+### exc "functions unchanged by transformations"
+
+	1. Let $f$ be a function so that $f(x) = f(3x)$ for all $x$; in other words, $f$ is unchanged after a horizontal stretch by a factor of $\frac{1}{3}$. What kind of a function does $f$ have to be? Is this an interesting type of function to study? What if we change the $3$ to a different number?
+
+	2. What about for vertical stretches instead of horizontal ones?
+
+	3. How about vertical shifts? Horizontal shifts?
+
+###
+
+With some results from this exercise in mind, let's dig a bit more into the final type of function: those that are preserved by particular horizontal shifts. If $f$ is a function whose graph is the same as when it's shifted to the left by $2$ units, then the graph needs to exactly line up with itself $2$ units over.
+
+### desmos periodicFunction
+
+Let's define a few terms so that these functions are a bit easier to talk about.
+
+### def "periodic function"
+
+	A function $f$ is **periodic** if for some value $a$, called the **period** of $f$, $f(x + a) = f(x)$ for all inputs $x$ for which both $f(x)$ and $f(x + a)$ are defined. We typically take $a$ to be the minimum possible positive value --- for example, if $f$ is periodic with period $3$, then it is also periodic with period $6$, since $f(x + 6) = f(x + 3) = f(x)$ for all $x$, but it is more informative to specify that the period is $3$.
+
+###
+
+In the previous graph, $f$ is periodic with period $2$. We can determine that by looking at the graph, but we can also go the other way, and sketch a complete graph of a periodic function given its period and a portion of its graph.
+
+### exc "graphing a periodic function"
+
+	1. Given that the function $g$ graphed below is periodic with period $3$, sketch a complete graph of it.
+
+	### desmos periodicFunction2
+
+	2. Given that the function $h$ graphed below is periodic with period $2$, sketch a complete graph of it.
+
+	### desmos periodicFunction3
+
+	3. Sketch a graph of a function that is periodic with period $1$.
+
+###
+
+We'll have quite a bit more to say about particular periodic functions in the next section, but for now, let's look at a few examples of some of them.
+
+### ex "a car engine"
+
+	An idling car has an engine whose noise $N(t)$ in decibels after $t$ seconds is given by
+	$$
+		N(t) = \begin{cases} 20 + 12000t, & 0 \leq t \leq \frac{1}{1200} \\ 40 - 12000t, & \frac{1}{1200} \leq t \leq \frac{1}{600} \end{cases}.
+	$$
+	$N$ is periodic with period $\frac{1}{600}$.
+
+	1. Sketch a graph of $N$ for $t \geq 0$.
+
+	2. What is the physical meaning of the period of this graph in context?
+
+	The numbers in this example are somewhat extreme, but we can sketch a graph as long as we take care to draw the $t$-axis quite small.
+
+	### desmos carEngine
+
+	Since the function is periodic with a period equal to the width of this interval, we can extend it to produce a graph of the entire function (graphed in blue). To address the physical meaning, this is a car engine whose noise level is repeating 600 times a second --- that's reasonable for the rate at which an engine rotates, particularly at idle! It's fair to say that this function is periodic because the physical state of the engine is periodic.
+
+###
+
+### exc "periodic functions"
+
+	What could be a physical interpretation for the following periodic function, graphed as a function of time? With this interpretation, what does the period represent?
+
+	### desmos wave
+
+###
+
+
+
+### nav-buttons

@@ -1,0 +1,169 @@
+home Cruz Godar
+	gallery Gallery
+
+	applets Applets
+		raymarching-fundamentals Raymarching Fundamentals
+		curved-light Curved Light
+		hairy-ball-theorem The Hairy Ball Theorem
+		hopf-fibration The Hopf Fibration
+		bernoulli-percolation Bernoulli Percolation
+		menger-sponge The Menger Sponge
+		game-of-life Conway's Game of Life
+		extruded-cube An Extruded Cube
+		voronoi-diagrams Voronoi Diagrams
+		thurston-geometries Thurston Geometries
+		magic-carpets Magic Carpets
+		vector-fields Vector Fields
+		plane-partitions Plane Partitions
+		quaternionic-julia-sets Quaternionic Julia Sets
+		fractal-sounds Fractal Sounds
+		sorting-algorithms Sorting Algorithms
+		complex-tori Complex Tori
+		domino-shuffling Domino Shuffling
+		pascals-triangle-colorings Pascal's Triangle Colorings
+		hitomezashi-patterns Hitomezashi Patterns
+		double-pendulum-fractal The Double Pendulum Fractal
+		complex-maps Complex Maps
+		lyapunov-fractals Lyapunov Fractals
+		newtons-method-extended Newton's Method, Extended
+		quasi-fuchsian-groups Quasi-Fuchsian Groups
+		the-mandelbulb The Mandelbulb
+		kaleidoscopic-ifs-fractals Kaleidoscopic IFS Fractals
+		binary-trees Binary Trees
+		snowflakes Gravner-Griffeath Snowflakes
+		finite-subdivisions Finite Subdivisions
+		generalized-julia-sets Generalized Julia Sets
+		strange-attractors Strange Attractors
+		sudoku-generator Sudoku Generator
+		julia-set-mosaic A Julia Set Mosaic
+		chaos-game The Chaos Game
+		kicked-rotator The Kicked Rotator
+		brownian-trees Brownian Trees
+		barnsley-fern The Barnsley Fern
+		newtons-method Newton's Method
+		calcudoku-generator Calcudoku Generator
+		simulated-annealing Simulated Annealing
+		abelian-sandpiles Abelian Sandpiles
+		wilsons-algorithm Wilson's Algorithm
+		julia-set-explorer Julia Set Explorer
+	
+	teaching Teaching
+		uo/342 Math 342
+			notes/0-linear-algebra-1-review Section 0: Linear Algebra I Review
+			notes/1-eigenvectors-and-eigenvalues Section 1: Eigenvectors and Eigenvalues
+			notes/2-diagonalization Section 2: Diagonalization
+			notes/3-intro-to-des Section 3: Intro to Differential Equations
+			notes/4-the-dot-product Section 4: The Dot Product
+			notes/5-least-squares Section 5: Least-Squares Approximations
+			notes/6-inner-product-spaces Section 6: Inner Product Spaces
+			notes/7-the-spectral-theorems Section 7: The Spectral Theorems
+			notes/8-jordan-normal-form Section 8: Jordan Normal Form
+			notes/9-singular-value-decompositions Section 9: Singular Value Decompositions
+		
+		uo/341 Math 341
+			notes/1-vectors-and-matrices Section 1: Vectors and Matrices
+			notes/2-row-reduction Section 2: Row Reduction
+			notes/3-vector-arithmetic Section 3: Vector Arithmetic
+			notes/4-linear-transformations Section 4: Linear Transformations
+			notes/5-properties-of-transformations Section 5: Properties of Transformations
+			notes/6-the-determinant Section 6: The Determinant
+			notes/7-vector-spaces Section 7: Vector Spaces
+			notes/8-bases-and-dimension Section 8: Bases and Dimension
+			notes/9-the-fundamental-theorem-of-linear-algebra Section 9: The Fundamental Theorem of Linear Algebra
+			notes/10-intro-to-markov-chains Section 10: Intro to Markov Chains
+
+		uo/256 Math 256
+			notes/0-calc-review Section 0: Calculus Review
+			notes/1-intro-to-des Section 1: Intro to DEs
+			notes/2-if-and-sep Section 2: Linear and Separable DEs
+			notes/3-existence-and-exactness Section 3: Existence and Exactness
+			notes/4-intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
+			notes/5-complex-and-repeated-roots Section 5: Complex and Repeated Roots
+			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous DEs
+			notes/7-higher-order-des Section 7: Higher-Order DEs
+			notes/8-intro-to-linear-algebra Section 8: Intro to Linear Algebra
+			notes/9-systems-and-inverses Section 9: Systems and Inverses
+			notes/10-determinants-and-eigenthings Section 10: Determinants and Eigenthings
+			notes/11-intro-to-systems Section 11: Intro to Systems of DEs
+			notes/12-complex-and-repeated-eigenvectors Section 12: Complex and Repeated Eigenvectors
+			notes/13-phase-portraits-and-stability Section 13: Phase Portraits and Stability
+		
+		uo/253 Math 253
+			notes/0-calc-2-review Section 0: Calculus I and II Review
+			notes/1-sequences Section 1: Sequences
+			notes/2-series Section 2: Series
+			notes/3-divergence-and-integral-tests Section 3: The Divergence and Integral Tests
+			notes/4-comparison-tests Section 4: The Comparison Tests
+			notes/5-alternating-series Section 5: Alternating Series
+			notes/6-ratio-and-root-tests Section 6: The Ratio and Root Tests
+			notes/7-power-series Section 7: Power Series
+			notes/8-properties-of-power-series Section 8: Properties of Power Series
+			notes/9-taylor-series Section 9: Taylor Series
+			notes/10-applications-of-taylor-series Section 10: Applications of Taylor Series
+			
+		uo/252 Math 252
+			notes/0-calc-1-review Section 0: Calculus I Review
+			notes/1-riemann-sums Section 1: Riemann Sums
+			notes/2-integrals-intro Section 2: Intro to Integrals
+			notes/3-antiderivatives Section 3: Antiderivatives
+			notes/4-ftoc Section 4: The Fundamental Theorem
+			notes/5-simple-applications Section 5: Simple Applications
+			notes/6-u-sub Section 6: $u$-Substitution
+			notes/7-exp-and-log-integrals Section 7: A Handful of Integrals
+			notes/8-area-between-curves Section 8: The Area Between Curves
+			notes/9-solids-of-revolution Section 9: Solids of Revolution
+			notes/10-arc-length-and-surface-area Section 10: Arc Length and Surface Area
+			notes/11-physical-applications Section 11: Physical Applications
+			notes/12-integration-by-parts Section 12: Integration by Parts
+			notes/13-trig-sub Section 13: Trig Sub
+			notes/14-partial-fractions Section 14: Partial Fractions
+			notes/15-improper-integrals Section 15: Improper Integrals
+			notes/16-intro-to-des Section 16: Intro to Differential Equations
+			
+		uo/251 Math 251
+			notes/0-algebra-and-trig-review Section 0: Algebra and Trig Review
+			notes/1-intro-to-limits Section 1: Intro To Limits
+			notes/2-limit-rules Section 2: Limit Rules
+			notes/3-continuity Section 3: Continuity
+			notes/4-intro-to-derivatives Section 4: Intro to Derivatives
+			notes/5-derivative-rules Section 5: Derivative Rules
+			notes/6-applications-of-derivatives Section 6: Applications of Derivatives
+			notes/7-exp-log-and-trig-derivatives Section 7: A Handful of Derivatives
+			notes/8-the-chain-rule Section 8: The Chain Rule
+			notes/9-the-inverse-function-theorem Section 9: The Inverse Function Theorem
+			notes/10-implicit-differentiation Section 10: Implicit Differentiation
+			notes/11-optimization Section 11: Optimization
+			notes/12-l-hopitals-rule Section 12: L'H&#244;pital's Rule
+			notes/13-related-rates Section 13: Related Rates
+			notes/14-applied-optimization Section 14: Applied Optimization
+			notes/15-newtons-method Section 15: Newton's Method
+			
+		uo/243 Math 243
+		
+		uo/112 Math 112
+			notes/1-transformations Section 1: Transformations
+			notes/2-periodic-functions Section 2: Periodic Functions
+		
+		uo/111 Math 111
+		uo/105 Math 105
+	
+	slides Slides
+		light-shadow-world-of-nails Light, Shadow, and a World of Nails
+		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization
+		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
+		oral-exam Prelude to an Oral Exam
+		lapsa Lapsa
+	
+	writing Writing
+		desolation-point Desolation Point
+		mist Mist
+	
+	about About
+	
+	404 Oh No!
+	
+	debug Debug
+		tests/glsl-test GLSL Tests
+		glsl-docs GLSL Docs
+	
+	teaching/uo/342/extra/eigenfaces-demo Eigenfaces

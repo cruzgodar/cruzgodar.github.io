@@ -1,84 +1,35 @@
-/*
-	
-	Browser: methods to detect the user's browser.
-		
-		detect: detects the browser used.
-	
-*/
+export const browserIsIos =
+(
+	[
+		"iPad Simulator",
+		"iPhone Simulator",
+		"iPod Simulator",
+		"iPad",
+		"iPhone",
+		"iPod"
+	].includes(navigator.platform)
 
+	// iPad on iOS 13 detection
+	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+);
 
+const browserSupportsP3 = matchMedia("(color-gamut: p3)").matches;
 
-"use strict";
+const browserSupportsRec2020 = matchMedia("(color-gamut: rec2020)").matches;
 
-
-
-let Browser = 
+// rgb is an array of integers in [0, 255], and a is a float in [0, 1]. The output is of the form
+// rgba(r, g, b, a) or color(display-p3 r g b / a).
+export function convertColor(r, g, b, a)
 {
-	name: "",
-	
-	detect: function()
+	if (browserSupportsRec2020)
 	{
-		this.Detector.init();
-		
-		this.name = this.Detector.browser;
-	},
-	
-	Detector:
-	{
-		init: function()
-		{
-			this.browser = this.searchString(this.dataBrowser) || "Other";
-			this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "Unknown";
-		},
-		
-		searchString: function(data)
-		{
-			for (let i = 0; i < data.length; i++)
-			{
-				let dataString = data[i].string;
-				this.versionSearchString = data[i].subString;
-
-				if (dataString.indexOf(data[i].subString) !== -1)
-				{
-					return data[i].identity;
-				}
-			}
-		},
-		
-		searchVersion: function(dataString)
-		{
-			let index = dataString.indexOf(this.versionSearchString);
-			
-			if (index === -1)
-			{
-				return;
-			}
-			
-			
-			
-			let rv = dataString.indexOf("rv:");
-			
-			if (this.versionSearchString === "Trident" && rv !== -1)
-			{
-				return parseFloat(dataString.substring(rv + 3));
-			}
-			
-			else
-			{
-				return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
-			}
-		},
-
-		dataBrowser:
-		[
-			{string: navigator.userAgent, subString: "Edge", identity: "MS Edge"},
-			{string: navigator.userAgent, subString: "MSIE", identity: "Explorer"},
-			{string: navigator.userAgent, subString: "Trident", identity: "Explorer"},
-			{string: navigator.userAgent, subString: "Firefox", identity: "Firefox"},
-			{string: navigator.userAgent, subString: "Opera", identity: "Opera"},  
-			{string: navigator.userAgent, subString: "OPR", identity: "Opera"},  
-			{string: navigator.userAgent, subString: "Chrome", identity: "Chrome"}, 
-			{string: navigator.userAgent, subString: "Safari", identity: "Safari"}	   
-		]
+		return `color(rec2020 ${r / 255} ${g / 255} ${b / 255} / ${a ?? 1})`;
 	}
-};
+
+	if (browserSupportsP3)
+	{
+		return `color(display-p3 ${r / 255} ${g / 255} ${b / 255} / ${a ?? 1})`;
+	}
+
+	return `rgba(${r}, ${g}, ${b}, ${a ?? 1})`;
+}

@@ -1,0 +1,434 @@
+### nav-buttons
+
+To finish our introduction to second-order linear DEs, let's handle the cases when the characteristic equation has complex or repeated roots. Most of our results still apply when the roots are complex, so let's start there.
+
+First of all, complex roots of a quadratic equation come in conjugate pairs: if we take a DE $ay'' + by' + cy = 0$, and $r_1 = \alpha + \beta i$ is a root of $ar^2 + br + c = 0$, then the imaginary part $\beta i$ must have arisen from the root in the quadratic formula. Since that has a $\pm$ on the outside, the other root is the complex conjugate of $r$: $r_2 = \alpha - \beta i$.
+
+Plugging these values of $r_1$ and $r_2$ into our exponential formula to get a general solution of
+
+$$
+	c_1e^{(\alpha + \beta i)t} + c_2e^{(\alpha - \beta i)t}
+$$
+
+doesn't have any problems on the surface, but it'd be nice to express the solution in the usual form of $a + bi$, especially because (homework 3, problem 10) we would then know that both the real and imaginary parts are solutions themselves. We can rewrite the exponential formula as
+
+$$
+	c_1e^{\alpha t}e^{\beta i t} + c_2e^{\alpha t}e^{-\beta i t},
+$$
+
+so our real question is how to deal with $e^{i\theta}$ for a real value of $\theta$. Here we need perhaps the most famous result in all of mathematics: Euler's exponential formula.
+
+
+
+### thm "Euler's formula"
+	
+	For any real number $\theta$,
+	
+	$$
+		e^{i\theta} = \cos(\theta) + i\sin(\theta).
+	$$
+	
+###
+
+### pf
+	
+	We don't get many opportunities for proofs in this class, so let's take this one! The Taylor series for $e^x$ centered at $x = 0$ is
+	
+	$$
+		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots,
+	$$
+	
+	and the series for $\cos(x)$ and $\sin(x)$ are
+	
+	$$
+		\cos(x) &= \sum_{n = 0}^\infty (-1)^n\frac{x^{2n}}{(2n)!} &&= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + \cdots
+		\sin(x) &= \sum_{n = 0}^\infty (-1)^n\frac{x^{2n + 1}}{(2n + 1)!} &&= x - \frac{x^3}{3!} + \frac{x^5}{5!} + \cdots.
+	$$
+	
+	All three series converge to their respective functions for all real values of $x$. By setting $x = i\theta$ in the first series, we can pull apart the series into those for $\sin$ and $\cos$.
+	
+	$$
+		e^{i\theta} &= \sum_{n = 0}^\infty \frac{(i\theta)^n}{n!}
+		
+		&= 1 + i\theta + \frac{i^2\theta^2}{2!} + \frac{i^3\theta^3}{3!} + \frac{i^4\theta^4}{4!} + \frac{i^5\theta^5}{5!} + \cdots
+		
+		&= 1 + i\theta - \frac{\theta^2}{2!} - i\frac{\theta^3}{3!} + \frac{\theta^4}{4!} + i\frac{\theta^5}{5!} + \cdots
+		
+		&= \left( 1 - \frac{\theta^2}{2!} + \frac{\theta^4}{4!} - \cdots \right) + i\left( \theta - \frac{\theta^3}{3!} + \frac{\theta^5}{5!} + \cdots \right)
+		
+		&= \cos(\theta) + i\sin(\theta).
+	$$
+	
+###
+
+
+
+The most well-known application of Euler's formula is with $\theta = \pi$, producing the incredible result of $e^{i\pi} = -1$. We'll apply it to our general solution from before in order to rewrite it with sines and cosines.
+
+$$
+	& \ \ c_1e^{\alpha t}e^{\beta i t} + c_2e^{\alpha t}e^{-\beta i t}
+	
+	&= c_1e^{\alpha t}\left( \cos(\beta t) + i\sin(\beta t) \right) + c_2e^{\alpha t}\left( \cos(-\beta t) + i\sin(-\beta t) \right).
+$$
+
+We desperately need to simplify this! First of all, we can use the fact that $\cos$ is an even function and $\sin$ is an odd one to get
+
+$$
+	c_1e^{\alpha t}\left( \cos(\beta t) + i\sin(\beta t) \right) + c_2e^{\alpha t}\left( \cos(\beta t) - i\sin(\beta t) \right).
+$$
+
+Now for some magic: by the homework problem mentioned earlier, the real and imaginary parts of both of our fundamental solutions must be solutions themselves. Specifically,
+
+$$
+	y &= c_1 e^{\alpha t} \cos(\beta t)
+	
+	y &= c_1 e^{\alpha t} \sin(\beta t)
+	
+	y &= c_2 e^{\alpha t} \cos(\beta t)
+	
+	y &= c_2 e^{\alpha t} \sin(\beta t)
+$$
+
+are all solutions. Since we can cover all possible sums of these four with just the first and fourth, the general solution is
+
+$$
+	y = c_1 e^{\alpha t} \cos(\beta t) + c_2 e^{\alpha t} \sin(\beta t).
+$$
+
+The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be complex numbers if we like, but if we want to only consider real solutions (as is often the case), then this is the form we're after.
+
+
+
+### ex "a characteristic equation with complex roots"
+	
+	Solve the DE $y'' + 2y' + 5y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = 1$ and $y'(0) = 3$.
+	
+	To get started, the characteristic equation is $r^2 + 2r + 5$. This doesn't factor easily, and we instead turn to the quadratic formula:
+	
+	$$
+		r &= \frac{-2 \pm \sqrt{4 - 20}}{2}
+		
+		&= -1 \pm 2i.
+	$$
+	
+	Dropping $\alpha = -1$ and $\beta = 2$ into our general solution from before gives us
+	
+	$$
+		y = c_1 e^{-t} \cos(2t) + c_2 e^{-t} \sin(2t).
+	$$
+	
+	It's worth actually plugging this back into the original DE just to make sure it's a solution in the first place. We have
+	
+	$$
+		y' &= c_1 \left( -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) \right) + c_2 \left( -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \right)
+		
+		&= (-c_1 + 2c_2) e^{-t}\cos(2t) + (-2c_1 - c_2) e^{-t}\sin(2t)
+		
+		y'' &= (-c_1 + 2c_2) \left( -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) \right) + (-2c_1 - c_2) \left( -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \right)
+		
+		&= (-3c_1 - 4c_2) e^{-t}\cos(2t) + (4c_1 - 3c_2) e^{-t}\sin(2t),
+	$$
+	
+	so the DE itself becomes
+	
+	$$
+		((-3c_1 - 4c_2) + 2(-c_1 + 2c_2) + 5c_1) e^{-t}\cos(2t) + ((4c_1 - 3c_2) + 2(-2c_1 - c_2) + 5c_2) e^{-t}\sin(2t) = 0
+	$$
+	
+	It still seems a little wild that this works, but it definitely does! Let's now look at the Wronskian to make sure that *all* solutions are picked up by this general form.
+	
+	$$
+		W\left[ e^{-t} \cos(2t), e^{-t} \sin(2t) \right] &= \det [[ e^{-t} \cos(2t), e^{-t} \sin(2t) ; -e^{-t}\cos(2t) - 2e^{-t}\sin(2t), -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) ]]
+		
+		&= 2e^{-2t}\sin^2(2t) + 2e^{-2t}\cos^2(2t)
+		
+		&= 2e^{-2t}\left( \sin^2(2t) + \cos^2(2t) \right)
+		
+		&= 2e^{-2t}.
+	$$
+	
+	Here we're using the trig identity that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any angle $\theta$, which is just the Pythagorean theorem applied to a triangle in the unit circle. Since $2e^{-2t}$ is nonzero for all $t$, the Wronskian is never zero, which means we have the general solution.
+	
+	For the initial condition, we have
+	
+	$$
+		y(0) &= c_1 e^{0} \cos(0) + c_2 e^{0} \sin(0) &&= c_1 &&= 1
+		
+		y'(0) &= (-c_1 + 2c_2) e^{0}\cos(0) + (-2c_1 - c_2) e^{0}\sin(0) &&= -c_1 + 2c_2 &&= 3
+	$$
+	
+	The first equation gives us $c_1 = 1$ and the second $c_2 = 2$, so the particular solution is
+	
+	$$
+		y = e^{-t} \cos(2t) + 2e^{-t} \sin(2t).
+	$$
+	
+###
+
+### exc "a characteristic equation with complex roots"
+	
+Solve the DE $y'' + 4y' + 13y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = -3$ and $y'(0) = 9$.
+	
+###
+
+
+
+## Repeated Roots
+
+The **discriminant** of the quadratic equation $ar^2 + br + c = 0$ is defined to be $b^2 - 4ac$: the quantity under the root in the quadratic formula. When the discriminant is positive, the equation has two distinct real roots, and when it's negative, there are two distinct complex roots (which are conjugates of one another). It's when the discriminant is zero that we have only one root, and we begin to run into trouble. With the single solution $r_1$ to $ar^2 + br + c = 0$, our general solution to $ay'' + by' + cy = 0$ is
+
+$$
+	y = c_1e^{r_1 t},
+$$
+
+but we have reason to believe that's not complete: a second-order DE should have two constants in its solution. To track down the missing part of the solution, we'll have to be a little clever. It's reasonable to expect that the other fundamental solution $y_2$ looks at least a little like this one, so let's make a guess that it's of the form $y_2 = v(t)e^{r_1 t}$ for some function $v$. If that's the case, then we can plug it back into the DE and try to solve for $v$. First of all, we have
+
+$$
+	y_2' &= v'(t) e^{r_1 t} + r_1 v(t) e^{r_1 t}
+	
+	y_2'' &= v''(t) e^{r_1 t} + r_1 v'(t) e^{r_1 t} + r_1 v'(t) e^{r_1 t} + r_1^2 v(t) e^{r_1 t}
+	
+	&= v''(t) e^{r_1 t} + 2r_1 v'(t) e^{r_1 t} + r_1^2 v(t) e^{r_1 t},
+$$
+
+and so the DE becomes
+
+$$
+	ay_2'' + by_2' + cy_2 &= 0
+	
+	a\left( v''(t) e^{r_1 t} + 2r_1 v'(t) e^{r_1 t} + r_1^2 v(t) e^{r_1 t} \right) + b\left( v'(t) e^{r_1 t} + r_1 v(t) e^{r_1 t} \right) + c\left( v(t)e^{r_1 t} \right) &= 0
+	
+	\left( ae^{r_1 t} \right) v'' + \left( 2ar_1e^{r_1 t} + be^{r_1 t} \right) v' + \left(ar_1^2e^{r_1 t} + br_1 e^{r_1 t} + ce^{r_1 t} \right)v &= 0.
+$$
+
+It looks like the complexity is starting to balloon out of control, but we're actually in a great place --- the entire coefficient of $v$ is zero, since $e^{r_1 t}$ is a solution to the original DE. The equation reduces to
+
+$$
+	\left( ae^{r_1 t} \right) v'' + \left( 2ar_1e^{r_1 t} + be^{r_1 t} \right) v' = 0,
+$$
+
+and while this is a second-order DE in $v$, it's *only a first-order one in $v'$.* It's both linear and separable, so we can definitely solve it. Let's use separation of variables here, since it's a little faster.
+
+$$
+	av'' + \left( 2ar_1 + b \right) v' &= 0
+	
+	v'' &= -\frac{2ar_1 + b}{a} v'
+	
+	\frac{dv'}{dt} &= -\frac{2ar_1 + b}{a} v'
+	
+	\frac{1}{v'}\,dv' &= -\frac{2ar_1 + b}{a}\,dt
+	
+	\int \frac{1}{v'}\,dv' &= \int -\frac{2ar_1 + b}{a}\,dt
+	
+	\log |v'| &= -\frac{2ar_1 + b}{a} t + C.
+$$
+
+Let's investigate this a little further. Since the original quadratic $ar^2 + br + c$ from forever ago was supposed to have a discriminant equal to zero, the quadratic formula gives
+
+$$
+	r_1 = \frac{-b \pm \sqrt{0}}{2a} = -\frac{b}{2a}.
+$$
+
+That means $2ar_1 + b = 0$, and so we actually just have $\log |v'| = C$, or equivalently, $v' = e^C$. This is a case where we can take any $C$, so let's just pick $C = 0$ so that $v' = 1$. Then $v = t + C$, and again with $C = 0$, we simply have $v(t) = t$. Returning to the original purpose of $v$, our other fundamental solution to the DE is
+
+$$
+	y_2 = te^{r_1 t},
+$$
+
+and so the general solution is
+
+$$
+	y = c_1e^{r_1 t} + c_2 t e^{r_1 t}.
+$$
+
+We're almost done! The only thing left is to check the Wronskian to make sure that we've actually captured all possible solutions this way. We have
+
+$$
+	W\left[ e^{r_1 t}, te^{r_1 t} \right] &= \det [[ e^{r_1 t}, te^{r_1 t} ; r_1 e^{r_1 t}, e^{r_1 t} + r_1 te^{r_1 t} ]]
+	
+	&= e^{2r_1 t} + r_1 t e^{2r_1 t} - r_1 t e^{2r_1 t}
+	
+	&= e^{2r_1 t}.
+$$
+
+Since that's never zero, we've successfully found all possible solutions.
+
+So --- what did we gain by going through such a grueling process? First of all, we now know exactly how to handle constant-coefficient DEs whose characteristic equations have repeated roots.
+
+
+
+### prop "general solution to a second-order linear constant-coefficient homogeneous DE with repeated roots"
+	
+	Let $ay'' + by' + cy = 0$ be a DE whose characteristic equation $ar^2 + br + c = 0$ has the single root $r = r_1$. Then the general solution to the DE is
+	
+	$$
+		y = c_1e^{r_1 t} + c_2 t e^{r_1 t}.
+	$$
+	
+###
+
+
+
+We can now also describe a complete method for solving this type of DE. (Finally!)
+
+
+
+### thm -m "Method: solving second-order linear constant-coefficient homogeneous DEs"
+	
+	To solve $ay'' + by' + cy = 0$, first find the roots $r_1$ and $r_2$ of the corresponding characteristic equation $ar^2 + br + c = 0$.
+	
+	1. If $r_1$ and $r_2$ are distinct and real, then the general solution is
+	
+	$$
+		y = c_1 e^{r_1 t} + c_2 e^{r_2 t}.
+	$$
+	
+	2. If $r_1$ and $r_2$ are complex, then they must be conjugates of the form $\alpha \pm \beta i$. The general solution is then
+	
+	$$
+		y = c_1 e^{\alpha t} \cos(\beta t) + c_2 e^{\alpha t} \sin(\beta t).
+	$$
+	
+	3. If $r_1 = r_2$, then the general solution is
+	
+	$$
+		y = c_1 e^{r_1 t} + c_2 t e^{r_1 t}.
+	$$
+	
+###
+
+
+
+Beyond solving this particular kind of DE, we also now have a general method to solve second-order linear homogeneous DEs, not necessarily with constant coefficients. If we begin with the DE $y'' + p(t)y' + q(t)y = 0$ and we know one fundamental solution $y = y_1(t)$ already, then by setting $y_2 = vy_1(t)$ and plugging $y_2$ back into the DE, we wind up with
+
+$$
+	y_1(t)v'' + (2y_1'(t) + p(t)y_1(t))v' = 0
+$$
+
+after following the same process. That's a separable first-order DE in $v'$, and so we can solve it with separation of variables, integrate again to find $v$ (choosing convenient values of $C$ in both integrations) and then find $y_2 = v(t)y_1(t)$. Since we transition from a second-order DE to a first-order one, this process is called **reduction of order**. Let's do examples of both the constant-coefficient case and this more general one, and then we'll close out the section.
+
+
+
+### ex "repeated roots"
+	
+	Solve $$y'' + 2y' + y = 0$$, given $y(0) = 1$ and $y'(0) = 0$.
+	
+	The characteristic equation is
+	
+	$$
+		r^2 + 2r + 1 = (r + 1)^2 = 0,
+	$$
+	
+	so the only root is $r = -1$. Since this DE has constant coefficients, we can jump straight to the general solution, which is
+	
+	$$
+		y = c_1e^{-t} + c_2te^{-t}.
+	$$
+	
+	Now we can plug in the initial conditions. We have
+	
+	$$
+		y' = -c_1e^{-t} + c_2e^{-t} - c_2te^{-t},
+	$$
+	
+	so
+	
+	$$
+		y(0) &= c_1 &&= 1
+		
+		y'(0) &= -c_1 + c_2 &&= 0.
+	$$
+	
+	Since $c_1 = c_2 = 1$, the particular solution we're after is
+	
+	$$
+		y = e^{-t} + te^{-t}.
+	$$
+	
+###
+
+### exc "repeated roots"
+	
+	Solve $$4y'' - 12y' + 9y = 0$$, given $y(0) = 4$ and $y'(0) = 1$.
+	
+###
+
+
+
+As a final example, we'll look at applying reduction of order to a more complicated example.
+
+
+
+### ex "reduction of order"
+	
+	One fundamental solution to $$t^2y'' - ty' + y = 0$$ is $y = t$. Find the other.
+	
+	Since the coefficients aren't constant, we don't have any way to solve this DE from scratch. But because it's homogeneous and linear, we have a hope of applying reduction of order. To get started, let's set $y_1 = t$ (since it's the first of two fundamental solutions) and assume $y_2 = v(t)y_1$ for some function $v$. If we rewrite the DE as
+	
+	$$
+		y'' - \frac{1}{t} + \frac{1}{t^2}y = 0
+	$$
+	
+	so that there is no coefficient on $y''$, then our previous work lets us skip the extended product rule applications and jump straight to
+	
+	$$
+		y_1(t)v'' + (2y_1'(t) + p(t)y_1(t))v' = 0.
+	$$
+	
+	Now $p(t) = -t^{-1}$, since it's the coefficient on $y'$ in the DE, and $y_1' = 1$, so this becomes
+	
+	$$
+		tv'' + (2 - 1)v' &= 0
+		
+		v'' &= -v'
+	$$
+	
+	This is just a first-order separable DE in $v'$, so let's separate and solve.
+	
+	$$
+		\frac{dv'}{dt} &= -\frac{1}{t}v'
+		
+		\frac{1}{v'}\,dv' &= -\frac{1}{t}\,dt
+		
+		\int \frac{1}{v'}\,dv' &= \int -\frac{1}{t}\,dt
+		
+		\log(v') &= -\log(t) + C.
+	$$
+	
+	We'll take $C = 0$ for convenience as before, then solve for $v'$.
+	
+	$$
+		\log(v') &= -\log(t)
+		
+		v' &= e^{-\log(t)}
+		
+		v' &= \left(e^{\log(t)}\right)^{-1}
+		
+		v' &= t^{-1}
+		
+		v' &= \frac{1}{t}.
+	$$
+	
+	Now we can at last integrate to find $v$.
+	
+	$$
+		v &= \int \frac{1}{t}\,dt
+		
+		v &= \log(t) + C
+		
+		v &= \log(t).
+	$$
+	
+	Our other fundamental solution is therefore $y_2 = t\log(t)$.
+	
+###
+
+### exc "reduction of order"
+	
+	One fundamental solution to $$3t^2y'' + 3ty' - y = 0$$ is $y = t^{1 / \sqrt{3}}$. Find the other.
+	
+###
+
+
+
+### nav-buttons

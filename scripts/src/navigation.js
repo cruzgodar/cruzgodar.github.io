@@ -1,409 +1,458 @@
-/*
-	
-	Page:
-		
-		...
-		
-		
-		Navigation: methods for navigating between pages.
-			
-			redirect: loads a new page.
-			
-			concat_url_vars: returns a string of url variables that can be appended to any url.
-			
-			write_url_vars: does exactly that.
-		
-		Unload: methods for deconstructing the current page.
-			
-			fade_out: handles the process of fading out the opacity, including edge cases like the background color being weird or the new page failing to load.
-	
-*/
+import { clearCurrentlyLoadedApplets, currentlyLoadedApplets } from "../applets/applet.js";
+import {
+	fadeDownOut,
+	fadeLeftOut,
+	fadeOut,
+	fadeRightOut,
+	fadeUpOut,
+	opacityAnimationTime
+} from "./animation.js";
+import {
+	bannerElement,
+	bannerPages,
+	loadBanner,
+	preloadBanner
+} from "./banners.js";
+import { cardIsOpen, hideCard } from "./cards.js";
+import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
+import { loadPage } from "./loadPage.js";
+import {
+	asyncFetch,
+	clearTemporaryIntervals,
+	clearTemporaryListeners,
+	clearTemporaryParams,
+	clearTemporaryWorkers,
+	pageElement,
+	pageUrl,
+	setPageUrl,
+	temporaryIntervals,
+	temporaryListeners,
+	temporaryParams,
+	temporaryWorkers
+} from "./main.js";
+import {
+	forceThemePages,
+	getQueryParams,
+	revertTheme,
+	setForcedTheme,
+	setRevertThemeTo,
+	siteSettings,
+	toggleDarkTheme
+} from "./settings.js";
+import { sitemap } from "./sitemap.js";
 
+export let currentlyRedirecting = false;
 
-
-"use strict";
-
-
-
-Page.Navigation =
+export function setCurrentlyRedirecting(newCurrentlyRedirecting)
 {
-	currently_changing_page: false,
+	currentlyRedirecting = newCurrentlyRedirecting;
+}
 
-	last_page_scroll: 0,
-	
-	
-	
-	//Handles virtually all links.
-	redirect: function(url, in_new_tab = false, no_state_push = false, restore_scroll = false)
+let lastPageScroll = 0;
+
+export let navigationTransitionType = 0;
+
+const urlsFetched = [];
+
+
+
+// Handles virtually all links.
+export async function redirect({
+	url,
+	inNewTab = false,
+	noStatePush = false,
+	restoreScroll = false,
+	noFadeOut = false
+}) {
+	if (currentlyRedirecting || url === pageUrl)
 	{
-		if (this.currently_changing_page)
-		{
-			return;
-		}
-		
-		
-		
-		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-		if (in_new_tab || url.slice(url.length - 5) !== ".html")
-		{
-			window.open(url, "_blank");
-			return;
-		}
-		
-		
-		
-		this.currently_changing_page = true;
-		
-		
-		
-		let temp = window.scrollY;
-		
-		
-		
-		Site.applet_process_id++;
-		
-		
-		
-		if (!no_state_push)
-		{
-			Site.last_pages.push(Page.url);
-		}
-		
-		Page.url = url;
-		
-		Page.parent_folder = url.slice(0, url.lastIndexOf("/") + 1);
-		
-		
-		
-		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
-		let background_color = document.documentElement.style.backgroundColor;
-		
-		
-		
-		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url), Page.Unload.fade_out(), Page.Banner.load()])
-		
-		
-		
-		.then((response) =>
-		{
-			if (!response[0].ok)
-			{
-				window.location.replace("/404.html");
-			}
-			
-			else
-			{
-				return response[0].text();
-			}
-		})
-		
-		
-		
-		.then((data) =>
-		{
-			Page.unload();
-			
-			//Record the page change in the url bar and in the browser history.
-			
-			if (!no_state_push)
-			{
-				history.pushState({}, document.title, url + this.concat_url_vars());
-			}
-			
-			else
-			{
-				history.replaceState({}, document.title, url + this.concat_url_vars());
-			}
-			
-			
-			
-			//Restore the ability to scroll in case it was removed.
-			document.documentElement.style.overflowY = "visible";
-			document.body.style.overflowY = "visible";
-			
-			document.body.style.userSelect = "auto";
-			document.body.style.WebkitUserSelect = "auto";
-			
-			
-			
-			document.body.innerHTML = Page.Components.decode(data);
-			
-			
-			
-			if (restore_scroll)
-			{
-				window.scrollTo(0, this.last_page_scroll);
-				Page.Banner.on_scroll(this.last_page_scroll);
-			}
-			
-			else
-			{
-				window.scrollTo(0, 0);
-				Page.scroll = 0;
-			}
-			
-			this.last_page_scroll = temp;
-			
-			
-			
-			Page.Load.parse_script_tags();
-		})
-		
-		
-		
-		.catch((error) =>
-		{
-			console.error(error.message);
-			
-			console.log("Failed to load new page -- reversing fade-out.");
-			
-			
-			
-			this.currently_changing_page = false;
-			
-			setTimeout(() =>
-			{
-				if (!Page.background_color_changed)
-				{
-					document.body.style.opacity = 1;
-				}
-				
-				
-				
-				else
-				{
-					setTimeout(() =>
-					{
-						document.documentElement.classList.add("background-transition");
-						document.body.classList.add("background-transition");
-						
-						document.documentElement.style.backgroundColor = background_color;
-						document.body.style.backgroundColor = background_color;
-						
-						setTimeout(() =>
-						{
-							document.documentElement.classList.remove("background-transition");
-							document.body.classList.remove("background-transition");
-							
-							document.body.style.backgroundColor = "";
-							
-							setTimeout(() =>
-							{
-								document.body.style.opacity = 1;
-							}, Site.opacity_animation_time);
-						}, Site.background_color_animation_time);
-					}, Site.background_color_animation_time);
-				}
-			}, Site.opacity_animation_time);
-		});
-	},
-
-
-
-	//Returns a string of url vars that can be attached to any url.
-	concat_url_vars: function()
-	{
-		let string = "";
-		let key = "";
-		let temp = "";
-		
-		let found_first_key = false;
-		
-		
-		
-		for (let i = 0; i < Object.keys(Site.Settings.url_vars).length; i++)
-		{
-			key = Object.keys(Site.Settings.url_vars)[i];
-			
-			if (Site.Settings.url_vars[key] !== 0 || (window.matchMedia("(prefers-color-scheme: dark)").matches && Site.Settings.url_vars["theme"] === 0 && key === "theme"))
-			{
-				if (found_first_key)
-				{
-					string += "&" + key + "=" + Site.Settings.url_vars[key];
-				}
-				
-				else
-				{
-					string += "?" + key + "=" + Site.Settings.url_vars[key];
-					
-					found_first_key = true;
-				}
-			}
-		}
-		
-		
-		
-		return string;
-	},
-	
-	
-
-	write_url_vars: function()
-	{
-		//Make the current state persist on refresh.
-		history.replaceState({}, document.title, window.location.pathname + this.concat_url_vars());
+		return;
 	}
-};
+
+	// If we're going somewhere outside of the site,
+	// open it in a new tab and don't screw with the opacity.
+	if (
+		inNewTab
+		|| url.indexOf("http") !== -1
+		|| url.indexOf("mailto:") !== -1
+		|| url.slice(-4) == ".pdf"
+	) {
+		window.open(url, "_blank");
+		return;
+	}
+
+	const queryParams = (() =>
+	{
+		if (url.indexOf("?") !== -1)
+		{
+			const [trimmedUrl, params] = url.split("?");
+
+			url = trimmedUrl;
+			return params;
+		}
+
+		return "";
+	})();
+
+	currentlyRedirecting = true;
+
+	const temp = window.scrollY;
+
+	navigationTransitionType = getTransitionType(url);
+
+	// Get the new data, fade out the page, and preload the next page's banner if it exists.
+	// When all of those things are successfully done, replace the current html with the new stuff.
+	const [text] = await Promise.all([
+		asyncFetch(`${url}data.html`),
+		preloadBanner(url),
+		fadeOutPage(noFadeOut),
+		cardIsOpen ? hideCard() : Promise.resolve()
+	]);
+
+	
+
+	loadBanner({ url });
+
+	if (forceThemePages[url])
+	{
+		setForcedTheme(true);
+
+		if (siteSettings.darkTheme !== forceThemePages[url])
+		{
+			setRevertThemeTo(siteSettings.darkTheme);
+			await toggleDarkTheme({ force: true });
+		}
+	}
+
+	else if (!forceThemePages[url])
+	{
+		await revertTheme();
+	}
 
 
 
-Page.Unload =
+	unloadPage();
+
+	document.body.firstElementChild.insertAdjacentHTML(
+		"beforebegin",
+		`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
+	);
+
+	setPageUrl(url);
+
+	urlsFetched.push(url);
+
+	loadPage();
+
+
+
+	// Record the page change in the url bar and in the browser history.
+	if (noStatePush)
+	{
+		history.replaceState({ url }, document.title, getDisplayUrl(queryParams));
+	}
+
+	else
+	{
+		history.pushState({ url }, document.title, getDisplayUrl(queryParams));
+	}
+
+
+
+	// Restore the ability to scroll in case it was removed.
+	document.documentElement.style.overflowY = "scroll";
+	document.body.style.overflowY = "visible";
+
+	document.body.style.userSelect = "auto";
+	document.body.style.WebkitUserSelect = "auto";
+
+
+	if (restoreScroll)
+	{
+		window.scrollTo(0, lastPageScroll);
+	}
+
+	else
+	{
+		window.scrollTo(0, 0);
+	}
+
+	lastPageScroll = temp;
+}
+
+
+
+// Figures out what type of transition to use to get to this url.
+// Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right,
+// -2 for one to the left, and 0 for anything else.
+function getTransitionType(url)
 {
-	fade_out: function()
+	if (!(url in sitemap) || url === pageUrl || !pageUrl || siteSettings.reduceMotion)
 	{
-		return new Promise((resolve, reject) =>
+		return 0;
+	}
+
+
+
+	let parent = pageUrl;
+
+	while (parent !== "")
+	{
+		parent = sitemap[parent].parent;
+
+		if (url === parent)
 		{
-			try
-			{
-				hide_floating_settings();
-				
-				
-				
-				document.querySelector("#floating-footer").style.opacity = 0;
-				
-				Footer.Floating.is_visible = false;
-			}
-			
-			catch(ex) {}
-			
-			
-			
-			//Act like a normal link, with no transitions, if the user wants that.
-			if (Site.Settings.url_vars["content_animation"] === 1)
-			{
-				if (Page.background_color_changed)
-				{
-					if (Site.Settings.url_vars["theme"] === 1)
-					{
-						if (Site.Settings.url_vars["dark_theme_color"] === 1)
-						{
-							document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-						}
-						
-						else
-						{
-							document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-						}
-					}
-					
-					else
-					{
-						document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-					}
-				}
-				
-				resolve();
-			}
-				
-				
-				
-			else
-			{
-				//Fade out the current page's content.
-				document.body.style.opacity = 0;
-				
-				setTimeout(() =>
-				{
-					if (Page.background_color_changed === false)
-					{
-						resolve();
-					}
-					
-					
-					
-					//If necessary, take the time to fade back to the default background color, whatever that is.
-					else
-					{
-						document.documentElement.classList.add("background-transition");
-						document.body.classList.add("background-transition");
-						
-						if (Site.Settings.url_vars["theme"] === 1)
-						{
-							if (Site.Settings.url_vars["dark_theme_color"] === 1)
-							{
-								document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-								document.body.style.backgroundColor = "rgb(0, 0, 0)";
-							}
-							
-							else
-							{
-								document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-								document.body.style.backgroundColor = "rgb(24, 24, 24)";
-							}
-						}
-						
-						else
-						{
-							document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-							document.body.style.backgroundColor = "rgb(255, 255, 255)";
-						}
-						
-						setTimeout(() =>
-						{
-							document.body.style.backgroundColor = "";
-							
-							document.documentElement.classList.remove("background-transition");
-							document.body.classList.remove("background-transition");
-						}, Site.background_color_animation_time);
-						
-						resolve();
-					}
-				}, Site.opacity_animation_time);
-			}
-		});
-	}
-};
-
-
-
-Page.unload = function()
-{
-	//Remove any css and js that's no longer needed to prevent memory leaks.
-	let elements = document.querySelectorAll("style.temporary-style, link.temporary-style, script.temporary-script");
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].remove();
-	}
-	
-	
-	
-	//Remove everything that's not a script from the body.
-	elements = document.querySelectorAll("body > *:not(script)");
-	for (let i = 0; i < elements.length; i++)
-	{ 
-		elements[i].remove();
-	}
-	
-	
-	
-	//Unbind everything transient from the window and the html element.
-	for (let key in Page.temporary_handlers)
-	{
-		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
-		{
-			window.removeEventListener(key, Page.temporary_handlers[key][j]);
-			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
+			return -1;
 		}
 	}
-	
-	
-	
-	//Clear any temporary intervals.
-	for (let i = 0; i < Page.temporary_intervals.length; i++)
+
+
+
+	parent = url;
+
+	while (parent !== "")
 	{
-		clearInterval(Page.temporary_intervals[i]);
+		parent = sitemap[parent].parent;
+
+		if (pageUrl === parent)
+		{
+			return 1;
+		}
+	}
+
+
+
+	if (sitemap[url].parent === sitemap[pageUrl].parent)
+	{
+		const parent = sitemap[url].parent;
+
+		if (sitemap[parent].children.indexOf(url) > sitemap[parent].children.indexOf(pageUrl))
+		{
+			return 2;
+		}
+
+		return -2;
+	}
+
+	return 0;
+}
+
+
+
+export function getDisplayUrl(additionalQueryParams)
+{
+	const queryParams = getQueryParams() + (additionalQueryParams ? `&${additionalQueryParams}` : "");
+
+	let displayUrl = pageUrl.replace(/\/home\//, "/") + (queryParams ? `?${queryParams}` : "");
+
+	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
+	{
+		displayUrl = displayUrl.slice(0, displayUrl.length - 1);
+	}
+
+	return displayUrl;
+}
+
+
+
+async function fadeOutPage(noFadeOut)
+{
+	if (!opacityAnimationTime)
+	{
+		return;
+	}
+
+	if (noFadeOut)
+	{
+		pageElement.style.opacity = 0;
+
+		return;
+	}
+
+
+
+	// Fade out the current page's content.
+	await (() =>
+	{
+		if (navigationTransitionType === 1)
+		{
+			return bannerElement
+				? Promise.all([
+					fadeUpOut({
+						element: bannerElement,
+						noOpacityChange: true
+					}),
+					fadeUpOut({ element: pageElement })
+				])
+				: fadeUpOut({ element: pageElement });
+		}
+
+		else if (navigationTransitionType === -1)
+		{
+			return bannerElement
+				? Promise.all([
+					fadeDownOut({
+						element: bannerElement,
+						noOpacityChange: true
+					}),
+					fadeDownOut({ element: pageElement })
+				])
+				: fadeDownOut({ element: pageElement });
+		}
+
+		else if (navigationTransitionType === 2)
+		{
+			return bannerElement
+				? Promise.all([
+					fadeLeftOut({
+						element: bannerElement,
+						noOpacityChange: true
+					}),
+					fadeLeftOut({ element: pageElement })
+				])
+				: fadeLeftOut({ element: pageElement });
+		}
+
+		else if (navigationTransitionType === -2)
+		{
+			return bannerElement
+				? Promise.all([
+					fadeRightOut({
+						element: bannerElement,
+						noOpacityChange: true
+					}),
+					fadeRightOut({ element: pageElement })
+				])
+				: fadeRightOut({ element: pageElement });
+		}
+
+		else
+		{
+			return bannerElement
+				? Promise.all([
+					fadeOut({
+						element: bannerElement,
+						noOpacityChange: true
+					}),
+					fadeOut({ element: pageElement })
+				])
+				: fadeOut({ element: pageElement });
+		}
+	})();
+
+	await new Promise(resolve => setTimeout(resolve, 33));
+}
+
+
+
+function unloadPage()
+{
+	// Remove temporary things outside the page element.
+	document.querySelectorAll(
+		"script, .temporary-style, .WILSON_fullscreen-container, .temporary-element"
+	).forEach(element => element.remove());
+	
+	temporaryListeners.forEach(temporaryListener =>
+	{
+		temporaryListener[0].removeEventListener(temporaryListener[1], temporaryListener[2]);
+	});
+
+	clearTemporaryListeners();
+
+
+
+	temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
+
+	clearTemporaryIntervals();
+
+
+
+	for (const key in temporaryWorkers)
+	{
+		if (temporaryWorkers[key]?.terminate)
+		{
+			temporaryWorkers[key].terminate();
+		}
+	}
+
+	clearTemporaryWorkers();
+
+
+
+	for (const key in desmosGraphs)
+	{
+		desmosGraphs[key].destroy();
+	}
+
+	clearDesmosGraphs();
+
+
+
+	const searchParams = new URLSearchParams(window.location.search);
+
+	temporaryParams.forEach(key =>
+	{
+		searchParams.delete(key);
+	});
+
+	const string = searchParams.toString();
+
+	window.history.replaceState(
+		{ url: pageUrl },
+		"",
+		pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+	);
+
+	clearTemporaryParams();
+
+	document.documentElement.style.overscrollBehaviorY = "auto";
+
+
+
+	currentlyLoadedApplets.forEach(applet =>
+	{
+		if (applet?.destroy)
+		{
+			applet.destroy();
+		}
+	});
+
+	clearCurrentlyLoadedApplets();
+
+	pageElement.remove();
+}
+
+// Fetches (and caches) a url, including all the page images
+// and banner images, and its scripts and styles.
+export async function prefetchPage(url)
+{
+	url = url.replace(/^https*:\/\/.+?(\/.+)$/, (match, $1) => $1);
+
+	if (urlsFetched.includes(url))
+	{
+		return;
+	}
+
+	urlsFetched.push(url);
+
+	const urlsToFetch = [`${url}data.html`];
+
+	if (bannerPages.includes(url))
+	{
+		urlsToFetch.push(`${url}banners/small.webp`);
 	}
 	
-	Page.temporary_intervals = [];
-	
-	
-	
-	//Terminate any temporary web workers.
-	for (let i = 0; i < Page.temporary_web_workers.length; i++)
+	const sitemapEntry = sitemap[url];
+
+	if (sitemapEntry?.customScript)
 	{
-		Page.temporary_web_workers[i].terminate();
+		urlsToFetch.push(`${url}scripts/index.min.js`);
 	}
-	
-	Page.temporary_web_workers = [];
+
+	if (sitemapEntry?.customStyle)
+	{
+		urlsToFetch.push(`${url}style/index.min.css`);
+	}
+
+	await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
 }

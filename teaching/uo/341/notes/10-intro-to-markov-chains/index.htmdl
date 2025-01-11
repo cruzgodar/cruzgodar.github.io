@@ -1,0 +1,131 @@
+### nav-buttons
+
+
+
+With so much theory developed, let's take this last section to explore one of the most important applications of linear algebra. While one of the most ubiquitous applications in modern technology is in graphics, where the function that maps any triangle in 3D space to its image on a fixed 2D screen is a linear map (called a *projection map*). With very few exceptions, this is the foundation of how every 3D game is implemented.
+
+Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in <a href="https://www.youtube.com/watch?v=LL3kVtc-4vY">Belousov-Zhabotinsky reaction</a>, $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
+
+### def "Markov chain"
+
+	Let $x_1, ..., x_n$ be a collection of states and let $\vec{x} \in #R#^n$ be a vector representing the amount of the system in each state. If the system evolves over time as a function $\vec{x}(t)$, but the value of $\vec{x}(t)$ is a linear function of $\vec{x}(t - 1)$ and no other factors, then we call $\vec{x}(t)$ a **Markov chain**.
+
+###
+
+A Markov chain is defined by an $n \times n$ matrix $P$, called a **transition matrix**, such that
+
+$$
+	P\vec{x}(t) = \vec{x}(t + 1).
+$$
+
+There's a surprising amount of information we can extract from just this description --- let's see it in action.
+
+### ex "Markov chain"
+
+	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 5% of the math majors at the university switch to a physics major, and 10% switch to computer science. On the other hand, 10% of the physics majors switch to math and 15% to computer science. 5% of the computer science majors switch to math, and 15% to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major after 2 years?
+	
+	The three states here are being a math, physics, and computer science major. The state vector is initially
+	
+	$$
+		\vec{x}(0) = [[ 100 ; 100 ; 100 ]],
+	$$
+	
+	representing the equal quantity of students in each major. The state matrix updates $\vec{x}(0)$ to $\vec{x}(1)$ --- i.e. the proportion in each major after a year --- by matrix multiplication, so we should have
+	
+	$$
+		P = [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]].
+	$$
+	
+	The entry in row $i$ and column $j$ is the proportion of students in major $j$ who switch to major $i$ --- when we do the matrix multiplication, multiplying the second row by $\vec{x}(0)$ gives us
+	
+	$$
+		(0.05)(100) + 0.75(100) + 0.15(100) = 5 + 75 + 15 = 95,
+	$$
+	
+	indicating that 5 math majors and 15 computer science majors switched to physics, and 75 physics majors "switched" to physics (i.e. stayed there). Since any given column of $P$ consists of the proportions of all the students coming from a given major, every column should have entries that sum to 1. In total, our matrix product we want is
+	
+	$$
+		\vec{x}(1) &= P\vec{x}(0)
+		
+		&= [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]][[ 100 ; 100 ; 100 ]]
+		
+		&= [[ 100 ; 95 ; 105 ]]
+		
+		\vec{x}(2) &= P\vec{x}(1)
+		
+		&= [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]][[ 100 ; 95 ; 105 ]]
+		
+		&= [[ 99.75 ; 92 ; 108.25 ]].
+	$$
+	
+	The numbers are a little wonky, but the idea is clear: iterating $P$ moves us forward in time, and if we had 1000 states rather than 3 and a computer capable of processing a matrix that large, we could begin to draw some truly novel insights.
+
+###
+
+### exc "a Markov chain"
+	
+	People occasionally change the type of computer they use, albeit very rarely. Suppose each year, 3% of users running macOS switch to Windows, and 1% to Linux, 3% of Windows users switch to macOS and 1% to Linux, and 3% of Linux users switch to macOS, as well as 3% to Windows. The current proportion of desktop operating systems among those three is 78% Windows, 19% Mac, and 3% Linux. What does our (unrealistic) model predict will be the proportion of each in 2 years?
+	
+###
+
+One of the most important proprtties of Markov chains is their ability to make predictions about the limiting behavior of a system (that is, $\lim_{t \to \infty} \vec{x}(t)$). A **steady-state vector** is a vector $\vec{q}$ for which $P\vec{q} = \vec{q}$, meaning the system no longer changes. The amount of students in each major stays exactly the same, or the number of people using each OS stays constant. Importantly, we're not saying that no one ever changes majors or computers --- the matrix $P$ in both the past examples is constant, so there will always be some people moving between states. Instead, we're after a vector $\vec{x}$ of a distribution across the states for which the inflow and outflow for each state are equal. Remarkably, as long as we're somewhat sensible in constructing our transition matrix, steady-state vectors will be present, unique, and useful.
+
+### thm "steady-state vectors in Markov chains"
+	
+	Let $P$ be a transition matrix for a Markov chain so that for some integer $k$, $P^k$ contains only positive entries (for our examples, $k$ will be $1$, meaning $P$ contains only positive entries). Then $P$ has a unique steady-state vector $\vec{q}$. Moreover, $\lim_{t \to \infty} P^t \vec{x} = \vec{q}$ for *any* vector $\vec{x}$, so the system converges to its steady-state vector regardless of the starting configuration of the state.
+	
+###
+
+This theorem guarantees that searching for a steady-state vector is worth our time since a unique one will always exist, and it also tells us why it's useful to find one --- it's the limiting behavior of the system (in the language of differential equations, we might say it's a convergent equilibrium).
+
+To find a steady-state vector, we want to solve $P\vec{q} = \vec{q}$, so $(P - I)\vec{q} = \vec{0}$. That should hopefully look familiar from a past homework --- we're finding an eigenvector with eigenvalue $\lambda = 1$. When we found all possible eigenvectors, we had to solve the characteristic polynomial for all the possible eigenvectors and then handle them one-by-one, but this time around we already know the eigenvalue we're interested in, and that there should be exactly one eigenvector corresponding to it. Once again, we're just doing row-reduction.
+
+### ex "a steady-state solution"
+
+	For the university example from before, how many students will be in each major in the long run?
+
+	We're solving $P - I = \vec{0}$, so we have
+
+	$$
+		[[ 0.85 - 1, 0.1, 0.05 | 0 ; 0.05, 0.75 - 1, 0.15 | 0 ; 0.1, 0.15, 0.8 - 1 | 0 ]] &
+
+		[[ -0.15, 0.1, 0.05 | 0 ; 0.05, -0.25, 0.15 | 0 ; 0.1, 0.15, -0.2 | 0 ]] &
+
+		[[ -3, 2, 1 | 0 ; 1, -5, 3 | 0 ; 2, 3, -4 | 0 ]] & \qquad :: \vec{r_1} \te 20 ; \vec{r_2} \te 20 ; \vec{r_3} \te 20 ::
+
+		[[ 1, -5, 3 | 0 ; -3, 2, 1 | 0 ; 2, 3, -4 | 0 ]] & \qquad \swap \vec{r_1}, \vec{r_2}
+
+		[[ 1, -5, 3 | 0 ; 0, -13, 10 | 0 ; 0, 13, -10 | 0 ]] & \qquad :: \vec{r_2} \pe 3\vec{r_1} ; \vec{r_3} \me 2\vec{r_1} ::
+
+		[[ 13, -65, 39 | 0 ; 0, -13, 10 | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_3} \pe \vec{r_2} ; \vec{r_1} \te 13 ::
+
+		[[ 13, 0, -11 | 0 ; 0, -13, 10 | 0 ; 0, 0, 0 | 0 ]] & \qquad \vec{r_1} \me 5\vec{r_2}
+
+		[[ 1, 0, -\frac{11}{13} | 0 ; 0, 1, -\frac{10}{13} | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_1} \te \frac{1}{13} ; \vec{r_2} \te -\frac{1}{13} ::
+	$$
+
+	Now we have a vector of $\vec{q} = [[ \frac{11}{13}t ; \frac{10}{13}t ; t ]]$ for any value of $t$, and choosing $t = 13$, we get $[[ 11 ; 10 ; 13 ]]$. That gives the relative amounts of students in each major, but we specifically need the sum of the entries to be $300$. The easiest way to make this happen is to first scale down the vector to have a sum of $1$, then multiply that by $300$. We can get the first one by dividing every entry by the total sum, which is $11 + 10 + 13 = 34$, to get
+
+	$$
+		[[ \frac{11}{34} ; \frac{10}{34} ; \frac{13}{34} ]],
+	$$
+
+	then multiply by $300$, which results in
+
+	$$
+		[[ \frac{3300}{34} ; \frac{3000}{34} ; \frac{3900}{34} ]] \approx [[ 97.1 ; 88.2 ; 114.7 ]].
+	$$
+
+	So over time, the number of students in each major tends toward roughly 97, 88, and 115 in math, physics, and computer science, respectively.
+
+###
+
+### exc "a steady-state solution"
+
+	With the previous computer OS exercise, what will the percentage of users with each OS be in the long run?
+
+###
+
+
+
+### nav-buttons

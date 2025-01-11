@@ -1,0 +1,303 @@
+### nav-buttons
+
+
+
+Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+
+### def "linear operator"
+
+	A **linear operator** is a linear transformation whose domain and codomain are equal.
+
+###
+
+Part of the difficulty in introducing the upcoming concept is that it's very well-motivated and completely unmotivated at the same time. Although it connects to a wide array of other topics in linear algebra and beyond, we're encountering it relatively early on in our progression through the subject, and so there's no great way to derive it from anything we've seen so far. As we'll quickly come to realize, though, it's closely connected with understanding linear operators. First, we'll get one technical definition out of the way.
+
+### def "matrix minor"
+
+	Let $A$ be an $m \times n$ matrix. The **minor** of $A$ corresponding to row $i$ and column $j$ is the $(m - 1) \times (n - 1)$ matrix obtained by crossing out row $i$ and column $j$ from $A$.
+
+###
+
+### ex "matrix minor"
+
+	Find the minors of $$[[ 1, 4, 9 ; 2, 1, 6 ; -3, -1, 0 ]]$$ corresponding to each entry in the first row.
+
+	By crossing out the appropriate rows and columns, we get
+
+	$$
+		[[ , ,  ; , 1, 6 ; , -1, 0 ]] \qquad [[ , ,  ; 2, , 6 ; -3, , 0 ]] \qquad [[ , ,  ; 2, 1,  ; -3, -1,  ]],
+	$$
+
+	for the entries in row $1$ and columns $1$, $2$, and $3$, respectively, which are just the $2 \times 2$ matrices
+
+	$$
+		[[ 1, 6 ; -1, 0 ]] \qquad [[ 2, 6 ; -3, 0 ]] \qquad [[ 2, 1 ; -3, -1 ]].
+	$$
+
+###
+
+With minors defined, we can finally get to the definition we've (possibly) been waiting for.
+
+### def "determinant"
+
+	Let $A$ be an $n \times n$ matrix. The **determinant** of $A$, written $\det A$, is a single number that we compute recursively. If $n = 1$, then $\det A$ is just its single entry --- e.g. $\det [5] = 5$. For $n > 1$, choose any row or column of $A$ and call it $\vec{v}$, and find the minors of $A$ for every entry in $\vec{v}$, denoting them $A_1, A_2, ..., A_n$. Then find the determinant of each $A_i$ and add up the quantities $\vec{v}_i \det A_i$ with alternating signs given by the checkerboard-like matrix
+
+	$$
+		[[ +, -, +, -, \cdots ; -, +, -, +, \cdots ; +, -, +, -, \cdots ; -, +, -, +, \cdots ; \vdots, \vdots, \vdots, \vdots, \ddots ]].
+	$$
+
+###
+
+Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it at all. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
+
+### ex "the determinant"
+
+	Compute $$\det [[ 1, 4 ; 2, 5 ]]$$.
+
+	Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
+
+	$$
+		1 \cdot \det [[ 5 ]] - 4 \cdot \det [[ 2 ]] = 5 - 8 = -3.
+	$$
+
+	In fact, this process is nearly identical for a generic $2 \times 2$ matrix:
+
+	$$
+		\det [[ a, b ; c, d ]] &= a \cdot \det [[ d ]] - b \cdot \det [[ c ]]
+
+		&= ad - bc.
+	$$
+
+	Not only is this a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, but we've seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
+
+###
+
+### exc "the determinant"
+
+	1. Compute $$\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]]$$.
+
+	2. An implicit assertion in the definition of the determinant is that its value is the same no matter which row or column we expand about. For the generic $2 \times 2$ matrix $[[ a, b ; c, d ]]$, expand about both rows and both columns and show that the result is always $ad - bc$.
+
+###
+
+In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
+
+### ex "the determinant"
+
+	Compute $$\det [[ 1, 4, 7, 2 ; 0, 4, 5, 0 ; 3, 1, 2, 0 ; 1, 2, 3, 4 ]]$$.
+
+	The second row has the most zeros, so let's expand about that, ignoring zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
+
+	$$
+		4\det [[ 1, 7, 2 ; 3, 2, 0 ; 1, 3, 4 ]] -5\det [[ 1, 4, 2 ; 3, 1, 0 ; 1, 2, 4 ]],
+	$$
+
+	and we can expand both of those about row 2 to get
+
+	$$
+		4\left( -3\det [[ 7, 2 ; 3, 4 ]] + 2\det [[ 1, 2 ; 1, 4 ]] \right) - 5 \left( -3 \det [[ 4, 2 ; 2, 4 ]] + \det [[ 1, 2 ; 1, 4 ]] \right).
+	$$
+
+	Now we can use the $2 \times 2$ determinant formula we just found to turn this into
+
+	$$
+		4( -3(28 - 6) + 2(4 - 2) ) - 5 ( -3(16 - 4) + (4 - 2) ) = -78.
+	$$
+
+###
+
+### exc "the determinant"
+
+	Compute $$\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$$.
+
+###
+
+With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
+
+### thm "determinants and row operations"
+
+	Let $A$ be an $n \times n$ matrix.
+
+	1. If $B$ is obtained from $A$ by swapping two rows, then $\det B = -\det A$.
+
+	2. If $B$ is obtained from $A$ by multiplying a row by a constant $c$, then $\det B = c\det A$.
+
+	3. If $B$ is obtained from $A$ by adding a multiple of one row to another, then $\det B = \det A$.
+
+###
+
+There are a few neat connections we can make immediately. First of all, we've seen from the recursive determinant formula that if a matrix $A$ has a single row of all zeros, then we can expand about it to find that $\det A = 0$. On the other hand, a row of all zeros can be scaled by any number $c$ and stay identical, so $\det A = c\det A$ for any number $c$. That's only true when $\det A = 0$, so at the very least, the theorem is consistent with something we already know.
+
+Computing a determinant using the recursive definition is a task that balloons in scope as the size of the matrix grows, and this theorem lets us bypass that quite a bit. Part 3 in particular is the most useful: to begin computing a large determinant, we can use one entry to clear all the others in its column, and then just expand about that column. If we haven't multiplied by any constants or swapped rows, then the determinant of the resulting matrix will be identical, and we've just saved a massive amount of work.
+
+### ex "determinants and row operations"
+
+	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
+
+	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
+
+	$$
+		[[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -4, 0, 6, -19 ; 3, 0, -5, -12 ]] & \qquad :: \vec{r_3} \me 3\vec{r_2} ; \vec{r_4} \me \vec{r_2} ::,
+	$$
+
+	and the determinant of this matrix is the same as the original, since all we've done is add multiples of rows to others. Expanding about column 2, we have that the determinant is
+
+	$$
+		-2\det [[ 3, 5, 3 ; -4, 6, -19 ; 3, -5, -12 ]],
+	$$
+
+	and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
+
+	$$
+		[[ 3, 5, 3 ; -12, 18, -57 ; 3, -5, -12 ]] & \qquad \vec{r_2} \te 3
+
+		[[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] & \qquad :: \vec{r_2} \pe 4\vec{r_1} ; \vec{r_3} \me \vec{r_1} ::
+	$$
+
+	We need to be a little careful here: since we multiplied a row by $4$, the determinant of this new matrix will be $4$ times larger than that of the original matrix. On the bright side, this new determinant is as easy as possible to calculate:
+
+	$$
+		\det [[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] &= 3\det [[ 38, -45 ; -10, -15 ]]
+
+		&= 3(38(-15) - (-45)(-10))
+
+		&= -3060.
+	$$
+
+	So the determinant of the original $3 \times 3$ is $\frac{1}{4}(-3060) = -765$, and finally, the determinant of the $4 \times 4$ is $-2(-765) = 1530$.
+
+###
+
+Next on the list of connections is invertibility, and here, the result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
+
+### thm "determinants and invertibility"
+
+	Let $A$ be an $n \times n$ matrix. Then $A$ is invertible exactly when $\det A \neq 0$.
+
+###
+
+Since invertibility is equivalent to being one-to-one or onto for square matrices, we now have a fourth equivalent condition. With the next definition and result, we'll have even more.
+
+### def "transpose"
+
+	Let $A$ be a matrix. The **transpose** of $A$ is the matrix $A^T$ formed by writing the rows of $A$ as columns, and vice versa, in a new matrix --- i.e. flipping $A$ across its diagonal.
+
+###
+
+We've seen the transpose indirectly in the last section --- it's the matrix we row reduce to find how many columns are linearly independent. For example,
+
+$$
+	[[ 1, 4, 5 ; -4, 2, 0 ]]^T = [[ 1, -4 ; 4, 2 ; 5, 0 ]].
+$$
+
+Transposing a matrix is an operation substantially more complicated than any row operation, and we'll have to wait quite a while before we have the language and tools to understand its effect from a linear transformation perspective. For now, though, we can relate it to the determinant: when we expand a square matrix $A$ about a row to find its determinant, we can expand $A^T$ about that column, and vice versa, to get exactly the same result. Therefore,
+
+### prop "determinants and transposes"
+
+	Let $A$ be an $n \times n$ matrix. Then $\det A^T = \det A$.
+
+###
+
+The primary usefulness of this to us currently is that $A^T$ is invertible exactly when $A$ is, and the columns of $A^T$ are the rows of $A$, so we can add a few more items to our ever-growing list of equivalent conditions for a square matrix.
+
+### prop "invertibility conditions"
+
+	Let $A$ be an $n \times n$ matrix with corresponding linear transformation $T$. Then the following are equivalent:
+
+	1. $T$ is an invertible function.
+
+	2. $A$ is an invertible matrix.
+
+	3. $A$ row reduces to the identity matrix.
+
+	4. $T$ is one-to-one.
+
+	5. The columns of $A$ are linearly independent.
+
+	6. The rows of $A$ are linearly independent.
+
+	7. $T$ is onto.
+
+	8. The columns of $A$ span $#R#^n$.
+
+	9. The rows of $A$ span $#R#^n$.
+
+	10. $\det A \neq 0$.
+
+	11. $\det A^T \neq 0$.
+
+###
+
+The determinant also interacts nicely with matrix multiplication: it's a multiplicative function.
+
+### thm "the determinant is multiplicative"
+
+	Let $A$ and $B$ be $n \times n$ matrices. Then $\det (AB) = (\det A) (\det B).$
+
+###
+
+The proof of this theorem is a little out of scope for our class, but the gist is that for invertible matrices $A$ and $B$, we can write both as a product of elementary matrices --- the ones from homework 2 that apply the row operations by multiplication. The way each one changes the determinant of the matrix they act on is by multiplying by their own determinant, and we can build the result up from there. We'll have more to say about the transpose and multiplicativity of the determinant on the homework, but for now, let's look at one final connection with prior material: an interpretation in the language of linear transformations.
+
+### thm "the determinant as a scaling factor"
+
+	Let $T : #R#^n \to #R#^n$ be a linear operator with matrix $A$, and let $X$ be a volume in $#R#^n$ of dimension $n$ (e.g. a $2$-dimensional subset of $#R#^2$ or a $3$-dimensional subset of $#R#^3$). Then the volume of $T(X)$ (the image of $X$) is $|\det A|$ times the volume of $X$.
+
+###
+
+This result definitely needs some examples to explain it, so let's start there.
+
+### ex "the determinant as a scaling factor"
+
+	Let $T : #R#^2 \to #R#^2$ be defined by
+
+	$$
+		T\left( [[ x ; y ]] \right) = [[ x + y ; 3x - 2y ]].
+	$$
+
+	If $X$ is the solid circle of radius $1$ centered at $(0, 2)$, describe $T(X)$ and find its area.
+
+	First of all, the matrix for $T$ is
+
+	$$
+		A = [[ 1, 1 ; 3, -2 ]],
+	$$
+
+	and its determinant is $\det A = -5$. The boundary circle of $X$ is given by the points $x = \cos(\theta)$ and $y = \sin(\theta) + 2$ for any value of $\theta$, so the boundary of $T(X)$ is given by 
+
+	$$
+		x &= \cos(\theta) + \sin(\theta) + 2
+
+		y &= 3\cos(\theta) - 2(\sin(\theta) + 2)
+	$$
+
+	obtained by replacing $x$ and $y$ with their images under $T$. Geometrically, $T(X)$ is an ellipse:
+
+	### desmos determinantScaling
+
+	The area of that ellipse doesn't look pleasant to compute, but since it's the image of the circle under $T$, its area is just the area of the circle times the magnitude of the determinant (i.e. $5$). Since the circle's area is $\pi(1^2) = \pi$, the ellipse has area $5\pi$.
+
+###
+
+### exc "the determinant as a scaling factor"
+
+	Let $S : #R#^3 \to #R#^3$ be defined by
+
+	$$
+		S\left( [[ x ; y ; z ]] \right) = [[ 2x + y ; x + y + z ; y + 3z ]].
+	$$
+
+	The unit cube in $#R#^3$ is the set of points $(x, y, z)$ with $0 \leq x \leq 1$, $0 \leq y \leq 1$, and $0 \leq z \leq 1$, and is defined by its three bounding vectors
+
+	$$
+		[[ 1 ; 0 ; 0 ]], [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]].
+	$$
+
+	Find the image of the unit cube under $S$ by finding the images of those three vectors and sketch a picture of it, and then find its volume.
+
+###
+
+With the determinant understood, we've covered every fundamental of matrix algebra, with only a few exceptions that are the next term's core subjects. But we're far from done --- while we began our discussion of matrices as arising from linear systems, there are many, *many* more situations in which they appear, and we'll begin exploring those in the next section.
+
+
+
+### nav-buttons

@@ -1,0 +1,69 @@
+### nav-buttons
+
+This is one of the last topics we'll cover, and mercifully, there's not a substantial amount here. The idea is simple: if we have two quantities that are related to one another --- say the radius of a circle and its area --- then their derivatives are related to. That's really not saying anything crazy: the area $A$ of a circle with radius $r$ is $A = \pi r^2$, so if the radius $r$ is increasing over time, then $r$, and therefore $A$, is a function of $t$. Differentiating both sides implicitly with respect to $t$, we get
+
+$$
+	\frac{dA}{dt} = 2 \pi r \frac{dr}{dt}.
+$$
+
+What this tells us is the relationship between the rate of change of the radius and the rate of change of the area. If at some time $t$, the radius is currently $3$ meters and is increasing at a rate of $4$ meters per second, then the area is increasing at $2\pi \cdot 3 \cdot 4 = 24\pi$ square meters per second.
+
+The technology behind related rates is just implicit differentiation, except that typically, there will be **two** variables depending on the one you're differentiating with respect to, rather than just one. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the motivating example before, both $r$ and $A$ depend on $t$, and so they both effectively become chain rule problems.
+
+
+
+### ex "related rates"
+	
+	A bird is flying 100 feet off the ground at 10 feet per second. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that happens. When $s = 200$, how fast is it increasing?
+	
+	It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 100, so we'll fix the bird's $y$-coordinate at 100. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
+	
+	So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
+	
+	$$
+		s = \sqrt{x^2 + 100^2}.
+	$$
+	
+	### desmos relatedRates
+	
+	Now we can differentiate both sides implicitly.
+	
+	$$
+		\frac{ds}{dt} = \frac{1}{2} (x^2 + 100^2)^{-1/2} \cdot 2x \cdot \frac{dx}{dt}.
+	$$
+	
+	We're being asked to find $\frac{ds}{dt}$ when $s = 200$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
+	
+	$$
+		s &= \sqrt{x^2 + 100^2}
+		
+		200 &= \sqrt{x^2 + 10000}
+		
+		40000 &= x^2 + 10000
+		
+		30000 &= x^2
+		
+		x &= \sqrt{30000}
+		
+		x &\approx 173.2.
+	$$
+	
+	Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $\frac{dx}{dt} = 10$. Therefore,
+	
+	$$
+		\frac{ds}{dt} = \frac{1}{2} (173.2^2 + 100^2)^{-1/2} \cdot 2(173.2) \cdot 10 \approx 8.66.
+	$$
+	
+	This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.
+	
+###
+
+### exc "related rates"
+	
+	You're trying to blow up a spherical balloon. As the balloon fills up, the pressure makes it harder to inflate, so the rate of increase of volume decreases over time. Specifically, after $t$ seconds, the balloon is inflating at a rate of $5 \cdot 2^{-t}$ cubic centimeters per second. After 4 seconds, the volume is 20 cubic centimeters. How fast is the radius increasing at that point in time?
+	
+###
+
+
+
+### nav-buttons

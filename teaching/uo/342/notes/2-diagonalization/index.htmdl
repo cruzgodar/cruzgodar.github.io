@@ -1,0 +1,441 @@
+### nav-buttons
+
+Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last section, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts (from right to left) by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, applies $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
+
+$$
+	B^{-1}AB\vec{e_i} &= B^{-1}A\vec{v_i}
+
+	&= B^{-1}\lambda_i \vec{v_i}
+
+	&= \lambda_i\vec{e_i},
+$$
+
+so the total matrix is
+
+$$
+	B^{-1}AB = [[ \lambda_1, 0, \cdots, 0 ; 0, \lambda_2, \cdots, 0 ; \vdots, \vdots, \ddots, \vdots ; 0, 0, \cdots, \lambda_n ]].
+$$
+
+That matrix is what's called **diagonal**: only its diagonal entries are nonzero. Calling it $D$, we've expressed $A$ as $A = BDB^{-1}$. This puts the ideas of the previous section into a more symbolic form: the reason why this makes $A^{100}$ easier to compute is that
+
+$$
+	A^{100} &= \left( BDB^{-1} \right)^{100}
+
+	&= BDB^{-1} BDB^{-1} \cdots BDB^{-1}
+
+	&= BD^{100}B^{-1},
+$$
+
+and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when some eigenvalues are repeated, we'll need to do some more work.
+
+
+
+## Repeated Eigenvalues and Eigenspaces
+
+Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to be diagonalizable, but we know it can't be necessary: the $2 \times 2$ identity matrix has the single eigenvalue of $1$ repeated twice, and it's definitely diagonalizable, since it's already diagonal. On the other hand, there are matrices where the diagonalization process breaks down because of repeated eigenvalues. Let's take a look at one as a case study to see where things go wrong.
+
+### ex "repeated eigenvalues"
+
+	Let $A$ be the matrix
+
+	$$
+		A = [[ -1, -3, 3 ; -3, -2, 4 ; -3, -4, 6 ]].
+	$$
+
+	Find the eigenvectors and eigenvalues of $A$.
+
+	We'll begin as usual by finding the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
+
+	$$
+		\chi_A(\lambda) &= \det (A - \lambda I)
+
+		&= (-1 - \lambda)((-2 - \lambda)(6 - \lambda) + 16) + 3(-3(6 - \lambda) + 12) + 3(12 + 3(-2 - \lambda))
+		
+		&= -\lambda^3 + 3\lambda^2 - 4.
+	$$
+
+	Cubics are hard to factor, and unless there's an easy root of $\lambda = 0$, we may as well just ask a computer. This one factors as
+
+	$$
+		\chi_A(\lambda) &= -(\lambda + 1)(\lambda - 2)^2,
+	$$
+
+	so either $\lambda = -1$ or $\lambda = 2$. For the first possibility, we have
+
+	$$
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; -3, -4, 7 | 0 ]] & 
+
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, -3, 3 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+
+		[[ 0, 1, -1 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
+
+		[[ 0, 1, -1 | 0 ; -3, 0, 3 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \pe \vec{r_1}
+
+		[[ 0, 1, -1 | 0 ; 1, 0, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te -\frac{1}{3}
+	$$
+
+	and so a solution is
+
+	$$
+		\vec{v_1} = [[ 1 ; 1 ; 1 ]].
+	$$
+
+	Let's take a look at the other eigenvalue:
+
+	$$
+		[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; -3, -4, 4 | 0 ]] & 
+
+		[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+
+		[[ -3, -3, 3 | 0 ; 0, -1, 1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		[[ 1, 1, -1 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad :: \vec{r_1} \te -\frac{1}{3} ; \vec{r_2} \te -1 ::
+
+		[[ 1, 0, 0 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \me \vec{r_2}
+	$$
+
+	Our solution here is
+
+	$$
+		\vec{v_2} = [[ 0 ; 1 ; 1 ]].
+	$$
+
+###
+
+There are only two linearly independent eigenvectors for $A$, and so it's not diagonalizable. So what went wrong? The repeated eigenvalue of $\lambda = 2$ feels like it might be the culprit: since it appeared as a root of the characteristic polynomial with multiplicity 2, we'd expect there to be two linearly independent eigenvectors corresponding to it. Let's dig into that a little more and see if we can find exactly where our expectation deviates from reality.
+
+Suppose $\vec{v_1}, ..., \vec{v_k}$ are all the eigenvectors of an $n \times n$ matrix $A$ with the eigenvalue $\lambda_1$. Then we can form a basis for $#R#^n$ by extending $\{ \vec{v_1}, ..., \vec{v_k} \}$ to
+
+$$
+	\{ \vec{v_1}, ..., \vec{v_k}, \vec{v_{k+1}}, ..., \vec{v_n} \}.
+$$
+
+If $B$ is the matrix with these $\vec{v_i}$ as columns (i.e. the change-of-basis matrix from this basis to the standard one), then
+
+$$
+	A = B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1}.
+$$
+
+This is a matrix written in *block* form: in the top left is a $k \times k$ block with $\lambda_1$ down the diagonal, in the bottom right is an $(n - k) \times (n - k)$ block called $C_2$ with arbitrary entries, and similarly for the other two blocks. What's important is that the bottom-left block is all zeros, since $A\vec{v_i} = \lambda_1\vec{v_i}$ for all $i$ with $1 \leq i \leq k$. If we take the characteristic polynomial of both sides, we find
+
+$$
+	\chi_A(\lambda) &= \det \left( B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1} - \lambda I \right)
+
+	&= \det \left( B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1} - \lambda (BIB^{-1}) \right)
+
+	&= \det \left( B \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right) B^{-1} \right)
+
+	&= \det B \det \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right) \det B^{-1}
+
+	&= \det \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right).
+
+	&= (\lambda_1 - \lambda)^k \chi_{C_2}(\lambda).
+$$
+
+So, what has all this work told us? If a matrix has at least $k$ linearly independent eigenvectors with eigenvalue $\lambda_1$, then $\lambda_1$ appears as a root of the characteristic polynomial $\chi_A(\lambda)$ with multiplicity *at least* $k$, but possibly more. Let's give these two multiplicities names to properly distinguish them.
+
+### def "algebraic and geometric multiplicity"
+
+	Let $A$ be an $n \times n$ matrix. The **algebraic multiplicity** of an eigenvalue $\lambda_i$ of $A$ is the power of the factor $(\lambda_i - \lambda)$ in $\chi_A(\lambda)$. The **eigenspace** $E_i$ corresponding to $\lambda_i$ is the subspace of $#R#^n$ of eigenvectors $\vec{v}$ with eigenvalue $\lambda_i$, and the **geometric multiplicity** of $\lambda_i$ is $\dim E_i$.
+
+	The sum of the algebraic multiplicities of the eigenvalues of $A$ is always equal to $n$ (since $\deg \chi_A(\lambda) = n$), but the sum of the geometric multiplicities is equal to $n$ only if $A$ is diagonalizable (and vice versa). Moreover, the geometric multiplicity of a $\lambda_i$ is at least 1 and no more than its algebraic multiplicity.
+
+###
+
+### exc "eigenspaces"
+
+	Let $A$ be an $n \times n$ matrix and let $\lambda_i$ be an eigenvalue of $A$. Show that the eigenspace $E_i$ is actually a subspace of $#R#^n$.
+
+###
+
+### ex "algebraic and geometric multiplicity"
+	
+	Consider the matrices
+
+	$$
+		A_1 = [[ 3, 0, 0 ; 0, 5, 0 ; 0, 0, 5 ]], \quad A_2 = [[ 3, 0, 0 ; 0, 5, 1 ; 0, 0, 5 ]].
+	$$
+
+	Both have characteristic polynomials of $(3 - \lambda)(5 - \lambda)^2$, so their eigenvalues are $\lambda_1 = 3$ and $\lambda_2 = 5$, with algebraic multiplicities 1 and 2, respectively. The previous definition tells us that the geometric multiplicity of $\lambda_1$ should be 1 for both $A_1$ and $A_2$, but that the geometric multiplicity of $\lambda_2$ will either be 1 or 2. Solving for the eigenvectors of $A_1$, we have
+
+	$$
+		[[ A_1 - 3I | \vec{0} ]] &= [[ 0, 0, 0 | 0 ; 0, 2, 0 | 0 ; 0, 0, 2 | 0 ]]
+
+		[[ A_1 - 5I | \vec{0} ]] &= [[ -2, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 0, 0 | 0 ]],
+	$$
+
+	so the eigenspaces $E_1$ and $E_2$ are
+
+	$$
+		E_1 &= \span\left\{ [[ 1 ; 0 ; 0 ]] \right\}
+
+		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]] \right\},
+	$$
+
+	meaning the geometric multiplicities of both $\lambda_1$ and $\lambda_2$ are equal to their algebraic multiplicities. That means $A_1$ is diagonalizable, which is pretty unsurprising since it's already diagonal. In contrast, $A_2$ fails to be diagonalizable:
+
+	$$
+		[[ A_2 - 3I | \vec{0} ]] &= [[ 0, 0, 0 | 0 ; 0, 2, 1 | 0 ; 0, 0, 2 | 0 ]]
+
+		[[ A_2 - 5I | \vec{0} ]] &= [[ -2, 0, 0 | 0 ; 0, 0, 1 | 0 ; 0, 0, 0 | 0 ]],
+	$$
+
+	so the eigenspaces are
+
+	$$
+		E_1 &= \span\left\{ [[ 1 ; 0 ; 0 ]] \right\}
+
+		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]] \right\},
+	$$
+
+	and so both eigenvalues have geometric multiplicities of 1. Later on, we'll develop a sense in which $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
+
+###
+
+
+
+## Complex Eigenvalues
+
+There's one more facet of the characteristic polynomial to discuss: rather famously, not every polynomial in $#R#[x]$ (i.e. with real coefficients) has roots in $#R#$. For example, the characteristic polynomial of the matrix
+
+$$
+	A = [[ 0, 1 ; -1, 0 ]]
+$$
+
+is $\chi_A(\lambda) = \lambda^2 + 1$, whose roots are $\pm i$ --- complex numbers. To fully understand diagonalization in every possible case, we'll sometimes need to deal with complex eigenvalues. As a quick refresher, defining $i = \sqrt{-1}$ produces a number system $#C#$ (the complex numbers), that's **algebraically closed**, meaning any polynomial in $#C#[x]$ has roots in $#C#$. Moreover, if a polynomial in $#R#[x]$ has complex roots, they come in conjugate pairs: if $a + bi$ is a root, then so is $a - bi$. In fact, this even extends to the eigenvectors.
+
+### prop "complex eigenvectors"
+
+	Let $A$ be an $n \times n$ matrix with real entries that has a pair of complex conjugate eigenvalues $\lambda_1 = a + bi$ and $\lambda_2 = a - bi$. If $\vec{v} \in #C#^n$ is an eigenvector corresponding to $\lambda_1$, then $\overline{\vec{v}}$ (the vector formed by conjugating every entry of $\vec{v}$) is an eigenvector corresponding to $\lambda_2$.
+
+###
+
+### pf
+
+	Since $A\vec{v} = \lambda_1\vec{v}$, conjugating both sides results in $\overline{A\vec{v}} = \overline{\lambda_1\vec{v}}$. Now conjugation splits over addition and multiplication of complex numbers --- it's easy but not particularly interesting to check that
+
+	$$
+		\overline{(a + bi) + (c + di)} &= (a - bi) + (c - di),
+		\overline{(a + bi)(c + di)} &= (a - bi)(c - di).
+	$$
+
+	The result is now just a (slightly tedious) computation:
+
+	$$
+		\overline{A\vec{v}} &= \overline{[[ a_{11}, \cdots, a_{1n} ; \vdots, \ddots, \vdots ; a_{n1}, \cdots, a_{nn} ]] [[ v_1 ; \vdots ; v_n ]]}
+
+		&= \overline{[[ a_{11} v_1 + \cdots + a_{1n}v_n ; \vdots ; a_{n1} v_1 + \cdots + a_{nn}v_n ]]}
+
+		&= [[ \overline{a_{11} v_1 + \cdots + a_{1n}v_n} ; \vdots ; \overline{a_{n1} v_1 + \cdots + a_{nn}v_n} ]]
+
+		&= [[ \overline{a_{11}} \cdot \overline{v_1} + \cdots + \overline{a_{1n}} \cdot \overline{v_n} ; \vdots ; \overline{a_{n1}} \cdot \overline{v_1} + \cdots + \overline{a_{nn}} \cdot \overline{v_n} ]]
+
+		&= [[ a_{11} \cdot \overline{v_1} + \cdots + a_{1n} \cdot \overline{v_n} ; \vdots ; a_{n1} \cdot \overline{v_1} + \cdots + a_{nn} \cdot \overline{v_n} ]]
+
+		&= A\overline{\vec{v}},
+	$$
+
+	where the second-to-last step is because every entry of $A$ is real. On the other hand,
+
+	$$
+		\overline{A\vec{v}} &= \overline{\lambda_1\vec{v}}
+
+		&= \overline{\lambda_1} \cdot \overline{\vec{v}}
+
+		&= \lambda_2 \overline{\vec{v}}.
+	$$
+
+	In total, $A\overline{\vec{v}} = \lambda_2 \overline{\vec{v}}$, as required.
+
+###
+
+Although it's a little frustrating that we'll have to work with complex numbers even when our matrices have all real entries, the good news is that linear algebra works just as well over $#C#$ as over $#R#$, so there won't be too much trouble. Let's start by finding some complex eigenvalues and eigenvectors and then see what insights we can draw.
+
+### ex "complex eigenvalues"
+
+	Find the eigenvalues and eigenvectors of
+
+	$$
+		A = [[ 3, 0, -3 ; -2, 5, 2 ; -4, -5, 4 ]].
+	$$
+
+	The process of finding $\chi_A(\lambda)$ is the same as always:
+
+	$$
+		\chi_A(\lambda) &= (3 - \lambda)((5 - \lambda)(4 - \lambda) + 10) - 3(10 + 4(5 - \lambda))
+
+		&= -\lambda^3 + 12\lambda^2 - 45\lambda
+
+		&= -\lambda(\lambda^2 - 12\lambda + 45).
+	$$
+
+	So $\lambda_1 = 0$ is an eigenvalue. To find the other two, we can use the quadratic formula:
+
+	$$
+		\lambda &= \frac{12 \pm \sqrt{144 - 180}}{2}
+
+		&= \frac{12 \pm \sqrt{-36}}{2}
+
+		&= 6 \pm 3i.
+	$$
+
+	As expected, the complex roots are occurring in conjugate pairs. The eigenvector corresponding to $0$ follows the usual steps:
+
+	$$
+		[[ 3, 0, -3 | 0 ; -2, 5, 2 | 0 ; -4, -5, 4 | 0 ]] &
+
+		[[ 1, 0, -1 | 0 ; -2, 5, 2 | 0 ; -4, -5, 4 | 0 ]] & \quad \vec{r_1} \te \frac{1}{3}
+
+		[[ 1, 0, -1 | 0 ; 0, 5, 0 | 0 ; 0, -5, 0 | 0 ]] & \quad :: \vec{r_1} \pe 2\vec{r_1} ; \vec{r_3} \pe 4\vec{r_1} ::
+
+		[[ 1, 0, -1 | 0 ; 0, 5, 0 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \pe \vec{r_2}
+
+		\vec{v_1} = [[ 1 ; 0 ; 1 ]].
+	$$
+
+	Since the remaining two eigenvalues are a conjugate pair, we only have to find an eigenvector for one of them, and then the other will be its conjugate. With $\lambda_2 = 6 + 3i$, we have
+
+	$$
+		[[ -3 - 3i, 0, -3 | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] &
+
+		[[ 1 + i, 0, 1 | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
+
+		[[ 2, 0, 1 - i | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] & \quad \vec{r_1} \te 1 - i
+
+		[[ 2, 0, 1 - i | 0 ; 0, -1 - 3i, 3 - i | 0 ; 0, -5, -5i | 0 ]] & \quad :: \vec{r_2} \pe \vec{r_1} ; \vec{r_3} \pe 2\vec{r_1} ::
+
+		[[ 2, 0, 1 - i | 0 ; 0, -1 - 3i, 3 - i | 0 ; 0, 1, i | 0 ]] & \quad \vec{r_3} \te -\frac{1}{5}
+
+		[[ 2, 0, 1 - i | 0 ; 0, 1, i | 0 ; 0, -1 - 3i, 3 - i | 0 ]] & \quad \swap \vec{r_2}, \vec{r_3}
+
+		[[ 2, 0, 1 - i | 0 ; 0, 1, i | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \pe (1 + 3i)\vec{r_2}
+
+		\vec{v_2} = [[ -1 + i ; -2i ; 2 ]] = [[ -1 ; 0 ; 2 ]] + [[ 1 ; -2 ; 0 ]]i.
+	$$
+
+	The final eigenvector $\vec{v_3}$ corresponding to $\lambda_3$ is then
+
+	$$
+		\vec{v_3} = [[ -1 ; 0 ; 2 ]] - [[ 1 ; -2 ; 0 ]]i.
+	$$
+
+	The eigenvalues *and* eigenvectors being complex might seem like there's no hope of diagonalizing the matrix at all, but we can actually get shockingly close. Let's look at the action of $A$ not on $\vec{v_2}$ and $\vec{v_3}$, but their real and imaginary parts separately:
+
+	$$
+		A [[ -1 ; 0 ; 2 ]] &= [[ -9 ; 6 ; 12 ]] = 6 [[ -1 ; 0 ; 2 ]] - 3 [[ 1 ; -2 ; 0 ]]
+
+		A [[ 1 ; -2 ; 0 ]] &= [[ 3 ; -12 ; 6 ]] = 3 [[ -1 ; 0 ; 2 ]] + 6 [[ 1 ; -2 ; 0 ]].
+	$$
+
+	We've come very close to diagonalizing $A$: while the outputs of these two vectors aren't scalar multiples of themselves like eigenvectors, they're linear combinations of one another --- so instead of a perfectly diagonal matrix, we'll have a $2 \times 2$ block in the lower right.
+
+	$$
+		A = [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]] [[ 0, 0, 0 ; 0, 6, 3 ; 0, -3, 6 ]] [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]]^{-1}.
+	$$
+
+	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, the eigenvectors were the axes along which the matrix exclusively scaled, but now there are no real eigenvectors in the $yz$-plane. Instead, let's focus in on the matrix
+
+	$$
+		[[ 6, 3 ; -3, 6 ]].
+	$$
+
+	The entries might look familiar: they follow the same pattern as
+
+	$$
+		[[ \cos(\theta), -\sin(\theta) ; \sin(\theta), \cos(\theta) ]],
+	$$
+
+	which is the matrix that acts on $#R#^2$ by rotating counterclockwise by $\theta$. By factoring out a number from our matrix so that the rows have magnitude $1$, we can express our matrix as a constant times a rotation matrix:
+
+	$$
+		[[ 6, 3 ; -3, 6 ]] &= \sqrt{45} [[ \frac{6}{\sqrt{45}}, \frac{3}{\sqrt{45}} ; -\frac{3}{\sqrt{45}}, \frac{6}{\sqrt{45}} ]]
+
+		&\approx \sqrt{45} [[ \cos(-0.4636), -\sin(-0.4636) ; \sin(-0.4636), \cos(-0.4636) ]].
+	$$
+
+	So in total, this matrix scales its inputs by $\sqrt{45} \approx 6.71$ and rotates them by about $0.4636$ radians (about $22.6^\circ$) clockwise.
+
+	### desmos rotationMatrix
+
+	Here, the blue vector is the output of multiplying the purple one by this matrix.
+
+###
+
+This is more than a motivating example: it holds in general.
+
+### thm "block diagonalization for complex eigenvalues"
+
+	Let $A$ be an $n \times n$ diagonalizable matrix with real entries, eigenvectors $\vec{v_1}, ..., \vec{v_n}$, and corresponding eigenvalues $\lambda_1, ..., \lambda_n$ (possibly repeated). Define $\vec{w_1}, ..., \vec{w_n}$ as follows: if $\lambda_i$ (and therefore $\vec{v_i}$) is real, then $\vec{w_i} = \vec{v_i}$. Otherwise, $\lambda_i = a + bi$, and another eigenvalue, say $\lambda_{i + 1}$, is $a - bi$. Moreover, the eigenvectors $\vec{v_i}$ and $\vec{v_{i + 1}}$ are conjugates. In that case, we define $\vec{w_i} = \Re \vec{v_i}$ and $\vec{w_{i + 1}} = \Im \vec{v_i}$ (i.e. the real and imaginary parts). Then $\{\vec{w_1}, ..., \vec{w_n}\}$ is a basis for $#R#^n$, and if $B$ is the matrix with $\vec{w_i}$ as its columns and $D$ is the nearly-diagonal matrix with entries of $\lambda_i$ for real $\lambda_i$ and $2 \times 2$ blocks
+
+	$$
+		[[ a, b ; -b, a ]]
+	$$
+
+	for any pair of complex eigenvalues $\lambda_i = a + bi$ and $\lambda_{i + 1} = a - bi$, then $A = BDB^{-1}$.
+
+###
+
+This theorem is so dense with math that it's almost more trouble than it's worth, but when we look past the symbols to the meaning, it's valuable to know. A diagonalizable matrix $A$ with real entries and all real eigenvalues diagonalizes **over $#R#$**, in the sense that we can write it as $A = BDB^{-1}$ for real matrices $B$ and $D$. If $A$ is diagonalizable and real entries but not all real eigenvalues, though, we have a choice to make: we can diagonalize it over $#C#$, but it's often more useful to get as close as we can without using complex numbers in the expansion. To that end, the previous theorem tells us that if we replace adjacent conjugate columns in $B$ by the real and imaginary parts of one of them, and also replace $2 \times 2$ blocks of $D$ with the following move:
+
+$$
+	\begin{array}{cc} a + bi & 0 \\ 0 & a - bi \end{array} \ \longmapsto\ \begin{array}{cc} a & b \\ -b & a \end{array}
+$$
+
+then the resulting expression $BDB^{-1}$ is both all real and still equals $A$.
+
+### pf
+
+	To show this result, let $A$ be a diagonalizable $n \times n$ matrix with all real entries and suppose $a + bi$ is an eigenvalue with algebraic multiplicity $k$. Then $a - bi$ is also an eigenvalue with algebraic multiplicity $k$, and since $A$ is diagonalizable, the geometric multiplicities of both are also $k$. Let's call their eigenspaces $E_1$ and $E_2$, respectively; if $\{\vec{v_1}, ..., \vec{v_k}\}$ is a basis for $E_1$, then $\{\overline{\vec{v_1}}, ..., \overline{\vec{v_k}}\}$ is a basis for $E_2$. Now since $A$ is diagonalizable, all $2k$ of these vectors are linearly independent, and so is the collection of linearly transformed vectors
+
+	$$
+		\frac{1}{2}\left( \vec{v_1} + \overline{\vec{v_1}} \right), \frac{1}{2}\left( \vec{v_1} - \overline{\vec{v_1}} \right), ..., \frac{1}{2}\left( \vec{v_n} + \overline{\vec{v_n}} \right), \frac{1}{2}\left( \vec{v_n} - \overline{\vec{v_n}} \right).
+	$$
+
+	Now for any complex number $z$, $\Re z = \frac{1}{2}\left( z + \overline{z} \right)$ and $\Im z = -\frac{i}{2}\left( z - \overline{z} \right)$: if $z = c + di$, then
+
+	$$
+		\frac{1}{2}\left( z + \overline{z} \right) &= \frac{1}{2}\left( c + di + c - di \right) = \frac{1}{2}(2c) = c
+
+		-\frac{i}{2}\left( z - \overline{z} \right) &= \frac{1}{2}\left( c + di - c + di \right) = -\frac{i}{2}(2di) = d.
+	$$
+
+
+	So these new $2k$ vectors are exactly the new columns of $B$ from the theorem, and all that remains is to check that $A$ has the correct effect on them. For any $\vec{v_j}$, we have
+
+	$$
+		A\left( \Re \vec{v_j} \right) &= A\left( \frac{1}{2}\left( \vec{v_j} + \overline{\vec{v_j}} \right) \right)
+
+		&= \frac{1}{2} \left( (a + bi)\vec{v_j} + (a - bi)\overline{\vec{v_j}} \right)
+
+		&= \frac{a}{2} \vec{v_j} + \frac{a}{2} \overline{\vec{v_j}} + \frac{bi}{2} \vec{v_j} - \frac{bi}{2} \overline{\vec{v_j}}
+
+		&= \frac{a}{2}\left( \vec{v_j} + \overline{\vec{v_j}} \right) + \frac{bi}{2}\left( \vec{v_j} - \overline{\vec{v_j}} \right)
+
+		&= a \Re\vec{v_j} - b\Im\vec{v_j}.
+	$$
+
+	Similarly,
+
+	$$
+		A\left( \Im \vec{v_j} \right) = b \Re\vec{v_j} + a \Im\vec{v_j},
+	$$
+
+	showing the result.
+
+###
+
+### exc "block diagonalization"
+
+	Find the eigenvectors and eigenvalues of
+
+	$$
+		A = [[ 2, 1, 2 ; 1, 0, -6 ; -1, 1, 5 ]]
+	$$
+
+	and use them to write $A = BDB^{-1}$ for real matrices $B$ and $D$, where $D$ is block diagonal with at most $2 \times 2$ blocks.
+
+###
+
+### nav-buttons

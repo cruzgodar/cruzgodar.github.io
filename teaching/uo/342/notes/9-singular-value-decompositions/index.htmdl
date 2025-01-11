@@ -1,0 +1,190 @@
+### nav-buttons
+
+For most of the course up to this point, we've focused on square matrices. There's good reason for that --- square matrices are the ones that have eigenvectors and eigenvalues, and the only ones that are possibly diagonalizable. But the framing of diagonalization as a convenient consequence of eigenvectors does a disservice to how useful a concept it is in isolation. In the last section, we saw one way to produce a diagonal-like decomposition that's still extremely useful in its own right, even when the matrix itself wasn't diagonalizable. That required it to be square, though, since we still found ourselves falling back to notions of eigenvectors and eigenvalues eventually. Many "naturally occurring" matrices --- those that come up in real-world applications --- are very much not square, and though they might not have eigenvectors to speak of, they're still worth our time and attention. Let's consider an $m \times n$ matrix $A$ and see what we can do.
+
+While $A$ might not be square, we've already seen a matrix in section 7 that's guaranteed to be: $A^T\!A$. It's also diagonalizable with an orthonormal basis of eigenvectors, and in an extremely loose sense, if $A$ were symmetric and had eigenvalues, then the eigenvalues of $A^T$ would be the same, and so the eigenvalues of $A^T\!A$ would be the squares of the eigenvalues of $A$.
+
+Let's see if we can turn that intuitive but technically-bankrupt notion into something actually meaningful. Since $A^T\!A$ is an $n \times n$ real symmetric matrix, it has eigenvalues $\lambda_1, ..., \lambda_n$ and an orthonormal basis of eigenvectors $\vec{v_1}, ..., \vec{v_n}$. If we place these $\vec{v_i}$ as columns in a matrix $V$ (that's an unusual letter to use for a matrix, but it's standard notation), then $V$ is unitary, so $V^{-1} = V^T$. Now for each $\vec{v_i}$,
+
+$$
+	\left| \left| A\vec{v} \right| \right|^2 &= A\vec{v_i} \bullet A\vec{v_i}
+
+	&= \vec{v_i}^T A^T\!A \vec{v_i}
+
+	&= \vec{v_i}^T \lambda_i \vec{v_i}
+
+	&= \lambda_i.
+$$
+
+That tells us quite a bit: first, that all the eigenvalues of $A^T\!A$ are positive, and second, that those quantities that were analogous to the square roots of the eigenvalues are given by the values $\left| \left| A\vec{v_i} \right| \right|$ for each $\vec{v_i}$. Let's give those values a name, and then we'll finish the decomposition.
+
+### def "singular value"
+
+	Let $A$ be an $m \times n$ matrix. The **singular values** of $A$ are the values $\sigma_1, ..., \sigma_n$, where
+
+	$$
+		\sigma_i = \sqrt{\lambda_i},
+	$$
+
+	and $\lambda_1, ..., \lambda_n$ are the eigenvalues of $A^T\!A$. Importantly, we always write the singular values in decreasing order.
+
+###
+
+Let's return to decomposing our matrix $A$. The outputs $A\vec{v_i}$ and $A\vec{v_j}$ are orthogonal, since
+
+$$
+	\left( A\vec{v_i} \right) \bullet \left( A\vec{v_j} \right) &= \vec{v_i}^T A^T\!A \vec{v_j}
+
+	&= \vec{v_i}^T \lambda_j \vec{v_j}
+
+	&= 0,
+$$
+
+and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\image A$, where $\sigma_1 \geq \cdots \geq \sigma_k > 0$ are the nonzero singular values of $A$ (since the remaining vectors are mapped to zero). By extending these to an orthogonal basis for $#R#^m$ (if they don't already form one) and normalizing them, we can produce an orthonormal basis $\left\{ \vec{u_1}, ..., \vec{u_m} \right\}$ for $#R#^m$, and in total we've decomposed $A$ into a product very reminiscent of a diagonalization:
+
+### thm "singular value decomposition"
+
+	Let $A$ be an $m \times n$ matrix, and let $\sigma_1 \geq \cdots \geq \sigma_k > 0$ be its nonzero singular values. Then
+
+	$$
+		A = U\Sigma V^T,
+	$$
+
+	where
+
+	$$
+		V = [[ \mid, , \mid ; \vec{v_1}, \cdots, \vec{v_n} ; \mid, , \mid ]]
+	$$
+
+	is a unitary $n \times n$ matrix whose columns are the eigenvectors of $A^T\!A$,
+
+	$$
+		\Sigma = [[ D | 0 ; \hline 0 | 0 ]] = [[ \sigma_1, \cdots, 0 | 0, \cdots, 0 ; \vdots, \ddots, \vdots | \vdots, \ddots, \vdots ; 0, \cdots, \sigma_k | 0, \cdots, 0 ; \hline 0, \cdots, 0 | 0, \cdots, 0 ; \vdots, \ddots, \vdots | \vdots, \ddots, \vdots ; 0, \cdots, 0 | 0, \cdots, 0 ]]
+	$$
+
+	is an $m \times n$ matrix containing the nonzero singular values on its diagonal and zeros elsewhere, and
+
+	$$
+		U = [[ \mid, , \mid ; \vec{u_1}, \cdots, \vec{u_m} ; \mid, , \mid ]]
+	$$
+
+	is an $m \times m$ unitary matrix whose columns form an orthonormal basis for $#R#^m$, where $\vec{u_i}$ is $A\vec{v_i}$ (after normalizing).
+
+###
+
+### ex "singular value decomposition"
+
+	Find a singular value decomposition for $A = [[ 1, 1, 2 ; 1, -1, 1 ]]$.
+
+	We'll start by finding the eigenvectors and eigenvalues for $A^T\!A$. We have
+
+	$$
+		A^T\!A = [[ 2, 0, 3 ; 0, 2, 1 ; 3, 1, 5 ]],
+	$$
+
+	which has eigenvalues $\lambda_1 = 7$, $\lambda_2 = 2$, and $\lambda_3 = 0$ (arranged in decreasing order), with corresponding eigenvectors
+
+	$$
+		\vec{v_1} = [[ 3 ; 1 ; 5 ]] \qquad \vec{v_2} = [[ -1 ; 3 ; 0 ]] \qquad \vec{v_3} = [[ -3 ; 1 ; 2 ]].
+	$$
+
+	The singular values of $A$ are the square roots of the eigenvalues, so we have $\sigma_1 = \sqrt{7}$ and $\sigma_2 = \sqrt{2}$. We won't need $\sigma_3 = 0$, since only the nonzero singular values appear in the decomposition. Our final step is to evaluate $A$ on the $\vec{v_i}$ corresponding to nonzero singular values and use them to construct an orthonormal basis if they don't already form one. We have
+
+	$$
+		\vec{u_1} &= A\vec{v_1} = [[ 14 ; 7 ]]
+
+		\vec{u_2} &= A\vec{v_2} = [[ 2 ; -4 ]].
+	$$
+
+	Normalizing our vectors and compiling them into three matrices, we have
+
+	$$
+		U &= [[ 2 / \sqrt{5}, 1 / \sqrt{5} ; 1 / \sqrt{5}, -2 / \sqrt{5}  ]]
+
+		\Sigma &= [[ \sqrt{7}, 0, 0 ; 0, \sqrt{2}, 0 ]]
+
+		V &= [[ 3 / \sqrt{35}, -1 / \sqrt{10}, -3 / \sqrt{14} ; 1 / \sqrt{35}, 3 / \sqrt{10}, 1 / \sqrt{14} ; 5 / \sqrt{35}, 0, 2 / \sqrt{14} ]].
+	$$
+
+	Geometrically, the expression $A = U \Sigma V^T$ expresses the action of $A : #R#^3 \to #R#^2$ in four steps: a rotation/reflection in $#R#^3$, a projection to $#R#^2$, a scaling of the axes in $#R#^2$, and finally a rotation/reflection in $#R#^2$. Since every matrix has an SVD, that means every linear map is expressible as these four steps, possibly swapping the projection for an inclusion to a higher-dimensional space, or just an identity matrix if the domain and codomain are equal.
+
+###
+
+### exc "singular value decomposition"
+
+	Find a singular value decomposition for $A = [[ 1, -2 ; 2, 3 ; -1, 1 ]]$.
+
+###
+
+
+
+## An Application to Image Compression
+
+Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with a 400 pixel wide, 300 pixel tall image $A$ and see what we can learn from its SVD.
+
+### image graphics/original.webp
+
+First of all, this doesn't directly translate to a matrix, since each pixel has red, green, and blue components, rather than a single number. Let's account for that by splitting it up into three images --- rather than red, green, and blue components, though, let's use hue, saturation, and value, which are much more perceptually distinct.
+
+### image graphics/h.webp graphics/s.webp graphics/v.webp
+
+Each of these is an $300 \times 400$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
+
+Let's call these matrices $H$, $S$, and $V$, and let's focus on just $V$ for now. Like all matrices, it has an SVD $V = U \Sigma W^T$ (we'll use $W$ since the name $V$ is already taken), where $U$ is a $300 \times 300$ unitary matrix, $W$ is an $400 \times 400$ unitary one, and $\Sigma$ is a $300 \times 400$ matrix whose only nonzero values lie along its diagonal.
+
+We need to take a brief tangent to think about another perspective on matrix multiplication. Given an $m \times n$ matrix $A$ and an $n \times k$ matrix $B$, the entry in row $i$ and column $j$ of $AB$ is
+
+$$
+	\sum_{l = 1}^n a_{il}b_{lj} = a_{i1}b_{1j} + \cdots + a_{in}b_{nj},
+$$
+
+as we're very well used to by now. Each of these sums contains $n$ terms, so the entire matrix is a sum of $n$ of them:
+
+$$
+	AB = [[ a_{11}b_{11}, a_{11}b_{12}, \cdots, a_{11}b_{1k} ; a_{21}b_{11}, a_{21}b_{12}, \cdots, a_{21}b_{1k} ; \vdots, \vdots, \ddots, \vdots ; a_{m1}b_{11}, a_{m1}b_{12}, \cdots, a_{m1}b_{1k} ]] + \cdots + [[ a_{1n}b_{n1}, a_{1n}b_{n2}, \cdots, a_{1n}b_{nk} ; a_{2n}b_{n1}, a_{2n}b_{n2}, \cdots, a_{2n}b_{nk} ; \vdots, \vdots, \ddots, \vdots ; a_{mn}b_{n1}, a_{mn}b_{n2}, \cdots, a_{mn}b_{nk} ]].
+$$
+
+This looks like a truly horrible way to compute a matrix product at first, but notice that the $l$th matrix in the series involves only the entries in the column $l$ of $A$ and the column $l$ of $B$. In fact, each term is a product of those two, just in the opposite order from what we're used to:
+
+$$
+	AB = [[ a_{11} ; a_{21} ; \vdots ; a_{m1} ]] [[ b_{11}, b_{12}, \cdots, b_{1k} ]] + \cdots + [[ a_{1n} ; a_{2n} ; \vdots ; a_{mn} ]] [[ b_{n1}, b_{n2}, \cdots, b_{nk} ]].
+$$
+
+In total, we've shown the following (fairly strange) fact: the product of $A$ and $B$ is equal to the matrix formed by multiplying every column of $A$ by the corresponding row of $B$ and adding up all the results.
+
+Now let's return to the SVD. In $V = U \Sigma W^T$, if we denote the columns of $U$ by $\vec{u_i}$, the columns of $W$ by $\vec{w_i}$, and the singular values by $\sigma_i$, then
+
+$$
+	V = \sigma_1 \vec{u_1}\vec{w_1}^T + \cdots + \sigma_{300} \vec{u_{300}}\vec{w_{300}}^T,
+$$
+
+and since all of the $\vec{u_i}$ and $\vec{w_i}$ have length $1$, the singular values (which we've arranged in descending order) are the only part of the data that can effectively change the magnitude. Among all matrices of the form $c\vec{u}\vec{w}^T$, the one closest to $V$ is then $\sigma_1 \vec{u_1}\vec{w_1}^T$. Among all matrices that are the sum of two of these terms, the closest is $\sigma_1 \vec{u_1}\vec{w_1}^T + \sigma_2 \vec{u_2}\vec{w_2}^T$, and so on. This points to a type of image compression we can easily extract: keep a few of the most important terms and throw out lots of the lower ones. That corresponds to deleting some of the right-most columns of $U$ and $W$ --- then we can store something near the data of all of $V$ by storing only a few columns of $U$ and $W$ and a few elements of $\Sigma$. The example below shows an approximation of $V$ with between 1 and 200 terms.
+
+### sliders
+	depth
+###
+
+### canvas v
+
+That's not bad! It's worth noting that unless we use fewer than half of the number of columns in the original image, we're not actually saving space, since using all the columns means all of $U$ and $V$, which is roughly twice the space of the original image.
+
+It might seem like high levels of compression are functionally useless since the artifacts are so strong, but that's largely just for the value component $V$ --- in fact, that's largely why we did this example with it. By using different levels of compression with all three data channels, we can achieve substantial compression at minimum visual noise. Looking at the original channels, it's no coincidence that the hue and saturation channels had less detail in the first place --- the image processor in the camera I took the photo with already removed detail from them to save space.
+
+To my knowledge, SVD compression isn't actually used by any mainstream formats, but the ideas behind it are similar to how those work. The ability to send more information over time to progressively load an image without having to produce multiple resolutions is particularly interesting.
+
+
+
+## Eigenfaces
+
+For one final demo, here's another SVD application. I've taken every graduate student with a directory photo at UO, run a small script to autocrop them all to the face and center the eyes, thrown out a few outliers that weren't taken head-on or were so close to the camera that they couldn't be lined up with the others, and finally scaled them all to $100 \times 100$. Then I placed them as columns in a $30000 \times 44$ matrix and ran an SVD on it, and the result is the faces below. By changing the face and depth, we can see how well the first $n$ eigenvectors approximate any given student, and the first one (called the **principal eigenvector**, or in this case the principal eigenface) is the closest face to every one in the list.
+
+### sliders
+	index
+	depth-2
+###
+
+### canvas eigenface
+
+That's it for this course! We've had the chance to cover many of linear algebra's most useful and used topics, and it's likely to form the mathematical underpinning of wherever you head next, whether that's more math or another STEM field. Thanks for being a part of the course --- I hope to see you in future ones!
+
+### nav-buttons

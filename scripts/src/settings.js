@@ -1,1852 +1,559 @@
-"use strict";
+import { currentlyLoadedApplets } from "../applets/applet.js";
+import { cardIsOpen } from "./cards.js";
+import { recreateDesmosGraphs } from "./desmos.js";
+import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
+import {
+	addStyle,
+	pageUrl
+} from "./main.js";
+import { getDisplayUrl } from "./navigation.js";
+import anime from "/scripts/anime.js";
 
-
-
-//Handles the various settings' effects on the page. These functions typically add or remove a style tag that handles all the changes. Some settings, like the theme, require an animation.
-
-
-
-let Settings =
+export const forceThemePages =
 {
-	url_vars: {},
-	
-	texts:
-	{
-		"theme": ["Theme: light", "Theme: dark"],
-		"dark_theme_color": ["Dark theme color: dark gray", "Dark theme color: black"],
-		"contrast": ["Contrast: normal", "Contrast: high"],
-		"text_size": ["Text size: normal", "Text size: large"],
-		"font": ["Font: always sans serif", "Font: serif on writing"],
-		"content_animation": ["Content animation: enabled", "Content animation: disabled"]
-	},
-	
-	dark_theme_background_color: "rgb(24, 24, 24)",
-	dark_theme_background_color_rgba: "rgba(24, 24, 24, ",
-	
-	gradient_suffix: "-0-0",
-	
-	//Set to either 0 or 1 if a page has forced a theme and it needs to change back.
-	revert_theme: -1,
-	
-	
-	
-	get_url_var: function(id)
-	{
-		let query = window.location.search.substring(1);
-		let vars = query.split("&");
-		
-		let pair = [];
-		
-		for (let i = 0; i < vars.length; i++)
-		{
-			pair = vars[i].split("=");
-			
-			if (pair[0] === id)
-			{
-				return pair[1];
-			}
-		}
-		
-		return null;
-	},
-	
-	
-	
-	set_up: function()
-	{
-		this.url_vars =
-		{
-			"theme": this.get_url_var("theme"),
-			"dark_theme_color": this.get_url_var("dark_theme_color"),
-			"contrast": this.get_url_var("contrast"),
-			"text_size": this.get_url_var("text_size"),
-			"font": this.get_url_var("font"),
-			"content_animation": this.get_url_var("content_animation"),
-			"title_pages_seen": this.get_url_var("title_pages_seen")
-		};
-		
-		
-		
-		window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
-		{
-			if (e.matches && this.url_vars["theme"] !== 1)
-			{
-				this.toggle_theme();
-			}
-			
-			else if (!e.matches && this.url_vars["theme"] === 1)
-			{
-				this.toggle_theme();
-				
-				if (this.url_vars["dark_theme_color"] === 1)
-				{
-					setTimeout(() =>
-					{
-						this.toggle_dark_theme_color();
-					}, Site.opacity_animation_time * 2);
-				}
-			}
-		});
+	"/gallery/": true,
+	"/slides/oral-exam/": true
+};
 
-		if (window.matchMedia("(prefers-color-scheme: dark)").matches && this.url_vars["theme"] === null)
-		{
-			this.url_vars["theme"] = 1;
-		}
-		
-		if (this.url_vars["dark_theme_color"] === 1)
-		{
-			this.dark_theme_background_color = "rgb(0, 0, 0)";
-			this.dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
-		}
-		
-		
-		
-		for (let key in this.url_vars)
-		{
-			//These are double equals, and that's important, but I can't quite see why. Obviously the this.url_vars are stored as strings and I just didn't realize that when I first coded this, but this bit of code has refused to cooperate with any modifications I make. Who knows.
-			if (this.url_vars[key] == null)
-			{
-				this.url_vars[key] = 0;
-			}
-			
-			else if (this.url_vars[key] == 1)
-			{
-				this.url_vars[key] = 0;
-				this.toggle(key, true);
-			}
-		}
-		
-		
-		
-		//This prevents things from flickering when we first load the site.
-		
-		let element = null;
-		
-		if (this.url_vars["theme"] === 1 && this.url_vars["contrast"] !== 1)
-		{
-			element = Site.add_style(this.get_settings_style("dark"), false);
-		}
-		
-		else if (this.url_vars["theme"] !== 1 && this.url_vars["contrast"] === 1)
-		{
-			element = Site.add_style(this.get_settings_style("contrast"), false);
-		}
-		
-		else if (this.url_vars["theme"] === 1 && this.url_vars["contrast"] === 1)
-		{
-			element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-		}
-		
-		try {document.querySelector("#theme-contrast-adjust").remove();}
-		catch(ex) {}
-		
-		try {element.id = "theme-contrast-adjust";}
-		catch(ex) {}
-	},
-	
-	
-	
-	meta_theme_color_refresh_id: null,
-	meta_theme_color_animation_step: 0,
-	meta_theme_color_element: document.querySelector("#theme-color-meta"),
-	
-	animate_meta_theme_color: function(old_brightness, new_brightness, num_steps = 45)
+const rootElement = document.querySelector(":root");
+
+export const metaThemeColorElement = document.querySelector("#theme-color-meta");
+
+
+let themeToggles = 0;
+
+
+const params = new URLSearchParams(window.location.search);
+
+const darkTheme = (() =>
+{
+	if (params.get("theme") === null)
 	{
-		try {clearInterval(this.meta_theme_color_refresh_id);}
-		catch(ex) {}
-		
-		this.meta_theme_color_animation_step = 0;
-		
-		this.meta_theme_color_refresh_id = setInterval(() =>
-		{
-			this.meta_theme_color_animation_step++;
-			
-			let brightness = (1 - this.meta_theme_color_animation_step / num_steps) * old_brightness + (this.meta_theme_color_animation_step / num_steps) * new_brightness;
-			
-			this.meta_theme_color_element.setAttribute("content", `rgb(${brightness}, ${brightness}, ${brightness})`);
-			
-			if (this.meta_theme_color_animation_step === num_steps)
-			{
-				try {clearInterval(this.meta_theme_color_refresh_id);}
-				catch(ex) {}
-			}
-		}, 10);
-	},
-	
-	
-	
-	handle_theme_revert: function()
+		return matchMedia("(prefers-color-scheme: dark)").matches;
+	}
+
+	return params.get("theme") === "1";
+})();
+
+const reduceMotion = (() =>
+{
+	if (params.get("reducemotion") === null)
 	{
-		if (this.url_vars["content_animation"] === 1)
+		return matchMedia("(prefers-reduced-motion: reduce)").matches;
+	}
+
+	return params.get("reducemotion") === "1";
+})();
+
+const increaseContrast = (() =>
+{
+	if (params.get("increasecontrast") === null)
+	{
+		return matchMedia("(prefers-contrast: more)").matches;
+	}
+
+	return params.get("increasecontrast") === "1";
+})();
+
+export const siteSettings =
+{
+	darkTheme,
+	reduceMotion,
+	increaseContrast,
+	card: params.get("card"),
+	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
+};
+
+
+
+// Set to false, true, or null for when a page has forced a theme and it needs to change back.
+let revertThemeTo = null;
+
+export function setRevertThemeTo(newRevertThemeTo)
+{
+	revertThemeTo = newRevertThemeTo;
+}
+
+
+
+let forcedTheme = false;
+
+export function setForcedTheme(newForcedTheme)
+{
+	forcedTheme = newForcedTheme;
+
+	if (darkThemeCheckbox)
+	{
+		darkThemeCheckbox.setDisabled(true);
+	}
+}
+
+
+
+export function getQueryParams()
+{
+	const params = new URLSearchParams(window.location.search);
+
+
+
+	params.delete("page");
+
+	if (!forcedTheme)
+	{
+		if (siteSettings.darkTheme && !matchMedia("(prefers-color-scheme: dark)").matches)
 		{
-			if (this.revert_theme === 0)
-			{
-				this.revert_theme = -1;
-				
-				this.url_vars["dark_theme_color"] = 1;
-				
-				this.toggle("theme", true, true);
-			}
-			
-			else if (Site.Settings.revert_theme === 1)
-			{
-				this.revert_theme = -1;
-				
-				this.toggle("theme", true, true);
-			}
+			params.set("theme", "1");
 		}
-		
+
+		else if (!siteSettings.darkTheme && matchMedia("(prefers-color-scheme: dark)").matches)
+		{
+			params.set("theme", "0");
+		}
+
 		else
 		{
-			if (this.revert_theme === 0)
-			{
-				this.revert_theme = -1;
-				
-				this.url_vars["dark_theme_color"] = 1;
-				
-				this.toggle("theme", false, true);
-			}
-			
-			else if (Site.Settings.revert_theme === 1)
-			{
-				this.revert_theme = -1;
-				
-				this.toggle("theme", false, true);
-			}
-		}
-	},
-	
-
-
-	//Changes a setting.
-	toggle: function(setting, no_animation = false, no_settings_text = false)
-	{
-		let element = null;
-		
-		if (no_animation === false && (setting === "theme" || setting === "dark_theme_color" || setting === "contrast"))
-		{
-			element = Site.add_style(`
-				html
-				{
-					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
-				}
-				
-				p, span, h1, h2, a, q, em, strong, dfn
-				{
-					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
-				}
-				
-				.text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
-				{
-					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
-				}
-				
-				.line-break
-				{
-					transition: ${Site.opacity_animation_time * 2 / 1000}s ease !important;
-				}
-			`);
-		}
-		
-		
-		
-		if (setting === "theme")
-		{
-			if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] !== 1)
-			{
-				this.toggle_dark_theme_color(no_settings_text);
-				
-				//document.querySelector("#theme-color-meta").setAttribute("content", "#000000");
-				this.animate_meta_theme_color(24, 0);
-				
-				if (!no_animation)
-				{
-					setTimeout(() =>
-					{
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: black");}
-							catch(ex) {}
-						}
-					}, Site.opacity_animation_time * 2);
-				}
-			}
-			
-			else if (this.url_vars["theme"] === 1 && this.url_vars["dark_theme_color"] === 1)
-			{
-				this.toggle_theme(no_settings_text);
-				
-				if (!no_animation)
-				{
-					setTimeout(() =>
-					{
-						this.toggle_dark_theme_color();
-						
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: light");}
-					 		catch(ex) {}
-					 	}
-					}, Site.opacity_animation_time * 2);
-				}
-			}
-			
-			else
-			{
-				this.toggle_theme(no_settings_text);
-				
-				if (!no_animation)
-				{
-					setTimeout(() =>
-					{
-						if (!no_settings_text)
-						{
-							try {Page.Footer.Floating.show_settings_text("Theme: dark");}
-							catch(ex) {}
-						}
-					}, Site.opacity_animation_time * 2);
-				}
-			}
-		}
-		
-		else if (setting === "dark_theme_color")
-		{
-			this.toggle_dark_theme_color(no_settings_text);
-		}
-		
-		else if (setting === "contrast")
-		{
-			this.toggle_contrast(no_settings_text);
-		}
-		
-		else if (setting === "text_size")
-		{
-			this.toggle_text_size(no_settings_text);
-		}
-		
-		else if (setting === "font")
-		{
-			this.toggle_font(no_settings_text);
-		}
-		
-		else if (setting === "content_animation")
-		{
-			this.toggle_content_animation(no_settings_text);
-		}
-		
-		else
-		{
-			console.log("Unknown setting");
-		}
-		
-		
-		
-		Page.Navigation.write_url_vars();
-		
-		
-		
-		if (no_animation === false && (setting === "theme" || setting === "dark_theme_color" || setting === "contrast"))
-		{
-			setTimeout(() =>
-			{
-				element.remove();
-			}, Site.opacity_animation_time * 2);
-		}
-	},
-
-
-
-	//Changes the theme and animates elements.
-	toggle_theme: function(no_settings_text)
-	{
-		//Light to dark
-		if (this.url_vars["theme"] === 0)
-		{
-			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-			{
-				if (this.url_vars["dark_theme_color"] !== 1)
-				{
-					document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-					
-					this.animate_meta_theme_color(255, 24);
-				}
-				
-				else
-				{
-					document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-					
-					this.animate_meta_theme_color(24, 0);
-				}
-			}
-			
-			
-			
-			if (this.url_vars["contrast"] === 1)
-			{
-				if (!Page.settings["manual_dark_theme"])
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-				{
-					this.animate_theme_contrast("dark");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("dark"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			this.url_vars["theme"] = 1;
-		}
-		
-		
-		
-		//Dark to light
-		else
-		{
-			if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-			{
-				document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
-				
-				this.animate_meta_theme_color(0, 255);
-			}
-			
-			
-			
-			if (this.url_vars["contrast"] === 1)
-			{
-				if (!Page.settings["manual_dark_theme"])
-				{
-					this.animate_theme_contrast("contrast");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				if (!("manual_dark_theme" in Page.settings && Page.settings["manual_dark_theme"]))
-				{
-					this.animate_theme_contrast("");
-				}
-				
-				
-				
-				setTimeout(() =>
-				{
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			this.url_vars["theme"] = 0;
-		}
-	},
-
-
-
-	toggle_dark_theme_color: function(no_settings_text)
-	{
-		if (this.url_vars["dark_theme_color"] === 0)
-		{
-			this.dark_theme_background_color = "rgb(0, 0, 0)";
-			this.dark_theme_background_color_rgba = "rgba(0, 0, 0, ";
-			
-			if (this.url_vars["theme"] === 1)
-			{
-				document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-				
-				if (this.url_vars["contrast"] == 1)
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				else
-				{
-					this.animate_theme_contrast("dark");
-				}
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				let element = null;
-				
-				if (this.url_vars["theme"] === 1)
-				{
-					if (this.url_vars["contrast"] === 1)
-					{
-						element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					}
-					
-					else
-					{
-						element = Site.add_style(this.get_settings_style("dark"), false);
-					}
-				}
-				
-				else if (this.url_vars["contrast"] === 1)
-				{
-					element = Site.add_style(this.get_settings_style("contrast"), false);
-				}
-				
-				
-				
-				try {document.querySelector("#theme-contrast-adjust").remove();}
-				catch(ex) {}
-				
-				try {element.id = "theme-contrast-adjust";}
-				catch(ex) {}
-				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
-			
-			
-			
-			this.url_vars["dark_theme_color"] = 1;
-		}
-		
-		
-		
-		else
-		{
-			this.dark_theme_background_color = "rgb(24, 24, 24)";
-			this.dark_theme_background_color_rgba = "rgba(24, 24, 24, ";
-			
-			if (this.url_vars["theme"] === 1)
-			{
-				document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
-				
-				if (this.url_vars["contrast"] == 1)
-				{
-					this.animate_theme_contrast("dark_contrast");
-				}
-				
-				else
-				{
-					this.animate_theme_contrast("dark");
-				}
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				let element = null;
-				
-				if (this.url_vars["theme"] === 1)
-				{
-					if (this.url_vars["contrast"] === 1)
-					{
-						element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					}
-					
-					else
-					{
-						element = Site.add_style(this.get_settings_style("dark"), false);
-					}
-				}
-				
-				else if (this.url_vars["contrast"] === 1)
-				{
-					element = Site.add_style(this.get_settings_style("contrast"), false);
-				}
-				
-				
-				
-				try {document.querySelector("#theme-contrast-adjust").remove();}
-				catch(ex) {}
-				
-				try {element.id = "theme-contrast-adjust";}
-				catch(ex) {}
-				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
-			
-			
-			
-			this.url_vars["dark_theme_color"] = 0;
-		}
-	},
-
-
-
-	toggle_contrast: function(no_settings_text)
-	{
-		//Default to high
-		if (this.url_vars["contrast"] === 0)
-		{
-			if (this.url_vars["theme"] === 1)
-			{
-				this.animate_theme_contrast("dark_contrast");
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("dark_contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				this.animate_theme_contrast("contrast");
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("contrast"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Contrast: high");}
-					catch(ex) {}
-				}
-			}, Site.opacity_animation_time * 2 + 50);
-			
-			this.url_vars["contrast"] = 1;
-		}
-		
-		
-		
-		//High to default
-		else
-		{
-			if (this.url_vars["theme"] === 1)
-			{
-				this.animate_theme_contrast("dark");
-				
-				
-				
-				setTimeout(() =>
-				{
-					let element = Site.add_style(this.get_settings_style("dark"), false);
-					
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					try {element.id = "theme-contrast-adjust";}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			else
-			{
-				this.animate_theme_contrast("");
-				
-				
-				
-				setTimeout(() =>
-				{
-					try {document.querySelector("#theme-contrast-adjust").remove();}
-					catch(ex) {}
-					
-					this.clear_weird_inline_styles();
-				}, Site.opacity_animation_time * 2);
-			}
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Contrast: normal");}
-					catch(ex) {}
-				}
-			}, Site.opacity_animation_time * 2 + 50);
-			
-			this.url_vars["contrast"] = 0;
-		}
-	},
-
-
-
-	toggle_text_size: function(no_settings_text)
-	{
-		document.body.classList.add("animated-opacity");
-		document.body.style.opacity = 0;
-		
-		
-		
-		//Normal to large
-		if (this.url_vars["text_size"] === 0)
-		{
-			setTimeout(() =>
-			{
-				try {document.querySelector("#text-size-adjust").remove();}
-				catch(ex) {}
-				
-				let element = Site.add_style(`
-					html
-					{
-						font-size: 18px;
-					}
-					
-					@media (min-width: 1000px)
-					{
-						html
-						{
-							font-size: 22px;
-						}
-					}
-				`, false);
-				
-				element.id = "text-size-adjust";
-				
-				
-				
-				setTimeout(() =>
-				{
-					if (!no_settings_text)
-					{
-						try {Page.Footer.Floating.show_settings_text("Text size: large");}
-					 	catch(ex) {}
-					 }
-				}, Site.opacity_animation_time);
-			}, Site.opacity_animation_time);
-				
-			this.url_vars["text_size"] = 1;
-		}
-			
-		else
-		{
-			setTimeout(() =>
-			{
-				try {document.querySelector("#text-size-adjust").remove();}
-				catch(ex) {}
-				
-				
-				
-				setTimeout(() =>
-				{
-					if (!no_settings_text)
-					{
-						try {Page.Footer.Floating.show_settings_text("Text size: normal");}
-					 	catch(ex) {}
-					 }
-				}, Site.opacity_animation_time);
-			}, Site.opacity_animation_time);
-				
-			this.url_vars["text_size"] = 0;
-		}
-		
-		
-		
-		setTimeout(() =>
-		{
-			setTimeout(() =>
-			{
-				document.body.style.opacity = 1; //???
-			}, 50);
-		}, Site.opacity_animation_time);
-	},
-
-
-
-	toggle_font: function(no_settings_text)
-	{
-		if ("writing_page" in Page.settings && Page.settings["writing_page"])
-		{
-			document.body.style.opacity = 0;
-		}
-		
-		
-		
-		//Sans to serif
-		if (this.url_vars["font"] === 0)
-		{
-			setTimeout(() =>
-			{
-				if ("writing_page" in Page.settings && Page.settings["writing_page"])
-				{
-					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
-				}
-				
-				
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Font: serif on writing");}
-				 	catch(ex) {}
-				 }
-			}, Site.opacity_animation_time);
-			
-			this.url_vars["font"] = 1;
-		}
-		
-		
-		
-		//Serif to sans
-		else
-		{
-			setTimeout(() =>
-			{
-				if ("writing_page" in Page.settings && Page.settings["writing_page"])
-				{
-					Page.set_element_styles(".body-text, .heading-text", "font-family", "'Rubik', sans-serif");
-				}
-				
-				
-				
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Font: always sans serif");}
-			 		catch(ex) {}
-			 	}
-			}, Site.opacity_animation_time);
-			
-			this.url_vars["font"] = 0;
-		}
-		
-		
-		
-		if ("writing_page" in Page.settings && Page.settings["writing_page"])
-		{
-			setTimeout(() =>
-			{
-				setTimeout(() =>
-				{
-					document.body.style.opacity = 1;
-					
-					Page.Load.AOS.on_resize();
-				}, 50);
-			}, Site.opacity_animation_time);
-		}
-	},
-
-
-
-	toggle_content_animation: function(no_settings_text)
-	{
-		if (this.url_vars["content_animation"] === 0)
-		{
-			//Here, we can just animate out the body as usual.	
-			document.body.style.opacity = 0;
-			
-			setTimeout(() =>
-			{
-				this.remove_animation();
-				
-				document.body.classList.add("animated-opacity");
-			
-				setTimeout(() =>
-				{
-					document.body.style.opacity = 1;
-					
-					setTimeout(() =>
-					{
-						document.body.classList.remove("animated-opacity");
-					}, Site.opacity_animation_time);
-				}, 50);
-			}, Site.opacity_animation_time);
-			
-			
-			
-			setTimeout(() =>
-			{
-				if (!no_settings_text)
-				{
-					try {Page.Footer.Floating.show_settings_text("Content animation: disabled");}
-			 		catch(ex) {}
-			 	}
-		 	}, Site.opacity_animation_time * 2);
-		 	
-		 	
-			
-			this.url_vars["content_animation"] = 1;
-		}
-		
-		
-		
-		else
-		{
-			this.url_vars["content_animation"] = 0;
-			
-			document.body.classList.add("animated-opacity");
-			
-			
-			
-			//This is a little messy, but it's better than the alternative. Removing every single data-aos attribute is way too destructive to undo, so instead, we'll just refresh the page.
-			Page.Navigation.last_page_scroll = window.scrollY;
-			
-			Page.Navigation.redirect(Page.url, false, true, true);
-		}
-	},
-
-
-
-	set_img_button_contrast: function()
-	{
-		let elements = document.querySelectorAll(".nav-button, .scroll-button");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].setAttribute("src", elements[i].getAttribute("src").replace("chevron-left", "chevron-left-dark").replace("chevron-right", "chevron-right-dark").replace("chevron-down", "chevron-down-dark"));
-		}
-	},
-
-
-
-	set_writing_page_font: function()
-	{
-		Page.set_element_styles(".body-text, .heading-text", "font-family", "'Gentium Book Basic', serif");
-	},
-
-
-
-	reduce_page_margins: function()
-	{
-		try {document.querySelector("#ultrawide-margin-adjust").remove();}
-		catch(ex) {}
-		
-		
-		
-		//When in ultrawide mode, shrink the margins to 50%.
-		if (Page.Layout.layout_string === "ultrawide")
-		{
-			let element = Site.add_style(`
-				.body-text, .nav-buttons, .line-break
-				{
-					width: 50vw;
-				}
-				
-				.body-text.narrow
-				{
-					width: 40vw;
-				}
-				
-				pre code
-				{
-					width: calc(50vw - 24px);
-				}
-			`);
-			
-			element.id = "ultrawide-margin-adjust";
-		}	
-	},
-
-
-
-	remove_animation: function()
-	{
-		let elements = document.body.querySelectorAll("[data-aos]")
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].removeAttribute("data-aos");
-		}
-	},
-
-
-
-	animate_theme_contrast: function(settings)
-	{
-		let new_gradient_suffix = "-0-0";
-		
-		if (settings === "")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(96, 96, 96)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(127, 127, 127)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(127, 192, 127)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(176, 176, 176)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(92, 92, 92)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-box", "color", "rgb(127, 127, 127)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(192, 192, 192)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-field", "color", "rgb(127, 127, 127)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(192, 192, 192)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(127, 127, 127)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(127, 127, 127)");
-			
-			
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", "rgb(255, 255, 255)");
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas", "border-color", "rgb(127, 127, 127)");
-		}
-		
-		
-		
-		else if (settings === "dark")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(184, 184, 184)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(152, 152, 152)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(152, 216, 152)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(104, 104, 104)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(188, 188, 188)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-box", "color", "rgb(152, 152, 152)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(88, 88, 88)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-field", "color", "rgb(152, 152, 152)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(88, 88, 88)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(152, 152, 152)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(152, 152, 152)");
-			
-			
-			
-			let element = Site.add_style(`
-				.slider-container > input
-				{
-					background-color: rgb(80, 80, 80) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(127, 127, 127) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(127, 127, 127) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(144, 144, 144) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(168, 168, 168) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(168, 168, 168) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(216, 216, 216) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(216, 216, 216) !important;
-				}
-			`, false);
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			try {element.id = "slider-style";}
-			catch(ex) {}
-				
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", this.dark_theme_background_color);
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			new_gradient_suffix = `-1-0`;
-		}
-		
-		
-		
-		else if (settings === "contrast")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(48, 48, 48)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext, .floating-settings-button-text", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(64, 128, 64)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(88, 88, 88)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(46, 46, 46)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-box", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(96, 96, 96)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".text-field", "color", "rgb(64, 64, 64)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(96, 96, 96)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(64, 64, 64)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(64, 64, 64)");
-			
-			
-			
-			let element = Site.add_style(`
-				.slider-container > input
-				{
-					background-color: rgb(100, 100, 100) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(80, 80, 80) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(80, 80, 80) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(64, 64, 64) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(56, 56, 56) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(56, 56, 56) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(0, 0, 0) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(0, 0, 0) !important;
-				}
-			`, false);
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			try {element.id = "slider-style";}
-			catch(ex) {}
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", "rgb(255, 255, 255)");
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(64, 64, 64)");
-			
-			
-			
-			new_gradient_suffix = `-0-1`;
-		}
-		
-		
-		
-		else if (settings === "dark_contrast")
-		{
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
-			
-			Page.set_element_styles(".section-text", "color", "rgb(232, 232, 232)");
-			
-			Page.set_element_styles(".body-text, .body-text span, .song-lyrics, .image-link-subtext", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".body-text .link", "color", "rgb(216, 255, 216)");
-			
-			Page.set_element_styles(".floating-settings-button-text", "color", "rgb(64, 64, 64)");
-			
-			
-			
-			Page.set_element_styles(".quote-text q", "color", "rgb(192, 192, 192)");
-			
-			Page.set_element_styles(".quote-attribution", "color", "rgb(234, 234, 234)");
-			
-			
-			
-			Page.set_element_styles(".text-box", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-box", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".text-box", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			Page.set_element_styles(".text-field", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".text-field", "color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".text-field", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			Page.set_element_styles(".checkbox-container", "border-color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "rgb(216, 216, 216)");
-			
-			
-			
-			Page.set_element_styles(".radio-button-container", "border-color", "rgb(216, 216, 216)");
-			
-			Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", this.dark_theme_background_color);
-			
-			Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(216, 216, 216)");
-			
-			
-			
-			//Page.set_element_styles(".slider-container > input", "background-color", "rgb(180, 180, 180)");
-			
-			let element = Site.add_style(`
-				.slider-container > input
-				{
-					background-color: rgb(180, 180, 180) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(200, 200, 200) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(200, 200, 200) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(216, 216, 216) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(224, 224, 224) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(224, 224, 224) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-			`, false);
-			
-			try {document.querySelector("#slider-style").remove();}
-			catch(ex) {}
-			
-			try {element.id = "slider-style";}
-			catch(ex) {}
-			
-			
-			
-			Page.set_element_styles("#floating-footer-content, #floating-footer-button-background", "background-color", this.dark_theme_background_color);
-			
-			
-			
-			Page.set_element_styles(".footer-button, .text-button, .nav-button, #output-canvas", "border-color", "rgb(152, 152, 152)");
-			
-			
-			
-			new_gradient_suffix = `-1-1`;
-		}
-		
-		//These elements have properties that cannot be animated. To get around this, every elemnt has 6 copies of itself -- one for each combination of theme and contrast. Here, we animate the new one in and the old one out.
-		Page.set_element_styles(`.line-break${this.gradient_suffix}`, "opacity", 0);
-		Page.set_element_styles(`.line-break${new_gradient_suffix}`, "opacity", 1);
-		
-		this.gradient_suffix = new_gradient_suffix;
-	},
-
-
-
-	clear_weird_inline_styles: function()
-	{
-		Page.set_element_styles(".checkbox-container > input ~ .checkbox", "background-color", "");
-			
-		Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox", "background-color", "");
-		
-		
-		
-		Page.set_element_styles(".radio-button-container > input ~ .radio-button", "background-color", "");
-			
-		Page.set_element_styles(".radio-button-container > input:checked ~ .radio-button", "background-color", "");
-		
-		
-		
-		Page.set_element_styles(".text-box", "background-color", "");
-		
-		Page.set_element_styles(".text-box", "color", "");
-		
-		Page.set_element_styles(".text-box", "border-color", "");
-		
-		
-		
-		Page.set_element_styles(".text-field", "background-color", "");
-		
-		Page.set_element_styles(".text-field", "color", "");
-		
-		Page.set_element_styles(".text-field", "border-color", "");
-	},
-
-
-
-	get_settings_style: function(settings) 
-	{
-		if (settings === "dark")
-		{
-			return `
-				.heading-text, .date-text, .title-text
-				{
-					color: rgb(255, 255, 255);
-				}
-				
-				.section-text
-				{
-					color: rgb(184, 184, 184);
-				}
-				
-				.body-text, .body-text span, .song-lyrics, .image-link-subtext
-				{
-					color: rgb(152, 152, 152);
-				}
-				
-				.body-text .link
-				{
-					color: rgb(152, 216, 152);
-				}
-				
-				
-				
-				.quote-text
-				{
-					color: rgb(104, 104, 104);
-				}
-				
-				.quote-attribution
-				{
-					color: rgb(188, 188, 188);
-				}
-				
-				
-				
-				.text-box
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(152, 152, 152);
-					border-color: rgb(88, 88, 88);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(152, 152, 152);
-					color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.text-field
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(152, 152, 152);
-					border-color: rgb(88, 88, 88);
-				}
-				
-				.text-field:focus
-				{
-					border-color: rgb(152, 152, 152);
-					color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.checkbox-container > input ~ .checkbox
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.checkbox-container > input:checked ~ .checkbox
-				{
-					background-color: rgb(152, 152, 152);
-				}
-				
-				
-				
-				.radio-button-container > input ~ .radio-button
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.radio-button-container > input:checked ~ .radio-button
-				{
-					background-color: rgb(152, 152, 152);
-				}
-				
-				
-				
-				.loading-spinner:after
-				{
-					border: 2px solid rgb(152, 152, 152);
-					border-color: rgb(152, 152, 152) transparent rgb(152, 152, 152) transparent;
-				}
-				
-							
-				
-				#floating-footer-content, #floating-footer-button-background
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-				
-				
-				
-				#banner-gradient, #floating-footer-gradient
-				{
-					background: -moz-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%, ${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: -webkit-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: linear-gradient(to bottom, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-				}
-				
-				
-				
-				.footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas
-				{
-					border-color: rgb(152, 152, 152);
-				}
-				
-				
-				
-				.line-break-1-0
-				{
-					opacity: 1;
-				}
-			`;
-		}
-		
-		
-		
-		else if (settings === "contrast")
-		{
-			return `
-				.heading-text, .date-text, .title-text
-				{
-					color: rgb(0, 0, 0);
-				}
-				
-				.section-text
-				{
-					color: rgb(48, 48, 48);
-				}
-				
-				.body-text, .body-text span, .song-lyrics, .image-link-subtext, .text-button
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				.settings-text
-				{
-					color: rgb(64, 64, 64) !important;
-				}
-				
-				.body-text .link
-				{
-					color: rgb(64, 128, 64);
-				}
-				
-				.floating-settings-button-text
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.quote-text
-				{
-					color: rgb(88, 88, 88);
-				}
-				
-				.quote-attribution
-				{
-					color: rgb(46, 46, 46);
-				}
-				
-				
-				
-				.text-box
-				{
-					background-color: rgb(255, 255, 255);
-					color: rgb(64, 64, 64);
-					border-color: rgb(96, 96, 96);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(48, 48, 48);
-					color: rgb(0, 0, 0);
-				}
-				
-				
-				
-				.text-field
-				{
-					background-color: rgb(255, 255, 255);
-					color: rgb(64, 64, 64);
-					border-color: rgb(96, 96, 96);
-				}
-				
-				.text-field:focus
-				{
-					border-color: rgb(48, 48, 48);
-					color: rgb(0, 0, 0);
-				}
-				
-				
-
-				.checkbox-container > input:checked ~ .checkbox
-				{
-					background-color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.radio-button-container > input:checked ~ .radio-button
-				{
-					background-color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.loading-spinner:after
-				{
-					border: 2px solid rgb(64, 64, 64);
-					border-color: rgb(64, 64, 64) transparent rgb(64, 64, 64) transparent;
-				}
-				
-				
-				
-				.footer-button, .text-button, .nav-button, .checkbox-container, #output-canvas
-				{
-					border-color: rgb(64, 64, 64);
-				}
-			`;
-		}
-		
-		
-		
-		else if (settings === "dark_contrast")
-		{
-			return `
-				.heading-text, .date-text, .title-text
-				{
-					color: rgb(255, 255, 255);
-				}
-				
-				.section-text
-				{
-					color: rgb(232, 232, 232);
-				}
-				
-				.body-text, .body-text span, .song-lyrics, .image-link-subtext
-				{
-					color: rgb(216, 216, 216);
-				}
-				
-				.settings-text
-				{
-					color: rgb(64, 64, 64) !important;
-				}
-				
-				.body-text .link
-				{
-					color: rgb(216, 255, 216);
-				}
-				
-				.floating-settings-button-text
-				{
-					color: rgb(64, 64, 64);
-				}
-				
-				
-				
-				.quote-text
-				{
-					color: rgb(192, 192, 192);
-				}
-				
-				.quote-attribution
-				{
-					color: rgb(234, 234, 234);
-				}
-				
-				
-				
-				.text-box
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(216, 216, 216);
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.text-box:focus
-				{
-					border-color: rgb(216, 216, 216);
-					color: rgb(255, 255, 255);
-				}
-				
-				
-				
-				.text-field
-				{
-					background-color: ${this.dark_theme_background_color};
-					color: rgb(216, 216, 216);
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.text-field:focus
-				{
-					border-color: rgb(216, 216, 216);
-					color: rgb(255, 255, 255);
-				}
-				
-				
-				
-				.checkbox-container
-				{
-					border-color: rgb(216, 216, 216);
-				}
-				
-				.checkbox-container > input ~ .checkbox
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.checkbox-container > input:checked ~ .checkbox
-				{
-					background-color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.radio-button-container
-				{
-					border-color: rgb(216, 216, 216);
-				}
-				
-				.radio-button-container > input ~ .radio-button
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-
-				.radio-button-container > input:checked ~ .radio-button
-				{
-					background-color: rgb(216, 216, 216);
-				}
-				
-				
-				
-				.loading-spinner:after
-				{
-					border: 2px solid rgb(216, 216, 216);
-					border-color: rgb(216, 216, 216) transparent rgb(216, 216, 216) transparent;
-				}
-				
-				
-				
-				#floating-footer-content, #floating-footer-button-background
-				{
-					background-color: ${this.dark_theme_background_color};
-				}
-				
-				
-				
-				#banner-gradient, #floating-footer-gradient
-				{
-					background: -moz-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%, ${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: -webkit-linear-gradient(top, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-					background: linear-gradient(to bottom, ${this.dark_theme_background_color_rgba}0) 0%,${this.dark_theme_background_color_rgba}1) 100%) !important;
-				}
-						
-				
-				
-				.footer-button, .text-button, .nav-button, #output-canvas
-				{
-					border-color: rgb(152, 152, 152);
-				}
-				
-				.line-break-1-1
-				{
-					opacity: 1;
-				}
-			`;
+			params.delete("theme");
 		}
 	}
-};
+
+
+
+	if (siteSettings.reduceMotion && !matchMedia("(prefers-reduced-motion: reduce)").matches)
+	{
+		params.set("reducemotion", "1");
+	}
+
+	else if (
+		!siteSettings.reduceMotion
+		&& matchMedia("(prefers-reduced-motion: reduce)").matches
+	) {
+		params.set("reducemotion", "0");
+	}
+
+	else
+	{
+		params.delete("reducemotion");
+	}
+
+
+
+	if (siteSettings.increaseContrast && !matchMedia("(prefers-contrast: more)").matches)
+	{
+		params.set("increasecontrast", "1");
+	}
+
+	else if (
+		!siteSettings.increaseContrast
+		&& matchMedia("(prefers-contrast: more)").matches
+	) {
+		params.set("increasecontrast", "0");
+	}
+
+	else
+	{
+		params.delete("increasecontrast");
+	}
+
+
+
+	if (siteSettings.card)
+	{
+		params.set("card", siteSettings.card);
+	}
+
+	else
+	{
+		params.delete("card");
+	}
+
+	
+
+	if (siteSettings.resolutionMultiplier && siteSettings.resolutionMultiplier !== 1)
+	{
+		params.set("resmult", siteSettings.resolutionMultiplier);
+	}
+
+	else
+	{
+		params.delete("resmult");
+	}
+
+
+
+	if (window.OFFLINE)
+	{
+		params.set("debug", "2");
+	}
+
+	else if (window.DEBUG)
+	{
+		params.set("debug", "1");
+	}
+
+	else
+	{
+		params.delete("debug");
+	}
+	
+	return params.toString();
+}
+
+
+
+export function initReduceMotion()
+{
+	matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) =>
+	{
+		siteSettings.reduceMotion = e.matches;
+
+		reduceMotionCheckbox && reduceMotionCheckbox.setChecked({
+			newChecked: siteSettings.reduceMotion
+		});
+	});
+}
+
+export function initIncreaseContrast()
+{
+	matchMedia("(prefers-contrast: more)").addEventListener("change", (e) =>
+	{
+		if (e.matches !== siteSettings.increaseContrast)
+		{
+			toggleIncreaseContrast({});
+
+			increaseContrastCheckbox &&
+				increaseContrastCheckbox.setChecked({
+					newChecked: siteSettings.increaseContrast
+				});
+		}
+	});
+
+	if (siteSettings.increaseContrast)
+	{
+		siteSettings.increaseContrast = false;
+
+		toggleIncreaseContrast({ noAnimation: true });
+	}
+}
+
+export async function initDarkTheme()
+{
+	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) =>
+	{
+		if (cardIsOpen)
+		{
+			return;
+		}
+
+		if ((e.matches && !siteSettings.darkTheme) || (!e.matches && siteSettings.darkTheme))
+		{
+			toggleDarkTheme({});
+		}
+	});
+
+	if (forceThemePages[pageUrl] !== undefined)
+	{
+		if (forceThemePages[pageUrl])
+		{
+			setForcedTheme(true);
+			setRevertThemeTo(siteSettings.darkTheme);
+			siteSettings.darkTheme = !forceThemePages[pageUrl];
+			await toggleDarkTheme({ noAnimation: true, force: true });
+		}
+
+		else if (!forceThemePages[pageUrl])
+		{
+			revertTheme();
+		}
+
+		return;
+	}
+
+	if (siteSettings.darkTheme)
+	{
+		siteSettings.darkTheme = false;
+
+		await toggleDarkTheme({ noAnimation: true });
+	}
+}
+
+
+
+export async function revertTheme()
+{
+	if (forcedTheme)
+	{
+		forcedTheme = false;
+	}
+
+	if (darkThemeCheckbox)
+	{
+		darkThemeCheckbox.setDisabled(false);
+	}
+
+	if (revertThemeTo === null)
+	{
+		return;
+	}
+
+	if (siteSettings.darkTheme !== revertThemeTo)
+	{
+		await toggleDarkTheme({ force: true });
+	}
+	
+	revertThemeTo = null;
+}
+
+export async function toggleDarkTheme({
+	noAnimation = false,
+	force = false,
+	duration = 500
+}) {
+	if (!force && pageUrl in forceThemePages)
+	{
+		return;
+	}
+
+	if (handleEasterEgg())
+	{
+		return;
+	}
+
+	updateCode(0);
+
+	siteSettings.darkTheme = !siteSettings.darkTheme;
+
+	darkThemeCheckbox && darkThemeCheckbox.setChecked({
+		newChecked: siteSettings.darkTheme
+	});
+
+	recreateDesmosGraphs();
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	if (noAnimation)
+	{
+		metaThemeColorElement.setAttribute(
+			"content",
+			siteSettings.darkTheme ? "#181818" : "#ffffff"
+		);
+
+		rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+	}
+
+	else
+	{
+		const element = addStyle(`
+			*:not(.page, #banner, .desmos-container)
+			{
+				transition: none !important;
+			}
+		`);
+
+		const dummy = { t: siteSettings.darkTheme ? 0 : 1 };
+
+		await Promise.all([
+			anime({
+				targets: metaThemeColorElement,
+				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
+				duration,
+				easing: "cubicBezier(.25, .1, .25, 1)",
+			}).finished,
+
+			anime({
+				targets: dummy,
+				t: siteSettings.darkTheme ? 1 : 0,
+				duration,
+				easing: "cubicBezier(.25, .1, .25, 1)",
+				update: () =>
+				{
+					rootElement.style.setProperty("--theme", dummy.t);
+				},
+				complete: () =>
+				{
+					rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+				},
+			}).finished
+		]);
+
+		element.remove();
+	}
+}
+
+
+
+export async function toggleReduceMotion()
+{
+	updateCode(1);
+
+	siteSettings.reduceMotion = !siteSettings.reduceMotion;
+
+	currentlyLoadedApplets.forEach(applet =>
+	{
+		for (const wilson of applet.wilsons)
+		{
+			wilson.reduceMotion = siteSettings.reduceMotion;
+		}
+	});
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+}
+
+
+
+export async function toggleIncreaseContrast({
+	noAnimation = false,
+	duration = 150
+}) {
+	updateCode(2);
+
+	siteSettings.increaseContrast = !siteSettings.increaseContrast;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	if (noAnimation)
+	{
+		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+	}
+
+	else
+	{
+		const element = addStyle(`
+			*:not(.checkbox)
+			{
+				transition: none !important;
+			}
+		`);
+
+		const dummy = { t: siteSettings.increaseContrast ? 0 : 1 };
+
+		await anime({
+			targets: dummy,
+			t: siteSettings.increaseContrast ? 1 : 0,
+			duration,
+			easing: "easeInOutSine",
+			update: () =>
+			{
+				rootElement.style.setProperty("--contrast", dummy.t);
+			},
+			complete: () =>
+			{
+				rootElement.style.setProperty(
+					"--contrast",
+					siteSettings.increaseContrast ? 1 : 0
+				);
+			},
+		}).finished;
+
+		element.remove();
+	}
+}
+
+let settingsCode = [];
+const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1];
+
+function updateCode(digit)
+{
+	settingsCode.push(digit);
+	
+	if (settingsCode.length >= streetlightsCode.length)
+	{
+		settingsCode = settingsCode.slice(-streetlightsCode.length);
+
+		if (settingsCode.join("") === streetlightsCode.join(""))
+		{
+			addStyle(`
+				#logo img, #logo-no-link img
+				{
+					background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 14.2857142857%, rgba(185,185,185,1) 14.2857142857%, rgba(185,185,185,1) 28.5714285714%, rgba(255,255,255,1) 28.5714285714%, rgba(255,255,255,1) 42.8571428571%, rgba(184,244,131,1) 42.8571428571%, rgba(184,244,131,1) 57.1428571429%, rgba(255,255,255,1) 57.1428571429%, rgba(255,255,255,1) 71.4285714286%, rgba(185,185,185,1) 71.4285714286%, rgba(185,185,185,1) 85.7142857143%, rgba(0,0,0,1) 85.7142857143%, rgba(0,0,0,1) 100%);
+				}
+			`, false);
+		}
+	}
+}
+
+
+
+let timeoutId;
+
+let shownEasterEgg = false;
+
+function handleEasterEgg()
+{
+	themeToggles++;
+
+	clearTimeout(timeoutId);
+
+	timeoutId = setTimeout(() => themeToggles = 0, 300);
+	
+	if (themeToggles >= 8 && !shownEasterEgg)
+	{
+		shownEasterEgg = true;
+
+		clearTimeout(timeoutId);
+
+		document.body.querySelector("#header-settings-button").innerHTML = "boo";
+
+		addStyle(`
+			#banner, img, canvas
+			{
+				filter: brightness(max(calc(var(--extra-brightness) / 10), 1)) saturate(var(--extra-brightness)) contrast(var(--extra-brightness)) hue-rotate(calc(var(--extra-brightness) * 5deg));
+			}
+		`, false);
+
+		const dummy = { t: 1 };
+
+		const startingBackground = siteSettings.darkTheme
+			? "lch(8.25% 0 0)"
+			: "lch(100% 0 0)";
+
+		const startingHighContrast = siteSettings.darkTheme
+			? "lch(100% 23.2 0)"
+			: "lch(0% 0 0)";
+
+		const startingNormalContrast = siteSettings.darkTheme
+			? "lch(83.48% 0 0)"
+			: "lch(27.09% 0 0)";
+
+		const startingLowContrast = siteSettings.darkTheme
+			? "lch(74.78% 0 0)"
+			: "lch(40.73% 0 0)";
+
+		document.documentElement.style.filter = "brightness(1)";
+
+		anime({
+			targets: dummy,
+			t: 0,
+			duration: 2000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				rootElement.style.setProperty(
+					"--background",
+					`color-mix(in lch, ${startingBackground} ${dummy.t * 100}%, lch(46.62% 108.32 40.84))`
+				);
+
+				rootElement.style.setProperty(
+					"--high-contrast",
+					`color-mix(in lch, ${startingHighContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				rootElement.style.setProperty(
+					"--normal-contrast",
+					`color-mix(in lch, ${startingNormalContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				rootElement.style.setProperty(
+					"--low-contrast",
+					`color-mix(in lch, ${startingLowContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				rootElement.style.setProperty(
+					"--extra-brightness",
+					(1 - dummy.t) * 10 + 1
+				);
+			}
+		});
+	}
+
+	return shownEasterEgg;
+}

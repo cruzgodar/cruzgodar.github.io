@@ -1,0 +1,243 @@
+### nav-buttons
+
+The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the chain rule. What we'll introduce in this section is an analogue of the product rule. As before, it will look different in practice, but we'll see that it's really just the same thing in the end.
+
+If $u$ and $v$ are differentiable functions, then
+
+$$
+	\frac{d}{dx} [uv] = \frac{d}{dx}[u] \cdot v + u \cdot \frac{d}{dx}[v].
+$$
+
+Equivalently,
+
+$$
+	u \cdot \frac{dv}{dx} = \frac{d(uv)}{dx} - v \cdot \frac{du}{dx}
+$$
+
+Taking the strange step of multiplying both sides of this equation by $dx$, we have
+
+$$
+	u\,dv = d(uv) - v\,du.
+$$
+
+And now if we integrate both sides, we get
+
+$$
+	\int u\,dv = uv - \int v\,du.
+$$
+
+This is the form we'll use, but just like with $u$-sub, we have a process to make it easier than having to interpret this somewhat obscure formula.
+
+
+
+### thm "integration by parts"
+	
+	To evaluate $\int f(x) g(x)\,dx$ with integration by parts, we need to be able differentiate $f(x)$ and integrate $g(x)$. Let $u = f(x)$ and $dv = g(x)\,dx$. Then find $du = f'(x)\,dx$ and $v = \int g(x)\,dx$, and rewrite the integral as
+	
+	$$
+		uv - \int v\,du.
+	$$
+	
+	Then attempt to solve the integral left in this equation --- if the process was successful, it will now be integrable. We may need to repeat the process on this new integral.
+	
+###
+
+
+
+### ex "integration by parts"
+	
+	Find $$\int x\sin(x)\,dx$$.
+	
+	We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $dv = \sin(x)\,dx$. Then $du = dx$ and
+	
+	$$
+		v = \int \sin(x)\,dx = -\cos(x)
+	$$
+	
+	(we drop the $+C$ until the end of the problem to keep things simple). Our integral now becomes
+	
+	$$
+		\int x\sin(x)\,dx &= uv - \int v\,du
+		
+		&= -x\cos(x) - \int -\cos(x)\,dx
+		
+		&= -x\cos(x) + \sin(x) + C.
+	$$
+	
+###
+
+### exc "integration by parts"
+	
+	Find $$\int ye^y\,dy$$.
+	
+	**Solution:** just like in the last example, let $u = y$ and $dv = e^y\,dy$. Then $du = dy$ and $v = e^y$, so we get
+	
+	$$
+		ye^y - \int e^y\,dy = ye^y - e^y + C.
+	$$
+	
+###
+
+
+
+### ex "integration by parts"
+	
+	Find $$\int \frac{\ln(t)}{t^2}\,dt$$.
+	
+	There are lots of choices for $u$ and $dv$ --- here are just a few:
+	
+	$$
+		u = \ln(t),\,dv = \frac{1}{t^2}\,dt
+	$$
+	
+	$$
+		u = \frac{\ln(t)}{t^2},\,dv = dt
+	$$
+	
+	$$
+		u = \frac{1}{t},\,dv = \frac{\ln(t)}{t}\,dt
+	$$
+	
+	In general, we want to choose $u$ and $dv$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $dv$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $dv = \frac{1}{t^2}\,dt$ --- let's see how that goes. We have $du = \frac{1}{t}\,dt$ and $v = -\frac{1}{t}$, so we get
+	
+	$$
+		\int \frac{\ln(t)}{t^2}\,dt &= -\frac{\ln(t)}{t} - \int -\frac{1}{t^2}\,dt
+		
+		&= -\frac{\ln(t)}{t} - \frac{1}{t} + C.
+	$$
+	
+###
+
+
+
+Sometimes, we'll need to apply integration by parts more than once.
+
+
+
+### ex "integration by parts twice"
+	
+	Find $$\int x^2 e^{3x}\,dx$$.
+	
+	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $dv = e^{3x}\,dx$. Then $du = 2x\,dx$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
+	
+	$$
+		\int x^2 e^{3x}\,dx = \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,dx.
+	$$
+	
+	To evaluate this integral, we need to do integration by parts again. It works almost exactly the same as before: $u = \frac{2}{3} x$ and $dv = e^{3x}\,dx$. Then $du = \frac{2}{3}\,dx$ and $v = \frac{1}{3}e^{3x}$ once again, so we have
+	
+	$$
+		\int x^2 e^{3x}\,dx &= \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,dx
+		
+		&= \frac{1}{3} x^2 e^{3x} - \left( \frac{2}{9} xe^{3x} - \int \frac{2}{9} e^{3x}\,dx \right)
+		
+		&= \frac{1}{3} x^2 e^{3x} - \frac{2}{9} x e^{3x} + \frac{2}{27} e^{3x} + C.
+	$$
+	
+###
+
+### exc "integration by parts twice"
+	
+	Find $$\int t^2 \cos(2t)\,dt$$.
+	
+	**Solution:** by the same logic, let $u = t^2$ and $dv = \cos(2t)\,dt$. Then $du = 2t\,dt$ and $v = \frac{1}{2} \sin(2t)\,dt$, so the integral becomes
+	
+	$$
+		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,dt = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,dt.
+	$$
+	
+	This is similar to the previous examples we've done: let $u = t$ and $dv = \sin(2t)\,dt$. Then $du = dt$ and $v = -\frac{1}{2} \cos(2t)$, so we get
+	
+	$$
+		\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\,dt \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
+	$$
+	
+###
+
+
+
+Things can get a little more complicated when multiple integration strategies are involved. First of all, <strong>try $u$-sub first.</strong> If you're trying to integrate $x\sin(x^2)$, trying to do it by parts will never work, since it's impossible to integrate $\sin(x^2)$ without that extra $x$ for $u$-sub. If it doesn't seem like $u$-sub will help, then try integrating by parts. Sometimes you'll even need to use both.
+
+
+
+### ex "integration by parts and $u$-sub"
+	
+	Find $$\int y^3 e^{y^2}\,dy$$.
+	
+	Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $du = 2y\,dy$, which gives us
+	
+	$$
+		\int \frac{1}{2} ue^u\,du.
+	$$
+	
+	Now we have an integration by parts problem, since there is no composition in this integral and it's a product we don't know how to integrate. Normally we use $u$ and $v$ for variables, but now we've already used $u$, so let's pick another variable --- say $w$. Therefore, $w = \frac{1}{2} u$, $dv = e^u\,du$, and so $dw = \frac{1}{2}\,du$ and $v = e^u$. Now we get
+	
+	$$
+		u e^u - \int \frac{1}{2} e^u\,du = u e^u - \frac{1}{2} e^u + C.
+	$$
+	
+	Finally, we can back-substitute for $y$:
+	
+	$$
+		y^2 e^{y^2} - \frac{1}{2} e^{y^2} + C.
+	$$
+	
+###
+
+
+
+### ex "integration by parts on definite integrals"
+	
+	The region bounded by $y = \cos(x)$, $y = 0$, and $x = 0$ is revolved about the $y$-axis. Find its volume.
+	
+	Since we're revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
+	
+	$$
+		\int_0^{\pi / 2} 2\pi x\cos(x)\,dx.
+	$$
+	
+	Now we need to apply integration by parts to this. As usual, $u = 2\pi x$ and $dv = \cos(x)\,dx$, so $du = 2\pi\,dx$ and $v = \sin(x)$, but this example is different in that we have a definite integral. To handle that, we apply integration by parts and evaluate the entire expression.
+	
+	$$
+		\int_0^{\pi / 2} 2\pi x\cos(x)\,dx &= \left. \left[ 2\pi x\sin(x) - \int 2\pi \sin(x)\,dx \right] \right|_0^{\pi / 2}
+		
+		&= \left. \left[ 2\pi x\sin(x) + 2\pi \cos(x) \right] \right|_0^{\pi / 2}
+		
+		&= \pi^2 - 2\pi.
+	$$
+	
+###
+
+### exc "integration by parts on definite integrals"
+	
+	Find $$\int_1^3 x^3 \sin(x^2)\,dx$$.
+	
+	**Solution:** we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $du = 2x\,dx$. Then $\frac{1}{2}\,du = x\,dx$, so the integral becomes
+	
+	$$
+		\int_1^3 \frac{1}{2} u \sin(u)\,du.
+	$$
+	
+	Now there's nothing left to do but integrate by parts. We're already using $u$ as a variable, so let's set $w = \frac{1}{2}u$ and $dv = \sin(u)\,du$. Then we have $dw = \frac{1}{2}\,du$ and $v = -\cos(u)$, so the integral becomes
+	
+	$$
+		-\frac{1}{2} u \cos(u) + \int \frac{1}{2} \cos(u)\,du = -\frac{1}{2} u \cos(u) + \frac{1}{2} \sin(u).
+	$$
+	
+	Now it's time to back-substitute for $u$.
+	
+	$$
+		-\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2).
+	$$
+	
+	Finally, we can evaluate the integral limits.
+	
+	$$
+		\left. \left[ -\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2) \right] \right|_1^3 = \frac{1}{2} (\sin(9) - 9\cos(9) - \sin(1) + \cos(1)).
+	$$
+	
+###
+
+
+
+### nav-buttons

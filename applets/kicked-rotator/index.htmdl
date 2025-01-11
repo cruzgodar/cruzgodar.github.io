@@ -1,0 +1,40 @@
+Pour enough heat into anything and it'll descend into chaos. But what if we just got close --- what does the boundary between order and chaos look like? It's a little unclear what we're even asking here, but it turns out math is well-equipped to provide an answer. We can see an example of this kind of boundary in the Kicked Rotator. It's a beautiful-looking image that resembles something like tidal flow, and in fact, that's not too far off. It plots the angle and momentum of a pendulum that sits in an antigravity chamber --- but one where we turn the gravity on and off periodically. Loops and paths here represent a change in the pendulum's angle and momentum over time --- so if the pendulum is on one loop, it will never reach another, no matter how much time passes.
+
+By varying the strength of the gravity, which we represent with the letter $K$, we can alter the paths the pendulum takes. The higher $K$ is, the more chaotic the system gets, until chaos begins to take over completely around $K = 2$. And so these Kicked Rotators give us a glimpse of the transition between order and chaos, with one slowly overtaking the other. It's a beautiful testament to the fragility of systems like these, especially when our universe is little more than a massive dynamical system itself.
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### text-boxes
+	resolution
+	k
+###
+
+### buttons
+	generate
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>

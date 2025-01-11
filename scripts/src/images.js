@@ -1,74 +1,28 @@
-/*
-	
-	Images: methods for handling inline page images.
-		
-		check_webp_support: tests support for WebP.
-	
-*/
+import anime from "../anime.js";
+import { pageShown } from "./loadPage.js";
+import { pageElement } from "./main.js";
 
-
-
-"use strict";
-
-
-
-Page.Images =
+export function loadImages()
 {
-	//Whether the browser supports WebP images or not. Given a boolean value when decided.
-	webp_support: null,
-	
-	file_extension: "",
+	const images = pageElement.querySelectorAll("img[data-src]");
 
-
-
-	//Uses Modernizr to determine if WebP works or not. Returns a promise for when it's done.
-	check_webp_support: function()
+	for (const image of images)
 	{
-		return new Promise((resolve, reject) =>
+		image.style.opacity = 0;
+
+		const imageLoadElement = document.createElement("img");
+		imageLoadElement.onload = () =>
 		{
-			Site.load_script("/scripts/modernizr-webp.min.js")
+			image.src = image.getAttribute("data-src");
 			
-			.then(() =>
-			{
-				Modernizr.on("webp", (result) =>
-				{
-					if (result)
-					{
-						this.webp_support = true;
-						this.file_extension = "webp";
-					}
-					
-					else
-					{
-						this.webp_support = false;
-						this.file_extension = "jpg";
-					}
-					
-					resolve();
-				});
-			})
-			
-			.catch((error) =>
-			{
-				console.error("Could not load Modernizr");
-				
-				this.webp_support = false;
-				this.file_extension = "jpg";
-				
-				resolve();
+			anime({
+				targets: image,
+				opacity: 1,
+				duration: pageShown ? 250 : 0,
+				easing: "easeInOutQuad"
 			});
-		});
-	},
-	
-	
-	
-	add_extensions: function()
-	{
-		let elements = document.querySelectorAll(".check-webp");
-		
-		for (let i = 0; i < elements.length; i++)
-		{
-			elements[i].src += this.file_extension;
-		}
+		};
+
+		setTimeout(() => imageLoadElement.src = image.getAttribute("data-src"), 0);
 	}
-};
+}

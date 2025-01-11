@@ -1,0 +1,177 @@
+### nav-buttons
+
+
+
+A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different.
+
+Let's start with some light notation. When we have a function $f$, its **domain** is the set of inputs it takes, and its **codomain** is a set containing the type of outputs it can give. Compared to the **image** or **range** of a function, which is the set consisting exclusively of outputs that actually occur, the codomain is simply the general type of output. For example, $f(x) = x^2$ can have a domain and codomain of $#R#$, since it takes in and outputs real numbers, but its image is $[0, \infty)$ (the set of nonnegative real numbers), since no real number squares to be negative. To make this less verbose, we write $f : #R# \to #R#$ to indicate the domain and codomain, and if we specifically want to specify the image, we can write $f : #R# \twoheadrightarrow [0, \infty)$.
+
+As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : #R#^n \to #R#^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in #R#^n$,
+
+$$
+	A(\vec{v} + \vec{w}) = A\vec{v} + A\vec{w},
+$$
+
+and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties, let's look at functions that are *defined* this way: ones that factor through addition and scalar multiplication of vectors.
+
+### def "linear transformation"
+	
+	A **linear transformation**, or **linear map**, from $#R#^n$ to $#R#^m$ is a function $T: #R#^n \to #R#^m$, such that
+	
+	1. For any two vectors $\vec{v}, \vec{w} \in #R#^n$, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$.
+	
+	2. For any vector $\vec{n} \in #R#^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
+	
+###
+
+First of all, one immediate property of any linear transformation $T$ is that it must send the zero vector to itself:
+
+$$
+	T(\vec{0}) = T(0 \cdot \vec{0}) = 0 \cdot T(\vec{0}) = \vec{0}.
+$$
+
+Linear transformations from $#R#$ to $#R#$ aren't very exciting: if $T$ is such a linear transformation, then
+
+$$
+	T(x) = T(x \cdot 1) = x T(1),
+$$
+
+so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $#R# \to #R#$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.
+
+### desmos 1dLinearTransformation
+
+Here, the input vector (i.e. the number $1$) is colored purple, and the output vector colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
+
+When we're not confined to a single input and output variable, linear transformations become much more interesting. Let's take a linear map $T : #R#^2 \to #R#^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
+
+$$
+	T\left( [[ a  ; b ]] \right) &= T\left( [[ a ; 0 ]] + [[ 0 ; b ]] \right)
+
+	&= T\left( [[ a ; 0 ]] \right) + T \left( [[ 0 ; b ]] \right)
+
+	&= T\left( a [[ 1 ; 0 ]] \right) + T \left( b [[ 0 ; 1 ]] \right)
+
+	&= a T\left( [[ 1 ; 0 ]] \right) + b T \left( [[ 0 ; 1 ]] \right).
+$$
+
+So as soon as we know where $T$ sends $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, finding where it sends any other vector is as simple as taking a linear combination of those two outputs.
+
+### desmos 2dLinearTransformation
+
+There's a lot going on in this graph, so let's go through it carefully. The red and blue vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
+
+$$
+	T \left( [[ 1 ; 0 ]] \right) &= [[ a_{11} ; a_{21} ]]
+
+	T \left( [[ 0 ; 1 ]] \right) &= [[ a_{12} ; a_{22} ]].
+$$
+
+As we just figured out, the entire behavior of $T$ is determined once those four values are chosen. The draggable purple vector $[[ x_1 ; x_2 ]]$ is fed into $T$, and the output is the non-draggable purple vector. To make this all a lot more concrete, let's work through an example.
+
+### ex "linear transformation"
+
+	Suppose $T : #R#^2 \to #R#^2$ is a linear transformation satisfying
+
+	$$
+		T \left( [[ 1 ; 0 ]] \right) &= [[ 1 ; 3 ]]
+
+		T \left( [[ 0 ; 1 ]] \right) &= [[ 0 ; -2 ]].
+	$$
+
+	Find $T \left( [[ 3 ; 4 ]] \right)$.
+
+	Since $T$ is linear, we can expand that last expression quite a bit:
+
+	$$
+		T \left( [[ 3 ; 4 ]] \right) &= 3 T \left( [[ 1 ; 0 ]] \right) + 4 T \left( [[ 0 ; 1 ]] \right)
+
+		&= 3 [[ 1 ; 3 ]] + 4 [[ 0 ; -2 ]]
+
+		&= [[ 3 ; 1 ]].
+	$$
+
+	In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the purple point to $(3, 4)$ to check!
+
+###
+
+### exc "linear transformation"
+
+	Suppose $S : #R#^3 \to #R#^2$ is a linear transformation satisfying
+
+	$$
+		S \left( [[ 1 ; 0 ; 1 ]] \right) = [[ 1 ; 1 ]]
+
+		S \left( [[ 0 ; 1 ; 1 ]] \right) = [[ 3 ; 1 ]]
+
+		S \left( [[ 0 ; 0 ; 2 ]] \right) = [[ 6 ; 2 ]].
+	$$
+
+	Find $S \left( [[ 1 ; 2 ; 3 ]] \right)$.
+
+###
+
+In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
+
+Let's fully work the $2 \times 2$ case through in general. We've already given names to all three relevant vectors: the results of $T$ applied to the two unit coordinate vectors, and the generic purple input vector. Applying $T$ to it, we have
+
+$$
+	T \left( [[ x_1 ; x_2 ]] \right) &= x_1 T \left( [[ 1 ; 0 ]] \right) + x_2 T \left( [[ 0 ; 1 ]] \right)
+
+	&= x_1 [[ a_{11} ; a_{21} ]] + x_2 [[ a_{12} ; a_{22} ]].
+$$
+
+Now that looks a whole lot like matrix multiplication! Specifically, it's a matrix times a vector:
+
+$$
+	T \left( [[ x_1 ; x_2 ]] \right) = [[ a_{11}, a_{12} ; a_{21}, a_{22} ]] [[ x_1 ; x_2 ]].
+$$
+
+And so we get to the fundamental result of the section: **linear transformations from $#R#^n$ to $#R#^m$ are just $m \times n$ matrices**. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
+
+### ex "linear transformations as matrices"
+
+	Let $T : #R#^3 \to #R#^3$ be the linear transformation defined by
+
+	$$
+		T\left( [[ a ; b ; c ]] \right) &= [[ 2a + 3b ; b + 2a ; 2c - a ]],
+	$$
+
+	Find the matrix for $T$.
+
+	By evaluating $T$ on $\vec{e_1}$, $\vec{e_2}$, $\vec{e_3}$, we have
+
+	$$
+		T(\vec{e_1}) &= [[ 2 ; 2 ; -1 ]]
+
+		T(\vec{e_2}) &= [[ 3 ; 1 ; 0 ]]
+
+		T(\vec{e_3}) &= [[ 0 ; 0 ; 2 ]],
+	$$
+
+	and so the matrix for $T$ is
+
+	$$
+		A = [[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]].
+	$$
+
+	In other words, $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in #R#^3$. This is the core of the idea that matrices are functions that act by multiplication: on the left is the function, and on the right is the matrix multiplication.
+
+###
+
+### exc "linear transformations as matrices"
+
+	Let $S : #R#^3 \to #R#^2$ be a linear transformation defined by
+
+	$$
+		S\left( [[ x ; y ; z ]] \right) &= [[ x + z ; 3x - 2y ]].
+	$$
+
+	Find the matrix $B$ for $S$, and then verify that the matrix for the composition $S \circ T$ is $BA$.
+
+###
+
+We'll have much, much more to say about linear transformations over the next few sections. The correspondence between linear transformations and matrices will help us understand both quite a bit more, and the work we've done to understand inverse matrices, linear independence, and linear combinations will play a vital role.
+
+
+
+### nav-buttons

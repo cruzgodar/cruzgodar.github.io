@@ -1,0 +1,417 @@
+### nav-buttons
+
+
+
+So far, we know how to handle systems of the form $**x**' = **Ax**$ when the eigenvalues of $**A**$ are real and distinct. Just like with $n$th-order individual DEs, we'll now work on extending that to all matrices $**A**$, regardless of the eigenvalues.
+
+
+
+## Complex Eigenvalues
+
+Much like we only discussed $n$th-order DEs with real coefficients, we'll only be considering matrices with real entries. That means the characteristic polynomials will have only real coefficients, and so any complex eigenvalues will come in conjugate pairs. If $**A**$ has eigenvalues of $\lambda = \alpha \pm \beta i$ corresponding to eigenvectors $**v_+**$ and $**v_-**$, then
+
+$$
+	**A****v_+** &= \left(\alpha + \beta i \right) **v_+**.
+$$
+
+Let's now take the complex conjugate of both sides (flipping the sign of any imaginary number), which is typically indicated by putting a bar above a variable.
+
+$$
+	\overline{**A****v_+**} &= \overline{\left(\alpha + \beta i \right) **v_+**}.
+$$
+
+For reasons slightly out of scope of this class, conjugation splits across multiplication, so we have
+
+$$
+	\overline{**A**} \overline{**v_+**} &= \overline{\left(\alpha + \beta i \right)} \overline{**v_+**}.
+$$
+
+Finally, $\overline{\alpha + \beta i} = \alpha - \beta i$, and $\overline{**A**} = **A**$, since all the entries of $**A**$ are real by assumption. Therefore,
+
+$$
+	**A** \overline{**v_+**} &= \left(\alpha - \beta i \right) \overline{**v_+**}.
+$$
+
+But that's exactly what it means to be $**v_-**$! What we've shown is that if $**A**$ has real entries, then it's not just its eigenvalues that come in conjugate pairs --- the corresponding eigenvectors do too.
+
+With individual DEs, we were able to extract two fundamental solutions immediately from a pair of conjugate roots to the characteristic equation by taking the real and imaginary parts of a single one of the two solutions, and we'll do the same here. Let's work through an example to see this all in action.
+
+
+
+### ex "complex eigenvalues"
+	
+	A species of fish in a pond feeds primarily on a certain strain of algae --- with $p_1(t)$ and $p_2(t)$ giving the total biomass of fish and algae in $\text{kg}$ after $t$ days, respectively, they satisfy the system
+	
+	$$
+		p_1' &= p_1 + p_2
+		
+		p_2' &= -2p_1 + 3p_2.
+	$$
+	
+	At time $t = 0$, there are $100\,\text{kg}$ of both fish and algae. Find $**p**$ as a function of $t$ and sketch a vector field.
+	
+	This problem proceeds familiarly, but we'll have the added wrinkle of complex eigenvalues. To get started, let's write it as a matrix.
+	
+	$$
+		**p**' = [[ 1, 1 ; -2, 3 ]] **p**.
+	$$
+	
+	Calling that matrix $**A**$, we first need to solve $\det (**A** - \lambda **I**) = 0$. That gives us
+	
+	$$
+		\det [[ 1 - \lambda, 1 ; -2, 3 - \lambda ]] &= 0
+		
+		(1 - \lambda)(3 - \lambda) - (1)(-2) &= 0
+		
+		\lambda^2 - 4\lambda + 5 &= 0
+		
+		\lambda &= \frac{4 \pm \sqrt{16 - 20}}{2}
+		
+		\lambda &= \frac{4 \pm 2i}{2}
+		
+		\lambda &= 2 \pm i.
+	$$
+	
+	That's the eigenvalues done --- now we need to find the corresponding eigenvectors. Let's start with $\lambda = 2 + i$ --- we haven't had to deal with row reducing a complex-values matrix before, but it takes a little bit of care: in general, we want to avoid dividing by imaginary numbers even more than we want to avoid dividing by real ones.
+	
+	$$
+		[[ 1 - (2 + i), 1 | 0 ; -2, 3 - (2 + i) | 0 ]] &
+		
+		[[ -1 - i, 1 | 0 ; -2, 1 - i | 0 ]] &
+		
+		[[ -2, 1 - i | 0 ; -1 - i, 1 | 0 ]] & \qquad \swap **r_1**, **r_2**
+		
+		[[ -2, 1 - i | 0 ; -2 - 2i, 2 | 0 ]] & \qquad **r_2** \te 2
+		
+		[[ -2, 1 - i | 0 ; -2i, 1 + i | 0 ]] & \qquad **r_2** \pe -**r_1**
+		
+		[[ -2, 1 - i | 0 ; 0, 0 | 0 ]] & \qquad **r_2** \pe -i**r_1**
+		
+		-2v_1 + (1 - i)v_2 &= 0
+		
+		v_1 &= \frac{1 - i}{2}v_2.
+	$$
+	
+	With $v_2 = 2$, we have
+	
+	$$
+		**v** = [[ 1 - i ; 2 ]].
+	$$
+	
+	Although row reducing a complex matrix is a little more work, the bright side is that we also know the eigenvector corresponding to $\lambda = 2 - i$: it's the conjugate of the vector $**v**$ we found. So the eigenvalues and eigenvectors are
+	
+	$$
+		\lambda = 2 + i: & \quad [[ 1 - i ; 2 ]]
+		
+		\lambda = 2 - i: & \quad [[ 1 + i ; 2 ]].
+	$$
+	
+	However, we won't actually need the other eigenvector --- just like with complex roots of the characteristic equation, all the data we need is contained in the real and imaginary parts of a single eigenvalue and eigenvector. Let's write out the part of the solution that comes from $\lambda = 2 + i$:
+	
+	$$
+		**p** &= e^{(2 + i)t} [[ 1 - i ; 2 ]]
+		
+		&= e^{2t}(\cos(t) + i\sin(t)) \left( [[ 1 ; 2 ]] + i[[ - 1 ; 0 ]] \right).
+	$$
+	
+	The number of terms can seem a little off-putting, but we actually want to foil this out --- that way, we can completely separate the real and imaginary parts.
+	
+	$$
+		**p** &= e^{2t}\cos(t)[[ 1 ; 2 ]] + ie^{2t}\cos(t)[[ - 1 ; 0 ]] + ie^{2t}\sin(t)[[ 1 ; 2 ]] + i^2e^{2t}\sin(t)[[ - 1 ; 0 ]]
+		
+		&= e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] + ie^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]].
+	$$
+	
+	The real and imaginary parts here are fundamental solutions: they're both solutions and linearly independent. Therefore, our general solution is
+	
+	$$
+		**p** = c_1 e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] + c_2 e^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]].
+	$$
+	
+	Now for the rest of the bookkeeping. The initial condition is
+	
+	$$
+		**p**(0) &= [[ 100 ; 100 ]]
+		
+		c_1 e^{0} [[ \cos(0) + \sin(0) ; 2\cos(0) ]] + c_2 e^{0}[[ \sin(0) - \cos(0) ; 2\sin(0) ]] &= [[ 100 ; 100 ]]
+		
+		c_1 [[ 1 ; 2 ]] + c_2 [[ -1 ; 0 ]] &= [[ 100 ; 100 ]].
+	$$
+	
+	We can form a matrix and row reduce to solve for $c_1$ and $c_2$, but here it's easier to just solve it manually: the bottom equation reads $2c_1 = 100$, so $c_1 = 50$, and then $c_1 - c_2 = 100$, so $c_2 = -50$. Our particular solution is therefore
+	
+	$$
+		**p** &= 50 e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] - 50 e^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]]
+		
+		&= 100 e^{2t} [[ \cos(t) ; \cos(t) - \sin(t) ]].
+	$$
+	
+	This system is exhibiting unbounded exponential growth, so it's probably not the complete story: maybe an ecosystem consisting only of these two species would be mutually beneficial to an extreme degree, but factors like other predators and the carrying capacity of the ecosystem play roles unaccounted-for here.
+	
+	Sketching a direction field, we can see a distinct spiral shape. When a $2 \times 2$ system of DEs has complex conjugate eigenvalues, we see either a spiral into or out from the origin, depending on whether the sign of the real part of the eigenvalues is positive or negative.
+	
+	### desmos vectorField
+	
+	### canvas vector-field
+	
+###
+
+### exc "complex eigenvalues"
+	
+	Chemical solutions $A$ and $B$ are mixed together and react. Large amounts of solution $A$ are rapidly converted to small amounts of solution $B$, and both $A$ and $B$ decay into an inert solution at a moderate rate. Specifically, if the masses of solutions $A$ and $B$ are given by $m_1$ and $m_2$ in grams after $t$ seconds, then
+	
+	$$
+		m_1' &= -m_1 - 9m_2
+		
+		m_2' &= m_1 - m_2.
+	$$
+	
+	At time $t = 0$, $10\,g$ of both solutions are mixed together. How much of each remains after 10 seconds? Sketch a direction field.
+	
+###
+
+
+
+## Repeated Eigenvalues
+
+In individual $n$th-order DEs, repeated roots of the characteristic equation were always a problem: we read off fundamental solutions directly from those roots. When eigenvalues of a matrix are repeated, though, the corresponding eigenvalues don't necessarily repeat. For example, let
+
+$$
+	**A** = [[ 0, -1 ; 1, -2 ]].
+$$
+
+Solving for the eigenvalues gives us $\lambda^2 + 2\lambda + 1 = 0$, so $\lambda = -1$. When we subtract it from the diagonal, we find
+
+$$
+	[[ 1, -1 | 0 ; 1, -1 | 0 ]],
+$$
+
+so $v_1 = v_2$. Taking $v_2 = 1$, our single eigenvector is
+
+$$
+	**v** = [[ 1 ; 1 ]].
+$$
+
+On the other hand,
+
+$$
+	B = [[ -1, 0 ; 0, -1 ]]
+$$
+
+has a repeated eigenvalue of $\lambda = -1$, but when we solve for the eigenvectors, we get a matrix of all zeros, so there are two free parameters. When we can choose more than one entry of $**v**$, a good strategy is to choose one of them to be one and the rest to be zero, and repeat for all of the entries. Taking $v_1 = 1$ and $v_2 = 0$, then $v_1 = 0$ and $v_2 = 1$, we get
+
+$$
+	**v**_1 = [[ 1 ; 0 ]], \qquad **v**_2 = [[ 0 ; 1 ]]. 
+$$
+
+So our metaphor of eigenvalues working like roots of the characteristic equation isn't quite one-to-one: repeated eigenvalues aren't always a problem. When there are still $n$ different eigen*vectors*, we don't need to do anything, but when there actually are fewer, we'll need to work to get more solutions. The technical details are similar to reduction of order, but they result in a rather different solution. To get started, we'll need a slight generalization of the notion of an eigenvector. Fittingly enough, these are called
+
+
+
+### def "generalized eigenvector"
+	
+	Let $**A**$ be an $n \times n$ matrix and let $**v**$ be an eigenvector with eigenvalue $\lambda$. A **generalized eigenvector** of $**v**$ is a vector $**w**$ with
+	
+	$$
+		(**A** - \lambda**I**)**w** = **v**.
+	$$
+	
+	We can also find the generalized eigenvectors of $**w**$, and so on. There are always $n$ linearly independent generalized eigenvectors of an $n \times n$ matrix, and the number of generalized eigenvectors corresponding to a single eigenvalue $\lambda$ is the number of times it appears as a root in the characteristic polynomial.
+	
+###
+
+
+
+As an opening example, let's return to our previous matrix with a repeated eigenvector:
+
+$$
+	**A** = [[ 0, -1 ; 1, -2 ]].
+$$
+
+We found that the single eigenvector was
+
+$$
+	**v** = [[ 11 ; 1 ]],
+$$
+
+and its eigenvalue was $\lambda = -1$. To find its generalized eigenvectors, we solve
+
+$$
+	(**A** - \lambda**I**)**w** = **v**,
+$$
+
+which means row reducing the matrix
+
+$$
+	[[ 1, -1 | 1 ; 1, -1 | 1 ]].
+$$
+
+The bottom row reduces to all zeros, so we just have $w_1 - w_2 = 1$. Therefore, $w_1 = w_2 + 1$, so if we take $w_2 = 0$, then our generalized eigenvector is
+
+$$
+	**w** = [[ 1 ; 0 ]].
+$$
+
+So even though $(**A** - (-1)**I**)**w** \neq **0**$, it is the case that $(**A** - (-1)**I**)^2**w** = **0**$. Continuing to try to generalize $**w**$ results in no solutions at all, and so we've exhausted the list.
+
+Without a use for them, it doesn't make much sense to find generalized eigenvectors, but you might already see where we're going with this: they're exactly the tool we need to find missing fundamental solutions to a system of DEs.
+
+
+
+### thm "solving a system with repeated eigenvectors"
+	
+	Suppose the matrix $**A**$ has an eigenvector $**v**$ that is repeated once --- i.e. the eigenvalue $\lambda$ appears as a root of the characteristic polynomial twice but there is only one eigenvector $**v**$ corresponding to it. Then the second fundamental solution to $**x**' = **Ax**$ with eigenvalue $\lambda$ is
+	
+	$$
+		te^{\lambda t} **v** + e^{\lambda t}**w**,
+	$$
+	
+	where $**w**$ is the generalized eigenvector of $**v**$.
+	
+###
+
+
+
+This theorem tells us how to handle an eigenvector repeated once, but no more than that: if it's repeated three or more times, there is a similar form involving increasing powers of $t$, factorials in denominators, and chains of generalized eigenvalues. This actually isn't all that complicated, but the examples required to see it in action are $4 \times 4$ at minimum, and so we'll be leaving them out of the course.
+
+When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but row reducing $**A** - \lambda **I**$ only has one free parameter, then we find an eigenvector $**v**$ and row reduce $**A** - \lambda **I**$ again --- but this time we augment it with $**v**$, not $**0**$. We'll find a generalized eigenvector $**w**$, and then we can plug that into the previous theorem. Let's see this in action:
+
+
+
+### ex "a repeated eigenvector"
+	
+	The heating in University hall is horribly broken (still). The basement, first floor, and second floor are heated and cooled at varying degrees, and since the floors are adjacent, the temperature on one floor affects the temperature on others. Specifically, if the temperatures are $x_1$, $x_2$, and $x_3$, then their rates of change are given by
+	
+	$$
+		x_1' &= 6x_1 - 2x_2 + 3x_3
+		
+		x_2' &= -7x_1 + 7x_2 - 7x_3
+		
+		x_3' &= -10x_1 + 6x_2 - 7x_3.
+	$$
+	
+	Find the general solution for $**x**$.
+	
+	We'll get started by turning the system into a matrix as usual:
+	
+	$$
+		**x**' = [[ 6, -2, 3 ; -7, 7, -7 ; -10, 6, -7 ]]**x**.
+	$$
+	
+	Calling that matrix $**A**$, let's find its eigenvalues.
+	
+	$$
+		\det [[ 6 - \lambda, -2, 3 ; -7, 7 - \lambda, -7 ; -10, 6, -7 - \lambda ]] &= 0
+		
+		(6 - \lambda)((7 - \lambda)(-7 - \lambda) + 42) + 2((-7)(-7 - \lambda) - 70) + 3(-42 + 10(7 - \lambda)) &= 0
+		
+		(6 - \lambda)(-7 + \lambda^2) + 2(-21 + 7\lambda) + 3(28 - 10\lambda) &= 0
+		
+		-42 + 7\lambda + 6\lambda^2 - \lambda^3 - 42 + 14\lambda + 84 - 30\lambda &= 0
+		
+		-\lambda^3 + 6\lambda^2 - 9\lambda &= 0
+		
+		-\lambda(\lambda - 3)^2 &= 0
+		
+		\lambda = 0, \quad \lambda = 3, \quad \lambda &= 3
+	$$
+	
+	In total, we expect one eigenvector with eigenvalue $0$ and two with eigenvalue $3$. Let's see how that pans out! With $\lambda = 0$, we have
+	
+	$$
+		[[ 6, -2, 3 | 0 ; -7, 7, -7 | 0 ; -10, 6, -7 | 0 ]] &
+		
+		[[ 6, -2, 3 | 0 ; -1, 5, -4 | 0 ; -10, 6, -7 | 0 ]] & \qquad **r_2** \pe **r_1**
+		
+		[[ -1, 5, -4 | 0 ; 6, -2, 3 | 0 ; -10, 6, -7 | 0 ]] & \qquad \swap **r_1**, **r_2**
+		
+		[[ -1, 5, -4 | 0 ; 0, 28, -21 | 0 ; 0, -44, 33 | 0 ]] & \qquad \begin{array}{l} **r_2** \pe 6 **r_1** \\ **r_3** \pe -10 **r_1** \end{array}
+		
+		[[ 1, -5, 4 | 0 ; 0, 4, -3 | 0 ; 0, 4, -3 | 0 ]] & \qquad \begin{array}{l} **r_1** \te -1 \\ **r_2** \te \frac{1}{7} \\ **r_3** \te -\frac{1}{11} \end{array}
+		
+		[[ 1, -5, 4 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad **r_3** \pe -**r_2**
+	$$
+	
+	In the interest of avoiding fractions, let's multiply the rows to get a common multiple rather than dividing them.
+	
+	$$
+		[[ 4, -20, 16 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad **r_1** \te 4
+		
+		[[ 4, 0, 1 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad **r_1** \pe 5**r_2**
+	$$
+	
+	In total, $4v_1 = -v_3$ and $4v_2 = 3v_3$. Choosing $v_3 = 4$ (again in the interest of minimizing fractions) results in $v_1 = -1$ and $v_2 = 3$, so our first eigenvector is
+	
+	$$
+		**v** = [[ -1 ; 3 ; 4 ]].
+	$$
+	
+	Only one eigenvector there, but that's what we were expecting: since $\lambda = 0$ only appears once in the characteristic polynomial, it can have at most one eigenvector. Now let's take a look at $\lambda = 3$:
+	
+	$$
+		[[ 3, -2, 3 | 0 ; -7, 4, -7 | 0 ; -10, 6, -10 | 0 ]] &
+		
+		[[ 3, -2, 3 | 0 ; -1, 0, -1 | 0 ; -10, 6, -10 | 0 ]] & \qquad **r_2** \pe 2**r_1**
+		
+		[[ -1, 0, -1 | 0 ; 3, -2, 3 | 0 ; -10, 6, -10 | 0 ]] & \qquad \swap **r_1**, **r_2**
+		
+		[[ -1, 0, -1 | 0 ; 0, -2, 0 | 0 ; 0, 6, 0 | 0 ]] & \qquad \begin{array}{l} **r_2** \pe 3**r_1** \\ **r_3** \pe -10**r_1** \end{array}
+		
+		[[ 1, 0, 1 | 0 ; 0, 1, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} **r_1** \te -1 \\ **r_2** \te -\frac{1}{2} \\ **r_3** \te \frac{1}{6} \end{array}
+		
+		[[ 1, 0, 1 | 0 ; 0, 1, 0 | 0 ; 0, 0, 0 | 0 ]] & \qquad **r_3** \pe -**r_2**
+	$$
+	
+	As equations, $v_1 = -v_3$ and $v_2 = 0$. There's only one free parameter here, so if we choose $v_3 = 1$, we get an eigenvector of
+	
+	$$
+		**v** = [[ -1 ; 0 ; 1 ]].
+	$$
+	
+	But we're supposed to have two eigenvectors corresponding to $\lambda = 3$! That means there should be a generalized eigenvector hiding here: to find it, we take the same matrix we just row reduced, but this time, we augment it with this vector. Thankfully, all the steps are the same, so we just need to keep track of the right side.
+	
+	$$
+		[[ 3, -2, 3 | -1 ; -7, 4, -7 | 0 ; -10, 6, -10 | 1 ]] &
+		
+		[[ 3, -2, 3 | -1 ; -1, 0, -1 | -2 ; -10, 6, -10 | 1 ]] & \qquad **r_2** \pe 2**r_1**
+		
+		[[ -1, 0, -1 | -2 ; 3, -2, 3 | -1 ; -10, 6, -10 | 1 ]] & \qquad \swap **r_1**, **r_2**
+		
+		[[ -1, 0, -1 | -2 ; 0, -2, 0 | -7 ; 0, 6, 0 | 21 ]] & \qquad \begin{array}{l} **r_2** \pe 3**r_1** \\ **r_3** \pe -10**r_1** \end{array}
+		
+		[[ 1, 0, 1 | 2 ; 0, 1, 0 | \frac{7}{2} ; 0, 1, 0 | \frac{7}{2} ]] & \qquad \begin{array}{l} **r_1** \te -1 \\ **r_2** \te -\frac{1}{2} \\ **r_3** \te \frac{1}{6} \end{array}
+		
+		[[ 1, 0, 1 | 2 ; 0, 1, 0 | \frac{7}{2} ; 0, 0, 0 | 0 ]] & \qquad **r_3** \pe -**r_2**
+	$$
+	
+	This time, $v_1 = 2 - v_3$ and $v_2 = \frac{7}{2}$. With $v_3 = 1$, we get
+	
+	$$
+		**v** = [[ 1 ; \frac{7}{2} ; 1 ]].
+	$$
+	
+	Now we're ready to go. The first two fundamental solutions work as normal, but the third is constructed using the previous theorem.
+	
+	$$
+		**x** &= c_1e^{0t} [[ -1 ; 3 ; 4 ]] + c_2e^{3t} [[ -1 ; 0 ; 1 ]] + c_3e^{3t} \left( t[[ -1 ; 0 ; 1 ]] + [[ 1 ; \frac{7}{2} ; 1 ]] \right)
+		
+		&= c_1 [[ -1 ; 3 ; 4 ]] + c_2e^{3t} [[ -1 ; 0 ; 1 ]] + c_3e^{3t} [[ -t + 1 ; \frac{7}{2} ; t + 1 ]].
+	$$
+	
+###
+
+### exc "a repeated eigenvector"
+	
+	Solve the system of DEs given by
+	
+	$$
+		x' &= 5x + y
+		
+		y' &= -x + 3y.
+	$$
+	
+###
+
+
+
+### nav-buttons

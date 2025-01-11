@@ -1,0 +1,147 @@
+### nav-buttons
+
+The matrix equation $A\vec{x} = \vec{b}$ isn't always solvable, but when there's no solution, we can still use the least-squares methods of section 5 to find a best approximation. In this section, we'll take a similar approach to diagonalization: if a square matrix $A$ isn't diagonalizable, it's because some eigenvalue $\lambda$ has algebraic multiplicity of $k > 1$, but fewer than $k$ linearly independent eigenvectors with eigenvalue $\lambda$. For example,
+
+$$
+	A = [[ -3, 9 ; -4, 9 ]]
+$$
+
+has characteristic polynomial $(\lambda - 3)^2$, so the only eigenvalue is $\lambda = 3$. Solving for the eigenvectors, we only have one:
+
+$$
+	\vec{v_1} = [[ 3 ; 2 ]],
+$$
+
+meaning $A$ is nondiagonalizable. There may not be a basis of eigenvectors, but let's see if we can still find some basis that's helpful. We'd definitely like to use $\vec{v_1}$ as one of the two vectors in this prospective basis, and since there's no linearly independent vector $\vec{v}$ with $(A - 3I)\vec{v} = \vec{0}$, the next-best thing to hope for is that there's one so that $(A - 3I)\vec{v} = \vec{v_1}$. Checking that, we have
+
+$$
+	[[ -6, 9 | 3 ; -4, 6 | 2 ]] &
+
+	[[ 2, -3 | -1 ; 2, -3 | -1 ]] & \quad :: \vec{r_1} \te -\frac{1}{3} ; \vec{r_2} \te -\frac{1}{2} ::
+
+	[[ 2, 3 | -1 ; 0, 0 | 0 ]] & \quad \vec{r_2} \me 2\vec{r_1}
+$$
+
+In total, we have a solution of
+
+$$
+	[[ -1 - 3t ; 2t ]],
+$$
+
+so with $t = 0$,
+
+$$
+	\vec{v_2} = [[ -1 ; 0 ]].
+$$
+
+With the basis $\left\{ \vec{v_1}, \vec{v_2} \right\}$, the matrix representation of $A$ isn't so bad! Specifically, $A = BDB^{-1}$, where
+
+$$
+	B = [[ 3, -1 ; 2, 0 ]] \qquad D = [[ 3, 1 ; 0, 3 ]].
+$$
+
+Since $A$ isn't diagonalizable, something like this is as close as we're going to get. In fact, this is remarkably close to a diagonalization, with the sole exception of the $1$ off the diagonal of $D$ that means the eigenspace corresponding to $\lambda = 3$ has dimension $1$ instead of $2$. With the goal of bringing this almost-diagonalization to any square matrix, let's back up and state a few definitions that formalize what we've seen here.
+
+### def "generalized eigenvector"
+
+	Let $A$ be an $n \times n$ matrix and $\lambda$ an eigenvalue of $A$. A **generalized eigenvector** of $A$ with eigenvalue $\lambda$ is a vector $\vec{v}$ so that $(A - \lambda I)^k\vec{v} = \vec{0}$ for some $k \geq 1$. The **rank** of a generalized eigenvector is the smallest $k$ for which this holds. 
+
+###
+
+Let's connect this back to what we've seen. Rank 1 generalized eigenvectors are just regular eigenvectors, and for rank 2 ones, we have $(A - \lambda I)^k\vec{v} = \vec{0}$ for $k = 2$ but not $k = 1$ --- or in other words,
+
+$$
+	(A - \lambda I)\vec{v} \in \ker (A - \lambda I)
+$$
+
+but $(A - \lambda I)\vec{v} \neq \vec{0}$, which is exactly what it means for $(A - \lambda I)\vec{v}$ to be an eigenvector of $A$ with eigenvalue $\lambda$. Similarly, the rank 3 generalized eigenvectors are those which are sent to rank 2 ones when plugged into $A - \lambda I$.
+
+We'll omit the proof of the next result to avoid getting too bogged down in the weeds, but it will let us find bases for any matrix which are as close to diagonal as possible.
+
+### prop "basis of generalized eigenvectors"
+
+	Let $A$ be an $n \times n$ matrix and let $\lambda$ be an eigenvalue of $A$ with algebraic multiplicity $k$. Then there are exactly $k$ linearly independent generalized eigenvectors corresponding to $\lambda$, and so there is a basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ for $#R#^n$ of generalized eigenvectors of $A$.
+
+###
+
+When expressed in such a basis, the matrix for $A$ has all its eigenvalues down the diagonal, but there are some $1$s on the diagonal above the middle one (called the **superdiagonal**) for strings of generalized eigenvectors, and this form is said to be in **Jordan normal form**.
+
+### ex "Jordan normal form"
+
+	Express the matrix $A = [[ -1, -1, -2 ; 1, 1, 1 ; 4, 0, 5 ]]$ in Jordan normal form.
+
+	First, the characteristic polynomial is
+
+	$$
+		\chi_A(\lambda) &= \lambda^3 + 5\lambda^2 - 8\lambda + 4
+
+		&= (\lambda - 1)(\lambda - 2)^2.
+	$$
+
+	The eigenvector for $\lambda = 1$ is
+
+	$$
+		[[ -2, -1, -2 | 0 ; 1, 0, 1 | 0 ; 4, 0, 4 | 0 ]] &
+
+		[[ 0, -1, 0 | 0 ; 1, 0, 1 | 0; 0, 0, 0 | 0 ]] & \quad :: \vec{r_1} \pe 2\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
+
+		\vec{v_1} = [[ -1 ; 0 ; 1 ]]&,
+	$$
+
+	and for $\lambda = 2$, we have
+
+	$$
+		[[ -3, -1, -2 | 0 ; 1, -1, 1 | 0 ; 4, 0, 3 | 0 ]] &
+
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 0 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
+
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+
+		[[ 0, -4, 1 | 0 ; 4, -4, 4 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te 4
+
+		[[ 0, -4, 1 | 0 ; 4, 0, 3 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		\vec{v_2} = [[ -3 ; 1 ; 4 ]] &.
+	$$
+
+	There isn't a basis of eigenvectors, but we know there should be a second generalized eigenvector for $\lambda = 2$, since its algebraic multiplicity is $2$ but its geometric multiplicity is $1$. To find it, we solve $A - 2I = \vec{v_2}$, but the left side of the row reduction is identical, since it's the same matrix:
+
+	$$
+		[[ -3, -1, -2 | -3 ; 1, -1, 1 | 1 ; 4, 0, 3 | 4 ]] &
+
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 1 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
+
+		[[ 0, -4, 1 | -1 ; 1, -1, 1 | 1; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+
+		[[ 0, -4, 1 | 0 ; 4, -4, 4 | 4; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te 4
+
+		[[ 0, -4, 1 | 0 ; 4, 0, 3 | 4; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		\vec{v_3} = [[ 1 - 3t ; t ; 4t ]]&.
+	$$
+
+	Here we're taking care to spell out the free parameter fully. When we're solving for eigenvectors normally, we set $t$ to a convenient nonzero value, since the zero vector is the only disallowed one. Here, though, $t = 0$ is a perfectly fine choice, and in fact the simplest one, since it doesn't produce the zero vector. Therefore, we'll take
+
+	$$
+		\vec{v_3} = [[ 1 ; 0 ; 0 ]],
+	$$
+
+	and so we've expressed our matrix as $A = BJB^{-1}$, where
+
+	$$
+		B = [[ \mid, \mid, \mid ; \vec{v_1}, \vec{v_2}, \vec{v_3} ; \mid, \mid, \mid ]] \qquad J = [[ 1, 0, 0 ; 0, 2, 1 ; 0, 0, 2 ]].
+	$$
+
+###
+
+### exc "Jordan normal form"
+
+	Express the matrix $A = [[ -2, 10, -1 ; -4, 11, -1 ; -9, 18, 0 ]]$ in Jordan normal form.
+
+###
+
+When an eigenvalue has more than one eigenvector corresponding to it, the situation can be somewhat more complex: for example, a $3 \times 3$ matrix with a single eigenvalue $\lambda$ but only two eigenvectors $\vec{v_1}$ and $\vec{v_2}$ does have a generalized eigenvector, but it might not be a solution to either $(A - \lambda I)\vec{v} = \vec{v_1}$ or $(A - \lambda I)\vec{v} = \vec{v_2}$. Instead, it might only be a solution to a specific linear combination $c_1\vec{v_1} + c_2\vec{v_2}$. We won't have problems where we solve for generalized eigenvectors in cases like these, but it's worth being aware that they exist.
+
+We're almost done! Out last section will deal with another diagonalization-like process, but one where the matrix need not even be square.
+
+### nav-buttons

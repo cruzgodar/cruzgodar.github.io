@@ -2,26 +2,10 @@
 
 
 
-onmessage = async function(e)
-{
-	canvas_width = e.data[0];
-	canvas_height = e.data[1];
-	max_depth = e.data[2];
-	max_pixel_brightness = e.data[3];
-	box_size = e.data[4];
-	
-	coefficients = e.data[5];
-	
-	await draw_quasi_fuchsian_group();
-}
-
-
-
-let canvas_width = null;
-let canvas_height = null;
-let max_depth = null;
-let max_pixel_brightness = null;
-let box_size = null;
+let resolution;
+let maxDepth;
+let maxPixelBrightness;
+const boxSize = 4;
 
 let coefficients = [];
 
@@ -32,144 +16,106 @@ let y = 0;
 
 
 
-function draw_quasi_fuchsian_group()
+function drawQuasiFuchsianGroup()
 {
-	return new Promise(async function(resolve, reject)
+	brightness = new Array(resolution * resolution);
+
+	for (let i = 0; i < brightness.length; i++)
 	{
-		brightness = new Array(canvas_width * canvas_height);
-		
-		for (let i = 0; i < canvas_height; i++)
-		{
-			for (let j = 0; j < canvas_width; j++)
-			{
-				brightness[canvas_width * i + j] = 0;
-			}
-		}
-		
-		
-		
-		for (let i = 0; i < 4; i++)
-		{
-			search_step(0, 0, i, -1, -1, 1);
-		}
-		
-		
-		
-		let brightness_sorted = brightness.flat().sort(function(a, b) {return a - b});
-		
-		let	max_brightness = brightness_sorted[Math.round(brightness_sorted.length * .999) - 1];
-		
-		for (let i = 0; i < canvas_height; i++)
-		{
-			for (let j = 0; j < canvas_width; j++)
-			{
-				brightness[canvas_width * i + j] = Math.min(Math.sqrt(brightness[canvas_width * i + j] / max_brightness), 1);
-			}
-		}
-		
-		
-		
-		//Run a pass to remove any isolated pixels.
-		for (let i = 1; i < canvas_height - 1; i++)
-		{
-			for (let j = 1; j < canvas_width - 1; j++)
-			{
-				if (brightness[canvas_width * i + j] !== 0 && brightness[canvas_width * (i - 1) + j] === 0 && brightness[canvas_width * (i - 1) + (j + 1)] === 0 && brightness[canvas_width * i + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + (j + 1)] === 0 && brightness[canvas_width * (i + 1) + j] === 0 && brightness[canvas_width * (i + 1) + (j - 1)] === 0 && brightness[canvas_width * i + (j - 1)] === 0 && brightness[canvas_width * (i - 1) + (j - 1)] === 0)
-				{
-					brightness[canvas_width * i + j] = 0;
-				}
-			}
-		}
-		
-		
-		
-		postMessage([brightness]);
-		
-		
-		
-		resolve();
-	});
+		brightness[i] = 0;
+	}
+
+	for (let i = 0; i < 4; i++)
+	{
+		searchStep(0, 0, i, 1);
+	}
+
+	let maxBrightness = 0;
+
+	for (let i = 0; i < brightness.length; i++)
+	{
+		maxBrightness = Math.max(maxBrightness, brightness[i]);
+	}
+
+	for (let i = 0; i < brightness.length; i++)
+	{
+		brightness[i] = Math.pow(brightness[i] / maxBrightness, .15);
+	}
+
+	postMessage([brightness]);
 }
 
 
 
-function search_step(start_x, start_y, last_transformation_index, last_row, last_col, depth)
+function searchStep(startX, startY, lastTransformationIndex, depth)
 {
-	if (depth === max_depth)
+	if (depth === maxDepth)
 	{
 		return;
 	}
-	
-	
-	
+
 	for (let i = 3; i < 6; i++)
 	{
-		x = start_x;
-		y = start_y;
-		
-		let transformation_index = (last_transformation_index + i) % 4;
-		
-		apply_transformation(transformation_index);
-		
-		
-		
-		let row = 0;
-		let col = 0;
-		
-		if (canvas_width >= canvas_height)
+		x = startX;
+		y = startY;
+
+		const transformationIndex = (lastTransformationIndex + i) % 4;
+
+		applyTransformation(transformationIndex);
+
+		const row = Math.floor((-y + boxSize / 2) / boxSize * resolution);
+		const col = Math.floor((x + boxSize / 2) / boxSize * resolution);
+
+		if (row >= 0 && row < resolution && col >= 0 && col < resolution)
 		{
-			row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
-			col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
-		}
-		
-		else
-		{
-			row = Math.floor((-y * (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_height);
-			col = Math.floor((x + box_size / 2) / box_size * canvas_width);
-		}
-		
-		
-		
-		if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
-		{
-			if (brightness[canvas_width * row + col] === max_pixel_brightness)
+			if (brightness[resolution * row + col] === maxPixelBrightness)
 			{
 				continue;
 			}
-			
-			brightness[canvas_width * row + col]++;
+
+			brightness[resolution * row + col]++;
 		}
-		
-		
-		
-		search_step(x, y, transformation_index, row, col, depth + 1);
+
+		searchStep(x, y, transformationIndex, depth + 1);
 	}
 }
 
 
 
-function apply_transformation(index)
+function applyTransformation(index)
 {
-	let ax = coefficients[index][0][0];
-	let ay = coefficients[index][0][1];
-	let bx = coefficients[index][1][0];
-	let by = coefficients[index][1][1];
-	let cx = coefficients[index][2][0];
-	let cy = coefficients[index][2][1];
-	let dx = coefficients[index][3][0];
-	let dy = coefficients[index][3][1];
-	
-	let num_x = ax*x - ay*y + bx;
-	let num_y = ax*y + ay*x + by;
-	
-	let den_x = cx*x - cy*y + dx;
-	let den_y = cx*y + cy*x + dy;
-	
-	let new_x = num_x*den_x + num_y*den_y;
-	let new_y = num_y*den_x - num_x*den_y;
-	
-	let magnitude = den_x*den_x + den_y*den_y;
-	
-	x = new_x / magnitude;
-	y = new_y / magnitude;
+	const ax = coefficients[index][0][0];
+	const ay = coefficients[index][0][1];
+	const bx = coefficients[index][1][0];
+	const by = coefficients[index][1][1];
+	const cx = coefficients[index][2][0];
+	const cy = coefficients[index][2][1];
+	const dx = coefficients[index][3][0];
+	const dy = coefficients[index][3][1];
+
+	const numX = ax * x - ay * y + bx;
+	const numY = ax * y + ay * x + by;
+
+	const denX = cx * x - cy * y + dx;
+	const denY = cx * y + cy * x + dy;
+
+	const newX = numX * denX + numY * denY;
+	const newY = numY * denX - numX * denY;
+
+	const magnitude = denX * denX + denY * denY;
+
+	x = newX / magnitude;
+	y = newY / magnitude;
 }
+
+
+
+onmessage = (e) =>
+{
+	resolution = e.data[0];
+	maxDepth = e.data[1];
+	maxPixelBrightness = e.data[2];
+	coefficients = e.data[3];
+
+	drawQuasiFuchsianGroup();
+};

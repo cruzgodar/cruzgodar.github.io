@@ -1,0 +1,43 @@
+The <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a> is one of the most famous and applicable bits of math, used to model population growth and <a href="https://www.youtube.com/watch?v=ovJcsL7vyrk">quite a bit else</a>. It depends on a single parameter $r$ that corresponds to the growth rate of the population when it's not near the enironment's capacity. If we instead flip $r$ between two different values, we get something quite a bit more complicated, called a **Lyapunov fractal**. Here, every point with $x$ and $y$ coordinates between $0$ and $4$ (the same range that the standard logistic map can accept) cooresponds to a pair of values for $r$. The manner in which we flip between those two values depends on the generating string --- for example, a string of ABBAB will use $x$ for the first iteration, $y$ for the second and third, $x$ for the fourth, and then $y$ for the fifth, before repeating this pattern indefinitely. This means that for any string, the diagonal from bottom-left to top-right matches the logistic map. The color is chosen so that the red and green channels reflect the degree to which the point is influenced by $x$ and $y$, respectively, and the blue component is derived from the stability of the solution overall --- regions with little or no blue tend to be closer to chaos.
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### text-boxes
+	resolution
+	generating-string
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+<div id="canvas-location"></div>
+
+<div>
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
+</div>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+### card applet-controls "Controls"
+	Drag on the scene to look around, and pinch or scroll to zoom.
+###

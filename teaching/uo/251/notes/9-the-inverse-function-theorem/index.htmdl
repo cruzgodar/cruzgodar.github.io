@@ -1,0 +1,185 @@
+### nav-buttons
+
+With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions --- rather than putting two functions together, it starts from a single function. What we're talking about here is function inversion, and it's often a point of confusion in algebra, just like composition. So, just like composition, let's review.
+
+
+
+### def "one-to-one"
+	
+	A function $y = f(x)$ is **one-to-one** if it passes the horizontal line test --- that is, every $y$-value comes from only one $x$-value.
+	
+###
+
+
+
+### ex "one-to-one"
+	
+	The function $f(x) = x^2$ is not one-to-one, since $4 = f(-2) = f(2)$. On the other hand, $g(x) = x^5$ is one-to-one, since it passes the horizontal line test: every horizontal line intersects the graph at one point at most.
+	
+###
+
+
+
+### def "inverse function"
+	
+	Let $y = f(x)$ be a one-to-one function. The **inverse** to $f$ is the function $x = f^{-1}(y)$, defined so that if $(x, y)$ is a point on the graph of $f$, then $(y, x)$ is a point on the graph of $f^{-1}$.
+	
+###
+
+
+
+So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inputs. In other words, $f^{-1}(f(x)) = x$ and $f(f^{-1}(x))$. This is why we need $f$ to be one-to-one: if two different $x$-values get sent to the same $y$-value, then the inverse function won't know which one to send that $y$-value back to.
+
+
+
+### ex "inverse functions"
+	
+	The inverse to $f(x) = x^5$ is $$f^{-1}(y) = \sqrt[5]{y}$$, and the inverse to $$f(x) = \frac{1}{x}$$ is $$f^{-1}(y) = \frac{1}{y}$$.
+	
+###
+
+### exc "inverse functions"
+	
+	Find the inverse functions to $f(x) = e^x$ and $$f(x) = \frac{x - 1}{x + 1}$$. Hint: let $y = f(x)$ and solve for $x$.
+	
+###
+
+
+
+While none of the six trig functions is one-to-one, we still really want to talk about their inverses. To help do that, we restrict their domain until they become one-to-one. This is a somewhat complicated subject that's not all that important for our purposes, so we'll gloss over it. All we need to know is that there are functions $\sin^{-1}(x)$, $\cos^{-1}(x)$, and so on, that undo the corresponding trig functions. For example, since $\sin(\theta)$ gives the $y$-coordinate of a point on the unit circle with angle $\theta$, $\sin^{-1}(y)$ gives the angle $\theta$ with that $y$-coordinate.
+
+Now that we've reviewed inverse functions, let's talk about their derivatives.
+
+
+
+### thm "the Inverse Function Theorem"
+	
+	Let $f$ be a differentiable function. Then
+	
+	$$
+		(f^{-1})'(x) = \frac{1}{f'(f^{-1}(x))}.
+	$$
+	
+###
+
+
+
+So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compose the two.
+
+
+
+### ex "the Inverse Function Theorem"
+	
+	Find $$\frac{d}{dx} [\sqrt{x}]$$.
+	
+	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one --- everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
+	
+	Now $f'(x) = 2x$, so $f'(f^{-1}(x)) = 2\sqrt{x}$. Then we have
+	
+	$$
+		\frac{d}{dx} [\sqrt{x}] = \frac{1}{2\sqrt{x}} = \frac{1}{2} x^{-1/2}.
+	$$
+	
+	Hey, that's what we would have expected to get! It seems like the pattern of $\frac{d}{dx}[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
+	
+###
+
+### exc "the Inverse Function Theorem"
+	
+	Find $$\frac{d}{dx} \left[\sqrt[3]{x}\right]$$ using the Inverse Function Theorem.
+	
+###
+
+
+
+### thm "the derivative of $x^n$ for rational $n$"
+	
+	Let $n$ be a rational number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
+	
+###
+
+### pf
+	
+	We can actually do the proof of this one! We don't get too many chances to present them, so let's take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
+	
+	$$
+		x^n = x^{a/b} = (x^{1/b})^a.
+	$$
+	
+	Let $f(x) = x^b$, so that $f^{-1}(x) = x^{1/b}$. Then $f'(x) = bx^{b - 1}$, which we know because $b$ is an integer, and so
+	
+	$$
+		f'(f^{-1}(x)) = bx^{(b-1)/b}
+	$$
+	
+	By the IFT,
+	
+	$$
+		\frac{d}{dx}\left[x^{1/b}\right] &= \frac{1}{bx^{(b-1)/b}}
+		
+		&= \frac{1}{b} x^{-(b-1)/b}
+		
+		&= \frac{1}{b} x^{\frac{1}{b} - 1}.
+	$$
+	
+	Now we can use the chain rule to find the derivative of $x^{a/b}$.
+	
+	$$
+		\frac{d}{dx}\left[(x^{1/b})^a\right] &= a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}
+		
+		&= \frac{a}{b} x^{\frac{a-1}{b} + \frac{1}{b} - 1}
+		
+		&= \frac{a}{b} x^{\frac{a}{b} - 1}
+		
+		&= nx^{n - 1}.
+	$$
+	
+###
+
+
+
+## The Derivatives of the Inverse Trig Functions
+	
+Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions --- they're rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you'll need to thoroughly learn this technique, and since it's not all that important to us right now, we're not going to cover it in this class. Instead, let's skip straight to the result.
+
+
+
+### thm "the derivatives of the inverse trig functions"
+	
+	1. $$\frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$$.
+	
+	2. $$\frac{d}{dx}[\cos^{-1}(x)] = -\frac{1}{\sqrt{1 - x^2}}$$.
+	
+	3. $$\frac{d}{dx}[\tan^{-1}(x)] = \frac{1}{1 + x^2}$$.
+	
+	4. $$\frac{d}{dx}[\sec^{-1}(x)] = \frac{1}{|x|\sqrt{x^2 - 1}}$$.
+	
+	5. $$\frac{d}{dx}[\csc^{-1}(x)] = -\frac{1}{|x|\sqrt{x^2 - 1}}$$.
+	
+	6. $$\frac{d}{dx}[\cot^{-1}(x)] = -\frac{1}{1 + x^2}$$.
+	
+###
+
+
+
+### ex "an inverse trig derivative"
+	
+	Find $$\frac{d}{dx}\left[\tan^{-1}(x^3)\right]$$.
+	
+	By the Chain Rule, we have
+	
+	$$
+		\frac{d}{dx}[\tan^{-1}(x^3)] = \frac{1}{1 + (x^3)^2} \cdot 3x^2 = \frac{3x^2}{1 + x^6}.
+	$$	
+	
+###
+
+### exc "an inverse trig derivative"
+	
+	Find $$\frac{d}{dx} \left. \left[e^x\csc^{-1}(\ln(x)) \right] \right|_{x = e}$$.
+	
+###
+
+
+
+### nav-buttons

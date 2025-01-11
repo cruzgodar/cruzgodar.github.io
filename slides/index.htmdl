@@ -1,0 +1,18 @@
+### center "A collection of the presentations I've given over time --- all of them are all built with Lapsa, a library I wrote to make simple presentations elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals."
+
+
+
+### image-links
+	light-shadow-world-of-nails/ -t
+	marys-3-manifold/ -t
+	grandmas-recipe/ -t
+	oral-exam/ -t
+###
+
+
+
+## The Library
+
+### image-links
+	lapsa/ -t
+###

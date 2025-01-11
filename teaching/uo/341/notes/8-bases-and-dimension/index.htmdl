@@ -1,0 +1,273 @@
+### nav-buttons
+
+
+
+So far, generalizing all of our results to different vector spaces hasn't been too terrible. The objects in our new spaces differ quite a bit from those in $#R#^n$ --- the only vector space we studied in the first six sections --- but the tools we've used to study them are nearly identical. Vectors can be added and multiplied by scalars, and linear transformations are defined in exactly the same way. However, so much of what we've learned relies on *matrices*, and at the moment, we just don't have those. To recap, the reason we can express a linear transformation $T : #R#^n \to #R#^m$ as multiplication by an $m \times n$ matrix $A$ is because any vector $\vec{v} \in #R#^n$ can be expressed as a linear combination of the $\vec{e_i}$:
+
+$$
+	\vec{v} = [[ c_1 ; c_2 ; \vdots ; c_n ]] = c_1\vec{e_1} + c_2\vec{e_2} + \cdots + c_n\vec{e_n}.
+$$
+
+Then applying $T$ to both sides results in
+
+$$
+	T(\vec{v}) = T\left( [[ c_1 ; c_2 ; \vdots ; c_n ]]\right) = c_1T(\vec{e_1}) + c_2T(\vec{e_2}) + \cdots + c_nT(\vec{e_n}),
+$$
+
+and that linear combination can be expressed as the matrix-vector product
+
+$$
+	T(\vec{v}) = [[ \mid, \mid, , \mid ; T(\vec{e_1}), T(\vec{e_2}), \cdots, T(\vec{e_n}) ; \mid, \mid, , \mid ]][[ c_1 ; c_2 ; \vdots ; c_n ]].
+$$
+
+So how can we bring this idea to a general vector space $V$? If we could find a collection of fundamental vectors like $\vec{e_1}, ..., \vec{e_n}$ so that we could express any $\vec{v} \in V$ as a linear combination of them --- ideally in a unique way --- then we'd be able to reap the same benefits of matrices: by computing a linear transformation's effect on just those fundamental vectors, we'd then be able to find its effect on any vector at all.
+
+What conditions will we need to make that a reality? If we want a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ so that any $\vec{v} \in V$ is expressible as a unique linear combination of the $\vec{v_i}$, then an immediate first requirement is that the $\vec{v_i}$ need to span $V$ --- otherwise, some vectors wouldn't be expressible as a linear combination of them at all, let alone a unique one. To guarantee the uniqueness condition, a rather technical argument can show that we need the $\vec{v_i}$ to be linearly independent (it's very similar to the one that shows a linear transformation from $#R#^n$ to $#R#^m$ is one-to-one if it sends only $\vec{0}$ to $\vec{0}$). When we say linearly independent and spanning, we mean exactly the same thing as we did in $#R#^n$, but let's take the time to write down the formal definitions in a general vector space $V$, and then name the collection of vectors whose linear combinations express all others uniquely.
+
+### def "linear independence and span"
+
+	Let $V$ be a vector space. A collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ is ** linearly independent** if the only linear combination
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + \cdots + c_n\vec{v_n} = \vec{0}
+	$$
+
+	is when $c_1 = c_2 = \cdots = c_n = 0$. The **span** of the $\vec{v_i}$ is the set of all their possible linear combinations, and we say the collection **spans** $V$ if
+
+	$$
+		\span \{ \vec{v_1}, \vec{v_2}, ..., \vec{v_n} \} = V.
+	$$
+
+###
+
+### def "basis"
+
+	Let $V$ be a vector space. A **basis** for $V$ is a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ that is linearly independent and spans $V$. Given a basis and any vector $\vec{v} \in V$, there is a **unique** linear combination
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + \cdots + c_n\vec{v_n} = \vec{v}.
+	$$
+
+###
+
+Just like in $#R#^n$, if a collection of vectors $\vec{v_i}$ spans a vector space $V$ but one of the $\vec{v_i}$ is a linear combination of the others, then we can remove that one without affecting the fact that the collection spans $V$. In this sense, a basis is just the right size: add any new vector to it and it'll stop being linearly independent, and remove any and it won't span $V$.
+
+### ex "a basis for $#R#^n$"
+
+	The primordial example of a basis is the vectors
+
+	$$
+		\vec{e_1} = [[ 1 ; 0 ; 0 ; \vdots ; 0 ]], \vec{e_2} = [[ 0 ; 1 ; 0 ; \vdots ; 0 ]], ..., \vec{e_n} = [[ 0 ; 0 ; \vdots ; 0 ; 1 ]] \in #R#^n.
+	$$
+
+	The $\vec{e_i}$ are linearly independent since they're already the rows of the identity matrix, and they certainly span $#R#^n$: given a vector $\vec{v} \in #R#^n$, we can immediately express $\vec{v}$ as a linear combination of the $\vec{e_i}$ (like we did at the start of the section).
+
+###
+
+This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
+
+### ex "another basis for $#R#^n$"
+
+	Show that the vectors
+
+	$$
+		\vec{v_1} = [[ 3 ; 1 ; 2 ]], \qquad \vec{v_2} = [[ 1 ; 0 ; 1 ]], \qquad \vec{v_3} = [[ 0 ; 2 ; 1 ]]
+	$$
+
+	form a basis for $#R#^3$ and express the vector
+
+	$$
+		\vec{v} = [[ 4 ; 1 ; 0 ]]
+	$$
+
+	in this basis.
+	
+	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing without swapping rows, so we might as well jump straight to that step now by placing our vectors as rows in a matrix. We have
+	
+	$$
+		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 2, 1 ]] & \qquad \vec{r_1} \me 3\vec{r_2}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 3 ]] & \qquad \vec{r_3} \me 2\vec{r_1}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad \vec{r_3} \te \frac{1}{3}
+
+		[[ 0, 1, 0 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad :: \vec{r_2} \me \vec{r_3} ; \vec{r_1} \pe \vec{r_3} ::,
+	$$
+
+	and so all of the vectors are linearly independent and therefore span $#R#^3$.
+
+	To express $\vec{v}$ in the basis, we're just trying to find a linear combination of the basis vectors that equals $\vec{v}$. We've already solved that type of problem: it's just row reduction once again, this time with the $\vec{v_i}$ as columns.
+
+	$$
+		[[ 3, 1, 0 | 4 ; 1, 0, 2 | 1 ; 2, 1, 1 | 0 ]] & 
+
+		[[ 1, 0, 2 | 1 ; 3, 1, 0 | 4 ; 2, 1, 1 | 0 ]] & \qquad \swap \vec{r_1}, \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 1, -3 | -2 ]] & \qquad :: \vec{r_2} \me 3\vec{r_1} ; \vec{r_3} \me 2\vec{r_1} ::
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 0, 3 | -3 ]] & \qquad \vec{r_3} \me \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_3} \te \frac{1}{3}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_2} \pe 6\vec{r_3}
+
+		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -3 ]] & \qquad \vec{r_1} \me 2\vec{r_3}.
+	$$
+
+	In total, our linear combination is $\vec{v} = 3\vec{v_1} - 5\vec{v_2} - 3\vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(3, -5, -3)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
+
+###
+
+Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point. 
+
+### desmos coordinateSystems
+
+Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
+
+### exc "another basis for $#R#^n$"
+	
+	Show that the vectors
+	
+	$$
+		\vec{v_1} = [[ 1 ; 2 ]], \qquad \vec{v_2} = [[ 0 ; -1 ]]
+	$$
+	
+	form a basis for $#R#^2$, and express the vector
+	
+	$$
+		\vec{v} = [[ 3 ; 8 ]]
+	$$
+
+	in this basis.
+	
+###
+
+Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. The only reason $#R#^n$ seems easier to work with than all of these new vector spaces is **because it came equipped with a convenient basis** --- the standard one. If we want to bring the convenience of matrices and vectors to spaces that don't support them naturally --- like $#R#[x]$ --- then we need to choose our own basis.
+
+Let's say a vector space $V$ has a basis $\vec{v_1}, ..., \vec{v_n}$. Then expressing a vector $\vec{v}$ in this basis lets us evaluate a linear transformation by just knowing its action on the basis vectors:
+
+$$
+	T(\vec{v}) &= T(c_1\vec{v_1} + \cdots + c_n\vec{v_n})
+
+	&= c_1T(\vec{v_1}) + \cdots + c_nT(\vec{v_n}).
+$$
+
+In $#R#^n$, we did this in the particular case with $\vec{v_i} = \vec{e_i}$ and $\vec{v} = [[ c_1 ; \vdots ; c_n ]]$, but now the objects aren't necessarily vectors in $#R#^n$. They still often *function* like vectors in $#R#^n$, though, as the previous block of math shows. To emphasize the relationship and make vectors in more abstract vector spaces easier to work with, let's create some notation to help.
+
+### def "coordinate vector"
+
+	Let $V$ be a vector space, let $\vec{v} \in V$, and let $\vec{v_1}, ..., \vec{v_n}$ be a basis, denoted $\mathcal{B}$. Then there is a unique expression
+
+	$$
+		\vec{v} = c_1\vec{v_1} + \cdots + c_n\vec{v_n},
+	$$
+
+	and we define the **coordinate vector** of $\vec{v}$ as
+
+	$$
+		[\vec{v}]_\mathcal{B} = [[ c_1 ; \vdots ; c_n ]].
+	$$
+
+###
+
+So for example, if $V$ is the space of polynomials with degree at most $3$ and $\mathcal{B}$ is the basis $1, x, x^2, x^3$ , then
+
+$$
+	[3 - x + 4x^3]_\mathcal{B} = [[ 3 ; -1 ; 0 ; 4 ]].
+$$
+
+The magic of coordinate vectors is that they let us define matrices, with the one caveat that those coordinate vectors only work when we choose a particular basis. To form the matrix for a linear transformation $T : V \to W$, we choose a basis $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$, evaluate $T$ on each of the vectors in $\mathcal{B}$, and then express each of those as coordinate vectors in $\mathcal{C}$. Then we place those as columns in a matrix $A$, at which point
+
+$$
+	A[\vec{v}]_\mathcal{B} = [T(\vec{v})]_\mathcal{C}.
+$$
+
+That requires a whole lot of work to understand, so let's dig in.
+
+### ex "the matrix of a transformation"
+
+	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis $1, x, x^2, x^3$ for $V$. Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$ for $W$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 - 2x + x^3)$.
+
+	To begin, we just plug every one of the four basis vectors in $\mathcal{B}$ into $D$, resulting in $0$, $1$, $2x$, and $3x^2$. Then we write each as a coordinate vector in $\mathcal{C}$, which gives us
+
+	$$
+		[0]_\mathcal{C} = [[ 0 ; 0 ; 0 ]] \qquad [1]_\mathcal{C} = [[ 1 ; 0 ; 0 ]] \qquad [2x]_\mathcal{C} = [[ 0 ; 2 ; 0 ]] \qquad [3x^2]_\mathcal{C} = [[ 0 ; 0 ; 3 ]].
+	$$
+
+	Assembling those into a matrix gives us
+
+	$$
+		A = [[ 0, 1, 0, 0 ; 0, 0, 2, 0 ; 0, 0, 0, 3 ]].
+	$$
+
+	To actually use $A$ to compute the effect of $D$ on the vector (i.e. polynomial) $1 - 2x + x^3$, we first write it as a coordinate vector using the basis $\mathcal{B}$:
+
+	$$
+		[1 - 2x + x^3]_\mathcal{B} = [[ 1 ; -2 ; 0 ; 1 ]].
+	$$
+
+	Then we do matrix multiplication as usual.
+
+	$$
+		A[1 - 2x + x^3]_\mathcal{B} &= [[ 0, 1, 0, 0 ; 0, 0, 2, 0 ; 0, 0, 0, 3 ]][[ 1 ; -2 ; 0 ; 1 ]]
+
+		&= [[ -2 ; 0 ; 3 ]].
+	$$
+
+	Finally, we interpret this as a coordinate vector in $\mathcal{C}$, which corresponds to the polynomial $-2 + 3x^2$, which is successfully $D(1 - 2x + x^3)$. Although the notation is a little bit clunkier and the process is a little bit longer, this is just a return to our old saying that matrix multiplication is function evaluation. Since linear transformations are defined by their actions on just basis vectors, we can make a perfect analogy to $#R#^n$ and recover all of our matrix techniques in the process.
+
+###
+
+### exc "the matrix of a transformation"
+
+	Let $\mathcal{B}$ be the basis
+
+	$$
+		[[ 1, 0 ; 0, 0 ]], [[ 0, 1 ; 0, 0 ]], [[ 0, 0 ; 1, 0 ]], [[ 0, 0 ; 0, 1 ]]
+	$$
+
+	for $M_{2 \times 2}(#R#)$ and let $\mathcal{C}$ be the basis $[[ 1 ; 0 ]], [[ 0 ; 1 ]]$ for $#R#^2$. Let $T : M_{2 \times 2}(#R#) \to #R#^2$ be the linear transformation defined by
+
+	$$
+		T(E) = E [[ -2 ; 1 ]].
+	$$
+
+	Find the matrix $A$ for $T$ with respect to these two bases and use it to evaluate
+
+	$$
+		T\left( [[ 1, 3 ; -1, 0 ]] \right).
+	$$
+
+###
+
+One immediate upshot of coordinate vectors is that they let us pin down how many vectors make up a basis. Suppose a vector space $V$ has one basis $\mathcal{B}$ with $n$ vectors and another basis $\mathcal{C}$ with $m$ vectors. Then we can write the vectors of $\mathcal{C}$ as coordinate vectors in $\mathcal{B}$, which live in $#R#^n$ since $\mathcal{B}$ has $n$ vectors. But any more than $n$ vectors in $#R#^n$ can't be linearly independent, and any fewer can't span, so $\mathcal{C}$ must have exactly $n$ vectors too. In short, any two bases for a vector space have the same size, and it's worth giving that invariant a name.
+
+### def "dimension"
+
+	Let $V$ be a vector space. The **dimension of $V$**, written $\dim V$, is the number of vectors in any basis of $V$. If $\dim V$ is finite, we say $V$ is **finite-dimensional**, and if not, we say $V$ is infinite-dimensional. Finally, we define $\dim \{\vec{0}\} = 0$.
+
+###
+
+### exc "dimension"
+
+	Find $\dim V$ for the following vector spaces $V$.
+
+	1. $V = #R#^4$.
+
+	2. $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $4$.
+
+	3. $V = #R#[x]$.
+
+	4. $V = M_{2 \times 3}(#R#)$.
+
+###
+
+In the next section, we'll tie up the last remaining loose ends: how to easily change from one basis to another, and why exactly the kernel and image are so important and closely related.
+
+
+
+
+
+### nav-buttons

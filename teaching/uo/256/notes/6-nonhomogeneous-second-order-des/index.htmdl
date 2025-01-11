@@ -1,0 +1,307 @@
+### nav-buttons
+
+
+
+The type of DE we've been studying for the past two sections has the extremely particular description of second-order, linear, constant-coefficient, and homogeneous --- put simply, they're DEs of the form $ay'' + by' + cy = 0$. Now that we completely understand how to solve them, we'd like to move on to slightly more general DEs by dropping one of the four adjectives. We'll get to higher-order DEs in the next section, but there's still plenty to say about second-order ones, so we'll keep that here for now. Nonlinear second-order equations are substantially more difficult to solve and are well outside the scope of the class, so we'll be sticking with linear ones. Unfortunately, DEs with non-constant coefficients are also quite difficult to solve, and while we'll have a small amount to say about them later in this section, we won't be discussing them in general. The only part we can generalize is homogeneity --- in other words, we'll be looking at DEs of the form
+
+$$
+	ay'' + by' + cy = g(t)
+$$
+
+for some function $g(t)$. We'd like to reuse as much as possible from the previous sections to avoid having to rework lots of new theory from scratch, and our first result will let us do just that.
+
+
+
+### thm "general solutions to nonhomogeneous DEs"
+	
+	Let
+	
+	$$
+		y'' + p(t)y' + q(t)y = g(t)
+	$$
+	
+	be a nonhomogeneous second-order linear DE and let $y_c(t) = c_1y_1 + c_2y_2$ be the general solution to the homogeneous DE
+
+	$$
+		y'' + p(t)y' + q(t)y = 0.
+	$$
+	
+	If $Y(t)$ is any particular solution to the nonhomogeneous DE, then the general solution is
+	
+	$$
+		y = y_c + Y.
+	$$
+	
+###
+
+
+
+So to find the general solution to a nonhomogeneous DE, we just need to find a single solution and add it to the general solution of the homogeneous version. This isn't incredibly surprising: plugging $y = y_c + Y$ into the DE results in the $y_c$ terms combining to zero and the $Y$ terms combining to $g(t)$. Since we already know how to find $y_c$ from the previous two sections, we can focus completely on finding a particular solution $Y$. Our first method here will be a little more cobbled-together than previous ones, but for many DEs, it will still let us find solutions.
+
+
+
+## Undetermined Coefficients
+
+As always, we'll begin with a few examples and dig into the general method afterward.
+
+
+
+### ex "undetermined coefficients"
+	
+	Solve the DE $$y'' + 3y' + 2y = e^t$$.
+	
+	Let's begin by solving the homogeneous version $y'' + 3y' + 2y = 0$. We have a characteristic equation of $r^2 + 3r + 2 = 0$, which factors and gives $r = -1$ and $r = -2$. Therefore, the general solution is
+	
+	$$
+		y_c = c_1e^{-t} + c_2e^{-2t}.
+	$$
+	
+	The new part of the problem is finding a particular solution $Y(t)$ to the nonhomogeneous version. It doesn't seem too unlikely that the solution is of the form $Y(t) = Ae^{t}$ for some constant $A$, since then we'll have a factor of $e^t$ in $Y$, $Y'$, and $Y''$. Specifically,
+	
+	$$
+		Y'' + 3Y' + 2Y &= e^t
+		
+		Ae^t + 3Ae^t + 2Ae^t &= e^t
+		
+		6Ae^t = e^t
+		
+		A = \frac{1}{6}.
+	$$
+	
+	Therefore, the general solution to the equation is
+	
+	$$
+		y &= y_c + Y
+		
+		&= c_1e^{-t} + c_2e^{-2t} + \frac{1}{6}e^t.
+	$$
+	
+###
+
+
+
+The key part of that method required us to guess that the solution was of the form $Ae^t$, which is a little worrying: how are we supposed to know the form to guess in general, and what happens if solving for the coefficients doesn't work? We'll make progress toward answering both questions in the next example.
+
+
+
+### ex "undetermined coefficients, again"
+	
+	Find the general solution to $$y'' + 2y' + y = \cos(t)$$.
+	
+	The homogeneous equation gives us the characteristic equation $r^2 + 2r + 1 = 0$, which factors and gives $r = -1$ as a repeated root. Our general solution is therefore
+	
+	$$
+		y_c = c_1e^{-t} + c_2te^{-t}.
+	$$
+	
+	Now we turn to undetermined coefficients. If we're looking for a function whose derivatives could combine to make $\cos(t)$, a good place to start is with $\cos$ itself: let's try $Y = A\cos(t)$. Then
+	
+	$$
+		Y'' + 2Y' + Y &= \cos(t)
+		
+		-A\cos(t) - 2A\sin(t) + A\cos(t) &= \cos(t)
+		
+		-2A\sin(t) &= \cos(t)
+	$$
+	
+	Unfortunately, there's no way to turn $\sin$ into $\cos$, no matter how we choose $A$. But there's a good reason we're stuck, and it's staring us in the face: if we stick a $\cos$ function into a DE, there are almost certainly going to be sines that appear, but by the same token, if we stick $\sin$ in, there will be cosines that appear. Specifically, both $\cos$ *and* $\sin$ can differentiate to $\cos$, and so we should widen our search to include $\sin$ as well: if
+	
+	$$
+		Y = A\sin(t) + B\cos(t),
+	$$
+	
+	then we have
+	
+	$$
+		Y'' + 2Y' + Y &= \cos(t)
+		
+		\left(-A\sin(t) - B\cos(t) \right) + \left(2A\cos(t) - 2B\sin(t)\right) + \left( A\sin(t) + B\cos(t) \right) &= \cos(t)
+		
+		(-A - 2B + A)\sin(t) + (-B + 2A + B)\cos(t) &= \cos(t)
+		
+		-2B\sin(t) + 2A\cos(t) &= \cos(t).
+	$$
+	
+	Therefore, $A = \frac{1}{2}$ and $B = 0$. In total, our general solution is
+	
+	$$
+		y = c_1e^{-t} + c_2te^{-t} + \frac{1}{2}\sin(t).
+	$$
+	
+###
+
+
+
+This method, called **undetermined coefficients**, can work when the right side of the DE is a product of exponentials, sines and cosines, and polynomials. If there are multiple terms on the right, we can just handle them one at a time and add all the resulting particular solutions together.
+
+
+
+### thm -m "Method: Undetermined Coefficients"
+	
+	To find a particular solution $Y$ to a DE of the form
+	
+	$$
+		ay'' + by' + cy = g(t),
+	$$
+	
+	where $g(t)$ is a product of exponentials, sines and cosines, and polynomials, first determine the form of $Y$.
+	
+	> - If $g(t) = e^{\alpha t}$, assume $Y = Ae^{\alpha t}$.
+	
+	> - If $g(t) = \sin(\beta t)$ or $\cos(\beta t)$, then assume $Y = A\sin(\beta t) + B\cos(\beta t)$.
+	
+	> - If $g(t) = p(t)$ for a polynomial $p$ of degree $n$, then assume $Y = A_0 + A_1t + \cdots + A_n t^n$.
+	
+	> - If $g(t)$ is a product of any of the previous possibilities, then assume $Y$ is a product of the corresponding forms. For example, if $g(t) = e^{2t}\sin(4t)$, then assume
+	
+	$$
+		Y = Ae^{2t}\sin(4t) + Be^{2t}\cos(4t).
+	$$
+	
+	If any terms of $Y$ are solutions to the homogeneous DE, multiply all of $Y$ by $t$ and check again, possibly multiplying by $t$ a second time. This is analogous to the extra factor of $t$ in repeated roots.
+	
+	Now plug in the value of $Y$ to the DE and solve for all of the undetermined coefficients.
+	
+###
+
+
+
+### ex "undetermined coefficients"
+	
+	Find the general solution to $$y'' - 6y' + 9y = 6(t + 1)e^{3t}$$.
+	
+	Let's first solve the homogeneous version. We have $r^2 - 6r + 9 = 0$, so $r = 3$ is a repeated root. The general solution is therefore
+	
+	$$
+		y = c_1e^{3t} + c_2te^{3t}.
+	$$
+	
+	Now the nonhomogeneous part is a degree-2 polynomial multiplied by an exponential, so the form to assume is
+	
+	$$
+		Y = (A_0 + A_1t)e^{3t}.
+	$$
+	
+	But there's a problem here: if we plug this form of $Y$ into the DE, we're going to run into problems. We already know that the two terms of $Y$ are exactly the general form of the solution to the homogeneous DE --- in other words, $Y$ is guaranteed to collapse to zero when we plug it in. Just like in the previous example with $\sin$, it's crucial that we have enough degrees of freedom for our variables, and this is where the last bit of the previous theorem comes in: just like we multiplied the initial solution of $e^{3t}$ by $t$ to produce the second fundamental solution, we can multiply all of $Y$ by $t$ to separate it from the solutions to the homogeneous equation:
+	
+	$$
+		Y = (A_0t + A_1t^2)e^{3t}.
+	$$
+	
+	The first term still overlaps with the homogeneous solution, though, so we need to multiply by $t$ a second time:
+	
+	$$
+		Y = (A_0t^2 + A_1t^3)e^{3t}.
+	$$
+	
+	Now we're finally good to go. The derivatives of $Y$ are
+	
+	$$
+		Y' &= (2A_0t + 3A_1t^2)e^{3t} + (A_0t^2 + A_1t^3)e^{3t} \cdot 3
+		
+		&= (2A_0t + (3A_0 + 3A_1)t^2 + 3A_1t^3)e^{3t}
+		
+		Y'' &= (2A_0 + (6A_0 + 6A_1)t + 9A_1t^2)e^{3t} + (2A_0t + (3A_0 + 3A_1)t^2 + 3A_1t^3)e^{3t} \cdot 3
+		
+		&= (2A_0 + (12A_0 + 6A_1)t + (9A_0 + 18A_1)t^2 + 9A_1t^3)e^{3t}
+	$$
+	
+	Plugging these into the original DE and gathering like terms results in the surprisingly short
+	
+	$$
+		Y'' - 6Y' + 9Y &= 6(t + 1)e^{3t}
+		
+		(2A_0 + 6A_1t)e^{3t} &= 6(t + 1)e^{3t}
+		
+		2A_0 + 6A_1t &= 6t + 6.
+	$$
+	
+	Therefore, $A_0 = 3$ and $A_1 = 1$, and so our general solution is
+	
+	$$
+		y = c_1e^{3t} + c_2te^{3t} + (3t^2 + t^3)e^{3t}.
+	$$
+	
+###
+
+### exc "undetermined coefficients"
+	
+	Find the general solution to
+	
+	$$
+		y'' - 2y' + 10y = 6e^t\sin(t) + 18e^t.
+	$$
+	
+###
+
+
+
+## Variation of Parameters
+
+Our second method will be more general than undetermined coefficients, but somewhat more complicated to actually use. Its derivation veers decidedly off the narrative path and into the weeds, but it's definitely worth asking about outside of class if you're interested.
+
+
+
+### thm -m "Method: Variation of Parameters"
+	
+	Suppose the general solution to $y'' + p(t)y' + q(t)y = 0$ is $y_c = c_1y_1 + c_2y_2$. Then a particular solution to $y'' + p(t)y' + q(t)y = g(t)$ is
+	
+	$$
+		Y = -y_1 \int \frac{y_2(t)g(t)}{W[y_1, y_2]}\,dt + y_2 \int \frac{y_1(t)g(t)}{W[y_1, y_2]}\,dt.
+	$$
+	
+###
+
+
+
+The advantage here is clear: we aren't restricted to the right side of the DE being made of just exponentials, sines and cosines, and polynomials. The downside is also pretty clear, though --- we have to integrate a potentially awful expression. As always with integral solutions to DEs, we can leave them in terms of integrals by replacing $t$ with $s$ and setting the upper limit to $t$ (and the lower limit to the input to the initial value). The space of problems that can't be solved by undetermined coefficients but can by variation of parameters is somewhat small, but they definitely do exist --- let's have a look at some now.
+
+
+
+### ex "variation of parameters"
+	
+	Find the general solution to $$y'' + y = \sec(t)$$.
+	
+	Solving the homogeneous version, we have $r^2 + 1 = 0$, so $r = \pm i$. Therefore, the general solution is
+	
+	$$
+		y = c_1\cos(t) + c_2\sin(t),
+	$$
+	
+	and so the Wronskian is
+	
+	$$
+		W[y_1, y_2] &= \cos^2(t) + \sin^2(t)
+		
+		&= 1.
+	$$
+	
+	Now variation of parameters gives us a particular solution of
+	
+	$$
+		Y &= -\cos(t) \int \sin(t)\sec(t)\,dt + \sin(t) \int \cos(t)\sec(t)\,dt
+		
+		&= -\cos(t) \int \frac{\sin(t)}{\cos(t)}\,dt + \sin(t) \int \frac{\cos(t)}{\cos(t)}\,dt
+		
+		&= -\cos(t) \int \tan(t)\,dt + \sin(t) \int 1\,dt
+		
+		&= \cos(t) \log(\cos(t)) + t\sin(t).
+	$$
+	
+	Not so bad! But those integrals being solvable depended both on the $\sec(t)$ *and* the general solution to the DE, and very often, the stars won't align quite so nicely. In total, our solution here is
+	
+	$$
+		y = c_1\cos(t) + c_2\sin(t) + \cos(t) \log(\cos(t)) + t\sin(t).
+	$$
+	
+###
+
+### exc "variation of parameters"
+	
+	Find the general solution to $$y'' - 2y' + y = \frac{e^t}{t^2 + 1}$$.
+	
+###
+
+
+
+### nav-buttons

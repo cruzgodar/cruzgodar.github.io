@@ -1,13 +1,15 @@
+import { getGlslBundle, loadGlsl } from "../../../../scripts/src/complexGlsl.js";
+import { showPage } from "../../../../scripts/src/loadPage.js";
+import { $ } from "/scripts/src/main.js";
+import { Wilson } from "/scripts/wilson.js";
+
 !async function()
 {
 	"use strict";
 	
 	
 	
-	if (!Site.scripts_loaded["glsl"])
-	{
-		await Site.load_glsl();
-	}
+	await loadGlsl();
 	
 
 
@@ -89,6 +91,7 @@
 		`return equal_within_relative_tolerance(cacsch(ONE-I/2.0), vec2(0.763884345953711, 0.311225797244761));`,
 			// asech
 		`return equal_within_relative_tolerance(casech(ONE+I/2.0), vec2(0.533218290584112, -0.797709970075392));`,
+		
 		`return equal_within_relative_tolerance(casech(ONE-I/2.0), vec2(0.533218290584112, 0.797709970075392));`,
 			// acoth
 		`return equal_within_relative_tolerance(cacoth(ONE+I/2.0), vec2(0.708303336014054, -0.662908831834016));`,
@@ -155,47 +158,46 @@
 		`return equal_within_absolute_tolerance(agm(2.0*ONE,I),vec2(1.010051593619580924333050617727020, 0.7426464223997775055939));`,
 		`return powermod(2,31,7) == 2;`,
 		`return powermod(3,600,4) == 1;`,
-	];
+	]
 	
 	
 	
-	let wilson = null;
+	let wilson;
 	
-	let canvas_location_element = document.querySelector("#canvas-location");
+	let canvasLocationElement = $("#canvas-location");
 	
 	
 	
-	function unit_test(shader)
+	function unitTest(shader)
 	{
 		try
 		{
 			try
 			{
-				wilson.output_canvas_container.parentNode.remove();
+				wilson.outputCanvasContainer.parentNode.remove();
 				
-				canvas_location_element.insertAdjacentHTML("beforebegin", `
-					<div>
-						<canvas id="output-canvas" class="output-canvas"></canvas>
-					</div>
+				canvasLocationElement.insertAdjacentHTML("afterend", `
+					<canvas id="output-canvas" class="output-canvas"></canvas>
 				`);
 			}
 			
-			catch(ex) {}
+			// eslint-disable-next-line no-unused-vars
+			catch(_ex) {}
 			
 			
 			
-			let frag_shader_source = `
+			let shader = /* glsl */`
 				precision highp float;
 				
 				varying vec2 uv;
 				
 				
 				
-				${COMPLEX_GLSL}
+				${getGlslBundle(shader)}
 				
 				
 				
-				bool unit_test(void)
+				bool unitTest(void)
 				{
 					${shader};
 				}
@@ -204,7 +206,7 @@
 				
 				void main(void)
 				{
-					if (unit_test())
+					if (unitTest())
 					{
 						gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 					}
@@ -220,21 +222,21 @@
 			{
 				renderer: "gpu",
 				
-				shader: frag_shader_source,
+				shader: shader,
 				
-				canvas_width: 1,
-				canvas_height: 1
+				canvasWidth: 1,
+				canvasHeight: 1
 			};
 			
-			wilson = new Wilson(document.querySelector("#output-canvas"), options);
+			wilson = new Wilson($("#output-canvas"), options);
 			
 			
 			
-			wilson.render.draw_frame();
+			wilson.render.drawFrame();
 			
-			let pixel_data = wilson.render.get_pixel_data();
+			let pixelData = wilson.render.getPixelData();
 			
-			if (pixel_data[0] === 0)
+			if (pixelData[0] === 0)
 			{
 				return 0;
 			}
@@ -242,7 +244,8 @@
 			return 1;
 		}
 		
-		catch(ex)
+		// eslint-disable-next-line no-unused-vars
+		catch(_ex)
 		{
 			return 2;
 		}
@@ -254,9 +257,9 @@
 	
 	for (let i = 0; i < tests.length; i++)
 	{
-		console.log(`Starting test ${i}`);
+		console.log(`Starting test ${i}: ${tests[i]}`);
 		
-		let result = unit_test(tests[i]);
+		let result = unitTest(tests[i]);
 		
 		if (result === 0)
 		{
@@ -265,13 +268,15 @@
 		
 		if (result === 1)
 		{
-			console.error(`Test ${i} returned false:`);
+			console.error(`Test ${i} returned false: ${tests[i]}`);
 			
-			console.error(tests[i]);
-			
-			passed_everything = false;
+			passedEverything = false;
 			
 			break;
 		}
 	}
+	
+	
+	
+	showPage();
 }()

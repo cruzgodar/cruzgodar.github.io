@@ -1,0 +1,649 @@
+### nav-buttons
+
+So far in linear algebra, we've focused on vectors as fairly abstract concepts. Vectors can look like lists of $n$ numbers in $#R#^n$, polynomials in $#R#[x]$, or even matrices or linear transformations. But largely speaking, we've refrained from talking about the *geometry* of these spaces. Vectors in $#R#^2$, typically represented as arrows in the plane, have notions of length and direction in addition to the component representation we're more familiar with, and there's often a lot to be gained from thinking about vectors in this way. There's also the **dot product**, which takes two vectors and produces a number that measures their lengths and the angle between them, and in $#R#^3$ specifically, there's also the **cross product**, which takes two vectors and produces a third vector that's orthogonal (i.e. perpendicular) to them.
+
+So what can we expect to generalize to arbitrary vector spaces? Probably not the cross product, since it's not even defined in $#R#^n$ unless $n = 3$ (there are technically generalizations to higher dimensions, but they're still specific to $#R#^n$ and won't generalize past that). Also, the notion of a vector having a single direction in $#R#^2$ breaks down immediately in $#R#^3$, where we need to know two angles and a length (i.e. spherical coordinates) to pin down a vector. In an $n$-dimensional space, there are $n$ degrees of freedom, so we'd need $n - 1$ angles to keep track of a vector if we know its length, and that's probably not a realistic goal. On the other hand, the angle *between* two vectors works just fine in every $#R#^n$, as does the dot product. In fact, everything that feels like it should generalize --- the angle between vectors, orthogonality, and magnitude --- can be defined in terms of the dot product. We'll see how it works in $#R#^n$ in this section, apply it to some common applications in the next, and then we'll bring its ideas to more general vector spaces in the section after that.
+
+### def "the dot product"
+
+	Let $\vec{v}, \vec{w} \in #R#^n$. The **dot product** of $\vec{v}$ and $\vec{w}$, written $\vec{v} \bullet \vec{w}$, is defined by
+
+	$$
+		[[ v_1 ; v_2 ; \vdots ; v_n ]] \bullet [[ w_1 ; w_2 ; \vdots ; w_n ]] = v_1 w_1 + v_2 w_2 + \cdots + v_n w_n.
+	$$
+
+###
+
+It's not particularly clear why this is something we'd care about initially, especially when $\vec{v} \bullet \vec{w}$ isn't even a vector in $#R#^n$. To start, let's write down a few fundamental properties of the dot product, and then we'll look at what it can be used for.
+
+### prop "properties of the dot product"
+
+	1. The dot product is **symmetric**: $\vec{v} \bullet \vec{w} = \vec{w} \bullet \vec{v}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+	2. The dot product is **bilinear**:
+	
+	$$
+		\left( \vec{u} + \vec{v} \right) \bullet \vec{w} = \vec{u} \bullet \vec{w} + \vec{v} \bullet \vec{w}
+	$$
+
+	and
+
+	$$
+		\left( c\vec{v} \right) \bullet \vec{w} = c \left( \vec{v} \bullet \vec{w} \right)
+	$$
+
+	for all $\vec{u}, \vec{v}, \vec{w} \in #R#^n$ and $c \in #R#$.
+
+	3. The dot product is **positive definite**: $\vec{v} \bullet \vec{v} \geq 0$ for all $\vec{v} \in #R#^n$, and the only $\vec{v}$ for which $\vec{v} \bullet \vec{v} = 0$ is $\vec{v} = 0$.
+
+###
+
+The last property lets us define a notion of length in terms of only the dot product, finally connecting us to some of the geometry that we haven't been dealing with directly.
+
+### def "magnitude"
+
+	Let $\vec{v} \in #R#^n$. The **magnitude** of $\vec{v}$, also called the **length** or **norm**, is $||\vec{v}|| = \sqrt{\vec{v} \bullet \vec{v}}$.
+
+###
+
+This is exactly the notion of length we're used to: the vector $\vec{v} = [[ 2 ; -3 ]] \in #R#^2$ has magnitude
+
+$$
+	||\vec{v}|| &= \sqrt{\vec{v} \bullet \vec{v}}
+
+	&= \sqrt{(2)(2) + (-3)(-3)}
+
+	&= \sqrt{13}.
+$$
+
+By dividing a nonzero vector by its magnitude, we produce a parallel vector with magnitude $1$. This is called **normalizing**, and any vector with magnitude $1$ is called a **unit vector**. For example, the vector $\vec{v}$ from before normalizes to the unit vector
+
+$$
+	\frac{\vec{v}}{||\vec{v}||} = [[ \frac{2}{\sqrt{13}} ; -\frac{3}{\sqrt{13}} ]].
+$$
+
+The magnitude of a vector is implicitly its distance from the zero vector, and that notion generalizes to the distance *between* two vectors as well.
+
+### def "distance between vectors"
+
+	Let $\vec{v}, \vec{w} \in #R#^n$. The **distance** between $\vec{v}$ and $\vec{w}$ is $||\vec{v} - \vec{w}||$.
+
+###
+
+Again, this is exactly the usual distance between points in $#R#^n$.
+
+### desmos vectorSubtraction
+
+Here, the purple vector is $\vec{v} = [[ 3 ; 2 ]]$, the blue one is $\vec{w} = [[ -2 ; 1 ]]$, and the distance between them is the magnitude of the red vector, which is
+
+$$
+	\vec{v} - \vec{w} = [[ 3 - (-2) ; 2 - 1 ]] = [[ 5 ; 1 ]].
+$$
+
+Let's use these vectors to demonstrate one more property of the dot product: its ability to measure the angle between vectors. We'll need the rarely-used **law of cosines**, which states that for any triangle with sides of length $a$, $b$, and $c$, and angle $\theta$ opposite $c$,
+
+$$
+	c^2 = a^2 + b^2 - 2ab\cos(\theta).
+$$
+
+If $\theta$ is the angle between $\vec{v}$ and $\vec{w}$, then we can see from the previous graph and the law of cosines that
+
+$$
+	||\vec{v} - \vec{w}||^2 &= ||\vec{v}||^2 + ||\vec{w}||^2 - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\left( \vec{v} - \vec{w} \right) \bullet \left( \vec{v} - \vec{w} \right) &= \vec{v} \bullet \vec{v} + \vec{w} \bullet \vec{w} - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\vec{v} \bullet \vec{v} - 2\left( \vec{v} \bullet \vec{w} \right) + \vec{w} \bullet \vec{w} &= \vec{v} \bullet \vec{v} + \vec{w} \bullet \vec{w} - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\vec{v} \bullet \vec{w} &= ||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\theta &= \arccos \left( \frac{\vec{v} \bullet \vec{w}}{||\vec{v}|| \cdot ||\vec{w}||} \right).
+$$
+
+We generally need to be careful when applying inverse trig functions, but everything's fine here since $\arccos$ has a range of $[0, \pi]$, which is exactly the interval of possible angles between vectors.
+
+### exc "distance and angle between vectors"
+
+	Let $\vec{v}$ and $\vec{w}$ be the vectors
+
+	$$
+		\vec{v} = [[ 1 ; 2 ; 4 ]], \quad \vec{w} = [[ 0 ; -3 ; 3 ]].
+	$$
+
+	Find the distance between $\vec{v}$ and $\vec{w}$ and the angle between them.
+
+###
+
+This definition of angle lets us talk about perpendicular vectors. If the angle between $\vec{v}$ and $\vec{w}$ is exactly $90^\circ$, then
+
+$$
+	\vec{v} \bullet \vec{w} = ||\vec{v}|| \cdot ||\vec{w}|| \cos(90^\circ) = 0.
+$$
+
+Since we're defining everything in terms of the dot product, let's do that here too.
+
+### def orthogonality
+
+	Two vectors $\vec{v}, \vec{w} \in #R#^n$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+We can immediately start getting applications of orthogonality: notably, the Pythagorean theorem can be stated in the language of linear algebra.
+
+### thm "The Pythagorean Theorem"
+
+	Two vectors $\vec{v}, \vec{w} \in #R#^n$ are **orthogonal** if and only if $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$.
+
+###
+
+### exc "the Pythagorean theorem"
+
+	Show that this theorem holds. Start by assuming $\vec{v}$ and $\vec{w}$ are orthogonal and show $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$. Then assume that $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$ and show that $\vec{v}$ and $\vec{w}$ must be orthogonal.
+
+###
+
+Orthogonality will be surprisingly critical to most of the rest of the class. We'll want to talk often about all the vectors orthogonal to a given one, and so we'll give that object a name.
+
+### def "orthogonal complement"
+
+	Let $X$ be a subspace of $#R#^n$. The **orthogonal complement** to $X$ is the subspace $X^\perp$ of $#R#^n$ (pronounced "X perp", like perpendicular) consisting of the vectors $\vec{v}$ that are orthogonal to every vector in $X$.
+
+###
+
+### ex "orthogonal complement"
+
+	Let $X = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; -1 ; 2 ]] \right\}$. Find a basis for $X^\perp$.
+
+	For a vector $\vec{v} = [[ v_1 ; v_2 ; v_3 ]]$ to be in the orthogonal complement, we need
+
+	$$
+		[[ v_1 ; v_2 ; v_3 ]] \bullet [[ 1 ; 1 ; 0 ]] &= 0
+
+		[[ v_1 ; v_2 ; v_3 ]] \bullet [[ 0 ; -1 ; 2 ]] &= 0,
+	$$
+
+	so
+
+	$$
+		v_1 + v_2 &= 0
+
+		-v_2 + 2v_3 &= 0.
+	$$
+
+	And that's a matrix equation once again! Row reducing, we have
+
+	$$
+		[[ 1, 1, 0 | 0 ; 0, -1, 2 | 0 ]] & 
+
+		[[ 1, 0, 2 | 0 ; 0, -1, 2 | 0 ]] & \quad \vec{r_1} \pe \vec{r_2}
+
+		[[ 1, 0, 2 | 0 ; 0, 1, -2 | 0 ]] & \quad \vec{r_2} \te -1
+
+		\vec{v} = [[ -2t ; 2t ; t ]] & .
+	$$
+
+	In total, the orthogonal complement is $X^\perp = \span\left\{ [[ -2 ; 2 ; 1 ]] \right\}$.
+
+###
+
+### exc "orthogonal complement"
+
+	Let $X$ be a subspace of $#R#^n$. Show that $X^\perp$ is in fact a subspace.
+
+###
+
+
+
+## Orthonormal Bases
+
+When we're asked to come up with a basis for $#R#^n$, there are two generally good choices we've seen at this point: if we have some diagonalizable $n \times n$ matrix $A$ that's relevant to the situation, we might want to choose a basis of eigenvectors of $A$, and otherwise, the standard basis $\left\{ \vec{e_1}, ..., \vec{e_n} \right\}$ is a reliable choice. Let's dig into that a little more and understand *why* it's so reliable. The standard basis has many useful properties, but let's focus on the most relevant:
+
+### def "orthonormal"
+
+	A collection of vectors $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ is **orthogonal** if $\vec{v_i} \bullet \vec{v_j} = 0$ whenever $i \neq j$, and it is **orthonormal** if additionally, $||\vec{v_i}|| = 1$ for every $\vec{v_i}$.
+
+###
+
+When a basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ is **orthonormal**, finding the expression of a vector in terms of the basis is much, *much* easier than it otherwise would be. Normally, that process requires inverting a change-of-basis matrix, but now we can sidestep that entirely. Let $\vec{v} \in #R#^n$ be a vector with the expression
+
+$$
+	\vec{v} = c_1 \vec{v_1} + \cdots + c_n \vec{v_n}.
+$$
+
+Now take the dot product of both sides with $\vec{v_i}$:
+
+$$
+	\vec{v} \bullet \vec{v_i} &= \left( c_1 \vec{v_1} + \cdots + c_n \vec{v_n} \right) \bullet \vec{v_i}
+
+	&= c_1 \vec{v_1} \bullet \vec{v_i} + \cdots + c_n \vec{v_n} \bullet \vec{v_i}
+
+	&= c_i.
+$$
+
+In other words,
+
+### prop "expression in an orthonormal basis"
+
+	Let $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ be an orthonormal basis for $#R#^n$. Then for any $\vec{v} \in #R#^n$,
+
+	$$
+		\vec{v} = \left( \vec{v} \bullet \vec{v_1} \right) \vec{v_1} + \cdots + \left( \vec{v} \bullet \vec{v_n} \right) \vec{v_n}.
+	$$
+
+###
+
+Another point of convenience is that any collection of nonzero orthonormal vectors --- or even just orthogonal ones --- is necessarily linearly independent, so a collection of $n$ of them in $#R#^n$ must be a basis.
+
+### prop "orthogonal vectors are linearly independent"
+
+	If $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ are orthogonal and nonzero, then they are linearly independent.
+
+###
+
+### pf
+
+	Suppose $c_1\vec{v_1} + \cdots + c_k\vec{v_k} = \vec{0}$. Dotting both sides by $\vec{v_i}$ results in
+
+	$$
+		c_i \left( \vec{v_i} \bullet \vec{v_i} \right) \vec{v_i} = 0,
+	$$
+
+	and since $\vec{v_i} \neq 0$, $\vec{v_i} \bullet \vec{v_i} \neq 0$, meaning $c_i = 0$. In total, every $c_i = 0$, and so the $\vec{v_i}$ are linearly independent.
+
+###
+
+### exc "expression in an orthonormal basis"
+
+	Given the vectors
+
+	$$
+		\vec{v_1} = [[ 1 ; -2 ; 1 ]], \quad \vec{v_2} = [[ -1 ; -1 ; -1 ]], \quad \vec{v_3} = [[ 3 ; 0 ; -3 ]].
+	$$
+
+	1. Show that $\left\{ \vec{v_1}, \vec{v_2}, \vec{v_3} \right\}$ is an orthogonal set, and therefore a basis for $#R#^3$.
+
+	2. Find an orthonormal basis $\left\{ \vec{w_1}, \vec{w_2}, \vec{w_3} \right\}$, where $\vec{w_i}$ is parallel to $\vec{v_i}$.
+
+	3. Express the vector
+
+	$$
+		\vec{v} = [[ 4 ; 3 ; -1 ]]
+	$$
+
+	in the basis $\left\{ \vec{w_1}, \vec{w_2}, \vec{w_3} \right\}$.
+
+###
+
+Just like linear independence is closely related to invertibility of matrices --- in that $n$ vectors in $#R#^n$ are linearly independent if and only if the matrix with them as columns is invertible --- orthonormality is closely related to another property a matrix can have.
+
+### def "unitary matrix"
+
+	An $m \times n$ matrix is **unitary** if its columns are orthonormal.
+
+###
+
+Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T\!A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition. Putting these two facts together, a square unitary matrix is always invertible, and $A^{-1} = A^T$.
+
+We'll have more to say about unitary matrices later on, but for now, let's see a few nice properties they have.
+
+### prop "properties of unitary matrices"
+
+ Let $A$ be a unitary $m \times n$ matrix. Then $A$ preserves distances and angles: $\left| \left| A\vec{v} \right| \right| = \left| \left| \vec{v} \right| \right|$ and $\left( A\vec{v} \right) \bullet \left( A\vec{w} \right) = \vec{v} \bullet \vec{w}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+###
+
+### pf
+
+	We'll show that $A$ preserves distances. Let
+
+	$$
+		\vec{v} = [[ c_1 ; \vdots ; c_n ]],
+	$$
+
+	and denote the columns of $A$ by $\vec{v_1}, ..., \vec{v_n}$. Then
+
+	$$
+		\left| \left| A\vec{v} \right| \right|^2 &= \left| \left| c_1 \vec{v_1} + \cdots + c_n \vec{v_n} \right| \right|^2
+
+		&= \left| c_1 \right|^2 \left| \left| \vec{v_1} \right| \right|^2 + \cdots + \left| c_n \right|^2 \left| \left| \vec{v_n} \right| \right|^2
+
+		&= \left| c_1 \right|^2 + \cdots + \left| c_n \right|^2
+
+		&= \left| \left| \vec{v} \right| \right|^2.
+	$$
+
+###
+
+### exc "properties of unitary matrices"
+
+	Let $A$ be a unitary $m \times n$ matrix. Show that $\left( A\vec{v} \right) \bullet \left( A\vec{w} \right) = \vec{v} \bullet \vec{w}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+###
+
+
+
+## The Gram-Schmidt Process
+
+Now that we've seen some of the nice properties of orthonormal bases, the natural next question is when we can find them. The good news is that unlike bases of eigenvectors of a matrix, which only exist when the matrix is diagonalizable, orthonormal bases always exist! We'll take a look at the standard process of finding one from a general basis, but in practice, we'll mainly use it to guarantee that an orthonormal basis *exists* rather than actually finding it.
+
+### thm -m "The Gram-Schmidt Process"
+
+	Let $\left\{ \vec{x_1}, ..., \vec{x_n} \right\}$ be a basis for a subspace $X$ of $#R#^m$. Then an orthogonal basis for $X$ is $\left\{ \vec{y_1}, ..., \vec{y_n} \right\}$, where
+
+	$$
+		\vec{y_1} &= \vec{x_1}
+
+		\vec{y_2} &= \vec{x_2} - \frac{\vec{x_2} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1}
+
+		\vec{y_3} &= \vec{x_3} - \frac{\vec{x_3} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_3} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2}
+
+		&\ \ \vdots
+	$$
+
+	By normalizing every $\vec{y_i}$, we can also produce an orthonormal basis.
+
+###
+
+### pf
+
+	As with many results about orthogonality, this amounts to a long-winded computation, and we'll show it one vector at a time. To show $\vec{y_1}$ and $\vec{y_2}$ are orthogonal, we can just compute
+
+	$$
+		\vec{y_1} \bullet \vec{y_2} &= \vec{x_1} \bullet \left( \vec{x_2} - \frac{\vec{x_2} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} \right)
+
+		&= \vec{x_1} \bullet \vec{x_2} - \vec{x_1} \bullet \frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1}
+
+		&= \vec{x_1} \bullet \vec{x_2} - \vec{x_2} \bullet \vec{x_1}
+
+		&= 0.
+	$$
+
+	For the general case, suppose we've shown that $\vec{y_1}, ..., \vec{y_{k - 1}}$ are all orthogonal. We'll show that $\vec{y_k}$ is orthogonal to all of them --- if $1 \leq i \leq k - 1$, then
+
+	$$
+		\vec{y_k} \bullet \vec{y_i} &= \left( \vec{x_k} - \frac{\vec{x_k} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_k} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} - \cdots - \frac{\vec{x_k} \bullet \vec{y_{k - 1}}}{\vec{y_{k - 1}} \bullet \vec{y_{k - 1}}}\vec{y_{k - 1}} \right) \bullet \vec{y_i}
+
+		&= \vec{x_k} \bullet \vec{y_i} - \frac{\vec{x_k} \bullet \vec{y_i}}{\vec{y_i} \bullet \vec{y_i}}\vec{y_i} \bullet \vec{y_i}
+
+		&= 0.
+	$$
+
+	As in past sections, you might recognize this as a proof by induction or just as a convincing argument, but either way, it shows that all the $\vec{y_i}$ are mutually orthogonal. That means they're linearly independent, and they're all still in $X$ since they're just linear combinations of the $\vec{x_i}$, and so they must form a basis.
+
+###
+
+Intuitively, every step of the Gram-Schmidt process begins with $\vec{x_i}$ and removes any component of the previous vectors, leaving behind a vector that's orthogonal to every one that came before.
+
+### desmos gramSchmidt
+
+In this Desmos graph, the purple and blue vectors are
+
+$$
+	\vec{x_1} = [[ 3 ; 2 ]], \quad \vec{x_2} = [[ -3 ; 1 ]],
+$$
+
+respectively. Then $\vec{x_1} \bullet \vec{x_2} = -7$, and $\vec{x_1} \bullet \vec{x_1} = 13$. The vector
+
+$$
+	\frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1} &= -\frac{7}{13}[[ 3 ; 2 ]],
+$$
+
+which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in red. The final vector $\vec{y_2}$ is in green, drawn both as the geometric subtraction between the blue and red vectors, and again from the origin to highlight how it's orthogonal to the purple vector $\vec{x_1} = \vec{y_1}$. Notice how the red vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
+
+### ex "the Gram-Schmidt process"
+
+	Let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 3 ; 1 ; 0 ]], [[ 0 ; -1 ; 1 ; 3 ]] \right\}.
+	$$
+
+	Find an orthonormal basis for $X$.
+
+	Let's call those three basis vectors $\vec{x_1}$, $\vec{x_2}$, and $\vec{x_3}$. We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
+
+	$$
+		\vec{y_1} = \vec{x_1} = [[ 1 ; 2 ; 0 ; -1 ]].
+	$$
+
+	Now $\vec{y_1} \bullet \vec{y_1} = 6$ and $\vec{x_2} \bullet \vec{y_1} = 8$, and so our next vector is
+
+	$$
+		[[ 2 ; 3 ; 1 ; 0 ]] - \frac{8}{6}[[ 1 ; 2 ; 0 ; -1 ]] &= [[ 2/3 ; 1/3 ; 1 ; 4/3 ]].
+	$$
+
+	We'd like to avoid dealing with fractions if at all possible. Since this is orthogonal to $\vec{y_1}$, rescaling it won't change that (and we'll have to do it anyway later when we normalize everything), so we might as well take
+
+	$$
+		\vec{y_2} = [[ 2 ; 1 ; 3 ; 4 ]].
+	$$
+
+	Now our final vector is
+
+	$$
+		\vec{x_3} - \frac{\vec{x_3} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_3} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} &= [[ 0 ; -1 ; 1 ; 3 ]] - \frac{-5}{6}[[ 1 ; 2 ; 0 ; -1 ]] - \frac{14}{30}[[ 2 ; 1 ; 3 ; 4 ]]
+
+		&= [[ -1/10 ; 1/5 ; -2/5 ; 3/10 ]]
+
+		\vec{y_3} &= [[ -1 ; 2 ; -4 ; 3 ]].
+	$$
+
+	Sure enough, all these vectors are orthogonal. To make them orthonormal, we just need to normalize them, producing a final basis of
+
+	$$
+		\left\{ \frac{1}{\sqrt{6}}[[ 1 ; 2 ; 0 ; -1 ]], \frac{1}{\sqrt{30}}[[ 2 ; 1 ; 3 ; 4 ]], \frac{1}{\sqrt{30}}[[ -1 ; 2 ; -4 ; 3 ]] \right\}
+	$$
+
+###
+
+### exc "the Gram-Schmidt process"
+
+	Let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]], [[ 1 ; 2 ; 0 ; 3 ]] \right\}.
+	$$
+
+	Find an orthonormal basis for $X$.
+
+###
+
+
+
+## Projections
+
+There's another perspective on orthogonal bases that's worth discussing. If we express $\vec{v} \in #R#^3$ in the standard basis as
+
+$$
+	\vec{v} = c_1 \vec{e_1} + c_2 \vec{e_2} + c_3 \vec{e_3},
+$$
+
+we can think about the vector $c_1 \vec{e_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{e_1} + c_3 \vec{e_3}$ is the vector in $\span\left\{ \vec{e_1}, \vec{e_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. <a href="https://www.desmos.com/3d/d1f12d74a5">This 3D Desmos graph</a> shows the red vector
+
+$$
+	\vec{v} = [[ 2 ; 1 ; 3 ]] \in #R#^3
+$$
+
+and the closest vector in $\span\left\{ \vec{e_1}, \vec{e_2} \right\}$, colored blue. Toggling on the surface $d(x, y)$ shows a 3D plot of the distances to the red vector, where the height of the surface at $(x, y)$ is the distance to $\vec{v}$ from the vector
+
+$$
+	\vec{w} = [[ x ; y ; 0 ]].
+$$
+
+Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about these closest approximations and how to find them in the next section, but let's focus on their existence and uniqueness right now.
+
+### prop "orthogonal decomposition"
+
+	Let $X$ be a subspace of $#R#^n$ and $X^\perp$ its orthogonal complement, and let $\vec{v} \in #R#^n$. Then $\vec{v}$ can be written uniquely as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+###
+
+### pf
+
+	This is a great example of how useful orthonormal bases can be --- not only in computations, but also in proofs. Let $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ be an orthonormal basis for $X$ (which exists via the Gram-Schmidt process), and extend it to a basis
+
+	$$
+		\left\{ \vec{x_1}, ..., \vec{x_k}, \vec{x_{k + 1}}, ..., \vec{x_n} \right\}
+	$$
+
+	for $#R#^n$. By applying the Gram-Schmidt process to this new basis, we can assume it too is orthonormal (and therefore $\left\{ \vec{x_{k + 1}}, ..., \vec{x_n} \right\}$ is a basis for $X^\perp$). Now $\vec{v}$ has a unique expression
+
+	$$
+		\vec{v} = c_1\vec{x_1} + \cdots + c_n \vec{x_n},
+	$$
+
+	and so we can (uniquely) define
+
+	$$
+		\vec{x} &= c_1\vec{x_1} + \cdots + c_k \vec{x_k}
+
+		\vec{x}' &= c_{k + 1}\vec{x_{k + 1}} + \cdots + c_n \vec{x_n}.
+	$$
+
+###
+
+### ex "orthogonal decomposition"
+
+	Let $X$ be the subspace of $#R#^4$ from the previous example, given by
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 3 ; 1 ; 0 ]], [[ 0 ; -1 ; 1 ; 3 ]] \right\}.
+	$$
+
+	Decompose the vector
+
+	$$
+		\vec{v} = [[ 1 ; 1 ; 2 ; 3 ]]
+	$$
+
+	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+	We already have an orthonormal basis for $X$, but to produce a basis for $X^\perp$, we need to extend this to a basis for $#R#^4$ and then run the Gram-Schmidt process on the new vectors. To that end, let's start at the step before we normalized the basis vectors:
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 1 ; 3 ; 4 ]], [[ -1 ; 2 ; -4 ; 3 ]] \right\}.
+	$$
+
+	Extending a basis in general is a little finicky, but nothing too terrible. At least one of the standard basis vectors (and likely most or all of them) will work, so let's try adding the first one. To check if
+
+	$$
+		\left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 1 ; 3 ; 4 ]], [[ -1 ; 2 ; -4 ; 3 ]], [[ 1 ; 0 ; 0 ; 0 ]] \right\}
+	$$
+
+	is a linearly independent set, we just need to show that a matrix with those vectors as rows or columns is invertible, which we can do by showing its determinant is nonzero:
+
+	$$
+		\det [[ 1, 2, -1, 1 ; 2, 1, 2, 0 ; 0, 3, -4, 0 ; -1, 4, 3, 0 ]] &= -\det [[ 2, 1, 2 ; 0, 3, -4 ; -1, 4, 3 ]]
+
+		&= -\left( 2\left( 9 + 16 \right) - \left( -4 - 8 \right) \right)
+
+		&= -124.
+	$$
+
+	Now that we've extended the basis, we just need to run Gram-Schmidt on this last vector. With the notation from the last example, we have
+
+	$$
+		\vec{y_4} &= \vec{x_4} - \frac{\vec{x_4} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_4} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} - \frac{\vec{x_4} \bullet \vec{y_3}}{\vec{y_3} \bullet \vec{y_3}}\vec{y_3}
+
+		&= [[ 1 ; 0 ; 0 ; 0 ]] - \frac{1}{6}[[ 1 ; 2 ; 0 ; -1 ]] - \frac{2}{30} [[ 2 ; 1 ; 3 ; 4 ]] - \frac{-1}{30} [[ -1 ; 2 ; -4 ; 3 ]]
+
+		&= [[ 2/3 ; -1/3 ; -1/3 ; 0 ]].
+	$$
+
+	Normalizing this and throwing it into the orthonormal basis for $X$, we have an orthonormal basis of
+
+	$$
+		\left\{ \vec{y_1}, \vec{y_2}, \vec{y_3}, \vec{y_4} \right\} = \left\{ \frac{1}{\sqrt{6}}[[ 1 ; 2 ; 0 ; -1 ]], \frac{1}{\sqrt{30}}[[ 2 ; 1 ; 3 ; 4 ]], \frac{1}{\sqrt{30}}[[ -1 ; 2 ; -4 ; 3 ]], \frac{1}{\sqrt{6}} [[ 2 ; -1 ; -1 ; 0 ]] \right\}
+	$$
+
+	for $#R#^4$, and expressing our vector $\vec{v}$ in it is as simple as taking four dot products.
+
+	$$
+		\vec{v} &= \left( \vec{v} \bullet \vec{y_1} \right) \vec{y_1} + \left( \vec{v} \bullet \vec{y_2} \right) \vec{y_2} + \left( \vec{v} \bullet \vec{y_3} \right) \vec{y_3} + \left( \vec{v} \bullet \vec{y_4} \right) \vec{y_4}
+
+		&= \frac{0}{6}[[ 1 ; 2 ; 0 ; -1 ]] + \frac{21}{30}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{2}{30}[[ -1 ; 2 ; -4 ; 3 ]] + \frac{-1}{6} [[ 2 ; -1 ; -1 ; 0 ]]
+
+		&= \frac{7}{10}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{1}{15}[[ -1 ; 2 ; -4 ; 3 ]] - \frac{1}{6} [[ 2 ; -1 ; -1 ; 0 ]].
+	$$
+
+	As an orthogonal decomposition,
+
+	$$
+		\frac{7}{10}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{1}{15}[[ -1 ; 2 ; -4 ; 3 ]] &\in X
+
+		- \frac{1}{6} [[ 2 ; -1 ; -1 ; 0 ]] &\in X^\perp
+	$$
+
+###
+
+### exc "orthogonal decomposition"
+
+	Similar to the previous exercise, let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]] \right\}.
+	$$
+
+	Decompose the vector
+
+	$$
+		\vec{v} = [[ 1 ; 0 ; 1 ; 0 ]]
+	$$
+
+	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+###
+
+The existence and uniqueness of orthogonal decompositions merits a simpler (and somewhat more descriptive) name:
+
+### def projection
+
+	Given a subspace $X$ of $#R#^n$ and an orthogonal decomposition $\vec{v} = \vec{x} + \vec{x}'$, we say that $\vec{x}$ is the **projection** of $\vec{v}$ onto $X$ and write $\proj_X\left( \vec{v} \right) = \vec{x}$.
+
+###
+
+The term *projection* calls to mind the same sort of shadow-casting idea that we saw in the Gram-Schmidt process example, and in fact, each step in the Gram-Schmidt process is a projection onto the orthogonal complement of the current basis --- more on this in the homework!
+
+As we saw in the proof of orthogonal decomposition, if $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ is an orthonormal basis for $X$, then this projection map is given by
+
+$$
+	\proj_X\left( \vec{v} \right) = \left( \vec{v} \bullet \vec{x_1} \right) \vec{x_1} + \cdots + \left( \vec{v} \bullet \vec{x_k} \right) \vec{x_k}.
+$$
+
+That means the projection map is linear, and a simple linear map at that. Extending $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ to an orthonormal basis $\left\{ \vec{x_1}, ..., \vec{x_n} \right\}$ for $#R#^n$, the matrix for $\proj_X$ expressed in this basis is
+
+$$
+	[[ I_k | 0 ; \hline 0 | 0 ]];
+$$
+
+that is, the top-left $k \times k$ block is the identity matrix, and every other entry is zero. Expressed in the standard basis, we have a matrix of
+
+$$
+	& \hspace{13.3pt} [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]] [[ I_k | 0 ; \hline 0 | 0 ]] [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]]^{-1}
+
+	&= [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]] [[ I_k | 0 ; \hline 0 | 0 ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_n}, - ]]
+
+	&= [[ \mid, , \mid, \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_k}, \vec{0}, \cdots, \vec{0} ; \mid, , \mid, \mid, , \mid ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_n}, - ]]
+
+	&= [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_k} ; \mid, , \mid ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_k}, - ]].
+$$
+
+This can make computing projections quite a bit easier.
+
+### exc "projections"
+
+	Let $X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]] \right\}$ be the subspace from the previous exercise. Verify that
+
+	$$
+		\proj_X \left( [[ 1 ; 0 ; 1 ; 0 ]] \right) &= \vec{x}
+
+		\proj_{X^\perp} \left( [[ 1 ; 0 ; 1 ; 0 ]] \right) &= \vec{x}',
+	$$
+
+	where $\vec{x} + \vec{x}'$ was the orthogonal decomposition from before.
+
+###
+
+
+
+### nav-buttons

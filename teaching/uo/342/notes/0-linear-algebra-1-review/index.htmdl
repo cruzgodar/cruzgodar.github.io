@@ -1,0 +1,374 @@
+### nav-buttons
+
+Welcome to Math 342! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before most lectures. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
+
+$$
+	\dim V = \dim \ker T + \dim \image T
+$$
+
+### desmos testGraph
+
+If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
+
+
+
+## Vector Spaces
+
+With linear algebra I behind us, we can take a high level view and summarize the whole of the course. Linear algebra is the study of **vector spaces** and maps (i.e. functions) between them, called **linear transformations**. The definition of a vector space is slightly technical, but let's repeat it here for completeness.
+
+### def "vector space"
+
+	A **vector space** is a set $V$, a method $+$ that can add any two elements $\vec{v}, \vec{w} \in V$, and a method $\cdot$ that can multiply any vector $\vec{v} \in V$ by any real number $c$, such that
+
+	1. $V$ is **closed** under addition and scalar multiplication: $\vec{v} + \vec{w} \in V$ for any $\vec{v}, \vec{w} \in V$, and $c\vec{v} \in V$ for any $\vec{v} \in V$ and $c \in #R#$.
+
+	2. Addition is associative and commutative: $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$ and $\vec{v} + \vec{w} = \vec{w} + \vec{v}$ for any $\vec{u}, \vec{v}, \vec{w} \in V$.
+
+	3. Multiplication is associative and distributive: $(cd)\vec{v} = c(d\vec{v})$, $(c + d)\vec{v} = c\vec{v} + d\vec{v}$, and $c(\vec{v} + \vec{w}) = c\vec{v} + c\vec{w}$.
+
+	4. There is a **zero vector** $\vec{0} \in V$ so that $\vec{v} + \vec{0} = \vec{v}$ for all $\vec{v} \in V$.
+
+	5. Given any $\vec{v} \in V$, there is a vector $-\vec{v} \in V$ with $\vec{v} + (-\vec{v}) = \vec{0}$.
+
+	6. For any $\vec{v} \in V$, $1\vec{v} = \vec{v}$.
+
+###
+
+Intuitively, a vector space is a set of elements that can be added together and scaled by real numbers without leaving the set, and the addition and multiplication has most of the properties we'd expect. In practice, we usually only need to show that a set $X$ is a **subspace** of a larger set $V$ that we already know is a vector space. That only requires showing that $X$ is closed under addition and scalar multiplication and contains the zero vector --- all of the other properties are inherited from $V$ since the addition and multiplication are the same.
+
+### ex "a subspace"
+	
+	Let $V$ be the vector space $C^0(#R#)$ consisting of continuous functions $f: #R# \to #R#$ and let $X$ be the set of functions $f$ such that $f(1) = 0$. Show that $X$ is a subspace of $V$.
+	
+	To show closure under addition and multiplication at once, we can show that $c\vec{v} + \vec{w} \in X$ for any $\vec{v}, \vec{w} \in X$ and $c \in #R#$. If $f, g \in X$ are functions and $c \in #R#$, then
+	
+	$$
+		(cf + g)(1) &= cf(1) + g(1)
+		
+		&= c(0) + 0
+		
+		&= 0.
+	$$
+	
+	That verifies that $X$ is closed under addition, and since the zero vector in $C^0(#R#)$ is the zero function $z : #R# \to #R#$ defined by $z(x) = 0$, $z \in X$ since $z(1) = 0$. Therefore, $X$ is a subspace.
+	
+###
+
+### exc "a subspace"
+	
+	Let $V$ be the vector space $M_{2 \times 3}(#R#)$ consisting of real-valued matrices with 2 rows and 3 columns, and let $X$ be the subset of $V$ consisting of matrices of the form
+	
+	$$
+		[[ a, b, 0 ; 0, c, c ]]
+	$$
+
+	for $a, b, c \in #R#$. Is $X$ a subspace of $V$? If it is, verify that it's closed under addition and scalar multiplication and contains the zero vector; if not, give an example showing one of those properties doesn't hold.
+	
+###
+
+It's worth going back over the notation for some of the most common vector spaces, which usually contain literal column vectors, matrices, or functions.
+
+> - $#R#$: the vector space of all real numbers.
+
+> - $#R#^n$: the vector space of length-$n$ column vectors.
+
+> - $#R#^#R#$: the vector space of all functions $f : #R# \to #R#$.
+
+> - $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
+
+> - $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
+
+> - $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
+
+> - $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
+
+
+
+## Linear Transformations
+
+The last entry in the list deserves some explanation. Given two vector spaces $V$ and $W$, a **linear transformation** $T : V \to W$ is a function that preserves the structure of the vector spaces --- specifically, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$ and $T(c\vec{v}) = cT(\vec{v})$ for any $\vec{v}, \vec{w} \in V$ and $c \in #R#$. When $V = #R#^n$ and $W = #R#^m$, we can represent any linear transformation $T : V \to W$ by an $m \times n$ **matrix** $A$. We find the $j$th column by evaluating $T(\vec{e_j})$, where $\vec{e_j} \in #R#^n$ is the column vector consisting of all zeros except a $1$ in position $j$. Then $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in #R#^n$.
+
+### ex "the matrix of a linear transformation"
+	
+	Let $T : #R#^2 \to #R#^2$ be defined by
+	
+	$$
+		T\left( [[ x ; y ]] \right) = [[ x - y ; 3x + 2y ]].
+	$$
+	
+	Find the matrix for $T$ and use it to evaluate $T\left( [[ -2 ; 1 ]] \right)$.
+
+	We have $T\left( [[ 1 ; 0 ]] \right) = [[ 1 ; 3 ]]$ and $T\left( [[ 0 ; 1 ]] \right) = [[ -1 ; 2 ]]$, so the matrix for $T$ is
+
+	$$
+		A = [[ 1, -1 ; 3, 2 ]].
+	$$
+
+	Applying this to $[[ -2 ; 1 ]]$ results in
+
+	$$
+		T\left( [[ -2 ; 1 ]] \right) &= A[[ -2 ; 1 ]] 
+
+		&= [[ -3 ; -4 ]],
+	$$
+
+	as expected.
+	
+###
+
+### exc "the matrix of a linear transformation"
+	
+	Let $S : #R#^3 \to #R#^2$ be defined by
+	
+	$$
+		S\left( [[ x ; y ; z ]] \right) = [[ 2x + y - z ; x + z ]].
+	$$
+	
+	Find the matrix for $T$ and use it to evaluate $S\left( [[ 1 ; 2 ; 3 ]] \right)$.
+	
+###
+
+The **kernel** of a linear transformation $T : V \to W$, written $\ker T$, is the space of vectors $\vec{v} \in V$ for which $T(\vec{v}) = \vec{0}$, and the **image** of $T$, written $\image T$, is the space of vectors $\vec{w} \in W$ with $\vec{w} = T(\vec{v})$ for some $\vec{v} \in V$ (i.e. the space of outputs of $T$ that actually occur).
+
+### ex "kernel and image"
+
+	Let $T$ be the linear transformation defined in the previous example. Find $\ker T$ and $\image T$.
+
+	To find the kernel, we solve $T\left( [[ x ; y ]] \right) = [[ 0 ; 0 ]]$, so we have
+
+	$$
+		[[ 1, -1 | 0 ; 3, 2 | 0 ]],
+	$$
+
+	which row reduces to
+
+	$$
+		[[ 1, 0 | 0 ; 0, 1 | 0 ]].
+	$$
+
+	That means $x = y = 0$, so $\ker T = \left\{ [[ 0 ; 0 ]] \right\}$. Since the product of a matrix with a vector is a linear combination of the columns of the matrix with coefficients given by the vector, we have
+
+	$$
+		T\left( [[ x ; y ]] \right) = x [[ 1 ; 3 ]] + y [[ -1 ; 2 ]],
+	$$
+
+	which means $\image T = \span \left\{ [[ 1 ; 3 ]], [[ -1 ; 2 ]] \right\}$.
+
+###
+
+### exc "kernel and image"
+
+	Let $S$ be the linear transformation defined in the previous example. Find $\ker S$ and $\image S$.
+
+###
+
+
+
+## The Determinant
+
+The matrix $A$ of a linear transformation $T : V \to W$ tells most of the story of how $T$ operates: the product $A\vec{v}$ is equal to $T(\vec{v})$, and the number of linearly independent columns determines if the map is one-to-one (if all the columns are linearly independent; equivalently if $\ker T = \{\vec{0}\}$) and/or onto (if there are at least as many linearly independent columns as there are rows; equivalently if $\image T = W$). In the case when the matrix is square, though, there's an even more concise piece of information that tells us about the matrix: the determinant. The method of computing $\det A$ is rather in-depth; let's work through a brief example to review how it works.
+
+### ex "a determinant"
+
+	Compute $\det A$ for
+
+	$$
+		A = [[ 1, 3, 2 ; 0, 3, 1 ; 1, -3, -4 ]].
+	$$
+
+	Let's expand about row 2. For each of the three entries, we cross off its row and column, compute the determinant of the $2 \times 2$ matrix that's left, and then multiply by the entry, possibly with a sign. That sign alternates between $+$ and $-$, starting with $+$ if it's an even row or column and $-$ if it's odd.
+
+	$$
+		\det A = -0 \det [[ 3, 2 ; -3, -4 ]] + 3 \det [[ 1, 2 ; 1, -4 ]] - 1\det [[ 1, 3 ; 1, -3 ]]
+	$$
+
+	The determinant of a $2 \times 2$ matrix $[[ a, b ; c, d ]]$ is just $ad - bc$ (or we can expand about any row and column, and the determinant of a $1 \times 1$ matrix is just its entry). In total, we have
+
+	$$
+		\det A = 3 (-4 - 2) - (-3 - 3) = -12.
+	$$
+
+###
+
+### exc "a determinant"
+
+	Compute $\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$.
+
+###
+
+The determinant of a matrix $A$ is nonzero exactly when $A$ is invertible, or equivalently if all of its columns are linearly independent. The value $|\det A|$ is also equal to the volume scaling factor of $A$: how many times more length/area/volume $A\vec{v}$ has than $\vec{v}$.
+
+One more important property of the determinant is that it's *multiplicative*: $\det (AB) = \det A \det B$. This leads to a number of convenient results, like $\det A^{-1} = \frac{1}{\det A}$ for any invertible matrix $A$, and we'll have use for it starting the very next section.
+
+
+
+
+## Bases and Dimension
+
+The ability to break a column vector in $#R#^n$ into a linear combination of the various $e_i$ is what allows us to write matrices so cleanly and understand linear transformations so well, and it's something we'd have great use for in more abstract vector spaces as well. To that end, we develop the concept of **bases**, which are collections of linearly independent and spanning vectors in a vector space. If $V$ is the vector space of polynomials with degree at most $3$, then a basis for $V$ is the collection $\{1, x, x^2, x^3\}$ --- they're all linearly independent, since the only linear combination $c_0 + c_1x + c_2x^2 + c_3x^3 = 0$ is $c_0 = c_1 = c_2 = c_3 = 0$, and they span $V$, since any polynomial in $V$ is a linear combination of them by definition. While bases for a vector space aren't unique, their size is, and the **dimension** of a vector space $V$, written $\dim V$, is the number of elements in a basis for $V$. For example, $\dim #R#^n = n$, $\dim M_{m \times n} = mn$, and $\dim \mathcal{L}(V, W) = (\dim V)(\dim W)$ for finite-dimensional spaces $V$ and $W$.
+
+With a basis $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ for a vector space $V$, we can uniquely represent any vector $\vec{v} \in V$ as a linear combination of the elements of $\mathcal{B}$ --- this is called **expressing** $\vec{v}$ in $\mathcal{B}$. To concisely store the expression of $\vec{v}$ in $\mathcal{B}$, we can write $[\vec{v}]_\mathcal{B}$, the **coordinate vector** of $\vec{v}$ in $\mathcal{B}$, by taking the unique expression
+
+$$
+	\vec{v} = c_1\vec{v_1} + \cdots + c_n\vec{v_n}
+$$
+
+and writing
+
+$$
+	[\vec{v}]_\mathcal{B} = [[ c_1 ; \vdots ; c_n ]].
+$$
+
+Many vector spaces have what is commonly referred to as a **standard basis**, which is a basis makes vectors particularly easy to express, and is usually the default choice for a basis. The standard basis for $#R#^n$ is the set $\{\vec{e_1}, ..., \vec{e_n}\}$, where $\vec{e_i}$ is the vector of all zeros and a 1 in position $i$, as before. The standard basis for the vector space of polynomials of degree at most $n$ is $\{1, x, x^2, ..., x^n\}$, and the standard basis for $M_{m \times n}(#R#)$ is the collection of $mn$ matrices that are all zeros except for a single 1, similar to the standard basis for $#R#^n$. The standard basis for $\mathcal{L}(#R#^n, #R#^m)$ is very similar, and it just inherits directly from the standard basis for $M_{m \times n}(#R#)$ by interpreting the matrices as linear transformations.
+
+The process of changing the basis of a coordinate vector --- effectively converting an expresion in one basis to an expression in another --- is itself a linear transformation, and so it has a matrix representation. Given a basis $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ for a vector space $V$, we can form the **change-of-basis matrix** $B$ that converts from $\mathcal{B}$ to $\mathcal{E}$, the standard basis, by finding $[\vec{v_i}]_\mathcal{E}$ for each $\vec{v_i}$ and placing them as columns in a matrix. While $B$ isn't particularly helpful --- we typically don't need the machinery of a matrix to help us express a vector in the standard basis --- the inverse matrix $B^{-1}$ is quite useful. It satisfies $B^{-1}[\vec{v}]_\mathcal{E} = [\vec{v}]_\mathcal{B}$ for any vector $\vec{v} \in V$, and so we can freely convert from the standard basis to $\mathcal{B}$.
+
+### ex "a change-of-basis matrix"
+
+	Let $V = \span\{ 1, x, x^2 \}$ be the vector space of polynomials with degree less than 4, let $\mathcal{E} = \{1, x, x^2\}$ be the standard basis for $V$, and let $\mathcal{B} = \{1 + x, x + x^2, -1 + 2x^2\}$ be another basis for $V$. Find the change-of-basis matrix $B$ from $\mathcal{B}$ to $\mathcal{E}$ and use it to express $p = 1 + x + x^2$ in $\mathcal{B}$.
+
+	The matrix $B$ is simple enough: we just write each basis vector in $\mathcal{B}$ as a coordinate vector in $\mathcal{E}$ (i.e. the vector of their coefficients) and place them as columns in a matrix:
+
+	$$
+		B = [[ 1, 0, -1 ; 1, 1, 0 ; 0, 1, 2 ]].
+	$$
+
+	To express the vector $p$ in $\mathcal{B}$, though, we need to convert *from* $\mathcal{E}$ *to* $\mathcal{B}$, which requires $B^{-1}$. Row reducing, we have
+
+	$$
+		[[ 1, 0, -1 | 1, 0, 0 ; 1, 1, 0 | 0, 1, 0 ; 0, 1, 2 | 0, 0, 1 ]] & 
+
+		[[ 1, 0, -1 | 1, 0, 0 ; 0, 1, 1 | -1, 1, 0 ; 0, 1, 2 | 0, 0, 1 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		[[ 1, 0, -1 | 1, 0, 0 ; 0, 1, 1 | -1, 1, 0 ; 0, 0, 1 | 1, -1, 1 ]] & \quad \vec{r_3} \me \vec{r_2}
+
+		[[ 1, 0, -1 | 1, 0, 0 ; 0, 1, 0 | -2, 2, -1 ; 0, 0, 1 | 1, -1, 1 ]] & \quad \vec{r_2} \me \vec{r_3}
+
+		[[ 1, 0, 0 | 2, -1, 1 ; 0, 1, 0 | -2, 2, -1 ; 0, 0, 1 | 1, -1, 1 ]] & \quad \vec{r_1} \pe \vec{r_3}
+	$$
+
+	The right side is now $B^{-1}$, so to express $p$ in $\mathcal{B}$, we evaluate $B^{-1}[p]_\mathcal{E}$:
+
+	$$
+		[[ 2, -1, 1 ; -2, 2, -1 ; 1, -1, 1 ]] [[ 1 ; 1 ; 1 ]] = [[ 2 ; -1 ; 1 ]].
+	$$
+
+	Sure enough,
+
+	$$
+		1 + x + x^2 = 2(1 + x) - (x + x^2) + (-1 + 2x^2).
+	$$
+
+###
+
+Coordinate vectors even let us get back to matrices for linear transformations. Suppose $T : V \to W$ for finite-dimensional vector spaces $V$ and $W$ and we choose bases $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ for $V$ and $\mathcal{C} = \{\vec{w_1}, ..., \vec{w_m}\}$ for $W$. Then the matrix $A$ for $T$ with respect to those two bases is formed by evaluating $T(\vec{v_j})$ for every $\vec{v_j} \in \mathcal{B}$ and placing $[T(\vec{v_j})]_\mathcal{C}$ in the $j$th column, and it satisfies $[T(\vec{v})]_\mathcal{C} = A[\vec{v}]_\mathcal{B}$ for any vector $\vec{v} \in V$. In other words, $T$ acts like a matrix (i.e. like a linear transformation from $#R#^n$ to $#R#^m$) as long as we represent both the input and output as column vectors.
+
+In practice, it's often a little cumbersome to find a matrix with respect to a different basis, particularly when the basis for the codomain is complicated enough that expressing vectors in it is difficult without constructing a change-of-basis matrix. Instead, we can do the same work in pieces: if $T : V \to W$ is a linear transformation and $\mathcal{B}$ and $\mathcal{C}$ are bases for $V$ and $W$ and we'd like to find the matrix for $T$ with respect to $V$ and $W$, we can first find the matrix $A$ for $T$ with respect to the *standard* bases for $V$ and $W$, a task which is usually much simpler. Then we can find the change-of-basis matrices $B$ and $C$ that convert from $\mathcal{B}$ and $\mathcal{C}$ to the respective standard bases for $V$ and $W$, and then simply take the product $C^{-1}AB$. The final effect is that if we take a vector $\vec{v} \in V$ and express it in the basis $\mathcal{B}$ to produce a coordinate vector $[\vec{v}]_\mathcal{B}$, then $B[\vec{v}]_\mathcal{B} = [\vec{v}]_\mathcal{E}$, the expression in the standard basis for $V$. Next, $A[\vec{v}]_\mathcal{E} = [T(\vec{v})]_\mathcal{E}$, the coordinate vector of $[T(\vec{v})]$ in the standard basis for $W$, and finally $C^{-1}[T(\vec{v})]_\mathcal{E} = [T(\vec{v})]_\mathcal{C}$. In the particular case when $V = W$, this operation of changing basis by matrix multiplication simplifies to $B^{-1}AB$, and we call this **conjugating** $A$ by $B$.
+
+### ex "the matrix for a linear transformation"
+	
+	Let $V = M_{2 \times 2}(#R#)$ and $W = \span\{1, x\}$, with bases
+	
+	$$
+		\mathcal{B} = \left\{ [[ 1, 0 ; 0, 1 ]], [[ 1, 0 ; 0, -1 ]], [[ 0, 1 ; 1, 0 ]], [[ 0, 1 ; -1, 0 ]] \right\}
+	$$
+	
+	and $\mathcal{C} = \{ 1 + x, 2 + 3x \}$. With $T : V \to W$ defined by
+	
+	$$
+		T\left( [[ a, b ; c, d ]] \right) = a + b + c + dx,
+	$$
+	
+	find the matrix for $T$ with respect to these two bases.
+	
+	The matrix $A$ for $T$ with respect to the standard basis is given by evaluating $T$ on each of the vectors in the standard basis for $V = M_{2 \times 2}(#R#)$ and writing them as coordinate vectors in the standard basis for $W$ (i.e. $\{1, x\}$. We have
+	
+	$$
+		T\left( [[ 1, 0 ; 0, 0 ]] \right) = 1,
+	$$
+	
+	which has a coordinate vector of $[[ 1 ; 0 ]]$ in the standard basis for $W$, so that becomes the first column in the matrix $A$. Continuing with the rest, we have
+	
+	$$
+		A = [[ 1, 1, 1, 0 ; 0, 0, 0, 1 ]].
+	$$
+	
+	To find the change-of-basis matrix $B$ from $\mathcal{B}$ to $\mathcal{E}$, we write each of the vectors in $\mathcal{B}$ as a coordinate vector in $\mathcal{E}$ and place them as columns, resulting in
+	
+	$$
+		B = [[ 1, 1, 0, 0 ; 0, 0, 1, 1 ; 0, 0, 1, -1 ; 1, -1, 0, 0 ]].
+	$$
+	
+	Similarly,
+	
+	$$
+		C = [[ 1, 2 ; 1, 3 ]].
+	$$
+	
+	However, we want $C^{-1}$. To find that, we augment $C$ with the $2 \times 2$ identity matrix and row reduce:
+	
+	$$
+		[[ 1, 2 | 1, 0 ; 1, 3 | 0, 1 ]]
+		
+		[[ 1, 2 | 1, 0 ; 0, 1 | -1, 1 ]] & \quad \vec{r_2} \me \vec{r_1}
+		
+		[[ 1, 0 | 3, -2 ; 0, 1 | -1, 1 ]] & \quad \vec{r_1} \me 2\vec{r_2}
+	$$
+	
+	Our inverse matrix $C^{-1}$ is therefore $[[ 3, -2 ; -1, 1 ]]$, and so our total matrix for $T$ is
+	
+	$$
+		C^{-1}AB &= [[ 3, -2 ; -1, 1 ]][[ 1, 1, 1, 0 ; 0, 0, 0, 1 ]][[ 1, 1, 0, 0 ; 0, 0, 1, 1 ; 0, 0, 1, -1 ; 1, -1, 0, 0 ]]
+		
+		&= [[ 3, -2 ; -1, 1 ]][[ 1, 1, 2, 0 ; 1, -1, 0, 0 ]]
+		
+		&= [[ 1, 5, 6, 0 ; 0, -2, -2, 0 ]].
+	$$
+	
+	For example, this tells us that
+	
+	$$
+		T\left([[ 1, 0 ; 0, -1 ]]\right) &= 5(1 + x) -2(2 + 3x)
+		
+		&= 1 - x,
+	$$
+	
+	as expected.
+	
+###
+
+One final but crucial result from linear algebra I is the **fundamental theorem of linear algebra**, which we'll see earn its name throughout this course.
+
+### thm "The Fundamental Theorem of Linear Algebra"
+	
+	Let $V$ and $W$ be vector spaces, where $V$ is finite-dimensional, and let $T : V \to W$ be a linear transformation. Then
+	
+	$$
+		\dim V = \dim \ker T + \dim \image T.
+	$$
+	
+	Specifically, if $\{\vec{v_1}, ..., \vec{v_k}\}$ is a basis for $\ker T$ and we extend it to a basis
+	
+	$$
+		\{\vec{v_1}, ..., \vec{v_k}, \vec{v_{k + 1}}, ..., \vec{v_n}\}
+	$$
+	
+	for $V$, then $\{T(\vec{v_{k + 1}}), ..., T(\vec{v_n})\}$ is a basis for $\image T$.
+	
+###
+
+### exc "kernel and image"
+	
+	With the transformation $T$ from the previous example, find bases for $\ker T$ and $\image T$.
+	
+###
+
+We've touched on many of the most important concepts, but it's impossible to cover everything. The first homework will help to review more material, but if you're still feeling shaky about a topic, I've written a full set of linear algebra I notes that you might find helpful!
+
+### image-links
+	/teaching/uo/341/ "Linear Algebra I Notes"
+###
+
+<div style="height: 32px"></div>
+
+### nav-buttons

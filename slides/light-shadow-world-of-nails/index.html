@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Light, Shadow, and a World of Nails</title>
+
+	<meta property="og:title" content="Light, Shadow, and a World of Nails"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://cruzgodar.com/slides/light-shadow-world-of-nails/"/>
+	<meta property="og:image" content="https://cruzgodar.com/slides/light-shadow-world-of-nails/cover.webp"/>
+	<meta property="og:locale" content="en_US"/>
+	<meta property="og:site_name" content="Cruz Godar"/>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#181818">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" as="font">
+
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+</head>
+
+<body>	
+	<div id="lapsa-slide-container">
+		<div id="title" class="full-canvas">
+			<h1>Light, Shadow, and a World of Nails</h1>
+			
+			<h2>Cruz Godar</h2>
+			
+			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+
+			<div id="canvas-bundle" style="opacity: 0">
+				<canvas id="output-canvas"></canvas>
+			</div>
+		</div>
+
+		<div>
+			<h1>Rendering 3D Worlds</h1>
+			
+			<p class="build">Making a computer make images isn&#x2019;t easy at the best of times, but 3D graphics are a substantial step up in difficulty. Balancing speed with quality is a challenge, especially when the objects we want to render are complex and detailed.</p>
+		</div>
+
+		<div>
+			<h1>Raster Graphics</h1>
+
+			<p class="build">The leading realtime rendering method (i.e. for video games) is <strong>raster graphics</strong>, which stores 3D objects as a collection of triangles, then projects those triangles onto a 2D screen. We can use the relative depths of triangles to cull any obscured triangles, greatly speeding up rendering time, and we can use the normal vectors of the triangles to shade the resulting image.</p>
+
+			<p class="build">However, effects like soft shadows, reflections, and antialiasing (smoothing jagged edges) are prohibitively difficult to implement with raster graphics, and the complexity of the objects we can render is limited by the number of triangles that make them up.</p>
+		</div>
+
+		<div>
+			<h1>Ray Tracing</h1>
+
+			<p class="build">An alternative to raster graphics is <strong>ray tracing</strong>, which more closely matches our physical world. We emit &#x201C;light&#x201D; rays from the camera and compute their intersection with the entire scene. We can then continue with the reflected ray, intersecting and bouncing it until it reaches a light source. In effect, we simulate only the light rays that eventually reach the camera.</p>
+
+			<p class="build">Unfortunately, computing those intersections is extraordinarily taxing, and although fancy effects are possible, they are also quite expensive to implement. Outside of limited use in modern video games with cutting-edge hardware, ray tracing is still constrained to non-realtime rendering (e.g. 3D movies).</p>
+		</div>
+
+		<div>
+			<h1>Distance Estimators</h1>
+
+			<p class="build">How can we get the effects of ray tracing without having to compute those intersections?</p>
+
+			<p class="build">We could avoid having to calculate the geometry of an object if we instead knew a <strong>distance estimator</strong>, or DE, for it: a function that takes in a point in $\mathbb{R}^3$ and outputs (no more than) the minimum distance to the surface of the object, with negative outputs indicating the point is inside.</p>
+		</div>
+		
+		<div>
+			<p>Sphere of radius $r$ at the origin: $d(p) = |p| - r$</p>
+
+			<p class="build">Plane $z = 0$: $d(p) = |p_z|$</p>
+
+			<p class="build">Cube of side length $2r$ at the origin: $d(p) = \max\{|p_x| - r, |p_y| - r, |p_z| - r\}$</p>
+
+			<p class="build">Union of objects with DEs $d_1$ and $d_2$: $d(p) = \min\{d_1(p), d_2(p)\}$</p>
+
+			<p class="build">Intersection of objects with DEs $d_1$ and $d_2$: $d(p) = \max\{d_1(p), d_2(p)\}$</p>
+
+			<p class="build">Set difference of objects with DEs $d_1$ and $d_2$: $d(p) = \max\{d_1(p), - d_2(p)\}$</p>
+		</div>
+
+		<div>
+			<h1>Ray Marching</h1>
+
+			<p class="build">Given a camera position $c \in \mathbb{R}^3$ and a unit vector $v \in T_c\mathbb{R}^3$, we can &#x201C;march&#x201D; a ray from $c$ in the direction of $v$.</p>
+
+			<p class="build">Since there are no objects within $d(c)$ of the camera, we can move to $p_1 = c + d(c)v$ without marching inside an object.</p>
+
+			<p class="build">We can then march safely to $p_1 + d(p_1)v$, and repeat until the DE is below some threshold $\varepsilon$ or above some clip distance &mdash; lower values of $\varepsilon$ will result in a more accurate image.</p>
+
+			<p class="build">Repeating this process for every pixel in a grid, using a different direction for each, we can render an image by coloring pixels based on whether they reach the object.</p>
+		</div>
+
+		<div id="ground-and-sphere" class="full-canvas"></div>
+
+		<div>
+			<h1>Lighting</h1>
+
+			<p class="build">What else can we do with DEs? Everything might look a nail to our hammer, but this world might genuinely be made of nails.</p>
+
+			<p class="build">Once we hit an object, we can find the normal vector to the surface by computing the gradient of the DE numerically. By taking the normal vector&#x2019;s dot product with a vector pointing to a light source, we can approximate shading.</p>
+
+			<p class="build">We can also slightly darken the color based on the number of marches taken to simulate ambient occlusion, and by blending the final color with the sky color based on distance from the camera, we can simulate fog.</p>
+		</div>
+
+		<div id="lighting" class="full-canvas"></div>
+
+		<div>
+			<h1>Shadows and Reflections</h1>
+
+			<p class="build">Once we hit an object, we can use the surface normal to bump the position back outside of the object, then turn and march straight toward the light source. If we hit something else along the way, we darken the pixel.</p>
+
+			<p class="build">Amazingly, we also get soft shadows for free with this method. If we don&#x2019;t hit anything on the way to the light source, we darken the pixel based on how close it came to hitting something.</p>
+
+			<p class="build">Reflections are even simpler: by reflecting the direction through the surface normal, we can start a new march and mix it with our current color.</p>
+		</div>
+
+		<div id="shadows" class="full-canvas"></div>
+
+		<div>
+			<h1>Folding Space</h1>
+
+			<p class="build">The real power of ray marching comes from the ways in which we can manipulate DEs to effectively cheat on computation time while the ray is still traveling.</p>
+
+			<p class="build">For example, if we modulo the position by a constant in all three directions at every step, the effect is to render infinitely many spheres at <strong>no additional time complexity</strong>, and we can invert the sphere DE to render a room-like space instead.</p>
+		</div>
+
+		<div id="folding-space" class="full-canvas"></div>
+
+		<div>
+			<h1>Fractals</h1>
+
+			<p class="build">Let&#x2019;s render a cube fractal that&#x2019;s reminiscent of the free group on three elements. We&#x2019;ll begin with a DE for a cube, and based on which of the six sides we&#x2019;re closest to, we&#x2019;ll union it with a smaller cube on that side. Repeating this produces $O(6^n)$ cubes in $O(n)$ time.</p>
+
+			<p class="build">By carving out cubes instead of adding them, we can also easily render the Menger Sponge.</p>
+		</div>
+
+		<div id="sphere-and-cube" class="full-canvas"></div>
+
+		<div id="cube-and-sponge" class="full-canvas"></div>
+
+		<div id="kifs" class="full-canvas"></div>
+
+		<div id="mandelbulb" class="full-canvas"></div>
+
+		<div id="qjulia" class="full-canvas"></div>
+
+		<div>
+			<h1>Curved Space</h1>
+
+			<p class="build">By changing the paths along which light travels, we can simulate a different curvature of space.</p>
+
+			<p class="build">With (a lot) more work, we can render scenes in the eight Thurston geometries on 3-manifolds.</p>
+		</div>
+
+		<div id="curved-space" class="full-canvas"></div>
+		
+		<div id="e3" class="full-canvas"></div>
+
+		<div id="h2xe" class="full-canvas"></div>
+
+		<div id="sl2r" class="full-canvas"></div>
+
+		<div>
+			<h1>Takeaways</h1>
+			
+			<p class="build">Ray marching is an excellent tool for rendering anything in 3D, particularly when it involves complicated mathematical objects.</p>
+
+			<p class="build">More broadly, it&#x2019;s an excellent example of extracting an incredible amount of detail and quality from a limited amount of information.</p>
+		</div>
+
+		<div style="display: flex; flex-direction: column; justify-content: center">
+			<h1 style="text-align: center">Thank You!</h1>
+		</div>
+	</div>
+	
+	<script>
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>

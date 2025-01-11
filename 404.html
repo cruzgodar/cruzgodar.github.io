@@ -1,83 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Cruz Godar</title>
 
+	<meta property="og:title" content="Cruz Godar"/>
 
+	<meta property="og:type" content="website"/>
 
-<title>Oh No!</title>
+	<meta property="og:url" content="https://cruzgodar.com/"/>
 
-<meta name="keywords" content="cruz,godar,cruzgodar,writing,math,teaching,blog,notes,applet">
-<meta name="author" content="Cruz Godar">
-<meta name="description" content="Writing and teaching and fractals.">
+	<meta property="og:image" content="https://cruzgodar.com/home/cover.webp"/>
 
-<meta charset="utf-8"/>
+	<meta property="og:description" content="Teacher, developer, mathematical illustrator.">
 
-<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<meta property="og:locale" content="en_US"/>
 
-<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<meta property="og:site_name" content="Cruz Godar"/>
 
-<link rel="manifest" href="/manifest.json">
+	<meta name="keywords" content="cruz,godar,cruzgodar,math,teaching,blog,notes,applet">
+	<meta name="author" content="Cruz Godar">
+	<meta name="description" content="Teacher, developer, mathematical illustrator.">
 
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+	<meta charset="utf-8"/>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
 
-<meta name="apple-mobile-web-app-title" content="Cruz Godar">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
+	<link rel="manifest" href="/manifest.json">
+
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+
+	<link rel="stylesheet" type="text/css" href="/style/index.min.css">
+
+	<link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap" rel="stylesheet" as="font">
+
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta id="theme-color-meta" name="theme-color" content="#ffffff">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+	<meta name="apple-mobile-web-app-title" content="Cruz Godar">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
 </head>
 
-
-
-<body class="animated-opacity">
+<body>
 	<noscript>
 		<div style="height: 5vh"></div>
 		
 		<p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p>
 	</noscript>
 	
-	
-	
-	<!-- Tells the browser that it's time to get GBB up and running -->
-	<p style="opacity: 0; font-family: 'Gentium Book Basic', serif">a</p>
-	
-	
-	
-	<script src="/scripts/aos.min.js"></script>
-	
-	<script src="/scripts/js-bundle.min.js"></script>
-	
+	<div id="card-container">
+		<div id="card-close-button"><span>&#215;</span></div>
+	</div>
+
+	<div id="height-measurer"></div>
+
 	<script>
-		let link = document.createElement("link");
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href", "/style/css-bundle.min.css");
-		document.head.appendChild(link);
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script type="module">
+		import anime from "/scripts/anime.min.js";
+		window.anime = anime;
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script type="module">
+		import {loadSite} from "/scripts/src/main.min.js";
+
+		window.DEBUG = false;
 		
-		link = document.createElement("link");
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href", "/style/aos.min.css");
-		document.head.appendChild(link);
-		
-		
-		
-		Site.load("/404/404.html");
+		loadSite("/404/");
 	</script>
 </body>
 </html>

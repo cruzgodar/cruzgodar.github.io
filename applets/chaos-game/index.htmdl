@@ -1,0 +1,38 @@
+Draw a pentagon and a single dot in the center. Now roll a five-sided die to randomly pick one of the vertices of the pentagon and draw a new dot halfway between the first dot and that vertex. Roll the die again, draw a dot halfway between that one and the new vertex, and repeat. If you have a few hundred years on hand, you'll have a very interesting picture. Depending on the inital polygon drawn, we can get some wild results --- see if you recognize the triangle version, for example. Like <a href="/applets/barnsley-fern/">the Barnsley Fern</a> and <a href="/applets/kicked-rotator/">the Kicked Rotator</a>, this process, often called the Chaos Game, is an example of an iterated function system, where we repeatedly apply a given function. It differs from examples like the <a href="/applets/julia-set-explorer/">Mandelbrot set</a>, though, in that we're tracking the movement of one point over time rather than iterating every point individually.
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### text-boxes
+	resolution
+	num-vertices
+###
+
+### buttons
+	generate
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>

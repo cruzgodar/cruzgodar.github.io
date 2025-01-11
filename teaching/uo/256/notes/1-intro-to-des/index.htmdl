@@ -1,0 +1,221 @@
+### nav-buttons
+
+
+
+You may have already seen differential equations in calculus II, but even if you have, it's probably been a while. Let's start from the beginning, and properly define the things we'll be devoting so much time to.
+
+
+
+### def "differential equation"
+	
+	A **differential equation**, or DE, is an equation involving a function $y(t)$, its derivatives, and the input variable $t$. We typically use $t$ instead of $x$, since the vast majority of our applications will have time as the input variable. A **solution** to a DE is a function $y(t)$ that satisfies the equation.
+	
+###
+
+
+
+For example, $y' = ty$ is a DE, and a solution is $y(t) = e^{\frac{1}{2} t^2}$. In fact, so is $y(t) = ce^{\frac{1}{2} t^2}$ for any value of $c$. To see why, we just need to solve for $y'$ and check if the equation works. We have
+
+$$
+	y'(t) &= \frac{d}{dt} \left[ ce^{\frac{1}{2} t^2}\right]
+	
+	&= ce^{\frac{1}{2} t^2} \cdot \frac{1}{2}(2t)
+	
+	&= cte^{\frac{1}{2} t^2}
+	
+	&= ty(t).
+$$
+
+It shouldn't be too surprising that we have the free parameter $c$ in our solution: when we specify a function in terms of its first derivative, finding it usually involves integrating, and integrating means writing $+C$ at some point. Here, our value of $c$ isn't being added to the function --- it's being multiplied. We'll see why momentarily, but it's a good heads-up that things won't be quite as simple as integrals in calculus II.
+
+
+
+### ex "a simple DE"
+	
+	A rock falling off a cliff has vertical velocity $v(t) = -10t$ after falling for $t$ seconds. Set up and solve a DE for the function $h(t)$ that gives the vertical height of the rock after $t$ seconds.
+	
+	We know from calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
+	
+	$$
+		h(t) &= \int -10t\,dt
+		
+		&= -5t^2 + c.
+	$$
+	
+	We're using a lowercase $c$ instead of an uppercase one, which is typical for DE solutions --- we're going to need to put subscripts on the $c$s soon, and capital variables would get a bit unwieldy.
+	
+###
+
+
+
+### exc "a simple DE"
+	
+	A buoy has a fixed horizontal position but bobs up and down with waves, and its acceleration after $t$ seconds is given by $a(t) = \cos\left( \frac{t}{5} \right)$. Set up and solve a DE for the function $v(t)$ that gives the vertical velocity of the buoy after $t$ seconds.
+
+	**Solution:** Since $v'(t) = a(t)$, we integrate $a(t)$ to find
+	
+	$$
+		v(t) = \int \cos\left( \frac{t}{5} \right)\,dt &= 5\sin\left( \frac{t}{5} \right) + c.
+	$$
+	
+###
+
+
+
+## Direction fields
+
+
+
+A common theme in math when developing a new topic is to find that many facts only apply in a particular situation. That's usually an indication that we should give that situation a name to make it easier to reference in the future --- before long, it becomes something we're used to in its own right.
+
+
+
+### def "ODEs and PDEs"
+	
+	An **ordinary differential equation**, or ODE, is a differential equation involving a function $y(t)$ of a single variable $t$. In contrast, a **partial differential equation**, or PDE, is one involving a function $y$ of multiple variables, like $y(t, s)$, and its partial derivatives.
+	
+###
+
+
+
+PDEs are substantially more complicated than ODEs --- in fact, they have entire classes devoted to them --- and we'll be sticking exclusively to ODEs in this course. We'll have more classifying definitions in the future, but we only need two more for now.
+
+
+
+### def "linearity"
+	
+	A DE is **linear** if it is a linear function of $y, y', ..., y^{(n)}$.
+	
+###
+
+
+
+### def "order"
+	
+	The **order** of a DE involving the derivatives $y, y', ..., y^{(n)}$ is $n$ --- in other words, it's the highest derivative on $y$.
+	
+###
+
+
+
+These are concise definitions, but not ones that are easy to internalize right away. Let's go through a few examples to get used to them.
+
+
+
+### ex "linearity and order"
+	
+	The DE $y'' - ty' = t^2$ is linear: even though $t$ is squared on the right and multiplied by $y'$ in the middle, this is a linear function of the derivatives of $y$. Since $t$ is never mentioned in the definition, we can think of it as a constant:
+	
+	$$
+		y'' - c_1y' = c_2,
+	$$
+	
+	which is much more clearly linear. The order of this DE is $2$, since the highest-order derivative that appears is $y'' = y^{(2)}$.
+	
+	On the other hand, the DE $y^2 - yy' = \sqrt{t}$ is not linear. The $\sqrt{t}$ isn't a problem, but both $y^2$ and $yy'$ aren't linear functions of $y$. Since the highest derivative that appears is $y'$, its order is $1$.
+	
+###
+
+
+
+We'll begin the class by solving first-order DEs, then move to second-order DEs a little later down the road, and higher-order ones after that.
+
+If we can solve a first-order DE for $y'$, then the other side of the equation is a function $f(t, y)$ of two variables. Let's take the DE
+
+$$
+	(t^2 + 1)y' = \sin(y)
+$$
+
+as an example. Solving for $y'$ results in
+
+$$
+	y' = \frac{dy}{dt} = \frac{\sin(y)}{t^2 + 1},
+$$
+
+so we know exactly what the slopes of tangent lines of a solution $y(t)$ must be. In order to represent all possible solutions at once, we can draw those tangent lines: for a grid of points $(t, y)$, we'll create what's called a **direction field** by drawing a small line segment with slope $y'$ at every point. Then solutions to the DE are tangent to all the line segments they intersect --- in other words, they follow the flow.
+
+### desmos directionField
+
+By changing $c$, we can see a handful of different solutions $y(t)$, all of which follow the flow.
+
+Returning to the solution for $y'$ and multiplying both sides by $dt$, we have
+
+$$
+	dy = \frac{\sin(y)}{t^2 + 1}dt.
+$$
+
+So for any time $t$ and state $y$, increasing $t$ by a tiny amount $\Delta t$ will increase $y$ by roughly
+
+$$
+	\frac{\sin(y)}{t^2 + 1}\Delta t.
+$$
+
+We can visualize this by flooding a grid with particles and moving them all over time according to that formula --- and the result is surprisingly beautiful.
+
+### canvas vector-field
+
+You can pan and zoom on that canvas by dragging, pinching, and scrolling, and the button in the top right opens it in fullscreen. Give it a try!
+
+While direction fields are restricted to always pushing particles to the right, we can extend the idea to what are called **vector fields**, which can freely move particles in any direction. You'll see a lot more of them if you stick around to calculus V, but if you'd like to explore more now, the applet that drew the above field can also draw any vector field you like --- have a look!
+
+### image-links
+	/applets/vector-fields/
+###
+
+<div style="height: 64px"></div>
+
+
+
+### exc "direction field"
+	
+	Draw a direction field for $(y^2 - 1)y' = t$ for $-5 \leq t \leq 5$ and $-5 \leq y \leq 5$.
+
+	**Solution:** This one has the rather chaotic field given by
+	
+###
+
+
+
+In our previous example, a particular kind of solution occurs when $y(t)$ is the constant function $0$, $\pi$, $-\pi$, or any integer multiple $k\pi$. When $y$ is a constant, $y' = 0$, so these appear as flat horizontal flow lines in the direction field, and they have a special name:
+
+
+
+### def "equilibria"
+	
+	A solution $y(t) = c$ to a DE for a constant $c$ is called an **equilibrium** solution. If the surrounding field all flows toward $y = c$ as $t \to \infty$, we call the solution **stable**, and if it all flows away, we call it **unstable**.
+	
+###
+
+
+
+In our running example, the equilibria occur at $y = k\pi$ for any integer $k$. They're stable for odd $k$ and unstable for even $k$, since far to the right in the field (i.e. as $t \to \infty$), the surrounding field flows away from even multiples of $\pi$ and toward odd multiples.
+
+
+
+### ex "equilibria"
+	
+	Find the equilibrium solutions to $$y' = \frac{1}{50}(y^2 - 4)\left| y - 4 \right|(t - 3)$$ and classify them as stable, unstable, or neither.
+	
+	When $y' = 0$, we have $y = 2$, $y = -2$, $y = 4$, or $t = 3$. Solutions are always $y$ as a function of $t$ and not $t$ as a function of anything, so we only want the first three. To classify their stability, we'll draw a direction field.
+	
+	### desmos directionField2
+	
+	In general, we should draw it large enough to include all the equilibria and any other times $y' = 0$ (like when $t = 3$). Now we can see that $y = 2$ is unstable, $y = -2$ is stable, and $y = 4$ is neither stable nor unstable.
+	
+###
+
+### exc "equilibria"
+	
+	A population of foxes is given by the function $P(t)$ (in thousands of foxes) after $t$ years. It satisfies the equation
+	
+	$$
+		\frac{20}{P(P - 3)}P' = t + 1.
+	$$
+	
+	Find the equilibrium solutions and classify them as stable, unstable, or neither. Do they make sense?
+	
+###
+
+
+
+### nav-buttons

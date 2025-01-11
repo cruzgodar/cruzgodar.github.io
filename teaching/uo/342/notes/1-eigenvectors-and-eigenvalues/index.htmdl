@@ -1,0 +1,338 @@
+### nav-buttons
+
+Before we dive into more linear algebra, I want to take a step back and look at some of its many applications that motivate devoting two terms to its study. Now that we have the terminology of bases, the definition of a linear map $T : V \to W$ couldn't be much simpler: it's a function that splits across addition and scalar multiplication (i.e. $T(c\vec{v_1} + \vec{v_2}) = cT(\vec{v_1}) + T(\vec{v_2})$) that's completely determined by its action on a basis.
+
+With $V = #R#^3$ and $W = #R#^2$, there's the classic example of 3D graphics. *Raster* graphics, the technology underlying most 3D video games, works by modeling 3D shapes as a massive collection of triangles, then projecting each onto the 2D screen by a linear map determined by the position and rotation of the camera. The projection of a 3D triangle is a 2D triangle (this takes a little thought!), and so the result is a collection of triangles in the image plane. We can then test every pixel to see if it's in the interior of a triangle, and color it accordingly if so. At the time of writing, there's no Desmos 3D API I can use to embed a graph directly in the notes, but here's <a href="https://www.desmos.com/3d/947d6c19bf">a small demonstration I put together</a>. The gray lines connecting the vertices of the red triangle in the world to its blue rendered image are projections from the ambient space onto the camera's image plane.
+
+### exc "3D rendering"
+
+	In the previous example, what would be a good choice of bases for the domain and codomain of the projection map to make its matrix representation as simple as possible? Explain your answer --- it doesn't need to be in symbols.
+
+###
+
+On the subject of 3D rendering, I completed a project to render the Thurston geometries not too long ago. These are the eight different geometries possible in curved three-dimensional space; as a two-dimensional analogue, the geometry of the sphere is different than that of the plane. Here's a rendering of three-dimensional *hyperbolic* space --- drag on the scene to look around and use WASD or hold down with two fingers on a touchscreen to move.
+
+### canvas h3-geometry
+
+Linear algebra is all over this project. All of the geometries are represented as curved spaces in 4-dimensional space, similar to how a sphere is curved in 3-dimensional space, and so the facing of the camera is stored as four vectors in $#R#^4$ that are all perpendicular to one another. Although the scene itself looks like an infinite collection of rooms, there's actually only a single one. The camera casts a ray out to render each pixel, and whenever it passes through one of the room's windows, a linear map (i.e. a $4 \times 4$ matrix) gets applied to its position and rotation to teleport it to the opposite window. By doing the same thing to the camera itself when it passes through windows and keeping careful track of the color changes, we get a perfect illusion of an infinite series of rooms with the rendering cost of just one.
+
+When the domain and codomain are the same, linear maps can be *iterated*: applied over and over to an input. If we take four specific maps from $#R#^2$ to itself (let's call them $A$, $B$, $C$, and $D$), we can repeatedly apply them to a starting point and see where it goes. At each step, we take a random map out of the four and apply it to a starting point of $(0, 0)$, then take a random map and apply it to that point, and so on. We'll plot the points it visits --- the brighter the point, the more frequently it's been there. 
+
+### canvas barnsley-fern
+
+The result for these four maps in particular is called the *Barnsley fern*, named after its creator --- amazingly, with enough iterations (10 million in this example), the picture converges to the same thing, even with the random choices of maps. Strictly speaking, these are *affine* linear maps, which means they multiply by a matrix and then add a vector, but it's a good demonstration nevertheless.
+
+As one final application, we can use linear maps to create systems of linear *differential* equations, not just algebraic ones. For example, the system
+
+$$
+	x' &= x - y
+	y' &= x + y
+$$
+
+is really a matrix equation in disguise:
+
+$$
+	[[ x' ; y' ]] = [[ 1, -1 ; 1, 1 ]] [[ x ; y ]].
+$$
+
+A great way to visualize these is by plotting a field of moving particles, where the velocity of one at $(x, y)$ is given by this formula for $(x', y')$. Coloring the points by their velocity and direction, we get a striking picture.
+
+### canvas vector-field
+
+We'll continue to touch on topics from all of these examples throughout the term. If you'd like to see more from any of them, they come from interactive applets I've written --- have a look!
+
+### image-links
+	/applets/thurston-geometries/
+	/applets/barnsley-fern/
+	/applets/vector-fields/
+###
+
+
+
+## Eigenvectors
+
+Let's start with a topic from the second example: iterated linear maps. If we're trying to evaluate $A^{100}\vec{v}$ for an $n \times n$ matrix $A$ and a vector $\vec{v} \in #R#^n$, then we'd desperately like a trick to avoid doing $100$ matrix-vector products. The best possible scenario would be if we had a basis $\{ \vec{v_1}, ..., \vec{v_n} \}$ of fixed points for $A$: vectors so that $A\vec{v_i} = \vec{v_i}$. Then for any vector $\vec{v} = c_1 \vec{v_1} + \cdots + c_n \vec{v_n}$, we'd have
+
+$$
+	Av &= A(c_1 \vec{v_1} + \cdots + c_n \vec{v_n})
+
+	&= c_1 A \vec{v_1} + \cdots + c_n A \vec{v_n}
+
+	&= c_1 \vec{v_1} + \cdots + c_n \vec{v_n}
+
+	&= \vec{v},
+$$
+
+so $A^{100}\vec{v} = \vec{v}$, and we've sidestepped the problem entirely. Unfortunately, this calculation shows that having a basis of fixed points implies that *every* vector is a fixed point of $A$, meaning $A$ has to be the identity matrix $I$. The reality of what we can expect will turn out to not be that far off, though, as surprising as that may be. Let's take a look at an example to get our bearings. With $A$, $\vec{v_1}$, and $\vec{v_2}$ defined as
+
+$$
+	A &= [[ 5, 6 ; -3, -4 ]]
+	
+	\vec{v_1} &= [[ -2 ; 1 ]]
+
+	\vec{v_2} &= [[ 1 ; -1 ]],
+$$
+
+we have
+
+$$
+	A\vec{v_1} &= [[ -4 ; 2 ]] = 2\vec{v_1}
+
+	A\vec{v_2} &= [[ -1 ; 1 ]] = -\vec{v_2}.
+$$
+
+Neither of these is a fixed point, but they're the next best thing. If we want to evaluate $A^{100}\vec{v_1}$, it's just $2^{100}\vec{v_1}$, since every application of $A$ just multiplies by 2. Similarly, $A^{100}\vec{v_2} = (-1)^{100}\vec{v_2} = \vec{v_2}$. And if we want to evaluate $A^{100}\vec{v}$ for any other vector $\vec{v}$, all we have to do is express $\vec{v} = c_1\vec{v_1} + c_2\vec{v_2}$ (since $\vec{v_1}$ and $\vec{v_2}$ are linearly independent and therefore form a basis for $#R#^2$), and then we can apply powers of $A$ with no trouble at all. These objects are important enough that we'll want to give them a name:
+
+### def "eigenvectors and eigenvalues"
+
+	Let $A$ be an $n \times n$ matrix. An **eigenvector** of $A$ is a nonzero vector $\vec{v} \in #R#^n$ such that $A\vec{v} = \lambda \vec{v}$ for some number $\lambda \in #R#$, called the **eigenvalue** corresponding to $\vec{v}$.
+
+###
+
+*Eigen* is German for *characteristic* (as well as *strange*), and refers to the way these objects are intrinsic to the matrix they come from. Eigenvectors and eigenvalues are defined only for square matrices, since if $A$ isn't square, its outputs have different lengths than its inputs, so there's no hope of the two being multiples of one another. We also exclude the zero vector since $A\vec{0} = \vec{0}$ no matter what $A$ is, and the eigenvalue wouldn't even be defined.
+
+So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch? We can rewrite the equation $A\vec{v} = \lambda \vec{v}$ as $A\vec{v} - \lambda \vec{v} = \vec{0}$, and to express the left side as a single linear map acting on $\vec{v}$, we can write it as $(A - \lambda I)\vec{v} = \vec{0}$. If we knew $\lambda$, we could solve for $\vec{v}$ by row reduction, we usually won't know the eigenvalues ahead of time. To that end, let's start by finding all the possible values for $\lambda$. If $(A - \lambda I)\vec{v} = \vec{0}$, then $\vec{v} \in \ker (A - \lambda I)$, which means $A - \lambda I$ isn't one-to-one. An equivalent condition is that $\det(A - \lambda I) = 0$, and that's an equation we can solve. Since the determinant is just a complicated series of multiplications and additions, the result will be a polynomial in $\lambda$, which we call the **characteristic polynomial** of $A$ and denote $\chi_A(\lambda)$. Once we solve $\chi_A(\lambda) = 0$ for the eigenvalues of $A$, we can then plug each into $(A - \lambda I)\vec{v} = \vec{0}$ in turn to find the corresponding eigenvectors.
+
+### ex "eigenvalues and eigenvectors"
+
+	Find the eigenvalues and eigenvectors of
+
+	$$
+		A = [[ 5, -3 ; 2, -2 ]].
+	$$
+	
+	To get the characteristic polynomial, we subtract $\lambda I$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
+	
+	$$
+		\det (A - \lambda I) &= \det [[ 5 - \lambda, -3 ; 2, -2 - \lambda ]]
+		
+		&= (5 - \lambda)(-2 - \lambda) - (-3)(2)
+		
+		&= -10 - 3\lambda + \lambda^2 + 6
+		
+		&= \lambda^2 - 3\lambda - 4
+		
+		&= (\lambda - 4)(\lambda + 1).
+	$$
+	
+	Since the characteristic polynomial is supposed to equal zero, the eigenvalues are $4$ and $-1$. We'll handle them one at a time to find the eigenvectors.
+	
+	First, let's take $\lambda = 4$. That gives us the system $(A - 4 I)\vec{v} = 0$, which corresponds to the augmented matrix
+	
+	$$
+		[[ 1, -3 | 0 ; 2, -6 | 0 ]] & 
+		
+		[[ 1, -3 | 0 ; 0, 0 | 0 ]] & \quad \vec{r_2} \pe -2\vec{r_1}.
+	$$
+	
+	In the form of an equation, $\vec{v}_1 - 3\vec{v}_2 = 0$, so $\vec{v}_1 = 3\vec{v}_2$. We just need one eigenvector, so let's take $\vec{v}_2 = 1$ and $\vec{v}_1 = 3$ to get our first eigenvector of
+	
+	$$
+		\vec{v} = [[ 3 ; 1 ]]
+	$$
+	
+	with $\lambda_1 = 4$. For the other eigenvalue, we have
+	
+	$$
+		[[ 6, -3 | 0 ; 2, -1 | 0 ]] & 
+			
+		[[ 6, -3 | 0 ; 0, 0 | 0 ]] & \quad \vec{r_2} \pe -\frac{1}{3}\vec{r_1}.
+	$$
+	
+	Now $6\vec{v}_1 - 3\vec{v}_2 = 0$, so $2\vec{v}_1 = \vec{v}_2$. We'll just take $\vec{v}_1 = 1$ and $\vec{v}_2 = 2$ to get our second eigenvector of
+	
+	$$
+		\vec{v} = [[ 1 ; 2 ]].
+	$$
+
+###
+
+### exc "eigenvectors and eigenvalues"
+	
+	Find the eigenvalues and eigenvectors of
+	
+	$$
+		B = [[ 1, 1, 0 ; 0, 0, 0 ; 0, 1, 1 ]].
+	$$
+	
+###
+
+There's an important fact relating eigenvalues and determinants that we should take the opportunity to write down. Since the eigenvalues $\lambda_1, ..., \lambda_n$ of an $n \times n$ matrix $A$ are just roots of its characteristic polynomial $\chi_A(\lambda)$, we can write that polynomial as
+
+$$
+	\chi_A(\lambda) = (\lambda_1 - \lambda)(\lambda_2 - \lambda) \cdots (\lambda_n - \lambda).
+$$
+
+On the other hand, $\chi_A(\lambda) = \det(A - \lambda I)$. If we set $\lambda = 0$ on both sides, we find that
+
+$$
+	\lambda_1 \lambda_2 \cdots \lambda_n = \det A.
+$$
+
+In other words,
+
+### thm "eigenvalues and the determinant"
+
+	Let $A$ be an $n \times n$ matrix. Then $\det A$ is the product of the eigenvalues of $A$.
+
+###
+
+An immediate corollary is that $A$ is invertible exactly if no eigenvalue of $A$ is zero. This description makes the volume-scaling interpretation of the determinant quite a bit more clear: for example, the matrix
+
+$$
+	A = [[ 4, -2 ; 1, 1 ]]
+$$
+
+has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and green ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
+
+### desmos areaScaling
+
+As is becoming increasingly clear, we'd always like a *basis* of eigenvectors for a matrix. The characteristic polynomial $\chi_A(\lambda)$ of an $n \times n$ matrix is always of degree $n$, since there's exactly one term in the determinant expansion that involves multiplying together every diagonal entry of $A - \lambda I$, each of which is of the form $a_{ii} - \lambda$. That means that we'll at least have $n$ eigenvalues $\lambda$, but that number is counted with multiplicity --- the eigenvalues could be repeated or even complex numbers. We'll dig more into those possibilities in future sections, but for now, we can at least verify that when all the eigenvalues are distinct, we get the basis of eigenvectors we're looking for.
+
+### prop "distinct eigenvalues guarantee a basis of eigenvectors"
+
+	Let $A$ be an $n \times n$ matrix with eigenvalues $\lambda_1, ..., \lambda_n$ so that $\lambda_i \neq \lambda_j$ for $i \neq j$. Then the corresponding eigenvectors $\vec{v_1}, ..., \vec{v_n}$ form a basis for $#R#^n$.
+
+###
+
+### pf
+
+	We'll often get the chance to prove our results in this course, and it's worth taking it whenever we can. While this course isn't proof-based, it's good preparation for future ones that are, and there's usually value in seeing *why* results are true regardless.
+
+	Since $\vec{v_1}, ..., \vec{v_n}$ is a list of $n$ vectors in $#R#^n$, we only need to check if they're linearly independent or they span --- if one is true, the other must be (this might be a more familiar fact if the $\vec{v_i}$ are placed as columns in a matrix; then the two conditions are that the corresponding map is one-to-one or onto). Linear independence is usually an easier condition to check, so let's try that.
+
+	We'll show this result one vector at a time, first showing that $\vec{v_1}$ and $\vec{v_2}$ are linearly independent. If $c_1\vec{v_1} + c_2\vec{v_2} = \vec{0}$, then all we can really do is apply $A$ to both sides --- otherwise, the $\lambda_i$ don't appear. The result of doing that is
+
+	$$
+		c_1 \lambda_1 \vec{v_1} + c_2 \lambda_2 \vec{v_2} = \vec{0},
+	$$
+
+	which looks very similar to our original equation. Multiplying it by $\lambda_1$ results in
+
+	$$
+		c_1 \lambda_1 \vec{v_1} + c_2 \lambda_1 \vec{v_2} = \vec{0},
+	$$
+
+	and subtracting these two equations from one another, we have
+
+	$$
+		c_2 (\lambda_2 - \lambda_1) \vec{v_2} &= \vec{0}
+
+		c_2 (\lambda_2 - \lambda_1) \vec{v_2} &= \vec{0}.
+	$$
+
+	Since $\vec{v_2}$ is an eigenvector, it's not the zero vector, and $\lambda_1 \neq \lambda_2$ by assumption, so $c_2 = 0$. Then $c_1 = 0$ too since $\vec{v_1} \neq \vec{0}$, and so $\vec{v_1}$ and $v_2$ are linearly independent.
+
+	This process continues to work: if we know $\vec{v_1}, ..., \vec{v_k}$ are linearly independent, then we can show $\vec{v_1}, ..., \vec{v_{k + 1}}$ are. That must mean that $\vec{v_1}, ..., \vec{v_n}$ are linearly independent --- intuitively, it's because we can repeat the process until we reach all $n$ vectors, but if you've taken a proofs class, you'll recognize this as an example of mathematical induction. Regardless, $\{\vec{v_1}, ..., \vec{v_n}\}$ is a basis for $#R#^n$.
+
+###
+
+One way to quickly put these ideas to use is with *dynamical systems*, a fancy term that just means a system whose state changes over time. When that change is characterized by a linear map, we can analyze its long-term behavior most easily by finding a basis of eigenvectors.
+
+### ex "a dynamical system"
+
+	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 25% of the math majors at the university switch to a computer science major, 50% of the physics majors switch to computer science, and 25% of the computer science majors switch to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major in the long run?
+	
+	The three states here are being a math, physics, and computer science major --- if $\vec{x}(t) \in #R#^3$ gives the number of students in each major after $t$ years, then
+
+	$$
+		\vec{x}(0) = [[ 100 ; 100 ; 100 ]],
+	$$
+
+	and for any nonnegative integer $t$, $\vec{x}(t + 1) = A\vec{x}(t)$, where
+
+	$$
+		A = [[ 0.75, 0, 0 ; 0, 0.5, 0.25 ; 0.25, 0.5, 0.75 ]].
+	$$
+
+	The entry in row $i$ and column $j$ is the proportion of people in state $j$ that move to state $i$ in each year --- since each column contains proportions of every state, their entries all sum to 1.
+
+	The long-term behavior of the system is
+
+	$$
+		\lim_{t \to \infty} \vec{x}(t) = \lim_{t \to \infty} A^t \vec{x}(0),
+	$$
+
+	so we want to express $\vec{x}(0)$ in a basis of eigenvectors. To find those eigenvectors, we first find $\chi_A(\lambda)$:
+
+	$$
+		\det [[ 0.75 - \lambda, 0, 0 ; 0, 0.5 - \lambda, 0.25 ; 0.25, 0.5, 0.75 - \lambda ]] &= 0
+
+		-\lambda^3 + 2\lambda^2 - 1.1875\lambda + 0.1875 &= 0
+	$$
+
+	Without the ability to solve cubics easily, we might as well plug this into an equation solver. The resulting solutions are
+
+	$$
+		\lambda_1 = 1, \quad \lambda_2 = 0.75, \quad \lambda_3 = 0.25.
+	$$
+
+	These are all distinct, and so our previous theorem guarantees that we'll have a basis of eigenvectors. To start, let's solve for $\vec{v_1}$:
+
+	$$
+		[[ 0.75 - 1, 0, 0 | 0 ; 0, 0.5 - 1, 0.25 | 0 ; 0.25, 0.5, 0.75 - 1 | 0 ]] &
+
+		[[ -0.25, 0, 0 | 0 ; 0, -0.5, 0.25 | 0 ; 0.25, 0.5, -0.25 | 0 ]] &
+
+		[[ 1, 0, 0 | 0 ; 0, 2, -1 | 0 ; 1, 2, -1 | 0 ]] & \quad :: \vec{r_1} \te -4 ; \vec{r_2} \te -2 ; \vec{r_3} \te 4 ::
+
+		[[ 1, 0, 0 | 0 ; 0, 2, -1 | 0 ; 0, 2, -1 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+
+		[[ 1, 0, 0 | 0 ; 0, 2, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+	$$
+
+	In total,
+
+	$$
+		\vec{v_1} = [[ 0 ; t/2 ; t ]],
+	$$
+
+	so with $t = 2$,
+
+	$$
+		\vec{v_1} = [[ 0 ; 1 ; 2 ]].
+	$$
+
+	Repeating this process for the next two vectors,
+
+	$$
+		\vec{v_2} = [[ -2 ; 1 ; 1 ]], \quad \vec{v_3} = [[ 0 ; -1 ; 1 ]].
+	$$
+
+	Now we need to express $\vec{x}(0)$ as
+
+	$$
+		\vec{x}(0) = c_1 \vec{v_1} + c_2 \vec{v_2} + c_3 \vec{v_3},
+	$$
+
+	which we can accomplish by inverting the matrix with the $\vec{v_i}$ as columns:
+
+	$$
+		[[ 0, -2, 0 ; 1, 1, -1 ; 2, 1, 1 ]]^{-1} &= [[ 1/3, 1/3, 1/3 ; -1/2, 0, 0 ; -1/6, -2/3, 1/3 ]]
+
+		[[ 1/3, 1/3, 1/3 ; -1/2, 0, 0 ; -1/6, -2/3, 1/3 ]][[ 100 ; 100 ; 100 ]] = [[ 100 ; -50 ; -50 ]].
+	$$
+
+	Then 
+
+	$$
+		\lim_{t \to \infty} A^t \vec{x}(0) &= \lim_{t \to \infty} A^t (100 \vec{v_1} + -50 \vec{v_2} + -50 \vec{v_3})
+
+		&= \lim_{t \to \infty} (100 \cdot 1^t \vec{v_1} -50 \cdot 0.75^t \vec{v_2} - 50 \cdot 0.25^t \vec{v_3})
+
+		&= 100 \vec{v_1}
+
+		&= [[ 0 ; 100 ; 200 ]].
+	$$
+
+	In the long run, there will be 100 students in the physics major and 200 in the computer science major (and tragically, no one in math).
+
+###
+
+### exc "a dynamical system"
+
+	Solutions A and B are mixed in a chemical reaction. Every minute, 25% of the mass of solution A is converted to solution B, and 40% of the mass of solution B is converted back to A. If there are initially 10 grams of solution A and 25 of solution B, how much will there be in the long run?
+
+###
+
+### nav-buttons

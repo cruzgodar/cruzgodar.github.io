@@ -1,0 +1,173 @@
+### nav-buttons
+
+In linear algebra I, we first developed our theory of matrices and linear transformations for $#R#^n$, and then brought them to more general vector spaces. Now that we've seen the dot product in $#R#^n$, we'll do the same to them to bring them to arbitrary vector spaces. The definitions of length, angle, and orthogonality could all be defined in terms of the dot product alone in $#R#^n$, and so we'll start there, trying to keep the definitions and their conditions to a minimum.
+
+### def "inner product"
+
+	Let $V$ be a vector space. An **inner product** on $V$ is a function that takes two vectors $\vec{v}$ and $\vec{w}$ and outputs an element of $#R#$, written $\left< \vec{v}, \vec{w} \right>$, such that:
+
+	1. It's **symmetric**: $\left< \vec{v}, \vec{w} \right> = \left< \vec{w}, \vec{v} \right>$.
+
+	2. It's **bilinear**: $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
+
+	3. It's **positive definite**: $\left< \vec{v}, \vec{v} \right> \geq 0$, and the only vector $\vec{v}$ for which $\left< \vec{v}, \vec{v} \right> = 0$ is $\vec{v} = \vec{0}$.
+
+	An **inner product space** is a vector space equipped with an inner product.
+
+###
+
+All of these properties were true of the dot product --- in fact, they were the content of our first proposition about it --- and so the dot product is the primordial example of an inner product. Let's use general inner products to define the related concepts, and then we'll take a look at some more exotic examples.
+
+### def "magnitude, angle, and orthogonality"
+
+	Let $V$ be an inner product space. The **magnitude** (or **length** or **norm**) of $\vec{v} \in V$ is $\left| \left| \vec{v} \right| \right| = \sqrt{\left< \vec{v}, \vec{v} \right>}$. The **angle** between vectors $\vec{v}$ and $\vec{w}$ is
+	
+	$$
+		\arccos\left( \frac{\left< \vec{v}, \vec{w} \right>}{\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|} \right),
+	$$
+
+	and we say that $\vec{v}$ and $\vec{w}$ are **orthogonal** if $\left< \vec{v}, \vec{w} \right> = 0$ (i.e. the angle between them is $90^\circ$).
+
+###
+
+Let's look at the most common inner products on our usual vector spaces. On $#R#^2$, for example, the typical choice is the standard dot product:
+
+$$
+	\left< [[ x_1 ; y_1 ]], [[ x_2 ; y_2 ]] \right> = x_1x_2 + y_1y_2.
+$$
+
+However, we could also replace the coefficients on $x_1x_2$ and $y_1y_2$ with any positive number, and the definition would still hold. If we tried to define
+
+$$
+	\left< [[ x_1 ; y_1 ]], [[ x_2 ; y_2 ]] \right>_2 = -2x_1x_2,
+$$
+
+making one coefficient negative and the other zero, then we fail positive definiteness:
+
+$$
+	\left< [[ 1 ; 0 ]], [[ 1 ; 0 ]] \right>_2 = -2,
+$$
+
+and
+
+$$
+	\left< [[ 0 ; 1 ]], [[ 0 ; 1 ]] \right>_2 = 0,
+$$
+
+even though that's not the zero vector. On the homework, we'll see that for any matrix $A$ with $A^T = A$ and all positive eigenvalues,
+
+$$
+	\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}
+$$
+
+defines an inner product on $#R#^n$ (and in fact these are *all* the possible inner products on $#R#^n$). Let's look at some of the more exotic vector spaces, though.
+
+### ex "an inner product on polynomials"
+
+	Let $V = \span\{1, x, x^2\}$ be a subspace of $#R#[x]$. Show that
+
+	$$
+		\left< p, q \right> &= \sum_{n = 0}^2 p(n)q(n)
+
+		&= p(0)q(0) + p(1)q(1) + p(2)q(2).
+	$$
+
+	is an inner product, and find an orthonormal basis for $V$.
+
+	This definition is definitely symmetric. To show bilinearity, we have
+
+	$$
+		\left< cp(x) + q(x), r(x) \right> &= (cp(0) + q(0))r(0) + (cp(1) + q(1))r(1) + (cp(2) + q(2))r(2)
+
+		&= cp(0)r(0) + q(0)r(0) + cp(1)r(1) + q(1)r(1) + cp(1)r(1) + q(1)r(1)
+
+		&= c\left< p(x), r(x) \right> + \left< q(x), r(x) \right>,
+	$$
+
+	and for positive definiteness,
+
+	$$
+		\left< p, p \right> = p(0)^2 + p(1)^2 + p(2)^2 \geq 0.
+	$$
+
+	The last bit is somewhat more complicated --- for $\left< p, p \right> = 0$, one possibility for $p$ is $p = 0$. But if we're solving for $p$ given
+
+	$$
+		p(0)^2 + p(1)^2 + p(2)^2 = 0,
+	$$
+
+	then we need
+
+	$$
+		p(0) &= 0
+
+		p(1) &= 0
+
+		p(2) &= 0,
+	$$
+
+	which is a system of three equations and three unknowns (the coefficients of $p$). The resulting matrix is invertible, and so the *only* solution is $p = 0$.
+
+	To construct an orthonormal basis, we'll follow the Gram-Schmidt process like we do in $#R#^n$, but now the dot product is replaced with this strange new inner product. Let's start with the basis $\left\{ 1, x, x^2 \right\}$ and work from there. We have
+
+	$$
+		\vec{v_1} &= 1
+
+		\vec{v_2} &= x - \frac{\left< x, 1 \right>}{\left< 1, 1 \right>} 1
+
+		&= x - \frac{0 \cdot 1 + 1 \cdot 1 + 2 \cdot 1}{1 \cdot 1 + 1 \cdot 1 + 1 \cdot 1}1
+
+		&= x - 1
+
+		\vec{v_3} &= x^2 - \frac{\left< x^2, 1 \right>}{\left< 1, 1 \right>} 1 - \frac{\left< x^2, x - 1 \right>}{\left< x - 1, x - 1 \right>} (x - 1)
+
+		&= x^2 - \frac{0 \cdot 1 + 1 \cdot 1 + 4 \cdot 1}{1 \cdot 1 + 1 \cdot 1 + 1 \cdot 1}1 - \frac{0 \cdot (-1) + 1 \cdot 0 + 4 \cdot 1}{(-1) \cdot (-1) + 0 \cdot 0 + 1 \cdot 1}(x - 1)
+
+		&= x^2 - \frac{5}{3} - 2x + 2
+
+		&= x^2 - 2x + \frac{1}{3}.
+	$$
+
+	Normalizing, we have an orthonormal basis of
+
+	$$
+		\left\{ \frac{1}{\sqrt{3}}, \frac{1}{\sqrt{2}}(x - 1), \sqrt{\frac{3}{2}}\left( x^2 - 2x + \frac{1}{3} \right) \right\}.
+	$$
+
+###
+
+### exc "an inner product on continuous functions"
+
+	Let $C[a, b]$ be the vector space of continuous functions $f : [a, b] \to #R#$. Show that
+
+	$$
+		\left< f, g \right> = \int_a^b f(x)g(x)\,dx
+	$$
+
+	defines an inner product. With $X = \span\left\{ 1, x, x^2 \right\}$ as a subspace of $C[0, 1]$, find an orthonormal basis for $X$.
+
+###
+
+We'll close with two fundamental results that relate the sizes of inner products to the magnitudes of their arguments.
+
+### thm "the Cauchy-Schwarz inequality"
+
+	Let $V$ be an inner product space and $\vec{v}, \vec{w} \in V$. Then
+
+	$$
+		\left| \left< \vec{v}, \vec{w} \right> \right| \leq \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|.
+	$$
+
+###
+
+### thm "the triangle inequality"
+
+	Let $V$ be an inner product space and $\vec{v}, \vec{w} \in V$. Then
+
+	$$
+		\left| \left| \vec{v} + \vec{w} \right| \right| \leq \left| \left| \vec{v} \right| \right| + \left| \left| \vec{w} \right| \right|.
+	$$
+
+###
+
+### nav-buttons

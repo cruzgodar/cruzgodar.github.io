@@ -1,0 +1,415 @@
+### nav-buttons
+
+We've almost finished our discussion of first-order DEs! We'll spend this section looking at the existence and uniqueness of solutions and a third solving method, and then we'll start looking at second-order DEs in the next section.
+
+
+
+## Existence of Solutions
+
+With so much work required to solve DEs, it'd be nice to have simple heuristics that tell us if a given one even has any solutions at all before we start solving it. As is becoming a theme with the class, linear DEs will be simpler to handle than nonlinear ones.
+
+
+
+### prop "existence and uniqueness of solutions for first-order linear equations"
+	
+	For continuous functions $p$ and $q$, the DE
+	
+	$$
+		y' + p(t)y &= q(t)
+		
+		y(t_0) &= y_0
+	$$
+	
+	has a unique solution. 
+	
+###
+
+
+
+That's a nice result! Every first-order linear DE with an initial value not only has a solution, but it has exactly one. As the lengthy title suggests, we use the phrase **existence and uniqueness** to describe that property.
+
+There's not much going on beneath the surface of this result --- we need $p$ and $q$ to be continuous so that they're integrable (and in fact simply integrable but not necessarily continuous functions will suffice). Then we just solve the DE with an integrating factor. The proposition makes no claim that the solution will be nice, and in fact we've seen just the opposite --- sometimes we'll end up with a solution in terms of a nonelementary integral. If that sort of behavior is on the table, then this proposition is the best we could hope for.
+
+When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solving method, but we surprisingly get almost as nice of a result.
+
+
+
+### thm "existence and uniqueness of solutions for first-order nonlinear equations"
+	
+	For a continuous function $f(t, y)$ with a continuous partial derivative $$\frac{\partial f}{\partial y}$$, the DE
+	
+	$$
+		y' &= f(t, y)
+		
+		y(t_0) &= y_0
+	$$
+	
+	has a unique solution. 
+	
+###
+
+
+
+We're now faced with the question of what a partial derivative is --- it's a topic from calculus IV, so you may have seen it already, but it's thankfully not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $g$ as
+
+$$
+	g(x) = cx^2
+$$
+
+for some fixed constant $c$. Then the derivative $\frac{dg}{dx} = 2cx$ tells us how fast $g(x)$ is changing relative to $x$. What if we wanted to know how fast $g$ was changing relative to $c$? We first need to formally make $c$ an input variable to $g$, which means it's now a function of two variables: $g(x, c) = cx^2$, and to remind us that we're only taking a *partial* derivative (since we're only looking at one variable at a time), we curl the $d$ symbols in the derivative a little:
+
+$$
+	\frac{\partial g}{\partial c} = x^2,
+$$
+
+read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ is a constant, and now it's reversed: $g$ is just a linear function of $c$. So despite the unusual notation and name, $\frac{\partial f}{\partial y}$ just means the derivative of $f$ with $t$ treated as a constant.
+
+
+
+### exc "partial derivatives"
+	
+	Define a function $h$ by
+	
+	$$
+		h(x, y) = 2\log\left(\sin^2(x) + y\right).
+	$$
+	
+	Find $$\frac{\partial h}{\partial x}$$ and $$\frac{\partial h}{\partial y}$$.
+	
+###
+
+
+
+The proof of the previous theorem is well beyond the scope of this class, but the key takeaway is simple: solutions to nonlinear DEs are guaranteed to exist and be unique when the expression equal to $y'$ is continuous and differentiating it with respect to $y$ also produces a continuous function. If one or both of those conditions fails to hold, there may still be a unique solution, but there might be no solutions or many.
+
+
+
+### ex "existence and uniqueness"
+	
+	Show that there's a unique solution to the DE
+	
+	$$
+		y' &= \frac{xe^y - y}{\sin(xy) + 2}
+		
+		y(0) &= 0.
+	$$
+	
+	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the quotient rule, we have
+	
+	$$
+		\frac{\partial y'}{\partial y} &= \frac{\frac{\partial}{\partial y} \left[ xe^y - y \right]\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\frac{\partial}{\partial y}\left[\sin(xy) + 2\right]}{\left(\sin(xy) + 2\right)^2}
+		
+		&= \frac{\left( xe^y - 1 \right)\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\left(\cos(xy)\cdot x\right)}{\left(\sin(xy) + 2\right)^2}.
+	$$
+	
+	It looks incredibly complicated, but this is continuous for the same reason that $y'$ itself was. So there must be a unique solution to this DE, even though we don't have a chance of actually finding it.
+	
+###
+
+
+
+## Exact Differential Equations
+
+Our final solving method for first-order DEs looks quite a lot like integrating factors. Instead of collapsing the left side of the equation with the product rule, though, we'll be using the *chain* rule. As with all of our methods, we'll open with an example before writing down the particular steps, but first, we need a brief result from calculus IV.
+
+
+
+### thm "the multivariable chain rule"
+	
+	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentiable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
+	
+	$$
+		\frac{d f(x, y)}{dt} = \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{\partial f}{\partial y} \frac{dy}{dt}.
+	$$
+	
+###
+
+
+
+Let's unpack that a little. The reason we're writing $f(x, y)$ on the left is because the output of $f(x, y)$ *is a function* --- specifically,
+
+$$
+	(f(x, y))(t) = f(x(t), y(t)).
+$$
+
+It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
+
+$$
+	\frac{d f(x)}{dt} = \frac{df}{dx} \frac{dx}{dt},
+$$
+
+which is just the chain rule from calculus I.
+
+
+
+### ex "the multivariable chain rule"
+	
+	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
+	
+	Let's find all four pieces on the right side of the equation:
+	
+	$$
+		\frac{\partial f}{\partial x} &= 2xy\cos\left(x^2y\right)
+		
+		\frac{\partial f}{\partial y} &= x^2\cos\left(x^2y\right)
+		
+		\frac{dx}{dt} &= 2.
+		
+		\frac{dy}{dt} &= 3t^2.
+	$$
+	
+	In total, the derivative should be
+	
+	$$
+		\frac{d f(x, y)}{dt} &= 2(2t)(t^3)\cos\left(4t^2 \cdot t^3\right) \cdot 2 + 4t^2\cos\left(4t^2 \cdot t^3\right) \cdot 3t^2
+		
+		&= 20t^4 \cos\left( 4t^5 \right).
+	$$
+	
+	Here, we've replaced every occurrence of $x$ and $y$ with $x(t)$ and $y(t)$. We can double-check the result by just finding $f(x(t), y(t))$ and differentiating that directly.
+	
+	$$
+		f(x(t), y(t)) &= \sin\left( 4t^5 \right)
+		
+		\frac{d f(x, y)}{dt} &= \cos\left( 4t^5 \right) \cdot 20t^4.
+	$$
+	
+	It works! That second way was much faster, but much of the point of this theorem is to help in situations where we can't find $f$ in terms of $t$ explicitly like that.
+	
+###
+
+### exc "the multivariable chain rule"
+	
+	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $$\frac{d g(x, y)}{dt}$$ with the multivariable chain rule.
+	
+###
+
+
+
+Equipped with the multivariable chain rule, we're ready to dive into our first example of the new solving method.
+
+
+
+### ex "solving with exactness"
+	
+	Solve the DE $$2t + y^2 + 2tyy' = 0$$.
+	
+	Let's check the methods we know already. This DE isn't linear because of the $y^2$ and the $yy'$, and it's not separable either: if we solve for $y'$, we get
+	
+	$$
+		y' = -\frac{2t + y^2}{2ty},
+	$$
+	
+	which can't be separated into a $t$-factor and a $y$-factor. So we need to find another way, and just like with integrating factors, the first step will seem to appear out of nowhere. Let's define a function $\psi$ (pronounced "psee") by
+	
+	$$
+		\psi(t, y) = t^2 + ty^2.
+	$$
+	
+	This is a very, very strange step to take, but the idea will start to take shape when we look at the partial derivatives of $\psi$:
+	
+	$$
+		\frac{\partial \psi}{\partial t} &= 2t + y^2
+		
+		\frac{\partial \psi}{\partial y} &= 2ty
+	$$
+	
+	Those partial derivatives look a lot like components of our DE! Specifically, we can rewrite it as
+	
+	$$
+		\frac{\partial \psi}{\partial t} + \frac{\partial \psi}{\partial y} \frac{dy}{dt} = 0.
+	$$
+	
+	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $\frac{dt}{dt}$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
+	
+	$$
+		\frac{d \psi(t, y)}{dt} &= 0
+		
+		\psi(t, y) &= \int 0\,dt
+		
+		\psi(t, y) &= c
+		
+		t^2 + ty^2 &= c.
+	$$
+	
+	While we can solve this equation for $y$, solving equations in this way typically leads to final solutions that can't be solved explicitly, so we'll usually just leave them in this form.
+	
+###
+
+
+
+The main questions we have here are similar to those from integrating factors: how do we recognize when a DE can be solved like this, and how do we find $\psi$? Let's give the concept a name to make it easier to talk about, and then see if we can answer both questions at once.
+
+
+
+### def "exact differential equation"
+	
+	A DE is **exact** if it can be written in the form
+	
+	$$
+		\frac{d \psi(t, y)}{dt} = 0.
+	$$
+	
+###
+
+
+
+For the collapsing step to work, we need to have a term without $y'$ and another with $y'$ appearing as a single factor, so to keep things as general as possible, let's take the DE
+
+$$
+	f(t, y) + g(t, y)y' = 0.
+$$
+
+For this to be exact, we need to find a function $\psi(t, y)$ so that
+
+$$
+	\frac{\partial \psi}{\partial t} &= f(t, y)
+	
+	\frac{\partial \psi}{\partial y} &= g(t, y).
+$$
+
+In the interest of time (and because it's covered in much more depth in calculus IV), let's cut to the chase:
+
+
+
+### thm "the existence of $\psi$"
+	
+	Let $f(t, y)$ and $g(t, y)$ be continuous and differentiable. If $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ exist and are continuous, and if
+
+	$$
+		\frac{\partial f}{\partial y} = \frac{\partial g}{\partial t}.
+	$$
+	
+	then there is a function $\psi(t, y)$ with
+	
+	$$
+		\frac{\partial \psi}{\partial t} &= f(t, y)
+		
+		\frac{\partial \psi}{\partial y} &= g(t, y).
+	$$
+	
+###
+
+
+
+So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with respect to $t$, and check if they're equal. If they are, we find $\psi$ by integrating $f$ $dt$ and $g$ $dy$. Let's state the process and then work through an in-depth example.
+
+
+
+### thm -m "Method: solving with exactness"
+	
+	To solve the DE $f(t, y) + g(t, y)y' = 0$ with exactness:
+	
+	1. Make sure the DE is actually exact by find $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ and ensuring they're equal. If they're not, this method won't work.
+	
+	2. Find $\int f(t, y)\,dt$ and $\int g(t, y)\,dy$. They should agree with one another on expressions involving both $t$ and $y$ but differ on expressions involving just one.
+	
+	3. Construct $\psi(t, y)$ as the sum of the shared portion of both integrals, the $t$-portion of the integral taken $dt$, and the $y$-portion of the integral taken $dy$.
+	
+	4. Rewrite the DE as
+	
+	$$
+		\frac{d \psi(t, y)}{dt} = 0
+	$$
+	
+	and integrate both sides $dt$ to get $\psi(t, y) = c$. This is the (implicit) solution to the DE.
+	
+###
+
+
+
+### ex "solving an exact DE"
+	
+	Solve the DE
+	
+	$$
+		(y\cos(xy) - 2e^{2x + y} + \sec^2(x)) + (x\cos(xy) - e^{2x + y} + 2y)y' &= 0
+		
+		y(0) &= 0.
+	$$
+	
+	This is hopelessly nonlinear and nonseparable, so our only hope is exactness. We have
+	
+	$$
+		f(x, y) &= y\cos(xy) - 2e^{2x + y} + \sec^2(x)
+		
+		g(x, y) &= x\cos(xy) - e^{2x + y} + 2y,
+	$$
+	
+	so we first need to take some partial derivatives.
+	
+	$$
+		\frac{\partial f}{\partial y} &= \cos(xy) - y\sin(xy) \cdot x - 2e^{2x + y}
+		
+		\frac{\partial g}{\partial x} &= \cos(xy) - x\sin(xy) \cdot y - e^{2x + y} \cdot 2.
+	$$
+	
+	It's a little magical watching these come together --- they're exactly the same, but through substantially different processes. Now that we know the DE is exact, we can find $\psi$. Knowing both of its partial derivatives is enough to solve for it up to a constant --- let's see how.
+	
+	First of all, $\frac{\partial \psi}{\partial x} = f(x, y)$, so we should integrate that $dx$. Just like partial derivatives, this just means treating $y$ as a constant.
+	
+	$$
+		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\,dx
+		
+		&= \sin(xy) - e^{2x + y} + \tan(x) + c_1(y).
+	$$
+	
+	The most surprising thing there is $+c_1(y)$ as opposed to just $+c_1$ or $+c$ --- what's up with that? When we differentiate a function of a single variable, we destroy any added constants, so we add back a generic one when integrating. When we differentiate $\psi$ with respect to $x$, though, we destroy anything that that derivative sees as a constant, which is any expression only involving $y$. Therefore, we need to add a generic function of $y$ to our expression. In order to solve for it, we'll come at $\psi$ from the other direction, integrating $g(x, y)$ $dy$.
+	
+	$$
+		\psi(x, y) &= \int \left( x\cos(xy) - e^{2x + y} + 2y \right)\,dy
+		
+		&= \sin(xy) - e^{2x + y} + y^2 + c_2(x).
+	$$
+	
+	Here we're denoting the "constant" with $c_2$ to distinguish it from the previous one. In the first expression for $\psi$, the term containing just $x$s was $\tan(x)$, and here, the term containing just $y$s is $y^2$. Therefore, the complete expression for $\psi$ is
+	
+	$$
+		\psi(x, y) = \sin(xy) - e^{2x + y} + \tan(x) + y^2 + C,
+	$$
+	
+	where $C$ actually just denotes a constant this time. Just like with integrating factors from the last section, we just need a single value of $\psi$ to make this work, so let's take $C = 0$.
+	
+	In total, our DE reduces to
+	
+	$$
+		\frac{d \psi(x, y)}{dx} = 0
+	$$
+	
+	from the multivariable chain rule, and so the general solution is
+	
+	$$
+		\psi(x, y) = \sin(xy) - e^{2x + y} + \tan(x) + y^2 = c.
+	$$
+	
+	To find the particular solution, we plug in $y(0) = 0$ by setting both $x$ and $y$ equal to zero:
+	
+	$$
+		\sin(0) - e^{0} + \tan(0) + 0^2 &= c
+		
+		c &= -1.
+	$$
+	
+	So we finally have a solution of
+	
+	$$
+		\sin(xy) - e^{2x + y} + \tan(x) + y^2 = -1.
+	$$
+	
+###
+
+### exc "solving an exact DE"
+	
+	Solve the DE
+	
+	$$
+		\left( \frac{1}{2\sqrt{x}} - (2x + y)\sin\left(x^2 + xy\right) \right) + \left( \frac{1}{y^2} - x\sin\left(x^2 + xy\right) \right)y' &= 0
+		
+		y(0) &= 2.
+	$$
+	
+###
+
+
+
+### nav-buttons

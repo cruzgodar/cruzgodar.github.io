@@ -1,0 +1,1003 @@
+Welcome to Math 341! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
+
+
+
+## General Resources
+
+### image-links
+	
+	syllabus -c "Syllabus"
+	
+###
+
+
+
+## Interactive Notes
+
+### image-links
+	
+	notes/1-vectors-and-matrices/
+	notes/2-row-reduction/
+	notes/3-vector-arithmetic/
+	notes/4-linear-transformations/
+	notes/5-properties-of-transformations/
+	notes/6-the-determinant/
+	notes/7-vector-spaces/
+	notes/8-bases-and-dimension/
+	notes/9-the-fundamental-theorem-of-linear-algebra/
+	notes/10-intro-to-markov-chains/
+	
+###
+
+
+
+## Homework
+
+### image-links
+	
+	homework-1 -c "Homework 1"
+	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
+	homework-4 -c "Homework 4"
+	homework-5 -c "Homework 5"
+	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
+	homework-8 -c "Homework 8"
+	homework-9 -c "Homework 9"
+	
+###
+
+
+
+### card homework-9 "Homework 9"
+
+	*Due Friday of Week 10 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-9
+	###
+
+	## Section 10
+
+	#. Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time?
+
+	#. Rudimentary predictive text models use Markov Chains! To explore a *very* simple example of this, let's look at a Markov chain on the words "me", "run", and "out". We'll never repeat a word twice. After "me", there is twice the chance of seeing "out" as there is "run". After "run", there is an equal chance of "me" and "out". After "out", there is twice the chance of "run" as "me".
+
+	> a) Write down the transition matrix $P$ for this Markov Chain. After running this predictive text model for a very large number of words, what will the proportion of each word be?
+
+	> b) A **Markov Chain Monte Carlo**, or MCMC, is a simple process that uses a Markov Chain to create sample data. Using a 6-sided die or simply a random number generator, use a uniformly random starting word from the three, and then use the appropriate column of $P$ to randomly choose the next word in the sequence. Do this twice to create a three-word sentence, and then repeat the process to create three total three-word sentences.
+
+
+
+	## Course Review Exercises (also required)
+
+	In problems 5#, do the following:
+
+	> a) Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
+
+	> b) Augment $A$ with $\vec{b}$ and row reduce the system to solve for $\vec{x}$.
+
+	> c) If $A$ is square, find $\det A$.
+
+	> d) Let $T$ be the linear transformation corresponding to the matrix $A$. Write down the domain and codomain for $T$.
+
+	> e) Find a basis for $\ker T$ and use it to find a basis for $\image T$ using the fundamental theorem of linear algebra.
+
+	> f) Determine if $T$ is one-to-one, onto, both, or neither. If it's both one-to-one and onto, find a formula for $T^{-1}$.
+
+	#.
+
+	$$
+		x + y &= 1
+		
+		x - y &= 3	
+	$$
+
+	#.
+
+	$$
+		x + 2y + z &= 0
+		
+		-x + y + z &= -2
+		
+		x + y &= 3
+		
+	$$
+
+	#.
+
+	$$
+		x + 2y - z &= -1
+		
+		2x + 3y - w &= -2
+	$$
+
+	#.
+
+	$$
+		x + y + 2z &= 4
+		
+		2x + y - z &= 2
+		
+		-3x - y + 4z &= 0
+	$$
+
+	#.
+
+	$$
+		x + y + z + w &= 5
+		
+		x + 2y - 2z + 3w &= 0
+		
+		3x + 5y - 3z + 7w &= 5
+
+		x - y + 7z - 3w &= 15
+	$$
+
+	- - -
+
+	In problems 5#, do the following:
+	
+	> a) The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
+	
+	> b) Determine whether the function $T : V \to W$ is a linear transformation. If it is, show it satisfies the two properties, and if not, give a specific example showing one of them fails.
+	
+	> c) If $T$ is a linear transformation, find the matrix for $T$ with respect to the standard bases for $V$ and $W$.
+	
+	> d) If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\image T$ using the fundamental theorem of linear algebra. Then extend the basis for $\image T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
+	
+	#. $V = #R#^4$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of vectors $[[ x ; y ; z ; w ]] \in #R#^4$ such that $x + 2y = w$, and $T : V \to W$ is defined by
+	
+	$$
+		T\left( [[ x ; y ; z ; w ]] \right) = [[ 0, x ; y + z, 2w ]].
+	$$
+	
+	#. $V = M_{2 \times 2}(#R#)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of matrices $A$ such that $\det A = 0$, and $T : V \to W$ is defined by
+	
+	$$
+		T(A) = A^T.
+	$$
+	
+	#. $V$ is the space of polynomials with degree at most 3, $W = #R#^2$, $X$ is the set of polynomials $p(x)$ such that $p'(x) = 1$, and $T : V \to W$ is defined by
+	
+	$$
+		T(a + bx + cx^2 + dx^3) = [[ a + b ; c + d ]].
+	$$
+	
+	#. $V = \mathcal{L}(#R#, #R#^2)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of linear transformations $S : #R# \to #R#^2$ such that $S(1) = [[ 0 ; 0 ]]$, and $T : V \to W$ is defined by
+	
+	$$
+		T(S) = [[ \mid, \mid ; S(1), S(-1) ; \mid, \mid ]],
+	$$
+	
+	i.e. the outputs of $S$ are placed as columns in a $2 \times 2$ matrix.
+	
+	#. $V = M_{2 \times 2}(#R#)$, $W$ is the space of polynomials with degree at most 2, $X$ is the set of matrices $[[ a, b ; c, d ]]$ with $a + d = 1$, and $T : V \to W$ is defined by
+	
+	$$
+		T(A) = \chi(A),
+	$$
+	
+	where $\chi(A)$ is the characteristic polynomial of $A$, as described in homework 5.
+	
+###
+
+
+
+### card homework-8 "Homework 8"
+
+	*Due Wednesday of Week 9 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-8
+	###
+
+	## Section 9
+	
+	In problems 3#, find the change of basis matrix $B$ that converts from the basis $\mathcal{B}$for the vector space $V$ to the standard basis, and use it to find $[\vec{v}]_\mathcal{B}$ for the given vector $\vec{v}$.
+
+	#. $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, $\mathcal{B} = \{1, x + x^2 + x^3, x^3 - x, x^3 + 2x^2\}$, and $\vec{v} = 2 + 7x - x^2$.
+
+	#. $V = M_{2 \times 2}(#R#)$,
+
+	$$
+		\mathcal{B} = \left\{ [[ 1, 0 ; 0, 1 ]], [[ 0, 1 ; -1, 0 ]], [[ 0, 1 ; 1, 0 ]], [[ 1, 0 ; 0, -1 ]] \right\},
+	$$
+
+	and $\vec{v} = [[ 1, 2 ; -1, 3 ]]$.
+
+	#. $V = \mathcal{L}(#R#^4, #R#)$, $\mathcal{B} = \{T_1, T_2, T_3, T_4\}$, where
+
+	$$
+		T_1\left([[ x ; y ; z ; w ]]\right) = 2x + y - z \qquad T_2\left([[ x ; y ; z ; w ]]\right) = x - w \qquad T_3\left([[ x ; y ; z ; w ]]\right) = y + z \qquad T_4\left([[ x ; y ; z ; w ]]\right) = x + y + z + w,
+	$$
+
+	and $\vec{v} : #R#^4 \to #R#$ is defined by $\vec{v}\left([[ x ; y ; z ; w ]]\right) = 2x - 2y + 4z + 2w$.
+
+	- - -
+
+	In problems 3#, find bases for $V$, $\ker T$ and $\image T$, and verify that the fundamental theorem of linear algebra correctly relates the three.
+
+	#. $T : V \to #R#$, where $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, is defined by $T(a + bx + cx^2 + dx^3) = d - c$.
+
+	#. $T : M_{2 \times 3}(#R#) \to #R#^3$ is defined by
+
+	$$
+		T\left( [[ a, b, c ; d, e, f ]] \right) = [[ a ; b ; c ]].
+	$$
+
+	#. $T : #R#^2 \to \mathcal{L}(#R#^2, #R#^2)$ is defined by $T\left([[ x ; y ]]\right) = S_{x, y}$, where
+	
+	$$
+		S_{x, y}\left( [[ 1 ; 0 ]] \right) &= [[ x - y ; 0 ]]
+
+		S_{x, y}\left( [[ 0 ; 1 ]] \right) &= [[ 0 ; y - x ]].
+	$$
+	
+###
+
+
+
+### card homework-7 "Homework 7"
+
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-7
+	###
+
+	## Section 8
+	
+	In problems 6#, find **two different** bases $\mathcal{B}$ and $\mathcal{C}$ for the vector space $V$ and use them to find $\dim V$. Then with the given vector $\vec{v}$, find $[\vec{v}]_\mathcal{C}$.
+
+	#. $V = #R#^3$, and $\vec{v} = [[ 1 ; 2 ; 3 ]]$.
+	
+	#. $V = M_{2 \times 2}(#R#)$, and $\vec{v} = [[ 2, -1 ; 0, 1 ]]$.
+	
+	#. $V = \mathcal{L}(#R#^2, #R#^2)$, and $\vec{v}:#R#^2 \to #R#^2$ is defined by $\vec{v}\left( [[ x ; y ]] \right) = [[ 2x ; x + y ]]$. (Hint: your answers to the previous problem may help.)
+	
+	#. $V$ is the subspace of $#R#^4$ of vectors $[[ x ; y ; z ; w ]]$ satisfying $x + y - w = 0$, and $\vec{v} = [[ 1 ; 1 ; 3 ; 2 ]]$.
+	
+	#. $V = #R#[x]$, and $\vec{v} = (x^2 - 2)^2$.
+
+	#. $V = \span\{\cos(x), \sin(x)\}$, and $\vec{v} = \sin\left(x + \frac{\pi}{4} \right)$. (Hint: the sum and difference formulas for $\sin$ and $\cos$ may be helpful.)
+
+	- - -
+
+	In problems 3#, find a matrix for the linear transformation $T : V \to W$ by choosing bases $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$. Then use the matrix to evaluate $T(\vec{v})$ for the given vector $v$.
+
+	#. $V = #R#^3$ and $W = #R#$, $T: V \to W$ is a transformation for which
+
+	$$
+		T\left( [[ 1 ; 0 ; 1 ]] \right) = 1 \qquad T\left( [[ 2 ; 0 ; 1 ]] \right) = 2 \qquad T\left( [[ 0 ; -1 ; 0 ]] \right) = -1,
+	$$
+
+	and $\vec{v} = [[ 1 ; 1 ; 1 ]]$.
+
+	#. $V$ and $W$ are both the subspace of $#R#[x]$ of polynomials with degree at most $2$, $T: V \to W$ is a transformation for which
+
+	$$
+		T(1) = x \qquad T(x^2 + x) = 2x \qquad T(x^2) = x^2,
+	$$
+
+	and $\vec{v} = x^2 - x - 1$.
+
+	#. $V = M_{2 \times 2}(#R#)$, $W = #R#^2$, $T: V \to W$ is a transformation for which
+
+	$$
+		T\left([[ 1, 0 ; 0, 1 ]]\right) = [[ 2 ; 0 ]] \qquad T\left([[ 0, 1 ; 1, 0 ]]\right) = [[ 0 ; 2 ]] \qquad T\left([[ 1, 1 ; 0, 0 ]]\right) = [[ 1 ; 1 ]] \qquad T\left([[ 0, 0 ; 0, 1 ]]\right) = [[ 1 ; 0 ]],
+	$$
+
+	and $\vec{v} = [[ 1, 2 ; 3, 4 ]]$.
+	
+###
+
+
+
+### card homework-6 "Homework 6"
+
+	*Due Wednesday of Week 7 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-6
+	###
+
+	## Section 7
+	
+	In problems 5#, determine if the set $X$ is a subspace of the vector space $V$. If it is, show that $X$ is closed under addition and scalar multiplication and contains the zero vector, and if not, give an example showing one of those three fails.
+
+	#. $X$ is the set of vectors of the form $[[ x ; y ; 1 ]]$ for real numbers $x$ and $y$, and $V = #R#^3$.
+
+	#. $X = \span \{ \cos(x), \sin(x) \}$, and $V = C^0(#R#)$.
+
+	#. $X$ is the set of matrices of the form $[[ a, 0 ; 0, b ]]$, and $V = M_{2 \times 2}(#R#)$.
+
+	#. $X$ is the set of linear transformations $T : #R#^2 \to #R#^2$ such that $T \left( [[ 1 ; 1 ]] \right) = [[ 1 ; 1 ]]$, and $V = \mathcal{L}(#R#^2, #R#^2)$.
+
+	#. $X$ is the set of linear transformations $T : #R#^3 \to #R#^2$ with
+
+	$$
+		\ker T = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]] \right\},
+	$$
+
+	and $V = \mathcal{L}(#R#^3, #R#^2)$.
+
+	- - -
+
+	In problems 5#, determine if the given function $T$ is a linear transformation. If it is, show that $T$ splits across addition and scalar multiplication, and if it is not, give an example showing one of those two things fails. If $T$ is a linear transformation, also find $\ker T$ and write it as a span of vectors.
+
+	#. $T : #R#^3 \to #R#^2$, defined by
+
+	$$
+		T \left( [[ x ; y ; z ]] \right) = [[ x + y + z ; 2x - y - z ]].
+	$$
+
+	#. $T : #R#[x] \to #R#$ given by $T(p(x)) = p''(x)$.
+	
+	#. $T : #R#^#R# \to #R#$ given by $T(f) = f(0)$. In this problem, just describe the kernel in words rather than as a span.
+	
+	#. $T : M_{2 \times 2}(#R#) \to #R#$ given by $T(A) = \det A$.
+
+	#. $T : \mathcal{L}(#R#^2, #R#^2) \to #R#^2$ given by $T(S) = S\left( [[ 1 ; 1 ]] \right)$.
+	
+###
+
+
+
+### card homework-5 "Homework 5"
+
+	*Due Wednesday of Week 6 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-5
+	###
+
+	## Section 6
+	
+	In problems 5#, compute the determinant.
+
+	#. $$A = [[ 2, 3 ; -3, 1 ]]$$.
+
+	#. $$B = [[ 2, 3, 0 ; -3, 1, -1 ; 1, 1, 1 ]]$$.
+
+	#. $$C = [[ 1, 1, -3 ; 0, 1, 3 ; 2, -1, -15 ]]$$.
+
+	#. $$D = [[ 1, 2, 3 ; 4, 5, 6 ]]$$.
+
+	#. $$E = [[ 1, 2, 3, 4 ; 3, -1, 0, 3 ; 2, 0, 1, 2; -1, -3, -7, 2 ]]$$.
+
+
+
+	- - -
+
+	#. For each of the matrices $A$--$E$ in problems 1--5, classify it as invertible or noninvertible based on its determinant.
+
+	#. Let $A$ be the matrix from problem 1. Sketch a picture of the unit square in $#R#^2$ and its image under the linear operator corresponding to $A$. Verify that the area of that image is $|\det A|$ times the area of the unit square (i.e. $1$).
+
+	#. We can use the multiplicativity of the determinant to show some nice facts about the determinants of inverse matrices.
+
+	> a) What is $\det I$?
+
+	> b) Let $A$ be an invertible matrix. Using part a), find $\det A^{-1}$ in terms of $\det A$.
+
+
+
+	- - -
+
+	#. **Cramer's Rule** is a method for computing the inverse of a matrix without row reduction. In this problem, we'll work through an example application of it.
+
+	> a) Let $$A = [[1, 0, -1 ; 4, 5, 6 ; 0, -1, 2]]$$ and let $c_{ij}$ be the determinant of the minor given by removing row $i$ and column $j$ from $A$. Find all nine $c_{ij}$ and form a matrix $C$ whose entry in row $i$ and column $j$ is $c_{ij}$.
+
+	> b) Form a new matrix $D$ by applying the checkerboard signs to $C$:
+
+	$$
+		[[ +, -, + ; -, +, - ; +, -, + ]].
+	$$
+
+	> c) If all went well, the matrix $E = \frac{1}{\det A} D$ should be equal to $(A^{-1})^T$. Compute $E$ and check that it is in fact the transpose of $A^{-1}$ (Note: the matrix $A$ appeared in homework 2).
+
+
+
+	## Eigenvectors and Eigenvalues
+
+	Let $A$ be an $n \times n$ matrix. When $A$ only scales a nonzero vector and doesn't multiply it --- i.e $A\vec{v} = \lambda\vec{v}$ for a vector $\vec{v}$ and a constant $\lambda$ --- we say that $\vec{v}$ is an **eigenvector** of $A$ with **eigenvalue** $\lambda$. You'll see more on these in the next course if you take it, but for now, we'll work through a few basic examples.
+
+	#. Let $$A = [[ 2, -1 ; 3, -2 ]]$$. Show that $\vec{v_1} = [[ 1 ; 3 ]]$ and $\vec{v_2} = [[ 1 ; 1 ]]$ are eigenvectors of $A$ and find their eigenvalues.
+
+	#. Let $B = [[ -1, 2 ; 0, -3 ]]$.
+
+	> a) If $B\vec{v} = \lambda\vec{v}$ for a nonzero vector $\vec{v}$, then $B\vec{v} = \lambda I \vec{v}$, so $(B - \lambda I)\vec{v} = \vec{0}$. That means $B - \lambda I$ is not one-to-one, so $\det (B - \lambda I) = 0$ (the left side is called the **characteristic polynomial** of $B$). Find that determinant and solve it for $\lambda$.
+
+	> b) The values of $\lambda$ in part a) are the eigenvalues of $B$. For each value of $\lambda$, we want to solve $(B - \lambda I)\vec{v} = 0$, so augment $B - \lambda I$ with $\vec{0}$ and row reduce. In total, what are the eigenvectors and eigenvalues of $B$?
+
+	#. Let $C = [[ 2, 2, -2 ; -3, 7, 3 ; -5, 5, 5 ]]$. Find the eigenvectors and eigenvalues of $C$ in the same manner as the previous problem.
+
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with eigenvalues $\lambda_1, \lambda_2, ..., \lambda_n$.
+
+	> a) What is the characteristic polynomial $\det(A - \lambda I)$ of $A$?
+
+	> b) By setting $\lambda = 0$ in part a), express $\det A$ in terms of the $\lambda_i$.
+
+
+
+	- - -
+
+	#. One application of eigenvalues is to systems of differential equations. If $\vec{v_1}$ and $\vec{v_2}$ are eigenvectors of a $2 \times 2$ matrix $A$ with eigenvalues $\lambda_1$ and $\lambda_2$, then the solution to the system
+
+	$$
+		[[ x'(t) ; y'(t) ]] = A[[ x(t) ; y(t) ]]
+	$$
+
+	is
+
+	$$
+		[[ x ; y ]] = c_1 e^{\lambda_1 t} \vec{v_1} + c_2 e^{\lambda_2 t} \vec{v_2}
+	$$
+
+	for any value of $c_1$ and $c_2$.
+
+	> a) Write the general solutions to the systems
+
+	$$
+		x'(t) &= 2x(t) - y(t)
+
+		y'(t) &= 3x(t) - 2y(t)
+	$$
+
+	> and
+
+	$$
+		x'(t) &= -x(t) + 2y(t)
+
+		y'(t) &= -3y(t).
+	$$
+
+	> b) We can plot solutions to systems of differential equations as **vector fields**: every point $(x, y)$ has a velocity $(x', y')$, so if we fill an area with particles and move them according to that velocity, we can see the entire effect of the system. Using <a href="/applets/vector-fields/">a vector field applet</a> with the generating functions `(2x - y, 2x - 2y)` and `(-x + 2y, -3y)`, plot the systems from part a).
+	
+###
+
+
+
+### card homework-4 "Homework 4"
+
+	*Due Wednesday of Week 5 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-4
+	###
+
+	## Section 5
+	
+	In problems 6#, determine if the linear transformation $T$ is one-to-one, if it is onto, and if it is invertible. If it is invertible, find the inverse transformation.
+
+	#. $T: #R#^2 \to #R#^2$ defined by $T\left([[ x ; y ]]\right) = [[ 2x + y ; x + 2y]]$.
+
+	#. $T: #R#^3 \to #R#^2$ defined by $T\left([[ x ; y ; z ]]\right) = [[ x ; y + z ]]$.
+
+	#. $T: #R#^2 \to #R#^2$, where
+
+	$$
+		T\left([[ 2 ; 0 ]]\right) = [[ 2 ; 4 ]] \qquad T\left([[ 4 ; 6 ]]\right) = [[ 4 ; -10 ]].
+	$$
+
+	#. $T: #R#^3 \to #R#^3$, where
+
+	$$
+		T\left([[ 1 ; 1 ; 1 ]]\right) = [[ 3 ; 7 ; 4 ]] \qquad T\left([[ 1 ; 2 ; 0 ]]\right) = [[ 1 ; -1 ; 3 ]] \qquad T\left([[ 0 ; 1 ; 3 ]]\right) = [[ 6 ; 16 ; 7 ]].
+	$$
+
+	#. $T: #R#^3 \to #R#$, where
+
+	$$
+		T\left([[ 1 ; -1 ; 1 ]]\right) = -3 \qquad T\left([[ 1 ; 0 ; 1 ]]\right) = 1 \qquad T\left([[ 0 ; 1 ; 1 ]]\right) = 4.
+	$$
+
+	#. $T: #R#^5 \to #R#^2$, where
+
+	$$
+		T\left([[ 1 ; 0 ; 2 ; 3 ; 0 ]]\right) = [[ 1 ; 1 ]] \qquad T\left([[ 2 ; 1 ; 2 ; -1 ; 3 ]]\right) = [[ 2 ; 0 ]].
+	$$
+
+
+
+	- - -
+
+	#. Let $T : #R#^4 \to #R#^3$ be defined by the matrix $[[ 1, 7, 2, -1 ; -3, 6, 3, 12 ; 0, 3, 1, 1 ]]$.
+
+	> a) Is $T$ one-to-one? Is it onto? Is it invertible?
+
+	> b) Find the vectors $\vec{v}$ for which $T(\vec{v}) = \vec{0}$ and express it as a span of one or more vectors, i.e. $\span\{ \vec{v_1}, ..., \vec{v_n} \}$.
+
+	> c) Find vectors $\vec{w_1}, ..., \vec{w_m} \in #R#^4$ that are linearly independent to $\vec{v_1}, ..., \vec{v_n}$ so that all together,
+
+	$$
+		\span\{ \vec{v_1}, ..., \vec{v_n}, \vec{w_1}, ..., \vec{w_m} \} = #R#^4.
+	$$
+
+	> Hint: $n + m$ should equal $4$. (Why?)
+
+	> d) Show that $T(\vec{w_1}), ..., T(\vec{w_m})$ are linearly independent. Briefly explain why this has to be the case.
+
+
+
+	- - -
+
+	#. Let $R : #R#^2 \to #R#^2$ be a function (not necessarily a linear transformation) defined by rotating its inputs $90^\circ$ counterclockwise. For example, $R\left( [[ 1 ; 0 ]] \right) = [[ 0 ; 1 ]]$ and $R\left( [[ \frac{1}{2} ; \frac{\sqrt{3}}{2} ]] \right) = [[ -\frac{\sqrt{3}}{2} ; \frac{1}{2} ]]$.
+
+	> a) Explain with a picture why $R$ is in fact a linear transformation, i.e. $R(\vec{v_1} + \vec{v_2}) = R(\vec{v_1}) + R(\vec{v_2})$ and $R(c\vec{v}) = cR(\vec{v})$.
+
+	> b) Find the matrix for $R$.
+	
+	> c) Let $R_\theta : #R#^2 \to #R#^2$ be the linear transformation that rotates its inputs an angle $\theta$ counterclockwise, where $\theta$ is a variable. Find a matrix for $R_\theta$.
+	
+###
+
+
+
+### card homework-3 "Homework 3"
+
+	*Due Wednesday of Week 4 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-3
+	###
+
+	## Section 3
+
+	#. Let $$\vec{v} = [[ 1 ; 3 ]]$$ and $$\vec{w} = [[ -1 ; 1 ]]$$.
+
+	> a) Draw $\vec{v}$ and $\vec{w}$ in the plane.
+
+	> b) Draw $2\vec{v} + \vec{w}$ geometrically and verify that it matches the algebraic definition (i.e. adding the entries of $\vec{v}$ and $\vec{w}$).
+
+	> c) Draw a vector linearly dependent with $\vec{v}$, but linearly independent with $\vec{w}$.
+
+	> d) Draw a vector linearly dependent with both $\vec{v}$ and $\vec{w}$, but not with either of them alone.
+	
+	
+
+	- - -
+
+	In problems 4#, determine if the vectors are linearly dependent or independent. If they are dependent, find a linear combination equal to $\vec{0}$.
+
+	#. $\vec{v_1} = [[ 2 ; 3 ]]$, $\vec{v_2} = [[ 4 ; 5 ]]$.
+
+	#. $\vec{v_1} = [[ 1 ; 2 ; 3 ]]$, $\vec{v_2} = [[ 1 ; 0 ; 2 ]]$, $\vec{v_3} = [[ 1 ; 4 ; 4 ]]$.
+
+	#. $\vec{v_1} = [[ 1 ; 1 ; 2 ]]$, $\vec{v_2} = [[ 2 ; 0 ; 3 ]]$, $\vec{v_3} = [[ 4 ; - 1 ; 2 ]]$
+
+	#. $\vec{v_1} = [[ 1 ; 5 ; 6 ; -10 ; \frac{17}{2} ]]$, $\vec{v_2} = [[ 3 ; 1 ; 7 ; -100 ; 0]]$, $\vec{v_3} = [[ 0 ; 0 ; 0 ; 0 ; 0 ]]$, $\vec{v_4} = [[ 4 ; 1 ; 2 ; 0 ; 89 ]]$.
+
+
+
+	- - -
+
+	In problems 2#, express $\vec{v}$ as a linear combination of the $\vec{u}_i$ or show it's impossible.
+
+	#. $\vec{v} = [[ 1 ; 2 ; 3 ]]$, $\vec{u_1} = [[ 1 ; 2 ; 2 ]]$, $\vec{u_2} = [[ 2 ; -1 ; 0 ]]$, $\vec{u_3} = [[ 3 ; 1 ; 1 ]]$.
+
+	#. $\vec{v} = [[ 1 ; 2 ; 3 ]]$, $\vec{u_1} = [[ -1 ; 3 ; 0 ]]$, $\vec{u_2} = [[ 1 ; 1 ; 1 ]]$, $\vec{u_3} = [[ 2 ; 6 ; 3 ]]$.
+
+
+
+	- - -
+
+	#. Let $\vec{w_1} = [[ 1 ; 1 ; 0 ]]$, $\vec{w_2} = [[ 2 ; 0 ; -1 ]]$, $\vec{w_3} = [[ 0 ; 2 ; 1 ]]$.
+
+	> a) Show that $\vec{w_1}$, $\vec{w_2}$, and $\vec{w_3}$ are linearly dependent.
+
+	> b) Show that just $\vec{w_1}$ and $\vec{w_2}$ on their own are linearly independent. (Hint: You should be able to modify the last step in the previous part to get this result without starting over).
+
+	> c) Using the previous two parts, write a sentence explaining why
+
+	$$
+		\span\{\vec{w_1}, \vec{w_2}\} = \span\{\vec{w_1}, \vec{w_2}, \vec{w_3}\}.
+	$$
+
+	> d) The span of $\vec{w_1}$ and $\vec{w_2}$ is the set consisting of all $\vec{w} = c_1\vec{w_1} + c_2\vec{w_2}$. Renaming $c_1 = u$ and $c_2 = v$, write the generic vector $\vec{w}$ in the span. Your answer should depend on $u$ and $v$.
+
+	> e) <a href="https://www.math3d.org/8Adpukc7b">Math3D</a> is a capable 3D grapher that can handle parametric surfaces. Open the linked example and replace the span expression with the one you found in the previous part --- if all went well, you should see the three vectors lying *in* that plane. This plane is the span, and the fact that the three vectors are contained in a two-dimensional surface is their linear dependence.
+
+
+
+	## Section 4
+
+	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : #R# \to #R#$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
+
+
+
+	- - -
+
+	In problems 3#, find the matrix for the linear transformation $T$ and use it to evaluate $T(\vec{v})$.
+
+	#. $T\left( [[ 1 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 3 ; 4 ]]$, $T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 3 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ; 2 ]]$.
+
+	#. $T\left( [[ 1 ; 1 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 1 ; -1 ]] \right) = [[ -1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ]]$.
+
+	#. $T\left( [[ 0 ; 1 ]] \right) = 2$, $T\left( [[ 1 ; 3 ]] \right) = 7$, and $\vec{v} = [[ 2 ; 1 ]]$.
+
+
+
+	- - -
+
+	#. Let $T : #R#^3 \to #R#^3$ be the linear transformation given by
+
+	$$
+		T \left( [[ x ; y ; z ]] \right) = [[ 2x + 3y ; x + 2y ; 3x + z ]].
+	$$
+
+	> a) Express $T$ as a $3 \times 3$ matrix $A$.
+
+	> b) Find $A^{-1}$.
+
+	> c) Write a linear transformation $S$ whose matrix is $A^{-1}$.
+
+	> d) Since $A^{-1}A = I$ and matrix multiplication is equivalent to function composition, we should expect $S \circ T = id$, the identity function. Evaluate $S \circ T$ as functions by using the output of $T$ as the input to $S$, and show this is in fact the case.
+	
+###
+
+
+
+### card homework-2 "Homework 2"
+
+	*Due Wednesday of Week 3 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-2
+	###
+
+	## Section 2
+	
+	In problems 6#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	
+	#.
+	
+	$$
+		3x - y &= 14
+		
+		4x + 2y &= 2.
+	$$
+	
+	#.
+	
+	$$
+		x + 2z &= 8
+		
+		-x + 2y + 6z &= 6
+		
+		4x + y + 3z &= 21.
+	$$
+	
+	#.
+	
+	$$
+		3x_1 + x_2 + x_3 &= 1
+		
+		x_2 + x_3 &= -4
+		
+		6x_1 + 5x_2 + 8x_3 &= -10.
+	$$
+	
+	#.
+	
+	$$
+		x_1 + x_2 - 4x_3 &= -11
+		
+		-3x_1 + 2x_3 &= 3
+		
+		2x_1 + 2x_2 + 2x_3 &= 8
+		
+		-x_1 + 2x_2 &= 1.
+	$$
+	
+	#.
+	
+	$$
+		a + c &= 2
+		
+		b + d &= 1
+		
+		a + 2b + 3c + 4d &= 10
+		
+		4a + 3b + 2c + d &= 5.
+	$$
+	
+	#.
+	
+	$$
+		x + y + 4z &= 4
+		
+		x - y + 2w &= 6
+		
+		-x + 5y + 8z - 6w &= -10
+		
+		x + 2z + w &= 5
+	$$
+	
+
+
+	- - -
+
+	In problems 5#, invert the matrix.
+	
+	#. $$[[4, 1 ; -1, 2]].$$
+	
+	#. $$[[1, 0, -1 ; 4, 5, 6 ; 0, -1, 2]].$$
+	
+	#. $$[[2, 1, 3 ; 3, -1, 2 ; 1, 0, 1]].$$
+	
+	#. $$[[4]].$$
+
+	#. $$[[1, 0, 0, 0 ; 0, 1, 0, 1 ; 0, 0, 1, 0 ; 1, 0, 1, 1]]$$
+	
+
+
+	- - -
+
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:
+	
+	> a) A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
+	
+	> b) A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
+	
+	> c) A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
+	
+
+
+	- - -
+
+	#. Let $$A = [[a, b ; c, d]]$$ be a generic $2 \times 2$ matrix. Find $A^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+	
+###
+
+
+
+### card homework-1 "Homework 1"
+	
+	*Due Wednesday of Week 2 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-1
+	###
+
+
+
+	## Section 1
+
+	In problems 3#, write the system in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and vector $\vec{b}$ of constants and a vector $\vec{x}$ of variables.
+
+	#.
+
+	$$
+		x_1 &= 2
+
+		2x_1 - x_2 &= 3.
+	$$
+
+	#.
+
+	$$
+		2x_3 - x_2 &= 0
+
+		x_1 &= x_3 - x_2 + 1
+	$$
+
+	#.
+
+	$$
+		x + y - z &= x
+
+		x + 2y - 1 &= 2z
+
+		x - z + 1 &= y
+	$$
+
+
+
+	- - -
+	
+	In problems 5#, evaluate the product.
+
+	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
+	
+	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
+	
+	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
+	
+
+
+	- - -
+	
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+	
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+
+
+	- - -
+
+	#. Let $A$ be an $m \times n$ matrix with entries $a_{ij}$.
+
+	> a) There is a row vector $\vec{x}$ and a column vector $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
+
+	> b) What about vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{ij}$? Your answer should be in terms of $i$ and $j$.
+
+
+
+	- - -
+
+	#. State whether each part is true or false. If true, briefly justify why, and if false, provide a small counterexample.
+
+	> a) A system with $3$ equations and $2$ unknowns always has at least one solution.
+
+	> b) If the product $AB$ is defined, then $A$ and $B$ have the same number of rows.
+
+	> c) If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for *every* vector $\vec{x}$, then $A = I_2$. Hint: try plugging in specific values of $x_1$ and $x_2$, like $0$ and $1$.
+
+
+
+	- - -
+
+	In problems 3#, we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
+
+	#. With real numbers $x$ and $y$, it must be the case that $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
+
+	$$
+		A = [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]], \quad B = [[1, 0, 2 ; -2, 3, 0 ; 0, 4, 1]]
+	$$
+
+	Compute $AB$ and $BA$ and show that they're different.
+
+	#. With real numbers $x$, $y$, and $z$ where $x \neq 0$ and $xy = xz$, it's always the case that $y = z$, but this also isn't true for matrices. Define matrices $A$, $B$, and $C$ by
+
+	$$
+		A = [[1, 2 ; 0, 0]], \quad B = [[1, 2 ; 3, 4]], \quad C = [[5, 4 ; 1, 3]]
+	$$
+
+	Show that $AB = AC$, despite $B \neq C$.
+
+	#. With real numbers $x$ and $y$ where $xy = 0$, either $x = 0$ or $y = 0$. Unfortunately, this also isn't the case for matrices. Define $A$ and $B$ by
+
+	$$
+		A = [[1, 0, 0 ; 0, 0, 0 ; 0, 0, 0]], \quad B = [[0, 0, 0 ; 0, 2, 3 ; 0, 4, 5]].
+	$$
+
+	Show that $AB = 0$ (the matrix of all zeros), even though both $A$ and $B$ are nonzero.
+
+###
+
+
+
+### card syllabus "Math 341: Elementary Linear Algebra"
+	
+	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
+
+	Class meetings: 9--9:50 MTWF in Eslinger 107
+	
+	Office hours: M 11--11:50 and 2--2:50, W 12--12:50, and F 11--11:50 in the Fenton Hall atrium (the middle of the third floor).
+	
+	
+	
+	## What materials will I need?
+	
+	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying more in sync with the course. If you'd like the book regardless, either for extra practice problems or just a different perspective on the course material, it's *Linear Algebra and its Applications, 5th edition*, by David and Steven Lay and Judi McDonald.
+	
+	A scientific calculator might save you time with simple calculations, but it's not required. You can always leave your final answers unsimplified, and the quizzes and exams are written so that necessary computations are doable by hand. No graphing calculators are allowed.
+	
+	
+	
+	## What will I be graded on?
+	
+	Your grade is determined by your scores on a number of different assignments, weighted as follows:
+	
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - In-class quizzes: 10%
+	> - Homework: 15%
+	> - Midterms: 20% each (40% total)
+	> - Final: 25%
+	
+	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
+	
+	
+	
+	## What will classes be like?
+	
+	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions and theorem statements, and are there so that you've seen the material at least once before lecture.
+	
+	Many of the examples in the notes have exercises (colored blue) following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper from your notebook, and then turn it in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	
+	
+	
+	## What will the homework be like?
+	
+	The homework is available on this site, and there will be roughly 15--20 problems due each week. Your grade on each is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	
+	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	
+	
+	
+	## What should I expect from the quizzes and exams?
+	
+	We have quizzes on Wednesdays during the last 20 minutes of class. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies. You can use your handwritten notes (i.e. not the online notes) on the quizzes.
+	
+	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative, and typically have multiple-choice and short-answer portions as well as longer, multi-part questions. You can use a handwritten, two-sided, 3x5 inch index card for notes on the midterms and final.
+	
+	Our final exam is also cumulative and is from 10:15 AM to 12:15 PM on Tuesday, December 5th.
+	
+	
+	
+	## What are the best things I can do to succeed?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
+	
+	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late --- Canvas is set to deduct 2% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	
+	
+	
+	## What if I'm registered with the AEC or think I should be?
+	
+	Please have the AEC send me the accommodations email as soon as possible, ideally in week 1. If you think you should be registered with the AEC, it's a good idea to start the process as soon as possible --- it can take a few weeks before everything goes through, so the sooner the better.
+	
+	
+	## What are the skills I can expect to learn from this course?
+	
+	We will learn how to:
+	
+	> - Solve a linear system with matrices and row reduction
+	
+	> - Determine linear dependence or independence of a set of vectors
+	
+	> - Find the determinant and inverse of a matrix
+	
+	> - Understand the definitions of a vector space, subspace, basis, and dimension
+	
+	> - Express a vector in terms of a basis
+	
+	> - Find the kernel and image of a linear transformation
+	
+	
+	
+	## Is there anything else I should know?
+	
+	Like most graduate students, I am a <a href="https://titleix.uoregon.edu/employee-reporting-obligations">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
+	
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
+	
+###

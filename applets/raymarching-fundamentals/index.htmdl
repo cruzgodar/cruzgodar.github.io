@@ -1,0 +1,33 @@
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### text-boxes
+	resolution
+###
+
+### checkboxes
+	test
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>

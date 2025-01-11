@@ -1,0 +1,54 @@
+In 2010, as graphics cards were becoming commonplace, a <a href="https://www.fractalforums.com/sierpinski-gasket/kaleidoscopic-(escape-time-ifs)/">user on FractalForums</a> posted something that would quickly become famous. Called Kaleidoscopic IFS (iterated function system) fractals, they generalize the Sierpinski tetrahedron to the rest of the platonic solids and add rotation and scaling to create truly fascinating objects.
+	
+As interesting as the fractals is the technique used to render them --- <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/">raymarching</a>, an seldom-seen algorithm that's ideal for this purpose. It's not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### dropdown polyhedra
+
+
+
+### text-boxes
+	resolution
+###
+
+### sliders
+	rotation-angle-x
+	rotation-angle-y
+	rotation-angle-z
+	scale
+###
+
+### checkboxes
+	lock-on-origin
+	shadows
+	antialiasing
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+### raymarch-controls

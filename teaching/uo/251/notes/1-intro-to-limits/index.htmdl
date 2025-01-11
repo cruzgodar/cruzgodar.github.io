@@ -1,0 +1,356 @@
+### nav-buttons
+
+Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you're moving, but we don't have the tools to do that yet.
+
+If you're moving at a constant rate --- say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
+
+### desmos velocityExample
+
+The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that's literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let's see how well this idea works in practice with the function $f(t) = t^2$ --- starting from $t = 0$, we'll divide rise by run, where run is exactly $1$.
+
+### desmos secantLines
+
+If it seems strange to talk about the slope of something that's not a curve, you might find it easier to think about the blue line: if we draw it to pass through the two points we're looking at on the red curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$. Therefore, the slope of that blue line is $\frac{1}{1} = 1$.
+
+Imagine that $f$ is measuring the distance you've traveled after $t$ seconds. You start off barely moving at all, and only really pick up speed down the line. You definitely don't have velocity $1 \frac{m}{s}$ from the moment you start, or the graph wouldn't have such a slow start from the origin. So what's the problem with the slope we found?
+
+Fundamentally, your velocity at time $t = 0$ shouldn't have anything to do with your position at $t = 1$. You might speed up or slow down a lot in that intervening second --- maybe you even walk backward! In our case, we sped up a lot, since our position is increasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, we can make the run smaller in our slope calculation: for example, if we take $t = .1$, only a tenth of a second after we start measuring, then there's much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$. Set $b = .1$ in the graph above to see the slope we're measuring.
+
+What's the slope now? The rise over run calculation gives us
+
+$$
+	\frac{f(.1) - f(0)}{.1 - 0} = \frac{.1^2}{.1} = .1.
+$$
+
+Better! Since our approximations improve as we have a smaller and smaller run, the best approximation --- in fact, the actual velocity we're after --- is the slope of a line with **no** run at all. Let's define a couple terms to make talking about these things easier.
+
+
+
+### def "secant and tangent lines"
+	
+	A **secant line** through a curve is a line that passes through two particular points on the curve. A **tangent line** is formed from a secant line by sliding one point until it is in the same location as the other.
+	
+###
+
+
+
+So far, we've been dealing with secant lines, but what we want is a tangent line, which appears when both points are at $(0, 0)$.
+
+### desmos tangentLines
+
+As you might be able to predict, that line is totally flat! So our velocity at time $t = 0$ is zero, because although we pick up speed later, we don't have any right at the start. If this seems strange, think of dropping a ball above the ground: gravity speeds it up over time, but at the exact moment you let go, it has zero velocity.
+
+It might not seem like it, but we actually just did something profound: we defined the slope of something that's not a line.
+
+
+
+### def "slope of a curve"
+	
+	Let $f(x)$ be a function. The **slope** of the graph of $f$ at $x = a$ is the slope of the tangent line to the graph of $f$ at $x = a$.
+	
+###
+
+
+
+That wasn't too bad! We already have a formula for the slope of a secant line, so let's just plug in the same point twice to find the slope of a tangent line. So in the example we've been talking about, that means plugging in $(0, 0)$ for both the left and right points:
+
+$$
+	\frac{f(0) - f(0)}{0 - 0} = \frac{0}{0}.
+$$
+
+And now it all comes grinding to a halt. We can't divide anything by zero --- even dividing zero by itself is a problem. No matter what slope we try to calculate, we'll have this problem, since the rise over run formula will always be $\frac{0}{0}$. So what can we do? That line **has** a slope --- the problem isn't that it's not well-defined or something similar, it's just that we cannot calculate it with methods in math that we've learned so far.
+
+It's important that we spell out the problem we're running into clearly. Define 
+
+$$
+	g(h) = \frac{f(h) - f(0)}{h - 0},
+$$
+
+which is just the slope of a secant line passing through the points $(0, f(0))$ and $(h, f(h))$. The function $g$ is undefined at zero, but **there is a clear value it should have.** To illustrate what we mean, let's graph $g(h)$.
+
+### desmos tangentLines2
+
+Since $f(h) = h^2$, we have that
+
+$$
+	g(h) = \frac{h^2}{h}.
+$$
+
+When $h$ is nonzero, we can cancel an $h$ to get $g(h) = h$. When $h = 0$, $g$ is undefined, so there is a hole in the graph at $h = 0$. But looking at that graph, the values of the graph right around $h = 0$ are very close to $0$, and so there is a sense in which the value that $g(h)$ **should** have at $h = 0$ is $0$.
+
+That sense is nice, but it's far from being a concrete definition, and if we're going to find the slopes of more complicated functions than $f(t) = t^2$, we need to know exactly where we're going. The tool we'll construct for this purpose is called a **limit**, and we'll spend roughly the first two weeks of the course getting used to working with them. Around week 3, we'll return with our knowledge of limits to this tangent line business, and figure out an easier way to find the slope of a curve. For now, let's dive into limits.
+
+
+
+## Defining Limits
+
+Our goal is to formalize the sense in which the function $g(h)$ from before should be defined at zero. We said this was because the graph was very close to the hole at $(0, 0)$, so let's write down exactly what we mean.
+
+
+
+### def "limit"
+	
+	Let $a$ be a real number and let $f(x)$ be a function defined everywhere on some interval containing $a$, except possibly at $a$ itself. If there is a real number $L$ so that all values of $f(x)$ get closer to $L$ as $x$ gets closer to $a$, then we say that **the limit as $x$ approaches $a$ of $f(x)$ is equal to $L$**, which we write more neatly as
+	
+	$$
+		\lim_{x \to a} f(x) = L.
+	$$
+	
+	If there is no single number $L$ that satisfies this property, then we say that the limit as $x$ approaches $a$ of $f(x)$ **does not exist**, which we can also write succinctly as
+	
+	$$
+		\lim_{x \to a} f(x) \text{ DNE}.
+	$$
+	
+###
+
+
+
+In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that contains $x$-values getting closer and closer to $a$ (from both above and below), and the corresponding values of $f(x)$. If we see that the $f(x)$ values are getting closer and closer to the same number from both directions, then that is the limit. If not, the limit doesn't exist.
+
+
+
+### ex "calculating a limit with a table"
+	
+	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$ with a table.
+	
+	We can't plug in $x = 0$, since $\sin(0) = 0$ and so we'd get $\frac{0}{0}$, but that's okay --- the limit doesn't have anything to do with what the function actually does at $0$, only very close to it.
+	
+	Let's plug in some values for $x$ that get closer and closer to zero. We need to do this from both above and below, but let's just start with above. That means positive numbers getting smaller and smaller --- let's try $.1$, $.01$, and $.001$.
+	
+	$$f(.1) = \frac{\sin(.1)}{.1} \approx .998334$$
+	
+	$$f(.01) = \frac{\sin(.01)}{.01} \approx .999983$$
+	
+	$$f(.001) = \frac{\sin(.001)}{.001} \approx .999999$$
+	
+	It's pretty clear that these values are approaching $1$. Now let's try approaching from below, which means negative numbers getting closer and closer to zero.
+	
+	$$f(-.1) = \frac{\sin(-.1)}{-.1} \approx .998334$$
+	
+	$$f(-.01) = \frac{\sin(-.01)}{-.01} \approx .999983$$
+	
+	$$f(-.001) = \frac{\sin(-.001)}{-.001} \approx .999999$$
+	
+	It turns out these numbers are exactly the same, but all we need to know is that they are also approaching $1$. Since the two numbers agree, we can declare that
+	
+	$$
+		\lim_{x \to 0} \frac{\sin(x)}{x} = 1.
+	$$
+	
+	Let's see what this looks like visually.
+	
+	### desmos limitExample
+	
+	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn't make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite --- and often because of --- the function being undefined.
+	
+###
+
+### exc "calculating a limit with a table"
+	
+	Find $$\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$$ with a table.
+	
+	Exercises like this will often follow examples --- we'll do some of them as group work in class. They're a great source of possible quiz and test questions, so it's a good idea to do them as practice problems.
+	
+###
+
+
+
+In this next example, let's start with the graph.
+
+
+
+### ex "calculating a limit from a graph"
+	
+	Find $$\lim_{x \to 1} g(x)$$ and $$\lim_{x \to -1} g(x)$$.
+	
+	### desmos limitExample2
+	
+	At $x = 1$, the hole and filled-in dot indicate that $g(1) = 2$. However, $\lim_{x \to 1} g(x)$ is determined only by what the points on the graph right next to $x = 1$ are doing. From both sides, the $y$-values get closer and closer to $y = 0$, so the limit is $\lim_{x \to 1} g(x) = 0$. In this sense, the limit is what you would expect a function's value to be, without actually knowing what that value is. Knowing everything about $g(x)$ except what $g(1)$ is, our best guess is $g(1) = 0$, since that's what the values near $x = 1$ indicate.
+	
+	As for $\lim_{x \to -1} g(x)$, the exact same process tells us that $\lim_{x \to -1} g(x) = 0$. It's also true that $g(-1) = 0$, but that doesn't affect our reasoning at all --- the only thing that matters is that values around $x = -1$ have $y$-values close to $y = 0$.
+	
+###
+
+
+
+### prop "some simple limits"
+	
+	For real numbers $a$ and $c$, $$\lim_{x \to a} x = a$$ and $$\lim_{x \to a} c = c$$.
+	
+###
+
+A proposition is just a true fact that's not particularly exciting. All the first part of this one is saying is that as $x$ gets closer and closer to $a$, the function $f(x) = x$ gets closer and closer to... $a$. That isn't a major result, but it's a good check to make sure things are making sense. The second part just says that the constant function $f(x) = c$ never changes, so no matter what $x$ is approaching, $f(x) = c$ approaches $c$.
+	
+
+
+## Limits that Don't Exist
+
+How could a limit not exist? There are two possibilities for this, generally speaking. Either the values of a function don't approach anything no matter how close $x$ gets to what it's approaching, or the values do approach something, but that something is different depending on the direction we approach from. We'll be able to partially remedy the second case, but let's take a look at the first one first.
+
+
+
+### ex "a limit that doesn't exist"
+	
+	Find $$\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$$.
+	
+	Without a graph to go on, let's plug in a handful of values.
+	
+	$$f(.1) \approx -.544021$$
+	
+	$$f(.01) \approx -.506366$$
+	
+	$$f(.001) \approx .826880$$
+	
+	$$f(.0001) \approx -.305614$$
+	
+	$$f(.00001) \approx .035749$$
+	
+	$$f(.000001) \approx -.349994$$
+	
+	These values aren't moving toward anything. While it's possible that the function only begins converging <em>incredibly</em> close to zero, the safest bet is that
+	
+	$$
+		\lim_{x \to 0} \sin\left( \frac{1}{x} \right) \text{ DNE}.
+	$$
+	
+	Let's back this up with a graph.
+	
+	### desmos dneLimit
+	
+	As $x \to 0$ even just from the right, the $y$-values never settle down to anything --- in fact, they just get more and more chaotic. Using the previous example's metaphor, there isn't any $y$-value that it would make sense to expect the graph to have at $x = 0$.
+	
+###
+
+### exc "another limit that doesn't exist"
+	
+	Find $$\lim_{x \to 2} \frac{|x - 2|}{x - 2}$$.
+	
+	As usual, let's plug in some values. Calling the function $f(x)$, we have
+	
+	$$f(2.1) = \frac{|.1|}{.1} = 1$$
+	
+	$$f(2.01) = \frac{|.01|}{.01} = 1$$
+	
+	$$f(2.001) = \frac{|.001|}{.001} = 1$$
+	
+	So approaching $x = 2$ from above tells us that the limit is probably $1$. Let's try approaching from below.
+	
+	$$f(1.9) = \frac{|-.1|}{-.1} = -1$$
+	
+	$$f(1.99) = \frac{|-.01|}{-.01} = -1$$
+	
+	$$f(1.999) = \frac{|-.001|}{-.001} = -1$$
+	
+	These values tell a different story --- that the limit really ought to be $-1$. So what do we do? The limit can't be two values at once, so we just say it doesn't exist. But look at this graph --- it's so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
+	
+	### desmos dneLimit2
+	
+###
+
+
+
+The previous example leads us to define a watered-down form of limit to describe the sort of behavior it exhibits.
+
+
+
+### def "one-sided limits"
+	
+	Let $f(x)$ be a function. The limit of $f(x)$ as $x$ approaches $a$ **from above** is the same as the usual limit, but we only consider numbers larger than $a$ when computing it. We write this new limit as
+	
+	$$
+		\lim_{x \to a^+} f(x).
+	$$
+	
+	Similarly, the limit of $f(x)$ as $x$ approaches $a$ **from below** is the same as the usual limit, but we only consider numbers smaller than $a$ when computing it. It's written as
+	
+	$$
+		\lim_{x \to a^-} f(x).
+	$$
+	
+	By the definition of the regular limit, $\lim_{x \to a} f(x)$ existing is equivalent to both $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ existing and being equal. To make the language a little less awkward, you'll often hear people say this sort of equivalence like this: $\lim_{x \to a} f(x)$ exists if and only if $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$ exist and are equal.
+	
+###
+
+
+For the previous example, $\lim_{x \to 2^+} f(x) = 1$, while $\lim_{x \to 2^-} f(x) = -1$. On the other hand, both
+
+$$
+	\lim_{x \to 0^+} \sin \left( \frac{1}{x} \right)
+$$
+
+and
+
+$$
+	\lim_{x \to 0^-} \sin \left( \frac{1}{x} \right)
+$$
+
+both still do not exist --- the problem there wasn't that the two sides didn't agree, it's that they didn't converge to anything in the first place.
+
+
+
+### exc "some one-sided limits"
+	
+	Find $$\lim_{x \to 2^+} g(x)$$ and $$\lim_{x \to 2^-} g(x)$$, where
+	
+	$$
+		g(x) = \frac{|x^2 - 4|}{x - 2}.
+	$$
+	
+###
+
+
+
+## Infinite Limits
+
+There's one possibility we haven't mentioned yet: what if the function values just grow larger and larger (or more and more negative) without bound when we take a limit? In that case, there's a sense in which they're getting closer and closer to infinity or negative infinity, so we write those limits as $\lim_{x \to a} f(x) = \infty$ or $\lim_{x \to a} f(x) = -\infty$. Let's look at an example to see what we mean.
+	
+
+
+### ex "an infinite limit"
+	
+	Find $$\lim_{x \to 0} f(x)$$, where $$f(x) = \frac{1}{x^2}$$.
+	
+	Plugging in values, we have
+	
+	$$f(.1) = \frac{1}{.1^2} = 100$$
+	
+	$$f(.01) = \frac{1}{.01^2} = 10000$$
+	
+	$$f(.001) = \frac{1}{.001^2} = 1000000$$
+	
+	Since these numbers are getting larger and larger with no upper bound, $\lim_{x \to 0^+} f(x) = \infty$. Now let's compute the limit from below.
+	
+	$$f(-.1) = \frac{1}{(-.1)^2} = 100$$
+	
+	$$f(-.01) = \frac{1}{(-.01)^2} = 10000$$
+	
+	$$f(-.001) = \frac{1}{(-.001)^2} = 1000000$$
+	
+	Similarly, $\lim_{x \to 0^-} f(x) = \infty$. Since the limits from above and below agree, we have that $\lim_{x \to 0} f(x) = \infty$. Graphically, limits equalling $\pm \infty$ correspond to vertical asymptotes in the graph.
+	
+	### desmos infiniteLimit
+	
+###
+
+### exc "a lot of limits"
+	
+	Let $f(x)$ be defined by the following graph.
+	
+	### desmos complicatedLimit
+	
+	Find the following quantities:
+	
+	$f(-3)$, $f(0)$, $f(1)$
+	
+	$$\lim_{x \to -3^+} f(x)$$, $$\lim_{x \to 0^+} f(x)$$, $$\lim_{x \to 1^+} f(x)$$
+	
+	$$\lim_{x \to -3^-} f(x)$$, $$\lim_{x \to 0^-} f(x)$$, $$\lim_{x \to 1^-} f(x)$$
+	
+	$$\lim_{x \to -3} f(x)$$, $$\lim_{x \to 0} f(x)$$, $$\lim_{x \to 1} f(x)$$
+	
+###
+
+
+
+### nav-buttons

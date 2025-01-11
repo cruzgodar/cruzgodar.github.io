@@ -1,19 +1,7 @@
-# 90259025\.github.io
+# cruzgodar.github.io
 
 
 
 ## What is it?
 
-My personal website. If you're just here to see it, go to [cruzgodar.com](https://cruzgodar.com). It contains the novels and short stories I've written, materials for the classes I've taught, and JavaScript applets I've created, among other things.
-
-
-
-## Why does it exist?
-
-Because anyone who wants to read my writing, view my class material, or use my applets needs a place to go, and that place deserves to be polished.
-
-
-
-## How does it work?
-
-Complete documentation is available under the docs folder. This is primarily for me in case I forget how something works, but if you're interested in an explanation of the site's inner workings, check it out [here](docs/overview.md).
+My personal website. If you're here to see it, go to [cruzgodar.com](https://cruzgodar.com). It contains some of the best pieces of generative art I've created, the JavaScript applets I used to make them, the novels and short stories I've written and am working on, and the materials for the classes I've taught. The site itself has been a massive attempt at learning full-stack web development, and so nearly every aspect is written from scratch, resulting in a polished experience and codebase alike.

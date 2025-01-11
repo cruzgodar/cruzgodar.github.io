@@ -1,0 +1,164 @@
+### banner
+
+I grew up in San Luis Obispo, a small town in California almost exactly halfway between San Francisco and Los Angeles. I took to math at an early age, and by the time I was eleven, I was interested in taking a few classes at the local community college. I was surprised to find it wasn't completely out of the question --- I was able to register as an enrichment student, and the eleven credits that I was limited to per semester was plenty. Being surrounded by students five or ten or forty years older than me was a unique experience, and one that took a little while to adapt to, but I settled in before too long. After four years, I was ready to transfer to Cal Poly, the local four-year university. I graduated in Spring 2018 with honors, and I chose to take a gap year to travel to Germany, where I attended a language school for three months and traveled the country. I packed up my life that fall and moved to Eugene, Oregon to attend grad school. For the next six years, I'm here to stay.
+
+In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anything else outside, and I've learned to settle for weightlifting when it's raining. I put quite a bit of time into making this site the best it can be, and in the free time I have left, I love 2D indie games --- particularly Celeste, in which I became the 818th person in the world to <a href="https://www.youtube.com/watch?v=R3r1k_w88O4">collect every golden strawberry</a> --- yes, even <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ">that one</a>.
+
+
+
+## Education
+
+**Ph.D. in Mathematics:** University of Oregon (2019&ndash;Present)
+	> *Advisor: Benjamin Young*
+
+**M.S. in Mathematics:** University of Oregon (2021)
+
+**B.S. in Mathematics:** California Polytechnic State University (2018)
+
+**A.S. in Mathematics:** Cuesta College (2016)
+
+
+
+## Teaching Experience
+
+**Graduate Educator** (University of Oregon, October 2019&ndash;Present)
+
+> - **Instructor of Record**
+
+>> - <a href="/teaching/uo/342/">Math 342: Elementary Linear Algebra II</a> (Spring 2024)
+
+>> - <a href="/teaching/uo/341/">Math 341: Elementary Linear Algebra I</a> (Fall 2023)
+
+>> - <a href="/teaching/uo/256/">Math 256: Intro to Differential Equations and Linear Algebra</a> (Fall 2024, Spring 2023)
+
+>> - <a href="/teaching/uo/253/">Math 253: Calculus III</a> (Fall 2022)
+
+>> - <a href="/teaching/uo/252/">Math 252: Calculus II</a> (Winter 2023, Winter 2022, Spring 2021)
+
+>> - <a href="/teaching/uo/251/">Math 251: Calculus I</a> (Spring 2022)
+
+>> - Math 243: Intro to Probability and Statistics (Summer 2021)
+
+>> - Math 112: Elementary Functions (Fall 2021, Winter 2021, Spring 2020)
+
+>> - Math 111: College Algebra (Winter 2020)
+
+>> - Math 105: University Math I (Summer 2020)
+
+> - **Teaching Assistant**
+
+>> - Math 241: Business Calculus I (Fall 2020)
+
+>> - Math 111: College Algebra (Fall 2019)
+
+
+
+## Research
+
+**<a href="https://arxiv.org/abs/2411.09920">Bijectivizing the PT--DT Correspondence</a>** (preprint, expected 2025). Joint work with Benjamin Young.
+
+
+
+## Industry Experience
+
+**Web Development Intern** (<a href="https://udisc.com">UDisc</a>, June--September 2024). Overhauled the tools for disc golf course owners with extensive data aggregation and visualization, using a new PostgreSQL backend.
+
+**Web Development Intern** (<a href="https://udisc.com">UDisc</a>, June--September 2023). Built tools for detailed reviews and wide-ranging internal tools, using MongoDB, TypeScript, and React + Remix.
+
+
+
+## Art Exhibitions
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art/cruz-godar">Bridges Conference 2024</a>** (August 2024). Virginia Commonwealth University; Richmond, Virginia.
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference/cruz-godar">Bridges Conference 2023</a>** (August 2023). Dalhousie University; Halifax, Nova Scotia.
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference/90259025">Bridges Conference 2022</a>** (August 2022). Aalto University; Helsinki, Finland.
+
+**<a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls’ Angle Bulletin</a>** (October 2021). *Magazine to foster girls’ interest in mathematics.*
+
+**<a href="https://calendar.uoregon.edu/event/generative_art_the_beautiful_side_of_math_-_exhibition_by_cruz_godar">Generative Art: The Beautiful Side of Math</a>** (September--October 2021). Solo Exhibition: Adell McMillan Gallery, University of Oregon.
+
+**<a href="https://www.artscioregon.com/2020-gallery">Research as Art Competition</a>** (December 2020--Present). *Displayed permanently in the Eugene airport and chosen as the cover image to represent the entire exhibit.*
+
+**<a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Creativity Counts</a>** (April--July 2020). Jordan Schnitzer Museum of Art, University of Oregon.
+
+
+
+## Projects
+
+**<a href="/applets/thurston-geometries/">Immersive Thurston Geometry Applet</a>** (February 2024). A WebGL renderer to experience the perspective of living inside any possible curved space.
+
+**<a href="/slides/lapsa/" data-in-new-tab="1">Lapsa</a>** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
+
+**<a href="/teaching/">Interactive Class Notes</a>** (January 2022--Present). Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
+
+**<a href="https://github.com/cruzgodar/wilson">Wilson</a>** (August 2021). A JavaScript and TypeScript library for creating interactive and parallelized web applets. Every applet on this site is built using Wilson.
+
+**<a href="/applets/kaleidoscopic-ifs-fractals/">Kaleidoscopic IFS Fractals Applet</a>** (October 2020). A WebGL renderer to view strikingly complex 3D fractals.
+
+**<a href="/applets/wilsons-algorithm/">Wilson's Algorithm Applet</a>** (October 2019). An applet to create and color random mazes of any size.
+
+**<a href="/applets/">Additional Applets</a>** (January 2019--Present). 40 more mathematical visualization projects ranging across disciplines, formats, and web technologies.
+
+**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present). A website written from scratch without using any large libraries; everything from the single-page site logic to the graphic design was made custom on my own, and the site currently contains a total of over 50000 lines of JavaScript.
+
+
+
+## Technical Skills
+
+**Programming Languages**
+
+> - JavaScript and TypeScript
+
+> - C
+
+> - GLSL
+
+> - Julia
+
+> - Python and SageMath
+
+**Tools and Packages**
+
+> - WebGL (examples: <a href="/applets/the-mandelbulb/">the Mandelbulb</a>, <a href="/applets/double-pendulum-fractal/">the double pendulum fractal</a>, <a href="/applets/newtons-method/">Newton's method fractals</a>)
+
+> - WebAssembly (examples: <a href="/applets/wilsons-algorithm/">Wilson's algorithm</a>, <a href="/applets/calcudoku-generator/">Calcudoku generator</a>)
+
+> - CUDA
+
+> - React and Remix
+
+> - Tailwind CSS
+
+> - MongoDB
+
+> - Gurobi
+
+> - Keras and TensorFlow
+
+
+
+## Selected Anonymous Teaching Feedback
+
+### carousel
+
+	"Best math class and class in general I have taken at UO, Cruz is the best instructor I have had in my two years here and has made a class about higher level math fun and interesting. Extremely supportive of students, you can tell he wants to see every student succeed and that meant a lot. His teaching style is serious when it needs to be, does not feel like you are punished if you don't know everything first time around, and actually has a personality while teaching that makes the class very engaging and fun to come to. 11/10 teacher would highly highly recommend and I want to see more teachers mirror his style."\n*Math 256: Intro to Differential Equations (Spring 2023)*
+
+	"Cruz has been an absolutely exceptional professor! I've taken a number of math classes at UO and I believe that his teaching style and organization with notes/homework has made a significant improvement in my ability to learn and comprehend the course material. He has outperformed previous teachers by many strides, even professor[s] which have been teaching for a number of years more. Cruz makes class engaging and I've always looked forward to coming to lectures, I could not give high enough praises!"\n*Math 256: Intro to Differential Equations (Fall 2024)*
+
+	"The instructor for this course has genuinely been the most helpful instructor I've had in my entire time at UO. He cares about making sure the students learn and understand the course material, is aware of the things students struggle with, and puts more focus on those things to make sure everyone is on track with the material. Overall, the instructor has been amazing this term."\n*Math 341: Linear Algebra I (Fall 2023)*
+
+	"I like the online notes. I am glad Cruz goes to the trouble to make them for students. He is EXTREMELY receptive to suggestions and feedback. I was often really blunt about things that were/weren't working, or aspects of the course that could be improved/modified/changed to help my learning and ensure everything was as thorough as it could be. He always took my suggestions and ideas, which made me feel heard and supported and respected. In addition, it made me feel like he put my learning as his top priority.\nHe is also very aware of when things need to be modified to fit the capability of the class, which is a very impressive skill as a teacher. He knows when certain things are too much, and communicates with the class to help reconcile. \nAlso, I may have said this before, but his ability to draw straight lines and perfect circles on a chalk board is quite impressive."\n*Math 252: Calculus II (Winter 2022)*
+
+	"This is the most organized course that I have taken in my college career. It was clear that the instructor cared about their student[s'] learning and actively worked to increase their understanding of mathematics, not just this course, through the inclusivity and thoroughness with which they created their website. Any additional resources one might need to pass this course was easily found as well as the actual course assignments and notes."\n*Math 256: Intro to Differential Equations (Fall 2024)*
+
+	*Prompt: What specifically about the support from the instructor helped your learning?*\n"The responses to questions in class, keeping us updated on any changes on assignments, little tidbits of extra knowledge [that] go outside the scope of the class, office hours were super helpful, 1 on 1 meetings were extremely beneficial. Overall one of the best teachers I have ever had all around, made the class enjoyable and made me want to come to class every day."\n*Math 256: Intro to Differential Equations (Spring 2023)*
+
+	"Cruz your website is literally perfection. I want to let you know that it makes life so much easier in comparison to the other canvas pages my other professors set up."\n*Math 341: Linear Algebra I (Fall 2023)*
+
+	"Office hours were super helpful and helped answer any questions that came up during homework. He also makes it easy to ask questions because he genuinely doesn't treat any questions like a stupid question. Many teachers will say that there is no stupid questions, but then still make you feel like your question is stupid. He very much doesn't do this.\n*Math 341: Linear Algebra I (Fall 2023)*
+
+	"This is the most well taught math course I have ever taken."\n*Math 341: Linear Algebra I (Fall 2023)*
+
+###

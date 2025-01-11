@@ -1,0 +1,134 @@
+This is a behemoth of an applet --- it took two months of work, I had to learn to use a proper 3D library, and there's more than twice as much code as the previous largest applet. I'm proud of the result, though: this applet visualizes **plane partitions**, which are stacks of boxes with one restriction: the height doesn't increase when moving down or to the right. The resulting objects can be viewed in 2D or 3D --- the 3D view looks like a bunch of rhombi, and drawing a line in the center (called a **dimer**) produces a one-to-one correspondence between plane partitions and what are called **perfect matchings** on a hexagonal lattice, where every node is paired with exactly one other.
+
+Plane partitions can be made **asymptotic** to a shape. When adding or editing an array, replace a number with a caret (`^`) to give that square infinite height, represented with slightly lighter boxes. You can also add the symbols `&gt;` and `v` to the right and bottom margins, respectively, to create 3-leg APPs. For example, "`7 >`" at the end of the first line means the row of height 7 should continue forever, indicated by the same lighter boxes.
+
+Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape --- a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must *increase*, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
+
+### dropdown categories
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+<div style="position: relative; margin: 0 auto; width: 100%; aspect-ratio: 1; margin-bottom: 5vh">
+	<div style="position: absolute; width: 100%">
+		<canvas id="output-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important"></canvas>
+	</div>
+	
+	<div id="numbers-canvas-container" style="position: absolute; width: 100%">
+		<canvas id="numbers-canvas" class="output-canvas" style="margin-top: 0 !important; margin-bottom: 0 !important; border-color: rgba(0, 0, 0, 0); opacity: 0"></canvas>
+	</div>
+</div>
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+
+
+<div id="category-holder" style="display: none">
+	<div class="view-controls-section category-section">
+		### text-boxes
+			resolution
+		###
+	</div>
+		
+	<div class="view-controls-section category-section">
+		### buttons
+			switch-view
+			show-dimers
+		###
+	</div>
+	
+	<div class="view-controls-section category-section">
+		### checkboxes
+			maximum-speed
+		###
+	</div>
+	
+	
+	
+	<div class="add-array-section category-section">
+		<div class="center-content" style="margin-top: 5vh">
+			### textarea add-array
+		</div>
+	</div>	
+	
+	<div class="add-array-section category-section">
+		### buttons
+			add-array
+		###
+	</div>
+	
+	
+	
+	<div class="edit-array-section category-section">
+		### text-boxes
+			edit-array-index
+		###
+	</div>
+	
+	<div class="edit-array-section category-section">
+		<div class="center-content" style="margin-top: 5vh">
+			### textarea edit-array
+		</div>
+	</div>	
+	
+	<div class="edit-array-section category-section">
+		### buttons
+			edit-array
+		###
+	</div>
+	
+	
+	
+	<div class="remove-array-section category-section">
+		### text-boxes
+			remove-array-index
+		###
+	</div>
+	
+	<div class="remove-array-section category-section">
+		### buttons
+			remove-array
+		###
+	</div>
+	
+	
+	
+	<div class="algorithms-section category-section">
+		### text-boxes
+			algorithm-index
+		###
+	</div>
+	
+	<div class="algorithms-section category-section">
+		### buttons
+			hillman-grassl
+			hillman-grassl-inverse
+			pak
+			pak-inverse
+			sulzgruber
+			sulzgruber-inverse
+			rsk
+			rsk-inverse
+		###
+	</div>
+</div>

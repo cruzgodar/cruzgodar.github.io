@@ -1,0 +1,159 @@
+### nav-buttons
+
+It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the chain rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
+
+Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we'll have to identify them in order to use it, so let's take some time to work on that.
+
+
+
+### ex "compositions"
+	
+	The following functions can be written in the form $f(g(x))$. Write down $f(x)$ and $g(x)$ for each.
+	
+	1. $$\cos(x^5)$$.
+	
+	2. $$\ln^3(x)$$.
+	
+	3. $$(x + 1)\sin(x + 1)$$.
+	
+	Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
+	
+	1. Here, the fifth power is the closest thing to $x$, so $g(x) = x^5$. What's happening to $x^5$ is a cosine, so $f(x) = \cos(x)$. It might be easier to see what $f$ should be by starting with $\cos(x^5)$ and replacing $x^5$ with $x$.
+	
+	2. Remember from the last section that this is the same thing as $(\ln(x))^3$. Then $g(x) = \ln(x)$ and $f(x) = x^3$.
+	
+	3. This is a little harder. The thing happening right next to $x$ is $x + 1$, so $g(x) = x + 1$. Crunching $x + 1$ down to $x$, we get $f(x) = x\sin(x)$.
+	
+###
+
+
+
+The chain rule will tell us how to differentiate compositions, but we'll need to identify each separate part in this way in order to use it.
+
+
+
+### thm "the Chain Rule"
+	
+	Let $f$ and $g$ be differentiable functions. Then
+	
+	$$
+		\frac{d}{dx}[f(g(x))] = f'(g(x))g'(x).
+	$$
+	
+###
+
+
+
+Okay, let's walk through that one. To differentiate a composition, first identify the inner and outer functions. Then differentiate each, plug undifferentiated $g$ into $f'$, and multiply the two together.
+
+
+
+### ex "compositions"
+	
+	Find the derivative of each of the following functions.
+	
+	1. $$\cos(x^5)$$.
+	
+	2. $$\ln^3(x)$$.
+	
+	3. $$(x + 1)\sin(x + 1)$$.
+	
+	Once again, we''ll take these one at a time.
+	
+	1. Here, $f(x) = \cos(x)$ and $g(x) = x^5$. We have $f'(x) = -\sin(x)$ and $g'(x) = 5x^4$, so $f'(g(x)) = -\sin(x^5)$. Therefore, the total derivative is
+	
+	$$
+		-\sin(x^5) \cdot 5x^4.
+	$$
+	
+	2. This time, $f(x) = x^3$ and $g(x) = \ln(x)$. Then $f'(x) = 3x^2$ and $g'(x) = \frac{1}{x}$, so
+	
+	$$
+		f'(g(x))g'(x) = 3\ln^2(x) \cdot \frac{1}{2}.
+	$$
+	
+	3. We have $f(x) = x\sin(x)$ and $g(x) = x + 1$. By the product rule, $f'(x) = \sin(x) - x\cos(x)$, and $g'(x) = 1$. Therefore, we have
+	
+	$$
+		\frac{d}{dx}[(x + 1)\sin(x + 1)] = \sin(x+1) - (x+1)\cos(x+1).
+	$$
+	
+###
+
+### exc "compositions"
+	
+	Find the derivative of each of the following functions.
+	
+	1. $$e^{\frac{1}{x}}$$.
+	
+	2. $$\frac{t^2}{\ln(t + 2)}$$.
+	
+	3. $$\csc(e^y)$$.
+	
+###
+
+
+
+Just like we can use the chain rule with the product and quotient rules, we can also use it with... the chain rule. This boils down to compositions of more than two functions, like $\sin(\cos(\tan(x)))$. In general, it's easiest to peel off functions from the outside in. Let's see how this works.
+
+
+
+### ex "a composition of three functions"
+	
+	Find the derivative of $$\sin(\cos(\tan(x)))$$.
+	
+	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
+	
+	$$
+		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) \frac{d}{dx}[\cos(\tan(x))].
+	$$
+	
+	Now we need to do the same thing to find that second derivative. The outer function is $\cos(x)$, and its derivative is $-\sin(x)$, so we get
+	
+	$$
+		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \frac{d}{dx}[\tan(x)].
+	$$
+	
+	Finally, we can handle $\tan(x)$ on its own.
+	
+	$$
+		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \sec^2(x).
+	$$
+	
+###
+
+### exc "a composition of four functions"
+	
+	Find the derivative of $$\sec^3\left(e^{x^2}\right)$$.
+	
+###
+
+
+
+Let's mention another way the chain rule is often stated. The derivative $\frac{d}{dx}[y]$ is often written as $\frac{dy}{dx}$. Although they both mean derivative, $\frac{d}{dx}$ is a verb and $\frac{dy}{dx}$ is a noun.
+
+The advantage of writing things in this way is that the chain rule becomes quite simple to write down. I'm not partial to this notation for reasons that will shortly become clear, but it is undeniably slick.
+
+Let $y = f(g(x))$ and define a new variable $u = g(x)$. Then $y = f(u)$, so
+
+$$
+	\frac{dy}{du} = f'(u) = f'(g(x)).
+$$
+
+Similarly, $\frac{du}{dx} = g'(x)$. Finally,
+
+$$
+	\frac{dy}{dx} = \frac{d}{dx}[f(g(x))].	
+$$
+
+In total, the chain rule says
+
+$$
+	\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}.
+$$
+
+We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $du$. While this isn't completely inaccurate, it's best not to get too used to thinking this way from the start --- it makes it easier to make mistakes.
+
+
+
+### nav-buttons

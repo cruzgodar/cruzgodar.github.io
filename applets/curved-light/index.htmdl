@@ -1,0 +1,47 @@
+Raymarching is an extraordinarily versatile method for rendering 3D scenes of all sorts, from <a href="/applets/quaternionic-julia-sets/">fractals</a> to <a href="/applets/thurston-geometries/">curved spaces</a>, but this time, things are a little different. By exchanging the straight line that line normally moves along for a different curve, we can produce all sorts of bizarre renderings that showcase the curvature of space, even if it's artificially imposed.
+
+
+
+### dropdown effects
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+
+### text-boxes
+	resolution
+###
+
+### sliders
+	radius
+	curvature
+###
+
+### checkboxes
+	reflections
+	antialiasing
+###
+
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+### raymarch-controls
