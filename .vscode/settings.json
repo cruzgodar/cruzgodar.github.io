@@ -28,8 +28,5 @@
 	"editor.formatOnSave": false,
 	"editor.maxTokenizationLineLength": 200000,
 	"editor.autoIndent": "advanced",
-	"liveServer.settings.port": 5500,
-	"files.associations": {
-		"number-theory": "cpp"
-	},
+	"liveServer.settings.port": 5500
 }
