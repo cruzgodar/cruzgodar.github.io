@@ -30,6 +30,9 @@
 	"editor.autoIndent": "advanced",
 	"liveServer.settings.port": 5500,
 	"files.associations": {
-		"number-theory": "cpp"
+		"number-theory": "cpp",
+		"__locale": "cpp",
+		"string": "cpp",
+		"string_view": "cpp"
 	},
 }
