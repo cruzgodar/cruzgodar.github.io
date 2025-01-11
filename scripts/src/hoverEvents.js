@@ -13,7 +13,7 @@ const elementSelectors = [
 const elementSelectorsWithScale =
 {
 	"#logo img": {
-		scale: 1.05,
+		scale: 1.035,
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
@@ -38,12 +38,12 @@ const elementSelectorsWithScale =
 		preventScaleWithIncreasedContrast: false
 	},
 	".image-link a[data-card-id] img": {
-		scale: 1.05,
+		scale: 1.035,
 		addBounceOnTouch: () => true,
 		preventScaleWithIncreasedContrast: false
 	},
 	".image-link a:not([data-card-id]) img": {
-		scale: 1.05,
+		scale: 1.035,
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
