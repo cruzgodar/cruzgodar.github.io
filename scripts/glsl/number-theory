@@ -340,18 +340,16 @@ vec2 wp(vec2 z, vec2 t) {
 		t = -t;
 	}
 	float t_magnitude = length(t); // |t|
-    if (t_magnitude > 1.0) { // Threshold for "large"
-        vec2 t_prime = cdiv(-1.0, t);
+	if (t_magnitude > 1.0) { // Threshold for "large"
+		vec2 t_prime = cdiv(-1.0, t);
 
-        // Transform z: z' = z / t
-        vec2 z_prime = cdiv(z, t);
+		// Transform z: z' = z / t
+		vec2 z_prime = cdiv(z, t);
 
-        // Compute wp(z'; t') using the same function recursively
-        vec2 wp_transformed = wpHelper(z_prime, t_prime);
+		vec2 wp_transformed = wpHelper(z_prime, t_prime);
 
-        // Rescale back to original coordinates
-        return cdiv(wp_transformed,cmul(t, t)); // wp(z; t) = t^-2 * wp(z/t; -1/t)
-    } else {
+		return cdiv(wp_transformed,cmul(t, t)); // wp(z; t) = t^-2 * wp(z/t; -1/t)
+	} else {
 		return wpHelper(z,t);
 	}
 }

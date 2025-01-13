@@ -48,7 +48,7 @@ Logarithms are infamous in algebra, but they don't need to be! When we say that 
 
 ### exc "logarithms"
 
-	1. Evaluate $\log_3(8)$, $\log_2\left( \frac{1}{4} \right)$, and $\ln(e)$.
+	1. Evaluate $\log_2(8)$, $\log_2\left( \frac{1}{4} \right)$, and $\ln(e)$.
 
 	2. Let $b > 0$ be a real number. What is $\log_b\left( b^x \right)$ for any value of $x$? What about $b^{\log_b(x)}$? Briefly explain your answers.
 

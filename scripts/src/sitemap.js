@@ -1592,7 +1592,8 @@ export const sitemap =
 		"children":
 		[
 			"/teaching/uo/112/notes/1-transformations/",
-			"/teaching/uo/112/notes/2-periodic-functions/"
+			"/teaching/uo/112/notes/2-periodic-functions/",
+			"/teaching/uo/112/notes/3-the-unit-circle/"
 		]
 	},
 		
@@ -1610,6 +1611,17 @@ export const sitemap =
 	"/teaching/uo/112/notes/2-periodic-functions/":
 	{
 		"title": "Section 2: Periodic Functions",
+		
+		"parent": "/teaching/uo/112/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/3-the-unit-circle/":
+	{
+		"title": "Section 3: The Unit Circle",
 		
 		"parent": "/teaching/uo/112/",
 		
