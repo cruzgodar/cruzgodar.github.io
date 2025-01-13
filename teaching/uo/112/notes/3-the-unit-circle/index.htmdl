@@ -1,0 +1,55 @@
+### nav-buttons
+
+
+
+With a good handle on periodic functions, we're ready to dig into trigonometry proper. We'll start by reviewing a few terms and concepts from geometry before examining the unit circle as our main object of study.
+
+## A Geometry Review
+
+Two lines meeting a point form an **angle**, whose size we typically measure in units of **degrees**, written as a small superscript circle. $360^\circ$ is defined to be a full circle, so $180^\circ$ is a straight line and $90^\circ$ is the angle found in any corner of a rectangle, called a **right** angle (indicated with a small square in the angle instead of a small arc). Instead of Latin letters like $x$ and $y$, we usually denote angles as Greek letters like $\theta$ (theta) or $\varphi$ (phi), which can help distinguish them contextually in expressions.
+
+### desmos angles
+
+Angles with measure between $0^\circ$ and $90^\circ$ (not inclusive) are called **acute**, and those with measure between $90^\circ$ and $180^\circ$, also not inclusive, are called **obtuse**. We also frequently use these angle names to refer to triangles.
+
+### def "acute, obtuse, and right triangles"
+
+	A triangle is **acute** if all of three its angles are less than $90^\circ$, **obtuse** if one of its angles is larger than $90^\circ$, and **right** if one of its angles is exactly $90^\circ$. In a right triangle, the two sides bordering the right angle are called **legs**, and the other side is called the **hypotenuse**.
+
+	### desmos rightTriangle
+
+###
+
+This definition implies no more than one angle in a triangle can be at least $90^\circ$, and that's the case! It's a consequence of the following (very useful) fact:
+
+### thm "the sum of angles of a triangle"
+
+	In any triangle, the three angles sum to $180^\circ$.
+
+###
+
+### exc "the sum of angles of a triangle"
+
+	Draw a diagram that shows that the previous theorem is true. Hint: one way to show that three angles sum to $180^\circ$	is to show that if you line them up side-by-side, they form a straight line.
+
+###
+
+While this theorem applies to all triangles, right triangles in particular have an extra very special (and very famous) property.
+
+### thm "The Pythagorean Theorem"
+
+	In a right triangle with legs $a$ and $b$ and hypotenuse $c$, $a^2 + b^2 = c^2$.
+
+###
+
+### pf
+
+	We don't get many chances to prove things in this course, so let's take this one! There are a massive number of proofs of the Pythagorean theorem, but my personal favorite to use as a first proof works by rearranging triangles.
+
+	### desmos pythagoreanTheorem
+
+###
+
+
+
+### nav-buttons

@@ -143,6 +143,7 @@ home Cruz Godar
 		uo/112 Math 112
 			notes/1-transformations Section 1: Transformations
 			notes/2-periodic-functions Section 2: Periodic Functions
+			notes/3-the-unit-circle Section 3: The Unit Circle
 		
 		uo/111 Math 111
 		uo/105 Math 105
