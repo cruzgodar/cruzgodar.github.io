@@ -48,6 +48,8 @@ While this theorem applies to all triangles, right triangles in particular have 
 
 	### desmos pythagoreanTheorem
 
+	Here, we have a right triangle with legs $a$ and $b$ (colored red and blue, respectively), and a hypotenuse $c$ (colored purple). By drawing three rotated copies of the triangle, we surround the purple square. Its side length is $c$, so its are must be $c^2$. However, if we rearrange the triangles (drag the $s$ slider in the expressions list), then we can instead fill exactly the same area with two smaller squares with areas $a^2$ and $b^2$, respectively. Since each diagram is constructed with the same four copies of the triangle, those squares must have the same area: in other words, $a^2 + b^2 = c^2$.
+
 ###
 
 

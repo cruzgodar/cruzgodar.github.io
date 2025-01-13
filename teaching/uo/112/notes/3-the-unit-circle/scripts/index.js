@@ -59,19 +59,22 @@ export default function()
 					{ latex: String.raw`(0, 0), (0, b)`, color: desmosBlue, points: false, lines: true, secret: true },
 					{ latex: String.raw`(a, 0), (0, b)`, color: desmosPurple, points: false, lines: true, secret: true },
 
-					{ latex: String.raw`(a, 0), (a + b, 0)`, color: desmosBlue, points: false, lines: true, secret: true },
-					{ latex: String.raw`(a + b, 0), (a + b, a)`, color: desmosRed, points: false, lines: true, secret: true },
-					{ latex: String.raw`(a + b, a), (a, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: String.raw`(a, sb), (a + b, sb)`, color: desmosBlue, points: false, lines: true, secret: true },
+					{ latex: String.raw`(a + b, sb), (a + b, a + sb)`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: String.raw`(a + b, a + sb), (a, sb)`, color: desmosPurple, points: false, lines: true, secret: true },
 
-					{ latex: String.raw`(0, b), (0, a + b)`, color: desmosRed, points: false, lines: true, secret: true },
-					{ latex: String.raw`(0, a + b), (b, a + b)`, color: desmosBlue, points: false, lines: true, secret: true },
-					{ latex: String.raw`(b, a + b), (0, b)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: String.raw`(sa, b), (sa, a + b)`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: String.raw`(sa, a + b), (b + sa, a + b)`, color: desmosBlue, points: false, lines: true, secret: true },
+					{ latex: String.raw`(b + sa, a + b), (sa, b)`, color: desmosPurple, points: false, lines: true, secret: true },
 
-					{ latex: String.raw`(b, a + b), (a + b, a + b)`, color: desmosRed, points: false, lines: true, secret: true },
-					{ latex: String.raw`(a + b, a + b), (a + b, a)`, color: desmosBlue, points: false, lines: true, secret: true },
-					{ latex: String.raw`(a + b, a), (b, a + b)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: String.raw`((1 - s)b, (1 - s)a + b), (a + (1 - s)b, (1 - s)a + b)`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: String.raw`(a + (1 - s)b, (1 - s)a + b), (a + (1 - s)b, (1 - s)a)`, color: desmosBlue, points: false, lines: true, secret: true },
+					{ latex: String.raw`(a + (1 - s)b, (1 - s)a), ((1 - s)b, (1 - s)a + b)`, color: desmosPurple, points: false, lines: true, secret: true },
 
-					{ latex: String.raw`\polygon((0, b), (b, a + b), (a + b, a), (a, 0))`, color: desmosPurple, fillOpacity: String.raw`0.5(1 - s)`, secret: true },
+					{ latex: String.raw`\polygon((0, b), (b, a + b), (a + b, a), (a, 0))`, color: desmosPurple, lineOpacity: String.raw`1 - s`, fillOpacity: String.raw`0.5(1 - s)`, secret: true },
+
+					{ latex: String.raw`\polygon((0, b), (a, b), (a, a + b), (0, a + b))`, color: desmosRed, lineOpacity: String.raw`s`, fillOpacity: String.raw`0.5s`, secret: true },
+					{ latex: String.raw`\polygon((a, 0), (a + b, 0), (a + b, b), (a, b))`, color: desmosBlue, lineOpacity: String.raw`s`, fillOpacity: String.raw`0.5s`, secret: true },
 
 					...getDesmosSlider({
 						expression: "a = 4",
