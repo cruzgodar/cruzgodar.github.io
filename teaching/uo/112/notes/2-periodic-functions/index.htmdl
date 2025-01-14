@@ -72,6 +72,16 @@ We'll have quite a bit more to say about particular periodic functions in the ne
 
 ###
 
+As one final set of terms, let's say just a bit more about properties of periodic functions.
+
+### def "midline and amplitude"
+
+	Let $f(x)$ be a periodic function, and suppose that its maximum $y$-value is $M$ and its minimum $y$-value is $m$. The **midline** of $f$ is the average of these two values, i.e. $\frac{M + m}{2}$, and the **amplitude** of $f$ is the distance from the midline to either the max or min, i.e. $\frac{M - m}{2}$.
+
+###
+
+For example, the periodic function in the previous exercise has a midline of $0$ and an amplitude of $1$, since its minimum $y$-value is $-1$ and its maximum is $1$.
+
 
 
 ### nav-buttons

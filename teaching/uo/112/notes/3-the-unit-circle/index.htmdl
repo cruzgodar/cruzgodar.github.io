@@ -52,6 +52,68 @@ While this theorem applies to all triangles, right triangles in particular have 
 
 ###
 
+### exc "the Pythagorean Theorem"
+
+	1. If a right triangle has legs of length $5$ and $12$, how long must its hypotenuse be?
+
+	2. Suppose a right triangle has two sides of lengths $3$ and $4$, how long could the third side be?
+
+###
+
+One final geometric definition we'll need to recall is that of **similar triangles**, which is a term used to describe two triangles of the same shape, where we can transform one into the other by rotating and scaling. Two similar triangles have the same angles, and if two corresponding sides have a ratio of lengths equal to $a$, then any other pair of corresponding sides has the same ratio of lengths.
+
+### desmos similarTriangles
+
+In this graph, the purple and blue triangles are similar, since we can rotate one $180^\circ$ and scale it to match the other. Doing that makes the two horizontal sides lie on top of one another, and so they are corresponding. Before rotating and scaling, the purple side is twice as long as the blue one, and so every other purple side is exactly twice as long as its corresponding blue side.
+
+### exc "similar triangles"
+
+	Are all right triangles similar? What about all right triangles whose hypotenuse has a length of exactly $6$?
+
+###
+
+
+
+## The Unit Circle
+
+With a geometry review behind us, let's investigate the **unit circle**, which is a circle of radius $1$ centered at $(0, 0)$.
+
+### desmos unitCircle
+
+We'll have much more to say about the unit circle in the next section, but let's start with an equation for it. Any point $(x, y)$ on the unit circle forms a triangle with side lengths $|x|$ and $|y|$ (if $x$ and $y$ are both positive, then that's just $x$ and $y$). The hypotenuse is the radius of the circle, which is $1$ by definition, so by the Pythagorean theorem, $x^2 + y^2 = 1$.
+
+### exc "the unit circle"
+
+	1. Is $(1, 1)$ on the unit circle? What about $\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$?
+
+	2. How many points on the unit circle have $y$-coordinate $\frac{1}{5}$? How about $y$-coordinate $-1$, or $1.5$?
+
+	3. For each point on the unit circle you found in the previous question, find its $x$-coordinate.
+
+###
+
+These types of questions let us convert $x$-coordinates to $y$-coordinates and vice versa, but it doesn't let us connect the points with the angles they make. For example, the purple point in the previous graph makes an angle of $30^\circ$ with the positive $x$-axis, and its $y$-coordinate is $\frac{1}{2}$, but there isn't an obvious way to go back and forth. All sorts of physical phenomena can be modeled at least in part with circles and angles, and so having a way to convert between the angle of a point and its $x$- and $y$-coordinates would be useful. Let's define two of our core functions now that will help us do just that, and then explore a bit about them.
+
+### def "cosine and sine"
+
+	Let $\theta$ be an angle. The **cosine** of $\theta$, written $\cos(\theta)$, is the $x$-coordinate of the point on the unit circle with angle $\theta$ measured counterclockwise from the positive $x$-axis, and the **sine** of $\theta$, written $\sin(\theta)$, is the $y$-coordinate of the point on the unit circle with angle $\theta$, measured in the same way. In other words, a point on the unit circle with angle $\theta$ has coordinates $(\cos(\theta), \sin(\theta))$.
+
+###
+
+There's quite a bit to digest here; let's begin by focusing on how points' angles are measured in the first place. The previous Desmos graph has a slider for the angle $a$ in degrees, ranging from $0^\circ$ to $360^\circ$. Since the angle is measured counterclockwise, increasing $a$ first makes the point rise up, until it's at the very top of the circle at $a = 90^\circ$, and then it falls, finally reaching the leftmost point of the circle at $a = 180^\circ$.
+
+### exc "cosine and sine"
+
+	1. Draw a unit circle and plot the points on it with angles $0^\circ$, $45^\circ$, $270^\circ$, and $360^\circ$ (measured counterclockwise from the positive $x$-axis, as we'll always take to be the case). You don't need to find their coordinates.
+
+	2. What are $\cos(0^\circ)$ and $\sin(0^\circ)$? What about $\cos(90^\circ)$, $\cos(180^\circ)$, and $\sin(270^\circ)$?
+
+	3. Suppose a point on the unit circle with angle $\theta$ has $\sin(\theta) = \frac{\sqrt{24}}{5}$. What could $\cos(\theta)$ be?
+
+###
+
+This is a good place to start! We'll have much, *much* more to say about sine and cosine in the next section, including exploring angles less than $0^\circ$ or larger than $360^\circ$, graphing both functions, and interpreting transformations of them.
+
 
 
 ### nav-buttons

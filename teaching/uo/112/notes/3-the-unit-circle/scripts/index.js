@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	desmosBlack,
 	desmosBlue,
 	desmosPurple,
 	desmosRed,
@@ -113,7 +114,41 @@ export default function()
 						secret: false
 					}),
 				]
-			}
+			},
+
+			similarTriangles:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`(-1, 0), (0, 3), (4, 0), (-1, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: String.raw`(0.5, -0.5), (0, -2), (-2, -0.5), (0.5, -0.5)`, color: desmosBlue, points: false, lines: true, secret: true },
+				]
+			},
+
+			unitCircle:
+			{
+				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+
+				expressions:
+				[
+					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+
+					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
+					
+					...getDesmosSlider({
+						expression: "a = 30",
+						min: 0,
+						max: 360,
+						step: 1,
+						secret: false
+					}),
+
+					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+				]
+			},
 		};
 
 		return data;
