@@ -121,7 +121,7 @@ When $V = #R#^n$ and $W = #R#^m$, we have the linear transformations we're used 
 	The set of polynomials using a variable $x$ and with coefficients in $#R#$ is written $#R#[x]$ (read "$#R#$ adjoin $x$"). Define $D : #R#[x] \to #R#[x]$ by
 	
 	$$
-		D(p(x)) = \frac{d}{dx}[p(x)].
+		D(p(x)) = d/dx[p(x)].
 	$$
 	
 	Is $D$ a linear transformation? Justify your answer.
@@ -129,7 +129,7 @@ When $V = #R#^n$ and $W = #R#^m$, we have the linear transformations we're used 
 	All this boils down to is checking if the derivative is linear. Since
 	
 	$$
-		D(p(x) + q(x)) &= \frac{d}{dx} [p(x) + q(x)]
+		D(p(x) + q(x)) &= d/dx [p(x) + q(x)]
 		
 		&= p'(x) + q'(x)
 		
@@ -139,7 +139,7 @@ When $V = #R#^n$ and $W = #R#^m$, we have the linear transformations we're used 
 	and
 	
 	$$
-		D(cp(x)) &= \frac{d}{dx} [cp(x)]
+		D(cp(x)) &= d/dx [cp(x)]
 		
 		&= cp'(x)
 		

@@ -133,7 +133,7 @@ $$
 	L[y] = y'' + p(t)y' + q(t)y.
 $$
 
-We use brackets on $L$ for the same reason we do with operators like $\frac{d}{dt}$: its inputs are functions rather than just numbers. Setting $L[y] = 0$ gives us a general second-order homogeneous DE, and setting it equal to some other function $g(t)$ results in the more complicated nonhomogeneous case. Thankfully, even the complicated case is well-behaved with regard to the existence of solutions:
+We use brackets on $L$ for the same reason we do with operators like $d/dt$: its inputs are functions rather than just numbers. Setting $L[y] = 0$ gives us a general second-order homogeneous DE, and setting it equal to some other function $g(t)$ results in the more complicated nonhomogeneous case. Thankfully, even the complicated case is well-behaved with regard to the existence of solutions:
 
 
 

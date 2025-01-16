@@ -6,10 +6,10 @@ Let's get right to it! We have Riemann sums, which approximate the area under th
 
 ### def "definite integral"
 	
-	Let $f$ be a nonnegative function defined on $[a, b]$. The **definite integral** of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\,dx$ and defined by
+	Let $f$ be a nonnegative function defined on $[a, b]$. The **definite integral** of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\,\d x$ and defined by
 	
 	$$
-		\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,
+		\int_a^b f(x)\,\d x = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i^*) \Delta x,
 	$$
 	
 	where the sum is a Riemann sum with $n$ rectangles. If the limit exists, we say that $f$ is **integrable** on $[a, b]$.
@@ -18,7 +18,7 @@ Let's get right to it! We have Riemann sums, which approximate the area under th
 
 
 
-The notation looks a little strange at first, but it's designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$, and it carries the same meaning as the $dx$ in $\frac{dy}{dx}$ --- it's an infinitesimal change in $x$, indicating that the rectangles have become infinitely thin.
+The notation looks a little strange at first, but it's designed to match a Riemann sum. The $dx$ takes the place of the $\Delta x$, and it carries the same meaning as the $dx$ in $dy/dx$ --- it's an infinitesimal change in $x$, indicating that the rectangles have become infinitely thin.
 
 Being integrable is a complicated condition --- it's not clear what properties a function could have that would make the limit of Riemann sums exist. For now, we can say at least one thing:
 
@@ -38,7 +38,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 ### ex "computing an integral geometrically"
 	
-	Find $$\int_{-1}^3 |x|\,dx$$.
+	Find $$\int_{-1}^3 |x|\,\d x$$.
 	
 	Especially with integrals, it's always a good idea to draw a picture of what's going on before digging into the equations.
 	
@@ -50,13 +50,13 @@ At this point, we're in desperate need of examples. Let's start with something w
 		\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
 	$$
 	
-	In total, $\int_{-1}^3 |x|\,dx = 5$.
+	In total, $\int_{-1}^3 |x|\,\d x = 5$.
 
 ###
 
 ### exc "computing an integral geometrically"
 	
-	Find $$\int_1^3 2x \,dx$$ geometrically.
+	Find $$\int_1^3 2x \,\d x$$ geometrically.
 	
 	**Solution:** the area in question looks like the following:
 	
@@ -70,7 +70,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 ### ex "computing an integral from the limit definition"
 	
-	Find $$\int_0^2 t^2\,dt$$.
+	Find $$\int_0^2 t^2\,\d t$$.
 	
 	It's not always as easy as the previous example. That was a lot like computing the derivative of a straight line --- we don't need the heavy machinery of derivatives to find its slope. Similarly, we don't need integrals to find the area of a triangle, although it's a good example to get our bearings. This time around, what we have is a parabola, and we don't know a simple formula for the shaded area. There's no getting around it --- we need to use the definition of the integral.
 	
@@ -103,7 +103,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 	Almost there! The integral we're trying to find is the limit of this as $n \to \infty$. It's a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
 	
 	$$
-		\int_0^2 t^2\,dt &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}
+		\int_0^2 t^2\,\d t &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}
 		
 		&= \lim_{n \to \infty} \frac{16n^3}{6n^3}
 		
@@ -116,7 +116,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 ### ex "computing an integral from the limit definition"
 	
-	Find $$\int_0^3 t^3\,dt$$ from the limit definition.
+	Find $$\int_0^3 t^3\,\d t$$ from the limit definition.
 	
 	**Solution:** split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
 	
@@ -144,7 +144,7 @@ Let's look at one more type of integral that we can handle geometrically, and th
 
 ### ex "another geometric integral"
 	
-	Compute $$\int_3^6 \sqrt{9 - (x - 3)^2}\,dx$$.
+	Compute $$\int_3^6 \sqrt{9 - (x - 3)^2}\,\d x$$.
 	
 	As always, it's good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
 	
@@ -162,7 +162,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 
 ### def "signed area"
 	
-	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\,dx$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
+	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\,\d x$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
 	
 ###
 
@@ -170,7 +170,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 
 ### ex "signed area"
 	
-	$$\int_{-2}^2 x^3\,dx = 0$$, since the areas above (red) and below (blue) the $x$-axis are equal.
+	$$\int_{-2}^2 x^3\,\d x = 0$$, since the areas above (red) and below (blue) the $x$-axis are equal.
 	
 	### desmos signedArea
 	
@@ -184,15 +184,15 @@ Since they're defined as limits of sums, integrals have many of the same nice pr
 
 ### prop "basic integral properties"
 	
-	1. $$\int_a^a f(x)\,dx = 0$$ (lines have no area).
+	1. $$\int_a^a f(x)\,\d x = 0$$ (lines have no area).
 	
-	2. $$\int_a^b (f(x) + g(x))\,dx = \int_a^b f(x)\,dx + \int_a^b g(x)\,dx$$.
+	2. $$\int_a^b (f(x) + g(x))\,\d x = \int_a^b f(x)\,\d x + \int_a^b g(x)\,\d x$$.
 	
-	3. $$\int_a^b c \cdot f(x)\,dx = c\int_a^b f(x)\,dx$$.
+	3. $$\int_a^b c \cdot f(x)\,\d x = c\int_a^b f(x)\,\d x$$.
 	
-	4. For $$a \leq c \leq b$$, $$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$$.
+	4. For $$a \leq c \leq b$$, $$\int_a^b f(x)\,\d x = \int_a^c f(x)\,\d x + \int_c^b f(x)\,\d x$$.
 	
-	5. If $$f(x) \geq g(x)$$ on $$[a, b]$$, then $$\int_a^b f(x)\,dx \geq \int_a^b g(x)\,dx$$.
+	5. If $$f(x) \geq g(x)$$ on $$[a, b]$$, then $$\int_a^b f(x)\,\d x \geq \int_a^b g(x)\,\d x$$.
 	
 	Property 4 is the same kind of stitching-together property as the one for sums --- we're just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
 	
@@ -209,7 +209,7 @@ One quantity integrals let us calculate conveniently is average value --- for a 
 	Let $f$ be a function on $[a, b]$. The **average value** of $f$ on $[a, b]$ is
 	
 	$$
-		\frac{1}{b - a} \int_a^b f(x)\,dx.
+		\frac{1}{b - a} \int_a^b f(x)\,\d x.
 	$$
 	
 ###

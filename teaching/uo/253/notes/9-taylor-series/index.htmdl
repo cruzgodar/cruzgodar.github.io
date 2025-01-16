@@ -75,7 +75,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	Okay, so what is that massive derivative? Let's list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
 	
 	$$
-		\frac{d}{dx}[\sin(x)] &= \cos(x)
+		d/dx[\sin(x)] &= \cos(x)
 		
 		\frac{d^2}{dx^2}[\sin(x)] &= -\sin(x)
 		
@@ -153,7 +153,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	1. Let's start by making a list of the first few derivatives. We have
 	
 	$$
-		\frac{d}{dx}[\ln(x)] &= x^{-1}
+		d/dx[\ln(x)] &= x^{-1}
 		
 		\frac{d^2}{dx^2}[\ln(x)] &= -x^{-2}
 		
@@ -211,7 +211,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	3. We already know a series representation of this, but to get a Taylor series, we just take derivatives. We have
 	
 	$$
-		\frac{d}{dx}\left[ \frac{1}{1 + x} \right] &= -(1 + x)^{-2}
+		d/dx\left[ \frac{1}{1 + x} \right] &= -(1 + x)^{-2}
 		
 		\frac{d^2}{dx^2}\left[ \frac{1}{1 + x} \right] &= 2(1 + x)^{-3}
 		
@@ -309,7 +309,7 @@ In this sense, $g$ is measuring how well a Taylor series centered at $t$ approxi
 By the Mean Value theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let's differentiate and find out. Remember, we're differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
 
 $$
-	g'(t) &= \frac{d}{dt} \left[ f(x) - \left( f(t) + \sum_{n = 1}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right) \right]
+	g'(t) &= d/dt \left[ f(x) - \left( f(t) + \sum_{n = 1}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right) \right]
 	
 	&= -f'(t) - \sum_{n = 1}^N \left( \frac{f^{(n + 1)}(t)}{n!} (x - t)^n + \frac{f^{(n)}(t)}{n!} n(x - t)^{n-1}(-1) \right) - R_N(x) \frac{(N + 1)(x - t)^N(-1)}{(x - a)^{N + 1}}
 	

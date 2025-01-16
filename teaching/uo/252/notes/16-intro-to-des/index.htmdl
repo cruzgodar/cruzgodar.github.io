@@ -168,18 +168,18 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	
 	To solve a DE of the form $y' = f(x)g(y)$:
 	
-	1. Rewrite $y'$ as $$\frac{dy}{dx}$$ to get $$\frac{dy}{dx} = f(x)g(y)$$.
+	1. Rewrite $y'$ as $$dy/dx$$ to get $$dy/dx = f(x)g(y)$$.
 	
 	2. Divide both sides by $g(y)$ and multiply both sides by $dx$ to get
 	
 	$$
-		\frac{1}{g(y)}\,dy = f(x)\,dx.
+		\frac{1}{g(y)}\,\d y = f(x)\,\d x.
 	$$
 	
 	3. Add an integral to both sides:
 	
 	$$
-		\int \frac{1}{g(y)}\,dy = \int f(x)\,dx.
+		\int \frac{1}{g(y)}\,\d y = \int f(x)\,\d x.
 	$$
 	
 	4. Integrate.
@@ -199,19 +199,19 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	We have
 	
 	$$
-		\frac{dy}{dx} = (x-2)(y-3).
+		dy/dx = (x-2)(y-3).
 	$$
 	
 	We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get
 	
 	$$
-		\frac{1}{y-3}\,dy = (x-2)\,dx.
+		\frac{1}{y-3}\,\d y = (x-2)\,\d x.
 	$$
 	
 	Then we integrate both sides:
 	
 	$$
-		\int \frac{1}{y-3}\,dy &= \int (x-2)\,dx
+		\int \frac{1}{y-3}\,\d y &= \int (x-2)\,\d x
 		
 		\ln |y - 3| &= \frac{x^2}{2} - 2x + C.
 	$$
@@ -253,9 +253,9 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	**Solution:** separating and integrating, we have
 	
 	$$
-		\frac{1}{y}\,dy &= \ln(x)\,dx
+		\frac{1}{y}\,\d y &= \ln(x)\,\d x
 		
-		\int \frac{1}{y}\,dy &= \int \ln(x)\,dx
+		\int \frac{1}{y}\,\d y &= \int \ln(x)\,\d x
 		
 		\ln|y| &= x\ln(x) - x + C
 		
@@ -311,11 +311,11 @@ As one final application, let's talk about temperature.
 	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
 	
 	$$
-		\frac{dT}{dt} &= k(T - 75)
+		dT/dt &= k(T - 75)
 		
-		\frac{1}{T - 75} &= k\,dt
+		\frac{1}{T - 75} &= k\,\d t
 		
-		\int \frac{1}{T - 75} &= \int k\,dt
+		\int \frac{1}{T - 75} &= \int k\,\d t
 		
 		\ln |T - 75| &= kt + C
 		

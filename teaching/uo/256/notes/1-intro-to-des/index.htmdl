@@ -17,7 +17,7 @@ You may have already seen differential equations in calculus II, but even if you
 For example, $y' = ty$ is a DE, and a solution is $y(t) = e^{\frac{1}{2} t^2}$. In fact, so is $y(t) = ce^{\frac{1}{2} t^2}$ for any value of $c$. To see why, we just need to solve for $y'$ and check if the equation works. We have
 
 $$
-	y'(t) &= \frac{d}{dt} \left[ ce^{\frac{1}{2} t^2}\right]
+	y'(t) &= d/dt \left[ ce^{\frac{1}{2} t^2}\right]
 	
 	&= ce^{\frac{1}{2} t^2} \cdot \frac{1}{2}(2t)
 	
@@ -37,7 +37,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 	We know from calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
 	
 	$$
-		h(t) &= \int -10t\,dt
+		h(t) &= \int -10t\,\d t
 		
 		&= -5t^2 + c.
 	$$
@@ -55,7 +55,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 	**Solution:** Since $v'(t) = a(t)$, we integrate $a(t)$ to find
 	
 	$$
-		v(t) = \int \cos\left( \frac{t}{5} \right)\,dt &= 5\sin\left( \frac{t}{5} \right) + c.
+		v(t) = \int \cos\left( \frac{t}{5} \right)\,\d t &= 5\sin\left( \frac{t}{5} \right) + c.
 	$$
 	
 ###
@@ -129,7 +129,7 @@ $$
 as an example. Solving for $y'$ results in
 
 $$
-	y' = \frac{dy}{dt} = \frac{\sin(y)}{t^2 + 1},
+	y' = dy/dt = \frac{\sin(y)}{t^2 + 1},
 $$
 
 so we know exactly what the slopes of tangent lines of a solution $y(t)$ must be. In order to represent all possible solutions at once, we can draw those tangent lines: for a grid of points $(t, y)$, we'll create what's called a **direction field** by drawing a small line segment with slope $y'$ at every point. Then solutions to the DE are tangent to all the line segments they intersect --- in other words, they follow the flow.
@@ -138,7 +138,7 @@ so we know exactly what the slopes of tangent lines of a solution $y(t)$ must be
 
 By changing $c$, we can see a handful of different solutions $y(t)$, all of which follow the flow.
 
-Returning to the solution for $y'$ and multiplying both sides by $dt$, we have
+Returning to the solution for $y'$ and multiplying both sides by $\d t$, we have
 
 $$
 	dy = \frac{\sin(y)}{t^2 + 1}dt.

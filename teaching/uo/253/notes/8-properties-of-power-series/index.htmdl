@@ -379,9 +379,9 @@ Now that we understand how basic algebraic operations work with power series, th
 	Let $f(x) = \sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then $f$ is differentiable and integrable on $(a - R, a + R)$, and
 	
 	$$
-		f'(x) &= \sum_{n = 0}^\infty \frac{d}{dx} \left[ c_n (x - a)^n \right] = \sum_{n = 1}^\infty n c_n (x - a)^{n - 1}
+		f'(x) &= \sum_{n = 0}^\infty d/dx \left[ c_n (x - a)^n \right] = \sum_{n = 1}^\infty n c_n (x - a)^{n - 1}
 		
-		\int f(x)\,dx &= \sum_{n = 0}^\infty \int c_n (x - a)^n\,dx = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
+		\int f(x)\,\d x &= \sum_{n = 0}^\infty \int c_n (x - a)^n\,\d x = C + \sum_{n = 0}^\infty c_n \frac{(x - a)^{n + 1}}{n + 1}.
 	$$
 	
 	Importantly, this theorem does not mention the endpoints of the interval of convergence. If $f(x)$ converges there, its derivative and integral may too, or they may not.
@@ -397,21 +397,21 @@ Now that we understand how basic algebraic operations work with power series, th
 	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let's try to work with that. The connection to $\ln(x + 1)$ is that
 	
 	$$
-		\int \frac{1}{1 + x}\,dx = \ln(1 + x) + C,
+		\int \frac{1}{1 + x}\,\d x = \ln(1 + x) + C,
 	$$
 	
 	so we want to replace $x$ with $-x$ in $\frac{1}{1 - x}$ and integrate the series term-by-term. We have
 	
 	$$
-		\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,dx + C
+		\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,\d x + C
 		
-		&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\,dx + C
+		&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\,\d x + C
 		
-		&= C + \sum_{n = 0}^\infty \int (-x)^n\,dx
+		&= C + \sum_{n = 0}^\infty \int (-x)^n\,\d x
 		
-		&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,dx
+		&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,\d x
 		
-		&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,dx
+		&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,\d x
 		
 		&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
 		

@@ -25,7 +25,7 @@ At first glance, our first solving method can seem like some sort of black magic
 	Now let's take a close look at the left side of the equation. The derivative of $e^{t^2 / 2}$ is
 	
 	$$
-		\frac{d}{dt} \left[ e^{t^2 / 2} \right] = te^{t^2 / 2},
+		d/dt \left[ e^{t^2 / 2} \right] = te^{t^2 / 2},
 	$$
 	
 	so if we define a function $\mu$ (a Greek letter pronounced "myu") by $\mu(t) = e^{t^2 / 2}$, then we can rewrite the DE as
@@ -37,21 +37,21 @@ At first glance, our first solving method can seem like some sort of black magic
 	It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the product rule! Specifically, we can rewrite it as
 	
 	$$
-		\frac{d}{dt} \left[ \mu(t)y(t) \right] = t\mu(t),
+		d/dt \left[ \mu(t)y(t) \right] = t\mu(t),
 	$$
 	
 	and since everything is now a function of $t$, we can integrate both sides $dt$ to get
 	
 	$$
-		\mu(t)y(t) &= \int t\mu(t)\,dt
+		\mu(t)y(t) &= \int t\mu(t)\,\d t
 		
-		&= \int te^{t^2 / 2}\,dt.
+		&= \int te^{t^2 / 2}\,\d t.
 	$$
 	
-	With $u = \frac{t^2}{2}$ and $du = t\,dt$, we have
+	With $u = \frac{t^2}{2}$ and $du = t\,\d t$, we have
 	
 	$$
-		\mu(t)y(t) &= \int e^u\,du
+		\mu(t)y(t) &= \int e^u\,\d u
 		
 		&= e^u + c
 		
@@ -106,31 +106,31 @@ $$
 This looks a little like alphabet soup, but we're actually almost done. If we integrate both sides $dt$, we have
 
 $$
-	\int \frac{1}{\mu(t)} \mu'(t)\,dt = \int p(t)\,dt,
+	\int \frac{1}{\mu(t)} \mu'(t)\,\d t = \int p(t)\,\d t,
 $$
 
-and if we take $u = \mu(t)$, then $du = \mu'(t)\,dt$, so
+and if we take $u = \mu(t)$, then $du = \mu'(t)\,\d t$, so
 
 $$
-	\int \frac{1}{u}\,du &= \int p(t)\,dt
+	\int \frac{1}{u}\,\d u &= \int p(t)\,\d t
 	
-	\log |u| + C &= \int p(t)\,dt
+	\log |u| + C &= \int p(t)\,\d t
 	
-	\log |u| &= \int p(t)\,dt - C
+	\log |u| &= \int p(t)\,\d t - C
 	
-	|u| &= e^{\int p(t)\,dt - C}.
+	|u| &= e^{\int p(t)\,\d t - C}.
 $$
 
 Since any value of $C$ will work here, let's just take $C = 0$. We can also drop the absolute value, since any power of $e$ will always be positive. And $u = \mu(t)$, so in total,
 
 $$
-	\mu(t) = e^{\int p(t)\,dt}.
+	\mu(t) = e^{\int p(t)\,\d t}.
 $$
 
 Since it's a little awkward to write big expressions like integrals inside an exponent, we often write this as
 
 $$
-	\mu(t) = \exp \left( \int p(t)\,dt \right),
+	\mu(t) = \exp \left( \int p(t)\,\d t \right),
 $$
 
 where $\exp(x)$ just means $e^x$.
@@ -145,9 +145,9 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	1. Rewrite the equation as $y' + p(t)y = q(t)$.
 	
-	2. Set $\mu(t) = \exp \left( \int p(t)\,dt \right)$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
+	2. Set $\mu(t) = \exp \left( \int p(t)\,\d t \right)$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
 	
-	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $\frac{d}{dt} [\mu(t) y] = \mu(t)q(t)$.
+	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $d/dt [\mu(t) y] = \mu(t)q(t)$.
 	
 	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's part of the solution.
 	
@@ -168,7 +168,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 	Now our integrating factor is
 	
 	$$
-		\mu(t) &= \exp \left( \int \frac{2}{t}\,dt \right)
+		\mu(t) &= \exp \left( \int \frac{2}{t}\,\d t \right)
 		
 		&= \exp \left( 2\log|t| \right)
 		
@@ -182,9 +182,9 @@ This is a pretty great first step for the class --- we now have a method to solv
 	$$
 		t^2y' + 2ty &= t^3
 		
-		\frac{d}{dt} \left[ t^2y \right] &= t^3
+		d/dt \left[ t^2y \right] &= t^3
 		
-		t^2 y &= \int t^3\,dt
+		t^2 y &= \int t^3\,\d t
 		
 		t^2 y &= \frac{t^4}{4} + c
 		
@@ -232,7 +232,7 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 	As usual, we'll solve for $\mu$:
 	
 	$$
-		\mu(t) &= \exp \left(\int t\,dt\right)
+		\mu(t) &= \exp \left(\int t\,\d t\right)
 		
 		&= e^{t^2 / 2}.
 	$$
@@ -242,36 +242,36 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 	$$
 		e^{t^2 / 2}y' + te^{t^2 / 2}y &= e^{t^2 / 2}
 		
-		\frac{d}{dt} \left[ e^{t^2 / 2}y \right] &= e^{t^2 / 2}
+		d/dt \left[ e^{t^2 / 2}y \right] &= e^{t^2 / 2}
 		
-		e^{t^2 / 2}y &= \int e^{t^2 / 2}\,dt
+		e^{t^2 / 2}y &= \int e^{t^2 / 2}\,\d t
 		
-		y &= e^{-t^2 / 2}\int e^{t^2 / 2}\,dt.
+		y &= e^{-t^2 / 2}\int e^{t^2 / 2}\,\d t.
 	$$
 	
-	Unfortunately, we're at the end of the road with that integral. $e^{t^2}$ is famously not an integrable function --- there is no combination of power functions, exponential functions, logarithms, and trig functions whose derivative is $e^{t^2}$. In and of itself that's not a huge problem --- we can just leave $y$ expressed in terms of this integral --- but there's a subtlety with the initial value. While it looks like plugging in $1$ for $t$ should mean replacing every value of $t$ with $1$, the $t$s inside the integral can't be treated the same way, since they're being integrated away. It's the same reason we can't plug in values before differentiating. For example, if $f(t) = 2t$ and $F(t) = \int f(t)\,dt$, then we have
+	Unfortunately, we're at the end of the road with that integral. $e^{t^2}$ is famously not an integrable function --- there is no combination of power functions, exponential functions, logarithms, and trig functions whose derivative is $e^{t^2}$. In and of itself that's not a huge problem --- we can just leave $y$ expressed in terms of this integral --- but there's a subtlety with the initial value. While it looks like plugging in $1$ for $t$ should mean replacing every value of $t$ with $1$, the $t$s inside the integral can't be treated the same way, since they're being integrated away. It's the same reason we can't plug in values before differentiating. For example, if $f(t) = 2t$ and $F(t) = \int f(t)\,\d t$, then we have
 	
 	$$
 		F(5) &= 5^2 = 25
-		\int 2 \cdot 5\,dt &= 10t + C,
+		\int 2 \cdot 5\,\d t &= 10t + C,
 	$$
 	
 	which are so different from one another that one is a number and the other is a function. The easiest way to actually plug in a value to a function inside an integral is to rewrite it using the Fundamental Theorem of Calculus --- not part II, which is the version expressing definite integrals in terms of antiderivatives that we use all the time, but the less-often-remembered part I, which states that
 	
 	$$
-		\int f(t)\,dt = \int_a^t f(s)\,ds + C
+		\int f(t)\,\d t = \int_a^t f(s)\,\d s + C
 	$$
 	
 	for any value of $a$ (since differentiating both sides will make it vanish). The advantage of this form is that it properly scopes the $t$ without requiring us to actually integrate: we can correctly plug in values for $t$ now. In our example, we have
 	
 	$$
-		y = e^{-t^2 / 2} \left( \int_a^t e^{s^2 / 2}\,ds + c \right).
+		y = e^{-t^2 / 2} \left( \int_a^t e^{s^2 / 2}\,\d s + c \right).
 	$$
 	
 	We can choose any value for $a$, but there is one choice that's significantly better than any other: since we're about to set $t = 1$ to solve the initial value problem, we should take $a = 1$ so that the integral will disappear. With $y(1) = 1$,
 	
 	$$
-		1 &= e^{-1^2 / 2} \left( \int_1^1 e^{s^2 / 2}\,ds + c \right)
+		1 &= e^{-1^2 / 2} \left( \int_1^1 e^{s^2 / 2}\,\d s + c \right)
 		
 		1 &= e^{-\frac{1}{2}} \left( 0 + c \right)
 		
@@ -281,7 +281,7 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 	After a little rearranging, our solution becomes
 	
 	$$
-		y = e^{\frac{1 - t^2}{2}} + e^{-t^2 / 2} \int_1^t e^{s^2 / 2}\,ds.
+		y = e^{\frac{1 - t^2}{2}} + e^{-t^2 / 2} \int_1^t e^{s^2 / 2}\,\d s.
 	$$
 	
 ###
@@ -310,20 +310,20 @@ Our next technique involves quite a bit less sleight of hand --- rather than int
 		y' = \frac{2t + \sin(t)}{y^2}.
 	$$
 	
-	Now we can write $y'$ as $\frac{dy}{dt}$ and take the somewhat unsettling step of multiplying both sides by $dt$, followed by $y^2$.
+	Now we can write $y'$ as $dy/dt$ and take the somewhat unsettling step of multiplying both sides by $dt$, followed by $y^2$.
 	
 	$$
-		\frac{dy}{dt} &= \frac{2t + \sin(t)}{y^2}
+		dy/dt &= \frac{2t + \sin(t)}{y^2}
 		
-		dy &= \frac{2t + \sin(t)}{y^2}\,dt
+		dy &= \frac{2t + \sin(t)}{y^2}\,\d t
 		
-		y^2\,dy &= (2t + \sin(t))\,dt.
+		y^2\,\d y &= (2t + \sin(t))\,\d t.
 	$$
 	
 	Both sides look like integrals without the integral symbol, and that's exactly what they are! Let's write it in and then integrate.
 	
 	$$
-		\int y^2\,dy &= \int (2t + \sin(t))\,dt
+		\int y^2\,\d y &= \int (2t + \sin(t))\,\d t
 		
 		\frac{y^3}{3} &= t^2 - \cos(t) + c
 	$$
@@ -376,10 +376,10 @@ In other words, we need to be able to write $y'$ as a product of only $y$-stuff 
 	
 	To solve a separable DE $y' = f(y)g(t)$:
 	
-	1. Rewrite $y'$ as $\frac{dy}{dt}$ and get all the $y$s on the left and $t$s on the right:
+	1. Rewrite $y'$ as $dy/dt$ and get all the $y$s on the left and $t$s on the right:
 	
 	$$
-		\frac{1}{f(y)}\,dy = g(t)\,dt.
+		\frac{1}{f(y)}\,\d y = g(t)\,\d t.
 	$$
 	
 	2. Integrate both sides and solve for $y$.
@@ -401,21 +401,21 @@ Not so bad! Let's work through another example.
 	This DE is more or less already separated as is. Moving the $y$s to the left and the $x$s to the right gives us
 	
 	$$
-		e^y\,dy &= \frac{x^2}{x^2 + 4}\,dx
+		e^y\,\d y &= \frac{x^2}{x^2 + 4}\,\d x
 		
-		\int e^y\,dy &= \int \frac{x^2}{x^2 + 4}\,dx
+		\int e^y\,\d y &= \int \frac{x^2}{x^2 + 4}\,\d x
 	$$
 	
-	The $y$ integral is simple enough, but the one on the right is a trig sub problem! Let's go through it --- it's a good chance for review. The denominator is of the form $x^2 + a^2$ with $a = 2$, so we'll substitute $x = 2\tan(\theta)$. Then $dx = 2\sec^2(\theta)\,d\theta$, and so we have
+	The $y$ integral is simple enough, but the one on the right is a trig sub problem! Let's go through it --- it's a good chance for review. The denominator is of the form $x^2 + a^2$ with $a = 2$, so we'll substitute $x = 2\tan(\theta)$. Then $\d x = 2\sec^2(\theta)\,\d \theta$, and so we have
 	
 	$$
-		e^y &= \int \frac{8\tan^2(\theta)\sec^2(\theta)}{4\left(\tan^2(\theta) + 1\right)}\,d\theta
+		e^y &= \int \frac{8\tan^2(\theta)\sec^2(\theta)}{4\left(\tan^2(\theta) + 1\right)}\,\d \theta
 		
-		e^y &= \int \frac{2\tan^2(\theta)\sec^2(\theta)}{\sec^2(\theta)}\,d\theta
+		e^y &= \int \frac{2\tan^2(\theta)\sec^2(\theta)}{\sec^2(\theta)}\,\d \theta
 		
-		e^y &= \int 2\tan^2(\theta)\,d\theta
+		e^y &= \int 2\tan^2(\theta)\,\d \theta
 		
-		e^y &= 2\int \left( \sec^2(\theta) - 1 \right) \,d\theta
+		e^y &= 2\int \left( \sec^2(\theta) - 1 \right) \,\d \theta
 		
 		e^y &= 2 \left( \tan(\theta) - \theta + c\right)
 		
@@ -491,7 +491,7 @@ Unlike the tank problems from calculus II that involve finding the work done by 
 	$$
 		Q' + \frac{Q}{500} &= 0.2
 		
-		\mu(t) &= \exp \left( \int \frac{1}{500}\,dt \right)
+		\mu(t) &= \exp \left( \int \frac{1}{500}\,\d t \right)
 		
 		\mu(t) &= \exp\left( \frac{t}{500} \right)
 		
@@ -499,9 +499,9 @@ Unlike the tank problems from calculus II that involve finding the work done by 
 		
 		e^{t / 500}Q' + \frac{1}{500} e^{t / 500} Q &= 0.2 e^{t / 500}
 		
-		\frac{d}{dt} \left[ e^{t / 500} Q \right] &= 0.2 e^{t / 500}
+		d/dt \left[ e^{t / 500} Q \right] &= 0.2 e^{t / 500}
 		
-		e^{t / 500} Q &= \int 0.2 e^{t / 500}\,dt
+		e^{t / 500} Q &= \int 0.2 e^{t / 500}\,\d t
 		
 		Q &= e^{-t / 500} \left( 0.2 \cdot 500 e^{t / 500} + c \right)
 		

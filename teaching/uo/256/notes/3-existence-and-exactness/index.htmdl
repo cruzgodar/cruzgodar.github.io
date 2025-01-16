@@ -56,7 +56,7 @@ $$
 	g(x) = cx^2
 $$
 
-for some fixed constant $c$. Then the derivative $\frac{dg}{dx} = 2cx$ tells us how fast $g(x)$ is changing relative to $x$. What if we wanted to know how fast $g$ was changing relative to $c$? We first need to formally make $c$ an input variable to $g$, which means it's now a function of two variables: $g(x, c) = cx^2$, and to remind us that we're only taking a *partial* derivative (since we're only looking at one variable at a time), we curl the $d$ symbols in the derivative a little:
+for some fixed constant $c$. Then the derivative $dg/dx = 2cx$ tells us how fast $g(x)$ is changing relative to $x$. What if we wanted to know how fast $g$ was changing relative to $c$? We first need to formally make $c$ an input variable to $g$, which means it's now a function of two variables: $g(x, c) = cx^2$, and to remind us that we're only taking a *partial* derivative (since we're only looking at one variable at a time), we curl the $d$ symbols in the derivative a little:
 
 $$
 	\frac{\partial g}{\partial c} = x^2,
@@ -119,7 +119,7 @@ Our final solving method for first-order DEs looks quite a lot like integrating 
 	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentiable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
 	
 	$$
-		\frac{d f(x, y)}{dt} = \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{\partial f}{\partial y} \frac{dy}{dt}.
+		\frac{d f(x, y)}{dt} = \frac{\partial f}{\partial x} dx/dt + \frac{\partial f}{\partial y} dy/dt.
 	$$
 	
 ###
@@ -135,7 +135,7 @@ $$
 It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
 
 $$
-	\frac{d f(x)}{dt} = \frac{df}{dx} \frac{dx}{dt},
+	\frac{d f(x)}{dt} = df/dx dx/dt,
 $$
 
 which is just the chain rule from calculus I.
@@ -153,9 +153,9 @@ which is just the chain rule from calculus I.
 		
 		\frac{\partial f}{\partial y} &= x^2\cos\left(x^2y\right)
 		
-		\frac{dx}{dt} &= 2.
+		dx/dt &= 2.
 		
-		\frac{dy}{dt} &= 3t^2.
+		dy/dt &= 3t^2.
 	$$
 	
 	In total, the derivative should be
@@ -217,15 +217,15 @@ Equipped with the multivariable chain rule, we're ready to dive into our first e
 	Those partial derivatives look a lot like components of our DE! Specifically, we can rewrite it as
 	
 	$$
-		\frac{\partial \psi}{\partial t} + \frac{\partial \psi}{\partial y} \frac{dy}{dt} = 0.
+		\frac{\partial \psi}{\partial t} + \frac{\partial \psi}{\partial y} dy/dt = 0.
 	$$
 	
-	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $\frac{dt}{dt}$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
+	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $dt/dt$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
 	
 	$$
 		\frac{d \psi(t, y)}{dt} &= 0
 		
-		\psi(t, y) &= \int 0\,dt
+		\psi(t, y) &= \int 0\,\d t
 		
 		\psi(t, y) &= c
 		
@@ -302,7 +302,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	
 	1. Make sure the DE is actually exact by find $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ and ensuring they're equal. If they're not, this method won't work.
 	
-	2. Find $\int f(t, y)\,dt$ and $\int g(t, y)\,dy$. They should agree with one another on expressions involving both $t$ and $y$ but differ on expressions involving just one.
+	2. Find $\int f(t, y)\,\d t$ and $\int g(t, y)\,\d y$. They should agree with one another on expressions involving both $t$ and $y$ but differ on expressions involving just one.
 	
 	3. Construct $\psi(t, y)$ as the sum of the shared portion of both integrals, the $t$-portion of the integral taken $dt$, and the $y$-portion of the integral taken $dy$.
 	
@@ -349,7 +349,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	First of all, $\frac{\partial \psi}{\partial x} = f(x, y)$, so we should integrate that $dx$. Just like partial derivatives, this just means treating $y$ as a constant.
 	
 	$$
-		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\,dx
+		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\,\d x
 		
 		&= \sin(xy) - e^{2x + y} + \tan(x) + c_1(y).
 	$$
@@ -357,7 +357,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	The most surprising thing there is $+c_1(y)$ as opposed to just $+c_1$ or $+c$ --- what's up with that? When we differentiate a function of a single variable, we destroy any added constants, so we add back a generic one when integrating. When we differentiate $\psi$ with respect to $x$, though, we destroy anything that that derivative sees as a constant, which is any expression only involving $y$. Therefore, we need to add a generic function of $y$ to our expression. In order to solve for it, we'll come at $\psi$ from the other direction, integrating $g(x, y)$ $dy$.
 	
 	$$
-		\psi(x, y) &= \int \left( x\cos(xy) - e^{2x + y} + 2y \right)\,dy
+		\psi(x, y) &= \int \left( x\cos(xy) - e^{2x + y} + 2y \right)\,\d y
 		
 		&= \sin(xy) - e^{2x + y} + y^2 + c_2(x).
 	$$

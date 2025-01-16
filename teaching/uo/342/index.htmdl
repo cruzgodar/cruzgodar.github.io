@@ -110,9 +110,9 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $V = \span\left\{ 1, x, x^2 \right\}$ with $\left< p, q \right> = \sum_{n = 0}^2 p(n)q(n)$, $X$ is the subspace of polynomials $p$ with $p'(0) = 0$, and $\vec{v} = 1 + 2x + x^2$.
 
-	#. (optional) $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,dx$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+	#. (optional) $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,\d x$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
 
-	#. (optional; more recommended than the previous problem) $V = \span\left\{ 1, \cos(x) \right\}$ with $\left< f, g \right> = \int_0^{\pi/2} f(x)g(x)\,dx$, $X = \span\{1\}$, and $\vec{v} = \cos(x) - 2$.
+	#. (optional; more recommended than the previous problem) $V = \span\left\{ 1, \cos(x) \right\}$ with $\left< f, g \right> = \int_0^{\pi/2} f(x)g(x)\,\d x$, $X = \span\{1\}$, and $\vec{v} = \cos(x) - 2$.
 
 ###
 
@@ -203,20 +203,20 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	#. $\vec{v}(x) = e^x$ and $\vec{w}(x) = x$ for $V = C[0, 1]$ with the inner product
 
 	$$
-		\left< f, g \right> = \int_0^1 f(x)g(x)\,dx.
+		\left< f, g \right> = \int_0^1 f(x)g(x)\,\d x.
 	$$
 
 	- - -
 
 	#. Let $V = C[0, 1]$. For each of the following possible inner product formulas, give an example showing that it does not define an inner product.
 
-	> a) $$\left< f, g \right> = \int_0^1 |f(x) + g(x)|\,dx.$$
+	> a) $$\left< f, g \right> = \int_0^1 |f(x) + g(x)|\,\d x.$$
 
-	> b) $$\left< f, g \right> = \int_0^1 (f(x)g(x))^2\,dx.$$
+	> b) $$\left< f, g \right> = \int_0^1 (f(x)g(x))^2\,\d x.$$
 
-	> c) $$\left< f, g \right> = \int_0^1 f(g(x))\,dx.$$
+	> c) $$\left< f, g \right> = \int_0^1 f(g(x))\,\d x.$$
 
-	> d) $$\left< f, g \right> = \int_{1/4}^{3/4} f(x)g(x)\,dx.$$
+	> d) $$\left< f, g \right> = \int_{1/4}^{3/4} f(x)g(x)\,\d x.$$
 
 ###
 

@@ -139,7 +139,7 @@ Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$,
 	The second derivative is
 	
 	$$
-		\frac{d}{dx}[5x^4 - 9x^2 + 1] = 20x^3 - 18x.
+		d/dx[5x^4 - 9x^2 + 1] = 20x^3 - 18x.
 	$$
 	
 	The second derivative test only works on the critical points where $f'(x) = 0$, so only $x = \pm 1.297$ and $x = \pm .345$. Plugging in our critical points from before, we have

@@ -14,34 +14,34 @@ These might look familiar: some integrals that evaluate to inverse trig function
 
 ### ex "trig sub"
 	
-	Find $$\int \sqrt{9 - x^2}\,dx$$.
+	Find $$\int \sqrt{9 - x^2}\,\d x$$.
 	
-	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $du = 2x\,dx$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $dx = 3\cos(\theta)\,d\theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
+	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $\d u = 2x\,\d x$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $\d x = 3\cos(\theta)\,\d \theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
 	$$
-		\int \sqrt{9 - x^2}\,dx &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\,d\theta
+		\int \sqrt{9 - x^2}\,\d x &= \int \sqrt{9 - 9\sin^2(\theta)}(3\cos(\theta))\,\d \theta
 		
-		&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\,d\theta
+		&= \int \sqrt{9(1 - \sin^2(\theta))}(3\cos(\theta))\,\d \theta
 		
-		&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\,d\theta.
+		&= \int 3\sqrt{1 - \sin^2(\theta)}(3\cos(\theta))\,\d \theta.
 	$$
 	
 	Remember from trig that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any $\theta$, so we can rewrite $1 - \sin^2(\theta)$ as $\cos^2(\theta)$. This is the reason that we did this strange substitution in the first place: it lets us turn the thing under the square root into a singe expression, which will even cancel with that root. Now we have
 	
 	$$
-		\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\,d\theta &= \int (3\cos(\theta))(3\cos(\theta))\,d\theta
+		\int 3\sqrt{\cos^2(\theta)}(3\cos(\theta))\,\d \theta &= \int (3\cos(\theta))(3\cos(\theta))\,\d \theta
 		
-		&= \int 9\cos^2(\theta)\,d\theta.
+		&= \int 9\cos^2(\theta)\,\d \theta.
 	$$
 	
 	We talked about how to handle integrals like this much earlier in the course: we use a half-angle identity.
 	
 	$$
-		\int 9\cos^2(\theta)\,d\theta &= \int \frac{9}{2}(1 + \cos(2\theta))\,d\theta
+		\int 9\cos^2(\theta)\,\d \theta &= \int \frac{9}{2}(1 + \cos(2\theta))\,\d \theta
 		
-		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta
+		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,\d \theta
 		
-		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,d\theta
+		&= \int \frac{9}{2} + \frac{9}{2} \cos(2\theta)\,\d \theta
 		
 		&= \frac{9}{2} \theta + \frac{9}{4} \sin(2\theta) + C.
 	$$
@@ -74,7 +74,7 @@ If you're thinking this is a pretty intense process to go through... you're righ
 	
 	1. Determine what to substitute for $x$. If the integral contains $\sqrt{a^2 - x^2}$, use $x = a\sin(\theta)$. If it contains $\sqrt{a^2 + x^2}$, use $x = a\tan(\theta)$. If it contains $\sqrt{x^2 - a^2}$, use $x = a\sec(\theta)$.
 	
-	2. Find $dx$ in terms of $\theta$ and $d\theta$ and substitute.
+	2. Find $\d x$ in terms of $\theta$ and $\d \theta$ and substitute.
 	
 	3. Simplify the integral using one of the following:
 	
@@ -122,13 +122,13 @@ While we're on the subject, let's talk about a few of the identities and formula
 	
 	**Integrals:**
 	
-	1. $$\int \tan(\theta)\,d\theta = \ln| \sec(\theta) | + C$$.
+	1. $$\int \tan(\theta)\,\d \theta = \ln| \sec(\theta) | + C$$.
 	
-	2. $$\int \sec(\theta)\,d\theta = \ln| \sec(\theta) + \tan(\theta) | + C$$.
+	2. $$\int \sec(\theta)\,\d \theta = \ln| \sec(\theta) + \tan(\theta) | + C$$.
 	
-	3. $$\int \sec^2(\theta)\,d\theta = \tan(\theta) + C$$.
+	3. $$\int \sec^2(\theta)\,\d \theta = \tan(\theta) + C$$.
 	
-	4. $$\int \sec(\theta)\tan(\theta)\,d\theta = \sec(\theta) + C$$.
+	4. $$\int \sec(\theta)\tan(\theta)\,\d \theta = \sec(\theta) + C$$.
 	
 	
 	
@@ -164,18 +164,18 @@ Since this class is on calculus and not trig, that complete list will be provide
 	
 	Find $$\int \frac{1}{\sqrt{4 + t^2}}\, dt$$.
 	
-	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $dt = 2\sec^2(\theta)\,d\theta$, so we get
+	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $\d t = 2\sec^2(\theta)\,\d \theta$, so we get
 	
 	$$
-		\int \frac{1}{\sqrt{4 + t^2}}\,dt &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\,d\theta
+		\int \frac{1}{\sqrt{4 + t^2}}\,\d t &= \int \frac{1}{\sqrt{4 + 4\tan^2(\theta)}}(2\sec^2(\theta))\,\d \theta
 		
-		&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\,d\theta
+		&= \int \frac{2\sec^2(\theta)}{2\sqrt{1 + \tan^2(\theta)}}\,\d \theta
 		
-		&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\,d\theta
+		&= \int \frac{\sec^2(\theta)}{\sqrt{\sec^2(\theta)}}\,\d \theta
 		
-		&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\,d\theta
+		&= \int \frac{\sec^2(\theta)}{\sec(\theta)}\,\d \theta
 		
-		&= \int \sec(\theta)\,d\theta
+		&= \int \sec(\theta)\,\d \theta
 		
 		&= \ln|\sec(\theta) + \tan(\theta)| + C.
 	$$
@@ -200,18 +200,18 @@ Since this class is on calculus and not trig, that complete list will be provide
 
 ### exc "trig sub"
 	
-	Find $$\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$$.
+	Find $$\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,\d x$$.
 	
-	**Solution:** Let $x = \sec(\theta)$. Then $dx = \sec(\theta)\tan(\theta)$, so the integral becomes
+	**Solution:** Let $x = \sec(\theta)$. Then $\d x = \sec(\theta)\tan(\theta)$, so the integral becomes
 	
 	$$
-		\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,d\theta
+		\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,\d x &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,\d \theta
 		
-		&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\,d\theta
+		&= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \tan(\theta)}\,\d \theta
 		
-		&= \int \frac{1}{\sec(\theta)}\,d\theta
+		&= \int \frac{1}{\sec(\theta)}\,\d \theta
 		
-		&= \int \cos(\theta)\,d\theta
+		&= \int \cos(\theta)\,\d \theta
 		
 		&= \sin(\theta) + C.
 	$$

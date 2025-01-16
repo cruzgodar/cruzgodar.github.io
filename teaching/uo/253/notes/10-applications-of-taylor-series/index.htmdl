@@ -9,7 +9,7 @@ $$
 and the integral
 
 $$
-	\int e^{-x^2}\,dx
+	\int e^{-x^2}\,\d x
 $$
 
 both present substantial challanges. By the end of this section, we'll be able to solve both with Taylor series, and the theory we started developing ten sections ago will largely be complete. Before we dive in, let's briefly restate the most important Taylor series we know. If possible, we like to center them at $x = 0$, which occasionally involves adjusting the argument of the function in consideration to make the math work out more easily. After each series is its interval of convergence.
@@ -288,9 +288,9 @@ We've seen this application before too: power series integrate term-by-term, so 
 
 ### ex "evaluating an integral with power series"
 	
-	Approximate $$\int_0^1 e^{-x^2}\,dx$$ to within $.001$ of its true value.
+	Approximate $$\int_0^1 e^{-x^2}\,\d x$$ to within $.001$ of its true value.
 	
-	This is a famously difficult integral --- it's usually the first example of one that isn't expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here --- $u$-sub would want $u = -x^2$, but $du = -2x\,dx$ isn't present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren't present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
+	This is a famously difficult integral --- it's usually the first example of one that isn't expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here --- $u$-sub would want $u = -x^2$, but $du = -2x\,\d x$ isn't present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren't present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
 	
 	$$
 		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!},
@@ -311,11 +311,11 @@ We've seen this application before too: power series integrate term-by-term, so 
 	Now we need to integrate the new series term by term. This amounts to just applying the power rule:
 	
 	$$
-		\int e^{-x^2}\,dx &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\,dx
+		\int e^{-x^2}\,\d x &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\,\d x
 		
-		&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\,dx \right) + C
+		&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\,\d x \right) + C
 		
-		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \int x^{2n}\,dx \right) + C
+		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \int x^{2n}\,\d x \right) + C
 		
 		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C.
 	$$
@@ -323,7 +323,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 	We'll finish the problem by evaluating the definite integral, but this is already pretty wild: while it's definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn't affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. We just need to use $x = 0$ and $x = 1$: specifically,
 	
 	$$
-		\int_0^1 e^{-x^2}\,dx &= \left. \left[ \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C \right] \right|_0^1
+		\int_0^1 e^{-x^2}\,\d x &= \left. \left[ \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C \right] \right|_0^1
 		
 		&= \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1^{2n + 1}}{2n + 1} \right) + C \right) - \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{0^{2n + 1}}{2n + 1} \right) + C \right)
 		
@@ -346,13 +346,13 @@ We've seen this application before too: power series integrate term-by-term, so 
 		&\approx .7475.
 	$$
 	
-	Sure enough, the actual value is about $.7468$. As an interesting side note, the integral $\int_{-\infty}^\infty e^{-x^2}\,dx$ is actually equal to $\sqrt{\pi}$, and is also the graph of the Normal distribution in statistics. If you're taking multivariable calculus, you'll see how to compute the $\sqrt{\pi}$ value exactly, and if you take or have taken statistics, you'll see $\sqrt{\pi}$ show up in the formula for Normal distribution functions --- this is a normalization factor that makes the total integral become exactly $1$, which is necessary for probabilities to make sense.
+	Sure enough, the actual value is about $.7468$. As an interesting side note, the integral $\int_{-\infty}^\infty e^{-x^2}\,\d x$ is actually equal to $\sqrt{\pi}$, and is also the graph of the Normal distribution in statistics. If you're taking multivariable calculus, you'll see how to compute the $\sqrt{\pi}$ value exactly, and if you take or have taken statistics, you'll see $\sqrt{\pi}$ show up in the formula for Normal distribution functions --- this is a normalization factor that makes the total integral become exactly $1$, which is necessary for probabilities to make sense.
 	
 ###
 
 ### exc "evaluating an integral with power series"
 	
-	Approximate $$\int_0^1 \frac{\sin(x)}{x}\,dx$$ to within $.001$ of its true value.
+	Approximate $$\int_0^1 \frac{\sin(x)}{x}\,\d x$$ to within $.001$ of its true value.
 	
 ###
 

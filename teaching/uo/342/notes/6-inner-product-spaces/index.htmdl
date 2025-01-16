@@ -141,7 +141,7 @@ defines an inner product on $#R#^n$ (and in fact these are *all* the possible in
 	Let $C[a, b]$ be the vector space of continuous functions $f : [a, b] \to #R#$. Show that
 
 	$$
-		\left< f, g \right> = \int_a^b f(x)g(x)\,dx
+		\left< f, g \right> = \int_a^b f(x)g(x)\,\d x
 	$$
 
 	defines an inner product. With $X = \span\left\{ 1, x, x^2 \right\}$ as a subspace of $C[0, 1]$, find an orthonormal basis for $X$.

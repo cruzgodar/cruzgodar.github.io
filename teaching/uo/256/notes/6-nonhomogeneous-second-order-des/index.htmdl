@@ -247,7 +247,7 @@ Our second method will be more general than undetermined coefficients, but somew
 	Suppose the general solution to $y'' + p(t)y' + q(t)y = 0$ is $y_c = c_1y_1 + c_2y_2$. Then a particular solution to $y'' + p(t)y' + q(t)y = g(t)$ is
 	
 	$$
-		Y = -y_1 \int \frac{y_2(t)g(t)}{W[y_1, y_2]}\,dt + y_2 \int \frac{y_1(t)g(t)}{W[y_1, y_2]}\,dt.
+		Y = -y_1 \int \frac{y_2(t)g(t)}{W[y_1, y_2]}\,\d t + y_2 \int \frac{y_1(t)g(t)}{W[y_1, y_2]}\,\d t.
 	$$
 	
 ###
@@ -279,11 +279,11 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 	Now variation of parameters gives us a particular solution of
 	
 	$$
-		Y &= -\cos(t) \int \sin(t)\sec(t)\,dt + \sin(t) \int \cos(t)\sec(t)\,dt
+		Y &= -\cos(t) \int \sin(t)\sec(t)\,\d t + \sin(t) \int \cos(t)\sec(t)\,\d t
 		
-		&= -\cos(t) \int \frac{\sin(t)}{\cos(t)}\,dt + \sin(t) \int \frac{\cos(t)}{\cos(t)}\,dt
+		&= -\cos(t) \int \frac{\sin(t)}{\cos(t)}\,\d t + \sin(t) \int \frac{\cos(t)}{\cos(t)}\,\d t
 		
-		&= -\cos(t) \int \tan(t)\,dt + \sin(t) \int 1\,dt
+		&= -\cos(t) \int \tan(t)\,\d t + \sin(t) \int 1\,\d t
 		
 		&= \cos(t) \log(\cos(t)) + t\sin(t).
 	$$

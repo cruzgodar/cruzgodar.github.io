@@ -34,15 +34,15 @@ In other words, to differentiate a function of the form $x^n$, bring down the po
 
 ### ex "the derivative of $x^n$"
 	
-	Find $$\frac{d}{dx}[x^6]$$.
+	Find $$d/dx[x^6]$$.
 	
-	To find this, we bring down the $6$ and decrease it by one into a $5$, to get $\frac{d}{dx}[x^6] = 6x^5$.
+	To find this, we bring down the $6$ and decrease it by one into a $5$, to get $d/dx[x^6] = 6x^5$.
 	
 ###
 
 ### exc "the derivative of $x^n$"
 	
-	Find $$\frac{d}{dt}[t^3]$$.
+	Find $$d/dt[t^3]$$.
 	
 ###
 
@@ -58,11 +58,11 @@ Next, let's get the rest of the glue we need to get to polynomials --- specifica
 	
 	Let $f$ and $g$ be differentiable functions and $c$ a constant number.
 	
-	1. (The Sum Rule) $$\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$$.
+	1. (The Sum Rule) $$d/dx[f(x) + g(x)] = f'(x) + g'(x)$$.
 	
-	2. (The Difference Rule) $$\frac{d}{dx}[f(x) - g(x)] = f'(x) - g'(x)$$.
+	2. (The Difference Rule) $$d/dx[f(x) - g(x)] = f'(x) - g'(x)$$.
 	
-	3. (The Constant Multiple Rule) $$\frac{d}{dx}[c \cdot f(x)] = c \cdot f'(x)$$.
+	3. (The Constant Multiple Rule) $$d/dx[c \cdot f(x)] = c \cdot f'(x)$$.
 	
 ###
 
@@ -79,9 +79,9 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	As before, we'll handle one derivative at a time.
 	
 	$$
-		\frac{d}{dx}[2x^2 - x] &= \frac{d}{dx}[2x^2] - \frac{d}{dx}[x]
+		d/dx[2x^2 - x] &= d/dx[2x^2] - d/dx[x]
 		
-		&= 2\frac{d}{dx}[x^2] - \frac{d}{dx}[x]
+		&= 2d/dx[x^2] - d/dx[x]
 		
 		&= 2(2x^1) - (1x^0)
 		
@@ -93,9 +93,9 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	Now we need to find the derivative of $4x - 1$.
 	
 	$$
-		\frac{d}{dx}[4x - 1] &= \frac{d}{dx}[4x] - \frac{d}{dx}[1]
+		d/dx[4x - 1] &= d/dx[4x] - d/dx[1]
 		
-		&= 4\frac{d}{dx}[x] - \frac{d}{dx}[1]
+		&= 4d/dx[x] - d/dx[1]
 		
 		&= 4(1) - 0
 		
@@ -125,7 +125,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 	Let $f$ and $g$ be differentiable functions. Then
 	
 	$$
-		\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
+		d/dx [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
 	$$
 	
 ###
@@ -145,11 +145,11 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and product rules, we have
 	
 	$$
-		P'(t) &= \frac{d}{dt}[ 3000(3t^2 + 1)(t + 2) ]
+		P'(t) &= d/dt[ 3000(3t^2 + 1)(t + 2) ]
 		
-		&= 3000 \frac{d}{dt}[ (3t^2 + 1)(t + 2) ]
+		&= 3000 d/dt[ (3t^2 + 1)(t + 2) ]
 		
-		&= 3000 \left( \frac{d}{dt}[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) \frac{d}{dt}[ (t + 2) ] \right)
+		&= 3000 \left( d/dt[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) d/dt[ (t + 2) ] \right)
 		
 		&= 3000 \left( (6t)(t + 2) + (3t^2 + 1)(1) \right)
 		
@@ -164,7 +164,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 ### exc "the product rule"
 	
-	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $$\frac{d}{dx}[f(x)g(x)]$$.
+	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $$d/dx[f(x)g(x)]$$.
 	
 ###
 
@@ -179,7 +179,7 @@ Our last topic for this section is a rule that lets us differentiate one functio
 	Let $f$ and $g$ be differentiable functions. Then
 	
 	$$
-		\frac{d}{dx} \left[\frac{f(x)}{g(x)}\right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2},
+		d/dx \left[\frac{f(x)}{g(x)}\right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2},
 	$$
 	
 	as long as $g(x) \neq 0$.
@@ -194,12 +194,12 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 
 ### ex "the quotient rule"
 	
-	Find $$\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right]$$.
+	Find $$d/dx \left[\frac{2x^2}{1 - x}\right]$$.
 	
 	The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
 	
 	$$
-		\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}
+		d/dx \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}
 		
 		&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}
 		
@@ -210,7 +210,7 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 
 ### exc "the quotient rule"
 	
-	Find $$\frac{d}{dx} \left[\frac{1 - x}{2x^2}\right]$$.
+	Find $$d/dx \left[\frac{1 - x}{2x^2}\right]$$.
 	
 ###
 
@@ -218,7 +218,7 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 The quotient rule has one immediate application: we can find the derivative of $x^n$ for negative integers $n$. If $n$ is a negative integer, then $-n$ is a positive integer, and $x^n = \frac{1}{x^{-n}}$. That may seem like a strange way to write it, but now we can apply the quotient rule:
 
 $$
-	\frac{d}{dx} \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}
+	d/dx \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}
 	
 	&= \frac{nx^{-n - 1}}{x^{-2n}}
 	
@@ -232,7 +232,7 @@ $$
 Hey, that's the same result as if $n$ were positive! Because of this, we can safely say that
 
 $$
-	\frac{d}{dx}[x^n] = nx^{n-1}
+	d/dx[x^n] = nx^{n-1}
 $$
 
 for **any** integer $n$.

@@ -101,7 +101,7 @@ After two full terms of calculus, though, you might have a sense of what this se
 Two positive functions $f(x)$ and $g(x)$ have fundamentally different rates of growth when either $\lim_{x \to \infty} \frac{f(x)}{g(x)} = 0$ or $\infty$. In the first case, $g$ grows much faster than $f$, and in the second case, $f$ much faster than $g$. For example, with $f(x) = x^2 + 1$ and $g(x) = x$, we have
 
 $$
-	\lim_{x \to \infty} \frac{f(x)}{g(x)} &= \lim_{x \to \infty} \frac{\frac{d}{dx} [x^2 + 1]}{\frac{d}{dx} [x]}
+	\lim_{x \to \infty} \frac{f(x)}{g(x)} &= \lim_{x \to \infty} \frac{d/dx [x^2 + 1]}{d/dx [x]}
 	
 	&= \lim_{x \to \infty} \frac{2x}{1}
 	
@@ -125,7 +125,7 @@ $$
 	
 	&= \lim_{n \to \infty} \frac{n^2}{n^2 - \frac{1}{2}}
 	
-	&= \lim_{n \to \infty} \frac{\frac{d}{dn}[n^2]}{\frac{d}{dn}\left[n^2 - \frac{1}{2}\right]}
+	&= \lim_{n \to \infty} \frac{d/dn[n^2]}{d/dn\left[n^2 - \frac{1}{2}\right]}
 	
 	&= \lim_{n \to \infty} \frac{2n}{2n}
 	

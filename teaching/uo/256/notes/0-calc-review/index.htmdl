@@ -39,7 +39,7 @@ $$
 we have that $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$, which is undefined. However, we can take the limit (and use L'H&#244;pital's rule) to find that
 
 $$
-	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}
+	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{d/dt [\sin(t)] }{d/dt[t]}
 	
 	&= \lim_{t \to 0} \frac{\cos(t)}{1}
 	
@@ -63,7 +63,7 @@ The limit $\lim_{x \to a} f(x)$ can fail to exist if values of $f(x)$ near $x = 
 Derivatives measure slopes of tangent lines. The derivative of a function $f(x)$ at $x = a$ is defined as
 
 $$
-	f'(a) = \frac{d}{dx}[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
+	f'(a) = d/dx[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
 $$
 
 if the limit exists. The function inside the limit is the slope of a secant line passing through the points $(a, f(a))$ and $(a + h, f(a + h))$, and as $h \to 0$, that secant line approaches a tangent line.
@@ -81,54 +81,54 @@ In practice, we don't use the limit definition of the derivative all that often.
 	1. The constant multiple rule:
 	
 	$$
-		\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x).
+		d/dx [c \cdot f(x)] = c \cdot f'(x).
 	$$
 	
 	2. The sum rule:
 	
 	$$
-		\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)
+		d/dx [f(x) + g(x)] = f'(x) + g'(x)
 	$$
 	
 	3. The product rule:
 	
 	$$
-		\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
+		d/dx [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
 	$$
 	
 	4. The quotient rule:
 	
 	$$
-		\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
+		d/dx \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
 	$$
 	
 	5. The chain rule:
 	
 	$$
-		\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x).
+		d/dx [f(g(x))] = f'(g(x))g'(x).
 	$$
 	
 ###
 
 ### prop "common derivatives"
 	
-	$$\frac{d}{dx} [c] = 0$$ for any constant $c$.
+	$$d/dx [c] = 0$$ for any constant $c$.
 	
-	$$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$$ (the power rule).
+	$$d/dx [x^p] = px^{p - 1}, p \neq 0$$ (the power rule).
 	
-	$$\frac{d}{dx} [\sin(x)] = \cos(x)$$.
+	$$d/dx [\sin(x)] = \cos(x)$$.
 	
-	$$\frac{d}{dx} [\cos(x)] = -\sin(x)$$.
+	$$d/dx [\cos(x)] = -\sin(x)$$.
 	
-	$$\frac{d}{dx} [\tan(x)] = \sec^2(x)$$.
+	$$d/dx [\tan(x)] = \sec^2(x)$$.
 	
-	$$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
+	$$d/dx [\sec(x)] = \sec(x)\tan(x)$$.
 	
-	$$\frac{d}{dx} [b^x] = b^x \log(b)$$.
+	$$d/dx [b^x] = b^x \log(b)$$.
 	
-	$$\frac{d}{dx} [e^x] = e^x$$.
+	$$d/dx [e^x] = e^x$$.
 	
-	$$\frac{d}{dx} [\log(x)] = \frac{1}{x}$$.
+	$$d/dx [\log(x)] = \frac{1}{x}$$.
 	
 ###
 
@@ -136,12 +136,12 @@ Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've
 
 ### exc "derivative rules"
 
-	Evaluate $$\frac{d}{dx} \left. \left[ \log \left( \cos\left( x^2 \right) \right) \right] \right|_{x = \sqrt{3\pi / 4}}$$.
+	Evaluate $$d/dx \left. \left[ \log \left( \cos\left( x^2 \right) \right) \right] \right|_{x = \sqrt{3\pi / 4}}$$.
 
 	**Solution:** Applying the chain rule multiple times, we have
 	
 	$$
-		\frac{d}{dx} \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
+		d/dx \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
 
 		&= -2x \tan\left( x^2 \right).
 	$$
@@ -171,17 +171,17 @@ We'll be using limits and derivatives quite a bit throughout the course --- deri
 The next building blocks we'll need are integrals, which come in two flavors: definite and indefinite. Indefinite integrals perform antidifferentiation, taking a function $f(x)$ to its general antiderivative, often denoted $F(x)$. For example,
 
 $$
-	\int x^2\,dx &= \frac{x^3}{3} + C
+	\int x^2\,\d x &= \frac{x^3}{3} + C
 
-	\int \sin(2x)\,dx &= -\frac{1}{2}\cos(2x) + C
+	\int \sin(2x)\,\d x &= -\frac{1}{2}\cos(2x) + C
 
-	\int \frac{1}{y}\,dy &= \log|y| + C
+	\int \frac{1}{y}\,\d y &= \log|y| + C
 $$
 
 In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
 
 $$
-	\int_{-2}^4 t^3\,dt = 60,
+	\int_{-2}^4 t^3\,\d t = 60,
 $$
 
 we mean that the shaded region in the graph below has an area of 60. Remember that area below the $x$-axis (here, the $t$-axis) counts as negative.
@@ -197,7 +197,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 	Let $f$ be an integrable function, and let $F$ be an antiderivative of $f$. Then
 	
 	$$
-		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
+		\int_a^b f(x)\,\d x = \left. \left[ \int f(x)\,\d x \right] \right|_a^b = F(b) - F(a).
 	$$	
 	
 ###
@@ -217,15 +217,15 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 	As an integral, this is 
 	
 	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx.
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x.
 	$$
 	
-	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,dx$. Present in our integral is $x\,dx$, not $2x\,dx$, so we divide by $2$ to get $\frac{1}{2}\,du = x\,dx$, which matches our integral. Now we have
+	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,\d x$. Present in our integral is $x\,\d x$, not $2x\,\d x$, so we divide by $2$ to get $\frac{1}{2}\,\d u = x\,\d x$, which matches our integral. Now we have
 	
 	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,\d u
 		
-		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du
+		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,\d u
 		
 		&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
 		
@@ -270,7 +270,7 @@ While we won't use calculus III to quite the same extent in this course, it's st
 	
 	1. (The Divergence Test) If $$\lim_{n \to \infty} a_n \neq 0$, then $\sum_{n = 1}^\infty a_n$$ diverges.
 	
-	2. (The Integral Test) If $a_n = f(n)$ for a positive, decreasing, integrable function $f$, then $$\sum_{n = 1}^\infty a_n$$ converges if and only if $$\int_1^\infty f(x)\,dx$$ does.
+	2. (The Integral Test) If $a_n = f(n)$ for a positive, decreasing, integrable function $f$, then $$\sum_{n = 1}^\infty a_n$$ converges if and only if $$\int_1^\infty f(x)\,\d x$$ does.
 	
 	3. (The Comparison Test) If $0 \leq a_n \geq b_n$, where $$\sum_{n = 1}^\infty b_n$$ converges, then $$\sum_{n = 1}^\infty a_n$$ converges. Similarly, if $0 \leq b_n \geq a_n$ and $$\sum_{n = 1}^\infty b_n$$ diverges, then $$\sum_{n = 1}^\infty a_n$$ diverges.
 	

@@ -93,33 +93,33 @@ $$
 Since the blue rectangles are always an overapproximation of the actual area, we have that
 
 $$
-	\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\,dx.
+	\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
 Similarly, since the red rectangles are always an underapproximation,
 
 $$
-	\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\,dx.
+	\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\,\d x.
 $$
 
 By treating the leftmost red rectangle separately and starting our sum at $n = 2$, we can rewrite this as
 
 $$
-	\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,dx.
+	\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
 Putting it all together, we have the following bounds on the series:
 
 $$
-	\int_1^\infty \frac{1}{x + 4}\,dx \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,dx.
+	\int_1^\infty \frac{1}{x + 4}\,\d x \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
-We've succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\,dx$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\,dx$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, **the sum does the same thing**. It may not converge to the same value, but this is still an excellent way to test convergence.
+We've succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\,\d x$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\,\d x$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, **the sum does the same thing**. It may not converge to the same value, but this is still an excellent way to test convergence.
 
 Let's close out this example by actually evaluating the integral, and then we'll state the general result.
 
 $$
-	\int_1^\infty \frac{1}{x + 4}\,dx &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty
+	\int_1^\infty \frac{1}{x + 4}\,\d x &= \left. \left[ \ln |x + 4| \right] \right|_1^\infty
 	
 	&= \lim_{b \to \infty} (\ln |b + 4| - \ln |1 + 4|)
 	
@@ -144,7 +144,7 @@ Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to t
 	
 	3. $f(n) = a_n$ for every integer $n \geq N$.
 	
-	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\,dx$ either both converge or both diverge.
+	Then $\sum_{n = N}^\infty a_n$ and $\int_N^\infty f(x)\,\d x$ either both converge or both diverge.
 
 ###
 
@@ -169,7 +169,7 @@ The divergence test is almost always easier than the integral test, so start the
 	1. Let's try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it's inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing --- and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it's always positive. The integral test asks us to consider
 	
 	$$
-		\int_1^\infty \frac{1}{x^2}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,dx
+		\int_1^\infty \frac{1}{x^2}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,\d x
 		
 		&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b
 		
@@ -185,11 +185,11 @@ The divergence test is almost always easier than the integral test, so start the
 	3. The divergence test fails on this, since $\lim_{n \to \infty} \frac{1}{\sqrt{n + 1}} = 0$. But since $\frac{1}{\sqrt{n + 1}}$ is positive and decreasing, we can apply the integral test. We have
 	
 	$$
-		\int_1^\infty \frac{1}{\sqrt{x + 1}}\,dx &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,dx
+		\int_1^\infty \frac{1}{\sqrt{x + 1}}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,\d x
 		
-		u &= x + 1,\,du = dx
+		u &= x + 1,\,\d u = dx
 		
-		&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,du
+		&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,\d u
 		
 		&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b
 		
@@ -231,7 +231,7 @@ First of all, if $p < 0$, then the terms $\frac{1}{n^p} = n^{-p}$ are all positi
 When $p > 0$, the divergence test is inconclusive, but $\frac{1}{x^p}$ is a positive, decreasing, integrable function on $[1, \infty)$, so we can apply the integral test.
 
 $$
-	\int \frac{1}{x^p}\,dx &= \int x^{-p}\,dx
+	\int \frac{1}{x^p}\,\d x &= \int x^{-p}\,\d x
 	
 	&= \begin{cases}
 		
@@ -299,13 +299,13 @@ For a convergent series, we know that $R_N \to 0$ as $N \to \infty$, but it woul
 Since $R_N = \sum_{n = N + 1}^\infty a_n$, it's a series in and of itself that we can possibly apply the integral test to. If that is the case, and there is a positive, decreasing, integrable function $f$ with $f(n) = a_n$, then from our derivation of the integral test, we have that
 
 $$
-	\int_{N + 1}^\infty f(x)\,dx \leq \sum_{n = N + 1}^\infty a_n \leq \int_N^\infty f(x)\,dx.
+	\int_{N + 1}^\infty f(x)\,\d x \leq \sum_{n = N + 1}^\infty a_n \leq \int_N^\infty f(x)\,\d x.
 $$
 
 Since the middle term is just $R_N$, we can rewrite that as
 
 $$
-	\int_{N + 1}^\infty f(x)\,dx \leq R_N \leq \int_N^\infty f(x)\,dx.
+	\int_{N + 1}^\infty f(x)\,\d x \leq R_N \leq \int_N^\infty f(x)\,\d x.
 $$
 
 This is a great result! It gives both an upper and lower bound for $R_N$, so if we're asked to give an approximation of a series that is within certain distance of the true value, we can use this integral to figure out a large enough $N$. Let's work some examples.
@@ -319,7 +319,7 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 	First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
 	
 	$$
-		R_N < \int_N^\infty \frac{1}{x^3}\,dx &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty
+		R_N < \int_N^\infty \frac{1}{x^3}\,\d x &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty
 		
 		&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)
 		
@@ -363,9 +363,9 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 	**Solution:** first of all, the terms are positive and decreasing, so we can use the integral test. We have
 	
 	$$
-		R_N \leq \int_N^\infty \frac{1}{x^5}\,dx
+		R_N \leq \int_N^\infty \frac{1}{x^5}\,\d x
 		
-		&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,dx
+		&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,\d x
 		
 		&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b
 		

@@ -37,7 +37,7 @@ The chain rule will tell us how to differentiate compositions, but we'll need to
 	Let $f$ and $g$ be differentiable functions. Then
 	
 	$$
-		\frac{d}{dx}[f(g(x))] = f'(g(x))g'(x).
+		d/dx[f(g(x))] = f'(g(x))g'(x).
 	$$
 	
 ###
@@ -75,7 +75,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 	3. We have $f(x) = x\sin(x)$ and $g(x) = x + 1$. By the product rule, $f'(x) = \sin(x) - x\cos(x)$, and $g'(x) = 1$. Therefore, we have
 	
 	$$
-		\frac{d}{dx}[(x + 1)\sin(x + 1)] = \sin(x+1) - (x+1)\cos(x+1).
+		d/dx[(x + 1)\sin(x + 1)] = \sin(x+1) - (x+1)\cos(x+1).
 	$$
 	
 ###
@@ -105,19 +105,19 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
 	
 	$$
-		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) \frac{d}{dx}[\cos(\tan(x))].
+		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) d/dx[\cos(\tan(x))].
 	$$
 	
 	Now we need to do the same thing to find that second derivative. The outer function is $\cos(x)$, and its derivative is $-\sin(x)$, so we get
 	
 	$$
-		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \frac{d}{dx}[\tan(x)].
+		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) d/dx[\tan(x)].
 	$$
 	
 	Finally, we can handle $\tan(x)$ on its own.
 	
 	$$
-		\frac{d}{dx}[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \sec^2(x).
+		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \sec^2(x).
 	$$
 	
 ###
@@ -130,29 +130,29 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 
 
 
-Let's mention another way the chain rule is often stated. The derivative $\frac{d}{dx}[y]$ is often written as $\frac{dy}{dx}$. Although they both mean derivative, $\frac{d}{dx}$ is a verb and $\frac{dy}{dx}$ is a noun.
+Let's mention another way the chain rule is often stated. The derivative $d/dx[y]$ is often written as $dy/dx$. Although they both mean derivative, $d/dx$ is a verb and $dy/dx$ is a noun.
 
 The advantage of writing things in this way is that the chain rule becomes quite simple to write down. I'm not partial to this notation for reasons that will shortly become clear, but it is undeniably slick.
 
 Let $y = f(g(x))$ and define a new variable $u = g(x)$. Then $y = f(u)$, so
 
 $$
-	\frac{dy}{du} = f'(u) = f'(g(x)).
+	dy/du = f'(u) = f'(g(x)).
 $$
 
-Similarly, $\frac{du}{dx} = g'(x)$. Finally,
+Similarly, $du/dx = g'(x)$. Finally,
 
 $$
-	\frac{dy}{dx} = \frac{d}{dx}[f(g(x))].	
+	dy/dx = d/dx[f(g(x))].	
 $$
 
 In total, the chain rule says
 
 $$
-	\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}.
+	dy/dx = dy/du \cdot du/dx.
 $$
 
-We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $du$. While this isn't completely inaccurate, it's best not to get too used to thinking this way from the start --- it makes it easier to make mistakes.
+We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $\d u$. While this isn't completely inaccurate, it's best not to get too used to thinking this way from the start --- it makes it easier to make mistakes.
 
 
 

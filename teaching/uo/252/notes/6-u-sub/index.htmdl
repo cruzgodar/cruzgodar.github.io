@@ -1,9 +1,9 @@
 ### nav-buttons
 
-At the moment, the only reasonable way we can calculate definite integrals is with the fundamental theorem, which requires taking an antiderivative. In calculus I, there were some derivatives we had to memorize, like $\frac{d}{dx}[\sin(x)] = \cos(x)$, and a few rules like the product and chain rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
+At the moment, the only reasonable way we can calculate definite integrals is with the fundamental theorem, which requires taking an antiderivative. In calculus I, there were some derivatives we had to memorize, like $d/dx[\sin(x)] = \cos(x)$, and a few rules like the product and chain rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
 
 $$
-	\int \cos(x)\,dx = \sin(x) + C.
+	\int \cos(x)\,\d x = \sin(x) + C.
 $$
 
 What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we'll start with the simplest and arguably the most useful: the opposite of the chain rule.
@@ -12,13 +12,13 @@ What we have yet to develop are the rules analogous to the ones for derivatives.
 
 ### thm "$u$-substitution"
 	
-	Given an integral of the form $$\int f(g(x))g'(x)\,dx$$,
+	Given an integral of the form $$\int f(g(x))g'(x)\,\d x$$,
 	
 	1. Set $u = g(x)$.
 	
-	2. Write $\frac{du}{dx} = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$.
+	2. Write $du/dx = g'(x)$ and multiply both sides by $dx$ to get $du = g'(x) dx$.
 	
-	3. Rewrite the integral as $\int f(u)\,du$.
+	3. Rewrite the integral as $\int f(u)\,\d u$.
 	
 	4. Integrate as usual to get $F(u) + C$.
 	
@@ -28,24 +28,24 @@ What we have yet to develop are the rules analogous to the ones for derivatives.
 
 
 
-This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{dx}[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is present as a factor in the integral.
+This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is present as a factor in the integral.
 
 
 
 ### ex "$u$-sub"
 	
-	Find $$\int 6x(3x^2 + 4)^4\,dx$$.
+	Find $$\int 6x(3x^2 + 4)^4\,\d x$$.
 	
 	We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 	
 	$$
-		\frac{d}{dx} \left[ 3x^2 + 4 \right] = 6x,
+		d/dx \left[ 3x^2 + 4 \right] = 6x,
 	$$
 	
-	we set $u = 3x^2 + 4$ and $du = 6x\,dx$. Then we have
+	we set $u = 3x^2 + 4$ and $du = 6x\,\d x$. Then we have
 	
 	$$
-		\int 6x(3x^2 + 4)^4\,dx &= \int u^4\,du + C
+		\int 6x(3x^2 + 4)^4\,\d x &= \int u^4\,\d u + C
 		
 		&= \frac{u^5}{5} + C
 		
@@ -56,12 +56,12 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 
 ### exc "$u$-sub"
 	
-	Find $$\int 2\sin^3(2x)\cos(2x)\,dx$$.
+	Find $$\int 2\sin^3(2x)\cos(2x)\,\d x$$.
 	
-	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $du = 2\cos(2x)\,dx$ by the chain rule, and so the integral becomes
+	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the chain rule, and so the integral becomes
 	
 	$$
-		\int u^3\,du &= \frac{u^4}{4} + C
+		\int u^3\,\d u &= \frac{u^4}{4} + C
 		
 		&= \frac{1}{4} \sin^4(2x) + C.
 	$$
@@ -76,12 +76,12 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### ex "$u$-sub doesn't always work"
 	
-	Find $$\int 6x^2(3x^2 + 4)^4\,dx$$.
+	Find $$\int 6x^2(3x^2 + 4)^4\,\d x$$.
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $du = 6x\,dx$, as before. The integral then becomes
+	If we try to set $u = 3x^2 + 4$ again, we get that $\d u = 6x\,\d x$, as before. The integral then becomes
 	
 	$$
-		\int xu^4\,du,
+		\int xu^4\,\d u,
 	$$
 	
 	and that's a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
@@ -93,7 +93,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	But the integral is then
 	
 	$$
-		\int u^4\sqrt{\frac{1}{3} (u - 4)}\,du,
+		\int u^4\sqrt{\frac{1}{3} (u - 4)}\,\d u,
 	$$
 	
 	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we'll talk about a different strategy to handle this kind of integral, but that's still some time away.
@@ -102,24 +102,24 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### ex "$u$-sub"
 	
-	Find $$\int_3^4 z\sqrt{z^2 - 5}\,dz$$.
+	Find $$\int_3^4 z\sqrt{z^2 - 5}\,\d z$$.
 	
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 	
 	$$
 		u &= z^2 - 5
 		
-		du &= 2z\,dz
+		du &= 2z\,\d z
 	$$
 	
-	At this point, $du$ isn't exactly present in the integral: it's $2z\,dz$ and we only have $z\,dz$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
+	At this point, $\d u$ isn't exactly present in the integral: it's $2z\,\d z$ and we only have $z\,\d z$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
 	
 	$$
-		\frac{1}{2} du &= z\,dz
+		\frac{1}{2} du &= z\,\d z
 		
-		\int_3^4 z\sqrt{z^2 - 5}\,dz &= \int_3^4 \frac{1}{2} \sqrt{u}\,du
+		\int_3^4 z\sqrt{z^2 - 5}\,\d z &= \int_3^4 \frac{1}{2} \sqrt{u}\,\d u
 		
-		&= \int_3^4 \frac{1}{2} u^{1/2}\,du
+		&= \int_3^4 \frac{1}{2} u^{1/2}\,\d u
 		
 		&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4
 		
@@ -138,12 +138,12 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 ### exc "$u$-sub"
 	
-	Find $$\int 2t^2 e^{4t^3 + 3}\,dt$$.
+	Find $$\int 2t^2 e^{4t^3 + 3}\,\d t$$.
 	
-	**Solution:** let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = \frac{1}{6}\,du$. Now we have
+	**Solution:** let $u = 4t^3 + 3$. Then $\d u = 12t^2\,\d t$, but we have $2t^2\,\d t$, so we solve for $2t^2\,\d t$ to get $2t^2\,\d t = \frac{1}{6}\,\d u$. Now we have
 	
 	$$
-		\int 2t^2 e^{4t^3 + 3}\,dt &= \int \frac{1}{6} e^u\,du
+		\int 2t^2 e^{4t^3 + 3}\,\d t &= \int \frac{1}{6} e^u\,\d u
 		
 		&= \frac{1}{6}e^u + C
 		
@@ -176,24 +176,24 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 ### ex "the half-angle formulas"
 	
-	Find $$\int 3\cos^2(x)\,dx$$.
+	Find $$\int 3\cos^2(x)\,\d x$$.
 	
 	First, we need to apply the half-angle formula:
 	
 	$$
-		\int 3\cos^2(x)\,dx &= 3\int \cos^2(x)\,dx
+		\int 3\cos^2(x)\,\d x &= 3\int \cos^2(x)\,\d x
 		
-		&= 3\int \frac{1 + \cos(2x)}{2}\,dx
+		&= 3\int \frac{1 + \cos(2x)}{2}\,\d x
 		
-		&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,dx
+		&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,\d x
 		
-		&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx
+		&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x
 	$$
 	
-	To integrate $\cos(2x)$, we set $u = 2x$ and $du = 2\,dx$, so $dx = \frac{1}{2}\,du$. Now
+	To integrate $\cos(2x)$, we set $u = 2x$ and $\d u = 2\,\d x$, so $dx = \frac{1}{2}\,\d u$. Now
 	
 	$$
-		\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,dx &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,du
+		\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,\d u
 		
 		&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)
 		
@@ -206,24 +206,24 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 ### exc "the half-angle formulas"
 	
-	Find $$\int \sin^4(t)\,dt$$.
+	Find $$\int \sin^4(t)\,\d t$$.
 	
 	**Solution:** using the half-angle formula, we have
 	
 	$$
-		\int \sin^4(t)\,dt &= \int (\sin^2(t))^2\,dt
+		\int \sin^4(t)\,\d t &= \int (\sin^2(t))^2\,\d t
 		
-		&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,dt
+		&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,\d t
 		
-		&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,dt
+		&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,\d t
 		
-		&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,dt
+		&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,\d t
 	$$
 	
 	Now we use half-angles **again**, this time on $\cos^2(2t)$.
 	
 	$$
-		\int \cos^2(2t)\,dt &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,dt
+		\int \cos^2(2t)\,\d t &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,\d t
 		
 		&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
 	$$
@@ -231,7 +231,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 	In total, we have
 	
 	$$
-		\int \sin^4(t)\,dt = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
+		\int \sin^4(t)\,\d t = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
 	$$
 	
 ###
@@ -244,22 +244,22 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 
 ### ex "another $u$-sub"
 	
-	Find $$\int \frac{x}{\sqrt{x - 1}}\,dx$$.
+	Find $$\int \frac{x}{\sqrt{x - 1}}\,\d x$$.
 	
-	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $du = dx$, and so we have
+	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $\d u = \d x$, and so we have
 	
 	$$
-		\int \frac{x}{\sqrt{x - 1}}\,dx = \int \frac{x}{\sqrt{u}}\,du.
+		\int \frac{x}{\sqrt{x - 1}}\,\d x = \int \frac{x}{\sqrt{u}}\,\d u.
 	$$
 	
 	The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 	
 	$$
-		\int \frac{u + 1}{\sqrt{u}}\,du &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,du
+		\int \frac{u + 1}{\sqrt{u}}\,\d u &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,\d u
 		
-		&= \int \frac{u}{\sqrt{u}}\,du + \int \frac{1}{\sqrt{u}}\,du
+		&= \int \frac{u}{\sqrt{u}}\,\d u + \int \frac{1}{\sqrt{u}}\,\d u
 		
-		&= \int u^{1/2}\,du + \int u^{-1/2}\,du
+		&= \int u^{1/2}\,\d u + \int u^{-1/2}\,\d u
 		
 		&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C
 		

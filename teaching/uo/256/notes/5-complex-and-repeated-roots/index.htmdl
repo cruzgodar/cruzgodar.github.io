@@ -216,9 +216,9 @@ $$
 	
 	\frac{dv'}{dt} &= -\frac{2ar_1 + b}{a} v'
 	
-	\frac{1}{v'}\,dv' &= -\frac{2ar_1 + b}{a}\,dt
+	\frac{1}{v'}\,\d v' &= -\frac{2ar_1 + b}{a}\,\d t
 	
-	\int \frac{1}{v'}\,dv' &= \int -\frac{2ar_1 + b}{a}\,dt
+	\int \frac{1}{v'}\,\d v' &= \int -\frac{2ar_1 + b}{a}\,\d t
 	
 	\log |v'| &= -\frac{2ar_1 + b}{a} t + C.
 $$
@@ -388,9 +388,9 @@ As a final example, we'll look at applying reduction of order to a more complica
 	$$
 		\frac{dv'}{dt} &= -\frac{1}{t}v'
 		
-		\frac{1}{v'}\,dv' &= -\frac{1}{t}\,dt
+		\frac{1}{v'}\,\d v' &= -\frac{1}{t}\,\d t
 		
-		\int \frac{1}{v'}\,dv' &= \int -\frac{1}{t}\,dt
+		\int \frac{1}{v'}\,\d v' &= \int -\frac{1}{t}\,\d t
 		
 		\log(v') &= -\log(t) + C.
 	$$
@@ -412,7 +412,7 @@ As a final example, we'll look at applying reduction of order to a more complica
 	Now we can at last integrate to find $v$.
 	
 	$$
-		v &= \int \frac{1}{t}\,dt
+		v &= \int \frac{1}{t}\,\d t
 		
 		v &= \log(t) + C
 		

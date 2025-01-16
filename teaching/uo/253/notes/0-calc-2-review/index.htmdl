@@ -31,7 +31,7 @@ $$
 we have that $g(0) = \frac{\sin(0)}{0} = \frac{0}{0}$, which is undefined. However, we can take the limit (and use L'H&#244;pital's rule) to find that
 
 $$
-	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{\frac{d}{dt} [\sin(t)] }{\frac{d}{dt}[t]}
+	\lim_{t \to 0} g(t) &= \lim_{t \to 0} \frac{d/dt [\sin(t)] }{d/dt[t]}
 	
 	&= \lim_{t \to 0} \frac{\cos(t)}{1}
 	
@@ -55,7 +55,7 @@ The limit $\lim_{x \to a} f(x)$ can fail to exist if values of $f(x)$ near $x = 
 Derivatives measure slopes of tangent lines. The derivative of a function $f(x)$ at $x = a$ is defined as
 
 $$
-	f'(a) = \frac{d}{dx}[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
+	f'(a) = d/dx[f(x)]|_{x = a} = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h},
 $$
 
 if the limit exists. The function inside the limit is the slope of a secant line passing through the points $(a, f(a))$ and $(a + h, f(a + h))$, and as $h \to 0$, that secant line approaches a tangent line.
@@ -73,54 +73,54 @@ In practice, we don't use the limit definition of the derivative all that often.
 	1. The constant multiple rule:
 	
 	$$
-		\frac{d}{dx} [c \cdot f(x)] = c \cdot f'(x).
+		d/dx [c \cdot f(x)] = c \cdot f'(x).
 	$$
 	
 	2. The sum rule:
 	
 	$$
-		\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)
+		d/dx [f(x) + g(x)] = f'(x) + g'(x)
 	$$
 	
 	3. The product rule:
 	
 	$$
-		\frac{d}{dx} [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
+		d/dx [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
 	$$
 	
 	4. The quotient rule:
 	
 	$$
-		\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
+		d/dx \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
 	$$
 	
 	5. The chain rule:
 	
 	$$
-		\frac{d}{dx} [f(g(x))] = f'(g(x))g'(x).
+		d/dx [f(g(x))] = f'(g(x))g'(x).
 	$$
 	
 ###
 
 ### prop "common derivatives"
 	
-	$$\frac{d}{dx} [c] = 0$$ for any constant $c$.
+	$$d/dx [c] = 0$$ for any constant $c$.
 	
-	$$\frac{d}{dx} [x^p] = px^{p - 1}, p \neq 0$$ (the power rule).
+	$$d/dx [x^p] = px^{p - 1}, p \neq 0$$ (the power rule).
 	
-	$$\frac{d}{dx} [\sin(x)] = \cos(x)$$.
+	$$d/dx [\sin(x)] = \cos(x)$$.
 	
-	$$\frac{d}{dx} [\cos(x)] = -\sin(x)$$.
+	$$d/dx [\cos(x)] = -\sin(x)$$.
 	
-	$$\frac{d}{dx} [\tan(x)] = \sec^2(x)$$.
+	$$d/dx [\tan(x)] = \sec^2(x)$$.
 	
-	$$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
+	$$d/dx [\sec(x)] = \sec(x)\tan(x)$$.
 	
-	$$\frac{d}{dx} [b^x] = b^x \ln(b)$$.
+	$$d/dx [b^x] = b^x \ln(b)$$.
 	
-	$$\frac{d}{dx} [e^x] = e^x$$.
+	$$d/dx [e^x] = e^x$$.
 	
-	$$\frac{d}{dx} [\ln(x)] = \frac{1}{x}$$.
+	$$d/dx [\ln(x)] = \frac{1}{x}$$.
 	
 ###
 	
@@ -141,17 +141,17 @@ We'll be using limits and derivatives heavily throughout the course. I have a fu
 The final building blocks we'll need are integrals. They come in two flavors: definite and indefinite. Indefinite integrals perform the opposite operation as derivatives, taking a function $f(x)$ to an antiderivative, often denoted $F(x)$. For example,
 
 $$
-	\int x^2\,dx &= \frac{x^3}{3} + C
+	\int x^2\,\d x &= \frac{x^3}{3} + C
 
-	\int \sin(2x)\,dx &= -\frac{1}{2}\cos(2x) + C
+	\int \sin(2x)\,\d x &= -\frac{1}{2}\cos(2x) + C
 
-	\int \frac{1}{y}\,dy &= \log|y| + C
+	\int \frac{1}{y}\,\d y &= \log|y| + C
 $$
 
 In contrast, definite integrals measure the area under the graph of a function and take an extra two numbers, written above and below the integral sign. When we say that
 
 $$
-	\int_{-2}^4 t^3\,dt = 60,
+	\int_{-2}^4 t^3\,\d t = 60,
 $$
 
 we mean that the shaded region in the graph below has area 60. Remember that area below the $x$-axis counts as negative.
@@ -167,7 +167,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 	Let $f$ be an integrable function. Then
 	
 	$$
-		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
+		\int_a^b f(x)\,\d x = \left. \left[ \int f(x)\,\d x \right] \right|_a^b = F(b) - F(a).
 	$$	
 	
 ###
@@ -187,15 +187,15 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 	As an integral, this is 
 	
 	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx.
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x.
 	$$
 	
-	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,dx$. Present in our integral is $x\,dx$, not $2x\,dx$, so we divide by $2$ to get $\frac{1}{2}\,du = x\,dx$, which matches our integral. Now we have
+	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,\d x$. Present in our integral is $x\,\d x$, not $2x\,\d x$, so we divide by $2$ to get $\frac{1}{2}\,\d u = x\,\d x$, which matches our integral. Now we have
 	
 	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,dx &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,du
+		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,\d u
 		
-		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,du
+		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,\d u
 		
 		&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
 		

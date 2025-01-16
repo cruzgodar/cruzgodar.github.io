@@ -55,7 +55,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 	That means we can use L'H&#244;pital's rule to try evaluating a different limit and see if we have more success.
 	
 	$$
-		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{\frac{d}{dx}[\sin(x)]}{\frac{d}{dx}[x]}
+		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{d/dx[\sin(x)]}{d/dx[x]}
 		
 		&= \lim_{x \to 0} \frac{\cos(x)}{1}
 		
@@ -109,7 +109,7 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 	We need to differentiate the top and bottom here. The derivative of $2x - 4$ is just $2$, but $\frac{1}{\ln(2x-4)}$ is a quotient rule problem (or a chain rule one, depending on how you approach it). We have
 	
 	$$
-		\frac{d}{dx} \left[ \frac{1}{\ln(2x-4)} \right] = \frac{-\frac{2}{2x - 4}}{\ln^2(2x - 4)},
+		d/dx \left[ \frac{1}{\ln(2x-4)} \right] = \frac{-\frac{2}{2x - 4}}{\ln^2(2x - 4)},
 	$$
 	
 	which is looking significantly more complicated. We'll probably have to run L'H&#244;pital's rule one more time at the very least, and there's no guarantee it will get simpler. Instead, let's go back and try the other route.
@@ -121,13 +121,13 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 	Now this is much easier to deal with. We have
 	
 	$$
-		\frac{d}{dx}\left[\ln(2x - 4)\right] = \frac{2}{2x - 4}
+		d/dx\left[\ln(2x - 4)\right] = \frac{2}{2x - 4}
 	$$
 	
 	and
 	
 	$$
-		\frac{d}{dx}\left[\frac{1}{2x - 4}\right] = \frac{-2}{(2x - 4)^2}.
+		d/dx\left[\frac{1}{2x - 4}\right] = \frac{-2}{(2x - 4)^2}.
 	$$
 	
 	Therefore, the limit becomes

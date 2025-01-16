@@ -1,24 +1,24 @@
 ### nav-buttons
 
-Typically, and for nearly all of this course so far, we define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
+Typically, and for nearly all of this course so far, we define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the corresponding $y$-values directly.
 
-It's possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it's not possible to solve for $y$ explicitly this way, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function.
+It's possible to write down relationships between variables $x$ and $y$ without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a circle: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. It's not possible to solve for $y$ explicitly here, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function.
 
 ### desmos circle
 
-We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined **implicitly**, and the process of finding the slopes of tangent lines is called **implicit differentiation**. This takes a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
+We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the function is defined **implicitly**, and the process of finding the slopes of tangent lines is called **implicit differentiation**. This takes a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
 
-Let's use $x^2 + y^2 = 1$ as our first example. Like we saw in the previous graph, there can be multiple $y$-values for each $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $\frac{dy}{dx}$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$
-isn't a function of $x$, there is a famous result (and an infamously difficult one to prove) called the Implicit Function theorem that can help us. Suppose $(a, b)$ is a point on an implicitly defined function at which the function is differentiable --- that is, the tangent line at $(a, b)$ is defined and not vertical. Then there is an explicit function $y = f(x)$ and a neighborhood surrounding $(a, b)$ in which $y = f(x)$ has exactly the same graph as our implicitly defined function. As a concrete example, if $(a, b)$ is a point on the graph of $x^2 + y^2 = 1$ with $b > 0$, then $y = \sqrt{1 - x^2}$ is an explicitly-defined and differentiable function that agrees with $x^2 + y^2 = 1$ on a (possibly very tiny) region containing $(a, b)$. If $b = 0$, any neighborhood of $(a, b)$ will fail the vertical line test, and so no such explicitly-defined function exists --- while the Implicit Function theorem doesn't guarantee that this failure occurs, it's nice to see how things could go wrong.
+Let's use $x^2 + y^2 = 1$ as our first example. Like we saw in the previous graph, there can be multiple $y$-values for a given $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $dy/dx$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$
+isn't a function of $x$, there is a famous result (that's infamously complicated to prove) called the *Implicit Function theorem* that can help us quite a bit here. Suppose $(a, b)$ is a point on an implicitly defined function at which the function is differentiable --- that is, the tangent line at $(a, b)$ is defined and not vertical. Then there is an *explicit* function $y = f(x)$ and a neighborhood surrounding $(a, b)$ in which $y = f(x)$ has exactly the same graph as our implicitly defined function. As a concrete example, if $(a, b)$ is a point on the graph of $x^2 + y^2 = 1$ with $b > 0$, then $y = \sqrt{1 - x^2}$ is an explicitly-defined and differentiable function that agrees with $x^2 + y^2 = 1$ on a (possibly very tiny) region containing $(a, b)$. If $b = 0$, any neighborhood of $(a, b)$ will fail the vertical line test, and so no such explicitly-defined function exists --- while the Implicit Function theorem doesn't guarantee that we can't find an explicitly-defined function if the derivative isn't defined like this, it's nice to see exactly how things could go wrong.
 
 With a fixed point $(a, b)$ and the explicitly-defined function $f(x)$ in hand, we can replace every instance of $y$ with $f(x)$ in the equation. Continuing with our circle example, that looks like $x^2 + f(x)^2 = 1$. And at this point, even if we don't have a formula for $f$, we can differentiate both sides of the equation with respect to $x$ by using the chain rule! We have
 
 $$
 	x^2 + f(x)^2 &= 1
 	
-	\frac{d}{dx}[x^2 + f(x)^2] &= \frac{d}{dx}[1]
+	d/dx[x^2 + f(x)^2] &= d/dx[1]
 	
-	\frac{d}{dx}[x^2] + \frac{d}{dx}[f(x)^2] &= 0
+	d/dx[x^2] + d/dx[f(x)^2] &= 0
 	
 	2x + 2f(x)f'(x) &= 0
 	
@@ -30,55 +30,55 @@ $$
 Incredibly, we don't need to know a formula for $f$, nor do we even need to know $a$ and $b$ ahead of time! By rewriting this as
 
 $$
-	\frac{dy}{dx} = -\frac{x}{y},
+	dy/dx = -\frac{x}{y},
 $$
 
-we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. Let's double-check that it seems reasonable: when $x = 0$ and $y = \pm 1$, $\frac{dy}{dx} = 0$, which makes sense since the tangent line is flat at $(0, \pm 1)$. When $x = y$, $\frac{dy}{dx} = -1$, and that looks about right --- the two points on the intersection of $y = x$ and $x^2 + y^2 = 1$ appear to have tangent lines with slope $-1$. And at $(\pm 1, 0)$, the derivative is undefined, as we'd hope!
+we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. Let's double-check that it seems reasonable: when $x = 0$ and $y = \pm 1$, $dy/dx = 0$, which makes sense since the tangent line is flat at $(0, \pm 1)$. When $x = y$, $dy/dx = -1$, and that looks about right --- the two points on the intersection of $y = x$ and $x^2 + y^2 = 1$ appear to have tangent lines with slope $-1$. And at $(\pm 1, 0)$, the derivative is undefined, as we'd hope!
 
 One of the most striking results of this example is that we differentiated an implicit function, but our final formula is in terms of $x$ and $y$ only. Even though we needed at least two different formulas for $f$ to cover every possible point --- for example, $\sqrt{1 - x^2}$ and $-\sqrt{1 - x^2}$ --- the end result works for all points $(x, y)$ with $x^2 + y^2 = 1$ that have a well-defined tangent line. In fact, we can completely omit $f$ from the outset! Let's write down a better version of this process that works in general and improves the notation.
 
 ### thm -m "Method: implicit differentiation"
 	
-	To find the derivative $\frac{dy}{dx}$ of a function defined implicitly in terms of $x$ and $y$:
+	To find the derivative $dy/dx$ of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the chain rule: we rewrite $\frac{d}{dx}[y]$ as $\frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
+	1. Take $d/dx$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the chain rule: we rewrite $d/dx[y]$ as $dy/dx$, so for example, $d/dx[\tan(y)] = \sec^2(y) \cdot dy/dx$.
 	
-	2. Move all the terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
+	2. Move all the terms containing $dy/dx$ to one side of the equation and all the other terms to the other side.
 	
-	3. Factor out $\frac{dy}{dx}$ and divide by whatever is left over.
+	3. Factor out $dy/dx$ and divide by whatever is left over.
 	
 ###
 
 ### ex "implicit differentiation"
 	
-	Given the implicit function $x\sin(xy) = y$, find $\frac{dy}{dx}$.
+	Given the implicit function $x\sin(xy) = y$, find $dy/dx$.
 	
 	### desmos sinThing
 	
-	We'll start by differentiating both sides --- the right side becomes $\frac{dy}{dx}$, but the left side requires the product rule, and then the chain rule.
+	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the product rule, and then the chain rule.
 	
 	$$
 		x\sin(xy) &= y
 		
-		\frac{d}{dx}[x\sin(xy)] &= \frac{d}{dx}[y]
+		d/dx[x\sin(xy)] &= d/dx[y]
 		
-		\frac{d}{dx}[x] \cdot \sin(xy) + x \cdot \frac{d}{dx}[\sin(xy)] &= \frac{dy}{dx}
+		d/dx[x] \cdot \sin(xy) + x \cdot d/dx[\sin(xy)] &= dy/dx
 		
-		\sin(xy) + x \cos(xy) \cdot \frac{d}{dx}[xy] &= \frac{dy}{dx}
+		\sin(xy) + x \cos(xy) \cdot d/dx[xy] &= dy/dx
 	$$
 
-	After one more application of the product rule, we're nearly done! All that's left is to group the terms containing $\frac{dy}{dx}$ together on the left side, factor it out, and then divide by what's left.
+	After one more application of the product rule, we're nearly done! All that's left is to group the terms containing $dy/dx$ together on the left side, factor it out, and then divide by what's left.
 
 	$$	
-		\sin(xy) + x \cos(xy) \left(\frac{d}{dx}[x] \cdot y + x \cdot \frac{d}{dx}[y]\right) &= \frac{dy}{dx}
+		\sin(xy) + x \cos(xy) \left(d/dx[x] \cdot y + x \cdot d/dx[y]\right) &= dy/dx
 		
-		\sin(xy) + x \cos(xy) \left(y + x \cdot \frac{dy}{dx}\right) &= \frac{dy}{dx}
+		\sin(xy) + x \cos(xy) \left(y + x \cdot dy/dx\right) &= dy/dx
 		
-		\sin(xy) + xy \cos(xy) + x^2\cos(xy) \frac{dy}{dx} &= \frac{dy}{dx}
+		\sin(xy) + xy \cos(xy) + x^2\cos(xy) dy/dx &= dy/dx
 		
-		\left( x^2\cos(xy) - 1 \right) \frac{dy}{dx} &= -\sin(xy) - xy \cos(xy)
+		\left( x^2\cos(xy) - 1 \right) dy/dx &= -\sin(xy) - xy \cos(xy)
 		
-		\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}
+		dy/dx &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}
 
 		&= \frac{\sin(xy) + xy \cos(xy)}{1 - x^2\cos(xy)}.
 	$$
@@ -95,17 +95,19 @@ One of the most striking results of this example is that we differentiated an im
 	
 	1. Does this graph make sense? You might find it helpful to first sketch a graph of $\sin(y) = x$, and then think about how applying cosine to both sides affects the result.
 
-	2. Find $\frac{dy}{dx}$.
+	2. Find $dy/dx$ by differentiating implicitly.
 
-	3. Is your formula for $\frac{dy}{dx}$ always defined for any values of $x$ and $y$ on the graph? If not, where are the problem points, and what are their issues?
+	3. Is your formula for $dy/dx$ always defined for any values of $x$ and $y$ on the graph? If not, where are the problem points, and what are their issues?
 	
 ###
+
+Implicitly-defined functions often appear experimentally when two quantities $x$ and $y$ are defined in terms of a third quantity $t$, often representing time.
 
 
 
 ## Logarithmic Differentiation
 
-Implicit differentiation unlocks one extra technique: sometimes, difficult functions to differentiate become much easier when we take a log on both sides. Specifically, functions involving strange exponents will turn into multiplication, so we can use the product rule. So: if you have a function of the form $y = (f(x))^{g(x)}$, start by rewriting it as
+Implicit differentiation lets us unlock an extra technique: sometimes, functions that are difficult to differentiate become much easier when we take a log on both sides. Specifically, functions involving complicated exponents will turn into multiplication, so we can use the product rule. If we have a function of the form $y = (f(x))^{g(x)}$, we'll start by rewriting it as
 
 $$
 	\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),
@@ -114,44 +116,43 @@ $$
 and then differentiate implicitly.
 
 
-
 ### ex "logarithmic differentiation"
 	
-	Find $$\frac{d}{dx}[x^x]$$.
+	Find $$d/dx[x^x]$$.
 	
-	Since $x$ is in both the base and the exponent, we can't use either the derivative rules for $x^b$ or $b^x$. Instead, we write
+	Since $x$ is in both the base and the exponent, we can't use either the derivative rules for $x^b$ or $b^x$. Instead, we can write
 	
 	$$
 		\ln(y) = \ln(x^x) = x\ln(x),
 	$$
 	
-	and then differentiate implicitly to get
+	and then differentiate implicitly to find
 	
 	$$
-		\frac{1}{y} \cdot \frac{dy}{dx} &= \ln(x) + x \cdot \frac{1}{x}
+		\frac{1}{y} \cdot dy/dx &= \ln(x) + x \cdot \frac{1}{x}
 		
-		\frac{dy}{dx} &= y(\ln(x) + 1)
+		dy/dx &= y(\ln(x) + 1)
 		
-		\frac{dy}{dx} &= x^x(\ln(x) + 1).
+		dy/dx &= x^x(\ln(x) + 1).
 	$$
 	
 ###
 
 ### exc "logarithmic differentiation"
 	
-	Find $$\frac{d}{dx}\left[\sin(x)^{(e^x)}\right]$$.
+	Find $$d/dx\left[\sin(x)^{(e^x)}\right]$$.
 	
 ###
 
 
 
-At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but <strong>any real number</strong>. Thankfully, it's exactly what we'd like it to be.
+At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but **any real number**. Thankfully, it's exactly what we'd like it to be.
 
 
 
 ### thm "the derivative of $x^n$ for any real $n$"
 	
-	Let $n$ be a real number. Then $$\frac{d}{dx}[x^n] = nx^{n-1}$$.
+	Let $n$ be a real number. Then $$d/dx[x^n] = nx^{n-1}$$.
 	
 ###
 
@@ -166,13 +167,13 @@ At long last, we can handle the derivative of $x^n$, where $n$ is not just a rat
 	Then
 	
 	$$
-		\frac{1}{y} \cdot \frac{dy}{dx} = \frac{n}{x},
+		\frac{1}{y} \cdot dy/dx = \frac{n}{x},
 	$$
 	
 	so
 	
 	$$
-		\frac{dy}{dx} = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
+		dy/dx = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
 	$$	
 	
 ###

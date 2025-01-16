@@ -67,7 +67,7 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	$$
 		A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}
 		
-		A'(a) &= \frac{d}{da}[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{d}{da}\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]
+		A'(a) &= d/da[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) d/da\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]
 		
 		&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)
 		

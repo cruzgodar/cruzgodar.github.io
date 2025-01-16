@@ -11,21 +11,21 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 	Let's let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is finding $N(t)$ in general. This is an antiderivative of $N'$, and so we have
 	
 	$$
-		N(t) &= \int N'(t)\,dt
+		N(t) &= \int N'(t)\,\d t
 		
-		&= \int 3^t\,dt.
+		&= \int 3^t\,\d t.
 	$$
 	
 	Since
 	
 	$$
-		\frac{d}{dt} [3^t] = 3^t \ln(3),
+		d/dt [3^t] = 3^t \ln(3),
 	$$
 	
 	we can divide both sides by $\ln(3)$ to find that
 	
 	$$
-		N(t) = \int 3^t\,dt = \frac{1}{ln(3)} 3^t + C.
+		N(t) = \int 3^t\,\d t = \frac{1}{ln(3)} 3^t + C.
 	$$
 	
 	Since $N(0) = 100$, we have that
@@ -55,7 +55,7 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 	**Solution:** if $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
 	
 	$$
-		m(t) &= \int -.0953 \cdot .91^t\,dt
+		m(t) &= \int -.0953 \cdot .91^t\,\d t
 		
 		&= -.0953 \frac{1}{\ln(.91)} .91^t + C
 		
@@ -70,12 +70,12 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 
 ### ex "another exponential integral"
 	
-	Find $$\int \frac{2^{1/x}}{x^2}\,dx$$.
+	Find $$\int \frac{2^{1/x}}{x^2}\,\d x$$.
 	
-	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn't really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\,dx$, which lines up nicely: the integral becomes
+	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn't really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\,\d x$, which lines up nicely: the integral becomes
 	
 	$$
-		-\int 2^u\,du &= -\frac{1}{\ln(2)} 2^u + C
+		-\int 2^u\,\d u &= -\frac{1}{\ln(2)} 2^u + C
 		
 		&= -\frac{1}{\ln(2)} 2^{1/x} + C.
 	$$
@@ -87,13 +87,13 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 We know that
 
 $$
-	\int \frac{1}{x}\,dx = \ln|x| + C,
+	\int \frac{1}{x}\,\d x = \ln|x| + C,
 $$
 
 since
 
 $$
-	\frac{d}{dx}[\ln|x|] = \frac{1}{x},
+	d/dx[\ln|x|] = \frac{1}{x},
 $$
 
 but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$ for any $a$. Let's fix that now.
@@ -103,7 +103,7 @@ but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$
 ### prop "the integral of $\ln$"
 	
 	$$
-		\int \ln(x)\,dx = x\ln(x) - x + C.
+		\int \ln(x)\,\d x = x\ln(x) - x + C.
 	$$
 	
 ###
@@ -130,20 +130,20 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 
 ### ex "a logarithmic integral"
 	
-	Find $$\int_2^3 \log_2(5x)\,dx$$.
+	Find $$\int_2^3 \log_2(5x)\,\d x$$.
 	
 	First, we'll turn this log into a natural log.
 	
 	$$
-		\int_2^3 \log_2(5x)\,dx = \int_2^3 \frac{\ln(5x)}{\ln(2)}\,dx.
+		\int_2^3 \log_2(5x)\,\d x = \int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x.
 	$$
 	
 	Now since $\ln(2)$ is a constant, we can factor it out of the integral and use $u$-sub to handle the rest.
 	
 	$$
-		\int_2^3 \frac{\ln(5x)}{\ln(2)}\,dx &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\,dx
+		\int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\,\d x
 		
-		& u = 5x,\,du = 5dx
+		& u = 5x,\,\d u = 5dx
 		
 		&= \frac{1}{\ln(2)} \int_2^3 \ln(u)\ \frac{1}{5}du
 		
@@ -158,14 +158,14 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 
 ### exc "a logarithmic integral"
 	
-	Find $$\int_1^2 x\log_3(x^2)\,dx$$.
+	Find $$\int_1^2 x\log_3(x^2)\,\d x$$.
 	
-	**Solution:** since we have a composition, we should try $u$-sub. Let $u = x^2$ --- then $du = 2x\,dx$, so we have
+	**Solution:** since we have a composition, we should try $u$-sub. Let $u = x^2$ --- then $du = 2x\,\d x$, so we have
 	
 	$$
-		\int_1^2 \frac{1}{2} \log_3(u)\,du &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\,du
+		\int_1^2 \frac{1}{2} \log_3(u)\,\d u &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\,\d u
 		
-		&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\,du
+		&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\,\d u
 		
 		&= \frac{1}{2\ln(3)} \left. \left[ u \ln(u) - u \right] \right|_1^2
 		
@@ -188,30 +188,30 @@ You may or may not have talked about derivatives of the inverse trig functions i
 
 ### prop "inverse trig integrals"
 	
-	1. $$\int \frac{1}{\sqrt{a^2 - x^2}}\,dx = \sin^{-1}\left( \frac{x}{a} \right) + C$$.
+	1. $$\int \frac{1}{\sqrt{a^2 - x^2}}\,\d x = \sin^{-1}\left( \frac{x}{a} \right) + C$$.
 	
-	2. $$\int \frac{1}{x^2 + a^2}\,dx = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$$.
+	2. $$\int \frac{1}{x^2 + a^2}\,\d x = \frac{1}{a} \tan^{-1}\left( \frac{x}{a} \right) + C$$.
 	
-	3. $$\int \frac{1}{x\sqrt{x^2 - a^2}}\,dx = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$$.
+	3. $$\int \frac{1}{x\sqrt{x^2 - a^2}}\,\d x = \frac{1}{a} \sec^{-1}\left( \frac{x}{a} \right) + C$$.
 	
 ###
 
 
 
-It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\,dx$, and the integral contains $\frac{1}{x}\,dx$.
+It might look like that last one is a $u$-sub problem, but it's actually not, since if we set $u = x^2 - a^2$, then $du = 2x\,\d x$, and the integral contains $\frac{1}{x}\,\d x$.
 
 
 
 ### ex "an inverse trig integral"
 	
-	Find $$\int \frac{1}{\sqrt{4 - 9x^2}}\,dx$$.
+	Find $$\int \frac{1}{\sqrt{4 - 9x^2}}\,\d x$$.
 	
 	This resembles the first integral in the previous proposition, but we need to remove the $9$ from the $x^2$. This can be done with $u$-sub:
 	
 	$$
-		\int \frac{1}{\sqrt{4 - 9x^2}}\,dx &= \int \frac{1}{\sqrt{4 - (3x)^2}}\,dx
+		\int \frac{1}{\sqrt{4 - 9x^2}}\,\d x &= \int \frac{1}{\sqrt{4 - (3x)^2}}\,\d x
 		
-		& u = 3x,\,du = 3\,dx
+		& u = 3x,\,\d u = 3\,\d x
 		
 		&= \int \frac{1}{\sqrt{4 - u^2}}\ \frac{1}{3}du
 		
@@ -224,12 +224,12 @@ It might look like that last one is a $u$-sub problem, but it's actually not, si
 
 ### exc "an inverse trig integral"
 	
-	Find $$\int \frac{1}{x\sqrt{4x^2 - 4}}\,dx$$.
+	Find $$\int \frac{1}{x\sqrt{4x^2 - 4}}\,\d x$$.
 	
 	**Solution:** first we need to factor out a $4$. Then we have
 	
 	$$
-		\int \frac{1}{2x\sqrt{x^2 - 1}}\,dx = \frac{1}{2} \sec^{-1}(x).
+		\int \frac{1}{2x\sqrt{x^2 - 1}}\,\d x = \frac{1}{2} \sec^{-1}(x).
 	$$
 	
 ###
@@ -254,12 +254,12 @@ This isn't particularly relevant to this course's material, and your calculator 
 
 ### ex "a definite inverse trig integral"
 	
-	Find $$\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx$$.
+	Find $$\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,\d x$$.
 	
 	We have
 	
 	$$
-		\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2
+		\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,\d x &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2
 		
 		&= \sin^{-1} \left( \frac{1}{2} \right) - \sin^{-1}(0)
 		
@@ -272,7 +272,7 @@ This isn't particularly relevant to this course's material, and your calculator 
 
 ### exc "a definite inverse trig integral"
 	
-	Find $$\int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\,dx$$.
+	Find $$\int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\,\d x$$.
 	
 	**Solution:** this is
 	

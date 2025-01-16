@@ -3,7 +3,7 @@
 This is one of the last topics we'll cover, and mercifully, there's not a substantial amount here. The idea is simple: if we have two quantities that are related to one another --- say the radius of a circle and its area --- then their derivatives are related to. That's really not saying anything crazy: the area $A$ of a circle with radius $r$ is $A = \pi r^2$, so if the radius $r$ is increasing over time, then $r$, and therefore $A$, is a function of $t$. Differentiating both sides implicitly with respect to $t$, we get
 
 $$
-	\frac{dA}{dt} = 2 \pi r \frac{dr}{dt}.
+	dA/dt = 2 \pi r dr/dt.
 $$
 
 What this tells us is the relationship between the rate of change of the radius and the rate of change of the area. If at some time $t$, the radius is currently $3$ meters and is increasing at a rate of $4$ meters per second, then the area is increasing at $2\pi \cdot 3 \cdot 4 = 24\pi$ square meters per second.
@@ -29,10 +29,10 @@ The technology behind related rates is just implicit differentiation, except tha
 	Now we can differentiate both sides implicitly.
 	
 	$$
-		\frac{ds}{dt} = \frac{1}{2} (x^2 + 100^2)^{-1/2} \cdot 2x \cdot \frac{dx}{dt}.
+		ds/dt = \frac{1}{2} (x^2 + 100^2)^{-1/2} \cdot 2x \cdot dx/dt.
 	$$
 	
-	We're being asked to find $\frac{ds}{dt}$ when $s = 200$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
+	We're being asked to find $ds/dt$ when $s = 200$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
 	
 	$$
 		s &= \sqrt{x^2 + 100^2}
@@ -48,10 +48,10 @@ The technology behind related rates is just implicit differentiation, except tha
 		x &\approx 173.2.
 	$$
 	
-	Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $\frac{dx}{dt} = 10$. Therefore,
+	Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $dx/dt = 10$. Therefore,
 	
 	$$
-		\frac{ds}{dt} = \frac{1}{2} (173.2^2 + 100^2)^{-1/2} \cdot 2(173.2) \cdot 10 \approx 8.66.
+		ds/dt = \frac{1}{2} (173.2^2 + 100^2)^{-1/2} \cdot 2(173.2) \cdot 10 \approx 8.66.
 	$$
 	
 	This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.

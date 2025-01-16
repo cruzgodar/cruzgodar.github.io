@@ -80,18 +80,18 @@ We mentioned in section 1 that the slope of a tangent line measures rate of chan
 
 We use the notation $f'(a)$ because the derivative is a whole new function: $f'(x)$ outputs the slope of the graph of $f$ at the point $x$. Taking a derivative is called **differentiating**, not deriving, for some reason.
 
-One more notational quirk: sometimes, we don't want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $\frac{d}{dx}$ followed by the function in brackets: for example, $\frac{d}{dx}[x^2]$ means the derivative of $x^2$.
+One more notational quirk: sometimes, we don't want to give a function a name just so that we can put a prime on it to indicate that we want to take a derivative. In that case, we can just write $d/dx$ followed by the function in brackets: for example, $d/dx[x^2]$ means the derivative of $x^2$.
 
 
 
 ### ex "computing a derivative"
 	
-	Find $$\frac{d}{dx}[x^2]$$.
+	Find $$d/dx[x^2]$$.
 	
 	By definition, this is
 	
 	$$
-		\frac{d}{dx}[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}
+		d/dx[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}
 		
 		&= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}
 		
@@ -104,7 +104,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 		&= 2x.
 	$$
 	
-	Therefore, $\frac{d}{dx}[x^2] = 2x$.
+	Therefore, $d/dx[x^2] = 2x$.
 	
 	Let's sketch a graph of these two.
 	
@@ -116,7 +116,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 ### exc "computing a derivative"
 	
-	Find $$\frac{d}{dx}[x^3]$$ and sketch a graph of both functions.
+	Find $$d/dx[x^3]$$ and sketch a graph of both functions.
 	
 ###
 
@@ -200,10 +200,10 @@ This gives us a nice heuristic for what differentiable functions look like: they
 
 ## Higher-Order Derivatives
 
-Since the derivative of a function $f(x)$ is just another function, we can take the derivative of $f'(x)$ to get yet another function, called the **second derivative** of $f$ written $f''(x)$. The analgous form for the $\frac{d}{dx}$ notation is
+Since the derivative of a function $f(x)$ is just another function, we can take the derivative of $f'(x)$ to get yet another function, called the **second derivative** of $f$ written $f''(x)$. The analgous form for the $d/dx$ notation is
 
 $$
-	\frac{d}{dx} \left[ \frac{d}{dx} \left[f\right] \right] = \frac{d^2}{dx^2}[f].
+	d/dx \left[ d/dx \left[f\right] \right] = \frac{d^2}{dx^2}[f].
 $$
 
 Sometimes we'll want to talk about the $n$th derivative where $n$ is left as a variable --- instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
@@ -219,7 +219,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 	This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
 	
 	$$
-		\frac{d}{dx}[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}
+		d/dx[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}
 		
 		&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}
 		
@@ -235,7 +235,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 	Now we'll take the derivative of this function to get the second derivative.
 	
 	$$
-		\frac{d}{dx}[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}
+		d/dx[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}
 		
 		&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}
 		

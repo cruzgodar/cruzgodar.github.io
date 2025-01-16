@@ -694,11 +694,11 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	In problems 3#, find the indicated integral. Make sure to express the constant as a function of the correct variable.
 	
-	#. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
+	#. $$\int f(x, y)\,\d x$$ for $$f(x, y) = 2x\cos(y - x).$$
 	
-	#. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
+	#. $$\int f(x, y)\,\d y$$ for $f$ as in the previous problem.
 	
-	#. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
+	#. $$\int g(x, y)\,\d y$$ for $$g(x, y) = e^{x^2}.$$
 	
 
 

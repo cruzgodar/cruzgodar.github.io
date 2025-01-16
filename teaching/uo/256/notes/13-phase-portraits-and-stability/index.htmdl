@@ -108,10 +108,10 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 	Find and classify the critical points.
 	
-	Since neither $x'$ or $y'$ depends on $t$, this system is autonomous. The chain rule says that $\frac{dy}{dt} = \frac{dy}{dx}\frac{dx}{dt}$, so solving for $\frac{dy}{dx}$ gives us
+	Since neither $x'$ or $y'$ depends on $t$, this system is autonomous. The chain rule says that $dy/dt = dy/dxdx/dt$, so solving for $dy/dx$ gives us
 	
 	$$
-		\frac{dy}{dx} &= \frac{dy/dt}{dx/dt}
+		dy/dx &= \frac{dy/dt}{dx/dt}
 		
 		&= \frac{y'}{x'}
 		
@@ -121,9 +121,9 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	To solve for $y$, we can separate and integrate.
 	
 	$$
-		y^2\,dy &= (1-x^2)\,dx
+		y^2\,\d y &= (1-x^2)\,\d x
 		
-		\int y^2\,dy &= \int (1-x^2)\,dx
+		\int y^2\,\d y &= \int (1-x^2)\,\d x
 		
 		\frac{y^3}{3} &= x - \frac{x^3}{3} + c
 		

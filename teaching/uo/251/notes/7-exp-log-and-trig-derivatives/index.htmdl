@@ -8,17 +8,17 @@ Let's start with the first of those two --- we'll save compositions for the next
 
 ### thm "derivatives of trig functions"
 	
-	1. $$\frac{d}{dx} [\sin(x)] = \cos(x)$$.
+	1. $$d/dx [\sin(x)] = \cos(x)$$.
 	
-	2. $$\frac{d}{dx} [\cos(x)] = -\sin(x)$$.
+	2. $$d/dx [\cos(x)] = -\sin(x)$$.
 	
-	3. $$\frac{d}{dx} [\tan(x)] = \sec^2(x)$$.
+	3. $$d/dx [\tan(x)] = \sec^2(x)$$.
 	
-	4. $$\frac{d}{dx} [\sec(x)] = \sec(x)\tan(x)$$.
+	4. $$d/dx [\sec(x)] = \sec(x)\tan(x)$$.
 	
-	5. $$\frac{d}{dx} [\csc(x)] = -\csc(x)\cot(x)$$.
+	5. $$d/dx [\csc(x)] = -\csc(x)\cot(x)$$.
 	
-	6. $$\frac{d}{dx} [\cot(x)] = -\csc^2(x)$$.
+	6. $$d/dx [\cot(x)] = -\csc^2(x)$$.
 	
 ###
 
@@ -30,19 +30,19 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 
 ### ex "derivatives of trig functions"
 	
-	Find $$\frac{d}{dx}[x^2\cos(x)]$$.
+	Find $$d/dx[x^2\cos(x)]$$.
 	
 	This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
 	
 	$$
-		\frac{d}{dx}[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
+		d/dx[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
 	$$
 	
 ###
 
 ### exc "derivatives of trig functions"
 	
-	Find $$\frac{d}{dx}\left[9x + \frac{\sec(x)}{x}\right]$$.
+	Find $$d/dx\left[9x + \frac{\sec(x)}{x}\right]$$.
 	
 ###
 
@@ -60,7 +60,7 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 	
 	This seems pretty tricky on first glance, but it's actually not so bad. Let's write out the first few derivatives and see if we can spot a pattern.
 	
-	$$\frac{d}{dx}[\cos(x)] = -\sin(x)$$.
+	$$d/dx[\cos(x)] = -\sin(x)$$.
 	
 	$$\frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$$.
 	
@@ -96,15 +96,15 @@ The final functions to talk about are exponential functions ($y = b^x$) and loga
 	
 	Let $b > 0$. Then
 	
-	1. $$\frac{d}{dx}[b^x] = b^x \cdot \ln(b)$$.
+	1. $$d/dx[b^x] = b^x \cdot \ln(b)$$.
 	
-	2. $$\frac{d}{dx}[\log_b(x)] = \frac{1}{x \cdot \ln(b)}$$.
+	2. $$d/dx[\log_b(x)] = \frac{1}{x \cdot \ln(b)}$$.
 	
 	In particular, when $b = e$, since $\ln(e) = 1$, we get
 	
-	1. $$\frac{d}{dx}[e^x] = e^x$$.
+	1. $$d/dx[e^x] = e^x$$.
 	
-	2. $$\frac{d}{dx}[\ln(x)] = \frac{1}{x}$$.
+	2. $$d/dx[\ln(x)] = \frac{1}{x}$$.
 	
 ###
 
