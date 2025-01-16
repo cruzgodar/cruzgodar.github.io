@@ -1,72 +1,49 @@
 ### nav-buttons
 
-We typically define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
+Typically, and for nearly all of this course so far, we define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the $y$-values directly.
 
 It's possible to write down functions without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a curve: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. Now it's not possible to solve for $y$ explicitly this way, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function.
 
 ### desmos circle
 
-We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined **implicitly**, and the process of finding the slopes of tangent lines is called **implicit differentiation**.
+We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say the curve is defined **implicitly**, and the process of finding the slopes of tangent lines is called **implicit differentiation**. This takes a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
 
-The process takes a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
+Let's use $x^2 + y^2 = 1$ as our first example. Like we saw in the previous graph, there can be multiple $y$-values for each $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $\frac{dy}{dx}$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$
+isn't a function of $x$, there is a famous result (and an infamously difficult one to prove) called the Implicit Function theorem that can help us. Suppose $(a, b)$ is a point on an implicitly defined function at which the function is differentiable --- that is, the tangent line at $(a, b)$ is defined and not vertical. Then there is an explicit function $y = f(x)$ and a neighborhood surrounding $(a, b)$ in which $y = f(x)$ has exactly the same graph as our implicitly defined function. As a concrete example, if $(a, b)$ is a point on the graph of $x^2 + y^2 = 1$ with $b > 0$, then $y = \sqrt{1 - x^2}$ is an explicitly-defined and differentiable function that agrees with $x^2 + y^2 = 1$ on a (possibly very tiny) region containing $(a, b)$. If $b = 0$, any neighborhood of $(a, b)$ will fail the vertical line test, and so no such explicitly-defined function exists --- while the Implicit Function theorem doesn't guarantee that this failure occurs, it's nice to see how things could go wrong.
 
+With a fixed point $(a, b)$ and the explicitly-defined function $f(x)$ in hand, we can replace every instance of $y$ with $f(x)$ in the equation. Continuing with our circle example, that looks like $x^2 + f(x)^2 = 1$. And at this point, even if we don't have a formula for $f$, we can differentiate both sides of the equation with respect to $x$ by using the chain rule! We have
 
+$$
+	x^2 + f(x)^2 &= 1
+	
+	\frac{d}{dx}[x^2 + f(x)^2] &= \frac{d}{dx}[1]
+	
+	\frac{d}{dx}[x^2] + \frac{d}{dx}[f(x)^2] &= 0
+	
+	2x + 2f(x)f'(x) &= 0
+	
+	f'(x) &= -\frac{2x}{2f(x)} = -\frac{x}{f(x)}.
+$$
+
+Incredibly, we don't need to know a formula for $f$, nor do we even need to know $a$ and $b$ ahead of time! By rewriting this as
+
+$$
+	\frac{dy}{dx} = -\frac{x}{y},
+$$
+
+we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. It's even undefined at $(\pm 1, 0)$, as we'd hope! Since we don't need $f$ at all, let's write down a better version of this process that works in general and improves the notation.
 
 ### thm "implicit differentiation"
 	
 	To find the derivative of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it's necessary to use the chain rule. We have $\frac{d}{dx}[y] = \frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
+	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it's necessary to use the chain rule. By the previous paragraph's logic, we rewrite $\frac{d}{dx}[y]$ as $\frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
 	
 	2. Move all terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
 	
 	3. Factor out $\frac{dy}{dx}$ and divide by whatever is left over.
 	
 ###
-
-
-
-### ex "implicit differentiation"
-	
-	The curve $x^2 + y^2 = 1$ has two points with $x = \frac{1}{2}$. Find the slopes of the tangent lines for each point.
-	
-	First, let's find $\frac{dy}{dx}$. We do this by differentiating both sides $dx$.
-	
-	$$
-		x^2 + y^2 &= 1
-		
-		\frac{d}{dx}[x^2 + y^2] &= \frac{d}{dx}[1]
-		
-		\frac{d}{dx}[x^2] + \frac{d}{dx}[y^2] &= 0
-		
-		2x + 2y\frac{dy}{dx} &= 0
-		
-		2y\frac{dy}{dx} &= -2x
-		
-		\frac{dy}{dx} &= -\frac{x}{y}.
-	$$
-	
-	Notice how the derivative is in terms of both $x$ and $y$. It's not enough to specify $x$, because this isn't necessarily a function, so there can be multiple points with the same $x$-value. For our purposes, we need to find the points with $x$-coordinate $\frac{1}{2}$, so we solve $\left(\frac{1}{2}\right)^2 + y^2 = 1$. That gives $y^2 = \frac{3}{4}$, and so $y = \pm \frac{\sqrt{3}}{2}$. Therefore, the slope of the tangent line at the top point is
-	
-	$$
-		\frac{dy}{dx} = -\frac{1/2}{\sqrt{3}/2} = -\frac{1}{\sqrt{3}}.
-	$$
-	
-	Similarly, the slope at the bottom point is $\frac{1}{\sqrt{3}}$. This looks about right given the previous picture.
-	
-###
-
-### exc "implicit differentiation"
-	
-	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
-	
-	### desmos braids
-	
-	Find $\frac{dy}{dx}$. Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what's going on using the equation.
-	
-###
-
-
 
 ### ex "implicit differentiation"
 	
@@ -95,6 +72,16 @@ The process takes a second to get used to, because it typically involves heavy u
 		
 		\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}.
 	$$
+	
+###
+
+### exc "implicit differentiation"
+	
+	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
+	
+	### desmos braids
+	
+	Find $\frac{dy}{dx}$. Is your formula always defined for any values of $x$ and $y$? If not, why is Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what's going on using the equation.
 	
 ###
 
