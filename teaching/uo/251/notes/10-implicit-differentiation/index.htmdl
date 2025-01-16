@@ -22,7 +22,9 @@ $$
 	
 	2x + 2f(x)f'(x) &= 0
 	
-	f'(x) &= -\frac{2x}{2f(x)} = -\frac{x}{f(x)}.
+	f'(x) &= -\frac{2x}{2f(x)}
+
+	&= -\frac{x}{f(x)}.
 $$
 
 Incredibly, we don't need to know a formula for $f$, nor do we even need to know $a$ and $b$ ahead of time! By rewriting this as
@@ -31,15 +33,17 @@ $$
 	\frac{dy}{dx} = -\frac{x}{y},
 $$
 
-we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. It's even undefined at $(\pm 1, 0)$, as we'd hope! Since we don't need $f$ at all, let's write down a better version of this process that works in general and improves the notation.
+we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. Let's double-check that it seems reasonable: when $x = 0$ and $y = \pm 1$, $\frac{dy}{dx} = 0$, which makes sense since the tangent line is flat at $(0, \pm 1)$. When $x = y$, $\frac{dy}{dx} = -1$, and that looks about right --- the two points on the intersection of $y = x$ and $x^2 + y^2 = 1$ appear to have tangent lines with slope $-1$. And at $(\pm 1, 0)$, the derivative is undefined, as we'd hope!
 
-### thm "implicit differentiation"
+One of the most striking results of this example is that we differentiated an implicit function, but our final formula is in terms of $x$ and $y$ only. Even though we needed at least two different formulas for $f$ to cover every possible point --- for example, $\sqrt{1 - x^2}$ and $-\sqrt{1 - x^2}$ --- the end result works for all points $(x, y)$ with $x^2 + y^2 = 1$ that have a well-defined tangent line. In fact, we can completely omit $f$ from the outset! Let's write down a better version of this process that works in general and improves the notation.
+
+### thm -m "Method: implicit differentiation"
 	
-	To find the derivative of a function defined implicitly in terms of $x$ and $y$:
+	To find the derivative $\frac{dy}{dx}$ of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, $y$ is a function of $x$, so it's necessary to use the chain rule. By the previous paragraph's logic, we rewrite $\frac{d}{dx}[y]$ as $\frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
+	1. Take $\frac{d}{dx}$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the chain rule: we rewrite $\frac{d}{dx}[y]$ as $\frac{dy}{dx}$, so for example, $\frac{d}{dx}[\tan(y)] = \sec^2(y) \cdot \frac{dy}{dx}$.
 	
-	2. Move all terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
+	2. Move all the terms containing $\frac{dy}{dx}$ to one side of the equation and all the other terms to the other side.
 	
 	3. Factor out $\frac{dy}{dx}$ and divide by whatever is left over.
 	
@@ -47,11 +51,11 @@ we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1
 
 ### ex "implicit differentiation"
 	
-	Find $$\frac{dy}{dx}$$ from the equation $x\sin(xy) = y$.
+	Given the implicit function $x\sin(xy) = y$, find $\frac{dy}{dx}$.
 	
 	### desmos sinThing
 	
-	We have
+	We'll start by differentiating both sides --- the right side becomes $\frac{dy}{dx}$, but the left side requires the product rule, and then the chain rule.
 	
 	$$
 		x\sin(xy) &= y
@@ -61,27 +65,39 @@ we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1
 		\frac{d}{dx}[x] \cdot \sin(xy) + x \cdot \frac{d}{dx}[\sin(xy)] &= \frac{dy}{dx}
 		
 		\sin(xy) + x \cos(xy) \cdot \frac{d}{dx}[xy] &= \frac{dy}{dx}
-		
+	$$
+
+	After one more application of the product rule, we're nearly done! All that's left is to group the terms containing $\frac{dy}{dx}$ together on the left side, factor it out, and then divide by what's left.
+
+	$$	
 		\sin(xy) + x \cos(xy) \left(\frac{d}{dx}[x] \cdot y + x \cdot \frac{d}{dx}[y]\right) &= \frac{dy}{dx}
 		
 		\sin(xy) + x \cos(xy) \left(y + x \cdot \frac{dy}{dx}\right) &= \frac{dy}{dx}
 		
-		\sin(xy) + xy \cos(xy) + x^2\cos(xy) \cdot \frac{dy}{dx} &= \frac{dy}{dx}
+		\sin(xy) + xy \cos(xy) + x^2\cos(xy) \frac{dy}{dx} &= \frac{dy}{dx}
 		
-		(x^2\cos(xy) - 1) \frac{dy}{dx} &= -\sin(xy) - xy \cos(xy)
+		\left( x^2\cos(xy) - 1 \right) \frac{dy}{dx} &= -\sin(xy) - xy \cos(xy)
 		
-		\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}.
+		\frac{dy}{dx} &= \frac{-\sin(xy) - xy \cos(xy)}{x^2\cos(xy) - 1}
+
+		&= \frac{\sin(xy) + xy \cos(xy)}{1 - x^2\cos(xy)}.
 	$$
+
+	There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
 	
 ###
 
-### exc "implicit differentiation"
+### exc "braids"
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
 	
 	### desmos braids
 	
-	Find $\frac{dy}{dx}$. Is your formula always defined for any values of $x$ and $y$? If not, why is Looking at the graph, the tangent line seems poorly defined when $x$ is a multiple of $2\pi$ and $y$ is a multiple of $\pi$. Explain what's going on using the equation.
+	1. Does this graph make sense? You might find it helpful to first sketch a graph of $\sin(y) = x$, and then think about how applying cosine to both sides affects the result.
+
+	2. Find $\frac{dy}{dx}$.
+
+	3. Is your formula for $\frac{dy}{dx}$ always defined for any values of $x$ and $y$ on the graph? If not, where are the problem points, and what are their issues?
 	
 ###
 
@@ -133,7 +149,7 @@ At long last, we can handle the derivative of $x^n$, where $n$ is not just a rat
 
 
 
-### thm "the derivative of $x^n$ for any real $n$	"
+### thm "the derivative of $x^n$ for any real $n$"
 	
 	Let $n$ be a real number. Then $$\frac{d}{dx}[x^n] = nx^{n-1}$$.
 	
