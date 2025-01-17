@@ -6,9 +6,17 @@ It's possible to write down relationships between variables $x$ and $y$ without 
 
 ### desmos circle
 
-We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with two different tangent lines that share the same $x$-value. When a curve is defined with the $x$ and $y$ intermixed and not in the form $y = f(x)$, we say that it is an **implicit equation**, and the process of finding the slopes of tangent lines is called **implicit differentiation**. This can take a second to get used to, because it typically involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
+We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with the points $\left( \frac{1}{2}, \pm \frac{\sqrt{3}}{2} \right)$ and their tangent lines. We'll encounter a number of curves defined in this indirect manner, and it will help to give them a name.
 
-Let's use $x^2 + y^2 = 1$ as our first example. Like we saw in the previous graph, there can be multiple $y$-values for a given $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $dy/dx$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$ isn't a function of $x$, there is a famous result (that's infamously complicated to prove) called the *Implicit Function theorem* that can help us quite a bit here.
+### def "implicit equation and differentiation"
+
+	An **implicit equation** of $x$ and $y$ is an equation involving the two, where potentially neither variable can be isolated. The process of finding the slopes of tangent lines to the graph of an implicit equation is called **implicit differentiation**.
+
+###
+
+Implicit differentiation can take a second to get used to, because it usually involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
+
+Let's use $x^2 + y^2 = 1$ as our introductory example. Like we saw in the previous graph, there can be multiple $y$-values for a given $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $dy/dx$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$ isn't a function of $x$, there is a famous result (that's infamously complicated to prove) called the *Implicit Function theorem* that can help us quite a bit here.
 
 ### thm "The Implicit Function Theorem"
 
