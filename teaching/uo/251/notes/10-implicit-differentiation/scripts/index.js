@@ -50,11 +50,11 @@ export default function()
 
 			sinThing:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { left: -40, right: 40, bottom: -40, top: 40 },
 
 				expressions:
 				[
-					{ latex: String.raw`x\sin(xy) = y`, color: desmosPurple }
+					{ latex: String.raw`x\sin(y) = y`, color: desmosPurple }
 				]
 			},
 		};

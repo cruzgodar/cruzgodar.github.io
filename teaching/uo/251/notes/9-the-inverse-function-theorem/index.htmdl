@@ -52,9 +52,9 @@ Now that we've reviewed inverse functions, let's talk about their derivatives.
 
 
 
-### thm "the Inverse Function Theorem"
+### thm "The Inverse Function Theorem"
 	
-	Let $f$ be a differentiable function. Then
+	Let $f$ be a differentiable and invertible function. Then
 	
 	$$
 		(f^{-1})'(x) = \frac{1}{f'(f^{-1}(x))}.
