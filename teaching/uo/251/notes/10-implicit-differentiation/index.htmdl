@@ -6,7 +6,7 @@ It's possible to write down relationships between variables $x$ and $y$ without 
 
 ### desmos circle
 
-We can still talk about slopes of tangent lines, though. Pictured above is a graph of $x^2 + y^2 = 1$, along with the points $\left( \frac{1}{2}, \pm \frac{\sqrt{3}}{2} \right)$ and their tangent lines. We'll encounter a number of curves defined in this indirect manner, and it will help to give them a name.
+We can still talk about slopes of tangent lines, though --- all we need for those to be well-defined is for the limit of slopes of secant lines to exist, or equivalently, for there to be a well-defined change in $y$ relative to a small change in $x$. Pictured above is a graph of $x^2 + y^2 = 1$, along with the points $\left( \frac{1}{2}, \pm \frac{\sqrt{3}}{2} \right)$ and their tangent lines. We'll encounter a number of curves defined in this indirect manner, and it will help to give them a name.
 
 ### def "implicit equation and differentiation"
 
