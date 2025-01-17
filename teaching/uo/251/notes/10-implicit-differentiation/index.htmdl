@@ -101,13 +101,13 @@ One of the most striking results of this example is that we differentiated an im
 	
 ###
 
-Implicitly-defined functions often appear experimentally when two quantities $x$ and $y$ are defined in terms of a third quantity $t$, often representing time.
+Implicitly-defined functions do often appear experimentally, though perhaps somewhat less often than explicitly-defined ones. One classic example comes from orbital mechanics, which is one of the major motivators of modern mathematics in the first place. To briefly introduce the setup, planets typically orbit stars in **ellipses**, which are oval-like shapes defined similarly to circles --- rather than the distance to a center being constant, though, the sum of distances to two points called **foci** is constant, and the star occupies one of these two foci. Around the year 850 CE, the Persian astronomer Habash al-Hasib introduced an equation for the position of a planet orbiting in an ellipse, and in 1609, the German astronomer Johannes Kepler independently discovered the same equation; as is frequently and frustratingly the case in mathematics, it is now known as Kepler's equation. Two angles $M$ and $E$, somewhat confusingly called the mean anomaly and eccentric anomaly, are related by the equation $E - e \sin(E) = M$, where $e$ is a parameter called the **eccentricity** that determines how elliptical the orbit is. Typically, $M$ is relatively easy to calculate, but $E$ is computed from $M$, and so Kepler's equation describes $E$ as an implicit function of $M$. On the homework, you'll get the chance to dig in much deeper to this equation and use implicit differentiation to compute velocities of the Earth and Moon.
 
 
 
 ## Logarithmic Differentiation
 
-Implicit differentiation lets us unlock an extra technique: sometimes, functions that are difficult to differentiate become much easier when we take a log on both sides. Specifically, functions involving complicated exponents will turn into multiplication, so we can use the product rule. If we have a function of the form $y = (f(x))^{g(x)}$, we'll start by rewriting it as
+Implicit differentiation lets us unlock an extra differentiation technique: sometimes, functions that are difficult to differentiate become much easier when we take a log on both sides. Specifically, functions involving complicated exponents will turn into multiplication, so we can use the product rule. If we have a function of the form $y = (f(x))^{g(x)}$, we'll start by rewriting it as
 
 $$
 	\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),

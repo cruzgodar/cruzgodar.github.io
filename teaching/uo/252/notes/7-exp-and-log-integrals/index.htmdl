@@ -25,13 +25,13 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 	we can divide both sides by $\ln(3)$ to find that
 	
 	$$
-		N(t) = \int 3^t\,\d t = \frac{1}{ln(3)} 3^t + C.
+		N(t) = \int 3^t\,\d t = \frac{1}{\ln(3)} 3^t + C.
 	$$
 	
 	Since $N(0) = 100$, we have that
 	
 	$$
-		100 = \frac{1}{ln(3)} 3^0 + C,
+		100 = \frac{1}{\ln(3)} 3^0 + C,
 	$$
 	
 	so
