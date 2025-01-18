@@ -154,7 +154,7 @@ export async function redirect({
 
 	else
 	{
-		history.pushState({ url }, document.title, getDisplayUrl(queryParams));
+		history.pushState({ url }, document.title, getDisplayUrl(queryParams) || "/");
 	}
 
 
@@ -250,7 +250,7 @@ export function getDisplayUrl(additionalQueryParams)
 		displayUrl = displayUrl.slice(0, -1);
 	}
 	
-	displayUrl = displayUrl + "/" + (queryParams ? `?${queryParams}` : "");
+	displayUrl = displayUrl + (queryParams ? `/?${queryParams}` : "");
 
 	return displayUrl;
 }
