@@ -141,7 +141,7 @@ export class ToggleButton extends Button
 				window.history.replaceState(
 					{ url: pageUrl },
 					"",
-					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 				);
 			}
 
@@ -220,7 +220,7 @@ export class ToggleButton extends Button
 				window.history.replaceState(
 					{ url: pageUrl },
 					"",
-					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 				);
 			}
 

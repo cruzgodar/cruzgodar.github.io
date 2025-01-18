@@ -144,6 +144,7 @@ home Cruz Godar
 			notes/1-transformations Section 1: Transformations
 			notes/2-periodic-functions Section 2: Periodic Functions
 			notes/3-the-unit-circle Section 3: The Unit Circle
+			notes/4-sine-and-cosine Section 4: Sine and Cosine
 		
 		uo/111 Math 111
 		uo/105 Math 105

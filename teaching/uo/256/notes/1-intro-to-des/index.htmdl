@@ -159,7 +159,7 @@ You can pan and zoom on that canvas by dragging, pinching, and scrolling, and th
 While direction fields are restricted to always pushing particles to the right, we can extend the idea to what are called **vector fields**, which can freely move particles in any direction. You'll see a lot more of them if you stick around to calculus V, but if you'd like to explore more now, the applet that drew the above field can also draw any vector field you like --- have a look!
 
 ### image-links
-	/applets/vector-fields/
+	/applets/vector-fields
 ###
 
 <div style="height: 64px"></div>

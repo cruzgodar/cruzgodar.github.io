@@ -62,7 +62,7 @@ function imageLink(options, url, name, coverPath)
 	// pdf files, etc.
 	const imgSrc = url.includes(".")
 		? `${url.slice(0, url.lastIndexOf("/"))}/cover.webp`
-		: `${url}cover.webp`;
+		: `${url}/cover.webp`;
 
 	return /* html */`
 		<div class="image-link">

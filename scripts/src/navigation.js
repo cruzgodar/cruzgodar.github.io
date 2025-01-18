@@ -103,7 +103,7 @@ export async function redirect({
 	// Get the new data, fade out the page, and preload the next page's banner if it exists.
 	// When all of those things are successfully done, replace the current html with the new stuff.
 	const [text] = await Promise.all([
-		asyncFetch(`${url}data.html`),
+		asyncFetch(`${url}/data.html`),
 		preloadBanner(url),
 		fadeOutPage(noFadeOut),
 		cardIsOpen ? hideCard() : Promise.resolve()
@@ -243,12 +243,14 @@ export function getDisplayUrl(additionalQueryParams)
 {
 	const queryParams = getQueryParams() + (additionalQueryParams ? `&${additionalQueryParams}` : "");
 
-	let displayUrl = pageUrl.replace(/\/home\//, "/") + (queryParams ? `?${queryParams}` : "");
-
-	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
+	let displayUrl = pageUrl.replace(/\/home/, "/");
+	
+	if (displayUrl[displayUrl.length - 1] === "/")
 	{
-		displayUrl = displayUrl.slice(0, displayUrl.length - 1);
+		displayUrl = displayUrl.slice(0, -1);
 	}
+	
+	displayUrl = displayUrl + "/" + (queryParams ? `?${queryParams}` : "");
 
 	return displayUrl;
 }
@@ -400,7 +402,7 @@ function unloadPage()
 	window.history.replaceState(
 		{ url: pageUrl },
 		"",
-		pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+		pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 	);
 
 	clearTemporaryParams();
@@ -435,23 +437,23 @@ export async function prefetchPage(url)
 
 	urlsFetched.push(url);
 
-	const urlsToFetch = [`${url}data.html`];
+	const urlsToFetch = [`${url}/data.html`];
 
 	if (bannerPages.includes(url))
 	{
-		urlsToFetch.push(`${url}banners/small.webp`);
+		urlsToFetch.push(`${url}/banners/small.webp`);
 	}
 	
 	const sitemapEntry = sitemap[url];
 
 	if (sitemapEntry?.customScript)
 	{
-		urlsToFetch.push(`${url}scripts/index.min.js`);
+		urlsToFetch.push(`${url}/scripts/index.min.js`);
 	}
 
 	if (sitemapEntry?.customStyle)
 	{
-		urlsToFetch.push(`${url}style/index.min.css`);
+		urlsToFetch.push(`${url}/style/index.min.css`);
 	}
 
 	await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));

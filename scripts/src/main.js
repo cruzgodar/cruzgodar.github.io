@@ -23,6 +23,11 @@ const params = new URLSearchParams(document.location.search);
 
 export let pageUrl = decodeURIComponent(params.get("page")).replace("index.html", "");
 
+if (pageUrl[pageUrl.length - 1] === "/")
+{
+	pageUrl = pageUrl.slice(0, -1);
+}
+
 export function setPageUrl(newPageUrl)
 {
 	pageUrl = newPageUrl;
@@ -30,7 +35,7 @@ export function setPageUrl(newPageUrl)
 
 if (pageUrl === "null")
 {
-	pageUrl = "/home/";
+	pageUrl = "/home";
 }
 
 

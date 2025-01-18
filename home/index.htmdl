@@ -37,17 +37,17 @@
 				
 				<div class="narrow-image-links" style="margin-top: 20px">
 					### image-links
-						/gallery/
+						/gallery
 						
-						/applets/
+						/applets
 						
-						/teaching/
+						/teaching
 						
-						/slides/
+						/slides
 						
-						/writing/
+						/writing
 						
-						/about/
+						/about
 					###
 				</div>
 			</header>

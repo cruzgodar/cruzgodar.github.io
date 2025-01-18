@@ -125,7 +125,7 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
+			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
 		}
 	}
 

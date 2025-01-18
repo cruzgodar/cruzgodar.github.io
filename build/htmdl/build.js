@@ -27,11 +27,11 @@ let parentFolder;
 
 const manualHeaderPages =
 [
-	"/home/",
+	"/home",
 
 	"/projects/wilson",
 
-	"/writing/caligo/",
+	"/writing/caligo",
 ];
 
 const singleLineComponents = [
@@ -80,7 +80,7 @@ export function setCurrentNumberedItem(newCurrentNumberedItem)
 
 export function parseUrl(url)
 {
-	return url[0] === "/" ? url : parentFolder + url;
+	return url[0] === "/" ? url : parentFolder + "/" + url;
 }
 
 export function splitCommandLine(line)
@@ -363,7 +363,7 @@ function decodeHTMDL(html)
 				${bannerHtml}
 				<header>
 					<div id="logo">
-						<a href="/home/" tabindex="-1">
+						<a href="/home" tabindex="-1">
 							<img src="/graphics/general-icons/logo.webp" alt="Logo" tabindex="1"></img>
 						</a>
 					</div>
@@ -456,7 +456,7 @@ export default async function buildHTMLFile(file, fileParentFolder, sitemapArgum
 
 	const [html, indexHtml] = decodeHTMDL("\n" + file);
 
-	write(`${fileParentFolder}data.html`, html);
+	write(`${fileParentFolder}/data.html`, html);
 
-	write(`${fileParentFolder}index.html`, indexHtml);
+	write(`${fileParentFolder}/index.html`, indexHtml);
 }

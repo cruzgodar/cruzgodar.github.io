@@ -165,19 +165,19 @@ let bannerFilepath = "";
 
 export const bannerPages =
 [
-	"/home/",
+	"/home",
 
-	"/about/",
+	"/about",
 
-	"/writing/mist/",
-	"/writing/desolation-point/",
+	"/writing/mist",
+	"/writing/desolation-point",
 
-	"/debug/htmdl-test/"
+	"/debug/htmdl-test"
 ];
 
 export const multibannerPages =
 {
-	"/home/":
+	"/home":
 	{
 		currentBanner: Math.floor(Math.random() * 11) + 1,
 		numBanners: 11
@@ -194,7 +194,7 @@ export async function preloadBanner(url)
 	}
 
 	bannerFilename = "small.webp";
-	bannerFilepath = url + "banners/";
+	bannerFilepath = url + "/banners/";
 
 	if (url in multibannerPages)
 	{
@@ -235,7 +235,7 @@ export async function loadBanner({
 	}
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
-	bannerFilepath = url + "banners/";
+	bannerFilepath = url + "/banners/";
 
 	if (url in multibannerPages)
 	{

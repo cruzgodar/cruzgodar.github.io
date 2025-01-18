@@ -179,7 +179,7 @@ export class TextBox extends InputElement
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 			);
 		}
 

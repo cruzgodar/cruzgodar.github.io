@@ -102,7 +102,7 @@ export class Checkbox extends InputElement
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 			);
 		}
 	}

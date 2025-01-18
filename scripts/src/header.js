@@ -25,38 +25,38 @@ export function addHeader()
 		<div id="header-container" style="opacity: 0"></div>
 		
 		<div id="header" style="opacity: 0">
-			<a id="header-logo" href="/home/">
+			<a id="header-logo" href="/home">
 				<img src="/graphics/header-icons/logo.webp" alt="Cruz Godar"></img>
 				<span>Cruz Godar</span>
 			</a>
 			
 			<div id="header-links">
-				<a id="header-gallery-link" href="/gallery/">
+				<a id="header-gallery-link" href="/gallery">
 					<span>Gallery</span>
 					<img src="/graphics/header-icons/gallery.webp"></img>
 				</a>
 				
-				<a id="header-applets-link" href="/applets/">
+				<a id="header-applets-link" href="/applets">
 					<span>Applets</span>
 					<img src="/graphics/header-icons/applets.webp"></img>
 				</a>
 				
-				<a id="header-teaching-link" href="/teaching/">
+				<a id="header-teaching-link" href="/teaching">
 					<span>Teaching</span>
 					<img src="/graphics/header-icons/teaching.webp"></img>
 				</a>
 				
-				<a id="header-slides-link" href="/slides/">
+				<a id="header-slides-link" href="/slides">
 					<span>Slides</span>
 					<img src="/graphics/header-icons/slides.webp"></img>
 				</a>
 				
-				<a id="header-writing-link" href="/writing/">
+				<a id="header-writing-link" href="/writing">
 					<span>Writing</span>
 					<img src="/graphics/header-icons/writing.webp"></img>
 				</a>
 				
-				<a id="header-about-link" href="/about/">
+				<a id="header-about-link" href="/about">
 					<span>About</span>
 					<img src="/graphics/header-icons/about.webp"></img>
 				</a>

@@ -37,7 +37,7 @@ import {
 import { sitemap } from "./sitemap.js";
 
 const blockCardPages = [
-	"/gallery/"
+	"/gallery"
 ];
 
 export let pageShown = true;
@@ -137,7 +137,7 @@ async function loadCustomStyle()
 	const element = document.createElement("style");
 
 	element.textContent = await asyncFetch(
-		`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`);
+		`${pageUrl}/style/index.${window.DEBUG ? "css" : "min.css"}`);
 	
 	element.classList.add("temporary-style");
 	
@@ -160,7 +160,7 @@ function loadCustomScripts()
 		return;
 	}
 	
-	import(`${pageUrl}scripts/index.${window.DEBUG ? "js" : "min.js"}`)
+	import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`)
 		.then(Module => Module.default());
 }
 

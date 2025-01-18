@@ -3,10 +3,10 @@
 
 
 ### image-links
-	light-shadow-world-of-nails/ -t
-	marys-3-manifold/ -t
-	grandmas-recipe/ -t
-	oral-exam/ -t
+	light-shadow-world-of-nails -t
+	marys-3-manifold -t
+	grandmas-recipe -t
+	oral-exam -t
 ###
 
 
@@ -14,5 +14,5 @@
 ## The Library
 
 ### image-links
-	lapsa/ -t
+	lapsa -t
 ###

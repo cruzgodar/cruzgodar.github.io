@@ -42,9 +42,9 @@ A great way to visualize these is by plotting a field of moving particles, where
 We'll continue to touch on topics from all of these examples throughout the term. If you'd like to see more from any of them, they come from interactive applets I've written --- have a look!
 
 ### image-links
-	/applets/thurston-geometries/
-	/applets/barnsley-fern/
-	/applets/vector-fields/
+	/applets/thurston-geometries
+	/applets/barnsley-fern
+	/applets/vector-fields
 ###
 
 

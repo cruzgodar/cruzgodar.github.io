@@ -132,7 +132,7 @@ export class Slider extends InputElement
 				window.history.replaceState(
 					{ url: pageUrl },
 					"",
-					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 				);
 			}
 		});
@@ -181,7 +181,7 @@ export class Slider extends InputElement
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 			);
 		}
 
