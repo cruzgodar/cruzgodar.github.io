@@ -97,7 +97,15 @@ export async function createDesmosGraphs(recreating = false)
 		// eslint-disable-next-line no-undef
 		desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
 
-		desmosGraphs[element.id].setMathBounds(data[element.id].bounds);
+		const bounds = data[element.id].bounds;
+		const rect = element.getBoundingClientRect();
+		const aspectRatio = rect.width / rect.height;
+		const width = bounds.right - bounds.left;
+		const centerX = (bounds.left + bounds.right) / 2;
+		bounds.left = centerX - width / 2 * aspectRatio;
+		bounds.right = centerX + width / 2 * aspectRatio;
+
+		desmosGraphs[element.id].setMathBounds(bounds);
 
 		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
 

@@ -1,0 +1,98 @@
+### nav-buttons
+
+
+
+Now that we've defined the sine and cosine functions, we can start getting our bearings and learning more about them. While we know values of $\sin(\theta)$ and $\cos(\theta)$ when $\theta$ is a multiple of $90^\circ$, that's not very much information. If we want to sketch a graph of either of the two, for example, we'll need to know more points. We'll start with a straightforward use of the Pythagorean theorem stated in terms of sine and cosine that will help us with this goal. Since we can think of $\sin(\theta)$ and $\cos(\theta)$ as the lengths of sides in a right triangle whose hypotenuse is the radius of a unit circle (i.e. has length $1$), the Pythagorean theorem tells us that
+
+### prop "the Pythagorean identity"
+
+	Let $\theta$ be any angle. Then $\cos(\theta)^2 + \sin(\theta)^2 = 1$.
+
+###
+
+Sometimes (though not in our notes), trig functions are written without parentheses, as in $\sin \theta$. To avoid confusion between $(\sin(\theta))^2$ and $\sin\left( \theta^2 \right)$, the first one is very often written $\sin^2(\theta)$. We'll use that notation in our course, and so we can write the Pythagorean identity as
+$$
+	\cos^2(\theta) + \sin^2(\theta) = 1.
+$$
+
+Returning to our goal to find more values of $\sin(\theta)$ and $\cos(\theta)$, let's start with $\theta = 45^\circ$. The picture here is the same unit circle that we're used to, but now that triangle has a special property: since the hypotenuse lies along the line $y = x$, the point $\left( \cos(\theta), \sin(\theta) \right)$ where the hypotenuse meets the circle must satisfy $\cos(\theta) = \sin(\theta)$.
+
+### desmos diagonalTriangle
+
+Using the Pythagorean identity,
+$$
+	\cos^2(\theta) + \sin^2(\theta) &= 1
+
+	\sin^2(\theta) + \sin^2(\theta) &= 1
+
+	2\sin^2(\theta) &= 1
+
+	\sin^2(\theta) &= \frac{1}{2}
+
+	\sin(\theta) &= \sqrt{\frac{1}{2}}
+
+	&= \frac{1}{\sqrt{2}}
+
+	&= \frac{\sqrt{2}}{2}.
+$$
+
+That final step is accomplished by rationalizing denominators, a rather silly process that sees us multiplying the top and bottom of a fraction by the denominator (here, that's $\sqrt{2}$) to move roots to the numerator. This is an archaic process to make long division easier, and it's entirely optional in this course.
+
+That's our first new value! We have $\cos\left( 45^\circ \right) = \sin\left( 45^\circ \right) = \frac{\sqrt{2}}{2}$. To get another exact value, we can leverage another kind of right triangle.
+
+### prop "exact values for $\theta = 30^\circ$ and $\theta = 60^\circ$"
+
+	The exact values of $\cos(\theta)$ and $\sin(\theta)$ for $\theta = 30^\circ$ and $\theta = 60^\circ$ are
+
+	$$
+		\sin\left( 30^\circ \right) &= \frac{1}{2}
+
+		\sin\left( 60^\circ \right) &= \frac{\sqrt{3}}{2}
+
+		\cos\left( 30^\circ \right) &= \frac{\sqrt{3}}{2}
+
+		\cos\left( 60^\circ \right) &= \frac{1}{2}.
+	$$
+
+###
+
+### exc
+
+	Show that $\sin\left( 30^\circ \right) = \frac{1}{2}$ and $\cos\left( 60^\circ \right) = \frac{1}{2}$. To do this, start by drawing the triangle in the unit circle, and see if you can use a geometric property of it. (Hint: what's a nice triangle involving an angle of $60^\circ$?)
+
+###
+
+
+
+## Sine and Cosine in Right Triangles
+
+When we compute the coordinates of a point with angle $\theta$ on the unit circle, we draw a right triangle whose bottom leg lies on the $x$-axis and whose vertical leg is parallel to the $y$-axis, as in the previous example. We'll call this the **reference triangle** for $\theta$, and in the particular case where $\theta$ is between $0^\circ$ and $90^\circ$, we can use it to apply $\sin$ and $\cos$ to right triangles in general. With the discussion of similar triangles from the last section, any right triangle is similar to a right triangle whose hypotenuse has length exactly $1$ --- we can just scale it down or up until the hypotenuse is the right length. Also, any right triangle with hypotenuse $1$ occurs as a reference triangle for some angle $\theta$ with $0^\circ < \theta < 90^\circ$: we can place it so that one of the legs is on the positive $x$-axis. In the following graph, for example, the red triangle has hypotenuse 3 and is similar to the reference triangle drawn in the unit circle.
+
+### desmos referenceTriangle
+
+By the definition of sine and cosine, the horizontal leg of the reference triangle has length $\cos(\theta)$ and the vertical leg has length $\sin(\theta)$. If the length of the original right triangle's hypotenuse was $r$ (e.g. $r = 3$ in the above graph), then since we scaled everything down by a factor of $r$, the legs of the original triangle have lengths $r\cos(\theta)$ and $r\sin(\theta)$, respectively. This does a couple things for us: first, multiplying sine and cosine by a factor of $r$ makes them measure coordinates of points in a circle of radius $r$:
+
+### prop "coordinates in a non-unit circle"
+
+	The coordinates of a point with angle $\theta$ in a circle with radius $r$ centered at the origin are $\left( r\cos(\theta), r\sin(\theta) \right)$.
+
+###
+
+We'll say more about this later, but let's return to the other use: it lets us compute sine and cosine for angles inside of right triangles, even if they aren't connected to the unit circle. The trouble here is that the legs may not be lined up with the axes, as in the following graph. Instead, almost like an astronaut orienting themselves in zero-gravity, we'll orient angles and sides in right triangles relative to the hypotenuse.
+
+### desmos upsideDownTriangle
+
+### def "opposite and adjacent sides"
+
+	In a right triangle, let $\theta$ be one of the two angles other than the right angle. The **opposite side** to $\theta$ is the leg that doesn't border theta, and the **adjacent side** to $\theta$ is the leg that does border $\theta$.
+
+###
+
+In the previous graph, the side opposite to the left angle is the rightmost leg, and the side adjacent to it is the leftmost leg. Note that opposite and adjacent sides depend on having an angle we're considering! If we consider the right angle in that graph instead, the opposite and adjacent sides are reversed.
+
+
+
+If we're trying to compute the coordinates of a point with angle $\theta$ that isn't in the first quadrant, we thankfully don't need to redo all of our work. The triangle that's drawn in all of
+
+
+### nav-buttons

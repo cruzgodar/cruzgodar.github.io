@@ -1637,7 +1637,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/112",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/111":

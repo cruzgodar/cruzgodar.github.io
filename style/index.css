@@ -2110,6 +2110,8 @@ img[src="/about/cover.webp"]
 
 .desmos-border:not(.canvas-container), .desmos-container:not(.canvas-container), .dcg-container:not(.canvas-container)
 {
+	width: min(calc(var(--text-width) - 8px), calc(90vw - 8px)) !important;
+
 	height: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
@@ -2120,6 +2122,8 @@ img[src="/about/cover.webp"]
 
 .notes-environment .desmos-border:not(.canvas-container), .notes-environment .desmos-container:not(.canvas-container), .notes-environment .dcg-container:not(.canvas-container)
 {
+	width: min(calc(var(--text-width) - 20px), calc(90vw - 20px)) !important;
+
 	height: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
