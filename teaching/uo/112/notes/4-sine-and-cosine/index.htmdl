@@ -90,9 +90,42 @@ We'll say more about this later, but let's return to the other use: it lets us c
 
 In the previous graph, the side opposite to the left angle is the rightmost leg, and the side adjacent to it is the leftmost leg. Note that opposite and adjacent sides depend on having an angle we're considering! If we consider the right angle in that graph instead, the opposite and adjacent sides are reversed.
 
+### desmos scaledUpReferenceTriangle
+
+By rotating a right triangle so that is is a scaled-up version of a reference triangle, like the red triangle in the previous graph, we can express sine and cosine in terms of its side lengths. If the hypotenuse has length $r$ and the angle of the triangle at the origin is $\theta$, then the leg opposite to $\theta$ has length $r \cos(\theta)$ and the adjacent leg has length $r \sin(\theta)$, as we've established. In other words,
+$$
+	\text{opposite} &= (\text{hypotenuse})\sin(\theta)
+
+	\text{adjacent} &= (\text{hypotenuse})\cos(\theta).
+$$
+
+To rearrange this in a way that lets us compute sine and cosine of an angle in a right triangle,
+
+### thm "sine and cosine in right triangles"
+
+	Let $\theta$ be an angle in a right triangle. Then
+	$$
+		\sin(\theta) &= \frac{\text{opposite}}{\text{hypotenuse}}
+
+		\cos(\theta) &= \frac{\text{adjacent}}{\text{hypotenuse}}
+	$$
+
+###
+
+### exc "sine and cosine in right triangles"
+
+	The left leg of the right triangle below has length 3. The left vertex on the $x$-axis is at $(-3, 0)$ and has angle $\theta$ in the triangle, and the right vertex is at $(3, 0)$ and has angle $\varphi$. What are $\cos(\theta)$, $\cos(\varphi)$, $\sin(\theta)$, and $\sin(\varphi)$?
+
+	### desmos upsideDownTriangle2
+
+###
+
+
+
 
 
 If we're trying to compute the coordinates of a point with angle $\theta$ that isn't in the first quadrant, we thankfully don't need to redo all of our work. The triangle that's drawn in all of
+
 
 
 ### nav-buttons
