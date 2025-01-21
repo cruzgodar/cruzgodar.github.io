@@ -88,6 +88,11 @@ export async function redirect({
 			const [trimmedUrl, params] = url.split("?");
 
 			url = trimmedUrl;
+			if (url[url.length - 1] === "/")
+			{
+				url = url.slice(0, -1);
+			}
+			
 			return params;
 		}
 
