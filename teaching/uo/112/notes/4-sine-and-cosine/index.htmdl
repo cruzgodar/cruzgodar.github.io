@@ -107,7 +107,13 @@ To rearrange this in a way that lets us compute sine and cosine of an angle in a
 	$$
 		\sin(\theta) &= \frac{\text{opposite}}{\text{hypotenuse}}
 
-		\cos(\theta) &= \frac{\text{adjacent}}{\text{hypotenuse}}
+		\cos(\theta) &= \frac{\text{adjacent}}{\text{hypotenuse}},
+	$$
+	or abbreviated,
+	$$
+		\sin(\theta) &= \frac{\text{opp}}{\text{hyp}}
+
+		\cos(\theta) &= \frac{\text{adj}}{\text{hyp}},
 	$$
 
 ###
@@ -120,11 +126,25 @@ To rearrange this in a way that lets us compute sine and cosine of an angle in a
 
 ###
 
+Returning to the unit circle, if we're trying to compute the coordinates of a point with angle $\theta$ that isn't in the first quadrant, we thankfully don't need to redo all of our work. After we draw a reference triangle, we can use the previous results to find sine and cosine in that triangle, and then find the coordinates of the point using it.
 
+### ex "using a reference triangle"
 
+	Find the coordinates of a point on the unit circle with angle $150^\circ$.
 
+	### desmos referenceTriangle2
 
-If we're trying to compute the coordinates of a point with angle $\theta$ that isn't in the first quadrant, we thankfully don't need to redo all of our work. The triangle that's drawn in all of
+	Now's as good of a time as any to emphasize that we always draw reference triangles to the $x$-axis. That way, since the opposite side to the angle formed with the $x$-axis is measured by $\sin$, and the adjacent side is measured by $\cos$, we'll still be able to use $\sin$ for the $y$-coordinate and $\cos$ for the $x$-coordinate.
+
+	In this particular example, the reference triangle makes an angle of $30^\circ$ with the $x$-axis. Since its hypotenuse has length $1$, we have
+	$$
+		\sin\left( 30^\circ \right) &= \frac{\text{opp}}{1} = \text{opp}
+
+		\cos\left( 30^\circ \right) &= \frac{\text{adj}}{1} = \text{adj}.
+	$$
+	Evaluating the two of those trig functions, the opposite side has length $\frac{1}{2}$ and the adjacent side has length $\frac{\sqrt{3}}{2}$. However, that adjacent side is moving in the negative $x$ direction, and so the coordinates of the point are $\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right)$.
+
+###
 
 
 
