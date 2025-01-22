@@ -130,7 +130,7 @@ Returning to the unit circle, if we're trying to compute the coordinates of a po
 
 ### ex "using a reference triangle"
 
-	Find the coordinates of a point on the unit circle with angle $150^\circ$.
+	Find the coordinates of the point on the unit circle with angle $150^\circ$.
 
 	### desmos referenceTriangle2
 
@@ -145,6 +145,62 @@ Returning to the unit circle, if we're trying to compute the coordinates of a po
 	Evaluating the two of those trig functions, the opposite side has length $\frac{1}{2}$ and the adjacent side has length $\frac{\sqrt{3}}{2}$. However, that adjacent side is moving in the negative $x$ direction, and so the coordinates of the point are $\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right)$.
 
 ###
+
+### exc "using a reference triangle"
+
+	1. Find the coordinates of the point on the unit circle with angle $315^\circ$.
+
+	2. Let's call that point in part 1 $(a, b)$. What is the angle of the other point on the unit circle with $x$-coordinate $a$? What about the angle of the other point with $y$-coordinate $b$? Finally, what is the angle of the other point whose reference triangle has a hypotenuse with the same slope?
+
+###
+
+
+
+## Graphs of Sine and Cosine
+
+With our few exact values in hand, let's sketch some very rough graphs of $\sin(x)$ and $\cos(x)$.
+
+### desmos sineAndCosine
+
+We can get a good sense of the overall shape of these graphs, and in the Desmos sidebar, you can toggle on the complete graphs for $x$ between $0^\circ$ and $360^\circ$. If possible, though, we'd like to extend these graphs to the left and right. That would mean describing angles on the unit circles less than $0^\circ$ or larger than $360^\circ$, and so let's take a brief diversion to talk about how to do that.
+
+### desmos bigAngles
+
+There aren't many ways to define what an angle larger than $360^\circ$ should mean, other than to continue to wrap around the circle. We already have a sense that $360^\circ$ represents exactly the same point as $0^\circ$ (i.e. $(1, 0)$). This is no more than an extension of that: the angle $450^\circ$ represents the same point as $90^\circ$, and so does $-270^\circ$ --- negative angles just wrap around clockwise instead of counterclockwise. In fact, any point on the unit circle can be represented by *infinitely many* angles, each separated by $360^\circ$. The previous graph demonstrates many of them --- drag the point to see some of that range.
+
+Increasing the angle of a point leaves its coordinates exactly the same is a way to say in a sentence that $y = \sin(x)$ and $y = \cos(x)$ are both periodic functions with period $360^\circ$. We can therefore extend the graphs of $\sin$ and $\cos$ to the entire $x$-axis.
+
+### desmos sineAndCosineComplete
+
+### exc "the graphs of sine and cosine"
+
+	1. Is $y = \sin(x)$ even, odd, or neither? What about $y = \cos(x)$? What is a geometric explanation for this in terms of the unit circle?
+
+	2. We can pretty immediately see that $\sin(x) = \cos\left( x - 90^\circ \right)$: in other words, the graph of $\cos$ is the graph of $\sin$ shifted to the right by $90^\circ$. What is an explanation for this in terms of coordinates on the unit circle?
+
+###
+
+These are our first two periodic functions that have arisen naturally from math itself! Both $y = \sin(x)$ and $y = \cos(x)$ have period $360^\circ$, midline $0$, and amplitude $1$. Both also have graphs that are examples of **waves**. They accurately model not only the height of ocean waves over time, but also more abstract waves --- like sound waves, which are patterns of high and low pressure air, and light waves, which are quite literally waves in an electromagnetic field. To that end, we also can define a property called **wavelength**, which is the distance between successive peaks of the graph --- but that's just the period, and so we won't have too much use for that term.
+
+By transforming the graphs of sine and cosine, we produce what are called **sinusoidal** functions. Since we've already seen that $\cos(x)$ is a transformation of $\sin(x)$, we can start from $\sin$ only.
+
+### prop "properties of sinusoidal functions"
+
+	Let $f(x) = A\sin(B(x - h)) + k$, where $B \geq 0$. Then $f$ has amplitude $A$, period $$\frac{360^\circ}{B}$$, and midline $k$. It also contains the point $(h, k)$, and we typically can start drawing a stretched graph of $\sin(x)$ at that point.
+
+	### desmos sinusoidalFunction
+
+###
+
+### exc "sinusoidal functions"
+
+	1. What is a geometric explanation for the function $y = A\sin(x)$? Hint: start with the interpretation of $y = \sin(x)$.
+
+	2. How about a geometric explanation for $y = A\cos(x) + k$? Hint: start with $A\cos(x)$ and use the previous part.
+
+###
+
+
 
 
 
