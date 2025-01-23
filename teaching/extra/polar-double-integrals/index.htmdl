@@ -52,6 +52,24 @@ In practice, the integration works just as it always has, and the challenge usua
 
 ### ex "double integrals in polar coordinates"
 
-	Evaluate $\int_{}$
+	Evaluate $$\int_R (x^2 + y^2)\,\d A$$, where $R$ is the region bounded by $x^2 + y^2 = 1$ and $x^2 + y^2 = 4$, and the positive $x$- and $y$-axes, as shown.
+
+	### desmos polarIntegrationRegion
+
+	While we could integrate this in rectangular coordinates, it would require a whole mess of different regions. Instead, it's much more easily expressible in polar coordinates: $1 \leq r \leq 2$ and $-\frac{\pi}{2} \theta \leq \pi$. We're integrating $x^2 + y^2$, which in polar coordinates is $r^2$, and so our integral becomes
+
+	$$
+		\int_{-\pi/2}^\pi \int_1^2 r^2\,r\,\d r\,\d \theta &= \int_{-\pi/2}^\pi \int_1^2 r^3\,\d r\,\d \theta
+
+		&= \int_{-\pi/2}^\pi \left. \left[ \frac{r^4}{4} \right] \right|_1^2\,\d \theta
+
+		&= \int_{-\pi/2}^\pi \frac{15}{4} \,\d \theta
+
+		&= \left. \left[ \frac{15}{4}\theta \right] \right|_{-\pi/2}^\pi
+
+		&= \frac{15}{4}\left( \frac{3\pi}{2} \right).
+
+		&= \frac{45}{8}\pi.
+	$$
 
 ###

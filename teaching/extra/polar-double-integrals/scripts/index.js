@@ -2,7 +2,6 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
-	desmosRed,
 	getDesmosSlider,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
@@ -16,13 +15,12 @@ export default function()
 		{
 			polarCoordinates:
 			{
-				bounds: { left: -2, right: 2, bottom: -2, top: 2 },
+				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
 
 				expressions:
 				[
 					{ latex: String.raw`r = 1`, color: desmosPurple },
-					{ latex: String.raw`r = \sin(\theta)`, color: desmosBlue },
-					{ latex: String.raw`r = \sin(4\theta)`, color: desmosRed },
+					{ latex: String.raw`r = \sin(4\theta)`, color: desmosBlue },
 				]
 			},
 
@@ -43,7 +41,7 @@ export default function()
 						secret: false,
 					}),
 					...getDesmosSlider({
-						expression: `\\Delta_{theta} = ${Math.PI / 4}`,
+						expression: `\\Delta_{theta} = ${Math.round(Math.PI / 4 * 100) / 100}`,
 						min: 0.01,
 						max: "2\\pi",
 						secret: false,
@@ -55,13 +53,26 @@ export default function()
 						secret: false,
 					}),
 					...getDesmosSlider({
-						expression: `\\theta_0 = ${Math.PI / 8}`,
+						expression: `\\theta_0 = ${Math.round(Math.PI / 8 * 100) / 100}`,
 						min: 0.01,
 						max: "2\\pi",
 						secret: false,
 					})
 				]
 			},
+
+			polarIntegrationRegion:
+			{
+				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+
+				expressions:
+				[
+					{ latex: String.raw`x^2 + y^2 \geq 1 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\} \left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple, secret: true },
+					{ latex: String.raw`x^2 + y^2 = 4 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\}`, color: desmosPurple, secret: true },
+					{ latex: String.raw`x = 0 \left\{ -2 \leq y \leq -1 \right\}`, color: desmosPurple, secret: true },
+					{ latex: String.raw`y = 0 \left\{ -2 \leq x \leq -1 \right\}`, color: desmosPurple, secret: true },
+				]
+			}
 		};
 
 		return data;
