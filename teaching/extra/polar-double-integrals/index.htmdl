@@ -1,0 +1,32 @@
+So far, we've seen how to extend integrals to functions of two variables by slicing the $xy$-plane into tiny rectangles. Back in calculus II, you may have heard it emphasized that the regions can be differently-sized so long as they all shrink to zero width, and the same was true in the last section. In practice, though, it hasn't often materially affected us. We've been able to integrate either $\d x$ or $\d y$ first, depending on which makes the limits of integration and/or function simpler. However, not all functions and regions are easily expressible in terms of $x$ and $y$ --- that is, in rectangular coordinates. This isn't a problem we've had to confront before, but now that we have two variables, there's quite a bit more we can do. The most common alternative coordinate system in two variables is **polar coordinates**: as a brief review, instead of defining $y$ as a function of $x$, we define $r$ as a function of $\theta$, where the point $(r, \theta)$ is plotted at a distance of $r$ from the origin, at an angle $\theta$ counterclockwise from the positive $x$-axis.
+
+### desmos polarCoordinates
+
+Circles, arcs, and flower-like objects are particularly simple in polar coordinates, and comparatively nightmarish in rectangular coordinates. To convert between rectangular polar coordinates, we can use the pairs of formulas
+$$
+	r &= \sqrt{x^2 + y^2}
+	\theta &= \arctan\left( y / x \right)
+	~
+	x &= r\cos(\theta)
+	y &= r\sin(\theta)
+$$
+The time and focus we spent on deriving the integration formulas from the two-variable Riemann sum will properly pay dividends here! If we're going to divide a region into tiny chunks over which $r$ changes by a small amount $\Delta r$ and $\theta$ changes by a small amount $\Delta \theta$, then the region is a small, thin arc of a circle. In order to write this as a Riemann sum, we just need to find a formula for the area of this slice.
+
+### desmos polarSlice
+
+Graphed here is a slice of the plane in polar coordinates, where $r$ starts at $r_0$, $\theta$ starts at $\theta_0$, and the amount each one changes is $\Delta_r$ and $\Delta_\theta$, respectively.
+
+### exc "the area of a polar slice"
+
+	1. Using the sliders in the previous Desmos graph, leave $\Delta_r$ and $\Delta_\theta$ the same. Does the area of the slice appear to be the same when $r_0$ changes? What about $\theta_0$? Based on this, should we expect the formula for the slice to depend on $r_0$ and/or $\theta_0$?
+
+	2. What is the formula for the area of the slice when $\Delta_\theta = 2\pi$ and $r_0 = 0$? What about when $\Delta_\theta = \pi$? How might this generalize if $\Delta_\theta$ were left as a variable?
+
+	3. If $r_0 \neq 0$, what is the formula for the area?
+
+###
+
+With this formula in hand, we can construct a Riemann sum as usual. By chopping up the region we're integrating over into $n$ slices of the form we just explored, and picking a point $\left( r_i^*, \theta_i^* \right)$ in each, we can approximate the volume of the region as
+$$
+	\sum_{i = 1}^n f\left( r_i^*, \theta_i^* \right) r_i^* \Delta_r \Delta_\theta.
+$$

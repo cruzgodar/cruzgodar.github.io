@@ -148,6 +148,8 @@ home Cruz Godar
 		
 		uo/111 Math 111
 		uo/105 Math 105
+
+		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
 	slides Slides
 		light-shadow-world-of-nails Light, Shadow, and a World of Nails

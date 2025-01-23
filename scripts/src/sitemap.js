@@ -618,7 +618,8 @@ export const sitemap =
 			"/teaching/uo/243",
 			"/teaching/uo/112",
 			"/teaching/uo/111",
-			"/teaching/uo/105"
+			"/teaching/uo/105",
+			"/teaching/extra/polar-double-integrals"
 		]
 	},
 		
@@ -1658,6 +1659,17 @@ export const sitemap =
 		"parent": "/teaching",
 		
 		"children": []
+	},
+	
+	"/teaching/extra/polar-double-integrals":
+	{
+		"title": "Double Integrals in Polar Coordinates",
+		
+		"parent": "/teaching",
+		
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/slides":

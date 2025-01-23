@@ -286,7 +286,7 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching</loc>
-		<lastmod>2025-1-14</lastmod>
+		<lastmod>2025-1-23</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
@@ -839,6 +839,12 @@
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/105</loc>
 		<lastmod>2025-1-14</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/extra/polar-double-integrals</loc>
+		<lastmod>2025-1-23</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
