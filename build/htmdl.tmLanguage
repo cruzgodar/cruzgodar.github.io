@@ -17,7 +17,42 @@
 		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (image\-links|buttons|carousel|checkboxes|text\-boxes|sliders|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|carousel|checkboxes|text\-boxes|sliders|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as)\s*$</string>
+			<key>end</key>
+			<string>^\t*?(###)\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
+
+		<dict>
+			<key>begin</key>
+			<string>^\t*?(###) (exc|ex|def|prop|thm|lem|cor|pf|ax|as)\s+(".*")\s*$</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
@@ -33,6 +68,51 @@
 					<string>keyword</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>string</string>
+				</dict>
+			</dict>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
+
+		<dict>
+			<key>begin</key>
+			<string>^\t*?(###) (card)\s+(.*)\s+(".*")\s*$</string>
+			<key>end</key>
+			<string>^\t*?(###)\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>string</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>string</string>
@@ -540,7 +620,7 @@
 		<!-- Tabs and bullets -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(>*?) (-?)</string>
+			<string>^\t*?(>*?) (\.?)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

@@ -5,7 +5,7 @@ So far, we've seen how to extend integrals to functions of two variables by slic
 Circles, arcs, and flower-like objects are particularly simple in polar coordinates, and comparatively nightmarish in rectangular coordinates. To convert between rectangular polar coordinates, we can use the pairs of formulas
 $$
 	r &= \sqrt{x^2 + y^2}
-	\theta &= \arctan\left( y / x \right)
+	\tan(\theta) &= \frac{y}{x}
 	~
 	x &= r\cos(\theta)
 	y &= r\sin(\theta)
@@ -14,19 +14,44 @@ The time and focus we spent on deriving the integration formulas from the two-va
 
 ### desmos polarSlice
 
-Graphed here is a slice of the plane in polar coordinates, where $r$ starts at $r_0$, $\theta$ starts at $\theta_0$, and the amount each one changes is $\Delta_r$ and $\Delta_\theta$, respectively.
+Graphed here is a slice of the plane in polar coordinates, where $r$ starts at $r_0$, $\theta$ starts at $\theta_0$, and the amount each changes is $\Delta r$ and $\Delta \theta$, respectively.
 
 ### exc "the area of a polar slice"
 
-	1. Using the sliders in the previous Desmos graph, leave $\Delta_r$ and $\Delta_\theta$ the same. Does the area of the slice appear to be the same when $r_0$ changes? What about $\theta_0$? Based on this, should we expect the formula for the slice to depend on $r_0$ and/or $\theta_0$?
+	1. Using the sliders in the previous Desmos graph, leave $\Delta r$ and $\Delta \theta$ the same. Does the area of the slice appear to be the same when $r_0$ changes? What about $\theta_0$? Based on this, should we expect the formula for the slice to depend on $r_0$ and/or $\theta_0$?
 
-	2. What is the formula for the area of the slice when $\Delta_\theta = 2\pi$ and $r_0 = 0$? What about when $\Delta_\theta = \pi$? How might this generalize if $\Delta_\theta$ were left as a variable?
+	2. What is the formula for the area of the slice when $\Delta \theta = 2\pi$ and $r_0 = 0$? What about when $\Delta \theta = \pi$? How might this generalize if $\Delta \theta$ were left as a variable?
 
-	3. If $r_0 \neq 0$, what is the formula for the area?
+	3. If $r_0 \neq 0$ in general, what is the formula for the area?
 
 ###
 
 With this formula in hand, we can construct a Riemann sum as usual. By chopping up the region we're integrating over into $n$ slices of the form we just explored, and picking a point $\left( r_i^*, \theta_i^* \right)$ in each, we can approximate the volume of the region as
+
 $$
-	\sum_{i = 1}^n f\left( r_i^*, \theta_i^* \right) r_i^* \Delta_r \Delta_\theta.
+	\sum_{i = 1}^n f\left( r_i^*, \theta_i^* \right) r_i^* \Delta r \Delta \theta.
 $$
+
+As we limit $\Delta r$ and $\Delta \theta$ to zero, necessarily also limiting the amount of slices $n$ to $\infty$, we produce a familiar, but slightly new form for our integral:
+
+### thm "double integrals in polar coordinates"
+
+	Let $z = f(x, y)$ be a function of two (rectangular) variables, and let
+	$$
+		g(r, \theta) = f(r\cos(\theta), r\sin(\theta))
+	$$
+	be the function given by expressing $f$ in polar coordinates. If the region $R$ is bounded by $r = r_1(\theta)$ and $r = r_2(\theta)$, where $\alpha \leq \theta \leq \beta$, then
+	$$
+		\iint_R f(x, y)\,\d A = \int_\alpha^\beta \!\! \int_{r_1(\theta)}^{r_2(\theta)}g(r, \theta)\,r\,\d r\,\d\theta.
+	$$
+
+
+###
+
+In practice, the integration works just as it always has, and the challenge usually lies in expressing a region in terms of polar coordinates.
+
+### ex "double integrals in polar coordinates"
+
+	Evaluate $\int_{}$
+
+###
