@@ -74,12 +74,14 @@ In practice, the integration works just as it always has, and the challenge usua
 
 ###
 
-Exactly as with 
-
 ### exc "double integrals in polar coordinates"
 
-	1. Evaluate $$\int_R \frac{x}{\sqrt{x^2 + y^2}} \,\d A$$, where $R$ is the region bounded by $x^2 + y^2 = \sin(\theta)$ and $x^2 + y^2 = 1$, as shown.
+	1. Evaluate $$\int_R \frac{x}{x^2 + y^2} \,\d A$$, where $R$ is the region bounded by $x^2 + y^2 = \sin(\theta)$ and $x^2 + y^2 = 1$, as shown.
 
 	### desmos polarIntegrationRegion2
+
+	2. What is an example of a region that is easy to integrate over in rectangular coordinates, but would be difficult in polar coordinates? How come?
+
+	3. What sort of real-world functions might lend themselves well to being expressed in polar coordinates as opposed to rectangular ones?
 
 ###
