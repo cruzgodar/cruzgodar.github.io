@@ -67,10 +67,22 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 \geq 1 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\} \left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple, secret: true },
+					{ latex: String.raw`x^2 + y^2 \leq 1 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\} \left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple, secret: true },
 					{ latex: String.raw`x^2 + y^2 = 4 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\}`, color: desmosPurple, secret: true },
 					{ latex: String.raw`x = 0 \left\{ -2 \leq y \leq -1 \right\}`, color: desmosPurple, secret: true },
 					{ latex: String.raw`y = 0 \left\{ -2 \leq x \leq -1 \right\}`, color: desmosPurple, secret: true },
+				]
+			},
+
+			polarIntegrationRegion2:
+			{
+				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+
+				expressions:
+				[
+					{ latex: String.raw`x^2 + y^2 \leq 1 \left\{ 0 \leq \mod(\arctan(y, x), 2\pi) \leq \pi \right\} \left\{ x^2 + y^2 \geq \sin(\mod(\arctan(y, x), 2\pi))^2 \right\}`, color: desmosPurple, secret: true },
+					{ latex: String.raw`r = \sin(\theta)`, color: desmosPurple, secret: true },
+					{ latex: String.raw`y = 0 \left\{ -1 \leq x \leq 1 \right\}`, color: desmosPurple, secret: true },
 				]
 			}
 		};

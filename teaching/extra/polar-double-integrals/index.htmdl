@@ -73,3 +73,13 @@ In practice, the integration works just as it always has, and the challenge usua
 	$$
 
 ###
+
+Exactly as with 
+
+### exc "double integrals in polar coordinates"
+
+	1. Evaluate $$\int_R \frac{x}{\sqrt{x^2 + y^2}} \,\d A$$, where $R$ is the region bounded by $x^2 + y^2 = \sin(\theta)$ and $x^2 + y^2 = 1$, as shown.
+
+	### desmos polarIntegrationRegion2
+
+###
