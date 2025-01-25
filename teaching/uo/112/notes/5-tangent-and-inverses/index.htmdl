@@ -1,0 +1,81 @@
+### nav-buttons
+
+
+
+We're almost done with the core material of our course! In this section, we'll look at the main function beyond sine and cosine that will be very useful, and then we'll explore ways in which we can undo all three trig functions.
+
+
+
+## The Tangent Function
+
+As we've seen, sine and cosine take in angles and output coordinates on the unit circle. Equivalently, we can think of them as ratios of sides in a right triangle: sine is computed with the opposite side to an angle and the hypotenuse, and cosine with the adjacent side and the hypotenuse. No function currently involves the opposite and adjacent sides, though, and it will prove surprisingly helpful for us to define one.
+
+### def "the tangent function"
+
+	Let $\theta$ be an angle. The **tangent** of $\theta$, written $\tan(\theta)$, is defined as
+	$$
+		\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}.
+	$$
+	Equivalently, if $\theta$ is an angle in a right triangle, then
+	$$
+		\tan(\theta) = \frac{\text{opposite}}{\text{adjacent}}.
+	$$
+
+###
+
+Geometrically, $\tan(\theta)$ is the *slope* of the line from the origin to the point with angle $\theta$, since $\frac{\sin(\theta)}{\cos(\theta)}$ is the rise over the run to get to that point.
+
+### desmos tanAsSlope
+
+### exc "exact values of tangent"
+
+	1. Find the exact values of $\tan\left( 0^\circ \right)$, $\tan\left( 30^\circ \right)$, $\tan\left( 45^\circ \right)$, $\tan\left( 60^\circ \right)$, and $\tan\left( 90^\circ \right)$. Do they make sense as slopes?
+
+	2. What is the formula for the line that intersects the $y$-axis at $(0, 2)$ and makes an angle of $30^\circ$ with it, as shown?
+
+	### desmos slopedLine
+
+	3. In a right triangle, the hypotenuse has length $5$, and one of the non-right angles $\theta$ has $\tan(\theta) = 2$. What are the lengths of the other two sides, and what is the tangent of the other non-right angle?
+
+###
+
+Just like we did with sine and cosine, we can use reference triangles to compute other values of tangent.
+
+### ex "tangent and reference triangles"
+
+	Compute the exact value of $\tan\left( 210^\circ \right)$.
+
+	### desmos tanReferenceTriangle
+
+	From this reference triangle, we have a reference angle of $30^\circ$, and so we have $\sin\left( 210^\circ \right) = -\frac{1}{2}$ and $\cos\left( 210^\circ \right) = -\frac{\sqrt{3}}{2}$. The tangent is therefore
+	$$
+		\tan\left( 210^\circ \right) = \frac{\sin\left( 210^\circ \right)}{\cos\left( 210^\circ \right)} = \frac{1}{\sqrt{3}}.
+	$$
+
+###
+
+With a fair amount more work like this, we're ready sketch a rough graph of tangent!
+
+### desmos tanGraph
+
+There are a few new properties of the graph of $\tan(x)$ that we haven't seen with sine and cosine. First of all, while $\tan$ is still periodic, it has period $180^\circ$ instead of $360^\circ$. That's because the slopes of lines in the unit circle repeat when we rotate them $180^\circ$ counterclockwise --- they remain parallel!
+
+Secondly, this graph has **asymptotes** --- at $90^\circ$, $270^\circ$, and any other angle that is $90^\circ$ more than a multiple of $180^\circ$, tangent is undefined since the line in the unit circle is straight up or down. Focusing on $90^\circ$, angles just below $90^\circ$ have lines with slopes that are extremely large and positive, while angles just after have lines with slopes that are extremely large and negative. The result is that the graph of $\tan(x)$ shoots up toward infinity right before $x = 90^\circ$, and returns up from negative infinity right after.
+
+### exc "the graph of tangent"
+
+	1. Sketch a graph of $y = \tan\left( \frac{1}{2}x \right) - 1$ by transforming the graph of $y = \tan(x)$.
+
+	2. A **tangent** line to a curve is a line that touches the curve at only one point, only barely grazing it. For example, the tangent line to the unit circle at $(1, 0)$ is the vertical line $x = 1$. If we extend that line to meet the line from the origin through $(\cos(\theta), \sin(\theta))$, as in the following graph, then what is the length of the portion of the tangent line (the green one)?
+
+	### desmos tangentLines
+
+	3. What are the angles of the two different points on the unit circle whose tangent is $1$?
+
+###
+
+This exercise will take us neatly into the following part of the section!
+
+
+
+### nav-buttons

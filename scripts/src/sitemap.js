@@ -1595,7 +1595,8 @@ export const sitemap =
 			"/teaching/uo/112/notes/1-transformations",
 			"/teaching/uo/112/notes/2-periodic-functions",
 			"/teaching/uo/112/notes/3-the-unit-circle",
-			"/teaching/uo/112/notes/4-sine-and-cosine"
+			"/teaching/uo/112/notes/4-sine-and-cosine",
+			"/teaching/uo/112/notes/5-tangent-and-inverses"
 		]
 	},
 		
@@ -1635,6 +1636,17 @@ export const sitemap =
 	"/teaching/uo/112/notes/4-sine-and-cosine":
 	{
 		"title": "Section 4: Sine and Cosine",
+		
+		"parent": "/teaching/uo/112",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/5-tangent-and-inverses":
+	{
+		"title": "Section 5: The Tangent Function and Inverses",
 		
 		"parent": "/teaching/uo/112",
 		

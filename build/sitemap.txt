@@ -145,6 +145,7 @@ home Cruz Godar
 			notes/2-periodic-functions Section 2: Periodic Functions
 			notes/3-the-unit-circle Section 3: The Unit Circle
 			notes/4-sine-and-cosine Section 4: Sine and Cosine
+			notes/5-tangent-and-inverses Section 5: The Tangent Function and Inverses
 		
 		uo/111 Math 111
 		uo/105 Math 105
