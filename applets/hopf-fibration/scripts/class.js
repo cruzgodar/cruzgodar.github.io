@@ -2,8 +2,12 @@ import anime from "/scripts/anime.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { magnitude } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
+import { STLExporter } from "/scripts/stlExporter.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonGPU } from "/scripts/wilson.js";
+
+
+const fiberThicknessScaleFactor = 1.5;
 
 function hsvToRgb(h, s, v)
 {
@@ -263,13 +267,15 @@ export class HopfFibration extends ThreeApplet
 			compression: this.compression
 		});
 
-		const tubularSegments = 100;
-		const radialSegments = 20;
+		const tubularSegments = 128;
+		const radialSegments = 64;
 
-		const fiberThickness = (1 - this.compression) * 0.05
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
 			+ this.compression * (
 				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			);
+			)
+		);
 
 		const saturation = .2 + .7 * Math.abs(
 			((theta + Math.PI / 2) % Math.PI) - Math.PI / 2) / (Math.PI / 2
@@ -305,10 +311,12 @@ export class HopfFibration extends ThreeApplet
 	createLongitudinalConnector(radius, startAngle, endAngle, addCaps = false)
 	{
 		// Create a circular path
-		const fiberThickness = (1 - this.compression) * 0.05
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
 			+ this.compression * (
 				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			);
+			)
+		);
 		const segments = 64;
 		const points = [];
 
@@ -324,7 +332,7 @@ export class HopfFibration extends ThreeApplet
 			partialCirclePath,
 			segments,
 			fiberThickness,
-			8,
+			64,
 			false
 		);
 		const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
@@ -370,16 +378,18 @@ export class HopfFibration extends ThreeApplet
 		const straightPath = new THREE.LineCurve3(startPoint, endPoint);
 
 		// Create the tube geometry
-		const fiberThickness = (1 - this.compression) * 0.05
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
 			+ this.compression * (
 				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			);
+			)
+		);
 		const tubeSegments = 64;   // Number of segments along the tube
 		const tubeGeometry = new THREE.TubeGeometry(
 			straightPath,
 			tubeSegments,
 			fiberThickness,
-			8,
+			64,
 			false
 		);
 
@@ -389,6 +399,20 @@ export class HopfFibration extends ThreeApplet
 
 		// Add the tube to the scene
 		this.scene.add(tube);
+	}
+
+	exportSTL()
+	{
+		const exporter = new STLExporter();
+		const stlString = exporter.parse(this.scene);
+
+		const blob = new Blob([stlString], { type: "application/octet-stream" });
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = "scene.stl";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	}
 
 	createAllFibers()

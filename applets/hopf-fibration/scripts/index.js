@@ -16,8 +16,7 @@ export default function()
 		name: "Download",
 		onClick: () =>
 		{
-			applet.needDownload = true;
-			applet.needNewFrame = true;
+			applet.exportSTL();
 		}
 	});
 
