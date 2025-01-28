@@ -302,6 +302,95 @@ export class HopfFibration extends ThreeApplet
 		return mesh;
 	}
 
+	createLongitudinalConnector(radius, startAngle, endAngle, addCaps = false)
+	{
+		// Create a circular path
+		const fiberThickness = (1 - this.compression) * 0.05
+			+ this.compression * (
+				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
+			);
+		const segments = 64;
+		const points = [];
+
+		for (let i = 0; i <= segments; i++) {
+			const t = i / segments; // Normalize between 0 and 1
+			const angle = startAngle + t * (endAngle - startAngle);
+			points.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0));
+		}
+
+		const partialCirclePath = new THREE.CatmullRomCurve3(points, false);
+
+		const tubeGeometry = new THREE.TubeGeometry(
+			partialCirclePath,
+			segments,
+			fiberThickness,
+			8,
+			false
+		);
+		const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+		const tube = new THREE.Mesh(tubeGeometry, material);
+
+		// Add end caps
+		const capMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+		const capGeometry = new THREE.CylinderGeometry(fiberThickness, fiberThickness, 0.1, 32);
+
+		const startCap = new THREE.Mesh(capGeometry, capMaterial);
+		startCap.position.copy(points[0]);
+		startCap.lookAt(points[1]); // Orient the cap to face the tube
+
+		const endCap = new THREE.Mesh(capGeometry, capMaterial);
+		endCap.position.copy(points[points.length - 1]);
+		endCap.lookAt(points[points.length - 2]); // Orient the cap to face the tube
+
+		if (addCaps)
+		{
+			this.scene.add(startCap);
+			this.scene.add(endCap);
+		}
+
+		// Add the tube to the scene
+		this.scene.add(tube);
+	}
+
+	createDepthConnector(startDistance, endDistance, angle)
+	{
+		// Define the start and end points
+		const startPoint = new THREE.Vector3(
+			startDistance * Math.sin(angle),
+			startDistance * Math.cos(angle),
+			0
+		);
+		const endPoint = new THREE.Vector3(
+			endDistance * Math.sin(angle),
+			endDistance * Math.cos(angle),
+			0
+		);
+
+		// Create a straight path using LineCurve3
+		const straightPath = new THREE.LineCurve3(startPoint, endPoint);
+
+		// Create the tube geometry
+		const fiberThickness = (1 - this.compression) * 0.05
+			+ this.compression * (
+				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
+			);
+		const tubeSegments = 64;   // Number of segments along the tube
+		const tubeGeometry = new THREE.TubeGeometry(
+			straightPath,
+			tubeSegments,
+			fiberThickness,
+			8,
+			false
+		);
+
+		// Create the material and mesh
+		const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+		const tube = new THREE.Mesh(tubeGeometry, material);
+
+		// Add the tube to the scene
+		this.scene.add(tube);
+	}
+
 	createAllFibers()
 	{
 		for (const fiber of this.fibers)
@@ -336,49 +425,47 @@ export class HopfFibration extends ThreeApplet
 			}
 		}
 
-		// Create a circular path
-		const radius = 0.875;
-		const fiberThickness = (1 - this.compression) * 0.05
-			+ this.compression * (
-				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			);
-		const segments = 64;
-		const startAngle = -(Math.PI * 2) * 0.125 + 0.0275;
-		const endAngle = (Math.PI * 2) * 0.625 - 0.0275; // 75% of a full circle
-		const points = [];
+		const angleAdjust = 0.09;
+		const addCaps = false;
 
-		for (let i = 0; i <= segments; i++) {
-		const t = i / segments; // Normalize between 0 and 1
-		const angle = startAngle + t * (endAngle - startAngle);
-		points.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0));
-		}
+		this.createLongitudinalConnector(
+			0.875,
+			-(Math.PI * 2) * 0.125 + angleAdjust,
+			(Math.PI * 2) * 0.625 - angleAdjust,
+			addCaps
+		);
 
-		const partialCirclePath = new THREE.CatmullRomCurve3(points, false); // 'false' for an open curve
+		this.createLongitudinalConnector(
+			0.75,
+			-(Math.PI * 2) * 0.125 + angleAdjust,
+			(Math.PI * 2) * 0.625 - angleAdjust,
+			addCaps
+		);
 
-// Create the tube geometry
-const tubeGeometry = new THREE.TubeGeometry(partialCirclePath, segments, fiberThickness, 8, false);
-const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-	const tube = new THREE.Mesh(tubeGeometry, material);
+		this.createLongitudinalConnector(
+			0.625,
+			-(Math.PI * 2) * 0.125 + angleAdjust,
+			(Math.PI * 2) * 0.625 - angleAdjust,
+			addCaps
+		);
 
-	// Add end caps
-const capMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-const capGeometry = new THREE.CylinderGeometry(fiberThickness, fiberThickness, 0.1, 32); // Small height
+		this.createDepthConnector(
+			0.875,
+			0.625,
+			-Math.PI / 12 + Math.PI * 2 / 25 * 1
+		);
 
-// First cap (start of the tube)
-const startCap = new THREE.Mesh(capGeometry, capMaterial);
-startCap.position.copy(points[0]);
-startCap.lookAt(points[1]); // Orient the cap to face the tube
-// this.scene.add(startCap);
+		this.createDepthConnector(
+			0.875,
+			0.625,
+			-Math.PI / 12 + Math.PI * 2 / 25 * (1 + 6)
+		);
 
-// Second cap (end of the tube)
-const endCap = new THREE.Mesh(capGeometry, capMaterial);
-endCap.position.copy(points[points.length - 1]);
-endCap.lookAt(points[points.length - 2]); // Orient the cap to face the tube
-// this.scene.add(endCap);
-
-		// Add the tube to the scene
-		this.scene.add(tube);
-		console.log("done");
+		this.createDepthConnector(
+			0.875,
+			0.625,
+			-Math.PI / 12 + Math.PI * 2 / 25 * (1 - 6)
+		);
 
 		this.needNewFrame = true;
 	}
