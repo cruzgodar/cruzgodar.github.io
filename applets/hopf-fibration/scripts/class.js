@@ -7,7 +7,7 @@ import * as THREE from "/scripts/three.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 
-const fiberThicknessScaleFactor = 1.5;
+const fiberThicknessScaleFactor = 1;
 
 function hsvToRgb(h, s, v)
 {
@@ -449,47 +449,47 @@ export class HopfFibration extends ThreeApplet
 			}
 		}
 
-		const angleAdjust = 0.09;
-		const addCaps = false;
+		// const angleAdjust = 0.09;
+		// const addCaps = false;
 
-		this.createLongitudinalConnector(
-			0.875,
-			-(Math.PI * 2) * 0.125 + angleAdjust,
-			(Math.PI * 2) * 0.625 - angleAdjust,
-			addCaps
-		);
+		// this.createLongitudinalConnector(
+		// 	0.875,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
 
-		this.createLongitudinalConnector(
-			0.75,
-			-(Math.PI * 2) * 0.125 + angleAdjust,
-			(Math.PI * 2) * 0.625 - angleAdjust,
-			addCaps
-		);
+		// this.createLongitudinalConnector(
+		// 	0.75,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
 
-		this.createLongitudinalConnector(
-			0.625,
-			-(Math.PI * 2) * 0.125 + angleAdjust,
-			(Math.PI * 2) * 0.625 - angleAdjust,
-			addCaps
-		);
+		// this.createLongitudinalConnector(
+		// 	0.625,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
 
-		this.createDepthConnector(
-			0.875,
-			0.625,
-			-Math.PI / 12 + Math.PI * 2 / 25 * 1
-		);
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * 1
+		// );
 
-		this.createDepthConnector(
-			0.875,
-			0.625,
-			-Math.PI / 12 + Math.PI * 2 / 25 * (1 + 6)
-		);
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * (1 + 6)
+		// );
 
-		this.createDepthConnector(
-			0.875,
-			0.625,
-			-Math.PI / 12 + Math.PI * 2 / 25 * (1 - 6)
-		);
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * (1 - 6)
+		// );
 
 		this.needNewFrame = true;
 	}
