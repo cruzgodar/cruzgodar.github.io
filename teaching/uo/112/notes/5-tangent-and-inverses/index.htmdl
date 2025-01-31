@@ -74,7 +74,31 @@ Secondly, this graph has **asymptotes** --- at $90^\circ$, $270^\circ$, and any 
 
 ###
 
-This exercise will take us neatly into the following part of the section! While we've 
+This exercise will take us neatly into the following part of the section! While we've focused so far on functions that take in angles and give us coordinates or ratios in the unit circle, we can also go the other direction: given an $x$-coordinate, $y$-coordinate, or slope of a point on the unit circle, we can find the angle of that point. As we talked about earlier in the term, this is a textbook example of an **inverse function**: one that undoes a function by taking its outputs back to inputs.
+
+Let's begin by focusing on $\sin(\theta)$. Its outputs are $y$-coordinates in the unit circle, which are between $-1$ and $1$, meaning if we invert the function, that inverse will only accept inputs between $-1$ and $1$. More troubling, though, there's more than one point on the unit circle with any given $y$-coordinate! For example, $y = \frac{1}{2}$ appears from points with angles $\theta = 30^\circ$ and $\theta = 150^\circ$, as well as any multiple of $360^\circ$ (positive or negative) added to those two. This is to say that $y = \sin(x)$ is not a one-to-one function, and so if we want to take a $y$-coordinate back to an angle, we'll have to make a choice.
+
+### desmos sinRange
+
+Pictured here is the widest we can draw a portion of the unit circle so that it includes the angle $0^\circ$ and completely covers the range of $\sin$. Any further and it would start to loop back on itself, and any less far and we wouldn't cover the whole range of $y$-coordinates. Since it includes the angle of $0^\circ$, the complete range of angles is $\left[ -90^\circ, 90^\circ \right]$ --- that is, every angle between $-90^\circ$ and $90^\circ$, inclusive. With this range, we can do as good of a job as possible at inverting the sine function, and we're ready to give it a name.
+
+### def "the arcsine function"
+
+	Let $y$ be a number in the interval $\left[ -1, 1 \right]$. The **arcsine** of $y$, written $\arcsin(y)$, is the angle $\theta$ in $\left[ -90^\circ, 90^\circ \right]$ so that $\sin(\theta) = y$.
+
+###
+
+For example, $\sin\left( 30^\circ \right) = \frac{1}{2}$, and so $\arcsin\left( \frac{1}{2} \right) = 30^\circ$. It's also true that $\sin\left( 150^\circ \right) = \frac{1}{2}$, but we only take the angle that lives in $\left[ -90^\circ, 90^\circ \right]$. Similarly, while $\sin\left( 210^\circ \right) = -\frac{1}{2}$, evaluating $\arcsin\left( -\frac{1}{2} \right)$ requires us to find an angle within $\left[ -90^\circ, 90^\circ \right]$. In this case, that's $-30^\circ$, since $\sin\left( -30^\circ \right) = -\frac{1}{2}$.
+
+### exc
+
+	1. What angle ranges should we pick for complete coverage of the output values of $\cos$ and $\tan$? Ideally, include $0^\circ$ in both.
+
+	2. Is it always true that $\sin(\arcsin(x)) = x$? What about $\arcsin(\sin(x))$?
+
+	3. Sketch a graph of $y = \arcsin(x)$, using the fact that it's (at least partially) an inverse to $y = \sin(x)$.
+
+###
 
 
 
