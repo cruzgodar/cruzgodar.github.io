@@ -90,13 +90,19 @@ Pictured here is the widest we can draw a portion of the unit circle so that it 
 
 For example, $\sin\left( 30^\circ \right) = \frac{1}{2}$, and so $\arcsin\left( \frac{1}{2} \right) = 30^\circ$. It's also true that $\sin\left( 150^\circ \right) = \frac{1}{2}$, but we only take the angle that lives in $\left[ -90^\circ, 90^\circ \right]$. Similarly, while $\sin\left( 210^\circ \right) = -\frac{1}{2}$, evaluating $\arcsin\left( -\frac{1}{2} \right)$ requires us to find an angle within $\left[ -90^\circ, 90^\circ \right]$. In this case, that's $-30^\circ$, since $\sin\left( -30^\circ \right) = -\frac{1}{2}$.
 
-### exc
+Instead of $\arcsin$, many textbooks and sources write $\sin^{-1}$. This is unfortunately fairly confusing: first of all, the superscript of $-1$ looks like this means $\sin^{-1}(x) = \frac{1}{\sin(x)}$. Not only is that not the case, but we'll actually talk a little bit about a function that *is* equal to $\frac{1}{\sin(x)}$ later in the term. The other issue is that the inverse notation implies $y = \sin(x)$ is an invertible function, and as we've seen, that's absolutely not the case without a lot of extra work. For both of these reasons, we'll stick with $\arcsin$ (and $\arccos$ and $\arctan$, as we're about to see).
+
+### exc "the arc functions"
 
 	1. What angle ranges should we pick for complete coverage of the output values of $\cos$ and $\tan$? Ideally, include $0^\circ$ in both.
 
-	2. Is it always true that $\sin(\arcsin(x)) = x$? What about $\arcsin(\sin(x))$?
+	2. Evaluate $\arcsin(1)$, $\arccos\left( -\frac{\sqrt{2}}{2} \right)$, and $\arctan\left( \sqrt{3} \right)$.
 
-	3. Sketch a graph of $y = \arcsin(x)$, using the fact that it's (at least partially) an inverse to $y = \sin(x)$.
+	3. Is it always true that $\sin(\arcsin(x)) = x$? What about $\arcsin(\sin(x))$?
+
+	4. Sketch graphs of $y = \arcsin(x)$, $y = \arccos(x)$, and $y = \arctan(x)$, using the fact that they're (at least partially) inverses to $y = \sin(x)$, $y = \cos(x)$, and $y = \tan(x)$.
+
+	5. Sketch a graph of $y = 2\arctan(-x) - 1$.
 
 ###
 

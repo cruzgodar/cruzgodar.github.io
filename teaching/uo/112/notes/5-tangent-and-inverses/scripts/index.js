@@ -101,8 +101,9 @@ export default function()
 
 					{ latex: String.raw`(\cos(a), \sin(a))`, color: desmosPurple, points: true, secret: false },
 
-					{ latex: String.raw`(0, 0), (\sign(\cos(a)), \sign(\cos(a))\tan(a))`, color: desmosPurple, points: true, lines: true, secret: true },
 					{ latex: String.raw`(\sign(\cos(a)), \sign(\cos(a))\tan(a)), (\sign(\cos(a)), 0)`, color: desmosGreen, points: false, lines: true, secret: true },
+
+					{ latex: String.raw`(0, 0), (\sign(\cos(a)), \sign(\cos(a))\tan(a))`, color: desmosPurple, points: true, lines: true, secret: true },
 
 					{ latex: String.raw`\tan(a)` },
 				]
