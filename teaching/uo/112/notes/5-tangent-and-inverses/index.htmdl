@@ -74,6 +74,10 @@ Secondly, this graph has **asymptotes** --- at $90^\circ$, $270^\circ$, and any 
 
 ###
 
+
+
+## Inverse Trig Functions
+
 This exercise will take us neatly into the following part of the section! While we've focused so far on functions that take in angles and give us coordinates or ratios in the unit circle, we can also go the other direction: given an $x$-coordinate, $y$-coordinate, or slope of a point on the unit circle, we can find the angle of that point. As we talked about earlier in the term, this is a textbook example of an **inverse function**: one that undoes a function by taking its outputs back to inputs.
 
 Let's begin by focusing on $\sin(\theta)$. Its outputs are $y$-coordinates in the unit circle, which are between $-1$ and $1$, meaning if we invert the function, that inverse will only accept inputs between $-1$ and $1$. More troubling, though, there's more than one point on the unit circle with any given $y$-coordinate! For example, $y = \frac{1}{2}$ appears from points with angles $\theta = 30^\circ$ and $\theta = 150^\circ$, as well as any multiple of $360^\circ$ (positive or negative) added to those two. This is to say that $y = \sin(x)$ is not a one-to-one function, and so if we want to take a $y$-coordinate back to an angle, we'll have to make a choice.
@@ -103,6 +107,25 @@ Instead of $\arcsin$, many textbooks and sources write $\sin^{-1}$. This is unfo
 	4. Sketch graphs of $y = \arcsin(x)$, $y = \arccos(x)$, and $y = \arctan(x)$, using the fact that they're (at least partially) inverses to $y = \sin(x)$, $y = \cos(x)$, and $y = \tan(x)$.
 
 	5. Sketch a graph of $y = 2\arctan(-x) - 1$.
+
+###
+
+Since the trig functions also output ratios in right triangles, the arc functions can also take in those ratios.
+
+### ex "the arc functions in right triangles"
+
+	The following right triangle has a hypotenuse of length $4$. Determine both of its non-right angles.
+
+	### desmos arcFunctionsTriangle
+
+	The vertical leg looks to have length $2$, and so to compute the angle at the origin, we can evaluate $\arcsin\left( \frac{2}{4} \right) = 30^\circ$. We can find the other angle by subtracting $30^\circ$ from $90^\circ$ to get $60^\circ$, or we can use the $\arccos$ function: the remaining angle is
+	$$
+		\arccos\left( \frac{2}{4} \right) = \arccos\left( \frac{1}{2} \right) = 60^\circ.
+	$$
+	Alternatively, the Pythagorean theorem tells us that the remaining side has length $\sqrt{4^2 - 2^2} = \sqrt{12}$, and so the remaining angle is
+	$$
+		\arcsin\left( \frac{\sqrt{12}}{4} \right) = \arcsin\left( \frac{\sqrt{3}}{2} \right) = 60^\circ.
+	$$
 
 ###
 

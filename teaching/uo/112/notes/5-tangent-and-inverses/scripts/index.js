@@ -121,6 +121,18 @@ export default function()
 					{ latex: String.raw`x^2 + y^2 = 1 \left\{ x \geq 0 \right\}`, color: desmosPurple, secret: true, lineWidth: 10, lineOpacity: 0.75 },
 				]
 			},
+
+			arcFunctionsTriangle:
+			{
+				bounds: { left: -1, right: 4, bottom: -1.75, top: 3.25 },
+
+				options: { degreeMode: true },
+
+				expressions:
+				[
+					{ latex: String.raw`(0, 0), (2\sqrt{3}, 2), (2\sqrt{3}, 0), (0, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+				]
+			},
 		};
 
 		return data;
