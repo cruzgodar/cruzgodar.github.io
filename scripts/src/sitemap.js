@@ -1596,7 +1596,8 @@ export const sitemap =
 			"/teaching/uo/112/notes/2-periodic-functions",
 			"/teaching/uo/112/notes/3-the-unit-circle",
 			"/teaching/uo/112/notes/4-sine-and-cosine",
-			"/teaching/uo/112/notes/5-tangent-and-inverses"
+			"/teaching/uo/112/notes/5-tangent-and-inverses",
+			"/teaching/uo/112/notes/6-radians-and-non-right-triangles"
 		]
 	},
 		
@@ -1647,6 +1648,17 @@ export const sitemap =
 	"/teaching/uo/112/notes/5-tangent-and-inverses":
 	{
 		"title": "Section 5: The Tangent Function and Inverses",
+		
+		"parent": "/teaching/uo/112",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/6-radians-and-non-right-triangles":
+	{
+		"title": "Section 6: Radians and Non-Right Triangles",
 		
 		"parent": "/teaching/uo/112",
 		

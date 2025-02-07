@@ -1,0 +1,35 @@
+### nav-buttons
+
+
+
+With a solid foundation of trig functions, we can begin to explore some of their many applications. This section, along with the next two, is largely a grab bag of different uses and techniques, and while the one we start with won't be the flashiest or most immediately useful, it will help pave the way for future topics and math courses.
+
+## Radians
+
+We've been measuring angles with degrees so far, but as it happens, this is equivalent to using feet in physics --- there's a much more widely-used and useful unit! The value of $360^\circ$ being a full circle is arbitrary and chosen only for convenience, since it's a very divisible number. If we're looking for something more natural, we need a way to measure angles in any circle. We could try to measure angles by the length of the arcs they cut out, but that changes based on the radius of the circle: for example, a full $360^\circ$ angle would produce a full-circumference arc of length $2\pi r = 2\pi$ in a circle of radius $1$, but $4\pi$ in a circle of radius $2$. What doesn't change between those two, though, is the total circumference *relative* to the radius. Since the circumference of a radius-$r$ circle is always $2\pi r$, it always takes $2\pi \approx 6.28$ copies of the radius to wrap completely around the circle.
+
+### desmos radiusWrap
+
+### def "radians"
+
+	The measure of an angle in **radians** is the length of the portion of the circumference that it cuts out on the unit circle. Equivalently, a full angle of $360^\circ$ is equal to $2\pi$ radians. Since radians are arc length divided by radius, both of which are units of length, radians are **unitless**. We therefore typically write equations like $360^\circ = 2\pi$, where the right side is simply a number.
+
+###
+
+### exc "radians"
+
+	Evaluate the following expressions:
+
+	1. $$\sin\left( \pi \right)$$.
+
+	2. $$\cos\left( -\frac{\pi}{6} \right)$$.
+
+	3. $$\tan\left( \frac{7\pi}{3} \right)$$.
+
+###
+
+We'll come to see that many, *many* formulas are better expressed in radians rather than degrees. While a lot of these are 
+
+
+
+### nav-buttons
