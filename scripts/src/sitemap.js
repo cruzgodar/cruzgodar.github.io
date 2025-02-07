@@ -1597,7 +1597,7 @@ export const sitemap =
 			"/teaching/uo/112/notes/3-the-unit-circle",
 			"/teaching/uo/112/notes/4-sine-and-cosine",
 			"/teaching/uo/112/notes/5-tangent-and-inverses",
-			"/teaching/uo/112/notes/6-radians-and-non-right-triangles"
+			"/teaching/uo/112/notes/6-radians-and-equations"
 		]
 	},
 		
@@ -1656,9 +1656,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/uo/112/notes/6-radians-and-non-right-triangles":
+	"/teaching/uo/112/notes/6-radians-and-equations":
 	{
-		"title": "Section 6: Radians and Non-Right Triangles",
+		"title": "Section 6: Radians and Equations",
 		
 		"parent": "/teaching/uo/112",
 		

@@ -28,7 +28,29 @@ We've been measuring angles with degrees so far, but as it happens, this is equi
 
 ###
 
-We'll come to see that many, *many* formulas are better expressed in radians rather than degrees. While a lot of these are 
+We'll come to see that many, *many* formulas are better expressed in radians rather than degrees. While a lot of these will have to wait until calculus, we can see a few of them now. First of all, since we've defined radians in terms of arc length, we can very easily find arc length from an angle that's given in radians. A full angle of $2\pi$ radians corresponds to an arc length that is the entire circumference of a circle --- i.e. $2\pi r$ for a circle of radius $r$. Similarly, a half-circle angle of $\pi$ has an arc length of $\pi r$, and in general, an angle of $\theta$ in radians has an arc length of $r\theta$. We can make the same argument with the area of a sector cut out by an angle instead of arc length: a full arc has the area of a full circle, which is $\pi r^2$, half a circle has an area of $\frac{1}{2} \pi r^2$, and in general, an angle of $\theta$ cuts out an arc of area $\frac{1}{2} r^2 \theta$. Let's write down these two results properly.
+
+### prop "arc length and sector area"
+
+	Let $\theta$ be an angle measured in radians in a circle of radius $r$. The arc length cut out by $\theta$ (in purple below) is $r\theta$, and the sector area (in blue) is $\frac{1}{2} r^2 \theta$.
+
+	### desmos arcLengthEtc
+
+###
+
+### exc "arc length and sector area"
+
+	1. Find the arc length and area for a sector with angle $120^\circ$ in a circle of radius $6$.
+
+	2. If we want a sector of area $1$ in a circle of radius $r$, what must $\theta$ be in terms of $r$? How does this change as $r$ changes?
+
+###
+
+
+
+## Non-Right Triangles
+
+With the groundwork of radians behind us, we can turn our attention to other topics. Our first 
 
 
 

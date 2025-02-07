@@ -449,7 +449,7 @@ export async function toggleIncreaseContrast({
 }
 
 let settingsCode = [];
-const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1];
+const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
 
 function updateCode(digit)
 {
