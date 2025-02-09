@@ -1,4 +1,4 @@
-This one isn't too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called **barycentric subdivision**, and similarly to the <a href="/applets/strange-attractors/">strange attractors</a> applet, it's only one kind of finite subdivision, but it's one of the most picturesque.
+This one isn't too complicated! Draw a polygon and connect its center of mass to every vertex, splitting it into triangles. Do the same thing for every triangle, and repeat until you have a beautiful, crystal-like spiderweb. This is called **barycentric subdivision**, and similarly to the <a href="/applets/strange-attractors">strange attractors</a> applet, it's only one kind of finite subdivision, but it's one of the most picturesque.
 
 
 

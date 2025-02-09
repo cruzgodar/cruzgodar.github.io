@@ -21,10 +21,20 @@ export default function()
 	const densityInput = new TextBox({
 		element: $("#density-input"),
 		name: "Density",
-		value: 0.5,
+		value: 0.32,
 		minValue: 0,
 		maxValue: 1,
 		onEnter: run,
+	});
+
+	const northAmountSlider = new Slider({
+		element: $("#north-amount-slider"),
+		name: "North Proportion",
+		value: 0.5,
+		min: 0,
+		max: 1,
+		snapPoints: [0.5],
+		onInput: onSliderInput,
 	});
 
 	const computationsPerFrameSlider = new Slider({
@@ -32,7 +42,7 @@ export default function()
 		name: "Computation Speed",
 		value: 1,
 		min: 1,
-		max: 500,
+		max: 10,
 		logarithmic: true,
 		integer: true,
 		onInput: onSliderInput,
@@ -46,7 +56,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "an-abelian-sandpile.png"
+		filename: "a-traffic-jam.png"
 	});
 
 	showPage();
@@ -56,12 +66,14 @@ export default function()
 		applet.run({
 			resolution: resolutionInput.value,
 			density: densityInput.value,
+			northAmount: northAmountSlider.value,
 			computationsPerFrame: computationsPerFrameSlider.value,
 		});
 	}
 
 	function onSliderInput()
 	{
+		applet.northAmount = northAmountSlider.value;
 		applet.computationsPerFrame = computationsPerFrameSlider.value;
 	}
 }

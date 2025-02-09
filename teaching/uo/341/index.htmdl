@@ -466,7 +466,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 		y'(t) &= -3y(t).
 	$$
 
-	> b) We can plot solutions to systems of differential equations as **vector fields**: every point $(x, y)$ has a velocity $(x', y')$, so if we fill an area with particles and move them according to that velocity, we can see the entire effect of the system. Using <a href="/applets/vector-fields/">a vector field applet</a> with the generating functions `(2x - y, 2x - 2y)` and `(-x + 2y, -3y)`, plot the systems from part a).
+	> b) We can plot solutions to systems of differential equations as **vector fields**: every point $(x, y)$ has a velocity $(x', y')$, so if we fill an area with particles and move them according to that velocity, we can see the entire effect of the system. Using <a href="/applets/vector-fields">a vector field applet</a> with the generating functions `(2x - y, 2x - 2y)` and `(-x + 2y, -3y)`, plot the systems from part a).
 	
 ###
 

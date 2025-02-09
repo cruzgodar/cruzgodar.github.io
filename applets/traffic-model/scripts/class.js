@@ -1,13 +1,85 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { getFloatGlsl } from "/scripts/applets/applet.js";
 import { WilsonGPU } from "/scripts/wilson.js";
+
+const moveToHereVecs = {
+	north: "vec2(0.0, stepSize)",
+	east: "vec2(stepSize, 0.0)",
+	south: "vec2(0.0, -stepSize)",
+	west: "vec2(-stepSize, 0.0)",
+};
+
+const directionValues = {
+	north: getFloatGlsl(1),
+	south: getFloatGlsl(0.75),
+	east: getFloatGlsl(0.5),
+	west: getFloatGlsl(0.25),
+};
+
+// Direction is one of "north", "east", "south", or "west".
+function getUpdateShader(direction)
+{
+	const directionValue = directionValues[direction];
+
+	return /* glsl */`
+		precision highp float;
+		precision highp sampler2D;
+		
+		varying vec2 uv;
+		
+		uniform sampler2D uTexture;
+		uniform float stepSize;
+		
+		void main(void)
+		{
+			vec2 center = (uv + vec2(1.0, 1.0)) * 0.5;
+
+			float here = texture2D(uTexture, center).x;
+
+			if (here == 0.0)
+			{
+				float adjacent = texture2D(uTexture, mod(center - ${moveToHereVecs[direction]}, 1.0)).x;
+
+				if (adjacent == ${directionValue})
+				{
+					gl_FragColor = vec4(${directionValue}, 0.0, 0.0, 1.0);
+				}
+
+				else
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				}
+			}
+
+			else if (here == ${directionValue})
+			{
+				float adjacent = texture2D(uTexture, mod(center + ${moveToHereVecs[direction]}, 1.0)).x;
+
+				if (adjacent == 0.0)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				}
+
+				else
+				{
+					gl_FragColor = vec4(${directionValue}, 0.0, 0.0, 1.0);
+				}
+			}
+
+			else
+			{
+				gl_FragColor = vec4(here, 0.0, 0.0, 1.0);
+			}
+		}
+	`;
+}
 
 export class AbelianSandpiles extends AnimationFrameApplet
 {
 	resolution = 500;
 	density = 0.5;
+	northAmount = 0.5;
 	computationsPerFrame = 1;
-
-	lastPixelData;
 
 
 
@@ -22,12 +94,13 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
-			
+			uniform float seed;
 			uniform float density;
+			uniform float northAmount;
 			
 			float rand(vec2 co)
 			{
-				co += vec2(${Math.random()}, ${Math.random()});
+				co += vec2(seed, seed);
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 			}
 			
@@ -35,7 +108,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			{
 				float random = rand(uv);
 
-				if (random < density * 0.5)
+				if (random < density * northAmount)
 				{
 					// North
 					gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
@@ -51,110 +124,6 @@ export class AbelianSandpiles extends AnimationFrameApplet
 				{
 					// Empty
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-				}
-			}
-		`;
-
-		const shaderUpdateNorth = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			uniform float stepSize;
-			
-			void main(void)
-			{
-				vec2 center = (uv + vec2(1.0, 1.0)) * 0.5;
-
-				float here = texture2D(uTexture, center).x;
-
-				if (here == 0.0)
-				{
-					float south = texture2D(uTexture, mod(center + vec2(0.0, -stepSize), 1.0)).x;
-
-					if (south == 1.0)
-					{
-						gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-					}
-
-					else
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					}
-				}
-
-				else if (here == 1.0)
-				{
-					float north = texture2D(uTexture, mod(center + vec2(0.0, stepSize), 1.0)).x;
-
-					if (north == 0.0)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					}
-
-					else
-					{
-						gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-					}
-				}
-
-				else
-				{
-					gl_FragColor = vec4(here, 0.0, 0.0, 1.0);
-				}
-			}
-		`;
-
-		const shaderUpdateEast = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			uniform float stepSize;
-			
-			void main(void)
-			{
-				vec2 center = (uv + vec2(1.0, 1.0)) * 0.5;
-
-				float here = texture2D(uTexture, center).x;
-
-				if (here == 0.0)
-				{
-					float west = texture2D(uTexture, mod(center + vec2(-stepSize, 0.0), 1.0)).x;
-
-					if (west == 0.5)
-					{
-						gl_FragColor = vec4(0.5, 0.0, 0.0, 1.0);
-					}
-
-					else
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					}
-				}
-
-				else if (here == 0.5)
-				{
-					float east = texture2D(uTexture, mod(center + vec2(stepSize, 0.0), 1.0)).x;
-
-					if (east == 0.0)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					}
-
-					else
-					{
-						gl_FragColor = vec4(0.5, 0.0, 0.0, 1.0);
-					}
-				}
-
-				else
-				{
-					gl_FragColor = vec4(here, 0.0, 0.0, 1.0);
 				}
 			}
 		`;
@@ -193,14 +162,16 @@ export class AbelianSandpiles extends AnimationFrameApplet
 		const options = {
 			shaders: {
 				init: shaderInit,
-				updateNorth: shaderUpdateNorth,
-				updateEast: shaderUpdateEast,
+				updateNorth: getUpdateShader("north"),
+				updateEast: getUpdateShader("east"),
 				draw: shaderDraw,
 			},
 
 			uniforms: {
 				init: {
+					seed: Math.random(),
 					density: this.density,
+					northAmount: this.northAmount,
 				},
 				updateNorth: {
 					stepSize: 1 / this.resolution,
@@ -230,14 +201,18 @@ export class AbelianSandpiles extends AnimationFrameApplet
 	run({
 		resolution = 100,
 		density = 0.5,
+		northAmount = 0.5,
 		computationsPerFrame = 1,
 	}) {
 		this.resolution = resolution;
 		this.density = density;
+		this.northAmount = northAmount;
 		this.computationsPerFrame = computationsPerFrame;
 
 		this.wilson.setUniforms({
+			seed: Math.random(),
 			density: this.density,
+			northAmount: this.northAmount,
 		}, "init");
 
 		this.wilson.setUniforms({
