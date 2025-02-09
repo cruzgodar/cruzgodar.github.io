@@ -16,7 +16,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/applets</loc>
-		<lastmod>2025-1-18</lastmod>
+		<lastmod>2025-2-7</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/applets/traffic-model</loc>
+		<lastmod>2025-2-7</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
@@ -837,7 +843,7 @@
 	</url>
 		
 	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/112/notes/6-radians-and-non-right-triangles</loc>
+		<loc>https://www.cruzgodar.com/teaching/uo/112/notes/6-radians-and-equations</loc>
 		<lastmod>2025-2-3</lastmod>
 		<priority>0.5</priority>
 	</url>

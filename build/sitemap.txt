@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		traffic-model The Biham-Middleton-Levine Traffic Model
 		raymarching-fundamentals Raymarching Fundamentals
 		curved-light Curved Light
 		hairy-ball-theorem The Hairy Ball Theorem

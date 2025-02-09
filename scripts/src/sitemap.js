@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/traffic-model",
 			"/applets/raymarching-fundamentals",
 			"/applets/curved-light",
 			"/applets/hairy-ball-theorem",
@@ -91,6 +92,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/traffic-model":
+	{
+		"title": "The Biham-Middleton-Levine Traffic Model",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/raymarching-fundamentals":
 	{
 		"title": "Raymarching Fundamentals",
