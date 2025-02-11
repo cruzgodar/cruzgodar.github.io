@@ -48,9 +48,31 @@ We'll come to see that many, *many* formulas are better expressed in radians rat
 
 
 
-## Non-Right Triangles
+## Trigonometric Equations
 
-With the groundwork of radians behind us, we can turn our attention to other topics. Our first 
+With the groundwork of radians behind us, we can turn our attention to other topics. In the last section, we introduced arc functions as a way of going backward, taking in coordinates or slopes of points on the unit circle and producing a corresponding angle in a particular range. While the work we did to make the trig functions invertible by restricting their domains was useful and necessary, though, it also destroyed quite a bit of information. For example, $\arcsin\left( \frac{1}{2} \right) = \frac{\pi}{6}$ tells us that one possible angle whose sine is $\frac{1}{2}$ is $\frac{\pi}{6}$ (i.e. $30^\circ$), but there are so many more angles $x$ for which $\sin(x) = \frac{1}{2}$ --- for example, $\frac{5\pi}{6}$, $\frac{13\pi}{6}$, $-\frac{7\pi}{6}$, and infinitely many more. If we're trying to solve the equation $\sin(x) = \frac{1}{2}$, then, $\arcsin$ is a tool that can get us *one* solution, but we'll need to do more to get all of them.
+
+While the idea of there being infinitely many other angles is daunting, it's a complexity that we can tame without too much trouble. Focusing on $\sin(x) = \frac{1}{2}$ for the moment, $\arcsin\left( \frac{1}{2} \right)$ gives us one point whose $y$-coordinate is $\frac{1}{2}$, and there's only one other point with that coordinate. To find it, we want to intersect the unit circle with the line $y = \frac{1}{2}$, or in other words, draw a horizontal line from the first point we found and figure out where the other point it intersects is.
+
+### desmos circleAndLine
+
+Since it's a horizontal line, the other point is just a reflection of the first point over the $y$-axis, meaning it has an angle of $\pi - \frac{\pi}{6} = \frac{5\pi}{6}$. The only other way to get points with this $y$-coordinate is to add an integer multiple of $2\pi = 360^\circ$ to either of these points, effectively wrapping back around the circle. In other words, the complete solution to $\sin(x) = \frac{1}{2}$ is
+$$
+	x = \frac{\pi}{6} + 2\pi k \quad\text{or}\quad \frac{5\pi}{6} + 2\pi k
+$$
+for any integer $k$.
+
+We can apply logic like this to solve any equation in which $x$ is stuck inside of a trig function. We solve as usual, and when there's nothing left to do except get rid of the trig function, we take the corresponding arc function of both sides. That gives us one angle (or possibly indicates there's no solutions, if for instance we find ourselves taking $\arcsin(2)$). To find the other angle, we draw a line from the first point --- horizontal for $\sin$, vertical for cosine, and diagonal through the origin for tangent, since those will intersect the unit circle at the other point with the same $y$-coordinate, $x$-coordinate, or slope, respectively. We take those two angles in radians, add $2\pi k$ for a variable $k$ representing any integer, and those are our solutions. If we're asked to find all of the solutions within a certain range, we can plug in different values of $k$ to see which ones fall within our particular range.
+
+### exc "trigonometric equations"
+
+	1. Solve $2\sin\left( x - 1 \right) = -\sqrt{3}$ for $x$.
+
+	2. Find all solutions to $\sqrt{3}\tan\left( 2t + 2 \right) = -1$ for which $-5 \leq t \leq 5$.
+
+	3. Where does the line $y = 3$ intersect the graph of $y = 2\cos(3x) + 1$?
+
+###
 
 
 
