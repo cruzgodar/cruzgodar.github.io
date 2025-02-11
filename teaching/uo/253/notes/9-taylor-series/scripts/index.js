@@ -6,6 +6,7 @@ import {
 	desmosRed,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 function getDerivativeString(n)
 {
@@ -42,13 +43,13 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \sin(x)`, color: desmosPurple },
-					{ latex: String.raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
-					{ latex: String.raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
-					{ latex: String.raw`a = 0` },
+					{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
+					{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
+					{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
+					{ latex: raw`a = 0` },
 
-					{ latex: String.raw`(a, f(a))`, color: desmosBlue, pointSize: 50, secret: true },
-					{ latex: String.raw`D = [${derivatives.join(", ")}]`, secret: true }
+					{ latex: raw`(a, f(a))`, color: desmosBlue, pointSize: 50, secret: true },
+					{ latex: raw`D = [${derivatives.join(", ")}]`, secret: true }
 				]
 			},
 
@@ -60,15 +61,15 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \sin(x)`, color: desmosPurple },
-					{ latex: String.raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
-					{ latex: String.raw`F_1(x) = \sum_{n = 0}^N \frac{D(0)[n + 1]}{n!} (x)^n`, color: desmosBlue },
-					{ latex: String.raw`F_2(x) = \sum_{n = 0}^N \frac{D(3\pi)[n + 1]}{n!} (x-3\pi)^n`, color: desmosRed },
-					{ latex: String.raw`f(10)` },
-					{ latex: String.raw`F_2(10)` },
-					{ latex: String.raw`F_1(10)` },
+					{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
+					{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
+					{ latex: raw`F_1(x) = \sum_{n = 0}^N \frac{D(0)[n + 1]}{n!} (x)^n`, color: desmosBlue },
+					{ latex: raw`F_2(x) = \sum_{n = 0}^N \frac{D(3\pi)[n + 1]}{n!} (x-3\pi)^n`, color: desmosRed },
+					{ latex: raw`f(10)` },
+					{ latex: raw`F_2(10)` },
+					{ latex: raw`F_1(10)` },
 
-					{ latex: String.raw`D(a) = [${derivatives.join(", ")}]`, hidden: true, secret: true }
+					{ latex: raw`D(a) = [${derivatives.join(", ")}]`, hidden: true, secret: true }
 				]
 			},
 
@@ -80,13 +81,13 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \{x = 0: 0, e^{-\frac{1}{x^2}}\}`, color: desmosPurple },
-					{ latex: String.raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
-					{ latex: String.raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
-					{ latex: String.raw`a = 0` },
+					{ latex: raw`f(x) = \{x = 0: 0, e^{-\frac{1}{x^2}}\}`, color: desmosPurple },
+					{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
+					{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
+					{ latex: raw`a = 0` },
 
-					{ latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true },
-					{ latex: String.raw`D = [${derivatives.slice(0, 6).join(", ")}]`, secret: true }
+					{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
+					{ latex: raw`D = [${derivatives.slice(0, 6).join(", ")}]`, secret: true }
 				]
 			}
 		};

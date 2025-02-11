@@ -5,6 +5,7 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -18,8 +19,8 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + (y - 2)^2 \leq 1`, color: desmosPurple, secret: true },
-					{ latex: String.raw`(2(x - 2) + (y + 4))^2 + (3(x - 2) - (y + 4))^2 \leq 25`, color: desmosBlue, secret: true }
+					{ latex: raw`x^2 + (y - 2)^2 \leq 1`, color: desmosPurple, secret: true },
+					{ latex: raw`(2(x - 2) + (y + 4))^2 + (3(x - 2) - (y + 4))^2 \leq 25`, color: desmosBlue, secret: true }
 				]
 			},
 		};

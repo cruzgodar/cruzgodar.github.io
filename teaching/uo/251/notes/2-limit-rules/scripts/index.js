@@ -6,6 +6,7 @@ import {
 	desmosRed,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -19,8 +20,8 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
-					{ latex: String.raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
+					{ latex: raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
+					{ latex: raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
 				]
 			},
 
@@ -32,7 +33,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(t) = \sqrt{t - 2}`, color: desmosPurple },
+					{ latex: raw`f(t) = \sqrt{t - 2}`, color: desmosPurple },
 				]
 			},
 
@@ -49,9 +50,9 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = -\left|x\right|`, color: desmosBlue },
-					{ latex: String.raw`g(x) = x\sin(x)`, color: desmosPurple },
-					{ latex: String.raw`h(x) = \left|x\right|`, color: desmosRed },
+					{ latex: raw`f(x) = -\left|x\right|`, color: desmosBlue },
+					{ latex: raw`g(x) = x\sin(x)`, color: desmosPurple },
+					{ latex: raw`h(x) = \left|x\right|`, color: desmosRed },
 				]
 			},
 		};

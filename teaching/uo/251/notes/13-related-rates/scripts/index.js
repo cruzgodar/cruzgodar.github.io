@@ -4,6 +4,7 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -17,8 +18,8 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: desmosPurple, lines: true },
-					{ latex: String.raw`t = 10` },
+					{ latex: raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: desmosPurple, lines: true },
+					{ latex: raw`t = 10` },
 				]
 			},
 		};

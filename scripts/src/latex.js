@@ -1,6 +1,7 @@
+import { raw } from "./main.js";
 
  
-const preamble = String.raw`\documentclass{article}
+const preamble = raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}

@@ -1,5 +1,5 @@
 import { changeOpacity } from "./animation.js";
-import { $$, loadScript } from "./main.js";
+import { $$, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 export let desmosPurple = "#772fbf";
@@ -61,11 +61,11 @@ export async function createDesmosGraphs(recreating = false)
 	{
 		data[key].expressions.forEach(expression =>
 		{
-			expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
-			expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
+			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
+			expression.latex = expression.latex.replace(/\)/g, raw`\right)`);
 
-			expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
-			expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
+			expression.latex = expression.latex.replace(/\[/g, raw`\left[`);
+			expression.latex = expression.latex.replace(/\]/g, raw`\right]`);
 		});
 	}
 
@@ -187,7 +187,7 @@ export function getDesmosPoint({
 	secret = true
 }) {
 	return [
-		{ latex: String.raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret },
+		{ latex: raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret },
 	];
 }
 
@@ -199,7 +199,7 @@ export function getDesmosSlider({
 	secret = true
 }) {
 	return [
-		{ latex: String.raw`${expression}`, sliderBounds: { min, max, step }, secret },
+		{ latex: raw`${expression}`, sliderBounds: { min, max, step }, secret },
 	];
 }
 
@@ -211,17 +211,17 @@ export function getDesmosVector({
 	uid++;
 
 	return [
-		{ latex: String.raw`(${from[0]}, ${from[1]}), (${to[0]}, ${to[1]})`, color, lines: true, points: false, secret: true },
-		{ latex: String.raw`s_{${uid}} = \arctan(${to[1]} - ${from[1]}, ${to[0]} - ${from[0]})`, secret: true },
+		{ latex: raw`(${from[0]}, ${from[1]}), (${to[0]}, ${to[1]})`, color, lines: true, points: false, secret: true },
+		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - ${from[1]}, ${to[0]} - ${from[0]})`, secret: true },
 		{
-			latex: String.raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} + .5), ${to[1]} - .35\sin(s_{${uid}} + .5))`,
+			latex: raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} + .5), ${to[1]} - .35\sin(s_{${uid}} + .5))`,
 			color,
 			lines: true,
 			points: false,
 			secret: true
 		},
 		{
-			latex: String.raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} - .5), ${to[1]} - .35\sin(s_{${uid}} - .5))`,
+			latex: raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} - .5), ${to[1]} - .35\sin(s_{${uid}} - .5))`,
 			color,
 			lines: true,
 			points: false,

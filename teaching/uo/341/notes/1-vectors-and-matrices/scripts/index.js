@@ -5,6 +5,7 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -18,12 +19,12 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
-					{ latex: String.raw`a = 0` },
-					{ latex: String.raw`b = 2` },
+					{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
+					{ latex: raw`a = 0` },
+					{ latex: raw`b = 2` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
 				]
 			},
 			
@@ -33,9 +34,9 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x + y = 1`, color: desmosPurple, secret: true },
-					{ latex: String.raw`(a + 1)x + (a^2 + 1)y = 4a + 1`, color: desmosBlue, secret: true },
-					{ latex: String.raw`a = 2`, sliderBounds: { min: -2, max: 2 } },
+					{ latex: raw`x + y = 1`, color: desmosPurple, secret: true },
+					{ latex: raw`(a + 1)x + (a^2 + 1)y = 4a + 1`, color: desmosBlue, secret: true },
+					{ latex: raw`a = 2`, sliderBounds: { min: -2, max: 2 } },
 				]
 			},
 		};

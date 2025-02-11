@@ -8,6 +8,7 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -21,14 +22,14 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`a = 45`, secret: true, hidden: true },
+					{ latex: raw`a = 45`, secret: true, hidden: true },
 					
-					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
 
-					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+					{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
 				]
 			},
 
@@ -38,15 +39,15 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`a = 30`, secret: true, hidden: true },
+					{ latex: raw`a = 30`, secret: true, hidden: true },
 					
-					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
-					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
+					{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
 
-					{ latex: String.raw`(0, 0), (3 \cos(\frac{\pi}{180} a), 3 \sin(\frac{\pi}{180} a)), (3 \cos(\frac{\pi}{180} a), 0), (0, 0)`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: raw`(0, 0), (3 \cos(\frac{\pi}{180} a), 3 \sin(\frac{\pi}{180} a)), (3 \cos(\frac{\pi}{180} a), 0), (0, 0)`, color: desmosRed, points: false, lines: true, secret: true },
 				]
 			},
 
@@ -56,7 +57,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`(-3, 0), (3\cos(\frac{2\pi}{3}), 3\sin(\frac{2\pi}{3})), (3, 0), (-3, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(-3, 0), (3\cos(\frac{2\pi}{3}), 3\sin(\frac{2\pi}{3})), (3, 0), (-3, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
 				]
 			},
 
@@ -66,18 +67,18 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`a = 30`, secret: true, hidden: true },
+					{ latex: raw`a = 30`, secret: true, hidden: true },
 
-					{ latex: String.raw`r = 0.25 \left\{ 0 \leq \theta \leq \frac{\pi}{180} a \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`(.5 \cos(\frac{\pi}{360} a), .5 \sin(\frac{\pi}{360} a))`, color: desmosPurple, label: "θ", showLabel: true, labelSize: "large", hidden: true, secret: true },
+					{ latex: raw`r = 0.25 \left\{ 0 \leq \theta \leq \frac{\pi}{180} a \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`(.5 \cos(\frac{\pi}{360} a), .5 \sin(\frac{\pi}{360} a))`, color: desmosPurple, label: "θ", showLabel: true, labelSize: "large", hidden: true, secret: true },
 					
-					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true },
-					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true },
+					{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
 
-					{ latex: String.raw`(0, 0), (3 \cos(\frac{\pi}{180} a), 3 \sin(\frac{\pi}{180} a)), (3 \cos(\frac{\pi}{180} a), 0), (0, 0)`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: raw`(0, 0), (3 \cos(\frac{\pi}{180} a), 3 \sin(\frac{\pi}{180} a)), (3 \cos(\frac{\pi}{180} a), 0), (0, 0)`, color: desmosRed, points: false, lines: true, secret: true },
 				]
 			},
 
@@ -87,7 +88,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`(-3, 0), (3\cos(\frac{2\pi}{3}), 3\sin(\frac{2\pi}{3})), (3, 0), (-3, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(-3, 0), (3\cos(\frac{2\pi}{3}), 3\sin(\frac{2\pi}{3})), (3, 0), (-3, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
 				]
 			},
 
@@ -97,14 +98,14 @@ export default function()
 	
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true },
 					
-					{ latex: String.raw`a = 150`, secret: true, hidden: true },
+					{ latex: raw`a = 150`, secret: true, hidden: true },
 
-					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+					{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
 				]
 			},
 
@@ -116,13 +117,13 @@ export default function()
 	
 				expressions:
 				[
-					{ latex: String.raw`A = [ 0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360 ]` },
+					{ latex: raw`A = [ 0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360 ]` },
 
-					{ latex: String.raw`(A, \sin(A))`, color: desmosPurple, points: true, lines: false },
-					{ latex: String.raw`(A, \cos(A))`, color: desmosBlue, points: true, lines: false },
+					{ latex: raw`(A, \sin(A))`, color: desmosPurple, points: true, lines: false },
+					{ latex: raw`(A, \cos(A))`, color: desmosBlue, points: true, lines: false },
 
-					{ latex: String.raw`\sin(x)\left\{ 0 \leq x \leq 360 \right\}`, color: desmosPurple, points: true, lines: false, hidden: true },
-					{ latex: String.raw`\cos(x)\left\{ 0 \leq x \leq 360 \right\}`, color: desmosBlue, points: true, lines: false, hidden: true },
+					{ latex: raw`\sin(x)\left\{ 0 \leq x \leq 360 \right\}`, color: desmosPurple, points: true, lines: false, hidden: true },
+					{ latex: raw`\cos(x)\left\{ 0 \leq x \leq 360 \right\}`, color: desmosBlue, points: true, lines: false, hidden: true },
 				]
 			},
 
@@ -132,9 +133,9 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 = 1`, color: desmosBlack },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
 					
 					...getDesmosSlider({
 						expression: "a = 30",
@@ -144,11 +145,11 @@ export default function()
 						secret: false
 					}),
 
-					{ latex: String.raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: String.raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+					{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
 
-					{ latex: String.raw`r = 0.3 + 0.02\theta \left\{ 0 \leq \theta \leq \frac{\pi}{180} a \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`r = 0.3 - 0.02\theta \left\{ 2\pi + \frac{\pi}{180} a \leq \theta \leq 2\pi \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`r = 0.3 + 0.02\theta \left\{ 0 \leq \theta \leq \frac{\pi}{180} a \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`r = 0.3 - 0.02\theta \left\{ 2\pi + \frac{\pi}{180} a \leq \theta \leq 2\pi \right\}`, color: desmosPurple, secret: true },
 				]
 			},
 
@@ -160,8 +161,8 @@ export default function()
 	
 				expressions:
 				[
-					{ latex: String.raw`\sin(x)`, color: desmosPurple },
-					{ latex: String.raw`\cos(x)`, color: desmosBlue },
+					{ latex: raw`\sin(x)`, color: desmosPurple },
+					{ latex: raw`\cos(x)`, color: desmosBlue },
 				]
 			},
 
@@ -173,7 +174,7 @@ export default function()
 	
 				expressions:
 				[
-					{ latex: String.raw`A\sin(B(x - h)) + k`, color: desmosPurple },
+					{ latex: raw`A\sin(B(x - h)) + k`, color: desmosPurple },
 					...getDesmosSlider({
 						expression: "A = 1",
 						min: -2,

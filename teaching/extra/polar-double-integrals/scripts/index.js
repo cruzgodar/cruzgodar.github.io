@@ -6,6 +6,7 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -19,8 +20,8 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`r = 1`, color: desmosPurple },
-					{ latex: String.raw`r = \sin(4\theta)`, color: desmosBlue },
+					{ latex: raw`r = 1`, color: desmosPurple },
+					{ latex: raw`r = \sin(4\theta)`, color: desmosBlue },
 				]
 			},
 
@@ -30,10 +31,10 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 \leq (r_0 + \Delta_r)^2 \left\{ r_0^2 \leq x^2 + y^2 \right\} \left\{ \theta_0 \leq \mod(\arctan(y, x), 2\pi) \right\} \left\{ \mod(\arctan(y, x), 2\pi) \leq \theta_0 + \Delta_{theta} \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`r_0^2 = x^2 + y^2 \left\{ \theta_0 \leq \mod(\arctan(y, x), 2\pi) \right\} \left\{ \mod(\arctan(y, x), 2\pi) \leq \theta_0 + \Delta_{theta} \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`\mod(\arctan(y, x), 2\pi) = \theta_0 \left\{ x^2 + y^2 \leq (r_0 + \Delta_r)^2 \right\} \left\{ r_0^2 \leq x^2 + y^2 \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`\mod(\arctan(y, x), 2\pi) = \theta_0 + \Delta_{theta} \left\{ x^2 + y^2 \leq (r_0 + \Delta_r)^2 \right\} \left\{ r_0^2 \leq x^2 + y^2 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x^2 + y^2 \leq (r_0 + \Delta_r)^2 \left\{ r_0^2 \leq x^2 + y^2 \right\} \left\{ \theta_0 \leq \mod(\arctan(y, x), 2\pi) \right\} \left\{ \mod(\arctan(y, x), 2\pi) \leq \theta_0 + \Delta_{theta} \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`r_0^2 = x^2 + y^2 \left\{ \theta_0 \leq \mod(\arctan(y, x), 2\pi) \right\} \left\{ \mod(\arctan(y, x), 2\pi) \leq \theta_0 + \Delta_{theta} \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`\mod(\arctan(y, x), 2\pi) = \theta_0 \left\{ x^2 + y^2 \leq (r_0 + \Delta_r)^2 \right\} \left\{ r_0^2 \leq x^2 + y^2 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`\mod(\arctan(y, x), 2\pi) = \theta_0 + \Delta_{theta} \left\{ x^2 + y^2 \leq (r_0 + \Delta_r)^2 \right\} \left\{ r_0^2 \leq x^2 + y^2 \right\}`, color: desmosPurple, secret: true },
 					...getDesmosSlider({
 						expression: "\\Delta_r = 0.25",
 						min: 0.01,
@@ -67,10 +68,10 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 \geq 1 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\} \left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x^2 + y^2 = 4 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x = 0 \left\{ -2 \leq y \leq -1 \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`y = 0 \left\{ -2 \leq x \leq -1 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x^2 + y^2 \geq 1 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\} \left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x^2 + y^2 = 4 \left\{ -\frac{\pi}{2} \leq \arctan(y, x) \leq \pi \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = 0 \left\{ -2 \leq y \leq -1 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`y = 0 \left\{ -2 \leq x \leq -1 \right\}`, color: desmosPurple, secret: true },
 				]
 			},
 
@@ -80,9 +81,9 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`x^2 + y^2 \leq 1 \left\{ 0 \leq \mod(\arctan(y, x), 2\pi) \leq \pi \right\} \left\{ x^2 + y^2 \geq \sin(\mod(\arctan(y, x), 2\pi))^2 \right\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`r = \sin(\theta)`, color: desmosPurple, secret: true },
-					{ latex: String.raw`y = 0 \left\{ -1 \leq x \leq 1 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x^2 + y^2 \leq 1 \left\{ 0 \leq \mod(\arctan(y, x), 2\pi) \leq \pi \right\} \left\{ x^2 + y^2 \geq \sin(\mod(\arctan(y, x), 2\pi))^2 \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`r = \sin(\theta)`, color: desmosPurple, secret: true },
+					{ latex: raw`y = 0 \left\{ -1 \leq x \leq 1 \right\}`, color: desmosPurple, secret: true },
 				]
 			}
 		};

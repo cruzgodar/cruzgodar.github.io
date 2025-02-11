@@ -7,6 +7,7 @@ import {
 	desmosRed,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -20,10 +21,10 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^5 - 3x^3 + x \{-1.5 \leq x \leq 1.5\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`(-3, 0), (-2, 2), (-1.5, f(-1.5))`, secret: true, points: false, lines: true, color: desmosPurple },
-					{ latex: String.raw`(-3, 0), (-1.5, f(-1.5)), (-.345, f(-.345)), (1.297, f(1.297))`, secret: true, color: desmosBlue },
-					{ latex: String.raw`(-2, 2), (-1.297, f(-1.297)), (.345, f(.345)), (1.5, f(1.5))`, secret: true, color: desmosRed },
+					{ latex: raw`f(x) = x^5 - 3x^3 + x \{-1.5 \leq x \leq 1.5\}`, color: desmosPurple, secret: true },
+					{ latex: raw`(-3, 0), (-2, 2), (-1.5, f(-1.5))`, secret: true, points: false, lines: true, color: desmosPurple },
+					{ latex: raw`(-3, 0), (-1.5, f(-1.5)), (-.345, f(-.345)), (1.297, f(1.297))`, secret: true, color: desmosBlue },
+					{ latex: raw`(-2, 2), (-1.297, f(-1.297)), (.345, f(.345)), (1.5, f(1.5))`, secret: true, color: desmosRed },
 				]
 			},
 
@@ -35,8 +36,8 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^3`, color: desmosPurple },
-					{ latex: String.raw`(0, 0)`, color: desmosBlue },
+					{ latex: raw`f(x) = x^3`, color: desmosPurple },
+					{ latex: raw`(0, 0)`, color: desmosBlue },
 				]
 			},
 
@@ -48,7 +49,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^5 - 3x^3 + x \left\{-2 \leq x \leq 1.5\right\}`, color: desmosPurple },
+					{ latex: raw`f(x) = x^5 - 3x^3 + x \left\{-2 \leq x \leq 1.5\right\}`, color: desmosPurple },
 				]
 			},
 
@@ -60,12 +61,12 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^5 - 3x^3 + x`, color: desmosPurple, hidden: true, secret: true },
-					{ latex: String.raw`f(x)`, color: desmosPurple },
-					{ latex: String.raw`f''(x)`, color: desmosGreen, hidden: true },
+					{ latex: raw`f(x) = x^5 - 3x^3 + x`, color: desmosPurple, hidden: true, secret: true },
+					{ latex: raw`f(x)`, color: desmosPurple },
+					{ latex: raw`f''(x)`, color: desmosGreen, hidden: true },
 
-					{ latex: String.raw`y \geq f(x) \{-.949 \leq x \leq 0, .949 \leq x\}`, color: desmosRed, secret: true },
-					{ latex: String.raw`y \leq f(x) \{x \leq -.949, 0 \leq x \leq .949\}`, color: desmosBlue, secret: true },
+					{ latex: raw`y \geq f(x) \{-.949 \leq x \leq 0, .949 \leq x\}`, color: desmosRed, secret: true },
+					{ latex: raw`y \leq f(x) \{x \leq -.949, 0 \leq x \leq .949\}`, color: desmosBlue, secret: true },
 				]
 			},
 
@@ -77,7 +78,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`g(t) = t^6 - t^4`, color: desmosPurple },
+					{ latex: raw`g(t) = t^6 - t^4`, color: desmosPurple },
 				]
 			}
 		};

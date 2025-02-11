@@ -9,6 +9,8 @@ export let pageElement = document.createElement("div");
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
 
+export const raw = String.raw;
+
 export function updatePageElement()
 {
 	pageElement = document.body.querySelector(".page");

@@ -4,6 +4,7 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -17,14 +18,14 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \frac{1}{x^2}`, color: desmosPurple },
-					{ latex: String.raw`a = 1` },
-					{ latex: String.raw`b = \infty` },
+					{ latex: raw`f(x) = \frac{1}{x^2}`, color: desmosPurple },
+					{ latex: raw`a = 1` },
+					{ latex: raw`b = \infty` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
 				]
 			},
 
@@ -36,14 +37,14 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \frac{1}{x}`, color: desmosPurple },
-					{ latex: String.raw`a = -\infty` },
-					{ latex: String.raw`b = -1` },
+					{ latex: raw`f(x) = \frac{1}{x}`, color: desmosPurple },
+					{ latex: raw`a = -\infty` },
+					{ latex: raw`b = -1` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
 				]
 			},
 
@@ -55,14 +56,14 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \frac{1}{\sqrt{4 - x}}`, color: desmosPurple },
-					{ latex: String.raw`a = 0` },
-					{ latex: String.raw`b = 4` },
+					{ latex: raw`f(x) = \frac{1}{\sqrt{4 - x}}`, color: desmosPurple },
+					{ latex: raw`a = 0` },
+					{ latex: raw`b = 4` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
 				]
 			},
 
@@ -74,14 +75,14 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \frac{1}{x^3}`, color: desmosPurple },
-					{ latex: String.raw`a = -1` },
-					{ latex: String.raw`b = 1` },
+					{ latex: raw`f(x) = \frac{1}{x^3}`, color: desmosPurple },
+					{ latex: raw`a = -1` },
+					{ latex: raw`b = 1` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
-					{ latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
+					{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+					{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
 				]
 			},
 		};

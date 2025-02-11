@@ -1609,7 +1609,8 @@ export const sitemap =
 			"/teaching/uo/112/notes/3-the-unit-circle",
 			"/teaching/uo/112/notes/4-sine-and-cosine",
 			"/teaching/uo/112/notes/5-tangent-and-inverses",
-			"/teaching/uo/112/notes/6-radians-and-equations"
+			"/teaching/uo/112/notes/6-radians-and-equations",
+			"/teaching/uo/112/notes/7-non-right-triangles-and-identities"
 		]
 	},
 		
@@ -1671,6 +1672,17 @@ export const sitemap =
 	"/teaching/uo/112/notes/6-radians-and-equations":
 	{
 		"title": "Section 6: Radians and Equations",
+		
+		"parent": "/teaching/uo/112",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/7-non-right-triangles-and-identities":
+	{
+		"title": "Section 7: Non-Right Triangles and Identities",
 		
 		"parent": "/teaching/uo/112",
 		

@@ -5,6 +5,7 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -18,9 +19,9 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple },
-					{ latex: String.raw`f'(x)`, color: desmosBlue },
-					{ latex: String.raw`C = 2` }
+					{ latex: raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple },
+					{ latex: raw`f'(x)`, color: desmosBlue },
+					{ latex: raw`C = 2` }
 				]
 			}
 		};

@@ -6,6 +6,7 @@ import {
 	desmosRed,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -19,12 +20,12 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
-					{ latex: String.raw`a = 0` },
-					{ latex: String.raw`b = 2` },
+					{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
+					{ latex: raw`a = 0` },
+					{ latex: raw`b = 2` },
 
-					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
 				]
 			},
 
@@ -36,16 +37,16 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`a = 0`, color: desmosPurple, sliderBounds: { min: 0, max: 10 } },
-					{ latex: String.raw`b = 10`, color: desmosPurple, sliderBounds: { min: 0, max: 10 } },
-					{ latex: String.raw`n = 10`, color: desmosBlue, sliderBounds: { min: 1, max: 30, step: 1 } },
+					{ latex: raw`a = 0`, color: desmosPurple, sliderBounds: { min: 0, max: 10 } },
+					{ latex: raw`b = 10`, color: desmosPurple, sliderBounds: { min: 0, max: 10 } },
+					{ latex: raw`n = 10`, color: desmosBlue, sliderBounds: { min: 1, max: 30, step: 1 } },
 
-					{ latex: String.raw`(a, 0)`, color: desmosPurple, secret: true },
-					{ latex: String.raw`(b, 0)`, color: desmosPurple, secret: true },
+					{ latex: raw`(a, 0)`, color: desmosPurple, secret: true },
+					{ latex: raw`(b, 0)`, color: desmosPurple, secret: true },
 
-					{ latex: String.raw`s = \frac{b - a}{n}`, secret: true },
-					{ latex: String.raw`X = [a, a + s, ..., b]`, secret: true },
-					{ latex: String.raw`x = X \{-.02 \leq y \leq .02\}`, color: desmosPurple, secret: true }
+					{ latex: raw`s = \frac{b - a}{n}`, secret: true },
+					{ latex: raw`X = [a, a + s, ..., b]`, secret: true },
+					{ latex: raw`x = X \{-.02 \leq y \leq .02\}`, color: desmosPurple, secret: true }
 				]
 			},
 
@@ -57,7 +58,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: desmosPurple },
+					{ latex: raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: desmosPurple },
 				]
 			},
 
@@ -69,19 +70,19 @@ export default function()
 
 				expressions:
 				[
-					{ latex: String.raw`f(t) = t^2`, color: desmosPurple, secret: true },
-					{ latex: String.raw`a = -5`, secret: true },
-					{ latex: String.raw`b = 5`, secret: true },
-					{ latex: String.raw`n = 5`, secret: true },
+					{ latex: raw`f(t) = t^2`, color: desmosPurple, secret: true },
+					{ latex: raw`a = -5`, secret: true },
+					{ latex: raw`b = 5`, secret: true },
+					{ latex: raw`n = 5`, secret: true },
 
-					{ latex: String.raw`s = \frac{b - a}{n}`, secret: true },
-					{ latex: String.raw`X = [a, a + s, ..., b]`, secret: true },
-					{ latex: String.raw`L = [a, a + s, ..., b - s]`, secret: true },
-					{ latex: String.raw`R = [a + s, a + 2s, ..., b]`, secret: true },
-					{ latex: String.raw`U = [-5, -3, -1, 3, 5]`, secret: true },
-					{ latex: String.raw`0 \leq y \leq f(U) \{ L \leq x \leq R \}`, color: desmosRed, secret: true },
-					{ latex: String.raw`x = L \{ 0 \leq y \leq f(U) \}`, color: desmosRed, secret: true },
-					{ latex: String.raw`x = R \{ 0 \leq y \leq f(U) \}`, color: desmosRed, secret: true }
+					{ latex: raw`s = \frac{b - a}{n}`, secret: true },
+					{ latex: raw`X = [a, a + s, ..., b]`, secret: true },
+					{ latex: raw`L = [a, a + s, ..., b - s]`, secret: true },
+					{ latex: raw`R = [a + s, a + 2s, ..., b]`, secret: true },
+					{ latex: raw`U = [-5, -3, -1, 3, 5]`, secret: true },
+					{ latex: raw`0 \leq y \leq f(U) \{ L \leq x \leq R \}`, color: desmosRed, secret: true },
+					{ latex: raw`x = L \{ 0 \leq y \leq f(U) \}`, color: desmosRed, secret: true },
+					{ latex: raw`x = R \{ 0 \leq y \leq f(U) \}`, color: desmosRed, secret: true }
 				]
 			},
 		};
