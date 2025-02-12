@@ -2,9 +2,13 @@
 
 
 
-With the ability to solve trig equations, we can approach another application of trig functions: their use in non-right triangles. We can 
+With the ability to solve trig equations, we can approach another application of trig functions: their use in non-right triangles. Our ability to use trig functions in right triangles came from the unit circle, as with most things, and so to approach non-right triangles, we'll place them in the unit circle too.
 
 ### desmos lawOfCosines
+
+Right triangles have a lot of convenient structure that leads to straightforward terminology: once we've chosen an angle, we can label the sides as opposite, adjacent, and hypotenuse. When there isn't a right angle, though, things are a bit more complicated. Pictured here is a general non-right triangle with sides $a$, $b$, and $c$, and angles $\alpha$, $\beta$, and $\gamma$ (the letters $a$, $b$, and $c$ of the Greek alphabet). It feels like we might want to have those Greek letters touching the sides with the corresponding Latin letters, but there isn't a good way to decide which of the two to pick. Instead, we'll name things so that the sides are opposite their corresponding angles.
+
+Let's see what we can determine with this triangle. As we change $a$, $b$, and $\gamma$, the angles $\alpha$ and $\beta$ and the side length $c$ seem to be determined for us, meaning there should in theory be a way to find all three in terms of $a$, $b$, and $\gamma$.
 
 
 
