@@ -9,6 +9,7 @@ With the ability to solve trig equations, we can approach another application of
 Right triangles have a lot of convenient structure that leads to straightforward terminology: once we've chosen an angle, we can label the sides as opposite, adjacent, and hypotenuse. When there isn't a right angle, though, things are a bit more complicated. Pictured here is a general non-right triangle with sides $a$, $b$, and $c$, and angles $\alpha$, $\beta$, and $\gamma$ (the letters $a$, $b$, and $c$ of the Greek alphabet, pronounced alpha, beta, and gamma). It feels like we might want to have those Greek letters touching the sides with the corresponding Latin letters, but there isn't a good way to decide which of the two to pick. Instead, we'll name things so that the sides are opposite their corresponding angles.
 
 Let's see what we can determine with this triangle. As we change $a$, $b$, and $\gamma$, the angles $\alpha$ and $\beta$ and the side length $c$ seem to be determined for us, meaning there should in theory be a way to find all three in terms of $a$, $b$, and $\gamma$. Normally, when we place an angle like $\gamma$ at the origin, we orient the triangle so that one side is on the $x$-axis and the other is the hypotenuse of the triangle, letting us use $\sin$, $\cos$, and the Pythagorean theorem. This time, though, side $c$ isn't perpendicular to side $a$, and so the Pythagorean theorem doesn't apply at all. However, we still know where all the points are: the one with angle $\beta$ is at $(a, 0)$ since it's on the $x$-axis, and the one with angle $\alpha$ is at $\left( b\cos(\gamma), b\sin(\gamma) \right)$, since it's on the circle of radius $b$ centered at the origin (toggle it on in the expression list to see). That means we can find the length of side $c$ by using the Pythagorean theorem (i.e. just the formula for distance between two points). Specifically,
+
 $$
 	c^2 &= \left( a - b\cos(\gamma) \right)^2 + \left( b\sin(\gamma) \right)^2
 
@@ -33,6 +34,54 @@ This is a surprisingly nice formula! There are a few important things to keep tr
 ###
 
 This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
+
+### exc "the Law of Cosines"
+
+	1. In a triangle with sides of length $2$ and $3$, and an angle of $\frac{\pi}{4}$ between them, what are the remaining sides and angles?
+
+	2. In a triangle with sides of length $5$, $8$, and $10$, what are all the angles?
+
+###
+
+The Law of Cosines helps when we either know all three sides and want to find angles, or when we know two sides and the angle between them. If we know a different three pieces of information --- either two sides and an angle not between them, or two angles and a side, then we'll need something else. Let's see if we can extract another formula about triangles that will help with these cases. Where the Law of Cosines used unit circle trigonometry, the next result will use right triangles instead.
+
+### desmos lawOfSines
+
+Drawing an altitude down from the point with angle $\alpha$, we get two right triangles: one with angle $\gamma$ and hypotenuse $b$, and another with angle $\beta$ and hypotenuse $c$. If we call the dashed line $y$, then
+$$
+	\sin(\gamma) &= \frac{y}{b}
+
+	\sin(\beta) &= \frac{y}{c}.
+$$
+
+Solving for $y$ and setting the two expressions equal to one another,
+
+$$
+	b\sin(\gamma) &= c\sin(\beta)
+
+	\frac{\sin(\beta)}{b} &= \frac{\sin(\gamma)}{c}.
+$$
+
+Doing the exact same thing with different sides, we find
+
+### prop -m "The Law of Sines"
+
+	In *any* triangle with side lengths $a$, $b$, and $c$, and angle $\alpha$, $\beta$, and $\gamma$ opposite them,
+	$$
+		\frac{\sin(\alpha)}{a} = \frac{\sin(\beta)}{b} = \frac{\sin(\gamma)}{c}.
+	$$
+
+###
+
+The Law of Sines neatly addresses both of the cases that the Law of Cosines misses: if we know two sides and an angle *not* between them, then that angle is opposite one of the sides, so the Law of Sines lets us solve for the sine of the other angle. And if we know two angles and a side, then we actually know all three angles since they have to sum to $\pi$, and so we can solve for both the remaining sides. If all we know is all three angles, we can't solve for any sides because of similar triangles: scaling a triangle up changes all of its side lengths but leaves the angles the same.
+
+### exc "the Law of Sines"
+
+	1. In a triangle with sides of length $4$ and $$, and an angle of $\frac{\pi}{4}$ between them, what are the remaining sides and angles?
+
+	2. In a triangle with sides of length $5$, $8$, and $10$, what are all the angles?
+
+###
 
 
 
