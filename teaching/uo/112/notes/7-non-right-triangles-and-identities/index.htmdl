@@ -6,9 +6,33 @@ With the ability to solve trig equations, we can approach another application of
 
 ### desmos lawOfCosines
 
-Right triangles have a lot of convenient structure that leads to straightforward terminology: once we've chosen an angle, we can label the sides as opposite, adjacent, and hypotenuse. When there isn't a right angle, though, things are a bit more complicated. Pictured here is a general non-right triangle with sides $a$, $b$, and $c$, and angles $\alpha$, $\beta$, and $\gamma$ (the letters $a$, $b$, and $c$ of the Greek alphabet). It feels like we might want to have those Greek letters touching the sides with the corresponding Latin letters, but there isn't a good way to decide which of the two to pick. Instead, we'll name things so that the sides are opposite their corresponding angles.
+Right triangles have a lot of convenient structure that leads to straightforward terminology: once we've chosen an angle, we can label the sides as opposite, adjacent, and hypotenuse. When there isn't a right angle, though, things are a bit more complicated. Pictured here is a general non-right triangle with sides $a$, $b$, and $c$, and angles $\alpha$, $\beta$, and $\gamma$ (the letters $a$, $b$, and $c$ of the Greek alphabet, pronounced alpha, beta, and gamma). It feels like we might want to have those Greek letters touching the sides with the corresponding Latin letters, but there isn't a good way to decide which of the two to pick. Instead, we'll name things so that the sides are opposite their corresponding angles.
 
-Let's see what we can determine with this triangle. As we change $a$, $b$, and $\gamma$, the angles $\alpha$ and $\beta$ and the side length $c$ seem to be determined for us, meaning there should in theory be a way to find all three in terms of $a$, $b$, and $\gamma$.
+Let's see what we can determine with this triangle. As we change $a$, $b$, and $\gamma$, the angles $\alpha$ and $\beta$ and the side length $c$ seem to be determined for us, meaning there should in theory be a way to find all three in terms of $a$, $b$, and $\gamma$. Normally, when we place an angle like $\gamma$ at the origin, we orient the triangle so that one side is on the $x$-axis and the other is the hypotenuse of the triangle, letting us use $\sin$, $\cos$, and the Pythagorean theorem. This time, though, side $c$ isn't perpendicular to side $a$, and so the Pythagorean theorem doesn't apply at all. However, we still know where all the points are: the one with angle $\beta$ is at $(a, 0)$ since it's on the $x$-axis, and the one with angle $\alpha$ is at $\left( b\cos(\gamma), b\sin(\gamma) \right)$, since it's on the circle of radius $b$ centered at the origin (toggle it on in the expression list to see). That means we can find the length of side $c$ by using the Pythagorean theorem (i.e. just the formula for distance between two points). Specifically,
+$$
+	c^2 &= \left( a - b\cos(\gamma) \right)^2 + \left( b\sin(\gamma) \right)^2
+
+	&= a^2 - 2ab\cos(\gamma) + b^2\cos^2(\gamma) + b^2\sin^2(\gamma)
+
+	&= a^2 - 2ab\cos(\gamma) + b^2\left( \cos^2(\gamma) + \sin^2(\gamma) \right)
+
+	&= a^2 - 2ab\cos(\gamma) + b^2\left( 1 \right)
+
+	&= a^2 + b^2 - 2ab\cos(\gamma).
+$$
+
+This is a surprisingly nice formula! There are a few important things to keep track of with it, and it should also probably get a name, so let's formally write it down.
+
+### prop -m "The Law of Cosines"
+
+	In *any* triangle with side lengths $a$ and $b$ and angle $\gamma$ between them, the length of side $c$ opposite $\gamma$ satisfies
+	$$
+		c^2 = a^2 + b^2 - 2ab\cos(\gamma).
+	$$
+
+###
+
+This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
 
 
 

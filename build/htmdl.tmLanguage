@@ -52,7 +52,7 @@
 
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (exc|ex|def|prop|thm|lem|cor|pf|ax|as)\s+(".*")\s*$</string>
+			<string>^\t*?(###) (exc|ex|def|prop|thm|lem|cor|pf|ax|as)\s+(-\w\s+)*(".*")\s*$</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
@@ -68,6 +68,11 @@
 					<string>keyword</string>
 				</dict>
 				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>4</key>
 				<dict>
 					<key>name</key>
 					<string>string</string>

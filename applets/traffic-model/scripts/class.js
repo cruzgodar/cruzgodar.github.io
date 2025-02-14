@@ -211,7 +211,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
-		this.canvas.style.imageRendering = "pixelated";
+		// this.canvas.style.imageRendering = "pixelated";
 	}
 
 
