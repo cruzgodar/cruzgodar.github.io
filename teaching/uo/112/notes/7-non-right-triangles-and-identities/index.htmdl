@@ -113,6 +113,12 @@ There is one small issue with the Law of Sines that the Law of Cosines doesn't h
 
 ###
 
+In general, we have to check for this alternate solution whenever using the Law of Sines to solve for an angle. Much of the time, though, the potential other value will produce a triangle whose angles sum to more than $\pi = 180^\circ$, and so we'll just disregard it.
+
+
+
+## Trigonometric Identities
+
 
 
 ### nav-buttons
