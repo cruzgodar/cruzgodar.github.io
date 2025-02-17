@@ -2,6 +2,8 @@
 
 
 
+## Non-Right Triangles
+
 With the ability to solve trig equations, we can approach another application of trig functions: their use in non-right triangles. Our ability to use trig functions in right triangles came from the unit circle, as with most things, and so to approach non-right triangles, we'll place them in the unit circle too.
 
 ### desmos lawOfCosines
@@ -27,6 +29,7 @@ This is a surprisingly nice formula! There are a few important things to keep tr
 ### prop -m "The Law of Cosines"
 
 	In *any* triangle with side lengths $a$ and $b$ and angle $\gamma$ between them, the length of side $c$ opposite $\gamma$ satisfies
+
 	$$
 		c^2 = a^2 + b^2 - 2ab\cos(\gamma).
 	$$
@@ -36,8 +39,8 @@ This is a surprisingly nice formula! There are a few important things to keep tr
 This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
 
 ### exc "the Law of Cosines"
-
-	1. In a triangle with sides of length $2$ and $3$, and an angle of $\frac{\pi}{4}$ between them, what are the remaining sides and angles?
+	
+	1. In a triangle with sides of length $2$ and $3$, and an angle of $\frac{\pi}{4}$ between them, what are the remaining sides and angles? You'll likely want to use a calculator for this problem and the next.
 
 	2. In a triangle with sides of length $5$, $8$, and $10$, what are all the angles?
 
@@ -67,19 +70,46 @@ Doing the exact same thing with different sides, we find
 ### prop -m "The Law of Sines"
 
 	In *any* triangle with side lengths $a$, $b$, and $c$, and angle $\alpha$, $\beta$, and $\gamma$ opposite them,
+
 	$$
 		\frac{\sin(\alpha)}{a} = \frac{\sin(\beta)}{b} = \frac{\sin(\gamma)}{c}.
 	$$
 
 ###
 
-The Law of Sines neatly addresses both of the cases that the Law of Cosines misses: if we know two sides and an angle *not* between them, then that angle is opposite one of the sides, so the Law of Sines lets us solve for the sine of the other angle. And if we know two angles and a side, then we actually know all three angles since they have to sum to $\pi$, and so we can solve for both the remaining sides. If all we know is all three angles, we can't solve for any sides because of similar triangles: scaling a triangle up changes all of its side lengths but leaves the angles the same.
+The Law of Sines neatly addresses both of the cases that the Law of Cosines misses: if we know two sides and an angle *not* between them, then that angle is opposite one of the sides, so the Law of Sines lets us solve for the sine of the other angle. And if we know two angles and a side, then we actually know all three angles since they have to sum to $\pi$, and so we can solve for both the remaining sides. If all we know is all three angles, we can't solve for any sides because of similar triangles: scaling a triangle up changes all of its side lengths but leaves the angles the same, so knowing only the angles of a triangle doesn't determine its side lengths.
 
 ### exc "the Law of Sines"
 
-	1. In a triangle with sides of length $4$ and $$, and an angle of $\frac{\pi}{4}$ between them, what are the remaining sides and angles?
+	1. The following triangle has sides of length $1$ and $2$ and an angle of $\frac{\pi}{3}$. What are the remaining sides and angles?
 
-	2. In a triangle with sides of length $5$, $8$, and $10$, what are all the angles?
+	### desmos lawOfSines2
+
+	2. Two of a triangle's angles are $\frac{\pi}{6}$, $\frac{\pi}{4}$, and its longest side has length $10$. What are the remaining sides and angles?
+
+###
+
+There is one small issue with the Law of Sines that the Law of Cosines doesn't have: when we're solving for the angles of a triangle by using $\arccos$, its output is between $0$ and $\pi$, which are exactly the valid angles of a triangle. On the other hand, using $\arcsin$ is somewhat more complicated: as we've seen with trig equations, its outputs are between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$, and in particular, that means it can't directly tell us about angles in a triangle that are larger than $\frac{\pi}{2}$. Because of this, we'll need to check for ourselves if such a case if possible when using the Law of Sines to solve for an angle. Let's see this in action with an example.
+
+### ex "complexity with the Law of Sines"
+
+	A triangle has sides of length $1$ and $\sqrt{3}$ and an angle of $\frac{\pi}{6}$ opposite the side of length $1$. What are the remaining sides and angles?
+
+	### desmos lawOfSines3
+
+	Since the angle of $\frac{\pi}{6}$ isn't in between the two sides we know, we have to use the Law of Sines. It tells us that if $\alpha$ is the angle opposite the side of length $\sqrt{3}$, then
+
+	$$
+		\frac{\sin(\alpha)}{\sqrt{3}} &= \frac{\sin\left( \frac{\pi}{6} \right)}{1}
+
+		\sin(\alpha) &= \sqrt{3} \sin\left( \frac{\pi}{6} \right)
+
+		\sin(\alpha) &= \frac{\sqrt{3}}{2}.
+	$$
+
+	This is a proper trig equation --- the sort that we learned about in the last section! As we saw then, our first solution is just $\alpha = \arcsin\left( \frac{\sqrt{3}}{2} \right) = \frac{\pi}{3}$, which produces a valid triangle: the familiar $30^\circ-60^\circ-90^\circ$ one graphed above. The remaining angle is $\frac{\pi}{2}$ to make all the angles sum to $\pi$, and to find the other side, we can use either the Law of Sines, the Law of Cosines, or the Pythagorean theorem to see that it's equal to $2$.
+
+	However, $\alpha = \frac{\pi}{3}$ isn't the only possible solution. The other point on the unit circle with $y$-coordinate $\frac{\sqrt{3}}{2}$ has an angle of $\frac{2\pi}{3}$, and with that angle, the remaining angle is $\frac{\pi}{6}$ and the side opposite it has length $1$ by the Law of Sines (or just by symmetry). Geometrically, the length of the side opposite the bottom-right angle has two different values where the rightmost side has length $1$ (colored and labeled in black as the slider changes).
 
 ###
 

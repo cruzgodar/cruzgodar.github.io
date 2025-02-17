@@ -122,6 +122,108 @@ export default function()
 
 					{ latex: raw`(b\cos(\gamma), b\sin(\gamma)), (b\cos(\gamma), 0)`, color: desmosBlack, points: false, lines: true, lineStyle: "DASHED" },
 				]
+			},
+
+			lawOfSines2:
+			{
+				bounds: { left: -1, right: 2, bottom: -0.5, top: 2.5 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`\gamma = 1.645`,
+						min: 0,
+						max: raw`\pi`,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`a = 1`,
+						min: 0,
+						max: 3,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`b = 2`,
+						min: 0,
+						max: 3,
+						secret: false,
+					}),
+
+					{ latex: raw`c = \sqrt{a^2 + b^2 - 2ab\cos(\gamma)}`, secret: false },
+
+					{ latex: raw`(0, 0), (a, 0)`, color: desmosBlack, points: false, lines: true, secret: true },
+					{ latex: raw`(a, 0), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, points: false, lines: true, secret: true },
+					{ latex: raw`(b\cos(\gamma), b\sin(\gamma)), (0, 0)`, color: desmosBlack, points: false, lines: true, secret: true },
+
+					{ latex: raw`(0, 0), (a, 0), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, secret: true },
+
+					{ latex: raw`a_1 = \arctan(-b\sin(\gamma), -b\cos(\gamma))`, secret: true },
+					{ latex: raw`a_2 = \arctan(-b\sin(\gamma), a - b\cos(\gamma))`, secret: true },
+					{ latex: raw`a_3 = \frac{a_1 + a_2}{2}`, secret: true },
+
+					{ latex: raw`b_3 = \arctan(0.5b\sin(\gamma), 0.5b\cos(\gamma) - a) + 0.2`, secret: false },
+					{ latex: raw`(a, 0) + (0.35\cos(b_3), 0.35\sin(b_3))`, color: desmosBlack, label: "π/3", showLabel: true, hidden: true, secret: true },
+
+					{ latex: raw`(0.5a, -0.2)`, color: desmosBlack, label: "1", showLabel: true, hidden: true, secret: true },
+					{ latex: raw`(0.5b\cos(\gamma), 0.5b\sin(\gamma)) + (0.2\cos(b_3), 0.2\sin(b_3))`, color: desmosBlack, label: "2", showLabel: true, hidden: true, secret: true },
+				]
+			},
+
+			lawOfSines3:
+			{
+				bounds: {
+					left: -0.25,
+					right: Math.sqrt(3) + 0.25,
+					bottom: -(Math.sqrt(3) / 2 + 0.25) + 0.5,
+					top: (Math.sqrt(3) / 2 + 0.25) + 0.5
+				},
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`\gamma = \frac{\pi}{6}`,
+						min: 0,
+						max: raw`\pi`,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`a = \sqrt{3}`,
+						min: 0,
+						max: 3,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`b = 2`,
+						min: 0,
+						max: 3,
+						secret: false,
+					}),
+
+					{ latex: raw`(0, 0), (a, 0)`, color: desmosBlack, points: false, lines: true, secret: true },
+					{ latex: raw`(a, 0), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, points: false, lines: true, secret: true },
+					{ latex: raw`(b\cos(\gamma), b\sin(\gamma)), (0, 0)`, color: desmosBlack, points: false, lines: true, secret: true },
+					{ latex: raw`(a, 0), (b\cos(\gamma), b\sin(\gamma)) \left\{ b < 0.95 \right\}`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: raw`(a, 0), (b\cos(\gamma), b\sin(\gamma)) \left\{ 1.05 < b < 1.95 \right\}`, color: desmosRed, points: false, lines: true, secret: true },
+					{ latex: raw`(a, 0), (b\cos(\gamma), b\sin(\gamma)) \left\{ 2.05 < b \right\}`, color: desmosRed, points: false, lines: true, secret: true },
+
+					{ latex: raw`(0, 0), (a, 0), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, secret: true },
+
+					{ latex: raw`a_1 = \arctan(-b\sin(\gamma), -b\cos(\gamma))`, secret: true },
+					{ latex: raw`a_2 = \arctan(-b\sin(\gamma), a - b\cos(\gamma))`, secret: true },
+					{ latex: raw`a_3 = \frac{a_1 + a_2}{2}`, secret: true },
+
+					{ latex: raw`b_3 = \arctan(0.5b\sin(\gamma), 0.5b\cos(\gamma) - a) + 0.2`, secret: true },
+
+					{ latex: raw`(0.4\cos(0.5\gamma), 0.4\sin(0.5\gamma))`, color: desmosBlack, label: "π/6", showLabel: true, hidden: true, secret: true },
+					{ latex: raw`(0.5a, -0.2)`, color: desmosBlack, label: "√3", showLabel: true, hidden: true, secret: true },
+
+					{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))\left\{0.95 \leq b \leq 1.05 \right\}`, color: desmosBlack, label: "1", showLabel: true, hidden: true, secret: true },
+					{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))\left\{1.95 \leq b \leq 2.05 \right\}`, color: desmosBlack, label: "1", showLabel: true, hidden: true, secret: true },
+				]
 			}
 		};
 
