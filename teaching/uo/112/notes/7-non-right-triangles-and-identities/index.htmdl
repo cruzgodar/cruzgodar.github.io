@@ -187,6 +187,8 @@ In addition to these new functions, there are a number of relationships between 
 		\cos\left( \frac{\theta}{2} \right) &= \pm \sqrt{\frac{1 + \cos(\theta)}{2}}
 	$$
 
+	The $\pm$ indicates that both a positive and negative version are possible, but only one is true in practice for any given angle. To figure out which, we just determine which quadrant we're in, just like with reference angles.
+
 	4. The sum and difference formulas:
 
 	$$
@@ -222,6 +224,14 @@ In addition to these new functions, there are a number of relationships between 
 	$$
 
 	And now all the other formulas follow from these! By plugging in $-\beta$ for $\beta$ and using the fact that $\sin$ is odd and $\cos$ is even, we can produce the difference formulas. By setting $\alpha = \beta$ in the sum formulas, we get the double-angle formulas, and by solving those for $\sin(\theta)$ and $\cos(\theta)$, we can produce the half-angle formulas.
+
+###
+
+### exc
+
+	1. Use the half-angle identities to compute the exact values of $\sin\left( \frac{\pi}{8} \right)$, $\cos\left( \frac{\pi}{12} \right)$, and $\tan\left( \frac{5\pi}{12} \right)$.
+
+	2. Find the exact values of $\sin\left( 75^\circ \right)$, $\sec\left( 37.5^\circ \right)$, and $\cot\left( 165^\circ \right)$.
 
 ###
 
