@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosGreen,
 	desmosPurple,
 	desmosRed,
 	getDesmosSlider,
@@ -223,6 +224,77 @@ export default function()
 
 					{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))\left\{0.95 \leq b \leq 1.05 \right\}`, color: desmosBlack, label: "1", showLabel: true, hidden: true, secret: true },
 					{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))\left\{1.95 \leq b \leq 2.05 \right\}`, color: desmosBlack, label: "1", showLabel: true, hidden: true, secret: true },
+				]
+			},
+
+			cotangent:
+			{
+				bounds: {
+					left: - 0.5 * Math.PI - 0.5,
+					right: 1.5 * Math.PI + 0.5,
+					bottom: - Math.PI - 0.5,
+					top: Math.PI + 0.5
+				},
+	
+				expressions:
+				[
+					{ latex: raw`\cot(x)`, color: desmosPurple },
+				]
+			},
+
+			cosecant:
+			{
+				bounds: {
+					left: -Math.PI - 0.5,
+					right: 3 * Math.PI + 0.5,
+					bottom: - 2 * Math.PI - 0.5,
+					top: 2 * Math.PI + 0.5
+				},
+	
+				expressions:
+				[
+					{ latex: raw`\csc(x)`, color: desmosPurple },
+					{ latex: raw`\sin(x)`, color: desmosBlue },
+
+					{ latex: raw`\sec(x)`, color: desmosPurple, hidden: true },
+					{ latex: raw`\cos(x)`, color: desmosBlue, hidden: true },
+				]
+			},
+
+			sumFormulas:
+			{
+				bounds: { left: -0.25, right: 1.25, bottom: -0.25, top: 1.25 },
+	
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`\alpha = 0.5`,
+						min: 0,
+						max: raw`\frac{\pi}{2}`,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`\beta = 0.5`,
+						min: 0,
+						max: raw`\frac{\pi}{2} - \alpha`,
+						secret: false,
+					}),
+
+					{ latex: raw`x^2 + y^2 = 1 \left\{ x \geq 0 \right\} \left\{ y \geq 0 \right\}`, color: desmosBlack, secret: true },
+
+					{ latex: raw`\polygon((0, 0), (\cos(\alpha)\cos(\beta), 0), (\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)), (0, 0))`, color: desmosPurple, lines: true, fill: true, fillOpacity: 0.25, secret: true },
+
+					{ latex: raw`\polygon((0, 0), (\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (0, 0))`, color: desmosBlue, lines: true, fill: true, fillOpacity: 0.25, secret: true },
+
+					{ latex: raw`\polygon((\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)), (\cos(\alpha)\cos(\beta), \sin(\alpha + \beta)), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)))`, color: desmosRed, lines: true, fill: true, fillOpacity: 0.25, secret: true },
+
+					{ latex: raw`(0, 0), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (\cos(\alpha + \beta), 0), (0, 0)`, color: desmosGreen, points: false, lines: true, secret: true },
+
+					{ latex: raw`(0.2\cos(0.5\alpha), 0.2\sin(0.5\alpha))`, color: desmosPurple, label: "α", showLabel: true, hidden: true, secret: true },
+					{ latex: raw`(0.2\cos(0.5\beta + \alpha), 0.2\sin(0.5\beta + \alpha))`, color: desmosBlue, label: "β", showLabel: true, hidden: true, secret: true },
+
+					{ latex: raw`(\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)) + (0.15\cos(\frac{\pi}{2} + 0.5\alpha), 0.15\sin(\frac{\pi}{2} + 0.5\alpha))`, color: desmosRed, label: "α", showLabel: true, hidden: true, secret: true },
 				]
 			}
 		};

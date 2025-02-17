@@ -115,9 +115,115 @@ There is one small issue with the Law of Sines that the Law of Cosines doesn't h
 
 In general, we have to check for this alternate solution whenever using the Law of Sines to solve for an angle. Much of the time, though, the potential other value will produce a triangle whose angles sum to more than $\pi = 180^\circ$, and so we'll just disregard it.
 
+### exc "complexity with the Law of Sines"
+
+	1. For both of the triangles in the previous exercise, determine if there is a second triangle that meets the criteria in the problem statement.
+
+	2. A triangle has sides of length $2$ and $\sqrt{8}$ and an angle of $\frac{\pi}{6}$ opposite the side of length $2$. What are the remaining sides and angles?
+
+###
+
 
 
 ## Trigonometric Identities
+
+We'll take a moment at the end of this section to take a look at a few more trig functions, as well as some relationships between them. While we can do --- and have done --- quite a bit with the standard functions of $\sin$, $\cos$, and $\tan$, we'll often find their reciprocals appearing, and it will be nice to give them names.
+
+### def "secant, cosecant, and cotangent"
+
+	Let $\theta$ be an angle in the unit circle. The **secant** of $\theta$, written $\sec(\theta)$, is defined as $\sec(\theta) = \frac{1}{\cos(\theta)}$. Similarly, the **cosecant** of $\theta$, written $\csc(\theta)$, is defined as $\csc(\theta) = \frac{1}{\sin(\theta)}$. Finally, the **cotangent** of $\theta$, written $\cot(\theta)$, is defined as $\cot(\theta) = \frac{\cos(\theta)}{\sin(\theta)}$.
+
+###
+
+### exc "secant, cosecant, and cotangent"
+
+	Compute the following:
+
+	1. $$\csc\left( -\frac{\pi}{3} \right)$$
+
+	2. $$\sec\left( 270^\circ \right)$$
+
+	3. $$\cot\left( \frac{11\pi}{6} \right)$$
+
+###
+
+The graphs of the reciprocal functions are reminiscent of the graphs of the original trig functions: the graph of $y = \cot(x)$ is just the graph of $y = \tan(x)$, but backward and shifted slightly so that it has an asymptote at $0$ (since the $\sin(x)$ in the denominator is now undefined when $x = 0$).
+
+### desmos cotangent
+
+On the other hand, the graphs of $y = \sec(x)$ and $y = \csc(x)$ are fully new: the graph of $y = \csc(x)$ is full of asymptotes, one for each $x$-value where $\sin(x) = 0$. The closest it ever gets to $y = 0$ is when $\sin(x) = \pm 1$, at which point it's also equal to $\pm 1$.
+
+### desmos cosecant
+
+The graph of $y = \sec(x)$ is exactly analogous to $y = \cos(x)$, or equivalently is just the graph of $y = \csc(x)$ shifted to the left by $\frac{\pi}{2}$, just like with $\cos$ and $\sin$. Toggle it on in the graph to see!
+
+In addition to these new functions, there are a number of relationships between trig functions that will be occasionally helpful to us:
+
+### thm -m "The Trigonometric Identities"
+
+	1. The Pythagorean identities:
+
+	$$
+		\sin^2(\theta) + \cos^2(\theta) = 1
+
+		\tan^2(\theta) + 1 = \sec^2(\theta)
+
+		1 + \cot^2(\theta) = \csc^2(\theta)
+	$$
+
+	2. The double-angle formulas:
+
+	$$
+		\sin(2\theta) &= 2\sin(\theta)\cos(\theta)
+
+		\cos(2\theta) &= \cos^2(\theta) - \sin^2(\theta)
+	$$
+
+	3. The half-angle formulas:
+
+	$$
+		\sin\left( \frac{\theta}{2} \right) &= \pm \sqrt{\frac{1 - \cos(\theta)}{2}}
+
+		\cos\left( \frac{\theta}{2} \right) &= \pm \sqrt{\frac{1 + \cos(\theta)}{2}}
+	$$
+
+	4. The sum and difference formulas:
+
+	$$
+		\sin(\alpha + \beta) &= \sin(\alpha)\cos(\beta) + \cos(\alpha)\sin(\beta)
+
+		\sin(\alpha - \beta) &= \sin(\alpha)\cos(\beta) - \cos(\alpha)\sin(\beta)
+
+		\cos(\alpha + \beta) &= \cos(\alpha)\cos(\beta) - \sin(\alpha)\sin(\beta)
+
+		\cos(\alpha - \beta) &= \cos(\alpha)\cos(\beta) + \sin(\alpha)\sin(\beta)
+	$$
+
+###
+
+### pf
+
+	Let's take just a moment to justify *why* these are true! We've seen the first Pythagorean identity already, and the other two are just from dividing both sides by $\sin^2(\theta)$ and $\cos^2(\theta)$. For the others, let's start from the sum formulas.
+
+	### desmos sumFormulas
+
+	Labeling every angle and side length in this diagram would make it nearly unreadable, so let's discuss it one bit at a time. The purple triangle has an angle of $\alpha$ at the origin and the blue triangle has an angle of $\beta$. The green triangle then has an angle of $\alpha + \beta$ at the origin, and its hypotenuse has length $1$, so the right and bottom legs of the green triangle have lengths $\sin(\alpha + \beta)$ and $\cos(\alpha + \beta)$, respectively. Since the blue triangle *also* has hypotenuse $1$, its rightmost leg has length $\sin(\beta)$ and its bottommost one has length $\cos(\beta)$. On the other hand, the purple triangle's hypotenuse is the blue triangle's bottom leg, and so it has length $\cos(\beta)$. Therefore, the purple triangle's right and bottom legs have lengths $\cos(\beta)\sin(\alpha)$ and $\cos(\beta)\cos(\alpha)$.
+
+	Now the red triangle has a bottom angle *also* equal to $\alpha$: the top angle of the purple triangle is $\frac{\pi}{2} - \alpha$, and together with the right angle of the blue triangle and the bottom angle of the red one, it sums to $\pi$. Just like with the purple triangle, the red one has a hypotenuse of $\sin(\beta)$, so the top leg of the red triangle has length $\sin(\beta)\sin(\alpha)$ and the right leg has length $\sin(\beta)\cos(\alpha)$. Putting it all together, the right leg of the green triangle is the sum of the right legs of the purple and red triangles, so
+
+	$$
+		\sin(\alpha + \beta) &= \sin(\alpha)\cos(\beta) + \cos(\alpha)\sin(\beta).
+	$$
+
+	Similarly, the bottom leg of the green triangle is the bottom leg of the purple one minus the top leg of the red one, so
+
+	$$
+		\cos(\alpha + \beta) &= \cos(\alpha)\cos(\beta) - \sin(\alpha)\sin(\beta).
+	$$
+
+	And now all the other formulas follow from these! By plugging in $-\beta$ for $\beta$ and using the fact that $\sin$ is odd and $\cos$ is even, we can produce the difference formulas. By setting $\alpha = \beta$ in the sum formulas, we get the double-angle formulas, and by solving those for $\sin(\theta)$ and $\cos(\theta)$, we can produce the half-angle formulas.
+
+###
 
 
 
