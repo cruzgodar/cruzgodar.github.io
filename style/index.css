@@ -551,7 +551,7 @@ mjx-container
 #contents-container
 {
 	position: fixed;
-	height: calc(100% - 112px);
+	height: calc(100% - 72px);
 	width: fit-content;
 
 	/* To account for the border. */
