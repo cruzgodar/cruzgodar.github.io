@@ -568,6 +568,33 @@ mjx-container
 	z-index: 100;
 }
 
+@media (max-width: 350px)
+{
+	#contents-container
+	{
+		height: calc(100% - 67px);
+		top: 51px;
+	}
+}
+
+@media (max-width: 300px)
+{
+	#contents-container
+	{
+		height: calc(100% - 62px);
+		top: 46px;
+	}
+}
+
+@media (max-width: 270px)
+{
+	#contents-container
+	{
+		height: calc(100% - 57px);
+		top: 41px;
+	}
+}
+
 #contents
 {
 	width: fit-content;
