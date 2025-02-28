@@ -36,7 +36,7 @@ This is a surprisingly nice formula! There are a few important things to keep tr
 
 ###
 
-This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
+This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) = 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
 
 ### exc "the Law of Cosines"
 	
