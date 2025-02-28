@@ -1,0 +1,30 @@
+### nav-buttons
+
+
+
+We'll close out the term with a brief introduction to vectors. We often talk about points in the plane as being locations, but we often find ourselves wanting for a quantity to represent *changes* in location too. Those are more versatile, in substantive ways: we can add them together, for example, while adding locations isn't something that's well-defined. Without further ado, let's define vectors and see how to represent them
+
+### def "vectors"
+
+	A **vector** is a 2-dimensional quantity with magnitude and direction. Visually, we represent vectors as arrows in the plane, representing moving from the tail of the vector to the tip. The **magnitude** of a vector is the length from the tail to the tip, and the **angle** of a vector is the angle as measured counterclockwise from the positive $x$-direction.
+###
+
+### desmos vectors
+
+Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$.
+
+
+
+## Vector Arithmetic
+
+Suppose the displacement from Eugene to Portland is given by $\vec{v}$, and the displacement from Portland to Bend is given by $\vec{w}$. The total displacement from Eugene to Bend should then be some combination of the two vectors --- specifically the sum of the two, since that should give us the *total* displacement from Eugene to Bend. The takeaway is that to add two vectors, we place the tail of one at the tip of the other, and draw the vector connecting the tail of the first to the tip of the second.
+
+### desmos vectorAddition
+
+Here, the blue and red vectors are added together to give the purple one. The dashed vectors are the same, but added in a different order, giving the exact same result. With our previous example, if we first traveled from Eugene along the vector from Portland to Bend, we'd end up somewhere around Crater lake; if we then traveled from there along the vector from Eugene to Portland, we'd arrive exactly in Bend.
+
+
+
+
+
+### nav-buttons

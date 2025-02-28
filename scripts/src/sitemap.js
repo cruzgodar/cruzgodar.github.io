@@ -1610,7 +1610,8 @@ export const sitemap =
 			"/teaching/uo/112/notes/4-sine-and-cosine",
 			"/teaching/uo/112/notes/5-tangent-and-inverses",
 			"/teaching/uo/112/notes/6-radians-and-equations",
-			"/teaching/uo/112/notes/7-non-right-triangles-and-identities"
+			"/teaching/uo/112/notes/7-non-right-triangles-and-identities",
+			"/teaching/uo/112/notes/8-vectors"
 		]
 	},
 		
@@ -1683,6 +1684,17 @@ export const sitemap =
 	"/teaching/uo/112/notes/7-non-right-triangles-and-identities":
 	{
 		"title": "Section 7: Non-Right Triangles and Identities",
+		
+		"parent": "/teaching/uo/112",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/8-vectors":
+	{
+		"title": "Section 8: Intro to Vectors",
 		
 		"parent": "/teaching/uo/112",
 		
