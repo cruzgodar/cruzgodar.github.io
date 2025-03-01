@@ -3,7 +3,7 @@ import { VSingularValues, VU, VW } from "./vData.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export default function()
 {
@@ -18,13 +18,10 @@ export default function()
 	function initValueWilson()
 	{
 		const options = {
-			renderer: "cpu",
-		
 			canvasWidth: 400,
-			canvasHeight: 300
 		};
 		
-		const wilson = new Wilson($("#v-canvas"), options);
+		const wilson = new WilsonCPU($("#v-canvas"), options);
 
 		const image = new Array(wilson.canvasHeight);
 
@@ -66,11 +63,7 @@ export default function()
 				}
 			}
 
-			wilson.ctx.putImageData(
-				new ImageData(imageData, wilson.canvasWidth, wilson.canvasHeight),
-				0,
-				0
-			);
+			wilson.drawFrame(imageData);
 		}
 
 		function drawTruncatedImage(depth = 200)
@@ -99,13 +92,10 @@ export default function()
 		const numCols = 44;
 
 		const options = {
-			renderer: "cpu",
-		
 			canvasWidth: 100,
-			canvasHeight: 100
 		};
 		
-		const wilson = new Wilson($("#eigenface-canvas"), options);
+		const wilson = new WilsonCPU($("#eigenface-canvas"), options);
 
 		const dataLength = wilson.canvasHeight * wilson.canvasWidth * 4;
 
@@ -182,13 +172,7 @@ export default function()
 				u[i + 3] = 255;
 			}
 
-			const imageData = new ImageData(
-				new Uint8ClampedArray(u),
-				wilson.canvasWidth,
-				wilson.canvasHeight
-			);
-
-			wilson.ctx.putImageData(imageData, 0, 0);
+			wilson.drawFrame(new Uint8ClampedArray(u));
 		}
 
 		for (let i = 0; i < numCols; i++)

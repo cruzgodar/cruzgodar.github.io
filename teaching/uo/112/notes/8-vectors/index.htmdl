@@ -11,7 +11,7 @@ We'll close out the term with a brief introduction to vectors. We often talk abo
 
 ### desmos vectors
 
-Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$.
+Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$. We also denote the **zero vector** as $\vec{0}$, which is the unique vector with length zero.
 
 
 
@@ -23,6 +23,19 @@ Suppose the displacement from Eugene to Portland is given by $\vec{v}$, and the 
 
 Here, the blue and red vectors are added together to give the purple one. The dashed vectors are the same, but added in a different order, giving the exact same result. With our previous example, if we first traveled from Eugene along the vector from Portland to Bend, we'd end up somewhere around Crater lake; if we then traveled from there along the vector from Eugene to Portland, we'd arrive exactly in Bend.
 
+### exc "vector addition"
+
+	Let $\vec{v}$ and $\vec{w}$ be the vectors that both start at $(0, 0)$ and end at $\left( 2, 2\sqrt{3} \right)$ and $\left( -3, 0 \right)$, respectively. What is the length of $\vec{v} + \vec{w}$?
+
+###
+
+Adding a vector $\vec{v}$ to itself should result in a vector $\vec{v} + \vec{v} = 2\vec{v}$, and since we can find $\vec{v} + \vec{v}$ by placing two copies of $\vec{v}$, one after another, the result is just a vector in the same direction as $\vec{v}$, but twice as long. Similarly, if vector addition exists, then vector subtraction should too, and we really ought to have $\vec{v} - \vec{v} = \vec{0}$. That means $\vec{v} = (-1)\vec{v}$ should be a vector with the same length as $\vec{v}$, but in the opposite direction. These two examples give us a hint as to how we ought to define $c\vec{v}$ for any number $c$.
+
+### def "vector scaling"
+
+	Let $\vec{v}$ be a vector and let $c$ be a number. The vector $c\vec{v}$ is a vector parallel to $\vec{v}$, but 
+
+###
 
 
 
