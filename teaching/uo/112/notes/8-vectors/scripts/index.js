@@ -198,6 +198,70 @@ export default function()
 					}),
 				]
 			},
+
+			componentVectors:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: raw`A = [ 0, ..., \floor(\abs(a))\sign(a) ]` },
+					...getDesmosSlider({
+						expression: raw`a = 3`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					{ latex: raw`B = [ 0, ..., \floor(\abs(b))\sign(b) ]` },
+					
+					...getDesmosSlider({
+						expression: raw`b = 2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosPoint({
+						point: ["a", "b"],
+						color: desmosBlack,
+						dragMode: "XY",
+						secret: false,
+					}),
+
+					...(Array(5).fill().map((_, i) => getDesmosVector({
+						from: [`A[${i + 1}]`, "0"],
+						to: [`A[${i + 2}]`, "0"],
+						color: desmosRed,
+						secret: false
+					})).flat()),
+
+					...(Array(5).fill().map((_, i) => getDesmosVector({
+						from: ["a", `B[${i + 1}]`],
+						to: ["a", `B[${i + 2}]`],
+						color: desmosBlue,
+						secret: false
+					})).flat()),
+
+					...getDesmosVector({
+						from: [raw`\floor(\abs(a))\sign(a)`, "0"],
+						to: [raw`a + 0.00001\sign(a)`, "0"],
+						color: desmosRed,
+					}),
+
+					...getDesmosVector({
+						from: ["a", raw`\floor(\abs(b))\sign(b)`],
+						to: ["a", raw`b + 0.00001\sign(b)`],
+						color: desmosBlue,
+					}),
+
+					...getDesmosVector({
+						from: ["0", "0"],
+						to: ["a", "b"],
+						color: desmosPurple,
+					}),
+				]
+			}
 		};
 
 		return data;

@@ -33,7 +33,7 @@ Adding a vector $\vec{v}$ to itself should result in a vector $\vec{v} + \vec{v}
 
 ### def "vector scaling"
 
-	Let $\vec{v}$ be a vector and let $c$ be a number. The vector $c\vec{v}$ is a vector parallel to $\vec{v}$, but with length $|c| \cdot \left| \left| \vec{v} \right| \right|$. If $c < 0$, then $c\vec{v}$ points in the opposite direction to $\vec{v}$, and if $c = 0$, then $c\vec{v} = 0\vec{v} = \vec{0}$.
+	Let $\vec{v}$ be a vector and let $c$ be a number. The vector $c\vec{v}$ is a vector parallel to $\vec{v}$, but with length $|c| \cdot \left| \left| \vec{v} \right| \right|$. If $c < 0$, then $c\vec{v}$ points in the opposite direction to $\vec{v}$, and if $c = 0$, then $c\vec{v} = 0\vec{v} = \vec{0}$. We call this **scalar multiplication** and refer to $c$ as a scalar, specifically to indicate that it isn't a vector. Notably, we won't define a way to multiply two vectors. While we'll see a vector product a little bit later in the section, it will produce a *scalar* rather than a vector, and be decidedly different from what we might imagine the product of two vectors to be.
 
 ###
 
@@ -51,7 +51,7 @@ With vector addition and scalar multiplication defined in this way, we have a nu
 
 	For any vectors $\vec{u}$, $\vec{v}$ and $\vec{w}$,
 
-	1. $\vec{u} + \left(  \vec{v} + \vec{w} \right) = \left(  \vec{u} + \vec{v} \right) + \vec{w}$ (i.e. vector addition is associative).
+	1. $\vec{u} + \left( \vec{v} + \vec{w} \right) = \left(  \vec{u} + \vec{v} \right) + \vec{w}$ (i.e. vector addition is associative).
 
 	2. $\vec{v} + \vec{w} = \vec{w} + \vec{v}$ (i.e. vector addition is commutative).
 
@@ -63,11 +63,29 @@ With vector addition and scalar multiplication defined in this way, we have a nu
 
 	6. $c\left( \vec{v} + \vec{w} \right) = c\vec{v} + c\vec{w}$ and $(c + d)\vec{v} = c\vec{v} + d\vec{v}$ for any numbers $c$ and $d$ (i.e. scalar multiplication of vectors is distributive).
 
-	7. $\left| \left| c\vec{v} \right| \right| = |c|\left| \left| \vec{v} \right| \right|$ for any number $c$.
+	7. $\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right|$ for any number $c$.
 
-	8. The only vector $\vec{v}$ with $\left| \left| v \right| \right| = 0$ is $\vec{v} = \vec{0}$.
+	8. The only vector $\vec{v}$ with $\left| \left| \vec{v} \right| \right| = 0$ is $\vec{v} = \vec{0}$.
 
 ###
+
+
+
+## Decomposition into Components
+
+Representing a vector as a magnitude and direction makes some intuitive sense, but it's not particularly convenient for many of the things we want to do with vectors. Given $\vec{v}$ and $\vec{w}$ in this form, finding the magnitude and direction of $\vec{v} + \vec{w}$ usually requires using the Law of Cosines. One of the only cases where we can avoid that work is when $\vec{v}$ and $\vec{w}$ are perpendicular to one another, in which case we can find $\left| \left| \vec{v} + \vec{w} \right| \right|$ by just using the Pythagorean theorem. Moreover, if $\vec{v}$ is parallel to the $x$-axis and $\vec{w}$ is parallel to the $y$-axis, then we're set up to find the angle of $\vec{v} + \vec{w}$ using $\arctan$.
+
+Let's see if we can leverage this type of situation to represent vectors in a more convenient way. Given a vector $\vec{v}$, placing its tail at $(0, 0)$ means that it is completely determined by the position of its tip, say at $(a, b)$. We can then write it as the sum of two vectors --- one from $(0, 0)$ to $(a, 0)$, and one from $(a, 0)$ to $(a, b)$. To get standard notation for these, we can define vectors parallel to the $x$- and $y$-axes with length 1:
+
+### def "unit vectors"
+
+	We denote the vector from $(0, 0)$ to $(1, 0)$ by $\vec{i}$, and the vector from $(0, 0)$ to $(0, 1)$ by $\vec{j}$.
+
+###
+
+Then any vector $\vec{v}$ from $(0, 0)$ to $(a, b)$ is decomposable as $\vec{v} = a\vec{i} + b\vec{j}$.
+
+### desmos componentVectors
 
 
 
