@@ -87,6 +87,18 @@ Then any vector $\vec{v}$ from $(0, 0)$ to $(a, b)$ is decomposable as $\vec{v} 
 
 ### desmos componentVectors
 
+### exc "vector decomposition"
+
+	1. Let $\vec{v}$ be a vector with $\left| \left| \vec{v} \right| \right| = 6$ and whose angle is $$\frac{2\pi}{3}$$. Decompose $\vec{v}$ into unit vectors.
+
+	2. Let $\vec{w} = -6\vec{i} - 3\vec{j}$. Find $\left| \left| \vec{v} \right| \right|$ and its angle.
+
+	3. Find the unit vector decomposition of $\vec{v} + \vec{w}$ and use it to find its magnitude and direction.
+
+	4. What is the unit vector decomposition of a vector from $(0, 3)$ to $(-1, -2)$?
+
+###
+
 
 
 
