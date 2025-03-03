@@ -11,7 +11,7 @@ We'll close out the term with a brief introduction to vectors. We often talk abo
 
 ### desmos vectors
 
-Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$. We also denote the **zero vector** as $\vec{0}$, which is the unique vector with length zero.
+Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$. We also denote the **zero vector** as $\vec{0}$, which is the unique vector with length zero. We write the magnitude of $\vec{v}$ as $\left| \left| \vec{v} \right| \right|$ (similar to how absolute value is the distance of a number from $0$).
 
 
 
@@ -25,7 +25,7 @@ Here, the blue and red vectors are added together to give the purple one. The da
 
 ### exc "vector addition"
 
-	Let $\vec{v}$ and $\vec{w}$ be the vectors that both start at $(0, 0)$ and end at $\left( 2, 2\sqrt{3} \right)$ and $\left( -3, 0 \right)$, respectively. What is the length of $\vec{v} + \vec{w}$?
+	Let $\vec{v}$ and $\vec{w}$ be the vectors that both start at $(0, 0)$ and end at $\left( 2, 2\sqrt{3} \right)$ and $\left( -3, 0 \right)$, respectively. What is $\left| \left| \vec{v} + \vec{w} \right| \right|$?
 
 ###
 
@@ -33,7 +33,39 @@ Adding a vector $\vec{v}$ to itself should result in a vector $\vec{v} + \vec{v}
 
 ### def "vector scaling"
 
-	Let $\vec{v}$ be a vector and let $c$ be a number. The vector $c\vec{v}$ is a vector parallel to $\vec{v}$, but 
+	Let $\vec{v}$ be a vector and let $c$ be a number. The vector $c\vec{v}$ is a vector parallel to $\vec{v}$, but with length $|c| \cdot \left| \left| \vec{v} \right| \right|$. If $c < 0$, then $c\vec{v}$ points in the opposite direction to $\vec{v}$, and if $c = 0$, then $c\vec{v} = 0\vec{v} = \vec{0}$.
+
+###
+
+### exc "vector arithmetic"
+
+	In the following diagram, the purple vector is $\vec{v}$ and the blue one is $\vec{w}$. Draw $2\vec{v}$, $-3\vec{w}$, $\vec{v} + \vec{w}$, and $\vec{v} - \vec{w}$.
+
+	### desmos vectorArithmeticExercise
+
+###
+
+With vector addition and scalar multiplication defined in this way, we have a number of convenient results that let us mostly think about vectors as being just like numbers.
+
+### prop "properties of vectors"
+
+	For any vectors $\vec{u}$, $\vec{v}$ and $\vec{w}$,
+
+	1. $\vec{u} + \left(  \vec{v} + \vec{w} \right) = \left(  \vec{u} + \vec{v} \right) + \vec{w}$ (i.e. vector addition is associative).
+
+	2. $\vec{v} + \vec{w} = \vec{w} + \vec{v}$ (i.e. vector addition is commutative).
+
+	3. $\vec{v} + \vec{0} = \vec{v}$.
+
+	4. $0\vec{v} = \vec{0}$.
+
+	5. $\vec{v} - \vec{v} = \vec{0}$.
+
+	6. $c\left( \vec{v} + \vec{w} \right) = c\vec{v} + c\vec{w}$ and $(c + d)\vec{v} = c\vec{v} + d\vec{v}$ for any numbers $c$ and $d$ (i.e. scalar multiplication of vectors is distributive).
+
+	7. $\left| \left| c\vec{v} \right| \right| = |c|\left| \left| \vec{v} \right| \right|$ for any number $c$.
+
+	8. The only vector $\vec{v}$ with $\left| \left| v \right| \right| = 0$ is $\vec{v} = \vec{0}$.
 
 ###
 

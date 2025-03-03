@@ -177,7 +177,27 @@ export default function()
 						color: desmosPurple,
 					}),
 				]
-			}
+			},
+
+			vectorArithmeticExercise:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					...getDesmosVector({
+						from: ["1", "0"],
+						to: ["2", "-2"],
+						color: desmosPurple,
+					}),
+
+					...getDesmosVector({
+						from: ["0", "-1"],
+						to: ["-1", "0"],
+						color: desmosBlue,
+					}),
+				]
+			},
 		};
 
 		return data;
