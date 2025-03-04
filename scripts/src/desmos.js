@@ -213,17 +213,17 @@ export function getDesmosVector({
 	uid++;
 
 	return [
-		{ latex: raw`(${from[0]}, ${from[1]}), (${to[0]}, ${to[1]})`, color, lines: true, points: false, secret, lineStyle },
-		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - ${from[1]}, ${to[0]} - ${from[0]})`, secret },
+		{ latex: raw`((${from[0]}), (${from[1]})), ((${to[0]}), (${to[1]}))`, color, lines: true, points: false, secret, lineStyle },
+		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - (${from[1]}), ${to[0]} - (${from[0]}))`, secret },
 		{
-			latex: raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} + .5), ${to[1]} - .35\sin(s_{${uid}} + .5))`,
+			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - .35\cos(s_{${uid}} + .5), (${to[1]}) - .35\sin(s_{${uid}} + .5))`,
 			color,
 			lines: true,
 			points: false,
 			secret
 		},
 		{
-			latex: raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} - .5), ${to[1]} - .35\sin(s_{${uid}} - .5))`,
+			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - .35\cos(s_{${uid}} - .5), (${to[1]}) - .35\sin(s_{${uid}} - .5))`,
 			color,
 			lines: true,
 			points: false,

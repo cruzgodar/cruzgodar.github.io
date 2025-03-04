@@ -179,7 +179,7 @@ export async function redirect({
 
 	else
 	{
-		window.scrollTo(0, 0);
+		window.scrollTo(0, siteSettings.scrollToBottom ? document.body.scrollHeight : 0);
 	}
 
 	lastPageScroll = temp;

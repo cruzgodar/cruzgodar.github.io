@@ -83,7 +83,13 @@ Let's see if we can leverage this type of situation to represent vectors in a mo
 
 ###
 
-Then any vector $\vec{v}$ from $(0, 0)$ to $(a, b)$ is decomposable as $\vec{v} = a\vec{i} + b\vec{j}$.
+Then any vector $\vec{v}$ from $(0, 0)$ to $(a, b)$ is decomposable as $\vec{v} = a\vec{i} + b\vec{j}$. One of the most useful applications of this unit vector decomposition is that we can add and scale vectors by adding and scaling their unit vector expressions: for example, if $\vec{v} = 3\vec{i} - \vec{j}$ and $\vec{w} = \vec{i} - 2\vec{j}$, then
+
+$$
+	\vec{v} + 2\vec{w} &= 3\vec{i} - \vec{j} + 2\left( \vec{i} - 2\vec{j} \right)
+
+	&= 5\vec{i} - 5\vec{j}.
+$$
 
 ### desmos componentVectors
 
@@ -99,6 +105,38 @@ Then any vector $\vec{v}$ from $(0, 0)$ to $(a, b)$ is decomposable as $\vec{v} 
 
 ###
 
+
+
+
+## The Dot Product
+
+If we know the unit vector decomposition of a vector $\vec{v}$, then we can use $\arctan$ to find the angle it makes with the horizontal. If we have two vectors $\vec{v}$ and $\vec{w}$ and want to find the angle *between* them, though, then we have a bit more to do. Let's suppose $\vec{v} = a\vec{i} + b\vec{j}$ and $\vec{w} = c\vec{i} + d\vec{j}$. Then $\left| \left| \vec{v} \right| \right| = \sqrt{a^2 + b^2}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{c^2 + d^2}$. To form a triangle with sides consisting of $\vec{v}$ and $\vec{w}$, the third side should be $\vec{v} - \vec{w}$, since adding it to $\vec{w}$ should produce $\vec{v}$:
+
+### desmos dotProductMotivation
+
+Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
+
+$$
+	\vec{v} - \vec{w} &= \left( a - c \right)\vec{i} + \left( b - d \right)\vec{j}
+
+	\left| \left| \vec{v} - \vec{w} \right| \right| &= \sqrt{\left( a - c \right)^2 + \left( b - d \right)^2}.
+$$
+
+If the angle between $\vec{v}$ and $\vec{w}$ (i.e. the angle at the black point) is $\theta$, then the Law of Cosines says that
+
+$$
+	\left| \left| \vec{v} - \vec{w} \right| \right|^2 &= \left| \left| \vec{v} \right| \right|^2 + \left| \left| \vec{w} \right| \right|^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	\left( a - c \right)^2 + \left( b - d \right)^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	a^2 - 2ab + b^2 + c^2 - 2cd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	-2ab + -2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
+$$
+
+That left side is surprisingly simple! What we've come upon is the idea 
 
 
 

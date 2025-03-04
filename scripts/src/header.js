@@ -6,7 +6,8 @@ import {
 	siteSettings,
 	toggleDarkTheme,
 	toggleIncreaseContrast,
-	toggleReduceMotion
+	toggleReduceMotion,
+	toggleScrollToBottom
 } from "./settings.js";
 
 export let headerElement;
@@ -15,6 +16,7 @@ let accessibilityTooltipElement;
 export let darkThemeCheckbox;
 export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
+export let scrollToBottomCheckbox;
 
 let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
@@ -101,6 +103,18 @@ export function addHeader()
 						<div class="checkbox keep-accessibility-dialog-open"></div>
 					</div>
 					<label for="increase-contrast-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
+						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
+					</label>
+				</div>
+			</div>
+
+			<div class="checkboxes keep-accessibility-dialog-open" style="${window.DEBUG ? "display: block" : "display: none"}">
+				<div class="checkbox-row keep-accessibility-dialog-open">
+					<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">
+						<input type="checkbox" id="scroll-to-bottom-checkbox" class="keep-accessibility-dialog-open">
+						<div class="checkbox keep-accessibility-dialog-open"></div>
+					</div>
+					<label for="scroll-to-bottom-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
 						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
 					</label>
 				</div>
@@ -217,6 +231,22 @@ export function addHeader()
 
 		addHoverEventWithScale({
 			element: increaseContrastCheckbox.element.parentNode,
+			scale: 1.1,
+			addBounceOnTouch: () => true
+		});
+
+
+
+		scrollToBottomCheckbox = new Checkbox({
+			element: document.body.querySelector("#scroll-to-bottom-checkbox"),
+			name: "Scroll to bottom",
+			checked: siteSettings.scrollToBottom,
+			persistState: false,
+			onInput: () => toggleScrollToBottom()
+		});
+
+		addHoverEventWithScale({
+			element: scrollToBottomCheckbox.element.parentNode,
 			scale: 1.1,
 			addBounceOnTouch: () => true
 		});

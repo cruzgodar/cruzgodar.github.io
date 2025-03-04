@@ -60,6 +60,7 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
+	scrollToBottom: params.get("scrolltobottom") === "1",
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 };
@@ -152,6 +153,18 @@ export function getQueryParams()
 	else
 	{
 		params.delete("increasecontrast");
+	}
+
+
+
+	if (siteSettings.scrollToBottom)
+	{
+		params.set("scrolltobottom", "1");
+	}
+
+	else
+	{
+		params.delete("scrolltobottom");
 	}
 
 
@@ -447,6 +460,22 @@ export async function toggleIncreaseContrast({
 		element.remove();
 	}
 }
+
+
+
+export async function toggleScrollToBottom()
+{
+	siteSettings.scrollToBottom = !siteSettings.scrollToBottom;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	if (siteSettings.scrollToBottom)
+	{
+		window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+	}
+}
+
+
 
 let settingsCode = [];
 const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
