@@ -136,7 +136,71 @@ $$
 	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
 $$
 
-That left side is surprisingly simple! What we've come upon is the idea 
+That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is quite an important quantity relating the vectors $a\vec{i} + b\vec{j}$ and $c\vec{i} + d\vec{j}$. In fact, we'll want to give it its own name and notation.
+
+### def "the dot product"
+
+	Let $\vec{v} = a\vec{i} + b\vec{j}$ and $\vec{w} = c\vec{i} + d\vec{j}$. The **dot product** of $\vec{v}$ and $\vec{w}$ is $\vec{v} \bullet \vec{w} = ac + bd$. Notably, this is a *scalar*, not a vector.
+
+###
+
+*Product* is a slightly strange name for this thing, since it isn't a vector, but it does satisfy a lot of multiplication-like properties:
+
+### prop "properties of the dot product"
+
+	For any vectors $\vec{u}$, $\vec{v}$, and $\vec{w}$,
+
+	1. $\vec{v} \bullet \vec{w} = \vec{w} \bullet \vec{v}$.
+
+	2. $\vec{u} \bullet \left( \vec{v} + \vec{w} \right) = \vec{u} \bullet \vec{v} + \vec{u} \bullet \vec{w}$.
+
+	3. $\vec{v} \bullet \vec{v} = \left| \left| \vec{v} \right| \right|^2$.
+
+###
+
+The dot product measures both the magnitudes of its factors and the angle between them. If $\vec{v}$ and $\vec{w}$ have an angle $\theta$ between them with $0^\circ \leq \theta < 90^\circ$, then $\vec{v} \bullet \vec{w}$ is positive, and if $\theta > 90^\circ$, then $\vec{v} \bullet \vec{w}$ is negative. If $\theta = 90^\circ$, then $\vec{v} \bullet \vec{w} = 0$, and almost the same is true in reverse: if both $\vec{v}$ and $\vec{w}$ are nonzero and $\vec{v} \bullet \vec{w} = 0$, then $\cos(\theta)$ must be zero, since both $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{v} \right| \right|$ are nonzero --- and the only angle $\theta$ between two vectors with $\cos(\theta) = 0$ is $\theta = 90^\circ$. This is an important enough idea that it will warrant its own name.
+
+### def "orthogonality"
+
+	Two vectors $\vec{v}$ and $\vec{w}$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+With $\vec{v} = \vec{i} - \vec{j}$ for example, $\vec{w} = -2\vec{i} - 2\vec{j}$ is a vector orthogonal to $\vec{v}$, since
+
+$$
+	\vec{v} \bullet \vec{w} &= \left( \vec{i} - \vec{j} \right) \bullet \left( -2\vec{i} + 2\vec{j} \right)
+
+	&= (1)(-2) + (-1)(-2)
+
+	&= 0.
+$$
+
+If we want to solve for *all* vectors orthogonal to $\vec{v}$, we can take a general vector $a\vec{i} + b\vec{j}$ and solve
+
+$$
+	\left( \vec{i} - \vec{j} \right) \bullet \left( a\vec{i} + b\vec{j} \right) &= 0
+
+	a - b &= 0
+
+	a = b.
+$$
+
+Therefore, the vectors orthogonal to $\vec{v}$ are the vectors $a\vec{i} + a\vec{j}$ for any $a$.
+
+### exc "orthogonality"
+
+	Let $\vec{v} = 2\vec{i} + \vec{j}$.
+
+	1. Let $\vec{w} = 3\vec{i} - \vec{j}$, $\vec{u} = 2\vec{i}$, and $\vec{x} = \vec{i} - 2\vec{j}$. Find $\vec{v} \bullet \vec{w}$, $\vec{v} \bullet \vec{w}$, $\vec{v} \bullet \vec{x}$, and $\vec{v} \bullet \vec{v}$.
+
+	2. Find the angle between 
+
+	3. Draw $\vec{v}$ in the plane. Describe the vectors orthogonal to $\vec{v}$.
+
+	4. Find a formula for all vectors orthogonal to $\vec{v}$.
+
+###
 
 
 
