@@ -15,18 +15,16 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 ## Interactive Notes
 
 ### image-links
-	
-	notes/1-vectors-and-matrices
-	notes/2-row-reduction
-	notes/3-vector-arithmetic
-	notes/4-linear-transformations
-	notes/5-properties-of-transformations
-	notes/6-the-determinant
-	notes/7-vector-spaces
-	notes/8-bases-and-dimension
-	notes/9-the-fundamental-theorem-of-linear-algebra
-	notes/10-intro-to-markov-chains
-	
+	/teaching/notes/linear-algebra/vectors-and-matrices
+	/teaching/notes/linear-algebra/row-reduction
+	/teaching/notes/linear-algebra/vector-arithmetic
+	/teaching/notes/linear-algebra/linear-transformations
+	/teaching/notes/linear-algebra/properties-of-transformations
+	/teaching/notes/linear-algebra/the-determinant
+	/teaching/notes/linear-algebra/vector-spaces
+	/teaching/notes/linear-algebra/bases-and-dimension
+	/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra
+	/teaching/notes/linear-algebra/intro-to-markov-chains
 ###
 
 

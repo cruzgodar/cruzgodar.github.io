@@ -15,23 +15,22 @@ Welcome to Math 251! We'll use this page for all of the homework and any other f
 ## Interactive Notes
 
 ### image-links
-	
-	notes/0-algebra-and-trig-review	
-	notes/1-intro-to-limits	
-	notes/2-limit-rules	
-	notes/3-continuity	
-	notes/4-intro-to-derivatives	
-	notes/5-derivative-rules	
-	notes/6-applications-of-derivatives	
-	notes/7-exp-log-and-trig-derivatives	
-	notes/8-the-chain-rule	
-	notes/9-the-inverse-function-theorem	
-	notes/10-implicit-differentiation	
-	notes/11-optimization	
-	notes/12-l-hopitals-rule	
-	notes/13-related-rates	
-	notes/14-applied-optimization	
-	notes/15-newtons-method	
+	/teaching/notes/calculus/algebra-and-trig-review	
+	/teaching/notes/calculus/intro-to-limits	
+	/teaching/notes/calculus/limit-rules	
+	/teaching/notes/calculus/continuity	
+	/teaching/notes/calculus/intro-to-derivatives	
+	/teaching/notes/calculus/derivative-rules	
+	/teaching/notes/calculus/applications-of-derivatives	
+	/teaching/notes/calculus/exp-log-and-trig-derivatives	
+	/teaching/notes/calculus/the-chain-rule	
+	/teaching/notes/calculus/the-inverse-function-theorem	
+	/teaching/notes/calculus/implicit-differentiation	
+	/teaching/notes/calculus/optimization	
+	/teaching/notes/calculus/l-hopitals-rule	
+	/teaching/notes/calculus/related-rates	
+	/teaching/notes/calculus/applied-optimization	
+	/teaching/notes/calculus/newtons-method	
 ###
 
 
