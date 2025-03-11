@@ -77,7 +77,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	$$
 		d/dx[\sin(x)] &= \cos(x)
 		
-		\frac{d^2}{dx^2}[\sin(x)] &= -\sin(x)
+		\frac{\d ^2}{\d x^2}[\sin(x)] &= -\sin(x)
 		
 		\frac{d^3}{dx^3}[\sin(x)] &= -\cos(x)
 		
@@ -155,7 +155,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	$$
 		d/dx[\ln(x)] &= x^{-1}
 		
-		\frac{d^2}{dx^2}[\ln(x)] &= -x^{-2}
+		\frac{\d ^2}{\d x^2}[\ln(x)] &= -x^{-2}
 		
 		\frac{d^3}{dx^3}[\ln(x)] &= 2x^{-3}
 		
@@ -213,7 +213,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	$$
 		d/dx\left[ \frac{1}{1 + x} \right] &= -(1 + x)^{-2}
 		
-		\frac{d^2}{dx^2}\left[ \frac{1}{1 + x} \right] &= 2(1 + x)^{-3}
+		\frac{\d ^2}{\d x^2}\left[ \frac{1}{1 + x} \right] &= 2(1 + x)^{-3}
 		
 		\frac{d^3}{dx^3}\left[ \frac{1}{1 + x} \right] &= -6(1 + x)^{-4}
 		

@@ -74,7 +74,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 ### ex "the sum, difference, and constant multiple rules"
 	
-	Find $$\frac{d^2}{dx^2}[2x^2 - x]$$.
+	Find $$\frac{\d ^2}{\d x^2}[2x^2 - x]$$.
 	
 	As before, we'll handle one derivative at a time.
 	
@@ -108,7 +108,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 ### exc "the sum, difference, and constant multiple rules"
 	
-	Find $$\frac{d^2}{dt^2}[t^2 - 5t + 2]$$.
+	Find $$\frac{\d ^2}{\d t^2}[t^2 - 5t + 2]$$.
 	
 ###
 

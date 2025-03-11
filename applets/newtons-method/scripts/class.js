@@ -1,4 +1,4 @@
-import { hexToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
+import { hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { WilsonGPU } from "/scripts/wilson.js";
@@ -53,6 +53,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 		this.colorSetterElement = colorSetterElement;
 
 		const hiddenCanvas = this.createHiddenCanvas();
+
+		this.randomizeColors();
 
 
 
@@ -573,24 +575,24 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-	setColor(hex)
+	setColor(rgb, root = this.lastActiveRoot)
 	{
-		if (!(this.lastActiveRoot in this.colors))
+		if (!(root in this.colors))
 		{
 			return;
 		}
 
-		const result = hexToRgb(hex);
+		const r = rgb[0] / 255;
+		const g = rgb[1] / 255;
+		const b = rgb[2] / 255;
 
-		const r = result.r / 255;
-		const g = result.g / 255;
-		const b = result.b / 255;
+		const result = {
+			r: this.colors[root][0],
+			g: this.colors[root][1],
+			b: this.colors[root][2]
+		};
 
-		result.r = this.colors[this.lastActiveRoot][0];
-		result.g = this.colors[this.lastActiveRoot][1];
-		result.b = this.colors[this.lastActiveRoot][2];
-
-		const index = this.lastActiveRoot.slice(4);
+		const index = root.slice(4);
 		const uniformName = `color${index}`;
 
 		anime({
@@ -602,21 +604,34 @@ export class NewtonsMethod extends AnimationFrameApplet
 			duration: 250,
 			update: () =>
 			{
-				this.colors[this.lastActiveRoot][0] = result.r;
-				this.colors[this.lastActiveRoot][1] = result.g;
-				this.colors[this.lastActiveRoot][2] = result.b;
+				this.colors[root][0] = result.r;
+				this.colors[root][1] = result.g;
+				this.colors[root][2] = result.b;
 
 				this.wilson.setUniforms({
-					[uniformName]: this.colors[this.lastActiveRoot]
+					[uniformName]: this.colors[root]
 				});
 
 				this.wilsonHidden.setUniforms({
-					[uniformName]: this.colors[this.lastActiveRoot]
+					[uniformName]: this.colors[root]
 				});
 
 				this.needNewFrame = true;
 			}
 		});
+	}
+
+	randomizeColors()
+	{
+		for (const root in this.colors)
+		{
+			const color = hsvToRgb(
+				(Math.random() * 0.55 + 0.525) % 1,
+				0.2 * Math.random() + 0.3,
+				0.2 * Math.random() + 0.8,
+			);
+			this.setColor(color, root);
+		}
 	}
 
 	onDragDraggable({ id, x, y })

@@ -44,6 +44,7 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 	remove-root
 	spread-roots
 	randomize-roots
+	randomize-colors
 ###
 
 

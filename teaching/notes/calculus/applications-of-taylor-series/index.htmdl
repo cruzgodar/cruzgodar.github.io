@@ -209,7 +209,7 @@ As we mentioned in section 8, power series have the excellent property of being 
 	Getting everything in terms of power series tells us that
 	
 	$$
-		\frac{d^2}{dx^2} \sum_{n = 0}^\infty c_n x^n &= x \sum_{n = 0}^\infty c_n x^n
+		\frac{\d ^2}{\d x^2} \sum_{n = 0}^\infty c_n x^n &= x \sum_{n = 0}^\infty c_n x^n
 		
 		\sum_{n = 2}^\infty c_n(n)(n - 1) x^{n - 2} &= \sum_{n = 0}^\infty c_n x^{n + 1}.
 	$$

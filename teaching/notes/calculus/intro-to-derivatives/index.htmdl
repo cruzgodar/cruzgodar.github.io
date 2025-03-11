@@ -203,7 +203,7 @@ This gives us a nice heuristic for what differentiable functions look like: they
 Since the derivative of a function $f(x)$ is just another function, we can take the derivative of $f'(x)$ to get yet another function, called the **second derivative** of $f$ written $f''(x)$. The analgous form for the $d/dx$ notation is
 
 $$
-	d/dx \left[ d/dx \left[f\right] \right] = \frac{d^2}{dx^2}[f].
+	d/dx \left[ d/dx \left[f\right] \right] = \frac{\d ^2}{\d x^2}[f].
 $$
 
 Sometimes we'll want to talk about the $n$th derivative where $n$ is left as a variable --- instead of trying to write $n$ prime symbols, we just write $f^{(n)}$ instead. So for example, $f^{(3)}(x) = f'''(x)$.
@@ -214,7 +214,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 
 ### ex "a second derivative"
 	
-	Find $$\frac{d^2}{dx^2}[2x^2 - x]$$.
+	Find $$\frac{\d ^2}{\d x^2}[2x^2 - x]$$.
 	
 	This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
 	
@@ -246,7 +246,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 		&= 4.
 	$$
 	
-	In total, $\frac{d^2}{dx^2}[2x^2 - x] = 4$.
+	In total, $\frac{\d ^2}{\d x^2}[2x^2 - x] = 4$.
 	
 ###
 

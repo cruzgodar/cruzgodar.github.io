@@ -62,7 +62,7 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 	
 	$$d/dx[\cos(x)] = -\sin(x)$$.
 	
-	$$\frac{d^2}{dx^2}[\cos(x)] = -\cos(x)$$.
+	$$\frac{\d ^2}{\d x^2}[\cos(x)] = -\cos(x)$$.
 	
 	$$\frac{d^3}{dx^3}[\cos(x)] = \sin(x)$$.
 	
@@ -71,7 +71,7 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won't matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
 	
 	$$
-		\frac{d^{74}}{dx^{74}}[\cos(x)] &= \frac{d^2}{dx^2}[\cos(x)]
+		\frac{d^{74}}{dx^{74}}[\cos(x)] &= \frac{\d ^2}{\d x^2}[\cos(x)]
 		
 		&= -\cos(x).
 	$$
