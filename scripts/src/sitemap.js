@@ -621,6 +621,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/teaching/notes",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -635,133 +636,1004 @@ export const sitemap =
 		]
 	},
 		
+	"/teaching/notes":
+	{
+		"title": "Interactive Notes",
+		
+		"parent": "/teaching",
+		
+		"children":
+		[
+			"/teaching/notes/calculus/algebra-and-trig-review",
+			"/teaching/notes/calculus/intro-to-limits",
+			"/teaching/notes/calculus/limit-rules",
+			"/teaching/notes/calculus/continuity",
+			"/teaching/notes/calculus/intro-to-derivatives",
+			"/teaching/notes/calculus/derivative-rules",
+			"/teaching/notes/calculus/applications-of-derivatives",
+			"/teaching/notes/calculus/exp-log-and-trig-derivatives",
+			"/teaching/notes/calculus/the-chain-rule",
+			"/teaching/notes/calculus/the-inverse-function-theorem",
+			"/teaching/notes/calculus/implicit-differentiation",
+			"/teaching/notes/calculus/optimization",
+			"/teaching/notes/calculus/l-hopitals-rule",
+			"/teaching/notes/calculus/related-rates",
+			"/teaching/notes/calculus/applied-optimization",
+			"/teaching/notes/calculus/newtons-method",
+			"/teaching/notes/calculus/calc-1-review",
+			"/teaching/notes/calculus/riemann-sums",
+			"/teaching/notes/calculus/integrals-intro",
+			"/teaching/notes/calculus/antiderivatives",
+			"/teaching/notes/calculus/ftoc",
+			"/teaching/notes/calculus/simple-applications",
+			"/teaching/notes/calculus/u-sub",
+			"/teaching/notes/calculus/exp-and-log-integrals",
+			"/teaching/notes/calculus/area-between-curves",
+			"/teaching/notes/calculus/solids-of-revolution",
+			"/teaching/notes/calculus/arc-length-and-surface-area",
+			"/teaching/notes/calculus/physical-applications",
+			"/teaching/notes/calculus/integration-by-parts",
+			"/teaching/notes/calculus/trig-sub",
+			"/teaching/notes/calculus/partial-fractions",
+			"/teaching/notes/calculus/improper-integrals",
+			"/teaching/notes/calculus/intro-to-des",
+			"/teaching/notes/calculus/calc-2-review",
+			"/teaching/notes/calculus/sequences",
+			"/teaching/notes/calculus/series",
+			"/teaching/notes/calculus/divergence-and-integral-tests",
+			"/teaching/notes/calculus/comparison-tests",
+			"/teaching/notes/calculus/alternating-series",
+			"/teaching/notes/calculus/ratio-and-root-tests",
+			"/teaching/notes/calculus/power-series",
+			"/teaching/notes/calculus/properties-of-power-series",
+			"/teaching/notes/calculus/taylor-series",
+			"/teaching/notes/calculus/applications-of-taylor-series",
+			"/teaching/notes/linear-algebra/vectors-and-matrices",
+			"/teaching/notes/linear-algebra/row-reduction",
+			"/teaching/notes/linear-algebra/vector-arithmetic",
+			"/teaching/notes/linear-algebra/linear-transformations",
+			"/teaching/notes/linear-algebra/properties-of-transformations",
+			"/teaching/notes/linear-algebra/the-determinant",
+			"/teaching/notes/linear-algebra/vector-spaces",
+			"/teaching/notes/linear-algebra/bases-and-dimension",
+			"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra",
+			"/teaching/notes/linear-algebra/intro-to-markov-chains",
+			"/teaching/notes/linear-algebra/linear-algebra-1-review",
+			"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
+			"/teaching/notes/linear-algebra/diagonalization",
+			"/teaching/notes/linear-algebra/intro-to-des",
+			"/teaching/notes/linear-algebra/the-dot-product",
+			"/teaching/notes/linear-algebra/least-squares",
+			"/teaching/notes/linear-algebra/inner-product-spaces",
+			"/teaching/notes/linear-algebra/the-spectral-theorems",
+			"/teaching/notes/linear-algebra/jordan-normal-form",
+			"/teaching/notes/linear-algebra/singular-value-decompositions",
+			"/teaching/notes/differential-equations/calc-review",
+			"/teaching/notes/differential-equations/intro-to-des",
+			"/teaching/notes/differential-equations/if-and-sep",
+			"/teaching/notes/differential-equations/existence-and-exactness",
+			"/teaching/notes/differential-equations/intro-to-second-order-linear",
+			"/teaching/notes/differential-equations/complex-and-repeated-roots",
+			"/teaching/notes/differential-equations/nonhomogeneous-second-order-des",
+			"/teaching/notes/differential-equations/higher-order-des",
+			"/teaching/notes/differential-equations/intro-to-linear-algebra",
+			"/teaching/notes/differential-equations/systems-and-inverses",
+			"/teaching/notes/differential-equations/determinants-and-eigenthings",
+			"/teaching/notes/differential-equations/intro-to-systems",
+			"/teaching/notes/differential-equations/complex-and-repeated-eigenvectors",
+			"/teaching/notes/differential-equations/phase-portraits-and-stability",
+			"/teaching/notes/trig/transformations",
+			"/teaching/notes/trig/periodic-functions",
+			"/teaching/notes/trig/the-unit-circle",
+			"/teaching/notes/trig/sine-and-cosine",
+			"/teaching/notes/trig/tangent-and-inverses",
+			"/teaching/notes/trig/radians-and-equations",
+			"/teaching/notes/trig/non-right-triangles-and-identities",
+			"/teaching/notes/trig/vectors"
+		]
+	},
+		
+	"/teaching/notes/calculus/algebra-and-trig-review":
+	{
+		"title": "Algebra and Trig Review",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/intro-to-limits":
+	{
+		"title": "Section 1.1: Intro To Limits",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/limit-rules":
+	{
+		"title": "Section 1.2: Limit Rules",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/continuity":
+	{
+		"title": "Section 1.3: Continuity",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/intro-to-derivatives":
+	{
+		"title": "Section 2.1: Intro to Derivatives",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/derivative-rules":
+	{
+		"title": "Section 2.2: Derivative Rules",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/applications-of-derivatives":
+	{
+		"title": "Section 2.3: Applications of Derivatives",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/exp-log-and-trig-derivatives":
+	{
+		"title": "Section 2.4: A Handful of Derivatives",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/the-chain-rule":
+	{
+		"title": "Section 2.5: The Chain Rule",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/the-inverse-function-theorem":
+	{
+		"title": "Section 2.6: The Inverse Function Theorem",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/implicit-differentiation":
+	{
+		"title": "Section 2.7: Implicit Differentiation",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/optimization":
+	{
+		"title": "Section 2.8: Optimization",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/l-hopitals-rule":
+	{
+		"title": "Section 2.9: L'H&#244;pital's Rule",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/related-rates":
+	{
+		"title": "Section 2.10: Related Rates",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/applied-optimization":
+	{
+		"title": "Section 2.11: Applied Optimization",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/newtons-method":
+	{
+		"title": "Section 2.12: Newton's Method",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
+	},
+	
+	"/teaching/notes/calculus/calc-1-review":
+	{
+		"title": "Chapters 1 and 2 Review",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/riemann-sums":
+	{
+		"title": "Section 3.1: Riemann Sums",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/integrals-intro":
+	{
+		"title": "Section 3.2: Intro to Integrals",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/antiderivatives":
+	{
+		"title": "Section 3.3: Antiderivatives",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/ftoc":
+	{
+		"title": "Section 3.4: The Fundamental Theorem",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/simple-applications":
+	{
+		"title": "Section 3.5: Simple Applications",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/u-sub":
+	{
+		"title": "Section 3.6: $u$-Substitution",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/exp-and-log-integrals":
+	{
+		"title": "Section 3.7: A Handful of Integrals",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/area-between-curves":
+	{
+		"title": "Section 3.8: The Area Between Curves",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/solids-of-revolution":
+	{
+		"title": "Section 3.9: Solids of Revolution",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/arc-length-and-surface-area":
+	{
+		"title": "Section 3.10: Arc Length and Surface Area",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/physical-applications":
+	{
+		"title": "Section 3.11: Physical Applications",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/integration-by-parts":
+	{
+		"title": "Section 3.12: Integration by Parts",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/trig-sub":
+	{
+		"title": "Section 3.13: Trig Sub",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/partial-fractions":
+	{
+		"title": "Section 3.14: Partial Fractions",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/improper-integrals":
+	{
+		"title": "Section 3.15: Improper Integrals",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/intro-to-des":
+	{
+		"title": "Section 3.16: Intro to Differential Equations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/calc-2-review":
+	{
+		"title": "Chapter 3 Review",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/sequences":
+	{
+		"title": "Section 4.1: Sequences",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/series":
+	{
+		"title": "Section 4.2: Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/divergence-and-integral-tests":
+	{
+		"title": "Section 4.3: The Divergence and Integral Tests",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/comparison-tests":
+	{
+		"title": "Section 4.4: The Comparison Tests",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/alternating-series":
+	{
+		"title": "Section 4.5: Alternating Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/ratio-and-root-tests":
+	{
+		"title": "Section 4.6: The Ratio and Root Tests",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/power-series":
+	{
+		"title": "Section 4.7: Power Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/properties-of-power-series":
+	{
+		"title": "Section 4.8: Properties of Power Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/calculus/taylor-series":
+	{
+		"title": "Section 4.9: Taylor Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/applications-of-taylor-series":
+	{
+		"title": "Section 4.10: Applications of Taylor Series",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/vectors-and-matrices":
+	{
+		"title": "Section 1: Vectors and Matrices",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/row-reduction":
+	{
+		"title": "Section 2: Row Reduction",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/vector-arithmetic":
+	{
+		"title": "Section 3: Vector Arithmetic",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/linear-transformations":
+	{
+		"title": "Section 4: Linear Transformations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/properties-of-transformations":
+	{
+		"title": "Section 5: Properties of Transformations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/the-determinant":
+	{
+		"title": "Section 6: The Determinant",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/vector-spaces":
+	{
+		"title": "Section 7: Vector Spaces",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/bases-and-dimension":
+	{
+		"title": "Section 8: Bases and Dimension",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra":
+	{
+		"title": "Section 9: The Fundamental Theorem of Linear Algebra",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/intro-to-markov-chains":
+	{
+		"title": "Section 10: Intro to Markov Chains",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/linear-algebra-1-review":
+	{
+		"title": "Section 11: Linear Algebra I Review",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues":
+	{
+		"title": "Section 12: Eigenvectors and Eigenvalues",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
+	},
+	
+	"/teaching/notes/linear-algebra/diagonalization":
+	{
+		"title": "Section 13: Diagonalization",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/intro-to-des":
+	{
+		"title": "Section 14: Intro to Differential Equations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/the-dot-product":
+	{
+		"title": "Section 15: The Dot Product",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/linear-algebra/least-squares":
+	{
+		"title": "Section 16: Least-Squares Approximations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/inner-product-spaces":
+	{
+		"title": "Section 17: Inner Product Spaces",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/the-spectral-theorems":
+	{
+		"title": "Section 18: The Spectral Theorems",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/jordan-normal-form":
+	{
+		"title": "Section 19: Jordan Normal Form",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/linear-algebra/singular-value-decompositions":
+	{
+		"title": "Section 20: Singular Value Decompositions",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
+	},
+	
+	"/teaching/notes/differential-equations/calc-review":
+	{
+		"title": "Section 0: Calculus Review",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/differential-equations/intro-to-des":
+	{
+		"title": "Section 1: Intro to DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/differential-equations/if-and-sep":
+	{
+		"title": "Section 2: Linear and Separable DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/existence-and-exactness":
+	{
+		"title": "Section 3: Existence and Exactness",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/intro-to-second-order-linear":
+	{
+		"title": "Section 4: Intro to Second-Order Linear DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/complex-and-repeated-roots":
+	{
+		"title": "Section 5: Complex and Repeated Roots",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/nonhomogeneous-second-order-des":
+	{
+		"title": "Section 6: Nonhomogeneous DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/higher-order-des":
+	{
+		"title": "Section 7: Higher-Order DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/intro-to-linear-algebra":
+	{
+		"title": "Section 8: Intro to Linear Algebra",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/systems-and-inverses":
+	{
+		"title": "Section 9: Systems and Inverses",
+		
+		"parent": "/teaching/notes",
+		
+		"children": []
+	},
+	
+	"/teaching/notes/differential-equations/determinants-and-eigenthings":
+	{
+		"title": "Section 10: Determinants and Eigenthings",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/differential-equations/intro-to-systems":
+	{
+		"title": "Section 11: Intro to Systems of DEs",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/differential-equations/complex-and-repeated-eigenvectors":
+	{
+		"title": "Section 12: Complex and Repeated Eigenvectors",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/differential-equations/phase-portraits-and-stability":
+	{
+		"title": "Section 13: Phase Portraits and Stability",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/transformations":
+	{
+		"title": "Section 1: Transformations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/periodic-functions":
+	{
+		"title": "Section 2: Periodic Functions",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/the-unit-circle":
+	{
+		"title": "Section 3: The Unit Circle",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/sine-and-cosine":
+	{
+		"title": "Section 4: Sine and Cosine",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/tangent-and-inverses":
+	{
+		"title": "Section 5: The Tangent Function and Inverses",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/radians-and-equations":
+	{
+		"title": "Section 6: Radians and Equations",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/non-right-triangles-and-identities":
+	{
+		"title": "Section 7: Non-Right Triangles and Identities",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/trig/vectors":
+	{
+		"title": "Section 8: Intro to Vectors",
+		
+		"parent": "/teaching/notes",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/teaching/uo/342":
 	{
 		"title": "Math 342",
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/342/notes/0-linear-algebra-1-review",
-			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues",
-			"/teaching/uo/342/notes/2-diagonalization",
-			"/teaching/uo/342/notes/3-intro-to-des",
-			"/teaching/uo/342/notes/4-the-dot-product",
-			"/teaching/uo/342/notes/5-least-squares",
-			"/teaching/uo/342/notes/6-inner-product-spaces",
-			"/teaching/uo/342/notes/7-the-spectral-theorems",
-			"/teaching/uo/342/notes/8-jordan-normal-form",
-			"/teaching/uo/342/notes/9-singular-value-decompositions"
-		],
-
-		"customScript": true
-	},
-		
-	"/teaching/uo/342/notes/0-linear-algebra-1-review":
-	{
-		"title": "Section 0: Linear Algebra I Review",
-		
-		"parent": "/teaching/uo/342",
-		
 		"children": [],
 
 		"customScript": true
-	},
-	
-	"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues":
-	{
-		"title": "Section 1: Eigenvectors and Eigenvalues",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
-	},
-	
-	"/teaching/uo/342/notes/2-diagonalization":
-	{
-		"title": "Section 2: Diagonalization",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/342/notes/3-intro-to-des":
-	{
-		"title": "Section 3: Intro to Differential Equations",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/342/notes/4-the-dot-product":
-	{
-		"title": "Section 4: The Dot Product",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/342/notes/5-least-squares":
-	{
-		"title": "Section 5: Least-Squares Approximations",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/342/notes/6-inner-product-spaces":
-	{
-		"title": "Section 6: Inner Product Spaces",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/342/notes/7-the-spectral-theorems":
-	{
-		"title": "Section 7: The Spectral Theorems",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/342/notes/8-jordan-normal-form":
-	{
-		"title": "Section 8: Jordan Normal Form",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/342/notes/9-singular-value-decompositions":
-	{
-		"title": "Section 9: Singular Value Decompositions",
-		
-		"parent": "/teaching/uo/342",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
 	},
 	
 	"/teaching/uo/341":
@@ -769,122 +1641,6 @@ export const sitemap =
 		"title": "Math 341",
 		
 		"parent": "/teaching",
-		
-		"children":
-		[
-			"/teaching/uo/341/notes/1-vectors-and-matrices",
-			"/teaching/uo/341/notes/2-row-reduction",
-			"/teaching/uo/341/notes/3-vector-arithmetic",
-			"/teaching/uo/341/notes/4-linear-transformations",
-			"/teaching/uo/341/notes/5-properties-of-transformations",
-			"/teaching/uo/341/notes/6-the-determinant",
-			"/teaching/uo/341/notes/7-vector-spaces",
-			"/teaching/uo/341/notes/8-bases-and-dimension",
-			"/teaching/uo/341/notes/9-the-fundamental-theorem-of-linear-algebra",
-			"/teaching/uo/341/notes/10-intro-to-markov-chains"
-		],
-
-		"customScript": true
-	},
-		
-	"/teaching/uo/341/notes/1-vectors-and-matrices":
-	{
-		"title": "Section 1: Vectors and Matrices",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/2-row-reduction":
-	{
-		"title": "Section 2: Row Reduction",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/341/notes/3-vector-arithmetic":
-	{
-		"title": "Section 3: Vector Arithmetic",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/4-linear-transformations":
-	{
-		"title": "Section 4: Linear Transformations",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/5-properties-of-transformations":
-	{
-		"title": "Section 5: Properties of Transformations",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/341/notes/6-the-determinant":
-	{
-		"title": "Section 6: The Determinant",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/7-vector-spaces":
-	{
-		"title": "Section 7: Vector Spaces",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/341/notes/8-bases-and-dimension":
-	{
-		"title": "Section 8: Bases and Dimension",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/9-the-fundamental-theorem-of-linear-algebra":
-	{
-		"title": "Section 9: The Fundamental Theorem of Linear Algebra",
-		
-		"parent": "/teaching/uo/341",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/341/notes/10-intro-to-markov-chains":
-	{
-		"title": "Section 10: Intro to Markov Chains",
-		
-		"parent": "/teaching/uo/341",
 		
 		"children": [],
 
@@ -897,160 +1653,6 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/256/notes/0-calc-review",
-			"/teaching/uo/256/notes/1-intro-to-des",
-			"/teaching/uo/256/notes/2-if-and-sep",
-			"/teaching/uo/256/notes/3-existence-and-exactness",
-			"/teaching/uo/256/notes/4-intro-to-second-order-linear",
-			"/teaching/uo/256/notes/5-complex-and-repeated-roots",
-			"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des",
-			"/teaching/uo/256/notes/7-higher-order-des",
-			"/teaching/uo/256/notes/8-intro-to-linear-algebra",
-			"/teaching/uo/256/notes/9-systems-and-inverses",
-			"/teaching/uo/256/notes/10-determinants-and-eigenthings",
-			"/teaching/uo/256/notes/11-intro-to-systems",
-			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors",
-			"/teaching/uo/256/notes/13-phase-portraits-and-stability"
-		],
-
-		"customScript": true
-	},
-		
-	"/teaching/uo/256/notes/0-calc-review":
-	{
-		"title": "Section 0: Calculus Review",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/256/notes/1-intro-to-des":
-	{
-		"title": "Section 1: Intro to DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/256/notes/2-if-and-sep":
-	{
-		"title": "Section 2: Linear and Separable DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/3-existence-and-exactness":
-	{
-		"title": "Section 3: Existence and Exactness",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/4-intro-to-second-order-linear":
-	{
-		"title": "Section 4: Intro to Second-Order Linear DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/5-complex-and-repeated-roots":
-	{
-		"title": "Section 5: Complex and Repeated Roots",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/6-nonhomogeneous-second-order-des":
-	{
-		"title": "Section 6: Nonhomogeneous DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/7-higher-order-des":
-	{
-		"title": "Section 7: Higher-Order DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/8-intro-to-linear-algebra":
-	{
-		"title": "Section 8: Intro to Linear Algebra",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/9-systems-and-inverses":
-	{
-		"title": "Section 9: Systems and Inverses",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/256/notes/10-determinants-and-eigenthings":
-	{
-		"title": "Section 10: Determinants and Eigenthings",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/256/notes/11-intro-to-systems":
-	{
-		"title": "Section 11: Intro to Systems of DEs",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors":
-	{
-		"title": "Section 12: Complex and Repeated Eigenvectors",
-		
-		"parent": "/teaching/uo/256",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/256/notes/13-phase-portraits-and-stability":
-	{
-		"title": "Section 13: Phase Portraits and Stability",
-		
-		"parent": "/teaching/uo/256",
-		
 		"children": [],
 
 		"customScript": true
@@ -1062,130 +1664,6 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/253/notes/0-calc-2-review",
-			"/teaching/uo/253/notes/1-sequences",
-			"/teaching/uo/253/notes/2-series",
-			"/teaching/uo/253/notes/3-divergence-and-integral-tests",
-			"/teaching/uo/253/notes/4-comparison-tests",
-			"/teaching/uo/253/notes/5-alternating-series",
-			"/teaching/uo/253/notes/6-ratio-and-root-tests",
-			"/teaching/uo/253/notes/7-power-series",
-			"/teaching/uo/253/notes/8-properties-of-power-series",
-			"/teaching/uo/253/notes/9-taylor-series",
-			"/teaching/uo/253/notes/10-applications-of-taylor-series"
-		]
-	},
-		
-	"/teaching/uo/253/notes/0-calc-2-review":
-	{
-		"title": "Section 0: Calculus I and II Review",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/1-sequences":
-	{
-		"title": "Section 1: Sequences",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/2-series":
-	{
-		"title": "Section 2: Series",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/3-divergence-and-integral-tests":
-	{
-		"title": "Section 3: The Divergence and Integral Tests",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/4-comparison-tests":
-	{
-		"title": "Section 4: The Comparison Tests",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/253/notes/5-alternating-series":
-	{
-		"title": "Section 5: Alternating Series",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/6-ratio-and-root-tests":
-	{
-		"title": "Section 6: The Ratio and Root Tests",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/253/notes/7-power-series":
-	{
-		"title": "Section 7: Power Series",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/253/notes/8-properties-of-power-series":
-	{
-		"title": "Section 8: Properties of Power Series",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/253/notes/9-taylor-series":
-	{
-		"title": "Section 9: Taylor Series",
-		
-		"parent": "/teaching/uo/253",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/253/notes/10-applications-of-taylor-series":
-	{
-		"title": "Section 10: Applications of Taylor Series",
-		
-		"parent": "/teaching/uo/253",
-		
 		"children": []
 	},
 	
@@ -1195,201 +1673,7 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/252/notes/0-calc-1-review",
-			"/teaching/uo/252/notes/1-riemann-sums",
-			"/teaching/uo/252/notes/2-integrals-intro",
-			"/teaching/uo/252/notes/3-antiderivatives",
-			"/teaching/uo/252/notes/4-ftoc",
-			"/teaching/uo/252/notes/5-simple-applications",
-			"/teaching/uo/252/notes/6-u-sub",
-			"/teaching/uo/252/notes/7-exp-and-log-integrals",
-			"/teaching/uo/252/notes/8-area-between-curves",
-			"/teaching/uo/252/notes/9-solids-of-revolution",
-			"/teaching/uo/252/notes/10-arc-length-and-surface-area",
-			"/teaching/uo/252/notes/11-physical-applications",
-			"/teaching/uo/252/notes/12-integration-by-parts",
-			"/teaching/uo/252/notes/13-trig-sub",
-			"/teaching/uo/252/notes/14-partial-fractions",
-			"/teaching/uo/252/notes/15-improper-integrals",
-			"/teaching/uo/252/notes/16-intro-to-des"
-		]
-	},
-		
-	"/teaching/uo/252/notes/0-calc-1-review":
-	{
-		"title": "Section 0: Calculus I Review",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/1-riemann-sums":
-	{
-		"title": "Section 1: Riemann Sums",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/2-integrals-intro":
-	{
-		"title": "Section 2: Intro to Integrals",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/3-antiderivatives":
-	{
-		"title": "Section 3: Antiderivatives",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/4-ftoc":
-	{
-		"title": "Section 4: The Fundamental Theorem",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/5-simple-applications":
-	{
-		"title": "Section 5: Simple Applications",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/6-u-sub":
-	{
-		"title": "Section 6: $u$-Substitution",
-		
-		"parent": "/teaching/uo/252",
-		
 		"children": []
-	},
-	
-	"/teaching/uo/252/notes/7-exp-and-log-integrals":
-	{
-		"title": "Section 7: A Handful of Integrals",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/252/notes/8-area-between-curves":
-	{
-		"title": "Section 8: The Area Between Curves",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/9-solids-of-revolution":
-	{
-		"title": "Section 9: Solids of Revolution",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/10-arc-length-and-surface-area":
-	{
-		"title": "Section 10: Arc Length and Surface Area",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/11-physical-applications":
-	{
-		"title": "Section 11: Physical Applications",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/252/notes/12-integration-by-parts":
-	{
-		"title": "Section 12: Integration by Parts",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/252/notes/13-trig-sub":
-	{
-		"title": "Section 13: Trig Sub",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/252/notes/14-partial-fractions":
-	{
-		"title": "Section 14: Partial Fractions",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/252/notes/15-improper-integrals":
-	{
-		"title": "Section 15: Improper Integrals",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/252/notes/16-intro-to-des":
-	{
-		"title": "Section 16: Intro to Differential Equations",
-		
-		"parent": "/teaching/uo/252",
-		
-		"children": [],
-
-		"customScript": true
 	},
 	
 	"/teaching/uo/251":
@@ -1398,195 +1682,7 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/251/notes/0-algebra-and-trig-review",
-			"/teaching/uo/251/notes/1-intro-to-limits",
-			"/teaching/uo/251/notes/2-limit-rules",
-			"/teaching/uo/251/notes/3-continuity",
-			"/teaching/uo/251/notes/4-intro-to-derivatives",
-			"/teaching/uo/251/notes/5-derivative-rules",
-			"/teaching/uo/251/notes/6-applications-of-derivatives",
-			"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives",
-			"/teaching/uo/251/notes/8-the-chain-rule",
-			"/teaching/uo/251/notes/9-the-inverse-function-theorem",
-			"/teaching/uo/251/notes/10-implicit-differentiation",
-			"/teaching/uo/251/notes/11-optimization",
-			"/teaching/uo/251/notes/12-l-hopitals-rule",
-			"/teaching/uo/251/notes/13-related-rates",
-			"/teaching/uo/251/notes/14-applied-optimization",
-			"/teaching/uo/251/notes/15-newtons-method"
-		]
-	},
-		
-	"/teaching/uo/251/notes/0-algebra-and-trig-review":
-	{
-		"title": "Section 0: Algebra and Trig Review",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/1-intro-to-limits":
-	{
-		"title": "Section 1: Intro To Limits",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/2-limit-rules":
-	{
-		"title": "Section 2: Limit Rules",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/3-continuity":
-	{
-		"title": "Section 3: Continuity",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/4-intro-to-derivatives":
-	{
-		"title": "Section 4: Intro to Derivatives",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/5-derivative-rules":
-	{
-		"title": "Section 5: Derivative Rules",
-		
-		"parent": "/teaching/uo/251",
-		
 		"children": []
-	},
-	
-	"/teaching/uo/251/notes/6-applications-of-derivatives":
-	{
-		"title": "Section 6: Applications of Derivatives",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives":
-	{
-		"title": "Section 7: A Handful of Derivatives",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/8-the-chain-rule":
-	{
-		"title": "Section 8: The Chain Rule",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/251/notes/9-the-inverse-function-theorem":
-	{
-		"title": "Section 9: The Inverse Function Theorem",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/251/notes/10-implicit-differentiation":
-	{
-		"title": "Section 10: Implicit Differentiation",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/11-optimization":
-	{
-		"title": "Section 11: Optimization",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/12-l-hopitals-rule":
-	{
-		"title": "Section 12: L'H&#244;pital's Rule",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": []
-	},
-	
-	"/teaching/uo/251/notes/13-related-rates":
-	{
-		"title": "Section 13: Related Rates",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/14-applied-optimization":
-	{
-		"title": "Section 14: Applied Optimization",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/251/notes/15-newtons-method":
-	{
-		"title": "Section 15: Newton's Method",
-		
-		"parent": "/teaching/uo/251",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
 	},
 	
 	"/teaching/uo/243":
@@ -1604,105 +1700,7 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children":
-		[
-			"/teaching/uo/112/notes/1-transformations",
-			"/teaching/uo/112/notes/2-periodic-functions",
-			"/teaching/uo/112/notes/3-the-unit-circle",
-			"/teaching/uo/112/notes/4-sine-and-cosine",
-			"/teaching/uo/112/notes/5-tangent-and-inverses",
-			"/teaching/uo/112/notes/6-radians-and-equations",
-			"/teaching/uo/112/notes/7-non-right-triangles-and-identities",
-			"/teaching/uo/112/notes/8-vectors"
-		]
-	},
-		
-	"/teaching/uo/112/notes/1-transformations":
-	{
-		"title": "Section 1: Transformations",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/2-periodic-functions":
-	{
-		"title": "Section 2: Periodic Functions",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/3-the-unit-circle":
-	{
-		"title": "Section 3: The Unit Circle",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/4-sine-and-cosine":
-	{
-		"title": "Section 4: Sine and Cosine",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/5-tangent-and-inverses":
-	{
-		"title": "Section 5: The Tangent Function and Inverses",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/6-radians-and-equations":
-	{
-		"title": "Section 6: Radians and Equations",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/7-non-right-triangles-and-identities":
-	{
-		"title": "Section 7: Non-Right Triangles and Identities",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/112/notes/8-vectors":
-	{
-		"title": "Section 8: Intro to Vectors",
-		
-		"parent": "/teaching/uo/112",
-		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/teaching/uo/111":

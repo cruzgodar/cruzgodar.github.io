@@ -49,108 +49,109 @@ home Cruz Godar
 		julia-set-explorer Julia Set Explorer
 	
 	teaching Teaching
-		uo/342 Math 342
-			notes/0-linear-algebra-1-review Section 0: Linear Algebra I Review
-			notes/1-eigenvectors-and-eigenvalues Section 1: Eigenvectors and Eigenvalues
-			notes/2-diagonalization Section 2: Diagonalization
-			notes/3-intro-to-des Section 3: Intro to Differential Equations
-			notes/4-the-dot-product Section 4: The Dot Product
-			notes/5-least-squares Section 5: Least-Squares Approximations
-			notes/6-inner-product-spaces Section 6: Inner Product Spaces
-			notes/7-the-spectral-theorems Section 7: The Spectral Theorems
-			notes/8-jordan-normal-form Section 8: Jordan Normal Form
-			notes/9-singular-value-decompositions Section 9: Singular Value Decompositions
-		
-		uo/341 Math 341
-			notes/1-vectors-and-matrices Section 1: Vectors and Matrices
-			notes/2-row-reduction Section 2: Row Reduction
-			notes/3-vector-arithmetic Section 3: Vector Arithmetic
-			notes/4-linear-transformations Section 4: Linear Transformations
-			notes/5-properties-of-transformations Section 5: Properties of Transformations
-			notes/6-the-determinant Section 6: The Determinant
-			notes/7-vector-spaces Section 7: Vector Spaces
-			notes/8-bases-and-dimension Section 8: Bases and Dimension
-			notes/9-the-fundamental-theorem-of-linear-algebra Section 9: The Fundamental Theorem of Linear Algebra
-			notes/10-intro-to-markov-chains Section 10: Intro to Markov Chains
+		notes Interactive Notes
+			calculus/algebra-and-trig-review Algebra and Trig Review
+			calculus/intro-to-limits Section 1.1: Intro To Limits
+			calculus/limit-rules Section 1.2: Limit Rules
+			calculus/continuity Section 1.3: Continuity
 
+			calculus/intro-to-derivatives Section 2.1: Intro to Derivatives
+			calculus/derivative-rules Section 2.2: Derivative Rules
+			calculus/applications-of-derivatives Section 2.3: Applications of Derivatives
+			calculus/exp-log-and-trig-derivatives Section 2.4: A Handful of Derivatives
+			calculus/the-chain-rule Section 2.5: The Chain Rule
+			calculus/the-inverse-function-theorem Section 2.6: The Inverse Function Theorem
+			calculus/implicit-differentiation Section 2.7: Implicit Differentiation
+			calculus/optimization Section 2.8: Optimization
+			calculus/l-hopitals-rule Section 2.9: L'H&#244;pital's Rule
+			calculus/related-rates Section 2.10: Related Rates
+			calculus/applied-optimization Section 2.11: Applied Optimization
+			calculus/newtons-method Section 2.12: Newton's Method
+			calculus/calc-1-review Chapters 1 and 2 Review
+
+			calculus/riemann-sums Section 3.1: Riemann Sums
+			calculus/integrals-intro Section 3.2: Intro to Integrals
+			calculus/antiderivatives Section 3.3: Antiderivatives
+			calculus/ftoc Section 3.4: The Fundamental Theorem
+			calculus/simple-applications Section 3.5: Simple Applications
+			calculus/u-sub Section 3.6: $u$-Substitution
+			calculus/exp-and-log-integrals Section 3.7: A Handful of Integrals
+			calculus/area-between-curves Section 3.8: The Area Between Curves
+			calculus/solids-of-revolution Section 3.9: Solids of Revolution
+			calculus/arc-length-and-surface-area Section 3.10: Arc Length and Surface Area
+			calculus/physical-applications Section 3.11: Physical Applications
+			calculus/integration-by-parts Section 3.12: Integration by Parts
+			calculus/trig-sub Section 3.13: Trig Sub
+			calculus/partial-fractions Section 3.14: Partial Fractions
+			calculus/improper-integrals Section 3.15: Improper Integrals
+			calculus/intro-to-des Section 3.16: Intro to Differential Equations
+			calculus/calc-2-review Chapter 3 Review
+
+			calculus/sequences Section 4.1: Sequences
+			calculus/series Section 4.2: Series
+			calculus/divergence-and-integral-tests Section 4.3: The Divergence and Integral Tests
+			calculus/comparison-tests Section 4.4: The Comparison Tests
+			calculus/alternating-series Section 4.5: Alternating Series
+			calculus/ratio-and-root-tests Section 4.6: The Ratio and Root Tests
+			calculus/power-series Section 4.7: Power Series
+			calculus/properties-of-power-series Section 4.8: Properties of Power Series
+			calculus/taylor-series Section 4.9: Taylor Series
+			calculus/applications-of-taylor-series Section 4.10: Applications of Taylor Series
+
+			linear-algebra/vectors-and-matrices Section 1: Vectors and Matrices
+			linear-algebra/row-reduction Section 2: Row Reduction
+			linear-algebra/vector-arithmetic Section 3: Vector Arithmetic
+			linear-algebra/linear-transformations Section 4: Linear Transformations
+			linear-algebra/properties-of-transformations Section 5: Properties of Transformations
+			linear-algebra/the-determinant Section 6: The Determinant
+			linear-algebra/vector-spaces Section 7: Vector Spaces
+			linear-algebra/bases-and-dimension Section 8: Bases and Dimension
+			linear-algebra/the-fundamental-theorem-of-linear-algebra Section 9: The Fundamental Theorem of Linear Algebra
+			linear-algebra/intro-to-markov-chains Section 10: Intro to Markov Chains
+
+			linear-algebra/linear-algebra-1-review Section 11: Linear Algebra I Review
+			linear-algebra/eigenvectors-and-eigenvalues Section 12: Eigenvectors and Eigenvalues
+			linear-algebra/diagonalization Section 13: Diagonalization
+			linear-algebra/intro-to-des Section 14: Intro to Differential Equations
+			linear-algebra/the-dot-product Section 15: The Dot Product
+			linear-algebra/least-squares Section 16: Least-Squares Approximations
+			linear-algebra/inner-product-spaces Section 17: Inner Product Spaces
+			linear-algebra/the-spectral-theorems Section 18: The Spectral Theorems
+			linear-algebra/jordan-normal-form Section 19: Jordan Normal Form
+			linear-algebra/singular-value-decompositions Section 20: Singular Value Decompositions
+
+			differential-equations/calc-review Section 0: Calculus Review
+			differential-equations/intro-to-des Section 1: Intro to DEs
+			differential-equations/if-and-sep Section 2: Linear and Separable DEs
+			differential-equations/existence-and-exactness Section 3: Existence and Exactness
+			differential-equations/intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
+			differential-equations/complex-and-repeated-roots Section 5: Complex and Repeated Roots
+			differential-equations/nonhomogeneous-second-order-des Section 6: Nonhomogeneous DEs
+			differential-equations/higher-order-des Section 7: Higher-Order DEs
+			differential-equations/intro-to-linear-algebra Section 8: Intro to Linear Algebra
+			differential-equations/systems-and-inverses Section 9: Systems and Inverses
+			differential-equations/determinants-and-eigenthings Section 10: Determinants and Eigenthings
+			differential-equations/intro-to-systems Section 11: Intro to Systems of DEs
+			differential-equations/complex-and-repeated-eigenvectors Section 12: Complex and Repeated Eigenvectors
+			differential-equations/phase-portraits-and-stability Section 13: Phase Portraits and Stability
+
+			trig/transformations Section 1: Transformations
+			trig/periodic-functions Section 2: Periodic Functions
+			trig/the-unit-circle Section 3: The Unit Circle
+			trig/sine-and-cosine Section 4: Sine and Cosine
+			trig/tangent-and-inverses Section 5: The Tangent Function and Inverses
+			trig/radians-and-equations Section 6: Radians and Equations
+			trig/non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
+			trig/vectors Section 8: Intro to Vectors
+		
+		uo/342 Math 342
+		uo/341 Math 341
 		uo/256 Math 256
-			notes/0-calc-review Section 0: Calculus Review
-			notes/1-intro-to-des Section 1: Intro to DEs
-			notes/2-if-and-sep Section 2: Linear and Separable DEs
-			notes/3-existence-and-exactness Section 3: Existence and Exactness
-			notes/4-intro-to-second-order-linear Section 4: Intro to Second-Order Linear DEs
-			notes/5-complex-and-repeated-roots Section 5: Complex and Repeated Roots
-			notes/6-nonhomogeneous-second-order-des Section 6: Nonhomogeneous DEs
-			notes/7-higher-order-des Section 7: Higher-Order DEs
-			notes/8-intro-to-linear-algebra Section 8: Intro to Linear Algebra
-			notes/9-systems-and-inverses Section 9: Systems and Inverses
-			notes/10-determinants-and-eigenthings Section 10: Determinants and Eigenthings
-			notes/11-intro-to-systems Section 11: Intro to Systems of DEs
-			notes/12-complex-and-repeated-eigenvectors Section 12: Complex and Repeated Eigenvectors
-			notes/13-phase-portraits-and-stability Section 13: Phase Portraits and Stability
-		
 		uo/253 Math 253
-			notes/0-calc-2-review Section 0: Calculus I and II Review
-			notes/1-sequences Section 1: Sequences
-			notes/2-series Section 2: Series
-			notes/3-divergence-and-integral-tests Section 3: The Divergence and Integral Tests
-			notes/4-comparison-tests Section 4: The Comparison Tests
-			notes/5-alternating-series Section 5: Alternating Series
-			notes/6-ratio-and-root-tests Section 6: The Ratio and Root Tests
-			notes/7-power-series Section 7: Power Series
-			notes/8-properties-of-power-series Section 8: Properties of Power Series
-			notes/9-taylor-series Section 9: Taylor Series
-			notes/10-applications-of-taylor-series Section 10: Applications of Taylor Series
-			
 		uo/252 Math 252
-			notes/0-calc-1-review Section 0: Calculus I Review
-			notes/1-riemann-sums Section 1: Riemann Sums
-			notes/2-integrals-intro Section 2: Intro to Integrals
-			notes/3-antiderivatives Section 3: Antiderivatives
-			notes/4-ftoc Section 4: The Fundamental Theorem
-			notes/5-simple-applications Section 5: Simple Applications
-			notes/6-u-sub Section 6: $u$-Substitution
-			notes/7-exp-and-log-integrals Section 7: A Handful of Integrals
-			notes/8-area-between-curves Section 8: The Area Between Curves
-			notes/9-solids-of-revolution Section 9: Solids of Revolution
-			notes/10-arc-length-and-surface-area Section 10: Arc Length and Surface Area
-			notes/11-physical-applications Section 11: Physical Applications
-			notes/12-integration-by-parts Section 12: Integration by Parts
-			notes/13-trig-sub Section 13: Trig Sub
-			notes/14-partial-fractions Section 14: Partial Fractions
-			notes/15-improper-integrals Section 15: Improper Integrals
-			notes/16-intro-to-des Section 16: Intro to Differential Equations
-			
 		uo/251 Math 251
-			notes/0-algebra-and-trig-review Section 0: Algebra and Trig Review
-			notes/1-intro-to-limits Section 1: Intro To Limits
-			notes/2-limit-rules Section 2: Limit Rules
-			notes/3-continuity Section 3: Continuity
-			notes/4-intro-to-derivatives Section 4: Intro to Derivatives
-			notes/5-derivative-rules Section 5: Derivative Rules
-			notes/6-applications-of-derivatives Section 6: Applications of Derivatives
-			notes/7-exp-log-and-trig-derivatives Section 7: A Handful of Derivatives
-			notes/8-the-chain-rule Section 8: The Chain Rule
-			notes/9-the-inverse-function-theorem Section 9: The Inverse Function Theorem
-			notes/10-implicit-differentiation Section 10: Implicit Differentiation
-			notes/11-optimization Section 11: Optimization
-			notes/12-l-hopitals-rule Section 12: L'H&#244;pital's Rule
-			notes/13-related-rates Section 13: Related Rates
-			notes/14-applied-optimization Section 14: Applied Optimization
-			notes/15-newtons-method Section 15: Newton's Method
-			
 		uo/243 Math 243
-		
 		uo/112 Math 112
-			notes/1-transformations Section 1: Transformations
-			notes/2-periodic-functions Section 2: Periodic Functions
-			notes/3-the-unit-circle Section 3: The Unit Circle
-			notes/4-sine-and-cosine Section 4: Sine and Cosine
-			notes/5-tangent-and-inverses Section 5: The Tangent Function and Inverses
-			notes/6-radians-and-equations Section 6: Radians and Equations
-			notes/7-non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
-			notes/8-vectors Section 8: Intro to Vectors
-		
 		uo/111 Math 111
 		uo/105 Math 105
 
