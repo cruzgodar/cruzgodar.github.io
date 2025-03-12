@@ -96,11 +96,6 @@ Stills and animations from these applets have been featured in the <a href="http
 
 ## The Library
 
-<div class="image-links one-image-link">
-	<div class="image-link">
-		<a href="https://github.com/cruzgodar/wilson" data-in-new-tab="1" tabindex="-1">
-			<img src="/graphics/general-icons/placeholder.png" data-src="/graphics/general-icons/wilson.webp" alt="Wilson" tabindex="1" style="opacity: 0">
-		</a>
-		<p class="image-link-subtext">Wilson</p>
-	</div>
-</div>
+### image-links
+	https://github.com/cruzgodar/wilson -e "Wilson" /graphics/general-icons/wilson.webp
+###
