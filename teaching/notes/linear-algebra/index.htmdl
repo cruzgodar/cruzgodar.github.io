@@ -1,0 +1,25 @@
+These notes cover a one-semester matrix algebra course, including row reduction, eigenvalues and eigenvectors, inner products, and abstract vector saces. As with all of my notes, please feel free to use these as either a student or teacher, and let me know if there is anything that could be improved!
+
+### image-links
+	vectors-and-matrices
+	row-reduction
+	vector-arithmetic
+	linear-transformations
+	properties-of-transformations
+	the-determinant
+	vector-spaces
+	bases-and-dimension
+	the-fundamental-theorem-of-linear-algebra
+	intro-to-markov-chains
+
+	linear-algebra-1-review
+	eigenvectors-and-eigenvalues
+	diagonalization
+	intro-to-des
+	the-dot-product
+	least-squares
+	inner-product-spaces
+	the-spectral-theorems
+	jordan-normal-form
+	singular-value-decompositions
+###

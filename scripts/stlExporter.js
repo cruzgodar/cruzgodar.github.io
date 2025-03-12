@@ -29,18 +29,22 @@ class STLExporter {
 
 				if ( geometry.isBufferGeometry !== true ) {
 
-					throw new Error( 'THREE.STLExporter: Geometry is not of type THREE.BufferGeometry.' );
+					throw new Error(
+						"THREE.STLExporter: Geometry is not of type THREE.BufferGeometry."
+					);
 
 				}
 
 				const index = geometry.index;
-				const positionAttribute = geometry.getAttribute( 'position' );
+				const positionAttribute = geometry.getAttribute( "position" );
 
-				triangles += ( index !== null ) ? ( index.count / 3 ) : ( positionAttribute.count / 3 );
+				triangles += (index !== null)
+					? index.count / 3
+					: positionAttribute.count / 3;
 
 				objects.push( {
 					object3d: object,
-					geometry: geometry
+					geometry
 				} );
 
 			}
@@ -59,8 +63,8 @@ class STLExporter {
 
 		} else {
 
-			output = '';
-			output += 'solid exported\n';
+			output = "";
+			output += "solid exported\n";
 
 		}
 
@@ -77,7 +81,7 @@ class STLExporter {
 			const geometry = objects[ i ].geometry;
 
 			const index = geometry.index;
-			const positionAttribute = geometry.getAttribute( 'position' );
+			const positionAttribute = geometry.getAttribute( "position" );
 
 			if ( index !== null ) {
 
@@ -113,7 +117,7 @@ class STLExporter {
 
 		if ( binary === false ) {
 
-			output += 'endsolid exported\n';
+			output += "endsolid exported\n";
 
 		}
 
@@ -149,8 +153,8 @@ class STLExporter {
 
 			} else {
 
-				output += '\t\tendloop\n';
-				output += '\tendfacet\n';
+				output += "\t\tendloop\n";
+				output += "\tendfacet\n";
 
 			}
 
@@ -172,8 +176,8 @@ class STLExporter {
 
 			} else {
 
-				output += '\tfacet normal ' + normal.x + ' ' + normal.y + ' ' + normal.z + '\n';
-				output += '\t\touter loop\n';
+				output += "\tfacet normal " + normal.x + " " + normal.y + " " + normal.z + "\n";
+				output += "\t\touter loop\n";
 
 			}
 
@@ -189,7 +193,7 @@ class STLExporter {
 
 			} else {
 
-				output += '\t\t\tvertex ' + vertex.x + ' ' + vertex.y + ' ' + vertex.z + '\n';
+				output += "\t\t\tvertex " + vertex.x + " " + vertex.y + " " + vertex.z + "\n";
 
 			}
 

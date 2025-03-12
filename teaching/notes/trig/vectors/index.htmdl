@@ -194,7 +194,7 @@ Therefore, the vectors orthogonal to $\vec{v}$ are the vectors $a\vec{i} + a\vec
 
 	1. Let $\vec{w} = 3\vec{i} - \vec{j}$, $\vec{u} = 2\vec{i}$, and $\vec{x} = \vec{i} - 2\vec{j}$. Find $\vec{v} \bullet \vec{w}$, $\vec{v} \bullet \vec{w}$, $\vec{v} \bullet \vec{x}$, and $\vec{v} \bullet \vec{v}$.
 
-	2. Find the angle between 
+	2. Find the angle between $\vec{v}$ and $\vec{w}$, between $\vec{v}$ and $\vec{u}$, and between $\vec{v}$ and $\vec{x}$.
 
 	3. Draw $\vec{v}$ in the plane. Describe the vectors orthogonal to $\vec{v}$.
 
