@@ -15,8 +15,8 @@
 		chaos-game 1
 		strange-attractor 1
 		menger-sponge 2
-		kaleidoscopic-ifs-2 1
 		julia-set 1
+		barnsley-fern 1
 	###
 	
 	### gallery-block
@@ -28,8 +28,8 @@
 		kaleidoscopic-ifs 2
 		newtons-method 1
 		kicked-rotator 1
-		secant-method 1
 		generalized-julia-set 1
+		generalized-julia-set-3 1
 	###
 	
 	### gallery-block
@@ -38,8 +38,8 @@
 	
 	### gallery-block
 		juliabulb-zoom-2 2
-		barnsley-fern 1
-		generalized-julia-set-3 1
+		kaleidoscopic-ifs-2 1
+		juliabulb-power-2 1
 		juliabulb-zoom 1
 		kaleidoscopic-ifs-3 1
 		hopf-fibration 1
@@ -59,12 +59,12 @@
 	###
 	
 	### gallery-block
-		magic-carpet 1
-		thurston-geometry-sl2r 2
+		thurston-geometry-sl2r 1
+		secant-method 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
 		abelian-sandpile 1
-		juliabulb-power-2 1
+		magic-carpet 1
 	###
 
 	### gallery-block
