@@ -96,13 +96,7 @@
 		const path = window.location.pathname;
 		console.log(path);
 
-		if (redirects[path])
-		{
-			loadSite(redirects[path]);
-			return;
-		}
-		
-		loadSite("/404");
+		loadSite(redirects[path] ?? "/404");
 	</script>
 </body>
 </html>
