@@ -89,11 +89,15 @@
 	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
 	
 	<script type="module">
-		import {loadSite} from "/scripts/src/main.min.js";
+		import { loadSite } from "/scripts/src/main.min.js";
+		import { redirects } from "/scripts/src/redirects.min.js";
 
 		window.DEBUG = false;
-		
-		loadSite("/404");
+
+		const path = window.location.pathname;
+		console.log(path);
+
+		loadSite(redirects[path] ?? "/404");
 	</script>
 </body>
 </html>

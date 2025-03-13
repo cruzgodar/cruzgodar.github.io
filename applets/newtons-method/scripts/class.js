@@ -36,8 +36,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 	resolution = 500;
 	resolutionHidden = 50;
 
-
-
 	constructor({
 		canvas,
 		rootSetterElement,
