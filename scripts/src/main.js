@@ -19,10 +19,6 @@ export function updatePageElement()
 	$$ = (queryString) => pageElement.querySelectorAll(queryString);
 }
 
-export const redirects = {
-	"/teaching/uo/342/notes/0-linear-algebra-1-review":
-		"/teaching/notes/linear-algebra/linear-algebra-1-review"
-};
 
 
 const params = new URLSearchParams(document.location.search);
