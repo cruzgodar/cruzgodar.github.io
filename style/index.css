@@ -977,7 +977,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	outline: none;
 }
 
-.text-button.dropdown
+.text-button.dropdown, .text-button.file-upload
 {
 	border-radius: 25px;
 
@@ -998,6 +998,12 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	transition: box-shadow .2s ease-out;
 
 	z-index: 75;
+}
+
+.text-button.file-upload
+{
+	height: 42.5px;
+	padding: 10px;
 }
 
 .text-button.dropdown.expanded

@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/singular-value-decompositions",
 			"/applets/traffic-model",
 			"/applets/raymarching-fundamentals",
 			"/applets/curved-light",
@@ -92,6 +93,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/singular-value-decompositions":
+	{
+		"title": "Singular Value Decompositions",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/traffic-model":
 	{
 		"title": "The Biham-Middleton-Levine Traffic Model",

@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		singular-value-decompositions Singular Value Decompositions
 		traffic-model The Biham-Middleton-Levine Traffic Model
 		raymarching-fundamentals Raymarching Fundamentals
 		curved-light Curved Light
