@@ -57,13 +57,25 @@ export default function()
 	new Button({
 		element: $("#spread-roots-button"),
 		name: "Spread Roots",
-		onClick: () => applet.spreadRoots(false, false)
+		onClick: () =>
+		{
+			applet.spreadRoots({
+				animate: true,
+				randomize: false
+			});
+		}
 	});
 
 	new Button({
 		element: $("#randomize-roots-button"),
 		name: "Randomize Roots",
-		onClick: () => applet.spreadRoots(false, true)
+		onClick: () =>
+		{
+			applet.spreadRoots({
+				animate: true,
+				randomize: true
+			});
+		}
 	});
 
 	new Button({
@@ -95,7 +107,7 @@ export default function()
 
 		const rgb = hexToRgb(hex);
 
-		applet.setColor([rgb[0], rgb[1], rgb[2]]);
+		applet.setColor({ rgb: [rgb[0], rgb[1], rgb[2]] });
 	});
 
 	showPage();
