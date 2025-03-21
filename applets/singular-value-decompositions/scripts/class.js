@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/applets/applet.js";
+import { loadScript } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 /*
@@ -254,7 +255,11 @@ export class SingularValueDecompositions extends Applet
 	numImages;
 	imageData = [];
 	dataLength;
+	U;
+	S;
+	V;
 	uMagnitudes;
+	loadPromise;
 
 	constructor({ canvas })
 	{
@@ -262,49 +267,174 @@ export class SingularValueDecompositions extends Applet
 
 		const options = {
 			renderer: "cpu",
-		
+
 			canvasWidth: 500,
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);
+
+		this.loadPromise = loadScript("/scripts/numeric.min.js");
 	}
 
 
 
 	async run({ files })
 	{
+		await this.loadPromise;
+
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 
 		this.imageData = [];
 
-		for (const file in files)
-		{
-			const img = new Image();
-			img.src = URL.createObjectURL(file);
+		let width = 0;
+		let height = 0;
 
+		console.log(files);
+
+		for (const file of files)
+		{
 			await new Promise(resolve =>
 			{
-				img.onload = () =>
+				const reader = new FileReader();
+				
+				reader.onload = (e) =>
 				{
-					canvas.width = img.width;
-					canvas.height = img.height;
-					ctx.drawImage(img, 0, 0);
+					const img = new Image();
 
-					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-					const pixels = imageData.data;
-					this.imageData.push(pixels);
+					img.onload = () =>
+					{
+						width = Math.max(width, img.width);
+						height = Math.max(height, img.height);
 
-					URL.revokeObjectURL(img.src)
+						resolve();
+					};
 
-					resolve();
+					img.src = e.target.result;
 				};
+
+				reader.readAsDataURL(file);
 			});
 		}
 
-		this.numImages = files.length;
-		this.uMagnitudes = new Array(this.numImages);
+		canvas.width = width;
+		canvas.height = height;
 
-		console.log(this.imageData)
+		for (const file of files)
+		{
+			await new Promise(resolve =>
+			{
+				const reader = new FileReader();
+				
+				reader.onload = (e) =>
+				{
+					const img = new Image();
+
+					img.onload = () =>
+					{
+						ctx.clearRect(0, 0, width, height);
+
+						ctx.drawImage(
+							img,
+							(width - img.width) / 2,
+							(height - img.height) / 2,
+						);
+
+						const imageData = ctx.getImageData(0, 0, width, height);
+
+						this.imageData.push(imageData.data);
+
+						resolve();
+					};
+
+					img.src = e.target.result;
+				};
+
+				reader.readAsDataURL(file);
+			});
+		}
+
+		this.dataLength = width * height * 4;
+		this.numImages = files.length;
+
+
+
+		// eslint-disable-next-line no-undef
+		const { U, S, V } = numeric.svd(numeric.transpose(this.imageData));
+		// eslint-disable-next-line no-undef
+		this.U = numeric.transpose(U);
+		this.S = S;
+		this.V = V;
+
+		// this.uMagnitudes = new Array(this.numImages);
+
+		// for (let i = 0; i < this.numImages; i++)
+		// {
+		// 	let totalSum = 0;
+
+		// 	for (let j = 0; j < this.dataLength; j++)
+		// 	{
+		// 		totalSum += this.U[i][j] * this.U[i][j];
+		// 	}
+
+		// 	this.uMagnitudes[i] = Math.sqrt(totalSum);
+		// }
+
+		// console.log(U, S, V);
+
+
+
+		this.wilson.canvas.style.aspectRatio = `${width} / ${height}`;
+		this.wilson.resizeCanvas({ width });
+
+		this.drawNormalizedImage(this.U[0]);
+	}
+
+	drawNormalizedImage(uVec)
+	{
+		const u = [...uVec];
+
+		let maxValue = 0;
+		let minValue = 0;
+
+		for (let i = 0; i < u.length; i += 4)
+		{
+			maxValue = Math.max(maxValue, u[i], u[i + 1], u[i + 2]);
+			minValue = Math.min(minValue, u[i], u[i + 1], u[i + 2]);
+		}
+
+		for (let i = 0; i < u.length; i += 4)
+		{
+			u[i] = (u[i] - minValue) / (maxValue - minValue) * 255;
+			u[i + 1] = (u[i + 1] - minValue) / (maxValue - minValue) * 255;
+			u[i + 2] = (u[i + 2] - minValue) / (maxValue - minValue) * 255;
+			u[i + 3] = 255;
+		}
+
+		const imageData = new ImageData(
+			new Uint8ClampedArray(u),
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight
+		);
+
+		this.wilson.ctx.putImageData(imageData, 0, 0);
+	}
+
+	drawTruncatedEigenface(index, depth = this.numImages)
+	{
+		// const vec = new Array(this.dataLength);
+
+		// const U_k = numeric.clone(U).map(row => row.slice(0, k));
+		// const S_k = numeric.diag(S.slice(0, k));  // Convert singular values to diagonal matrix
+		// const V_k = numeric.clone(V).map(row => row.slice(0, k));
+
+		// // Compute A_k = U_k * S_k * V_k^T
+		// return numeric.dot(numeric.dot(U_k, S_k), numeric.transpose(V_k));
+
+		// drawEigenface(vec);
+
+		// Draw an image from a column of this.U.
+
+		this.drawNormalizedImage(this.U[0]);
 	}
 }

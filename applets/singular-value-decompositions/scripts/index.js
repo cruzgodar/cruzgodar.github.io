@@ -10,8 +10,7 @@ export default function()
 
 	const fileUpload = new FileUpload({
 		element: $("#images-upload"),
-		name: "Upload Images",
-		onInput: run
+		name: "Choose Images",
 	});
 
 	new GenerateButton({
@@ -29,6 +28,6 @@ export default function()
 
 	function run()
 	{
-		applet.run({ files: fileUpload });
+		applet.run({ files: fileUpload.files });
 	}
 }

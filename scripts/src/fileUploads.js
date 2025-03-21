@@ -4,11 +4,12 @@ export class FileUpload extends InputElement
 {
 	buttonElement;
 	onInput;
+	files;
 
 	constructor({
 		element,
 		name,
-		onInput,
+		onInput = () => {},
 	}) {
 		super({ element, name });
 		this.onInput = onInput;
@@ -21,20 +22,20 @@ export class FileUpload extends InputElement
 
 		this.element.addEventListener("change", async (e) =>
 		{
-			const files = Array.from(e.target.files);
+			this.files = e.target.files;
 
-			if (!files.length)
+			if (!this.files.length)
 			{
 				return;
 			}
 
-			this.buttonElement.innerHTML = files.length === 1
-				? files[0].name
-				: `${files.length} files`;
+			this.buttonElement.innerHTML = this.files.length === 1
+				? this.files[0].name
+				: `${this.files.length} files`;
 
 			if (!this.disabled)
 			{
-				this.onInput(files);
+				this.onInput(this.files);
 			}
 		});
 	}
