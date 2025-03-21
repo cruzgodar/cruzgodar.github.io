@@ -1,7 +1,6 @@
 
 export function fileUpload(options, id, accept, multiple = "")
 {
-	console.log(id, accept, multiple);
 	return /* html */`
 		<div class="text-buttons">
 			<div class="focus-on-child dropdown-container" tabindex="1">

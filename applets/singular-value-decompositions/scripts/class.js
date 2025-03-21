@@ -290,8 +290,6 @@ export class SingularValueDecompositions extends Applet
 		let width = 0;
 		let height = 0;
 
-		console.log(files);
-
 		for (const file of files)
 		{
 			await new Promise(resolve =>
@@ -380,14 +378,12 @@ export class SingularValueDecompositions extends Applet
 		// 	this.uMagnitudes[i] = Math.sqrt(totalSum);
 		// }
 
-		// console.log(U, S, V);
-
 
 
 		this.wilson.canvas.style.aspectRatio = `${width} / ${height}`;
 		this.wilson.resizeCanvas({ width });
 
-		this.drawNormalizedImage(this.U[0]);
+		this.drawTruncatedEigenimage(0, 1);
 	}
 
 	drawNormalizedImage(uVec)
@@ -420,21 +416,84 @@ export class SingularValueDecompositions extends Applet
 		this.wilson.ctx.putImageData(imageData, 0, 0);
 	}
 
-	drawTruncatedEigenface(index, depth = this.numImages)
+	drawTruncatedEigenimage(index, depth = this.numImages)
 	{
-		// const vec = new Array(this.dataLength);
+		const floorIndex = Math.floor(index);
+		const ceilIndex = Math.ceil(index);
 
-		// const U_k = numeric.clone(U).map(row => row.slice(0, k));
-		// const S_k = numeric.diag(S.slice(0, k));  // Convert singular values to diagonal matrix
-		// const V_k = numeric.clone(V).map(row => row.slice(0, k));
+		console.log(this.U, this.S, this.V);
 
-		// // Compute A_k = U_k * S_k * V_k^T
-		// return numeric.dot(numeric.dot(U_k, S_k), numeric.transpose(V_k));
+		const vec = new Array(this.dataLength).fill(0);
+		const floorDepth = Math.floor(depth);
 
-		// drawEigenface(vec);
+		for (let i = 0; i < floorDepth; i++)
+		{
+			const singularValue = this.S[i];
 
-		// Draw an image from a column of this.U.
+			for (let j = 0; j < this.dataLength; j++)
+			{
+				vec[j] += singularValue
+					* this.U[i][j]
+					* this.V[i][floorIndex]
+					* (1 - (index - floorIndex));
+			}
 
-		this.drawNormalizedImage(this.U[0]);
+			console.log(i, floorIndex,this.V[i][floorIndex]);
+		}
+		
+
+		if (floorDepth < depth)
+		{
+			const i = floorDepth;
+
+			const singularValue = this.S[i];
+
+			for (let j = 0; j < this.dataLength; j++)
+			{
+				vec[j] += singularValue
+					* this.U[i][j]
+					* this.V[i][floorIndex]
+					* (depth - floorDepth)
+					* (1 - (index - floorIndex));
+			}
+		}
+
+		
+
+		if (floorIndex !== ceilIndex)
+		{
+			for (let i = 0; i < floorDepth; i++)
+			{
+				const singularValue = this.S[i];
+
+				for (let j = 0; j < this.dataLength; j++)
+				{
+					vec[j] += singularValue
+						* this.U[i][j]
+						* this.V[i][ceilIndex]
+						* (1 - (ceilIndex - index));
+				}
+			}
+
+			if (floorDepth < depth)
+			{
+				const i = floorDepth;
+
+				const singularValue = this.S[i];
+
+				for (let j = 0; j < this.dataLength; j++)
+				{
+					vec[j] += singularValue
+						* this.U[i][j]
+						* this.V[i][ceilIndex]
+						* (depth - floorDepth)
+						* (1 - (ceilIndex - index));
+				}
+			}
+		}
+
+		
+
+		this.drawNormalizedImage(vec);
 	}
 }

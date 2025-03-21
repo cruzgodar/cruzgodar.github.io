@@ -13,7 +13,8 @@ Important: running this applet with a nonzero amount of surrounding grains can r
 ###
 
 ### sliders
-	computations-per-frame
+	index
+	depth
 ###
 
 </div>
