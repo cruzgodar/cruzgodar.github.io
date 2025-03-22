@@ -8,16 +8,17 @@ import { center } from "./components/center.js";
 import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
 import { dropdown } from "./components/dropdown.js";
-import { galleryBlock } from "./components/gallery-block.js";
+import { fileUpload } from "./components/fileUpload.js";
+import { galleryBlock } from "./components/galleryBlock.js";
 import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
-import { notesEnvironment, notesEnvironmentNames } from "./components/notes-environment.js";
-import { raymarchControls } from "./components/raymarch-controls.js";
+import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
+import { raymarchControls } from "./components/raymarchControls.js";
 import { sliders } from "./components/sliders.js";
-import { textBoxes } from "./components/text-boxes.js";
 import { parseText } from "./components/text.js";
 import { textarea } from "./components/textarea.js";
+import { textBoxes } from "./components/textBoxes.js";
 import { wilson } from "./components/wilson.js";
 
 // const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
@@ -41,6 +42,7 @@ const singleLineComponents = [
 	"center",
 	"desmos",
 	"dropdown",
+	"file-upload",
 	"glsl-docs",
 	"image",
 	"nav-buttons",
@@ -59,6 +61,7 @@ const components = {
 	"checkboxes": checkboxes,
 	"desmos": desmos,
 	"dropdown": dropdown,
+	"file-upload": fileUpload,
 	"gallery-block": galleryBlock,
 	"image": image,
 	"image-links": imageLinks,

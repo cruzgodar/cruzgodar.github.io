@@ -15,18 +15,16 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 ## Interactive Notes
 
 ### image-links
-	
-	notes/0-linear-algebra-1-review
-	notes/1-eigenvectors-and-eigenvalues
-	notes/2-diagonalization
-	notes/3-intro-to-des
-	notes/4-the-dot-product
-	notes/5-least-squares
-	notes/6-inner-product-spaces
-	notes/7-the-spectral-theorems
-	notes/8-jordan-normal-form
-	notes/9-singular-value-decompositions
-	
+	/teaching/notes/linear-algebra/linear-algebra-1-review
+	/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues
+	/teaching/notes/linear-algebra/diagonalization
+	/teaching/notes/linear-algebra/intro-to-des
+	/teaching/notes/linear-algebra/the-dot-product
+	/teaching/notes/linear-algebra/least-squares
+	/teaching/notes/linear-algebra/inner-product-spaces
+	/teaching/notes/linear-algebra/the-spectral-theorems
+	/teaching/notes/linear-algebra/jordan-normal-form
+	/teaching/notes/linear-algebra/singular-value-decompositions
 ###
 
 

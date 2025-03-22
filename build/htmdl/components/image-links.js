@@ -77,7 +77,9 @@ function imageLink(options, url, name, coverPath)
 
 export function imageLinks(options, lines)
 {
-	let html = /* html */`<div class="image-links${lines.length === 1 ? " one-image-link" : ""}">`;
+	let html = /* html */`
+		<div class="image-links">
+	`;
 
 	lines.forEach(line =>
 	{

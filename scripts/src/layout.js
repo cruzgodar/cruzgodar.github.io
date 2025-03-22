@@ -3,8 +3,7 @@ import { currentCard, resizeCard } from "./cards.js";
 import { headerElement } from "./header.js";
 import {
 	$,
-	$$,
-	pageElement
+	$$
 } from "./main.js";
 
 export const pageWidth = 1150;
@@ -67,40 +66,8 @@ export function onResize()
 		element.style.width = `${element.getBoundingClientRect().height}px`;
 	}
 
-
-
-	// Handle single image link rows.
-	const oneImageLinkElements = $$(".one-image-link .image-link");
-
-	let imageLinkElement = $(".image-links:not(.one-image-link) .image-link");
-
-	if (!imageLinkElement)
-	{
-		const element = document.createElement("div");
-
-		element.classList.add("image-links");
-		element.style.opacity = 0;
-		element.style.marginTop = 0;
-
-		pageElement.appendChild(element);
-
-		imageLinkElement = document.createElement("div");
-
-		imageLinkElement.classList.add("image-link");
-
-		element.appendChild(imageLinkElement);
-	}
-	
-	if (oneImageLinkElements.length)
-	{
-		const oneImageLinkWidth = $(".image-links:not(.one-image-link) .image-link")
-			.getBoundingClientRect().width;
-
-		oneImageLinkElements.forEach(element =>
-		{
-			element.style.width = `${oneImageLinkWidth}px`;
-		});
-	}
+	updateImageLinks();
+	requestAnimationFrame(updateImageLinks);
 
 
 
@@ -124,6 +91,40 @@ export function onResize()
 export function initOnResize()
 {
 	window.addEventListener("resize", onResize);
+}
+
+
+
+function updateImageLinks()
+{
+	const imageLinksElements = $$(".image-links");
+
+	for (let i = 0; i < imageLinksElements.length; i++)
+	{
+		const imageLinksElement = imageLinksElements[i];
+
+		const firstImageLinkRect = imageLinksElement.children[0].getBoundingClientRect();
+		const lastImageLinkRect = imageLinksElement.children[imageLinksElement.children.length - 1]
+			.getBoundingClientRect();
+
+		const onSameRow = firstImageLinkRect.top === lastImageLinkRect.top;
+
+		if (onSameRow)
+		{
+			const missingWidth = $("main").clientWidth - (
+				lastImageLinkRect.right - firstImageLinkRect.left
+			);
+
+			imageLinksElement.style.marginLeft = `${missingWidth / 2}px`;
+			imageLinksElement.style.marginRight = `-${missingWidth / 2}px`;
+		}
+
+		else
+		{
+			imageLinksElement.style.removeProperty("margin-left");
+			imageLinksElement.style.removeProperty("margin-right");
+		}
+	}
 }
 
 
