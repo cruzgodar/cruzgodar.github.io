@@ -40,13 +40,15 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "an-abelian-sandpile.png"
+		filename: "a-singular-value-decomposition.png"
 	});
 
 	showPage();
 
 	function run()
 	{
+		indexSlider.setBounds({ max: fileUpload.files.length, callOnInput: false });
+		depthSlider.setBounds({ max: fileUpload.files.length, callOnInput: false });
 		applet.run({ files: fileUpload.files });
 	}
 

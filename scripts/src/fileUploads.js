@@ -31,7 +31,9 @@ export class FileUpload extends InputElement
 
 			this.buttonElement.innerHTML = this.files.length === 1
 				? this.files[0].name
-				: `${this.files.length} files`;
+				: this.files.length === 2
+					? `${this.files[0].name} and ${this.files[1].name}`
+					: `${this.files[0].name} and ${this.files.length - 1} other files`;
 
 			if (!this.disabled)
 			{

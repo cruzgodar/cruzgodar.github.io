@@ -1004,6 +1004,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	height: 42.5px;
 	padding: 10px;
+	margin-bottom: 16px;
 }
 
 .text-button.dropdown.expanded
