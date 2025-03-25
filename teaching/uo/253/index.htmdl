@@ -56,7 +56,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	## What materials will I need?
 	
-	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's *Functions, Trigonometry, and Their Applications, version 3.0*, by Dan Raies.
+	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/CalculusVolume2-OP.pdf">Calculus Volume 2</a> by Herman and Strang.
 	
 	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, **no calculators of any sort are allowed.** The quizzes and exams are written so that necessary computations are doable by hand.
 	
@@ -82,15 +82,21 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions, theorem statements, and exam and are there so that you've seen the material at least once before lecture.
 	
-	Many of the examples in the notes have exercises following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper from your notebook, and then turn it in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	Many of the examples in the notes have exercises following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper, and then turn those in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
 	
 	
 	
 	## What will the homework be like?
 	
-	The homework is available on this site, and there will be roughly 20 problems due each week. Your grade is out of 16 points --- 4 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	The homework is available on this site, and there will be roughly 20 problems due each week. Your grade is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to be graded on correctness for 4 points each.
 	
 	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+
+	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+
+	## What about generative AI?
+
+	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine the learning process with them. LLMs in their current form fundamentally cannot be guaranteed to produce correct answers, but more importantly, relying on them to complete homework assignments is one of the most effective ways to set yourself up for failure: the homework exists to challenge and prepare you for the in-class assignments, which are worth most of the credit. To that end, I treat using AI tools to complete the homework similarly to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting copied answers from an LLM is a form of academic misconduct.
 	
 	
 	
@@ -108,8 +114,6 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
 	
-	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
-	
 	
 	
 	## What is the policy regarding late work, make-ups, and dropped assignments?
@@ -120,7 +124,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	## What if I'm registered with the AEC or think I should be?
 	
-	The Accessible Education Center is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with the AEC, please have them send me the accommodations email as soon as possible, ideally in week 1. If you think the AEC could be a benefit to you, please reach out to them --- it can take a few weeks before everything goes through, so the sooner the better.
+	The Accessible Education Center is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with the AEC, please have them send me the accommodations email as soon as possible, ideally in week 1. If you think the AEC could be a benefit to you, please reach out to them! It can take a few weeks before everything goes through, so the sooner the better.
 	
 	
 	
