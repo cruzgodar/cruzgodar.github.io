@@ -68,7 +68,7 @@ home Cruz Godar
 			related-rates Section 2.10: Related Rates
 			applied-optimization Section 2.11: Applied Optimization
 			newtons-method Section 2.12: Newton's Method
-			calc-1-review Chapters 1 and 2 Review
+			calc-1-review Parts 1 and 2 Review
 
 			riemann-sums Section 3.1: Riemann Sums
 			integrals-intro Section 3.2: Intro to Integrals
@@ -86,7 +86,7 @@ home Cruz Godar
 			partial-fractions Section 3.14: Partial Fractions
 			improper-integrals Section 3.15: Improper Integrals
 			intro-to-des Section 3.16: Intro to Differential Equations
-			calc-2-review Chapter 3 Review
+			calc-2-review Part 3 Review
 
 			sequences Section 4.1: Sequences
 			series Section 4.2: Series

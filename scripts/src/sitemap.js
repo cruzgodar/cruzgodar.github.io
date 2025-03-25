@@ -875,7 +875,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/calc-1-review":
 	{
-		"title": "Chapters 1 and 2 Review",
+		"title": "Parts 1 and 2 Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1050,7 +1050,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/calc-2-review":
 	{
-		"title": "Chapter 3 Review",
+		"title": "Part 3 Review",
 		
 		"parent": "/teaching/notes/calculus",
 		

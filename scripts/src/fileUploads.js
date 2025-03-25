@@ -38,7 +38,24 @@ export class FileUpload extends InputElement
 			if (!this.disabled)
 			{
 				this.onInput(this.files);
+
+				console.log(this.files);
 			}
 		});
+	}
+
+	async setFiles(urls)
+	{
+		const dataTransfer = new DataTransfer();
+
+		for (const url of urls)
+		{
+			const response = await fetch(url);
+			const blob = await response.blob();
+			const file = new File([blob], url.split("/").pop(), { type: blob.type });
+			dataTransfer.items.add(file);
+		}
+
+		this.files = dataTransfer.files;
 	}
 }

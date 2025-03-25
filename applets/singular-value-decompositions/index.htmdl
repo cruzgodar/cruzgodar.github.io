@@ -1,4 +1,4 @@
-Singular value decompositions are a technique for
+ <a href="/teaching/notes/linear-algebra">Linear algebra</a> often sees us decompose matrices into nicely-structured matrix products, most famously when a square matrix is diagonalizable. Even when a matrix isn't diagonalizable or even square, though, the technique of <a href="/teaching/notes/linear-algebra/singular-value-decompositions">singular value decompositions</a> lets us express the columns of a matrix as combinations of other particular columns, and it even organizes them by relevance, so that the first column is the best one to approximate all of the others. In the linked page, the matrix is a single image, so that columns of the matrix are columns of the image itself, but here, we use multiple images and convert each one into an extremely long column. By running a singular value decomposition on that matrix, the result is images that closely approximate the ones we started with. Here, the default is three of the homepage's banner photos: by adjusting the Image slider, we change the image being approximated, and the Depth slider changes the level of approximation.
 
 <div id="canvas-landscape">
 

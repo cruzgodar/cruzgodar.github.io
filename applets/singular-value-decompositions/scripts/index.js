@@ -45,8 +45,19 @@ export default function()
 
 	showPage();
 
-	function run()
+	run();
+
+	async function run()
 	{
+		if (!fileUpload.files)
+		{
+			await fileUpload.setFiles([
+				"/home/banners/3/small.webp",
+				"/home/banners/7/small.webp",
+				"/home/banners/10/small.webp",
+			]);
+		}
+
 		indexSlider.setBounds({ max: fileUpload.files.length, callOnInput: false });
 		depthSlider.setBounds({ max: fileUpload.files.length, callOnInput: false });
 		applet.run({ files: fileUpload.files });
