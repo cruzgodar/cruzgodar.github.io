@@ -35,7 +35,7 @@ export default function()
 		name: "Point Factor",
 		value: 1,
 		min: 1,
-		max: 20,
+		max: 100,
 		integer: true,
 		onInput: redraw,
 	});

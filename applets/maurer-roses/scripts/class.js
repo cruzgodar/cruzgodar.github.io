@@ -8,7 +8,10 @@ export class MaurerRoses extends AnimationFrameApplet
 	thetaFactor = 2;
 	pointFactor = 1;
 	numGraphPoints = 4000;
-	graphPointsPerFrame = 20;
+	graphPointsPerFrame = 30;
+	linesPerFrame = 1;
+	curveThickness = 1;
+	lineThickness = 1;
 
 	pointQueue = [];
 	lineQueue = [];
@@ -51,6 +54,18 @@ export class MaurerRoses extends AnimationFrameApplet
 		this.pointFactor = pointFactor;
 		this.animate = animate;
 
+		this.numGraphPoints = 30000;
+
+		this.graphPointsPerFrame = this.animate
+			? this.numGraphPoints / (300 * this.thetaFactor)
+			: this.numGraphPoints;
+
+		this.linesPerFrame = this.animate ? 1 : 360;
+
+		this.curveThickness = Math.max(this.resolution / 500, 1);
+		this.lineThickness = Math.max(this.resolution / 1000, 1);
+		this.wilson.ctx.lineWidth = this.lineThickness;
+
 		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.pointQueue = [];
@@ -72,13 +87,13 @@ export class MaurerRoses extends AnimationFrameApplet
 
 		for (let i = 0; i < 360; i++)
 		{
-			const theta = i / 360 * 2 * Math.PI;
+			const theta = i / 360 * 2 * Math.PI * this.pointFactor;
 			const r = Math.sin(theta * this.thetaFactor);
 
 			const x = r * Math.cos(theta);
 			const y = r * Math.sin(theta);
 
-			const [row, col] = this.wilson.interpolateCanvasToWorld([x, y]);
+			const [row, col] = this.wilson.interpolateWorldToCanvas([x, y]);
 			const rgb = hsvToRgb(i / 360, 1, 1);
 
 			this.lineQueue.push([row, col, rgb]);
@@ -90,42 +105,45 @@ export class MaurerRoses extends AnimationFrameApplet
 		this.resume();
 	}
 
-	prepareFrame()
-	{
-		
-	}
-
 	drawFrame()
 	{
-		if (this.animate)
+		this.needNewFrame = true;
+
+		if (this.pointQueuePosition < this.pointQueue.length)
 		{
-			this.needNewFrame = true;
+			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
 
-			if (this.pointQueuePosition < this.pointQueue.length)
-			{
-				for (
-					let i = 0;
-					i < this.graphPointsPerFrame
-						&& this.pointQueuePosition < this.pointQueue.length;
-					i++
-				) {
-					const [row, col] = this.pointQueue[this.pointQueuePosition];
+			for (
+				let i = 0;
+				i < this.graphPointsPerFrame
+					&& this.pointQueuePosition < this.pointQueue.length;
+				i++
+			) {
+				const [row, col] = this.pointQueue[this.pointQueuePosition];
 
-					this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-					this.wilson.ctx.fillRect(row - 1, col - 1, 3, 3);
+				// Draw a circle of radius lineThickness here.
+				this.wilson.ctx.beginPath();
+				this.wilson.ctx.arc(row, col, this.curveThickness, 0, 2 * Math.PI);
+				this.wilson.ctx.fill();
 
-					this.pointQueuePosition++;
-				}
+				this.pointQueuePosition++;
 			}
+		}
 
-			else if (this.lineQueuePosition < this.lineQueue.length)
-			{
-				const [row, col, rgb] = this.pointQueue[this.pointQueuePosition];
-				const [nextRow, nextCol, nextRgb] = this.lineQueue[
+		else if (this.lineQueuePosition < this.lineQueue.length)
+		{
+			for (
+				let i = 0;
+				i < this.linesPerFrame
+					&& this.lineQueuePosition < this.lineQueue.length;
+				i++
+			) {
+				const [row, col, rgb] = this.lineQueue[this.lineQueuePosition];
+				const [nextRow, nextCol] = this.lineQueue[
 					(this.lineQueuePosition + 1) % this.lineQueue.length
 				];
 
-				this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+				this.wilson.ctx.strokeStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(row, col);
 				this.wilson.ctx.lineTo(nextRow, nextCol);
@@ -133,11 +151,11 @@ export class MaurerRoses extends AnimationFrameApplet
 
 				this.lineQueuePosition++;
 			}
+		}
 
-			else
-			{
-				this.needNewFrame = false;
-			}
+		else
+		{
+			this.needNewFrame = false;
 		}
 	}
 }
