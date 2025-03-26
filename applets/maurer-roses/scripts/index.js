@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { MaurerRoses } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -40,6 +41,12 @@ export default function()
 		onInput: redraw,
 	});
 
+	const drawLinesSequentiallyCheckbox = new Checkbox({
+		element: $("#draw-lines-sequentially-checkbox"),
+		name: "Draw lines sequentially",
+		checked: false,
+	});
+
 	new GenerateButton({
 		element: $("#generate-button"),
 		onClick: animate
@@ -71,6 +78,7 @@ export default function()
 			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			thetaFactor: thetaFactorSlider.value,
 			pointFactor: pointFactorSlider.value,
+			drawLinesSequentially: drawLinesSequentiallyCheckbox.checked,
 			animate: true,
 		});
 	}
