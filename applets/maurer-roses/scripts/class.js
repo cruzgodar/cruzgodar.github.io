@@ -49,14 +49,13 @@ export class MaurerRoses extends AnimationFrameApplet
 		resolution = 2000,
 		thetaFactor = 2,
 		pointFactor = 1,
-		drawLinesSequentially = false,
 		animate = false
 	}) {
 		this.resolution = resolution;
 		this.thetaFactor = thetaFactor;
 		this.pointFactor = pointFactor;
-		this.drawLinesSequentially = drawLinesSequentially;
 		this.animate = animate;
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.numPoints = 30000;
 		this.numPointsPerFrame = this.numPoints / (300 * this.thetaFactor);
@@ -68,8 +67,6 @@ export class MaurerRoses extends AnimationFrameApplet
 		this.curveThickness = Math.max(this.resolution / 500, 1);
 		this.lineThickness = Math.max(this.resolution / 500, 1);
 		this.wilson.ctx.lineWidth = this.lineThickness;
-
-		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.points = [];
 		this.lines = [];

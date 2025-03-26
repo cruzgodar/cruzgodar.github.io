@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { MaurerRoses } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -23,7 +22,7 @@ export default function()
 
 	const thetaFactorSlider = new Slider({
 		element: $("#theta-factor-slider"),
-		name: "Theta Factor",
+		name: "Graph Factor",
 		value: 2,
 		min: 1,
 		max: 10,
@@ -33,18 +32,12 @@ export default function()
 
 	const pointFactorSlider = new Slider({
 		element: $("#point-factor-slider"),
-		name: "Point Factor",
-		value: 1,
+		name: "Point Separation",
+		value: 52,
 		min: 1,
 		max: 100,
 		integer: true,
 		onInput: redraw,
-	});
-
-	const drawLinesSequentiallyCheckbox = new Checkbox({
-		element: $("#draw-lines-sequentially-checkbox"),
-		name: "Draw lines sequentially",
-		checked: false,
 	});
 
 	new GenerateButton({
@@ -78,7 +71,6 @@ export default function()
 			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			thetaFactor: thetaFactorSlider.value,
 			pointFactor: pointFactorSlider.value,
-			drawLinesSequentially: drawLinesSequentiallyCheckbox.checked,
 			animate: true,
 		});
 	}

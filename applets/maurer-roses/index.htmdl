@@ -1,4 +1,4 @@
-A classic example of the boundary between order and chaos, Bernoulli percolation works by assigning values randomly between 0 and 1 to every edge in a square grid. By only connecting edges with value below a threshold, then coloring the vertices and edges by the connected components, we see scattered and chaotic small components slowly be overtaken by larger ones as the threshold increases. When it's exactly 0.5, the system undergoes a phase transition, where the probability that a single component dominates (specifically, that there's an unbounded component on the infinite grid graph) switches from 0 to 1, and order overtakes chaos.
+A very straightforward type of mathematical art, Maurer roses are formed by first plotting the polar graph $r = \sin(n \theta)$ for an integer $n$, then plotting 360 points, each at an integer multiple of some value $k$. We connect each point to the next with a straight line, and the result is a beautiful flower-like diagram.
 
 
 
@@ -12,10 +12,6 @@ A classic example of the boundary between order and chaos, Bernoulli percolation
 	### sliders
 		theta-factor
 		point-factor
-	###
-
-	### checkboxes
-		draw-lines-sequentially
 	###
 
 	### buttons
