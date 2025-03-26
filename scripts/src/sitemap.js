@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/maurer-roses",
 			"/applets/singular-value-decompositions",
 			"/applets/traffic-model",
 			"/applets/raymarching-fundamentals",
@@ -93,6 +94,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/maurer-roses":
+	{
+		"title": "Maurer Roses",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/singular-value-decompositions":
 	{
 		"title": "Singular Value Decompositions",
@@ -1709,7 +1721,9 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252":
