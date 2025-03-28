@@ -48,67 +48,49 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 
 
-	## Section 10
+	## Section 4.1
 	
-	In problems 5#, find the determinant of the given matrix.
-	
-	#. $$**A** = [[2, -1 ; 3, -2]].$$
-	
-	#. $$**B** = [[1, -1 ; 1, 3]].$$
-	
-	#. $$**C** = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
-	
-	#. $$**D** = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
-	
-	#. $$**E** = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
-	
+	In problems 6#, write the first five terms of the sequence and find an explicit formula for the $n$th term of the sequence if it is not already given.
 
+	#. $$a_n = \left( \frac{1}{2} \right)^n$$.
 
-	- - -
+	#. $$b_n = \cos\left( \frac{\pi}{2} n \right)$$.
 
-	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
-	
-	#. $**A**$ from problem 1.
-	
-	#. $**B**$ from problem 2.
-	
-	#. $**C**$ from problem 3.
-	
-	#. $**D**$ from problem 4.
-	
-	#. $**E**$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
-	
+	#. $$c_1 = 1$$ and $$c_n = nc_{n - 1}$$ for $n \geq 2$.
 
+	#. $d_1 = 1$, $$d_2 = \frac{1}{5}$$, and $d_n = d_{n - 1}d_{n - 2}$ for $n \geq 3$. (You may state your explicit formula in terms of another sequence).
+
+	#. $e_1 = 6$, $e_2 = 2$, and $(e_n)$ is an arithmetic sequence.
+
+	#. $f_1 = 6$, $f_2 = 2$, and $(f_n)$ is a geometric sequence.
+
+	#. For each of the sequences in problems #-6--#-1, find the limit if it exists. If it does exist, find a positive integer $N$ so that all terms of the sequence with index at least $N$ are within $\varepsilon = 0.1$ of the limit.
 
 	- - -
 
-	#. With $**A**$ from problem 1, find the following:
-	
-	> a) $$**A**^{100} [[1 ; 3]].$$
-	
-	> b) $$**A**^{100} [[-2 ; -6]].$$
-	
-	> c) $$**A**^{100} [[0 ; -4]].$$
-	
+	In problems 5#, determine if the sequence converges and find the limit of the sequence if it does. Justify your answers.
 
+	#. $$a_n = \frac{3n^3 - 2n^2}{n^3 + 1}$$.
 
-	- - -
+	#. $$b_n = \frac{(-1)^n}{\sqrt{n}}$$.
 
-	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $**A**$ and $**B**$, $\det (**AB**) = \left( \det **A** \right)\left( \det **B** \right)$. Use this property to answer the following questions.
-	
-	> a) What is $\det **I**$? Hint: $**IA** = **A**$ for any matrix $**A**$ for which the product makes sense.
-	
-	> b) Let $**A**$ be an invertible matrix. What is $\det \left(**A**^{-1}\right)$ in terms of $\det **A**$?
-	
+	#. $$c_n = \tan(n)$$.
 
+	#. $$d_n = \frac{2^n}{n!}$$.
+
+	#. $$e_n = \frac{n^n}{n!}$$.
 
 	- - -
 
-	#. Suppose $**A**$ is an invertible matrix with eigenvectors $**v_1**, ..., **v_n**$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
-	
-	> a) For $**A**$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
-	
-	> b) What are the eigenvectors and eigenvalues of $**A**^{-1}$? Hint: start with $**Av_i** = \lambda_i **v_i**$ and find a way to introduce $**A**^{-1}$ into the equation.
+	#. Give an example of a sequence that is monotone increasing that does not converge, and a sequence that is bounded below but does not converge.
+
+	#. If a sequence is not bounded above, can it converge? Explain.
+
+	#. If a sequence $a_n$ has infinitely many positive terms *and* infinitely many negative terms, can it still converge? If so, are there restrictions on what it can converge to?
+
+	#. Suppose $(a_n)$ is a sequence of rational numbers with $(a_n) \to a$. Is $a$ necessarily a rational number?
+
+	#. Let $a_n$ be a sequence and let $b_n = \left| a_{n + 1} - a_n \right|$. If $(b_n) \to 0$, does $(a_n)$ have to converge?
 
 ###
 

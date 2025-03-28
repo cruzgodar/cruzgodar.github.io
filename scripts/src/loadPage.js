@@ -18,6 +18,7 @@ import { loadImages } from "./images.js";
 import { listenForFullscreenKey } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
+	$,
 	$$,
 	asyncFetch,
 	pageElement,
@@ -87,6 +88,8 @@ export async function loadPage()
 	typesetMath();
 
 	initCards();
+
+	hideSolutions();
 
 	onResize();
 
@@ -297,4 +300,14 @@ export function disableLinks()
 	{
 		link.addEventListener("click", e => e.preventDefault());
 	});
+}
+
+function hideSolutions()
+{
+	const element = $("#show-solutions");
+
+	if (!element && !window.DEBUG)
+	{
+		$$(".solution").forEach(e => e.remove());
+	}
 }

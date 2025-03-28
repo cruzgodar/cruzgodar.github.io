@@ -145,7 +145,7 @@
 		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(###) (banner|canvas|desmos|dropdown|file\-upload|image|nav\-buttons|glsl\-docs|textarea|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|desmos|dropdown|file\-upload|image|nav\-buttons|glsl\-docs|textarea|wilson|solutions)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -601,7 +601,7 @@
 
 
 
-		<!-- Numbered range -->
+		<!-- Numbered ranges -->
 		<dict>
 			<key>match</key>
 			<string>([0-9]+)(#)</string>
@@ -616,6 +616,25 @@
 				<dict>
 					<key>name</key>
 					<string>keyword</string>
+				</dict>
+			</dict>
+		</dict>
+
+		<!-- Relative problem numbers -->
+		<dict>
+			<key>match</key>
+			<string>(#)([+-][0-9]+)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>string</string>
 				</dict>
 			</dict>
 		</dict>

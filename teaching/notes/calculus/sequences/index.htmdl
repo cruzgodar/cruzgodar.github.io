@@ -586,7 +586,7 @@ If a sequence is monotone increasing and bounded above, then its behavior is ver
 		
 		1 & \leq a_{n - 1}^2
 		
-		a_{n - 1} & \geq 1 \text{ or } a_{n - 1} & \leq -1.
+		a_{n - 1} & \geq 1 \text{ or } a_{n - 1} \leq -1.
 	$$
 	
 	Since $a_{n - 1} \geq 1$, this is always the case. Therefore, the MCT applies, the the sequence converges.

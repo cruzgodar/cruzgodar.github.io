@@ -20,7 +20,9 @@ export function parseText(text)
 		.replaceAll(/\\:/g, "[COLON]")
 		.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `$\\displaystyle ${$1}$`)
 		.replaceAll(/\$(.*?)\$/g, (match, $1) => `$${parseLatex($1)}[END$]`)
-		.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`);
+		.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`)
+		.replaceAll(/#\+([0-9]+)/g, (match, $1) => `${currentNumberedItem + parseInt($1)}`)
+		.replaceAll(/#-([0-9]+)/g, (match, $1) => `${currentNumberedItem - parseInt($1)}`);
 
 
 

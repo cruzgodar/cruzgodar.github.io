@@ -16,6 +16,7 @@ import { parseLatex } from "./components/latex.js";
 import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
 import { raymarchControls } from "./components/raymarchControls.js";
 import { sliders } from "./components/sliders.js";
+import { solutions } from "./components/solutions.js";
 import { parseText } from "./components/text.js";
 import { textarea } from "./components/textarea.js";
 import { textBoxes } from "./components/textBoxes.js";
@@ -47,6 +48,7 @@ const singleLineComponents = [
 	"image",
 	"nav-buttons",
 	"raymarch-controls",
+	"solutions",
 	"textarea",
 	"wilson"
 ];
@@ -69,6 +71,7 @@ const components = {
 	"notes-environment": notesEnvironment,
 	"raymarch-controls": raymarchControls,
 	"sliders": sliders,
+	"solutions": solutions,
 	"textarea": textarea,
 	"text-boxes": textBoxes,
 	"wilson": wilson
