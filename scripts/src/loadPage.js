@@ -308,6 +308,6 @@ function hideSolutions()
 
 	if (!element && !window.DEBUG)
 	{
-		$$(".solution").forEach(e => e.remove());
+		$$(".notes-exc .solution").forEach(e => e.remove());
 	}
 }

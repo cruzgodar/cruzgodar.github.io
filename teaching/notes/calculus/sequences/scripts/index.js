@@ -76,6 +76,22 @@ export default function()
 
 
 
+			cosineSequence:
+			{
+				bounds: { left: -1, right: 6, bottom: -1.5, top: 1.5 },
+
+				expressions:
+				[
+					{ latex: raw`a(n) = \cos(2\pi n)`, hidden: true },
+					{ latex: raw`f(x) = \cos(2\pi x)`, color: desmosBlue },
+
+					{ latex: raw`N = [1, ..., 100]`, secret: true },
+					{ latex: raw`(N, a(N))`, color: desmosPurple, secret: true },
+				]
+			},
+
+
+
 			squeezeTheorem:
 			{
 				bounds: { left: -1, right: 101, bottom: -1.5, top: 1.5 },

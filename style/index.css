@@ -2261,6 +2261,19 @@ img[src="/about/cover.webp"]
 
 
 
+.notes-ex .solution, .notes-exc .solution
+{
+	margin-top: 64px;
+}
+
+.notes-ex .solution > *:first-child::before, .notes-exc .solution > *:first-child::before
+{
+	content: "Solution: ";
+	font-weight: bold;
+}
+
+
+
 .notes-environment br:last-child
 {
 	display: none;
