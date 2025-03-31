@@ -328,6 +328,24 @@ export const galleryImageData =
 		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
 	},
 
+	"maurer-rose":
+	{
+		title: "A Maurer Rose",
+
+		appletLink: "/applets/maurer-roses",
+
+		driveId: "1RolPnj-o5o1havy0jii4XPIa_iw9JID-"
+	},
+
+	"maurer-rose-2":
+	{
+		title: "A Maurer Rose",
+
+		appletLink: "/applets/maurer-roses",
+
+		driveId: "1J9qEixnXoO-JgoS0hYVvLLUiDU0hVQ16"
+	},
+
 	"menger-sponge":
 	{
 		title: "A Menger Sponge",
