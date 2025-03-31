@@ -1,0 +1,39 @@
+HTMDL is a language similar to Markdown, but with support for straight HTML inline and a number of shortcuts. The following is a list of everything it supports.
+
+Paragraphs are by default wrapped in `&lt;p class="body-text"&gt;&lt;/p&gt;`. A single heading per file is allowed, with a line beginning with `#`, and sections are given by lines starting with `##`. Further headings are not allowed since three hash symbols indicate environments.
+
+Display math is delimited by `$$`; it is automatically put in an `align*` environment so that `&` characters can be used freely. Line ends are automatically terminated with `\\\\`, and empty lines are culled.
+
+Code blocks (with optional language tags) are delimited by `\`\`\``. Blocks that should be hidden unless in debug mode are delimited by `???`.
+
+
+
+## Text
+
+Lines beginning with a `&lt;` are treated as HTML and ignored; otherwise, the following replacement rules apply.
+
+> - Math is delimited by dollar signs, and if delimited by `$$` instead, it is preceded with `\\displaystyle`.
+
+> - Code is delimited by `\``.
+
+> - Lines beginning with one or more `&gt;` are indented by that many tabs; if followed by a `-` character, they're bulleted.
+
+> - Numbered listed can be written manually, but writing `#.` at the start of a line will replace it with the appropriate number in sequence, starting from one. Similarly, something like `4\#` will be replaced with `2--5`, where the start is the next number and the prefix to the hash gives the length of the range. Finally, `\#+n` and `\#-n` are converted to the numbers relative to the current position.
+
+
+
+## Math
+
+Within math environments, the following rules are used:
+
+> - `\pe`, `\me`, and `\te` compile to appropriately-spaced $\pe$, $\me$, and $\te$.
+
+> - `\span`, `\image`, `\swap`, `\Re`, `\Im`, `\proj` are all treated as operatornames.
+
+> - Matrices like `[[ 1, 2, 3 ; 4, 5, 6 ]]` compile to $[[ 1, 2, 3 ; 4, 5, 6 ]]$.
+
+> - Expressions like `:: a = 1 ; b = 1234 ::` are left aligned blocks: $\ :: a = 1 ; b = 1234 ::$
+
+> - One-or-two variable Leibniz derivatives like `d/dx`, `dy/dx`, `d\theta/dx` convert to $d/dx$, $dy/dx$, and $d\theta/dx$. `\d` not immediately followed by a letter (i.e. not a letter) is converted to an operator $\text{d}$.
+
+> - `**A**` is converted to bold $**A**$, and `#A#` is converted to blackboard bold $#A#$.

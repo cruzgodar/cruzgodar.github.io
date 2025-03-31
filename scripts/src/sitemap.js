@@ -1883,15 +1883,23 @@ export const sitemap =
 		"children":
 		[
 			"/debug/tests/glsl-test",
+			"/debug/htmdl-docs",
 			"/debug/glsl-docs"
-		],
-
-		"customScript": true
+		]
 	},
 		
 	"/debug/tests/glsl-test":
 	{
 		"title": "GLSL Tests",
+		
+		"parent": "/debug",
+		
+		"children": []
+	},
+	
+	"/debug/htmdl-docs":
+	{
+		"title": "HTMDL Docs",
 		
 		"parent": "/debug",
 		

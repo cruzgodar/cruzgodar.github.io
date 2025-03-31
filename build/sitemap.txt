@@ -176,6 +176,7 @@ home Cruz Godar
 	
 	debug Debug
 		tests/glsl-test GLSL Tests
+		htmdl-docs HTMDL Docs
 		glsl-docs GLSL Docs
 	
 	teaching/uo/342/extra/eigenfaces-demo Eigenfaces
