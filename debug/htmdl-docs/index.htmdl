@@ -18,7 +18,7 @@ Lines beginning with a `&lt;` are treated as HTML and ignored; otherwise, the fo
 
 > - Lines beginning with one or more `&gt;` are indented by that many tabs; if followed by a `-` character, they're bulleted.
 
-> - Numbered listed can be written manually, but writing `#.` at the start of a line will replace it with the appropriate number in sequence, starting from one. Similarly, something like `4\#` will be replaced with `2--5`, where the start is the next number and the prefix to the hash gives the length of the range. Finally, `\#+n` and `\#-n` are converted to the numbers relative to the current position.
+> - Numbered lists can be written manually, but writing `#.` at the start of a line will replace it with the appropriate number in sequence, starting from one. Similarly, something like `4\#` will be replaced with `2--5`, where the start is the next number and the prefix to the hash gives the length of the range. Finally, `\#+n` and `\#-n` are converted to the numbers relative to the current position.
 
 
 
@@ -37,3 +37,35 @@ Within math environments, the following rules are used:
 > - One-or-two variable Leibniz derivatives like `d/dx`, `dy/dx`, `d\theta/dx` convert to $d/dx$, $dy/dx$, and $d\theta/dx$. `\d` not immediately followed by a letter (i.e. not a letter) is converted to an operator $\text{d}$.
 
 > - `**A**` is converted to bold $**A**$, and `#A#` is converted to blackboard bold $#A#$.
+
+
+
+## Environments
+
+All environments begin with `### &lt;environemnt-name>`, and if they're multi-line, end with `###`.
+
+Single-line environments:
+
+> - `\#\#\# banner`: indicates that the page should have a banner at the top.
+> - `### canvas [id]`: a canvas with the given id. If no id is given, it's an applet-style output-canvas.
+> - `### center &lt;text>`: centered text.
+> - `### desmos &lt;id>`: a Desmos graph with the given id.
+> - `### dropdown &lt;id>`: a dropdown with the given id.
+> - `### file-upload &lt;id> &lt;accept> [multiple]`: a file upload with the given id and accept type. If multiple is given, it's a multiple file upload.
+> - `### image &lt;urls...>`: an image with the given urls. If no urls are given, it's a placeholder.
+> - `### nav-buttons`: a set of navigation buttons for the current page.
+> - `### raymarch-controls`: a predefined applet controls card for raymarch applets.
+> - `### solutions &lt;id>`: indicates that exercise solutions on the current notes page should be visisble in non-debug mode.
+> - `### textarea &lt;id>`: a textarea with the given id.
+
+Multi-line environments:
+
+> - `### buttons`: a list of buttons. Each line is of the form `&lt;id>`.
+> - `\#\#\# card &lt;id> &lt;title>`: a card with the given id and title. The body is the entire inside of the environment.
+> - `### carousel`: a carousel. Each line within is a page of the carousel.
+> - `### checkboxes`: a list of checkboxes. Each line is of the form `&lt;id>`.
+> - `### gallery-block`: a gallery block. Each line is of the form `&lt;id> &lt;size>`.
+> - `### image-links`: a list of image links, each of the form `&lt;url> [name] [cover-path] [-cet]`. If no name is given, it's the title of the page with the given url. If no cover-path is given, it's the cover of that page. `-c` indicates a card, `-t` opens in a new tab, and `-e` indicates an external link.
+> - `### &lt;ex|exc|def|prop|thm|lem|cor|pf|ax|as> [title] [-m]`: a notes environment with the given title. The body is the entire inside of the environment. `-m` indicates a manual title (i.e. not automatically prefixed with things like "Theorem: ").
+> - `### sliders`: a list of sliders, each of the form `id`.
+> - `### text-boxes`: a list of text boxes, each of the form `id`.

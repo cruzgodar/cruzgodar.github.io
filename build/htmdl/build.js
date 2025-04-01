@@ -20,9 +20,6 @@ import { solutions } from "./components/solutions.js";
 import { parseText } from "./components/text.js";
 import { textarea } from "./components/textarea.js";
 import { textBoxes } from "./components/textBoxes.js";
-import { wilson } from "./components/wilson.js";
-
-// const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
 
 let sitemap;
 let parentFolder;
@@ -44,13 +41,11 @@ const singleLineComponents = [
 	"desmos",
 	"dropdown",
 	"file-upload",
-	"glsl-docs",
 	"image",
 	"nav-buttons",
 	"raymarch-controls",
 	"solutions",
 	"textarea",
-	"wilson"
 ];
 
 const components = {
@@ -74,7 +69,6 @@ const components = {
 	"solutions": solutions,
 	"textarea": textarea,
 	"text-boxes": textBoxes,
-	"wilson": wilson
 };
 
 export let currentNumberedItem = 1;
