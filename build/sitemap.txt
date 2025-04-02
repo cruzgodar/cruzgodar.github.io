@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		lambda-calculus Lambda Calculus
 		maurer-roses Maurer Roses
 		singular-value-decompositions Singular Value Decompositions
 		traffic-model The Biham-Middleton-Levine Traffic Model

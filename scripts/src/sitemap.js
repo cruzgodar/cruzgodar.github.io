@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/lambda-calculus",
 			"/applets/maurer-roses",
 			"/applets/singular-value-decompositions",
 			"/applets/traffic-model",
@@ -94,6 +95,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/lambda-calculus":
+	{
+		"title": "Lambda Calculus",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/maurer-roses":
 	{
 		"title": "Maurer Roses",
