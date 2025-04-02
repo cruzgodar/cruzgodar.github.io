@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { MaurerRoses } from "./class.js";
+import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { Textarea } from "/scripts/src/textareas.js";
@@ -7,7 +7,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new MaurerRoses({ canvas: $("#output-canvas") });
+	const applet = new LambdaCalculus({ canvas: $("#output-canvas") });
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
@@ -52,7 +52,6 @@ export default function()
 	function updateTextarea()
 	{
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
-		const valueBeforeReplacement = expressionTextarea.value;
 		let cursorBump = 0;
 
 		// Remove ephemeral tokens.
@@ -70,7 +69,7 @@ export default function()
 
 			else if (
 				lastValue[index] === "("
-				&& index !== expressionTextarea.value.length - 1
+				&& index !== expressionTextarea.value.length
 				&& lastValue[index + 1] === ")"
 			) {
 				expressionTextarea.setValue(
@@ -80,18 +79,18 @@ export default function()
 			}
 		}
 
-		else if (selectionStart !== 0 && expressionTextarea.value[selectionStart - 1] === "(")
-		{
-			const numLeftParens = expressionTextarea.value.split("(").length - 1;
-			const numRightParens = expressionTextarea.value.split(")").length - 1;
-
-			if (numLeftParens === numRightParens + 1)
-			{
-				expressionTextarea.setValue(
-					expressionTextarea.value.slice(0, selectionStart) + ")"
-					+ expressionTextarea.value.slice(selectionStart)
-				);
-			}
+		else if (
+			selectionStart !== 0
+			&& expressionTextarea.value[selectionStart - 1] === "("
+			&& (
+				selectionStart === expressionTextarea.value.length
+				|| expressionTextarea.value[selectionStart] === " "
+			)
+		) {
+			expressionTextarea.setValue(
+				expressionTextarea.value.slice(0, selectionStart) + ")"
+				+ expressionTextarea.value.slice(selectionStart)
+			);
 		}
 
 		// Replace ls with lambdas.
@@ -122,6 +121,11 @@ export default function()
 					cursorBump++;
 					return `λ${$1}.`;
 				})
+		);
+
+		// Remove everything except letters, lambdas, parentheses, dots, and whitespace.
+		expressionTextarea.setValue(
+			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().\n\t ]/g, "")
 		);
 
 		// Restore cursor position.
