@@ -98,15 +98,6 @@ export default function()
 			expressionTextarea.value.replaceAll(/l/g, "λ")
 		);
 
-		// Disallow multiple lambdas.
-		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/λ+/g, (match) =>
-			{
-				cursorBump -= match.length - 1;
-				return "λ";
-			})
-		);
-
 		// Add dots after lambdas with with an argument and nowhere else.
 		expressionTextarea.setValue(expressionTextarea.value.replaceAll(/\./g, () =>
 		{

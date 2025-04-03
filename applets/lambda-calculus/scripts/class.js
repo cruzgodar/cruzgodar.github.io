@@ -29,7 +29,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	run({
-		expression: expressionString,
+		expression: expressionString
 	}) {
 		expressionString = expressionString.replaceAll(/[\n\t.]/g, "")
 			.replaceAll(/\s+/g, " ");
@@ -41,53 +41,47 @@ export class LambdaCalculus extends AnimationFrameApplet
 			throw new Error("Lambda expressions must start with λ.");
 		}
 
-		console.log(this.parseExpression(expressionString));
+		const expression = this.parseExpression(expressionString);
+
+		console.log(expression);
+
+		this.validateExpression(expression);
 	}
 	
 	// Converts a string expression to a nested array. Each is of the form
 	// [variable, return value, input]
 	parseExpression(expressionString)
 	{
+		console.log(expressionString);
 		if (expressionString.length === 0)
 		{
 			throw new Error("Empty expression.");
 		}
 
-		if (expressionString.length === 1)
-		{
-			return {
-				type: LITERAL,
-				value: expressionString[0],
-			};
-		}
+		const terms = [];
 
-		if (expressionString[0] === "λ")
+		while (expressionString.length > 0)
 		{
-			if (expressionString.length < 3)
+			if (expressionString[0] === "λ")
 			{
-				throw new Error("Expression too short.");
+				if (expressionString.length < 3)
+				{
+					throw new Error("Expression too short.");
+				}
+
+				const argument = expressionString[1];
+				const body = expressionString.slice(2);
+
+				terms.push({
+					type: LAMBDA,
+					argument,
+					body: this.parseExpression(body)
+				});
+
+				expressionString = "";
 			}
 
-			const argument = expressionString[1];
-			const body = expressionString.slice(2);
-
-			return {
-				type: LAMBDA,
-				argument,
-				body: this.parseExpression(body)
-			};
-		}
-
-		else if (expressionString[0] === "(")
-		{
-			if (expressionString[expressionString.length - 1] !== ")")
-			{
-				throw new Error("Mismatched parentheses.");
-			}
-
-			// If the first expression starts with a parenthesis,
-			// ditch it and scan until there's a matching closing one.
-			if (expressionString[1] === "(")
+			else if (expressionString[0] === "(")
 			{
 				let i = 1;
 				let parenthesisCount = 1;
@@ -107,51 +101,67 @@ export class LambdaCalculus extends AnimationFrameApplet
 					i++;
 				}
 
-				return {
-					type: APPLICATION,
-					function: this.parseExpression(expressionString.slice(2, i - 1)),
-					input: this.parseExpression(expressionString.slice(i + 1, expressionString.length - 1)),
-				};
+				terms.push(this.parseExpression(expressionString.slice(1, i - 1)));
+				expressionString = expressionString.slice(i);
 			}
 
-			// Otherwise, use the first space appearing at the shallowest depth
-			// as the separator if there is one.
-
-			let i = 1;
-			let parenthesisCount = 1;
-
-			while (i < expressionString.length && !(parenthesisCount === 1 && expressionString[i] === " "))
+			else
 			{
-				if (expressionString[i] === "(")
-				{
-					parenthesisCount++;
-				}
-
-				else if (expressionString[i] === ")")
-				{
-					parenthesisCount--;
-				}
-
-				i++;
+				terms.push({
+					type: LITERAL,
+					value: expressionString[0],
+				});
+				expressionString = expressionString.slice(1);
 			}
-			
-			// Take the very last character as the input and the first stuff as the function.
-			if (i === expressionString.length)
-			{
-				return {
-					type: APPLICATION,
-					function: this.parseExpression(expressionString.slice(1, expressionString.length - 2)),
-					input: {
-						type: LITERAL,
-						value: expressionString[expressionString.length - 2],
-					}
-				};
-			}
-			return {
+		}
+
+		if (terms.length === 1)
+		{
+			return terms[0];
+		}
+		
+		// This is now an application, so we apply them from left to right.
+		let returnValue = terms[0];
+		for (let i = 1; i < terms.length; i++)
+		{
+			returnValue = {
 				type: APPLICATION,
-				function: this.parseExpression(expressionString.slice(1, i)),
-				input: this.parseExpression(expressionString.slice(i + 1, expressionString.length - 1)),
+				function: returnValue,
+				input: terms[i],
 			};
 		}
+
+		return returnValue;
+	}
+
+
+
+	validateExpression(expression, scopedVariables = [])
+	{
+		if (expression.type === LITERAL)
+		{
+			if (!scopedVariables.includes(expression.value))
+			{
+				throw new Error(`Undefined variable ${expression.value}.`);
+			}
+
+			return true;
+		}
+
+		if (expression.type === LAMBDA)
+		{
+			if (scopedVariables.includes(expression.argument))
+			{
+				throw new Error(`Variable ${expression.argument} is already in scope.`);
+			}
+
+			return this.validateExpression(
+				expression.body,
+				[...scopedVariables, expression.argument]
+			);
+		}
+
+		return this.validateExpression(expression.function, scopedVariables)
+			&& this.validateExpression(expression.input, scopedVariables);
 	}
 }
