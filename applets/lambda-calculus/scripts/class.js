@@ -60,8 +60,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, size + 2, size + 2);
 		this.drawExpression(expression);
-
-		console.log(expression);
 	}
 	
 	parseExpression(expressionString)
@@ -163,11 +161,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		if (expression.type === LAMBDA)
 		{
-			if (scopedVariables.includes(expression.argument))
-			{
-				throw new Error(`Variable ${expression.argument} is already in scope.`);
-			}
-
 			return this.validateExpression(
 				expression.body,
 				[...scopedVariables, expression.argument]
@@ -244,7 +237,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		else if (expression.type === LAMBDA)
 		{
-			bindings[expression.argument] = expression;
 			this.addExpressionBindings(expression.body, {
 				...bindings,
 				[expression.argument]: expression,
@@ -288,21 +280,21 @@ export class LambdaCalculus extends AnimationFrameApplet
 			// Connect to the bottom of the lambda.
 			if (expression.function.type === LAMBDA)
 			{
-				functionConnector.color = "rgb(255, 255, 0)";
+				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.row + expression.function.height - 1;
 			}
 			
 			// Connect to the top of the literal's binding lambda.
 			else if (expression.function.type === LITERAL)
 			{
-				functionConnector.color = "rgb(0, 255, 255)";
+				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.bindingLambda.row + 1;
 			}
 
 			// Connect to the bottom of the application.
 			else
 			{
-				functionConnector.color = "rgb(255, 0, 255)";
+				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.row + expression.function.height - 1;
 			}
 
@@ -318,19 +310,19 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			if (expression.input.type === LAMBDA)
 			{
-				inputConnector.color = "rgb(255, 255, 0)";
+				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.row + expression.input.height - 1;
 			}
 			
 			else if (expression.input.type === LITERAL)
 			{
-				inputConnector.color = "rgb(0, 255, 255)";
+				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.bindingLambda.row + 1;
 			}
 
 			else
 			{
-				inputConnector.color = "rgb(255, 0, 255)";
+				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.row + expression.input.height - 1;
 			}
 
@@ -363,7 +355,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			// To handle cases like lx.(x(ly.x)).
 			expression.rects = [
 				{
-					color: "rgb(0, 255, 255)",
+					color: "rgb(255, 255, 255)",
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
