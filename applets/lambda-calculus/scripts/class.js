@@ -49,15 +49,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.validateExpression(expression);
 
 		this.addExpressionSize(expression);
-		expression.row = 0;
-		expression.col = 0;
+		const size = Math.max(expression.width, expression.height);
+		expression.row = Math.max(Math.round((size - expression.height) / 2), 0);
+		expression.col = Math.max(Math.round((size - expression.width) / 2), 0);
+
 		this.addExpressionLocation(expression);
 		this.addExpressionBindings(expression);
 		this.addExpressionColors(expression);
 		this.addExpressionRects(expression);
-		console.log(expression);
-
-		const size = Math.max(expression.width, expression.height);
+		
 		this.wilson.resizeCanvas({ width: size + 2 });
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, size + 2, size + 2);
