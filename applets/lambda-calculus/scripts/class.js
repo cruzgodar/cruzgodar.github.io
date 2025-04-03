@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const LITERAL = 0; // { value, bindingLambda }
@@ -6,12 +7,15 @@ const LAMBDA = 1; // { argument, body }
 const APPLICATION = 2; // { function, input }
 
 // Additionally, every expression has row, col, width, and height.
-// Finally, each has rect: { row, col, width, height }, which is the part actually used
-// for drawing.
+// Each also has rect: { row, col, width, height }, which is the part actually used for drawing.
+// And also color: { h, s, v }.
+// Lambdas are special: they have a literalColor field too.
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
 	resolution = 2000;
+	lambdaIndex = 0;
+	numLambdas = 0;
 
 	constructor({ canvas })
 	{
@@ -39,21 +43,19 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}) {
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
+		this.numLambdas = expressionString.split("λ").length - 1;
+		this.lambdaIndex = 0;
 		const expression = this.parseExpression(expressionString);
-
 		this.validateExpression(expression);
 
-
-
 		this.addExpressionSize(expression);
-
 		expression.row = 0;
 		expression.col = 0;
 		this.addExpressionLocation(expression);
-
 		this.addExpressionBindings(expression);
-
+		this.addExpressionColors(expression);
 		this.addExpressionRects(expression);
+		console.log(expression);
 
 		const size = Math.max(expression.width, expression.height);
 		this.wilson.resizeCanvas({ width: size + 2 });
@@ -86,8 +88,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 				terms.push({
 					type: LAMBDA,
 					argument,
-					body: this.parseExpression(body)
+					body: this.parseExpression(body),
+					literalColor: { h: this.lambdaIndex / this.numLambdas, s: 0.8, v: 1 },
 				});
+				this.lambdaIndex++;
 
 				expressionString = "";
 			}
@@ -250,15 +254,58 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}
 	}
 
+	addExpressionColors(expression)
+	{
+		if (expression.type === LITERAL)
+		{
+			expression.color = expression.bindingLambda.literalColor;
+		}
+
+		else if (expression.type === LAMBDA)
+		{
+			this.addExpressionColors(expression.body);
+			expression.color = expression.body.color;
+		}
+
+		else
+		{
+			this.addExpressionColors(expression.function);
+			this.addExpressionColors(expression.input);
+
+			const h1 = expression.function.color.h;
+			const h2 = expression.input.color.h;
+
+			const s1 = expression.function.color.s;
+			const s2 = expression.input.color.s;
+
+			expression.color = {
+				h: Math.abs(h1 - h2) <= 0.5
+					? (h1 + h2) / 2
+					: ((h1 + h2 + 1) / 2) % 1,
+				s: Math.max(
+					Math.min(s1, s2) - 0.1,
+					0.1
+				),
+				v: 1,
+			};
+		}
+	}
+
 	// Adds the rects fields to each expression recursively,
 	// which is an array of objects with row, col, width, and height fields.
 	addExpressionRects(expression)
 	{
 		if (expression.type === LAMBDA)
 		{
+			const rgb = hsvToRgb(
+				expression.literalColor.h,
+				expression.literalColor.s,
+				expression.literalColor.v
+			);
+
 			expression.rects = [
 				{
-					color: "rgb(255, 255, 255)",
+					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 					row: expression.row,
 					col: expression.col,
 					width: expression.width,
@@ -271,8 +318,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		else if (expression.type === APPLICATION)
 		{
+			const rgb = hsvToRgb(
+				expression.function.color.h,
+				expression.function.color.s,
+				expression.function.color.v
+			);
+
 			// Vertical connecting bars up to the function and input.
 			const functionConnector = {
+				color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 				col: expression.col + 1,
 				width: 1,
 			};
@@ -280,61 +334,68 @@ export class LambdaCalculus extends AnimationFrameApplet
 			// Connect to the bottom of the lambda.
 			if (expression.function.type === LAMBDA)
 			{
-				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.row + expression.function.height - 1;
 			}
 			
 			// Connect to the top of the literal's binding lambda.
 			else if (expression.function.type === LITERAL)
 			{
-				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.bindingLambda.row + 1;
 			}
 
 			// Connect to the bottom of the application.
 			else
 			{
-				functionConnector.color = "rgb(255, 255, 255)";
 				functionConnector.row = expression.function.row + expression.function.height - 1;
 			}
 
 			functionConnector.height = expression.row + expression.height - 3
 				- functionConnector.row + 1;
 
-
+			
+			
+			const rgb2 = hsvToRgb(
+				expression.input.color.h,
+				expression.input.color.s,
+				expression.input.color.v
+			);
 
 			const inputConnector = {
+				color: `rgb(${rgb2[0]}, ${rgb2[1]}, ${rgb2[2]})`,
 				col: expression.col + expression.function.width + 2,
 				width: 1,
 			};
 
 			if (expression.input.type === LAMBDA)
 			{
-				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.row + expression.input.height - 1;
 			}
 			
 			else if (expression.input.type === LITERAL)
 			{
-				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.bindingLambda.row + 1;
 			}
 
 			else
 			{
-				inputConnector.color = "rgb(255, 255, 255)";
 				inputConnector.row = expression.input.row + expression.input.height - 1;
 			}
 
 			inputConnector.height = expression.row + expression.height - 3
 				- inputConnector.row + 1;
 
+			
 
+			const rgb3 = hsvToRgb(
+				expression.color.h,
+				expression.color.s,
+				expression.color.v
+			);
 
 			expression.rects = [
 				// The connecting bar almost at the bottom.
 				{
-					color: "rgb(255, 255, 255)",
+					color: `rgb(${rgb3[0]}, ${rgb3[1]}, ${rgb3[2]})`,
 					row: expression.row + expression.height - 2,
 					// Adjust to ensure we're connecting exactly to the function and inputs.
 					col: expression.col + 1,
@@ -351,11 +412,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 		
 		else
 		{
+			const rgb = hsvToRgb(expression.color.h, expression.color.s, expression.color.v);
+
 			// We still need to connect this literal to its binding lambda
 			// To handle cases like lx.(x(ly.x)).
 			expression.rects = [
 				{
-					color: "rgb(255, 255, 255)",
+					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
