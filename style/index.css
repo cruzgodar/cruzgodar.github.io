@@ -1284,11 +1284,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 
 
-.text-field
+.text-field, .textarea-overlay
 {
 	width: 100%;
-	
-	border: 2px solid var(--normal-contrast);
 	border-radius: 10px;
 	padding: 10px;
 	outline: none;
@@ -1296,25 +1294,43 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	box-sizing: border-box;
 	-webkit-appearance: none;
 	appearance: none;
+	font-family: "Source Code Pro", monospace;
 	
-	margin-left: 16px;
-	margin-right: 16px;
-	
-	color: var(--normal-contrast);
 	font-size: 100%;
 	
 	transition: border-color .25s ease-in-out, color .25s ease-in-out;
 }
 
-.text-field:focus
+.textarea-overlay
 {
-	border-color: var(--high-contrast);
-	color: var(--high-contrast);
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	color: var(--normal-contrast);
+	pointer-events: none;
+	z-index: 1;
+	height: 100px;
+
+	border: 2px solid var(--normal-contrast);
+
+	white-space: pre-wrap;
+	word-break: break-word;
+	overflow-wrap: break-word;
+}
+
+.text-field
+{
+	border: none;
+	color: rgba(0, 0, 0, 0);
+	z-index: 2;
+	caret-color: var(--high-contrast);
+	resize: none;
 }
 
 .text-field-container
 {
-	width: 300px;
+	width: 293px;
 	
 	display: flex;
 	flex-direction: column;
@@ -1329,6 +1345,18 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	width: 70%;
 	margin-bottom: 0 !important;
+}
+
+.textarea-wrapper
+{
+	width: 100%;
+	height: fit-content;
+	position: relative;
+	display: flex;
+	justify-content: center;
+
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 

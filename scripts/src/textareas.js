@@ -4,6 +4,7 @@ import { addTemporaryParam, pageUrl } from "./main.js";
 export class Textarea extends InputElement
 {
 	defaultValue;
+	overlayElement;
 
 	constructor({
 		element,
@@ -15,7 +16,10 @@ export class Textarea extends InputElement
 		onEnter = () => {},
 	}) {
 		super({ element, name });
-		this.element.nextElementSibling.textContent = this.name;
+		this.element.parentElement.nextElementSibling.textContent = this.name;
+
+		this.overlayElement = this.element.nextElementSibling;
+
 		this.value = value;
 		this.persistState = persistState;
 		this.allowEnter = allowEnter;
@@ -23,6 +27,7 @@ export class Textarea extends InputElement
 		this.onEnter = onEnter;
 		
 		this.element.value = this.value;
+		this.updateOverlayElement();
 
 		this.element.addEventListener("input", () => this.inputCallback());
 
@@ -44,6 +49,14 @@ export class Textarea extends InputElement
 			}
 		});
 
+		// Whenever the textarea changes size, update the overlay's size and position.
+		const observer = new ResizeObserver(() =>
+		{
+			this.updateOverlayElement();
+		});
+
+		observer.observe(this.element);
+
 		if (this.persistState)
 		{
 			const value = new URLSearchParams(window.location.search).get(this.element.id);
@@ -55,6 +68,20 @@ export class Textarea extends InputElement
 
 			addTemporaryParam(this.element.id);
 		}
+	}
+
+	updateOverlayElement()
+	{
+		this.overlayElement.innerHTML = this.value
+			.replaceAll(/\n/g, "<br>");
+
+		this.element.style.height = "fit-content";
+
+		this.overlayElement.style.height = this.element.scrollHeight + "px";
+		this.overlayElement.style.width = this.element.scrollWidth + "px";
+		this.overlayElement.style.left = this.element.offsetLeft + "px";
+
+		this.element.style.height = this.element.scrollHeight + "px";
 	}
 
 	inputCallback()
@@ -71,6 +98,7 @@ export class Textarea extends InputElement
 	{
 		this.value = newValue;
 		this.element.value = this.value;
+		this.updateOverlayElement();
 
 		if (this.persistState)
 		{
