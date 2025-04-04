@@ -28,8 +28,6 @@ export default function()
 		allowEnter: true,
 	});
 
-	let lastValue = expressionTextarea.value;
-
 	new Button({
 		element: $("#evaluate-button"),
 		name: "Evaluate",
@@ -54,64 +52,9 @@ export default function()
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 		let cursorBump = 0;
 
-		// Remove ephemeral tokens.
-		if (expressionTextarea.value.length < lastValue.length)
-		{
-			const index = findRemovedCharIndex(lastValue, expressionTextarea.value);
-
-			if (lastValue[index] === "." && index !== 0)
-			{
-				expressionTextarea.setValue(
-					expressionTextarea.value.slice(0, index - 1) +
-					expressionTextarea.value.slice(index + 1)
-				);
-			}
-
-			else if (
-				lastValue[index] === "("
-				&& index !== expressionTextarea.value.length
-				&& lastValue[index + 1] === ")"
-			) {
-				expressionTextarea.setValue(
-					expressionTextarea.value.slice(0, index) +
-					expressionTextarea.value.slice(index + 1)
-				);
-			}
-		}
-
-		else if (
-			selectionStart !== 0
-			&& expressionTextarea.value[selectionStart - 1] === "("
-			&& (
-				selectionStart === expressionTextarea.value.length
-				|| expressionTextarea.value[selectionStart] === " "
-			)
-		) {
-			expressionTextarea.setValue(
-				expressionTextarea.value.slice(0, selectionStart) + ")"
-				+ expressionTextarea.value.slice(selectionStart)
-			);
-		}
-
 		// Replace ls with lambdas.
 		expressionTextarea.setValue(
 			expressionTextarea.value.replaceAll(/l/g, "λ")
-		);
-
-		// Add dots after lambdas with with an argument and nowhere else.
-		expressionTextarea.setValue(expressionTextarea.value.replaceAll(/\./g, () =>
-		{
-			cursorBump--;
-			return "";
-		}));
-
-		expressionTextarea.setValue(
-			expressionTextarea.value
-				.replaceAll(/λ([a-km-zA-KM-Z])/g, (match, $1) =>
-				{
-					cursorBump++;
-					return `λ${$1}.`;
-				})
 		);
 
 		// Remove everything except letters, lambdas, parentheses, dots, and whitespace.
@@ -124,8 +67,6 @@ export default function()
 			selectionStart + cursorBump,
 			selectionEnd + cursorBump
 		);
-
-		lastValue = expressionTextarea.value;
 	}
 
 	function run()
@@ -133,18 +74,5 @@ export default function()
 		applet.run({
 			expression: expressionTextarea.value,
 		});
-	}
-
-	function findRemovedCharIndex(str1, str2)
-	{
-		for (let i = 0; i < str1.length; i++)
-		{
-			if (str1[i] !== str2[i])
-			{
-				return i;
-			}
-		}
-
-		return str1.length;
 	}
 }

@@ -48,19 +48,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const expression = this.parseExpression(expressionString);
 		this.validateExpression(expression);
 
-		this.addExpressionSize(expression);
-		const size = Math.max(expression.width, expression.height);
-		expression.row = Math.max(Math.round((size - expression.height) / 2), 0);
-		expression.col = Math.max(Math.round((size - expression.width) / 2), 0);
-
-		this.addExpressionLocation(expression);
-		this.addExpressionBindings(expression);
-		this.addExpressionColors(expression);
-		this.addExpressionRects(expression);
-		
-		this.wilson.resizeCanvas({ width: size + 2 });
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, size + 2, size + 2);
+		this.setupExpression(expression);
 		this.drawExpression(expression);
 	}
 	
@@ -173,6 +161,20 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		return this.validateExpression(expression.function, scopedVariables)
 			&& this.validateExpression(expression.input, scopedVariables);
+	}
+
+	// Adds size, location, rect, and color infor to an expression.
+	setupExpression(expression)
+	{
+		this.addExpressionSize(expression);
+		const size = Math.max(expression.width, expression.height);
+		expression.row = Math.max(Math.round((size - expression.height) / 2), 0);
+		expression.col = Math.max(Math.round((size - expression.width) / 2), 0);
+
+		this.addExpressionLocation(expression);
+		this.addExpressionBindings(expression);
+		this.addExpressionColors(expression);
+		this.addExpressionRects(expression);
 	}
 
 	// Adds width and height fields to each expression recursively.
@@ -430,6 +432,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	drawExpression(expression)
 	{
+		const size = Math.max(expression.width, expression.height);
+		
+		this.wilson.resizeCanvas({ width: size + 2 });
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, size + 2, size + 2);
+		this.drawExpressionStep(expression);
+	}
+
+	drawExpressionStep(expression)
+	{
 		for (const rect of expression.rects)
 		{
 			this.wilson.ctx.fillStyle = rect.color;
@@ -438,13 +450,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		if (expression.type === LAMBDA)
 		{
-			this.drawExpression(expression.body);
+			this.drawExpressionStep(expression.body);
 		}
 
 		else if (expression.type === APPLICATION)
 		{
-			this.drawExpression(expression.function);
-			this.drawExpression(expression.input);
+			this.drawExpressionStep(expression.function);
+			this.drawExpressionStep(expression.input);
 		}
 	}
 }
