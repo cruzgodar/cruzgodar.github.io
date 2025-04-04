@@ -283,7 +283,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					? (h1 + h2) / 2
 					: ((h1 + h2 + 1) / 2) % 1,
 				s: Math.max(
-					Math.min(s1, s2) - 0.1,
+					(s1 + s2) / 2 - 0.1,
 					0.1
 				),
 				v: 1,
