@@ -15,7 +15,6 @@ export default function()
 		value: 2000,
 		minValue: 1000,
 		maxValue: 3000,
-		onInput: redraw,
 		onEnter: run,
 	});
 
@@ -42,15 +41,9 @@ export default function()
 
 	showPage();
 
-	function redraw()
-	{
-		
-	}
-
 	function updateTextarea()
 	{
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
-		let cursorBump = 0;
 
 		// Replace ls with lambdas.
 		expressionTextarea.setValue(
@@ -64,15 +57,22 @@ export default function()
 
 		// Restore cursor position.
 		expressionTextarea.element.setSelectionRange(
-			selectionStart + cursorBump,
-			selectionEnd + cursorBump
+			selectionStart,
+			selectionEnd
 		);
 	}
 
 	function run()
 	{
+		const parsedValue = expressionTextarea.value
+			.replaceAll(/λ([a-mk-zA-KM-Z]+?)\./g, (match, $1) =>
+			{
+				const variables = $1.split("");
+				return `λ${variables.join(".λ")}.`;
+			});
+			
 		applet.run({
-			expression: expressionTextarea.value,
+			expression: parsedValue
 		});
 	}
 }

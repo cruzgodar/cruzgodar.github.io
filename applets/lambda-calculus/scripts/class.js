@@ -50,6 +50,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		this.setupExpression(expression);
 		this.drawExpression(expression);
+
+		console.log(this.expressionToString(expression));
+
+		const reductions = this.listAllBetaReductions(expression);
+		console.log(reductions.map(reduction => this.expressionToString(reduction)));
+		this.setupExpression(reductions[0]);
+		this.drawExpression(reductions[0]);
 	}
 	
 	parseExpression(expressionString)
@@ -458,5 +465,145 @@ export class LambdaCalculus extends AnimationFrameApplet
 			this.drawExpressionStep(expression.function);
 			this.drawExpressionStep(expression.input);
 		}
+	}
+
+
+
+	expressionToString(expression)
+	{
+		if (expression.type === LITERAL)
+		{
+			return expression.value;
+		}
+
+		if (expression.type === LAMBDA)
+		{
+			return `λ${expression.argument}.${this.expressionToString(expression.body)}`;
+		}
+
+		const functionString = expression.function.type === LAMBDA
+			? `(${this.expressionToString(expression.function)})`
+			: this.expressionToString(expression.function);
+		const inputString = expression.input.type === APPLICATION
+			? `(${this.expressionToString(expression.input)})`
+			: this.expressionToString(expression.input);
+		return `${functionString}${inputString}`;
+	}
+
+
+	// Makes a list of all different beta reductions.
+	listAllBetaReductions(expression)
+	{
+		if (expression.type === APPLICATION)
+		{
+			const functionBetaReductions = this.listAllBetaReductions(expression.function)
+				.map(reduction =>
+				{
+					const reducedExpression = structuredClone(expression);
+					reducedExpression.function = reduction;
+					return reducedExpression;
+				});
+
+			const inputBetaReductions = this.listAllBetaReductions(expression.input)
+				.map(reduction =>
+				{
+					const reducedExpression = structuredClone(expression);
+					reducedExpression.input = reduction;
+					return reducedExpression;
+				});
+
+			if (expression.function.type === LAMBDA)
+			{
+				// We need to replace every instance of this variable with the input.
+				// However, variables can be shadowed, so we actually have to do this
+				// by examining literals' binding lambdas. Thankfully, structuredClone
+				// supports circular references, so we don't need to worry about
+				// rebinding stuff within input all the time.
+				const clonedExpression = structuredClone(expression);
+
+				// It's super important that we take the binding lambda from the
+				// *cloned* expression, since otherwise we'll never find anything to replace.
+				const expressionToReduce = clonedExpression.function.body;
+				const bindingLambdaToReplace = clonedExpression.function;
+				const replacementValue = clonedExpression.input;
+	
+				const betaReduction = this.computeBetaReduction(
+					expressionToReduce,
+					bindingLambdaToReplace,
+					replacementValue
+				);
+				
+				return [
+					...functionBetaReductions,
+					...inputBetaReductions,
+					betaReduction,
+				];
+			}
+
+			else
+			{
+				return [
+					...functionBetaReductions,
+					...inputBetaReductions
+				];
+			}
+		}
+
+		else if (expression.type === LAMBDA)
+		{
+			const bodyBetaReductions = this.listAllBetaReductions(expression.body)
+				.map(reduction =>
+				{
+					const reducedExpression = structuredClone(expression);
+					reducedExpression.body = reduction;
+					return reducedExpression;
+				});
+
+			return bodyBetaReductions;
+		}
+
+		else
+		{
+			return [];
+		}
+	}
+
+	// Returns the beta reduction of the expression, replacing any literals
+	// with the given binding lambda with replacementValue.
+	computeBetaReduction(expression, bindingLambdaToReplace, replacementValue)
+	{
+		if (expression.type === LITERAL)
+		{
+			if (expression.bindingLambda === bindingLambdaToReplace)
+			{
+				return structuredClone(replacementValue);
+			}
+		}
+
+		else if (expression.type === LAMBDA)
+		{
+			expression.body = this.computeBetaReduction(
+				expression.body,
+				bindingLambdaToReplace,
+				replacementValue
+			);
+		}
+
+		else
+		{
+			expression.function = this.computeBetaReduction(
+				expression.function,
+				bindingLambdaToReplace,
+				replacementValue
+			);
+			
+			expression.input = this.computeBetaReduction(
+				expression.input,
+				bindingLambdaToReplace,
+				replacementValue
+			);
+		}
+
+		return expression;
 	}
 }
