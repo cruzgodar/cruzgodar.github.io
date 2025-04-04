@@ -143,10 +143,24 @@ export class Slider extends InputElement
 			
 			if (value)
 			{
-				setTimeout(() => this.setValue(parseFloat(decodeURIComponent(value)), true), 10);
+				setTimeout(() =>
+				{
+					this.setValue(parseFloat(decodeURIComponent(value)), true);
+					this.loadResolve();
+				}, 10);
+			}
+
+			else
+			{
+				this.loadResolve();
 			}
 
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 

@@ -31,8 +31,10 @@ export default function()
 
 	applet.loadPromise.then(() => run());
 
-	function run()
+	async function run()
 	{
+		await resolutionInput.loaded;
+		
 		applet.run({ resolution: resolutionInput.value });
 	}
 }

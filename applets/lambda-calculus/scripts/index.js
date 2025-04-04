@@ -22,8 +22,7 @@ export default function()
 		element: $("#expression-textarea"),
 		name: "Expression",
 		value: "",
-		onInput: updateTextarea,
-		onEnter: run,
+		onInput: run,
 		allowEnter: true,
 	});
 
@@ -41,8 +40,11 @@ export default function()
 
 	showPage();
 
-	function updateTextarea()
+	run();
+
+	function run()
 	{
+		// Update the textarea.
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 
 		// Replace ls with lambdas.
@@ -60,10 +62,9 @@ export default function()
 			selectionStart,
 			selectionEnd
 		);
-	}
 
-	function run()
-	{
+
+
 		const parsedValue = expressionTextarea.value
 			.replaceAll(/λ([a-mk-zA-KM-Z]+?)\./g, (match, $1) =>
 			{

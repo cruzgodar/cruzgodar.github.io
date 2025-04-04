@@ -121,8 +121,16 @@ export default function()
 
 	showPage();
 
-	function run()
+	async function run()
 	{
+		await Promise.all([
+			glslTextarea.loaded,
+			resolutionInput.loaded,
+			maxParticlesInput.loaded,
+			speedSlider.loaded,
+			lifetimeInput.loaded
+		]);
+
 		const generatingCode = rawGlslCheckbox.checked
 			? glslTextarea.value
 			: parseNaturalGlsl(glslTextarea.value);

@@ -89,10 +89,24 @@ export class TextBox extends InputElement
 			
 			if (value)
 			{
-				setTimeout(() => this.setValue(decodeURIComponent(value), true), 10);
+				setTimeout(() =>
+				{
+					this.setValue(decodeURIComponent(value), true);
+					this.loadResolve();
+				}, 10);
+			}
+
+			else
+			{
+				this.loadResolve();
 			}
 
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 

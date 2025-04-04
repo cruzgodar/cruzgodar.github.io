@@ -141,10 +141,21 @@ export class Dropdown extends InputElement
 							newValue: decodeURIComponent(value),
 							instant: true,
 						});
+						this.loadResolve();
 					}, 10);
 				}
 
+				else
+				{
+					this.loadResolve();
+				}
+
 				addTemporaryParam(this.element.id);
+			}
+
+			else
+			{
+				this.loadResolve();
 			}
 		}, 16);
 	}

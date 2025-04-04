@@ -175,6 +175,8 @@ export class ToggleButton extends Button
 						newState: true,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
@@ -186,10 +188,22 @@ export class ToggleButton extends Button
 						newState: false,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
+			else
+			{
+				this.loadResolve();
+			}
+
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 

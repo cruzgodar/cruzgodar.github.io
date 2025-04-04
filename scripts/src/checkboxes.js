@@ -60,6 +60,8 @@ export class Checkbox extends InputElement
 						newChecked: true,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
@@ -71,10 +73,22 @@ export class Checkbox extends InputElement
 						newChecked: false,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
+			else
+			{
+				this.loadResolve();
+			}
+
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 
