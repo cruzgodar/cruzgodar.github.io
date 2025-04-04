@@ -57,6 +57,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 		console.log(reductions.map(reduction => this.expressionToString(reduction)));
 		this.setupExpression(reductions[0]);
 		this.drawExpression(reductions[0]);
+
+		return this.colorExpressionString(expression, expressionString);
 	}
 	
 	parseExpression(expressionString)
@@ -170,7 +172,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			&& this.validateExpression(expression.input, scopedVariables);
 	}
 
-	// Adds size, location, rect, and color infor to an expression.
+	// Adds size, location, rect, and color info to an expression.
 	setupExpression(expression)
 	{
 		this.addExpressionSize(expression);
@@ -488,6 +490,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 			? `(${this.expressionToString(expression.input)})`
 			: this.expressionToString(expression.input);
 		return `${functionString}${inputString}`;
+	}
+
+	colorExpressionString(expression, expressionString)
+	{
+		
 	}
 
 
