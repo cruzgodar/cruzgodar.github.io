@@ -492,11 +492,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 		return `${functionString}${inputString}`;
 	}
 
-	colorExpressionString(expression, expressionString)
-	{
-		
-	}
-
 
 	// Makes a list of all different beta reductions.
 	listAllBetaReductions(expression)

@@ -63,6 +63,18 @@ export default function()
 			selectionEnd
 		);
 
+		const invalidRange = validateString(expressionTextarea.value);
+
+		if (invalidRange !== -1)
+		{
+			expressionTextarea.overlayElement.innerHTML =
+				expressionTextarea.value.slice(0, invalidRange[0])
+				+ `<span class="invalid">${expressionTextarea.value.slice(invalidRange[0], invalidRange[1])}</span>`
+				+ expressionTextarea.value.slice(invalidRange[1]);
+
+			return;
+		}
+
 
 
 		const parsedValue = expressionTextarea.value
@@ -75,5 +87,88 @@ export default function()
 		applet.run({
 			expression: parsedValue
 		});
+	}
+
+	// Returns a range of the first invalid segment, or -1 if there are no invalid characters.
+	function validateString(expressionString)
+	{
+		// Check for parentheses.
+		let parenthesesCount = 0;
+		let lastParenthesisZeroIndex = expressionString.search(/\(/g);
+
+		for (let i = 0; i < expressionString.length; i++)
+		{
+			if (expressionString[i] === "(")
+			{
+				parenthesesCount++;
+			}
+
+			else if (expressionString[i] === ")")
+			{
+				parenthesesCount--;
+			}
+
+			if (parenthesesCount < 0)
+			{
+				return i;
+			}
+
+			else if (parenthesesCount === 0)
+			{
+				lastParenthesisZeroIndex = i + 1;
+			}
+		}
+
+		if (parenthesesCount !== 0)
+		{
+			return [lastParenthesisZeroIndex, lastParenthesisZeroIndex + 1];
+		}
+
+
+
+		// Find lambdas not closed properly.
+		let index = expressionString.search(/λ([a-mk-zA-KM-Z]*)[()λ]/g);
+
+		if (index !== -1)
+		{
+			return [
+				index,
+				index + expressionString.match(/λ([a-mk-zA-KM-Z]*)[()λ]/g)[0].length
+			];
+		}
+
+
+
+		index = expressionString.search(/λ([a-mk-zA-KM-Z]*)$/g);
+		
+		if (index !== -1)
+		{
+			return [
+				index,
+				index + expressionString.match(/λ([a-mk-zA-KM-Z]*)$/g)[0].length
+			];
+		}
+
+		index = expressionString.search(/λ\./g);
+		
+		if (index !== -1)
+		{
+			return [
+				index,
+				index + expressionString.match(/λ\./g)[0].length
+			];
+		}
+
+		index = expressionString.search(/λ[a-mk-zA-KM-Z]*\.$/g);
+		
+		if (index !== -1)
+		{
+			return [
+				index,
+				index + expressionString.match(/λ[a-mk-zA-KM-Z]*\.$/g)[0].length
+			];
+		}
+
+		return -1;
 	}
 }
