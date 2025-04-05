@@ -481,7 +481,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const startText = expression.startText ?? "";
 		const endText = expression.endText ?? "";
 
-		const valueFactor = siteSettings.darkTheme ? 1 : 0.7;
+		const valueFactor = siteSettings.darkTheme ? 1 : 0.75;
 
 		if (expression.type === LITERAL)
 		{

@@ -111,7 +111,7 @@ export default function()
 
 			if (parenthesesCount < 0)
 			{
-				return i;
+				return [i, i + 1];
 			}
 
 			else if (parenthesesCount === 0)
