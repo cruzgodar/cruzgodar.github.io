@@ -35,6 +35,7 @@ import {
 	getQueryParams,
 	revertTheme,
 	setForcedTheme,
+	setOnThemeChange,
 	setRevertThemeTo,
 	siteSettings,
 	toggleDarkTheme
@@ -414,6 +415,10 @@ function unloadPage()
 	clearTemporaryParams();
 
 	document.documentElement.style.overscrollBehaviorY = "auto";
+
+
+
+	setOnThemeChange(() => {});
 
 
 

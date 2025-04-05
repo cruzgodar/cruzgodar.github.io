@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { setOnThemeChange } from "/scripts/src/settings.js";
 import { Textarea } from "/scripts/src/textareas.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -42,8 +43,12 @@ export default function()
 
 	run();
 
-	function run()
+	setOnThemeChange(() => run());
+
+	async function run()
 	{
+		await expressionTextarea.loaded;
+
 		// Update the textarea.
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 
@@ -54,7 +59,7 @@ export default function()
 
 		// Remove everything except letters, lambdas, parentheses, dots, and whitespace.
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().\n\t ]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().]/g, "")
 		);
 
 		// Restore cursor position.
@@ -76,17 +81,13 @@ export default function()
 		}
 
 
-
-		const parsedValue = expressionTextarea.value
-			.replaceAll(/λ([a-mk-zA-KM-Z]+?)\./g, (match, $1) =>
-			{
-				const variables = $1.split("");
-				return `λ${variables.join(".λ")}.`;
-			});
 			
-		applet.run({
-			expression: parsedValue
+		const html = applet.run({
+			expression: expressionTextarea.value
 		});
+
+		expressionTextarea.overlayElement.innerHTML = html;
+		setTimeout(() => expressionTextarea.overlayElement.innerHTML = html, 50);
 	}
 
 	// Returns a range of the first invalid segment, or -1 if there are no invalid characters.
@@ -127,25 +128,25 @@ export default function()
 
 
 		// Find lambdas not closed properly.
-		let index = expressionString.search(/λ([a-mk-zA-KM-Z]*)[()λ]/g);
+		let index = expressionString.search(/λ([a-mk-zA-KM-Z])[()λ]/g);
 
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z]*)[()λ]/g)[0].length
+				index + expressionString.match(/λ([a-mk-zA-KM-Z])[()λ]/g)[0].length
 			];
 		}
 
 
 
-		index = expressionString.search(/λ([a-mk-zA-KM-Z]*)$/g);
+		index = expressionString.search(/λ([a-mk-zA-KM-Z])$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z]*)$/g)[0].length
+				index + expressionString.match(/λ([a-mk-zA-KM-Z])$/g)[0].length
 			];
 		}
 
@@ -159,13 +160,13 @@ export default function()
 			];
 		}
 
-		index = expressionString.search(/λ[a-mk-zA-KM-Z]*\.$/g);
+		index = expressionString.search(/λ[a-mk-zA-KM-Z]\.$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ[a-mk-zA-KM-Z]*\.$/g)[0].length
+				index + expressionString.match(/λ[a-mk-zA-KM-Z]\.$/g)[0].length
 			];
 		}
 

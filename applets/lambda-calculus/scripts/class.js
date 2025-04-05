@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const LITERAL = 0; // { value, bindingLambda }
@@ -9,7 +10,8 @@ const APPLICATION = 2; // { function, input }
 // Additionally, every expression has row, col, width, and height.
 // Each also has rect: { row, col, width, height }, which is the part actually used for drawing.
 // And also color: { h, s, v }.
-// Lambdas are special: they have a literalColor field too.
+// Lambdas get a literalColor field too.
+// Applications get a startText and endText field.
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
@@ -47,18 +49,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.lambdaIndex = 0;
 		const expression = this.parseExpression(expressionString);
 		this.validateExpression(expression);
-
 		this.setupExpression(expression);
 		this.drawExpression(expression);
 
-		console.log(this.expressionToString(expression));
+		const html = this.expressionToString(expression);
 
-		const reductions = this.listAllBetaReductions(expression);
-		console.log(reductions.map(reduction => this.expressionToString(reduction)));
-		this.setupExpression(reductions[0]);
-		this.drawExpression(reductions[0]);
+		// const reductions = this.listAllBetaReductions(expression);
+		// console.log(reductions.map(reduction => this.expressionToString(reduction)));
+		// this.setupExpression(reductions[0]);
+		// this.drawExpression(reductions[0]);
 
-		return this.colorExpressionString(expression, expressionString);
+		return html;
 	}
 	
 	parseExpression(expressionString)
@@ -113,7 +114,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 					i++;
 				}
 
-				terms.push(this.parseExpression(expressionString.slice(1, i - 1)));
+				const subExpression = this.parseExpression(expressionString.slice(1, i - 1));
+				subExpression.startText = "(" + (subExpression.startText ?? "");
+				subExpression.endText = (subExpression.endText ?? "") + ")";
+
+				terms.push(subExpression);
 				expressionString = expressionString.slice(i);
 			}
 
@@ -470,26 +475,48 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 
-
+	// Converts an expression to a colored string.
 	expressionToString(expression)
 	{
+		const startText = expression.startText ?? "";
+		const endText = expression.endText ?? "";
+
+		const valueFactor = siteSettings.darkTheme ? 1 : 0.7;
+
 		if (expression.type === LITERAL)
 		{
-			return expression.value;
+			const color = expression.bindingLambda.literalColor;
+			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
+			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+			return `<span style="color: ${rgbString}">${startText}${expression.value}${endText}</span>`;
 		}
 
 		if (expression.type === LAMBDA)
 		{
-			return `λ${expression.argument}.${this.expressionToString(expression.body)}`;
+			const literalColor = expression.literalColor;
+			const literalRgb = hsvToRgb(
+				literalColor.h,
+				literalColor.s,
+				literalColor.v * valueFactor
+			);
+			const literalRgbString = `rgb(${literalRgb[0]}, ${literalRgb[1]}, ${literalRgb[2]})`;
+
+			const color = expression.color;
+			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
+			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+			return `<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">λ${expression.argument}.</span>${this.expressionToString(expression.body)}<span style="color: ${rgbString}">${endText}</span>`;
 		}
 
-		const functionString = expression.function.type === LAMBDA
-			? `(${this.expressionToString(expression.function)})`
-			: this.expressionToString(expression.function);
-		const inputString = expression.input.type === APPLICATION
-			? `(${this.expressionToString(expression.input)})`
-			: this.expressionToString(expression.input);
-		return `${functionString}${inputString}`;
+		const functionString = this.expressionToString(expression.function);
+		const inputString = this.expressionToString(expression.input);
+
+		const color = expression.color;
+		const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
+		const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+		return `<span style="color: ${rgbString}">${startText}</span>${functionString}${inputString}<span style="color: ${rgbString}">${endText}</span>`;
 	}
 
 

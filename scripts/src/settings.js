@@ -316,6 +316,12 @@ export async function revertTheme()
 	revertThemeTo = null;
 }
 
+export let onThemeChange = () => {};
+export function setOnThemeChange(callback)
+{
+	onThemeChange = callback;
+}
+
 export async function toggleDarkTheme({
 	noAnimation = false,
 	force = false,
@@ -342,6 +348,8 @@ export async function toggleDarkTheme({
 	recreateDesmosGraphs();
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	onThemeChange();
 
 	if (noAnimation)
 	{
