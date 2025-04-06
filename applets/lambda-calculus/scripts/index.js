@@ -3,6 +3,7 @@ import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { Textarea } from "/scripts/src/textareas.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -35,6 +36,16 @@ export default function()
 		onClick: () => run(true)
 	});
 
+	const animationTimeSlider = new Slider({
+		element: $("#animation-time-slider"),
+		name: "Animation Speed",
+		value: 1,
+		min: 0.25,
+		max: 10,
+		logarithmic: true,
+		onInput: onSliderInput
+	});
+
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
@@ -54,23 +65,39 @@ export default function()
 			resolutionInput.loaded,
 		]);
 
+		const oldLength = expressionTextarea.value.length;
+
 		// Update the textarea.
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 
-		// Replace ls with lambdas.
+		// Replace ls with lambdas, numbers with Church numerals, and
+		// I -> λx.x
+		// K -> λx.λy.x
+		// S -> λx.λy.λz.(xz)(yz)
+		// Y -> λf.(λx.f(xx))(λx.f(xx))
 		expressionTextarea.setValue(
 			expressionTextarea.value.replaceAll(/l/gi, "λ")
+				.replaceAll(/([0-9]+)/g, (match, $1) =>
+				{
+					const num = parseInt($1);
+
+					return `(λf.λx.${"f(".repeat(num)}x${")".repeat(num)})`;
+				})
+				.replaceAll(/I/g, "(λx.x)")
+				.replaceAll(/K/g, "(λx.λy.x)")
+				.replaceAll(/S/g, "(λx.λy.λz.(xz)(yz))")
+				.replaceAll(/Y/g, "(λf.(λx.f(xx))(λx.f(xx)))")
 		);
 
-		// Remove everything except letters, lambdas, parentheses, dots, and whitespace.
+		// Remove everything except letters, lambdas, parentheses, dots, and numerals.
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().0-9]/g, "")
 		);
 
 		// Restore cursor position.
 		expressionTextarea.element.setSelectionRange(
-			selectionStart,
-			selectionEnd
+			selectionStart + expressionTextarea.value.length - oldLength,
+			selectionEnd + expressionTextarea.value.length - oldLength
 		);
 
 		const invalidRange = validateString(expressionTextarea.value);
@@ -84,8 +111,6 @@ export default function()
 
 			return;
 		}
-
-
 			
 		const html = applet.run({
 			resolution: resolutionInput.value,
@@ -135,23 +160,23 @@ export default function()
 
 
 		// Find lambdas not closed properly.
-		let index = expressionString.search(/λ([a-mk-zA-KM-Z])[^.]/g);
+		let index = expressionString.search(/λ([a-mk-zA-KM-Z0-9])[^.]/g);
 
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z])[^.]/g)[0].length
+				index + expressionString.match(/λ([a-mk-zA-KM-Z0-9])[^.]/g)[0].length
 			];
 		}
 
-		index = expressionString.search(/λ([a-mk-zA-KM-Z])$/g);
+		index = expressionString.search(/λ([a-mk-zA-KM-Z0-9])$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z])$/g)[0].length
+				index + expressionString.match(/λ([a-mk-zA-KM-Z0-9])$/g)[0].length
 			];
 		}
 
@@ -165,16 +190,23 @@ export default function()
 			];
 		}
 
-		index = expressionString.search(/λ[a-mk-zA-KM-Z]\.$/g);
+		index = expressionString.search(/λ[a-mk-zA-KM-Z0-9]\.$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ[a-mk-zA-KM-Z]\.$/g)[0].length
+				index + expressionString.match(/λ[a-mk-zA-KM-Z0-9]\.$/g)[0].length
 			];
 		}
 
 		return -1;
+	}
+
+
+
+	function onSliderInput()
+	{
+		applet.animationTime = 500 / animationTimeSlider.value;
 	}
 }

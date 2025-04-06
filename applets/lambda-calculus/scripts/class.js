@@ -26,7 +26,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
-	animationTime = 2000;
+	animationTime = 500;
 
 	nextId = 0;
 
@@ -872,8 +872,22 @@ export class LambdaCalculus extends AnimationFrameApplet
 		// This is the application bar and its connectors.
 		// Determine the bottommost three deleted rects.
 		// Note that bottommost means those with the lowest *bottom*,
-		// not the lowest row.
-		const rectsToFadeDown = deletedRects.slice(-3);
+		// not the lowest row. Also, sometimes literals can be in the last three
+		// if they completely overlap a connector bar, so we find the last three
+		// rects of type APPLICATION or CONNECTOR.
+		const rectsToFadeDown = [];
+		let i = deletedRects.length - 1;
+		while (rectsToFadeDown.length < 3)
+		{
+			if (
+				oldRectIndex[deletedRects[i]].type === APPLICATION
+				|| oldRectIndex[deletedRects[i]].type === CONNECTOR
+			) {
+				rectsToFadeDown.push(deletedRects[i]);
+			}
+
+			i--;
+		}
 
 		const deletedLambdaKey = deletedRects.find(key => oldRectIndex[key].type === LAMBDA);
 
@@ -920,14 +934,18 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const newRects = newRectChunks.flat();
 
 
-
-		console.log(deletedRects, newRects, replacementRects);
-		console.log(newRects.map(key => newRectIndex[key]));
-		console.log(replacementRects.map(key => oldRectIndex[key]));
+		
+		// console.log(deletedRects, newRects, replacementRects);
+		// console.log(deletedRects.map(key => oldRectIndex[key]));
+		// console.log(newRects.map(key => newRectIndex[key]));
+		// console.log(replacementRects.map(key => oldRectIndex[key]));
 
 
 		const replacementIsLiteral = replacementRects
-			.every(key => oldRectIndex[key].type === LITERAL);
+			.every(key =>
+			{
+				return oldRectIndex[key].type === LITERAL || oldRectIndex[key].type === CONNECTOR;
+			});
 
 		// We also need to know the size of the thing
 		// we're subbing in so we can keep it on the right.
@@ -1009,6 +1027,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 		);
 
 		const numReplacementBlocks = newRects.length / replacementRects.length;
+
+
 
 		if (newRects.length % replacementRects.length !== 0 && !replacementIsLiteral)
 		{

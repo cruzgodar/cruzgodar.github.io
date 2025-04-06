@@ -14,6 +14,10 @@ Text
 	### buttons
 		reduce
 	###
+
+	### sliders
+		animation-time
+	###
 </div>
 
 
