@@ -17,6 +17,8 @@ const CONNECTOR = 3;
 // And also color: { h, s, v }.
 // Lambdas get a literalColor field too.
 // Applications get a startText and endText field.
+// And lambdas get an argumentText, and literals get a valueText
+// so that we can uniqueify the argument as we parse.
 
 // The outermost expression also gets a rectIndex field.
 
@@ -29,6 +31,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	animationTime = 500;
 
 	nextId = 0;
+	nextUniqueArgument = 0;
 
 	constructor({ canvas })
 	{
@@ -102,6 +105,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				terms.push({
 					type: LAMBDA,
 					argument,
+					argumentText: argument,
 					body: this.parseExpression(body),
 					literalColor: { h: this.lambdaIndex / this.numLambdas, s: 0.8, v: 1 },
 				});
@@ -143,6 +147,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				terms.push({
 					type: LITERAL,
 					value: expressionString[0],
+					valueText: expressionString[0],
 				});
 				expressionString = expressionString.slice(1);
 			}
@@ -208,7 +213,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-	// Adds size, location, rect, and color info to an expression.
+	// Adds size, location, rect, and color info to an expression, and uniqueifies its arguments.
 	setupExpression(expression, isBetaReduction = false)
 	{
 		this.addExpressionSize(expression);
@@ -224,7 +229,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 		expression.col = Math.max((this.outerExpressionSize - expression.width) / 2, 0);
 
 		this.addExpressionLocation(expression);
-
 		this.addExpressionBindings(expression);
 		this.addExpressionColors(expression);
 		this.addExpressionRects(expression, isBetaReduction);
@@ -299,25 +303,46 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	// Adds bindingLambda pointers to each literal expression.
-	addExpressionBindings(expression, bindings = {})
+	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {})
 	{
 		if (expression.type === LITERAL)
 		{
+			if (expression.value in argumentRewriteMap)
+			{
+				expression.value = argumentRewriteMap[expression.value];
+			}
+
 			expression.bindingLambda = bindings[expression.value];
 		}
 
 		else if (expression.type === LAMBDA)
 		{
+			if (expression.argument in bindings)
+			{
+				this.nextUniqueArgument++;
+
+				const oldArgument = expression.argument;
+				expression.argument = this.nextUniqueArgument;
+
+				// This variable is already taken, so we'll rewrite it.
+				this.addExpressionBindings(expression.body, {
+					...bindings,
+					[expression.argument]: expression,
+				}, {
+					[oldArgument]: this.nextUniqueArgument,
+				});
+			}
+
 			this.addExpressionBindings(expression.body, {
 				...bindings,
 				[expression.argument]: expression,
 			});
 		}
 
-		else
+		else if (expression.type === APPLICATION)
 		{
-			this.addExpressionBindings(expression.function, bindings);
-			this.addExpressionBindings(expression.input, bindings);
+			this.addExpressionBindings(expression.function, bindings, argumentRewriteMap);
+			this.addExpressionBindings(expression.input, bindings, argumentRewriteMap);
 		}
 	}
 
@@ -675,7 +700,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
 			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			return `<span style="color: ${rgbString}">${startText}${expression.value}${endText}</span>`;
+			return `<span style="color: ${rgbString}">${startText}${expression.valueText}${endText}</span>`;
 		}
 
 		if (expression.type === LAMBDA)
@@ -692,7 +717,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
 			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			return `<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">λ${expression.argument}.</span>${this.expressionToString(expression.body)}<span style="color: ${rgbString}">${endText}</span>`;
+			return `<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">λ${expression.argumentText}.</span>${this.expressionToString(expression.body)}<span style="color: ${rgbString}">${endText}</span>`;
 		}
 
 		const functionString = this.expressionToString(expression.function);
@@ -1303,6 +1328,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			let minArea = Infinity;
 			let minAreaIndex = 0;
 
+
 			for (let i = 0; i < betaReductions.length; i++)
 			{
 				this.setupExpression(betaReductions[i], true);
@@ -1314,7 +1340,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					minAreaIndex = i;
 				}
 			}
-			
+
 			this.setupExpression(betaReductions[minAreaIndex], true);
 			await this.animateBetaReduction(expression, betaReductions[minAreaIndex]);
 
