@@ -7,11 +7,17 @@ const LITERAL = 0; // { value, bindingLambda }
 const LAMBDA = 1; // { argument, body }
 const APPLICATION = 2; // { function, input }
 
+// Only used as a type in rects. Represents the
+// vertical connectors up to both the function and input.
+const CONNECTOR = 3;
+
 // Additionally, every expression has row, col, width, and height.
 // Each also has rect: { row, col, width, height }, which is the part actually used for drawing.
 // And also color: { h, s, v }.
 // Lambdas get a literalColor field too.
 // Applications get a startText and endText field.
+
+// The outermost expression also gets a rectIndex field.
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
@@ -20,6 +26,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
+
+	nextId = 0;
 
 	constructor({ canvas })
 	{
@@ -54,14 +62,20 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const expression = this.parseExpression(expressionString);
 		this.validateExpression(expression);
 		this.setupExpression(expression);
+
 		this.drawExpression(expression);
+
+
 
 		const html = this.expressionToString(expression);
 
-		// const reductions = this.listAllBetaReductions(expression);
-		// console.log(reductions.map(reduction => this.expressionToString(reduction)));
-		// this.setupExpression(reductions[0]);
-		// this.drawExpression(reductions[0]);
+		setTimeout(() =>
+		{
+			const betaReduction = this.listAllBetaReductions(expression)[0];
+			this.setupExpression(betaReduction, true);
+
+			this.animateBetaReduction(expression, betaReduction);
+		}, 1000);
 
 		return html;
 	}
@@ -184,7 +198,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	// Adds size, location, rect, and color info to an expression.
-	setupExpression(expression)
+	setupExpression(expression, isBetaReduction = false)
 	{
 		this.addExpressionSize(expression);
 
@@ -199,9 +213,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 		expression.col = Math.max((this.outerExpressionSize - expression.width) / 2, 0);
 
 		this.addExpressionLocation(expression);
-		this.addExpressionBindings(expression);
-		this.addExpressionColors(expression);
-		this.addExpressionRects(expression);
+
+		if (!isBetaReduction)
+		{
+			this.addExpressionBindings(expression);
+			this.addExpressionColors(expression);
+		}
+
+		this.addExpressionRects(expression, isBetaReduction);
+
+		expression.rectIndex = {};
+		this.addExpressionRectIndices(expression, expression.rectIndex);
 	}
 
 	// Adds width and height fields to each expression recursively.
@@ -322,7 +344,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	// Adds the rects fields to each expression recursively,
 	// which is an array of objects with row, col, width, and height fields.
-	addExpressionRects(expression)
+	// If isBetaReduction is true, then we only change the position of the rects.
+	addExpressionRects(expression, isBetaReduction)
 	{
 		if (expression.type === LAMBDA)
 		{
@@ -332,8 +355,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 				expression.literalColor.v
 			);
 
-			expression.rects = [
+			const rects = [
 				{
+					type: LAMBDA,
 					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 					row: expression.row,
 					col: expression.col,
@@ -342,7 +366,20 @@ export class LambdaCalculus extends AnimationFrameApplet
 				},
 			];
 
-			this.addExpressionRects(expression.body);
+			if (isBetaReduction)
+			{
+				expression.rects[0].row = rects[0].row;
+				expression.rects[0].col = rects[0].col;
+				expression.rects[0].width = rects[0].width;
+				expression.rects[0].height = rects[0].height;
+			}
+
+			else
+			{
+				expression.rects = rects;
+			}
+
+			this.addExpressionRects(expression.body, isBetaReduction);
 		}
 
 		else if (expression.type === APPLICATION)
@@ -355,6 +392,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			// Vertical connecting bars up to the function and input.
 			const functionConnector = {
+				type: CONNECTOR,
 				color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 				col: expression.col + 1,
 				width: 1,
@@ -390,6 +428,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			);
 
 			const inputConnector = {
+				type: CONNECTOR,
 				color: `rgb(${rgb2[0]}, ${rgb2[1]}, ${rgb2[2]})`,
 				col: expression.col + expression.function.width + 2,
 				width: 1,
@@ -421,9 +460,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 				expression.color.v
 			);
 
-			expression.rects = [
+			const rects = [
 				// The connecting bar almost at the bottom.
 				{
+					type: APPLICATION,
 					color: `rgb(${rgb3[0]}, ${rgb3[1]}, ${rgb3[2]})`,
 					row: expression.row + expression.height - 2,
 					// Adjust to ensure we're connecting exactly to the function and inputs.
@@ -435,8 +475,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 				inputConnector,
 			];
 
-			this.addExpressionRects(expression.function);
-			this.addExpressionRects(expression.input);
+			if (isBetaReduction)
+			{
+				for (let i = 0; i < 3; i++)
+				{
+					expression.rects[i].row = rects[i].row;
+					expression.rects[i].col = rects[i].col;
+					expression.rects[i].width = rects[i].width;
+					expression.rects[i].height = rects[i].height;
+				}
+			}
+
+			else
+			{
+				expression.rects = rects;
+			}
+
+			this.addExpressionRects(expression.function, isBetaReduction);
+			this.addExpressionRects(expression.input, isBetaReduction);
 		}
 		
 		else
@@ -445,8 +501,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			// We still need to connect this literal to its binding lambda
 			// To handle cases like lx.(x(ly.x)).
-			expression.rects = [
+			const rects = [
 				{
+					type: LITERAL,
 					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
@@ -454,8 +511,96 @@ export class LambdaCalculus extends AnimationFrameApplet
 					height: expression.row - 1 - (expression.bindingLambda.row + 1) + 1,
 				}
 			];
+
+			if (isBetaReduction)
+			{
+				expression.rects[0].row = rects[0].row;
+				expression.rects[0].col = rects[0].col;
+				expression.rects[0].width = rects[0].width;
+				expression.rects[0].height = rects[0].height;
+			}
+
+			else
+			{
+				expression.rects = rects;
+			}
 		}
 	}
+
+	// Adds never-before-seen rect IDs to each expression recursively.
+	addExpressionRectIndices(expression, rectIndex)
+	{
+		if (expression.type === LAMBDA)
+		{
+			if (expression.rects[0].id === undefined)
+			{
+				expression.rects[0].id = this.nextId;
+				this.nextId++;
+			}
+
+			rectIndex[expression.rects[0].id] = expression.rects[0];
+
+			this.addExpressionRectIndices(expression.body, rectIndex);
+		}
+
+		else if (expression.type === APPLICATION)
+		{
+			for (let i = 0; i < 3; i++)
+			{
+				if (expression.rects[i].id === undefined)
+				{
+					expression.rects[i].id = this.nextId;
+					this.nextId++;
+				}
+
+				rectIndex[expression.rects[i].id] = expression.rects[i];
+			}
+
+			this.addExpressionRectIndices(expression.function, rectIndex);
+			this.addExpressionRectIndices(expression.input, rectIndex);
+		}
+		
+		else
+		{
+			if (expression.rects[0].id === undefined)
+			{
+				expression.rects[0].id = this.nextId;
+				this.nextId++;
+			}
+
+			rectIndex[expression.rects[0].id] = expression.rects[0];
+		}
+	}
+
+	// This doesn't remove the indices from the rectIndex!
+	// To clear them, we need to rerun the expression through addExpressionRectIndices.
+	removeExpressionRectIndices(expression)
+	{
+		if (expression.type === LAMBDA)
+		{
+			expression.rects[0].id = undefined;
+
+			this.removeExpressionRectIndices(expression.body);
+		}
+
+		else if (expression.type === APPLICATION)
+		{
+			for (let i = 0; i < 3; i++)
+			{
+				expression.rects[i].id = undefined;
+			}
+
+			this.removeExpressionRectIndices(expression.function);
+			this.removeExpressionRectIndices(expression.input);
+		}
+		
+		else
+		{
+			expression.rects[0].id = undefined;
+		}
+	}
+
+
 
 	drawExpression(expression)
 	{
@@ -578,6 +723,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 				const expressionToReduce = clonedExpression.function.body;
 				const bindingLambdaToReplace = clonedExpression.function;
 				const replacementValue = clonedExpression.input;
+
+				// Okay so. We need the replacement value to have different rect IDs
+				// than the original expression, but we can't easily update
+				// the rectIndex here. Instead, we'll clear the IDs off it and then
+				// go back and add them all back in later.
+				this.removeExpressionRectIndices(replacementValue);
 	
 				const betaReduction = this.computeBetaReduction(
 					expressionToReduce,
@@ -657,5 +808,21 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}
 
 		return expression;
+	}
+
+
+
+	animateBetaReduction(expression, betaReducedExpression)
+	{
+		// Oh boy here we go. First we need to make room for all the new rects
+		// we're going to copy in.
+		const preservedRects = Object.keys(expression.rectIndex).filter(
+			rectId => rectId in betaReducedExpression.rectIndex
+		);
+
+		for (const key of preservedRects)
+		{
+			console.log(key);
+		}
 	}
 }
