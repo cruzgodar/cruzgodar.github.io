@@ -1,3 +1,4 @@
+import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -214,12 +215,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		this.addExpressionLocation(expression);
 
-		if (!isBetaReduction)
-		{
-			this.addExpressionBindings(expression);
-			this.addExpressionColors(expression);
-		}
-
+		this.addExpressionBindings(expression);
+		this.addExpressionColors(expression);
 		this.addExpressionRects(expression, isBetaReduction);
 
 		expression.rectIndex = {};
@@ -372,6 +369,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				expression.rects[0].col = rects[0].col;
 				expression.rects[0].width = rects[0].width;
 				expression.rects[0].height = rects[0].height;
+				expression.rects[0].color = rects[0].color;
 			}
 
 			else
@@ -483,6 +481,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					expression.rects[i].col = rects[i].col;
 					expression.rects[i].width = rects[i].width;
 					expression.rects[i].height = rects[i].height;
+					expression.rects[i].color = rects[i].color;
 				}
 			}
 
@@ -812,7 +811,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-	animateBetaReduction(expression, betaReducedExpression)
+	async animateBetaReduction(expression, betaReducedExpression)
 	{
 		// Oh boy here we go. First we need to make room for all the new rects
 		// we're going to copy in.
@@ -820,9 +819,97 @@ export class LambdaCalculus extends AnimationFrameApplet
 			rectId => rectId in betaReducedExpression.rectIndex
 		);
 
-		for (const key of preservedRects)
+		const deletedRects = Object.keys(expression.rectIndex).filter(
+			rectId => !(rectId in betaReducedExpression.rectIndex)
+		);
+
+		const oldRectIndex = structuredClone(expression.rectIndex);
+		const oldExpressionSize = Math.max(expression.width, expression.height);
+		const newExpressionSize = Math.max(
+			betaReducedExpression.width,
+			betaReducedExpression.height
+		);
+
+		const rgbOld = Object.fromEntries(
+			Object.entries(expression.rectIndex).map(([key, value]) =>
+			{
+				return [key, value.color.slice(4, -1).split(",").map(Number)];
+			})
+		);
+
+		const rgbNew = Object.fromEntries(
+			Object.entries(betaReducedExpression.rectIndex).map(([key, value]) =>
+			{
+				return [key, value.color.slice(4, -1).split(",").map(Number)];
+			})
+		);
+
+		const dummy = { t: 0 };
+
+		// Fade out deleted rects.
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.outerExpressionSize = oldExpressionSize;
+
+				for (const key of deletedRects)
+				{
+					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
+				}
+
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(expression);
+			}
+		}).finished;
+
+		dummy.t = 0;
+		
+		// Move rects to their new positions.
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.outerExpressionSize = (1 - dummy.t) * oldExpressionSize
+					+ dummy.t * newExpressionSize;
+
+				for (const key of preservedRects)
+				{
+					expression.rectIndex[key].row = (1 - dummy.t) * oldRectIndex[key].row
+						+ dummy.t * betaReducedExpression.rectIndex[key].row;
+
+					expression.rectIndex[key].col = (1 - dummy.t) * oldRectIndex[key].col
+						+ dummy.t * betaReducedExpression.rectIndex[key].col;
+
+					expression.rectIndex[key].width = (1 - dummy.t) * oldRectIndex[key].width
+						+ dummy.t * betaReducedExpression.rectIndex[key].width;
+
+					expression.rectIndex[key].height = (1 - dummy.t) * oldRectIndex[key].height
+						+ dummy.t * betaReducedExpression.rectIndex[key].height;
+					
+					const r = (1 - dummy.t) * rgbOld[key][0] + dummy.t * rgbNew[key][0];
+					const g = (1 - dummy.t) * rgbOld[key][1] + dummy.t * rgbNew[key][1];
+					const b = (1 - dummy.t) * rgbOld[key][2] + dummy.t * rgbNew[key][2];
+
+					expression.rectIndex[key].color = `rgb(${r}, ${g}, ${b})`;
+				}
+
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(expression);
+			}
+		}).finished;
+
+		setTimeout(() =>
 		{
-			console.log(key);
-		}
+			this.drawExpression(betaReducedExpression);
+		}, 1000);
 	}
 }
