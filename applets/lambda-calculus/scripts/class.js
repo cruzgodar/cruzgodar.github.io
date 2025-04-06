@@ -26,7 +26,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
-	animationTime = 600;
+	animationTime = 6000;
 
 	nextId = 0;
 
@@ -832,46 +832,69 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	async animateBetaReduction(expression, betaReducedExpression)
 	{
-		// Oh boy here we go. First we need to make room for all the new rects
-		// we're going to copy in.
+		const oldRectIndex = structuredClone(expression.rectIndex);
+
+		// This stores the actual rects of the new expression so we know where
+		// they're supposed to go.
+		const newRectIndex = structuredClone(betaReducedExpression.rectIndex);
+
+
+
 		const preservedRects = Object.keys(expression.rectIndex).filter(
 			rectId => rectId in betaReducedExpression.rectIndex
 		);
-
+		
+		// We sort these by row, then by column.
 		const deletedRects = Object.keys(expression.rectIndex).filter(
 			rectId => !(rectId in betaReducedExpression.rectIndex)
-		).sort((a, b) => parseInt(a) - parseInt(b));
+		).sort((a, b) =>
+		{
+			if (oldRectIndex[a].row !== oldRectIndex[b].row)
+			{
+				return oldRectIndex[a].row - oldRectIndex[b].row;
+			}
 
+			return oldRectIndex[a].col - oldRectIndex[b].col;
+		});
+		
+		// We sort these by ID.
 		const newRects = Object.keys(betaReducedExpression.rectIndex).filter(
 			rectId => !(rectId in expression.rectIndex)
 		).sort((a, b) => parseInt(a) - parseInt(b));
 
-		const oldRectIndex = structuredClone(expression.rectIndex);
-
-		// This stores the actual rects of the new expression so we know where
-		// they're supposed to go
-		const newRectIndex = structuredClone(betaReducedExpression.rectIndex);
-
-
 		
-		// This is just the application bar and its connectors, which is a very cool twist, are
-		// the rects with the smallest ID!
-		const rectsToFadeDown = [deletedRects[0], deletedRects[1], deletedRects[2]];
-		// The no-longer-used lambda bar and all of its applications (which immediately follow it)
-		const rectsToFadeUp = [deletedRects[3]];
 		
-		// These are the remaining ones, which should be exclusively the stuff to replace.
-		let i = 4;
-		while (
-			i < deletedRects.length
-			&& oldRectIndex[deletedRects[i]].type === LITERAL
-			&& oldRectIndex[deletedRects[i]].color === oldRectIndex[deletedRects[3]].color
-		) {
-			rectsToFadeUp.push(deletedRects[i]);
-			i++;
-		}
+		// This is the application bar and its connectors.
+		// Determine the bottommost three deleted rects.
+		const rectsToFadeDown = deletedRects.slice(-3);
 
-		const replacementRects = deletedRects.slice(i);
+		const deletedLambdaKey = deletedRects.find(key => oldRectIndex[key].type === LAMBDA);
+
+		// The no-longer-used lambda bar (the unique one with type LAMBDA) and all of its literals,
+		// which are the rects with type LITERAL that have the same row (+1) as the deleted lambda,
+		// *and* have a column within the deleted lambda's column range.
+		const rectsToFadeUp = [deletedLambdaKey].concat(
+			deletedRects.filter(key =>
+			{
+				return oldRectIndex[key].type === LITERAL
+					&& oldRectIndex[key].row === oldRectIndex[deletedLambdaKey].row + 1
+					&& oldRectIndex[key].col >= oldRectIndex[deletedLambdaKey].col
+					&& oldRectIndex[key].col < oldRectIndex[deletedLambdaKey].col
+						+ oldRectIndex[deletedLambdaKey].width;
+			})
+		);
+
+		// We resort these by ID so that the colors and groupings work.
+		const replacementRects = deletedRects.filter(
+			key => !(rectsToFadeDown.includes(key) || rectsToFadeUp.includes(key))
+		).sort((a, b) => parseInt(a) - parseInt(b));
+
+
+
+		console.log(deletedRects, newRects, replacementRects);
+		console.log(newRects.map(key => newRectIndex[key]));
+		console.log(replacementRects.map(key => oldRectIndex[key]));
+
 
 		const replacementIsLiteral = replacementRects
 			.every(key => oldRectIndex[key].type === LITERAL);
@@ -956,6 +979,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 		);
 
 		const numReplacementBlocks = newRects.length / replacementRects.length;
+
+		// if (newRects.length % replacementRects.length !== 0 && !replacementIsLiteral)
+		// {
+		// 	throw new Error("Chunking failed.");
+		// }
 
 
 
