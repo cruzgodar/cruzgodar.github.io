@@ -303,7 +303,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	// Adds bindingLambda pointers to each literal expression.
-	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {})
+	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {}, argumentsSeen = [])
 	{
 		if (expression.type === LITERAL)
 		{
@@ -317,7 +317,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		else if (expression.type === LAMBDA)
 		{
-			if (expression.argument in bindings)
+			if (argumentsSeen.includes(expression.argument))
 			{
 				this.nextUniqueArgument++;
 
@@ -329,20 +329,37 @@ export class LambdaCalculus extends AnimationFrameApplet
 					...bindings,
 					[expression.argument]: expression,
 				}, {
+					...argumentRewriteMap,
 					[oldArgument]: this.nextUniqueArgument,
-				});
+				}, argumentsSeen);
 			}
 
-			this.addExpressionBindings(expression.body, {
-				...bindings,
-				[expression.argument]: expression,
-			});
+			else
+			{
+				argumentsSeen.push(expression.argument);
+
+				this.addExpressionBindings(expression.body, {
+					...bindings,
+					[expression.argument]: expression,
+				}, argumentRewriteMap, argumentsSeen);
+			}
 		}
 
 		else if (expression.type === APPLICATION)
 		{
-			this.addExpressionBindings(expression.function, bindings, argumentRewriteMap);
-			this.addExpressionBindings(expression.input, bindings, argumentRewriteMap);
+			this.addExpressionBindings(
+				expression.function,
+				bindings,
+				argumentRewriteMap,
+				argumentsSeen
+			);
+
+			this.addExpressionBindings(
+				expression.input,
+				bindings,
+				argumentRewriteMap,
+				argumentsSeen
+			);
 		}
 	}
 
