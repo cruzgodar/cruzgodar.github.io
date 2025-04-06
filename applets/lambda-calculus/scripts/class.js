@@ -26,7 +26,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
-	animationTime = 1000;
+	animationTime = 2000;
 
 	nextId = 0;
 
@@ -860,8 +860,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 			return oldRectIndex[a].col - oldRectIndex[b].col;
 		});
 		
-		// We sort these by ID.
-		const newRects = Object.keys(betaReducedExpression.rectIndex).filter(
+		// We sort these by ID. The number of these should be an integer multiple of the number
+		// of replacement rects, so to ensure they're lined up correctly, we sort each chunk
+		// of these later by row, then by column.
+		const newRectsById = Object.keys(betaReducedExpression.rectIndex).filter(
 			rectId => !(rectId in expression.rectIndex)
 		).sort((a, b) => parseInt(a) - parseInt(b));
 
@@ -892,7 +894,30 @@ export class LambdaCalculus extends AnimationFrameApplet
 		// We resort these by ID so that the colors and groupings work.
 		const replacementRects = deletedRects.filter(
 			key => !(rectsToFadeDown.includes(key) || rectsToFadeUp.includes(key))
-		).sort((a, b) => parseInt(a) - parseInt(b));
+		);
+
+
+
+		const newRectChunks = [];
+		for (let i = 0; i < newRectsById.length; i += replacementRects.length)
+		{
+			newRectChunks.push(
+				newRectsById.slice(i, i + replacementRects.length).sort((a, b) =>
+				{
+					if (
+						newRectIndex[a].row + newRectIndex[a].height
+							!== newRectIndex[b].row + newRectIndex[b].height
+					) {
+						return newRectIndex[a].row + newRectIndex[a].height
+							- (newRectIndex[b].row + newRectIndex[b].height);
+					}
+
+					return newRectIndex[a].col - newRectIndex[b].col;
+				})
+			);
+		}
+
+		const newRects = newRectChunks.flat();
 
 
 
