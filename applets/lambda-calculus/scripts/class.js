@@ -23,7 +23,6 @@ const CONNECTOR = 3;
 export class LambdaCalculus extends AnimationFrameApplet
 {
 	outerExpressionSize;
-	expressionContainsAnApplication = false;
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
@@ -163,8 +162,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 				function: returnValue,
 				input: terms[i],
 			};
-
-			this.expressionContainsAnApplication = true;
 		}
 
 		return returnValue;
@@ -194,17 +191,30 @@ export class LambdaCalculus extends AnimationFrameApplet
 			&& this.validateExpression(expression.input, scopedVariables);
 	}
 
+	checkIfExpressionContainsApplication(expression)
+	{
+		if (expression.type === LITERAL)
+		{
+			return false;
+		}
+
+		if (expression.type === LAMBDA)
+		{
+			return this.checkIfExpressionContainsApplication(expression.body);
+		}
+
+		return true;
+	}
+
 
 
 	// Adds size, location, rect, and color info to an expression.
 	setupExpression(expression, isBetaReduction = false)
 	{
-		this.expressionContainsAnApplication = false;
-
 		this.addExpressionSize(expression);
 
 		// Technical thing to make centering work.
-		if (this.expressionContainsAnApplication)
+		if (this.checkIfExpressionContainsApplication(expression))
 		{
 			expression.height--;
 		}
@@ -863,6 +873,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const replacementRects = deletedRects.slice(i);
 
+		const replacementIsLiteral = replacementRects
+			.every(key => oldRectIndex[key].type === LITERAL);
+
 		// We also need to know the size of the thing
 		// we're subbing in so we can keep it on the right.
 		let minRow = Infinity;
@@ -893,7 +906,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		// This is the size of the expanded expression
 		// plus the replacement thing held off above.
-		const expandedExpressionSize = newRects.length === 0
+		const expandedExpressionSize = (newRects.length === 0 || replacementIsLiteral)
 			? newExpressionSize
 			: Math.max(
 				Math.max(betaReducedExpression.width, replacementRectWidth),
@@ -911,13 +924,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const replacementRectColOffset = replacementRectTargetCol - minCol;
 
 		// If the expression is taller than it is wide, we also need to move the old rects.
-		const expandedExpressionRowOffset =
-			(expandedExpressionSize - betaReducedExpression.height) / 2
-			- betaReducedExpression.row;
+		const expandedExpressionRowOffset = replacementIsLiteral
+			? 0
+			: (expandedExpressionSize - betaReducedExpression.height) / 2
+				- betaReducedExpression.row;
 
-		const expandedExpressionColOffset =
-			(expandedExpressionSize - betaReducedExpression.width) / 2
-			- betaReducedExpression.col;
+		const expandedExpressionColOffset = replacementIsLiteral
+			? 0
+			: (expandedExpressionSize - betaReducedExpression.width) / 2
+				- betaReducedExpression.col;
 
 		for (const key of preservedRects)
 		{
@@ -939,13 +954,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 				return [key, value.color.slice(4, -1).split(",").map(Number)];
 			})
 		);
-
-
-
-		if (newRects.length % replacementRects.length !== 0)
-		{
-			throw new Error("Amount of new rects is not a multiple of replacement rects!");
-		}
 
 		const numReplacementBlocks = newRects.length / replacementRects.length;
 
@@ -975,7 +983,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
 				}
 
-				if (newRects.length === 0)
+				if (newRects.length === 0 || replacementIsLiteral)
 				{
 					for (const key of replacementRects)
 					{
@@ -997,6 +1005,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		// Stretch rects to their new positions and
 		// move the replacement block 3px above the whole thing.
+		// If the replacement block is a literal, we just skip this.
 		await anime({
 			targets: dummy,
 			t: 1,
@@ -1044,6 +1053,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}).finished;
 
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+
+
+
+		if (replacementIsLiteral)
+		{
+			this.drawExpression(betaReducedExpression);
+
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+
+			return;
+		}
 
 		
 
