@@ -15,6 +15,8 @@ const APPLICATION = 2; // { function, input }
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
+	outerExpressionSize;
+	expressionContainsAnApplication = false;
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
@@ -35,18 +37,20 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		};
 
-		this.canvas.style.imageRendering = "pixelated";
-
 		this.wilson = new WilsonCPU(this.canvas, options);
 	}
 
 	run({
+		resolution = 2000,
 		expression: expressionString
 	}) {
+		this.resolution = resolution;
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
 		this.numLambdas = expressionString.split("λ").length - 1;
 		this.lambdaIndex = 0;
+		this.expressionContainsAnApplication = false;
+
 		const expression = this.parseExpression(expressionString);
 		this.validateExpression(expression);
 		this.setupExpression(expression);
@@ -146,6 +150,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 				function: returnValue,
 				input: terms[i],
 			};
+
+			this.expressionContainsAnApplication = true;
 		}
 
 		return returnValue;
@@ -181,9 +187,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 	setupExpression(expression)
 	{
 		this.addExpressionSize(expression);
-		const size = Math.max(expression.width, expression.height);
-		expression.row = Math.max(Math.round((size - expression.height) / 2), 0);
-		expression.col = Math.max(Math.round((size - expression.width) / 2), 0);
+
+		// Technical thing to make centering work.
+		if (this.expressionContainsAnApplication)
+		{
+			expression.height--;
+		}
+
+		this.outerExpressionSize = Math.max(expression.width, expression.height);
+		expression.row = Math.max((this.outerExpressionSize - expression.height) / 2, 0);
+		expression.col = Math.max((this.outerExpressionSize - expression.width) / 2, 0);
 
 		this.addExpressionLocation(expression);
 		this.addExpressionBindings(expression);
@@ -446,11 +459,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	drawExpression(expression)
 	{
-		const size = Math.max(expression.width, expression.height);
+		this.outerExpressionSize = Math.max(expression.width, expression.height);
+		this.resolution = Math.round(this.resolution / (this.outerExpressionSize + 2))
+			* (this.outerExpressionSize + 2);
 		
-		this.wilson.resizeCanvas({ width: size + 2 });
+		this.wilson.resizeCanvas({ width: this.resolution });
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, size + 2, size + 2);
+		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 		this.drawExpressionStep(expression);
 	}
 
@@ -459,7 +474,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 		for (const rect of expression.rects)
 		{
 			this.wilson.ctx.fillStyle = rect.color;
-			this.wilson.ctx.fillRect(rect.col + 1, rect.row + 1, rect.width, rect.height);
+			
+			const scaleFactor = this.resolution / (this.outerExpressionSize + 2);
+
+			this.wilson.ctx.fillRect(
+				scaleFactor * (rect.col + 1),
+				scaleFactor * (rect.row + 1),
+				scaleFactor * rect.width,
+				scaleFactor * rect.height
+			);
 		}
 
 		if (expression.type === LAMBDA)
@@ -481,7 +504,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const startText = expression.startText ?? "";
 		const endText = expression.endText ?? "";
 
-		const valueFactor = siteSettings.darkTheme ? 1 : 0.75;
+		const valueFactor = siteSettings.darkTheme ? 1 : 0.7;
 
 		if (expression.type === LITERAL)
 		{

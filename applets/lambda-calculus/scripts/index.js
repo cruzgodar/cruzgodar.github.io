@@ -47,14 +47,17 @@ export default function()
 
 	async function run()
 	{
-		await expressionTextarea.loaded;
+		await Promise.all([
+			expressionTextarea.loaded,
+			resolutionInput.loaded,
+		]);
 
 		// Update the textarea.
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 
 		// Replace ls with lambdas.
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/l/g, "λ")
+			expressionTextarea.value.replaceAll(/l/gi, "λ")
 		);
 
 		// Remove everything except letters, lambdas, parentheses, dots, and whitespace.
@@ -83,6 +86,7 @@ export default function()
 
 			
 		const html = applet.run({
+			resolution: resolutionInput.value,
 			expression: expressionTextarea.value
 		});
 
