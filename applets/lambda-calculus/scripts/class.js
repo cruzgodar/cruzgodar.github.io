@@ -27,6 +27,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
+	animationTime = 600;
 
 	nextId = 0;
 
@@ -911,13 +912,22 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
+		if (newRects.length % replacementRects.length !== 0)
+		{
+			throw new Error("Amount of new rects is not a multiple of replacement rects!");
+		}
+
+		const numReplacementBlocks = newRects.length / replacementRects.length;
+
+
+
 		const dummy = { t: 0 };
 
 		// Fade out deleted rects.
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: this.animationTime * 0.5,
 			easing: "easeInOutQuad",
 			update: () =>
 			{
@@ -941,7 +951,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		await new Promise(resolve => setTimeout(resolve, 500));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
 
 
 
@@ -952,7 +962,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 1000,
+			duration: this.animationTime,
 			easing: "easeInOutQuad",
 			update: () =>
 			{
@@ -995,9 +1005,109 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		setTimeout(() =>
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+
+		
+
+		// Now the sleight of hand. Currently we have a stretched copy of the old expression
+		// and the replacement block floating above. Making a bunch of new rects and copying
+		// them all in would be nasty, but instead, we can just draw the *new* expression
+		// and move all of its replacement blocks up to where the block is hovering!
+
+		// This stores the actual rects of the new expression so we know where
+		// they're supposed to go
+		const newRectIndex = structuredClone(betaReducedExpression.rectIndex);
+
+		for (let i = 0; i < numReplacementBlocks; i++)
 		{
-			this.drawExpression(betaReducedExpression);
-		}, 1000);
+			for (let j = replacementRects.length * i; j < replacementRects.length * (i + 1); j++)
+			{
+				const replacementRectKey = replacementRects[j % replacementRects.length];
+				const key = newRects[j];
+
+				betaReducedExpression.rectIndex[key].row =
+					expression.rectIndex[replacementRectKey].row;
+				
+				betaReducedExpression.rectIndex[key].col =
+					expression.rectIndex[replacementRectKey].col;
+			}
+		}
+
+		const expandedRectIndex = structuredClone(betaReducedExpression.rectIndex);
+
+		for (let i = 0; i < numReplacementBlocks - 1; i++)
+		{
+			dummy.t = 0;
+
+			await anime({
+				targets: dummy,
+				t: 1,
+				duration: 1.5 * this.animationTime / numReplacementBlocks,
+				easing: "easeInOutQuad",
+				update: () =>
+				{
+					this.outerExpressionSize = expandedExpressionSize;
+
+					for (
+						let j = replacementRects.length * i;
+						j < replacementRects.length * (i + 1);
+						j++
+					) {
+						const key = newRects[j];
+
+						betaReducedExpression.rectIndex[key].row =
+							(1 - dummy.t) * expandedRectIndex[key].row
+							+ dummy.t * newRectIndex[key].row;
+
+						betaReducedExpression.rectIndex[key].col =
+							(1 - dummy.t) * expandedRectIndex[key].col
+							+ dummy.t * newRectIndex[key].col;
+					}
+
+					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+					this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+					this.drawExpressionStep(betaReducedExpression);
+				}
+			}).finished;
+		}
+
+		dummy.t = 0;
+		
+		// For this one, we also update the size.
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 1.5 * this.animationTime / numReplacementBlocks,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.outerExpressionSize = (1 - dummy.t) * expandedExpressionSize
+					+ dummy.t * newExpressionSize;
+
+				for (
+					let j = replacementRects.length * (numReplacementBlocks - 1);
+					j < replacementRects.length * numReplacementBlocks;
+					j++
+				) {
+					const key = newRects[j];
+
+					betaReducedExpression.rectIndex[key].row =
+						(1 - dummy.t) * expandedRectIndex[key].row
+						+ dummy.t * newRectIndex[key].row;
+
+					betaReducedExpression.rectIndex[key].col =
+						(1 - dummy.t) * expandedRectIndex[key].col
+						+ dummy.t * newRectIndex[key].col;
+				}
+
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(betaReducedExpression);
+			}
+		}).finished;
+
+
+		// If all went well, this call should be unnoticable!
+		this.drawExpression(betaReducedExpression);
 	}
 }
