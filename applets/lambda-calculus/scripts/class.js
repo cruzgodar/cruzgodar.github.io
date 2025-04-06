@@ -26,7 +26,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	resolution = 2000;
 	lambdaIndex = 0;
 	numLambdas = 0;
-	animationTime = 6000;
+	animationTime = 1000;
 
 	nextId = 0;
 
@@ -849,9 +849,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 			rectId => !(rectId in betaReducedExpression.rectIndex)
 		).sort((a, b) =>
 		{
-			if (oldRectIndex[a].row !== oldRectIndex[b].row)
-			{
-				return oldRectIndex[a].row - oldRectIndex[b].row;
+			if (
+				oldRectIndex[a].row + oldRectIndex[a].height
+					!== oldRectIndex[b].row + oldRectIndex[b].height
+			) {
+				return oldRectIndex[a].row + oldRectIndex[a].height
+					- (oldRectIndex[b].row + oldRectIndex[b].height);
 			}
 
 			return oldRectIndex[a].col - oldRectIndex[b].col;
@@ -866,6 +869,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 		
 		// This is the application bar and its connectors.
 		// Determine the bottommost three deleted rects.
+		// Note that bottommost means those with the lowest *bottom*,
+		// not the lowest row.
 		const rectsToFadeDown = deletedRects.slice(-3);
 
 		const deletedLambdaKey = deletedRects.find(key => oldRectIndex[key].type === LAMBDA);
@@ -980,10 +985,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const numReplacementBlocks = newRects.length / replacementRects.length;
 
-		// if (newRects.length % replacementRects.length !== 0 && !replacementIsLiteral)
-		// {
-		// 	throw new Error("Chunking failed.");
-		// }
+		if (newRects.length % replacementRects.length !== 0 && !replacementIsLiteral)
+		{
+			throw new Error("Chunking failed.");
+		}
 
 
 
