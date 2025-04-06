@@ -52,14 +52,14 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	run({
 		resolution = 2000,
-		expression: expressionString
+		expression: expressionString,
+		betaReduce = false
 	}) {
 		this.resolution = resolution;
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
 		this.numLambdas = expressionString.split("λ").length - 1;
 		this.lambdaIndex = 0;
-		this.expressionContainsAnApplication = false;
 
 		const expression = this.parseExpression(expressionString);
 		this.validateExpression(expression);
@@ -71,13 +71,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const html = this.expressionToString(expression);
 
-		setTimeout(() =>
+		if (betaReduce)
 		{
-			const betaReduction = this.listAllBetaReductions(expression)[0];
-			this.setupExpression(betaReduction, true);
-
-			this.animateBetaReduction(expression, betaReduction);
-		}, 1000);
+			this.animateIteratedBetaReduction(expression);
+		}
 
 		return html;
 	}
@@ -173,8 +170,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 		return returnValue;
 	}
 
-
-
 	validateExpression(expression, scopedVariables = [])
 	{
 		if (expression.type === LITERAL)
@@ -199,9 +194,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 			&& this.validateExpression(expression.input, scopedVariables);
 	}
 
+
+
 	// Adds size, location, rect, and color info to an expression.
 	setupExpression(expression, isBetaReduction = false)
 	{
+		this.expressionContainsAnApplication = false;
+
 		this.addExpressionSize(expression);
 
 		// Technical thing to make centering work.
@@ -219,6 +218,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.addExpressionBindings(expression);
 		this.addExpressionColors(expression);
 		this.addExpressionRects(expression, isBetaReduction);
+
+		// In the specific case where the outermost expression is an application,
+		// we need to move all three of its the rectangles down 1 for reasons I don't understand.
+		if (expression.type === APPLICATION)
+		{
+			expression.rects[0].row++;
+			expression.rects[1].height++;
+			expression.rects[2].height++;
+		}
 
 		expression.rectIndex = {};
 		this.addExpressionRectIndices(expression, expression.rectIndex);
@@ -830,6 +838,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const oldRectIndex = structuredClone(expression.rectIndex);
 
+		// This stores the actual rects of the new expression so we know where
+		// they're supposed to go
+		const newRectIndex = structuredClone(betaReducedExpression.rectIndex);
+
 
 		
 		// This is just the application bar and its connectors, which is a very cool twist, are
@@ -874,26 +886,44 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const oldExpressionSize = Math.max(expression.width, expression.height);
 
-		// This is the wize of the expanded expression
-		// plus the replacement thing held off above.
-		const expandedExpressionSize = Math.max(
-			Math.max(betaReducedExpression.width, replacementRectWidth),
-			betaReducedExpression.height + replacementRectHeight + 3
-		);
-
 		const newExpressionSize = Math.max(
 			betaReducedExpression.width,
 			betaReducedExpression.height
 		);
 
+		// This is the size of the expanded expression
+		// plus the replacement thing held off above.
+		const expandedExpressionSize = newRects.length === 0
+			? newExpressionSize
+			: Math.max(
+				Math.max(betaReducedExpression.width, replacementRectWidth),
+				// + 3 for the gap and +3 for the margin, *2 since we need
+				// to count space above and below.
+				betaReducedExpression.height + 2 * (replacementRectHeight + 6)
+			);
+
 
 
 		// Now we need to figure out where to put the replacement rects.
-		const targetRow = betaReducedExpression.row - 3 - replacementRectHeight;
-		const targetCol = (newExpressionSize - replacementRectWidth) / 2;
-		const replacementRectRowOffset = targetRow - minRow;
-		const replacementRectColOffset = targetCol - minCol;
+		const replacementRectTargetRow = betaReducedExpression.row - 3 - replacementRectHeight;
+		const replacementRectTargetCol = (newExpressionSize - replacementRectWidth) / 2;
+		const replacementRectRowOffset = replacementRectTargetRow - minRow;
+		const replacementRectColOffset = replacementRectTargetCol - minCol;
 
+		// If the expression is taller than it is wide, we also need to move the old rects.
+		const expandedExpressionRowOffset =
+			(expandedExpressionSize - betaReducedExpression.height) / 2
+			- betaReducedExpression.row;
+
+		const expandedExpressionColOffset =
+			(expandedExpressionSize - betaReducedExpression.width) / 2
+			- betaReducedExpression.col;
+
+		for (const key of preservedRects)
+		{
+			betaReducedExpression.rectIndex[key].row += expandedExpressionRowOffset;
+			betaReducedExpression.rectIndex[key].col += expandedExpressionColOffset;
+		}
 
 
 		const rgbOld = Object.fromEntries(
@@ -945,6 +975,14 @@ export class LambdaCalculus extends AnimationFrameApplet
 					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
 				}
 
+				if (newRects.length === 0)
+				{
+					for (const key of replacementRects)
+					{
+						expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
+					}
+				}
+
 				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 				this.drawExpressionStep(expression);
@@ -993,10 +1031,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 				for (const key of replacementRects)
 				{
 					expression.rectIndex[key].row = oldRectIndex[key].row
-						+ dummy.t * replacementRectRowOffset;
+						+ dummy.t * (replacementRectRowOffset + expandedExpressionRowOffset);
 
 					expression.rectIndex[key].col = oldRectIndex[key].col
-						+ dummy.t * replacementRectColOffset;
+						+ dummy.t * (replacementRectColOffset + expandedExpressionColOffset);
 				}
 
 				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
@@ -1014,10 +1052,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 		// them all in would be nasty, but instead, we can just draw the *new* expression
 		// and move all of its replacement blocks up to where the block is hovering!
 
-		// This stores the actual rects of the new expression so we know where
-		// they're supposed to go
-		const newRectIndex = structuredClone(betaReducedExpression.rectIndex);
-
 		for (let i = 0; i < numReplacementBlocks; i++)
 		{
 			for (let j = replacementRects.length * i; j < replacementRects.length * (i + 1); j++)
@@ -1030,6 +1064,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 				
 				betaReducedExpression.rectIndex[key].col =
 					expression.rectIndex[replacementRectKey].col;
+
+				betaReducedExpression.rectIndex[key].width =
+					expression.rectIndex[replacementRectKey].width;
+				
+				betaReducedExpression.rectIndex[key].height =
+					expression.rectIndex[replacementRectKey].height;
 			}
 		}
 
@@ -1054,14 +1094,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 						j++
 					) {
 						const key = newRects[j];
-
+						
+						// For these, we have to add the offset
+						// because the whole expression hasn't moved yet.
 						betaReducedExpression.rectIndex[key].row =
 							(1 - dummy.t) * expandedRectIndex[key].row
-							+ dummy.t * newRectIndex[key].row;
+							+ dummy.t * (newRectIndex[key].row + expandedExpressionRowOffset);
 
 						betaReducedExpression.rectIndex[key].col =
 							(1 - dummy.t) * expandedRectIndex[key].col
-							+ dummy.t * newRectIndex[key].col;
+							+ dummy.t * (newRectIndex[key].col + expandedExpressionColOffset);
+
+						betaReducedExpression.rectIndex[key].width =
+							(1 - dummy.t) * expandedRectIndex[key].width
+							+ dummy.t * newRectIndex[key].width;
+						
+						betaReducedExpression.rectIndex[key].height =
+							(1 - dummy.t) * expandedRectIndex[key].height
+							+ dummy.t * newRectIndex[key].height;
 					}
 
 					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
@@ -1074,40 +1124,103 @@ export class LambdaCalculus extends AnimationFrameApplet
 		dummy.t = 0;
 		
 		// For this one, we also update the size.
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1.5 * this.animationTime / numReplacementBlocks,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.outerExpressionSize = (1 - dummy.t) * expandedExpressionSize
-					+ dummy.t * newExpressionSize;
+		// We also need to be able to handle the case where numReplacementBlocks is 0.
 
-				for (
-					let j = replacementRects.length * (numReplacementBlocks - 1);
-					j < replacementRects.length * numReplacementBlocks;
-					j++
-				) {
-					const key = newRects[j];
+		// Now everything in betaReducedExpression needs its offset removed
+		// All that means is we need to animate all the rects,
+		// including those that were already moved in.
+		// To prevent them from animating again, we just update their position
+		// in expandedRectIndex.
+		for (
+			let j = 0;
+			j < replacementRects.length * (numReplacementBlocks - 1);
+			j++
+		) {
+			const key = newRects[j];
 
-					betaReducedExpression.rectIndex[key].row =
-						(1 - dummy.t) * expandedRectIndex[key].row
-						+ dummy.t * newRectIndex[key].row;
+			expandedRectIndex[key].row = betaReducedExpression.rectIndex[key].row;
+			expandedRectIndex[key].col = betaReducedExpression.rectIndex[key].col;
+			expandedRectIndex[key].width = betaReducedExpression.rectIndex[key].width;
+			expandedRectIndex[key].height = betaReducedExpression.rectIndex[key].height;
+		}
+		
+		if (newRects.length !== 0)
+		{
+			await anime({
+				targets: dummy,
+				t: 1,
+				duration: 1.5 * this.animationTime / numReplacementBlocks,
+				easing: "easeInOutQuad",
+				update: () =>
+				{
+					this.outerExpressionSize = (1 - dummy.t) * expandedExpressionSize
+						+ dummy.t * newExpressionSize;
 
-					betaReducedExpression.rectIndex[key].col =
-						(1 - dummy.t) * expandedRectIndex[key].col
-						+ dummy.t * newRectIndex[key].col;
+					for (const key in newRectIndex)
+					{
+						betaReducedExpression.rectIndex[key].row =
+							(1 - dummy.t) * expandedRectIndex[key].row
+							+ dummy.t * newRectIndex[key].row;
+
+						betaReducedExpression.rectIndex[key].col =
+							(1 - dummy.t) * expandedRectIndex[key].col
+							+ dummy.t * newRectIndex[key].col;
+
+						betaReducedExpression.rectIndex[key].width =
+							(1 - dummy.t) * expandedRectIndex[key].width
+							+ dummy.t * newRectIndex[key].width;
+						
+						betaReducedExpression.rectIndex[key].height =
+							(1 - dummy.t) * expandedRectIndex[key].height
+							+ dummy.t * newRectIndex[key].height;
+					}
+
+					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+					this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+					this.drawExpressionStep(betaReducedExpression);
 				}
-
-				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-				this.drawExpressionStep(betaReducedExpression);
-			}
-		}).finished;
-
+			}).finished;
+		}
 
 		// If all went well, this call should be unnoticable!
 		this.drawExpression(betaReducedExpression);
+
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+	}
+
+
+
+	async animateIteratedBetaReduction(expression)
+	{
+		for (;;)
+		{
+			const betaReductions = this.listAllBetaReductions(expression);
+
+			if (betaReductions.length === 0)
+			{
+				break;
+			}
+
+			// Find the one with the smallest area.
+			let minArea = Infinity;
+			let minAreaIndex = 0;
+
+			for (let i = 0; i < betaReductions.length; i++)
+			{
+				this.setupExpression(betaReductions[i], true);
+				const area = betaReductions[i].width * betaReductions[i].height;
+
+				if (area < minArea)
+				{
+					minArea = area;
+					minAreaIndex = i;
+				}
+			}
+			
+			this.setupExpression(betaReductions[minAreaIndex], true);
+			await this.animateBetaReduction(expression, betaReductions[minAreaIndex]);
+
+			expression = betaReductions[minAreaIndex];
+		}
 	}
 }

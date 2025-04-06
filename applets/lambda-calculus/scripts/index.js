@@ -16,7 +16,8 @@ export default function()
 		value: 2000,
 		minValue: 1000,
 		maxValue: 3000,
-		onEnter: run,
+		onEnter: () => run(true),
+
 	});
 
 	const expressionTextarea = new Textarea({
@@ -24,13 +25,14 @@ export default function()
 		name: "Expression",
 		value: "",
 		onInput: run,
+		onEnter: () => run(true),
 		allowEnter: true,
 	});
 
 	new Button({
-		element: $("#evaluate-button"),
-		name: "Evaluate",
-		onClick: run
+		element: $("#reduce-button"),
+		name: "Reduce",
+		onClick: () => run(true)
 	});
 
 	new DownloadButton({
@@ -45,7 +47,7 @@ export default function()
 
 	setOnThemeChange(() => run());
 
-	async function run()
+	async function run(betaReduce = false)
 	{
 		await Promise.all([
 			expressionTextarea.loaded,
@@ -87,7 +89,8 @@ export default function()
 			
 		const html = applet.run({
 			resolution: resolutionInput.value,
-			expression: expressionTextarea.value
+			expression: expressionTextarea.value,
+			betaReduce
 		});
 
 		expressionTextarea.overlayElement.innerHTML = html;
@@ -132,17 +135,15 @@ export default function()
 
 
 		// Find lambdas not closed properly.
-		let index = expressionString.search(/λ([a-mk-zA-KM-Z])[()λ]/g);
+		let index = expressionString.search(/λ([a-mk-zA-KM-Z])[^.]/g);
 
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z])[()λ]/g)[0].length
+				index + expressionString.match(/λ([a-mk-zA-KM-Z])[^.]/g)[0].length
 			];
 		}
-
-
 
 		index = expressionString.search(/λ([a-mk-zA-KM-Z])$/g);
 		
