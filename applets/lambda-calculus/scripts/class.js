@@ -821,14 +821,79 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const deletedRects = Object.keys(expression.rectIndex).filter(
 			rectId => !(rectId in betaReducedExpression.rectIndex)
-		);
+		).sort((a, b) => parseInt(a) - parseInt(b));
+
+		const newRects = Object.keys(betaReducedExpression.rectIndex).filter(
+			rectId => !(rectId in expression.rectIndex)
+		).sort((a, b) => parseInt(a) - parseInt(b));
 
 		const oldRectIndex = structuredClone(expression.rectIndex);
+
+
+		
+		// This is just the application bar and its connectors, which is a very cool twist, are
+		// the rects with the smallest ID!
+		const rectsToFadeDown = [deletedRects[0], deletedRects[1], deletedRects[2]];
+		// The no-longer-used lambda bar and all of its applications (which immediately follow it)
+		const rectsToFadeUp = [deletedRects[3]];
+		
+		// These are the remaining ones, which should be exclusively the stuff to replace.
+		let i = 4;
+		while (
+			i < deletedRects.length
+			&& oldRectIndex[deletedRects[i]].type === LITERAL
+			&& oldRectIndex[deletedRects[i]].color === oldRectIndex[deletedRects[3]].color
+		) {
+			rectsToFadeUp.push(deletedRects[i]);
+			i++;
+		}
+
+		const replacementRects = deletedRects.slice(i);
+
+		// We also need to know the size of the thing
+		// we're subbing in so we can keep it on the right.
+		let minRow = Infinity;
+		let minCol = Infinity;
+		let maxRow = 0;
+		let maxCol = 0;
+
+		for (const key of replacementRects)
+		{
+			const rect = oldRectIndex[key];
+			minRow = Math.min(minRow, rect.row);
+			minCol = Math.min(minCol, rect.col);
+			maxRow = Math.max(maxRow, rect.row + rect.height);
+			maxCol = Math.max(maxCol, rect.col + rect.width);
+		}
+
+		const replacementRectWidth = maxCol - minCol;
+		const replacementRectHeight = maxRow - minRow;
+
+
+
 		const oldExpressionSize = Math.max(expression.width, expression.height);
+
+		// This is the wize of the expanded expression
+		// plus the replacement thing held off above.
+		const expandedExpressionSize = Math.max(
+			Math.max(betaReducedExpression.width, replacementRectWidth),
+			betaReducedExpression.height + replacementRectHeight + 3
+		);
+
 		const newExpressionSize = Math.max(
 			betaReducedExpression.width,
 			betaReducedExpression.height
 		);
+
+
+
+		// Now we need to figure out where to put the replacement rects.
+		const targetRow = betaReducedExpression.row - 3 - replacementRectHeight;
+		const targetCol = (newExpressionSize - replacementRectWidth) / 2;
+		const replacementRectRowOffset = targetRow - minRow;
+		const replacementRectColOffset = targetCol - minCol;
+
+
 
 		const rgbOld = Object.fromEntries(
 			Object.entries(expression.rectIndex).map(([key, value]) =>
@@ -844,6 +909,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 			})
 		);
 
+
+
 		const dummy = { t: 0 };
 
 		// Fade out deleted rects.
@@ -856,8 +923,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 			{
 				this.outerExpressionSize = oldExpressionSize;
 
-				for (const key of deletedRects)
+				for (const key of rectsToFadeDown)
 				{
+					expression.rectIndex[key].row = oldRectIndex[key].row + dummy.t;
+					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
+				}
+
+				for (const key of rectsToFadeUp)
+				{
+					expression.rectIndex[key].row = oldRectIndex[key].row - dummy.t;
 					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
 				}
 
@@ -867,18 +941,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
+		await new Promise(resolve => setTimeout(resolve, 500));
+
+
+
 		dummy.t = 0;
-		
-		// Move rects to their new positions.
+
+		// Stretch rects to their new positions and
+		// move the replacement block 3px above the whole thing.
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: 1000,
 			easing: "easeInOutQuad",
 			update: () =>
 			{
 				this.outerExpressionSize = (1 - dummy.t) * oldExpressionSize
-					+ dummy.t * newExpressionSize;
+					+ dummy.t * expandedExpressionSize;
 
 				for (const key of preservedRects)
 				{
@@ -899,6 +978,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 					const b = (1 - dummy.t) * rgbOld[key][2] + dummy.t * rgbNew[key][2];
 
 					expression.rectIndex[key].color = `rgb(${r}, ${g}, ${b})`;
+				}
+
+				for (const key of replacementRects)
+				{
+					expression.rectIndex[key].row = oldRectIndex[key].row
+						+ dummy.t * replacementRectRowOffset;
+
+					expression.rectIndex[key].col = oldRectIndex[key].col
+						+ dummy.t * replacementRectColOffset;
 				}
 
 				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
