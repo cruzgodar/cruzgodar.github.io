@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -18,6 +19,13 @@ export default function()
 		minValue: 1000,
 		maxValue: 3000,
 		onEnter: () => run(true),
+	});
+
+	const expandShorthandsCheckbox = new Checkbox({
+		element: $("#expand-shorthands-checkbox"),
+		name: "Expand shorthands",
+		checked: false,
+		onInput: run
 	});
 
 	const expressionTextarea = new Textarea({
@@ -88,50 +96,14 @@ export default function()
 
 		let cursorBump = 0;
 
-		// Replace ls with lambdas, numbers with Church numerals, and
-		// I -> λx.x
-		// K -> λx.λy.x
-		// S -> λx.λy.λz.(xz)(yz)
-		// Y -> λf.(λx.f(xx))(λx.f(xx))
+		// Replace ls with lambdas.
 		expressionTextarea.setValue(
 			expressionTextarea.value.replaceAll(/l/g, "λ")
-				.replaceAll(/([0-9]+)/g, (match, $1) =>
-				{
-					const num = parseInt($1);
-
-					return `(λf.λx.${"f(".repeat(num)}x${")".repeat(num)})`;
-				})
-				.replaceAll(/I/g, "(λx.x)")
-				.replaceAll(/K/g, "(λx.λy.x)")
-				.replaceAll(/S/g, "(λx.λy.λz.(xz)(yz))")
-				.replaceAll(/Y/g, "(λf.(λx.f(xx))(λx.f(xx)))")
-				.replaceAll(/Z/g, "(λf.(λx.f(λv.xxv))(λx.f(λv.xxv)))")
-
-				// Pair, first, last
-				.replaceAll(/P/g, "(λx.λy.λz.zxy)")
-				.replaceAll(/F/g, "(λp.p(λx.λy.x))")
-				.replaceAll(/L/g, "(λp.p(λx.λy.y))")
-
-
-				.replaceAll(/\+/g, "(λa.λb.λf.λx.(af)(bfx))")
-				.replaceAll(/-/g, "(λm.λn.n(λn.λf.λx.n(λg.λh.h(gf))(λu.x)(λu.u))m)")
-				.replaceAll(/\*/g, "(λa.λb.λf.b(af))")
-				.replaceAll(/\^/g, "(λa.λb.ba)")
 		);
 
-		if (window.DEBUG)
-		{
-			expressionTextarea.setValue(
-				expressionTextarea.value.replaceAll(
-					/E/g,
-					"((λf.(λx.f(xx))(λx.f(xx)))(λe.λm.m(λx.x)(λm.λn.em(en))(λm.λv.e(mv))))"
-				)
-			);
-		}
-
-		// Remove everything except letters, lambdas, parentheses, dots, and numerals.
+		// Remove everything except valid tokens
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^-]/g, "")
 				.replaceAll(/\.+/g, match =>
 				{
 					cursorBump += match.length - 1;
@@ -160,14 +132,21 @@ export default function()
 			return;
 		}
 			
-		const html = await applet.run({
+		const [html, text] = await applet.run({
 			resolution: resolutionInput.value,
 			expression: expressionTextarea.value,
+			expandShorthands: expandShorthandsCheckbox.checked,
 			betaReduce
 		});
 
+		expressionTextarea.setValue(text);
 		expressionTextarea.overlayElement.innerHTML = html;
-		setTimeout(() => expressionTextarea.overlayElement.innerHTML = html, 50);
+
+		setTimeout(() =>
+		{
+			expressionTextarea.setValue(text);
+			expressionTextarea.overlayElement.innerHTML = html;
+		}, 50);
 	}
 
 	// Returns a range of the first invalid segment, or -1 if there are no invalid characters.

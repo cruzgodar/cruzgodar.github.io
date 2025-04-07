@@ -20,8 +20,37 @@ const CONNECTOR = 3;
 // Applications get a startText and endText field.
 // And lambdas get an argumentText, and literals get a valueText
 // so that we can uniqueify the argument as we parse.
+// Finally, literals can be shorthands! They get a shorthand field.
 
 // The outermost expression also gets a rectIndex field.
+
+const shorthands = {
+	"0": "λfλxx",
+	"1": "λfλxf(x)",
+	"2": "λfλxf(f(x))",
+	"3": "λfλxf(f(f(x)))",
+	"4": "λfλxf(f(f(f(x))))",
+	"5": "λfλxf(f(f(f(f(x)))))",
+	"6": "λfλxf(f(f(f(f(f(x))))))",
+	"7": "λfλxf(f(f(f(f(f(f(x)))))))",
+	"8": "λfλxf(f(f(f(f(f(f(f(x))))))))",
+	"9": "λfλxf(f(f(f(f(f(f(f(f(x)))))))))",
+
+	"I": "λxx",
+	"K": "λxλyx",
+	"S": "λxλyλz(xz)(yz)",
+	"Y": "λf(λxf(xx))(λxf(xx))",
+	"Z": "λf(λxf(λvxxv))(λxf(λvxxv))",
+
+	"P": "λxλyλzzxy",
+	"F": "λpp(λxλyx)",
+	"L": "λpp(λxλyy)",
+
+	"+": "λaλbλfλx(af)(bfx)",
+	"-": "λmλnn(λnλfλxn(λgλhh(gf))(λux)(λuu))m)",
+	"*": "λaλbλfb(af)",
+	"^": "λaλbba",
+};
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
@@ -62,6 +91,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	async run({
 		resolution = 2000,
 		expression: expressionString,
+		expandShorthands = false,
 		betaReduce = false
 	}) {
 		if (this.needReload)
@@ -81,10 +111,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.resolution = resolution;
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
-		this.numLambdas = expressionString.split("λ").length - 1;
+		this.numLambdas = this.computeNumLambdasFromString(expressionString);
 		this.lambdaIndex = 0;
 
-		const expression = this.parseExpression(expressionString);
+		const expression = this.parseExpression(expressionString, expandShorthands);
 		// this.validateExpression(expression);
 		this.setupExpression(expression);
 
@@ -100,16 +130,38 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.drawExpression(expression);
 
 		const html = this.expressionToString({ expression });
+		const text = this.expressionToString({ expression, addHtml: false });
 
 		if (betaReduce)
 		{
 			this.animateIteratedBetaReduction(expression);
 		}
 
-		return html;
+		return [html, text];
+	}
+
+	computeNumLambdasFromString(expressionString)
+	{
+		let numLambdas = 0;
+		const chars = expressionString.split("");
+
+		for (let i = 0; i < chars.length; i++)
+		{
+			if (chars[i] === "λ")
+			{
+				numLambdas++;
+			}
+
+			else if (chars[i] in shorthands)
+			{
+				numLambdas += shorthands[chars[i]].split("λ").length - 1;
+			}
+		}
+
+		return numLambdas;
 	}
 	
-	parseExpression(expressionString)
+	parseExpression(expressionString, expandShorthands)
 	{
 		if (expressionString.length === 0)
 		{
@@ -134,7 +186,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					type: LAMBDA,
 					argument,
 					argumentText: argument,
-					body: this.parseExpression(body),
+					body: this.parseExpression(body, expandShorthands),
 					literalColor: { h: this.lambdaIndex / this.numLambdas, s: 0.8, v: 1 },
 				});
 				this.lambdaIndex++;
@@ -162,7 +214,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 					i++;
 				}
 
-				const subExpression = this.parseExpression(expressionString.slice(1, i - 1));
+				const subExpression = this.parseExpression(
+					expressionString.slice(1, i - 1),
+					expandShorthands
+				);
+
 				subExpression.startText = "(" + (subExpression.startText ?? "");
 				subExpression.endText = (subExpression.endText ?? "") + ")";
 
@@ -172,11 +228,28 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			else
 			{
-				terms.push({
-					type: LITERAL,
-					value: expressionString[0],
-					valueText: expressionString[0],
-				});
+				if (expressionString[0] in shorthands)
+				{
+					terms.push(this.parseExpression(
+						shorthands[expressionString[0]],
+						expandShorthands
+					));
+					
+					if (!expandShorthands)
+					{
+						terms[terms.length - 1].shorthandText = expressionString[0];
+					}
+				}
+
+				else
+				{
+					terms.push({
+						type: LITERAL,
+						value: expressionString[0],
+						valueText: expressionString[0],
+					});
+				}
+
 				expressionString = expressionString.slice(1);
 			}
 		}
@@ -752,6 +825,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 				? `λa.λb.λc.${expression.valueText}`
 				: expression.valueText;
 
+			if (expression.shorthandText)
+			{
+				return addHtml
+					? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
+					: `${startText}${expression.shorthandText}${endText}`;
+			}
+
 			return addHtml
 				? /* html */`<span style="color: ${rgbString}">${startText}${valueText}${endText}</span>`
 				: `${startText}${valueText}${endText}`;
@@ -785,6 +865,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 				? bodyString + ")"
 				: bodyString;
 
+			if (expression.shorthandText)
+			{
+				return addHtml
+					? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
+					: `${startText}${expression.shorthandText}${endText}`;
+			}
+
 			return addHtml
 				? /* html */`<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">${lambdaText}</span>${bodyText}<span style="color: ${rgbString}">${endText}</span>`
 				: `${startText}${lambdaText}${bodyText}${endText}`;
@@ -809,6 +896,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const applicationString = useForSelfInterpreter
 			? `λa.λb.λc.b(${functionString}${inputString})`
 			: `${functionString}${inputString}`;
+
+		if (expression.shorthandText)
+		{
+			return addHtml
+				? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
+				: `${startText}${expression.shorthandText}${endText}`;
+		}
 
 		return addHtml
 			? /* html */`<span style="color: ${rgbString}">${startText}</span>${applicationString}<span style="color: ${rgbString}">${endText}</span>`

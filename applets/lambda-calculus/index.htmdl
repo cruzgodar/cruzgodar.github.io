@@ -5,6 +5,10 @@ Text
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
+	### checkboxes
+		expand-shorthands
+	###
+
 	### textarea expression
 
 	### text-boxes
