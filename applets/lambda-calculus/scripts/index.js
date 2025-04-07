@@ -59,7 +59,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "lambda-calculus.png"
+		filename: "a-lambda-diagram.png"
 	});
 
 	showPage();
@@ -113,10 +113,13 @@ export default function()
 		);
 
 		// Restore cursor position.
-		expressionTextarea.element.setSelectionRange(
-			selectionStart + expressionTextarea.value.length - oldLength,
-			selectionEnd + expressionTextarea.value.length - oldLength
-		);
+		if (document.activeElement === expressionTextarea.element)
+		{
+			expressionTextarea.element.setSelectionRange(
+				selectionStart + expressionTextarea.value.length - oldLength,
+				selectionEnd + expressionTextarea.value.length - oldLength
+			);
+		}
 
 		const invalidRange = validateString(expressionTextarea.value);
 

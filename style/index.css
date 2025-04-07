@@ -1299,6 +1299,12 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	font-size: 100%;
 	
 	transition: border-color .25s ease-in-out, color .25s ease-in-out;
+
+	white-space: pre-wrap;
+	word-break: break-all;
+	overflow-wrap: break-word;
+
+	cursor: text;
 }
 
 .textarea-overlay
@@ -1313,10 +1319,6 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	height: 100px;
 
 	border: 2px solid var(--normal-contrast);
-
-	white-space: pre-wrap;
-	word-break: break-word;
-	overflow-wrap: break-word;
 }
 
 .text-field
@@ -1339,6 +1341,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	margin: 0 auto;
 	
 	margin-top: 32px;
+
+	cursor: text;
 }
 
 .text-field-container p
@@ -1357,6 +1361,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 	margin-left: 16px;
 	margin-right: 16px;
+
+	cursor: text;
 }
 
 
