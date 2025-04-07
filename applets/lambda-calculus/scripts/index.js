@@ -94,7 +94,7 @@ export default function()
 		// S -> λx.λy.λz.(xz)(yz)
 		// Y -> λf.(λx.f(xx))(λx.f(xx))
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/l/gi, "λ")
+			expressionTextarea.value.replaceAll(/l/g, "λ")
 				.replaceAll(/([0-9]+)/g, (match, $1) =>
 				{
 					const num = parseInt($1);
@@ -110,6 +110,7 @@ export default function()
 		// Remove everything except letters, lambdas, parentheses, dots, and numerals.
 		expressionTextarea.setValue(
 			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().0-9]/g, "")
+				.replaceAll(/\.+/g, ".")
 		);
 
 		// Restore cursor position.

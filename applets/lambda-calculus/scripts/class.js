@@ -90,9 +90,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		this.drawExpression(expression);
 
-
-
-		const html = this.expressionToString(expression);
+		const html = this.expressionToString({ expression });
 
 		if (betaReduce)
 		{
@@ -725,8 +723,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 	// Converts an expression to a colored string.
-	expressionToString(expression)
-	{
+	expressionToString({
+		expression,
+		addHtml = true,
+		collapseVariablesToX = false
+	}) {
 		const startText = expression.startText ?? "";
 		const endText = expression.endText ?? "";
 
@@ -738,7 +739,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
 			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			return `<span style="color: ${rgbString}">${startText}${expression.valueText}${endText}</span>`;
+			const valueText = collapseVariablesToX ? "x" : expression.valueText;
+
+			return addHtml
+				? /* html */`<span style="color: ${rgbString}">${startText}${valueText}${endText}</span>`
+				: `${startText}${valueText}${endText}`;
 		}
 
 		if (expression.type === LAMBDA)
@@ -755,17 +760,61 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
 			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			return `<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">λ${expression.argumentText}.</span>${this.expressionToString(expression.body)}<span style="color: ${rgbString}">${endText}</span>`;
+			const argumentText = collapseVariablesToX ? "x" : expression.argumentText;
+
+			const bodyString = this.expressionToString({
+				expression: expression.body,
+				addHtml,
+				collapseVariablesToX
+			});
+
+			return addHtml
+				? /* html */`<span style="color: ${rgbString}">${startText}</span><span style="color: ${literalRgbString}">λ${argumentText}.</span>${bodyString}<span style="color: ${rgbString}">${endText}</span>`
+				: `${startText}λ${argumentText}.${bodyString}${endText}`;
 		}
 
-		const functionString = this.expressionToString(expression.function);
-		const inputString = this.expressionToString(expression.input);
+		const functionString = this.expressionToString({
+			expression: expression.function,
+			addHtml,
+			collapseVariablesToX
+		});
+
+		const inputString = this.expressionToString({
+			expression: expression.input,
+			addHtml,
+			collapseVariablesToX
+		});
 
 		const color = expression.color;
 		const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
 		const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-		return `<span style="color: ${rgbString}">${startText}</span>${functionString}${inputString}<span style="color: ${rgbString}">${endText}</span>`;
+		return addHtml
+			? /* html */`<span style="color: ${rgbString}">${startText}</span>${functionString}${inputString}<span style="color: ${rgbString}">${endText}</span>`
+			: `${startText}${functionString}${inputString}${endText}`;
+	}
+
+
+
+	isSubexpressionOf(subexpressionString, expressionString)
+	{
+			console.log(subexpressionString, expressionString);
+		let i = 0;
+
+		for (const char of expressionString)
+		{
+			if (char === subexpressionString[i])
+			{
+				i++;
+			}
+
+			if (i === subexpressionString.length)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 
@@ -1354,35 +1403,53 @@ export class LambdaCalculus extends AnimationFrameApplet
 	async animateIteratedBetaReduction(expression)
 	{
 		this.animationRunning = true;
+		let expressionString = this.expressionToString({ expression, addHtml: false });
 
 		outerLoop: for (;;)
 		{
-			const betaReductions = this.listAllBetaReductions(expression);
+			const betaReductions = this.listAllBetaReductions(expression).map(reduction =>
+			{
+				const string = this.expressionToString({
+					expression: reduction,
+					addHtml: false,
+					collapseVariablesToX: false
+				});
+
+				return {
+					expression: reduction,
+					expressionString: string,
+					isNestedBadly: this.isSubexpressionOf(expressionString, string)
+				};
+			});
 
 			if (betaReductions.length === 0)
 			{
 				break;
 			}
 
-			// Find the one with the smallest area.
-			let minArea = Infinity;
-			let minAreaIndex = 0;
-
-
-			for (let i = 0; i < betaReductions.length; i++)
+			// Sort expressions by containment, then by string length.
+			const sortedBetaReductions = betaReductions.sort((a, b) =>
 			{
-				this.setupExpression(betaReductions[i], true);
-				const area = betaReductions[i].width * betaReductions[i].height;
-
-				if (area < minArea)
+				if (!a.isNestedBadly && b.isNestedBadly)
 				{
-					minArea = area;
-					minAreaIndex = i;
+					return -1;
 				}
-			}
 
-			this.setupExpression(betaReductions[minAreaIndex], true);
-			const animation = this.animateBetaReduction(expression, betaReductions[minAreaIndex]);
+				if (a.isNestedBadly && !b.isNestedBadly)
+				{
+					return 1;
+				}
+
+				return a.expressionString.length - b.expressionString.length;
+			});
+
+			console.log(sortedBetaReductions);
+
+			this.setupExpression(sortedBetaReductions[0].expression, true);
+			const animation = this.animateBetaReduction(
+				expression,
+				sortedBetaReductions[0].expression
+			);
 
 			// eslint-disable-next-line no-unused-vars
 			for await (const _ of animation)
@@ -1406,7 +1473,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 				}
 			}
 
-			expression = betaReductions[minAreaIndex];
+			expression = sortedBetaReductions[0].expression;
+			expressionString = sortedBetaReductions[0].expressionString;
 		}
 
 		if (this.needReload)
