@@ -43,6 +43,7 @@ export default function()
 		min: 0.25,
 		max: 10,
 		logarithmic: true,
+		snapPoints: [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		onInput: onSliderInput
 	});
 

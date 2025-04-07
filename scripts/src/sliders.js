@@ -46,6 +46,7 @@ export class Slider extends InputElement
 			this.value = Math.log10(this.value);
 			this.min = Math.log10(this.min);
 			this.max = Math.log10(this.max);
+			this.snapThreshhold = (this.max - this.min) / 80;
 		}
 
 		this.persistState = persistState;
@@ -91,7 +92,9 @@ export class Slider extends InputElement
 
 			for (let i = 0; i < this.snapPoints.length; i++)
 			{
-				const distanceToSnapPoint = Math.abs(this.value - this.snapPoints[i]);
+				const distanceToSnapPoint = this.logarithmic
+					? Math.abs(Math.log10(this.value) - Math.log10(this.snapPoints[i]))
+					: Math.abs(this.value - this.snapPoints[i]);
 
 				if (distanceToSnapPoint < this.snapThreshhold)
 				{
