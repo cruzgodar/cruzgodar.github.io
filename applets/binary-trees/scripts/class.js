@@ -270,16 +270,16 @@ export class BinaryTrees extends AnimationFrameApplet
 
 		const that = this;
 
-		const callback = () =>
+		const refreshId = setInterval(() =>
 		{
 			const alpha = step / 37;
 			that.wilson.ctx.fillStyle = convertColor(0, 0, 0, alpha);
 			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 
 			step++;
-		};
+		}, 8);
 
-		const refreshId = addTemporaryInterval({ callback, delay: 8 });
+		addTemporaryInterval(refreshId);
 
 
 

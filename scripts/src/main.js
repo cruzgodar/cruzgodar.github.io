@@ -59,13 +59,9 @@ export function clearTemporaryListeners()
 
 export let temporaryIntervals = [];
 
-export function addTemporaryInterval({ callback, delay })
+export function addTemporaryInterval(refreshId)
 {
-	const refreshId = setInterval(callback, delay);
-
 	temporaryIntervals.push(refreshId);
-
-	return refreshId;
 }
 
 export function clearTemporaryIntervals()

@@ -1,6 +1,7 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { addTemporaryInterval } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -29,6 +30,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 	lambdaIndex = 0;
 	numLambdas = 0;
 	animationTime = 500;
+	animationPaused = false;
+
+	animationRunning = false;
+	needReload = false;
+	reloaded = Promise.resolve();
+	reloadedResolve;
 
 	nextId = 0;
 	nextUniqueArgument = 0;
@@ -52,11 +59,25 @@ export class LambdaCalculus extends AnimationFrameApplet
 		this.wilson = new WilsonCPU(this.canvas, options);
 	}
 
-	run({
+	async run({
 		resolution = 2000,
 		expression: expressionString,
 		betaReduce = false
 	}) {
+		if (this.needReload)
+		{
+			return;
+		}
+
+		if (this.animationRunning)
+		{
+			this.reloaded = new Promise(resolve => this.reloadedResolve = resolve);
+			this.needReload = true;
+			await this.reloaded;
+			this.needReload = false;
+			this.animationRunning = false;
+		}
+
 		this.resolution = resolution;
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
@@ -872,7 +893,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-	async animateBetaReduction(expression, betaReducedExpression)
+	async *animateBetaReduction(expression, betaReducedExpression)
 	{
 		const oldRectIndex = structuredClone(expression.rectIndex);
 
@@ -1117,7 +1138,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
 
 
 
@@ -1172,7 +1193,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
 
 
 
@@ -1180,7 +1201,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		{
 			this.drawExpression(betaReducedExpression);
 
-			await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+			yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
 
 			return;
 		}
@@ -1325,14 +1346,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 		// If all went well, this call should be unnoticable!
 		this.drawExpression(betaReducedExpression);
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
 	}
 
 
 
 	async animateIteratedBetaReduction(expression)
 	{
-		for (;;)
+		this.animationRunning = true;
+
+		outerLoop: for (;;)
 		{
 			const betaReductions = this.listAllBetaReductions(expression);
 
@@ -1359,9 +1382,39 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 
 			this.setupExpression(betaReductions[minAreaIndex], true);
-			await this.animateBetaReduction(expression, betaReductions[minAreaIndex]);
+			const animation = this.animateBetaReduction(expression, betaReductions[minAreaIndex]);
+
+			// eslint-disable-next-line no-unused-vars
+			for await (const _ of animation)
+			{
+				if (this.needReload)
+				{
+					break outerLoop;
+				}
+
+				if (this.animationPaused)
+				{
+					await new Promise(resolve => {
+						addTemporaryInterval(setInterval(() =>
+						{
+							if (!this.animationPaused)
+							{
+								resolve();
+							}
+						}), 100);
+					});
+				}
+			}
 
 			expression = betaReductions[minAreaIndex];
 		}
+
+		if (this.needReload)
+		{
+			this.needReload = false;
+			this.reloadedResolve();
+		}
+
+		this.animationRunning = false;
 	}
 }

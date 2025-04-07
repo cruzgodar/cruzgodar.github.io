@@ -1,6 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { LambdaCalculus } from "./class.js";
-import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -36,6 +36,15 @@ export default function()
 		onClick: () => run(true)
 	});
 
+	const playPauseButton = new ToggleButton({
+		element: $("#play-pause-button"),
+		name0: "Pause",
+		name1: "Play",
+		persistState: false,
+		onClick0: () => applet.animationPaused = true,
+		onClick1: () => applet.animationPaused = false
+	});
+
 	const animationTimeSlider = new Slider({
 		element: $("#animation-time-slider"),
 		name: "Animation Speed",
@@ -64,7 +73,15 @@ export default function()
 		await Promise.all([
 			expressionTextarea.loaded,
 			resolutionInput.loaded,
+			playPauseButton.loaded,
+			animationTimeSlider.loaded,
 		]);
+
+		if (playPauseButton.state)
+		{
+			playPauseButton.setState({ newState: false });
+			applet.animationPaused = false;
+		}
 
 		const oldLength = expressionTextarea.value.length;
 
@@ -113,7 +130,7 @@ export default function()
 			return;
 		}
 			
-		const html = applet.run({
+		const html = await applet.run({
 			resolution: resolutionInput.value,
 			expression: expressionTextarea.value,
 			betaReduce
