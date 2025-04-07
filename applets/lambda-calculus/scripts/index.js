@@ -109,7 +109,7 @@ export default function()
 
 		// Remove everything except letters, lambdas, parentheses, dots, and numerals.
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-KM-Zλ().0-9]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9]/g, "")
 				.replaceAll(/\.+/g, ".")
 		);
 
@@ -182,23 +182,23 @@ export default function()
 
 
 		// Find lambdas not closed properly.
-		let index = expressionString.search(/λ([a-mk-zA-KM-Z0-9])[^.]/g);
+		let index = expressionString.search(/λ([a-km-zA-Z0-9])[^.]/g);
 
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z0-9])[^.]/g)[0].length
+				index + expressionString.match(/λ([a-km-zA-Z0-9])[^.]/g)[0].length
 			];
 		}
 
-		index = expressionString.search(/λ([a-mk-zA-KM-Z0-9])$/g);
+		index = expressionString.search(/λ([a-km-zA-Z0-9])$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ([a-mk-zA-KM-Z0-9])$/g)[0].length
+				index + expressionString.match(/λ([a-km-zA-Z0-9])$/g)[0].length
 			];
 		}
 
@@ -212,13 +212,13 @@ export default function()
 			];
 		}
 
-		index = expressionString.search(/λ[a-mk-zA-KM-Z0-9]\.$/g);
+		index = expressionString.search(/λ[a-km-zA-Z0-9]\.$/g);
 		
 		if (index !== -1)
 		{
 			return [
 				index,
-				index + expressionString.match(/λ[a-mk-zA-KM-Z0-9]\.$/g)[0].length
+				index + expressionString.match(/λ[a-km-zA-Z0-9]\.$/g)[0].length
 			];
 		}
 
