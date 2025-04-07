@@ -18,7 +18,6 @@ export default function()
 		minValue: 1000,
 		maxValue: 3000,
 		onEnter: () => run(true),
-
 	});
 
 	const expressionTextarea = new Textarea({
@@ -27,7 +26,6 @@ export default function()
 		value: "",
 		onInput: run,
 		onEnter: () => run(true),
-		allowEnter: true,
 	});
 
 	new Button({
@@ -88,6 +86,8 @@ export default function()
 		// Update the textarea.
 		const { selectionStart, selectionEnd } = expressionTextarea.element;
 
+		let cursorBump = 0;
+
 		// Replace ls with lambdas, numbers with Church numerals, and
 		// I -> λx.x
 		// K -> λx.λy.x
@@ -105,20 +105,46 @@ export default function()
 				.replaceAll(/K/g, "(λx.λy.x)")
 				.replaceAll(/S/g, "(λx.λy.λz.(xz)(yz))")
 				.replaceAll(/Y/g, "(λf.(λx.f(xx))(λx.f(xx)))")
+				.replaceAll(/Z/g, "(λf.(λx.f(λv.xxv))(λx.f(λv.xxv)))")
+
+				// Pair, first, last
+				.replaceAll(/P/g, "(λx.λy.λz.zxy)")
+				.replaceAll(/F/g, "(λp.p(λx.λy.x))")
+				.replaceAll(/L/g, "(λp.p(λx.λy.y))")
+
+
+				.replaceAll(/\+/g, "(λa.λb.λf.λx.(af)(bfx))")
+				.replaceAll(/-/g, "(λm.λn.n(λn.λf.λx.n(λg.λh.h(gf))(λu.x)(λu.u))m)")
+				.replaceAll(/\*/g, "(λa.λb.λf.b(af))")
+				.replaceAll(/\^/g, "(λa.λb.ba)")
 		);
+
+		if (window.DEBUG)
+		{
+			expressionTextarea.setValue(
+				expressionTextarea.value.replaceAll(
+					/E/g,
+					"((λf.(λx.f(xx))(λx.f(xx)))(λe.λm.m(λx.x)(λm.λn.em(en))(λm.λv.e(mv))))"
+				)
+			);
+		}
 
 		// Remove everything except letters, lambdas, parentheses, dots, and numerals.
 		expressionTextarea.setValue(
 			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9]/g, "")
-				.replaceAll(/\.+/g, ".")
+				.replaceAll(/\.+/g, match =>
+				{
+					cursorBump += match.length - 1;
+					return ".";
+				})
 		);
 
 		// Restore cursor position.
 		if (document.activeElement === expressionTextarea.element)
 		{
 			expressionTextarea.element.setSelectionRange(
-				selectionStart + expressionTextarea.value.length - oldLength,
-				selectionEnd + expressionTextarea.value.length - oldLength
+				selectionStart + expressionTextarea.value.length - oldLength + cursorBump,
+				selectionEnd + expressionTextarea.value.length - oldLength + cursorBump
 			);
 		}
 
