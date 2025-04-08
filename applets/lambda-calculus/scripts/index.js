@@ -70,7 +70,7 @@ export default function()
 
 	showPage();
 
-	run();
+	setTimeout(() => run(), 10);
 
 	setOnThemeChange(() => run());
 
@@ -103,7 +103,7 @@ export default function()
 
 		// Remove everything except valid tokens
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^-]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^\-!,<>'"&|]/g, "")
 				.replaceAll(/\.+/g, match =>
 				{
 					cursorBump += match.length - 1;
@@ -124,10 +124,11 @@ export default function()
 
 		if (invalidRange !== -1)
 		{
+			const value = expressionTextarea.value.replaceAll(/</g, "&lt;");
 			expressionTextarea.overlayElement.innerHTML =
-				expressionTextarea.value.slice(0, invalidRange[0])
-				+ `<span class="invalid">${expressionTextarea.value.slice(invalidRange[0], invalidRange[1])}</span>`
-				+ expressionTextarea.value.slice(invalidRange[1]);
+				value.slice(0, invalidRange[0])
+				+ `<span class="invalid">${value.slice(invalidRange[0], invalidRange[1])}</span>`
+				+ value.slice(invalidRange[1]);
 
 			return;
 		}

@@ -25,31 +25,42 @@ const CONNECTOR = 3;
 // The outermost expression also gets a rectIndex field.
 
 const shorthands = {
-	"0": "λfλxx",
-	"1": "λfλxf(x)",
-	"2": "λfλxf(f(x))",
-	"3": "λfλxf(f(f(x)))",
-	"4": "λfλxf(f(f(f(x))))",
-	"5": "λfλxf(f(f(f(f(x)))))",
-	"6": "λfλxf(f(f(f(f(f(x))))))",
-	"7": "λfλxf(f(f(f(f(f(f(x)))))))",
-	"8": "λfλxf(f(f(f(f(f(f(f(x))))))))",
-	"9": "λfλxf(f(f(f(f(f(f(f(f(x)))))))))",
+	"0": "(λfλxx)",
+	"F": "(λfλxx)",
+	"1": "(λfλxf(x))",
+	"2": "(λfλxf(f(x)))",
+	"3": "(λfλxf(f(f(x))))",
+	"4": "(λfλxf(f(f(f(x)))))",
+	"5": "(λfλxf(f(f(f(f(x))))))",
+	"6": "(λfλxf(f(f(f(f(f(x)))))))",
+	"7": "(λfλxf(f(f(f(f(f(f(x))))))))",
+	"8": "(λfλxf(f(f(f(f(f(f(f(x)))))))))",
+	"9": "(λfλxf(f(f(f(f(f(f(f(f(x))))))))))",
 
-	"I": "λxx",
-	"K": "λxλyx",
-	"S": "λxλyλz(xz)(yz)",
-	"Y": "λf(λxf(xx))(λxf(xx))",
-	"Z": "λf(λxf(λvxxv))(λxf(λvxxv))",
+	">": "(λnλfλxf(nf(x)))",
+	"<": "(λnλfλxn(λgλhh(gf))(λux)(λuu))",
 
-	"P": "λxλyλzzxy",
-	"F": "λpp(λxλyx)",
-	"L": "λpp(λxλyy)",
+	"I": "(λxx)",
+	"K": "(λxλyx)",
+	"T": "(λxλyx)",
+	"S": "(λxλyλz(xz)(yz))",
+	"Y": "(λf(λxf(xx))(λxf(xx)))",
+	"U": "(λxλy(y((xx)y)))",
 
-	"+": "λaλbλfλx(af)(bfx)",
-	"-": "λmλnn(λnλfλxn(λgλhh(gf))(λux)(λuu))m)",
-	"*": "λaλbλfb(af)",
-	"^": "λaλbba",
+	"Z": "(λnn(λxF)T)",
+
+	"!": "(λxxFT)",
+	"&": "(λxλyxyF)",
+	"|": "(λxλyxTy)",
+
+	",": "(λxλyλzzxy)",
+	"'": "(λpp(λxλyx))",
+	"\"": "(λpp(λxλyy))",
+
+	"+": "(λaλbλfλx(af)(bfx))",
+	"-": "(λmλnn<m)",
+	"*": "(λaλbλfb(af))",
+	"^": "(λaλbba)",
 };
 
 export class LambdaCalculus extends AnimationFrameApplet
@@ -129,8 +140,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		this.drawExpression(expression);
 
-		const html = this.expressionToString({ expression });
-		const text = this.expressionToString({ expression, addHtml: false });
+		const html = this.expressionToString({ expression })
+			.replaceAll(/\[LEFTCARET\]/g, "&lt;");
+		const text = this.expressionToString({ expression, addHtml: false })
+			.replaceAll(/\[LEFTCARET\]/g, "<");
 
 		if (betaReduce)
 		{
@@ -142,6 +155,27 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	computeNumLambdasFromString(expressionString)
 	{
+		for (;;)
+		{
+			let foundShorthand = false;
+
+			for (const key in shorthands)
+			{
+				if (!expressionString.includes(key))
+				{
+					continue;
+				}
+
+				expressionString = expressionString.replaceAll(key, shorthands[key]);
+				foundShorthand = true;
+			}
+
+			if (!foundShorthand)
+			{
+				break;
+			}
+		}
+
 		let numLambdas = 0;
 		const chars = expressionString.split("");
 
@@ -234,10 +268,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 						shorthands[expressionString[0]],
 						expandShorthands
 					));
-					
+
 					if (!expandShorthands)
 					{
-						terms[terms.length - 1].shorthandText = expressionString[0];
+						terms[terms.length - 1].shorthandText = expressionString[0] === "<"
+							? "[LEFTCARET]"
+							: expressionString[0];
 					}
 				}
 
@@ -828,8 +864,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 			if (expression.shorthandText)
 			{
 				return addHtml
-					? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
-					: `${startText}${expression.shorthandText}${endText}`;
+					? /* html */`<span style="color: ${rgbString}">${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}</span>`
+					: `${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}`;
 			}
 
 			return addHtml
@@ -868,8 +904,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 			if (expression.shorthandText)
 			{
 				return addHtml
-					? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
-					: `${startText}${expression.shorthandText}${endText}`;
+					? /* html */`<span style="color: ${rgbString}">${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}</span>`
+					: `${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}`;
 			}
 
 			return addHtml
@@ -900,8 +936,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 		if (expression.shorthandText)
 		{
 			return addHtml
-				? /* html */`<span style="color: ${rgbString}">${startText}${expression.shorthandText}${endText}</span>`
-				: `${startText}${expression.shorthandText}${endText}`;
+				? /* html */`<span style="color: ${rgbString}">${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}</span>`
+				: `${startText.slice(1)}${expression.shorthandText}${endText.slice(1)}`;
 		}
 
 		return addHtml

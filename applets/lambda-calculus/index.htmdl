@@ -44,3 +44,39 @@ Text
 </div>
 
 </div>
+
+### card applet-controls "Controls"
+	A number of common operations and combinators have shorthands that can optionally be expanded directly (although those expansions tend to get very messy very fast).
+
+	- - -
+
+	`T`: the function `λx.λy.x`, used as the boolean value `true`.
+	`F`: the function `λx.λy.y`, used as the boolean value `false`.
+	`!`: the boolean negation operator `λx.xFT`.
+	`&`: the boolean and operator `λx.λy.xyF`.
+	`|`: the boolean or operator `λx.λy.xTy`.
+	
+	- - -
+
+	`0-9`: A Church numeral.
+	`Z`: the `isZero` function `λn.n(λx.F)T`.
+	`>`: the increment operator `λn.λf.λx.f(nf(x))`.
+	`&lt;`: the decrement operator `λn.λf.λx.n(λg.λh.h(gf))(λu.x)(λu.u)`.
+	`+`: the addition operator `λa.λb.λf.λx.(af)(bfx)`.
+	`*`: the multiplication operator `λa.λb.λf.b(af)`.
+	`^`: the exponentiation operator `λa.λb.ba`.
+	`-`: the subtraction operator `λa.λb.a&lt;b`.
+
+	- - -
+
+	`I`: The identity function `λx.x`.
+	`T` or `K`: The first-argument function `λx.λy.x`, also used as the boolean value `true`.
+	`S`: The substitution operator `λx.λy.λz.(xz)(yz)`.
+	`Y`: The Y combinator `λf.(λx.f(xx))(λx.f(xx))`, used to implement recursion.
+
+	- - -
+
+	`,`: The pairing operator `λx.λy.λz.zxy`. Packs `x` and `y` into an ordered pair.
+	`'`: The first-entry extractor `λp.p(λx.λy.x)`. Retrieves the first entry of `p`.
+	`"`: The second-entry extractor `λp.p(λx.λy.y)`. Retrieves the second entry of `p`.
+###

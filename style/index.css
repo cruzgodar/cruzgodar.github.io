@@ -1323,11 +1323,12 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 .text-field
 {
-	border: none;
-	color: rgba(0, 0, 0, 0);
+	border: 2px solid transparent;
+	color: transparent;
 	z-index: 2;
 	caret-color: var(--high-contrast);
 	resize: none;
+	width: calc(100% - 4px);
 }
 
 .text-field-container
