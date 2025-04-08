@@ -7,15 +7,24 @@ import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { Textarea } from "/scripts/src/textareas.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 const examples = {
 	identity: "λx.x",
+	returnLambda: "λx.λy.x",
+	evaluation: "λx.xx",
+	betaReduction: "(λz.zz)(λx.λy.x)",
 	booleans: "&T (| (!F) F)",
 	successor: ">3",
 	addition: "+34",
 	multiplication: "*34",
 	exponentiation: "^34",
+	omega: "Yλx.x",
+	recursiveTriangleNumbers: "(Y λf. λn. _(<n) 1 (+ n (f(<n)))) 4",
+	recursiveFactorial: "(Y λf. λn. _(<n) 1 (* n (f(<n)))) 4",
+	recursiveFibonacci: "(Y λf. λn. _(<n) 1 (+ (f(<(<n))) (f(<n)) )) 4",
+	iterativeTriangleNumbers: "(λn.n( λg.λa.λb.g (>a) (+ab) ) (λa.λb.b) 1 0) 4",
+	iterativeFactorial: "(λn.n( λg.λa.λb.g (>a) (*ab) ) (λa.λb.b) 1 1) 4",
+	iterativeFibonacci: "(λn.n( λg.λa.λb.g (+ab) a ) (λa.λb.b) 1 0) 4",
 };
 
 export default function()
@@ -27,28 +36,28 @@ export default function()
 		name: "Examples",
 		options: {
 			identity: "Identity",
+			returnLambda: "Returning a Lambda",
+			evaluation: "Evaluation",
+			betaReduction: "Beta Reduction",
 			booleans: "Booleans",
 			successor: "Successor",
 			addition: "Addition",
 			multiplication: "Multiplication",
 			exponentiation: "Exponentiation",
+			omega: "Omega",
+			recursiveTriangleNumbers: "Recursive Triangle Numbers",
+			recursiveFactorial: "Recursive Factorial",
+			iterativeTriangleNumbers: "Iterative Triangle Numbers",
+			iterativeFactorial: "Iterative Factorial",
+			iterativeFibonacci: "Iterative Fibonacci",
 		},
 		onInput: onDropdownInput
-	});
-
-	const resolutionInput = new TextBox({
-		element: $("#resolution-input"),
-		name: "Resolution",
-		value: 2000,
-		minValue: 1000,
-		maxValue: 3000,
-		onEnter: () => run(true),
 	});
 
 	const expressionTextarea = new Textarea({
 		element: $("#expression-textarea"),
 		name: "Expression",
-		value: "",
+		value: "*23",
 		onInput: () =>
 		{
 			if (examplesDropdown.value)
@@ -96,9 +105,9 @@ export default function()
 		name: "Animation Speed",
 		value: 1,
 		min: 0.25,
-		max: 10,
+		max: 20,
 		logarithmic: true,
-		snapPoints: [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		snapPoints: [0.5, 1, 2, 5, 10],
 		onInput: onSliderInput
 	});
 
@@ -118,7 +127,6 @@ export default function()
 	{
 		await Promise.all([
 			expressionTextarea.loaded,
-			resolutionInput.loaded,
 			playPauseButton.loaded,
 			animationTimeSlider.loaded,
 		]);
@@ -143,7 +151,7 @@ export default function()
 
 		// Remove everything except valid tokens
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^_\-!,<>'"&|]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^_\-!,<>'"&=|]/g, "")
 				.replaceAll(/\.+/g, match =>
 				{
 					cursorBump += match.length - 1;
@@ -174,7 +182,6 @@ export default function()
 		}
 			
 		const [html, text] = await applet.run({
-			resolution: resolutionInput.value,
 			expression: expressionTextarea.value,
 			expandShorthands: expandShorthandsCheckbox.checked,
 			betaReduce
@@ -182,6 +189,12 @@ export default function()
 
 		expressionTextarea.setValue(text);
 		expressionTextarea.overlayElement.innerHTML = html;
+
+		setTimeout(() =>
+		{
+			expressionTextarea.setValue(text);
+			expressionTextarea.overlayElement.innerHTML = html;
+		});
 	}
 
 	// Returns a range of the first invalid segment, or -1 if there are no invalid characters.

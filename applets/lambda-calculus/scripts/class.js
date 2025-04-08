@@ -45,7 +45,6 @@ const shorthands = {
 	"T": "(λxλyx)",
 	"S": "(λxλyλz(xz)(yz))",
 	"Y": "(λf(λxf(xx))(λxf(xx)))",
-	"U": "(λxλy(y((xx)y)))",
 
 	"_": "(λnn(λxF)T)",
 
@@ -61,6 +60,8 @@ const shorthands = {
 	"-": "(λmλnn<m)",
 	"*": "(λaλbλfb(af))",
 	"^": "(λaλbba)",
+	// "=": "λaλb&(_(-ab))(_(-ba))"
+	"=": "(λaλb(a(λnλfλxn(λgλhh(gf))(λux)(λuu))b(λxF)T)(b(λnλfλxn(λgλhh(gf))(λux)(λuu))a(λxF)T)(F))"
 };
 
 export class LambdaCalculus extends AnimationFrameApplet
@@ -100,7 +101,6 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	async run({
-		resolution = 2000,
 		expression: expressionString,
 		expandShorthands = false,
 		betaReduce = false
@@ -119,24 +119,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 			this.animationRunning = false;
 		}
 
-		this.resolution = resolution;
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
 		this.numLambdas = this.computeNumLambdasFromString(expressionString);
 		this.lambdaIndex = 0;
 
 		const expression = this.parseExpression(expressionString, expandShorthands);
-		// this.validateExpression(expression);
 		this.setupExpression(expression);
-
-		if (window.DEBUG)
-		{
-			// console.log(this.expressionToString({
-			// 	expression,
-			// 	addHtml: false,
-			// 	useForSelfInterpreter: true
-			// }));
-		}
 
 		this.drawExpression(expression);
 
@@ -147,7 +136,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		if (betaReduce)
 		{
-			this.animateIteratedBetaReduction(expression);
+			if (!expandShorthands)
+			{
+				const expression = this.parseExpression(expressionString, true);
+				this.setupExpression(expression);
+				this.animateIteratedBetaReduction(expression);
+			}
+
+			else
+			{
+				this.animateIteratedBetaReduction(expression);
+			}
 		}
 
 		return [html, text];
@@ -802,8 +801,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 	drawExpression(expression)
 	{
 		this.outerExpressionSize = Math.max(expression.width, expression.height);
-		this.resolution = Math.round(this.resolution / (this.outerExpressionSize + 2))
-			* (this.outerExpressionSize + 2);
+		this.resolution = Math.round(
+			Math.min(Math.max(this.resolution, 2000), 5000) / (this.outerExpressionSize + 2),
+		) * (this.outerExpressionSize + 2);
 		
 		this.wilson.resizeCanvas({ width: this.resolution });
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
@@ -1392,7 +1392,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 6));
 
 
 
@@ -1400,7 +1400,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		{
 			this.drawExpression(betaReducedExpression);
 
-			yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+			yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 6));
 
 			return;
 		}
@@ -1559,7 +1559,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 			addHtml: false,
 		});
 
-		let collapsedExpressionString = expressionString.replaceAll(/a-zA-Z/g, "x");
+		let collapsedExpressionString = expressionString.replaceAll(/a-zA-Z/g, "x")
+			.replaceAll(/\(\)/g, "");
 
 		outerLoop: for (;;)
 		{
@@ -1570,7 +1571,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 					addHtml: false,
 				});
 
-				const collapsedString = string.replaceAll(/a-zA-Z/g, "x");
+				const collapsedString = string.replaceAll(/a-zA-Z/g, "x")
+					.replaceAll(/\(\)/g, "");
 
 				return {
 					expression: reduction,
