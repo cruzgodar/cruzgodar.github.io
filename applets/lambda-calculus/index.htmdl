@@ -1,6 +1,6 @@
 Text
 
-
+### dropdown examples
 
 <div id="canvas-landscape">
 
@@ -59,7 +59,7 @@ Text
 	- - -
 
 	`0-9`: A Church numeral.
-	`Z`: the `isZero` function `λn.n(λx.F)T`.
+	`_`: the `isZero` function `λn.n(λx.F)T`.
 	`>`: the increment operator `λn.λf.λx.f(nf(x))`.
 	`&lt;`: the decrement operator `λn.λf.λx.n(λg.λh.h(gf))(λu.x)(λu.u)`.
 	`+`: the addition operator `λa.λb.λf.λx.(af)(bfx)`.

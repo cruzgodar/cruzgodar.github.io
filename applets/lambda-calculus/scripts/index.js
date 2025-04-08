@@ -2,15 +2,39 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { Textarea } from "/scripts/src/textareas.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
+const examples = {
+	identity: "λx.x",
+	booleans: "&T (| (!F) F)",
+	successor: ">3",
+	addition: "+34",
+	multiplication: "*34",
+	exponentiation: "^34",
+};
+
 export default function()
 {
 	const applet = new LambdaCalculus({ canvas: $("#output-canvas") });
+
+	const examplesDropdown = new Dropdown({
+		element: $("#examples-dropdown"),
+		name: "Examples",
+		options: {
+			identity: "Identity",
+			booleans: "Booleans",
+			successor: "Successor",
+			addition: "Addition",
+			multiplication: "Multiplication",
+			exponentiation: "Exponentiation",
+		},
+		onInput: onDropdownInput
+	});
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
@@ -21,19 +45,35 @@ export default function()
 		onEnter: () => run(true),
 	});
 
-	const expandShorthandsCheckbox = new Checkbox({
-		element: $("#expand-shorthands-checkbox"),
-		name: "Expand shorthands",
-		checked: false,
-		onInput: run
-	});
-
 	const expressionTextarea = new Textarea({
 		element: $("#expression-textarea"),
 		name: "Expression",
 		value: "",
-		onInput: run,
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				examplesDropdown.setValue({ newValue: "default" });
+			}
+
+			run();
+		},
 		onEnter: () => run(true),
+	});
+
+	const expandShorthandsCheckbox = new Checkbox({
+		element: $("#expand-shorthands-checkbox"),
+		name: "Expand shorthands",
+		checked: false,
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				expressionTextarea.setValue(examples[examplesDropdown.value]);
+			}
+
+			run();
+		}
 	});
 
 	new Button({
@@ -103,7 +143,7 @@ export default function()
 
 		// Remove everything except valid tokens
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^\-!,<>'"&|]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^_\-!,<>'"&|]/g, "")
 				.replaceAll(/\.+/g, match =>
 				{
 					cursorBump += match.length - 1;
@@ -124,11 +164,11 @@ export default function()
 
 		if (invalidRange !== -1)
 		{
-			const value = expressionTextarea.value.replaceAll(/</g, "&lt;");
-			expressionTextarea.overlayElement.innerHTML =
-				value.slice(0, invalidRange[0])
+			const value = expressionTextarea.value.replaceAll(/</g, ";");
+			const html = value.slice(0, invalidRange[0])
 				+ `<span class="invalid">${value.slice(invalidRange[0], invalidRange[1])}</span>`
 				+ value.slice(invalidRange[1]);
+			expressionTextarea.overlayElement.innerHTML = html.replaceAll(/;/g, "&lt;");
 
 			return;
 		}
@@ -142,12 +182,6 @@ export default function()
 
 		expressionTextarea.setValue(text);
 		expressionTextarea.overlayElement.innerHTML = html;
-
-		setTimeout(() =>
-		{
-			expressionTextarea.setValue(text);
-			expressionTextarea.overlayElement.innerHTML = html;
-		}, 50);
 	}
 
 	// Returns a range of the first invalid segment, or -1 if there are no invalid characters.
@@ -236,5 +270,17 @@ export default function()
 	function onSliderInput()
 	{
 		applet.animationTime = 500 / animationTimeSlider.value;
+	}
+
+	function onDropdownInput()
+	{
+		if (examplesDropdown.value)
+		{
+			expressionTextarea.setValue(
+				examples[examplesDropdown.value]
+			);
+
+			run();
+		}
 	}
 }

@@ -47,7 +47,7 @@ const shorthands = {
 	"Y": "(λf(λxf(xx))(λxf(xx)))",
 	"U": "(λxλy(y((xx)y)))",
 
-	"Z": "(λnn(λxF)T)",
+	"_": "(λnn(λxF)T)",
 
 	"!": "(λxxFT)",
 	"&": "(λxλyxyF)",

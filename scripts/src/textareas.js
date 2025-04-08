@@ -87,7 +87,8 @@ export class Textarea extends InputElement
 	updateOverlayElement()
 	{
 		this.overlayElement.innerHTML = this.value
-			.replaceAll(/\n/g, "<br>");
+			.replaceAll(/\n/g, "<br>")
+			.replaceAll(/</g, "&lt;");
 
 		this.element.style.height = "fit-content";
 
