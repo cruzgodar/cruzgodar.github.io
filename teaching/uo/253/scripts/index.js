@@ -5,10 +5,17 @@ import { $ } from "/scripts/src/main.js";
 
 export default function load()
 {
-	for (let i = 1; i <= 1; i++)
+	for (let i = 1; i <= 9; i++)
 	{
+		const element = $(`#download-homework-${i}-button`);
+		
+		if (!element)
+		{
+			break;
+		}
+
 		new Button({
-			element: $(`#download-homework-${i}-button`),
+			element,
 			name: "Download Latex Source",
 			onClick: () =>
 			{
