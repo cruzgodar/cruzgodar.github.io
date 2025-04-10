@@ -458,6 +458,13 @@ mjx-container
 	margin-bottom: 0;
 }
 
+.card img
+{
+	width: 100% !important;
+	
+	max-width: var(--text-width);
+}
+
 .card .text-buttons
 {
 	grid-template-columns: unset !important;

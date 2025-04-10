@@ -437,7 +437,7 @@ export async function showZoomCard({
 
 
 
-	const image = currentCard.querySelector("img");
+	const image = currentCard.querySelector("img.gallery-card-image");
 
 	if (image)
 	{
