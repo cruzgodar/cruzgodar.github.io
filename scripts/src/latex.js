@@ -1,4 +1,4 @@
-import { raw } from "./main.js";
+import { loadScript, raw } from "./main.js";
 
  
 const preamble = raw`\documentclass{article}
@@ -9,6 +9,8 @@ const preamble = raw`\documentclass{article}
 \usepackage{amssymb}
 \usepackage{enumitem}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\graphicspath{{graphics/}}
 \usepackage[total={6.5in, 9in}, heightrounded]{geometry}
 \setenumerate[0]{label=\alph*)}
 \setlength{\parindent}{0pt}
@@ -37,9 +39,21 @@ export function convertCardToLatex(element, title, course)
 		firstSection.previousElementSibling.remove();
 	}
 
+	const imageUrls = [];
+
 	const tex = preamble
 		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
 		+ clonedElement.innerHTML
+			.replaceAll(/<img.+? src="(.+?)".+?>(<\/img>)?/g, (match, $1) =>
+			{
+				imageUrls.push($1);
+				const filename = $1.split("/").pop();
+				return `
+\\begin{center}
+	\\includegraphics[width=0.5\\linewidth]{${filename}}
+\\end{center}
+`;
+			})
 			.replaceAll(/<!--.*?-->/g, "")
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
 			.replaceAll(
@@ -64,12 +78,47 @@ export function convertCardToLatex(element, title, course)
 			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
 			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\n\\section{${$1}}\n\n`)
 			.replaceAll(/&amp;/g, " &")
+			.replaceAll(/&lt;/g, "<")
 			.replaceAll(/\s\s&/g, " &")
 			.replaceAll(/–/g, "--")
 			.replaceAll(/—/g, "---")
 		+ "\n\\end{document}";
 
-	downloadTex(`${title}.tex`, tex);
+	if (imageUrls.length)
+	{
+		downloadTexWithGraphics(title, tex, imageUrls);
+	}
+
+	else
+	{
+		downloadTex(title, tex);
+	}
+}
+
+async function downloadTexWithGraphics(filename, text, imageUrls)
+{
+	await Promise.all([
+		loadScript("/scripts/jszip.min.js"),
+		loadScript("/scripts/fileSaver.min.js")
+	]);
+
+	// eslint-disable-next-line no-undef
+	const zip = new JSZip();
+
+	zip.file(`${filename}.tex`, text);
+
+	const graphics = zip.folder("graphics");
+
+	for (const imageUrl of imageUrls)
+	{
+		// Generate base64 data for the image.
+		const image = await fetch(imageUrl).then(res => res.blob());
+		graphics.file(imageUrl.split("/").pop(), image);
+	}
+
+	const blob = await zip.generateAsync({ type: "blob" });
+	// eslint-disable-next-line no-undef
+	saveAs(blob, `${filename}.zip`);
 }
 
 function downloadTex(filename, text)
@@ -79,7 +128,7 @@ function downloadTex(filename, text)
 		"href",
 		"data:text/x-tex;charset=utf-8," + encodeURIComponent(text)
 	);
-	element.setAttribute("download", filename);
+	element.setAttribute("download", `${filename}.tex`);
 
 	element.style.display = "none";
 	document.body.appendChild(element);
@@ -87,9 +136,4 @@ function downloadTex(filename, text)
 	element.click();
 
 	document.body.removeChild(element);
-
-	if (window.DEBUG)
-	{
-		console.log(text);
-	}
 }

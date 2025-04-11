@@ -59,7 +59,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	#. $$\sum_{i = 1}^\infty \frac{1}{i + 1} - \frac{1}{i}$$.
 
-	#. $$\sum_{n = 0}^\infty (-1)^n$$.
+	#. $$\sum_{n = 1}^\infty (-1)^n$$.
 
 	#. $$\sum_{n = 0}^\infty \frac{1}{10^n}$$.
 
