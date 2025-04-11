@@ -204,6 +204,11 @@ async function testPages(files)
 
 
 const latexFiles = {
+	"teaching/uo/253/": [
+		"#download-homework-1-button",
+		"#download-homework-2-button",
+	],
+
 	"teaching/uo/256/": [
 		"#download-homework-1-button",
 		"#download-homework-2-button",

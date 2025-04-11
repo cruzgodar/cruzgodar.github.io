@@ -59,24 +59,24 @@ export default function()
 					...getDesmosPoint({
 						point: ["-2", "0"],
 						color: desmosPurple,
-						dragMode: "",
+						dragMode: "NONE",
 						style: "OPEN",
 					}),
 					...getDesmosPoint({
 						point: ["-1", "1"],
 						color: desmosPurple,
-						dragMode: "",
+						dragMode: "NONE",
 					}),
 					...getDesmosPoint({
 						point: ["3", "2"],
 						color: desmosPurple,
-						dragMode: "",
+						dragMode: "NONE",
 						style: "OPEN",
 					}),
 					...getDesmosPoint({
 						point: ["4", "1"],
 						color: desmosPurple,
-						dragMode: "",
+						dragMode: "NONE",
 					}),
 				]
 			},
