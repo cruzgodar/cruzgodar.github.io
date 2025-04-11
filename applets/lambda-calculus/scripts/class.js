@@ -704,7 +704,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
-					height: expression.row - 1 - (expression.bindingLambda.row + 1),
+					height: expression.row - 1 - (expression.bindingLambda.row + 1) + 1,
 				}
 			];
 
