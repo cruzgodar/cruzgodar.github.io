@@ -51,6 +51,8 @@ Like every other test we know, the ratio test is incapable of determining what v
 ### ex "the ratio test"
 	
 	Determine if the series $$\sum_{n = 1}^\infty \frac{e^n}{n!}$$ converges or diverges.
+
+	### solution
 	
 	As usual, we'll start with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there's no equivalent function we know of on the real numbers that we can differentiate in order to apply L'H&#244;pital's rule --- we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
 	
@@ -88,7 +90,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 	
 	2. $$\sum_{k = 1}^\infty \frac{(k!)^2}{(2k)!}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. With all the exponentials, let's try the ratio test. We can also use the alternating series test, but the ratio test will work well enough for our purposes. We have
 	
@@ -136,7 +138,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 	
 	3. $$\sum_{n = 1}^\infty (-1)^n$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. This converges conditionally by the AST, but not absolutely, since removing the $(-1)^n$ makes it the Harmonic series, which diverges. The ratio test gives us
 	
@@ -197,6 +199,8 @@ Much like the ratio test, the root test compares a given series to a geometric s
 ### ex "the root test"
 
 	Determine if the series $$\sum_{n = 1}^\infty \frac{\sin^n(n)}{n^n}$$ converges or diverges.
+
+	### solution
 	
 	The root test works best when there are lots of expressions raised to the power of $n$ in the terms. Since $\sin^n(n)$ is just another way of writing $(\sin(n))^n$, the terms can be rewritten as
 	
@@ -226,7 +230,7 @@ Much like the ratio test, the root test compares a given series to a geometric s
 	
 	2. $$\sum_{n = 1}^\infty \frac{n}{2^n}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. While we could try the ratio test here, the $(k + 1)^k$ will make that a bit of a nightmare --- nothing will cancel. Instead, all of the powers of $k$ mean the root test is probably the right choice. We have
 	

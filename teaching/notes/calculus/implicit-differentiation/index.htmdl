@@ -103,6 +103,8 @@ Let's approach one more complicated example before moving on.
 	Given the implicit function $x\sin(y) = y$, find $dy/dx$.
 	
 	### desmos sinThing
+
+	### solution
 	
 	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the product rule, and then the chain rule (since we're differentiating implicitly). We have
 	
@@ -146,6 +148,8 @@ and then differentiate implicitly.
 ### ex "logarithmic differentiation"
 	
 	Find $$d/dx[x^x]$$.
+
+	### solution
 	
 	Since $x$ is in both the base and the exponent, we can't use either the derivative rules for $x^b$ or $b^x$. Instead, we can write
 	

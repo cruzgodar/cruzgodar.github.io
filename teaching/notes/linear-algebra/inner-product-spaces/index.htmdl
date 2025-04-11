@@ -74,6 +74,8 @@ defines an inner product on $#R#^n$ (and in fact these are *all* the possible in
 
 	is an inner product, and find an orthonormal basis for $V$.
 
+	### solution
+
 	This definition is definitely symmetric. To show bilinearity, we have
 
 	$$

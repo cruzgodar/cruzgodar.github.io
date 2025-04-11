@@ -183,6 +183,8 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 ### ex "$u$-sub"
 	
 	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
+
+	### solution
 	
 	As an integral, this is 
 	

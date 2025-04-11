@@ -45,6 +45,8 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 ### ex "L'H&#244;pital's rule"
 	
 	Evaluate $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
+
+	### solution
 	
 	You might recall that this one gave us some trouble back in the first few sections. Since both $x$ and $\sin(x)$ are continuous functions, we have that
 	
@@ -99,6 +101,8 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 ### ex "L'H&#244;pital's rule in the case $0 \cdot \infty$"
 	
 	Evaluate $$\lim_{x \to 2} (2x - 4)\ln(2x - 4)$$.
+
+	### solution
 	
 	We have $2x - 4 \to 0$ and $\ln(2x - 4) \to -\infty$, so this limit is of the form $0 \cdot \infty$. We can either move $2x - 4$ or $\ln(2x - 4)$ into the denominator --- let's try the natural log and see how it goes.
 	
@@ -167,6 +171,8 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 ### ex "L'H&#244;pital's rule in the case $1^\infty$"
 	
 	Evaluate $$\lim_{x \to \infty} (1 + e^{-x})^{x}$$.
+
+	### solution
 	
 	Since $e^{-x} \to 0$ and $x \to \infty$, this thing is of the form $1^\infty$. So let's set $y = (1 + e^{-x})^{x}$ and take a natural log to get $\ln(y) = x\ln(1 + e^{-x})$. Now since $\ln(1) = 0$ and $\ln$ is continuous, $\ln(1 + e^{-x}) \to 0$, so the whole limit is now of the form $\infty \cdot 0$. We'll tackle this just like we did before. We learned our lesson about putting the $\ln$ in the denominator, so let's try the $x$ first this time. We get
 	

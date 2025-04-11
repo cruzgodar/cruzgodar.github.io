@@ -27,6 +27,8 @@ This process is called **Newton's method**, named after the same Newton that dis
 ### ex "Newton's method"
 	
 	Approximate $\sqrt{2}$ using three iterations of Newton's method.
+
+	### solution
 	
 	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we index these with subscripts starting at zero. Let's start with $x_0 = 1$. To use Newton's method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. Therefore, we have
 	

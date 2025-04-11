@@ -9,6 +9,8 @@ In a real-world senario, you won't usually be given the function to optimize out
 ### ex "a walled garden"
 	
 	You have 20 feet of fencing material to build a rectangular garden up against a wall. The wall will serve as one of the four sides, and you'll construct the other three. How many square feet is the largest possible garden you can build?
+
+	### solution
 	
 	If the premise isn't quite clear, here are a couple of examples. You could make the side opposite the wall 18 feet and the other two sides 1 foot each, for a total of 18 square feet, or you could make all three non-wall sides $\frac{20}{3} \approx 6.67$ feet each, resulting in an area of about 44.44 square feet. In the graph below, you can drag the indicated point up and down to change the vertical side length.
 	
@@ -51,6 +53,8 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	A rectangle is said to be <dfn>inscribed</dfn> in an ellipse if all four of its corners are on the ellipse --- this requires the sides of the rectangle to be parallel to the $x$- and $y$-axes. What is the largest-area rectangle we can inscribe in this ellipse?
 	
 	### desmos ellipse
+
+	### solution
 	
 	As before, let's start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes --- in other words, the rectangle is defined by a single corner. Let's say one corner is at $(a, b)$, and let's just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9\left(1 - \frac{a^2}{4} \right)}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
 	

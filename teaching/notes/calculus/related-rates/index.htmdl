@@ -15,6 +15,8 @@ The technology behind related rates is just implicit differentiation, except tha
 ### ex "related rates"
 	
 	A bird is flying 100 feet off the ground at 10 feet per second. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that happens. When $s = 200$, how fast is it increasing?
+
+	### solution
 	
 	It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 100, so we'll fix the bird's $y$-coordinate at 100. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
 	

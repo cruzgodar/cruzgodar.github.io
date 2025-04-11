@@ -47,6 +47,8 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 ### ex "integration by parts"
 	
 	Find $$\int x\sin(x)\,\d x$$.
+
+	### solution
 	
 	We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $\d v = \sin(x)\,\d x$. Then $\d u = \d x$ and
 	
@@ -69,8 +71,10 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 ### exc "integration by parts"
 	
 	Find $$\int ye^y\,\d y$$.
+
+	### solution
 	
-	**Solution:** just like in the last example, let $u = y$ and $\d v = e^y\,\d y$. Then $\d u = \d y$ and $v = e^y$, so we get
+	Just like in the last example, let $u = y$ and $\d v = e^y\,\d y$. Then $\d u = \d y$ and $v = e^y$, so we get
 	
 	$$
 		ye^y - \int e^y\,\d y = ye^y - e^y + C.
@@ -83,6 +87,8 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 ### ex "integration by parts"
 	
 	Find $$\int \frac{\ln(t)}{t^2}\,\d t$$.
+
+	### solution
 	
 	There are lots of choices for $u$ and $\d v$ --- here are just a few:
 	
@@ -117,6 +123,8 @@ Sometimes, we'll need to apply integration by parts more than once.
 ### ex "integration by parts twice"
 	
 	Find $$\int x^2 e^{3x}\,\d x$$.
+
+	### solution
 	
 	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $\d v = e^{3x}\,\d x$. Then $\d u = 2x\,\d x$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
 	
@@ -139,8 +147,10 @@ Sometimes, we'll need to apply integration by parts more than once.
 ### exc "integration by parts twice"
 	
 	Find $$\int t^2 \cos(2t)\,\d t$$.
+
+	### solution
 	
-	**Solution:** by the same logic, let $u = t^2$ and $\d v = \cos(2t)\,\d t$. Then $\d u = 2t\,\d t$ and $v = \frac{1}{2} \sin(2t)\,\d t$, so the integral becomes
+	By the same logic, let $u = t^2$ and $\d v = \cos(2t)\,\d t$. Then $\d u = 2t\,\d t$ and $v = \frac{1}{2} \sin(2t)\,\d t$, so the integral becomes
 	
 	$$
 		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,\d t = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,\d t.
@@ -163,6 +173,8 @@ Things can get a little more complicated when multiple integration strategies ar
 ### ex "integration by parts and $u$-sub"
 	
 	Find $$\int y^3 e^{y^2}\,\d y$$.
+
+	### solution
 	
 	Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $\d u = 2y\,\d y$, which gives us
 	
@@ -189,6 +201,8 @@ Things can get a little more complicated when multiple integration strategies ar
 ### ex "integration by parts on definite integrals"
 	
 	The region bounded by $y = \cos(x)$, $y = 0$, and $x = 0$ is revolved about the $y$-axis. Find its volume.
+
+	### solution
 	
 	Since we're revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
 	
@@ -211,8 +225,10 @@ Things can get a little more complicated when multiple integration strategies ar
 ### exc "integration by parts on definite integrals"
 	
 	Find $$\int_1^3 x^3 \sin(x^2)\,\d x$$.
+
+	### solution
 	
-	**Solution:** we see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $\d u = 2x\,\d x$. Then $\frac{1}{2}\,\d u = x\,\d x$, so the integral becomes
+	We see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $\d u = 2x\,\d x$. Then $\frac{1}{2}\,\d u = x\,\d x$, so the integral becomes
 	
 	$$
 		\int_1^3 \frac{1}{2} u \sin(u)\,\d u.

@@ -25,6 +25,8 @@ Unlike most math classes leading up to it, this course is a clean break from its
 		
 		2x_1 - 3x_2 &= 8.
 	$$
+
+	### solution
 	
 	We could use substitution by solving the first equation for $x_1$ and substituting it into the second, but let's think critically about that. Substitution doesn't scale well --- if we had $n$ equations and $n$ unknowns, solving by substitution means isolating and plugging in $n - 1$ equations until we finally reach the end, and then we have to do a large amount of back-substitution. That's not to mention the complexity that arises when not every equation contains every variable, and we have to carefully pick and choose our order. We'd like more of a general solving method here, and so we owe it to ourselves to build a better foundation.
 	
@@ -168,23 +170,25 @@ Although this is an intense definition, it's thankfully among the most complicat
 	
 	1. $$[[ 1, -1 ; 2, 3 ]] [[ 3 ; -2 ]].$$
 	
-	Multiplying each row of the matrix with the vector, we have
+	2. $$[[ 5, 0, 2 ; 2, 3, 0 ]] [[ 1 ; 0 ; -2 ]].$$
+	
+	3. $$[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] [[ 5 ; -4 ; 1 ]].$$
+	
+	### solution
+	
+	1. Multiplying each row of the matrix with the vector, we have
 	
 	$$
 		[[ 1(3) + -1(-2) ; 2(3) + 3(-2) ]] = [[ 5 ; 0 ]].
 	$$
 	
-	2. $$[[ 5, 0, 2 ; 2, 3, 0 ]] [[ 1 ; 0 ; -2 ]].$$
-	
-	Although the matrix isn't square, the definition still works fine:
+	2. Although the matrix isn't square, the definition still works fine:
 	
 	$$
 		[[ 5(1) + 0(0) + 2(-2) ; 2(1) + 3(0) + 0(-2) ]] = [[ 1 ; 2 ]].
 	$$
 	
-	3. $$[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] [[ 5 ; -4 ; 1 ]].$$
-	
-	This one works exactly the same way! The resulting vector is
+	3. This one works exactly the same way! The resulting vector is
 	
 	$$
 		[[ 1(5) + 0(-4) + 0(1) ; 0(5) + 1(-4) + 0(1) ; 0(5) + 0(-4) + 1(1) ]] = [[ 5 ; -4 ; 1 ]].
@@ -291,6 +295,8 @@ That was a *lot* of work! Let's turn to some examples to see this in action.
 ### ex "matrix multiplication"
 	
 	Let $$A = [[ 5, 0 ; -2, 1 ]]$$ and $$B = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $AB$.
+
+	### solution
 	
 	This is a valid product to take, since the number of columns $A$ and the number of rows of $B$ are the same (i.e. $2$). And the dimensions of $AB$ will be $2 \times 3$, since $A$ has $2$ rows and $B$ has $3$ columns. To get the element $AB_{11}$ --- the top-left entry --- we take the first row of $A$, which is $(5, 0)$, and the first column of $B$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	

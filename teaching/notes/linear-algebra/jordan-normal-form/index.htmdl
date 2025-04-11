@@ -70,6 +70,8 @@ When expressed in such a basis, the matrix for $A$ has all its eigenvalues down 
 
 	Express the matrix $A = [[ -1, -1, -2 ; 1, 1, 1 ; 4, 0, 5 ]]$ in Jordan normal form.
 
+	### solution
+
 	First, the characteristic polynomial is
 
 	$$

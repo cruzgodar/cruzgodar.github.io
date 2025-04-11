@@ -15,6 +15,8 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 	2. $$\ln^3(x)$$.
 	
 	3. $$(x + 1)\sin(x + 1)$$.
+
+	### solution
 	
 	Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
 	
@@ -57,8 +59,10 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 	2. $$\ln^3(x)$$.
 	
 	3. $$(x + 1)\sin(x + 1)$$.
+
+	### solution
 	
-	Once again, we''ll take these one at a time.
+	Once again, we'll take these one at a time.
 	
 	1. Here, $f(x) = \cos(x)$ and $g(x) = x^5$. We have $f'(x) = -\sin(x)$ and $g'(x) = 5x^4$, so $f'(g(x)) = -\sin(x^5)$. Therefore, the total derivative is
 	
@@ -101,6 +105,8 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 ### ex "a composition of three functions"
 	
 	Find the derivative of $$\sin(\cos(\tan(x)))$$.
+
+	### solution
 	
 	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
 	

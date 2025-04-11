@@ -80,6 +80,8 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	Find $T \left( [[ 3 ; 4 ]] \right)$.
 
+	### solution
+
 	Since $T$ is linear, we can expand that last expression quite a bit:
 
 	$$
@@ -137,6 +139,8 @@ And so we get to the fundamental result of the section: **linear transformations
 	$$
 
 	Find the matrix for $T$.
+
+	### solution
 
 	By evaluating $T$ on $\vec{e_1}$, $\vec{e_2}$, $\vec{e_3}$, we have
 

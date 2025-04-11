@@ -81,6 +81,8 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 	Is $T$ one-to-one? Is it onto?
 
+	### solution
+
 	By the previous theorem, we first want to express $T$ as a matrix: it corresponds to
 
 	$$

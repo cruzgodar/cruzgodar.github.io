@@ -102,6 +102,8 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 ### ex "a characteristic equation with complex roots"
 	
 	Solve the DE $y'' + 2y' + 5y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = 1$ and $y'(0) = 3$.
+
+	### solution
 	
 	To get started, the characteristic equation is $r^2 + 2r + 5$. This doesn't factor easily, and we instead turn to the quadratic formula:
 	
@@ -167,7 +169,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 
 ### exc "a characteristic equation with complex roots"
 	
-Solve the DE $y'' + 4y' + 13y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = -3$ and $y'(0) = 9$.
+	Solve the DE $y'' + 4y' + 13y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = -3$ and $y'(0) = 9$.
 	
 ###
 
@@ -312,6 +314,8 @@ after following the same process. That's a separable first-order DE in $v'$, and
 ### ex "repeated roots"
 	
 	Solve $$y'' + 2y' + y = 0$$, given $y(0) = 1$ and $y'(0) = 0$.
+
+	### solution
 	
 	The characteristic equation is
 	
@@ -362,6 +366,8 @@ As a final example, we'll look at applying reduction of order to a more complica
 ### ex "reduction of order"
 	
 	One fundamental solution to $$t^2y'' - ty' + y = 0$$ is $y = t$. Find the other.
+
+	### solution
 	
 	Since the coefficients aren't constant, we don't have any way to solve this DE from scratch. But because it's homogeneous and linear, we have a hope of applying reduction of order. To get started, let's set $y_1 = t$ (since it's the first of two fundamental solutions) and assume $y_2 = v(t)y_1$ for some function $v$. If we rewrite the DE as
 	

@@ -62,6 +62,8 @@ In so many symbols, $\ker \left( A^T\!A \right) = \left\{ \vec{0} \right\}$, so 
 		[[ 1, 0 ; 1, 1 ; 2, 1 ]]\vec{x} = [[ 2 ; 1 ; 0 ]].
 	$$
 
+	### solution
+
 	One advantage of the least-squares approach is that if the matrix equation does actually have a solution, we'll find it anyway, so we don't need to check that before we start the process. Multiplying both sides by the transpose of the coefficient matrix, we have
 
 	$$

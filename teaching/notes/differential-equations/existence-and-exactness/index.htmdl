@@ -93,6 +93,8 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 		
 		y(0) &= 0.
 	$$
+
+	### solution
 	
 	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the quotient rule, we have
 	
@@ -146,6 +148,8 @@ which is just the chain rule from calculus I.
 	
 	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
 	
+	### solution
+	
 	Let's find all four pieces on the right side of the equation:
 	
 	$$
@@ -193,6 +197,8 @@ Equipped with the multivariable chain rule, we're ready to dive into our first e
 ### ex "solving with exactness"
 	
 	Solve the DE $$2t + y^2 + 2tyy' = 0$$.
+
+	### solution
 	
 	Let's check the methods we know already. This DE isn't linear because of the $y^2$ and the $yy'$, and it's not separable either: if we solve for $y'$, we get
 	
@@ -327,6 +333,8 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 		
 		y(0) &= 0.
 	$$
+
+	### solution
 	
 	This is hopelessly nonlinear and nonseparable, so our only hope is exactness. We have
 	

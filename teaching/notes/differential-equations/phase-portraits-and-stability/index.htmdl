@@ -49,6 +49,8 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
 	### desmos vectorField2
+
+	### solution
 	
 	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (since being on a straight-line solution is exactly what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
 	
@@ -107,6 +109,8 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	$$
 	
 	Find and classify the critical points.
+
+	### solution
 	
 	Since neither $x'$ or $y'$ depends on $t$, this system is autonomous. The chain rule says that $dy/dt = dy/dxdx/dt$, so solving for $dy/dx$ gives us
 	
@@ -227,6 +231,8 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	$$
 	
 	There is a critical point at $\left(\pi, 0\right)$. Is it stable or unstable?
+
+	### solution
 	
 	To get started, let's find the Jacobian in general:
 	

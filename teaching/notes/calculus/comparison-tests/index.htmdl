@@ -23,6 +23,8 @@ The idea isn't too tricky: if you start with a convergent series with positive t
 ### ex "the comparison test"
 	
 	show that $$\sum_{n = 1}^\infty \frac{1}{n^2 + 20}$$ converges.
+
+	### solution
 	
 	While we could use the integral test, it would require trig sub, and that's probably something to be avoided if possible. Instead, this looks a whole lot like $\sum_{n = 1}^\infty \frac{1}{n^2}$, a series we already know converges. Increasing a denominator decreases the overall fraction, so
 	
@@ -44,7 +46,7 @@ The idea isn't too tricky: if you start with a convergent series with positive t
 	
 	3. $$\sum_{n = 1}^\infty \frac{1}{2^n + 3}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. The denominator is dominated by $n^4$, so let's try to compare against that. We need
 	
@@ -161,6 +163,8 @@ If you're asked to determine if a given series converges, try the divergence tes
 ### ex "the limit comparison test"
 	
 	Determine if $$\sum_{n = 1}^\infty \frac{2^n + 3^n}{4^n}$$ converges or diverges.
+
+	### solution
 	
 	Let's run through our list of tests. The divergence test is almost always the easiest, so let's start there. We have
 	
@@ -212,7 +216,7 @@ If you're asked to determine if a given series converges, try the divergence tes
 	
 	4. $$\sum_{n = 1}^\infty \frac{\ln(n)}{n}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. In the limit, the terms look like $\frac{2^n}{3^n} = \left(\frac{2}{3}\right)^n$, so we might try comparing against that. It's worth trying the regular comparison test first: since we're subtracting $n$, a positive number, from the numerator, the entire fraction is made smaller, so we have
 	

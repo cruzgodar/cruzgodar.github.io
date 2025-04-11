@@ -44,6 +44,8 @@ Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to 
 
 	Find the eigenvectors and eigenvalues of $A$.
 
+	### solution
+
 	We'll begin as usual by finding the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
 
 	$$
@@ -260,6 +262,8 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 	$$
 		A = [[ 3, 0, -3 ; -2, 5, 2 ; -4, -5, 4 ]].
 	$$
+
+	### solution
 
 	The process of finding $\chi_A(\lambda)$ is the same as always:
 

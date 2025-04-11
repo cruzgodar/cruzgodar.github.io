@@ -49,6 +49,8 @@ As always, we'll begin with a few examples and dig into the general method after
 ### ex "undetermined coefficients"
 	
 	Solve the DE $$y'' + 3y' + 2y = e^t$$.
+
+	### solution
 	
 	Let's begin by solving the homogeneous version $y'' + 3y' + 2y = 0$. We have a characteristic equation of $r^2 + 3r + 2 = 0$, which factors and gives $r = -1$ and $r = -2$. Therefore, the general solution is
 	
@@ -87,6 +89,8 @@ The key part of that method required us to guess that the solution was of the fo
 ### ex "undetermined coefficients, again"
 	
 	Find the general solution to $$y'' + 2y' + y = \cos(t)$$.
+
+	### solution
 	
 	The homogeneous equation gives us the characteristic equation $r^2 + 2r + 1 = 0$, which factors and gives $r = -1$ as a repeated root. Our general solution is therefore
 	
@@ -169,6 +173,8 @@ This method, called **undetermined coefficients**, can work when the right side 
 ### ex "undetermined coefficients"
 	
 	Find the general solution to $$y'' - 6y' + 9y = 6(t + 1)e^{3t}$$.
+
+	### solution
 	
 	Let's first solve the homogeneous version. We have $r^2 - 6r + 9 = 0$, so $r = 3$ is a repeated root. The general solution is therefore
 	
@@ -261,6 +267,8 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 ### ex "variation of parameters"
 	
 	Find the general solution to $$y'' + y = \sec(t)$$.
+
+	### solution
 	
 	Solving the homogeneous version, we have $r^2 + 1 = 0$, so $r = \pm i$. Therefore, the general solution is
 	

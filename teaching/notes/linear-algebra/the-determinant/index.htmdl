@@ -22,6 +22,8 @@ Part of the difficulty in introducing the upcoming concept is that it's very wel
 
 	Find the minors of $$[[ 1, 4, 9 ; 2, 1, 6 ; -3, -1, 0 ]]$$ corresponding to each entry in the first row.
 
+	### solution
+
 	By crossing out the appropriate rows and columns, we get
 
 	$$
@@ -54,6 +56,8 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	Compute $$\det [[ 1, 4 ; 2, 5 ]]$$.
 
+	### solution
+
 	Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
 
 	$$
@@ -85,6 +89,8 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 ### ex "the determinant"
 
 	Compute $$\det [[ 1, 4, 7, 2 ; 0, 4, 5, 0 ; 3, 1, 2, 0 ; 1, 2, 3, 4 ]]$$.
+
+	### solution
 
 	The second row has the most zeros, so let's expand about that, ignoring zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
 
@@ -133,6 +139,8 @@ Computing a determinant using the recursive definition is a task that balloons i
 ### ex "determinants and row operations"
 
 	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
+
+	### solution
 
 	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
 
@@ -255,6 +263,8 @@ This result definitely needs some examples to explain it, so let's start there.
 	$$
 
 	If $X$ is the solid circle of radius $1$ centered at $(0, 2)$, describe $T(X)$ and find its area.
+
+	### solution
 
 	First of all, the matrix for $T$ is
 

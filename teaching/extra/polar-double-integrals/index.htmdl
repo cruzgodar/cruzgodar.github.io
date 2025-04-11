@@ -56,6 +56,8 @@ In practice, the integration works just as it always has, and the challenge usua
 
 	### desmos polarIntegrationRegion
 
+	### solution
+
 	While we could integrate this in rectangular coordinates, it would require a whole mess of different regions. Instead, it's much more easily expressible in polar coordinates: $1 \leq r \leq 2$ and $-\frac{\pi}{2} \theta \leq \pi$. We're integrating $x^2 + y^2$, which in polar coordinates is $r^2$, and so our integral becomes
 
 	$$

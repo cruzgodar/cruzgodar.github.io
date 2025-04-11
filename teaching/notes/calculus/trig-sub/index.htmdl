@@ -15,6 +15,8 @@ These might look familiar: some integrals that evaluate to inverse trig function
 ### ex "trig sub"
 	
 	Find $$\int \sqrt{9 - x^2}\,\d x$$.
+
+	### solution
 	
 	We can't use $u$-sub, since we would need to take $u = 9 - x^2$, and $\d u = 2x\,\d x$ doesn't appear anywhere in the expression. We also can't use integration by parts, since there is no product here. Instead, let's do something strange: let $x = 3\sin(\theta)$. Then $\d x = 3\cos(\theta)\,\d \theta$. This looks like a $u$-sub a little bit, but we're **going the other direction** --- we're letting $x$ be a function of $\theta$ rather than letting $u$ being a function of $x$. But the process now is the same: we just substitute in for $x$.
 	
@@ -163,6 +165,8 @@ Since this class is on calculus and not trig, that complete list will be provide
 ### ex "trig sub"
 	
 	Find $$\int \frac{1}{\sqrt{4 + t^2}}\, dt$$.
+
+	### solution
 	
 	Trying to use $u$-sub or integration by parts fails for the same reasons it did before, so let's turn to trig sub. The square root is of the form $\sqrt{a^2 + t^2}$ for $a = 2$, so let's take $t = 2\tan(\theta)$. Then $\d t = 2\sec^2(\theta)\,\d \theta$, so we get
 	
@@ -201,8 +205,10 @@ Since this class is on calculus and not trig, that complete list will be provide
 ### exc "trig sub"
 	
 	Find $$\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,\d x$$.
+
+	### solution
 	
-	**Solution:** Let $x = \sec(\theta)$. Then $\d x = \sec(\theta)\tan(\theta)$, so the integral becomes
+	Let $x = \sec(\theta)$. Then $\d x = \sec(\theta)\tan(\theta)$, so the integral becomes
 	
 	$$
 		\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,\d x &= \int \frac{\sec(\theta)\tan(\theta)}{\sec^2(\theta) \sqrt{\sec^2(\theta) - 1}}\,\d \theta

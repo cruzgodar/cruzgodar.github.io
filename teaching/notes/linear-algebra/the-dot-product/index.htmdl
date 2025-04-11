@@ -154,6 +154,8 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 	Let $X = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; -1 ; 2 ]] \right\}$. Find a basis for $X^\perp$.
 
+	### solution
+
 	For a vector $\vec{v} = [[ v_1 ; v_2 ; v_3 ]]$ to be in the orthogonal complement, we need
 
 	$$
@@ -400,6 +402,8 @@ which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown 
 
 	Find an orthonormal basis for $X$.
 
+	### solution
+
 	Let's call those three basis vectors $\vec{x_1}$, $\vec{x_2}$, and $\vec{x_3}$. We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
 
 	$$
@@ -517,6 +521,8 @@ Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about the
 	$$
 
 	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+	### solution
 
 	We already have an orthonormal basis for $X$, but to produce a basis for $X^\perp$, we need to extend this to a basis for $#R#^4$ and then run the Gram-Schmidt process on the new vectors. To that end, let's start at the step before we normalized the basis vectors:
 

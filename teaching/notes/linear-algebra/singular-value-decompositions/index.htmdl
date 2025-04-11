@@ -76,6 +76,8 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 	Find a singular value decomposition for $A = [[ 1, 1, 2 ; 1, -1, 1 ]]$.
 
+	### solution
+
 	We'll start by finding the eigenvectors and eigenvalues for $A^T\!A$. We have
 
 	$$

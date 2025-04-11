@@ -128,7 +128,7 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 	
 	2. $$g(x) = \sum_{n = 1}^\infty \frac{x^n}{\sqrt{n}}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. With all the exponents (and no $n$s in the bases), let's try the ratio test. We have
 	
@@ -192,7 +192,9 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 
 ### ex "representing a function as a power series"
 	
-	Write $$f(x) = \frac{x}{1 + 3x^2}$$ as a power series, and state the interval and radius of convergence.
+	Write $$f(x) = \frac{x}{1 + 3x^2}$$ as a power series and state its interval and radius of convergence.
+
+	### solution
 	
 	First of all, if we're going to use the fact that $\frac{1}{1 - x} = \sum_{n = 0}^\infty x^n$, we'd like our numerator to be equal to $1$. To get us to that point, we'll factor out the $x$ and deal with $\frac{1}{1 + 3x^2}$ on its own. To make it conform to the format we know, the denominator should be $1$ minus something instead of $1$ plus something, so we'll rewrite it as
 	
@@ -225,8 +227,10 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 ### exc "representing a function as a power series"
 	
 	Write the function $$g(x) = \frac{x^3}{2 + x^2}$$ as a power series, and find the interval and radius of convergence. Hint: $$2 + x^2 = 2\left(1 + \frac{x^2}{2}\right)$$.
+
+	### solution
 	
-	**Solution:** as in the example, we'll rewrite this to look like $\frac{1}{1 - x}$:
+	As in the example, we'll rewrite this to look like $\frac{1}{1 - x}$:
 	
 	$$
 		\frac{x^3}{2 + x^2} &= \frac{x^3}{2} \frac{1}{1 - \left(-\frac{x^2}{2}\right)}

@@ -91,6 +91,8 @@ Let's try using a characteristic equation in a concrete example to see how it wo
 ### ex "a characteristic equation"
 	
 	Solve $y'' + 3y' + 2y = 0$, given $y(0) = 1$ and $y'(0) = 2$.
+
+	### solution
 	
 	The corresponding characteristic equation is
 	
@@ -254,6 +256,8 @@ Let's (finally) return to an example and put all of this into practice.
 ### ex "solving a DE with the Wronskian"
 	
 	Solve $y'' + 6y' + 8y = 0$ and verify that you've found all possible solutions.
+
+	### solution
 	
 	The corresponding characteristic equation is
 	

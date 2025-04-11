@@ -63,6 +63,8 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 ### ex "direction field"
 	
 	Draw a direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
+
+	### solution
 	
 	We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
 	
@@ -107,6 +109,8 @@ By definition, a solution to the DE is a function whose slope matches the direct
 ### ex "equilibrium solution"
 	
 	Find all equilibrium solutions to $$y' = \frac{1}{20}(x-3)(y^2 - 4)$$.
+
+	### solution
 	
 	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
 	
@@ -195,6 +199,8 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 ### ex "separation of variables"
 	
 	Solve $$y' = (x-2)(y-3)$$, given that $y(0) = 5$.
+
+	### solution
 	
 	We have
 	
@@ -249,8 +255,10 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 ### exc "separation of variables"
 	
 	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
+
+	### solution
 	
-	**Solution:** separating and integrating, we have
+	Separating and integrating, we have
 	
 	$$
 		\frac{1}{y}\,\d y &= \ln(x)\,\d x
@@ -307,6 +315,8 @@ As one final application, let's talk about temperature.
 ### ex "Newton's Law of Cooling"
 	
 	A pizza is baked at $350^\circ F$ and removed from the oven. The air temperature of the kitchen is $75^\circ F$, and after $5$ minutes, the pizza is $300^\circ F$. How much longer until it is $200^\circ F$?
+
+	### solution
 	
 	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
 	
@@ -373,8 +383,10 @@ As one final application, let's talk about temperature.
 ### exc "Newton's Law of Cooling"
 	
 	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It's removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
+
+	### solution
 	
-	**Solution:** We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
+	We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
 	
 	$$
 		400 &= e^C + 75

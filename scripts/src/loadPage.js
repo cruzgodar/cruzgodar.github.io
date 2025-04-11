@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import {
 	fadeDownIn,
 	fadeIn,
@@ -10,7 +11,7 @@ import {
 	bannerElement,
 	initBanner
 } from "./banners.js";
-import { initNavButtons, initTextButtons } from "./buttons.js";
+import { Button, initNavButtons, initTextButtons } from "./buttons.js";
 import { initCards, showCard } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
@@ -73,6 +74,8 @@ export async function loadPage()
 
 	disableLinks();
 
+	initSolutions();
+
 	initHoverEvents();
 
 	initTextButtons();
@@ -88,8 +91,6 @@ export async function loadPage()
 	typesetMath();
 
 	initCards();
-
-	hideSolutions();
 
 	onResize();
 
@@ -302,12 +303,97 @@ export function disableLinks()
 	});
 }
 
-function hideSolutions()
+function packageSolution(solutionElement, showButton = true)
 {
+	while (solutionElement.nextElementSibling)
+	{
+		solutionElement.appendChild(solutionElement.nextElementSibling);
+	}
+
+	solutionElement.style.position = "fixed";
+	solutionElement.style.top = "0";
+	solutionElement.style.left = "0";
+	solutionElement.style.opacity = 0;
+	solutionElement.style.zIndex = -100;
+
+	if (!showButton)
+	{
+		return;
+	}
+
+	const textButtonsElement = document.createElement("div");
+	textButtonsElement.classList.add("text-buttons");
+	textButtonsElement.style.marginBottom = "16px";
+	solutionElement.parentElement.appendChild(textButtonsElement);
+
+	const childElement = document.createElement("div");
+	childElement.classList.add("focus-on-child");
+	childElement.tabIndex = 1;
+	childElement.style.margin = "0px auto";
+	textButtonsElement.appendChild(childElement);
+
+	const buttonElement = document.createElement("button");
+	buttonElement.classList.add("text-button");
+	buttonElement.type = "button";
+	buttonElement.tabIndex = -1;
+	childElement.appendChild(buttonElement);
+
+	
+
+	new Button({
+		element: buttonElement,
+		name: "Show Solution",
+		linked: false,
+		onClick: async () =>
+		{
+			solutionElement.style.height = "auto";
+			solutionElement.style.width =
+				solutionElement.parentElement.getBoundingClientRect().width - 12 + "px";
+
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			const solutionElementHeight = solutionElement.getBoundingClientRect().height;
+			const textButtonsElementHeight = textButtonsElement.getBoundingClientRect().height;
+			const textButtonsElementMarginTop = parseFloat(
+				window.getComputedStyle(textButtonsElement).marginTop
+			);
+
+			solutionElement.style.height = 0;
+			solutionElement.style.position = "relative";
+
+			const dummy = { t: 0 };
+
+			await anime({
+				targets: dummy,
+				t: 1,
+				duration: 450,
+				easing: "easeOutQuint",
+				update: () =>
+				{
+					solutionElement.style.height = `${solutionElementHeight * dummy.t}px`;
+					textButtonsElement.style.height = `${textButtonsElementHeight * (1 - dummy.t)}px`;
+					textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - dummy.t)}px`;
+
+					textButtonsElement.style.opacity = 1 - dummy.t;
+					solutionElement.style.opacity = dummy.t;
+				}
+			}).finished;
+
+			solutionElement.style.height = "auto";
+			solutionElement.style.width = "auto";
+			textButtonsElement.remove();
+		}
+	});
+}
+
+function initSolutions()
+{
+	$$(".notes-ex .solution").forEach(e => e.remove());
+
 	const element = $("#show-solutions");
 
-	if (!element && !window.DEBUG)
+	$$(".notes-exc .solution").forEach(e =>
 	{
-		$$(".notes-exc .solution").forEach(e => e.remove());
-	}
+		packageSolution(e, element !== undefined || window.DEBUG);
+	});
 }

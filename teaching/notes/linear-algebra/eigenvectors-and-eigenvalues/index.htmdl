@@ -100,6 +100,8 @@ So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch
 	$$
 		A = [[ 5, -3 ; 2, -2 ]].
 	$$
+
+	### solution
 	
 	To get the characteristic polynomial, we subtract $\lambda I$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
 	
@@ -232,6 +234,8 @@ One way to quickly put these ideas to use is with *dynamical systems*, a fancy t
 ### ex "a dynamical system"
 
 	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 25% of the math majors at the university switch to a computer science major, 50% of the physics majors switch to computer science, and 25% of the computer science majors switch to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major in the long run?
+
+	### solution
 	
 	The three states here are being a math, physics, and computer science major --- if $\vec{x}(t) \in #R#^3$ gives the number of students in each major after $t$ years, then
 

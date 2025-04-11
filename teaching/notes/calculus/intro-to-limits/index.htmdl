@@ -113,6 +113,8 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 ### ex "calculating a limit with a table"
 	
 	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$ with a table.
+
+	### solution
 	
 	We can't plug in $x = 0$, since $\sin(0) = 0$ and so we'd get $\frac{0}{0}$, but that's okay --- the limit doesn't have anything to do with what the function actually does at $0$, only very close to it.
 	
@@ -165,6 +167,8 @@ In this next example, let's start with the graph.
 	Find $$\lim_{x \to 1} g(x)$$ and $$\lim_{x \to -1} g(x)$$.
 	
 	### desmos limitExample2
+
+	### solution
 	
 	At $x = 1$, the hole and filled-in dot indicate that $g(1) = 2$. However, $\lim_{x \to 1} g(x)$ is determined only by what the points on the graph right next to $x = 1$ are doing. From both sides, the $y$-values get closer and closer to $y = 0$, so the limit is $\lim_{x \to 1} g(x) = 0$. In this sense, the limit is what you would expect a function's value to be, without actually knowing what that value is. Knowing everything about $g(x)$ except what $g(1)$ is, our best guess is $g(1) = 0$, since that's what the values near $x = 1$ indicate.
 	
@@ -193,6 +197,8 @@ How could a limit not exist? There are two possibilities for this, generally spe
 ### ex "a limit that doesn't exist"
 	
 	Find $$\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$$.
+
+	### solution
 	
 	Without a graph to go on, let's plug in a handful of values.
 	
@@ -225,6 +231,8 @@ How could a limit not exist? There are two possibilities for this, generally spe
 ### exc "another limit that doesn't exist"
 	
 	Find $$\lim_{x \to 2} \frac{|x - 2|}{x - 2}$$.
+
+	### solution
 	
 	As usual, let's plug in some values. Calling the function $f(x)$, we have
 	
@@ -310,6 +318,8 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 ### ex "an infinite limit"
 	
 	Find $$\lim_{x \to 0} f(x)$$, where $$f(x) = \frac{1}{x^2}$$.
+
+	### solution
 	
 	Plugging in values, we have
 	

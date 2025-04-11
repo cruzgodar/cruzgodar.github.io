@@ -15,6 +15,8 @@ At first glance, our first solving method can seem like some sort of black magic
 ### ex "an integrating factor"
 	
 	Solve $y' + ty = t$, given $y(0) = 3$.
+
+	### solution
 	
 	It's worth pointing out why we can't just solve this directly: to get rid of the derivative on $y$, we'd like to integrate, but we have to integrate $dt$, and solving for $y'$ puts it in terms of $t$ *and* $y$, ruining our chances of integrating. Instead, let's take the (bizarre) step of multiplying both sides by $e^{t^2 / 2}$, which gives us
 	
@@ -158,6 +160,8 @@ This is a pretty great first step for the class --- we now have a method to solv
 ### ex "integrating factors"
 	
 	Solve the DE $$ty' + 2y = t^2$$, given $$y(2) = 2$$.
+
+	### solution
 	
 	This DE is first-order and linear, so we can use integrating factors. First, we need to make sure there's no coefficient on $y'$, so we divide both sides by $t$:
 	
@@ -228,6 +232,8 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 ### ex "a complicating factor"
 	
 	Solve the initial value problem $$y' + ty = 1$$, given $$y(1) = 1$$.
+
+	### solution
 	
 	As usual, we'll solve for $\mu$:
 	
@@ -303,6 +309,8 @@ Our next technique involves quite a bit less sleight of hand --- rather than int
 ### ex "separation of variables"
 	
 	Solve $$y' - \frac{2t + \sin(t)}{y^2} = 0$$, given $y(0) = 0$.
+
+	### solution
 	
 	To get started, we'll isolate $y'$:
 	
@@ -397,6 +405,8 @@ Not so bad! Let's work through another example.
 ### ex "separation of variables"
 	
 	Solve $$y' = \frac{x^2}{e^y(x^2 + 4)}$$, given that $y(0) = 0$.
+
+	### solution
 	
 	This DE is more or less already separated as is. Moving the $y$s to the left and the $x$s to the right gives us
 	
@@ -465,6 +475,8 @@ Unlike the tank problems from calculus II that involve finding the work done by 
 ### ex "a mixing problem"
 	
 	A $1000$ liter tank of water contains $20\,\text{kg}$ of salt dissolved in it. We begin pouring in a brine solution with a salt concentration of $0.1\,\frac{\text{kg}}{\text{L}}$ at a rate of $2\,\frac{\text{L}}{\text{min}}$. At the same time, we begin draining well-mixed solution from the bottom of the tank at the same rate of $2\,\frac{\text{L}}{\text{min}}$. After $30$ minutes, what will the mass of salt in the tank be? What will the long-term mass approach?
+
+	### solution
 	
 	There's a lot to digest here! It's always a good idea to name some variables so we can start building equations --- to that end, let's let $Q(t)$ be the mass of salt in the tank after $t$ minutes. Since the only information we're given refers to the way in which $Q$ changes, we'll want to find $Q$ in a DE first, then solve that to get an explicit formula.
 	
@@ -532,7 +544,7 @@ Unlike the tank problems from calculus II that involve finding the work done by 
 	
 	A $10$ liter tank of water contains $2\,\text{g}$ of sugar dissolved in it. We begin pouring in a sugar solution at a rate of $10\,\frac{\text{L}}{\text{min}}$ with a concentration of $t + 1\,\frac{\text{g}}{\text{L}}$ at time $t$ and draining the well-mixed solution at the same rate of $10\,\frac{\text{L}}{\text{min}}$. After $20$ minutes, what will the mass of sugar in the tank be, and what will the mass approach in the long term?
 	
-	###
+###
 
 
 

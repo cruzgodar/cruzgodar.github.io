@@ -53,6 +53,8 @@ All local extrema occur at critical points, but not all critical points are extr
 ### ex "critical points"
 	
 	Find the critical points of $$f(x) = x^5 - 3x^3 + x$$ on $$[-2, 1.5]$$.
+
+	### solution
 	
 	Let's start by differentiating: $f'(x) = 5x^4 - 9x^2 + 1$. The first kind of critical point is when $f'(x) = 0$, so let's solve that equation. It might have been a little while since you've solved something quite like this, but the idea is that when there are no $x^3$ or $x$ terms, we can use the quadratic formula on $x^2$:
 	
@@ -135,6 +137,8 @@ Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$,
 ### ex "critical points"
 	
 	Classify the critical points of $$f(x) = x^5 - 3x^3 + x$$ on $$[-2, 1.5]$$ using the second derivative test.
+
+	### solution
 	
 	The second derivative is
 	
@@ -187,6 +191,8 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 ### ex "critical points"
 	
 	Find and classify the extrema of $$g(t) = t^6 - t^4$$.
+
+	### solution
 	
 	To find candidates for extrema, we first find the critical points. That means $g'(t) = 6t^5 - 4t^3 = 0$, so $2t^3(3t^2 - 2)$. Therefore, we have $t = 0$ and $t = \pm \sqrt{2 / 3}$. There are no places where the derivative is undefined and the function is defined on all real numbers, so there is no boundary to take critical points from.
 	

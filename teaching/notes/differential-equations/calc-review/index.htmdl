@@ -138,7 +138,9 @@ Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've
 
 	Evaluate $$d/dx \left. \left[ \log \left( \cos\left( x^2 \right) \right) \right] \right|_{x = \sqrt{3\pi / 4}}$$.
 
-	**Solution:** Applying the chain rule multiple times, we have
+	### solution
+
+	Applying the chain rule multiple times, we have
 	
 	$$
 		d/dx \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
@@ -213,6 +215,8 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 ### ex "$u$-sub"
 	
 	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
+
+	### solution
 	
 	As an integral, this is 
 	

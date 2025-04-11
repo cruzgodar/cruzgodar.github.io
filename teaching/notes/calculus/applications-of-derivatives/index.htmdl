@@ -82,6 +82,8 @@ which is the cost to us to acquire the fifth item.
 ### ex "business applications"
 	
 	You're selling whiteboard markers. When you sell $x$ of them, you charge $p(x) = 1 - .01x$ dollars per marker. Each one costs you $5$ cents to produce. What is the profit you make from selling the 20th marker?
+
+	### solution
 	
 	The total cost to us to get $x$ markers is $0.05$ dollars per marker times $x$ markers, so $C(x) = .05x$. Similarly,
 	

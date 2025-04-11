@@ -97,6 +97,8 @@ There is one small issue with the Law of Sines that the Law of Cosines doesn't h
 
 	### desmos lawOfSines3
 
+	### solution
+
 	Since the angle of $\frac{\pi}{6}$ isn't in between the two sides we know, we have to use the Law of Sines. It tells us that if $\alpha$ is the angle opposite the side of length $\sqrt{3}$, then
 
 	$$
@@ -227,7 +229,7 @@ In addition to these new functions, there are a number of relationships between 
 
 ###
 
-### exc
+### exc "the half-angle identities"
 
 	1. Use the half-angle identities to compute the exact values of $\sin\left( \frac{\pi}{8} \right)$, $\cos\left( \frac{\pi}{12} \right)$, and $\tan\left( \frac{5\pi}{12} \right)$.
 

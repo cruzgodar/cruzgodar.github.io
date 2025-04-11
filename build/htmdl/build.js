@@ -15,8 +15,9 @@ import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
 import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
 import { raymarchControls } from "./components/raymarchControls.js";
+import { showSolutions } from "./components/showSolutions.js";
 import { sliders } from "./components/sliders.js";
-import { solutions } from "./components/solutions.js";
+import { solution } from "./components/solution.js";
 import { parseText } from "./components/text.js";
 import { textarea } from "./components/textarea.js";
 import { textBoxes } from "./components/textBoxes.js";
@@ -44,7 +45,8 @@ const singleLineComponents = [
 	"image",
 	"nav-buttons",
 	"raymarch-controls",
-	"solutions",
+	"show-solutions",
+	"solution",
 	"textarea",
 ];
 
@@ -65,8 +67,9 @@ const components = {
 	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
 	"raymarch-controls": raymarchControls,
+	"show-solutions": showSolutions,
 	"sliders": sliders,
-	"solutions": solutions,
+	"solution": solution,
 	"textarea": textarea,
 	"text-boxes": textBoxes,
 };
@@ -211,7 +214,7 @@ function decodeHTMDL(html)
 
 			lines[i] = "\\end{align*}$$</span></p>";
 
-			lines[startI] = /* html */`<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
+			lines[startI] = /* html */`<p class="body-text" style="text-align: center; line-height: 0"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
 		}
 
 

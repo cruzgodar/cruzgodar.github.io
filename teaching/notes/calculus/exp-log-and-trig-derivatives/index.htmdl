@@ -31,6 +31,8 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 ### ex "derivatives of trig functions"
 	
 	Find $$d/dx[x^2\cos(x)]$$.
+
+	### solution
 	
 	This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
 	
@@ -57,6 +59,8 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 ### ex "a higher-order trig derivative"
 	
 	Find $$\frac{d^{74}}{dx^{74}}[\cos(x)]$$.
+
+	### solution
 	
 	This seems pretty tricky on first glance, but it's actually not so bad. Let's write out the first few derivatives and see if we can spot a pattern.
 	
@@ -121,6 +125,8 @@ This is one reason why we care so much about the number $e$: derivatives involvi
 ### ex "the derivatives of exponential and logarithmic functions"
 	
 	Find the equation of the tangent line to $f(x) = x^2e^x$ at $x = 2$.
+
+	### solution
 	
 	First of all, we need to find $f'(x)$. This is a product rule computation: $f'(x) = 2xe^x + x^2e^x$. For $x = 2$, $f(2) = 4e^2$ and $f'(2) = 8e^2$. Therefore, the equation of the tangent line is
 	

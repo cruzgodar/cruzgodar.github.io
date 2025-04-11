@@ -49,6 +49,8 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 ### ex "the disk method"
 	
 	Find the volume of the solid created by revolving $$f(x) = \frac{3}{x}$$ on $[1, 5]$ about the $x$-axis.
+
+	### solution
 	
 	This solid is plotted in the previous graph. Applying the disk method, we have
 	
@@ -65,8 +67,10 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 ### exc "the disk method"
 	
 	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
+
+	### solution
 	
-	**Solution:** We have
+	We have
 	
 	$$
 		\int_0^\pi \pi (\sin(x) + 2)^2\,\d x &= \int_0^\pi (\sin^2(x) + 2\sin(x) + 4)\,\d x
@@ -89,6 +93,8 @@ That wasn't so bad! We can also use the same method for functions revolved about
 ### ex "the disk method, again"
 	
 	The area bounded by $y = x^3$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 0$ and $y = 2$.
+
+	### solution
 	
 	First, we need to rewrite this as a function of $y$: $x = y^{1/3}$. Then we have
 	
@@ -107,8 +113,10 @@ That wasn't so bad! We can also use the same method for functions revolved about
 ### exc "the disk method, again"
 	
 	The area bounded by $$y = \frac{1}{x}$$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
+
+	### solution
 	
-	**Solution:** to use the disk method, we integrate $\d y$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
+	To use the disk method, we integrate $\d y$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
 	
 	$$
 		\int_1^2 \pi \left( \frac{1}{y} \right)^2\,\d y &= \left. \left[ -\pi \frac{1}{y} \right] \right|_1^2
@@ -127,6 +135,8 @@ The disk method can be extended to work with problems where we're taking the dif
 ### ex "the disk method with a hole"
 	
 	The area bounded by $y = x$ and $y = \sqrt{x}$ is revolved about the $x$-axis. Find its volume.
+
+	### solution
 	
 	Let's visualize what's going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that's going to be rotated.
 	
@@ -151,8 +161,10 @@ The disk method can be extended to work with problems where we're taking the dif
 ### exc "the disk method with a hole"
 	
 	The area bounded by $$y = \frac{1}{x^2}$$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
+
+	### solution
 	
-	**Solution:** let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
+	Let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
 	
 	$$
 		\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\,\d y &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\,\d y
@@ -205,6 +217,8 @@ Before we do more examples, let's write down when to apply all of these methods.
 ### ex "the shell method"
 	
 	Find the volume of the solid created by revolving the region bounded by $$y = \frac{1}{x}$$ and $y = 0$ on $[1, 3]$ about the $y$-axis.
+
+	### solution
 	
 	Following the previous instructions, the first step is to notice that we're revolving about the $y$-axis, so the disk method will integrate $\d y$ and the shell method will integrate $\d x$. Since our function is currently a function of $x$, we'll try the shell method first.
 	
@@ -223,8 +237,10 @@ Before we do more examples, let's write down when to apply all of these methods.
 ### exc "the shell method"
 	
 	Find the volume of the solid created by revolving the region bounded by $y = 2x - x^2 + 2$, $y = x$, and $x = 0$ about the $y$-axis.
+
+	### solution
 	
-	**Solution:** for this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
+	For this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
 	
 	$$
 		2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\,\d x &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2
@@ -239,6 +255,8 @@ Before we do more examples, let's write down when to apply all of these methods.
 ### ex "the shell method, again"
 	
 	The region bounded by $y = \ln(x)$, $y = 1$, and $x = e^2$ is revolved about the $x$-axis. Set up, but don't solve, the integrals to find its volume using both the disk method and shell method.
+
+	### solution
 	
 	Since we're revolving about the $x$-axis, the disk method with integrate $\d x$ and the shell method $\d y$. Our functions are in terms of $x$, so let's do the disk method first --- it'll be easier to set up.
 	
@@ -267,8 +285,10 @@ Before we do more examples, let's write down when to apply all of these methods.
 ### exc "the shell method, again"
 	
 	The region bounded by $y = x^2$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
+
+	### solution
 	
-	**Solution:** for the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
+	For the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
 	
 	$$
 		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\,\d y.
@@ -291,6 +311,8 @@ As one final example, let's take a look at a solid of revolution about a line th
 ### ex "a different axis"
 	
 	The region bounded by $y = x^2$, $y = 0$, and $x = 4$ is revolved about the line $x = 6$. Set up, but don't solve, the integrals to find its volume using both the disk method and shell method.
+
+	### solution
 	
 	The key observation is that revolving about the line $x = 6$ is extremely similar to revolving about $x = 0$, i.e. the $y$-axis. The disk method will still produce a vertical stack of pancakes and the shell method a sequence of nested vertical cylinders. The only difference is where they're centered, and therefore their radii.
 	

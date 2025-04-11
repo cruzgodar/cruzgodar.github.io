@@ -81,6 +81,8 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 	$$
 
 	in this basis.
+
+	### solution
 	
 	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing without swapping rows, so we might as well jump straight to that step now by placing our vectors as rows in a matrix. We have
 	
@@ -189,6 +191,8 @@ That requires a whole lot of work to understand, so let's dig in.
 ### ex "the matrix of a transformation"
 
 	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis $1, x, x^2, x^3$ for $V$. Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$ for $W$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 - 2x + x^3)$.
+
+	### solution
 
 	To begin, we just plug every one of the four basis vectors in $\mathcal{B}$ into $D$, resulting in $0$, $1$, $2x$, and $3x^2$. Then we write each as a coordinate vector in $\mathcal{C}$, which gives us
 

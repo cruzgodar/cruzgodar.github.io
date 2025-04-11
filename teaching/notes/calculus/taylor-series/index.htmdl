@@ -65,6 +65,8 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 ### ex "finding a Maclaurin series"
 	
 	Find the Maclaurin series for $\sin(x)$ and determine its interval of convergence. Find the first six Maclaurin polynomials.
+
+	### solution
 	
 	The Maclaurin series is just the Taylor series centered at $0$, so it is $\sum_{n = 0}^\infty c_n x^n$, where
 	
@@ -148,7 +150,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	
 	4. A Maclaurin series for $$e^x$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. Let's start by making a list of the first few derivatives. We have
 	
@@ -373,6 +375,8 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 ### ex "Taylor's Theorem"
 	
 	Determine a bound for the $N$th remainder function of the Maclaurin series for $\sin(x)$. Using a Maclaurin polynomial of degree $5$, estimate $\sin(1)$ and determine the maximum error.
+
+	### solution
 	
 	First, remember that the Maclaurin series for $\sin(x)$ is
 	
@@ -444,7 +448,7 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 	
 	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
 	
-	**Solutions:**
+	### solution
 	
 	1. Using the series we computed before, the degree-4 Taylor polynomial is
 	
@@ -503,6 +507,8 @@ There's one final question before our basic theory of Taylor series is complete:
 ### ex "convergence of a Taylor series"
 	
 	Determine when the Maclaurin series for $\sin(x)$ actually converges to $\sin(x)$.
+
+	### solution
 	
 	We know from previous examples that the Maclaurin series for $\sin(x)$ is
 	

@@ -46,7 +46,7 @@ There are two important things to note here: first, the divergence test says not
 	
 	3. $$\sum_{i = 0}^\infty \frac{1}{i + 1} \cos(i)$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so the divergence test tells us nothing --- the series might converge, or it might diverge.
 	
@@ -164,7 +164,7 @@ The divergence test is almost always easier than the integral test, so start the
 	
 	3. $$\sum_{n = 1}^\infty \frac{1}{\sqrt{n + 1}}$$.
 	
-	**Solutions:**
+	### solution
 	
 	1. Let's try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it's inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing --- and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it's always positive. The integral test asks us to consider
 	
@@ -315,6 +315,8 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 ### ex "estimating the value of a series"
 	
 	Estimate $$\sum_{n = 1}^\infty \frac{1}{n^3}$$ to within $.01$ of its actual value.
+
+	### solution
 	
 	First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
 	
@@ -360,7 +362,9 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 	Estimate $$\sum_{n = 1}^\infty \frac{1}{n^5}$$ to within $.01$ of its actual value.
 	
-	**Solution:** first of all, the terms are positive and decreasing, so we can use the integral test. We have
+	### solution
+	
+	First of all, the terms are positive and decreasing, so we can use the integral test. We have
 	
 	$$
 		R_N \leq \int_N^\infty \frac{1}{x^5}\,\d x

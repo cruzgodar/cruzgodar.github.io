@@ -56,7 +56,7 @@ That's our first new value! We have $\cos\left( 45^\circ \right) = \sin\left( 45
 
 ###
 
-### exc
+### exc "exact values"
 
 	Show that $\sin\left( 30^\circ \right) = \frac{1}{2}$ and $\cos\left( 60^\circ \right) = \frac{1}{2}$. To do this, start by drawing the triangle in the unit circle, and see if you can use a geometric property of it. (Hint: what's a nice triangle involving an angle of $60^\circ$?)
 
@@ -133,6 +133,8 @@ Returning to the unit circle, if we're trying to compute the coordinates of a po
 	Find the coordinates of the point on the unit circle with angle $150^\circ$.
 
 	### desmos referenceTriangle2
+
+	### solution
 
 	Now's as good of a time as any to emphasize that we always draw reference triangles to the $x$-axis. That way, since the opposite side to the angle formed with the $x$-axis is measured by $\sin$, and the adjacent side is measured by $\cos$, we'll still be able to use $\sin$ for the $y$-coordinate and $\cos$ for the $x$-coordinate.
 

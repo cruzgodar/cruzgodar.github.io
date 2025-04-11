@@ -33,6 +33,8 @@ The first and simplest thing we can do to power series is to add two of them tog
 	$$
 	
 	as a power series and determine the interval of convergence.
+
+	### solution
 	
 	While we can express this as two series multiplied together, we don't really know how to handle that kind of construction yet. Instead, let's turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
 	
@@ -113,8 +115,10 @@ The first and simplest thing we can do to power series is to add two of them tog
 	$$
 	
 	as a power series and determine the interval of convergence.
+
+	### solution
 	
-	**Solution:** First, let's apply partial fractions and split this up. We have
+	First, let's apply partial fractions and split this up. We have
 	
 	$$
 		\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}
@@ -171,6 +175,8 @@ For many series, we now have the tools to go backward: determine the function it
 	$$
 	
 	Find a closed form for $f$ (i.e. a form without an infinite series).
+
+	### solution
 	
 	This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let's rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
 	
@@ -297,6 +303,8 @@ This is the main result about multiplying power series --- all that's left is de
 	Express $$\frac{1}{(1 - x)^2}$$
 	
 	as a power series and determine the interval and radius of convergence.
+
+	### solution
 	
 	This is just the series for $\frac{1}{1 - x}$ multiplied by itself. Since all the coefficients are $1$, the product is
 	
@@ -319,8 +327,10 @@ This is the main result about multiplying power series --- all that's left is de
 	$$
 	
 	as a power series using partial fractions. Instead, express it as the product of two power series and verify that it matches the previous result through the first six terms.
+
+	### solution
 	
-	**Solution:** Let's leave the $5$ alone for now and take a look at the other two series. We have
+	Let's leave the $5$ alone for now and take a look at the other two series. We have
 	
 	$$
 		\frac{1}{1 - 2x} &= \sum_{n = 0}^\infty 2^n x^n
@@ -393,6 +403,8 @@ Now that we understand how basic algebraic operations work with power series, th
 ### ex "calculus on power series"
 	
 	Find a power series representation for $\ln(x + 1)$ and state the interval of convergence.
+
+	### solution
 	
 	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let's try to work with that. The connection to $\ln(x + 1)$ is that
 	
@@ -459,8 +471,10 @@ Now that we understand how basic algebraic operations work with power series, th
 	$$
 	
 	as a power series earlier by multiplying the series for $\frac{1}{1 - x}$ by itself. Find it a different way by starting from $\frac{1}{1 - x}$ and using calculus, and make sure the interval of convergence matches.
+
+	### solution
 	
-	**Solution:** In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
+	In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
 	
 	$$
 		f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.
@@ -515,6 +529,8 @@ So far, we've got a good handle on how power series work and interact, and we ev
 	$$
 	
 	and set it equal to its derivative to solve for the coefficients.
+
+	### solution
 	
 	Differentiating this series gives
 	

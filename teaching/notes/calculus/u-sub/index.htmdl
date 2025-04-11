@@ -35,6 +35,8 @@ This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x
 ### ex "$u$-sub"
 	
 	Find $$\int 6x(3x^2 + 4)^4\,\d x$$.
+
+	### solution
 	
 	We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 	
@@ -57,8 +59,10 @@ This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x
 ### exc "$u$-sub"
 	
 	Find $$\int 2\sin^3(2x)\cos(2x)\,\d x$$.
+
+	### solution
 	
-	**Solution:** Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the chain rule, and so the integral becomes
+	Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the chain rule, and so the integral becomes
 	
 	$$
 		\int u^3\,\d u &= \frac{u^4}{4} + C
@@ -77,6 +81,8 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 ### ex "$u$-sub doesn't always work"
 	
 	Find $$\int 6x^2(3x^2 + 4)^4\,\d x$$.
+
+	### solution
 	
 	If we try to set $u = 3x^2 + 4$ again, we get that $\d u = 6x\,\d x$, as before. The integral then becomes
 	
@@ -103,6 +109,8 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 ### ex "$u$-sub"
 	
 	Find $$\int_3^4 z\sqrt{z^2 - 5}\,\d z$$.
+
+	### solution
 	
 	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 	
@@ -139,8 +147,10 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 ### exc "$u$-sub"
 	
 	Find $$\int 2t^2 e^{4t^3 + 3}\,\d t$$.
+
+	### solution
 	
-	**Solution:** let $u = 4t^3 + 3$. Then $\d u = 12t^2\,\d t$, but we have $2t^2\,\d t$, so we solve for $2t^2\,\d t$ to get $2t^2\,\d t = \frac{1}{6}\,\d u$. Now we have
+	Let $u = 4t^3 + 3$. Then $\d u = 12t^2\,\d t$, but we have $2t^2\,\d t$, so we solve for $2t^2\,\d t$ to get $2t^2\,\d t = \frac{1}{6}\,\d u$. Now we have
 	
 	$$
 		\int 2t^2 e^{4t^3 + 3}\,\d t &= \int \frac{1}{6} e^u\,\d u
@@ -177,6 +187,8 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 ### ex "the half-angle formulas"
 	
 	Find $$\int 3\cos^2(x)\,\d x$$.
+
+	### solution
 	
 	First, we need to apply the half-angle formula:
 	
@@ -207,8 +219,10 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 ### exc "the half-angle formulas"
 	
 	Find $$\int \sin^4(t)\,\d t$$.
+
+	### solution
 	
-	**Solution:** using the half-angle formula, we have
+	Using the half-angle formula, we have
 	
 	$$
 		\int \sin^4(t)\,\d t &= \int (\sin^2(t))^2\,\d t
@@ -245,6 +259,8 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 ### ex "another $u$-sub"
 	
 	Find $$\int \frac{x}{\sqrt{x - 1}}\,\d x$$.
+
+	### solution
 	
 	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $\d u = \d x$, and so we have
 	
