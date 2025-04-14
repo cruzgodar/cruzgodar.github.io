@@ -2182,26 +2182,26 @@ img[src="/about/cover.webp"]
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(75vh - 48px)) !important;
+	width: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(60vh - 48px)) !important;
 }
 
 .desmos-border:not(.canvas-container), .desmos-container:not(.canvas-container), .dcg-container:not(.canvas-container)
 {
 	width: min(calc(var(--text-width) - 8px), calc(90vw - 8px)) !important;
 
-	height: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(75vh - 48px)) !important;
+	height: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(60vh - 48px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(75vh - 60px)) !important;
+	width: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(60vh - 60px)) !important;
 }
 
 .notes-environment .desmos-border:not(.canvas-container), .notes-environment .desmos-container:not(.canvas-container), .notes-environment .dcg-container:not(.canvas-container)
 {
 	width: min(calc(var(--text-width) - 20px), calc(90vw - 20px)) !important;
 
-	height: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(75vh - 60px)) !important;
+	height: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(60vh - 60px)) !important;
 }
 
 

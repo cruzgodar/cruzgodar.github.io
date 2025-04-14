@@ -2,7 +2,7 @@ import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
-import { initDarkTheme, initIncreaseContrast, initReduceMotion } from "./settings.js";
+import { initDarkTheme, initIncreaseContrast, initReduceMotion, setScroll } from "./settings.js";
 
 export let pageElement = document.createElement("div");
 
@@ -173,7 +173,15 @@ export async function loadSite(url = pageUrl)
 		});
 	});
 
-	if (!window.DEBUG)
+	
+
+	if (window.DEBUG)
+	{
+		window.addEventListener("scroll", () => setScroll());
+		window.addEventListener("resize", () => setScroll());
+	}
+
+	else
 	{
 		addStyle(".DEBUG {display: none;}", false);
 	}

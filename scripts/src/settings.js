@@ -1,5 +1,5 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
-import { cardIsOpen } from "./cards.js";
+import { cardContainer, cardIsOpen, currentCard } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
@@ -60,7 +60,7 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
-	scrollToBottom: params.get("scrolltobottom") === "1",
+	scroll: parseInt(params.get("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 };
@@ -157,14 +157,14 @@ export function getQueryParams()
 
 
 
-	if (siteSettings.scrollToBottom)
+	if (siteSettings.scroll)
 	{
-		params.set("scrolltobottom", "1");
+		params.set("scroll", siteSettings.scroll);
 	}
 
 	else
 	{
-		params.delete("scrolltobottom");
+		params.delete("scroll");
 	}
 
 
@@ -471,16 +471,21 @@ export async function toggleIncreaseContrast({
 
 
 
-export async function toggleScrollToBottom()
+let setScrollTimeout = undefined;
+
+export async function setScroll()
 {
-	siteSettings.scrollToBottom = !siteSettings.scrollToBottom;
-
-	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
-
-	if (siteSettings.scrollToBottom)
+	if (setScrollTimeout !== undefined)
 	{
-		window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+		clearTimeout(setScrollTimeout);
 	}
+
+	setScrollTimeout = setTimeout(() =>
+	{
+		siteSettings.scroll = currentCard ? cardContainer.scrollTop : window.scrollY;
+
+		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+	}, 100);
 }
 
 

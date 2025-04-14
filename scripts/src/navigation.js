@@ -181,7 +181,9 @@ export async function redirect({
 
 	else
 	{
-		window.scrollTo(0, siteSettings.scrollToBottom ? document.body.scrollHeight : 0);
+		const scroll = siteSettings.scroll;
+		window.scrollTo(0, scroll);
+		setTimeout(() => window.scrollTo(0, scroll), 100);
 	}
 
 	lastPageScroll = temp;

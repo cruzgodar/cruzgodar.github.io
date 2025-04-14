@@ -1,12 +1,12 @@
 ### nav-buttons
 
-As we've mentioned many times by now, this course revolves around series. The later sections will be devoted to Taylor series, the application we care most about, but there's an important question we need to address before then: how do we know if a series will converge? Unfortunately, the answer turns out to be substantially more complicated than we might like, similarly to the question of <em>how do we integrate functions</em> that took a whole quarter to answer in calculus II. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that each handle many situations, but not all. We'll start with the simplest in this section and work our way up from there.
+As we've mentioned and begun to see, this course revolves around series. The later sections will be devoted to Taylor series, the application we'll come to care about the most, but there's an important question we need to address before then: how do we know if a series converges? Unfortunately, the answer turns out to be substantially more complicated than we might like, similarly to the question of *how do we integrate functions* that took a whole part of the course to answer. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could each only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that each handle many situations, but not all. We'll start with the simplest in this section and work our way up from there.
 
 
 
 ## The Divergence Test
 
-Take a convergent series $\sum_{n = 1}^\infty a_n$ and its sequence of partial sums $(S_k)$. We can write any term $a_n$ as $a_n = S_n - S_{n - 1}$, as long as $n \geq 2$, since the difference between $S_{n - 1}$ and $S_n$ is that the latter includes $a_n$ while the former doesn't. Since we assumed the series converges, we know that $(S_n) \to S$ for some $S$. Therefore, we can take the limit of both sides of the relation between $a_n$ and $S_n$ and get a meaningful answer:
+Let's take a convergent series $\sum_{n = 1}^\infty a_n$ and its sequence of partial sums $(S_k)$. We can write any term $a_n$ as $a_n = S_n - S_{n - 1}$ as long as $n \geq 2$, since the difference between $S_{n - 1}$ and $S_n$ is just that $S_n$ includes $a_n$ while $S_{n-1}$ doesn't. Since we assumed the series converges, we know that $(S_n) \to S$ for some value $S$, and so just like in section 4.1, we can take the limit of both sides of the relation between $a_n$ and $S_n$ and get a meaningful answer:
 
 $$
 	a_n &= S_n - S_{n - 1}
@@ -18,21 +18,19 @@ $$
 	\lim_{n \to \infty} a_n &= 0.
 $$
 
-Taking the limit of $S_{n - 1}$ might feel a little strange, but as $n$ approaches $\infty$, so does $n - 1$, so $S_{n - 1}$ approaches the same thing that $S_n$ does.
-
 What we've shown here is that *every* convergent series $\sum_{n = 1}^\infty a_n$ must satisfy $\lim_{n \to \infty} a_n = 0$. So if that limit either doesn't exist or isn't zero, there's no way the series can converge. This is the content of our first test:
 
 
 
 ### prop "the divergence test"
 	
-	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n$ doesn't exist or is nonzero, then $\sum_{n = 1}^\infty a_n$ diverges.
+	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n \neq 0$, then $\sum_{n = 1}^\infty a_n$ diverges.
 	
 ###
 
 
 
-There are two important things to note here: first, the divergence test says nothing about when series *do* converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge: for example, $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. The other important point is that the divergence test provides no information on the *value* of series, divergent or not. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
+There are two important things to note here: first, the divergence test says nothing about when series *do* converge. If $\lim_{n \to \infty} a_n = 0$, the series might still diverge, and the Harmonic series is the classic example: $\left( \frac{1}{n} \right) \to 0$, but $\sum_{n = 1}^\infty \frac{1}{n}$ diverges. Second, the divergence test provides no information on the *value* of series, divergent or otherwise. Much like sequences, a series can diverge because its partial sums approach infinity, or simply because they never settle down to one particular value, as we saw in an example in the last section. The divergence test is just the first and easiest test to tell if a series clearly diverges, without having to do a lot of work.
 
 
 
@@ -60,15 +58,15 @@ There are two important things to note here: first, the divergence test says not
 
 ## The Integral Test
 
-There's a good chance you'd already seen series before this course: Riemann sums are usually introduced in calculus II in order to define integration. By now, we have a robust theory of integration that doesn't require resorting to Riemann sums every time we need to take an integral, and so we can turn things around, using integrals to tell us about the convergence of sums.
+There's a good chance you'd already seen a $\Sigma$ symbol before this course: Riemann sums are usually introduced in calculus II in order to define integration. By now, though, we have a robust theory of integration --- one that doesn't require resorting to Riemann sums every time we need to take an integral. We can therefore turn things around, using integrals to tell us about the convergence of sums.
 
-As a brief refresher, Riemann sums are an approximation of the area under a curve. Given a function $f$ on an interval $[a, b]$, we choose a width $\Delta x$ and divide $[a, b]$ into pieces of size $\Delta x$. Every piece forms the base of a rectangle whose height is determined by the value of $f$ at some point in the interval.
+As a brief refresher, Riemann sums are an approximation of the area under a curve. Given a function $f$ on an interval $[a, b]$, we choose a width $\Delta x$ and divide $[a, b]$ into segments of size $\Delta x$ each. Every one of those subintervals then forms the base of a rectangle whose height is determined by the value of $f$ at some point in the subinterval.
 
 ### desmos riemannSum
 
-Let's fix $\Delta x = 1$, so that every rectangle's area is equal to its height. Rather than thinking of that Riemann sum as an approximation of the integral, we can treat the integral as an approximation of the sum. Sure, it's not a great approximation, but if all we care about is whether the sum is infinite or not, it will be good enough.
+Let's fix $\Delta x = 1$, so that every rectangle's area is equal to its height. Rather than thinking of that Riemann sum as an approximation of the integral, we can treat the integral as an approximation of the sum. Sure, it's not a great approximation, but if all we care about is whether the sum is infinite or not, it'll be good enough.
 
-We'll need a few restrictions on the series to make this work properly. Let's look at an example where everything works well, and then we'll back up and see what properties were necessary.
+We'll need a few restrictions on the series to make this work properly. Let's first look at an example where everything works well, and then we'll back up and see what properties were necessary.
 
 Let $a_n = \frac{1}{n + 4}$ and consider the series
 
@@ -90,13 +88,13 @@ $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4}.
 $$
 
-Since the blue rectangles are always an overapproximation of the actual area, we have that
+Since the blue rectangles are always an overapproximation of the actual area,
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
-Similarly, since the red rectangles are always an underapproximation,
+And similarly, since the red rectangles are always an underapproximation,
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\,\d x.

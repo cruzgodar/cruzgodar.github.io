@@ -117,15 +117,12 @@ export async function showPage()
 				animationTime: 10
 			}).then(() =>
 			{
-				if (siteSettings.scrollToBottom)
-				{
-					cardContainer.scrollTo(0, 10000000);
+				cardContainer.scrollTo(0, siteSettings.scroll);
 
-					setTimeout(() =>
-					{
-						cardContainer.scrollTo(0, 10000000);
-					}, 100);
-				}
+				setTimeout(() =>
+				{
+					cardContainer.scrollTo(0, siteSettings.scroll);
+				}, 100);
 			});
 		}
 
@@ -133,6 +130,11 @@ export async function showPage()
 		{
 			siteSettings.card = undefined;
 		}
+	}
+
+	else
+	{
+		window.scrollTo(0, siteSettings.scroll);
 	}
 
 	await fadeInPage();

@@ -3,7 +3,7 @@ import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { $$, pageElement, pageUrl } from "./main.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
-import { metaThemeColorElement, siteSettings } from "./settings.js";
+import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
@@ -54,6 +54,11 @@ export function initCards()
 			}
 		});
 	});
+
+	if (window.DEBUG)
+	{
+		cardContainer.addEventListener("scroll", () => setScroll());
+	}
 }
 
 export async function showCard({
@@ -216,6 +221,11 @@ export async function showCard({
 	currentCard.focus();
 	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
+
+	if (window.DEBUG)
+	{
+		setScroll();
+	}
 }
 
 export async function hideCard(animationTime = cardAnimationTime)
@@ -333,6 +343,11 @@ export async function hideCard(animationTime = cardAnimationTime)
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
 	cardIsAnimating = false;
+
+	if (window.DEBUG)
+	{
+		setScroll();
+	}
 }
 
 
