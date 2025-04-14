@@ -365,7 +365,7 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 	First of all, the terms are positive and decreasing, so we can use the integral test. We have
 	
 	$$
-		R_N \leq \int_N^\infty \frac{1}{x^5}\,\d x
+		R_N &\leq \int_N^\infty \frac{1}{x^5}\,\d x
 		
 		&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,\d x
 		

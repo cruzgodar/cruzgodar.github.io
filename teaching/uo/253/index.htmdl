@@ -81,7 +81,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	#. $$\sum_{n = 1}^\infty \left( \cos\left( \frac{\pi}{n} \right) - \cos\left( \frac{\pi}{n + 2} \right) \right)$$.
 
-	#. $$\sum_{n = 0}^\infty \frac{3^n(n - 3)}{(n + 1)1}$$.
+	#. $$\sum_{n = 0}^\infty 3^n\frac{1 - 2n}{n(n + 1)}$$.
 
 	#. $$\sum_{m = 1}^\infty \ln\left( \frac{m}{m + 1} \right)$$.
 
