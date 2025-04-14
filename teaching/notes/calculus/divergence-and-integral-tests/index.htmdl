@@ -204,7 +204,7 @@ The divergence test is much easier to apply than the integral test, so we'll alm
 
 
 
-The integral tests let us classify the behavior of a particular type of series that we'll return to throughout the course.
+One immediate application of the integral test is that it lets us classify the behavior of a particular type of series that we'll return to throughout the course.
 
 
 
@@ -340,17 +340,17 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 		N &> \sqrt{50} \approx 7.07
 	$$
 	
-	Therefore, let's choose $N = 8$. It's in our best interest to keep $N$ as small as possible so that the next step doesn't get too painful --- we now need to find $S_{8}$.
+	Therefore, let's choose $N = 8$. It's in our best interest to keep $N$ as small as possible so that the next step doesn't get too annoying --- we now need to find $S_{8}$.
 	
 	$$
-		S_{10} &= \sum_{n = 1}^8 \frac{1}{n^3}
+		S_8 &= \sum_{n = 1}^8 \frac{1}{n^3}
 		
 		&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}
 		
 		&\approx 1.195.
 	$$
 	
-	The actual value is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly --- in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we'll talk about later, the value of the power-3 $p$-series is only known approximately.
+	The actual value of the series is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly --- in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we'll talk about later, the value of the power-3 $p$-series is only known approximately.
 
 ###
 
