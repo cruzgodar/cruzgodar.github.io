@@ -93,6 +93,8 @@ export async function loadPage()
 	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 50);
 	setTimeout(equalizeAppletColumns, 100);
+
+	window.scrollTo(0, 0);
 }
 
 

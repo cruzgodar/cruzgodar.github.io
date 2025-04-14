@@ -1,7 +1,6 @@
 "use strict";
 
 import { launch } from "puppeteer";
-import { sleep } from "/scripts/src/main.js";
 
 const ignorePatterns = [
 	// eslint-disable-next-line max-len
@@ -52,7 +51,7 @@ async function testFiles(ip, port, files)
 		
 		postMessage(["progress"]);
 		await page.goto(`http://${ip}:${port}/${file}`);
-		await sleep(4000);
+		await new Promise(resolve => setTimeout(resolve, 4000));
 	}
 
 	await page.close();

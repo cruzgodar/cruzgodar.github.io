@@ -1,5 +1,4 @@
 import { read, write } from "./file-io.js";
-import { sleep } from "/scripts/src/main.js";
 
 const textSitemapPath = "/build/sitemap.txt";
 export const sitemapPath = "/scripts/src/sitemap.js";
@@ -123,7 +122,7 @@ export async function buildSitemap()
 
 	await write(sitemapPath, sitemap);
 
-	await sleep(50);
+	await new Promise(resolve => setTimeout(resolve, 50));
 }
 
 
