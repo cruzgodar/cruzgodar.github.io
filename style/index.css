@@ -945,7 +945,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	display: flex;
 	justify-content: center;
-	margin-top: 12px;
+	margin-top: -22px;
 	margin-bottom: 32px;
 }
 

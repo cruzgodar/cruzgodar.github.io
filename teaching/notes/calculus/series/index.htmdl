@@ -316,13 +316,31 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 	
 	Evaluate the following series.
 
-	1. $$\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$$.
+	1. $$\sum_{k = -1}^\infty (-3)^{-k}$$.
 	
 	2. $$\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}}$$.
 	
 	3. $$\sum_{m = 1}^\infty e^m$$.
 	
 	### solution
+
+	1. Rewriting this to positive $k$ instead of a negative one (so that we can apply the theorem), we have
+
+	$$
+		\sum_{k = -1}^\infty (-3)^{-k} &= \sum_{k = -1}^\infty \left( \frac{1}{3} \right)^k.
+	$$
+
+	We'd once again like to start our series at $k = 0$, so we can just handle the $k = -1$ term separately.
+
+	$$
+		\sum_{k = -1}^\infty \left( \frac{1}{3} \right)^k &= \left( \frac{1}{3} \right)^{-1} + \sum_{k = 0}^\infty \left( \frac{1}{3} \right)^k
+
+		&= 3 + \frac{1}{1 - \frac{1}{3}}
+
+		&= 3 + \frac{3}{2}
+
+		&= \frac{9}{2}.
+	$$
 
 	2. Ideally, we'd like to have just one power of $k$ in our sum so that we can apply the formula for geometric series. By pulling off two factors of $3$, we get
 	
