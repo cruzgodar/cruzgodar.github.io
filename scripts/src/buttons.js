@@ -384,7 +384,7 @@ export function initNavButtons()
 
 
 	const navButtons = $$(".nav-buttons");
-	if (navButtons)
+	if (navButtons && navButtons.length > 0)
 	{
 		navButtons[0].style.marginTop = "0";
 		navButtons[0].style.marginBottom = "32px";
