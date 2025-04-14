@@ -380,4 +380,13 @@ export function initNavButtons()
 	{
 		$$(".next-nav-button").forEach(element => element.parentNode.remove());
 	}
+
+
+
+	const navButtons = $$(".nav-buttons");
+	if (navButtons)
+	{
+		navButtons[0].style.marginTop = "0";
+		navButtons[0].style.marginBottom = "32px";
+	}
 }
