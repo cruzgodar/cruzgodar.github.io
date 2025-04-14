@@ -112,7 +112,7 @@ $$
 	\int_1^\infty \frac{1}{x + 4}\,\d x \leq \sum_{n = 1}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
-We've succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\,\d x$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\,\d x$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, **the sum does the same thing**. It may not converge to the same value, but this is still an excellent way to test convergence.
+We've succeeded in relating the Riemann sums to an integral, and the fact that the two inequalities go in different directions is the best part. If $\int_1^\infty \frac{1}{x + 4}\,\d x$ is infinite, then our sum must be too, because of the left inequality. On the other hand, if $\int_1^\infty \frac{1}{x + 4}\,\d x$ is finite, then the same must be true of the sum by the right inequality. Therefore, whether the integral converges or diverges, *the sum does the same thing*. It may not converge to the same value, but this is still an excellent way to test convergence.
 
 Let's close out this example by actually evaluating the integral, and then we'll state the general result.
 
@@ -128,7 +128,7 @@ $$
 
 Therefore, the integral diverges, and so $\sum_{n = 1}^\infty \frac{1}{n + 4}$ diverges too.
 
-Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing and integrable on $[1, \infty)$, and that all the terms of the series are positive. Beyond that, we didn't need any other properties, and so the statement of this result for general series requires only these facts.
+Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to the argument was the fact that $\frac{1}{x + 4}$ is decreasing: that's why the leftmost endpoint of each interval was where the function was the largest, and the rightmost endpoint was where it was the smallest. Also, we needed that the function was integrable on $[1, \infty)$, and that all the terms of the series were positive (otherwise the left Riemann sum wouldn't be guaranteed to be an underapproximation, so we'd lose our information about the series). Beyond that, we didn't need any other properties, and so the statement of this result for general series requires only these facts.
 
 
 
@@ -148,7 +148,7 @@ Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to t
 
 
 
-The divergence test is almost always easier than the integral test, so start there. If it's inconclusive, then try the integral test if the series matches the necessary requirements. Like the divergence test, the integral test cannot tell you the exact value of a series, but it can confirm that a series converges, something the divergence test cannot.
+The divergence test is much easier to apply than the integral test, so we'll almost always start there. If it's inconclusive, then we'll try the integral test if the series matches the necessary requirements. Like the divergence test, the integral test can't tell us the exact value of a series, but it *can* confirm that a series converges, something the divergence test can't.
 
 
 

@@ -371,6 +371,6 @@ function initSolutions()
 
 	$$(".notes-exc .solution").forEach(e =>
 	{
-		packageSolution(e, element !== undefined || window.DEBUG);
+		packageSolution(e, element !== null || window.DEBUG);
 	});
 }
