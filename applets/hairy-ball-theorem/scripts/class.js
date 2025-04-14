@@ -1,5 +1,6 @@
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { sleep } from "/scripts/src/main.js";
 
 export class HairyBall extends RaymarchApplet
 {
@@ -142,6 +143,6 @@ export class HairyBall extends RaymarchApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

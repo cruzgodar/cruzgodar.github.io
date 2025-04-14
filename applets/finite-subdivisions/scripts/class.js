@@ -1,7 +1,7 @@
 import { hsvToRgb } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
+import { addTemporaryWorker, sleep } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class FiniteSubdivisions extends AnimationFrameApplet
@@ -247,6 +247,6 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

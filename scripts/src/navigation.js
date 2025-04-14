@@ -25,6 +25,7 @@ import {
 	pageElement,
 	pageUrl,
 	setPageUrl,
+	sleep,
 	temporaryIntervals,
 	temporaryListeners,
 	temporaryParams,
@@ -177,13 +178,6 @@ export async function redirect({
 	if (restoreScroll)
 	{
 		window.scrollTo(0, lastPageScroll);
-	}
-
-	else
-	{
-		const scroll = siteSettings.scroll;
-		window.scrollTo(0, scroll);
-		setTimeout(() => window.scrollTo(0, scroll), 100);
 	}
 
 	lastPageScroll = temp;
@@ -351,7 +345,7 @@ async function fadeOutPage(noFadeOut)
 		}
 	})();
 
-	await new Promise(resolve => setTimeout(resolve, 33));
+	await sleep(33);
 }
 
 

@@ -1,5 +1,7 @@
 "use strict";
 
+const { sleep } = require("/scripts/src/main.js");
+
 
 
 let gridSize;
@@ -284,7 +286,7 @@ async function drawLines()
 		]
 	]);
 
-	await new Promise(resolve => setTimeout(resolve, 50));
+	await sleep(50);
 }
 
 

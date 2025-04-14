@@ -1,5 +1,6 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { sleep } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 
 export async function addNewArray(
@@ -284,7 +285,7 @@ export async function addNewArray(
 
 	if (index !== this.arrays.length - 1)
 	{
-		await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		await sleep(this.animationTime);
 	}
 
 

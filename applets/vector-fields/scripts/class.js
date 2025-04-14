@@ -9,6 +9,7 @@ import {
 	getMaxGlslString,
 	tempShader
 } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet
@@ -875,6 +876,6 @@ export class VectorFields extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

@@ -1,5 +1,6 @@
 import anime from "../anime.js";
 import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
+import { sleep } from "../src/main.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
@@ -390,7 +391,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 
 
@@ -410,7 +411,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.drawFrame();
 
-		await new Promise(resolve => setTimeout(resolve, 1000));
+		await sleep(1000);
 
 		for (let i = 1; i <= resolution; i++)
 		{
@@ -419,7 +420,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			});
 			this.drawFrame();
 			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
-			await new Promise(resolve => setTimeout(resolve, preview ? 0 : 150));
+			await sleep(preview ? 0 : 150);
 		}
 	}
 
@@ -1304,7 +1305,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					});
 				}
 
-				await new Promise(resolve => setTimeout(resolve, 100));
+				await sleep(100);
 
 				this.setUniforms({
 					uvScale: 1,
@@ -1342,7 +1343,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 				ctx.putImageData(imageData, 0, 0);
 
-				await new Promise(resolve => setTimeout(resolve, 500));
+				await sleep(500);
 
 				j++;
 				if (j === size)

@@ -1,6 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class ComplexMaps extends AnimationFrameApplet
@@ -306,6 +307,6 @@ export class ComplexMaps extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

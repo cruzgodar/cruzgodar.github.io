@@ -1,6 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class PascalsTriangleColorings extends AnimationFrameApplet
@@ -372,6 +373,6 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

@@ -1,5 +1,5 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
-import { cardContainer, cardIsOpen, currentCard } from "./cards.js";
+import { cardContainer, cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
@@ -482,7 +482,7 @@ export async function setScroll()
 
 	setScrollTimeout = setTimeout(() =>
 	{
-		siteSettings.scroll = currentCard ? cardContainer.scrollTop : window.scrollY;
+		siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
 
 		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	}, 100);

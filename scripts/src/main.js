@@ -1,8 +1,19 @@
+import { cardContainer, showCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
-import { initDarkTheme, initIncreaseContrast, initReduceMotion, setScroll } from "./settings.js";
+import {
+	initDarkTheme,
+	initIncreaseContrast,
+	initReduceMotion,
+	setScroll,
+	siteSettings
+} from "./settings.js";
+
+const blockCardPages = [
+	"/gallery"
+];
 
 export let pageElement = document.createElement("div");
 
@@ -202,11 +213,13 @@ export async function loadSite(url = pageUrl)
 
 	else
 	{
-		redirect({
+		await redirect({
 			url,
 			noStatePush: true,
 			noFadeOut: true
 		});
+
+		showAndRestoreScroll();
 	}
 }
 
@@ -307,4 +320,50 @@ export async function asyncFetch(url)
 
 		fetcher.onerror = reject;
 	});
+}
+
+export function sleep(ms)
+{
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+
+async function showAndRestoreScroll()
+{
+	const scroll = siteSettings.scroll;
+	siteSettings.scroll = undefined;
+
+	await sleep(10);
+	
+	if (siteSettings.card)
+	{
+		if (!blockCardPages.includes(pageUrl))
+		{
+			showCard({
+				id: siteSettings.card,
+				fromElement: pageElement,
+				animationTime: 10
+			}).then(() =>
+			{
+				cardContainer.scrollTo(0, scroll);
+
+				setTimeout(() =>
+				{
+					cardContainer.scrollTo(0, scroll);
+				}, 100);
+			});
+		}
+
+		else
+		{
+			siteSettings.card = undefined;
+		}
+	}
+
+	else
+	{
+		window.scrollTo(0, scroll);
+		setTimeout(() => window.scrollTo(0, scroll), 100);
+	}
 }

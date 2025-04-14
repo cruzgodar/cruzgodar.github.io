@@ -3,7 +3,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { $$ } from "/scripts/src/main.js";
+import { $$, sleep } from "/scripts/src/main.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
@@ -621,7 +621,7 @@ export class FractalSounds extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 
 	downloadFrame(filename)

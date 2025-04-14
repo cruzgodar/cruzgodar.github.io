@@ -2,6 +2,7 @@ import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
@@ -429,6 +430,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

@@ -6,6 +6,7 @@ import {
 	tempShader
 } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VoronoiDiagrams extends Applet
@@ -589,6 +590,6 @@ export class VoronoiDiagrams extends Applet
 	{
 		this.anime?.pause && this.anime.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

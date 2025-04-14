@@ -1,7 +1,7 @@
 import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
-import { $$, pageElement, pageUrl } from "./main.js";
+import { $$, pageElement, pageUrl, sleep } from "./main.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
@@ -134,7 +134,7 @@ export async function showCard({
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await sleep(100);
 		}
 	}
 
@@ -247,7 +247,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 	siteSettings.card = undefined;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
@@ -374,7 +374,7 @@ async function getClosedContainerStyle({
 
 	cardContainer.style.transform = "translateX(0) translateY(0) scale(1)";
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	return [translateX, translateY, scale];
 }
@@ -471,7 +471,7 @@ export async function showZoomCard({
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 90));
+			await sleep(90);
 		}
 	}
 
@@ -585,7 +585,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	siteSettings.card = undefined;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";

@@ -3,7 +3,7 @@ import { createShader } from "./createShader.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { edgeDetectShader } from "/scripts/applets/raymarchApplet.js";
-import { $ } from "/scripts/src/main.js";
+import { $, sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 
@@ -610,7 +610,7 @@ export class ThurstonGeometries extends Applet
 				link.click();
 			});
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await sleep(100);
 
 			this.wilson.setUniforms({
 				uvScale: 1,
@@ -659,7 +659,7 @@ export class ThurstonGeometries extends Applet
 
 			ctx.putImageData(imageData, 0, 0);
 
-			await new Promise(resolve => setTimeout(resolve, 500));
+			await sleep(500);
 
 			j++;
 			if (j === size)
@@ -1170,6 +1170,6 @@ export class ThurstonGeometries extends Applet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

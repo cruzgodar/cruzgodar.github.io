@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { carouselFillAnimationTime, carouselSwitchAnimationTime } from "./animation.js";
-import { $$, addTemporaryListener } from "./main.js";
+import { $$, addTemporaryListener, sleep } from "./main.js";
 
 const dotSize = 8;
 const expandedDotWidth = 128;
@@ -102,7 +102,7 @@ class Carousel
 
 		const oldDotTop = this.dots[0].getBoundingClientRect().top;
 
-		await new Promise(resolve => setTimeout(resolve, 10));
+		await sleep(10);
 
 
 

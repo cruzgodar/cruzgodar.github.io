@@ -1,5 +1,6 @@
 import { generateRandomPlanePartition, generateRandomTableau } from "./generateRandomData.js";
 import { parseArray, verifyPp, verifySsyt } from "./parseAndVerify.js";
+import { sleep } from "/scripts/src/main.js";
 
 export async function runExample(index)
 {
@@ -8,7 +9,7 @@ export async function runExample(index)
 		while (this.arrays.length > 1)
 		{
 			await this.removeArray(1);
-			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+			await sleep(this.animationTime / 2);
 		}
 
 		if (this.arrays.length === 0)
@@ -23,7 +24,7 @@ export async function runExample(index)
 		else if (!verifyPp(this.arrays[0].numbers))
 		{
 			await this.removeArray(0);
-			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+			await sleep(this.animationTime / 2);
 
 			const planePartition = parseArray(
 				generateRandomPlanePartition()
@@ -38,7 +39,7 @@ export async function runExample(index)
 		{
 			await this.runAlgorithm("hillmanGrassl", 0);
 
-			await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
+			await sleep(3 * this.animationTime);
 
 			await this.runAlgorithm("hillmanGrasslInverse", 0);
 		}
@@ -47,11 +48,11 @@ export async function runExample(index)
 		{
 			await this.runAlgorithm("pak", 0);
 
-			await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
+			await sleep(3 * this.animationTime);
 
 			await this.showHexView();
 
-			await new Promise(resolve => setTimeout(resolve, this.animationTime));
+			await sleep(this.animationTime);
 
 			await this.runAlgorithm("sulzgruberInverse", 0);
 		}
@@ -64,7 +65,7 @@ export async function runExample(index)
 		while (this.arrays.length > 0)
 		{
 			await this.removeArray(0);
-			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+			await sleep(this.animationTime / 2);
 		}
 
 		await this.addNewArray(this.arrays.length, generateRandomTableau());
@@ -73,11 +74,11 @@ export async function runExample(index)
 
 		await this.show2dView();
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		await sleep(this.animationTime);
 
 		await this.runAlgorithm("rskInverse", 0);
 
-		await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
+		await sleep(3 * this.animationTime);
 
 		await this.runAlgorithm("rsk", 0);
 	}

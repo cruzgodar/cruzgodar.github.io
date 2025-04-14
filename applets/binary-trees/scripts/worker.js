@@ -1,5 +1,7 @@
 "use strict";
 
+const { sleep } = require("/scripts/src/main.js");
+
 
 
 let root = [];
@@ -85,7 +87,7 @@ async function drawAnimatedBinaryTree()
 
 
 
-			await new Promise(resolve => setTimeout(resolve, 8));
+			await sleep(8);
 		}
 
 

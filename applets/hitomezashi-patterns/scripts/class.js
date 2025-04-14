@@ -1,5 +1,6 @@
 import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class HitomezashiPatterns extends Applet
@@ -592,6 +593,6 @@ export class HitomezashiPatterns extends Applet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

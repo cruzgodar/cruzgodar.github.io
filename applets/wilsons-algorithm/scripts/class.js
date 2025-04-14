@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
+import { addTemporaryWorker, sleep } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 
@@ -146,6 +146,6 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

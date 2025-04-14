@@ -1,3 +1,5 @@
+import { sleep } from "/scripts/src/main.js";
+
 export async function godar1(index)
 {
 	// Figure out the shape of nu.
@@ -63,11 +65,11 @@ export async function godar1(index)
 
 	await this.addNewArray(index + 1, newArray);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 	await this.removeArray(index);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 	array = this.arrays[index];
 	planePartition = array.numbers;
@@ -95,7 +97,7 @@ export async function godar1(index)
 
 	await this.runAlgorithm("pak", index, true);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 2));
+	await sleep(this.animationTime * 2);
 
 	array = this.arrays[index];
 	planePartition = array.numbers;
@@ -140,7 +142,7 @@ export async function godar1(index)
 
 	await this.addNewArray(index, finiteArray);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 
 
@@ -148,7 +150,7 @@ export async function godar1(index)
 
 	await this.runAlgorithm("pakInverse", index, true);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 2));
+	await sleep(this.animationTime * 2);
 
 
 
@@ -282,7 +284,7 @@ export async function godar1(index)
 		}
 	}
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
+	await sleep(this.animationTime * 3);
 
 
 
@@ -312,7 +314,7 @@ export async function godar1(index)
 	{
 		rppArray = await this.addNewArray(index + 1, rpp);
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+		await sleep(this.animationTime / 2);
 	}
 
 
@@ -387,7 +389,7 @@ export async function godar1(index)
 
 
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
+	await sleep(this.animationTime * 3);
 
 	// Now it's time for the palindromic toggle.
 
@@ -446,13 +448,13 @@ export async function godar1Inverse(index)
 
 	await this.runAlgorithm("pak", index, true);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 	await this.runAlgorithm("pak", index + 1, true);
 
 
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
+	await sleep(this.animationTime * 3);
 
 
 
@@ -678,7 +680,7 @@ export async function godar1Inverse(index)
 
 
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
+	await sleep(this.animationTime * 3);
 
 
 
@@ -704,7 +706,7 @@ export async function godar1Inverse(index)
 
 	const appArray = await this.addNewArray(index + 2, app);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 
 
@@ -797,17 +799,17 @@ export async function godar1Inverse(index)
 
 	await this.removeArray(index);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 	await this.removeArray(index);
 
 
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
+	await sleep(this.animationTime * 3);
 
 
 
 	await this.runAlgorithm("pakInverse", index, true);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime));
+	await sleep(this.animationTime);
 }

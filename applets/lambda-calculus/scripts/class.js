@@ -1,7 +1,7 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
-import { addTemporaryInterval } from "/scripts/src/main.js";
+import { addTemporaryInterval, sleep } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -1337,7 +1337,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await sleep(this.animationTime / 3);
 
 
 
@@ -1392,7 +1392,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 		}).finished;
 
-		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 6));
+		yield await sleep(this.animationTime / 6);
 
 
 
@@ -1400,7 +1400,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		{
 			this.drawExpression(betaReducedExpression);
 
-			yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 6));
+			yield await sleep(this.animationTime / 6);
 
 			return;
 		}
@@ -1545,7 +1545,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		// If all went well, this call should be unnoticable!
 		this.drawExpression(betaReducedExpression);
 
-		yield await new Promise(resolve => setTimeout(resolve, this.animationTime / 3));
+		yield await sleep(this.animationTime / 3);
 	}
 
 

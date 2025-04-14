@@ -46,6 +46,7 @@ import {
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { sleep } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -472,6 +473,6 @@ export class PlanePartitions extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

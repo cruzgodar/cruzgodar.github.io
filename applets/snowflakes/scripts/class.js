@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { sleep } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class Snowflakes extends AnimationFrameApplet
@@ -638,6 +639,6 @@ export class Snowflakes extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

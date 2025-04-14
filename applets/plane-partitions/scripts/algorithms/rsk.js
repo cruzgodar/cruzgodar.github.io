@@ -1,3 +1,5 @@
+import { sleep } from "/scripts/src/main.js";
+
 export async function rsk(index)
 {
 	const pArray = this.arrays[index];
@@ -282,14 +284,14 @@ export async function rsk(index)
 
 		hueIndex++;
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+		await sleep(this.animationTime / 2);
 	}
 
 	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime));
+	await sleep(this.animationTime);
 
 	await this.removeArray(index);
 }
@@ -421,11 +423,11 @@ export async function rskInverse(index)
 
 	const pArray = await this.addNewArray(index + 1, pSsyt);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 	const qArray = await this.addNewArray(index + 2, qSsyt);
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 
 
@@ -624,7 +626,7 @@ export async function rskInverse(index)
 
 		hueIndex++;
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+		await sleep(this.animationTime / 2);
 	}
 
 	this.currentlyAnimatingCamera = false;

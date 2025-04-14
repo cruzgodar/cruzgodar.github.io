@@ -12,7 +12,7 @@ import {
 	initBanner
 } from "./banners.js";
 import { Button, initNavButtons, initTextButtons } from "./buttons.js";
-import { cardContainer, initCards, showCard } from "./cards.js";
+import { initCards } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
@@ -24,6 +24,7 @@ import {
 	asyncFetch,
 	pageElement,
 	pageUrl,
+	sleep,
 	updatePageElement
 } from "./main.js";
 import { typesetMath } from "./math.js";
@@ -33,14 +34,7 @@ import {
 	setCurrentlyRedirecting
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
-import {
-	siteSettings
-} from "./settings.js";
 import { sitemap } from "./sitemap.js";
-
-const blockCardPages = [
-	"/gallery"
-];
 
 export let pageShown = true;
 
@@ -105,38 +99,6 @@ export async function loadPage()
 
 export async function showPage()
 {
-	await new Promise(resolve => setTimeout(resolve, 10));
-
-	if (siteSettings.card)
-	{
-		if (!blockCardPages.includes(pageUrl))
-		{
-			showCard({
-				id: siteSettings.card,
-				fromElement: pageElement,
-				animationTime: 10
-			}).then(() =>
-			{
-				cardContainer.scrollTo(0, siteSettings.scroll);
-
-				setTimeout(() =>
-				{
-					cardContainer.scrollTo(0, siteSettings.scroll);
-				}, 100);
-			});
-		}
-
-		else
-		{
-			siteSettings.card = undefined;
-		}
-	}
-
-	else
-	{
-		window.scrollTo(0, siteSettings.scroll);
-	}
-
 	await fadeInPage();
 
 	setCurrentlyRedirecting(false);
@@ -363,7 +325,7 @@ function packageSolution(solutionElement, showButton = true)
 			solutionElement.style.width =
 				solutionElement.parentElement.getBoundingClientRect().width - 12 + "px";
 
-			await new Promise(resolve => setTimeout(resolve, 10));
+			await sleep(10);
 
 			const solutionElementHeight = solutionElement.getBoundingClientRect().height;
 			const textButtonsElementHeight = textButtonsElement.getBoundingClientRect().height;
