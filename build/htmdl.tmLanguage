@@ -599,7 +599,21 @@
 			</dict>
 		</dict>
 
+		
 
+		<!-- Autonumbered problems -->
+		<dict>
+			<key>match</key>
+			<string>^\s+?(#)\.</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+		</dict>
 
 		<!-- Numbered ranges -->
 		<dict>

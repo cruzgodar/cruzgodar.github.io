@@ -386,9 +386,9 @@ function decodeHTMDL(html)
 		{
 			const content = parseText(lines[i]);
 
-			if (content.match(/^#+?\./))
+			if (content.match(/^#\./))
 			{
-				lines[i] = /* html */`<p class="body-text numbered-list-item">${content.replace(/^#+?\./, `${currentNumberedItem}.`)}</p>`;
+				lines[i] = /* html */`<p class="body-text numbered-list-item">${content.replace(/^#\./, `${currentNumberedItem}.`)}</p>`;
 
 				currentNumberedItem++;
 			}

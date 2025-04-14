@@ -67,7 +67,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	- - -
 
-	#. For problems #-4--#-1, find an explicit formula for $S_n$, the $n$th partial sum, and use it to find the value of the series.
+	#. For problems #-4--#-1, find an explicit formula for $S_n$, the $n$th partial sum, and use it to find the value of the series. (Hint: for problem #-1, try finding *double* the partial sum first by adding $1 + 2 + \cdots + n$ to $n + (n - 1) + \cdots + 1$. Can you find a way to simplify those two sums when added together?)
 
 	- - -
 
@@ -87,7 +87,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	- - -
 
-	#. Does every telescoping series of the form $$\sum_{m = 1}^\infty (a_{n + 1} - a_n)$$ converge to $a_1$?. Why or why not?
+	#. Does every telescoping series of the form $$\sum_{n = 1}^\infty (a_{n + 1} - a_n)$$ converge to $a_1$?. Why or why not?
 
 	#. If $$\sum_{n = 1}^\infty a_n$$ converges and $|b_n| < |a_n|$ for all $m$, does $$\sum_{n = 1}^\infty b_n$$ necessarily converge?
 
@@ -99,9 +99,9 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	#. Let $c_n$ be the number of edges in the snowflake at step $n$, and let $l_n$ be their lengths. For example, $c_0 = 3$, since we start with a triangle, and $l_0 = 1$, since the sides of the triangle all have length $1$. In the next step, $c_1 = 12$ and $l_1 = \dfrac{1}{3}$. Find explicit formulas for $c_n$ and $l_n$.
 
-	#. Let $p_n$ be the perimeter of the snowflake at step $n$. Using your answer to part $1$, find an explicit formula for $p_n$. Then find the perimeter of the completed snowflake by taking the limit of the sequence $(p_n)$.
+	#. Let $p_n$ be the perimeter of the snowflake at step $n$. Using your answer to question #-1, find an explicit formula for $p_n$. Then find the perimeter of the completed snowflake by taking the limit of the sequence $(p_n)$.
 
-	#. Let $A$ be the area of the completed Koch snowflake and let $a_n$ be the amount the area increases at step $n$, where $n \geq 1$. For example, step 1 is going from the original triangle to the six-pointed star. That adds three triangles, each of area $\dfrac{\sqrt{3}}{36}$. Therefore, $a_1 = \dfrac{\sqrt{3}}{12}$. Using your answer to part 1, find an explicit formula for $a_n$. Since the area of the original triangle is $\dfrac{\sqrt{3}}{4}$, the total area $A$ of the completed snowflake is
+	#. Let $A$ be the area of the completed Koch snowflake and let $a_n$ be the amount the area increases at step $n$, where $n \geq 1$. For example, step 1 is going from the original triangle to the six-pointed star. That adds three triangles, each of area $\dfrac{\sqrt{3}}{36}$. Therefore, $a_1 = \dfrac{\sqrt{3}}{12}$. Using your answer to question #-2, find an explicit formula for $a_n$. The area of the original triangle is $\dfrac{\sqrt{3}}{4}$, and so the total area $A$ of the completed snowflake is
 	
 	$$
 		A = \frac{\sqrt{3}}{4} + \sum_{n = 1}^\infty a_n.

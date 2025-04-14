@@ -12,7 +12,7 @@ import {
 	initBanner
 } from "./banners.js";
 import { Button, initNavButtons, initTextButtons } from "./buttons.js";
-import { initCards, showCard } from "./cards.js";
+import { cardContainer, initCards, showCard } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
@@ -115,6 +115,17 @@ export async function showPage()
 				id: siteSettings.card,
 				fromElement: pageElement,
 				animationTime: 10
+			}).then(() =>
+			{
+				if (siteSettings.scrollToBottom)
+				{
+					cardContainer.scrollTo(0, 10000000);
+
+					setTimeout(() =>
+					{
+						cardContainer.scrollTo(0, 10000000);
+					}, 100);
+				}
 			});
 		}
 

@@ -12,7 +12,7 @@ export let cardIsAnimating = false;
 
 const easing = "cubicBezier(.25, 1, .25, 1)";
 
-const container = document.querySelector("#card-container");
+export const cardContainer = document.querySelector("#card-container");
 
 export let currentCard;
 
@@ -80,17 +80,17 @@ export async function showCard({
 	siteSettings.card = id;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	
-	container.style.display = "flex";
-	container.style.opacity = 1;
-	container.style.top = "100vh";
-	container.style.transform = "";
+	cardContainer.style.display = "flex";
+	cardContainer.style.opacity = 1;
+	cardContainer.style.top = "100vh";
+	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
-	container.appendChild(currentCard);
+	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
 
-	container.scroll(0, 0);
+	cardContainer.scroll(0, 0);
 
 	const backgroundScale = siteSettings.reduceMotion ? 1 : .975;
 
@@ -100,12 +100,12 @@ export async function showCard({
 
 	if (rect.height > window.innerHeight - 32)
 	{
-		container.style.justifyContent = "flex-start";
+		cardContainer.style.justifyContent = "flex-start";
 	}
 
 	else
 	{
-		container.style.justifyContent = "center";
+		cardContainer.style.justifyContent = "center";
 	}
 
 
@@ -163,13 +163,13 @@ export async function showCard({
 
 	if (siteSettings.reduceMotion)
 	{
-		container.style.opacity = 0;
-		container.style.top = 0;
+		cardContainer.style.opacity = 0;
+		cardContainer.style.top = 0;
 	}
 
 	await Promise.all([
 		anime({
-			targets: container,
+			targets: cardContainer,
 			top: 0,
 			opacity: 1,
 			duration: animationTime,
@@ -214,7 +214,7 @@ export async function showCard({
 
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
-	container.scrollTo(0, 0);
+	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
 }
 
@@ -248,12 +248,12 @@ export async function hideCard(animationTime = cardAnimationTime)
 	}
 
 	const dummy = { t: 0 };
-	const containerOldScroll = container.scrollTop;
+	const containerOldScroll = cardContainer.scrollTop;
 	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
 	const hidePromise = siteSettings.reduceMotion
 		? anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 0,
 			duration: animationTime,
 			easing,
@@ -267,10 +267,10 @@ export async function hideCard(animationTime = cardAnimationTime)
 			{
 				const heightMoved = dummy.t * totalHeightToMove;
 				const scroll = Math.max(containerOldScroll - heightMoved, 0);
-				container.scrollTo(0, scroll);
+				cardContainer.scrollTo(0, scroll);
 
 				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
-				container.style.top = `${remainingHeight}px`;
+				cardContainer.style.top = `${remainingHeight}px`;
 			}
 		}).finished;
 
@@ -324,11 +324,11 @@ export async function hideCard(animationTime = cardAnimationTime)
 	document.documentElement.style.backgroundColor = "var(--background)";
 	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
-	container.style.display = "none";
+	cardContainer.style.display = "none";
 
 	pageElement.appendChild(currentCard);
 
-	container.appendChild(closeButton);
+	cardContainer.appendChild(closeButton);
 
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
@@ -349,7 +349,7 @@ async function getClosedContainerStyle({
 
 	const scale = computedScale * fromElementRect.width / toElementRect.width;
 
-	container.style.transform = `scale(${scale})`;
+	cardContainer.style.transform = `scale(${scale})`;
 	
 	toElementRect = toElement.getBoundingClientRect();
 	const translateX = fromElementRect.left - toElementRect.left
@@ -357,7 +357,7 @@ async function getClosedContainerStyle({
 	const translateY = fromElementRect.top - toElementRect.top
 		- (computedScale - 1) / 2 * fromElementRect.height;
 
-	container.style.transform = "translateX(0) translateY(0) scale(1)";
+	cardContainer.style.transform = "translateX(0) translateY(0) scale(1)";
 
 	await new Promise(resolve => setTimeout(resolve, 0));
 
@@ -404,10 +404,10 @@ export async function showZoomCard({
 
 
 
-	container.style.display = "flex";
-	container.style.opacity = 0.002;
-	container.style.top = 0;
-	container.style.transform = "";
+	cardContainer.style.display = "flex";
+	cardContainer.style.opacity = 0.002;
+	cardContainer.style.top = 0;
+	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
@@ -416,10 +416,10 @@ export async function showZoomCard({
 		toElement = currentCard;
 	}
 
-	container.appendChild(currentCard);
+	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
 
-	container.scroll(0, 0);
+	cardContainer.scroll(0, 0);
 
 	
 
@@ -427,12 +427,12 @@ export async function showZoomCard({
 
 	if (rect.height > window.innerHeight - 32)
 	{
-		container.style.justifyContent = "flex-start";
+		cardContainer.style.justifyContent = "flex-start";
 	}
 
 	else
 	{
-		container.style.justifyContent = "center";
+		cardContainer.style.justifyContent = "center";
 	}
 
 
@@ -494,13 +494,13 @@ export async function showZoomCard({
 		toElement,
 	});
 
-	container.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
+	cardContainer.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
 
-	container.style.opacity = .75;
+	cardContainer.style.opacity = .75;
 
 	await Promise.all([
 		anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 1,
 			scale: 1,
 			translateX: 0,
@@ -547,7 +547,7 @@ export async function showZoomCard({
 
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
-	container.scrollTo(0, 0);
+	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
 }
 
@@ -617,7 +617,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 		}).finished,
 
 		anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 0,
 			scale: siteSettings.reduceMotion ? 1 : .925,
 			duration: animationTime,
@@ -636,11 +636,11 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	document.documentElement.style.backgroundColor = "var(--background)";
 	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
-	container.style.display = "none";
+	cardContainer.style.display = "none";
 
 	pageElement.appendChild(currentCard);
 
-	container.appendChild(closeButton);
+	cardContainer.appendChild(closeButton);
 
 	document.documentElement.removeEventListener("click", handleClickEventZoom);
 
@@ -675,12 +675,12 @@ export function resizeCard()
 
 		if (rect.height > window.innerHeight - 32)
 		{
-			container.style.justifyContent = "flex-start";
+			cardContainer.style.justifyContent = "flex-start";
 		}
 
 		else
 		{
-			container.style.justifyContent = "center";
+			cardContainer.style.justifyContent = "center";
 		}
 	}
 }
