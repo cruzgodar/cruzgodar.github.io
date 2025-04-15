@@ -1,14 +1,13 @@
 import { Button } from "/scripts/src/buttons.js";
 import { convertCardToLatex } from "/scripts/src/latex.js";
 import { showPage } from "/scripts/src/loadPage.js";
-import { $ } from "/scripts/src/main.js";
 
 export default function load()
 {
 	for (let i = 1; i <= 8; i++)
 	{
 		new Button({
-			element: $(`#download-homework-${i}-button`),
+			element: document.body.querySelector(`#download-homework-${i}-button`),
 			name: "Download Latex Source",
 			onClick: () =>
 			{

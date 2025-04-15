@@ -1,4 +1,4 @@
-import { loadScript, raw } from "./main.js";
+import { loadScript, pageUrl, raw } from "./main.js";
 
  
 const preamble = raw`\documentclass{article}
@@ -44,7 +44,7 @@ export function convertCardToLatex(element, title, course)
 	const tex = preamble
 		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
 		+ clonedElement.innerHTML
-			.replaceAll(/<img.+? src="(.+?)".+?>(<\/img>)?/g, (match, $1) =>
+			.replaceAll(/<img.*? src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
 			{
 				imageUrls.push($1);
 				const filename = $1.split("/").pop();
@@ -53,6 +53,21 @@ export function convertCardToLatex(element, title, course)
 	\\includegraphics[width=0.5\\linewidth]{${filename}}
 \\end{center}
 `;
+			})
+			.replaceAll(/<a.*? href="(.+?)".*?>(.+?)<\/a>/g,  (match, $1, $2) =>
+			{
+				console.log($1, $2);
+				if ($1.slice(0, 4) === "http" || $1.slice(0, 3) === "www")
+				{
+					return `\\href{${$1}}{${$2}}`;
+				}
+
+				else if ($1[0] === "/")
+				{
+					return `\\href{https://cruzgodar.com${$1}}{${$2}}`;
+				}
+
+				return `\\href{https://cruzgodar.com${pageUrl}/${$1}}{${$2}}`;
 			})
 			.replaceAll(/<!--.*?-->/g, "")
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)

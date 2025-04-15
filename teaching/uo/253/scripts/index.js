@@ -1,13 +1,12 @@
 import { Button } from "/scripts/src/buttons.js";
 import { convertCardToLatex } from "/scripts/src/latex.js";
 import { showPage } from "/scripts/src/loadPage.js";
-import { $ } from "/scripts/src/main.js";
 
-export default function load()
+export default async function load()
 {
 	for (let i = 1; i <= 9; i++)
 	{
-		const element = $(`#download-homework-${i}-button`);
+		const element = document.body.querySelector(`#download-homework-${i}-button`);
 		
 		if (!element)
 		{
