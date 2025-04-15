@@ -25,6 +25,7 @@ const examples = {
 	iterativeTriangleNumbers: "(λn.n( λg.λa.λb.g (>a) (+ab) ) (λa.λb.b) 1 0) 4",
 	iterativeFactorial: "(λn.n( λg.λa.λb.g (>a) (*ab) ) (λa.λb.b) 1 1) 4",
 	iterativeFibonacci: "(λn.n( λg.λa.λb.g (+ab) a ) (λa.λb.b) 1 0) 4",
+	knuthUpArrows: "(Yλf.λn.λa.λb.(_(<n)(ba)(((<b)(λg.λc.λd.gc(f(<n)cd)))(λc.λd.d)aa)))223"
 };
 
 export default function()
@@ -50,6 +51,7 @@ export default function()
 			iterativeTriangleNumbers: "Iterative Triangle Numbers",
 			iterativeFactorial: "Iterative Factorial",
 			iterativeFibonacci: "Iterative Fibonacci",
+			knuthUpArrows: "Knuth's Up Arrows"
 		},
 		onInput: onDropdownInput
 	});
