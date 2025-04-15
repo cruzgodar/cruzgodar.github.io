@@ -82,6 +82,7 @@ export default function()
 			}
 
 			run();
+			setTimeout(() => run(), 50);
 		}
 	});
 
