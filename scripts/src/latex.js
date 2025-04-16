@@ -7,6 +7,7 @@ const preamble = raw`\documentclass{article}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{graphicx}
