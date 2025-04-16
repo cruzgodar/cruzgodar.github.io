@@ -11,8 +11,10 @@ const preamble = raw`\documentclass{article}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{graphicx}
-\graphicspath{{graphics/}}
 \usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
 \setenumerate[0]{label=\alph*)}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{8pt}
