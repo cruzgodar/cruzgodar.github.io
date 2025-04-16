@@ -130,9 +130,9 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	- - -
 
-	#. Does every telescoping series of the form $$\sum_{n = 1}^\infty (a_{n + 1} - a_n)$$ converge to $a_1$?. Why or why not?
+	#. Does every telescoping series of the form $$\sum_{n = 1}^\infty (a_{n + 1} - a_n)$$ converge to $-a_1$?. Why or why not?
 
-	#. If $$\sum_{n = 1}^\infty a_n$$ converges and $|b_n| < |a_n|$ for all $m$, does $$\sum_{n = 1}^\infty b_n$$ necessarily converge?
+	#. If $$\sum_{n = 1}^\infty a_n$$ converges and $|b_n| < |a_n|$ for all $n$, does $$\sum_{n = 1}^\infty b_n$$ necessarily converge?
 
 	- - -
 
