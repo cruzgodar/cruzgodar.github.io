@@ -10,7 +10,7 @@ Our next test for convergence isn't nearly so complicated. Now that we know the 
 	
 	1. If $\sum_{n = 1}^\infty a_n$ converges, then $\sum_{n = 1}^\infty b_n$ also converges.
 	
-	2. If $\sum_{n = 1}^\infty b_n$ diverges, then $\sum_{n = 1}^\infty b_n$ also diverges.
+	2. If $\sum_{n = 1}^\infty b_n$ diverges, then $\sum_{n = 1}^\infty a_n$ also diverges.
 	
 ###
 
