@@ -1,3 +1,5 @@
+### show-solutions
+
 ### nav-buttons
 
 As we've mentioned and begun to see, this course revolves around series. The later sections will be devoted to Taylor series, the application we'll come to care about the most, but there's an important question we need to address before then: how do we know if a series converges? Unfortunately, the answer turns out to be substantially more complicated than we might like, similarly to the question of *how do we integrate functions* that took a whole part of the course to answer. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could each only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that each handle many situations, but not all. We'll start with the simplest in this section and work our way up from there.
