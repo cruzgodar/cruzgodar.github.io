@@ -142,7 +142,7 @@ The purpose of partial sums is to let us talk about the convergence of series. T
 
 
 
-Notice the difference in notation between sequences and series: if a sequence $(a_n)$ converges to $a$, we write $(a_n) \to a$, with an arrow marking convergence. On the other hand, a convergent series is written $\sum_{n = 1}^\infty b_n = b$, with an equals sign. This is because a convergent series is equal to its limit, whereas a convergent series is still just a list of numbers.
+Notice the difference in notation between sequences and series: if a sequence $(a_n)$ converges to $a$, we write $(a_n) \to a$, with an arrow marking convergence. On the other hand, a convergent series is written $\sum_{n = 1}^\infty b_n = b$, with an equals sign. This is because a convergent series is equal to its limit, whereas a convergent sequence is still just a list of numbers.
 
 
 
