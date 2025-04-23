@@ -23,6 +23,8 @@ const preamble = raw`\documentclass{article}
 \titleformat{\section}
 {\normalfont \Large \bfseries \centering}{}{0pt}{}
 
+\newcommand{\s}[1]{{\color{violet} #1}}
+
 \begin{document}
 
 \Large Name: [YOUR NAME HERE] \hfill `;

@@ -24,7 +24,7 @@ We'll take a brief diversion from general convergence tests to talk about a part
 
 
 
-Alternating series are well-named: the terms alternate in sign. This can have some profoud effects on the behavior of the series. For example, one of the most famous alternating series is the **Alternating Harmonic series**, defined as
+Alternating series are well-named: the terms alternate in sign. This can have some profound effects on the behavior of the series. For example, one of the most famous alternating series is the **Alternating Harmonic series**, defined as
 
 $$
 	\sum_{n = 1}^\infty \frac{(-1)^{n + 1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots.
