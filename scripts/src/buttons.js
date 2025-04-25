@@ -76,9 +76,15 @@ export class DownloadButton extends Button
 			{
 				if (window.DEBUG && (e.metaKey || e.ctrlKey))
 				{
-					if (applet.downloadBokehFrame)
+					if (e.altKey && applet.downloadBokehFrame)
 					{
 						applet.downloadBokehFrame();
+						return;
+					}
+
+					else if (applet.makeMosaic)
+					{
+						applet.makeMosaic({});
 						return;
 					}
 				}

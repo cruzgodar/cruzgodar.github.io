@@ -1181,13 +1181,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		
-		// this.makeMosaic({ filename, size: 4 });
 	}
 
 	async makeMosaic({
-		filename,
-		size,
+		size = 10,
 		returnPixels = false,
 		useForDepthBuffer = false
 	}) {
@@ -1300,7 +1297,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						const link = document.createElement("a");
 						link.href = URL.createObjectURL(blob);
-						link.download = filename;
+						link.download = "mosaic.png";
 						link.click();
 					});
 				}
@@ -1369,7 +1366,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const mosaicSize = 8;
+		const mosaicSize = 10;
 
 		const returnToAntialiasing = this.useAntialiasing;
 		await loadGlsl();
