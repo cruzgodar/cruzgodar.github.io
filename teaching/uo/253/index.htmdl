@@ -68,7 +68,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	#. $$\sum_{n = 1}^\infty \frac{1}{\sqrt{n^2 + \ln(n)}}$$.
 
-	#. $$\sum_{k = 1}^\infty \frac{1}{n\ln(n)\ln(\ln(n))}$$.
+	#. $$\sum_{n = 2}^\infty \frac{1}{n\ln(n)\ln(\ln(n))}$$.
 
 	#. $$\sum_{n = 1}^\infty \frac{\ln^k(n)}{n^2}$$ for $k \geq 1$ any positive integer. Here, $\ln^k(n) = \left( \ln(n) \right)^k$.
 

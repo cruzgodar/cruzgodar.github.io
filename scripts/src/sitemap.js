@@ -1786,6 +1786,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/slides/in-defense-of-a-dissertation",
 			"/slides/light-shadow-world-of-nails",
 			"/slides/marys-3-manifold",
 			"/slides/grandmas-recipe",
@@ -1794,6 +1795,15 @@ export const sitemap =
 		]
 	},
 		
+	"/slides/in-defense-of-a-dissertation":
+	{
+		"title": "In Defense of a Dissertation",
+		
+		"parent": "/slides",
+		
+		"children": []
+	},
+	
 	"/slides/light-shadow-world-of-nails":
 	{
 		"title": "Light, Shadow, and a World of Nails",
