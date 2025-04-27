@@ -11,6 +11,8 @@ Text
 
 	### sliders
 		num-boids
+		avoidance-factor
+		alignment-factor
 	###
 </div>
 

@@ -6,6 +6,7 @@ export class Slider extends InputElement
 	subtextElement;
 	valueElement;
 	value;
+	displayValue;
 	min;
 	max;
 	snapPoints;
@@ -67,6 +68,10 @@ export class Slider extends InputElement
 
 		this.value = this.integer
 			? Math.round(this.value)
+			: this.value;
+
+		this.displayValue = this.integer
+			? this.value
 			: this.value.toFixed(this.precision);
 		
 		this.element.setAttribute("min", this.min);
@@ -77,7 +82,7 @@ export class Slider extends InputElement
 
 		this.subtextElement.textContent = `${name}: `;
 		this.valueElement = document.createElement("span");
-		this.valueElement.textContent = this.value;
+		this.valueElement.textContent = this.displayValue;
 		this.subtextElement.appendChild(this.valueElement);
 
 		this.value = parseFloat(this.value);
@@ -104,9 +109,13 @@ export class Slider extends InputElement
 
 			this.value = this.integer
 				? Math.round(this.value)
+				: this.value;
+
+			this.displayValue = this.integer
+				? this.value
 				: this.value.toFixed(this.precision);
 
-			this.valueElement.textContent = this.value;
+			this.valueElement.textContent = this.displayValue;
 
 			this.value = parseFloat(this.value);
 			
@@ -177,9 +186,13 @@ export class Slider extends InputElement
 
 		this.value = this.integer
 			? Math.round(this.value)
+			: this.value;
+
+		this.displayValue = this.integer
+			? this.value
 			: this.value.toFixed(this.precision);
 
-		this.valueElement.textContent = this.value;
+		this.valueElement.textContent = this.displayValue;
 
 		if (this.persistState)
 		{

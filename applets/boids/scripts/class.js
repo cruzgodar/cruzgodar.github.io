@@ -31,8 +31,10 @@ export class Boids extends AnimationFrameApplet
 
 	margin = 0.02;
 
-	frameCycle = 0;
-	numFrameCycles;
+	avoidCycle = 0;
+	numAvoidCycles;
+	alignCycle = 0;
+	numAlignCycles;
 
 	constructor({ canvas })
 	{
@@ -53,6 +55,8 @@ export class Boids extends AnimationFrameApplet
 		this.wilson = new WilsonCPU(canvas, options);
 
 		this.run({});
+
+		this.resume();
 	}
 
 
@@ -80,9 +84,20 @@ export class Boids extends AnimationFrameApplet
 		this.centeringFactor = centeringFactor;
 		this.turnFactor = turnFactor;
 
-		this.numFrameCycles = Math.ceil(this.numBoids / 75);
+		this.setResolution(resolution);
+		this.setNumBoids(numBoids);
+	}
+
+	setResolution(resolution)
+	{
+		this.resolution = resolution;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
+	}
+
+	setNumBoids(numBoids)
+	{
+		this.numBoids = numBoids;
 
 		if (this.boids.length > this.numBoids)
 		{
@@ -106,15 +121,15 @@ export class Boids extends AnimationFrameApplet
 			}
 		}
 
-		this.resume();
+		this.numAvoidCycles = Math.ceil(this.numBoids / 200);
+		this.numAlignCycles = Math.ceil(this.numBoids / 100);
 	}
 
 	drawFrame()
 	{
-		this.frameCycle = (this.frameCycle + 1) % this.numFrameCycles;
+		this.avoidCycle = (this.avoidCycle + 1) % this.numAvoidCycles;
+		this.alignCycle = (this.alignCycle + 1) % this.numAlignCycles;
 		this.updateBoids();
-
-
 
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
@@ -170,7 +185,7 @@ export class Boids extends AnimationFrameApplet
 			let closeDx = 0;
 			let closeDy = 0;
 
-			for (let j = this.frameCycle; j < this.numBoids; j += this.numFrameCycles)
+			for (let j = this.avoidCycle; j < this.numBoids; j += this.numAvoidCycles)
 			{
 				if (i === j)
 				{
@@ -197,7 +212,7 @@ export class Boids extends AnimationFrameApplet
 			let totalVy = 0;
 			let totalWeight = 0;
 
-			for (let j = this.frameCycle; j < this.numBoids; j += this.numFrameCycles)
+			for (let j = this.alignCycle; j < this.numBoids; j += this.numAlignCycles)
 			{
 				if (i === j)
 				{
@@ -254,27 +269,6 @@ export class Boids extends AnimationFrameApplet
 			
 			boid.x += boid.vx;
 			boid.y += boid.vy;
-
-			// // Wrap the boid around the world.
-			// if (boid.x < -this.wilson.worldWidth / 2)
-			// {
-			// 	boid.x += this.wilson.worldWidth;
-			// }
-
-			// else if (boid.x > this.wilson.worldWidth / 2)
-			// {
-			// 	boid.x -= this.wilson.worldWidth;
-			// }
-
-			// if (boid.y < -this.wilson.worldHeight / 2)
-			// {
-			// 	boid.y += this.wilson.worldHeight;
-			// }
-
-			// else if (boid.y > this.wilson.worldHeight / 2)
-			// {
-			// 	boid.y -= this.wilson.worldHeight;
-			// }
 		}
 	}
 }

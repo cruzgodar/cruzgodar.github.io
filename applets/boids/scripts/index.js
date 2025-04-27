@@ -15,17 +15,35 @@ export default function()
 		value: 2000,
 		minValue: 1000,
 		maxValue: 3000,
-		onInput: updateParameters,
+		onInput: () => applet.setResolution(resolutionInput.value)
 	});
 
 	const numBoidsSlider = new Slider({
 		element: $("#num-boids-slider"),
 		name: "Boids",
-		value: 500,
+		value: 1000,
 		min: 100,
-		max: 3000,
+		max: 5000,
 		logarithmic: true,
-		onInput: updateParameters
+		onInput: () => applet.setNumBoids(numBoidsSlider.value)
+	});
+
+	const avoidanceFactorSlider = new Slider({
+		element: $("#avoidance-factor-slider"),
+		name: "Avoidance",
+		value: 10,
+		min: 0,
+		max: 20,
+		onInput: () => applet.avoidFactor = avoidanceFactorSlider.value / 100
+	});
+
+	const alignmentFactorSlider = new Slider({
+		element: $("#alignment-factor-slider"),
+		name: "Alignment",
+		value: 0.75,
+		min: 0,
+		max: 3,
+		onInput: () => applet.alignmentFactor = alignmentFactorSlider.value / 100
 	});
 
 	new DownloadButton({
@@ -35,12 +53,4 @@ export default function()
 	});
 
 	showPage();
-
-	function updateParameters()
-	{
-		applet.run({
-			resolution: resolutionInput.value,
-			numBoids: numBoidsSlider.value,
-		});
-	}
 }
