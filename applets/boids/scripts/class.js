@@ -27,6 +27,9 @@ export class Boids extends AnimationFrameApplet
 	avoidRange;
 	avoidFactor;
 	centeringFactor;
+	turnFactor;
+
+	margin = 0.02;
 
 	frameCycle = 0;
 	numFrameCycles;
@@ -64,6 +67,7 @@ export class Boids extends AnimationFrameApplet
 		avoidRange = 0.01,
 		avoidFactor = 0.05,
 		centeringFactor = 0.0005,
+		turnFactor = 0.0001,
 	}) {
 		this.resolution = resolution;
 		this.numBoids = numBoids;
@@ -74,6 +78,7 @@ export class Boids extends AnimationFrameApplet
 		this.avoidRange = avoidRange;
 		this.avoidFactor = avoidFactor;
 		this.centeringFactor = centeringFactor;
+		this.turnFactor = turnFactor;
 
 		this.numFrameCycles = Math.ceil(this.numBoids / 75);
 
@@ -220,6 +225,14 @@ export class Boids extends AnimationFrameApplet
 				boid.vy += (totalVy / totalWeight - boid.vy) * this.alignmentFactor;
 			}
 
+			
+
+			const xFactor = Math.exp((Math.abs(boid.x) - this.wilson.worldWidth / 2) * 10);
+			const yFactor = Math.exp((Math.abs(boid.y) - this.wilson.worldHeight / 2) * 10);
+
+			boid.vx -= Math.sign(boid.x) * xFactor * this.turnFactor;
+			boid.vy -= Math.sign(boid.y) * yFactor * this.turnFactor;
+
 
 
 			// Clamp velocity and move the boid.
@@ -242,26 +255,26 @@ export class Boids extends AnimationFrameApplet
 			boid.x += boid.vx;
 			boid.y += boid.vy;
 
-			// Wrap the boid around the world.
-			if (boid.x < -this.wilson.worldWidth / 2)
-			{
-				boid.x += this.wilson.worldWidth;
-			}
+			// // Wrap the boid around the world.
+			// if (boid.x < -this.wilson.worldWidth / 2)
+			// {
+			// 	boid.x += this.wilson.worldWidth;
+			// }
 
-			else if (boid.x > this.wilson.worldWidth / 2)
-			{
-				boid.x -= this.wilson.worldWidth;
-			}
+			// else if (boid.x > this.wilson.worldWidth / 2)
+			// {
+			// 	boid.x -= this.wilson.worldWidth;
+			// }
 
-			if (boid.y < -this.wilson.worldHeight / 2)
-			{
-				boid.y += this.wilson.worldHeight;
-			}
+			// if (boid.y < -this.wilson.worldHeight / 2)
+			// {
+			// 	boid.y += this.wilson.worldHeight;
+			// }
 
-			else if (boid.y > this.wilson.worldHeight / 2)
-			{
-				boid.y -= this.wilson.worldHeight;
-			}
+			// else if (boid.y > this.wilson.worldHeight / 2)
+			// {
+			// 	boid.y -= this.wilson.worldHeight;
+			// }
 		}
 	}
 }
