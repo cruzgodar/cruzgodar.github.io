@@ -22,8 +22,8 @@ export default function()
 		element: $("#num-boids-slider"),
 		name: "Boids",
 		value: 500,
-		min: 50,
-		max: 5000,
+		min: 100,
+		max: 3000,
 		logarithmic: true,
 		onInput: updateParameters
 	});

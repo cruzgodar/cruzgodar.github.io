@@ -19,6 +19,17 @@ export class Boids extends AnimationFrameApplet
 	// world units per frame.
 
 	boidSize = 0.01;
+	minVelocity;
+	maxVelocity;
+
+	alignmentRange;
+	alignmentFactor;
+	avoidRange;
+	avoidFactor;
+	centeringFactor;
+
+	frameCycle = 0;
+	numFrameCycles;
 
 	constructor({ canvas })
 	{
@@ -46,13 +57,25 @@ export class Boids extends AnimationFrameApplet
 	run({
 		resolution = 2000,
 		numBoids = 500,
-		minVelocity = 0.0008,
-		maxVelocity = 0.005,
+		minVelocity = 0.002,
+		maxVelocity = 0.004,
+		alignmentRange = 0.1,
+		alignmentFactor = 0.05,
+		avoidRange = 0.01,
+		avoidFactor = 0.05,
+		centeringFactor = 0.0005,
 	}) {
 		this.resolution = resolution;
 		this.numBoids = numBoids;
 		this.minVelocity = minVelocity;
 		this.maxVelocity = maxVelocity;
+		this.alignmentRange = alignmentRange;
+		this.alignmentFactor = alignmentFactor;
+		this.avoidRange = avoidRange;
+		this.avoidFactor = avoidFactor;
+		this.centeringFactor = centeringFactor;
+
+		this.numFrameCycles = Math.ceil(this.numBoids / 100);
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
@@ -83,6 +106,7 @@ export class Boids extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		this.frameCycle = (this.frameCycle + 1) % this.numFrameCycles;
 		this.updateBoids();
 
 
@@ -96,9 +120,13 @@ export class Boids extends AnimationFrameApplet
 			const x = boid.x;
 			const y = boid.y;
 			const theta = Math.atan2(boid.vy, boid.vx);
-			const v = Math.sqrt(boid.vx * boid.vx + boid.vy * boid.vy);
+			const v2 = boid.vx * boid.vx + boid.vy * boid.vy;
 	
-			const rgb = hsvToRgb(theta / (2 * Math.PI) + 0.5, v / this.maxVelocity, 1);
+			const rgb = hsvToRgb(
+				theta / (2 * Math.PI) + 0.5,
+				v2 / (this.maxVelocity * this.maxVelocity),
+				1
+			);
 			this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
 			// Draw an isoceles triangle centered at (x, y) and pointing toward (x + vx, y + vy).
@@ -129,11 +157,88 @@ export class Boids extends AnimationFrameApplet
 
 	updateBoids()
 	{
-		console.log(this.boids[0].vx, this.boids[0].vy);
 		for (let i = 0; i < this.numBoids; i++)
 		{
-			// Move the boid.
 			const boid = this.boids[i];
+
+			// Avoid other boids.
+			let closeDx = 0;
+			let closeDy = 0;
+
+			for (let j = this.frameCycle; j < this.numBoids; j += this.numFrameCycles)
+			{
+				if (i === j)
+				{
+					continue;
+				}
+
+				const dx = boid.x - this.boids[j].x;
+				const dy = boid.y - this.boids[j].y;
+				const d = Math.sqrt(dx * dx + dy * dy);
+
+				closeDx += dx * Math.exp(-d / this.avoidRange);
+				closeDy += dy * Math.exp(-d / this.avoidRange);
+			}
+
+			boid.vx += closeDx * this.avoidFactor;
+			boid.vy += closeDy * this.avoidFactor;
+
+
+
+			// Align and center with nearby boids.
+			let totalX = 0;
+			let totalY = 0;
+			let totalVx = 0;
+			let totalVy = 0;
+			let totalWeight = 0;
+
+			for (let j = this.frameCycle; j < this.numBoids; j += this.numFrameCycles)
+			{
+				if (i === j)
+				{
+					continue;
+				}
+
+				const dx = boid.x - this.boids[j].x;
+				const dy = boid.y - this.boids[j].y;
+				const d = Math.sqrt(dx * dx + dy * dy);
+				const weight = Math.exp(-d / this.alignmentRange);
+
+				totalX += this.boids[j].x * weight;
+				totalY += this.boids[j].y * weight;
+				totalVx += this.boids[j].vx * weight;
+				totalVy += this.boids[j].vy * weight;
+				totalWeight += weight;
+			}
+
+			if (totalWeight > 0)
+			{
+				boid.x += (totalX / totalWeight - boid.x) * this.centeringFactor;
+				boid.y += (totalY / totalWeight - boid.y) * this.centeringFactor;
+
+				boid.vx += (totalVx / totalWeight - boid.vx) * this.alignmentFactor;
+				boid.vy += (totalVy / totalWeight - boid.vy) * this.alignmentFactor;
+			}
+
+
+
+			// Clamp velocity and move the boid.
+			const v2 = boid.vx * boid.vx + boid.vy * boid.vy;
+
+			if (v2 > this.maxVelocity * this.maxVelocity)
+			{
+				const v = Math.sqrt(v2);
+				boid.vx = this.maxVelocity * boid.vx / v;
+				boid.vy = this.maxVelocity * boid.vy / v;
+			}
+
+			else if (v2 < this.minVelocity * this.minVelocity)
+			{
+				const v = Math.sqrt(v2);
+				boid.vx = this.minVelocity * boid.vx / v;
+				boid.vy = this.minVelocity * boid.vy / v;
+			}
+			
 			boid.x += boid.vx;
 			boid.y += boid.vy;
 
