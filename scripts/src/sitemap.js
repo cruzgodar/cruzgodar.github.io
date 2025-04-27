@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/boids",
 			"/applets/lambda-calculus",
 			"/applets/maurer-roses",
 			"/applets/singular-value-decompositions",
@@ -95,6 +96,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/boids":
+	{
+		"title": "Boids!",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/lambda-calculus":
 	{
 		"title": "Lambda Calculus",

@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		boids Boids!
 		lambda-calculus Lambda Calculus
 		maurer-roses Maurer Roses
 		singular-value-decompositions Singular Value Decompositions
