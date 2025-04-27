@@ -75,7 +75,7 @@ export class Boids extends AnimationFrameApplet
 		this.avoidFactor = avoidFactor;
 		this.centeringFactor = centeringFactor;
 
-		this.numFrameCycles = Math.ceil(this.numBoids / 100);
+		this.numFrameCycles = Math.ceil(this.numBoids / 75);
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 

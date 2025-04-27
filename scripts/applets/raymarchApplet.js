@@ -238,7 +238,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 		
 		this.listenForKeysPressed(
-			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z", "control"],
 			(key, pressed) =>
 			{
 				if (key === "z")
@@ -1609,6 +1609,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[2] = -1;
 		}
 
+		const movingSpeed = (this.keysPressed.control ? 0.1 : 1) * this.movingSpeed;
+
 		if (!this.lockedOnOrigin && (
 			this.moveVelocity[0] !== 0
 				|| this.moveVelocity[1] !== 0
@@ -1646,10 +1648,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[2] * this.speedFactor / 1.5
 			];
 
-			this.cameraPos[0] += this.movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
-			this.cameraPos[1] += this.movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
+			this.cameraPos[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
+			this.cameraPos[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
 			this.cameraPos[2] = this.lockZ
-				?? this.cameraPos[2] + this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
+				?? this.cameraPos[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
 			this.needNewFrame = true;
 		}
