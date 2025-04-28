@@ -36,6 +36,8 @@ export class Boids extends AnimationFrameApplet
 	alignCycle = 0;
 	numAlignCycles;
 
+	lastTimeElapsed;
+
 	constructor({ canvas })
 	{
 		super(canvas);
@@ -45,6 +47,7 @@ export class Boids extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			fullscreenOptions: {
+				fillScreen: true,
 				useFullscreenButton: true,
 
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -71,7 +74,7 @@ export class Boids extends AnimationFrameApplet
 		avoidRange = 0.01,
 		avoidFactor = 0.05,
 		centeringFactor = 0.0005,
-		turnFactor = 0.0001,
+		turnFactor = 0.00004,
 	}) {
 		this.resolution = resolution;
 		this.numBoids = numBoids;
@@ -125,6 +128,11 @@ export class Boids extends AnimationFrameApplet
 		this.numAlignCycles = Math.ceil(this.numBoids / 100);
 	}
 
+	prepareFrame(timeElapsed)
+	{
+		this.lastTimeElapsed = timeElapsed;
+	}
+
 	drawFrame()
 	{
 		this.avoidCycle = (this.avoidCycle + 1) % this.numAvoidCycles;
@@ -132,7 +140,7 @@ export class Boids extends AnimationFrameApplet
 		this.updateBoids();
 
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 		for (let i = 0; i < this.numBoids; i++)
 		{
@@ -162,11 +170,16 @@ export class Boids extends AnimationFrameApplet
 			const x3 = x + Math.cos(theta3) * this.boidSize;
 			const y3 = y + Math.sin(theta3) * this.boidSize;
 
+			const canvasCoords = this.wilson.interpolateWorldToCanvas([x, y]);
+			const canvasCoords1 = this.wilson.interpolateWorldToCanvas([x1, y1]);
+			const canvasCoords2 = this.wilson.interpolateWorldToCanvas([x2, y2]);
+			const canvasCoords3 = this.wilson.interpolateWorldToCanvas([x3, y3]);
+
 			this.wilson.ctx.beginPath();
-			this.wilson.ctx.moveTo(...this.wilson.interpolateWorldToCanvas([x1, y1]));
-			this.wilson.ctx.lineTo(...this.wilson.interpolateWorldToCanvas([x2, y2]));
-			this.wilson.ctx.lineTo(...this.wilson.interpolateWorldToCanvas([x, y]));
-			this.wilson.ctx.lineTo(...this.wilson.interpolateWorldToCanvas([x3, y3]));
+			this.wilson.ctx.moveTo(canvasCoords1[1], canvasCoords1[0]);
+			this.wilson.ctx.lineTo(canvasCoords2[1], canvasCoords2[0]);
+			this.wilson.ctx.lineTo(canvasCoords[1], canvasCoords[0]);
+			this.wilson.ctx.lineTo(canvasCoords3[1], canvasCoords3[0]);
 			this.wilson.ctx.closePath();
 
 			this.wilson.ctx.fill();
@@ -242,8 +255,12 @@ export class Boids extends AnimationFrameApplet
 
 			
 
-			const xFactor = Math.exp((Math.abs(boid.x) - this.wilson.worldWidth / 2) * 10);
-			const yFactor = Math.exp((Math.abs(boid.y) - this.wilson.worldHeight / 2) * 10);
+			const xFactor = Math.exp(
+				(Math.abs(boid.x) - (this.wilson.worldWidth / 2 - 0.075)) * 50
+			);
+			const yFactor = Math.exp(
+				(Math.abs(boid.y) - (this.wilson.worldHeight / 2 - 0.075)) * 50
+			);
 
 			boid.vx -= Math.sign(boid.x) * xFactor * this.turnFactor;
 			boid.vy -= Math.sign(boid.y) * yFactor * this.turnFactor;
@@ -267,8 +284,8 @@ export class Boids extends AnimationFrameApplet
 				boid.vy = this.minVelocity * boid.vy / v;
 			}
 			
-			boid.x += boid.vx;
-			boid.y += boid.vy;
+			boid.x += boid.vx * (this.lastTimeElapsed / 6.944);
+			boid.y += boid.vy * (this.lastTimeElapsed / 6.944);
 		}
 	}
 }

@@ -23,7 +23,7 @@ export default function()
 		name: "Boids",
 		value: 1000,
 		min: 100,
-		max: 5000,
+		max: 4000,
 		logarithmic: true,
 		onInput: () => applet.setNumBoids(numBoidsSlider.value)
 	});
