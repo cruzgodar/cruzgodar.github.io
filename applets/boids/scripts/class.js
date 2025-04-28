@@ -36,7 +36,9 @@ export class Boids extends AnimationFrameApplet
 	alignCycle = 0;
 	numAlignCycles;
 
-	lastTimeElapsed;
+	frame = 0;
+	lastTimeElapseds = Array(16).fill(0);
+	lastTimeElapsed = 0;
 
 	constructor({ canvas })
 	{
@@ -71,10 +73,10 @@ export class Boids extends AnimationFrameApplet
 		maxVelocity = 0.004,
 		alignmentRange = 0.1,
 		alignmentFactor = 0.05,
-		avoidRange = 0.01,
-		avoidFactor = 0.05,
+		avoidRange = 0.0075,
+		avoidFactor = 0.1,
 		centeringFactor = 0.0005,
-		turnFactor = 0.00004,
+		turnFactor = 0.0001,
 	}) {
 		this.resolution = resolution;
 		this.numBoids = numBoids;
@@ -130,7 +132,15 @@ export class Boids extends AnimationFrameApplet
 
 	prepareFrame(timeElapsed)
 	{
-		this.lastTimeElapsed = timeElapsed;
+		this.frame = (this.frame + 1) % this.lastTimeElapseds.length;
+		this.lastTimeElapseds[this.frame] = timeElapsed;
+
+		this.lastTimeElapsed = 0;
+		for (let i = 0; i < this.lastTimeElapseds.length; i++)
+		{
+			this.lastTimeElapsed += this.lastTimeElapseds[i];
+		}
+		this.lastTimeElapsed /= this.lastTimeElapseds.length;
 	}
 
 	drawFrame()
@@ -255,12 +265,8 @@ export class Boids extends AnimationFrameApplet
 
 			
 
-			const xFactor = Math.exp(
-				(Math.abs(boid.x) - (this.wilson.worldWidth / 2 - 0.075)) * 50
-			);
-			const yFactor = Math.exp(
-				(Math.abs(boid.y) - (this.wilson.worldHeight / 2 - 0.075)) * 50
-			);
+			const xFactor = Math.exp((Math.abs(boid.x) - this.wilson.worldWidth / 2) * 10);
+			const yFactor = Math.exp((Math.abs(boid.y) - this.wilson.worldHeight / 2) * 10);
 
 			boid.vx -= Math.sign(boid.x) * xFactor * this.turnFactor;
 			boid.vy -= Math.sign(boid.y) * yFactor * this.turnFactor;

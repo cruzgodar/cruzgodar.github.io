@@ -25,6 +25,7 @@ export default function()
 		min: 100,
 		max: 4000,
 		logarithmic: true,
+		snapPoints: [500, 1000, 2000, 3000],
 		onInput: () => applet.setNumBoids(numBoidsSlider.value)
 	});
 
