@@ -426,6 +426,30 @@ export class Boids extends AnimationFrameApplet
 
 
 
+			// Slightly avoid boids of prey.
+			closeDx = 0;
+			closeDy = 0;
+
+			for (let j = 0; j < this.numBoidsOfPrey; j++)
+			{
+				if (i === j)
+				{
+					continue;
+				}
+
+				const dx = boidOfPrey.x - this.boidsOfPrey[j].x;
+				const dy = boidOfPrey.y - this.boidsOfPrey[j].y;
+				const d = Math.sqrt(dx * dx + dy * dy);
+
+				closeDx += dx * Math.exp(-d / this.fearRange);
+				closeDy += dy * Math.exp(-d / this.fearRange);
+			}
+
+			boidOfPrey.vx += closeDx * this.fearFactor * 0.05;
+			boidOfPrey.vy += closeDy * this.fearFactor * 0.05;
+
+
+
 			// Center with nearby boids, but don't align.
 			let totalX = 0;
 			let totalY = 0;
