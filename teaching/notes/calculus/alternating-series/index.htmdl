@@ -108,7 +108,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 	
 	1. Here, it's helpful to pull out the minus sign to get $(-1)^i \left( \frac{1}{i^i} \right)$. Since the second factor is always positive, the series is alternating, and we also have that the terms are decreasing. Since it certainly satisfies $\lim_{i \to \infty} \left( \frac{1}{i^i} \right) = 0$, the series converges by the AST.
 	
-	2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denomator says otherwise: it's often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can't apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settle down to any one for large $n$, we must have that
+	2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denominator says otherwise: it's often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can't apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settles down to any one for large $n$, we must have that
 	
 	$$
 		\lim_{n \to \infty} \frac{(-1)^{n+1}}{\sin(n)}
@@ -266,7 +266,19 @@ We pick up every term this way, and since the Harmonic series diverges, we'll ne
 
 
 
-First of all, any series with all positive terms that converges does so absolutely, since taking the absolute value of every term changes nothing. For a more substantial example, $\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n^2}$ converges absolutely, while $\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n}$ only converges conditionally.
+First of all, any series with all positive terms that converges does so absolutely, since taking the absolute value of every term changes nothing. For a more substantial example,
+
+$$
+	\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n^2}
+$$
+
+converges absolutely, while
+
+$$
+	\sum_{n = 1}^\infty \frac{(-1)^{n+1}}{n}
+$$
+
+only converges conditionally.
 
 Suppose $\sum_{n = 1}^\infty a_n$ converges absolutely. Since the $a_n$ can be positive or negative, we know that either $a_n = |a_n|$ or $a_n = -|a_n|$. Therefore, $a_n + |a_n|$ is either $2|a_n|$ or zero. That inequality extends to the series too:
 
