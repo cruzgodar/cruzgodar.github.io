@@ -43,7 +43,7 @@ export default function()
 	const avoidanceFactorSlider = new Slider({
 		element: $("#avoidance-factor-slider"),
 		name: "Avoidance",
-		value: 10,
+		value: 15,
 		min: 0,
 		max: 20,
 		onInput: () => applet.avoidFactor = avoidanceFactorSlider.value / 100
@@ -52,7 +52,7 @@ export default function()
 	const alignmentFactorSlider = new Slider({
 		element: $("#alignment-factor-slider"),
 		name: "Alignment",
-		value: 0.75,
+		value: 1,
 		min: 0,
 		max: 3,
 		onInput: () => applet.alignmentFactor = alignmentFactorSlider.value / 100
@@ -61,9 +61,9 @@ export default function()
 	const fearFactorSlider = new Slider({
 		element: $("#fear-factor-slider"),
 		name: "Fear",
-		value: 10,
+		value: 15,
 		min: 0,
-		max: 20,
+		max: 30,
 		snapPoints: [5, 10, 15],
 		onInput: () => applet.fearFactor = fearFactorSlider.value / 1000
 	});
@@ -72,6 +72,15 @@ export default function()
 		element: $("#download-button"),
 		applet,
 		filename: "boids.png"
+	});
+
+	applet.run({
+		resolution: resolutionInput.value,
+		numBoids: numBoidsSlider.value,
+		numBoidsOfPrey: numBoidsOfPreySlider.value,
+		avoidFactor: avoidanceFactorSlider.value / 100,
+		alignmentFactor: alignmentFactorSlider.value / 100,
+		fearFactor: fearFactorSlider.value / 1000,
 	});
 
 	showPage();

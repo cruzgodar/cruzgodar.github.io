@@ -20,7 +20,7 @@ export class Boids extends AnimationFrameApplet
 
 	// world units per frame.
 
-	boidSize = 0.01;
+	boidSize = 0.015;
 	minVelocity;
 	maxVelocity;
 
@@ -64,17 +64,13 @@ export class Boids extends AnimationFrameApplet
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);
-
-		this.run({});
-
-		this.resume();
 	}
 
 
 
 	run({
 		resolution = 2000,
-		numBoids = 500,
+		numBoids = 1000,
 		numBoidsOfPrey = 0,
 		minVelocity = 0.002,
 		maxVelocity = 0.004,
@@ -108,6 +104,8 @@ export class Boids extends AnimationFrameApplet
 		this.setResolution(resolution);
 		this.setNumBoids(numBoids);
 		this.setNumBoidsOfPrey(numBoidsOfPrey);
+
+		this.resume();
 	}
 
 	setResolution(resolution)
@@ -180,7 +178,7 @@ export class Boids extends AnimationFrameApplet
 	prepareFrame(timeElapsed)
 	{
 		this.frame = (this.frame + 1) % this.lastTimeElapseds.length;
-		this.lastTimeElapseds[this.frame] = timeElapsed;
+		this.lastTimeElapseds[this.frame] = Math.min(timeElapsed, 50);
 
 		this.lastTimeElapsed = 0;
 		for (let i = 0; i < this.lastTimeElapseds.length; i++)
@@ -207,21 +205,25 @@ export class Boids extends AnimationFrameApplet
 
 		for (let i = 0; i < this.numBoidsOfPrey; i++)
 		{
-			this.drawBoid(this.boidsOfPrey[i], 3);
+			this.drawBoid(this.boidsOfPrey[i], true);
 		}
 
 		this.needNewFrame = true;
 	}
 
-	drawBoid(boid, size = 1)
+	drawBoid(boid, predator = false)
 	{
 		const x = boid.x;
 		const y = boid.y;
 		const theta = Math.atan2(boid.vy, boid.vx);
 		const v2 = boid.vx * boid.vx + boid.vy * boid.vy;
 
+		const size = predator ? 2.5 : 1;
+
+		const h = theta / (2 * Math.PI) + 0.5;
+
 		const rgb = hsvToRgb(
-			theta / (2 * Math.PI) + 0.5,
+			predator ? 0.5 + h : h,
 			v2 / (this.maxVelocity * this.maxVelocity),
 			1
 		);
