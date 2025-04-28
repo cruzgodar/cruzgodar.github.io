@@ -11,8 +11,10 @@ Text
 
 	### sliders
 		num-boids
+		num-boids-of-prey
 		avoidance-factor
 		alignment-factor
+		fear-factor
 	###
 </div>
 

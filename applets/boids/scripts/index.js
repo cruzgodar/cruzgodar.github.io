@@ -25,8 +25,19 @@ export default function()
 		min: 100,
 		max: 4000,
 		logarithmic: true,
+		integer: true,
 		snapPoints: [500, 1000, 2000, 3000],
 		onInput: () => applet.setNumBoids(numBoidsSlider.value)
+	});
+
+	const numBoidsOfPreySlider = new Slider({
+		element: $("#num-boids-of-prey-slider"),
+		name: "Boids of Prey",
+		value: 0,
+		min: 0,
+		max: 5,
+		integer: true,
+		onInput: () => applet.setNumBoidsOfPrey(numBoidsOfPreySlider.value)
 	});
 
 	const avoidanceFactorSlider = new Slider({
@@ -45,6 +56,16 @@ export default function()
 		min: 0,
 		max: 3,
 		onInput: () => applet.alignmentFactor = alignmentFactorSlider.value / 100
+	});
+
+	const fearFactorSlider = new Slider({
+		element: $("#fear-factor-slider"),
+		name: "Fear",
+		value: 10,
+		min: 0,
+		max: 20,
+		snapPoints: [5, 10, 15],
+		onInput: () => applet.fearFactor = fearFactorSlider.value / 1000
 	});
 
 	new DownloadButton({
