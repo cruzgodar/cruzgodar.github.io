@@ -54,9 +54,9 @@ if (pageUrl === "null")
 
 export let temporaryListeners = [];
 
-export function addTemporaryListener({ object, event, callback })
+export function addTemporaryListener({ object, event, callback, options = {} })
 {
-	object.addEventListener(event, callback);
+	object.addEventListener(event, callback, options);
 
 	temporaryListeners.push([object, event, callback]);
 }

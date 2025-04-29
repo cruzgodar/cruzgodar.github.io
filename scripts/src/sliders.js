@@ -129,7 +129,8 @@ export class Slider extends InputElement
 
 					this.setRawValue(clampedX / maxX);
 				}
-			}
+			},
+			options: { passive: false }
 		});
 
 		addTemporaryListener({
@@ -149,7 +150,8 @@ export class Slider extends InputElement
 
 					this.setRawValue(clampedX / maxX);
 				}
-			}
+			},
+			options: { passive: false }
 		});
 
 		setTimeout(() =>
