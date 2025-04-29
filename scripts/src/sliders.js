@@ -9,6 +9,7 @@ export class Slider extends InputElement
 	subtextElement;
 	valueElement;
 	value;
+	defaultValue;
 	displayValue;
 
 	lastValueElementTextContent;
@@ -50,6 +51,7 @@ export class Slider extends InputElement
 		this.integer = integer;
 
 		this.value = parseFloat(value);
+		this.defaultValue = this.value;
 		this.min = parseFloat(min);
 		this.max = parseFloat(max);
 		this.logMin = Math.log(this.min);
@@ -100,6 +102,15 @@ export class Slider extends InputElement
 			setCaretPosition(this.valueElement, offset + offsetAdjustment);
 
 			this.setValue(parseFloat(this.valueElement.textContent), true, false);
+		});
+
+		this.valueElement.addEventListener("blur", () =>
+		{
+			console.log(this.valueElement.textContent);
+			if (this.valueElement.textContent === "")
+			{
+				this.setValue(this.defaultValue, true);
+			}
 		});
 
 		this.value = parseFloat(this.value);
