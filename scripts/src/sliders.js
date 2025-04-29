@@ -267,15 +267,9 @@ export class Slider extends InputElement
 		this.precision = Math.max(
 			0,
 			3 - Math.floor(
-				Math.log10(
-					(this.logarithmic ? 10 ** this.max : this.max)
-						- (this.logarithmic ? 10 ** this.min : this.min)
-				)
+				Math.log10(this.max - this.min)
 			)
 		);
-		
-		this.element.setAttribute("min", this.min);
-		this.element.setAttribute("max", this.max);
 
 		if (this.value > this.max)
 		{
