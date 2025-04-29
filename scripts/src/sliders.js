@@ -22,7 +22,6 @@ export class Slider extends InputElement
 	logarithmic;
 	integer;
 	persistState;
-	setSearchParamsTimeoutId;
 	thumbSize;
 	currentlyDragging = false;
 	dragOffset;
@@ -105,7 +104,34 @@ export class Slider extends InputElement
 		addTemporaryListener({
 			object: document.documentElement,
 			event: "pointerup",
-			callback: () => this.currentlyDragging = false
+			callback: () =>
+			{
+				if (this.currentlyDragging)
+				{
+					this.currentlyDragging = false;
+
+					if (this.persistState)
+					{
+						const searchParams = new URLSearchParams(window.location.search);
+
+						if (this.value !== undefined)
+						{
+							searchParams.set(
+								this.element.id,
+								encodeURIComponent(this.value)
+							);
+						}
+
+						const string = searchParams.toString();
+
+						window.history.replaceState(
+							{ url: pageUrl },
+							"",
+							pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+						);
+					}
+				}
+			}
 		});
 
 		addTemporaryListener({
@@ -214,35 +240,6 @@ export class Slider extends InputElement
 			: this.value.toFixed(this.precision);
 
 		this.valueElement.textContent = this.displayValue;
-
-		if (this.persistState)
-		{
-			const searchParams = new URLSearchParams(window.location.search);
-
-			if (this.value !== undefined)
-			{
-				searchParams.set(
-					this.element.id,
-					encodeURIComponent(this.value)
-				);
-			}
-
-			const string = searchParams.toString();
-			
-			if (this.setSearchParamsTimeoutId !== undefined)
-			{
-				clearTimeout(this.setSearchParamsTimeoutId);
-			}
-
-			this.setSearchParamsTimeoutId = setTimeout(() =>
-			{
-				window.history.replaceState(
-					{ url: pageUrl },
-					"",
-					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
-				);
-			}, 100);
-		}
 
 		if (callOnInput)
 		{
