@@ -46,6 +46,9 @@ export class Boids extends AnimationFrameApplet
 	lastTimeElapseds = Array(16).fill(0);
 	lastTimeElapsed = 0;
 
+	usingCursorAsPredator = false;
+	cursorPredatorLocation = [0, 0];
+
 	constructor({ canvas })
 	{
 		super(canvas);
@@ -53,6 +56,17 @@ export class Boids extends AnimationFrameApplet
 		const options =
 		{
 			canvasWidth: this.resolution,
+
+			interactionOptions: {
+				callbacks: {
+					mousedown: this.onGrabCanvas.bind(this),
+					touchstart: this.onGrabCanvas.bind(this),
+					mousedrag: this.onGrabCanvas.bind(this),
+					touchmove: this.onGrabCanvas.bind(this),
+					mouseup: this.onReleaseCanvas.bind(this),
+					touchend: this.onReleaseCanvas.bind(this),
+				},
+			},
 
 			fullscreenOptions: {
 				fillScreen: true,
@@ -301,6 +315,16 @@ export class Boids extends AnimationFrameApplet
 				closeDy += dy * Math.exp(-d / this.fearRange);
 			}
 
+			if (this.usingCursorAsPredator)
+			{
+				const dx = boid.x - this.cursorPredatorLocation[0];
+				const dy = boid.y - this.cursorPredatorLocation[1];
+				const d = Math.sqrt(dx * dx + dy * dy);
+
+				closeDx += dx * Math.exp(-d / this.fearRange);
+				closeDy += dy * Math.exp(-d / this.fearRange);
+			}
+
 			boid.vx += closeDx * this.fearFactor;
 			boid.vy += closeDy * this.fearFactor;
 
@@ -445,6 +469,16 @@ export class Boids extends AnimationFrameApplet
 				closeDy += dy * Math.exp(-d / this.fearRange);
 			}
 
+			if (this.usingCursorAsPredator)
+			{
+				const dx = boidOfPrey.x - this.cursorPredatorLocation[0];
+				const dy = boidOfPrey.y - this.cursorPredatorLocation[1];
+				const d = Math.sqrt(dx * dx + dy * dy);
+
+				closeDx += dx * Math.exp(-d / this.fearRange);
+				closeDy += dy * Math.exp(-d / this.fearRange);
+			}
+
 			boidOfPrey.vx += closeDx * this.fearFactor * 0.05;
 			boidOfPrey.vy += closeDy * this.fearFactor * 0.05;
 
@@ -514,5 +548,16 @@ export class Boids extends AnimationFrameApplet
 			boidOfPrey.x += boidOfPrey.vx * (this.lastTimeElapsed / 6.944);
 			boidOfPrey.y += boidOfPrey.vy * (this.lastTimeElapsed / 6.944);
 		}
+	}
+
+	onGrabCanvas({ x, y })
+	{
+		this.usingCursorAsPredator = true;
+		this.cursorPredatorLocation = [x, y];
+	}
+
+	onReleaseCanvas()
+	{
+		this.usingCursorAsPredator = false;
 	}
 }

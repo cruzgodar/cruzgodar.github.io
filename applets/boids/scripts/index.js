@@ -46,6 +46,7 @@ export default function()
 		value: 15,
 		min: 0,
 		max: 20,
+		snapPoints: [5, 10, 15],
 		onInput: () => applet.avoidFactor = avoidanceFactorSlider.value / 100
 	});
 
@@ -55,13 +56,14 @@ export default function()
 		value: 1,
 		min: 0,
 		max: 3,
+		snapPoints: [1, 2],
 		onInput: () => applet.alignmentFactor = alignmentFactorSlider.value / 100
 	});
 
 	const fearFactorSlider = new Slider({
 		element: $("#fear-factor-slider"),
 		name: "Fear",
-		value: 15,
+		value: 10,
 		min: 0,
 		max: 30,
 		snapPoints: [5, 10, 15],
