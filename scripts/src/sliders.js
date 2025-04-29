@@ -115,6 +115,8 @@ export class Slider extends InputElement
 			{
 				if (this.currentlyDragging)
 				{
+					e.preventDefault();
+					
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.clientX - trackRect.left - this.dragOffset;
 					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
