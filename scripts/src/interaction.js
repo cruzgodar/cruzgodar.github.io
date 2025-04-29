@@ -61,33 +61,6 @@ export function initInteractionListeners()
 			}
 		}
 	});
-
-
-
-	// Remove focus when moving the mouse or touching anything.
-	document.documentElement.addEventListener("pointerdown", () =>
-	{
-		if (!(
-			document.activeElement.tagName === "INPUT"
-			&& document.activeElement.type !== "range"
-			|| document.activeElement.tagName === "TEXTAREA"
-		)
-		) {
-			document.activeElement.blur();
-		}
-	});
-
-	document.documentElement.addEventListener("pointerup", () =>
-	{
-		if (!(
-			document.activeElement.tagName === "INPUT"
-			&& document.activeElement.type !== "range"
-			|| document.activeElement.tagName === "TEXTAREA"
-		)
-		) {
-			document.activeElement.blur();
-		}
-	});
 }
 
 function handleTouchEvent()

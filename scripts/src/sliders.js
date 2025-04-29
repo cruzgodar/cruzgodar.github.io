@@ -11,6 +11,8 @@ export class Slider extends InputElement
 	value;
 	displayValue;
 
+	lastValueElementTextContent;
+
 	min;
 	max;
 	logMin;
@@ -77,7 +79,28 @@ export class Slider extends InputElement
 		this.subtextElement.textContent = `${name}: `;
 		this.valueElement = document.createElement("span");
 		this.valueElement.textContent = this.displayValue;
+		this.lastValueElementTextContent = this.valueElement.textContent;
+		this.valueElement.setAttribute("contenteditable", "true");
 		this.subtextElement.appendChild(this.valueElement);
+
+		this.valueElement.addEventListener("input", () =>
+		{
+			const offset = getCaretCharacterOffsetWithin(this.valueElement);
+			let offsetAdjustment = 0;
+
+			this.valueElement.textContent = this.valueElement.textContent
+				.replaceAll(/[^0-9.-]/g, (match) =>
+				{
+					offsetAdjustment -= match.length;
+					return "";
+				});
+
+			this.lastValueElementTextContent = this.valueElement.textContent;
+
+			setCaretPosition(this.valueElement, offset + offsetAdjustment);
+
+			this.setValue(parseFloat(this.valueElement.textContent), true, false);
+		});
 
 		this.value = parseFloat(this.value);
 
@@ -182,6 +205,8 @@ export class Slider extends InputElement
 		}, 10);
 	}
 
+
+
 	onEndDrag()
 	{
 		if (this.currentlyDragging)
@@ -250,7 +275,7 @@ export class Slider extends InputElement
 		this.setValue(this.value, oldValue !== this.value);
 	}
 
-	setValue(newValue, callOnInput = false)
+	setValue(newValue, callOnInput = false, updateValueElement = true)
 	{
 		this.value = newValue;
 
@@ -267,8 +292,11 @@ export class Slider extends InputElement
 		this.displayValue = this.integer
 			? this.value
 			: this.value.toFixed(this.precision);
-
-		this.valueElement.textContent = this.displayValue;
+		
+		if (updateValueElement)
+		{
+			this.valueElement.textContent = this.displayValue;
+		}
 
 		if (callOnInput)
 		{
@@ -308,5 +336,38 @@ export class Slider extends InputElement
 		{
 			this.setValue(this.min, callOnInput);
 		}
+	}
+}
+
+function getCaretCharacterOffsetWithin(el) {
+	const sel = window.getSelection();
+	let charCount = 0;
+	if (sel.anchorNode && el.contains(sel.anchorNode)) {
+		const range = sel.getRangeAt(0);
+		const preRange = range.cloneRange();
+		preRange.selectNodeContents(el);
+		preRange.setEnd(range.startContainer, range.startOffset);
+		charCount = preRange.toString().length;
+	}
+	return charCount;
+}
+
+function setCaretPosition(el, offset) {
+	const range = document.createRange();
+	const sel = window.getSelection();
+	let charCount = 0;
+
+	const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+	let node;
+	while ((node = walker.nextNode())) {
+		const nextCharCount = charCount + node.length;
+		if (offset <= nextCharCount) {
+			range.setStart(node, offset - charCount);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
+			return;
+		}
+		charCount = nextCharCount;
 	}
 }
