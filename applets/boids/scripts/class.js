@@ -550,8 +550,9 @@ export class Boids extends AnimationFrameApplet
 		}
 	}
 
-	onGrabCanvas({ x, y })
+	onGrabCanvas({ x, y, event })
 	{
+		event.preventDefault();
 		this.usingCursorAsPredator = true;
 		this.cursorPredatorLocation = [x, y];
 	}
