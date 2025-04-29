@@ -33,7 +33,7 @@ export class Slider extends InputElement
 		value,
 		min,
 		max,
-		snapThreshhold = 1 / 75,
+		snapThreshhold = 1 / 50,
 		snapPoints = [],
 		logarithmic = false,
 		integer = false,
