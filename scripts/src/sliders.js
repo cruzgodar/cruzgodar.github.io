@@ -1,20 +1,31 @@
+import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
-import { addTemporaryParam, pageUrl } from "./main.js";
+import { currentlyTouchDevice } from "./interaction.js";
+import { addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
 
 export class Slider extends InputElement
 {
+	trackElement;
 	subtextElement;
 	valueElement;
 	value;
 	displayValue;
+
 	min;
 	max;
+	logMin;
+	logMax;
+
 	snapPoints;
 	snapThreshhold;
 	precision;
 	logarithmic;
 	integer;
 	persistState;
+	setSearchParamsTimeoutId;
+	thumbSize;
+	currentlyDragging = false;
+	dragOffset;
 	onInput;
 
 	constructor({
@@ -23,7 +34,7 @@ export class Slider extends InputElement
 		value,
 		min,
 		max,
-		snapThreshhold = (max - min) / 80,
+		snapThreshhold = 1 / 75,
 		snapPoints = [],
 		logarithmic = false,
 		integer = false,
@@ -32,6 +43,7 @@ export class Slider extends InputElement
 	}) {
 		super({ element, name });
 		this.subtextElement = this.element.nextElementSibling.firstElementChild;
+		this.trackElement = this.element.previousElementSibling;
 
 		this.logarithmic = logarithmic;
 		this.integer = integer;
@@ -39,16 +51,10 @@ export class Slider extends InputElement
 		this.value = parseFloat(value);
 		this.min = parseFloat(min);
 		this.max = parseFloat(max);
+		this.logMin = Math.log(this.min);
+		this.logMax = Math.log(this.max);
 		this.snapPoints = snapPoints;
 		this.snapThreshhold = snapThreshhold;
-
-		if (this.logarithmic)
-		{
-			this.value = Math.log10(this.value);
-			this.min = Math.log10(this.min);
-			this.max = Math.log10(this.max);
-			this.snapThreshhold = (this.max - this.min) / 80;
-		}
 
 		this.persistState = persistState;
 		this.onInput = onInput;
@@ -57,14 +63,9 @@ export class Slider extends InputElement
 		this.precision = Math.max(
 			0,
 			3 - Math.floor(
-				Math.log10(
-					(this.logarithmic ? 10 ** this.max : this.max)
-						- (this.logarithmic ? 10 ** this.min : this.min)
-				)
+				Math.log10(this.max - this.min)
 			)
 		);
-
-		this.value = (this.logarithmic ? 10 ** this.value : this.value);
 
 		this.value = this.integer
 			? Math.round(this.value)
@@ -73,12 +74,6 @@ export class Slider extends InputElement
 		this.displayValue = this.integer
 			? this.value
 			: this.value.toFixed(this.precision);
-		
-		this.element.setAttribute("min", this.min);
-		this.element.setAttribute("max", this.max);
-
-		// This isn't this.value since we don't want to apply log / int stuff
-		this.element.setAttribute("value", this.logarithmic ? Math.log10(value) : value);
 
 		this.subtextElement.textContent = `${name}: `;
 		this.valueElement = document.createElement("span");
@@ -87,106 +82,129 @@ export class Slider extends InputElement
 
 		this.value = parseFloat(this.value);
 
-		this.element.addEventListener("input", () =>
+		
+
+		this.thumbSize = currentlyTouchDevice ? 28 : 18;
+		this.element.style.width = `${this.thumbSize}px`;
+		this.element.style.height = `${this.thumbSize}px`;
+
+		this.element.style.top = `-${this.thumbSize / 2 + 2.5 / 2}px`;
+
+		addHoverEventWithScale({
+			element: this.element,
+			scale: 1.1,
+		});
+
+		this.element.addEventListener("pointerdown", (e) =>
 		{
-			const oldValue = this.value;
+			this.currentlyDragging = true;
+			this.dragOffset = e.clientX - this.element.getBoundingClientRect().left - 2.5 / 2;
+		});
 
-			this.value = this.logarithmic
-				? 10 ** parseFloat(this.element.value)
-				: parseFloat(this.element.value);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "pointerup",
+			callback: () => this.currentlyDragging = false
+		});
 
-			for (let i = 0; i < this.snapPoints.length; i++)
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "pointermove",
+			callback: (e) =>
 			{
-				const distanceToSnapPoint = this.logarithmic
-					? Math.abs(Math.log10(this.value) - Math.log10(this.snapPoints[i]))
-					: Math.abs(this.value - this.snapPoints[i]);
-
-				if (distanceToSnapPoint < this.snapThreshhold)
+				if (this.currentlyDragging)
 				{
-					this.value = this.snapPoints[i];
+					const trackRect = this.trackElement.getBoundingClientRect();
+					const x = e.clientX - trackRect.left - this.dragOffset;
+					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+					const clampedX = Math.min(Math.max(x, 0), maxX);
+					this.element.style.left = `${clampedX}px`;
+
+					this.setRawValue(clampedX / maxX);
 				}
-			}
-
-			this.value = this.integer
-				? Math.round(this.value)
-				: this.value;
-
-			this.displayValue = this.integer
-				? this.value
-				: this.value.toFixed(this.precision);
-
-			this.valueElement.textContent = this.displayValue;
-
-			this.value = parseFloat(this.value);
-			
-			if (oldValue !== this.value)
-			{
-				this.onInput();
 			}
 		});
 
-		this.element.addEventListener("pointerup", () =>
+		setTimeout(() =>
 		{
 			if (this.persistState)
 			{
-				const searchParams = new URLSearchParams(window.location.search);
-
-				if (this.element.value !== undefined)
-				{
-					searchParams.set(
-						this.element.id,
-						encodeURIComponent(this.element.value)
-					);
-				}
-
-				const string = searchParams.toString();
-
-				window.history.replaceState(
-					{ url: pageUrl },
-					"",
-					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
-				);
-			}
-		});
-
-		if (this.persistState)
-		{
-			const value = new URLSearchParams(window.location.search).get(this.element.id);
-			
-			if (value)
-			{
-				setTimeout(() =>
+				const value = new URLSearchParams(window.location.search).get(this.element.id);
+				
+				if (value)
 				{
 					this.setValue(parseFloat(decodeURIComponent(value)), true);
-					this.loadResolve();
-				}, 10);
+				}
+
+				else
+				{
+					this.setValue(this.value);
+				}
+
+				addTemporaryParam(this.element.id);
 			}
 
 			else
 			{
-				this.loadResolve();
+				this.setValue(this.value);
 			}
 
-			addTemporaryParam(this.element.id);
-		}
-
-		else
-		{
 			this.loadResolve();
-		}
+		}, 10);
 	}
 
-	setValue(newValue, callOnInput = false)
+	// Sets the value using a proportion between 0 and 1.
+	setRawValue(newValue)
 	{
-		this.element.value = newValue;
+		const oldValue = this.value;
 
 		this.value = this.logarithmic
-			? 10 ** parseFloat(this.element.value)
-			: parseFloat(this.element.value);
+			? Math.exp(parseFloat(this.logMin + newValue * (this.logMax - this.logMin)))
+			: parseFloat(this.min + newValue * (this.max - this.min));
+
+		for (let i = 0; i < this.snapPoints.length; i++)
+		{
+			const snapPointProportion = this.logarithmic
+				? (Math.log(this.snapPoints[i]) - this.logMin) / (this.logMax - this.logMin)
+				: (this.snapPoints[i] - this.min) / (this.max - this.min);
+
+			const distanceToSnapPoint = Math.abs(snapPointProportion - newValue);
+
+			if (distanceToSnapPoint < this.snapThreshhold)
+			{
+				this.value = this.snapPoints[i];
+				break;
+			}
+		}
 
 		this.value = this.integer
 			? Math.round(this.value)
 			: this.value;
+
+		this.displayValue = this.integer
+			? this.value
+			: this.value.toFixed(this.precision);
+
+		this.valueElement.textContent = this.displayValue;
+
+		this.value = parseFloat(this.value);
+		
+		this.setValue(this.value, oldValue !== this.value);
+	}
+
+	setValue(newValue, callOnInput = false)
+	{
+		this.value = newValue;
+
+		const sliderProportion = this.logarithmic
+			? (Math.log(this.value) - this.logMin) / (this.logMax - this.logMin)
+			: (this.value - this.min) / (this.max - this.min);
+
+		const clampedSliderProportion = Math.min(Math.max(sliderProportion, 0), 1);
+
+		const trackRect = this.trackElement.getBoundingClientRect();
+		const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+		this.element.style.left = `${clampedSliderProportion * maxX}px`;
 
 		this.displayValue = this.integer
 			? this.value
@@ -202,17 +220,25 @@ export class Slider extends InputElement
 			{
 				searchParams.set(
 					this.element.id,
-					encodeURIComponent(this.element.value)
+					encodeURIComponent(this.value)
 				);
 			}
 
 			const string = searchParams.toString();
+			
+			if (this.setSearchParamsTimeoutId !== undefined)
+			{
+				clearTimeout(this.setSearchParamsTimeoutId);
+			}
 
-			window.history.replaceState(
-				{ url: pageUrl },
-				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
-			);
+			this.setSearchParamsTimeoutId = setTimeout(() =>
+			{
+				window.history.replaceState(
+					{ url: pageUrl },
+					"",
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				);
+			}, 100);
 		}
 
 		if (callOnInput)
@@ -233,6 +259,9 @@ export class Slider extends InputElement
 
 		this.min = min;
 		this.max = max;
+
+		this.logMin = Math.log(this.min);
+		this.logMax = Math.log(this.max);
 
 		this.precision = Math.max(
 			0,

@@ -920,7 +920,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 	grid-template-columns: repeat(auto-fit, 100px);
 	
-	row-gap: 10px;
+	row-gap: 16px;
 	column-gap: 10px;
 	
 	margin-top: 32px;
@@ -1373,63 +1373,33 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 .slider-container
 {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.slider-container > input
+.slider-bar
 {
-	-webkit-appearance: none;
-	appearance: none;
-	
-	-webkit-user-select: none;
-	user-select: none;
-	
-	width: calc(100% + 1px);
-	height: 3px;
-	
-	border-radius: 1.5px;
-	
-	margin-left: -1px;
-	
-	background-color: var(--normal-contrast) !important;
-	outline: none;
-	box-shadow: none;
-	
-	z-index: 10;
-	
-	transition: background-color .125s ease-in-out;
+	background: var(--normal-contrast);
+	width: 100%;
+	height: 2.5px;
+	border-radius: 2px;
 }
 
-.slider-container > input::-webkit-slider-thumb, .slider-container > input::-moz-slider-thumb
+.slider-thumb
 {
-	-webkit-appearance: none;
-	appearance: none;
-	
-	-webkit-user-select: none;
-	user-select: none;
-	box-shadow: none;
-	
-	width: 25px;
-	height: 25px;
-	background-color: var(--high-contrast) !important;
-	
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	background: var(--background);
 	border-radius: 50%;
-	
+	border: 2.5px solid var(--normal-contrast);
 	cursor: pointer;
-	
-	transition: background-color .125s ease-in-out;
-}
 
-.slider-container > input:active, .slider-container > input:active::-webkit-slider-thumb, .slider-container > input:active::-moz-slider-thumb
-{
-	background-color: var(--high-contrast) !important;
-}
-
-.slider-container > input:hover::-webkit-slider-thumb, .slider-container > input:hover::-moz-slider-thumb
-{
-	background-color: var(--high-contrast) !important;
+	z-index: 10;
+	user-select: none;
 }
 
 .slider-container p
@@ -1443,7 +1413,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	z-index: 5;
 	width: 100% !important;
-	margin-top: 4px;
+	margin-top: 12px;
 }
 
 .slider-subtext
@@ -1454,6 +1424,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 .slider-subtext span
 {
 	font-family: Menlo, Monaco, Consolas, monospace;
+	cursor: text;
 }
 
 

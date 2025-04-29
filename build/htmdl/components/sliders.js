@@ -1,13 +1,11 @@
 import { splitCommandLine } from "../build.js";
 
-// Options:
-// -l: Logarithmic.
-// -i: Integer-valued.
 function slider(options, id)
 {
 	return /* html */`
 		<div class="slider-container">
-			<input id="${id}-slider" type="range" step="0.000001" tabindex="1">
+			<div class="slider-bar"></div>
+			<div id="${id}-slider" class="slider-thumb"></div>
 			<label for="${id}-slider">
 				<p class="body-text slider-subtext"></p>
 			</label>
