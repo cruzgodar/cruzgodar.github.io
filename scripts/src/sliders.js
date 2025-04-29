@@ -103,40 +103,18 @@ export class Slider extends InputElement
 
 		addTemporaryListener({
 			object: document.documentElement,
-			event: "pointerup",
-			callback: () =>
-			{
-				if (this.currentlyDragging)
-				{
-					this.currentlyDragging = false;
-
-					if (this.persistState)
-					{
-						const searchParams = new URLSearchParams(window.location.search);
-
-						if (this.value !== undefined)
-						{
-							searchParams.set(
-								this.element.id,
-								encodeURIComponent(this.value)
-							);
-						}
-
-						const string = searchParams.toString();
-
-						window.history.replaceState(
-							{ url: pageUrl },
-							"",
-							pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
-						);
-					}
-				}
-			}
+			event: "touchend",
+			callback: this.onEndDrag.bind(this)
+		});
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "mouseup",
+			callback: this.onEndDrag.bind(this)
 		});
 
 		addTemporaryListener({
 			object: document.documentElement,
-			event: "pointermove",
+			event: "mousemove",
 			callback: (e) =>
 			{
 				if (this.currentlyDragging)
@@ -145,6 +123,26 @@ export class Slider extends InputElement
 					
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.clientX - trackRect.left - this.dragOffset;
+					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+					const clampedX = Math.min(Math.max(x, 0), maxX);
+					this.element.style.left = `${clampedX}px`;
+
+					this.setRawValue(clampedX / maxX);
+				}
+			}
+		});
+
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "touchmove",
+			callback: (e) =>
+			{
+				if (this.currentlyDragging)
+				{
+					e.preventDefault();
+					
+					const trackRect = this.trackElement.getBoundingClientRect();
+					const x = e.touches[0].clientX - trackRect.left - this.dragOffset;
 					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
 					const clampedX = Math.min(Math.max(x, 0), maxX);
 					this.element.style.left = `${clampedX}px`;
@@ -180,6 +178,35 @@ export class Slider extends InputElement
 
 			this.loadResolve();
 		}, 10);
+	}
+
+	onEndDrag()
+	{
+		if (this.currentlyDragging)
+		{
+			this.currentlyDragging = false;
+
+			if (this.persistState)
+			{
+				const searchParams = new URLSearchParams(window.location.search);
+
+				if (this.value !== undefined)
+				{
+					searchParams.set(
+						this.element.id,
+						encodeURIComponent(this.value)
+					);
+				}
+
+				const string = searchParams.toString();
+
+				window.history.replaceState(
+					{ url: pageUrl },
+					"",
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				);
+			}
+		}
 	}
 
 	// Sets the value using a proportion between 0 and 1.
