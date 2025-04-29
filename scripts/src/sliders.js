@@ -42,7 +42,7 @@ export class Slider extends InputElement
 		onInput = () => {}
 	}) {
 		super({ element, name });
-		this.subtextElement = this.element.nextElementSibling.firstElementChild;
+		this.subtextElement = this.element.nextElementSibling;
 		this.trackElement = this.element.previousElementSibling;
 
 		this.logarithmic = logarithmic;
@@ -84,11 +84,12 @@ export class Slider extends InputElement
 
 		
 
-		this.thumbSize = currentlyTouchDevice ? 28 : 18;
+		this.thumbSize = currentlyTouchDevice ? 26 : 18;
 		this.element.style.width = `${this.thumbSize}px`;
 		this.element.style.height = `${this.thumbSize}px`;
-
 		this.element.style.top = `-${this.thumbSize / 2 + 2.5 / 2}px`;
+
+		this.subtextElement.style.marginTop = currentlyTouchDevice ? "16px" : "12px";
 
 		addHoverEventWithScale({
 			element: this.element,
@@ -216,7 +217,7 @@ export class Slider extends InputElement
 		{
 			const searchParams = new URLSearchParams(window.location.search);
 
-			if (this.element.value !== undefined)
+			if (this.value !== undefined)
 			{
 				searchParams.set(
 					this.element.id,

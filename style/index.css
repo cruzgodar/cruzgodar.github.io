@@ -1407,13 +1407,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	text-align: center;
 	margin-bottom: 0 !important;
 	width: 100% !important;
-}
-
-.slider-container > label
-{
-	z-index: 5;
-	width: 100% !important;
-	margin-top: 12px;
+	color: var(--normal-contrast);
 }
 
 .slider-subtext

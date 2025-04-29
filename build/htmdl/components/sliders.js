@@ -6,9 +6,7 @@ function slider(options, id)
 		<div class="slider-container">
 			<div class="slider-bar"></div>
 			<div id="${id}-slider" class="slider-thumb"></div>
-			<label for="${id}-slider">
-				<p class="body-text slider-subtext"></p>
-			</label>
+			<p class="body-text slider-subtext"></p>
 		</div>
 	`;
 }
