@@ -247,7 +247,7 @@ The key observation is that those diagonals (represented here as different color
 Let's make the jump from polynomials to series. If $f(x) = \sum_{n = 0}^\infty a_n x^n$ and $g(x) = \sum_{n = 0}^\infty b_n x^n$, then the product $f(x)g(x)$ will be the sum of an infinite table:
 
 $$
-	\definecolor{textred}{rgb}{.8, 0, 0} \definecolor{textyellow}{rgb}{.8, .6, 0} \definecolor{textgreen}{rgb}{0, .6, 0} \definecolor{textcyan}{rgb}{0, .6, 1} \definecolor{textblue}{rgb}{0, 0, 1} \begin{array}{r|ccccccc}
+	\definecolor{textred}{rgb}{.8, 0, 0} \definecolor{textyellow}{rgb}{.8, .6, 0} \definecolor{textgreen}{rgb}{0, .6, 0} \definecolor{textcyan}{rgb}{0, .6, 1} \definecolor{textblue}{rgb}{0, 0, 1} \definecolor{textmagenta}{rgb}{.6, 0, 1} \begin{array}{r|ccccccc}
 		
 		& b_0 & b_1 x & b_2 x^2 & b_3 x^3 & b_4 x^4 & b_5 x^5 & \cdots
 		
@@ -268,7 +268,7 @@ $$
 	\end{array}
 $$
 
-To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients' subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. green) diagonal is
+To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients' subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. light blue) diagonal is
 
 $$
 	(a_0 b_3 + a_1 b_2 + a_2 b_1 + a_3 b_0) x^3,
