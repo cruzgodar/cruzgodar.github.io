@@ -151,5 +151,5 @@ export function parseText(text)
 		.replaceAll(/\[ASTERISK\]/g, "*")
 		.replaceAll(/\[BACKTICK\]/g, "`")
 		.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">$${$1}$${$2}</span>`);
+		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1}">$${$1}$${$2}</span>`);
 }
