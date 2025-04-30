@@ -1413,6 +1413,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 	z-index: 10;
 	user-select: none;
+	touch-action: none;
+	--webkit-user-select: none;
 
 	transition: transform 0.125s ease-in-out, border-width 0.125s ease-in-out, margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out;
 }

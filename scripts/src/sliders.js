@@ -1,7 +1,7 @@
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { currentlyTouchDevice } from "./interaction.js";
-import { addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
+import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
 
 const trackWidth = 170;
 
@@ -132,7 +132,6 @@ export class Slider extends InputElement
 
 		this.element.addEventListener("pointerdown", (e) =>
 		{
-			this.currentlyDragging = true;
 			this.onGrabThumb();
 
 			this.dragOffset = e.clientX - this.element.getBoundingClientRect().left - 2.5 / 2;
@@ -256,6 +255,17 @@ export class Slider extends InputElement
 
 	onGrabThumb()
 	{
+		this.currentlyDragging = true;
+
+		this.temporaryStyleElement = addStyle(`
+			*
+			{
+				user-select: none;
+				-webkit-user-select: none;
+				cursor: pointer;
+			}
+		`);
+
 		for (const tickElement of this.tickElements)
 		{
 			tickElement.style.top = "-2.5px";
@@ -265,6 +275,10 @@ export class Slider extends InputElement
 
 	onReleaseThumb()
 	{
+		this.currentlyDragging = false;
+
+		this.temporaryStyleElement.remove();
+
 		for (const tickElement of this.tickElements)
 		{
 			tickElement.style.top = "0px";
@@ -278,7 +292,6 @@ export class Slider extends InputElement
 	{
 		if (this.currentlyDragging)
 		{
-			this.currentlyDragging = false;
 			this.onReleaseThumb();
 
 			if (this.persistState)

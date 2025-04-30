@@ -128,11 +128,14 @@ export class PlanePartitions extends AnimationFrameApplet
 	constructor({
 		canvas,
 		numbersCanvas,
-		useFullscreenButton = true
+		useFullscreenButton = true,
+		backgroundColor = 0x000000
 	}) {
 		super(canvas);
 
 		this.useFullscreenButton = useFullscreenButton;
+
+		this.backgroundColor = backgroundColor;
 
 		const hiddenCanvas = this.createHiddenCanvas();
 		const hiddenCanvas2 = this.createHiddenCanvas();
@@ -266,7 +269,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.renderer = new THREE.WebGLRenderer({
 			canvas: this.wilson.canvas,
 			antialias: true,
-			context: this.wilson.gl
+			context: this.wilson.gl,
+			alpha: true,
 		});
 
 		this.renderer.setSize(this.resolution, this.resolution, false);

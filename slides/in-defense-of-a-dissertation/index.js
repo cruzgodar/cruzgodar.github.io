@@ -19,7 +19,8 @@ import Lapsa from "/scripts/lapsa.js";
 export const applet = new PlanePartitions({
 	canvas: document.body.querySelector("#output-canvas"),
 	numbersCanvas: document.body.querySelector("#numbers-canvas"),
-	useFullscreenButton: false
+	useFullscreenButton: false,
+	backgroundColor: null
 });
 
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
