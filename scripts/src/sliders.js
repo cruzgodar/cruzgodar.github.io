@@ -8,6 +8,8 @@ export class Slider extends InputElement
 	trackElement;
 	subtextElement;
 	valueElement;
+	tickElements = [];
+
 	value;
 	defaultValue;
 	displayValue;
@@ -117,7 +119,7 @@ export class Slider extends InputElement
 
 		
 
-		this.thumbSize = currentlyTouchDevice ? 26 : 18;
+		this.thumbSize = 24;
 		this.element.style.width = `${this.thumbSize}px`;
 		this.element.style.height = `${this.thumbSize}px`;
 		this.element.style.top = `-${this.thumbSize / 2 + 2.5 / 2}px`;
@@ -132,6 +134,8 @@ export class Slider extends InputElement
 		this.element.addEventListener("pointerdown", (e) =>
 		{
 			this.currentlyDragging = true;
+			this.onGrabThumb();
+
 			this.dragOffset = e.clientX - this.element.getBoundingClientRect().left - 2.5 / 2;
 		});
 
@@ -188,6 +192,10 @@ export class Slider extends InputElement
 			options: { passive: false }
 		});
 
+		this.addTickMarks();
+
+
+
 		setTimeout(() =>
 		{
 			if (this.persistState)
@@ -218,11 +226,63 @@ export class Slider extends InputElement
 
 
 
+	addTickMarks()
+	{
+		this.tickElements.forEach(tick => tick.remove());
+
+		const ticks = this.snapPoints.length
+			? this.snapPoints
+			: this.integer && this.max - this.min < 10
+				? Array.from({ length: this.max - this.min + 1 }, (_, i) => this.min + i)
+				: [];
+
+		const trackRect = this.trackElement.getBoundingClientRect();
+		const sliderWidth = trackRect.width;
+		const usableWidth = sliderWidth - (this.thumbSize + 5);
+
+		for (const tick of ticks)
+		{
+			const tickElement = document.createElement("div");
+			tickElement.classList.add("slider-tick");
+
+			const proportion = this.logarithmic
+				? (Math.log(tick) - this.logMin) / (this.logMax - this.logMin)
+				: (tick - this.min) / (this.max - this.min);
+
+			const left = proportion * usableWidth + (this.thumbSize + 5) / 2 - 2.5 / 2;
+			tickElement.style.left = `${left}px`;
+			this.element.parentElement.appendChild(tickElement);
+
+			this.tickElements.push(tickElement);
+		}
+	}
+
+	onGrabThumb()
+	{
+		for (const tickElement of this.tickElements)
+		{
+			tickElement.style.top = "-2.5px";
+			tickElement.style.height = "7.5px";
+		}
+	}
+
+	onReleaseThumb()
+	{
+		for (const tickElement of this.tickElements)
+		{
+			tickElement.style.top = "0px";
+			tickElement.style.height = "2.5px";
+		}
+	}
+
+
+
 	onEndDrag()
 	{
 		if (this.currentlyDragging)
 		{
 			this.currentlyDragging = false;
+			this.onReleaseThumb();
 
 			if (this.persistState)
 			{
@@ -347,6 +407,8 @@ export class Slider extends InputElement
 		{
 			this.setValue(this.min, callOnInput);
 		}
+
+		this.addTickMarks();
 	}
 }
 
