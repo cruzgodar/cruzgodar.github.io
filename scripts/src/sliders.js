@@ -3,6 +3,8 @@ import { InputElement } from "./inputElement.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
 
+const trackWidth = 170;
+
 export class Slider extends InputElement
 {
 	trackElement;
@@ -108,14 +110,11 @@ export class Slider extends InputElement
 
 		this.valueElement.addEventListener("blur", () =>
 		{
-			console.log(this.valueElement.textContent);
 			if (this.valueElement.textContent === "")
 			{
 				this.setValue(this.defaultValue, true);
 			}
 		});
-
-		this.value = parseFloat(this.value);
 
 		
 
@@ -236,9 +235,7 @@ export class Slider extends InputElement
 				? Array.from({ length: this.max - this.min + 1 }, (_, i) => this.min + i)
 				: [];
 
-		const trackRect = this.trackElement.getBoundingClientRect();
-		const sliderWidth = trackRect.width;
-		const usableWidth = sliderWidth - (this.thumbSize + 5);
+		const usableWidth = trackWidth - (this.thumbSize + 5);
 
 		for (const tick of ticks)
 		{
@@ -356,8 +353,9 @@ export class Slider extends InputElement
 
 		const clampedSliderProportion = Math.min(Math.max(sliderProportion, 0), 1);
 
-		const trackRect = this.trackElement.getBoundingClientRect();
-		const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+		void(this.trackElement.offsetWidth);
+
+		const maxX = trackWidth - this.thumbSize - 2.5 * 2;
 		this.element.style.left = `${clampedSliderProportion * maxX}px`;
 
 		this.displayValue = this.integer
