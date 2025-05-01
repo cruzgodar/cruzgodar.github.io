@@ -219,6 +219,9 @@ img
 	width: 100px;
 	height: 100px;
 	margin: 0 auto;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #logo img, #logo-no-link img
@@ -463,6 +466,9 @@ mjx-container
 	width: 100% !important;
 	
 	max-width: var(--text-width);
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .card .text-buttons
@@ -500,6 +506,9 @@ mjx-container
 	margin: 6px;
 	
 	z-index: 1001;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #card-close-button.hover
@@ -527,6 +536,9 @@ mjx-container
 	padding-top: 48px;
 	padding-bottom: 48px;
 	cursor: pointer;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 @media (max-width: 440px)
@@ -573,6 +585,9 @@ mjx-container
 	right: 0;
 
 	z-index: 100;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 @media (max-width: 350px)
@@ -968,6 +983,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	
 	cursor: pointer;
 	outline: none;
+
+	user-select: none;
+	-webkit-user-select: none;
 	
 	z-index: 10;
 }
@@ -1086,6 +1104,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	width: auto;
 	text-align: left;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .checkbox-subtext
@@ -1211,6 +1232,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	margin-bottom: 0 !important;
 	
 	text-align: center !important;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .text-box-subtext span
@@ -1351,6 +1375,10 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	width: 70%;
 	margin-bottom: 0 !important;
+
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
 }
 
 .textarea-wrapper
@@ -1416,7 +1444,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	z-index: 10;
 	user-select: none;
 	touch-action: none;
-	--webkit-user-select: none;
+	-webkit-user-select: none;
 
 	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out !important;
 }
@@ -1436,6 +1464,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	text-align: center;
 	margin-bottom: 0 !important;
 	width: 100% !important;
+	user-select: none;
+	-webkit-user-select: none;
 	color: var(--normal-contrast);
 }
 
@@ -1609,6 +1639,9 @@ option
 	z-index: 110;
 	
 	transform-origin: 50% 50vh;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 
@@ -1819,6 +1852,9 @@ option
 	opacity: 0;
 	display: none;
 	z-index: 150;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #accessibility-tooltip .checkbox-row
@@ -2074,6 +2110,9 @@ option
 	width: 100%;
 	
 	border-radius: 10%;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .image-link img
