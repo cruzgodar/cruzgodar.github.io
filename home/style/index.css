@@ -20,6 +20,9 @@ header
 	font-family: "Gentium Book Basic", serif;
 	text-shadow: 0px 0px 4vmin rgb(0, 0, 0);
 	margin-left: calc(4.9583vmin - 30px);
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #cruz-text

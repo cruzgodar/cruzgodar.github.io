@@ -26,7 +26,7 @@ In other words, not only are the terms of that geometric series getting smaller 
 		r = \lim_{n \to \infty} \left| \frac{a_{n + 1}}{a_n} \right|.
 	$$
 	
-	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$, the test is inconclusive.
+	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$ or the limit doesn't exist, the test is inconclusive.
 
 ###
 
@@ -190,7 +190,7 @@ Much like the ratio test, the root test compares a given series to a geometric s
 		r = \lim_{n \to \infty} \sqrt[n]{|a_n|}.
 	$$
 	
-	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$, the test is inconclusive.
+	If $0 \leq r < 1$, then the series converges. If $r > 1$, the series diverges. If $r = 1$ or the limit doesn't exist, the test is inconclusive.
 
 ###
 
