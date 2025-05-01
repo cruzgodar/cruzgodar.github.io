@@ -4,6 +4,7 @@ import { currentlyTouchDevice } from "./interaction.js";
 import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
 
 const trackWidth = 170;
+const thumbWidth = 24;
 
 export class Slider extends InputElement
 {
@@ -29,7 +30,6 @@ export class Slider extends InputElement
 	logarithmic;
 	integer;
 	persistState;
-	thumbSize;
 	currentlyDragging = false;
 	dragOffset;
 	onInput;
@@ -118,11 +118,6 @@ export class Slider extends InputElement
 
 		
 
-		this.thumbSize = 24;
-		this.element.style.width = `${this.thumbSize}px`;
-		this.element.style.height = `${this.thumbSize}px`;
-		this.element.style.top = `-${this.thumbSize / 2 + 2.5 / 2}px`;
-
 		this.subtextElement.style.marginTop = currentlyTouchDevice ? "16px" : "12px";
 
 		addHoverEventWithScale({
@@ -159,7 +154,7 @@ export class Slider extends InputElement
 					
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.clientX - trackRect.left - this.dragOffset;
-					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+					const maxX = trackRect.width - thumbWidth - 2.5 * 2;
 					const clampedX = Math.min(Math.max(x, 0), maxX);
 					this.element.style.left = `${clampedX}px`;
 
@@ -180,7 +175,7 @@ export class Slider extends InputElement
 					
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.touches[0].clientX - trackRect.left - this.dragOffset;
-					const maxX = trackRect.width - this.thumbSize - 2.5 * 2;
+					const maxX = trackRect.width - thumbWidth - 2.5 * 2;
 					const clampedX = Math.min(Math.max(x, 0), maxX);
 					this.element.style.left = `${clampedX}px`;
 
@@ -234,7 +229,7 @@ export class Slider extends InputElement
 				? Array.from({ length: this.max - this.min + 1 }, (_, i) => this.min + i)
 				: [];
 
-		const usableWidth = trackWidth - (this.thumbSize + 5);
+		const usableWidth = trackWidth - (thumbWidth + 5);
 
 		for (const tick of ticks)
 		{
@@ -245,7 +240,7 @@ export class Slider extends InputElement
 				? (Math.log(tick) - this.logMin) / (this.logMax - this.logMin)
 				: (tick - this.min) / (this.max - this.min);
 
-			const left = proportion * usableWidth + (this.thumbSize + 5) / 2 - 2.5 / 2;
+			const left = proportion * usableWidth + (thumbWidth + 5) / 2 - 2.5 / 2;
 			tickElement.style.left = `${left}px`;
 			this.element.parentElement.appendChild(tickElement);
 
@@ -368,7 +363,7 @@ export class Slider extends InputElement
 
 		void(this.trackElement.offsetWidth);
 
-		const maxX = trackWidth - this.thumbSize - 2.5 * 2;
+		const maxX = trackWidth - thumbWidth - 2.5 * 2;
 		this.element.style.left = `${clampedSliderProportion * maxX}px`;
 
 		this.displayValue = this.integer

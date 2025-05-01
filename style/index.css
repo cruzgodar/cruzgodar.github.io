@@ -1403,28 +1403,32 @@ body > .WILSON_fullscreen-container .wilson-help-button
 .slider-thumb
 {
 	position: absolute;
-	top: 0;
+	top: calc(-24px / 2 - 2.5px / 2);
 	left: 0;
 
 	background: var(--background);
 	border-radius: 50%;
 	border: 2.5px solid var(--normal-contrast);
 	cursor: pointer;
+	width: 24px;
+	height: 24px;
 
 	z-index: 10;
 	user-select: none;
 	touch-action: none;
 	--webkit-user-select: none;
 
-	transition: transform 0.125s ease-in-out, border-width 0.125s ease-in-out, margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out;
+	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out !important;
 }
 
 .slider-thumb:active
 {
-	transform: scale(0.5) !important;
-	border-width: 5px;
-	margin-top: -2.5px;
-	margin-left: -2.5px;
+	transform: scale(1.1) !important;
+
+	width: 12px;
+	height: 12px;
+	margin-top: 6px;
+	margin-left: 6px;
 }
 
 .slider-container p
