@@ -1,7 +1,8 @@
 import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
-import { $$, pageElement, pageUrl, sleep } from "./main.js";
+import { $$, asyncFetch, pageElement, pageUrl, sleep } from "./main.js";
+import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
@@ -33,8 +34,6 @@ if (closeButton)
 	});
 }
 
-
-
 export let scrollBeforeCard = 0;
 
 
@@ -60,6 +59,23 @@ export function initCards()
 		cardContainer.addEventListener("scroll", () => setScroll());
 	}
 }
+
+
+
+// This system lets pages do stuff with the DOM after it's changed
+// due to loading external cards. It's only called once for each
+// card, so it's safe to use it for things like initializing custom
+// elements.
+
+// eslint-disable-next-line no-unused-vars
+let onLoadExternalCard = (cardElement) => {};
+
+export function setOnLoadExternalCard(callback)
+{
+	onLoadExternalCard = callback;
+}
+
+
 
 export async function showCard({
 	id,
@@ -91,6 +107,20 @@ export async function showCard({
 	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
+
+	if (currentCard.classList.contains("external-card"))
+	{
+		const data = await asyncFetch(`${pageUrl}/cards/${id}/data.html`);
+		const dataInnards = data
+			.replaceAll(/^<div.*?>/g, "")
+			.replaceAll(/<\/div>$/g, "");
+		currentCard.innerHTML = dataInnards;
+		await typesetMath();
+
+		onLoadExternalCard(currentCard);
+	}
+
+
 
 	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);

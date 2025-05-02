@@ -132,21 +132,20 @@ function decodeHTMDL(html)
 
 	html = html.replaceAll(/\t/g, "");
 
-
+	
 
 	// Automatically add a header if there's not one already here.
-	if (!html.match(/^[\n\t\s]*?\n#\s/g) && !manualHeaderPages.includes(parentFolder))
-	{
-		if (!sitemap[parentFolder])
-		{
-			throw new Error(`${parentFolder} is not in sitemap!`);
-		}
+	if (
+		!html.match(/^[\n\t\s]*?\n#\s/g)
+		&& !manualHeaderPages.includes(parentFolder)
+		&& sitemap[parentFolder]
+	) {
 		const title = sitemap[parentFolder].title;
 
 		html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);
 	}
 
-
+	let hasHeading = false;
 
 	let pageTitle = "";
 
@@ -296,7 +295,7 @@ function decodeHTMDL(html)
 			{
 				lines[i] = components[words[0]](options, ...(words.slice(1)));
 
-				if (words[0] === "card")
+				if (words[0] === "card" && !options.includes("e"))
 				{
 					inEnvironment = true;
 				}
@@ -356,6 +355,8 @@ function decodeHTMDL(html)
 		// A heading. Only one of these per file.
 		else if (lines[i][0] === "#" && lines[i][1] !== ".")
 		{
+			hasHeading = true;
+
 			const title = parseText(lines[i].slice(2));
 
 			pageTitle = title;
@@ -428,7 +429,10 @@ function decodeHTMDL(html)
 
 	// End the HTML properly.
 
-	html = /* html */`${html}</section></main>`;
+	if (hasHeading)
+	{
+		html = /* html */`${html}</section></main>`;
+	}
 
 	if (usesBanner)
 	{
