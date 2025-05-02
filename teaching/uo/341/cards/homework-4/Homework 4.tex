@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 4 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 5 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 4}
+
+In problems 1--5, solve the DE and verify that you've found the general solution with the Wronskian.
+
+1. $\displaystyle y'' + 2y' - 3y = 0.$
+
+2. $\displaystyle y'' + 3y' = 0.$
+
+3. $\displaystyle 4y'' - 9y = 0.$
+
+4. $\displaystyle y'' - y' - y = 0.$
+
+5. $\displaystyle y'' = y'.$
+
+~\\
+
+In problems 6--8, solve the initial value problem.
+
+6. $\displaystyle y'' + y' - 20y = 0,$ $\displaystyle y(0) = 9,$ $\displaystyle y'(0) = 18.$
+
+7. $\displaystyle 2y'' + 6y' = 20y,$ $\displaystyle y(0) = 14,$ $\displaystyle y'(0) = 0.$
+
+8. $\displaystyle y'' - y = 0,$ $\displaystyle y(0) = 4,$ $\displaystyle y'(0) = 2.$
+
+~\\
+
+9. Consider the DE $\displaystyle 2t^2y'' - ty' + y = 0.$
+
+\begin{enumerate}
+
+	\item Show that a solution is $\displaystyle y = c_1t + c_2\sqrt{t}.$
+
+	\item Compute $\displaystyle W\left[t, \sqrt{t}\right].$ For which value $t = t_0$ is it zero?
+
+	\item Why is $t = t_0$ a problem?
+
+\end{enumerate}
+
+~\\
+
+10. Let $y = a(t) + b(t)i$ be a solution to
+
+$$
+	y'' + p(t)y' + q(t)y = 0,
+$$
+
+where $a$, $b$, $p$, and $q$ are all real-valued functions. Show that both $a$ and $b$ must be solutions to $y'' + p(t)y' + q(t)y = 0$ themselves.
+
+~\\
+
+11. Consider the DE $\displaystyle y'' - yy' = 0.$
+
+\begin{enumerate}
+
+	\item Show that both $\displaystyle y = \tan\left(\frac{x}{2}\right)$ and $\displaystyle y = 2\tan\left(x + 1\right)$ are solutions.
+
+	\item Show that
+
+\end{enumerate}
+
+$$
+	y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
+$$
+
+is \textit{not} a solution in general. Why does this not contradict the results of section 4?
+
+
+\end{document}

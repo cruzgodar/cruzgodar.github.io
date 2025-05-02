@@ -287,6 +287,8 @@ async function prepareTexFromHTML(file)
 		result[0]
 	);
 
+	console.log(`${path}/${result[1]}.tex`);
+
 	if (result[2])
 	{
 		// Zip the tex file and the graphics directory.
