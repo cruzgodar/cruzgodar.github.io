@@ -14,6 +14,7 @@ export function loadImages()
 		imageLoadElement.onload = () =>
 		{
 			image.src = image.getAttribute("data-src");
+			image.removeAttribute("data-src");
 			
 			anime({
 				targets: image,
