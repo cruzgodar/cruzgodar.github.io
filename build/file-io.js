@@ -50,3 +50,17 @@ export function write(filepath, content)
 		}
 	});
 }
+
+export function copy(sourcePath, targetPath)
+{
+	const fullSourcePath = sourcePath[0] === "/" ? root + sourcePath.slice(1) : root + sourcePath;
+	const fullTargetPath = targetPath[0] === "/" ? root + targetPath.slice(1) : root + targetPath;
+
+	fs.copyFile(fullSourcePath, fullTargetPath, err =>
+	{
+		if (err)
+		{
+			console.error(err);
+		}
+	});
+}

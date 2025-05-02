@@ -78,6 +78,8 @@ async function buildSite()
 		})
 	));
 
+	console.log(directories);
+
 	const expandedFiles = directories.map(directory =>
 		spawnSync("ls", [
 			"-p",
@@ -275,14 +277,11 @@ async function prepareTexFromHTML(file)
 		pageUrl: `/${path}`
 	});
 
-	if (result.length === 2)
-	{
-		// Write a standard tex file.
-		await write(
-			`${path}/${result[1]}.tex`,
-			result[0]
-		);
-	}
+	// Write a standard tex file.
+	write(
+		`${path}/${result[1]}.tex`,
+		result[0]
+	);
 }
 
 

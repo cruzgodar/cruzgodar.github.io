@@ -46,7 +46,7 @@ export function convertCardToTex({
 			// Remove buttons.
 			.replaceAll(/<div.*? class="text-buttons">.*?<\/div><\/div>/g, "")
 			// Images.
-			.replaceAll(/<img.*? src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
+			.replaceAll(/<img.*? data-src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
 			{
 				imageUrls.push($1);
 				const filename = $1.split("/").pop();
