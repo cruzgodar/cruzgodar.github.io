@@ -118,6 +118,8 @@ export async function showCard({
 		]);
 
 		onLoadExternalCard(currentCard, id);
+
+		await sleep(10);
 	}
 
 	cardContainer.style.display = "flex";
