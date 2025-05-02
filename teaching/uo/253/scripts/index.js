@@ -1,9 +1,6 @@
-import { convertCardToLatex } from "../../../../build/bin/latex.js";
-import { Button } from "/scripts/src/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { showPage } from "/scripts/src/loadPage.js";
-import { asyncFetch, pageUrl } from "/scripts/src/main.js";
 
 export default async function load()
 {
@@ -17,15 +14,15 @@ export default async function load()
 			addBounceOnTouch: () => true,
 		});
 
-		new Button({
-			element: buttons[0],
-			name: "Download PDF Version",
-			onClick: async () =>
-			{
-				const html = await asyncFetch(`${pageUrl}/cards/${id}/data.html`);
-				convertCardToLatex(html, "Math 253");
-			}
-		});
+		// new Button({
+		// 	element: buttons[0],
+		// 	name: "Download PDF Version",
+		// 	onClick: async () =>
+		// 	{
+		// 		const html = await asyncFetch(`${pageUrl}/cards/${id}/data.html`);
+		// 		convertCardToLatex(html, "Math 253");
+		// 	}
+		// });
 	});
 
 	showPage();

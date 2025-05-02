@@ -78,8 +78,6 @@ async function buildSite()
 		})
 	));
 
-	console.log(directories);
-
 	const expandedFiles = directories.map(directory =>
 		spawnSync("ls", [
 			"-p",
@@ -282,6 +280,51 @@ async function prepareTexFromHTML(file)
 		`${path}/${result[1]}.tex`,
 		result[0]
 	);
+
+	const proc = spawnSync(
+		"pdflatex",
+		[`${result[1]}.tex`, "-interaction=nonstopmode"],
+		{ cwd: `${root}/${path}` }
+	);
+
+	parseTexErrors(proc.stdout.toString());
+
+	// Remove the auxiliary files.
+	spawnSync(
+		"rm",
+		["-f", `${result[1]}.aux`, `${result[1]}.log`, `${result[1]}.out`],
+		{ cwd: `${root}/${path}` }
+	);
+}
+
+
+
+function parseTexErrors(stdout)
+{
+	const lines = stdout.toString().split("\n");
+	const errorThings = [/error/i, /undefined/i];
+
+	outerloop: for (let i = 0; i < lines.length; i++)
+	{
+		if (lines[i] === "Package biblatex Warning: Using fall-back bibtex backend:")
+		{
+			continue;
+		}
+		
+		for (const badThing of errorThings)
+		{
+			if (badThing.test(lines[i]))
+			{
+				let error = lines[i];
+				for (let j = i; j < Math.min(i + 5, lines.length); j++)
+				{
+					error = `${error}\n${lines[j]}`;
+				}
+				console.error(error + "\n");
+				continue outerloop;
+			}
+		}
+	}
 }
 
 

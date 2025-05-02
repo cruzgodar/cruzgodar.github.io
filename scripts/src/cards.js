@@ -1,6 +1,7 @@
 import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
+import { loadImages } from "./images.js";
 import { $$, asyncFetch, pageElement, pageUrl, sleep } from "./main.js";
 import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
@@ -115,7 +116,11 @@ export async function showCard({
 			.replaceAll(/^<div.*?>/g, "")
 			.replaceAll(/<\/div>$/g, "");
 		currentCard.innerHTML = dataInnards;
-		await typesetMath();
+		
+		await Promise.all([
+			typesetMath(),
+			loadImages()
+		]);
 
 		onLoadExternalCard(currentCard, id);
 	}

@@ -72,29 +72,34 @@ export function convertCardToTex({
 				return `\\href{https://cruzgodar.com${pageUrl}/${$1}}{${$2}}`;
 			})
 			.replaceAll(/<!--.*?-->/g, "")
-			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
+			.replaceAll(
+				/<span[^>]*?inline-math[^>]*?data-source-tex=".*?"[^>]*?>(.*?)<\/span>/g,
+				(match, $1) => $1
+			)
 			.replaceAll(
 				/<span[^>]*?data-source-tex="(.*?)"[^>]*?>.*?<\/span>/g,
-				(match, $1) => `$${$1}$`
+				(match, $1) => $1
 			)
-			.replaceAll(/\[NEWLINE\]/g, "\n")
-			.replaceAll(/\[TAB\]/g, "\t")
 			.replaceAll(/<strong.*?>(.+?)<\/strong>/g, (match, $1) => `\\textbf{${$1}}`)
 			.replaceAll(/<em.*?>(.+?)<\/em>/g, (match, $1) => `\\textit{${$1}}`)
 			.replaceAll(/<span.*?><\/span>[a-z]\)/g, "\t\\item")
-			.replaceAll(
-				/((?:\t\\item.*\n\n)+)/g,
-				(match, $1) => `\\begin{enumerate}\n\n${$1}\\end{enumerate}\n\n`
-			)
-			.replaceAll(/\n\n/g, "\n")
-			.replaceAll(/(\n[0-9]+\.)/g, (match, $1) => `\n${$1}`)
-			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
-			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\n\\section{${$1}}\n\n`)
 			.replaceAll(/&amp;/g, " &")
+			.replaceAll(/&#x2019;/g, "'")
 			.replaceAll(/&lt;/g, "<")
 			.replaceAll(/\s\s&/g, " &")
 			.replaceAll(/&ndash;/g, "--")
 			.replaceAll(/&mdash;/g, "---")
+			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
+			.replaceAll(/\[NEWLINE\]/g, "\n")
+			.replaceAll(/\[TAB\]/g, "\t")
+			.replaceAll(
+				/((?:\t\\item.*\n\n)+)/g,
+				(match, $1) => `\\begin{enumerate}\n\n${$1}\\end{enumerate}\n\n`
+			)
+			.replaceAll(/(\n[0-9]+\.)/g, (match, $1) => `\n${$1}`)
+			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
+			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\n\\section{${$1}}\n\n`)
+			.replaceAll(/\n\n\n/g, "\n\n")
 		+ "\n\\end{document}";
 
 	return imageUrls.length ? [tex, title, imageUrls] : [tex, title];
