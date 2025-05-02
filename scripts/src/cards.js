@@ -101,11 +101,6 @@ export async function showCard({
 	
 	siteSettings.card = id;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
-	
-	cardContainer.style.display = "flex";
-	cardContainer.style.opacity = 1;
-	cardContainer.style.top = "100vh";
-	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
@@ -124,6 +119,11 @@ export async function showCard({
 
 		onLoadExternalCard(currentCard, id);
 	}
+
+	cardContainer.style.display = "flex";
+	cardContainer.style.opacity = 1;
+	cardContainer.style.top = "100vh";
+	cardContainer.style.transform = "";
 
 
 

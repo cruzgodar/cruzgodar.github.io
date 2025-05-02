@@ -1,0 +1,79 @@
+### card homework-4 "Homework 4"
+	
+	*Due Wednesday of Week 5 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-4
+	###
+
+
+
+	## Section 4
+	
+	In problems 5#, solve the DE and verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 2y' - 3y = 0.$$
+	
+	#. $$y'' + 3y' = 0.$$
+	
+	#. $$4y'' - 9y = 0.$$
+	
+	#. $$y'' - y' - y = 0.$$
+	
+	#. $$y'' = y'.$$
+	
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
+	
+	#. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
+	
+	#. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
+	
+	#. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
+	
+
+
+	- - -
+
+	#. Consider the DE $$2t^2y'' - ty' + y = 0.$$
+
+	> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
+	
+	> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
+	
+	> c) Why is $t = t_0$ a problem?
+	
+
+
+	- - -
+
+	#. Let $y = a(t) + b(t)i$ be a solution to
+	
+	$$
+		y'' + p(t)y' + q(t)y = 0,
+	$$
+	
+	where $a$, $b$, $p$, and $q$ are all real-valued functions. Show that both $a$ and $b$ must be solutions to $y'' + p(t)y' + q(t)y = 0$ themselves.
+	
+
+
+	- - -
+
+	#. Consider the DE $$y'' - yy' = 0.$$
+
+	> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
+	
+	> b) Show that
+	
+	$$
+		y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
+	$$
+	
+	is *not* a solution in general. Why does this not contradict the results of section 4?
+	
+###

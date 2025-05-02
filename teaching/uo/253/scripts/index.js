@@ -34,6 +34,11 @@ export default async function load()
 	{
 		const buttons = card.querySelectorAll(".text-button");
 
+		if (buttons.length === 0)
+		{
+			return;
+		}
+
 		addHoverEventWithScale({
 			element: buttons[0],
 			scale: 1.05,

@@ -1,0 +1,49 @@
+### card homework-1 "Homework 1"
+	
+	*Due Wednesday of Week 2 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-1
+	###
+	
+	
+	
+	## Section 1
+	
+	In problems 3#, find the order of the DE, state whether it's linear, and verify that the given function solves it.
+	
+	#. $$y'' + y' + y = 0,$$ $$y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right).$$
+	
+	#. $$y''' = t,$$ $$y(t) = \frac{t^4}{24}.$$
+	
+	#. $$(y'')^2 = e^t,$$ $$y(t) = t - 4e^{t / 2}.$$
+	
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
+	
+	#. $$\frac{y'}{\tan(t)} = \sec(t),$$ $$y(0) = 1.$$
+	
+	#. $$y' = y,$$ $$y(1) = 1.$$
+	
+	#. $$r' = t^2\sin(t),$$ $$r(0) = 0.$$
+	
+
+
+	- - -
+
+	In problems 4#, draw the direction field for the given DE and sketch a solution curve. Find all the equilibria and classify them as stable, unstable, or neither.
+	
+	#. $$y' = \sin(t).$$
+	
+	#. $$y' = (y^2 - 1)(t^2 - 1).$$
+	
+	#. $$y' = y.$$
+	
+	#. $$(y')^2 = |yt|.$$
+	
+###
