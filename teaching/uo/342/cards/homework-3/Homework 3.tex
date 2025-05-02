@@ -24,7 +24,7 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 3 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 3 | Math 341 | Cruz Godar \vspace{4pt} \normalsize
 
 \textit{Due Wednesday of Week 4 at the start of class}
 
@@ -32,49 +32,73 @@ Complete the following problems and submit them as a pdf to Canvas. 8 points are
 
 \section{Section 3}
 
-In problems 1--3, find the indicated derivative.
+In problems 1--3, find the general solution to the system of differential equations.
 
-1. $\displaystyle \frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$
+1.
 
-2. $\displaystyle \frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$
+\begin{align*}
+	x_1' &= 2x_1 - x_2\\
+	x_2' &= 3x_1 - 2x_2.
+\end{align*}
 
-3. $\displaystyle \frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$
+For this problem, also sketch a vector field.
+
+2.
+
+\begin{align*}
+	x_1' &= 19x_1 - 4x_2 + 8x_3\\
+	x_2' &= -8x_1 + 5x_2 - 10x_3\\
+	x_3' &= -x_1 - 2x_2 + 4x_3.
+\end{align*}
+
+3.
+
+\begin{align*}
+	x' &= 2x + 2y - 2z\\
+	y' &= -3x + 7y + 3z\\
+	z' &= -5x + 5y + 5z.
+\end{align*}
 
 ~\\
 
-4. Using the multivariable chain rule, find $\displaystyle \frac{d f(x, y)}{dt}$, where $\displaystyle f(x, y) = 2x^2 + \sec(xy^2)$, $x(t) = t$, and $y(t) = 5t^2$.
+4. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows \textit{back} into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
 
 ~\\
 
-In problems 5--7, find the indicated integral. Make sure to express the constant as a function of the correct variable.
+5. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The \textbf{companion matrix} to $f$ is the $2 \times 2$ matrix
 
-5. $\displaystyle \int f(x, y)\,\text{d} x$ for $\displaystyle f(x, y) = 2x\cos(y - x).$
+\begin{align*}
+	C(f) = \left[\begin{array}{cc}0& -b \\ 1& -a\end{array}\right].
+\end{align*}
 
-6. $\displaystyle \int f(x, y)\,\text{d} y$ for $f$ as in the previous problem.
+Show that the characteristic polynomial $\chi_{C(f)}$ is $f$.
 
-7. $\displaystyle \int g(x, y)\,\text{d} y$ for $\displaystyle g(x, y) = e^{x^2}.$
+6. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
 
-~\\
+\begin{enumerate}
 
-In problems 8--14, solve the the given DE.
+	\item $\lambda_1 = 1, \quad \lambda_2 = 1$.
 
-8. $\displaystyle 2y + 1 + (2x + 1)y' = 0,$ $\displaystyle y(1) = 1.$
+	\item $\lambda_1 = 1, \quad \lambda_2 = -1$.
 
-9. $\displaystyle 1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$ $\displaystyle y(0) = 0.$
+	\item $\lambda_1 = -1, \quad \lambda_2 = -1$.
 
-10. $\displaystyle \sin(y)y' - te^t\cos(y) = 0.$
+	\item $\lambda_1 = 1 + 2i, \quad \lambda_2 = 1 - 2i$.
 
-11. $\displaystyle y' = -\frac{yx^{y - 1}}{x^y\log(x)},$ $\displaystyle y(2) = 1.$
+	\item $\lambda_1 = -1 + 2i, \quad \lambda_2 = -1 - 2i$.
 
-12. $\displaystyle ty' + y + t^{-2} = 0,$ $\displaystyle y(2) = 2.$
+	\item $\lambda_1 = i, \quad \lambda_2 = -i$.
 
-13. $\displaystyle (10t + t^2) - 2\sin(y)y' = 0,$ $\displaystyle y(0) = 1.$
+\end{enumerate}
 
-14.
+7. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the \href{https://cruzgodar.com/applets/vector-fields}{vector fields applet} --- for example, to plot
 
-$$
-	\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
-$$
+\begin{align*}
+	x' &= 2x - y\\
+	y' &= x + 4y,
+\end{align*}
+
+enter <code>(2x - y, x + 4y)</code> in the box and hit generate.
 
 
 \end{document}

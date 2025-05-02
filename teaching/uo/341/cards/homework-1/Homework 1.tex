@@ -24,7 +24,7 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 342 | Cruz Godar \vspace{4pt} \normalsize
 
 \textit{Due Wednesday of Week 2 at the start of class}
 
@@ -32,35 +32,111 @@ Complete the following problems and submit them as a pdf to Canvas. 8 points are
 
 \section{Section 1}
 
-In problems 1--3, find the order of the DE, state whether it's linear, and verify that the given function solves it.
+In problems 1--3, write the system in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and vector $\vec{b}$ of constants and a vector $\vec{x}$ of variables.
 
-1. $\displaystyle y'' + y' + y = 0,$ $\displaystyle y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right).$
+1.
 
-2. $\displaystyle y''' = t,$ $\displaystyle y(t) = \frac{t^4}{24}.$
+\begin{align*}
+	x_1 &= 2\\
+	2x_1 - x_2 &= 3.
+\end{align*}
 
-3. $\displaystyle (y'')^2 = e^t,$ $\displaystyle y(t) = t - 4e^{t / 2}.$
+2.
+
+\begin{align*}
+	2x_3 - x_2 &= 0\\
+	x_1 &= x_3 - x_2 + 1
+\end{align*}
+
+3.
+
+\begin{align*}
+	x + y - z &= x\\
+	x + 2y - 1 &= 2z\\
+	x - z + 1 &= y
+\end{align*}
 
 ~\\
 
-In problems 4--6, solve the initial value problem.
+In problems 4--8, evaluate the product.
 
-4. $\displaystyle \frac{y'}{\tan(t)} = \sec(t),$ $\displaystyle y(0) = 1.$
+4. $\displaystyle \left[\begin{array}{cc}3& 0 \\ 6& -2\end{array}\right]\left[\begin{array}{c}1 \\ -1\end{array}\right].$
 
-5. $\displaystyle y' = y,$ $\displaystyle y(1) = 1.$
+5. $\displaystyle \left[\begin{array}{ccc}1& 2& 3\end{array}\right]\left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right].$
 
-6. $\displaystyle r' = t^2\sin(t),$ $\displaystyle r(0) = 0.$
+6. $\displaystyle \left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right]\left[\begin{array}{ccc}1& 2& 3\end{array}\right].$
+
+7. $\displaystyle \left[\begin{array}{c}1 \\ 2 \\ 3\end{array}\right]\left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right].$
+
+8. $\displaystyle \left[\begin{array}{cc}1& 0 \\ 0& 1 \\ 1& 1\end{array}\right]\left[\begin{array}{cccc}1& -1& 1& -1 \\ -1& 1& -1& 1\end{array}\right].$
 
 ~\\
 
-In problems 7--10, draw the direction field for the given DE and sketch a solution curve. Find all the equilibria and classify them as stable, unstable, or neither.
+9. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
 
-7. $\displaystyle y' = \sin(t).$
+\begin{enumerate}
 
-8. $\displaystyle y' = (y^2 - 1)(t^2 - 1).$
+	\item For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
 
-9. $\displaystyle y' = y.$
+	\item The $i$th row of $A$ is $\left[\begin{array}{cccc}a_{i1}& a_{i2}& \cdots& a_{in}\end{array}\right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
 
-10. $\displaystyle (y')^2 = |yt|.$
+	\item What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+\end{enumerate}
+
+~\\
+
+10. Let $A$ be an $m \times n$ matrix with entries $a_{ij}$.
+
+\begin{enumerate}
+
+	\item There is a row vector $\vec{x}$ and a column vector $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
+
+	\item What about vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{ij}$? Your answer should be in terms of $i$ and $j$.
+
+\end{enumerate}
+
+~\\
+
+11. State whether each part is true or false. If true, briefly justify why, and if false, provide a small counterexample.
+
+\begin{enumerate}
+
+	\item A system with $3$ equations and $2$ unknowns always has at least one solution.
+
+	\item If the product $AB$ is defined, then $A$ and $B$ have the same number of rows.
+
+	\item If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for \textit{every} vector $\vec{x}$, then $A = I_2$. Hint: try plugging in specific values of $x_1$ and $x_2$, like $0$ and $1$.
+
+\end{enumerate}
+
+~\\
+
+In problems 12--14, we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
+
+12. With real numbers $x$ and $y$, it must be the case that $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
+
+\begin{align*}
+	A = \left[\begin{array}{ccc}1& 2& 3 \\ 4& 5& 6 \\ 7& 8& 9\end{array}\right], \quad B = \left[\begin{array}{ccc}1& 0& 2 \\ -2& 3& 0 \\ 0& 4& 1\end{array}\right]
+\end{align*}
+
+Compute $AB$ and $BA$ and show that they're different.
+
+13. With real numbers $x$, $y$, and $z$ where $x \neq 0$ and $xy = xz$, it's always the case that $y = z$, but this also isn't true for matrices. Define matrices $A$, $B$, and $C$ by
+
+\begin{align*}
+	A = \left[\begin{array}{cc}1& 2 \\ 0& 0\end{array}\right], \quad B = \left[\begin{array}{cc}1& 2 \\ 3& 4\end{array}\right], \quad C = \left[\begin{array}{cc}5& 4 \\ 1& 3\end{array}\right]
+\end{align*}
+
+Show that $AB = AC$, despite $B \neq C$.
+
+14. With real numbers $x$ and $y$ where $xy = 0$, either $x = 0$ or $y = 0$. Unfortunately, this also isn't the case for matrices. Define $A$ and $B$ by
+
+\begin{align*}
+	A = \left[\begin{array}{ccc}1& 0& 0 \\ 0& 0& 0 \\ 0& 0& 0\end{array}\right], \quad B = \left[\begin{array}{ccc}0& 0& 0 \\ 0& 2& 3 \\ 0& 4& 5\end{array}\right].
+\end{align*}
+
+Show that $AB = 0$ (the matrix of all zeros), even though both $A$ and $B$ are nonzero.
 
 
 \end{document}

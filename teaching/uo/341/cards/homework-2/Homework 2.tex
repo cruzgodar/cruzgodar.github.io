@@ -24,7 +24,7 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 2 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 2 | Math 342 | Cruz Godar \vspace{4pt} \normalsize
 
 \textit{Due Wednesday of Week 3 at the start of class}
 
@@ -32,61 +32,89 @@ Complete the following problems and submit them as a pdf to Canvas. 8 points are
 
 \section{Section 2}
 
-In problems 1--10, solve the DE. Whenever possible, fully evaluate all integrals.
+In problems 1--6, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
 
-1. $\displaystyle y' + 2y = e^{-2t},$ $\displaystyle y(0) = -1.$
+1.
 
-2. $\displaystyle y' + \frac{y}{t} = \sin(t),$ $\displaystyle y(\pi) = 0.$
+\begin{align*}
+	3x - y &= 14\\
+	4x + 2y &= 2.
+\end{align*}
 
-3. $\displaystyle xy' = \sqrt{y^2x^2 - y^2}.$ Hint: during the integration, you'll want to set $x = \sec(\theta)$ and use trig sub.
+2.
 
-4. $\displaystyle y' = y + t^2e^t.$
+\begin{align*}
+	x + 2z &= 8\\
+	-x + 2y + 6z &= 6\\
+	4x + y + 3z &= 21.
+\end{align*}
 
-5. $\displaystyle y' = \frac{t}{1 + y},$ $\displaystyle y(0) = -2.$
+3.
 
-6. $\displaystyle y' + ty^2 + ty + 2y^2 + 2y = 0.$
+\begin{align*}
+	3x_1 + x_2 + x_3 &= 1\\
+	x_2 + x_3 &= -4\\
+	6x_1 + 5x_2 + 8x_3 &= -10.
+\end{align*}
 
-7. $\displaystyle ty' + (t + 1)y = t + 2,$ $\displaystyle y(1) = 2.$
+4.
 
-8. $\displaystyle \cos^2(t)y' = 1 + y.$
+\begin{align*}
+	x_1 + x_2 - 4x_3 &= -11\\
+	-3x_1 + 2x_3 &= 3\\
+	2x_1 + 2x_2 + 2x_3 &= 8\\
+	-x_1 + 2x_2 &= 1.
+\end{align*}
 
-9. $\displaystyle y' = t + \frac{t}{y}.$
+5.
 
-10. $\displaystyle y' = e^{x + y},$ $\displaystyle y(0) = 0.$
+\begin{align*}
+	a + c &= 2\\
+	b + d &= 1\\
+	a + 2b + 3c + 4d &= 10\\
+	4a + 3b + 2c + d &= 5.
+\end{align*}
+
+6.
+
+\begin{align*}
+	x + y + 4z &= 4\\
+	x - y + 2w &= 6\\
+	-x + 5y + 8z - 6w &= -10\\
+	x + 2z + w &= 5
+\end{align*}
 
 ~\\
 
-11. You invest $\$1000$ into an account which compounds interest \textbf{continuously} --- in other words, your balance is constantly increasing at a rate proportional to its current value. If the continuous interest rate is $0.2\%$ per year, how much money will be in the account after 10 years?
+In problems 7--11, invert the matrix.
+
+7. $\displaystyle \left[\begin{array}{cc}4& 1 \\ -1& 2\end{array}\right].$
+
+8. $\displaystyle \left[\begin{array}{ccc}1& 0& -1 \\ 4& 5& 6 \\ 0& -1& 2\end{array}\right].$
+
+9. $\displaystyle \left[\begin{array}{ccc}2& 1& 3 \\ 3& -1& 2 \\ 1& 0& 1\end{array}\right].$
+
+10. $\displaystyle \left[\begin{array}{c}4\end{array}\right].$
+
+11. $\displaystyle \left[\begin{array}{cccc}1& 0& 0& 0 \\ 0& 1& 0& 1 \\ 0& 0& 1& 0 \\ 1& 0& 1& 1\end{array}\right]$
 
 ~\\
 
-12. The population $P(t)$ of a colony of bacteria after $t$ hours (in thousands) follows the equation $\displaystyle P' + P = 2^{-t} + 1.$ After enough time, what will the population settle down to?
-
-~\\
-
-13. The function $y$ satisfies $y' = y\log(x)$ with $\displaystyle y(1) = \frac{1}{e}.$
+12. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:
 
 \begin{enumerate}
 
-	\item Express $y''$ in terms of $x, y$, and $y'$.
+	\item A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
 
-	\item Solve the original DE, find $y''$ in terms of $x$ only, and verify that your answer to part a) was correct.
+	\item A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
+
+	\item A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
 
 \end{enumerate}
 
 ~\\
 
-14. Solve the DE $\displaystyle y' + xy = x$ in two ways: first with integrating factors and then with separation of variables. Make sure your answers are the same!
-
-~\\
-
-15. True or false: if a DE is separable, then its direction field is symmetric about the origin --- i.e. the slope at $(x, y)$ is the same as the slope at $(-x, -y)$. If it's true, briefly explain why, and if it's false, give a counterexample.
-
-~\\
-
-16. A tank is filled with $1\,\text{L}$ of water. We begin pouring in a salt solution with a concentration of $2\,\frac{\text{g}}{\text{mL}}$ at a rate of $10\,\frac{\text{mL}}{\text{s}}$, and also begin draining the tank at a rate of $10\,\frac{\text{mL}}{\text{s}}$. What will the concentration of salt be after an hour?
-
-17. A tank is filled with $100\,\text{L}$ of uncolored paint. We begin pouring in a solution of red paint, which contains $0.5\,\frac{\text{kg}}{\text{L}}$ of dye, at a rate of $1\,\frac{\text{L}}{\text{s}}$. We also begin draining the well-mixed paint from the bottom of the tank at a rate of $1\,\frac{\text{L}}{\text{s}}$. How long will it take for the paint in the tank to have half the concentration of dye that the incoming red paint does?
+13. Let $\displaystyle A = \left[\begin{array}{cc}a& b \\ c& d\end{array}\right]$ be a generic $2 \times 2$ matrix. Find $A^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 
 
 \end{document}

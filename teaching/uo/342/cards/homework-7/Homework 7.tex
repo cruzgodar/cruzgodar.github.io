@@ -24,88 +24,37 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 7 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 7 | Math 341 | Cruz Godar \vspace{4pt} \normalsize
 
 \textit{Due Wednesday of Week 8 at the start of class}
 
 Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
 
-\section{Section 9}
+\section{Section 7}
 
-In problems 1--5, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+1. Let $A$ be a real $m \times n$ matrix. Explain why $A^T\!A$ is guaranteed to be diagonalizable.
 
-1.
-
-\begin{align*}
-	3x - y &= 14\\
-	4x + 2y &= 2.
-\end{align*}
-
-2.
-
-\begin{align*}
-	x + 2z &= 8\\
-	-x + 2y + 6z &= 6\\
-	4x + y + 3z &= 21.
-\end{align*}
-
-3.
-
-\begin{align*}
-	3x_1 + x_2 + x_3 &= 1\\
-	x_2 + x_3 &= -4\\
-	6x_1 + 5x_2 + 8x_3 &= -10.
-\end{align*}
-
-4.
-
-\begin{align*}
-	x_1 + x_2 - 4x_3 &= -11\\
-	-3x_1 + 2x_3 &= 3\\
-	2x_1 + 2x_2 + 2x_3 &= 8\\
-	-x_1 + 2x_2 &= 1.
-\end{align*}
-
-5.
-
-\begin{align*}
-	a + c &= 2\\
-	b + d &= 1\\
-	a + 2b + 3c + 4d &= 10\\
-	4a + 3b + 2c + d &= 5.
-\end{align*}
-
-~\\
-
-In problems 6--10, invert the matrix.
-
-6. $\displaystyle \left[\begin{array}{cc}4& 1 \\ -1& 2\end{array}\right].$
-
-7. $\displaystyle \left[\begin{array}{ccc}1& 0& -1 \\ 4& 5& 6 \\ 0& -1& 2\end{array}\right].$
-
-8. $\displaystyle \left[\begin{array}{ccc}2& 1& 3 \\ 3& -1& 2 \\ 1& 0& 1\end{array}\right].$
-
-9. $\displaystyle \left[\begin{array}{c}4\end{array}\right].$
-
-10. $\displaystyle \left[\begin{array}{cccc}1& 0& 0& 0 \\ 0& 1& 0& 1 \\ 0& 0& 1& 0 \\ 1& 0& 1& 1\end{array}\right].$
-
-~\\
-
-11. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
+2. Let $A$ be a symmetric (i.e. $A^T = A$), $n \times n$, real matrix with all positive eigenvalues and define $\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}$ for $\vec{v}, \vec{w} \in \mathbb{R}^n$.
 
 \begin{enumerate}
 
-	\item A matrix $\mathbf{S_{1, 2}}$ so that $\mathbf{S_{1, 2}A}$ is the same as $\mathbf{A}$, but with rows $1$ and $2$ swapped. Similarly, find $\mathbf{S_{1, 3}}$ and $\mathbf{S_{2, 3}}$.
+	\item Show from the formula that this is symmetric --- that $\left< \vec{v}, \vec{w} \right> = \left< \vec{w}, \vec{v} \right>$.
 
-	\item A matrix $\mathbf{M_{1, c}}$ so that $\mathbf{M_{1, c}A}$ is same as $\mathbf{A}$, but with row $1$ multiplied by $c$. Similarly, find $\mathbf{M_{2, c}}$ and $\mathbf{M_{3, c}}$.
+	\item Show that it's also bilinear --- that $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
 
-	\item A matrix $\mathbf{P_{1, 2, c}}$ so that $\mathbf{P_{1, 2, c}A}$ is same as $\mathbf{A}$, but with $c$ times row $2$ added to row $1$. Similarly, find $\mathbf{P_{1, 3, c}}$, $\mathbf{P_{2, 3, c}}$, as well as $\mathbf{P_{2, 1, c}}$, $\mathbf{P_{3, 1, c}}$, and $\mathbf{P_{3, 2, c}}$.
+	\item Setting $\vec{v} = \vec{w} = \vec{0}$, we have that $\left< \vec{0}, \vec{0} \right> = 0$. Explain why for any nonzero vector $\vec{v} \in \mathbb{R}^n$, $\left< \vec{v}, \vec{v} \right> > 0$.
 
 \end{enumerate}
 
-~\\
+\section{Section 8}
 
-12. Let $\displaystyle \mathbf{A} = \left[\begin{array}{cc}a& b \\ c& d\end{array}\right]$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+In problems 3--5, write the matrix as $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+
+3. $A = \left[\begin{array}{ccc} 0& -5& -2 \\ 2& 6& 1 \\ -2& -3& 2 \end{array}\right]$.
+
+4. $A = \left[\begin{array}{ccc} -3& -1& -2 \\ -1& -1& -1 \\ 2& 1& 1 \end{array}\right]$.
+
+5. $A = \left[\begin{array}{ccc} 12& 4& 4 \\ -24& -8& -8 \\ -3& -1& 0 \end{array}\right]$.
 
 
 \end{document}

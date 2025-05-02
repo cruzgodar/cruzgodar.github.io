@@ -24,77 +24,83 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 4 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 4 | Math 342 | Cruz Godar \vspace{4pt} \normalsize
 
 \textit{Due Wednesday of Week 5 at the start of class}
 
 Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
 
-\section{Section 4}
+\section{Section 5}
 
-In problems 1--5, solve the DE and verify that you've found the general solution with the Wronskian.
+In problems 1--6, determine if the linear transformation $T$ is one-to-one, if it is onto, and if it is invertible. If it is invertible, find the inverse transformation.
 
-1. $\displaystyle y'' + 2y' - 3y = 0.$
+1. $T: \mathbb{R}^2 \to \mathbb{R}^2$ defined by $T\left(\left[\begin{array}{c} x \\ y \end{array}\right]\right) = \left[\begin{array}{c} 2x + y \\ x + 2y\end{array}\right]$.
 
-2. $\displaystyle y'' + 3y' = 0.$
+2. $T: \mathbb{R}^3 \to \mathbb{R}^2$ defined by $T\left(\left[\begin{array}{c} x \\ y \\ z \end{array}\right]\right) = \left[\begin{array}{c} x \\ y + z \end{array}\right]$.
 
-3. $\displaystyle 4y'' - 9y = 0.$
+3. $T: \mathbb{R}^2 \to \mathbb{R}^2$, where
 
-4. $\displaystyle y'' - y' - y = 0.$
+$$
+	T\left(\left[\begin{array}{c} 2 \\ 0 \end{array}\right]\right) = \left[\begin{array}{c} 2 \\ 4 \end{array}\right] \qquad T\left(\left[\begin{array}{c} 4 \\ 6 \end{array}\right]\right) = \left[\begin{array}{c} 4 \\ -10 \end{array}\right].
+$$
 
-5. $\displaystyle y'' = y'.$
+4. $T: \mathbb{R}^3 \to \mathbb{R}^3$, where
+
+$$
+	T\left(\left[\begin{array}{c} 1 \\ 1 \\ 1 \end{array}\right]\right) = \left[\begin{array}{c} 3 \\ 7 \\ 4 \end{array}\right] \qquad T\left(\left[\begin{array}{c} 1 \\ 2 \\ 0 \end{array}\right]\right) = \left[\begin{array}{c} 1 \\ -1 \\ 3 \end{array}\right] \qquad T\left(\left[\begin{array}{c} 0 \\ 1 \\ 3 \end{array}\right]\right) = \left[\begin{array}{c} 6 \\ 16 \\ 7 \end{array}\right].
+$$
+
+5. $T: \mathbb{R}^3 \to \mathbb{R}$, where
+
+$$
+	T\left(\left[\begin{array}{c} 1 \\ -1 \\ 1 \end{array}\right]\right) = -3 \qquad T\left(\left[\begin{array}{c} 1 \\ 0 \\ 1 \end{array}\right]\right) = 1 \qquad T\left(\left[\begin{array}{c} 0 \\ 1 \\ 1 \end{array}\right]\right) = 4.
+$$
+
+6. $T: \mathbb{R}^5 \to \mathbb{R}^2$, where
+
+$$
+	T\left(\left[\begin{array}{c} 1 \\ 0 \\ 2 \\ 3 \\ 0 \end{array}\right]\right) = \left[\begin{array}{c} 1 \\ 1 \end{array}\right] \qquad T\left(\left[\begin{array}{c} 2 \\ 1 \\ 2 \\ -1 \\ 3 \end{array}\right]\right) = \left[\begin{array}{c} 2 \\ 0 \end{array}\right].
+$$
 
 ~\\
 
-In problems 6--8, solve the initial value problem.
-
-6. $\displaystyle y'' + y' - 20y = 0,$ $\displaystyle y(0) = 9,$ $\displaystyle y'(0) = 18.$
-
-7. $\displaystyle 2y'' + 6y' = 20y,$ $\displaystyle y(0) = 14,$ $\displaystyle y'(0) = 0.$
-
-8. $\displaystyle y'' - y = 0,$ $\displaystyle y(0) = 4,$ $\displaystyle y'(0) = 2.$
-
-~\\
-
-9. Consider the DE $\displaystyle 2t^2y'' - ty' + y = 0.$
+7. Let $T : \mathbb{R}^4 \to \mathbb{R}^3$ be defined by the matrix $\left[\begin{array}{cccc} 1& 7& 2& -1 \\ -3& 6& 3& 12 \\ 0& 3& 1& 1 \end{array}\right]$.
 
 \begin{enumerate}
 
-	\item Show that a solution is $\displaystyle y = c_1t + c_2\sqrt{t}.$
+	\item Is $T$ one-to-one? Is it onto? Is it invertible?
 
-	\item Compute $\displaystyle W\left[t, \sqrt{t}\right].$ For which value $t = t_0$ is it zero?
+	\item Find the vectors $\vec{v}$ for which $T(\vec{v}) = \vec{0}$ and express it as a span of one or more vectors, i.e. $\operatorname{span}\{ \vec{v_1}, ..., \vec{v_n} \}$.
 
-	\item Why is $t = t_0$ a problem?
+	\item Find vectors $\vec{w_1}, ..., \vec{w_m} \in \mathbb{R}^4$ that are linearly independent to $\vec{v_1}, ..., \vec{v_n}$ so that all together,
+
+\end{enumerate}
+
+$$
+	\operatorname{span}\{ \vec{v_1}, ..., \vec{v_n}, \vec{w_1}, ..., \vec{w_m} \} = \mathbb{R}^4.
+$$
+
+<span style="width: 32px"></span>Hint: $n + m$ should equal $4$. (Why?)
+
+\begin{enumerate}
+
+	\item Show that $T(\vec{w_1}), ..., T(\vec{w_m})$ are linearly independent. Briefly explain why this has to be the case.
 
 \end{enumerate}
 
 ~\\
 
-10. Let $y = a(t) + b(t)i$ be a solution to
-
-$$
-	y'' + p(t)y' + q(t)y = 0,
-$$
-
-where $a$, $b$, $p$, and $q$ are all real-valued functions. Show that both $a$ and $b$ must be solutions to $y'' + p(t)y' + q(t)y = 0$ themselves.
-
-~\\
-
-11. Consider the DE $\displaystyle y'' - yy' = 0.$
+8. Let $R : \mathbb{R}^2 \to \mathbb{R}^2$ be a function (not necessarily a linear transformation) defined by rotating its inputs $90^\circ$ counterclockwise. For example, $R\left( \left[\begin{array}{c} 1 \\ 0 \end{array}\right] \right) = \left[\begin{array}{c} 0 \\ 1 \end{array}\right]$ and $R\left( \left[\begin{array}{c} \frac{1}{2} \\ \frac{\sqrt{3}}{2} \end{array}\right] \right) = \left[\begin{array}{c} -\frac{\sqrt{3}}{2} \\ \frac{1}{2} \end{array}\right]$.
 
 \begin{enumerate}
 
-	\item Show that both $\displaystyle y = \tan\left(\frac{x}{2}\right)$ and $\displaystyle y = 2\tan\left(x + 1\right)$ are solutions.
+	\item Explain with a picture why $R$ is in fact a linear transformation, i.e. $R(\vec{v_1} + \vec{v_2}) = R(\vec{v_1}) + R(\vec{v_2})$ and $R(c\vec{v}) = cR(\vec{v})$.
 
-	\item Show that
+	\item Find the matrix for $R$.
+
+	\item Let $R_\theta : \mathbb{R}^2 \to \mathbb{R}^2$ be the linear transformation that rotates its inputs an angle $\theta$ counterclockwise, where $\theta$ is a variable. Find a matrix for $R_\theta$.
 
 \end{enumerate}
-
-$$
-	y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
-$$
-
-is \textit{not} a solution in general. Why does this not contradict the results of section 4?
 
 
 \end{document}

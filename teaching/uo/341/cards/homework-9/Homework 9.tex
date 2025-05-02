@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 9 | Math 342 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Friday of Week 10 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 10}
+
+1. Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time?
+
+2. Rudimentary predictive text models use Markov Chains! To explore a \textit{very} simple example of this, let's look at a Markov chain on the words &#x201C;me&#x201D;, &#x201C;run&#x201D;, and &#x201C;out&#x201D;. We'll never repeat a word twice. After &#x201C;me&#x201D;, there is twice the chance of seeing &#x201C;out&#x201D; as there is &#x201C;run&#x201D;. After &#x201C;run&#x201D;, there is an equal chance of &#x201C;me&#x201D; and &#x201C;out&#x201D;. After &#x201C;out&#x201D;, there is twice the chance of &#x201C;run&#x201D; as &#x201C;me&#x201D;.
+
+\begin{enumerate}
+
+	\item Write down the transition matrix $P$ for this Markov Chain. After running this predictive text model for a very large number of words, what will the proportion of each word be?
+
+	\item A \textbf{Markov Chain Monte Carlo}, or MCMC, is a simple process that uses a Markov Chain to create sample data. Using a 6-sided die or simply a random number generator, use a uniformly random starting word from the three, and then use the appropriate column of $P$ to randomly choose the next word in the sequence. Do this twice to create a three-word sentence, and then repeat the process to create three total three-word sentences.
+
+\end{enumerate}
+
+\section{Course Review Exercises (also required)}
+
+In problems 3--7, do the following:
+
+\begin{enumerate}
+
+	\item Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
+
+	\item Augment $A$ with $\vec{b}$ and row reduce the system to solve for $\vec{x}$.
+
+	\item If $A$ is square, find $\det A$.
+
+	\item Let $T$ be the linear transformation corresponding to the matrix $A$. Write down the domain and codomain for $T$.
+
+	\item Find a basis for $\ker T$ and use it to find a basis for $\operatorname{image} T$ using the fundamental theorem of linear algebra.
+
+	\item Determine if $T$ is one-to-one, onto, both, or neither. If it's both one-to-one and onto, find a formula for $T^{-1}$.
+
+\end{enumerate}
+
+3.
+
+\begin{align*}
+	x + y &= 1\\
+	x - y &= 3
+\end{align*}
+
+4.
+
+\begin{align*}
+	x + 2y + z &= 0\\
+	-x + y + z &= -2\\
+	x + y &= 3
+\end{align*}
+
+5.
+
+\begin{align*}
+	x + 2y - z &= -1\\
+	2x + 3y - w &= -2
+\end{align*}
+
+6.
+
+\begin{align*}
+	x + y + 2z &= 4\\
+	2x + y - z &= 2\\
+	-3x - y + 4z &= 0
+\end{align*}
+
+7.
+
+\begin{align*}
+	x + y + z + w &= 5\\
+	x + 2y - 2z + 3w &= 0\\
+	3x + 5y - 3z + 7w &= 5\\
+	x - y + 7z - 3w &= 15
+\end{align*}
+
+~\\
+
+In problems 8--12, do the following:
+
+\begin{enumerate}
+
+	\item The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
+
+	\item Determine whether the function $T : V \to W$ is a linear transformation. If it is, show it satisfies the two properties, and if not, give a specific example showing one of them fails.
+
+	\item If $T$ is a linear transformation, find the matrix for $T$ with respect to the standard bases for $V$ and $W$.
+
+	\item If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\operatorname{image} T$ using the fundamental theorem of linear algebra. Then extend the basis for $\operatorname{image} T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
+
+\end{enumerate}
+
+8. $V = \mathbb{R}^4$, $W = M_{2 \times 2}(\mathbb{R})$, $X$ is the set of vectors $\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right] \in \mathbb{R}^4$ such that $x + 2y = w$, and $T : V \to W$ is defined by
+
+\begin{align*}
+	T\left( \left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right] \right) = \left[\begin{array}{cc} 0& x \\ y + z& 2w \end{array}\right].
+\end{align*}
+
+9. $V = M_{2 \times 2}(\mathbb{R})$, $W = M_{2 \times 2}(\mathbb{R})$, $X$ is the set of matrices $A$ such that $\det A = 0$, and $T : V \to W$ is defined by
+
+$$
+	T(A) = A^T.
+$$
+
+10. $V$ is the space of polynomials with degree at most 3, $W = \mathbb{R}^2$, $X$ is the set of polynomials $p(x)$ such that $p'(x) = 1$, and $T : V \to W$ is defined by
+
+$$
+	T(a + bx + cx^2 + dx^3) = \left[\begin{array}{c} a + b \\ c + d \end{array}\right].
+$$
+
+11. $V = \mathcal{L}(\mathbb{R}, \mathbb{R}^2)$, $W = M_{2 \times 2}(\mathbb{R})$, $X$ is the set of linear transformations $S : \mathbb{R} \to \mathbb{R}^2$ such that $S(1) = \left[\begin{array}{c} 0 \\ 0 \end{array}\right]$, and $T : V \to W$ is defined by
+
+\begin{align*}
+	T(S) = \left[\begin{array}{cc} \mid& \mid \\ S(1)& S(-1) \\ \mid& \mid \end{array}\right],
+\end{align*}
+
+i.e. the outputs of $S$ are placed as columns in a $2 \times 2$ matrix.
+
+12. $V = M_{2 \times 2}(\mathbb{R})$, $W$ is the space of polynomials with degree at most 2, $X$ is the set of matrices $\left[\begin{array}{cc} a& b \\ c& d \end{array}\right]$ with $a + d = 1$, and $T : V \to W$ is defined by
+
+$$
+	T(A) = \chi(A),
+$$
+
+where $\chi(A)$ is the characteristic polynomial of $A$, as described in homework 5.
+
+
+\end{document}

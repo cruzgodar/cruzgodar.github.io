@@ -34,6 +34,8 @@ export default async function load()
 	{
 		const buttons = card.querySelectorAll(".text-button");
 
+		console.log(buttons);
+
 		if (buttons.length === 0)
 		{
 			return;
