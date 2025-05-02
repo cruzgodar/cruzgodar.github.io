@@ -26,7 +26,7 @@ const preamble = String.raw`\documentclass{article}
 
 \Large Name: [YOUR NAME HERE] \hfill `;
 
-export function convertCardToLatex({
+export function convertCardToTex({
 	html,
 	course,
 	pageUrl

@@ -5,6 +5,7 @@ import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
 import buildHTMLFile from "../htmdl/build.js";
+import { convertCardToTex } from "./latex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -23,6 +24,13 @@ const excludeFromBuild =
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
+};
+
+const courseNames = {
+	"Math 253": /teaching\/uo\/253\/.+/,
+	"Math 256": /teaching\/uo\/256\/.+/,
+	"Math 341": /teaching\/uo\/341\/.+/,
+	"Math 342": /teaching\/uo\/342\/.+/,
 };
 
 let sitemap;
@@ -243,7 +251,38 @@ function buildPDFFile(file)
 
 async function prepareTexFromHTML(file)
 {
-	const result = await convertCardToLatex(await read(file), file.split("/").pop().split(".")[0]);
+	let courseName;
+
+	for (const [name, regex] of Object.entries(courseNames))
+	{
+		if (regex.test(file))
+		{
+			courseName = name;
+			break;
+		}
+	}
+
+	if (!courseName)
+	{
+		throw new Error("No course name found!");
+	}
+
+	const path = file.slice(0, file.lastIndexOf("/"));
+
+	const result = await convertCardToTex({
+		html: await read(file),
+		course: courseName,
+		pageUrl: `/${path}`
+	});
+
+	if (result.length === 2)
+	{
+		// Write a standard tex file.
+		await write(
+			`${path}/${result[1]}.tex`,
+			result[0]
+		);
+	}
 }
 
 

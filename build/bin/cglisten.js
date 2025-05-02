@@ -11,7 +11,7 @@ function listenToChanges()
 	const proc1 = spawnSync("find", [
 		root,
 		"-name",
-		"index.htmdl",
+		"*.htmdl",
 	]);
 
 	const proc2 = spawnSync("find", [
@@ -65,12 +65,10 @@ function isValidFile(file)
 		return;
 	}
 
-	const filename = end.slice(0, index);
 	const extension = end.slice(index + 1);
 
 	if (
-		(extension === "htmdl" && filename === "index")
-
+		extension === "htmdl"
 		|| extension === "js"
 		|| extension === "css"
 	) {

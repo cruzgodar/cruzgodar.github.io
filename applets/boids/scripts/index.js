@@ -63,10 +63,10 @@ export default function()
 	const fearFactorSlider = new Slider({
 		element: $("#fear-factor-slider"),
 		name: "Fear",
-		value: 10,
+		value: 20,
 		min: 0,
 		max: 30,
-		snapPoints: [5, 10, 15],
+		snapPoints: [5, 10, 15, 20, 25],
 		onInput: () => applet.fearFactor = fearFactorSlider.value / 1000
 	});
 
