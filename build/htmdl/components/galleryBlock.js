@@ -11,7 +11,7 @@ function galleryImage(options, id, size, name)
 
 export function galleryBlock(options, lines)
 {
-	let html = "<div class='gallery-block'>";
+	let html = "<div class=\"gallery-block\">";
 
 	lines.forEach(line =>
 	{

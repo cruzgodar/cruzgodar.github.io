@@ -68,7 +68,7 @@ export function initCards()
 // elements.
 
 // eslint-disable-next-line no-unused-vars
-let onLoadExternalCard = (cardElement) => {};
+let onLoadExternalCard = (card, id) => {};
 
 export function setOnLoadExternalCard(callback)
 {
@@ -117,7 +117,7 @@ export async function showCard({
 		currentCard.innerHTML = dataInnards;
 		await typesetMath();
 
-		onLoadExternalCard(currentCard);
+		onLoadExternalCard(currentCard, id);
 	}
 
 

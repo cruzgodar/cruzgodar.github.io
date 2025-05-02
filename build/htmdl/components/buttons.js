@@ -11,7 +11,7 @@ function button(id)
 
 export function buttons(_options, lines)
 {
-	let html = "<div class='text-buttons'>";
+	let html = "<div class=\"text-buttons\">";
 
 	lines.forEach(line =>
 	{

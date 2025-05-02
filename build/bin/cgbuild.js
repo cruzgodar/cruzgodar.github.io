@@ -129,6 +129,22 @@ async function buildFile(file)
 		}
 	}
 
+	else if (extension === "htmdl" && filename === "card")
+	{
+		const text = await read(file);
+		
+		if (text)
+		{
+			console.log(file);
+
+			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+
+			const path = file.slice(0, lastSlashIndex - 1);
+
+			await prepareTexFromHTML(`${path}/data.html`);
+		}
+	}
+
 	else if (extension === "js")
 	{
 		const text = await read(file);
@@ -221,6 +237,13 @@ function buildPDFFile(file)
 		"85",
 		`${root}${outputFile}`
 	]);
+}
+
+
+
+async function prepareTexFromHTML(file)
+{
+	const result = await convertCardToLatex(await read(file), file.split("/").pop().split(".")[0]);
 }
 
 

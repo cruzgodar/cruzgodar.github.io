@@ -1,7 +1,4 @@
-import { loadScript, pageUrl, raw } from "./main.js";
-
- 
-const preamble = raw`\documentclass{article}
+const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -29,26 +26,26 @@ const preamble = raw`\documentclass{article}
 
 \Large Name: [YOUR NAME HERE] \hfill `;
 
-export function convertCardToLatex(element, title, course)
-{
-	const clonedElement = element.cloneNode(true);
-
-	clonedElement.querySelectorAll(".tex-holder > *, #card-close-button, h1")
-		.forEach(e => e.remove());
-	
-	const firstSection = clonedElement.querySelector("h2")
-		?? clonedElement.querySelector(".text-buttons").nextElementSibling;
-	
-	while (firstSection.previousElementSibling)
-	{
-		firstSection.previousElementSibling.remove();
-	}
+export function convertCardToLatex({
+	html,
+	course,
+	pageUrl
+}) {
+	const title = html.match(/<h1.*?>(.*?)<\/h1>/)?.[1];
 
 	const imageUrls = [];
 
 	const tex = preamble
 		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
-		+ clonedElement.innerHTML
+		+ html
+			// Remove the wrapping card divs.
+			.replaceAll(/^<div.*?>/g, "")
+			.replaceAll(/<\/div>$/g, "")
+			// Remove the heading.
+			.replaceAll(/<h1.*?>(.*?)<\/h1>/g, "")
+			// Remove buttons.
+			.replaceAll(/<div.*? class="text-buttons">.*?<\/div><\/div>/g, "")
+			// Images.
 			.replaceAll(/<img.*? src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
 			{
 				imageUrls.push($1);
@@ -59,9 +56,9 @@ export function convertCardToLatex(element, title, course)
 \\end{center}
 `;
 			})
+			// Links.
 			.replaceAll(/<a.*? href="(.+?)".*?>(.+?)<\/a>/g,  (match, $1, $2) =>
 			{
-				console.log($1, $2);
 				if ($1.slice(0, 4) === "http" || $1.slice(0, 3) === "www")
 				{
 					return `\\href{${$1}}{${$2}}`;
@@ -77,12 +74,8 @@ export function convertCardToLatex(element, title, course)
 			.replaceAll(/<!--.*?-->/g, "")
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
 			.replaceAll(
-				/<span[^>]*?inline-math[^>]*?data-source-tex="(.*?)"[^>]*?>(.*?)<\/span>/g,
-				(match, $1, $2) => `$${$1}$${$2}`
-			)
-			.replaceAll(
-				/<span[^>]*?tex-holder[^>]*?data-source-tex="(.*?)"[^>]*?>(.*?)<\/span>/g,
-				(match, $1, $2) => `${$1}${$2}`
+				/<span[^>]*?data-source-tex="(.*?)"[^>]*?>.*?<\/span>/g,
+				(match, $1) => `$${$1}$`
 			)
 			.replaceAll(/\[NEWLINE\]/g, "\n")
 			.replaceAll(/\[TAB\]/g, "\t")
@@ -100,60 +93,52 @@ export function convertCardToLatex(element, title, course)
 			.replaceAll(/&amp;/g, " &")
 			.replaceAll(/&lt;/g, "<")
 			.replaceAll(/\s\s&/g, " &")
-			.replaceAll(/–/g, "--")
-			.replaceAll(/—/g, "---")
+			.replaceAll(/&ndash;/g, "--")
+			.replaceAll(/&mdash;/g, "---")
 		+ "\n\\end{document}";
 
-	if (imageUrls.length)
-	{
-		downloadTexWithGraphics(title, tex, imageUrls);
-	}
-
-	else
-	{
-		downloadTex(title, tex);
-	}
+	return imageUrls.length ? [tex, title, imageUrls] : [tex, title];
 }
 
-async function downloadTexWithGraphics(filename, text, imageUrls)
-{
-	await Promise.all([
-		loadScript("/scripts/jszip.min.js"),
-		loadScript("/scripts/fileSaver.min.js")
-	]);
+// async function downloadTexWithGraphics(filename, text, imageUrls)
+// {
+// 	await Promise.all([
+// 		loadScript("/scripts/jszip.min.js"),
+// 		loadScript("/scripts/fileSaver.min.js")
+// 	]);
 
-	// eslint-disable-next-line no-undef
-	const zip = new JSZip();
+// 	// eslint-disable-next-line no-undef
+// 	const zip = new JSZip();
 
-	zip.file(`${filename}.tex`, text);
+// 	zip.file(`${filename}.tex`, text);
 
-	const graphics = zip.folder("graphics");
+// 	const graphics = zip.folder("graphics");
 
-	for (const imageUrl of imageUrls)
-	{
-		// Generate base64 data for the image.
-		const image = await fetch(imageUrl).then(res => res.blob());
-		graphics.file(imageUrl.split("/").pop(), image);
-	}
+// 	for (const imageUrl of imageUrls)
+// 	{
+// 		// Generate base64 data for the image.
+// 		const image = await fetch(imageUrl).then(res => res.blob());
+// 		graphics.file(imageUrl.split("/").pop(), image);
+// 	}
 
-	const blob = await zip.generateAsync({ type: "blob" });
-	// eslint-disable-next-line no-undef
-	saveAs(blob, `${filename}.zip`);
-}
+// 	const blob = await zip.generateAsync({ type: "blob" });
+// 	// eslint-disable-next-line no-undef
+// 	saveAs(blob, `${filename}.zip`);
+// }
 
-function downloadTex(filename, text)
-{
-	const element = document.createElement("a");
-	element.setAttribute(
-		"href",
-		"data:text/x-tex;charset=utf-8," + encodeURIComponent(text)
-	);
-	element.setAttribute("download", `${filename}.tex`);
+// function downloadTex(filename, text)
+// {
+// 	const element = document.createElement("a");
+// 	element.setAttribute(
+// 		"href",
+// 		"data:text/x-tex;charset=utf-8," + encodeURIComponent(text)
+// 	);
+// 	element.setAttribute("download", `${filename}.tex`);
 
-	element.style.display = "none";
-	document.body.appendChild(element);
+// 	element.style.display = "none";
+// 	document.body.appendChild(element);
 
-	element.click();
+// 	element.click();
 
-	document.body.removeChild(element);
-}
+// 	document.body.removeChild(element);
+// }

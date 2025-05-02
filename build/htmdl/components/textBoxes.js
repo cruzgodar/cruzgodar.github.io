@@ -12,7 +12,7 @@ function textBox(id)
 
 export function textBoxes(_options, lines)
 {
-	let html = "<div class='text-boxes'>";
+	let html = "<div class=\"text-boxes\">";
 
 	lines.forEach(line =>
 	{

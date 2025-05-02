@@ -1,5 +1,5 @@
+import { convertCardToLatex } from "../../../../build/bin/latex.js";
 import { Button } from "/scripts/src/buttons.js";
-import { convertCardToLatex } from "/scripts/src/latex.js";
 import { showPage } from "/scripts/src/loadPage.js";
 
 export default function load()

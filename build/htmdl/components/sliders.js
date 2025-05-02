@@ -13,7 +13,7 @@ function slider(options, id)
 
 export function sliders(options, lines)
 {
-	let html = "<div class='sliders'>";
+	let html = "<div class=\"sliders\">";
 
 	lines.forEach(line =>
 	{

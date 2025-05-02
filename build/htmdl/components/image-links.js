@@ -66,7 +66,7 @@ function imageLink(options, url, name, coverPath)
 
 	return /* html */`
 		<div class="image-link">
-			<a href="${url}"${options.includes("t") ? " data-in-new-tab='1'" : ""} tabindex="-1">
+			<a href="${url}"${options.includes("t") ? " data-in-new-tab=\"1\"" : ""} tabindex="-1">
 				<img src="/graphics/general-icons/placeholder.png" data-src="${imgSrc}" alt="${name}" tabindex="1"></img>
 			</a>
 			
