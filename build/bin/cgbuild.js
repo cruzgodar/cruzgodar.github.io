@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { spawnSync } from "child_process";
+import { readdirSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
@@ -179,9 +180,14 @@ async function buildFile(file)
 
 	else if (extension === "pdf")
 	{
-		console.log(file);
+		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
 
-		await buildPDFFile(file);
+		if (!(files.some(f => f.endsWith(".htmdl"))))
+		{
+			console.log(file);
+
+			await buildPDFFile(file);
+		}
 	}
 }
 
@@ -280,6 +286,17 @@ async function prepareTexFromHTML(file)
 		`${path}/${result[1]}.tex`,
 		result[0]
 	);
+
+	if (result[2])
+	{
+		// Zip the tex file and the graphics directory.
+		spawnSync("zip", [
+			"-r",
+			`${result[1]}.zip`,
+			`${result[1]}.tex`,
+			"graphics"
+		], { cwd: `${root}/${path}` });
+	}
 
 	const proc = spawnSync(
 		"pdflatex",

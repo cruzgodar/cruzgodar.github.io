@@ -367,3 +367,15 @@ async function showAndRestoreScroll()
 		setTimeout(() => window.scrollTo(0, scroll), 100);
 	}
 }
+
+
+
+export function downloadFile(filename)
+{
+	const link = document.createElement("a");
+	link.href = filename;
+	link.download = filename.slice(filename.lastIndexOf("/") + 1);
+	document.body.appendChild(link);
+	link.click();
+	link.remove();
+}
