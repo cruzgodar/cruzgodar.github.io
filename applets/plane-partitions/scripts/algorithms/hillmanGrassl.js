@@ -114,7 +114,7 @@ export async function hillmanGrassl(index)
 		}
 	}
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
 	await sleep(this.animationTime);
 
@@ -295,7 +295,7 @@ export async function hillmanGrasslInverse(index)
 
 	const planePartition = structuredClone(emptyArray);
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
 
 

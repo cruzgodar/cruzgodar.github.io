@@ -18,7 +18,10 @@ export async function runExample(index)
 				generateRandomPlanePartition()
 			);
 
-			await this.addNewArray(this.arrays.length, planePartition);
+			await this.addNewArray({
+				index: this.arrays.length,
+				numbers: planePartition
+			});
 		}
 
 		else if (!verifyPp(this.arrays[0].numbers))
@@ -30,7 +33,10 @@ export async function runExample(index)
 				generateRandomPlanePartition()
 			);
 
-			await this.addNewArray(this.arrays.length, planePartition);
+			await this.addNewArray({
+				index: this.arrays.length,
+				numbers: planePartition
+			});
 		}
 
 
@@ -68,7 +74,10 @@ export async function runExample(index)
 			await sleep(this.animationTime / 2);
 		}
 
-		await this.addNewArray(this.arrays.length, generateRandomTableau());
+		await this.addNewArray({
+			index: this.arrays.length,
+			numbers: generateRandomTableau()
+		});
 
 
 

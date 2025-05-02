@@ -60,7 +60,7 @@ export async function rsk(index)
 		}
 	}
 
-	const outputArray = await this.addNewArray(index + 2, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 2, numbers: emptyArray });
 
 
 
@@ -421,11 +421,11 @@ export async function rskInverse(index)
 		}
 	}
 
-	const pArray = await this.addNewArray(index + 1, pSsyt);
+	const pArray = await this.addNewArray({ index: index + 1, numbers: pSsyt });
 
 	await sleep(this.animationTime / 2);
 
-	const qArray = await this.addNewArray(index + 2, qSsyt);
+	const qArray = await this.addNewArray({ index: index + 2, numbers: qSsyt });
 
 	await sleep(this.animationTime / 2);
 

@@ -27,9 +27,11 @@ async function reset({ slide, forward, duration })
 		await applet.removeArray(0);
 	}
 
-
-
-	const array = await applet.addNewArray(0, rpp, false, false);
+	const array = await applet.addNewArray({
+		index: 0,
+		numbers: rpp,
+		horizontalLegs: false
+	});
 
 	applet.removeOutsideFloor(array);
 

@@ -63,7 +63,7 @@ export async function godar1(index)
 		}
 	}
 
-	await this.addNewArray(index + 1, newArray);
+	await this.addNewArray({ index: index + 1, numbers: newArray });
 
 	await sleep(this.animationTime / 2);
 
@@ -140,7 +140,7 @@ export async function godar1(index)
 
 	this.deleteCubes(array, cubesToDelete, true, true);
 
-	await this.addNewArray(index, finiteArray);
+	await this.addNewArray({ index, numbers: finiteArray });
 
 	await sleep(this.animationTime / 2);
 
@@ -312,7 +312,7 @@ export async function godar1(index)
 
 	if (rppSize > 0)
 	{
-		rppArray = await this.addNewArray(index + 1, rpp);
+		rppArray = await this.addNewArray({ index: index + 1, numbers: rpp });
 
 		await sleep(this.animationTime / 2);
 	}
@@ -331,7 +331,7 @@ export async function godar1(index)
 		}
 	}
 
-	const ppArray = await this.addNewArray(index + 2, pp);
+	const ppArray = await this.addNewArray({ index: index + 2, numbers: pp });
 
 
 
@@ -704,7 +704,7 @@ export async function godar1Inverse(index)
 		}
 	}
 
-	const appArray = await this.addNewArray(index + 2, app);
+	const appArray = await this.addNewArray({ index: index + 2, numbers: app });
 
 	await sleep(this.animationTime / 2);
 

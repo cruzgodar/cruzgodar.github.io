@@ -27,7 +27,11 @@ async function reset({ slide, duration })
 		await applet.removeArray(0);
 	}
 
-	await applet.addNewArray(0, rpp, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: rpp,
+		horizontalLegs: false
+	});
 
 	if (!applet.inExactHexView)
 	{

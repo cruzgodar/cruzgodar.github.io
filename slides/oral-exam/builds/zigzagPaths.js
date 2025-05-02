@@ -28,7 +28,11 @@ async function reset({ slide, forward, duration })
 		await applet.removeArray(0);
 	}
 
-	await applet.addNewArray(0, rpp, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: rpp,
+		horizontalLegs: false
+	});
 
 	if (!applet.in2dView)
 	{

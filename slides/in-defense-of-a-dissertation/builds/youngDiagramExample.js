@@ -34,7 +34,11 @@ async function reset({ slide, duration })
 		await applet.removeArray(0);
 	}
 
-	await applet.addNewArray(0, planePartition, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: planePartition,
+		horizontalLegs: false
+	});
 
 	await applet.hideFloor();
 
