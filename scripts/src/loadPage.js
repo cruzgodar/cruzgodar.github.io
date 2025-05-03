@@ -21,10 +21,8 @@ import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$,
 	$$,
-	asyncFetch,
 	pageElement,
 	pageUrl,
-	sleep,
 	updatePageElement
 } from "./main.js";
 import { typesetMath } from "./math.js";
@@ -35,6 +33,7 @@ import {
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
 import { sitemap } from "./sitemap.js";
+import { asyncFetch, sleep } from "./utils.js";
 
 export let pageShown = true;
 

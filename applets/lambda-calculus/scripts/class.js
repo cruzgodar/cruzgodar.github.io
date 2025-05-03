@@ -1,8 +1,8 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
-import { addTemporaryInterval, sleep } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
+import { addTemporaryInterval, clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const LITERAL = 0; // { value, bindingLambda }
@@ -802,7 +802,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	{
 		this.outerExpressionSize = Math.max(expression.width, expression.height);
 		this.resolution = Math.round(
-			Math.min(Math.max(this.resolution, 2000), 5000) / (this.outerExpressionSize + 2),
+			clamp(this.resolution, 2000, 5000) / (this.outerExpressionSize + 2),
 		) * (this.outerExpressionSize + 2);
 		
 		this.wilson.resizeCanvas({ width: this.resolution });

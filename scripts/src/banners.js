@@ -8,6 +8,7 @@ import {
 	pageUrl
 } from "./main.js";
 import { siteSettings } from "./settings.js";
+import { clamp } from "./utils.js";
 
 export let bannerElement;
 
@@ -64,7 +65,7 @@ export function updateBanner(timestamp)
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
-	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.3, 0), 1);
+	const t0 = clamp(window.scrollY / bannerMaxScroll * 1.3, 0, 1);
 	const t = easeInOutQuad(t0);
 
 

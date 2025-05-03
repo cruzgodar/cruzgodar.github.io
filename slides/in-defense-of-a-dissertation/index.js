@@ -12,7 +12,6 @@ import { regionsExampleBuilds } from "./builds/regionsExample.js";
 import { sulzgruberBuilds } from "./builds/sulzgruber.js";
 import { titleBuilds } from "./builds/title.js";
 import { youngDiagramExampleBuilds } from "./builds/youngDiagramExample.js";
-import { zigzagPathsBuilds } from "./builds/zigzagPaths.js";
 import { PlanePartitions } from "/applets/plane-partitions/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 
@@ -40,7 +39,6 @@ const options =
 		"young-diagram-example": youngDiagramExampleBuilds,
 		"plane-partition-example": planePartitionExampleBuilds,
 		"hooks": hooksBuilds,
-		"zigzag-paths": zigzagPathsBuilds,
 		"hillman-grassl": hillmanGrasslBuilds,
 		"pak": pakBuilds,
 		"regions-example": regionsExampleBuilds,

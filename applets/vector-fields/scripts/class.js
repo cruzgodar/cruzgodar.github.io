@@ -1,15 +1,15 @@
 import {
-	doubleEncodingGlsl,
-	getGlslBundle,
-	loadGlsl
+    doubleEncodingGlsl,
+    getGlslBundle,
+    loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import {
-	getFloatGlsl,
-	getMaxGlslString,
-	tempShader
+    getFloatGlsl,
+    getMaxGlslString,
+    tempShader
 } from "/scripts/applets/applet.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet

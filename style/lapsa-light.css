@@ -83,11 +83,6 @@ body
 	bottom: 2.5vw;
 }
 
-.lapsa-slide.full-square-canvas
-{
-	background-color: rgb(0, 0, 0);
-}
-
 .full-square-canvas canvas
 {
 	width: 55.625vw;

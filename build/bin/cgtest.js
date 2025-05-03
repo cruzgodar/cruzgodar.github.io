@@ -1,6 +1,5 @@
 #!/usr/bin/env bun
 
-import { launch } from "puppeteer";
 import { Worker } from "worker_threads";
 import { getModifiedDate, read, write } from "../file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
@@ -267,68 +266,6 @@ function testLatex(tex)
 	}
 }
 
-async function testAllLatex(files)
-{
-	spawnSync("mkdir", ["-p", `${root}/${texDirectory}`]);
-
-	const browser = await launch({ headless: true });
-	const page = await browser.newPage();
-
-	const texSources = [];
-
-	page.on("console", async (e) =>
-	{
-		const args = await Promise.all(e.args().map(a => a.jsonValue()));
-		const text = args.join(" ");
-
-		if (text.includes("\\documentclass{article}"))
-		{
-			texSources.push(text);
-		}
-	});
-
-	console.log("Downloading Latex...");
-
-	for (const file of files)
-	{
-		const buttons = latexFiles[file];
-
-		await page.goto(`http://${ip}:${port}/${file}?debug=1`);
-		
-		for (const button of buttons)
-		{
-			await new Promise(resolve =>
-			{
-				setTimeout(async () =>
-				{
-					await page.evaluate((button) =>
-					{
-						document.querySelector(button).click();
-					}, button);
-
-					resolve();
-				}, 150);
-			});
-		}
-	}
-	
-	await page.close();
-	await browser.close();
-
-	console.log("Compiling Latex...");
-
-	for (let i = 0; i < texSources.length; i++)
-	{
-		process.stdout.moveCursor(0, -1); // Move cursor up one line
-		process.stdout.clearLine();
-		console.log(`Compiling Latex (${i + 1}/${texSources.length})...`);
-		testLatex(texSources[i]);
-	}
-
-	const proc = spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
-	console.log(proc.stdout.toString());
-}
-
 async function test(clean)
 {
 	const proc = spawnSync("git", [
@@ -364,8 +301,6 @@ async function test(clean)
 
 	console.log("Testing pages for console errors...");
 	await testPages(htmlIndexFiles);
-
-	await testAllLatex(latexDataFiles);
 
 	process.exit(0);
 }

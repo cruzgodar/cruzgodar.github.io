@@ -1,6 +1,7 @@
 import anime from "../anime.js";
 import { carouselFillAnimationTime, carouselSwitchAnimationTime } from "./animation.js";
-import { $$, addTemporaryListener, sleep } from "./main.js";
+import { $$, addTemporaryListener } from "./main.js";
+import { sleep } from "./utils.js";
 
 const dotSize = 8;
 const expandedDotWidth = 128;

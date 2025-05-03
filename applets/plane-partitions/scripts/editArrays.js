@@ -1,13 +1,13 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
 
 export async function addNewArray({
 	index,
 	numbers,
 	keepNumbersCanvasVisible = false,
-	horizontalLegs = true
+	horizontalLegs = true,
 }) {
 	if (this.currentlyAnimatingCamera)
 	{

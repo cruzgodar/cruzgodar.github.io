@@ -1,6 +1,6 @@
 import { generateRandomPlanePartition, generateRandomTableau } from "./generateRandomData.js";
 import { parseArray, verifyPp, verifySsyt } from "./parseAndVerify.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 
 export async function runExample(index)
 {

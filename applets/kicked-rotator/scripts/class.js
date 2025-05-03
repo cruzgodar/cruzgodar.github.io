@@ -1,7 +1,7 @@
 import { getFloatGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class KickedRotator extends AnimationFrameApplet

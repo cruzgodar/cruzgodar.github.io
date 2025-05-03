@@ -2,10 +2,11 @@ import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
-import { $$, asyncFetch, pageElement, pageUrl, sleep } from "./main.js";
+import { $$, pageElement, pageUrl } from "./main.js";
 import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
+import { asyncFetch, sleep } from "./utils.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;

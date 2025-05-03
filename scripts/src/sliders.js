@@ -2,6 +2,7 @@ import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
+import { clamp } from "./utils.js";
 
 const trackWidth = 170;
 const thumbWidth = 24;
@@ -155,7 +156,7 @@ export class Slider extends InputElement
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.clientX - trackRect.left - this.dragOffset;
 					const maxX = trackRect.width - thumbWidth - 2.5 * 2;
-					const clampedX = Math.min(Math.max(x, 0), maxX);
+					const clampedX = clamp(x, 0, maxX);
 					this.element.style.left = `${clampedX}px`;
 
 					this.setRawValue(clampedX / maxX);
@@ -176,7 +177,7 @@ export class Slider extends InputElement
 					const trackRect = this.trackElement.getBoundingClientRect();
 					const x = e.touches[0].clientX - trackRect.left - this.dragOffset;
 					const maxX = trackRect.width - thumbWidth - 2.5 * 2;
-					const clampedX = Math.min(Math.max(x, 0), maxX);
+					const clampedX = clamp(x, 0, maxX);
 					this.element.style.left = `${clampedX}px`;
 
 					this.setRawValue(clampedX / maxX);
@@ -359,7 +360,7 @@ export class Slider extends InputElement
 			? (Math.log(this.value) - this.logMin) / (this.logMax - this.logMin)
 			: (this.value - this.min) / (this.max - this.min);
 
-		const clampedSliderProportion = Math.min(Math.max(sliderProportion, 0), 1);
+		const clampedSliderProportion = clamp(sliderProportion, 0, 1);
 
 		void(this.trackElement.offsetWidth);
 
@@ -404,15 +405,7 @@ export class Slider extends InputElement
 			)
 		);
 
-		if (this.value > this.max)
-		{
-			this.setValue(this.max, callOnInput);
-		}
-
-		else if (this.value < this.min)
-		{
-			this.setValue(this.min, callOnInput);
-		}
+		this.setValue(clamp(this.value, this.min, this.max), callOnInput);
 
 		this.addTickMarks();
 	}

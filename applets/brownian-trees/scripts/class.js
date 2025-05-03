@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker, sleep } from "/scripts/src/main.js";
+import { addTemporaryWorker, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class BrownianTrees extends AnimationFrameApplet

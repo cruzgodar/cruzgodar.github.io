@@ -10,6 +10,7 @@ import {
 	setScroll,
 	siteSettings
 } from "./settings.js";
+import { sleep } from "./utils.js";
 
 const blockCardPages = [
 	"/gallery"
@@ -304,31 +305,6 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 }
 
 
-
-export async function asyncFetch(url)
-{
-	return new Promise((resolve, reject) =>
-	{
-		const fetcher = new Worker("/scripts/src/asyncFetcher.js");
-
-		fetcher.postMessage([url]);
-
-		fetcher.onmessage = (e) =>
-		{
-			resolve(e.data[0]);
-		};
-
-		fetcher.onerror = reject;
-	});
-}
-
-export function sleep(ms)
-{
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
-
 async function showAndRestoreScroll()
 {
 	const scroll = siteSettings.scroll;
@@ -366,16 +342,4 @@ async function showAndRestoreScroll()
 		window.scrollTo(0, scroll);
 		setTimeout(() => window.scrollTo(0, scroll), 100);
 	}
-}
-
-
-
-export function downloadFile(filename)
-{
-	const link = document.createElement("a");
-	link.href = filename;
-	link.download = filename.slice(filename.lastIndexOf("/") + 1);
-	document.body.appendChild(link);
-	link.click();
-	link.remove();
 }

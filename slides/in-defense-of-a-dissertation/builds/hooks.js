@@ -14,7 +14,7 @@ async function reset({ slide, forward, duration })
 
 	const rpp =
 	[
-		[0, 2, 2, 4],
+		[1, 2, 2, 4],
 		[1, 2, 3, 0],
 		[1, 3, 3, 0],
 		[2, 3, 0, 0],

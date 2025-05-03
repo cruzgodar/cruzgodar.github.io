@@ -1,7 +1,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { NilRooms } from "/applets/thurston-geometries/scripts/geometries/nil.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 
 async function reset({ slide, duration })
 {

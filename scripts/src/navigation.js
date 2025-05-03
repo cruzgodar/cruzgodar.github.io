@@ -17,7 +17,6 @@ import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
-	asyncFetch,
 	clearTemporaryIntervals,
 	clearTemporaryListeners,
 	clearTemporaryParams,
@@ -25,7 +24,6 @@ import {
 	pageElement,
 	pageUrl,
 	setPageUrl,
-	sleep,
 	temporaryIntervals,
 	temporaryListeners,
 	temporaryParams,
@@ -42,6 +40,7 @@ import {
 	toggleDarkTheme
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
+import { asyncFetch, sleep } from "./utils.js";
 
 export let currentlyRedirecting = false;
 

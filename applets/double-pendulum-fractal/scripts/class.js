@@ -2,7 +2,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class DoublePendulumFractal extends AnimationFrameApplet

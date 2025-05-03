@@ -67,9 +67,13 @@
 			
 			<p class="build">Ex: $(5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.</p>
 			
-			<p class="build">The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$.</p>
+			<div class="build">
+				<p>The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$.</p>
+
+				<p>(We use the convention of $\mathbb{N} = \{1, 2, ... \}$).</p>
+			</div>
 			
-			<p class="build">We usually treat these as top-left-justified sets of squares in a grid, so that $a_i$ is the length of row $i$.</p>
+			<p class="build">We usually treat these as top-left-justified sets of squares in a grid, so that $a_i$ is the length of row $i$, and we freely identify partitions with their Young diagrams.</p>
 		</div>
 		
 		
@@ -77,8 +81,8 @@
 		<div id="young-diagram-example" class="large-canvas">
 			<p>Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$.</p>
 		</div>
-		
-		
+
+
 		
 		<div>
 			<h1>Plane Partitions</h1>
@@ -88,6 +92,8 @@
 			<p class="build">The <dfn>weight</dfn> of a plane partition $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.</p>
 			
 			<p class="build">If we require the rows and columns of a plane partition to weakly <em>increase</em> rather than decrease, the resulting object is called a <dfn>reverse plane partition</dfn>, or RPP.</p>
+
+			<p class="build">Given a Young diagram $\lambda$, we define the <dfn>Young diagram asymptotic to $\lambda$</dfn> to be the collection of boxes $\mathbb{N}^2 \setminus \lambda$</p>.
 		</div>
 		
 		
@@ -127,43 +133,17 @@
 		
 		
 		<div>
-			<h1>Hillman-Grassl</h1>
+			<h1>Hillman&ndash;Grassl</h1>
 			
-			<p class="build">The first bijective proof of the hook length formula is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them unmodified to construct an RPP: for example, with $\lambda = (2, 2)$, the hook with pivot $(1, 1)$ makes the tableau</p>
+			<p class="build">The first bijective proof of the hook length formula is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them unmodified to construct an RPP: for example, with $\lambda = (2, 2)$, including just the hook with pivot $(1, 1)$ makes the tableau (and invalid RPP)</p>
 			
-			<p data-build="0" style="text-align: center">$\begin{array}{cc}1 & 1 \\ 1 & 0\end{array}$</p>
+			<p data-build="0" style="text-align: center">$\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array}$</p>
 			
-			<p data-build="0">which isn&#x2019;t a valid RPP.</p>
+			<p class="build">Instead, each hook is reshaped in an invertible manner before it is placed. We can view this process decomposing an RPP into a multi-set of hooks and back again.</p>
 		</div>
-		
-		
-		
-		<div>
-			<h1>Zigzag Paths</h1>
-			
-			<p>The Hillman-Grassl map decomposes RPPs into <dfn>zigzag paths</dfn> instead of hooks. A zigzag path begins at the leftmost nonzero entry at the bottom of its column. It moves up if the entries are equal and right otherwise, until it can no longer move.</p>
-			
-			<p class="build">The <dfn>pivot</dfn> of a zigzag path is the entry with the path&#x2019;s starting column and ending row.</p>
-			
-			<p class="build">Every nonzero RPP has a unique zigzag path, and decrementing its entries preserves the RPP inequalities. Critically, every zigzag path has length equal to its pivot&#x2019;s hook length.</p>
-		</div>
-		
-		
-		
-		<div id="zigzag-paths" class="full-square-canvas"></div>
-		
-		
-		
-		<div>
-			<p>The Hillman-Grassl map $\operatorname{HG}$ is a bijection between RPPs and multisets of hooks. It operates on an RPP by decrementing its zigzag path, finding the zigzag path of the resulting RPP and decrementing <em>it</em>, and so on, until eventually the RPP has weight zero. At each step, we record the corresponding hook formed.</p>
-			
-			<p class="build">The removal of a zigzag path is an invertible operation, and it can be shown that the generated sequence of pivots respects a reverse lexicographic ordering, so given a multiset of pivots, the inverse map $\operatorname{HG}^{-1}$ is well-defined.</p>
-			
-			<p class="build">Since hooks are in bijection with pivots, we can concisely represent the multiset of hooks as a tableau of shape $\lambda$, weighted by hook length.</p>
-		</div>
-		
-		
-		
+
+
+
 		<div id="hillman-grassl" class="full-square-canvas"></div>
 		
 		

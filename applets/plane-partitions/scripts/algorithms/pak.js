@@ -1,4 +1,4 @@
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 
 export async function pak(index)
 {

@@ -1,6 +1,6 @@
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 
 export class HairyBall extends RaymarchApplet
 {

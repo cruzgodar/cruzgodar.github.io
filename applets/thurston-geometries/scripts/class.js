@@ -3,7 +3,8 @@ import { createShader } from "./createShader.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { edgeDetectShader } from "/scripts/applets/raymarchApplet.js";
-import { $, sleep } from "/scripts/src/main.js";
+import { $ } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 

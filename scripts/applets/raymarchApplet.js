@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
-import { sleep } from "../src/main.js";
+import { sleep } from "../src/utils.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {

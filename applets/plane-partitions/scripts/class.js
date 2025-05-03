@@ -46,7 +46,7 @@ import {
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { sleep } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -238,10 +238,10 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden3.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden3.ctx._alpha = 1;
 
-		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden3.ctx.fillStyle = convertColor(64, 64, 64, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden3.ctx.fillStyle = convertColor(64, 64, 64);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden3.ctx.lineWidth = 6;
