@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { Worker } from "worker_threads";
-import { getModifiedDate, read, write } from "../file-io.js";
+import { getModifiedDate, read } from "../file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
 const { spawnSync } = require("child_process");
@@ -200,72 +200,6 @@ async function testPages(files)
 	});
 }
 
-
-
-const latexFiles = {
-	"teaching/uo/253/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-	],
-
-	"teaching/uo/256/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-		"#download-homework-9-button",
-	],
-
-	"teaching/uo/341/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-		"#download-homework-9-button",
-	],
-
-	"teaching/uo/342/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-	],
-};
-
-const texDirectory = ".cgTexTesting";
-
-function testLatex(tex)
-{
-	const filename = Math.random().toString(36).slice(2);
-	write(`${texDirectory}/${filename}.tex`, tex);
-
-	const proc = spawnSync(
-		"pdflatex",
-		["-interaction=nonstopmode", "-halt-on-error", `${root}/${texDirectory}/${filename}.tex`],
-		{
-			stdio: "pipe",
-			cwd: `${root}/${texDirectory}`
-		}
-	);
-
-	if (proc.stdout.toString().toLowerCase().includes("error"))
-	{
-		console.error(`Error in compiling tex: ${proc.stdout.toString()}`);
-	}
-}
-
 async function test(clean)
 {
 	const proc = spawnSync("git", [
@@ -282,10 +216,6 @@ async function test(clean)
 	const htmlFiles = files.filter(file => file.slice(file.lastIndexOf(".")) === ".html");
 	const htmlDataFiles = htmlFiles.filter(file => file.includes("data.html"));
 	const htmlIndexFiles = htmlFiles.filter(file => file.includes("index.html"));
-
-	const latexDataFiles = htmlDataFiles
-		.map(file => file.replace("data.html", ""))
-		.filter(file => latexFiles[file]);
 
 	const jsFiles = files.filter(file =>
 	{

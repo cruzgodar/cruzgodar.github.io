@@ -27,7 +27,7 @@
 
 	- - -
 
-	#. For each of the series in problems #-6--#-1 that converges, find a value of $N$ so that the $N$th remainder $R_N$ is below $0.01$. Then compute the $N$th partial sum of the series with a tool like <a href="www.wolframalpha.com/">WolframAlpha</a>.
+	#. For each of the series in problems #-6--#-1 that converges, find a value of $N$ so that the $N$th remainder $R_N$ is below $0.01$. Then compute the $N$th partial sum of the series with a tool like <a href="https://wolframalpha.com">WolframAlpha</a>.
 
 	- - -
 
