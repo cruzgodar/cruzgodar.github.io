@@ -1,8 +1,9 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { addTemporaryInterval } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { addTemporaryInterval, clamp, sleep } from "/scripts/src/utils.js";
+import { clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const LITERAL = 0; // { value, bindingLambda }
