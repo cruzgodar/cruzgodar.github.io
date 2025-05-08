@@ -102,7 +102,7 @@ It turns out that these are the *only* three possibilities for the convergence o
 
 
 
-In case 2, what we mean by an interval centered at $a$ is something of the form $(a - R, a + R)$, where $R$ is some positive number. For example, the series $\sum_{n = 0}^\infty x^n$ has $R = 1$, since it converges on $(-1, 1)$. The interval of convergence can also sometimes include its endpoints, which we denote with square brackets, as in $[a - R, a + R]$.
+In case 2, what we mean by an interval centered at $a$ is something of the form $(a - R, a + R)$, where $R$ is some positive number. For example, the series $\sum_{n = 0}^\infty x^n$ has $R = 1$, since it converges on $(-1, 1)$. The interval of convergence can also sometimes include one or both of its endpoints, which we denote with square brackets, as in $[a - R, a + R]$.
 
 These three cases can all be collected into one, and it even helpfully comes along with its own definition.
 
@@ -122,7 +122,7 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 
 ### exc "radius of convergence"
 	
-	Find the radius and interval of convergence of the following series.
+	Find the interval and radius of convergence of the following series.
 	
 	1. $$f(x) = \sum_{n = 0}^\infty \frac{(x + 1)^n}{2^n(n + 1)}$$.
 	
