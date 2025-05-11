@@ -298,8 +298,9 @@ export class ComplexMaps extends AnimationFrameApplet
 		this.wilson.drawFrame();
 	}
 
-	switchFullscreen()
+	switchFullscreen(isFullscreen)
 	{
+		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
 		this.resume();
 	}
 

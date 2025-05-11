@@ -355,6 +355,11 @@ export class Applet
 				id: "applet-controls",
 				fromElement: element,
 			}));
+
+			if (!siteSettings.reduceMotion)
+			{
+				element.style.setProperty("view-transition-name", "wilson-help-button");
+			}
 		}, 10);
 
 		return element;

@@ -91,6 +91,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			fullscreenOptions: {
+				onSwitch: this.onSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -1658,5 +1659,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}
 
 		this.animationRunning = false;
+	}
+
+	onSwitchFullscreen(isFullscreen)
+	{
+		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
 	}
 }

@@ -416,6 +416,20 @@ export async function toggleReduceMotion()
 		}
 	});
 
+	const helpButton = document.querySelector(".wilson-help-button");
+	if (helpButton)
+	{
+		if (!siteSettings.reduceMotion)
+		{
+			helpButton.style.setProperty("view-transition-name", "wilson-help-button");
+		}
+		
+		else
+		{
+			helpButton.style.removeProperty("view-transition-name");
+		}
+	}
+
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 }
 

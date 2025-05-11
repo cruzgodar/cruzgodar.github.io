@@ -860,6 +860,8 @@ export class VectorFields extends AnimationFrameApplet
 
 	switchFullscreen(isFullscreen)
 	{
+		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
+		
 		if (isFullscreen)
 		{
 			this.wilsonPanZoomDim.enterFullscreen();

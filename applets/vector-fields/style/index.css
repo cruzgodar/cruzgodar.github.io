@@ -2,3 +2,8 @@
 {
 	font-family: 'Source Code Pro', monospace;
 }
+
+.wilson-help-button
+{
+	view-transition-name: unset !important;
+}

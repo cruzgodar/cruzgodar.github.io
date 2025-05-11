@@ -134,8 +134,10 @@ export class HairyBall extends RaymarchApplet
 		return 1.55 - 1;
 	}
 
-	switchFullscreen()
+	switchFullscreen(isFullscreen)
 	{
+		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
+		
 		this.resume();
 	}
 

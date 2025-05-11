@@ -242,6 +242,10 @@ export default function()
 			demoApplet.allowFullscreenWithKeyboard = false;
 
 			$$(".WILSON_enter-fullscreen-button")[1].remove();
+			setTimeout(() =>
+			{
+				$$(".wilson-help-button")[1].remove();
+			}, 50);
 		}
 
 		else
