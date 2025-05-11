@@ -1,6 +1,5 @@
 import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class HitomezashiPatterns extends Applet
@@ -40,8 +39,6 @@ export class HitomezashiPatterns extends Applet
 			canvasWidth: 1000,
 
 			fullscreenOptions: {
-				onSwitch: this.switchFullscreen.bind(this),
-				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
@@ -582,17 +579,5 @@ export class HitomezashiPatterns extends Applet
 				requestAnimationFrame(this.drawRegionsStep.bind(this));
 			}
 		}
-	}
-
-	switchFullscreen()
-	{
-		this.resume();
-	}
-
-	async beforeSwitchFullscreen()
-	{
-		this.animationPaused = true;
-
-		await sleep(33);
 	}
 }
