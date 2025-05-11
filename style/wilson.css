@@ -169,3 +169,18 @@
 	width: 100%;
 	height: 100%;
 }
+
+::view-transition-old(*)
+{
+	animation-duration: 300ms;
+}
+
+::view-transition-new(*)
+{
+	animation-duration: 300ms;
+}
+
+::view-transition-group(*)
+{
+	animation-duration: 300ms;
+}

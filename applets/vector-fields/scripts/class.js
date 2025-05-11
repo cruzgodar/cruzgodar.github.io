@@ -180,6 +180,7 @@ export class VectorFields extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
+				crossfade: true,
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
