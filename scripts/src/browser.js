@@ -1,17 +1,5 @@
-export const browserIsIos =
-(
-	[
-		"iPad Simulator",
-		"iPhone Simulator",
-		"iPod Simulator",
-		"iPad",
-		"iPhone",
-		"iPod"
-	].includes(navigator.platform)
-
-	// iPad on iOS 13 detection
-	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-);
+export const browserIsIos = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 const browserSupportsP3 = matchMedia("(color-gamut: p3)").matches;
 
