@@ -10,3 +10,8 @@
 	aspect-ratio: 1/1;
 	opacity: 0;
 }
+
+.WILSON_fullscreen-container.WILSON_fullscreen
+{
+	background-color: var(--background) !important;
+}
