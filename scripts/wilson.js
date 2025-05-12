@@ -603,8 +603,9 @@ class Wilson {
             const styleElement = __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") ? __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_addExitFullscreenFillScreenTransitionStyle).call(this) : null;
             if (!this.reduceMotion
                 && !this.crossfadeFullscreen
-                && window.innerWidth == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerWidth, "f")
-                && window.innerHeight == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerHeight, "f")) {
+                && (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f")
+                    || (window.innerWidth == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerWidth, "f")
+                        && window.innerHeight == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerHeight, "f")))) {
                 if (__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f")) {
                     __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").style.setProperty("view-transition-name", `WILSON_fullscreen-button-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
                 }
@@ -1409,14 +1410,12 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
 			::view-transition-old(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
 			{
 				animation-name: WILSON_move-out;
-				animation-easing: ease-out;
 				mix-blend-mode: plus-lighter;
 			}
 
 			::view-transition-new(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
 			{
 				animation-name: WILSON_move-in;
-				animation-easing: cubic-bezier(0, 1, 0, 1);
 				mix-blend-mode: plus-lighter;
 			}
 		`;
@@ -1531,14 +1530,12 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
 			::view-transition-old(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
 			{
 				animation-name: WILSON_move-out;
-				animation-easing: cubic-bezier(0, 1, 0, 1);
 				mix-blend-mode: plus-lighter;
 			}
 
 			::view-transition-new(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
 			{
 				animation-name: WILSON_move-in;
-				animation-easing: ease-out;
 				mix-blend-mode: plus-lighter;
 			}
 		`;
