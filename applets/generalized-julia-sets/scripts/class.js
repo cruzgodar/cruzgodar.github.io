@@ -545,10 +545,8 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		this.wilson.drawFrame();
 	}
 
-	switchFullscreen(isFullscreen)
+	switchFullscreen()
 	{
-		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
-		
 		this.resume();
 	}
 

@@ -604,8 +604,6 @@ export class FractalSounds extends AnimationFrameApplet
 				"important"
 			));
 
-		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
-
 
 		if (isFullscreen)
 		{

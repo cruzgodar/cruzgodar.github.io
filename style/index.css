@@ -739,13 +739,19 @@ body > .WILSON_fullscreen-container .fps-canvas
 	top: 10px;
 	width: 15px;
 	height: 15px;
-	z-index: 2001;
+	z-index: 50;
 	background: var(--background);
 	border: 2px solid var(--normal-contrast);
 	padding: 5px;
 	border-radius: 25%;
 	cursor: pointer;
 	outline: none;
+}
+
+.WILSON_fullscreen-container.WILSON_fullscreen .wilson-help-button
+{
+	z-index: 1000;
+	opacity: 0;
 }
 
 .wilson-help-button img

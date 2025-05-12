@@ -131,7 +131,6 @@ export class HopfFibration extends ThreeApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
-				onSwitch: this.onSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -586,11 +585,6 @@ export class HopfFibration extends ThreeApplet
 				link.remove();
 			});
 		}
-	}
-
-	onSwitchFullscreen(isFullscreen)
-	{
-		document.querySelector(".wilson-help-button").style.opacity = isFullscreen ? 0 : 1;
 	}
 
 	onResizeCanvas()
