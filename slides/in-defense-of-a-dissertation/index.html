@@ -63,9 +63,9 @@
 		<div>
 			<h1>Background</h1>
 			
-			<p class="build">A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ of decreasing nonnegative integers $a_i$ with $\sum_i a_i = n$.</p>
+			<p class="build">A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ of weakly decreasing nonnegative integers $a_i$ with $\sum_i a_i = n$.</p>
 			
-			<p class="build">Ex: $(5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.</p>
+			<p class="build">Ex: $(5, 3, 2, 2, 1) = (5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.</p>
 			
 			<div class="build">
 				<p>The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$.</p>
@@ -81,15 +81,21 @@
 		<div>
 			<h1>Asymptotic Young Diagrams and Hooks</h1>
 			
-			<p class="build">A Young diagram <dfn>asymptotic</dfn> to a partition $\lambda$ is the collection of boxes </p>
+			<p class="build">A Young diagram <dfn>asymptotic</dfn> to a partition $\lambda$ is the collection of boxes $\mathbb{N}^2 \setminus \lambda$.</p>
 
-			<p class="build">The <dfn>hook</dfn> corresponding to a box in a plane partition is the right-angled collection of boxes directly above and to the left of it. The hook length $h(i, j)$ of a box is the total number of boxes in its hook, and the corner box $(i, j)$ is called the <dfn>pivot</dfn> of the hook.</p>
+			<p class="build">The <dfn>hook</dfn> corresponding to a box in a Young diagram is the right-angled collection of all boxes directly below and to the right of it. The hook length $h(i, j)$ of a box is the total number of boxes in its hook, and the corner box $(i, j)$ is called the <dfn>pivot</dfn> of the hook.</p>
+
+			<p class="build">In an asymptotic Young diagram, hooks extend up and left (i.e. always toward the boundary).</p>
 		</div>
 
 
 
-		<div id="young-diagram-example" class="large-canvas">
-			<p>Ex: the Young diagram of $(5, 3, 2, 2, 1, 0, 0, ...)$ and a hook of length.</p>
+		<div id="hooks" class="large-canvas">
+			<p>Ex: the Young diagram of $(4, 3, 3, 2)$ and the hook with pivot $(2, 1)$. The hook length is $h(2, 1) = 5$.</p>
+		</div>
+
+		<div id="hooks2" class="large-canvas">
+			<p>Ex: the Young diagram asymptotic to $(4, 3, 3, 2)$ and the hook with pivot $(4, 5)$. The hook length is $h(4, 5) = 6$.</p>
 		</div>
 
 
@@ -97,23 +103,17 @@
 		<div>
 			<h1>Plane Partitions</h1>
 			
-			<p class="build">A <dfn>plane partition</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly decrease. We can also think of them as a stacks of boxes, with each number indicating how many boxes are stacked on that square.</p>
-			
-			<p class="build">The <dfn>weight</dfn> of a plane partition $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.</p>
+			<p class="build">A <dfn>reverse plane partition (or RPP)</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly increase. We can also think of them as a stacks of boxes in the corner of a room.</p>
 
+			<p class="build">A <dfn>skew plane partition (or SPP)</dfn> is identical, but we place nonnegative integers into an asymptotic Young diagram $\mathbb{N} \setminus \lambda$ that decrease weakly along rows and columns. When $\lambda = \emptyset$, we just call the object a <dfn>plane partition.</dfn></p>
 			
+			<p class="build">The <dfn>weight</dfn> of an RPP or SPP $\pi$, written $|\pi|$, is just the sum of its entries, or equivalently the total number of boxes stacked.</p>			
 		</div>
 		
 		
 		
 		<div id="plane-partition-example" class="large-canvas">
-			<p>Ex: a plane partition of weight $33$ and a hook of length .<p>
-		</div>
-		
-		
-		
-		<div id="hooks" class="large-canvas">
-			<p>Ex: $h(2, 1) = 5$ in this RPP.</p>
+			<p>Ex: a plane partition of weight $33$.<p>
 		</div>
 		
 		

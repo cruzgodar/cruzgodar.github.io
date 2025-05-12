@@ -14,10 +14,12 @@ async function reset({ slide, forward, duration })
 
 	const rpp =
 	[
-		[1, 1, 1, 1],
-		[1, 1, 1, 0],
-		[1, 1, 1, 0],
-		[1, 1, 0, 0],
+		[0, 0, 0, 0, 1, 1],
+		[0, 0, 0, 1, 1, 1],
+		[0, 0, 0, 1, 1, 1],
+		[0, 0, 1, 1, 1, 1],
+		[1, 1, 1, 1, 1, 1],
+		[1, 1, 1, 1, 1, 1],
 	];
 
 	applet.animationTime = 0;
@@ -62,7 +64,7 @@ async function build0({
 }) {
 	applet.animationTime = duration;
 
-	const cubes = [[3, 0, 0], [2, 0, 0], [1, 0, 0], [1, 1, 0], [1, 2, 0]];
+	const cubes = [[3, 2, 0], [3, 3, 0], [3, 4, 0], [2, 4, 0], [1, 4, 0], [0, 4, 0]];
 
 	if (forward)
 	{
@@ -75,7 +77,7 @@ async function build0({
 	}
 }
 
-export const hooksBuilds =
+export const hooks2Builds =
 {
 	reset,
 	0: build0,

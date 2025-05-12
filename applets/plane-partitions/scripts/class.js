@@ -16,9 +16,11 @@ import { rsk, rskInverse } from "./algorithms/rsk.js";
 import { sulzgruber, sulzgruberInverse } from "./algorithms/sulzgruber.js";
 import {
 	hideDimers,
+	hideNumbersCanvas,
 	show2dView,
 	showDimers,
 	showHexView,
+	showNumbersCanvas,
 	updateCameraHeight
 } from "./cameraControls.js";
 import { addNewArray, editArray, removeArray, trimArray } from "./editArrays.js";
@@ -367,6 +369,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	showHexView = showHexView;
 	show2dView = show2dView;
+	showNumbersCanvas = showNumbersCanvas;
+	hideNumbersCanvas = hideNumbersCanvas;
 	updateCameraHeight = updateCameraHeight;
 	showDimers = showDimers;
 	hideDimers = hideDimers;

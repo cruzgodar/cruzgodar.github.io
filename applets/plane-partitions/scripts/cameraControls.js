@@ -173,6 +173,26 @@ export async function show2dView()
 
 
 
+export async function showNumbersCanvas()
+{
+	await changeOpacity({
+		element: this.wilsonNumbers.canvas,
+		opacity: 1,
+		duration: this.animationTime / 5
+	});
+}
+
+export async function hideNumbersCanvas()
+{
+	await changeOpacity({
+		element: this.wilsonNumbers.canvas,
+		opacity: 0,
+		duration: this.animationTime / 5
+	});
+}
+
+
+
 // Makes sure everything is in frame but doesn't affect rotation.
 export async function updateCameraHeight(force = false)
 {

@@ -5,13 +5,13 @@ import { garverPatrias3Builds } from "./builds/garverPatrias3.js";
 import { garverPatrias4Builds } from "./builds/garverPatrias4.js";
 import { hillmanGrasslBuilds } from "./builds/hillmanGrassl.js";
 import { hooksBuilds } from "./builds/hooks.js";
+import { hooks2Builds } from "./builds/hooks2.js";
 import { pakBuilds } from "./builds/pak.js";
 import { planePartitionExampleBuilds } from "./builds/planePartitionExample.js";
 import { psRskBuilds } from "./builds/psRsk.js";
 import { regionsExampleBuilds } from "./builds/regionsExample.js";
 import { sulzgruberBuilds } from "./builds/sulzgruber.js";
 import { titleBuilds } from "./builds/title.js";
-import { youngDiagramExampleBuilds } from "./builds/youngDiagramExample.js";
 import { PlanePartitions } from "/applets/plane-partitions/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 
@@ -36,9 +36,9 @@ const options =
 	builds:
 	{
 		"title": titleBuilds,
-		"young-diagram-example": youngDiagramExampleBuilds,
-		"plane-partition-example": planePartitionExampleBuilds,
 		"hooks": hooksBuilds,
+		"hooks2": hooks2Builds,
+		"plane-partition-example": planePartitionExampleBuilds,
 		"hillman-grassl": hillmanGrasslBuilds,
 		"pak": pakBuilds,
 		"regions-example": regionsExampleBuilds,

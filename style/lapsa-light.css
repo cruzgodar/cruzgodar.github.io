@@ -33,6 +33,11 @@ body
 	display: none;
 }
 
+dfn
+{
+	font-weight: bolder;
+}
+
 
 
 .inline-image
