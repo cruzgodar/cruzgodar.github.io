@@ -61,7 +61,7 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	Now it really helps to have this picture: the largest that $a$ can be is $2$, and the smallest is $0$. Therefore, our goal is to maximize
 	
 	$$
-		A(a) = 4a\sqrt{9(1 - \frac{a^2}{4}}
+		A(a) = 4a\sqrt{9\left( 1 - \frac{a^2}{4} \right)}
 	$$
 	
 	on the interval $[0, 2]$.
