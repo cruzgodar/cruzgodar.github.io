@@ -1,0 +1,11 @@
+#interlacing #canvas-bundle
+{
+	transform: scale(1.3);
+	z-index: -1;
+}
+
+#toggles #canvas-bundle, #toggles2 #canvas-bundle
+{
+	transform: scale(2);
+	z-index: -1;
+}

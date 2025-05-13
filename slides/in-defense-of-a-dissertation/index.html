@@ -27,6 +27,7 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
 	
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-light.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
 
 	<style>
 		#young-diagram-example #numbers-canvas-container, #regions-example #numbers-canvas-container
@@ -56,6 +57,12 @@
 					</div>
 				</div>
 			</div>
+		</div>
+
+
+
+		<div style="display: flex; flex-direction: column; justify-content: center">
+			<h1 style="text-align: center">Part 1: Vertex Operators</h1>
 		</div>
 		
 		
@@ -129,7 +136,7 @@
 
 
 		<div id="interlacing" class="large-canvas">
-			<p>Ex: $(5, 3, 1, 1) \succ (3, 2, 1) \succ (2, 2)$.<p>
+			<p>Ex: $(5, 3, 1, 1) \succ (3, 2, 1) \succ (3, 2)$.<p>
 		</div>
 
 
@@ -191,6 +198,98 @@
 				<p>By splitting the middle $Q$ and commuting them all outward where they annihilate against the $\bra{\emptyset}$ and $\ket{\emptyset}$, we find that the previous generating function is</p>
 
 				<p style="text-align: center; transform: scale(0.8); margin-left: -9%">$\displaystyle \left< \emptyset \left| \Gamma_-\left( q^{\frac{2N - 1}{2}} \right) \cdots \Gamma_-\left( q^{\frac{3}{2}} \right) \Gamma_-\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{3}{2}} \right) \cdots \Gamma_+\left( q^{\frac{2N - 1}{2}} \right)\right|\, \emptyset \right>.$</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Toggles</h1>
+			
+			<div class="build">
+				<p>Given partitions $\lambda$ and $\mu$, the set of partitions $\nu$ with $\lambda \prec \nu \prec \mu$ is product of intervals: each $\nu_i$ is bounded above and below by maxes and mins of entries of $\lambda$ and $\mu$. The map on this set given by reversing each interval is called a <dfn>toggle</dfn>, and was introduced independently by multiple sources. The explicit formula $T(\nu)$ is given by</p>
+
+				<p style="text-align: center">$\displaystyle T(\nu)_i = \min\left\{ \lambda_i, \mu_{i - 1} \right\} + \max\left\{ \lambda_{i + 1}, \mu_i \right\} - \nu_i$,</p>
+
+				<p>where we take $\mu_0 = \infty$.</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>More Toggles</h1>
+			
+			<p class="build">More broadly, we define the toggle of $\nu$ when it has any interlacing relationship with $\lambda$ and $\mu$.</p>
+
+			<p class="build">When $\lambda \prec \nu \succ \mu$, we need to handle $\nu_1$ differently, since its poset of possible entries is unbounded above. We instead &#x201C;pop off&#x201D; the value $\nu_1 - \max\left\{ \lambda_1, \mu_1 \right\}$ in addition to producing the toggled partition $T(\nu)$, which then satisfies $\lambda \succ T(\nu) \prec \mu$.</p>
+
+			<p class="build">Similarly, if $\lambda \succ \nu \prec \mu$, then the toggle map takes in both $\nu$ and a nonnegative integer $n$ to produce a partition $T(\nu, n)$, where $T(\nu, n)_1 = n + \max\left\{ \lambda_1, \mu_1 \right\}$. This new partition then satisfies $\lambda \prec T(\nu, n) \succ \mu$.</p>
+		</div>
+
+
+
+		<div id="toggles" class="large-canvas">
+			<p>Ex: The toggle of $(3, 2, 1)$ relative to $(5, 3, 1, 1)$ and $(3, 2)$.<p>
+		</div>
+
+		<div id="toggles2" class="large-canvas">
+			<p>Ex: The toggle of $(5, 3, 1, 1)$ relative to $(4, 2, 1)$ and $(3, 2, 1)$. The value of $1$ is popped off in the toggle.<p>
+		</div>
+
+
+
+		<div>
+			<h1>Bijectivizing $\Gamma$ Commutation</h1>
+			
+			<div class="build">
+				<p><strong>Proposition (G.).</strong> Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
+			
+				<p style="text-align: center">$|\nu| - |\lambda| = |\lambda| - |T(\nu)| + n$</p>
+
+				<p style="text-align: center">$|\nu| - |\mu| = |\mu| - |T(\nu)| + n$,</p>
+
+				<p>where $n$ is the entry popped off in the toggle. An analogous result (without a number popped off) holds if $\mu \succ \nu \succ \lambda$.</p>
+			</div>
+		</div>
+
+		<div>
+			<p>This proposition bijectivizes the following established commutation relations for $\Gamma$ operators:</p>
+		
+			<p style="text-align: center">$\displaystyle \Gamma_-(a)\Gamma_+(b) = \frac{1}{1 - ab}\Gamma_+(b)\Gamma_-(a)$</p>
+
+			<p style="text-align: center">$\displaystyle \Gamma_+(a)\Gamma_+(b) = \Gamma_+(b)\Gamma_+(a)$</p>
+
+			<p style="text-align: center">$\displaystyle \Gamma_-(a)\Gamma_-(b) = \Gamma_-(b)\Gamma_-(a).$</p>
+
+			<p class="build">Specifically, in a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Producing MacMahon's Function</h1>
+			
+			<div class="build">
+				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce MacMahon's function $M(q)$ for plane partitions:</p>
+			
+				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>$</p>
+			</div>
+
+			<div class="build">
+				<p>We may then commute the middle two $\Gamma$ operators to produce</p>
+			
+				<p style="text-align: center">$\displaystyle \frac{1}{1 - q}\left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
+			</div>
+		</div>
+
+		<div>
+			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped numbers separately. We now have two choices of opposite-sign commutations, corresponding to the two diagonals of the plane partition that interlace their neighbors.</p>
+
+			<div class="build">
+				<p>It turns out that each commutation produces a factor of $\frac{1}{1 - q^{h(\square)}}$, where $h(\square)$ is the hook length of the box popped off in the corresponding toggle. After all possible commutations, the result is the familiar expression</p>
+
+				<p style="text-align: center">$\displaystyle M(q) = \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}}.$</p>
 			</div>
 		</div>
 		

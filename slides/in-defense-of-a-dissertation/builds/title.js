@@ -44,6 +44,8 @@ async function reset({ slide, duration })
 		await applet.showHexView();
 	}
 
+	await applet.hideFloor();
+
 
 
 	let hue = 0;

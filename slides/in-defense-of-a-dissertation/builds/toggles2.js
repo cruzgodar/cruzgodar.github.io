@@ -20,10 +20,18 @@ async function reset({ slide, duration })
 	slide.appendChild(canvasBundle);
 
 	const planePartition = [
-		[5, 3, 3, 0, 0],
-		[0, 3, 2, 2, 0],
+		[5, 3, 0, 0, 0],
+		[4, 3, 2, 0, 0],
+		[0, 2, 1, 1, 0],
 		[0, 0, 1, 1, 0],
-		[0, 0, 0, 1, 0],
+		[0, 0, 0, 0, 0]
+	];
+
+	const planePartition2 = [
+		[1, 3, 0, 0, 0],
+		[4, 2, 2, 0, 0],
+		[0, 2, 2, 1, 0],
+		[0, 0, 1, 0, 0],
 		[0, 0, 0, 0, 0]
 	];
 
@@ -37,6 +45,18 @@ async function reset({ slide, duration })
 		numbers: planePartition,
 		horizontalLegs: false
 	});
+
+	await applet.addNewArray({
+		index: 1,
+		numbers: planePartition2,
+		horizontalLegs: false
+	});
+
+	await applet.colorCubes(
+		applet.arrays[1],
+		[[0, 0, 0]],
+		0.75
+	);
 
 	await applet.hideFloor();
 
@@ -52,7 +72,7 @@ async function reset({ slide, duration })
 	});
 }
 
-export const interlacingBuilds =
+export const toggles2Builds =
 {
 	reset,
 };
