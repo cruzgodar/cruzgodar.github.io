@@ -6,6 +6,7 @@ import { garverPatrias4Builds } from "./builds/garverPatrias4.js";
 import { hillmanGrasslBuilds } from "./builds/hillmanGrassl.js";
 import { hooksBuilds } from "./builds/hooks.js";
 import { hooks2Builds } from "./builds/hooks2.js";
+import { interlacingBuilds } from "./builds/interlacing.js";
 import { pakBuilds } from "./builds/pak.js";
 import { planePartitionExampleBuilds } from "./builds/planePartitionExample.js";
 import { psRskBuilds } from "./builds/psRsk.js";
@@ -39,6 +40,7 @@ const options =
 		"hooks": hooksBuilds,
 		"hooks2": hooks2Builds,
 		"plane-partition-example": planePartitionExampleBuilds,
+		"interlacing": interlacingBuilds,
 		"hillman-grassl": hillmanGrasslBuilds,
 		"pak": pakBuilds,
 		"regions-example": regionsExampleBuilds,

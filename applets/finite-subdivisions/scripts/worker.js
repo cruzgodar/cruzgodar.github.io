@@ -1,7 +1,5 @@
 "use strict";
 
-const { sleep } = require("/scripts/src/main.js");
-
 
 
 let numVertices;
@@ -43,7 +41,7 @@ async function drawOuterPolygon()
 			]);
 		}
 
-		await sleep(8);
+		await new Promise(resolve => setTimeout(resolve, 8));
 	}
 }
 
@@ -108,7 +106,7 @@ async function drawLines(newLines)
 			]);
 		}
 
-		await sleep(8);
+		await new Promise(resolve => setTimeout(resolve, 8));
 	}
 }
 
