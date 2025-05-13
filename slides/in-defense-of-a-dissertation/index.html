@@ -129,18 +129,70 @@
 
 
 		<div id="interlacing" class="large-canvas">
-			<p>Ex: $(5, 3, 1, 1) \succ (3, 2, 1)$.<p>
+			<p>Ex: $(5, 3, 1, 1) \succ (3, 2, 1) \succ (2, 2)$.<p>
 		</div>
 
 
 
-		<!-- <div>
+		<div>
+			<h1>Vertex Operators</h1>
+
+			<p class="build">Given a partition $\mu$, the set of partitions $\lambda$ with $\lambda \succ \mu$ is a poset product of intervals in $\mathbb{N}$: each $\lambda_i$ is bounded below by $\mu_i$ and above by $\mu_{i - 1}$ (or unbounded for $i = 1$). We use this to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
+
+			<p class="build">We define a formal $\mathbb{Q}$-linear vector space $\Lambda$ whose basis consists of vectors $\ket{\lambda}$ for partitions $\lambda$, and denote the corresponding dual basis elements by $\bra{\lambda}$.</p>
+
+			<p class="build">We also define a <dfn>weighing operator</dfn> $Q$ by $Q(q)\,\ket{\lambda} = q^{|\lambda|}\,\ket{\lambda}$.</p>
+		</div>
+
+
+
+		<div>
 			<h1>Interlacing Operators</h1>
 
-			<p>Given a partition $\mu$, the set of partitions $\lambda$ with $\lambda \succ \mu$ is a poset product of intervals in $\mathbb{N}$: each $\lambda_i$ is bounded below by $\mu_i$ and above by $\mu_{i - 1}$ (or unbounded for $i = 1$). We use this to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
+			<div class="build">
+				<p>The two main operators of interest are the <dfn>interlacing operators</dfn>, defined by</p>
 
-			<p>We define a formal $\mathbb{Q}$-linear vector space $\Lambda$ whose basis </p>
-		</div> -->
+				<p style="text-align: center">$\displaystyle \Gamma_+(q)\,\ket{\lambda} = \sum_{\mu \succ \lambda}q^{|\mu| - |\lambda|}\,\ket{\lambda}$</p>
+
+				<p style="text-align: center">$\displaystyle \Gamma_-(q)\,\ket{\lambda} = \sum_{\mu \prec \lambda}q^{|\lambda| - |\mu|}\,\ket{\lambda}$.</p>
+			</div>
+
+			<p class="build">While the formula for $\Gamma_+$ nominally contains an infinite sum, we can avoid convergence issues in practice by adding $Q$ operators to produce a generating function.</p>
+		</div>
+
+
+
+		<div>
+			<h1>A Generating Function for Plane Partitions</h1>
+
+			<div class="build">
+				<p>By using the interlacing operators, we can express the generating function for plane partitions whose nonzero entries are contained in an $N \times N$ box:</p>
+
+				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \left( \prod_{i = 1}^N Q \Gamma_-(1) \right) Q \left( \prod_{i = 1}^N \Gamma_+(1) Q \right) \right|\, \emptyset \right>$</p>
+			</div>
+
+			<p class="build">To convert this into a more useful formula, we need to commute the $Q$ and $\Gamma$ operators.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Commutation Relations</h1>
+
+			<div class="build">
+				<p>The $\Gamma$ and $Q$ operators have a simple commutation relation (weighing a slice before or after making it bigger/smaller):</p>
+
+				<p style="text-align: center">$\displaystyle Q(q) \Gamma_+(a) = \Gamma_+(qa) Q(q)$</p>
+
+				<p style="text-align: center">$\displaystyle \Gamma_-(a) Q(q) = Q(q) \Gamma_-(qa)$.</p>
+			</div>
+
+			<div class="build">
+				<p>By splitting the middle $Q$ and commuting them all outward where they annihilate against the $\bra{\emptyset}$ and $\ket{\emptyset}$, we find that the previous generating function is</p>
+
+				<p style="text-align: center; transform: scale(0.8); margin-left: -9%">$\displaystyle \left< \emptyset \left| \Gamma_-\left( q^{\frac{2N - 1}{2}} \right) \cdots \Gamma_-\left( q^{\frac{3}{2}} \right) \Gamma_-\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{3}{2}} \right) \cdots \Gamma_+\left( q^{\frac{2N - 1}{2}} \right)\right|\, \emptyset \right>.$</p>
+			</div>
+		</div>
 		
 		
 		

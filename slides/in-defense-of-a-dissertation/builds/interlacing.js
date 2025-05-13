@@ -20,8 +20,8 @@ async function reset({ slide, duration })
 	slide.appendChild(canvasBundle);
 
 	const planePartition = [
-		[5, 3, 0, 0, 0],
-		[0, 3, 2, 0, 0],
+		[5, 3, 2, 0, 0],
+		[0, 3, 2, 2, 0],
 		[0, 0, 1, 1, 0],
 		[0, 0, 0, 1, 0],
 		[0, 0, 0, 0, 0]
