@@ -86,7 +86,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			
 			pos = rotationMatrix * pos;
 
-			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .5;" : ""}
+			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .2;" : ""}
 		}
 		
 		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(numIterations))"};
