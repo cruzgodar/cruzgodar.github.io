@@ -59,23 +59,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 	const loopInternals = Array(numNs).fill(0).map((_, i) =>
 	{
-		if (useForGetColor)
-		{
-			// Reflect along perpendicular bisector planes to the edges connected to
-			// the scale center vertex so that we can compute only the distance
-			// to that single vertex.
-
-			return /* glsl */`
-				float t${i} = dot(pos, n${i}${variableName});
-				
-				if (t${i} < 0.0)
-				{
-					pos -= 2.0 * t${i} * n${i}${variableName};
-					color = mix(color, color${i}, colorScale);
-				}
-			`;
-		}
-
 		return /* glsl */`
 			float t${i} = dot(pos, n${i}${variableName});
 			
@@ -103,7 +86,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			
 			pos = rotationMatrix * pos;
 
-			${useForGetColor ? "colorScale *= .5;" : ""}
+			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .5;" : ""}
 		}
 		
 		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(numIterations))"};
@@ -137,20 +120,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			constantsGlsl.push(glsl);
 		}
 
-		const addGlsl = /* glsl */`
-			const vec3 color0 = vec3(1.0, 0.0, 0.0);
-			const vec3 color1 = vec3(0.0, 1.0, 0.0);
-			const vec3 color2 = vec3(0.0, 0.0, 1.0);
-			const vec3 color3 = vec3(1.0, 1.0, 0.0);
-			const vec3 color4 = color0;
-			const vec3 color5 = color1;
-			const vec3 color6 = color2;
-			const vec3 color7 = color3;
-			const vec3 color8 = color0;
-			const vec3 color9 = color1;
-			
-			${constantsGlsl.join("\n")}
-		`;
+		const addGlsl = constantsGlsl.join("\n");
 
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(shape);
 

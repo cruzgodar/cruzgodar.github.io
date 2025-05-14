@@ -109,7 +109,7 @@ async function build3({ forward, duration = 400 })
 	}
 }
 
-export const pakBuilds =
+export const zeroLegBuilds =
 {
 	reset,
 	0: build0,

@@ -7,7 +7,6 @@ import { hillmanGrasslBuilds } from "./builds/hillmanGrassl.js";
 import { hooksBuilds } from "./builds/hooks.js";
 import { hooks2Builds } from "./builds/hooks2.js";
 import { interlacingBuilds } from "./builds/interlacing.js";
-import { pakBuilds } from "./builds/pak.js";
 import { planePartitionExampleBuilds } from "./builds/planePartitionExample.js";
 import { psRskBuilds } from "./builds/psRsk.js";
 import { regionsExampleBuilds } from "./builds/regionsExample.js";
@@ -15,6 +14,7 @@ import { sulzgruberBuilds } from "./builds/sulzgruber.js";
 import { titleBuilds } from "./builds/title.js";
 import { togglesBuilds } from "./builds/toggles.js";
 import { toggles2Builds } from "./builds/toggles2.js";
+import { zeroLegBuilds } from "./builds/zeroLeg.js";
 import { PlanePartitions } from "/applets/plane-partitions/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 
@@ -45,9 +45,9 @@ const options =
 		"interlacing": interlacingBuilds,
 		"toggles": togglesBuilds,
 		"toggles2": toggles2Builds,
+		"zeroLeg": zeroLegBuilds,
 
 		"hillman-grassl": hillmanGrasslBuilds,
-		"pak": pakBuilds,
 		"regions-example": regionsExampleBuilds,
 		"sulzgruber": sulzgruberBuilds,
 		"ps-rsk": psRskBuilds,
