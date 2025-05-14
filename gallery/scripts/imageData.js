@@ -251,7 +251,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679",
 
-		driveId: "164SyXm3-le_Le1QuM_mDJoOZLChzTCDD"
+		driveId: "17-UW2b0uTMbv-VYDVRstnkge-8D4sdDT"
 	},
 
 	"kaleidoscopic-ifs-2":
@@ -265,7 +265,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046",
 
-		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
+		driveId: "1GSG-LNt7oqQjE-pmO8TfsgAvZDQ9wA1_"
 	},
 
 	"kaleidoscopic-ifs-3":
@@ -279,7 +279,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299",
 
-		driveId: "1xXGP5T566_nSHjF3_kRmBHNl73qJfsq-"
+		driveId: "1iwHMZWhC1vTKv9IvTNRSVRPfEis3x3dP"
 	},
 
 	"kicked-rotator":

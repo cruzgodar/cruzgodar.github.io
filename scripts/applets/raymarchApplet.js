@@ -1184,7 +1184,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}
 
 	async makeMosaic({
-		size = 10,
+		size = 16,
 		returnPixels = false,
 		useForDepthBuffer = false
 	}) {
