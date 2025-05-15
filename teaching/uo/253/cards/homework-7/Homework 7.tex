@@ -32,61 +32,45 @@ Complete the following problems and submit them as a pdf to Canvas. 8 points are
 
 ~\\
 
-In problems 1--6, find the interval and radius of convergence of the power series.
+In problems 1--3, find a power series for the function using power series multiplication and determine its interval of convergence.
 
-1. $\displaystyle \sum_{n = 1}^\infty \frac{x^n}{n}$.
+1. $\displaystyle \left( \frac{1}{1 - x} \right)\left( \frac{1}{1 + x} \right)$.
 
-2. $\displaystyle \sum_{n = 1}^\infty \frac{x^n}{n^2}$.
+2. $\displaystyle \left( \frac{1}{1 - x} \right)\left( \frac{1}{(1 + x)^2} \right)$.
 
-3. $\displaystyle \sum_{n = 1}^\infty nx^n$.
-
-4. $\displaystyle \sum_{n = 1}^\infty \frac{x^n}{2^n}$.
-
-5. $\displaystyle \sum_{n = 1}^\infty \frac{2^n x^n}{n!}$.
-
-6. $\displaystyle \sum_{n = 2}^\infty \frac{x^n}{\ln(n)}$.
+3. $\displaystyle \left( \frac{1}{(1 - x)^2} \right)\left( \frac{1}{(1 + x)^2} \right)$.
 
 ~\\
 
-7. Find the radius of convergence of $\displaystyle \sum_{n = 0}^\infty \frac{(n!)^3 x^n}{(3n)!}$, but not the interval (i.e. you don't need to check the endpoints).
+In problems 4--5, find a power series for the given function using calculus and determine its interval of convergence.
+
+4. $\displaystyle \ln\left( 1 + x^2 \right)$.
+
+5. $\displaystyle \frac{1}{(1 + 2x)^4}$.
 
 ~\\
 
-In problems 8--15, expand each function $f(x)$ as a power series and find its interval and radius of convergence.
+6. Let $\displaystyle f(x) = \sum_{n = 0}^\infty c_n x^n$ on $(-R, R)$, so that the series does not converge at $x = R$. Is it possible for the series for $f'(x)$ to converge at $x = R$? Give an example of a series where this is true or justify why no such series can exist.
 
-8. $\displaystyle \frac{1}{1 - x}$.
-
-9. $\displaystyle \frac{1}{1 - x^3}$.
-
-10. $\displaystyle \frac{1}{1 - 2x}$.
-
-11. $\displaystyle \frac{1}{x}$.
-
-12. $\displaystyle \frac{x^4}{1 - x^2}$.
-
-13. $\displaystyle \frac{1}{2 - x}$.
-
-14. $\displaystyle \frac{1}{x}$.
-
-15. $\displaystyle \frac{x}{1 - (1 - x)}$. Does your result make sense?
+7. Let $\displaystyle f(x) = \sum_{n = 0}^\infty c_n x^n$ on $(-R, R)$, so that the series does not converge at $x = R$. Is it possible for the series for $\displaystyle \int f(x)\,\text{d} x$ to converge at $x = R$? Give an example of a series where this is true or justify why no such series can exist.
 
 ~\\
 
-16. Give examples of power series with intervals of convergence of
+8. Let $f(x) = \sin(x)$.
 
 \begin{enumerate}
 
-	\item $(-1, 1]$.
+	\item What are $f(0)$ and $f'(0)$?
 
-	\item $[-4, 0]$.
+	\item Suppose $\displaystyle f(x) = \sum_{n = 0}^\infty c_n x^n$. What are $c_0$ and $c_1$?
 
-	\item Only $x = 5$ and no other numbers.
+	\item Since $f''(x) = -\sin(x) = -f(x)$, the coefficient sequence $(c_n)$ satisfies a recurrence. Write that recurrence down.
+
+	\item Find an explicit formula for $c_n$. (Hint: handle even and odd $n$ separately).
+
+	\item What is the interval of convergence for $\displaystyle \sum_{n = 0}^\infty c_n x^n$?
 
 \end{enumerate}
-
-17. If a power series converges at $x = 1$, does it also have to converge at $x = 0$? Why or why not?
-
-18. Is it possible to express a function as a power series in more than one way? For example, can we express $\displaystyle \frac{1}{1 - x}$ as a power series centered at $x = \frac{1}{2}$? What happens to the interval of convergence if so? What about as a series centered at $x = 1$?
 
 
 \end{document}
