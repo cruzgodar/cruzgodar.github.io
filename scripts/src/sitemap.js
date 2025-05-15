@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/flag-overlap",
 			"/applets/boids",
 			"/applets/lambda-calculus",
 			"/applets/maurer-roses",
@@ -96,6 +97,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/flag-overlap":
+	{
+		"title": "Flag Overlap",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/boids":
 	{
 		"title": "Boids!",

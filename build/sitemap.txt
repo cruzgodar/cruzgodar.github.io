@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		flag-overlap Flag Overlap
 		boids Boids!
 		lambda-calculus Lambda Calculus
 		maurer-roses Maurer Roses
