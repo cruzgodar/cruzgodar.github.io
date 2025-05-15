@@ -149,7 +149,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
-		useOppositeLight = false,
+		useOppositeLight = true,
 		oppositeLightBrightness = 0.5,
 		ambientLight = 0.25,
 		bloomPower = 1,
