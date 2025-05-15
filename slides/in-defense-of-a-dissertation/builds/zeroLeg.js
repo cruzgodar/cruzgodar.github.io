@@ -60,7 +60,7 @@ async function build0({ forward, duration = 400 })
 	}
 }
 
-async function build1({ forward, duration = 400 })
+async function build1({ forward, duration = 600 })
 {
 	if (forward)
 	{

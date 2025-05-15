@@ -18,6 +18,13 @@ body
 	padding: unset !important;
 }
 
+.lapsa-slide.title
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .lapsa-slide h1, .lapsa-slide h2
 {
 	z-index: 10;

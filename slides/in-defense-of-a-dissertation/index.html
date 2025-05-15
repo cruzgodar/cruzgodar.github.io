@@ -28,13 +28,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-light.css">
 	<link rel="stylesheet" type="text/css" href="index.css">
-
-	<style>
-		#young-diagram-example #numbers-canvas-container, #regions-example #numbers-canvas-container
-		{
-			opacity: 0 !important;
-		}
-	</style>
 </head>
 
 <body>
@@ -61,14 +54,30 @@
 
 
 
-		<div style="display: flex; flex-direction: column; justify-content: center">
-			<h1 style="text-align: center">Part 1: Vertex Operators</h1>
+		<div>
+			<h1>Outline</h1>
+			
+			<p class="build">Background and history</p>
+			
+			<p class="build">Bijectivization of two special cases of an identity (the PT&ndash;DT correspondence) via vertex operators and toggles</p>
+
+			<p class="build">Structural results of the general case of the identity and progress toward a bijection</p>
+
+			<p class="build">Classification of bijections on reverse plane partitions via integer programs</p>
+
+			<p class="build">Plans for future work</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Background and History</h1>
 		</div>
 		
 		
 		
 		<div>
-			<h1>Background</h1>
+			<h1>Partitions</h1>
 			
 			<p class="build">A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ of weakly decreasing nonnegative integers $a_i$ with $\sum_i a_i = n$.</p>
 			
@@ -126,11 +135,37 @@
 
 
 		<div>
+			<h1>The PT&ndash;DT Correspondence</h1>
+			
+			<p class="build">RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$ are used to compute the Calabi&ndash;Yau topological vertex in Pandharipande&ndash;Thomas (PT) theory and Donaldson&ndash;Thomas (DT) theory.</p>
+
+			<div class="build">
+				<p>Let $W_{(\emptyset, \emptyset, \lambda)}(q)$ and $V_{(\emptyset, \emptyset, \lambda)}(q)$ be the generating functions for RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$, respectively, and let $M(q) = V_{(\emptyset, \emptyset, \emptyset)}(q)$ be MacMahon's generating function for plane partitions. Then</p>
+
+				<p style="text-align: center">Thm: $\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = W_{(\emptyset, \emptyset, \lambda)}(q)M(q).$</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>One-Leg Objects</h1>
+			
+			<p class="build">This theorem was stated in the PT paper; we supply omitted details and bijectivize it.</p>
+
+			<p class="build">The subscripts of $(\emptyset, \emptyset, \lambda)$ suggest further generalizations are possible, and this is indeed the case. Due to only one partition being nonempty in the tuple, we call the RPPs and SPPs we have defined so far <dfn>one-leg objects</dfn> and this version of the PT&ndash;DT correspondence the <dfn>one-leg correspondence</dfn>.</p>
+
+			<p class="build">Our approach to bijectivizing the one- and two-leg correspondences is to bijectivize local moves that we iterate to decompose both RPPs and SPPs into more malleable objects.</p>
+		</div>
+
+
+
+		<div>
 			<h1>Interlacing</h1>
 			
 			<p class="build">While the rows and columns of RPPs and SPPs contain valuable information, the <em>diagonals</em> of both turn out to be much more useful.</p>
 			
-			<p class="build">Given partitions $\lambda$ and $\mu$, we say $\lambda$ <dfn>interlaces</dfn> $\mu$, written $\lambda \succ \mu$, if $\lambda_1 \geq \mu_1 \geq \lambda_2 \geq \mu_2 \geq \cdots$ &mdash; in other words, if $\lambda$ and $\mu$ satisfy the plane partition inequalities when placed next to one another as diagonal slices with $\lambda$ coming first.</p>
+			<p class="build">Given partitions $\lambda$ and $\mu$, we say $\lambda$ <dfn>interlaces</dfn> $\mu$, written $\lambda \succ \mu$, if $\lambda_1 \geq \mu_1 \geq \lambda_2 \geq \mu_2 \geq \cdots$; in other words, if $\lambda$ and $\mu$ satisfy the plane partition inequalities when placed next to one another as diagonal slices with $\lambda$ coming first.</p>
 		</div>
 
 
@@ -144,7 +179,7 @@
 		<div>
 			<h1>Vertex Operators</h1>
 
-			<p class="build">Given a partition $\mu$, the set of partitions $\lambda$ with $\lambda \succ \mu$ is a poset product of intervals in $\mathbb{N}$: each $\lambda_i$ is bounded below by $\mu_i$ and above by $\mu_{i - 1}$ (or unbounded for $i = 1$). We use this to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
+			<p class="build">We can use the notion of interlacing to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
 
 			<p class="build">We define a formal $\mathbb{Q}$-linear vector space $\Lambda$ whose basis consists of vectors $\ket{\lambda}$ for partitions $\lambda$, and denote the corresponding dual basis elements by $\bra{\lambda}$.</p>
 
@@ -175,7 +210,7 @@
 			<div class="build">
 				<p>By using the interlacing operators, we can express the generating function for plane partitions whose nonzero entries are contained in an $N \times N$ box:</p>
 
-				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \left( \prod_{i = 1}^N Q \Gamma_-(1) \right) Q \left( \prod_{i = 1}^N \Gamma_+(1) Q \right) \right|\, \emptyset \right>$</p>
+				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \left( \prod_{i = 1}^N Q \Gamma_-(1) \right) Q\! \left( \prod_{i = 1}^N \Gamma_+(1) Q \right) \right|\, \emptyset \right>$</p>
 			</div>
 
 			<p class="build">To convert this into a more useful formula, we need to commute the $Q$ and $\Gamma$ operators.</p>
@@ -205,14 +240,20 @@
 
 		<div>
 			<h1>Toggles</h1>
+
+			<p class="build">If we could commute the $\Gamma$ operators in the previous expression, we could simplify it greatly.</p>
 			
 			<div class="build">
-				<p>Given partitions $\lambda$ and $\mu$, the set of partitions $\nu$ with $\lambda \prec \nu \prec \mu$ is product of intervals: each $\nu_i$ is bounded above and below by maxes and mins of entries of $\lambda$ and $\mu$. The map on this set given by reversing each interval is called a <dfn>toggle</dfn>, and was introduced independently by multiple sources. The explicit formula $T(\nu)$ is given by</p>
+				<p>Given partitions $\lambda$ and $\mu$, the set of partitions $\nu$ with $\lambda \prec \nu \prec \mu$ is a poset product of intervals: each $\nu_i$ is bounded above and below by maxes and mins of entries of $\lambda$ and $\mu$. The involution on this poset given by reversing each interval is called a <dfn>toggle</dfn>, and was introduced independently by multiple sources. The explicit formula $T(\nu)$ is given by</p>
 
 				<p style="text-align: center">$\displaystyle T(\nu)_i = \min\left\{ \lambda_i, \mu_{i - 1} \right\} + \max\left\{ \lambda_{i + 1}, \mu_i \right\} - \nu_i$,</p>
 
 				<p>where we take $\mu_0 = \infty$.</p>
 			</div>
+		</div>
+
+		<div id="toggles" class="large-canvas">
+			<p>Ex: The toggle of $(3, 2, 1)$ relative to $(5, 3, 1, 1)$ and $(3, 2)$.<p>
 		</div>
 
 
@@ -227,12 +268,6 @@
 			<p class="build">Similarly, if $\lambda \succ \nu \prec \mu$, then the toggle map takes in both $\nu$ and a nonnegative integer $n$ to produce a partition $T(\nu, n)$, where $T(\nu, n)_1 = n + \max\left\{ \lambda_1, \mu_1 \right\}$. This new partition then satisfies $\lambda \prec T(\nu, n) \succ \mu$.</p>
 		</div>
 
-
-
-		<div id="toggles" class="large-canvas">
-			<p>Ex: The toggle of $(3, 2, 1)$ relative to $(5, 3, 1, 1)$ and $(3, 2)$.<p>
-		</div>
-
 		<div id="toggles2" class="large-canvas">
 			<p>Ex: The toggle of $(5, 3, 1, 1)$ relative to $(4, 2, 1)$ and $(3, 2, 1)$. The value of $1$ is popped off in the toggle.<p>
 		</div>
@@ -243,13 +278,13 @@
 			<h1>Bijectivizing $\Gamma$ Commutation</h1>
 			
 			<div class="build">
-				<p><strong>Proposition (G.).</strong> Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
+				<p><strong>Proposition (G.):</strong> Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
 			
 				<p style="text-align: center">$|\nu| - |\lambda| = |\lambda| - |T(\nu)| + n$</p>
 
 				<p style="text-align: center">$|\nu| - |\mu| = |\mu| - |T(\nu)| + n$,</p>
 
-				<p>where $n$ is the entry popped off in the toggle. An analogous result (without a number popped off) holds if $\mu \succ \nu \succ \lambda$.</p>
+				<p>where $n$ is the entry popped off in the toggle. An analogous result (without a number popped off) holds if $\mu \prec \nu \prec \lambda$.</p>
 			</div>
 		</div>
 
@@ -271,20 +306,20 @@
 			<h1>Producing MacMahon's Function</h1>
 			
 			<div class="build">
-				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce MacMahon's function $M(q)$ for plane partitions:</p>
+				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce the generating function $M(q)$ for plane partitions:</p>
 			
-				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>$</p>
+				<p style="text-align: center; transform: scale(0.9); margin-left: -2.25%">$\displaystyle M(q) = \left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
 			</div>
 
 			<div class="build">
 				<p>We may then commute the middle two $\Gamma$ operators to produce</p>
 			
-				<p style="text-align: center">$\displaystyle \frac{1}{1 - q}\left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
+				<p style="text-align: center; transform: scale(0.85); margin-left: -6.5%">$\displaystyle M(q) = \frac{1}{1 - q}\left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
 			</div>
 		</div>
 
 		<div>
-			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped numbers separately. We now have two choices of opposite-sign commutations, corresponding to the two diagonals of the plane partition that interlace their neighbors.</p>
+			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped number separately. We now have two choices of opposite-sign commutations, corresponding to the two diagonals of the plane partition that interlace their neighbors.</p>
 
 			<div class="build">
 				<p>It turns out that each commutation produces a factor of $\frac{1}{1 - q^{h(\square)}}$, where $h(\square)$ is the hook length of the box popped off in the corresponding toggle. After all possible commutations, the result is the familiar expression</p>
@@ -294,19 +329,15 @@
 		</div>
 
 		<div id="zeroLeg" class="large-canvas">
-			<p>Ex: Decomposing a plane partition $\pi$ into a hook-length-weighted tableau via iterating toggling.<p>
+			<p>Ex: Decomposing a plane partition $\pi$ into a hook-length-weighted tableau via iterated toggling (in reading order).<p>
 		</div>
 
 
 
 		<div>
-			<p>The resulting map is a weight-preserving bijection $\tau$ between plane partitions and hook-length-weighted tableaux. It is functionally identical to a map introduced by $\pak$ that operates on RPPs; what is new with this presentation is a more clear explanation of why it is independent of the order of </p>
+			<p>The resulting map is a weight-preserving bijection $\tau$ between plane partitions and hook-length-weighted tableaux. It is functionally identical to a map introduced by Pak that operates on RPPs; what is new with this presentation is a more clear explanation of why it is independent of the order of toggles, as well as the ability to extend to generalizations of plane partitions.</p>
 
-			<div class="build">
-				<p>It turns out that each commutation produces a factor of $\frac{1}{1 - q^{h(\square)}}$, where $h(\square)$ is the hook length of the box popped off in the corresponding toggle. After all possible commutations, the result is the familiar expression</p>
-
-				<p style="text-align: center">$\displaystyle M(q) = \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}}.$</p>
-			</div>
+			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first constructing the vertex operator expansion</p>
 		</div>
 		
 		
