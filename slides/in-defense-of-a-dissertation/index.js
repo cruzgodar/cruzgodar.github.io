@@ -1,4 +1,5 @@
 import { appBuilds } from "./builds/app.js";
+import { edgeSequencesBuilds } from "./builds/edgeSequences.js";
 import { garverPatriasBuilds } from "./builds/garverPatrias.js";
 import { garverPatrias2Builds } from "./builds/garverPatrias2.js";
 import { garverPatrias3Builds } from "./builds/garverPatrias3.js";
@@ -46,6 +47,7 @@ const options =
 		"toggles": togglesBuilds,
 		"toggles2": toggles2Builds,
 		"zeroLeg": zeroLegBuilds,
+		"edgeSequences": edgeSequencesBuilds,
 
 		"hillman-grassl": hillmanGrasslBuilds,
 		"regions-example": regionsExampleBuilds,

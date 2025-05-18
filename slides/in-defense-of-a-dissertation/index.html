@@ -149,7 +149,7 @@
 		<div>
 			<h1>A Generating Function for SPPs</h1>
 			
-			<p class="build">An identical result holds for SPPs (with the caveat that hook length is now measured up and left instead of down and right):</p>
+			<p class="build">An identical result holds for SPPs (recall that hook length for these is measured up and left instead of down and right):</p>
 
 			<p class="build" style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\sigma q^{|\sigma|} = \prod_{\square \in \mathbb{N}^2 \setminus \lambda} \frac{1}{1 - q^{h(\square)}}.$</p>
 		
@@ -200,7 +200,7 @@
 			<p class="build">RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$ are used to compute the Calabi&ndash;Yau topological vertex in Pandharipande&ndash;Thomas (PT) theory and Donaldson&ndash;Thomas (DT) theory.</p>
 
 			<div class="build">
-				<p>Let $W_{(\emptyset, \emptyset, \lambda)}(q)$ and $V_{(\emptyset, \emptyset, \lambda)}(q)$ be the generating functions for RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$, respectively, and let $M(q) = V_{(\emptyset, \emptyset, \emptyset)}(q)$ be MacMahon's generating function for plane partitions. Then</p>
+				<p>Let $W_{(\emptyset, \emptyset, \lambda)}(q)$ and $V_{(\emptyset, \emptyset, \lambda)}(q)$ be the generating functions for RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$, respectively, and let $M(q) = V_{(\emptyset, \emptyset, \emptyset)}(q)$ be MacMahon's function. Then</p>
 
 				<p style="text-align: center">Thm: $\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = W_{(\emptyset, \emptyset, \lambda)}(q)M(q).$</p>
 			</div>
@@ -363,10 +363,10 @@
 
 
 		<div>
-			<h1>Producing MacMahon's Function</h1>
+			<h1>Producing $M(q)$</h1>
 			
 			<div class="build">
-				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce the generating function $M(q)$ for plane partitions:</p>
+				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce MacMahon's function:</p>
 			
 				<p style="text-align: center; transform: scale(0.9); margin-left: -2.25%">$\displaystyle M(q) = \left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
 			</div>
@@ -397,11 +397,59 @@
 		<div>
 			<p>The resulting map is a weight-preserving bijection $\tau$ between plane partitions and hook-length-weighted tableaux. It is functionally identical to a map introduced by Pak that operates on RPPs; what is new with this presentation is a more clear explanation of why it is independent of the order of toggles, as well as the ability to extend to generalizations of plane partitions.</p>
 
-			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first constructing the vertex operator expansion</p>
+			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first expressing their generating function $V_{(\emptyset, \emptyset, \lambda}$ in terms of vertex operators.</p>
 		</div>
-		
-		
-		
+
+
+
+		<div>
+			<h1>Vertex Operators for SPPs</h1>
+
+			<p class="build">When $\lambda \neq \emptyset$, the vertex operator expansion of $V_{(\emptyset, \emptyset, \lambda}$ contains $\Gamma_-$ operators to the right of the middle $Q$ operators and $\Gamma_+$ operators to the left.</p>
+
+			<p class="build">Splitting the middle $Q$ into $Q^{\frac{1}{2}}Q^{\frac{1}{2}}$ and splitting it still works, but now the out of place $\Gamma$s have negative exponents.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Edge Sequences</h1>
+
+			<p class="build">For a partition $\lambda$, we introduce the doubly-infinite <dfn>edge sign sequence</dfn> $e_\lambda(n)$ and <dfn>edge power sequence</dfn> $p_\lambda(n)$ for the edges of the boundary of $\mathbb{N}^2 \setminus \lambda$, labeled with integers from bottom-left to top right so that the main diagonal has edges with labels $-1$ and $0$.</p>
+
+			<p class="build">$e_\lambda(n)$ is $1$ if the edge labeled $n$ is horizontal and $-1$ if it is horizontal.</p>
+
+			<p class="build">$p_\lambda(n) = \begin{cases} \left| n + \frac{1}{2} \right|, & e_\lambda(n) = \operatorname{sign}\left(n + \frac{1}{2}\right) \\ - \left| n + \frac{1}{2} \right|, & e_\lambda(n) \neq \operatorname{sign}\left(n + \frac{1}{2}\right) \end{cases}$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>A Generating Function for SPPs</h1>
+
+			<div class="build">
+				<p>We use these sequences to produce the expression</p>
+			
+				<p style="text-align: center">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \left< \emptyset \left| \,\prod_{n \in \mathbb{Z}} \Gamma_{e(n)}\left(q^{p(n)}\right)\, \right|\,\emptyset\right>$.</p>
+			</div>
+		</div>
+
+
+
+		<div id="edgeSequences" class="large-canvas">
+			<p>Ex: with $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to<p>
+
+			<p style="transform: scale(0.61); margin-left: -20.5%; margin-top: -4%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$<p>
+		</div>
+
+
+
+		<div>
+			<h1>Producing $V_{(\emptyset, \emptyset, \lambda)}(q)$</h1>
+
+			<p class="build">After </p>
+		</div>
+
 		
 		
 		<div id="ps-rsk" class="medium-canvas">
