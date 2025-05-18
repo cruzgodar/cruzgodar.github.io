@@ -211,7 +211,7 @@ export async function addNewArray({
 
 
 	// Add walls. Disabled by default.
-	if (this.abConfigMode)
+	if (this.addWalls)
 	{
 		array.leftWall = new Array(this.wallWidth);
 		array.rightWall = new Array(this.wallWidth);

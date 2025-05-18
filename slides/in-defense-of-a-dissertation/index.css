@@ -9,3 +9,9 @@
 	transform: scale(2);
 	z-index: -1;
 }
+
+#app #canvas-bundle
+{
+	transform: scale(1.4);
+	z-index: -1;
+}

@@ -384,12 +384,12 @@ export async function showDimers()
 					targets.push(array.cubes[i][j][k].material[3]);
 					targets.push(array.cubes[i][j][k].material[5]);
 
-					if (this.abConfigMode && i === 0)
+					if (this.addWalls && i === 0)
 					{
 						targets.push(array.rightWall[j][k].material[4]);
 					}
 
-					if (this.abConfigMode && j === 0)
+					if (this.addWalls && j === 0)
 					{
 						targets.push(array.leftWall[i][k].material[0]);
 					}
@@ -467,7 +467,7 @@ export async function showDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -475,7 +475,7 @@ export async function showDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -493,7 +493,7 @@ export async function showDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -501,7 +501,7 @@ export async function showDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
@@ -666,7 +666,7 @@ export async function hideDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -674,7 +674,7 @@ export async function hideDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -692,7 +692,7 @@ export async function hideDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -700,7 +700,7 @@ export async function hideDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 

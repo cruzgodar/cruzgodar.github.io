@@ -31,11 +31,19 @@ export const canvasBundle = document.body.querySelector("#canvas-bundle");
 document.body.querySelectorAll(".WILSON_draggables-container")
 	.forEach(element => element.classList.add("lapsa-interactable"));
 
-
+function setup()
+{
+	applet.addWalls = false;
+	applet.wallWidth = 16;
+	applet.wallHeight = 16;
+	applet.infiniteHeight = 50;
+}
 
 const options =
 {
 	shelfIconPaths: "/graphics/lapsa-icons/",
+
+	setupBuild: setup,
 
 	builds:
 	{
@@ -48,6 +56,7 @@ const options =
 		"toggles2": toggles2Builds,
 		"zeroLeg": zeroLegBuilds,
 		"edgeSequences": edgeSequencesBuilds,
+		"app": appBuilds,
 
 		"hillman-grassl": hillmanGrasslBuilds,
 		"regions-example": regionsExampleBuilds,
@@ -57,7 +66,6 @@ const options =
 		"garver-patrias-2": garverPatrias2Builds,
 		"garver-patrias-3": garverPatrias3Builds,
 		"garver-patrias-4": garverPatrias4Builds,
-		"app": appBuilds
 	}
 };
 

@@ -28,9 +28,11 @@ import {
 	drawAll2dViewText,
 	drawSingleCell2dViewText,
 	hideFloor,
+	hideWalls,
 	recalculateHeights,
 	removeOutsideFloor,
-	showFloor
+	showFloor,
+	showWalls
 } from "./miscUtils.js";
 import { drawBoundary, drawBoundaryRect, drawNQuotient } from "./nQuotients.js";
 import { runAlgorithm, runExample } from "./runAlgorithm.js";
@@ -75,6 +77,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	infiniteHeight = 50;
 
+	addWalls = false;
 	abConfigMode = false;
 	wallWidth = 16;
 	wallHeight = 16;
@@ -253,10 +256,10 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden4.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden4.ctx._alpha = 1;
 
-		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden4.ctx.fillStyle = convertColor(64, 64, 64, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden4.ctx.fillStyle = convertColor(64, 64, 64, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden4.ctx.lineWidth = 6;
@@ -377,6 +380,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	showFloor = showFloor;
 	hideFloor = hideFloor;
+	showWalls = showWalls;
+	hideWalls = hideWalls;
 	removeOutsideFloor = removeOutsideFloor;
 	recalculateHeights = recalculateHeights;
 	drawAll2dViewText = drawAll2dViewText;
