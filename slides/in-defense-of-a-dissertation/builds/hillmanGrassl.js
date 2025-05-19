@@ -33,7 +33,7 @@ async function reset({ slide, duration })
 		horizontalLegs: false
 	});
 
-	if (!applet.inExactHexView)
+	if (applet.in2dView)
 	{
 		await applet.showHexView();
 	}
