@@ -15,3 +15,42 @@
 	transform: scale(1.4);
 	z-index: -1;
 }
+
+.regions-image
+{
+	width: calc(16.5vw * 152 / 89);
+	border-radius: 10px;
+}
+
+#rpp-example-image
+{
+	width: calc(25.5vw * 152 / 89);
+	border-radius: 10px;
+}
+
+#entry-posets-image
+{
+	width: calc(25.5vw * 152 / 89);
+	border-radius: 10px;
+}
+
+/* @media (min-aspect-ratio: 152/89)
+{	
+	.regions-image
+	{
+		height: calc(16.5 * var(--safe-vh) * 152 / 89);
+		width: unset;
+	}
+
+	#rpp-example-image
+	{
+		height: calc(25.5 * var(--safe-vh) * 152 / 89);
+		width: unset;
+	}
+
+	#entry-posets-image
+	{
+		height: calc(25.5 * var(--safe-vh) * 152 / 89);
+		width: unset;
+	}
+} */

@@ -1,6 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
-import { generateRandomPlanePartition } from "./generateRandomData.js";
 import { arrayToAscii, parseArray } from "./parseAndVerify.js";
 import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -243,11 +242,11 @@ export default function()
 	sectionElements[visibleSection]
 		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
-	const planePartition = generateRandomPlanePartition();
-	addArrayTextarea.setValue(arrayToAscii(planePartition));
-	applet.addNewArray({ index: 0, numbers: planePartition });
+	// const planePartition = generateRandomPlanePartition();
+	// addArrayTextarea.setValue(arrayToAscii(planePartition));
+	// applet.addNewArray({ index: 0, numbers: planePartition });
 
-	// testABConfigs();
+	testABConfigs();
 
 	showPage();
 

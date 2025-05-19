@@ -95,7 +95,7 @@
 		
 		
 		<div>
-			<h1>Asymptotic Young Diagrams and Hooks</h1>
+			<h1>Asymptotic Young Diagrams</h1>
 			
 			<p class="build">A Young diagram <dfn>asymptotic</dfn> to a partition $\lambda$ is the collection of boxes $\mathbb{N}^2 \setminus \lambda$.</p>
 
@@ -135,19 +135,19 @@
 
 
 		<div>
-			<h1>A Generating Function for RPPs</h1>
+			<h1>An RPP Generating Function</h1>
 			
 			<p class="build">A famous result (due to Stanley in his Ph.D. thesis) expresses the generating function for RPPs of shape $\lambda$ as a product involving hook lengths:</p>
 
 			<div class="build">
 				<p style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\rho q^{|\rho|} = \prod_{\square \in \lambda} \frac{1}{1 - q^{h(\square)}},$</p>
 			
-				<p>where the sum is taken over all RPPs $\rho$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs of shape $\lambda$ are in bijection with multi-sets of hooks in a diagram of shape $\lambda$.</p>
+				<p>where the sum is taken over all RPPs $\rho$ of shape $\lambda$. Since boxes and hooks are in bijection, the combinatorial interpretation is that RPPs of shape $\lambda$ are in bijection with hook-length-weighted tableaux of shape $\lambda$.</p>
 			</div>
 		</div>
 
 		<div>
-			<h1>A Generating Function for SPPs</h1>
+			<h1>An SPP Generating Function</h1>
 			
 			<p class="build">An identical result holds for SPPs (recall that hook length for these is measured up and left instead of down and right):</p>
 
@@ -202,8 +202,10 @@
 			<div class="build">
 				<p>Let $W_{(\emptyset, \emptyset, \lambda)}(q)$ and $V_{(\emptyset, \emptyset, \lambda)}(q)$ be the generating functions for RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$, respectively, and let $M(q) = V_{(\emptyset, \emptyset, \emptyset)}(q)$ be MacMahon's function. Then</p>
 
-				<p style="text-align: center">Thm: $\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = W_{(\emptyset, \emptyset, \lambda)}(q)M(q).$</p>
+				<p style="text-align: center"><strong>Thm:</strong> $\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = W_{(\emptyset, \emptyset, \lambda)}(q)M(q)$,</p>
 			</div>
+
+			<p class="build">i.e. SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ correspond to pairs $(\rho, \pi)$ of RPPs $\rho$ of shape $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
 		</div>
 
 
@@ -254,9 +256,9 @@
 			<div class="build">
 				<p>The two main operators of interest are the <dfn>interlacing operators</dfn>, defined by</p>
 
-				<p style="text-align: center">$\displaystyle \Gamma_+(q)\,\ket{\lambda} = \sum_{\mu \succ \lambda}q^{|\mu| - |\lambda|}\,\ket{\lambda}$</p>
+				<p style="text-align: center">$\displaystyle \Gamma_+(q)\,\ket{\lambda} = \sum_{\mu \succ \lambda}q^{|\mu| - |\lambda|}\,\ket{\mu}$</p>
 
-				<p style="text-align: center">$\displaystyle \Gamma_-(q)\,\ket{\lambda} = \sum_{\mu \prec \lambda}q^{|\lambda| - |\mu|}\,\ket{\lambda}$.</p>
+				<p style="text-align: center">$\displaystyle \Gamma_-(q)\,\ket{\lambda} = \sum_{\mu \prec \lambda}q^{|\lambda| - |\mu|}\,\ket{\mu}$.</p>
 			</div>
 
 			<p class="build">While the formula for $\Gamma_+$ nominally contains an infinite sum, we can avoid convergence issues in practice by adding $Q$ operators to produce a generating function.</p>
@@ -290,7 +292,7 @@
 			</div>
 
 			<div class="build">
-				<p>By splitting the middle $Q$ and commuting them all outward where they annihilate against the $\bra{\emptyset}$ and $\ket{\emptyset}$, we find that the previous generating function is</p>
+				<p>By splitting the middle $Q$ into $Q^{\frac{1}{2}}Q^{\frac{1}{2}}$ and commuting all the $Q$s outward, where they annihilate against the $\bra{\emptyset}$ and $\ket{\emptyset}$, we find that the previous generating function is</p>
 
 				<p style="text-align: center; transform: scale(0.8); margin-left: -9%">$\displaystyle \left< \emptyset \left| \Gamma_-\left( q^{\frac{2N - 1}{2}} \right) \cdots \Gamma_-\left( q^{\frac{3}{2}} \right) \Gamma_-\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{3}{2}} \right) \cdots \Gamma_+\left( q^{\frac{2N - 1}{2}} \right)\right|\, \emptyset \right>.$</p>
 			</div>
@@ -513,9 +515,60 @@
 		<div>
 			<h1>Three-Leg RPPs</h1>
 
-			<p class="build">Unfortunately, three-leg RPPs are much more complicated. Given partitions $\lambda$, $\mu$, and $\nu$, a three-leg RPP has the appearance of </p>
+			<p class="build">Three-leg RPPs are much more complicated than their one- or even two-leg counterparts. Rather than thinking of the entries of one-leg RPPs as the number of boxes stacked on a Young diagram, a more generalizable interpretation is to treat them as the number of boxes <em>removed</em> from an infinite tower.</p>
 
-			<p class="build">Three-leg objects are substantively more complicated. Given partitions $\lambda$, $\mu$, and $\nu$, an RPP $\sigma$ of shape $(\lambda, \mu, \nu)$ has the appearance</p>
+			<p class="build">Generalizing this interpretation, a three-leg RPP of shape $(\lambda, \mu, \nu)$ is an object in which we remove boxes from cylindrical legs of shape $\lambda$, $\mu$, and $\nu$, including their two- and three-way intersections.</p>
+		</div>
+
+		<div>
+			<p>Ex: the minimal-weight RPP of shape $(\lambda, \mu, \nu)$ for $\lambda = (3, 2)$, $\mu = (2, 1, 1)$, and $\nu = (4, 2, 1)$, colored by region.</p>
+
+			<div class="lapsa-padding-bottom" style="display: flex; justify-content: space-between">
+				<img class="regions-image" src="graphics/regions1and3.png">
+				<img class="regions-image" src="graphics/allRegions.png">
+				<img class="regions-image" src="graphics/regions2and3.png">
+			</div>
+
+			<p class="build">We denote the set of orange boxes as $\operatorname{I}$, the set of yellow (i.e. two-way intersection) boxes as $\operatorname{II}$, and the set of purple (i.e. three-way intersection) boxes as $\operatorname{III}$.</p>
+		</div>
+
+		<div>
+			<h1>RPP Regions</h1>
+
+			<p class="build">We write $\operatorname{I} = \operatorname{I}_1 \sqcup \operatorname{I}_2 \sqcup \operatorname{I}_3$, where $\operatorname{I}_1$, $\operatorname{I}_2$, and $\operatorname{I}_3$ are the sets of boxes in the legs corresponding to $\lambda$, $\mu$, and $\nu$, respectively. Similarly, $\operatorname{II} = \operatorname{II}_{\overline{1}} \sqcup \operatorname{II}_{\overline{2}} \sqcup \operatorname{II}_{\overline{3}}$, where $\operatorname{II}_{\overline{1}}$, $\operatorname{II}_{\overline{2}}$, and $\operatorname{II}_{\overline{3}}$ are the sets of two-way intersection boxes <em>not</em> from the legs corresponding to $\lambda$, $\mu$, and $\nu$, respectively.</p>
+
+			<p class="build">We then define a three-leg RPP as a pair $\rho = (A, B)$, where $A \subseteq \operatorname{I} \cup \operatorname{III}$ and $B \subseteq \operatorname{II} \cup \operatorname{III}$ and both satisfy the plane partition inequalities.</p>
+		</div>
+
+		<div>
+			<h1>The Labeling Condition</h1>
+
+			<div class="build">
+				<p>However, $A$ and $B$ must satisfy a further global condition: if boxes in $\operatorname{I}_i \cup \operatorname{II}_{\overline{i}}$ are labeled $i$, then all connected components of</p>
+			
+				<p style="text-align: center">$(\operatorname{I} \setminus A) \cup (\operatorname{II} \cap B) \cup (\operatorname{III} \cap (A \triangle B))$</p>
+
+				<p>can contain no more than one distinct label each.</p>
+			</div>
+
+			<p class="build">The weight of $\rho = (A, B)$ is the total number of boxes removed from both $A$ and $B$; note that since region $\operatorname{III}$ is present in both, its boxes can be present with multiplicity 2. This notion of a labeled $AB$ configuration was introduced by Jenne, Webb, and Young, who were also the first to prove the three-leg PT&ndash;DT correspondence.</p>
+		</div>
+
+		<div>
+			<h1>Three-Leg Challenges</h1>
+
+			<p class="build">Extending the bijectivization methods of the one- and two-leg cases to the three-leg one is immediately more difficult: three-leg RPPs do not naturally admit a vertex operator expression at all.</p>
+
+			<p class="build">In the hopes of producing one via a toggle-like operation, however, we investigated the entry posets of specific boxes of three-leg RPPs.</p>
+		</div>
+
+		<div>
+			<p>Ex: a three-leg RPP and the posets of valid values $(a,b)$ for its outer corners.</p>
+
+			<div class="lapsa-padding-bottom" style="display: flex; justify-content: space-between; align-items: center">
+				<img id="rpp-example-image" src="graphics/exampleRpp.png">
+				<img id="entry-posets-image" src="graphics/entryPosets.png">
+			</div>
 		</div>
 
 
