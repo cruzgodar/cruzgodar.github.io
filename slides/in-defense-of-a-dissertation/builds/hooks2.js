@@ -24,10 +24,7 @@ async function reset({ slide, forward, duration })
 
 	applet.animationTime = 0;
 
-	for (let i = applet.arrays.length - 1; i >= 0; i--)
-	{
-		await applet.removeArray(0);
-	}
+	await applet.removeAllArrays();
 
 	const array = await applet.addNewArray({
 		index: 0,

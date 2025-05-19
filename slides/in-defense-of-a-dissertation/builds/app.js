@@ -34,10 +34,7 @@ async function reset({ slide, duration })
 	applet.wallWidth = 12;
 	applet.wallHeight = 12;
 
-	for (let i = applet.arrays.length - 1; i >= 0; i--)
-	{
-		await applet.removeArray(0);
-	}
+	await applet.removeAllArrays();
 
 	await applet.addNewArray({
 		index: 0,

@@ -8,6 +8,7 @@ import { hillmanGrasslBuilds } from "./builds/hillmanGrassl.js";
 import { hooksBuilds } from "./builds/hooks.js";
 import { hooks2Builds } from "./builds/hooks2.js";
 import { interlacingBuilds } from "./builds/interlacing.js";
+import { oneLegBijectionBuilds } from "./builds/oneLegBijection.js";
 import { planePartitionExampleBuilds } from "./builds/planePartitionExample.js";
 import { psRskBuilds } from "./builds/psRsk.js";
 import { regionsExampleBuilds } from "./builds/regionsExample.js";
@@ -57,6 +58,7 @@ const options =
 		"zeroLeg": zeroLegBuilds,
 		"edgeSequences": edgeSequencesBuilds,
 		"app": appBuilds,
+		"oneLegBijection": oneLegBijectionBuilds,
 
 		"hillman-grassl": hillmanGrasslBuilds,
 		"regions-example": regionsExampleBuilds,

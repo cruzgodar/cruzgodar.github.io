@@ -551,3 +551,11 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 		this.updateCameraHeight(true);
 	}
 }
+
+export async function removeAllArrays()
+{
+	for (let i = this.arrays.length - 1; i >= 0; i--)
+	{
+		await this.removeArray(i);
+	}
+}

@@ -9,7 +9,7 @@ import {
 	testAllEntriesOfABConfig
 } from "./abConfigs.js";
 import { addCube, addFloor, addLeftWall, addRightWall } from "./addGeometry.js";
-import { godar1, godar1Inverse } from "./algorithms/goder1.js";
+import { godar1, godar1Inverse } from "./algorithms/godar1.js";
 import { hillmanGrassl, hillmanGrasslInverse } from "./algorithms/hillmanGrassl.js";
 import { pak, pakInverse } from "./algorithms/pak.js";
 import { rsk, rskInverse } from "./algorithms/rsk.js";
@@ -23,7 +23,7 @@ import {
 	showNumbersCanvas,
 	updateCameraHeight
 } from "./cameraControls.js";
-import { addNewArray, editArray, removeArray, trimArray } from "./editArrays.js";
+import { addNewArray, editArray, removeAllArrays, removeArray, trimArray } from "./editArrays.js";
 import {
 	drawAll2dViewText,
 	drawSingleCell2dViewText,
@@ -364,6 +364,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	editArray = editArray;
 	trimArray = trimArray;
 	removeArray = removeArray;
+	removeAllArrays = removeAllArrays;
 
 	addCube = addCube;
 	addFloor = addFloor;

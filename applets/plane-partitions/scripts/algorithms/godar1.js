@@ -43,58 +43,6 @@ export async function godar1(index)
 
 
 
-	const newArray = new Array(planePartition.length);
-
-	for (let i = 0; i < planePartition.length; i++)
-	{
-		newArray[i] = new Array(planePartition.length);
-
-		for (let j = 0; j < planePartition.length; j++)
-		{
-			if (planePartition[i][j] === Infinity)
-			{
-				newArray[i][j] = this.infiniteHeight;
-			}
-
-			else
-			{
-				newArray[i][j] = planePartition[i][j];
-			}
-		}
-	}
-
-	await this.addNewArray({ index: index + 1, numbers: newArray });
-
-	await sleep(this.animationTime / 2);
-
-	await this.removeArray(index);
-
-	await sleep(this.animationTime / 2);
-
-	array = this.arrays[index];
-	planePartition = array.numbers;
-
-
-
-	let rightLegSize = 0;
-	let bottomLegSize = 0;
-
-	while (
-		rightLegSize < planePartition.length
-		&& planePartition[rightLegSize][planePartition.length - 1] !== 0
-	) {
-		rightLegSize++;
-	}
-
-	while (
-		bottomLegSize < planePartition.length
-		&& planePartition[planePartition.length - 1][bottomLegSize] !== 0
-	) {
-		bottomLegSize++;
-	}
-
-
-
 	await this.runAlgorithm("pak", index, true);
 
 	await sleep(this.animationTime * 2);
@@ -102,55 +50,6 @@ export async function godar1(index)
 	array = this.arrays[index];
 	planePartition = array.numbers;
 
-
-
-	const legSize = Math.max(rightLegSize, bottomLegSize);
-
-	const finiteArray = new Array(planePartition.length - legSize + 1);
-
-	const cubesToDelete = [];
-
-	for (let i = 0; i < finiteArray.length - 1; i++)
-	{
-		finiteArray[i] = new Array(finiteArray.length);
-
-		for (let j = 0; j < finiteArray.length - 1; j++)
-		{
-			finiteArray[i][j] = planePartition[i][j];
-
-			for (let k = 0; k < planePartition[i][j]; k++)
-			{
-				cubesToDelete.push([i, j, k]);
-			}
-
-			planePartition[i][j] = 0;
-		}
-
-		finiteArray[i][finiteArray.length - 1] = 0;
-	}
-
-	finiteArray[finiteArray.length - 1] = new Array(finiteArray.length);
-
-	for (let j = 0; j < finiteArray.length; j++)
-	{
-		finiteArray[finiteArray.length - 1][j] = 0;
-	}
-
-
-
-	this.deleteCubes(array, cubesToDelete, true, true);
-
-	await this.addNewArray({ index, numbers: finiteArray });
-
-	await sleep(this.animationTime / 2);
-
-
-
-	// Now we unPak the second array.
-
-	await this.runAlgorithm("pakInverse", index, true);
-
-	await sleep(this.animationTime * 2);
 
 
 
@@ -237,8 +136,8 @@ export async function godar1(index)
 			const col = appPivotsByHookLength[i][j][1];
 
 			if (
-				row < planePartition.length - bottomLegSize
-				&& col < planePartition.length - rightLegSize
+				row < planePartition.length
+				&& col < planePartition.length
 			) {
 				for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 				{
@@ -335,9 +234,9 @@ export async function godar1(index)
 
 
 
-	for (let i = 0; i < planePartition.length - bottomLegSize; i++)
+	for (let i = 0; i < planePartition.length; i++)
 	{
-		for (let j = nuRowLengths[i]; j < planePartition.length - rightLegSize; j++)
+		for (let j = nuRowLengths[i]; j < planePartition.length; j++)
 		{
 			if (this.arrays[index].numbers[i][j] > 0)
 			{
@@ -387,18 +286,23 @@ export async function godar1(index)
 		}
 	}
 
-
+	await this.removeArray(index);
 
 	await sleep(this.animationTime * 3);
 
-	// Now it's time for the palindromic toggle.
-
-	await this.runAlgorithm("pakInverse", index, true);
+	this.animationTime /= 5;
 
 	if (rppSize > 0)
 	{
-		await this.runAlgorithm("hillmanGrasslInverse", index + 1, true);
+		await this.runAlgorithm("pakInverse", index, true);
 	}
+
+	if (ppSize > 0)
+	{
+		await this.runAlgorithm("pakInverse", index + 1, true);
+	}
+
+	this.animationTime *= 5;
 }
 
 
