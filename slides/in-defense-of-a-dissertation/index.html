@@ -409,9 +409,9 @@
 
 
 		<div class="large-canvas">
-			<p>Ex: with $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to</p>
+			<p>Ex: With $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to</p>
 
-			<p style="transform: scale(0.63); margin-left: -19%; margin-top: -2%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$</p>
+			<p style="transform: scale(0.605); margin-left: -20.5%; margin-top: -2%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$</p>
 			
 			<div style="display: flex; justify-content: center; width: 100%">
 				<img id="edge-signs-image" src="graphics/edgeSigns.png">
@@ -425,44 +425,14 @@
 
 			<p class="build">When $\lambda \neq \emptyset$, the vertex operator expansion of $V_{(\emptyset, \emptyset, \lambda)}$ contains $\Gamma_-$ operators to the right of the middle $Q$ operators and $\Gamma_+$ operators to the left.</p>
 
-			<p class="build">Splitting the middle $Q$ into $Q^{\frac{1}{2}}Q^{\frac{1}{2}}$ and splitting it still works, but now the out of place $\Gamma$s have negative exponents.</p>
+			<p class="build">Commuting every $Q$ to the outside still works, but now the out of place $\Gamma$s have negative exponents.</p>
+
+			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a partition and $(i, j) \in \mathbb{N}^2 \setminus \lambda$. If the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$ at edges corresponding to $\Gamma_-\left( q^k \right)$ and $\Gamma_+\left( q^l \right)$, then $h(i, j) = k + l$.</p>
 		</div>
 
 
 
-		<div>
-			<h1>Edge Sequences</h1>
-
-			<p class="build">For a partition $\lambda$, we introduce the doubly-infinite <dfn>edge sign sequence</dfn> $e_\lambda(n)$ and <dfn>edge power sequence</dfn> $p_\lambda(n)$ for the edges of the boundary of $\mathbb{N}^2 \setminus \lambda$, labeled with integers from bottom-left to top right so that the main diagonal has edges with labels $-1$ and $0$.</p>
-
-			<p class="build">$e_\lambda(n)$ is $1$ if the edge labeled $n$ is horizontal and $-1$ if it is horizontal.</p>
-
-			<p class="build">$p_\lambda(n) = \begin{cases} \left| n + \frac{1}{2} \right|, & e_\lambda(n) = \operatorname{sign}\left(n + \frac{1}{2}\right) \\ - \left| n + \frac{1}{2} \right|, & e_\lambda(n) \neq \operatorname{sign}\left(n + \frac{1}{2}\right) \end{cases}$.</p>
-		</div>
-
-
-
-		<div>
-			<h1>A Generating Function for SPPs</h1>
-
-			<div class="build">
-				<p>We use these sequences to produce the expression</p>
-			
-				<p style="text-align: center">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \left< \emptyset \left| \,\prod_{n \in \mathbb{Z}} \Gamma_{e(n)}\left(q^{p(n)}\right)\, \right|\,\emptyset\right>$.</p>
-			</div>
-		</div>
-
-
-
-		<div>
-			<h1>Producing $V_{(\emptyset, \emptyset, \lambda)}(q)$</h1>
-
-			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a Young diagram. If $(i, j) \in \mathbb{N}^2 \setminus \lambda$ and $k$ and $l$ are the labels of the edges where the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$, then $h(i, j) = p_\lambda(k) + p_\lambda(l)$.</p>
-
-			<p class="build">Similarly, if $(i, j) \in \lambda$, then $h(i, j) = -\left( p_\lambda(k) + p_\lambda(l) \right)$.</p>
-
-			<p class="build">This theorem guarantees that when we commute the $\Gamma$ operators in the expression for $V_{(\emptyset, \emptyset, \lambda)}(q)$, each factor we produce is exactly $\left( 1 - q^{h(\square)} \right)^{-1}$, where $\square$ is the box we pop off in the corresponding toggle.</p>
-		</div>
+		
 
 
 
@@ -539,7 +509,7 @@
 		<div>
 			<h1>RPP Generalizations</h1>
 
-			<p class="build">Three-Leg RPPs are unfortunately <em>extremely</em> complicated &mdash; much more so than their one- or even two-leg counterparts.</p>
+			<p class="build">Three-leg RPPs are unfortunately <em>extremely</em> complicated &mdash; much more so than their one- or even two-leg counterparts.</p>
 
 			<p class="build">We instead focus only on two-leg RPPs of a specific shape: $(\lambda, \mu, \emptyset)$. They are generalizations of one-leg RPPs as we would expect, but we need to think of the one-leg ones in a different manner to understand how.</p>
 
@@ -618,6 +588,48 @@
 
 		<div class="title">
 			<h1 style="text-align: center">Questions?</h1>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Edge Sign Sequences</h1>
+		</div>
+
+
+
+		<div>
+			<h1>Edge Sequences</h1>
+
+			<p class="build">For a partition $\lambda$, we introduce the doubly-infinite <dfn>edge sign sequence</dfn> $e_\lambda(n)$ and <dfn>edge power sequence</dfn> $p_\lambda(n)$ for the edges of the boundary of $\mathbb{N}^2 \setminus \lambda$, labeled with integers from bottom-left to top right so that the main diagonal has edges with labels $-1$ and $0$.</p>
+
+			<p class="build">$e_\lambda(n)$ is $1$ if the edge labeled $n$ is horizontal and $-1$ if it is horizontal.</p>
+
+			<p class="build">$p_\lambda(n) = \begin{cases} \left| n + \frac{1}{2} \right|, & e_\lambda(n) = \operatorname{sign}\left(n + \frac{1}{2}\right) \\ - \left| n + \frac{1}{2} \right|, & e_\lambda(n) \neq \operatorname{sign}\left(n + \frac{1}{2}\right) \end{cases}$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>A Generating Function for SPPs</h1>
+
+			<div class="build">
+				<p>We use these sequences to produce the expression</p>
+			
+				<p style="text-align: center">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \left< \emptyset \left| \,\prod_{n \in \mathbb{Z}} \Gamma_{e(n)}\left(q^{p(n)}\right)\, \right|\,\emptyset\right>$.</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Producing $V_{(\emptyset, \emptyset, \lambda)}(q)$</h1>
+
+			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a Young diagram. If $(i, j) \in \mathbb{N}^2 \setminus \lambda$ and $k$ and $l$ are the labels of the edges where the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$, then $h(i, j) = p_\lambda(k) + p_\lambda(l)$.</p>
+
+			<p class="build">Similarly, if $(i, j) \in \lambda$, then $h(i, j) = -\left( p_\lambda(k) + p_\lambda(l) \right)$.</p>
+
+			<p class="build">This theorem guarantees that when we commute the $\Gamma$ operators in the expression for $V_{(\emptyset, \emptyset, \lambda)}(q)$, each factor we produce is exactly $\left( 1 - q^{h(\square)} \right)^{-1}$, where $\square$ is the box we pop off in the corresponding toggle.</p>
 		</div>
 
 
