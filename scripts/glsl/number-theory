@@ -362,19 +362,6 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 
 
 
-// benchmarking function
-#function bench1000
-#requires wp
-vec2 bench1000(vec2 z) {
-	vec2 temp = z;
-	for (int j = 0; j < 100; j++) {
-		temp += wp(z,rho);
-	}
-	return temp;
-}
-#endfunction
-
-
 
 // Returns the derivative of the Weierstrass p function wp
 // This satisfies p'^2 - 4p^3 +g2 p + g3 =0, although we have some instability issues
@@ -383,10 +370,6 @@ vec2 bench1000(vec2 z) {
 #function wpprime wpprimeHelper
 #requires cexp cpow
 vec2 wpprimeHelper(vec2 z, vec2 t) {
-	// Shift z to be in the fundamental parallelogram
-	// z -= floor(z.y/t.y)*t;
-	// z.x = fract(z.x);
-
 	// Manually compute thetas here since you can reuse variables instead of calling separately
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
@@ -432,6 +415,7 @@ vec2 wpprimeHelper(vec2 z, vec2 t) {
 	return prod;
 }
 
+
 vec2 wpprime(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
@@ -450,7 +434,9 @@ vec2 wpprime(vec2 z, vec2 t) {
 
 		vec2 wp_transformed = wpprimeHelper(z_prime, t_prime);
 
-		return cdiv(wp_transformed,cpow(t, 3.0)); // wp(z; t) = t^-2 * wp(z/t; -1/t)
+		// wp(z; t) = t^-2 * wp(z/t; -1/t)
+		// so d/dz wp(z,t) = t^-3*wp(z/t,-1/t)
+		return cdiv(wp_transformed,cpow(t,3.0));
 	} else {
 		return wpprimeHelper(z,t);
 	}
