@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-	<title>In Defense of a Dissertation</title>
+	<title>Dissertation Defense</title>
 
-	<meta property="og:title" content="In Defense of a Dissertation"/>
+	<meta property="og:title" content="Dissertation Defense"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content="https://cruzgodar.com/slides/in-defense-of-a-dissertation/"/>
 	<meta property="og:image" content="https://cruzgodar.com/slides/in-defense-of-a-dissertation/cover.webp"/>
@@ -33,7 +33,7 @@
 <body>
 	<div id="lapsa-slide-container">
 		<div id="title" class="medium-canvas">
-			<h1>In Defense of a Dissertation</h1>
+			<h1>Dissertation Defense</h1>
 			
 			<h2>Cruz Godar</h2>
 			
@@ -268,7 +268,7 @@
 			<div class="build">
 				<p>By using the interlacing operators, we can express the generating function for plane partitions whose nonzero entries are contained in an $N \times N$ box:</p>
 
-				<p style="text-align: center">$\displaystyle \left< \emptyset \left| \left( \prod_{i = 1}^N Q \Gamma_-(1) \right) Q\! \left( \prod_{i = 1}^N \Gamma_+(1) Q \right) \right|\, \emptyset \right>$</p>
+				<p style="text-align: center">$\displaystyle \left< \emptyset \right|\, \left( Q \Gamma_-(1) \right)^N Q\, \left( \Gamma_+(1) Q \right)^N \left| \emptyset \right>$</p>
 			</div>
 
 			<p class="build">To convert this into a more useful formula, we need to commute the $Q$ and $\Gamma$ operators.</p>
@@ -336,7 +336,7 @@
 			<h1>Bijectivizing $\Gamma$ Commutation</h1>
 			
 			<div class="build">
-				<p><strong>Prop (G.):</strong> Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
+				<p>Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
 			
 				<p style="text-align: center">$|\nu| - |\lambda| = |\lambda| - |T(\nu)| + n$</p>
 
@@ -355,7 +355,7 @@
 
 			<p style="text-align: center">$\displaystyle \Gamma_-(a)\Gamma_-(b) = \Gamma_-(b)\Gamma_-(a).$</p>
 
-			<p class="build">Specifically, in a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
+			<p class="build"><strong>Prop (G.):</strong> In a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
 		</div>
 
 
@@ -377,7 +377,7 @@
 		</div>
 
 		<div>
-			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped number separately. We now have two choices of opposite-sign commutations, corresponding to the two diagonals of the plane partition that interlace their neighbors.</p>
+			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped number separately.
 
 			<div class="build">
 				<p>It turns out that each commutation produces a factor of $\frac{1}{1 - q^{h(\square)}}$, where $h(\square)$ is the hook length of the box popped off in the corresponding toggle. After all possible commutations, the result is the familiar expression</p>
@@ -395,7 +395,19 @@
 		<div>
 			<p>The resulting map is a weight-preserving bijection $\tau$ between plane partitions and hook-length-weighted tableaux. It is functionally identical to Pak's description of $\operatorname{PS}$, which operates on RPPs; what is new with this presentation is a more clear explanation of why it is independent of the order of toggles, as well as the ability to extend to generalizations of plane partitions.</p>
 
-			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first expressing their generating function $V_{(\emptyset, \emptyset, \lambda}$ in terms of vertex operators.</p>
+			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first expressing their generating function $V_{(\emptyset, \emptyset, \lambda)}$ in terms of vertex operators.</p>
+		</div>
+
+
+
+		<div class="large-canvas">
+			<p>Ex: with $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to</p>
+
+			<p style="transform: scale(0.63); margin-left: -19%; margin-top: -2%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="edge-signs-image" src="graphics/edgeSigns.png">
+			</div>
 		</div>
 
 
@@ -430,14 +442,6 @@
 			
 				<p style="text-align: center">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \left< \emptyset \left| \,\prod_{n \in \mathbb{Z}} \Gamma_{e(n)}\left(q^{p(n)}\right)\, \right|\,\emptyset\right>$.</p>
 			</div>
-		</div>
-
-
-
-		<div id="edgeSequences" class="large-canvas">
-			<p>Ex: with $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to</p>
-
-			<p style="transform: scale(0.61); margin-left: -20.5%; margin-top: -4%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$</p>
 		</div>
 
 

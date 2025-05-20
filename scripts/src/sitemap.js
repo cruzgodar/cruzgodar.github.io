@@ -1823,7 +1823,7 @@ export const sitemap =
 		
 	"/slides/in-defense-of-a-dissertation":
 	{
-		"title": "In Defense of a Dissertation",
+		"title": "Dissertation Defense",
 		
 		"parent": "/slides",
 		
