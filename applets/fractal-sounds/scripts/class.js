@@ -50,9 +50,12 @@ export class FractalSounds extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			fullscreenOptions: {
+				onSwitch: this.onSwitchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				fillScreen: true,
-				animate: false,
-				closeWithEscape: false,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			}
 		};
 
@@ -102,17 +105,14 @@ export class FractalSounds extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
-				onSwitch: this.onSwitchFullscreen.bind(this),
-				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				fillScreen: true,
-				useFullscreenButton: true,
-				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+				animate: false,
+				closeWithEscape: false,
 			},
 		};
 
 		this.wilson = new WilsonCPU(lineDrawerCanvas, options);
-		this.wilsonForFullscreen = this.wilson;
+		this.wilsonForFullscreen = this.wilsonJulia;
 
 		const elements = $$(".WILSON_fullscreen-container");
 
@@ -597,22 +597,14 @@ export class FractalSounds extends AnimationFrameApplet
 
 	onSwitchFullscreen(isFullscreen)
 	{
-		document.body.querySelectorAll(".WILSON_fullscreen-container")
-			.forEach(element => element.style.setProperty(
-				"background-color",
-				"rgba(0, 0, 0, 0)",
-				"important"
-			));
-
-
 		if (isFullscreen)
 		{
-			this.wilsonJulia.enterFullscreen();
+			this.wilson.enterFullscreen();
 		}
 
 		else
 		{
-			this.wilsonJulia.exitFullscreen();
+			this.wilson.exitFullscreen();
 		}
 
 		this.resume();

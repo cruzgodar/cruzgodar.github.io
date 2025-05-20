@@ -335,7 +335,9 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/sorting-algorithms":
