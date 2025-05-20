@@ -467,7 +467,11 @@
 
 
 		<div>
-			<p>Ex: hook lengths as sums of </p>
+			<p>Ex: hook lengths as sums of $p_\lambda(n)$.</p>
+
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="hook-length-sums-image" src="graphics/hook-length-sums.png">
+			</div>
 		</div>
 
 		
@@ -489,7 +493,7 @@
 				<p style="text-align: center">$\displaystyle \prod_{\square \in \mathbb{N}^2 \setminus \lambda} \frac{1}{1 - q^{h(\square)}} = \left( \prod_{\square \in \lambda} \frac{1}{1 - q^{h(\square)}} \right) \left( \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}} \right)$.</p>
 			</div>
 
-			<p class="build">Delightfully, this is true on the level of hooks: for any Young diagram $\lambda$ and any $n \in \mathbb{N}$, there are exactly $n$ distinct $n$-hooks in $\mathbb{N}^2$, and if there are $k$ distinct $n$-hooks in $\lambda$, then there are $n + k$ distinct $n$-hooks in $\mathbb{N}^2 \setminus \lambda$, and they are in bijection nearly-canonically. (This is an established result; we omit it here for brevity).</p>
+			<p class="build">Delightfully, this is true on the level of hooks: for any Young diagram $\lambda$ and any $n \in \mathbb{N}$, there are exactly $n$ distinct $n$-hooks in $\mathbb{N}^2$, and if there are $k$ distinct $n$-hooks in $\lambda$, then there are $n + k$ distinct $n$-hooks in $\mathbb{N}^2 \setminus \lambda$, and they are in bijection nearly-canonically. (This is an established result &mdash; we omit it here for brevity).</p>
 		</div>
 
 
@@ -557,7 +561,7 @@
 		<div>
 			<h1>Two-Leg RPPs</h1>
 
-			<p class="build">In this interpretation, the single leg is vertical, just like the single leg in SPPs of shape $\mathbb{N}^2 \setminus \lambda$, we remove boxesfrom it instead of adding them, and the resulting object satisfies the <em>regular</em> plane partition inequalities, not the reverse ones.</p>
+			<p class="build">In this interpretation, the single leg is vertical, just like the single leg in SPPs of shape $\mathbb{N}^2 \setminus \lambda$, we remove boxes from it instead of adding them, and the resulting object satisfies the <em>regular</em> plane partition inequalities, not the reverse ones.</p>
 
 			<p class="build">A two-leg RPP of shape $(\lambda, \mu, \emptyset)$ is now exactly the analogue of this object with two intersecting horizontal legs instead of a single vertical one.</p>
 		</div>
@@ -701,88 +705,6 @@
 			<p class="build">However, the height of the left part of the angle may not equal the width of the infinite vertical part, meaning there is not always a grading-preserving bijection between these posets and products of intervals.</p>
 
 			<p class="build">This means a toggle operation is likely impossible to define, since no analogous involution may exist.</p>
-		</div>
-
-
-
-
-
-
-
-
-
-		
-		
-		<div id="ps-rsk" class="medium-canvas">
-			<p class="left-text">Incredibly, Pak and Sulzgruber&#x2019;s maps produce identical results despite wildly differing descriptions. We refer to the map collectively as $\operatorname{PS}$.</p>
-			
-			<p class="build left-text">There is a surprising connection between $\operatorname{PS}$ and the $\operatorname{RSK}$ algorithm. Given a square tableau $T$, the diagonals of $\operatorname{PS}^{-1}(T)$ give the shapes of restrictions of $P$ and $Q$ in $(P, Q) = \operatorname{RSK}(T)$.</p>
-		</div>
-		
-		
-		
-		<div id="garver-patrias" class="medium-canvas">
-			<h1>Garver-Patrias</h1>
-			
-			<p class="left-text">This result is stated in a different but equivalent manner in a paper by Garver and Patrias. Given a Young diagram of shape $\lambda$, we first label each box in reading order.</p>
-		</div>
-		
-		
-		
-		<div id="garver-patrias-2" class="medium-canvas">
-			<p class="left-text">Given a tableau $T$ of shape $\lambda$, which is equivalent to a multiset of hooks, we write them in the order the Sulzgruber algorithm inserts them, and then read off the labels of their pivots to form a word $w$. In this example, $w = 145539$.</p>
-		</div>
-		
-		
-		
-		<div id="garver-patrias-3" class="medium-canvas">
-			<p class="left-text">For each diagonal $d$, we form the subword $w_d$ of $w$ by selecting only the labels whose hooks intersect diagonal $d$.</p>
-			
-			<p class="left-text">Here, $w_{-2} = 14$, $w_{-1} = 1455$, $w_0 = 145539$, $w_1 = 14553$, and $w_2 = 13$.</p>
-		</div>
-		
-		
-		
-		<div id="garver-patrias-4" class="medium-canvas">
-			<p class="left-text">We now run $\operatorname{RSK}$ on each $w_d$ and store the shape of the resulting tableaux in the corresponding diagonal.</p>
-			
-			<p class="left-text build">For example, the tableau $P$ in $\operatorname{RSK}(w_1) = \operatorname{RSK}(14355)$ is</p>
-			
-			<p data-build="0" class="left-text" style="text-align: center">$\displaystyle\begin{array}{cccc}1 & 3 & 5 & 5 \\ 4\end{array},$</p>
-			
-			<p data-build="0" class="left-text">so we place the partition $(4, 1)$ into the diagonal $d = 1$ (in reverse order).</p>
-		</div>
-		
-		
-		
-		<div>
-			<p><strong>Thm:</strong> This process is equivalent to $\operatorname{PS}$.</p>
-			
-			<p class="build">We can describe $\operatorname{HG}$ in an identical way by changing the labeling order to be right to left, top to bottom, and then changing the hook ordering to match $\operatorname{HG}$&#x2019;s insertion order. The result is a much more clear connection between the two bijections.</p>
-		</div>
-		
-		
-		
-		<div>
-			<h1>What&#x2019;s the Use?</h1>
-			
-			<p class="build">My research uses these bijections in order to develop new ones between generalizations of plane partitions. A central result deals with plane partitions <dfn>asymptotic</dfn> to a Young diagram $\lambda$, which are analogous to skew semi-standard Young tableaux.</p>
-		</div>
-		
-		
-		
-		<div id="app" class="large-canvas">
-			<p>Ex: a plane partition asymptotic to $\lambda = (3, 2)$.</p>
-		</div>
-		
-		
-		
-		<div>
-			<p><strong>Thm:</strong> With $\operatorname{M}(q)$, $\operatorname{RPP}_\lambda(q)$, and $\operatorname{APP}_\lambda(q)$ denoting the generating functions for plane partitions, RPPs of shape $\lambda$, and plane partitions asymptotic to lambda, respectively,</p>
-			
-			<p style="text-align: center">$\displaystyle \operatorname{APP}_\lambda(q) = \operatorname{RPP}_\lambda(q)M(q)$.</p>
-			
-			<p>This relation was formerly known only algebraically, but showing it bijectively was possible using $\operatorname{HG}$. A generalization of the relation was also bijectivized using Pak, and a bijectivizing a further generalization, which was shown algebraically by Jenne, Webb, and Young in 2020, remains an open problem.</p>
 		</div>
 	</div>
 

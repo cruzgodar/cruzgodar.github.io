@@ -42,6 +42,12 @@
 	width: 40vw;
 }
 
+#hook-length-sums-image
+{
+	width: 40vw;
+	margin-top: 3%;
+}
+
 #entry-posets-image
 {
 	width: 40vw;
@@ -71,6 +77,11 @@
 	}
 
 	#edge-signs-image
+	{
+		width: calc(40 * var(--safe-vh) * 152 / 89);
+	}
+
+	#hook-length-sums-image
 	{
 		width: calc(40 * var(--safe-vh) * 152 / 89);
 	}
