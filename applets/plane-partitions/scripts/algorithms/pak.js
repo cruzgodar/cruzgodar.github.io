@@ -1,6 +1,6 @@
 import { sleep } from "/scripts/src/utils.js";
 
-export async function pak(index)
+export async function pak(index, ignoreLegs = true)
 {
 	const array = this.arrays[index];
 
@@ -30,9 +30,12 @@ export async function pak(index)
 		bottomLegSize++;
 	}
 
-	// Todo: remove eventually
-	rightLegSize = 0;
-	bottomLegSize = 0;
+	if (ignoreLegs)
+	{
+		// Todo: remove eventually
+		rightLegSize = 0;
+		bottomLegSize = 0;
+	}
 
 	let numCorners = 0;
 

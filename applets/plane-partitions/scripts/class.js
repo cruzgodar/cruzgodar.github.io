@@ -10,6 +10,7 @@ import {
 } from "./abConfigs.js";
 import { addCube, addFloor, addLeftWall, addRightWall } from "./addGeometry.js";
 import { godar1, godar1Inverse } from "./algorithms/godar1.js";
+import { godar2 } from "./algorithms/godar2.js";
 import { hillmanGrassl, hillmanGrasslInverse } from "./algorithms/hillmanGrassl.js";
 import { pak, pakInverse } from "./algorithms/pak.js";
 import { rsk, rskInverse } from "./algorithms/rsk.js";
@@ -420,6 +421,8 @@ export class PlanePartitions extends AnimationFrameApplet
 	godar1 = godar1;
 	godar1Inverse = godar1Inverse;
 
+	godar2 = godar2;
+
 	algorithmData = {
 		hillmanGrassl:
 		{
@@ -480,7 +483,13 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			method: this.godar1Inverse,
 			inputType: ["pp", "pp"]
-		}
+		},
+
+		godar2:
+		{
+			method: this.godar2,
+			inputType: ["pp"]
+		},
 	};
 
 	async beforeSwitchFullscreen()

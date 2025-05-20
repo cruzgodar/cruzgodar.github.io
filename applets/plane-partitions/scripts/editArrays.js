@@ -18,8 +18,6 @@ export async function addNewArray({
 
 	let updatingCamera = false;
 
-
-
 	const array = {
 		numbers,
 		cubes: [],

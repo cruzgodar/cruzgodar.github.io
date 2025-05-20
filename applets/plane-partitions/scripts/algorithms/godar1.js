@@ -52,8 +52,7 @@ export async function godar1(index)
 
 
 
-
-	// We're now clear to pull apart the negative RPP from the finite part.n
+	// We're now clear to pull apart the negative RPP from the finite part.
 
 
 

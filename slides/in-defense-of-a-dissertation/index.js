@@ -16,6 +16,7 @@ import { sulzgruberBuilds } from "./builds/sulzgruber.js";
 import { titleBuilds } from "./builds/title.js";
 import { togglesBuilds } from "./builds/toggles.js";
 import { toggles2Builds } from "./builds/toggles2.js";
+import { twoLegBijectionBuilds } from "./builds/twoLegBijection.js";
 import { zeroLegBuilds } from "./builds/zeroLeg.js";
 import { PlanePartitions } from "/applets/plane-partitions/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
@@ -59,6 +60,7 @@ const options =
 		"edgeSequences": edgeSequencesBuilds,
 		"app": appBuilds,
 		"oneLegBijection": oneLegBijectionBuilds,
+		"twoLegBijection": twoLegBijectionBuilds,
 
 		"hillman-grassl": hillmanGrasslBuilds,
 		"regions-example": regionsExampleBuilds,
