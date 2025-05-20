@@ -73,7 +73,7 @@ Much of the code implementing complex functions was contributed by <a href='http
 	
 	`float <strong>cabs</strong>([float | vec2] z)`: returns $|z|$, where e.g. $|3 + 4i| = 5$.
 	
-	`float <strong>cmag</strong>([float | vec2] z)`: returns $|z|^2$. Avoids taking a square root to compute $|z|$.
+	`float <strong>cmag2</strong>([float | vec2] z)`: returns $|z|^2$. Avoids taking a square root to compute $|z|$.
 	
 	`float <strong>carg</strong>([float | vec2] z)`: returns the principal argument of $z$, i.e. the angle in $(-\pi, \pi]$ that $z$ makes with the positive $x$-axis.
 	
