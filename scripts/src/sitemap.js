@@ -1942,7 +1942,9 @@ export const sitemap =
 		
 		"parent": "/debug",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/debug/htmdl-docs":

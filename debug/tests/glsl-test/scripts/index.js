@@ -1,9 +1,9 @@
 import { getGlslBundle, loadGlsl } from "../../../../scripts/src/complexGlsl.js";
 import { showPage } from "../../../../scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
-!async function()
+export default async function()
 {
 	"use strict";
 	
@@ -170,23 +170,7 @@ import { Wilson } from "/scripts/wilson.js";
 	
 	function unitTest(shader)
 	{
-		try
-		{
-			try
-			{
-				wilson.outputCanvasContainer.parentNode.remove();
-				
-				canvasLocationElement.insertAdjacentHTML("afterend", `
-					<canvas id="output-canvas" class="output-canvas"></canvas>
-				`);
-			}
-			
-			// eslint-disable-next-line no-unused-vars
-			catch(_ex) {}
-			
-			
-			
-			let shader = /* glsl */`
+			const wrappedShader = /* glsl */`
 				precision highp float;
 				
 				varying vec2 uv;
@@ -218,17 +202,14 @@ import { Wilson } from "/scripts/wilson.js";
 				}
 			`;
 			
-			let options =
+			const options =
 			{
-				renderer: "gpu",
-				
-				shader: shader,
+				shader,
 				
 				canvasWidth: 1,
-				canvasHeight: 1
 			};
 			
-			wilson = new Wilson($("#output-canvas"), options);
+			wilson = new WilsonGPU($("#output-canvas"), options);
 			
 			
 			
@@ -279,4 +260,4 @@ import { Wilson } from "/scripts/wilson.js";
 	
 	
 	showPage();
-}()
+}

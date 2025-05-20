@@ -43,6 +43,16 @@
 	border-radius: 10px;
 }
 
+#one-leg-rpp-image
+{
+	width: 70vw;
+}
+
+#two-leg-rpp-image
+{
+	width: 85vw;
+}
+
 @media (min-aspect-ratio: 152/89)
 {	
 	.regions-image
@@ -58,5 +68,15 @@
 	#entry-posets-image
 	{
 		width: calc(40 * var(--safe-vh) * 152 / 89);
+	}
+
+	#one-leg-rpp-image
+	{
+		width: calc(70 * var(--safe-vh) * 152 / 89);
+	}
+
+	#two-leg-rpp-image
+	{
+		width: calc(85 * var(--safe-vh) * 152 / 89);
 	}
 }

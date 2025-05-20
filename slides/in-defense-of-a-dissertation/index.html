@@ -479,7 +479,7 @@
 		<div>
 			<h1>Finishing the One-Leg Bijection</h1>
 
-			<p class="build"><strong>Thm (G.):</strong> There is a bijection between SPPs $\sigma$ of shape $(\emptyset, \emptyset, \lambda)$ and pairs $(\rho, \pi)$ of RPPs $\rho$ of $(\emptyset, \emptyset, \lambda)$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
+			<p class="build"><strong>Thm (G.):</strong> There is a bijection between SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ and pairs $(\rho, \pi)$ of RPPs $\rho$ of $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
 
 			<p class="build">We iteratively toggle the diagonals of $\sigma$ until there are no more nonzero entries in it (which only requires a finite number of toggles). The result is a hook-length weighted tableau of shape $\mathbb{N}^2 \setminus \lambda$, whose entries we distribute between tableaux of shape $\lambda$ and $\mathbb{N}^2$ while preserving hook length. We then untoggle those tableaux to produce $\rho$ and $\pi$.</p>
 		</div>
@@ -488,6 +488,84 @@
 
 		<div id="oneLegBijection" class="large-canvas">
 			<p>Ex: The complete one-leg bijection.</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Two-Leg Objects</h1>
+		</div>
+
+
+
+		<div>
+			<h1>Other Legs</h1>
+			
+			<p class="build">The notation $(\emptyset, \emptyset, \lambda)$ for SPPs of shape $\mathbb{N}^2 \setminus \lambda$ and RPPs of shape $\lambda$ suggests further generalizations, and this is the case.</p>
+
+			<p class="build">SPPs with more legs are direct generalizations of their one-leg counterparts when viewed as stacks of boxes, where we dent in all three edges of the room. Given partitions $\lambda$, $\mu$, and $\nu$, an SPP $\sigma$ of shape $(\lambda, \mu, \nu)$ is an SPP of shape $\mathbb{N}^2 \setminus \nu$ so that $\sigma(i, j) \geq \max\left\{ \lambda_j, \mu_i \right\}$ for all $(i, j)$. It has the appearance of boxes stacked in a room with dents in all three edges.</p>
+		</div>
+
+
+
+		<div id="app" class="large-canvas">
+			<p>Ex: A three-leg SPP. The weight-contributing boxes are darker gray.</p>
+		</div>
+
+
+
+		<div>
+			<h1>RPP Generalizations</h1>
+
+			<p class="build">Three-Leg RPPs are unfortunately <em>extremely</em> complicated &mdash; much more so than their one- or even two-leg counterparts.</p>
+
+			<p class="build">We instead focus only on two-leg RPPs of a specific shape: $(\lambda, \mu, \emptyset)$. They are generalizations of one-leg RPPs as we would expect, but we need to think of the one-leg ones in a different manner to understand how.</p>
+
+			<p class="build">Rather than treating the entries of a one-leg RPP as the number of boxes stacked on a Young diagram, our new interpretation is to treat them as the number of boxes <em>removed</em> from an infinite tower.</p>
+		</div>
+
+
+
+		<div>
+			<p>Ex: a one-leg RPP of shape $(4, 3, 1)$ and weight 19, visualized as 19 boxes removed from an infinite vertical tower.</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="one-leg-rpp-image" src="graphics/one-leg-rpp.png">
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Two-Leg RPPs</h1>
+
+			<p class="build">In this interpretation, the single leg is vertical, just like the single leg in SPPs of shape $\mathbb{N}^2 \setminus \lambda$, we remove boxesfrom it instead of adding them, and the resulting object satisfies the <em>regular</em> plane partition inequalities, not the reverse ones.</p>
+
+			<p class="build">A two-leg RPP of shape $(\lambda, \mu, \emptyset)$ is now exactly the analogue of this object with two intersecting horizontal legs instead of a single vertical one.</p>
+		</div>
+
+
+
+		<div>
+			<p>Ex: an RPP of weight 7 and shape $(\lambda, \mu, \emptyset)$ for $\lambda = (3, 1)$ and $\mu = (2, 2)$.</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="two-leg-rpp-image" src="graphics/two-leg-rpp.png">
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Two-Leg Vertex Operators</h1>
+
+			<div class="build">
+				<p>Two-leg SPPs and RPPs have very similar and clean vertex operator expansions:</p>
+				
+				<p style="text-align: center; transform: scale(0.9); margin-left: -5.5%">$\displaystyle V_{(\lambda, \mu, \emptyset)}(q) = \left< \mu \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \lambda \right>.$</p>
+
+				<p style="text-align: center; transform: scale(0.9); margin-left: -6%">$\displaystyle W_{(\lambda, \mu, \emptyset)}(q) = \left< \mu \left| \cdots \Gamma_+\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_-\left(q^{3/2}\right) \cdots \right|\, \lambda \right>.$</p>
+			</div>
 		</div>
 
 
@@ -503,13 +581,7 @@
 
 			<p class="build">The PT&ndash;DT correspondence holds in different and more general settings. Two-leg SPPs and RPPs are largely analogous to their one-leg counterparts, and our methods of bijectivizing the two-leg PT&ndash;DT correspondence extend with only moderate difficulty.</p>
 
-			<p class="build">Three-leg objects are substantively more complicated. Given partitions $\lambda$, $\mu$, and $\nu$, an SPP $\sigma$ of shape $(\lambda, \mu, \nu)$ is an SPP of shape $(\emptyset, \emptyset, \nu)$ so that $\sigma(i, j) \geq \max\left\{ \lambda_j, \mu_i \right\}$ for all $(i, j)$. It has the appearance of boxes stacked in a room with dents in all three edges.</p>
-		</div>
-
-
-
-		<div id="app" class="large-canvas">
-			<p>Ex: A three-leg SPP.</p>
+			<p class="build">Three-leg objects are substantively more complicated. Given partitions $\lambda$, $\mu$, and $\nu$, an SPP $\sigma$ of shape $(\lambda, \mu, \nu)$ is an SPP of shape $\mathbb{N}^2 \setminus \nu$ so that $\sigma(i, j) \geq \max \left\{ \lambda_j, \mu_i \right\}$ for all $(i, j)$.</p>
 		</div>
 
 
