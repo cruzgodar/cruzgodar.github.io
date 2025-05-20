@@ -231,6 +231,8 @@ export async function godar1(index)
 
 	const ppArray = await this.addNewArray({ index: index + 2, numbers: pp });
 
+	await sleep(this.animationTime * 2);
+
 
 
 	for (let i = 0; i < planePartition.length; i++)

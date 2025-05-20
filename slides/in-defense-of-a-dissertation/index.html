@@ -184,6 +184,16 @@
 
 
 
+		<div>
+			<h1>Other Bijections</h1>
+			
+			<p>In 2002, Igor Pak found a different bijection between SPPs/RPPs and multisets of hooks. In contrast to Hillman&ndash;Grassl, Pak&#x2019;s bijection operates on the level of diagonals rather than hooks. It performs a sequence of bijective local moves on diagonals of an SPP/RPP that change its shape and each produce one element of a hook-length-weighted tableau.</p>
+			
+			<p class="build">In 2017, Robin Sulzgruber found an equivalent formulation of Pak&#x2019;s bijection that operates on the level of hooks, analogously to $\operatorname{HG}$. We collectively refer to the map as $\operatorname{PS}$.</p>
+		</div>
+
+
+
 		<div class="title">
 			<h1 style="text-align: center">The One-Leg PT&ndash;DT Correspondence</h1>
 		</div>
@@ -239,15 +249,15 @@
 
 			<p class="build">We can use the notion of interlacing to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
 
-			<p class="build">We define a formal $\mathbb{Q}$-linear vector space $\Lambda$ whose basis consists of vectors $\ket{\lambda}$ for partitions $\lambda$, and denote the corresponding dual basis elements by $\bra{\lambda}$.</p>
-
-			<p class="build">We also define a <dfn>weighing operator</dfn> $Q$ by $Q(q)\,\ket{\lambda} = q^{|\lambda|}\,\ket{\lambda}$.</p>
+			<p class="build">We define a vector space $\Lambda$ over $\mathbb{Q}$ whose basis consists of vectors $\ket{\lambda}$ for partitions $\lambda$, and we denote the corresponding dual basis elements by $\bra{\lambda}$.</p>
 		</div>
 
 
 
 		<div>
-			<h1>Interlacing Operators</h1>
+			<h1>Weighing and Interlacing Operators</h1>
+
+			<p class="build">We define a <dfn>weighing operator</dfn> $Q$ by $Q(q)\,\ket{\lambda} = q^{|\lambda|}\,\ket{\lambda}$.</p>
 
 			<div class="build">
 				<p>The two main operators of interest are the <dfn>interlacing operators</dfn>, defined by</p>
@@ -256,8 +266,6 @@
 
 				<p style="text-align: center">$\displaystyle \Gamma_-(q)\,\ket{\lambda} = \sum_{\mu \prec \lambda}q^{|\lambda| - |\mu|}\,\ket{\mu}$.</p>
 			</div>
-
-			<p class="build">While the formula for $\Gamma_+$ nominally contains an infinite sum, we can avoid convergence issues in practice by adding $Q$ operators to produce a generating function.</p>
 		</div>
 
 
@@ -268,7 +276,7 @@
 			<div class="build">
 				<p>By using the interlacing operators, we can express the generating function for plane partitions whose nonzero entries are contained in an $N \times N$ box:</p>
 
-				<p style="text-align: center">$\displaystyle \left< \emptyset \right|\, \left( Q \Gamma_-(1) \right)^N Q\, \left( \Gamma_+(1) Q \right)^N \left| \emptyset \right>$</p>
+				<p style="text-align: center">$\displaystyle \left< \emptyset \left|\, \left( \vphantom{$^1$} Q(q) \Gamma_-(1) \right)^N\, Q(q)\, \left( \vphantom{$^1$} \Gamma_+(1) Q(q) \right)^N\, \right|\, \emptyset \right>$</p>
 			</div>
 
 			<p class="build">To convert this into a more useful formula, we need to commute the $Q$ and $\Gamma$ operators.</p>
@@ -355,7 +363,7 @@
 
 			<p style="text-align: center">$\displaystyle \Gamma_-(a)\Gamma_-(b) = \Gamma_-(b)\Gamma_-(a).$</p>
 
-			<p class="build"><strong>Prop (G.):</strong> In a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
+			<p class="build"><strong>Lemma (G.):</strong> In a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
 		</div>
 
 
