@@ -50,6 +50,7 @@ import {
 } from "./styleCubes.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
@@ -155,8 +156,13 @@ export class PlanePartitions extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			fullscreenOptions: {
-				animate: false,
-				closeWithEscape: false,
+				useFullscreenButton: this.useFullscreenButton,
+
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+				onSwitch: this.onSwitchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 			}
 		};
 
@@ -180,17 +186,13 @@ export class PlanePartitions extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
-				onSwitch: this.onSwitchFullscreen.bind(this),
-				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
-				useFullscreenButton: this.useFullscreenButton,
-
-				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+				animate: false,
+				closeWithEscape: false,
 			},
 		};
 
 		this.wilsonNumbers = new WilsonCPU(numbersCanvas, optionsNumbers);
-		this.wilsonForFullscreen = this.wilsonNumbers;
+		this.wilsonForFullscreen = this.wilson;
 
 		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 		
@@ -341,12 +343,30 @@ export class PlanePartitions extends AnimationFrameApplet
 	{
 		if (isFullscreen)
 		{
-			this.wilson.enterFullscreen();
+			this.wilsonNumbers.enterFullscreen();
+
+			const containers = document.querySelectorAll(".WILSON_canvas-container");
+
+			containers[0].appendChild(
+				document.querySelector(".WILSON_exit-fullscreen-button")
+			);
 		}
 
 		else
 		{
-			this.wilson.exitFullscreen();
+			this.wilsonNumbers.exitFullscreen();
+		}
+
+		if (this.in2dView)
+		{
+			setTimeout(() =>
+			{
+				changeOpacity({
+					element: this.wilsonNumbers.canvas,
+					opacity: 1,
+					duration: this.animationTime / 5
+				});
+			}, 300);
 		}
 
 		this.resume();
@@ -495,6 +515,15 @@ export class PlanePartitions extends AnimationFrameApplet
 	async beforeSwitchFullscreen()
 	{
 		this.pause();
+
+		if (this.in2dView)
+		{
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 5
+			});
+		}
 
 		await sleep(33);
 	}
