@@ -600,6 +600,12 @@ export class FractalSounds extends AnimationFrameApplet
 		if (isFullscreen)
 		{
 			this.wilson.enterFullscreen();
+
+			const containers = document.querySelectorAll(".WILSON_canvas-container");
+
+			containers[0].appendChild(
+				document.querySelector(".WILSON_exit-fullscreen-button")
+			);
 		}
 
 		else
