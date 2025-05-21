@@ -246,7 +246,7 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 
 		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (int iteration = 0; iteration < 56; iteration++)
+		for (int iteration = 0; iteration < 20; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
 			float t1 = dot(pos, n1${variableName});
