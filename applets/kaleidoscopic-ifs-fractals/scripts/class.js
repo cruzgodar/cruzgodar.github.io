@@ -5,6 +5,7 @@ import {
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { clamp } from "/scripts/src/utils.js";
 
 const ns = {
 	tetrahedron: [
@@ -135,7 +136,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		const uniforms = {
 			scale: 2,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
-			numIterations: 56
+			numIterations: 12
 		};
 
 		super({
@@ -155,6 +156,38 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		});
 
 		this.shape = shape;
+	}
+
+
+
+	drawFrame()
+	{
+		super.drawFrame();
+
+		const distance = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
+
+		// Interpolates from 0 at scale 2 to 3 at scale 1.125.
+		const scaleFactor = (1 / (this.uniforms.scale - 1) - 1) * 2 / 7;
+
+		const numIterations = clamp(
+			Math.floor(
+				12 - Math.log(distance) * 2
+			),
+			12,
+			24
+		)
+			+ Math.round(scaleFactor * 28);
+
+		if (this.uniforms.numIterations === numIterations)
+		{
+			return;
+		}
+
+		this.setUniforms({ numIterations });
 	}
 
 
