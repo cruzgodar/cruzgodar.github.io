@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Dissertation Defense</title>
+
+	<meta property="og:title" content="Dissertation Defense"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://cruzgodar.com/slides/in-defense-of-a-dissertation/"/>
+	<meta property="og:image" content="https://cruzgodar.com/slides/in-defense-of-a-dissertation/cover.webp"/>
+	<meta property="og:locale" content="en_US"/>
+	<meta property="og:site_name" content="Cruz Godar"/>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#181818">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" as="font">
+
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="/style/lapsa-light.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+	<div id="lapsa-slide-container">
+		<div id="title" class="medium-canvas">
+			<h1>Dissertation Defense</h1>
+			
+			<h2>Cruz Godar</h2>
+			
+			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+
+			<div id="canvas-bundle" style="opacity: 0">
+				<div>
+					<div style="position: absolute; width: 100%">
+						<canvas id="output-canvas"></canvas>
+					</div>
+					
+					<div id="numbers-canvas-container" style="width: 100%">
+						<canvas id="numbers-canvas" style="opacity: 0"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Background and History</h1>
+		</div>
+		
+		
+		
+		<div>
+			<h1>Partitions</h1>
+			
+			<p class="build">A <dfn>partition</dfn> of an integer $n$ is a sequence $(a_1, a_2, ... )$ of weakly decreasing nonnegative integers $a_i$ with $\sum_i a_i = n$.</p>
+			
+			<p class="build">Ex: $(5, 3, 2, 2, 1) = (5, 3, 2, 2, 1, 0, 0, ...)$ is a partition of $13$.</p>
+			
+			<p class="build">The <dfn>Young diagram</dfn> corresponding to a partition $(a_i)$ is the set $\{(i, j) \in \mathbb{N}^2 \mid 1 \leq j \leq a_i\}$. (We use the convention of $\mathbb{N} = \{1, 2, ... \}$).</p>
+			
+			<p class="build">Young diagrams are top-left-justified sets of squares in a grid, where $a_i$ is the length of row $i$. We freely identify partitions with their Young diagrams.</p>
+		</div>
+		
+		
+		
+		<div>
+			<h1>Asymptotic Young Diagrams</h1>
+			
+			<p class="build">A Young diagram <dfn>asymptotic</dfn> to a partition $\lambda$ is the collection of boxes $\mathbb{N}^2 \setminus \lambda$.</p>
+
+			<p class="build">The <dfn>hook</dfn> corresponding to a box in a Young diagram is the right-angled collection of all boxes directly below and to the right of it. The hook length $h(i, j)$ of a box is the total number of boxes in its hook, and the corner box $(i, j)$ is called the <dfn>pivot</dfn> of the hook.</p>
+
+			<p class="build">In an asymptotic Young diagram, hooks extend up and left (i.e. always toward the boundary).</p>
+		</div>
+
+
+
+		<div id="hooks" class="large-canvas">
+			<p>Ex: the Young diagram of $(4, 3, 3, 2)$ and the hook with pivot $(2, 1)$. The hook length is $h(2, 1) = 5$.</p>
+		</div>
+
+		<div id="hooks2" class="large-canvas">
+			<p>Ex: the Young diagram asymptotic to $(4, 3, 3, 2)$ and the hook with pivot $(4, 5)$. The hook length is $h(4, 5) = 6$.</p>
+		</div>
+
+
+		
+		<div>
+			<h1>Plane Partitions</h1>
+			
+			<p class="build">A <dfn>reverse plane partition (or RPP)</dfn> is a placement of nonnegative integers into a Young diagram, such that the rows and columns weakly increase.</p>
+
+			<p class="build">A <dfn>skew plane partition (or SPP)</dfn> is identical, but we place nonnegative integers into an asymptotic Young diagram $\mathbb{N}^2 \setminus \lambda$ that weakly decrease along rows and columns. When $\lambda = \emptyset$, we just call the object a <dfn>plane partition</dfn>.</p>
+			
+			<p class="build">The <dfn>weight</dfn> of an RPP or SPP $\pi$, written $|\pi|$, is the sum of its entries.</p>
+		</div>
+		
+		
+		
+		<div id="plane-partition-example" class="large-canvas">
+			<p>Ex: a plane partition of weight $33$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>An RPP Generating Function</h1>
+			
+			<p class="build">A famous result (due to Stanley in his Ph.D. thesis) expresses the generating function for RPPs of shape $\lambda$:</p>
+
+			<div class="build">
+				<p style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\rho q^{|\rho|} = \prod_{\square \in \lambda} \frac{1}{1 - q^{h(\square)}},$</p>
+			
+				<p>where the sum is taken over all RPPs $\rho$ of shape $\lambda$.</p>
+			</div>
+
+			<p class="build">Combinatorially, RPPs of shape $\lambda$ are in bijection with hook-length-weighted tableaux of shape $\lambda$.</p>
+		</div>
+
+		<div>
+			<h1>An SPP Generating Function</h1>
+			
+			<p class="build">An identical result holds for SPPs (recall that hook length for these is measured up and left instead of down and right):</p>
+
+			<p class="build" style="text-align: center"><strong>Thm:</strong> $\displaystyle \sum_\sigma q^{|\sigma|} = \prod_{\square \in \mathbb{N}^2 \setminus \lambda} \frac{1}{1 - q^{h(\square)}}.$</p>
+		
+			<p class="build">This result is most famously presented as a formula for <dfn>MacMahon's generating function</dfn> $M(q)$ for plane partitions:</p>
+
+			<p class="build" style="text-align: center">$\displaystyle M(q) = \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}} = \prod_{n \in \mathbb{N}} \left( \frac{1}{1 - q^n} \right)^n.$</p>
+		</div>
+		
+		
+		
+		<div>
+			<h1>Hillman&ndash;Grassl</h1>
+
+			<div class="build">
+				<p>The first bijective proof of these formulas is due to Hillman and Grassl in 1975. Given a multi-set of hooks, it is not possible to place them all down unmodified to construct an plane partition: for example, including just the hook with pivot $(2, 2)$ makes the tableau (but invalid plane partition)</p>
+				
+				<p style="text-align: center">$\begin{array}{cc} 0 & 1 \\ 1 & 1 \end{array}$</p>
+			</div>
+			
+			<p class="build">Instead, each hook is reshaped in an invertible manner before it is placed down. We denote their map $\operatorname{HG}$ and can view it operating on a plane partition.</p>
+		</div>
+
+
+
+		<div id="hillman-grassl" class="full-square-canvas"></div>
+		
+		
+		
+		<div>
+			<h1>Pak&ndash;Sulzgruber</h1>
+			
+			<p>In 2002, Igor Pak introduced a different bijection. In contrast to $\operatorname{HG}$, it operates on the level of diagonals rather than hooks.</p>
+
+			<p class="build">Pak's bijection performs a sequence of invertible local moves on diagonals of an SPP/RPP that change its shape and each produce one element of a hook-length-weighted tableau.</p>
+			
+			<p class="build">In 2017, Robin Sulzgruber found an equivalent formulation of this bijection that operates on the level of hooks, analogously to $\operatorname{HG}$. We collectively refer to the map as $\operatorname{PS}$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Other Bijections</h1>
+			
+			<p>Garver and Patrias introduced a universal formulation of both $\operatorname{HG}$ and $\operatorname{PS}$: given an ordering $\mathcal{O}$ of the boxes of a Young diagram $\lambda$ and a set of distinct labels $\mathcal{L}$, they produce an algorithm $\operatorname{GP}^\mathcal{O}_\mathcal{L}$ that is sometimes a well-defined bijection, and coincides with $\operatorname{HG}$ and $\operatorname{PS}$ for particular choices of $\mathcal{O}$ and $\mathcal{L}$.</p>
+			
+			<p class="build">The question of other possible bijections for choices of $\mathcal{O}$ and $\mathcal{L}$ remained open; we resolved it using integer programming for $3 \times 3$ tableau. Out of $9!^2 \approx 131$ billion possible algorithms, only 192 are well-defined bijections, and there are only 8 distinct maps.</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">The One-Leg PT&ndash;DT Correspondence</h1>
+		</div>
+
+
+
+		<div>
+			<h1>The PT&ndash;DT Correspondence</h1>
+			
+			<p class="build">RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$ are used to compute the Calabi&ndash;Yau topological vertex in Pandharipande&ndash;Thomas (PT) theory and Donaldson&ndash;Thomas (DT) theory.</p>
+
+			<div class="build">
+				<p>Let $W_{(\emptyset, \emptyset, \lambda)}(q)$ and $V_{(\emptyset, \emptyset, \lambda)}(q)$ be the generating functions for RPPs of shape $\lambda$ and SPPs of shape $\mathbb{N}^2 \setminus \lambda$, respectively, and let $M(q) = V_{(\emptyset, \emptyset, \emptyset)}(q)$ be MacMahon's function. Then</p>
+
+				<p style="text-align: center"><strong>Thm:</strong> $\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = W_{(\emptyset, \emptyset, \lambda)}(q)M(q)$,</p>
+			</div>
+
+			<p class="build">i.e. SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ correspond to pairs $(\rho, \pi)$ of RPPs $\rho$ of shape $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>One-Leg Objects</h1>
+			
+			<p class="build">This theorem was stated in the PT paper; we supply omitted details and bijectivize it.</p>
+
+			<p class="build">Due to only one partition being nonempty in the tuple $(\emptyset, \emptyset, \lambda)$, the RPPs and SPPs we have defined so far are called <dfn>one-leg objects</dfn>.</p>
+
+			<p class="build">Our approach to bijectivizing the one-leg (and two-leg) correspondences is to bijectivize local moves that we iterate to decompose both RPPs and SPPs into more malleable objects.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Interlacing</h1>
+			
+			<p class="build">While the rows and columns of RPPs and SPPs contain valuable information, the <em>diagonals</em> of both turn out to be much more useful.</p>
+			
+			<p class="build">Given partitions $\lambda$ and $\mu$, we say $\lambda$ <dfn>interlaces</dfn> $\mu$, written $\lambda \succ \mu$, if $\lambda_1 \geq \mu_1 \geq \lambda_2 \geq \mu_2 \geq \cdots$.</p>
+
+			<p class="build">In other words, $\lambda$ and $\mu$ satisfy the plane partition inequalities when placed next to one another as diagonal slices with $\lambda$ coming first.</p>
+		</div>
+
+
+
+		<div id="interlacing" class="large-canvas">
+			<p>Ex: $(5, 3, 1, 1) \succ (3, 2, 1) \succ (3, 2)$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Vertex Operators</h1>
+
+			<p class="build">We can use the interlacing relation to build the generating functions for RPPs and SPPs diagonal by diagonal.</p>
+
+			<p class="build">We define a vector space $\Lambda$ over $\mathbb{Q}$ whose basis consists of vectors $\ket{\lambda}$ for partitions $\lambda$, and we denote the corresponding dual basis elements by $\bra{\lambda}$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Weighing and Interlacing Operators</h1>
+
+			<p class="build">We define a <dfn>weighing operator</dfn> $Q$ by $Q(q)\,\ket{\lambda} = q^{|\lambda|}\,\ket{\lambda}$.</p>
+
+			<div class="build">
+				<p>The two main operators of interest are the <dfn>interlacing operators</dfn>, defined by</p>
+
+				<p style="text-align: center">$\displaystyle \Gamma_+(q)\,\ket{\lambda} = \sum_{\mu \succ \lambda}q^{|\mu| - |\lambda|}\,\ket{\mu}$</p>
+
+				<p style="text-align: center">$\displaystyle \Gamma_-(q)\,\ket{\lambda} = \sum_{\mu \prec \lambda}q^{|\lambda| - |\mu|}\,\ket{\mu}$.</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>A Generating Function for Plane Partitions</h1>
+
+			<div class="build">
+				<p>Now the generating function for plane partitions whose nonzero entries are contained in an $N \times N$ box is</p>
+
+				<p style="text-align: center">$\displaystyle \left< \emptyset \left|\, \left( \vphantom{$^1$} Q(q) \Gamma_-(1) \right)^N\, Q(q)\, \left( \vphantom{$^1$} \Gamma_+(1) Q(q) \right)^N\, \right|\, \emptyset \right>$</p>
+			</div>
+
+			<p class="build">To convert this into a more useful formula, we need to commute the $Q$ and $\Gamma$ operators.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Commutation Relations</h1>
+
+			<div class="build">
+				<p>The $\Gamma$ and $Q$ operators have a simple commutation relation (weighing a slice before or after making it bigger/smaller):</p>
+
+				<p style="text-align: center">$\displaystyle Q(q) \Gamma_+(a) = \Gamma_+(qa) Q(q)$</p>
+
+				<p style="text-align: center">$\displaystyle \Gamma_-(a) Q(q) = Q(q) \Gamma_-(qa)$.</p>
+			</div>
+
+			<div class="build">
+				<p>By splitting the middle $Q$ into $Q^{\frac{1}{2}}Q^{\frac{1}{2}}$ and commuting all the $Q$s outward, where they annihilate against the $\bra{\emptyset}$ and $\ket{\emptyset}$, we find that the previous generating function is</p>
+
+				<p style="text-align: center; transform: scale(0.8); margin-left: -9%">$\displaystyle \left< \emptyset \left|\, \Gamma_-\left( q^{\frac{2N - 1}{2}} \right) \cdots \Gamma_-\left( q^{\frac{3}{2}} \right) \Gamma_-\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{1}{2}} \right) \Gamma_+\left( q^{\frac{3}{2}} \right) \cdots \Gamma_+\left( q^{\frac{2N - 1}{2}} \right)\right|\, \emptyset \right>.$</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Toggles</h1>
+
+			<p class="build">Given partitions $\lambda$ and $\mu$, the set of partitions $\nu$ with $\lambda \succ \nu \succ \mu$ is a poset product of intervals.</p>
+
+			<div class="build">
+				<p>The involution on this poset given by reversing each interval is called a <dfn>toggle</dfn> and was introduced independently by multiple sources. The explicit formula $T(\nu)$ is given by</p>
+
+				<p style="text-align: center">$\displaystyle T(\nu)_i = \min\left\{ \lambda_i, \mu_{i - 1} \right\} + \max\left\{ \lambda_{i + 1}, \mu_i \right\} - \nu_i$,</p>
+
+				<p>where we take $\mu_0 = \infty$.</p>
+			</div>
+		</div>
+
+		<div id="toggles" class="large-canvas">
+			<p>Ex: with $(5, 3, 1, 1) \succ (3, 2, 1) \succ (3, 2)$, we can toggle the middle partition relative to the other two.</p>
+		</div>
+
+
+
+		<div>
+			<h1>More Toggles</h1>
+			
+			<p class="build">More broadly, we define the toggle of $\nu$ when it has any interlacing relationship with $\lambda$ and $\mu$.</p>
+
+			<p class="build">When $\lambda \prec \nu \succ \mu$, we need to handle $\nu_1$ differently, since its poset of possible entries is unbounded above. We instead &#x201C;pop off&#x201D; the value $\nu_1 - \max\left\{ \lambda_1, \mu_1 \right\}$ in addition to producing the toggled partition $T(\nu)$, which then satisfies $\lambda \succ T(\nu) \prec \mu$.</p>
+
+			<p class="build">Similarly, if $\lambda \succ \nu \prec \mu$, then the toggle map takes in both $\nu$ and a nonnegative integer $n$ to produce a partition $T(\nu, n)$, where $T(\nu, n)_1 = n + \max\left\{ \lambda_1, \mu_1 \right\}$. This new partition then satisfies $\lambda \prec T(\nu, n) \succ \mu$.</p>
+		</div>
+
+		<div id="toggles2" class="large-canvas">
+			<p>Ex: the toggle of $(5, 3, 1, 1)$ relative to $(4, 2, 1)$ and $(3, 2, 1)$. The value of $1$ is popped off in the toggle.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Bijectivizing $\Gamma$ Commutation</h1>
+			
+			<div class="build">
+				<p>Let $\lambda$ and $\mu$ be partitions. Then there is a bijection between partitions $\nu$ with $\mu \prec \nu \succ \lambda$ and pairs $(\nu', n)$ of partitions $\nu'$ with $\mu \succ \nu' \prec \lambda$ and nonnegative integers $n$, given by toggling $\nu$ with respect to $\lambda$ and $\mu$. Moreover, the bijection preserves weight in the following manner:</p>
+			
+				<p style="text-align: center">$|\nu| - |\lambda| = |\lambda| - |T(\nu)| + n$</p>
+
+				<p style="text-align: center">$|\nu| - |\mu| = |\mu| - |T(\nu)| + n$,</p>
+
+				<p>where $n$ is the entry popped off in the toggle. An analogous result (without a number popped off) holds if $\mu \prec \nu \prec \lambda$.</p>
+			</div>
+		</div>
+
+		<div>
+			<p>This proposition bijectivizes the following established commutation relations for $\Gamma$ operators:</p>
+		
+			<p style="text-align: center">$\displaystyle \bra{\mu}\, \Gamma_-(a)\Gamma_+(b)\, \ket{\lambda} = \frac{1}{1 - ab}\bra{\mu}\, \Gamma_+(b)\Gamma_-(a)\, \ket{\lambda}$</p>
+
+			<p style="text-align: center">$\displaystyle \bra{\mu}\, \Gamma_+(a)\Gamma_+(b) \, \ket{\lambda} = \bra{\mu}\, \Gamma_+(b)\Gamma_+(a)\, \ket{\lambda}$</p>
+
+			<p style="text-align: center">$\displaystyle \bra{\mu}\, \Gamma_-(a)\Gamma_-(b) \, \ket{\lambda} = \bra{\mu}\, \Gamma_-(b)\Gamma_-(a)\, \ket{\lambda}$</p>
+
+			<p class="build"><strong>Lemma (G.):</strong> In a generating function $z_1(q)$ equal to a product of $\Gamma$ operators, commuting any two adjacent operators in $z_1$ results in a generating function $z_2$ that counts objects given by toggling the corresponding diagonal of the objects counted by $z_1$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Producing $M(q)$</h1>
+			
+			<div class="build">
+				<p>Beginning with our vertex operator formula for plane partitions in an $N \times N$ box, we may limit $N \to \infty$ to produce MacMahon's function:</p>
+			
+				<p style="text-align: center; transform: scale(0.9); margin-left: -2.25%">$\displaystyle M(q) = \left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
+			</div>
+
+			<div class="build">
+				<p>We may then commute the middle two $\Gamma$ operators to produce</p>
+			
+				<p style="text-align: center; transform: scale(0.85); margin-left: -6.5%">$\displaystyle M(q) = \frac{1}{1 - q}\left< \emptyset \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \emptyset \right>.$</p>
+			</div>
+		</div>
+
+		<div>
+			<p>This corresponds to toggling the main diagonal of the plane partitions counted by $M(q)$ and recording the popped number separately.
+
+			<div class="build">
+				<p>Each commutation produces a factor of $\left( 1 - q^{h(\square)} \right)^{-1}$, where $h(\square)$ is the hook length of the box popped off in the corresponding toggle. After all possible commutations, the result is the familiar expression</p>
+
+				<p style="text-align: center">$\displaystyle M(q) = \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}}.$</p>
+			</div>
+		</div>
+
+		<div id="zeroLeg" class="large-canvas">
+			<p>Ex: Decomposing a plane partition $\pi$ into a hook-length-weighted tableau via iterated toggling (in reading order).</p>
+		</div>
+
+
+
+		<div>
+			<p>The result is a weight-preserving bijection $\tau$ from plane partitions to hook-length-weighted tableaux, which is functionally identical to Pak's description of $\operatorname{PS}$.</p>
+
+			<p class="build">What is new with this presentation is a more clear explanation of why it is independent of the order of toggles, as well as the ability to extend to generalizations of plane partitions.</p>
+
+			<p class="build">Extending the bijection $\tau$ to accept SPPs requires first expressing their generating function $V_{(\emptyset, \emptyset, \lambda)}$ in terms of vertex operators.</p>
+		</div>
+
+
+
+		<div class="large-canvas">
+			<p>Ex: with $\lambda = (4, 2, 1)$, $V_{(\emptyset, \emptyset, \lambda)}(q)$ is equal to</p>
+
+			<p style="transform: scale(0.605); margin-left: -20.5%; margin-top: -2%;">$\left< \emptyset \left| \,\cdots\Gamma_-\left( q^{\frac{7}{2}} \right)\Gamma_+\left( q^{-\frac{5}{2}} \right)\Gamma_-\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{-\frac{1}{2}} \right)\Gamma_-\left( q^{-\frac{1}{2}} \right)\Gamma_+\left( q^{\frac{3}{2}} \right)\Gamma_+\left( q^{\frac{5}{2}} \right)\Gamma_-\left( q^{-\frac{7}{2}} \right)\Gamma_+\left( q^{\frac{9}{2}} \right)\cdots\, \right|\,\emptyset\right>.$</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="edge-signs-image" src="graphics/edgeSigns.png">
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Vertex Operators for SPPs</h1>
+
+			<p class="build">When $\lambda \neq \emptyset$, the vertex operator expansion of $V_{(\emptyset, \emptyset, \lambda)}$ contains $\Gamma_-$ operators to the right of the middle $Q$ operators and $\Gamma_+$ operators to the left.</p>
+
+			<p class="build">Commuting every $Q$ to the outside still works, but now the out of place $\Gamma$s have negative exponents.</p>
+
+			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a partition and $(i, j) \in \mathbb{N}^2 \setminus \lambda$. If the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$ at edges corresponding to $\Gamma_-\left( q^k \right)$ and $\Gamma_+\left( q^l \right)$, then $h(i, j) = k + l$.</p>
+		</div>
+
+
+
+		
+
+
+
+		<div>
+			<p>Ex: hook lengths as sums of $p_\lambda(n)$.</p>
+
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="hook-length-sums-image" src="graphics/hook-length-sums.png">
+			</div>
+		</div>
+
+		
+
+		<div>
+			<h1>One-Leg Bijections</h1>
+
+			<p class="build">This lets us extend $\tau$ to RPPs and SPPs; it outputs a hook-length-weighted tableau of the same shape. The result is a bijective proof of the existing results</p>
+
+			<p class="build" style="text-align: center; transform: scale(0.9)">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \prod_{\square \in \mathbb{N}^2 \setminus \lambda} \frac{1}{1 - q^{h(\square)}}, \quad W_{(\emptyset, \emptyset, \lambda)}(q) = \prod_{\square \in \lambda} \frac{1}{1 - q^{h(\square)}}.$</p>
+		</div>
+
+
+
+		<div>
+			<div>
+				<p>What remains is to bijectivize the one-leg PT&ndash;DT correspondence</p>
+			
+				<p style="text-align: center">$\displaystyle \prod_{\square \in \mathbb{N}^2 \setminus \lambda} \frac{1}{1 - q^{h(\square)}} = \left( \prod_{\square \in \lambda} \frac{1}{1 - q^{h(\square)}} \right) \left( \prod_{\square \in \mathbb{N}^2} \frac{1}{1 - q^{h(\square)}} \right)$.</p>
+			</div>
+
+			<p class="build">Delightfully, this is true on the level of hooks: for any Young diagram $\lambda$ and any $n \in \mathbb{N}$, there are exactly $n$ distinct $n$-hooks in $\mathbb{N}^2$, and if there are $k$ distinct $n$-hooks in $\lambda$, then there are $n + k$ distinct $n$-hooks in $\mathbb{N}^2 \setminus \lambda$, and they are in bijection nearly-canonically. (This is an established result via $n$-quotients &mdash; we omit it here for brevity).</p>
+		</div>
+
+
+
+		<div>
+			<h1>Finishing the One-Leg Bijection</h1>
+
+			<p class="build"><strong>Thm (G.):</strong> There is a bijection between SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ and pairs $(\rho, \pi)$ of RPPs $\rho$ of $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
+
+			<p class="build">We iteratively toggle the diagonals of $\sigma$ until there are no more nonzero entries in it (which only requires a finite number of toggles). The result is a hook-length weighted tableau of shape $\mathbb{N}^2 \setminus \lambda$, whose entries we distribute between tableaux of shape $\lambda$ and $\mathbb{N}^2$ while preserving hook length. We then untoggle those tableaux to produce $\rho$ and $\pi$.</p>
+		</div>
+
+
+
+		<div id="oneLegBijection" class="large-canvas">
+			<p>Ex: the complete one-leg bijection.</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Two-Leg Objects</h1>
+		</div>
+
+
+
+		<div>
+			<h1>Other Legs</h1>
+			
+			<p class="build">The notation $(\emptyset, \emptyset, \lambda)$ for SPPs of shape $\mathbb{N}^2 \setminus \lambda$ and RPPs of shape $\lambda$ suggests further generalizations, and this is the case.</p>
+
+			<p class="build">SPPs with more legs are direct generalizations of their one-leg counterparts when viewed as stacks of boxes. Given partitions $\lambda,$ $\mu,$ and $\nu$, an SPP $\sigma$ of shape $(\lambda, \mu, \nu)$ has the appearance of boxes stacked in a room with dents in all three edges.</p>
+		</div>
+
+
+
+		<div id="app" class="large-canvas">
+			<p>Ex: a three-leg SPP. The weight-contributing boxes are darker gray.</p>
+		</div>
+
+
+
+		<div>
+			<h1>RPP Generalizations</h1>
+
+			<p class="build">Three-leg RPPs are unfortunately <em>extremely</em> complicated &mdash; much more so than their one- or even two-leg counterparts.</p>
+
+			<p class="build">We instead focus only on two-leg RPPs of a specific shape: $(\lambda, \mu, \emptyset)$.</p>
+
+			<p class="build">Rather than treating the entries of a one-leg RPP as the number of boxes stacked on a Young diagram, a generalizable interpretation is to treat them as the number of boxes <em>removed</em> from an infinite tower.</p>
+		</div>
+
+
+
+		<div>
+			<p>Ex: a one-leg RPP of shape $(4, 3, 1)$ and weight 19, visualized as 19 boxes removed from an infinite vertical tower.</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="one-leg-rpp-image" src="graphics/one-leg-rpp.png">
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Two-Leg RPPs</h1>
+
+			<p class="build">In this interpretation, the single leg is vertical, we remove boxes from it instead of adding them, and the resulting object satisfies the <em>regular</em> plane partition inequalities, not the reverse ones.</p>
+
+			<p class="build">A two-leg RPP of shape $(\lambda, \mu, \emptyset)$ is now exactly the analogue of this object with two intersecting horizontal legs instead of a single vertical one.</p>
+		</div>
+
+
+
+		<div>
+			<p>Ex: an RPP of weight 7 and shape $(\lambda, \mu, \emptyset)$ for $\lambda = (3, 1)$ and $\mu = (2, 2)$.</p>
+			
+			<div style="display: flex; justify-content: center; width: 100%">
+				<img id="two-leg-rpp-image" src="graphics/two-leg-rpp.png">
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Two-Leg Vertex Operators</h1>
+
+			<div class="build">
+				<p>Two-leg SPPs and RPPs have very similar and clean vertex operator expansions:</p>
+				
+				<p style="text-align: center; transform: scale(0.9); margin-left: -5.5%">$\displaystyle V_{(\lambda, \mu, \emptyset)}(q) = \left< \mu \left| \cdots \Gamma_-\left(q^{3/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_+\left(q^{3/2}\right) \cdots \right|\, \lambda \right>.$</p>
+
+				<p style="text-align: center; transform: scale(0.9); margin-left: -6%">$\displaystyle W_{(\lambda, \mu, \emptyset)}(q) = \left< \mu \left| \cdots \Gamma_+\left(q^{3/2}\right) \Gamma_+\left(q^{1/2}\right) \Gamma_-\left(q^{1/2}\right) \Gamma_-\left(q^{3/2}\right) \cdots \right|\, \lambda \right>.$</p>
+			</div>
+
+			<p class="build">We can produce $W$ from $V$ by commuting every $\Gamma_+$ past every $\Gamma_-$ as before, but <em>also</em> inverting the order of the same-sign $\Gamma$ operators relative to one another.
+		</div>
+
+
+
+		<div>
+			<h1>Bijectivization Difficulty</h1>
+
+			<p class="build">Given an SPP $\sigma$, we toggle its diagonals until we only pop off zeros. However, this time there is an RPP-like remnant effectively at infinity. To convert it into a two-leg RPP, we &#x201C;palindromically&#x201D; commute the same-sign $\Gamma$ operators.</p>
+			
+			<p class="build">The challenges with this bijection arise in showing it is well-defined. While only finitely many steps are required for any specific SPP, there was substantial work involved in showing that that remains true for a map defined on <em>all</em> SPPs.</p>
+		</div>
+
+
+
+		<div id="twoLegBijection" class="large-canvas">
+			<p>Ex: the complete two-leg bijection.</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Thank You!</h1>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Questions?</h1>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Edge Sign Sequences (Bonus)</h1>
+		</div>
+
+
+
+		<div>
+			<h1>Edge Sequences</h1>
+
+			<p class="build">For a partition $\lambda$, we introduce the doubly-infinite <dfn>edge sign sequence</dfn> $e_\lambda(n)$ and <dfn>edge power sequence</dfn> $p_\lambda(n)$ for the edges of the boundary of $\mathbb{N}^2 \setminus \lambda$, labeled with integers from bottom-left to top right so that the main diagonal has edges with labels $-1$ and $0$.</p>
+
+			<p class="build">$e_\lambda(n)$ is $1$ if the edge labeled $n$ is horizontal and $-1$ if it is horizontal.</p>
+
+			<p class="build">$p_\lambda(n) = \begin{cases} \left| n + \frac{1}{2} \right|, & e_\lambda(n) = \operatorname{sign}\left(n + \frac{1}{2}\right) \\ - \left| n + \frac{1}{2} \right|, & e_\lambda(n) \neq \operatorname{sign}\left(n + \frac{1}{2}\right) \end{cases}$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>A Generating Function for SPPs</h1>
+
+			<div class="build">
+				<p>We use these sequences to produce the expression</p>
+			
+				<p style="text-align: center">$\displaystyle V_{(\emptyset, \emptyset, \lambda)}(q) = \left< \emptyset \left| \,\prod_{n \in \mathbb{Z}} \Gamma_{e(n)}\left(q^{p(n)}\right)\, \right|\,\emptyset\right>$.</p>
+			</div>
+		</div>
+
+
+
+		<div>
+			<h1>Producing $V_{(\emptyset, \emptyset, \lambda)}(q)$</h1>
+
+			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a Young diagram. If $(i, j) \in \mathbb{N}^2 \setminus \lambda$ and $k$ and $l$ are the labels of the edges where the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$, then $h(i, j) = p_\lambda(k) + p_\lambda(l)$.</p>
+
+			<p class="build">Similarly, if $(i, j) \in \lambda$, then $h(i, j) = -\left( p_\lambda(k) + p_\lambda(l) \right)$.</p>
+
+			<p class="build">This theorem guarantees that when we commute the $\Gamma$ operators in the expression for $V_{(\emptyset, \emptyset, \lambda)}(q)$, each factor we produce is exactly $\left( 1 - q^{h(\square)} \right)^{-1}$, where $\square$ is the box we pop off in the corresponding toggle.</p>
+		</div>
+
+
+
+		<div class="title">
+			<h1 style="text-align: center">Three-Leg Objects (Bonus)</h1>
+		</div>
+
+
+
+		<div>
+			<h1>More Legs</h1>
+
+			<p class="build">The PT&ndash;DT correspondence holds in different and more general settings. Two-leg SPPs and RPPs are largely analogous to their one-leg counterparts, and our methods of bijectivizing the two-leg PT&ndash;DT correspondence extend with only moderate difficulty.</p>
+
+			<p class="build">Three-leg objects are substantively more complicated. Given partitions $\lambda$, $\mu$, and $\nu$, an SPP $\sigma$ of shape $(\lambda, \mu, \nu)$ is an SPP of shape $\mathbb{N}^2 \setminus \nu$ so that $\sigma(i, j) \geq \max \left\{ \lambda_j, \mu_i \right\}$ for all $(i, j)$.</p>
+		</div>
+
+
+
+		<div>
+			<h1>Three-Leg RPPs</h1>
+
+			<p class="build">Three-leg RPPs are much more complicated than their one- or even two-leg counterparts. Rather than thinking of the entries of one-leg RPPs as the number of boxes stacked on a Young diagram, a more generalizable interpretation is to treat them as the number of boxes <em>removed</em> from an infinite tower.</p>
+
+			<p class="build">Generalizing this interpretation, a three-leg RPP of shape $(\lambda, \mu, \nu)$ is an object in which we remove boxes from cylindrical legs of shape $\lambda$, $\mu$, and $\nu$, including their two- and three-way intersections.</p>
+		</div>
+
+		<div>
+			<p>Ex: the minimal-weight RPP of shape $(\lambda, \mu, \nu)$ for $\lambda = (3, 2)$, $\mu = (2, 1, 1)$, and $\nu = (4, 2, 1)$, colored by region.</p>
+
+			<div class="lapsa-padding-bottom" style="display: flex; justify-content: space-between">
+				<img class="regions-image" src="graphics/regions1and3.png">
+				<img class="regions-image" src="graphics/allRegions.png">
+				<img class="regions-image" src="graphics/regions2and3.png">
+			</div>
+
+			<p class="build">We denote the set of orange boxes as $\operatorname{I}$, the set of yellow (i.e. two-way intersection) boxes as $\operatorname{II}$, and the set of purple (i.e. three-way intersection) boxes as $\operatorname{III}$.</p>
+		</div>
+
+		<div>
+			<h1>RPP Regions</h1>
+
+			<p class="build">We write $\operatorname{I} = \operatorname{I}_1 \sqcup \operatorname{I}_2 \sqcup \operatorname{I}_3$, where $\operatorname{I}_1$, $\operatorname{I}_2$, and $\operatorname{I}_3$ are the sets of boxes in the legs corresponding to $\lambda$, $\mu$, and $\nu$, respectively. Similarly, $\operatorname{II} = \operatorname{II}_{\overline{1}} \sqcup \operatorname{II}_{\overline{2}} \sqcup \operatorname{II}_{\overline{3}}$, where $\operatorname{II}_{\overline{1}}$, $\operatorname{II}_{\overline{2}}$, and $\operatorname{II}_{\overline{3}}$ are the sets of two-way intersection boxes <em>not</em> from the legs corresponding to $\lambda$, $\mu$, and $\nu$, respectively.</p>
+
+			<p class="build">We then define a three-leg RPP as a pair $\rho = (A, B)$, where $A \subseteq \operatorname{I} \cup \operatorname{III}$ and $B \subseteq \operatorname{II} \cup \operatorname{III}$ and both satisfy the plane partition inequalities.</p>
+		</div>
+
+		<div>
+			<h1>The Labeling Condition</h1>
+
+			<div class="build">
+				<p>However, $A$ and $B$ must satisfy a further global condition: if boxes in $\operatorname{I}_i \cup \operatorname{II}_{\overline{i}}$ are labeled $i$, then all connected components of</p>
+			
+				<p style="text-align: center">$(\operatorname{I} \setminus A) \cup (\operatorname{II} \cap B) \cup (\operatorname{III} \cap (A \triangle B))$</p>
+
+				<p>can contain no more than one distinct label each.</p>
+			</div>
+
+			<p class="build">The weight of $\rho = (A, B)$ is the total number of boxes removed from both $A$ and $B$; note that since region $\operatorname{III}$ is present in both, its boxes can be present with multiplicity 2. This notion of a labeled $AB$ configuration was introduced by Jenne, Webb, and Young, who were also the first to prove the three-leg PT&ndash;DT correspondence.</p>
+		</div>
+
+		<div>
+			<h1>Three-Leg Challenges</h1>
+
+			<p class="build">Extending the bijectivization methods of the one- and two-leg cases to the three-leg one is immediately more difficult: three-leg RPPs do not naturally admit a vertex operator expression at all.</p>
+
+			<p class="build">In the hopes of producing one via a toggle-like operation, however, we investigated the entry posets of specific boxes of three-leg RPPs.</p>
+		</div>
+
+		<div>
+			<p>Ex: a three-leg RPP and the posets of valid values $(a,b)$ for its outer corners.</p>
+
+			<div class="lapsa-padding-bottom" style="display: flex; justify-content: space-between; align-items: center">
+				<img id="rpp-example-image" src="graphics/exampleRpp.png">
+				<img id="entry-posets-image" src="graphics/entryPosets.png">
+			</div>
+		</div>
+
+		<div>
+			<h1>Three-Leg Results</h1>
+
+			<p class="build"><strong>Thm (G.):</strong> All outer corners' entry posets have this right-angled shape.</p>
+
+			<p class="build">However, the height of the left part of the angle may not equal the width of the infinite vertical part, meaning there is not always a grading-preserving bijection between these posets and products of intervals.</p>
+
+			<p class="build">This means a toggle operation is likely impossible to define, since no analogous involution may exist.</p>
+		</div>
+	</div>
+
+	<script>
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>

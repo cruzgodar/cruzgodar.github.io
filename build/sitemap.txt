@@ -163,7 +163,7 @@ home Cruz Godar
 		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
 	slides Slides
-		in-defense-of-a-dissertation Dissertation Defense
+		dissertation-defense Dissertation Defense
 		light-shadow-world-of-nails Light, Shadow, and a World of Nails
 		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups

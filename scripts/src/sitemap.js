@@ -1812,7 +1812,7 @@ export const sitemap =
 		
 		"children":
 		[
-			"/slides/in-defense-of-a-dissertation",
+			"/slides/dissertation-defense",
 			"/slides/light-shadow-world-of-nails",
 			"/slides/marys-3-manifold",
 			"/slides/grandmas-recipe",
@@ -1821,7 +1821,7 @@ export const sitemap =
 		]
 	},
 		
-	"/slides/in-defense-of-a-dissertation":
+	"/slides/dissertation-defense":
 	{
 		"title": "Dissertation Defense",
 		
