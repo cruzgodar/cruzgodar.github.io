@@ -254,7 +254,6 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 			if (t1 < 0.0)
 			{
 				pos -= 2.0 * t1 * n1${variableName};
-				${useForGetColor ? "color = mix(color, color1, colorScale);" : ""}
 			}
 			
 			float t2 = dot(pos, n2${variableName});
@@ -262,7 +261,6 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 			if (t2 < 0.0)
 			{
 				pos -= 2.0 * t2 * n2${variableName};
-				${useForGetColor ? "color = mix(color, color2, colorScale);" : ""}
 			}
 			
 			float t3 = dot(pos, n3${variableName});
@@ -270,7 +268,6 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 			if (t3 < 0.0)
 			{
 				pos -= 2.0 * t3 * n3${variableName};
-				${useForGetColor ? "color = mix(color, color3, colorScale);" : ""}
 			}
 
 			${variableName === "Octahedron" ? /* glsl */`
@@ -279,7 +276,6 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 				if (t4 < 0.0)
 				{
 					pos -= 2.0 * t4 * n4${variableName};
-					${useForGetColor ? "color = mix(color, color4, colorScale);" : ""}
 				}
 			` : ""}
 			
@@ -288,7 +284,7 @@ function getKIFSDistanceEstimator(shape, useForGetColor = false)
 			
 			pos = rotationMatrix * pos;
 
-			${useForGetColor ? "colorScale *= .5;" : ""}
+			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .2;" : ""}
 		}
 
 		float totalDistance = length(pos) * pow(1.0/${kIFSScale}, float(56));

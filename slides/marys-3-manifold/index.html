@@ -36,9 +36,9 @@
 
 		#demo-canvas
 		{
-			width: 40vw;
-			height: 3vw;
-			border-radius: 1vw;
+			width: calc(40 * var(--vl));
+			height: calc(3 * var(--vl));
+			border-radius: calc(1 * var(--vl));
 		}
 
 		.lapsa-slide:not(#s2) #canvas-bundle > *:last-child
@@ -49,16 +49,6 @@
 		p strong
 		{
 			color: rgb(255, 255, 255) !important;
-		}
-
-		@media (min-aspect-ratio: 152/89)
-		{
-			#demo-canvas
-			{
-				width: calc(40 * var(--safe-vh) * 152 / 89);
-				height: calc(3 * var(--safe-vh) * 152 / 89);
-				border-radius: calc(1 * var(--safe-vh) * 152 / 89);
-			}
 		}
 	</style>
 </head>

@@ -65,10 +65,10 @@ async function reset({ slide, duration })
 		floor.material.forEach(material => material.opacity = 1);
 	}
 
-	if (!applet.in2dView)
-	{
-		await applet.show2dView();
-	}
+	await applet.showHexView();
+	await applet.show2dView();
+
+	applet.drawAll2dViewText();
 
 	await changeOpacity({
 		element: canvasBundle,

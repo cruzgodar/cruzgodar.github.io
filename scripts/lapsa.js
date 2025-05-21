@@ -151,7 +151,9 @@ class Lapsa {
             element.classList.add("lapsa-slide");
             const wrapper = document.createElement("div");
             wrapper.classList.add("lapsa-slide-wrapper");
-            wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89 ? `calc(${index * 100 + 2.5} * var(--safe-vh))` : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
+            wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89
+                ? `calc(${index * 100 + 2.5} * var(--safe-vh))`
+                : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
             this.slideContainer.insertBefore(wrapper, element);
             wrapper.appendChild(element);
             if (element.lastElementChild) {
@@ -191,8 +193,10 @@ class Lapsa {
         __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, window.innerWidth / window.innerHeight >= 152 / 89
             ? window.innerHeight * this.transitionAnimationDistanceFactor * 159 / 82
             : window.innerWidth * this.transitionAnimationDistanceFactor, "f");
-        __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
+            ? `${window.innerHeight / 100 * 152 / 89}px`
+            : `${window.innerWidth / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_shelfContainer, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").id = "lapsa-slide-shelf-container";
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").innerHTML = /* html */ `
@@ -939,8 +943,10 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         }
     }
     else {
-        __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
+            ? `${window.innerHeight / 100 * 152 / 89}px`
+            : `${window.innerWidth / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
@@ -962,7 +968,10 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     const newHeight = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + window.innerHeight * t;
     __classPrivateFieldSet(this, _Lapsa_lastWindowHeight, newHeight, "f");
     __classPrivateFieldSet(this, _Lapsa_safeVh, newHeight / 100, "f");
-    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / newHeight >= 152 / 89
+        ? `${newHeight / 100 * 152 / 89}px`
+        : `${window.innerWidth / 100}px`);
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${newHeight / 100}px`);
     if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
         const slidesPerScreen = window.innerWidth / newHeight >= 152 / 89
             ? 1
@@ -1034,6 +1043,14 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     }
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         this.previousSlide();
+    }
+    else if (e.key === "Escape") {
+        if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
+            this.closeTableView(this.currentSlide);
+        }
+        else {
+            this.openTableView();
+        }
     }
 }, _Lapsa_handleTouchstartEvent = function _Lapsa_handleTouchstartEvent(e) {
     __classPrivateFieldSet(this, _Lapsa_currentlyTouchDevice, true, "f");
