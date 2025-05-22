@@ -291,9 +291,10 @@ class Lapsa {
         __classPrivateFieldSet(this, _Lapsa_handleMousemoveEventBound, __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_handleMousemoveEvent).bind(this), "f");
         __classPrivateFieldSet(this, _Lapsa_onResizeBound, __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_onResize).bind(this), "f");
         document.documentElement.addEventListener("keydown", __classPrivateFieldGet(this, _Lapsa_handleKeydownEventBound, "f"));
-        document.documentElement.addEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
-        document.documentElement.addEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
-        document.documentElement.addEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.addEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
+        document.body.addEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
+        document.body.addEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.style.touchAction = "none";
         window.addEventListener("resize", __classPrivateFieldGet(this, _Lapsa_onResizeBound, "f"));
         setTimeout(() => this.jumpToSlide(__classPrivateFieldGet(this, _Lapsa_startingSlide, "f")), 500);
     }
@@ -307,9 +308,10 @@ class Lapsa {
         document.body.style.height = "fit-content";
         document.body.style.userSelect = "auto";
         document.documentElement.removeEventListener("keydown", __classPrivateFieldGet(this, _Lapsa_handleKeydownEventBound, "f"));
-        document.documentElement.removeEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
-        document.documentElement.removeEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
-        document.documentElement.removeEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.removeEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
+        document.body.removeEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
+        document.body.removeEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.style.touchAction = "";
         window.removeEventListener("resize", __classPrivateFieldGet(this, _Lapsa_onResizeBound, "f"));
     }
     async nextSlide(skipBuilds = false) {
@@ -530,6 +532,7 @@ class Lapsa {
         }
         document.body.style.overflowY = "visible";
         document.body.style.position = "relative";
+        document.body.style.touchAction = "";
         this.slideContainer.style.overflowY = "visible";
         const bodyRect = document.body.getBoundingClientRect();
         // The goal is to have room to display just under 4 slides vertically,
@@ -673,6 +676,7 @@ class Lapsa {
         const correctTop = this.slides[0].getBoundingClientRect().top;
         document.documentElement.style.overflowY = "hidden";
         document.body.style.overflowY = "hidden";
+        document.body.style.touchAction = "none";
         this.slideContainer.style.transformOrigin = `center calc(${centerSlide * 100 + 50} * var(--safe-vh))`;
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
@@ -946,6 +950,7 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
             ? `${window.innerHeight / 100 * 152 / 89}px`
             : `${window.innerWidth / 100}px`);
+        __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
         __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
