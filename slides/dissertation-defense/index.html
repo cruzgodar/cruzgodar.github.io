@@ -211,7 +211,7 @@
 
 			<p class="build">Due to only one partition being nonempty in the tuple $(\emptyset, \emptyset, \lambda)$, the RPPs and SPPs we have defined so far are called <dfn>one-leg objects</dfn>.</p>
 
-			<p class="build">Our approach to bijectivizing the one-leg (and two-leg) correspondences is to bijectivize local moves that we iterate to decompose both RPPs and SPPs into more malleable objects.</p>
+			<p class="build">Our approach to bijectivizing the one-leg (and two-leg) correspondence is to bijectivize local moves that we iterate to decompose both RPPs and SPPs into more malleable objects.</p>
 		</div>
 
 
@@ -309,7 +309,7 @@
 		</div>
 
 		<div id="toggles" class="large-canvas">
-			<p>Ex: with $(5, 3, 1, 1) \succ (3, 2, 1) \succ (3, 2)$, we can toggle the middle partition relative to the other two.</p>
+			<p>Ex: with $(5, 3, 1, 1, 0) \succ (4, 3, 1, 0) \succ (3, 2, 0)$, we can toggle the middle partition relative to the other two.</p>
 		</div>
 
 
@@ -345,7 +345,7 @@
 		</div>
 
 		<div>
-			<p>This proposition bijectivizes the following established commutation relations for $\Gamma$ operators:</p>
+			<p>This result bijectivizes the following established commutation relations for $\Gamma$ operators:</p>
 		
 			<p style="text-align: center">$\displaystyle \bra{\mu}\, \Gamma_-(a)\Gamma_+(b)\, \ket{\lambda} = \frac{1}{1 - ab}\bra{\mu}\, \Gamma_+(b)\Gamma_-(a)\, \ket{\lambda}$</p>
 
@@ -413,25 +413,9 @@
 
 
 		<div>
-			<h1>Vertex Operators for SPPs</h1>
+			<p><strong>Thm (G.):</strong> Let $\lambda$ be a partition and $(i, j) \in \mathbb{N}^2 \setminus \lambda$. If the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$ at edges corresponding to $\Gamma_-\left( q^k \right)$ and $\Gamma_+\left( q^l \right)$, then $h(i, j) = k + l$.</p>
 
-			<p class="build">When $\lambda \neq \emptyset$, the vertex operator expansion of $V_{(\emptyset, \emptyset, \lambda)}$ contains $\Gamma_-$ operators to the right of the middle $Q$ operators and $\Gamma_+$ operators to the left.</p>
-
-			<p class="build">Commuting every $Q$ to the outside still works, but now the out of place $\Gamma$s have negative exponents.</p>
-
-			<p class="build"><strong>Thm (G.):</strong> Let $\lambda$ be a partition and $(i, j) \in \mathbb{N}^2 \setminus \lambda$. If the hook of $(i, j)$ meets the boundary of $\mathbb{N}^2 \setminus \lambda$ at edges corresponding to $\Gamma_-\left( q^k \right)$ and $\Gamma_+\left( q^l \right)$, then $h(i, j) = k + l$.</p>
-		</div>
-
-
-
-		
-
-
-
-		<div>
-			<p>Ex: hook lengths as sums of $p_\lambda(n)$.</p>
-
-			<div style="display: flex; justify-content: center; width: 100%">
+			<div style="display: flex; justify-content: center; width: 100%" class="lapsa-padding-bottom">
 				<img id="hook-length-sums-image" src="graphics/hook-length-sums.png">
 			</div>
 		</div>
@@ -463,9 +447,9 @@
 		<div>
 			<h1>Finishing the One-Leg Bijection</h1>
 
-			<p class="build"><strong>Thm (G.):</strong> There is a bijection between SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ and pairs $(\rho, \pi)$ of RPPs $\rho$ of $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
+			<p class="build"><strong>Thm (G.):</strong> There is a bijection between SPPs $\sigma$ of shape $\mathbb{N}^2 \setminus \lambda$ and pairs $(\rho, \pi)$ of RPPs $\rho$ of shape $\lambda$ and plane partitions $\pi$, where $|\sigma| = |\rho| + |\pi|$.</p>
 
-			<p class="build">We iteratively toggle the diagonals of $\sigma$ until there are no more nonzero entries in it (which only requires a finite number of toggles). The result is a hook-length weighted tableau of shape $\mathbb{N}^2 \setminus \lambda$, whose entries we distribute between tableaux of shape $\lambda$ and $\mathbb{N}^2$ while preserving hook length. We then untoggle those tableaux to produce $\rho$ and $\pi$.</p>
+			<p class="build">We iteratively toggle the diagonals of $\sigma$ until there are no more nonzero entries in it (which only requires a finite number of toggles). The result is a hook-length-weighted tableau of shape $\mathbb{N}^2 \setminus \lambda$, whose entries we distribute between tableaux of shape $\lambda$ and $\mathbb{N}^2$ while preserving hook length. We then untoggle those tableaux to produce $\rho$ and $\pi$.</p>
 		</div>
 
 
