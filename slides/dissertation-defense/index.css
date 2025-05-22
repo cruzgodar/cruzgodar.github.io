@@ -18,9 +18,8 @@
 
 #plane-partition-example #canvas-bundle
 {
-	transform: scale(1.3);
+	transform: scale(1.2);
 	margin-bottom: 3%;
-	z-index: -1;
 }
 
 #hillman-grassl #canvas-bundle
