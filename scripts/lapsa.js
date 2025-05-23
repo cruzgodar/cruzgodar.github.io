@@ -221,7 +221,7 @@ class Lapsa {
         __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
             ? `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100 * 152 / 89}px`
             : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_shelfContainer, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").id = "lapsa-slide-shelf-container";
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").innerHTML = /* html */ `
@@ -992,7 +992,7 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
             ? `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100 * 152 / 89}px`
             : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_safeVh, __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
@@ -1012,12 +1012,13 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     }
     const t = .5 * (1 + Math.cos(Math.PI * (__classPrivateFieldGet(this, _Lapsa_windowHeightAnimationFrame, "f") / this.windowHeightAnimationFrames + 1)));
     const newHeight = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") * t;
+    const newHeight2 = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + window.innerHeight * t;
     __classPrivateFieldSet(this, _Lapsa_lastWindowHeight, newHeight, "f");
     __classPrivateFieldSet(this, _Lapsa_safeVh, newHeight / 100, "f");
     __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / newHeight >= 152 / 89
         ? `${newHeight / 100 * 152 / 89}px`
         : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
-    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${newHeight / 100}px`);
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${newHeight2 / 100}px`);
     if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
         const slidesPerScreen = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / newHeight >= 152 / 89
             ? 1
