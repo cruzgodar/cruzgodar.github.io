@@ -520,13 +520,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			vec3 computeShadingWithoutReflection(
 				vec3 pos,
 				float epsilon,
-				float correctionDistance,
 				int iteration
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
-
-				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-				pos -= surfaceNormal * correctionDistance;
 				
 				vec3 lightDirection = normalize(lightPos - pos);
 				
@@ -572,7 +568,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 						return computeShadingWithoutReflection(
 							pos,
 							epsilon,
-							distanceToScene - 2.0 * epsilon,
 							iteration + startIteration
 						);
 					}
@@ -607,7 +602,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				vec3 computeShading(
 					vec3 pos,
 					float epsilon,
-					float correctionDistance,
 					int iteration
 				) {
 					gl_FragColor = encodeFloat(length(pos - cameraPos));
@@ -618,13 +612,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 				vec3 computeShading(
 					vec3 pos,
 					float epsilon,
-					float correctionDistance,
 					int iteration
 				) {
 					vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
-
-					// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-					pos -= surfaceNormal * correctionDistance;
 					
 					vec3 lightDirection = normalize(lightPos - pos);
 					
@@ -686,10 +676,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							if (distanceToScene < epsilon)
 							{
+								t -= epsilon - distanceToScene;
+								pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+
 								return computeShading(
 									pos,
 									epsilon,
-									distanceToScene - 2.0 * epsilon,
 									iteration
 								);
 							}
@@ -728,10 +720,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							if (distanceToScene < epsilon)
 							{
+								t -= epsilon - distanceToScene;
+								pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+
 								return computeShading(
 									pos,
 									epsilon,
-									distanceToScene - 2.0 * epsilon,
 									iteration
 								);
 							}
@@ -766,10 +760,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 						
 						if (distanceToScene < epsilon)
 						{
+							t -= epsilon - distanceToScene;
+							pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+
 							return computeShading(
 								pos,
 								epsilon,
-								distanceToScene - 2.0 * epsilon,
 								iteration
 							);
 						}
