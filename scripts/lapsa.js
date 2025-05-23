@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Lapsa_instances, _Lapsa_rootSelector, _Lapsa_bottomMarginElement, _Lapsa_shelfContainer, _Lapsa_slideShelf, _Lapsa_shelfMargin, _Lapsa_shelfIsOpen, _Lapsa_shelfAnimationPromise, _Lapsa_shelfIndicatorContainer, _Lapsa_slideShelfIndicator, _Lapsa_transitionAnimationDistance, _Lapsa_useSearchParams, _Lapsa_startingSlide, _Lapsa_numBuilds, _Lapsa_currentlyAnimating, _Lapsa_inTableView, _Lapsa_handleKeydownEventBound, _Lapsa_handleTouchstartEventBound, _Lapsa_handleTouchmoveEventBound, _Lapsa_handleMousemoveEventBound, _Lapsa_onResizeBound, _Lapsa_currentlyTouchDevice, _Lapsa_lastMousemoveEvent, _Lapsa_lastWindowHeight, _Lapsa_startWindowHeight, _Lapsa_windowHeightAnimationFrame, _Lapsa_windowHeightAnimationLastTimestamp, _Lapsa_resizeAnimationBound, _Lapsa_missedResizeAnimation, _Lapsa_currentlyDragging, _Lapsa_dragDistanceX, _Lapsa_lastTouchX, _Lapsa_dragDistanceY, _Lapsa_lastTouchY, _Lapsa_lastMoveThisDrag, _Lapsa_safeVh, _Lapsa_updateSearchParams, _Lapsa_onResize, _Lapsa_resizeAnimation, _Lapsa_showSlideShelf, _Lapsa_hideSlideShelf, _Lapsa_showSlideShelfIndicator, _Lapsa_hideSlideShelfIndicator, _Lapsa_handleKeydownEvent, _Lapsa_handleTouchstartEvent, _Lapsa_handleTouchmoveEvent, _Lapsa_handleMousemoveEvent;
+var _Lapsa_instances, _Lapsa_rootSelector, _Lapsa_bottomMarginElement, _Lapsa_shelfContainer, _Lapsa_slideShelf, _Lapsa_shelfMargin, _Lapsa_shelfIsOpen, _Lapsa_shelfAnimationPromise, _Lapsa_shelfIndicatorContainer, _Lapsa_slideShelfIndicator, _Lapsa_transitionAnimationDistance, _Lapsa_useSearchParams, _Lapsa_startingSlide, _Lapsa_numBuilds, _Lapsa_currentlyAnimating, _Lapsa_inTableView, _Lapsa_handleKeydownEventBound, _Lapsa_handleTouchstartEventBound, _Lapsa_handleTouchmoveEventBound, _Lapsa_handleMousemoveEventBound, _Lapsa_onResizeBound, _Lapsa_currentlyTouchDevice, _Lapsa_lastMousemoveEvent, _Lapsa_lastWindowHeight, _Lapsa_startWindowHeight, _Lapsa_windowHeightAnimationFrame, _Lapsa_windowHeightAnimationLastTimestamp, _Lapsa_resizeAnimationBound, _Lapsa_missedResizeAnimation, _Lapsa_safeAreaInsets, _Lapsa_safeWindowHeight, _Lapsa_safeWindowWidth, _Lapsa_currentlyDragging, _Lapsa_dragDistanceX, _Lapsa_lastTouchX, _Lapsa_dragDistanceY, _Lapsa_lastTouchY, _Lapsa_lastMoveThisDrag, _Lapsa_safeVh, _Lapsa_updateSearchParams, _Lapsa_onResize, _Lapsa_resizeAnimation, _Lapsa_showSlideShelf, _Lapsa_hideSlideShelf, _Lapsa_showSlideShelfIndicator, _Lapsa_hideSlideShelfIndicator, _Lapsa_handleKeydownEvent, _Lapsa_handleTouchstartEvent, _Lapsa_handleTouchmoveEvent, _Lapsa_handleMousemoveEvent;
 const defaultOptions = {
     builds: {},
     setupBuild: (data) => { },
@@ -69,6 +69,14 @@ class Lapsa {
         _Lapsa_windowHeightAnimationLastTimestamp.set(this, -1);
         _Lapsa_resizeAnimationBound.set(this, void 0);
         _Lapsa_missedResizeAnimation.set(this, false);
+        _Lapsa_safeAreaInsets.set(this, {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+        });
+        _Lapsa_safeWindowHeight.set(this, window.innerHeight);
+        _Lapsa_safeWindowWidth.set(this, window.innerWidth);
         _Lapsa_currentlyDragging.set(this, false);
         _Lapsa_dragDistanceX.set(this, 0);
         _Lapsa_lastTouchX.set(this, -1);
@@ -138,6 +146,23 @@ class Lapsa {
         }
         this.slideContainer = slideContainerElement;
         this.slideContainer.classList.add("lapsa-hover");
+        __classPrivateFieldSet(this, _Lapsa_safeAreaInsets, {
+            top: parseFloat(window.getComputedStyle(document.documentElement)
+                .getPropertyValue("--safe-area-inset-top")
+                .slice(0, -2)),
+            bottom: parseFloat(window.getComputedStyle(document.documentElement)
+                .getPropertyValue("--safe-area-inset-bottom")
+                .slice(0, -2)),
+            left: parseFloat(window.getComputedStyle(document.documentElement)
+                .getPropertyValue("--safe-area-inset-left")
+                .slice(0, -2)),
+            right: parseFloat(window.getComputedStyle(document.documentElement)
+                .getPropertyValue("--safe-area-inset-right")
+                .slice(0, -2)),
+        }, "f");
+        console.log(window.getComputedStyle(document.documentElement));
+        __classPrivateFieldSet(this, _Lapsa_safeWindowHeight, window.innerHeight - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").top - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").bottom, "f");
+        __classPrivateFieldSet(this, _Lapsa_safeWindowWidth, window.innerWidth - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").left - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").right, "f");
         this.slides = document.body.querySelectorAll("#lapsa-slide-container > *");
         if (Number.isNaN(__classPrivateFieldGet(this, _Lapsa_startingSlide, "f")) || __classPrivateFieldGet(this, _Lapsa_startingSlide, "f") < 0 || __classPrivateFieldGet(this, _Lapsa_startingSlide, "f") >= this.slides.length) {
             __classPrivateFieldSet(this, _Lapsa_startingSlide, 0, "f");
@@ -151,7 +176,7 @@ class Lapsa {
             element.classList.add("lapsa-slide");
             const wrapper = document.createElement("div");
             wrapper.classList.add("lapsa-slide-wrapper");
-            wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89
+            wrapper.style.top = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
                 ? `calc(${index * 100 + 2.5} * var(--safe-vh))`
                 : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
             this.slideContainer.insertBefore(wrapper, element);
@@ -190,13 +215,13 @@ class Lapsa {
             functionalBuildKeys.forEach(key => maxFunctionalBuild = Math.max(maxFunctionalBuild, (parseInt(key) + 1) || 0));
             __classPrivateFieldGet(this, _Lapsa_numBuilds, "f")[index] = Math.max(__classPrivateFieldGet(this, _Lapsa_numBuilds, "f")[index], maxFunctionalBuild);
         });
-        __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, window.innerWidth / window.innerHeight >= 152 / 89
-            ? window.innerHeight * this.transitionAnimationDistanceFactor * 159 / 82
-            : window.innerWidth * this.transitionAnimationDistanceFactor, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
-            ? `${window.innerHeight / 100 * 152 / 89}px`
-            : `${window.innerWidth / 100}px`);
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
+        __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
+            ? __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") * this.transitionAnimationDistanceFactor * 159 / 82
+            : __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") * this.transitionAnimationDistanceFactor, "f");
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
+            ? `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100 * 152 / 89}px`
+            : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_shelfContainer, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").id = "lapsa-slide-shelf-container";
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").innerHTML = /* html */ `
@@ -247,8 +272,8 @@ class Lapsa {
                 this.showShelf();
             }
         });
-        __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").addEventListener("mouseleave", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !this.permanentShelf && this.useShelf) {
+        __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").addEventListener("mouseleave", (e) => {
+            if (e.relatedTarget && __classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !this.permanentShelf && this.useShelf) {
                 this.hideShelf();
             }
         });
@@ -558,12 +583,12 @@ class Lapsa {
         this.slideContainer.style.transformOrigin = `center calc(${this.currentSlide * 100 + 50} * var(--safe-vh))`;
         const translation = bodyRect.width / bodyRect.height >= 152 / 89
             ? (58.125 * 152 / 89 * centerSlide - 100 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")
-            : (58.125 * centerSlide) * scale * window.innerWidth / 100
+            : (58.125 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100
                 - 100 * centerSlide * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f");
         this.slideContainer.style.transition = `transform ${duration}ms ${this.tableViewEasing}`;
         this.slideContainer.style.transform = bodyRect.width / bodyRect.height >= 152 / 89
             ? `matrix(${scale}, 0, 0, ${scale}, 0, ${((this.currentSlide - centerSlide) * 58.125 * 152 / 89 * scale - 100 * this.currentSlide) * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")})`
-            : `matrix(${scale}, 0, 0, ${scale}, 0, ${(this.currentSlide - centerSlide) * 58.125 * scale * window.innerWidth / 100 - 100 * this.currentSlide * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")})`;
+            : `matrix(${scale}, 0, 0, ${scale}, 0, ${(this.currentSlide - centerSlide) * 58.125 * scale * __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100 - 100 * this.currentSlide * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")})`;
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
@@ -628,7 +653,7 @@ class Lapsa {
                         element.parentElement.style.top = `calc(${2.5 + 58.125 * (index - centerSlide)}vw + ${100 * centerSlide} * var(--safe-vh))`;
                     }
                 });
-                if (window.innerWidth / window.innerHeight >= 152 / 89) {
+                if (__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89) {
                     __classPrivateFieldGet(this, _Lapsa_bottomMarginElement, "f").style.top = `calc(${5 + 58.125 * 152 / 89 * (this.slides.length - centerSlide) + 100 * centerSlide} * var(--safe-vh))`;
                 }
                 else {
@@ -742,7 +767,7 @@ class Lapsa {
                         return;
                     }
                     element.parentElement.style.transition = `top ${duration}ms ${this.tableViewEasing}`;
-                    element.parentElement.style.top = window.innerWidth / window.innerHeight >= 152 / 89 ? `calc(${index * 100 + 2.5} * var(--safe-vh))` : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
+                    element.parentElement.style.top = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89 ? `calc(${index * 100 + 2.5} * var(--safe-vh))` : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
                 });
                 setTimeout(() => {
                     builds.forEach((element, index) => {
@@ -891,7 +916,7 @@ class Lapsa {
         });
     }
 }
-_Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(), _Lapsa_shelfContainer = new WeakMap(), _Lapsa_slideShelf = new WeakMap(), _Lapsa_shelfMargin = new WeakMap(), _Lapsa_shelfIsOpen = new WeakMap(), _Lapsa_shelfAnimationPromise = new WeakMap(), _Lapsa_shelfIndicatorContainer = new WeakMap(), _Lapsa_slideShelfIndicator = new WeakMap(), _Lapsa_transitionAnimationDistance = new WeakMap(), _Lapsa_useSearchParams = new WeakMap(), _Lapsa_startingSlide = new WeakMap(), _Lapsa_numBuilds = new WeakMap(), _Lapsa_currentlyAnimating = new WeakMap(), _Lapsa_inTableView = new WeakMap(), _Lapsa_handleKeydownEventBound = new WeakMap(), _Lapsa_handleTouchstartEventBound = new WeakMap(), _Lapsa_handleTouchmoveEventBound = new WeakMap(), _Lapsa_handleMousemoveEventBound = new WeakMap(), _Lapsa_onResizeBound = new WeakMap(), _Lapsa_currentlyTouchDevice = new WeakMap(), _Lapsa_lastMousemoveEvent = new WeakMap(), _Lapsa_lastWindowHeight = new WeakMap(), _Lapsa_startWindowHeight = new WeakMap(), _Lapsa_windowHeightAnimationFrame = new WeakMap(), _Lapsa_windowHeightAnimationLastTimestamp = new WeakMap(), _Lapsa_resizeAnimationBound = new WeakMap(), _Lapsa_missedResizeAnimation = new WeakMap(), _Lapsa_currentlyDragging = new WeakMap(), _Lapsa_dragDistanceX = new WeakMap(), _Lapsa_lastTouchX = new WeakMap(), _Lapsa_dragDistanceY = new WeakMap(), _Lapsa_lastTouchY = new WeakMap(), _Lapsa_lastMoveThisDrag = new WeakMap(), _Lapsa_safeVh = new WeakMap(), _Lapsa_instances = new WeakSet(), _Lapsa_updateSearchParams = function _Lapsa_updateSearchParams() {
+_Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(), _Lapsa_shelfContainer = new WeakMap(), _Lapsa_slideShelf = new WeakMap(), _Lapsa_shelfMargin = new WeakMap(), _Lapsa_shelfIsOpen = new WeakMap(), _Lapsa_shelfAnimationPromise = new WeakMap(), _Lapsa_shelfIndicatorContainer = new WeakMap(), _Lapsa_slideShelfIndicator = new WeakMap(), _Lapsa_transitionAnimationDistance = new WeakMap(), _Lapsa_useSearchParams = new WeakMap(), _Lapsa_startingSlide = new WeakMap(), _Lapsa_numBuilds = new WeakMap(), _Lapsa_currentlyAnimating = new WeakMap(), _Lapsa_inTableView = new WeakMap(), _Lapsa_handleKeydownEventBound = new WeakMap(), _Lapsa_handleTouchstartEventBound = new WeakMap(), _Lapsa_handleTouchmoveEventBound = new WeakMap(), _Lapsa_handleMousemoveEventBound = new WeakMap(), _Lapsa_onResizeBound = new WeakMap(), _Lapsa_currentlyTouchDevice = new WeakMap(), _Lapsa_lastMousemoveEvent = new WeakMap(), _Lapsa_lastWindowHeight = new WeakMap(), _Lapsa_startWindowHeight = new WeakMap(), _Lapsa_windowHeightAnimationFrame = new WeakMap(), _Lapsa_windowHeightAnimationLastTimestamp = new WeakMap(), _Lapsa_resizeAnimationBound = new WeakMap(), _Lapsa_missedResizeAnimation = new WeakMap(), _Lapsa_safeAreaInsets = new WeakMap(), _Lapsa_safeWindowHeight = new WeakMap(), _Lapsa_safeWindowWidth = new WeakMap(), _Lapsa_currentlyDragging = new WeakMap(), _Lapsa_dragDistanceX = new WeakMap(), _Lapsa_lastTouchX = new WeakMap(), _Lapsa_dragDistanceY = new WeakMap(), _Lapsa_lastTouchY = new WeakMap(), _Lapsa_lastMoveThisDrag = new WeakMap(), _Lapsa_safeVh = new WeakMap(), _Lapsa_instances = new WeakSet(), _Lapsa_updateSearchParams = function _Lapsa_updateSearchParams() {
     if (!__classPrivateFieldGet(this, _Lapsa_useSearchParams, "f")) {
         return;
     }
@@ -902,9 +927,25 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     if (__classPrivateFieldGet(this, _Lapsa_currentlyAnimating, "f")) {
         return;
     }
-    __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, window.innerWidth / window.innerHeight >= 152 / 89
-        ? window.innerHeight * this.transitionAnimationDistanceFactor * 159 / 82
-        : window.innerWidth * this.transitionAnimationDistanceFactor, "f");
+    __classPrivateFieldSet(this, _Lapsa_safeAreaInsets, {
+        top: parseFloat(window.getComputedStyle(document.documentElement)
+            .getPropertyValue("--safe-area-inset-top")
+            .slice(0, -2)),
+        bottom: parseFloat(window.getComputedStyle(document.documentElement)
+            .getPropertyValue("--safe-area-inset-bottom")
+            .slice(0, -2)),
+        left: parseFloat(window.getComputedStyle(document.documentElement)
+            .getPropertyValue("--safe-area-inset-left")
+            .slice(0, -2)),
+        right: parseFloat(window.getComputedStyle(document.documentElement)
+            .getPropertyValue("--safe-area-inset-right")
+            .slice(0, -2)),
+    }, "f");
+    __classPrivateFieldSet(this, _Lapsa_safeWindowHeight, window.innerHeight - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").top - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").bottom, "f");
+    __classPrivateFieldSet(this, _Lapsa_safeWindowWidth, window.innerWidth - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").left - __classPrivateFieldGet(this, _Lapsa_safeAreaInsets, "f").right, "f");
+    __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
+        ? __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") * this.transitionAnimationDistanceFactor * 159 / 82
+        : __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") * this.transitionAnimationDistanceFactor, "f");
     if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
         const bodyRect = document.body.getBoundingClientRect();
         const slidesPerScreen = bodyRect.width / bodyRect.height >= 152 / 89
@@ -917,20 +958,20 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         const centerSlide = Math.min(Math.max((scaledSlidesPerScreen - 1) / 2, this.currentSlide), this.slides.length - 1 - (scaledSlidesPerScreen - 1) / 2);
         const translation = bodyRect.width / bodyRect.height >= 152 / 89
             ? (58.125 * 152 / 89 * centerSlide - 100 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")
-            : (58.125 * centerSlide) * scale * window.innerWidth / 100
+            : (58.125 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100
                 - 100 * centerSlide * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f");
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
             }
-            if (window.innerWidth / window.innerHeight >= 152 / 89) {
+            if (__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89) {
                 element.parentElement.style.top = `calc(${5 + 58.125 * 152 / 89 * (index - centerSlide) + 100 * centerSlide} * var(--safe-vh))`;
             }
             else {
                 element.parentElement.style.top = `calc(${2.5 + 58.125 * (index - centerSlide)}vw + ${100 * centerSlide} * var(--safe-vh))`;
             }
         });
-        if (window.innerWidth / window.innerHeight >= 152 / 89) {
+        if (__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89) {
             __classPrivateFieldGet(this, _Lapsa_bottomMarginElement, "f").style.top = `calc(${5 + 58.125 * 152 / 89 * (this.slides.length - centerSlide) + 100 * centerSlide} * var(--safe-vh))`;
         }
         else {
@@ -947,16 +988,16 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         }
     }
     else {
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
-            ? `${window.innerHeight / 100 * 152 / 89}px`
-            : `${window.innerWidth / 100}px`);
-        __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
+            ? `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100 * 152 / 89}px`
+            : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
+        __classPrivateFieldSet(this, _Lapsa_safeVh, __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100, "f");
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") / 100}px`);
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
             }
-            element.parentElement.style.top = window.innerWidth / window.innerHeight >= 152 / 89
+            element.parentElement.style.top = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") >= 152 / 89
                 ? `calc(${index * 100 + 2.5} * var(--safe-vh))`
                 : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
         });
@@ -970,23 +1011,23 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         return;
     }
     const t = .5 * (1 + Math.cos(Math.PI * (__classPrivateFieldGet(this, _Lapsa_windowHeightAnimationFrame, "f") / this.windowHeightAnimationFrames + 1)));
-    const newHeight = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + window.innerHeight * t;
+    const newHeight = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + __classPrivateFieldGet(this, _Lapsa_safeWindowHeight, "f") * t;
     __classPrivateFieldSet(this, _Lapsa_lastWindowHeight, newHeight, "f");
     __classPrivateFieldSet(this, _Lapsa_safeVh, newHeight / 100, "f");
-    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / newHeight >= 152 / 89
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / newHeight >= 152 / 89
         ? `${newHeight / 100 * 152 / 89}px`
-        : `${window.innerWidth / 100}px`);
+        : `${__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100}px`);
     __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${newHeight / 100}px`);
     if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
-        const slidesPerScreen = window.innerWidth / newHeight >= 152 / 89
+        const slidesPerScreen = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / newHeight >= 152 / 89
             ? 1
-            : newHeight / (window.innerWidth * 89 / 152);
+            : newHeight / (__classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") * 89 / 152);
         const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
         const scaledSlidesPerScreen = slidesPerScreen / scale;
         const centerSlide = Math.min(Math.max((scaledSlidesPerScreen - 1) / 2, this.currentSlide), this.slides.length - 1 - (scaledSlidesPerScreen - 1) / 2);
-        const translation = window.innerWidth / newHeight >= 152 / 89
+        const translation = __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / newHeight >= 152 / 89
             ? (58.125 * 152 / 89 * centerSlide - 100 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f")
-            : (58.125 * centerSlide) * scale * window.innerWidth / 100
+            : (58.125 * centerSlide) * scale * __classPrivateFieldGet(this, _Lapsa_safeWindowWidth, "f") / 100
                 - 100 * centerSlide * scale * __classPrivateFieldGet(this, _Lapsa_safeVh, "f");
         this.slideContainer.style.transform = `matrix(${scale}, 0, 0, ${scale}, 0, ${translation})`;
     }
