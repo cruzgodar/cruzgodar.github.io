@@ -372,43 +372,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-		// Set up dithering.
-
-		this.wilson.createFramebufferTexturePair({
-			id: "blueNoise",
-			width: 64,
-			height: 64,
-			textureType: "unsignedByte"
-		});
-
-		this.wilson.useFramebuffer(null);
-		this.wilson.useTexture("blueNoise");
-
-		const tempPixel = new Uint8Array([127, 127, 127, 255]);
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			1,
-			1,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			tempPixel
-		);
-
-		const image = new Image();
-		image.onload = () =>
-		{
-			this.wilson.setTexture({
-				id: "blueNoise",
-				data: image
-			});
-		};
-		image.src = "/graphics/blueNoise.png";
-
-
-
 		if (this.useFor3DPrinting)
 		{
 			this.make3DPrintable();
@@ -557,6 +520,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			vec3 computeShadingWithoutReflection(
 				vec3 pos,
 				float epsilon,
+				float distanceToScene,
 				int iteration
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
@@ -572,14 +536,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 					${getFloatGlsl(this.ambientLight)}
 				);
 
-				float ditheringAmount = 252.0 / 255.0 + 6.0 / 255.0 * texture2D(
-					uBlueNoise,
-					mod(0.5 * (uv + vec2(1.0)) * resolution, 64.0) / 64.0
-				).x;
-
 				vec3 color = getColor(pos)
 					* lightIntensity
-					* ditheringAmount
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
 				${this.useShadows ? /* glsl */`
@@ -613,6 +571,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						return computeShadingWithoutReflection(
 							pos,
 							epsilon,
+							distanceToScene,
 							iteration + startIteration
 						);
 					}
@@ -676,17 +635,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 						${getFloatGlsl(this.ambientLight)}
 					);
 
-					
-
-					float ditheringAmount = 252.0 / 255.0 + 6.0 / 255.0 * texture2D(
-						uBlueNoise,
-						mod(0.5 * (uv + vec2(1.0)) * resolution, 64.0) / 64.0
-					).x;
 
 
 					vec3 color = getColor(pos)
 						* lightIntensity
-						* ditheringAmount
 						* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
 					
@@ -933,8 +885,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				uniform sampler2D uTexture;
 				uniform vec2 stepSize;
 			` : ""}
-
-			uniform sampler2D uBlueNoise;
 			
 			const vec3 lightPos = ${getVectorGlsl(this.lightPos)};
 			const float lightBrightness = ${getFloatGlsl(this.lightBrightness)};
