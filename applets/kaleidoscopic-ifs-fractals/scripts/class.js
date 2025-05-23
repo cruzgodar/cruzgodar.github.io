@@ -151,7 +151,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			cameraPos: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
-			epsilonScaling: 1,
+			epsilonScaling: 0.75,
 			stepFactor: .6,
 		});
 
@@ -175,9 +175,9 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		const numIterations = clamp(
 			Math.floor(
-				12 - Math.log(distance) * 2
+				14 - Math.log(distance) * 2
 			),
-			12,
+			14,
 			24
 		)
 			+ Math.round(scaleFactor * 28);
