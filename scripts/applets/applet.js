@@ -242,8 +242,7 @@ export class Applet
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
-		hiddenCanvas.style.width = "10px";
-		hiddenCanvas.style.height = "10px";
+		hiddenCanvas.style.width = "1000px";
 
 		if (!this.hiddenCanvasContainer)
 		{
@@ -252,7 +251,7 @@ export class Applet
 			
 			this.hiddenCanvasContainer.style.position = "fixed";
 			this.hiddenCanvasContainer.style.top = "0";
-			this.hiddenCanvasContainer.style.left = "-200vw";
+			this.hiddenCanvasContainer.style.left = "-1000vw";
 			
 			document.body.appendChild(this.hiddenCanvasContainer);
 		}
@@ -459,6 +458,7 @@ export class Applet
 
 
 
+// HSV are in [0, 1], and the outputs are in [0, 255].
 export function hsvToRgb(h, s, v)
 {
 	function f(n)
@@ -468,6 +468,43 @@ export function hsvToRgb(h, s, v)
 	}
 
 	return [255 * f(5), 255 * f(3), 255 * f(1)];
+}
+
+export function rgbToHsv(r, g, b)
+{
+	r /= 255;
+	g /= 255;
+	b /= 255;
+
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	const delta = max - min;
+
+	let h = 0;
+	const s = max === 0 ? 0 : delta / max;
+	const v = max;
+
+	if (delta !== 0)
+	{
+		if (max === r)
+		{
+			h = ((g - b) / delta + 6) % 6;
+		}
+
+		else if (max === g)
+		{
+			h = (b - r) / delta + 2;
+		}
+
+		else
+		{
+			h = (r - g) / delta + 4;
+		}
+
+		h /= 6;
+	}
+
+	return [h, s, v];
 }
 
 /*
