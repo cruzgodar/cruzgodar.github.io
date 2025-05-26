@@ -4,14 +4,23 @@
 
 <div id="canvas-landscape">
 
-<div id="canvas-landscape-left"></div>
-
-<div id="canvas-landscape-middle">
-
-### canvas
-
+<div id="canvas-landscape-left">
+	
 </div>
 
-<div id="canvas-landscape-right"></div>
+<div id="canvas-landscape-middle">
+	### canvas
+</div>
+
+<div id="canvas-landscape-right">
+	<div id="guess-canvases">
+		<canvas class="guess-canvas"></canvas>
+		<canvas class="guess-canvas"></canvas>
+		<canvas class="guess-canvas"></canvas>
+		<canvas class="guess-canvas"></canvas>
+		<canvas class="guess-canvas"></canvas>
+		<canvas class="guess-canvas"></canvas>
+	</div>
+</div>
 
 </div>

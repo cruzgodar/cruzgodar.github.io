@@ -1,41 +1,41 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-const hThreshold = 0.25;
-const sThreshold = 0.25;
-const vThreshold = 0.25;
+const hThreshold = 0.075;
+const sThreshold = 0.4;
+const vThreshold = 0.4;
 
 export class FlagOverlap extends Applet
 {
 	loadPromise;
+	guessCanvases;
 
 	wilsonCorrectFlag;
 	// Double the resolution of the flag images.
 	resolution = 2048;
-	correctFlag = "md";
+	correctFlag = "bw";
 	correctPixels;
 	correctHsv;
+	// Each entry is an object of the form
+	// {
+	//	 flagId,
+	//   matchingPixels: 1D list of booleans per pixel
+	//   pixels: matching pixels that can be drawn to the guess canvas
+	//   hsvData: same, but hsv
+	//   wilson: instance for drawing
+	// }
 	guesses = [];
 	
 
-	constructor({ canvas })
+	constructor({ canvas, guessCanvases })
 	{
 		super(canvas);
+
+		this.guessCanvases = guessCanvases;
 
 		const options =
 		{
 			canvasWidth: this.resolution,
-
-			interactionOptions: {
-				callbacks: {
-					// mousedown: this.onGrabCanvas.bind(this),
-					// touchstart: this.onGrabCanvas.bind(this),
-					// mousedrag: this.onGrabCanvas.bind(this),
-					// touchmove: this.onGrabCanvas.bind(this),
-					// mouseup: this.onReleaseCanvas.bind(this),
-					// touchend: this.onReleaseCanvas.bind(this),
-				},
-			},
 
 			fullscreenOptions: {
 				useFullscreenButton: true,
@@ -107,6 +107,42 @@ export class FlagOverlap extends Applet
 		};
 	}
 
+
+
+	updateMainCanvas()
+	{
+		const data = new Uint8ClampedArray(this.wilson.canvasWidth * this.wilson.canvasHeight * 4);
+
+		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
+		{
+			data[4 * i] = 32;
+			data[4 * i + 1] = 32;
+			data[4 * i + 2] = 32;
+			data[4 * i + 3] = 255;
+			
+			for (const guess of this.guesses)
+			{
+				if (guess.matchingPixels[i])
+				{
+					data[4 * i] = this.correctPixels[4 * i];
+					data[4 * i + 1] = this.correctPixels[4 * i + 1];
+					data[4 * i + 2] = this.correctPixels[4 * i + 2];
+					break;
+				}
+			}
+		}
+
+		const imageData = new ImageData(
+			data,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight
+		);
+
+		this.wilson.ctx.putImageData(imageData, 0, 0);
+	}
+
+
+
 	async guessFlag(flagId)
 	{
 		const guess = {};
@@ -130,17 +166,54 @@ export class FlagOverlap extends Applet
 				&& deltaV < vThreshold;
 			if (!guess.matchingPixels[i])
 			{
-				guess.pixels[4 * i] = 0;
-				guess.pixels[4 * i + 1] = 0;
-				guess.pixels[4 * i + 2] = 0;
+				guess.pixels[4 * i] = 32;
+				guess.pixels[4 * i + 1] = 32;
+				guess.pixels[4 * i + 2] = 32;
 			}
 		}
+
+
+
+		const switchFullscreen = () =>
+		{
+			if (guess.wilson.currentlyFullscreen)
+			{
+				guess.wilson.exitFullscreen();
+			}
+
+			else
+			{
+				guess.wilson.enterFullscreen();
+			}
+		};
+
+		const options =
+		{
+			canvasWidth: this.resolution,
+
+			interactionOptions: {
+				callbacks: {
+					mousedown: switchFullscreen,
+					touchstart: switchFullscreen
+				},
+			},
+		};
+
+		guess.wilson = new WilsonCPU(
+			this.guessCanvases[this.guesses.length],
+			options
+		);
 
 		const imageData = new ImageData(
 			guess.pixels,
 			this.wilson.canvasWidth,
 			this.wilson.canvasHeight
 		);
-		this.wilson.ctx.putImageData(imageData, 0, 0);
+
+		guess.wilson.ctx.putImageData(imageData, 0, 0);
+
+		this.guesses.push(guess);
+
+		this.updateMainCanvas();
 	}
 }

@@ -463,8 +463,6 @@ mjx-container
 
 .card img
 {
-	width: 100% !important;
-	
 	max-width: var(--text-width);
 
 	user-select: none;
