@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { FlagOverlap } from "./class.js";
+import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $, $$ } from "/scripts/src/main.js";
 
@@ -10,7 +11,8 @@ export default async function()
 		overlayCanvas: $("#overlay-canvas"),
 		guessCanvases: Array.from($$(".guess-canvas")),
 		overlayCanvases: Array.from($$(".overlay-canvas")),
-		progressBars: Array.from($$(".progress-bar"))
+		progressBars: Array.from($$(".progress-bar")),
+		winOverlay: $("#win-overlay")
 	});
 
 	const showDiffsCheckbox = new Checkbox({
@@ -21,10 +23,15 @@ export default async function()
 		persistState: false
 	});
 
+	const replayButton = new Button({
+		element: $("#replay-button"),
+		name: "Play Again",
+		onClick: () => applet.guessFlag("us")
+	});
+
 	await applet.loadPromise;
 
-	setTimeout(() => applet.guessFlag("sc"), 1000);
-	setTimeout(() => applet.guessFlag("us"), 5000);
+	setTimeout(() => applet.guessFlag("us"), 1000);
 
 	showPage();
 

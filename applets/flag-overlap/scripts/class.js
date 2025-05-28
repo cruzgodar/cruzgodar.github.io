@@ -14,6 +14,7 @@ export class FlagOverlap extends Applet
 	guessCanvases;
 	overlayCanvases;
 	progressBars;
+	winOverlay;
 
 	wilsonOverlay;
 
@@ -43,13 +44,15 @@ export class FlagOverlap extends Applet
 		overlayCanvas,
 		guessCanvases,
 		overlayCanvases,
-		progressBars
+		progressBars,
+		winOverlay
 	}) {
 		super(canvas);
 
 		this.guessCanvases = guessCanvases;
 		this.overlayCanvases = overlayCanvases;
 		this.progressBars = progressBars;
+		this.winOverlay = winOverlay;
 
 		const switchFullscreen = () =>
 		{
@@ -77,7 +80,6 @@ export class FlagOverlap extends Applet
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);
-
 		this.wilsonOverlay = new WilsonCPU(overlayCanvas, options);
 
 
@@ -307,7 +309,15 @@ export class FlagOverlap extends Applet
 		{
 			progressBar.style.width = `${t * fillProportion * 100}%`;
 			progressBar.style.background = `hsl(${t * fillProportion * 120}, 70%, 50%)`;
-		}, 500 + fillProportion * 1000, "easeInOutQuad");
+		}, 500 + fillProportion * 500, "easeInOutQuad");
+
+
+
+		if (flagId === this.correctFlag)
+		{
+			this.win();
+			return;
+		}
 
 
 
@@ -330,6 +340,29 @@ export class FlagOverlap extends Applet
 			]);
 		}
 	}
+
+
+
+	async win()
+	{
+		await sleep(500);
+
+		this.wilsonOverlay.canvas.style.padding = "24px";
+		this.wilsonOverlay.canvas.style.borderColor = "transparent";
+		this.wilsonOverlay.canvas.style.marginTop = "-22px";
+		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
+		this.wilsonOverlay.canvas.style.borderRadius = "32px";
+		
+		this.winOverlay.style.zIndex = 1;
+	
+		changeOpacity({
+			element: this.winOverlay,
+			opacity: 1,
+			duration: 300
+		});
+	}
+
+
 
 	setShowDiffs(showDiffs)
 	{
