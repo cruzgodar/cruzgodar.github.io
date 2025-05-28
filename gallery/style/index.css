@@ -91,6 +91,7 @@ section
 #high-res-viewer-card img
 {
 	width: calc(100vh - 300px);
+	max-width: 100%;
 	aspect-ratio: 1;
 	border-radius: 16px;
 
