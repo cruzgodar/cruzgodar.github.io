@@ -237,12 +237,13 @@ export class Applet
 
 	hiddenCanvasContainer;
 
-	createHiddenCanvas(hidden = true)
+	createHiddenCanvas(hidden = true, aspectRatio = 1)
 	{
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
-		hiddenCanvas.style.width = "1000px";
+		hiddenCanvas.style.width = "10px";
+		hiddenCanvas.style.height = `${10 / aspectRatio}px`;
 
 		if (!this.hiddenCanvasContainer)
 		{
@@ -251,7 +252,7 @@ export class Applet
 			
 			this.hiddenCanvasContainer.style.position = "fixed";
 			this.hiddenCanvasContainer.style.top = "0";
-			this.hiddenCanvasContainer.style.left = "-1000vw";
+			this.hiddenCanvasContainer.style.left = "calc(-1000vw - 100px)";
 			
 			document.body.appendChild(this.hiddenCanvasContainer);
 		}
