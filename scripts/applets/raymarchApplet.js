@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
-import { sleep } from "../src/utils.js";
+import { animate, sleep } from "../src/utils.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
@@ -134,7 +134,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		theta = 0,
 		phi = Math.PI / 2,
 		stepFactor = .99,
-		epsilonScaling = 1.75,
+		epsilonScaling = 1.25,
 		minEpsilon = .0000003,
 
 		maxMarches = 128,
@@ -243,28 +243,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 			{
 				if (key === "z")
 				{
-					const dummy = { t: 0 };
 					const oldFactor = pressed ? 1 : 4;
 					const newFactor = pressed ? 4 : 1;
 
-					anime({
-						targets: dummy,
-						t: 1,
-						duration: 250,
-						easing: "easeOutCubic",
-						update: () =>
-						{
-							this.fovFactor = (1 - dummy.t) * oldFactor
-								+ dummy.t * newFactor;
+					animate((t) =>
+					{
+						this.fovFactor = (1 - t) * oldFactor
+							+ t * newFactor;
 
-							this.setUniforms({
-								epsilonScaling: this.epsilonScaling *
-									((1 - dummy.t) * oldFactor + dummy.t * newFactor)
-							});
+						this.setUniforms({
+							epsilonScaling: this.epsilonScaling *
+								((1 - t) * oldFactor + t * newFactor)
+						});
 
-							this.needNewFrame = true;
-						}
-					});
+						this.needNewFrame = true;
+					}, 250, "easeOutCubic");
 				}
 			}
 		);
@@ -1708,19 +1701,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		value,
 		duration = 1000
 	}) {
-		const dummy = { t: this.uniforms[name] };
+		const oldUniformValue = this.uniforms[name];
 
-		return anime({
-			targets: dummy,
-			t: value,
-			duration,
-			easing: "easeInOutQuart",
-			update: () =>
-			{
-				this.setUniforms({ [name]: dummy.t });
-				this.needNewFrame = true;
-			}
-		}).finished;
+		animate((t) =>
+		{
+			this.setUniforms({ [name]: t * value + (1 - t) * oldUniformValue });
+			this.needNewFrame = true;
+		}, duration, "easeInOutQuart");
 	}
 
 	loopUniform({

@@ -1,5 +1,5 @@
-import anime from "/scripts/anime.js";
 import { dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { animate } from "/scripts/src/utils.js";
 
 export class QuaternionicJuliaSets extends RaymarchApplet
 {
@@ -146,22 +146,14 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 		const oldJuliaProportion = juliaProportion;
 		const newJuliaProportion = 1 - juliaProportion;
 
-		const dummy = { t: 0 };
+		animate((t) =>
+		{
+			this.setUniforms({
+				juliaProportion: (1 - t) * oldJuliaProportion
+					+ t * newJuliaProportion
+			});
 
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: instant ? 10 : 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				this.setUniforms({
-					juliaProportion: (1 - dummy.t) * oldJuliaProportion
-						+ dummy.t * newJuliaProportion
-				});
-
-				this.needNewFrame = true;
-			}
-		});
+			this.needNewFrame = true;
+		}, instant ? 0 : 1000, "easeInOutQuad");
 	}
 }

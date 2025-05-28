@@ -7,6 +7,7 @@ import {
 	pageUrl
 } from "./main.js";
 import { getDisplayUrl } from "./navigation.js";
+import { animate } from "./utils.js";
 import anime from "/scripts/anime.js";
 
 export const forceThemePages =
@@ -370,7 +371,8 @@ export async function toggleDarkTheme({
 			}
 		`);
 
-		const dummy = { t: siteSettings.darkTheme ? 0 : 1 };
+		const oldTheme = siteSettings.darkTheme ? 0 : 1;
+		const newTheme = siteSettings.darkTheme ? 1 : 0;
 
 		await Promise.all([
 			anime({
@@ -380,20 +382,10 @@ export async function toggleDarkTheme({
 				easing: "cubicBezier(.25, .1, .25, 1)",
 			}).finished,
 
-			anime({
-				targets: dummy,
-				t: siteSettings.darkTheme ? 1 : 0,
-				duration,
-				easing: "cubicBezier(.25, .1, .25, 1)",
-				update: () =>
-				{
-					rootElement.style.setProperty("--theme", dummy.t);
-				},
-				complete: () =>
-				{
-					rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
-				},
-			}).finished
+			animate((t) =>
+			{
+				rootElement.style.setProperty("--theme", t * newTheme + (1 - t) * oldTheme);
+			}, duration, "cubicBezier(.25, .1, .25, 1)")
 		]);
 
 		element.remove();
@@ -459,25 +451,16 @@ export async function toggleIncreaseContrast({
 			}
 		`);
 
-		const dummy = { t: siteSettings.increaseContrast ? 0 : 1 };
+		const oldIncreaseContrast = siteSettings.increaseContrast ? 0 : 1;
+		const newIncreaseContrast = siteSettings.increaseContrast ? 1 : 0;
 
-		await anime({
-			targets: dummy,
-			t: siteSettings.increaseContrast ? 1 : 0,
-			duration,
-			easing: "easeInOutSine",
-			update: () =>
-			{
-				rootElement.style.setProperty("--contrast", dummy.t);
-			},
-			complete: () =>
-			{
-				rootElement.style.setProperty(
-					"--contrast",
-					siteSettings.increaseContrast ? 1 : 0
-				);
-			},
-		}).finished;
+		await animate((t) =>
+		{
+			rootElement.style.setProperty(
+				"--contrast",
+				t * newIncreaseContrast + (1 - t) * oldIncreaseContrast
+			);
+		}, duration, "easeInOutSine");
 
 		element.remove();
 	}
@@ -556,8 +539,6 @@ function handleEasterEgg()
 			}
 		`, false);
 
-		const dummy = { t: 1 };
-
 		const startingBackground = siteSettings.darkTheme
 			? "lch(8.25% 0 0)"
 			: "lch(100% 0 0)";
@@ -576,39 +557,33 @@ function handleEasterEgg()
 
 		document.documentElement.style.filter = "brightness(1)";
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: 2000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				rootElement.style.setProperty(
-					"--background",
-					`color-mix(in lch, ${startingBackground} ${dummy.t * 100}%, lch(46.62% 108.32 40.84))`
-				);
+		animate((t) =>
+		{
+			rootElement.style.setProperty(
+				"--background",
+				`color-mix(in lch, ${startingBackground} ${(1 - t) * 100}%, lch(46.62% 108.32 40.84))`
+			);
 
-				rootElement.style.setProperty(
-					"--high-contrast",
-					`color-mix(in lch, ${startingHighContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--high-contrast",
+				`color-mix(in lch, ${startingHighContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--normal-contrast",
-					`color-mix(in lch, ${startingNormalContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--normal-contrast",
+				`color-mix(in lch, ${startingNormalContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--low-contrast",
-					`color-mix(in lch, ${startingLowContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--low-contrast",
+				`color-mix(in lch, ${startingLowContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--extra-brightness",
-					(1 - dummy.t) * 10 + 1
-				);
-			}
-		});
+			rootElement.style.setProperty(
+				"--extra-brightness",
+				t * 10 + 1
+			);
+		}, 2000);
 	}
 
 	return shownEasterEgg;

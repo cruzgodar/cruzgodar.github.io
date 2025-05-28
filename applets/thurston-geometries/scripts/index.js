@@ -73,11 +73,11 @@ export default function()
 		name0: "Switch to Spheres",
 		name1: "Switch to Rooms",
 		onClick0: (instant) => setTimeout(
-			() => applet.switchScene({ duration: instant ? 20 : 500 }),
+			() => applet.switchScene({ duration: instant ? 0 : 500 }),
 			instant ? 100 : 0
 		),
 		onClick1: (instant) => setTimeout(
-			() => applet.switchScene({ duration: instant ? 20 : 500 }),
+			() => applet.switchScene({ duration: instant ? 0 : 500 }),
 			instant ? 100 : 0
 		),
 	});

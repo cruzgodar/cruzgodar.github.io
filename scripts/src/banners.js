@@ -1,4 +1,3 @@
-import anime from "../anime.js";
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
 import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
@@ -8,7 +7,7 @@ import {
 	pageUrl
 } from "./main.js";
 import { siteSettings } from "./settings.js";
-import { clamp } from "./utils.js";
+import { animate, clamp } from "./utils.js";
 
 export let bannerElement;
 
@@ -83,38 +82,22 @@ export function updateBanner(timestamp)
 
 		if (t >= .8 && lastT < .8)
 		{
-			const dummy = { t: 0 };
-
-			anime({
-				targets: dummy,
-				t: 1,
-				duration: 300,
-				easing: "easeInOutSine",
-				update: () =>
-				{
-					bannerElement.style.opacity = 1 - dummy.t;
-					nameTextOpacity = 1 - dummy.t;
-					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - dummy.t) * .35})`;
-				}
-			});
+			animate((t) =>
+			{
+				bannerElement.style.opacity = 1 - t;
+				nameTextOpacity = 1 - t;
+				contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
+			}, 300, "easeInOutSine");
 		}
 
 		else if (t < .8 && lastT >= .8)
 		{
-			const dummy = { t: 0 };
-
-			anime({
-				targets: dummy,
-				t: 1,
-				duration: 300,
-				easing: "easeInOutSine",
-				update: () =>
-				{
-					bannerElement.style.opacity = dummy.t;
-					nameTextOpacity = dummy.t;
-					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(dummy.t) * .35})`;
-				}
-			});
+			animate((t) =>
+			{
+				bannerElement.style.opacity = t;
+				nameTextOpacity = t;
+				contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(t) * .35})`;
+			}, 300, "easeInOutSine");
 		}
 	}
 

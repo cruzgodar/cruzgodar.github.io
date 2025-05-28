@@ -1,4 +1,5 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
+import { pageUrl } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const hThreshold = 0.075;
@@ -47,8 +48,7 @@ export class FlagOverlap extends Applet
 
 		this.wilson = new WilsonCPU(canvas, options);
 
-		const hiddenCanvas = this.createHiddenCanvas(false);
-		hiddenCanvas.style.setProperty("aspect-ratio", "1024 / 683", "important");
+		const hiddenCanvas = this.createHiddenCanvas(true, 1024 / 683);
 		this.wilsonCorrectFlag = new WilsonCPU(hiddenCanvas, options);
 
 		this.loadPromise = new Promise(resolve =>
@@ -79,7 +79,7 @@ export class FlagOverlap extends Applet
 			resolve();
 		};
 
-		img.src = `graphics/${flagId}.png`;
+		img.src = `${pageUrl}/graphics/${flagId}.png`;
 
 		await promise;
 
@@ -105,6 +105,19 @@ export class FlagOverlap extends Applet
 			pixels,
 			hsvData
 		};
+	}
+
+
+
+	// Animates the given wilson to the pixels passed.
+	async animateToImageData(wilson, newPixels)
+	{
+		const pixels = wilson.ctx.getImageData(
+			0,
+			0,
+			wilson.canvasWidth,
+			wilson.canvasHeight,
+		).data;
 	}
 
 
@@ -137,8 +150,6 @@ export class FlagOverlap extends Applet
 			this.wilson.canvasWidth,
 			this.wilson.canvasHeight
 		);
-
-		this.wilson.ctx.putImageData(imageData, 0, 0);
 	}
 
 
@@ -214,6 +225,8 @@ export class FlagOverlap extends Applet
 
 		this.guesses.push(guess);
 
-		this.updateMainCanvas();
+		
+		
+
 	}
 }

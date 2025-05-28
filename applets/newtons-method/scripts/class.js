@@ -2,7 +2,7 @@ import { hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { sleep } from "/scripts/src/utils.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
@@ -401,7 +401,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 			this.wilson.draggables[`root${i}`].element.style.display = "none";
 		}
 
-		this.spreadRoots({ animate: false });
+		this.spreadRoots({ doAnimation: false });
 
 		this.resume();
 	}
@@ -410,30 +410,23 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	switchMethod(instant)
 	{
-		const dummy = { t: this.secantProportion };
-
+		const oldSecantProportion = this.secantProportion;
 		const newSecantProportion = this.secantProportion === 0 ? 1 : 0;
 
-		anime({
-			targets: dummy,
-			t: newSecantProportion,
-			duration: instant ? 10 : 1000,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.secantProportion = dummy.t;
+		animate((t) =>
+		{
+			this.secantProportion = t * newSecantProportion + (1 - t) * oldSecantProportion;
 
-				this.wilson.setUniforms({
-					secantProportion: this.secantProportion
-				});
+			this.wilson.setUniforms({
+				secantProportion: this.secantProportion
+			});
 
-				this.wilsonHidden.setUniforms({
-					secantProportion: this.secantProportion
-				});
+			this.wilsonHidden.setUniforms({
+				secantProportion: this.secantProportion
+			});
 
-				this.needNewFrame = true;
-			}
-		});
+			this.needNewFrame = true;
+		}, instant ? 0 : 1000, "easeInOutQuad");
 	}
 
 
@@ -537,7 +530,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 	spreadRoots({
-		animate = true,
+		doAnimation = true,
 		randomize = false
 	}) {
 		const newRoots = {};
@@ -552,12 +545,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 			];
 		}
 
-		this.moveRoots({ newRoots, animate });
+		this.moveRoots({ newRoots, doAnimation });
 	}
 
 	async moveRoots({
 		newRoots,
-		animate = true,
+		doAnimation = true,
 		easing = "easeInOutQuad",
 		duration = 1000
 	}) {
@@ -566,48 +559,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 				.map(([id, draggable]) => [id, draggable.location])
 		);
 
-		const dummy = { t: 0 };
-
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: animate ? duration : 10,
-			easing,
-			update: () =>
+		await animate((t) =>
+		{
+			for (const id of Object.keys(newRoots))
 			{
-				for (const id of Object.keys(newRoots))
-				{
-					const oldRoot = oldRoots[id];
-					const newRoot = newRoots[id];
+				const oldRoot = oldRoots[id];
+				const newRoot = newRoots[id];
 
-					const location = [
-						(1 - dummy.t) * oldRoot[0]
-							+ dummy.t * newRoot[0],
-						(1 - dummy.t) * oldRoot[1]
-							+ dummy.t * newRoot[1]
-					];
+				const location = [
+					(1 - t) * oldRoot[0]
+						+ t * newRoot[0],
+					(1 - t) * oldRoot[1]
+						+ t * newRoot[1]
+				];
 
-					this.wilson.setDraggables({ [id]: location });
+				this.wilson.setDraggables({ [id]: location });
 
-					this.wilson.setUniforms({ [id]: location });
-					this.wilsonHidden.setUniforms({ [id]: location });
-				}
+				this.wilson.setUniforms({ [id]: location });
+				this.wilsonHidden.setUniforms({ [id]: location });
+			}
 
-				this.needNewFrame = true;
-			},
-			complete: () =>
-			{
-				for (const id of Object.keys(newRoots))
-				{
-					this.wilson.setDraggables({ [id]: newRoots[id] });
-
-					this.wilson.setUniforms({ [id]: newRoots[id] });
-					this.wilsonHidden.setUniforms({ [id]: newRoots[id] });
-				}
-
-				this.needNewFrame = true;
-			},
-		}).finished;
+			this.needNewFrame = true;
+		}, doAnimation ? duration : 0, easing);
 	}
 
 

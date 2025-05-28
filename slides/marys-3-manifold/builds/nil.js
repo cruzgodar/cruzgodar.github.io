@@ -1,7 +1,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { NilRooms } from "/applets/thurston-geometries/scripts/geometries/nil.js";
-import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { animate } from "/scripts/src/utils.js";
 
 let geometryData;
 
@@ -40,55 +40,41 @@ async function reset({ slide, forward, duration })
 
 async function build0({ forward })
 {
-	const dummy = { t: 0 };
-
 	if (forward)
 	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			applet.automovingDirection = () =>
 			{
-				applet.automovingDirection = () =>
-				{
-					geometryData.cameraPos[0] *= .99;
-					geometryData.cameraPos[1] *= .99;
+				geometryData.cameraPos[0] *= .99;
+				geometryData.cameraPos[1] *= .99;
 
-					return [
-						0,
-						-1 * (1 - dummy.t) + 0 * dummy.t,
-						0 * (1 - dummy.t) + 1 * dummy.t,
-						0,
-					];
-				};
-			}
-		}).finished;
+				return [
+					0,
+					-1 * (1 - t) + 0 * t,
+					0 * (1 - t) + 1 * t,
+					0,
+				];
+			};
+		}, 1000);
 	}
 
 	else
 	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			applet.automovingDirection = () =>
 			{
-				applet.automovingDirection = () =>
-				{
-					geometryData.cameraPos[2] *= .99;
+				geometryData.cameraPos[2] *= .99;
 
-					return [
-						0,
-						0 * (1 - dummy.t) - 1 * dummy.t,
-						1 * (1 - dummy.t) + 0 * dummy.t,
-						0,
-					];
-				};
-			}
-		}).finished;
+				return [
+					0,
+					0 * (1 - t) - 1 * t,
+					1 * (1 - t) + 0 * t,
+					0,
+				];
+			};
+		}, 1000);
 	}
 }
 

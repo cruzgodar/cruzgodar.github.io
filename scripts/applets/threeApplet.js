@@ -1,4 +1,5 @@
 import anime from "../anime.js";
+import { animate } from "../src/utils.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import { crossProduct, magnitude, normalize, scaleVector } from "./raymarchApplet.js";
 import * as THREE from "/scripts/three.js";
@@ -55,24 +56,16 @@ export class ThreeApplet extends AnimationFrameApplet
 			{
 				if (key === "z")
 				{
-					const dummy = { t: 0 };
 					const oldFovFactor = this.fovFactor;
 					const newFovFactor = pressed ? .25 : 1;
 
-					anime({
-						targets: dummy,
-						t: 1,
-						duration: 250,
-						easing: "easeOutQuad",
-						update: () =>
-						{
-							this.fovFactor = (1 - dummy.t) * oldFovFactor + dummy.t * newFovFactor;
-							this.camera.fov = 100 * this.fovFactor;
-							this.camera.updateProjectionMatrix();
-
-							this.needNewFrame = true;
-						}
-					});
+					animate((t) =>
+					{
+						this.fovFactor = (1 - t) * oldFovFactor + t * newFovFactor;
+						this.camera.fov = 100 * this.fovFactor;
+						this.camera.updateProjectionMatrix();
+						this.needNewFrame = true;
+					}, 250);
 				}
 			}
 		);

@@ -1,7 +1,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
-import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { animate } from "/scripts/src/utils.js";
 
 let geometryData;
 
@@ -35,20 +35,12 @@ async function reset({ slide, forward, duration })
 
 async function build0({ forward })
 {
-	const dummy = { t: 0 };
-
-	await anime({
-		targets: dummy,
-		t: 1,
-		duration: 500,
-		easing: "easeOutCubic",
-		update: () =>
-		{
-			geometryData.sliderValues.wallThickness = forward
-				? (1 - dummy.t) * .143 + dummy.t * (-.357)
-				: (1 - dummy.t) * (-.357) + dummy.t * (.143);
-		}
-	}).finished;
+	await animate((t) =>
+	{
+		geometryData.sliderValues.wallThickness = forward
+			? (1 - t) * .143 + t * (-.357)
+			: (1 - t) * (-.357) + t * (.143);
+	}, 500, "easeOutCubic");
 }
 
 export const h3Builds =

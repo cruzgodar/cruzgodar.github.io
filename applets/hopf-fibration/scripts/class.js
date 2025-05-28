@@ -1,7 +1,7 @@
-import anime from "/scripts/anime.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { magnitude } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
+import { animate } from "/scripts/src/utils.js";
 import { STLExporter } from "/scripts/stlExporter.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonGPU } from "/scripts/wilson.js";
@@ -496,8 +496,6 @@ export class HopfFibration extends ThreeApplet
 
 	async toggleCompression(instant)
 	{
-		const dummy = { t: 0 };
-
 		const oldCompression = this.compression;
 		const newCompression = this.compression === 0 ? 1 : 0;
 
@@ -516,38 +514,21 @@ export class HopfFibration extends ThreeApplet
 			this.cameraPos[2] * scalingFactor
 		];
 
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: instant ? 0 : 750,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				this.compression = (1 - dummy.t) * oldCompression + dummy.t * newCompression;
+		await animate((t) => {
+			this.compression = (1 - t) * oldCompression + t * newCompression;
 
-				this.cameraPos = [
-					(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
-					(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
-					(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2]
-				];
+			this.cameraPos = [
+				(1 - t) * oldCameraPos[0] + t * newCameraPos[0],
+				(1 - t) * oldCameraPos[1] + t * newCameraPos[1],
+				(1 - t) * oldCameraPos[2] + t * newCameraPos[2]
+			];
 
-				this.distanceFromOrigin = magnitude(this.cameraPos);
+			this.distanceFromOrigin = magnitude(this.cameraPos);
 
-				this.createAllFibers();
+			this.createAllFibers();
 
-				this.needNewFrame = true;
-			},
-			complete: () =>
-			{
-				this.compression = newCompression;
-
-				this.cameraPos = newCameraPos;
-				this.distanceFromOrigin = magnitude(this.cameraPos);
-				this.createAllFibers();
-
-				this.needNewFrame = true;
-			}
-		}).finished;
+			this.needNewFrame = true;
+		}, instant ? 0 : 750);
 	}
 
 

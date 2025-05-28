@@ -1,6 +1,7 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { animate } from "/scripts/src/utils.js";
 
 export async function showHexView()
 {
@@ -26,8 +27,8 @@ export async function showHexView()
 
 
 	this.updateCameraHeight(true);
-
-	const dummy = { t: this.wilsonNumbers.worldCenterX };
+	const oldCenterX = this.wilsonNumbers.worldCenterX;
+	const newCenterX = 0;
 
 	await Promise.all([
 		anime({
@@ -39,18 +40,12 @@ export async function showHexView()
 			easing: "easeInOutQuad",
 		}).finished,
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: this.animationTime,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.wilsonNumbers.resizeWorld({
-					centerX: dummy.t
-				});
-			}
-		}).finished
+		animate((t) =>
+		{
+			this.wilsonNumbers.resizeWorld({
+				centerX: t * newCenterX + (1 - t) * oldCenterX
+			});
+		}, this.animationTime, "easeInOutQuad"),
 	]
 		.concat(
 			this.arrays.map(array =>
@@ -106,7 +101,8 @@ export async function show2dView()
 
 	this.updateCameraHeight(true);
 
-	const dummy = { t: this.wilsonNumbers.worldCenterX };
+	const oldCenterX = this.wilsonNumbers.worldCenterX;
+	const newCenterX = 0;
 
 	await Promise.all([
 		anime({
@@ -118,18 +114,12 @@ export async function show2dView()
 			easing: "easeInOutQuad"
 		}).finished,
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: this.animationTime,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.wilsonNumbers.resizeWorld({
-					centerX: dummy.t
-				});
-			}
-		}).finished
+		animate((t) =>
+		{
+			this.wilsonNumbers.resizeWorld({
+				centerX: t * newCenterX + (1 - t) * oldCenterX
+			});
+		}, this.animationTime, "easeInOutQuad"),
 	]
 		.concat(
 			this.arrays.map(array =>

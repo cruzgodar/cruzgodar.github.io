@@ -6,7 +6,7 @@ import { $$, pageElement, pageUrl } from "./main.js";
 import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
-import { asyncFetch, sleep } from "./utils.js";
+import { animate, asyncFetch, sleep } from "./utils.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
@@ -295,7 +295,6 @@ export async function hideCard(animationTime = cardAnimationTime)
 		pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 	}
 
-	const dummy = { t: 0 };
 	const containerOldScroll = cardContainer.scrollTop;
 	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
@@ -306,21 +305,15 @@ export async function hideCard(animationTime = cardAnimationTime)
 			duration: animationTime,
 			easing,
 		}).finished
-		: anime({
-			targets: dummy,
-			t: 1,
-			duration: animationTime,
-			easing,
-			update: () =>
-			{
-				const heightMoved = dummy.t * totalHeightToMove;
-				const scroll = Math.max(containerOldScroll - heightMoved, 0);
-				cardContainer.scrollTo(0, scroll);
+		: animate((t) =>
+		{
+			const heightMoved = t * totalHeightToMove;
+			const scroll = Math.max(containerOldScroll - heightMoved, 0);
+			cardContainer.scrollTo(0, scroll);
 
-				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
-				cardContainer.style.top = `${remainingHeight}px`;
-			}
-		}).finished;
+			const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
+			cardContainer.style.top = `${remainingHeight}px`;
+		}, animationTime, easing);
 
 	await Promise.all([
 		anime({

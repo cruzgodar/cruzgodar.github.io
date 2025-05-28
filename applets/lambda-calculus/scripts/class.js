@@ -1,9 +1,8 @@
-import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { addTemporaryInterval } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { clamp, sleep } from "/scripts/src/utils.js";
+import { animate, clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const LITERAL = 0; // { value, bindingLambda }
@@ -1300,98 +1299,80 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-		const dummy = { t: 0 };
+		await animate((t) =>
+		{
+			this.outerExpressionSize = oldExpressionSize;
 
-		// Fade out deleted rects.
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: this.animationTime * 0.5,
-			easing: "easeInOutQuad",
-			update: () =>
+			for (const key of rectsToFadeDown)
 			{
-				this.outerExpressionSize = oldExpressionSize;
-
-				for (const key of rectsToFadeDown)
-				{
-					expression.rectIndex[key].row = oldRectIndex[key].row + dummy.t;
-					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
-				}
-
-				for (const key of rectsToFadeUp)
-				{
-					expression.rectIndex[key].row = oldRectIndex[key].row - dummy.t;
-					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
-				}
-
-				if (newRects.length === 0 || replacementIsLiteral)
-				{
-					for (const key of replacementRects)
-					{
-						expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - dummy.t})`;
-					}
-				}
-
-				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-				this.drawExpressionStep(expression);
+				expression.rectIndex[key].row = oldRectIndex[key].row + t;
+				expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
 			}
-		}).finished;
+
+			for (const key of rectsToFadeUp)
+			{
+				expression.rectIndex[key].row = oldRectIndex[key].row - t;
+				expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
+			}
+
+			if (newRects.length === 0 || replacementIsLiteral)
+			{
+				for (const key of replacementRects)
+				{
+					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
+				}
+			}
+
+			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+			this.drawExpressionStep(expression);
+		}, this.animationTime * 0.5, "easeInOutQuad");
 
 		yield await sleep(this.animationTime / 3);
 
 
-
-		dummy.t = 0;
-
 		// Stretch rects to their new positions and
 		// move the replacement block 3px above the whole thing.
 		// If the replacement block is a literal, we just skip this.
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: this.animationTime,
-			easing: "easeInOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			this.outerExpressionSize = (1 - t) * oldExpressionSize
+				+ t * expandedExpressionSize;
+
+			for (const key of preservedRects)
 			{
-				this.outerExpressionSize = (1 - dummy.t) * oldExpressionSize
-					+ dummy.t * expandedExpressionSize;
+				expression.rectIndex[key].row = (1 - t) * oldRectIndex[key].row
+					+ t * betaReducedExpression.rectIndex[key].row;
 
-				for (const key of preservedRects)
-				{
-					expression.rectIndex[key].row = (1 - dummy.t) * oldRectIndex[key].row
-						+ dummy.t * betaReducedExpression.rectIndex[key].row;
+				expression.rectIndex[key].col = (1 - t) * oldRectIndex[key].col
+					+ t * betaReducedExpression.rectIndex[key].col;
 
-					expression.rectIndex[key].col = (1 - dummy.t) * oldRectIndex[key].col
-						+ dummy.t * betaReducedExpression.rectIndex[key].col;
+				expression.rectIndex[key].width = (1 - t) * oldRectIndex[key].width
+					+ t * betaReducedExpression.rectIndex[key].width;
 
-					expression.rectIndex[key].width = (1 - dummy.t) * oldRectIndex[key].width
-						+ dummy.t * betaReducedExpression.rectIndex[key].width;
+				expression.rectIndex[key].height = (1 - t) * oldRectIndex[key].height
+					+ t * betaReducedExpression.rectIndex[key].height;
+				
+				const r = (1 - t) * rgbOld[key][0] + t * rgbNew[key][0];
+				const g = (1 - t) * rgbOld[key][1] + t * rgbNew[key][1];
+				const b = (1 - t) * rgbOld[key][2] + t * rgbNew[key][2];
 
-					expression.rectIndex[key].height = (1 - dummy.t) * oldRectIndex[key].height
-						+ dummy.t * betaReducedExpression.rectIndex[key].height;
-					
-					const r = (1 - dummy.t) * rgbOld[key][0] + dummy.t * rgbNew[key][0];
-					const g = (1 - dummy.t) * rgbOld[key][1] + dummy.t * rgbNew[key][1];
-					const b = (1 - dummy.t) * rgbOld[key][2] + dummy.t * rgbNew[key][2];
-
-					expression.rectIndex[key].color = `rgb(${r}, ${g}, ${b})`;
-				}
-
-				for (const key of replacementRects)
-				{
-					expression.rectIndex[key].row = oldRectIndex[key].row
-						+ dummy.t * (replacementRectRowOffset + expandedExpressionRowOffset);
-
-					expression.rectIndex[key].col = oldRectIndex[key].col
-						+ dummy.t * (replacementRectColOffset + expandedExpressionColOffset);
-				}
-
-				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-				this.drawExpressionStep(expression);
+				expression.rectIndex[key].color = `rgb(${r}, ${g}, ${b})`;
 			}
-		}).finished;
+
+			for (const key of replacementRects)
+			{
+				expression.rectIndex[key].row = oldRectIndex[key].row
+					+ t * (replacementRectRowOffset + expandedExpressionRowOffset);
+
+				expression.rectIndex[key].col = oldRectIndex[key].col
+					+ t * (replacementRectColOffset + expandedExpressionColOffset);
+			}
+
+			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+			this.drawExpressionStep(expression);
+		}, this.animationTime, "easeInOutQuad");
 
 		yield await sleep(this.animationTime / 6);
 
@@ -1438,51 +1419,41 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		for (let i = 0; i < numReplacementBlocks - 1; i++)
 		{
-			dummy.t = 0;
+			await animate((t) =>
+			{
+				this.outerExpressionSize = expandedExpressionSize;
 
-			await anime({
-				targets: dummy,
-				t: 1,
-				duration: 1.5 * this.animationTime / numReplacementBlocks,
-				easing: "easeInOutQuad",
-				update: () =>
-				{
-					this.outerExpressionSize = expandedExpressionSize;
+				for (
+					let j = replacementRects.length * i;
+					j < replacementRects.length * (i + 1);
+					j++
+				) {
+					const key = newRects[j];
+					
+					// For these, we have to add the offset
+					// because the whole expression hasn't moved yet.
+					betaReducedExpression.rectIndex[key].row =
+						(1 - t) * expandedRectIndex[key].row
+						+ t * (newRectIndex[key].row + expandedExpressionRowOffset);
 
-					for (
-						let j = replacementRects.length * i;
-						j < replacementRects.length * (i + 1);
-						j++
-					) {
-						const key = newRects[j];
-						
-						// For these, we have to add the offset
-						// because the whole expression hasn't moved yet.
-						betaReducedExpression.rectIndex[key].row =
-							(1 - dummy.t) * expandedRectIndex[key].row
-							+ dummy.t * (newRectIndex[key].row + expandedExpressionRowOffset);
+					betaReducedExpression.rectIndex[key].col =
+						(1 - t) * expandedRectIndex[key].col
+						+ t * (newRectIndex[key].col + expandedExpressionColOffset);
 
-						betaReducedExpression.rectIndex[key].col =
-							(1 - dummy.t) * expandedRectIndex[key].col
-							+ dummy.t * (newRectIndex[key].col + expandedExpressionColOffset);
-
-						betaReducedExpression.rectIndex[key].width =
-							(1 - dummy.t) * expandedRectIndex[key].width
-							+ dummy.t * newRectIndex[key].width;
-						
-						betaReducedExpression.rectIndex[key].height =
-							(1 - dummy.t) * expandedRectIndex[key].height
-							+ dummy.t * newRectIndex[key].height;
-					}
-
-					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-					this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-					this.drawExpressionStep(betaReducedExpression);
+					betaReducedExpression.rectIndex[key].width =
+						(1 - t) * expandedRectIndex[key].width
+						+ t * newRectIndex[key].width;
+					
+					betaReducedExpression.rectIndex[key].height =
+						(1 - t) * expandedRectIndex[key].height
+						+ t * newRectIndex[key].height;
 				}
-			}).finished;
-		}
 
-		dummy.t = 0;
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(betaReducedExpression);
+			}, 1.5 * this.animationTime / numReplacementBlocks, "easeInOutQuad");
+		}
 		
 		// For this one, we also update the size.
 		// We also need to be able to handle the case where numReplacementBlocks is 0.
@@ -1507,40 +1478,34 @@ export class LambdaCalculus extends AnimationFrameApplet
 		
 		if (newRects.length !== 0)
 		{
-			await anime({
-				targets: dummy,
-				t: 1,
-				duration: 1.5 * this.animationTime / numReplacementBlocks,
-				easing: "easeInOutQuad",
-				update: () =>
+			await animate((t) =>
+			{
+				this.outerExpressionSize = (1 - t) * expandedExpressionSize
+					+ t * newExpressionSize;
+
+				for (const key in newRectIndex)
 				{
-					this.outerExpressionSize = (1 - dummy.t) * expandedExpressionSize
-						+ dummy.t * newExpressionSize;
+					betaReducedExpression.rectIndex[key].row =
+						(1 - t) * expandedRectIndex[key].row
+						+ t * newRectIndex[key].row;
 
-					for (const key in newRectIndex)
-					{
-						betaReducedExpression.rectIndex[key].row =
-							(1 - dummy.t) * expandedRectIndex[key].row
-							+ dummy.t * newRectIndex[key].row;
+					betaReducedExpression.rectIndex[key].col =
+						(1 - t) * expandedRectIndex[key].col
+						+ t * newRectIndex[key].col;
 
-						betaReducedExpression.rectIndex[key].col =
-							(1 - dummy.t) * expandedRectIndex[key].col
-							+ dummy.t * newRectIndex[key].col;
-
-						betaReducedExpression.rectIndex[key].width =
-							(1 - dummy.t) * expandedRectIndex[key].width
-							+ dummy.t * newRectIndex[key].width;
-						
-						betaReducedExpression.rectIndex[key].height =
-							(1 - dummy.t) * expandedRectIndex[key].height
-							+ dummy.t * newRectIndex[key].height;
-					}
-
-					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-					this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-					this.drawExpressionStep(betaReducedExpression);
+					betaReducedExpression.rectIndex[key].width =
+						(1 - t) * expandedRectIndex[key].width
+						+ t * newRectIndex[key].width;
+					
+					betaReducedExpression.rectIndex[key].height =
+						(1 - t) * expandedRectIndex[key].height
+						+ t * newRectIndex[key].height;
 				}
-			}).finished;
+
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(betaReducedExpression);
+			}, 1.5 * this.animationTime / numReplacementBlocks, "easeInOutQuad");
 		}
 
 		// If all went well, this call should be unnoticable!

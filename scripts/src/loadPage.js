@@ -1,4 +1,3 @@
-import anime from "../anime.js";
 import {
 	fadeDownIn,
 	fadeIn,
@@ -34,7 +33,7 @@ import {
 import { initPageContents } from "./pageContent.js";
 import { siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
-import { asyncFetch, sleep } from "./utils.js";
+import { animate, asyncFetch, sleep } from "./utils.js";
 
 export let pageShown = true;
 
@@ -353,23 +352,14 @@ function packageSolution(solutionElement, showButton = true)
 			solutionElement.style.height = 0;
 			solutionElement.style.position = "relative";
 
-			const dummy = { t: 0 };
-
-			await anime({
-				targets: dummy,
-				t: 1,
-				duration: 450,
-				easing: "easeOutQuint",
-				update: () =>
-				{
-					solutionElement.style.height = `${solutionElementHeight * dummy.t}px`;
-					textButtonsElement.style.height = `${textButtonsElementHeight * (1 - dummy.t)}px`;
-					textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - dummy.t)}px`;
-
-					textButtonsElement.style.opacity = 1 - dummy.t;
-					solutionElement.style.opacity = dummy.t;
-				}
-			}).finished;
+			await animate((t) =>
+			{
+				solutionElement.style.height = `${solutionElementHeight * t}px`;
+				textButtonsElement.style.height = `${textButtonsElementHeight * (1 - t)}px`;
+				textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - t)}px`;
+				textButtonsElement.style.opacity = 1 - t;
+				solutionElement.style.opacity = t;
+			}, 450, "easeOutQuint");
 
 			solutionElement.style.height = "auto";
 			solutionElement.style.width = "auto";

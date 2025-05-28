@@ -11,7 +11,7 @@ export default async function()
 
 	await applet.loadPromise;
 
-	applet.guessFlag("bs");
+	applet.guessFlag("us");
 
 	showPage();
 }

@@ -1,7 +1,7 @@
-import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { animate } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class BernoulliPercolation extends AnimationFrameApplet
@@ -649,55 +649,35 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			return;
 		}
 
-		const dummy = { t: 0 };
-
 		if (this.doDrawDots)
 		{
 			this.doDrawDots = false;
 
 			this.roundRectFudgePixels = 2 * Math.ceil(this.resolution / 2000);
 
-			await anime({
-				targets: dummy,
-				t: 1,
-				duration: 250,
-				easing: "easeOutQuint",
-				update: () =>
-				{
-					this.dotRadiusFraction = .35 * (1 - dummy.t) + .5 * dummy.t;
-					this.edgeWidthFraction = .2 * (1 - dummy.t) + .5 * dummy.t;
-					this.redrawEverything();
-				},
-				complete: () =>
-				{
-					this.roundRectFudgePixels = 0;
-					this.redrawEverything(true);
-				}
-			}).finished;
+			await animate((t) => {
+				this.dotRadiusFraction = .35 * (1 - t) + .5 * t;
+				this.edgeWidthFraction = .2 * (1 - t) + .5 * t;
+				this.redrawEverything();
+			}, 250, "easeOutQuint");
+			
+			this.roundRectFudgePixels = 0;
+			this.redrawEverything(true);
 		}
 
 		else
 		{
 			this.doDrawDots = true;
 
-			await anime({
-				targets: dummy,
-				t: 1,
-				duration: 250,
-				easing: "easeOutQuint",
-				update: () =>
-				{
-					this.dotRadiusFraction = .5 * (1 - dummy.t) + .35 * dummy.t;
-					this.edgeWidthFraction = .5 * (1 - dummy.t) + .2 * dummy.t;
-					this.redrawEverything();
-				},
-				complete: () =>
-				{
-					this.dotRadiusFraction = .35;
-					this.edgeWidthFraction = .2;
-					this.redrawEverything();
-				}
-			}).finished;
+			await animate((t) => {
+				this.dotRadiusFraction = .5 * (1 - t) + .35 * t;
+				this.edgeWidthFraction = .5 * (1 - t) + .2 * t;
+				this.redrawEverything();
+			}, 250, "easeOutQuint");
+
+			this.dotRadiusFraction = .35;
+			this.edgeWidthFraction = .2;
+			this.redrawEverything();
 		}
 	}
 
