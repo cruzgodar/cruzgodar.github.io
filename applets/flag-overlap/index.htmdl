@@ -10,51 +10,72 @@
 	
 </div>
 
-<div id="canvas-landscape-middle">
-	### canvas
+<div id="canvas-landscape-middle" style="position: relative">
+	<canvas id="output-canvas" class="output-canvas"></canvas>
+	<div style="position: absolute; top: 0; left: 0">
+		<canvas id="overlay-canvas" class="output-canvas"></canvas>
+	</div>
 </div>
 
 <div id="canvas-landscape-right">
 	<div id="guess-canvases">
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 
 		<div class="guess">
 			<canvas class="guess-canvas"></canvas>
-			<div>
+			<div class="overlay-canvas-container">
 				<canvas class="overlay-canvas"></canvas>
+			</div>
+			<div class="progress-bar-container">
+				<div class="progress-bar"></div>
 			</div>
 		</div>
 	</div>

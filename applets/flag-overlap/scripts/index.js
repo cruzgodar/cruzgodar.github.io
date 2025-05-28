@@ -7,8 +7,10 @@ export default async function()
 {
 	const applet = new FlagOverlap({
 		canvas: $("#output-canvas"),
+		overlayCanvas: $("#overlay-canvas"),
 		guessCanvases: Array.from($$(".guess-canvas")),
-		overlayCanvases: Array.from($$(".overlay-canvas"))
+		overlayCanvases: Array.from($$(".overlay-canvas")),
+		progressBars: Array.from($$(".progress-bar"))
 	});
 
 	const showDiffsCheckbox = new Checkbox({
@@ -21,7 +23,8 @@ export default async function()
 
 	await applet.loadPromise;
 
-	setTimeout(() => applet.guessFlag("us"), 1000);
+	setTimeout(() => applet.guessFlag("sc"), 1000);
+	setTimeout(() => applet.guessFlag("us"), 5000);
 
 	showPage();
 

@@ -13,11 +13,14 @@ export class FlagOverlap extends Applet
 	loadPromise;
 	guessCanvases;
 	overlayCanvases;
+	progressBars;
+
+	wilsonOverlay;
 
 	wilsonCorrectFlag;
 	// Double the resolution of the flag images.
 	resolution = 2048;
-	correctFlag = "bw";
+	correctFlag = "us";
 	correctPixels;
 	correctHsv;
 
@@ -35,26 +38,47 @@ export class FlagOverlap extends Applet
 	showDiffs = true;
 	
 
-	constructor({ canvas, guessCanvases, overlayCanvases })
-	{
+	constructor({
+		canvas,
+		overlayCanvas,
+		guessCanvases,
+		overlayCanvases,
+		progressBars
+	}) {
 		super(canvas);
 
 		this.guessCanvases = guessCanvases;
 		this.overlayCanvases = overlayCanvases;
+		this.progressBars = progressBars;
+
+		const switchFullscreen = () =>
+		{
+			if (this.wilson.currentlyFullscreen)
+			{
+				this.wilson.exitFullscreen();
+			}
+
+			else
+			{
+				this.wilson.enterFullscreen();
+			}
+		};
 
 		const options =
 		{
 			canvasWidth: this.resolution,
 
-			fullscreenOptions: {
-				useFullscreenButton: true,
-
-				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
-			}
+			interactionOptions: {
+				callbacks: {
+					mousedown: switchFullscreen,
+					touchstart: switchFullscreen
+				},
+			},
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);
+
+		this.wilsonOverlay = new WilsonCPU(overlayCanvas, options);
 
 
 
@@ -124,40 +148,6 @@ export class FlagOverlap extends Applet
 
 
 
-	// Animates the given wilson to the pixels passed.
-	async animateToImageData(wilson, newPixels, duration)
-	{
-		const oldPixels = wilson.ctx.getImageData(
-			0,
-			0,
-			wilson.canvasWidth,
-			wilson.canvasHeight,
-		).data;
-
-		await animate((t) =>
-		{
-			const pixels = new Uint8ClampedArray(
-				wilson.canvasWidth * wilson.canvasHeight * 4
-			);
-
-			for (let i = 0; i < wilson.canvasWidth * wilson.canvasHeight; i++)
-			{
-				pixels[4 * i] = newPixels[4 * i] * t + oldPixels[4 * i] * (1 - t);
-				pixels[4 * i + 1] = newPixels[4 * i + 1] * t + oldPixels[4 * i + 1] * (1 - t);
-				pixels[4 * i + 2] = newPixels[4 * i + 2] * t + oldPixels[4 * i + 2] * (1 - t);
-				pixels[4 * i + 3] = newPixels[4 * i + 3] * t + oldPixels[4 * i + 3] * (1 - t);
-			}
-
-			wilson.ctx.putImageData(new ImageData(
-				pixels,
-				wilson.canvasWidth,
-				wilson.canvasHeight
-			), 0, 0);
-		}, duration, "easeOutQuad");
-	}
-
-
-
 	updateMainCanvas()
 	{
 		const pixels = new Uint8ClampedArray(
@@ -183,7 +173,11 @@ export class FlagOverlap extends Applet
 			}
 		}
 
-		this.animateToImageData(this.wilson, pixels, 500);
+		this.wilson.ctx.putImageData(new ImageData(
+			pixels,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight
+		), 0, 0);
 	}
 
 
@@ -242,9 +236,13 @@ export class FlagOverlap extends Applet
 			options
 		);
 
-		const returnValue = await this.drawFlag(guess.wilsonOverlay, flagId);
+		const [returnValue] = await Promise.all([
+			this.drawFlag(guess.wilsonOverlay, flagId),
+			this.drawFlag(this.wilsonOverlay, flagId)
+		]);
 		guess.pixels = returnValue.pixels;
 		guess.hsvData = returnValue.hsvData;
+		let numMatchingPixels = 0;
 
 		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
 		{
@@ -257,19 +255,33 @@ export class FlagOverlap extends Applet
 			guess.matchingPixels[i] = deltaH < hThreshold
 				&& deltaS < sThreshold
 				&& deltaV < vThreshold;
+
 			if (!guess.matchingPixels[i])
 			{
 				guess.pixels[4 * i] = 32;
 				guess.pixels[4 * i + 1] = 32;
 				guess.pixels[4 * i + 2] = 32;
 			}
+
+			else
+			{
+				numMatchingPixels++;
+			}
 		}
 
-		await changeOpacity({
-			element: guess.wilsonOverlay.canvas,
-			opacity: 1,
-			duration: 500
-		});
+		await Promise.all([
+			changeOpacity({
+				element: guess.wilsonOverlay.canvas,
+				opacity: 1,
+				duration: 500
+			}),
+
+			changeOpacity({
+				element: this.wilsonOverlay.canvas,
+				opacity: 1,
+				duration: 500
+			})
+		]);
 
 		guess.wilson.ctx.putImageData(new ImageData(
 			guess.pixels,
@@ -279,18 +291,44 @@ export class FlagOverlap extends Applet
 
 		this.guesses.push(guess);
 
+		this.updateMainCanvas();
+
+		await sleep(100);
+
+
+
+		// Animate the progress bar.
+
+		const progressBar = this.progressBars[this.guesses.length - 1];
+		const fillProportion = numMatchingPixels
+			/ (this.wilson.canvasWidth * this.wilson.canvasHeight);
+
+		await animate((t) =>
+		{
+			progressBar.style.width = `${t * fillProportion * 100}%`;
+			progressBar.style.background = `hsl(${t * fillProportion * 120}, 70%, 50%)`;
+		}, 500 + fillProportion * 1000, "easeInOutQuad");
+
+
+
 		if (this.showDiffs)
 		{
-			await sleep(500);
+			await sleep(400);
 
-			await changeOpacity({
-				element: guess.wilsonOverlay.canvas,
-				opacity: 0,
-				duration: 250
-			});
+			await Promise.all([
+				changeOpacity({
+					element: guess.wilsonOverlay.canvas,
+					opacity: 0,
+					duration: 300
+				}),
+
+				changeOpacity({
+					element: this.wilsonOverlay.canvas,
+					opacity: 0,
+					duration: 300
+				})
+			]);
 		}
-
-		// setTimeout(() => this.updateMainCanvas(), 1000);
 	}
 
 	setShowDiffs(showDiffs)
