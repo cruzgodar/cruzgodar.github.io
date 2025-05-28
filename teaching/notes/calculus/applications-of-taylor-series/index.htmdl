@@ -100,7 +100,7 @@ $$
 	&= |x|.
 $$
 
-Therefore, the series converges when $|x| < 1$, and so the interval of convergence is $(-1, 1)$.
+Therefore, the series converges when $|x| < 1$, and so the interval of convergence is at least $(-1, 1)$. Determining convergence at the endpoints is trickier and unfortunately out of scope of our course, but we thankfully won't have a need for it.
 
 
 
@@ -154,7 +154,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 
 ### exc "the Maclaurin series for $(1 + x)^{3/2}$"
 	
-	Express $$(1 + x)^{3/2}$$ as a Maclaurin series and determine the interval of convergence. Then approximate $$1.5^{1.5}$$ with a degree-3 Maclaurin polynomial and bound the error.
+	Express $$(1 + x)^{3/2}$$ as a Maclaurin series, and then approximate $$1.5^{1.5}$$ with a degree-3 Maclaurin polynomial and bound the error.
 	
 	### solution
 	
@@ -276,12 +276,6 @@ As we mentioned in section 8, power series have the excellent property of being 
 	
 	The presence of the $c_0$ and $c_1$ indicate that there are two free variables --- we can take them to be anything we like, and the equation $y'' = xy$ will still be satisfied. If we're given initial conditions, say $y(0) = 1$ and $y'(0) = 2$, then we can solve for them. In this particular case, we would have $y(0) = c_0 = 1$, and $y'(0) = c_1 = 2$.
 	
-###
-
-### exc "solving a differential equation with power series"
-	
-	Find a power series solution to the differential equation $$y'' = \frac{y}{x}$$.
-
 ###
 
 
