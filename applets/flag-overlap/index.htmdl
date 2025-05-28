@@ -1,8 +1,10 @@
 
 
+### checkboxes
+	show-diffs
+###
 
-
-<div id="canvas-landscape">
+<div id="canvas-landscape" style="margin-top: 32px">
 
 <div id="canvas-landscape-left">
 	
@@ -14,12 +16,47 @@
 
 <div id="canvas-landscape-right">
 	<div id="guess-canvases">
-		<canvas class="guess-canvas"></canvas>
-		<canvas class="guess-canvas"></canvas>
-		<canvas class="guess-canvas"></canvas>
-		<canvas class="guess-canvas"></canvas>
-		<canvas class="guess-canvas"></canvas>
-		<canvas class="guess-canvas"></canvas>
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
+
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
+
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
+
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
+
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
+
+		<div class="guess">
+			<canvas class="guess-canvas"></canvas>
+			<div>
+				<canvas class="overlay-canvas"></canvas>
+			</div>
+		</div>
 	</div>
 </div>
 

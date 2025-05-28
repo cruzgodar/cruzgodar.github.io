@@ -16,13 +16,30 @@
 	column-gap: 16px;
 }
 
-#guess-canvases canvas
+.guess
+{
+	position: relative;
+}
+
+.guess-canvas, .overlay-canvas
 {
 	width: calc(100% - 8px);
 	aspect-ratio: 1024 / 683;
 	border-radius: 12px;
 	padding: 2px;
 	border: 2px solid var(--normal-contrast);
+}
+
+.overlay-canvas
+{
+	opacity: 0;
+}
+
+.guess > *:last-child
+{
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .WILSON_applet-container

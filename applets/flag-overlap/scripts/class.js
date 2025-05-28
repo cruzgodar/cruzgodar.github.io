@@ -1,5 +1,7 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { pageUrl } from "/scripts/src/main.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const hThreshold = 0.075;
@@ -10,6 +12,7 @@ export class FlagOverlap extends Applet
 {
 	loadPromise;
 	guessCanvases;
+	overlayCanvases;
 
 	wilsonCorrectFlag;
 	// Double the resolution of the flag images.
@@ -17,6 +20,7 @@ export class FlagOverlap extends Applet
 	correctFlag = "bw";
 	correctPixels;
 	correctHsv;
+
 	// Each entry is an object of the form
 	// {
 	//	 flagId,
@@ -24,15 +28,19 @@ export class FlagOverlap extends Applet
 	//   pixels: matching pixels that can be drawn to the guess canvas
 	//   hsvData: same, but hsv
 	//   wilson: instance for drawing
+	//   wilsonOverlay: instance for drawing the overlay flag
 	// }
 	guesses = [];
+
+	showDiffs = true;
 	
 
-	constructor({ canvas, guessCanvases })
+	constructor({ canvas, guessCanvases, overlayCanvases })
 	{
 		super(canvas);
 
 		this.guessCanvases = guessCanvases;
+		this.overlayCanvases = overlayCanvases;
 
 		const options =
 		{
@@ -48,8 +56,15 @@ export class FlagOverlap extends Applet
 
 		this.wilson = new WilsonCPU(canvas, options);
 
+
+
+		const optionsHidden =
+		{
+			canvasWidth: this.resolution,
+		};
+
 		const hiddenCanvas = this.createHiddenCanvas(true, 1024 / 683);
-		this.wilsonCorrectFlag = new WilsonCPU(hiddenCanvas, options);
+		this.wilsonCorrectFlag = new WilsonCPU(hiddenCanvas, optionsHidden);
 
 		this.loadPromise = new Promise(resolve =>
 		{
@@ -110,46 +125,65 @@ export class FlagOverlap extends Applet
 
 
 	// Animates the given wilson to the pixels passed.
-	async animateToImageData(wilson, newPixels)
+	async animateToImageData(wilson, newPixels, duration)
 	{
-		const pixels = wilson.ctx.getImageData(
+		const oldPixels = wilson.ctx.getImageData(
 			0,
 			0,
 			wilson.canvasWidth,
 			wilson.canvasHeight,
 		).data;
+
+		await animate((t) =>
+		{
+			const pixels = new Uint8ClampedArray(
+				wilson.canvasWidth * wilson.canvasHeight * 4
+			);
+
+			for (let i = 0; i < wilson.canvasWidth * wilson.canvasHeight; i++)
+			{
+				pixels[4 * i] = newPixels[4 * i] * t + oldPixels[4 * i] * (1 - t);
+				pixels[4 * i + 1] = newPixels[4 * i + 1] * t + oldPixels[4 * i + 1] * (1 - t);
+				pixels[4 * i + 2] = newPixels[4 * i + 2] * t + oldPixels[4 * i + 2] * (1 - t);
+				pixels[4 * i + 3] = newPixels[4 * i + 3] * t + oldPixels[4 * i + 3] * (1 - t);
+			}
+
+			wilson.ctx.putImageData(new ImageData(
+				pixels,
+				wilson.canvasWidth,
+				wilson.canvasHeight
+			), 0, 0);
+		}, duration, "easeOutQuad");
 	}
 
 
 
 	updateMainCanvas()
 	{
-		const data = new Uint8ClampedArray(this.wilson.canvasWidth * this.wilson.canvasHeight * 4);
+		const pixels = new Uint8ClampedArray(
+			this.wilson.canvasWidth * this.wilson.canvasHeight * 4
+		);
 
 		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
 		{
-			data[4 * i] = 32;
-			data[4 * i + 1] = 32;
-			data[4 * i + 2] = 32;
-			data[4 * i + 3] = 255;
+			pixels[4 * i] = 32;
+			pixels[4 * i + 1] = 32;
+			pixels[4 * i + 2] = 32;
+			pixels[4 * i + 3] = 255;
 			
 			for (const guess of this.guesses)
 			{
 				if (guess.matchingPixels[i])
 				{
-					data[4 * i] = this.correctPixels[4 * i];
-					data[4 * i + 1] = this.correctPixels[4 * i + 1];
-					data[4 * i + 2] = this.correctPixels[4 * i + 2];
+					pixels[4 * i] = this.correctPixels[4 * i];
+					pixels[4 * i + 1] = this.correctPixels[4 * i + 1];
+					pixels[4 * i + 2] = this.correctPixels[4 * i + 2];
 					break;
 				}
 			}
 		}
 
-		const imageData = new ImageData(
-			data,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight
-		);
+		this.animateToImageData(this.wilson, pixels, 500);
 	}
 
 
@@ -160,7 +194,55 @@ export class FlagOverlap extends Applet
 		guess.flagId = flagId;
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
-		const returnValue = await this.drawFlag(this.wilson, flagId);
+		const switchFullscreen = () =>
+		{
+			if (guess.wilsonOverlay.currentlyFullscreen)
+			{
+				guess.wilsonOverlay.exitFullscreen();
+			}
+
+			else if (guess.wilson.currentlyFullscreen)
+			{
+				guess.wilson.exitFullscreen();
+			}
+
+			else
+			{
+				if (this.showDiffs)
+				{
+					guess.wilson.enterFullscreen();
+				}
+
+				else
+				{
+					guess.wilsonOverlay.enterFullscreen();
+				}
+			}
+		};
+
+		const options =
+		{
+			canvasWidth: this.resolution,
+
+			interactionOptions: {
+				callbacks: {
+					mousedown: switchFullscreen,
+					touchstart: switchFullscreen
+				},
+			},
+		};
+
+		guess.wilson = new WilsonCPU(
+			this.guessCanvases[this.guesses.length],
+			options
+		);
+
+		guess.wilsonOverlay = new WilsonCPU(
+			this.overlayCanvases[this.guesses.length],
+			options
+		);
+
+		const returnValue = await this.drawFlag(guess.wilsonOverlay, flagId);
 		guess.pixels = returnValue.pixels;
 		guess.hsvData = returnValue.hsvData;
 
@@ -183,50 +265,45 @@ export class FlagOverlap extends Applet
 			}
 		}
 
+		await changeOpacity({
+			element: guess.wilsonOverlay.canvas,
+			opacity: 1,
+			duration: 500
+		});
 
-
-		const switchFullscreen = () =>
-		{
-			if (guess.wilson.currentlyFullscreen)
-			{
-				guess.wilson.exitFullscreen();
-			}
-
-			else
-			{
-				guess.wilson.enterFullscreen();
-			}
-		};
-
-		const options =
-		{
-			canvasWidth: this.resolution,
-
-			interactionOptions: {
-				callbacks: {
-					mousedown: switchFullscreen,
-					touchstart: switchFullscreen
-				},
-			},
-		};
-
-		guess.wilson = new WilsonCPU(
-			this.guessCanvases[this.guesses.length],
-			options
-		);
-
-		const imageData = new ImageData(
+		guess.wilson.ctx.putImageData(new ImageData(
 			guess.pixels,
 			this.wilson.canvasWidth,
 			this.wilson.canvasHeight
-		);
-
-		guess.wilson.ctx.putImageData(imageData, 0, 0);
+		), 0, 0);
 
 		this.guesses.push(guess);
 
-		
-		
+		if (this.showDiffs)
+		{
+			await sleep(500);
 
+			await changeOpacity({
+				element: guess.wilsonOverlay.canvas,
+				opacity: 0,
+				duration: 250
+			});
+		}
+
+		// setTimeout(() => this.updateMainCanvas(), 1000);
+	}
+
+	setShowDiffs(showDiffs)
+	{
+		this.showDiffs = showDiffs;
+
+		for (const guess of this.guesses)
+		{
+			changeOpacity({
+				element: guess.wilsonOverlay.canvas,
+				opacity: this.showDiffs ? 0 : 1,
+				duration: 150
+			});
+		}
 	}
 }
