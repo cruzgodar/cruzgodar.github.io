@@ -333,9 +333,10 @@ vec2 wpHelper(vec2 z, vec2 t) {
 vec2 wp(vec2 z, vec2 t) {
 
 	// wp is expressible in terms of the nome q = e^(pi i t) so it's periodic in t -> t+2
-	if (t.x > 2.0) {
+	if (t.x*t.x > 1.0) {
 		t = vec2(t.x-2.0*floor(t.x/2.0),t.y);
 	}
+
 
 	// Shift z to be in the fundamental parallelogram
 	
@@ -439,8 +440,7 @@ vec2 wpprime(vec2 z, vec2 t) {
 	// Shift z to be in the fundamental parallelogram
 	z -= floor(z.y/t.y)*t;
 	z.x = fract(z.x);
-
-	if (t.x > 2.0) {
+	if (t.x*t.x > 1.0) {
 		t = vec2(t.x-2.0*floor(t.x/2.0),t.y);
 	}
 
