@@ -310,7 +310,7 @@ export async function revertTheme()
 
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
-		await toggleDarkTheme({ force: true });
+		await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
 	}
 	
 	revertThemeTo = null;

@@ -106,53 +106,68 @@ export async function redirect({
 	const temp = window.scrollY;
 
 	navigationTransitionType = getTransitionType(url);
+	
+	async function swapPageContents()
+	{
+		// Get the new data, fade out the page,
+		// and preload the next page's banner if it exists.
+		// When all of those things are successfully done,
+		// replace the current html with the new stuff.
+		
+		const [text] = await Promise.all([
+			asyncFetch(`${url}/data.html`),
+			preloadBanner(url),
+			fadeOutPage(noFadeOut),
+			cardIsOpen ? hideCard() : Promise.resolve()
+		]);
 
-	// Get the new data, fade out the page, and preload the next page's banner if it exists.
-	// When all of those things are successfully done, replace the current html with the new stuff.
-	const [text] = await Promise.all([
-		asyncFetch(`${url}/data.html`),
-		preloadBanner(url),
-		fadeOutPage(noFadeOut),
-		cardIsOpen ? hideCard() : Promise.resolve()
-	]);
+		
+
+		loadBanner({ url });
+
+		if (forceThemePages[url])
+		{
+			setForcedTheme(true);
+
+			if (siteSettings.darkTheme !== forceThemePages[url])
+			{
+				setRevertThemeTo(siteSettings.darkTheme);
+				await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
+			}
+		}
+
+		else if (!forceThemePages[url])
+		{
+			await revertTheme();
+		}
+
+		unloadPage();
+
+		document.body.firstElementChild.insertAdjacentHTML(
+			"beforebegin",
+			`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
+		);
+
+		setPageUrl(url);
+
+		urlsFetched.push(url);
+
+		loadPage();
+	}
+
+
+	if (siteSettings.reduceMotion && document.startViewTransition)
+	{
+		document.startViewTransition(swapPageContents);
+	}
+
+	else
+	{
+		swapPageContents();
+	}
+
 
 	
-
-	loadBanner({ url });
-
-	if (forceThemePages[url])
-	{
-		setForcedTheme(true);
-
-		if (siteSettings.darkTheme !== forceThemePages[url])
-		{
-			setRevertThemeTo(siteSettings.darkTheme);
-			await toggleDarkTheme({ force: true });
-		}
-	}
-
-	else if (!forceThemePages[url])
-	{
-		await revertTheme();
-	}
-
-
-
-	unloadPage();
-
-	document.body.firstElementChild.insertAdjacentHTML(
-		"beforebegin",
-		`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
-	);
-
-	setPageUrl(url);
-
-	urlsFetched.push(url);
-
-	loadPage();
-
-
-
 	// Record the page change in the url bar and in the browser history.
 	if (noStatePush)
 	{
@@ -189,7 +204,7 @@ export async function redirect({
 // -2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
-	if (!(url in sitemap) || url === pageUrl || !pageUrl || siteSettings.reduceMotion)
+	if (!(url in sitemap) || url === pageUrl || !pageUrl)
 	{
 		return 0;
 	}
@@ -266,9 +281,14 @@ async function fadeOutPage(noFadeOut)
 		return;
 	}
 
-	if (noFadeOut)
+	if (noFadeOut || siteSettings.reduceMotion)
 	{
 		pageElement.style.opacity = 0;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 0;
+		}
 
 		return;
 	}

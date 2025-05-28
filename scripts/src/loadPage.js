@@ -32,6 +32,7 @@ import {
 	setCurrentlyRedirecting
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
+import { siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 import { asyncFetch, sleep } from "./utils.js";
 
@@ -146,6 +147,21 @@ function loadCustomScripts()
 
 async function fadeInPage()
 {
+	if (siteSettings.reduceMotion)
+	{
+		document.querySelector("#header").style.opacity = 1;
+		document.querySelector("#header-container").style.opacity = 1;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 1;
+		}
+
+		pageElement.style.opacity = 1;
+
+		return;
+	}
+
 	fadeIn({ element: document.querySelector("#header") });
 	document.querySelector("#header-container").style.opacity = 1;
 
