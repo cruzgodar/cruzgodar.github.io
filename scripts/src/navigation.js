@@ -158,12 +158,12 @@ export async function redirect({
 
 	if (siteSettings.reduceMotion && document.startViewTransition)
 	{
-		document.startViewTransition(swapPageContents);
+		await document.startViewTransition(swapPageContents).finished;
 	}
 
 	else
 	{
-		swapPageContents();
+		await swapPageContents();
 	}
 
 

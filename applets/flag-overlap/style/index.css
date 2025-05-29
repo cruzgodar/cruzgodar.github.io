@@ -13,6 +13,8 @@
 #guess-canvases
 {
 	width: 100%;
+	max-width: 1000px;
+	margin: 0 auto;
 	margin-top: 16px;
 	margin-bottom: 16px;
 
@@ -95,6 +97,8 @@
 
 #win-text
 {
+	user-select: none;
+	-webkit-user-select: none;
 	font-size: 48px;
 	font-weight: bold;
 	color: white;
@@ -108,4 +112,18 @@
 	background-color: transparent;
 	text-shadow: 0 0 16px black;
 	box-shadow: 0 0 16px black;
+}
+
+#guess-selector
+{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#guess-selector .text-box-container
+{
+	width: 100%;
+	max-width: 300px;
 }

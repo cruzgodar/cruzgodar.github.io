@@ -1204,6 +1204,8 @@ body > .WILSON_fullscreen-container .fps-canvas
 	color: var(--normal-contrast);
 	font-size: 100%;
 	text-align: center;
+
+	font-family: "Rubik", sans-serif;
 	
 	transition: border-color .25s ease-out, color .25s ease-out;
 }

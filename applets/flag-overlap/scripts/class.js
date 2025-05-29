@@ -1,6 +1,6 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { pageUrl } from "/scripts/src/main.js";
+import { addTemporaryListener, pageUrl } from "/scripts/src/main.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -360,6 +360,25 @@ export class FlagOverlap extends Applet
 			opacity: 1,
 			duration: 300
 		});
+
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: (e) =>
+			{
+				if (e.key === "Enter")
+				{
+					this.replay();
+				}
+			}
+		});
+	}
+
+
+
+	async replay()
+	{
+
 	}
 
 

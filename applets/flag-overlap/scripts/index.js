@@ -26,12 +26,13 @@ export default async function()
 	const replayButton = new Button({
 		element: $("#replay-button"),
 		name: "Play Again",
-		onClick: () => applet.guessFlag("us")
+		onClick: () => applet.replay()
 	});
 
 	await applet.loadPromise;
 
-	setTimeout(() => applet.guessFlag("us"), 1000);
+	setTimeout(() => applet.guessFlag("sc"), 1000);
+	setTimeout(() => applet.guessFlag("us"), 6000);
 
 	showPage();
 
