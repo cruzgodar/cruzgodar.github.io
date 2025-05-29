@@ -1,9 +1,9 @@
-import anime from "/scripts/anime.js";
 import {
 	magnitude,
 	mat3TimesVector,
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
+import { animate } from "/scripts/src/utils.js";
 
 export class Mandelbulb extends RaymarchApplet
 {
@@ -114,7 +114,7 @@ export class Mandelbulb extends RaymarchApplet
 			phi: 2.272,
 			cameraPos: [0.084365, 1.91102, 1.69388],
 			lightPos: [-10, 0, 15],
-			lightBrightness: 1.25,
+			lightBrightness: 1.2,
 		});
 	}
 
@@ -171,26 +171,17 @@ export class Mandelbulb extends RaymarchApplet
 
 	switchBulb(instant)
 	{
-		const dummy = { t: 0 };
-
 		const oldJuliaProportion = this.uniforms.juliaProportion;
 		const newJuliaProportion = this.uniforms.juliaProportion === 0 ? 1 : 0;
 
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: instant ? 10 : 1000,
-			easing: "easeOutSine",
-			update: () =>
-			{
-				this.setUniforms({
-					juliaProportion:
-						(1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion
-				});
+		animate((t) => {
+			this.setUniforms({
+				juliaProportion:
+					(1 - t) * oldJuliaProportion + t * newJuliaProportion
+			});
 
-				this.needNewFrame = true;
-			}
-		});
+			this.needNewFrame = true;
+		}, instant ? 0 : 650, "easeOutQuad");
 	}
 
 	downloadFrame()

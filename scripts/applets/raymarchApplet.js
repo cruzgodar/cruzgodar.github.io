@@ -1,5 +1,6 @@
 import anime from "../anime.js";
 import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
+import { animate, sleep } from "../src/utils.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
@@ -132,8 +133,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		theta = 0,
 		phi = Math.PI / 2,
-		stepFactor = .95,
-		epsilonScaling = 1.75,
+		stepFactor = .99,
+		epsilonScaling = 1.25,
 		minEpsilon = .0000003,
 
 		maxMarches = 128,
@@ -148,7 +149,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
-		useOppositeLight = false,
+		useOppositeLight = true,
 		oppositeLightBrightness = 0.5,
 		ambientLight = 0.25,
 		bloomPower = 1,
@@ -237,33 +238,26 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 		
 		this.listenForKeysPressed(
-			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z", "control"],
 			(key, pressed) =>
 			{
 				if (key === "z")
 				{
-					const dummy = { t: 0 };
 					const oldFactor = pressed ? 1 : 4;
 					const newFactor = pressed ? 4 : 1;
 
-					anime({
-						targets: dummy,
-						t: 1,
-						duration: 250,
-						easing: "easeOutCubic",
-						update: () =>
-						{
-							this.fovFactor = (1 - dummy.t) * oldFactor
-								+ dummy.t * newFactor;
+					animate((t) =>
+					{
+						this.fovFactor = (1 - t) * oldFactor
+							+ t * newFactor;
 
-							this.setUniforms({
-								epsilonScaling: this.epsilonScaling *
-									((1 - dummy.t) * oldFactor + dummy.t * newFactor)
-							});
+						this.setUniforms({
+							epsilonScaling: this.epsilonScaling *
+								((1 - t) * oldFactor + t * newFactor)
+						});
 
-							this.needNewFrame = true;
-						}
-					});
+						this.needNewFrame = true;
+					}, 250, "easeOutCubic");
 				}
 			}
 		);
@@ -390,7 +384,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 
 
@@ -410,7 +404,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.drawFrame();
 
-		await new Promise(resolve => setTimeout(resolve, 1000));
+		await sleep(1000);
 
 		for (let i = 1; i <= resolution; i++)
 		{
@@ -419,7 +413,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			});
 			this.drawFrame();
 			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
-			await new Promise(resolve => setTimeout(resolve, preview ? 0 : 150));
+			await sleep(preview ? 0 : 150);
 		}
 	}
 
@@ -519,13 +513,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 			vec3 computeShadingWithoutReflection(
 				vec3 pos,
 				float epsilon,
-				float correctionDistance,
+				float distanceToScene,
 				int iteration
 			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
-
-				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-				pos -= surfaceNormal * correctionDistance;
+				vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
+				pos += (epsilon - distanceToScene) * surfaceNormal;
+				surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
 				
 				vec3 lightDirection = normalize(lightPos - pos);
 				
@@ -571,7 +564,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						return computeShadingWithoutReflection(
 							pos,
 							epsilon,
-							distanceToScene - 2.0 * epsilon,
+							distanceToScene,
 							iteration + startIteration
 						);
 					}
@@ -606,7 +599,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				vec3 computeShading(
 					vec3 pos,
 					float epsilon,
-					float correctionDistance,
+					float distanceToScene,
 					int iteration
 				) {
 					gl_FragColor = encodeFloat(length(pos - cameraPos));
@@ -617,13 +610,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 				vec3 computeShading(
 					vec3 pos,
 					float epsilon,
-					float correctionDistance,
+					float distanceToScene,
 					int iteration
 				) {
-					vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
-
-					// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-					pos -= surfaceNormal * correctionDistance;
+					// Using distanceToScene / 2 here means we never step inside the object
+					// which helps to prevent banding.
+					vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
+					pos += (epsilon - distanceToScene) * surfaceNormal;
+					surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
 					
 					vec3 lightDirection = normalize(lightPos - pos);
 					
@@ -634,9 +628,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 						${getFloatGlsl(this.ambientLight)}
 					);
 
+
+
 					vec3 color = getColor(pos)
 						* lightIntensity
 						* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+
+					
 
 					${this.useShadows ? /* glsl */`
 						float shadowIntensity = computeShadowIntensity(pos, lightDirection);
@@ -688,7 +686,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 								return computeShading(
 									pos,
 									epsilon,
-									distanceToScene - 2.0 * epsilon,
+									distanceToScene,
 									iteration
 								);
 							}
@@ -730,7 +728,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 								return computeShading(
 									pos,
 									epsilon,
-									distanceToScene - 2.0 * epsilon,
+									distanceToScene,
 									iteration
 								);
 							}
@@ -768,7 +766,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							return computeShading(
 								pos,
 								epsilon,
-								distanceToScene - 2.0 * epsilon,
+								distanceToScene,
 								iteration
 							);
 						}
@@ -1180,13 +1178,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		
-		// this.makeMosaic({ filename, size: 4 });
 	}
 
 	async makeMosaic({
-		filename,
-		size,
+		size = 16,
 		returnPixels = false,
 		useForDepthBuffer = false
 	}) {
@@ -1299,12 +1294,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						const link = document.createElement("a");
 						link.href = URL.createObjectURL(blob);
-						link.download = filename;
+						link.download = "mosaic.png";
 						link.click();
 					});
 				}
 
-				await new Promise(resolve => setTimeout(resolve, 100));
+				await sleep(100);
 
 				this.setUniforms({
 					uvScale: 1,
@@ -1342,7 +1337,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 				ctx.putImageData(imageData, 0, 0);
 
-				await new Promise(resolve => setTimeout(resolve, 500));
+				await sleep(500);
 
 				j++;
 				if (j === size)
@@ -1368,7 +1363,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const mosaicSize = 8;
+		const mosaicSize = 10;
 
 		const returnToAntialiasing = this.useAntialiasing;
 		await loadGlsl();
@@ -1611,6 +1606,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[2] = -1;
 		}
 
+		const movingSpeed = (this.keysPressed.control ? 0.1 : 1) * this.movingSpeed;
+
 		if (!this.lockedOnOrigin && (
 			this.moveVelocity[0] !== 0
 				|| this.moveVelocity[1] !== 0
@@ -1648,10 +1645,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[2] * this.speedFactor / 1.5
 			];
 
-			this.cameraPos[0] += this.movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
-			this.cameraPos[1] += this.movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
+			this.cameraPos[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
+			this.cameraPos[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
 			this.cameraPos[2] = this.lockZ
-				?? this.cameraPos[2] + this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
+				?? this.cameraPos[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
 			this.needNewFrame = true;
 		}
@@ -1704,19 +1701,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		value,
 		duration = 1000
 	}) {
-		const dummy = { t: this.uniforms[name] };
+		const oldUniformValue = this.uniforms[name];
 
-		return anime({
-			targets: dummy,
-			t: value,
-			duration,
-			easing: "easeInOutQuart",
-			update: () =>
-			{
-				this.setUniforms({ [name]: dummy.t });
-				this.needNewFrame = true;
-			}
-		}).finished;
+		animate((t) =>
+		{
+			this.setUniforms({ [name]: t * value + (1 - t) * oldUniformValue });
+			this.needNewFrame = true;
+		}, duration, "easeInOutQuart");
 	}
 
 	loopUniform({

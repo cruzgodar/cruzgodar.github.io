@@ -1,10 +1,12 @@
 #!/usr/bin/env bun
 
 import { spawnSync } from "child_process";
+import { readdirSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
 import buildHTMLFile from "../htmdl/build.js";
+import { convertCardToTex } from "./latex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -16,13 +18,20 @@ const excludeFromBuild =
 	/scripts\/anime\.js/,
 	/scripts\/math\.js/,
 	/teaching\/uo\/342\/extra\/eigenfaces-demo\/scripts\/data\.js/,
-	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/data.js/,
-	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/vData.js/
+	/teaching\/notes\/linear-algebra\/singular-value-decompositions\/scripts\/data.js/,
+	/teaching\/notes\/linear-algebra\/singular-value-decompositions\/scripts\/vData.js/
 ];
 
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
+};
+
+const courseNames = {
+	"Math 253": /teaching\/uo\/253\/.+/,
+	"Math 256": /teaching\/uo\/256\/.+/,
+	"Math 341": /teaching\/uo\/341\/.+/,
+	"Math 342": /teaching\/uo\/342\/.+/,
 };
 
 let sitemap;
@@ -125,7 +134,23 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
+			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+		}
+	}
+
+	else if (extension === "htmdl" && filename === "card")
+	{
+		const text = await read(file);
+		
+		if (text)
+		{
+			console.log(file);
+
+			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+
+			const path = file.slice(0, lastSlashIndex - 1);
+
+			await prepareTexFromHTML(`${path}/data.html`);
 		}
 	}
 
@@ -155,9 +180,14 @@ async function buildFile(file)
 
 	else if (extension === "pdf")
 	{
-		console.log(file);
+		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
 
-		await buildPDFFile(file);
+		if (!(files.some(f => f.endsWith(".htmdl"))))
+		{
+			console.log(file);
+
+			await buildPDFFile(file);
+		}
 	}
 }
 
@@ -221,6 +251,99 @@ function buildPDFFile(file)
 		"85",
 		`${root}${outputFile}`
 	]);
+}
+
+
+
+async function prepareTexFromHTML(file)
+{
+	let courseName;
+
+	for (const [name, regex] of Object.entries(courseNames))
+	{
+		if (regex.test(file))
+		{
+			courseName = name;
+			break;
+		}
+	}
+
+	if (!courseName)
+	{
+		throw new Error("No course name found!");
+	}
+
+	const path = file.slice(0, file.lastIndexOf("/"));
+
+	const result = await convertCardToTex({
+		html: await read(file),
+		course: courseName,
+		pageUrl: `/${path}`
+	});
+
+	// Write a standard tex file.
+	write(
+		`${path}/${result[1]}.tex`,
+		result[0]
+	);
+
+	console.log(`${path}/${result[1]}.tex`);
+
+	if (result[2])
+	{
+		// Zip the tex file and the graphics directory.
+		spawnSync("zip", [
+			"-r",
+			`${result[1]}.zip`,
+			`${result[1]}.tex`,
+			"graphics"
+		], { cwd: `${root}/${path}` });
+	}
+
+	const proc = spawnSync(
+		"pdflatex",
+		[`${result[1]}.tex`, "-interaction=nonstopmode"],
+		{ cwd: `${root}/${path}` }
+	);
+
+	parseTexErrors(proc.stdout.toString());
+
+	// Remove the auxiliary files.
+	spawnSync(
+		"rm",
+		["-f", `${result[1]}.aux`, `${result[1]}.log`, `${result[1]}.out`],
+		{ cwd: `${root}/${path}` }
+	);
+}
+
+
+
+function parseTexErrors(stdout)
+{
+	const lines = stdout.toString().split("\n");
+	const errorThings = [/error/i, /undefined/i];
+
+	outerloop: for (let i = 0; i < lines.length; i++)
+	{
+		if (lines[i] === "Package biblatex Warning: Using fall-back bibtex backend:")
+		{
+			continue;
+		}
+		
+		for (const badThing of errorThings)
+		{
+			if (badThing.test(lines[i]))
+			{
+				let error = lines[i];
+				for (let j = i; j < Math.min(i + 5, lines.length); j++)
+				{
+					error = `${error}\n${lines[j]}`;
+				}
+				console.error(error + "\n");
+				continue outerloop;
+			}
+		}
+	}
 }
 
 

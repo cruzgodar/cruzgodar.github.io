@@ -1,9 +1,13 @@
-import anime from "/scripts/anime.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { magnitude } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
+import { animate } from "/scripts/src/utils.js";
+import { STLExporter } from "/scripts/stlExporter.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonGPU } from "/scripts/wilson.js";
+
+
+const fiberThicknessScaleFactor = 1;
 
 function hsvToRgb(h, s, v)
 {
@@ -263,13 +267,15 @@ export class HopfFibration extends ThreeApplet
 			compression: this.compression
 		});
 
-		const tubularSegments = 100;
-		const radialSegments = 20;
+		const tubularSegments = 128;
+		const radialSegments = 64;
 
-		const fiberThickness = (1 - this.compression) * 0.05
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
 			+ this.compression * (
 				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			);
+			)
+		);
 
 		const saturation = .2 + .7 * Math.abs(
 			((theta + Math.PI / 2) % Math.PI) - Math.PI / 2) / (Math.PI / 2
@@ -300,6 +306,113 @@ export class HopfFibration extends ThreeApplet
 		this.scene.add(mesh);
 
 		return mesh;
+	}
+
+	createLongitudinalConnector(radius, startAngle, endAngle, addCaps = false)
+	{
+		// Create a circular path
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
+			+ this.compression * (
+				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
+			)
+		);
+		const segments = 64;
+		const points = [];
+
+		for (let i = 0; i <= segments; i++) {
+			const t = i / segments; // Normalize between 0 and 1
+			const angle = startAngle + t * (endAngle - startAngle);
+			points.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0));
+		}
+
+		const partialCirclePath = new THREE.CatmullRomCurve3(points, false);
+
+		const tubeGeometry = new THREE.TubeGeometry(
+			partialCirclePath,
+			segments,
+			fiberThickness,
+			64,
+			false
+		);
+		const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+		const tube = new THREE.Mesh(tubeGeometry, material);
+
+		// Add end caps
+		const capMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+		const capGeometry = new THREE.CylinderGeometry(fiberThickness, fiberThickness, 0.1, 32);
+
+		const startCap = new THREE.Mesh(capGeometry, capMaterial);
+		startCap.position.copy(points[0]);
+		startCap.lookAt(points[1]); // Orient the cap to face the tube
+
+		const endCap = new THREE.Mesh(capGeometry, capMaterial);
+		endCap.position.copy(points[points.length - 1]);
+		endCap.lookAt(points[points.length - 2]); // Orient the cap to face the tube
+
+		if (addCaps)
+		{
+			this.scene.add(startCap);
+			this.scene.add(endCap);
+		}
+
+		// Add the tube to the scene
+		this.scene.add(tube);
+	}
+
+	createDepthConnector(startDistance, endDistance, angle)
+	{
+		// Define the start and end points
+		const startPoint = new THREE.Vector3(
+			startDistance * Math.sin(angle),
+			startDistance * Math.cos(angle),
+			0
+		);
+		const endPoint = new THREE.Vector3(
+			endDistance * Math.sin(angle),
+			endDistance * Math.cos(angle),
+			0
+		);
+
+		// Create a straight path using LineCurve3
+		const straightPath = new THREE.LineCurve3(startPoint, endPoint);
+
+		// Create the tube geometry
+		const fiberThickness = fiberThicknessScaleFactor * (
+			(1 - this.compression) * 0.05
+			+ this.compression * (
+				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
+			)
+		);
+		const tubeSegments = 64;   // Number of segments along the tube
+		const tubeGeometry = new THREE.TubeGeometry(
+			straightPath,
+			tubeSegments,
+			fiberThickness,
+			64,
+			false
+		);
+
+		// Create the material and mesh
+		const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+		const tube = new THREE.Mesh(tubeGeometry, material);
+
+		// Add the tube to the scene
+		this.scene.add(tube);
+	}
+
+	exportSTL()
+	{
+		const exporter = new STLExporter();
+		const stlString = exporter.parse(this.scene);
+
+		const blob = new Blob([stlString], { type: "application/octet-stream" });
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = "scene.stl";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	}
 
 	createAllFibers()
@@ -336,13 +449,53 @@ export class HopfFibration extends ThreeApplet
 			}
 		}
 
+		// const angleAdjust = 0.09;
+		// const addCaps = false;
+
+		// this.createLongitudinalConnector(
+		// 	0.875,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
+
+		// this.createLongitudinalConnector(
+		// 	0.75,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
+
+		// this.createLongitudinalConnector(
+		// 	0.625,
+		// 	-(Math.PI * 2) * 0.125 + angleAdjust,
+		// 	(Math.PI * 2) * 0.625 - angleAdjust,
+		// 	addCaps
+		// );
+
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * 1
+		// );
+
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * (1 + 6)
+		// );
+
+		// this.createDepthConnector(
+		// 	0.875,
+		// 	0.625,
+		// 	-Math.PI / 12 + Math.PI * 2 / 25 * (1 - 6)
+		// );
+
 		this.needNewFrame = true;
 	}
 
 	async toggleCompression(instant)
 	{
-		const dummy = { t: 0 };
-
 		const oldCompression = this.compression;
 		const newCompression = this.compression === 0 ? 1 : 0;
 
@@ -361,38 +514,21 @@ export class HopfFibration extends ThreeApplet
 			this.cameraPos[2] * scalingFactor
 		];
 
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: instant ? 0 : 750,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				this.compression = (1 - dummy.t) * oldCompression + dummy.t * newCompression;
+		await animate((t) => {
+			this.compression = (1 - t) * oldCompression + t * newCompression;
 
-				this.cameraPos = [
-					(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
-					(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
-					(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2]
-				];
+			this.cameraPos = [
+				(1 - t) * oldCameraPos[0] + t * newCameraPos[0],
+				(1 - t) * oldCameraPos[1] + t * newCameraPos[1],
+				(1 - t) * oldCameraPos[2] + t * newCameraPos[2]
+			];
 
-				this.distanceFromOrigin = magnitude(this.cameraPos);
+			this.distanceFromOrigin = magnitude(this.cameraPos);
 
-				this.createAllFibers();
+			this.createAllFibers();
 
-				this.needNewFrame = true;
-			},
-			complete: () =>
-			{
-				this.compression = newCompression;
-
-				this.cameraPos = newCameraPos;
-				this.distanceFromOrigin = magnitude(this.cameraPos);
-				this.createAllFibers();
-
-				this.needNewFrame = true;
-			}
-		}).finished;
+			this.needNewFrame = true;
+		}, instant ? 0 : 750);
 	}
 
 
@@ -431,8 +567,6 @@ export class HopfFibration extends ThreeApplet
 			});
 		}
 	}
-
-
 
 	onResizeCanvas()
 	{

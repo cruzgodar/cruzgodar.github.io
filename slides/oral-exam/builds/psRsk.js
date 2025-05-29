@@ -28,14 +28,19 @@ async function reset({ slide, forward, duration })
 
 	applet.animationTime = 0;
 
-	for (let i = applet.arrays.length - 1; i >= 0; i--)
-	{
-		await applet.removeArray(0);
-	}
+	await applet.removeAllArrays();
 
-	await applet.addNewArray(0, rpp, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: rpp,
+		horizontalLegs: false
+	});
 
-	await applet.addNewArray(1, rpp2, false, false);
+	await applet.addNewArray({
+		index: 1,
+		numbers: rpp2,
+		horizontalLegs: false
+	});
 
 	if (!applet.inExactHexView)
 	{
@@ -100,7 +105,11 @@ async function build2({
 			[3, 0, 0]
 		];
 
-		await applet.addNewArray(1, tableau, false, false);
+		await applet.addNewArray({
+			index: 1,
+			numbers: tableau,
+			horizontalLegs: false
+		});
 	}
 
 	else
@@ -114,7 +123,11 @@ async function build2({
 			[2, 1, 1]
 		];
 
-		await applet.addNewArray(1, tableau, false, false);
+		await applet.addNewArray({
+			index: 1,
+			numbers: tableau,
+			horizontalLegs: false
+		});
 	}
 }
 

@@ -141,10 +141,21 @@ export class Dropdown extends InputElement
 							newValue: decodeURIComponent(value),
 							instant: true,
 						});
+						this.loadResolve();
 					}, 10);
 				}
 
+				else
+				{
+					this.loadResolve();
+				}
+
 				addTemporaryParam(this.element.id);
+			}
+
+			else
+			{
+				this.loadResolve();
 			}
 		}, 16);
 	}
@@ -442,7 +453,7 @@ export class Dropdown extends InputElement
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 			);
 		}
 		

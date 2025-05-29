@@ -1,4 +1,3 @@
-import anime from "../anime.js";
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
 import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
@@ -8,6 +7,7 @@ import {
 	pageUrl
 } from "./main.js";
 import { siteSettings } from "./settings.js";
+import { animate, clamp } from "./utils.js";
 
 export let bannerElement;
 
@@ -64,7 +64,7 @@ export function updateBanner(timestamp)
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
-	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.3, 0), 1);
+	const t0 = clamp(window.scrollY / bannerMaxScroll * 1.3, 0, 1);
 	const t = easeInOutQuad(t0);
 
 
@@ -82,38 +82,22 @@ export function updateBanner(timestamp)
 
 		if (t >= .8 && lastT < .8)
 		{
-			const dummy = { t: 0 };
-
-			anime({
-				targets: dummy,
-				t: 1,
-				duration: 300,
-				easing: "easeInOutSine",
-				update: () =>
-				{
-					bannerElement.style.opacity = 1 - dummy.t;
-					nameTextOpacity = 1 - dummy.t;
-					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - dummy.t) * .35})`;
-				}
-			});
+			animate((t) =>
+			{
+				bannerElement.style.opacity = 1 - t;
+				nameTextOpacity = 1 - t;
+				contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
+			}, 300, "easeInOutSine");
 		}
 
 		else if (t < .8 && lastT >= .8)
 		{
-			const dummy = { t: 0 };
-
-			anime({
-				targets: dummy,
-				t: 1,
-				duration: 300,
-				easing: "easeInOutSine",
-				update: () =>
-				{
-					bannerElement.style.opacity = dummy.t;
-					nameTextOpacity = dummy.t;
-					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(dummy.t) * .35})`;
-				}
-			});
+			animate((t) =>
+			{
+				bannerElement.style.opacity = t;
+				nameTextOpacity = t;
+				contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(t) * .35})`;
+			}, 300, "easeInOutSine");
 		}
 	}
 
@@ -165,19 +149,19 @@ let bannerFilepath = "";
 
 export const bannerPages =
 [
-	"/home/",
+	"/home",
 
-	"/about/",
+	"/about",
 
-	"/writing/mist/",
-	"/writing/desolation-point/",
+	"/writing/mist",
+	"/writing/desolation-point",
 
-	"/debug/htmdl-test/"
+	"/debug/htmdl-test"
 ];
 
 export const multibannerPages =
 {
-	"/home/":
+	"/home":
 	{
 		currentBanner: Math.floor(Math.random() * 11) + 1,
 		numBanners: 11
@@ -194,7 +178,7 @@ export async function preloadBanner(url)
 	}
 
 	bannerFilename = "small.webp";
-	bannerFilepath = url + "banners/";
+	bannerFilepath = url + "/banners/";
 
 	if (url in multibannerPages)
 	{
@@ -235,7 +219,7 @@ export async function loadBanner({
 	}
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
-	bannerFilepath = url + "banners/";
+	bannerFilepath = url + "/banners/";
 
 	if (url in multibannerPages)
 	{

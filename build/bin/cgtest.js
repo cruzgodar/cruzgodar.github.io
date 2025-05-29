@@ -1,8 +1,7 @@
 #!/usr/bin/env bun
 
-import { launch } from "puppeteer";
 import { Worker } from "worker_threads";
-import { getModifiedDate, read, write } from "../file-io.js";
+import { getModifiedDate, read } from "../file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
 const { spawnSync } = require("child_process");
@@ -201,129 +200,6 @@ async function testPages(files)
 	});
 }
 
-
-
-const latexFiles = {
-	"teaching/uo/256/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-		"#download-homework-9-button",
-	],
-
-	"teaching/uo/341/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-		"#download-homework-9-button",
-	],
-
-	"teaching/uo/342/": [
-		"#download-homework-1-button",
-		"#download-homework-2-button",
-		"#download-homework-3-button",
-		"#download-homework-4-button",
-		"#download-homework-5-button",
-		"#download-homework-6-button",
-		"#download-homework-7-button",
-		"#download-homework-8-button",
-	],
-};
-
-const texDirectory = ".cgTexTesting";
-
-function testLatex(tex)
-{
-	const filename = Math.random().toString(36).slice(2);
-	write(`${texDirectory}/${filename}.tex`, tex);
-
-	const proc = spawnSync(
-		"pdflatex",
-		["-interaction=nonstopmode", "-halt-on-error", `${root}/${texDirectory}/${filename}.tex`],
-		{
-			stdio: "pipe",
-			cwd: `${root}/${texDirectory}`
-		}
-	);
-
-	if (proc.stdout.toString().toLowerCase().includes("error"))
-	{
-		console.error(`Error in compiling tex: ${proc.stdout.toString()}`);
-	}
-}
-
-async function testAllLatex(files)
-{
-	spawnSync("mkdir", ["-p", `${root}/${texDirectory}`]);
-
-	const browser = await launch({ headless: true });
-	const page = await browser.newPage();
-
-	const texSources = [];
-
-	page.on("console", async (e) =>
-	{
-		const args = await Promise.all(e.args().map(a => a.jsonValue()));
-		const text = args.join(" ");
-
-		if (text.includes("\\documentclass{article}"))
-		{
-			texSources.push(text);
-		}
-	});
-
-	console.log("Downloading Latex...");
-
-	for (const file of files)
-	{
-		const buttons = latexFiles[file];
-
-		await page.goto(`http://${ip}:${port}/${file}?debug=1`);
-		
-		for (const button of buttons)
-		{
-			await new Promise(resolve =>
-			{
-				setTimeout(async () =>
-				{
-					await page.evaluate((button) =>
-					{
-						document.querySelector(button).click();
-					}, button);
-
-					resolve();
-				}, 150);
-			});
-		}
-	}
-	
-	await page.close();
-	await browser.close();
-
-	console.log("Compiling Latex...");
-
-	for (let i = 0; i < texSources.length; i++)
-	{
-		process.stdout.moveCursor(0, -1); // Move cursor up one line
-		process.stdout.clearLine();
-		console.log(`Compiling Latex (${i + 1}/${texSources.length})...`);
-		testLatex(texSources[i]);
-	}
-
-	const proc = spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
-	console.log(proc.stdout.toString());
-}
-
 async function test(clean)
 {
 	const proc = spawnSync("git", [
@@ -341,10 +217,6 @@ async function test(clean)
 	const htmlDataFiles = htmlFiles.filter(file => file.includes("data.html"));
 	const htmlIndexFiles = htmlFiles.filter(file => file.includes("index.html"));
 
-	const latexDataFiles = htmlDataFiles
-		.map(file => file.replace("data.html", ""))
-		.filter(file => latexFiles[file]);
-
 	const jsFiles = files.filter(file =>
 	{
 		return file.slice(file.lastIndexOf(".")) === ".js" && !file.includes(".min.");
@@ -359,8 +231,6 @@ async function test(clean)
 
 	console.log("Testing pages for console errors...");
 	await testPages(htmlIndexFiles);
-
-	await testAllLatex(latexDataFiles);
 
 	process.exit(0);
 }

@@ -1,7 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
-import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
@@ -305,40 +305,34 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	animatePaletteChange()
 	{
-		const dummy = { t: 0 };
-
 		const oldColors = [...this.colors];
 		const newColors = this.generateNewPalette();
 
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		console.log(oldColors, newColors);
+
+		animate((t) =>
+		{
+			for (let i = 0; i < 12; i++)
 			{
-				for (let i = 0; i < 12; i++)
-				{
-					this.colors[i] = (1 - dummy.t) * oldColors[i] + dummy.t * newColors[i];
+				this.colors[i] = (1 - t) * oldColors[i] + t * newColors[i];
 
-					this.wilson.setUniforms({
-						color0: [this.colors[0], this.colors[1], this.colors[2]],
-						color1: [this.colors[3], this.colors[4], this.colors[5]],
-						color2: [this.colors[6], this.colors[7], this.colors[8]],
-						color3: [this.colors[9], this.colors[10], this.colors[11]],
-					});
+				this.wilson.setUniforms({
+					color0: [this.colors[0], this.colors[1], this.colors[2]],
+					color1: [this.colors[3], this.colors[4], this.colors[5]],
+					color2: [this.colors[6], this.colors[7], this.colors[8]],
+					color3: [this.colors[9], this.colors[10], this.colors[11]],
+				});
 
-					this.wilsonHidden.setUniforms({
-						color0: [this.colors[0], this.colors[1], this.colors[2]],
-						color1: [this.colors[3], this.colors[4], this.colors[5]],
-						color2: [this.colors[6], this.colors[7], this.colors[8]],
-						color3: [this.colors[9], this.colors[10], this.colors[11]],
-					});
+				this.wilsonHidden.setUniforms({
+					color0: [this.colors[0], this.colors[1], this.colors[2]],
+					color1: [this.colors[3], this.colors[4], this.colors[5]],
+					color2: [this.colors[6], this.colors[7], this.colors[8]],
+					color3: [this.colors[9], this.colors[10], this.colors[11]],
+				});
 
-					this.needNewFrame = true;
-				}
+				this.needNewFrame = true;
 			}
-		});
+		}, 1000);
 	}
 
 
@@ -429,6 +423,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

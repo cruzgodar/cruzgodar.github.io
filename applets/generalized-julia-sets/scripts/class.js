@@ -1,6 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class GeneralizedJuliaSets extends AnimationFrameApplet
@@ -553,6 +554,6 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

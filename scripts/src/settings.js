@@ -1,5 +1,5 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
-import { cardIsOpen } from "./cards.js";
+import { cardContainer, cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
@@ -7,12 +7,13 @@ import {
 	pageUrl
 } from "./main.js";
 import { getDisplayUrl } from "./navigation.js";
+import { animate } from "./utils.js";
 import anime from "/scripts/anime.js";
 
 export const forceThemePages =
 {
-	"/gallery/": true,
-	"/slides/oral-exam/": true
+	"/gallery": true,
+	"/slides/oral-exam": true
 };
 
 const rootElement = document.querySelector(":root");
@@ -60,6 +61,7 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
+	scroll: parseInt(params.get("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 };
@@ -152,6 +154,18 @@ export function getQueryParams()
 	else
 	{
 		params.delete("increasecontrast");
+	}
+
+
+
+	if (siteSettings.scroll)
+	{
+		params.set("scroll", siteSettings.scroll);
+	}
+
+	else
+	{
+		params.delete("scroll");
 	}
 
 
@@ -297,10 +311,16 @@ export async function revertTheme()
 
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
-		await toggleDarkTheme({ force: true });
+		await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
 	}
 	
 	revertThemeTo = null;
+}
+
+export let onThemeChange = () => {};
+export function setOnThemeChange(callback)
+{
+	onThemeChange = callback;
 }
 
 export async function toggleDarkTheme({
@@ -330,6 +350,8 @@ export async function toggleDarkTheme({
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
+	onThemeChange();
+
 	if (noAnimation)
 	{
 		metaThemeColorElement.setAttribute(
@@ -349,7 +371,8 @@ export async function toggleDarkTheme({
 			}
 		`);
 
-		const dummy = { t: siteSettings.darkTheme ? 0 : 1 };
+		const oldTheme = siteSettings.darkTheme ? 0 : 1;
+		const newTheme = siteSettings.darkTheme ? 1 : 0;
 
 		await Promise.all([
 			anime({
@@ -359,20 +382,10 @@ export async function toggleDarkTheme({
 				easing: "cubicBezier(.25, .1, .25, 1)",
 			}).finished,
 
-			anime({
-				targets: dummy,
-				t: siteSettings.darkTheme ? 1 : 0,
-				duration,
-				easing: "cubicBezier(.25, .1, .25, 1)",
-				update: () =>
-				{
-					rootElement.style.setProperty("--theme", dummy.t);
-				},
-				complete: () =>
-				{
-					rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
-				},
-			}).finished
+			animate((t) =>
+			{
+				rootElement.style.setProperty("--theme", t * newTheme + (1 - t) * oldTheme);
+			}, duration, "cubicBezier(.25, .1, .25, 1)")
 		]);
 
 		element.remove();
@@ -394,6 +407,20 @@ export async function toggleReduceMotion()
 			wilson.reduceMotion = siteSettings.reduceMotion;
 		}
 	});
+
+	const helpButton = document.querySelector(".wilson-help-button");
+	if (helpButton)
+	{
+		if (!siteSettings.reduceMotion)
+		{
+			helpButton.style.setProperty("view-transition-name", "wilson-help-button");
+		}
+		
+		else
+		{
+			helpButton.style.removeProperty("view-transition-name");
+		}
+	}
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 }
@@ -424,32 +451,44 @@ export async function toggleIncreaseContrast({
 			}
 		`);
 
-		const dummy = { t: siteSettings.increaseContrast ? 0 : 1 };
+		const oldIncreaseContrast = siteSettings.increaseContrast ? 0 : 1;
+		const newIncreaseContrast = siteSettings.increaseContrast ? 1 : 0;
 
-		await anime({
-			targets: dummy,
-			t: siteSettings.increaseContrast ? 1 : 0,
-			duration,
-			easing: "easeInOutSine",
-			update: () =>
-			{
-				rootElement.style.setProperty("--contrast", dummy.t);
-			},
-			complete: () =>
-			{
-				rootElement.style.setProperty(
-					"--contrast",
-					siteSettings.increaseContrast ? 1 : 0
-				);
-			},
-		}).finished;
+		await animate((t) =>
+		{
+			rootElement.style.setProperty(
+				"--contrast",
+				t * newIncreaseContrast + (1 - t) * oldIncreaseContrast
+			);
+		}, duration, "easeInOutSine");
 
 		element.remove();
 	}
 }
 
+
+
+let setScrollTimeout = undefined;
+
+export async function setScroll()
+{
+	if (setScrollTimeout !== undefined)
+	{
+		clearTimeout(setScrollTimeout);
+	}
+
+	setScrollTimeout = setTimeout(() =>
+	{
+		siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
+
+		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+	}, 100);
+}
+
+
+
 let settingsCode = [];
-const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1];
+const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
 
 function updateCode(digit)
 {
@@ -500,8 +539,6 @@ function handleEasterEgg()
 			}
 		`, false);
 
-		const dummy = { t: 1 };
-
 		const startingBackground = siteSettings.darkTheme
 			? "lch(8.25% 0 0)"
 			: "lch(100% 0 0)";
@@ -520,39 +557,33 @@ function handleEasterEgg()
 
 		document.documentElement.style.filter = "brightness(1)";
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: 2000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				rootElement.style.setProperty(
-					"--background",
-					`color-mix(in lch, ${startingBackground} ${dummy.t * 100}%, lch(46.62% 108.32 40.84))`
-				);
+		animate((t) =>
+		{
+			rootElement.style.setProperty(
+				"--background",
+				`color-mix(in lch, ${startingBackground} ${(1 - t) * 100}%, lch(46.62% 108.32 40.84))`
+			);
 
-				rootElement.style.setProperty(
-					"--high-contrast",
-					`color-mix(in lch, ${startingHighContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--high-contrast",
+				`color-mix(in lch, ${startingHighContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--normal-contrast",
-					`color-mix(in lch, ${startingNormalContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--normal-contrast",
+				`color-mix(in lch, ${startingNormalContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--low-contrast",
-					`color-mix(in lch, ${startingLowContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
-				);
+			rootElement.style.setProperty(
+				"--low-contrast",
+				`color-mix(in lch, ${startingLowContrast} ${(1 - t) * 100}%, lch(79.24% 134.33 134.57))`
+			);
 
-				rootElement.style.setProperty(
-					"--extra-brightness",
-					(1 - dummy.t) * 10 + 1
-				);
-			}
-		});
+			rootElement.style.setProperty(
+				"--extra-brightness",
+				t * 10 + 1
+			);
+		}, 2000);
 	}
 
 	return shownEasterEgg;

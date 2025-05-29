@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "./class.js";
+import { hexToRgb } from "/scripts/applets/applet.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -56,13 +57,31 @@ export default function()
 	new Button({
 		element: $("#spread-roots-button"),
 		name: "Spread Roots",
-		onClick: () => applet.spreadRoots(false, false)
+		onClick: () =>
+		{
+			applet.spreadRoots({
+				animate: true,
+				randomize: false
+			});
+		}
 	});
 
 	new Button({
 		element: $("#randomize-roots-button"),
 		name: "Randomize Roots",
-		onClick: () => applet.spreadRoots(false, true)
+		onClick: () =>
+		{
+			applet.spreadRoots({
+				animate: true,
+				randomize: true
+			});
+		}
+	});
+
+	new Button({
+		element: $("#randomize-colors-button"),
+		name: "Randomize Colors",
+		onClick: () => applet.randomizeColors()
 	});
 
 	new DownloadButton({
@@ -86,7 +105,9 @@ export default function()
 	{
 		const hex = rootColorInputElement.value;
 
-		applet.setColor(hex);
+		const rgb = hexToRgb(hex);
+
+		applet.setColor({ rgb: [rgb[0], rgb[1], rgb[2]] });
 	});
 
 	showPage();

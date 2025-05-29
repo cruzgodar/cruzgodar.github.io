@@ -9,26 +9,31 @@ import {
 	testAllEntriesOfABConfig
 } from "./abConfigs.js";
 import { addCube, addFloor, addLeftWall, addRightWall } from "./addGeometry.js";
-import { godar1, godar1Inverse } from "./algorithms/goder1.js";
+import { godar1, godar1Inverse } from "./algorithms/godar1.js";
+import { godar2 } from "./algorithms/godar2.js";
 import { hillmanGrassl, hillmanGrasslInverse } from "./algorithms/hillmanGrassl.js";
 import { pak, pakInverse } from "./algorithms/pak.js";
 import { rsk, rskInverse } from "./algorithms/rsk.js";
 import { sulzgruber, sulzgruberInverse } from "./algorithms/sulzgruber.js";
 import {
 	hideDimers,
+	hideNumbersCanvas,
 	show2dView,
 	showDimers,
 	showHexView,
+	showNumbersCanvas,
 	updateCameraHeight
 } from "./cameraControls.js";
-import { addNewArray, editArray, removeArray, trimArray } from "./editArrays.js";
+import { addNewArray, editArray, removeAllArrays, removeArray, trimArray } from "./editArrays.js";
 import {
 	drawAll2dViewText,
 	drawSingleCell2dViewText,
 	hideFloor,
+	hideWalls,
 	recalculateHeights,
 	removeOutsideFloor,
-	showFloor
+	showFloor,
+	showWalls
 } from "./miscUtils.js";
 import { drawBoundary, drawBoundaryRect, drawNQuotient } from "./nQuotients.js";
 import { runAlgorithm, runExample } from "./runAlgorithm.js";
@@ -45,7 +50,9 @@ import {
 } from "./styleCubes.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -72,6 +79,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	infiniteHeight = 50;
 
+	addWalls = false;
 	abConfigMode = false;
 	wallWidth = 16;
 	wallHeight = 16;
@@ -127,11 +135,14 @@ export class PlanePartitions extends AnimationFrameApplet
 	constructor({
 		canvas,
 		numbersCanvas,
-		useFullscreenButton = true
+		useFullscreenButton = true,
+		backgroundColor = 0x000000
 	}) {
 		super(canvas);
 
 		this.useFullscreenButton = useFullscreenButton;
+
+		this.backgroundColor = backgroundColor;
 
 		const hiddenCanvas = this.createHiddenCanvas();
 		const hiddenCanvas2 = this.createHiddenCanvas();
@@ -145,8 +156,13 @@ export class PlanePartitions extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			fullscreenOptions: {
-				animate: false,
-				closeWithEscape: false,
+				useFullscreenButton: this.useFullscreenButton,
+
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+				onSwitch: this.onSwitchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 			}
 		};
 
@@ -170,17 +186,13 @@ export class PlanePartitions extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
-				onSwitch: this.onSwitchFullscreen.bind(this),
-				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
-				useFullscreenButton: this.useFullscreenButton,
-
-				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+				animate: false,
+				closeWithEscape: false,
 			},
 		};
 
 		this.wilsonNumbers = new WilsonCPU(numbersCanvas, optionsNumbers);
-		this.wilsonForFullscreen = this.wilsonNumbers;
+		this.wilsonForFullscreen = this.wilson;
 
 		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 		
@@ -234,10 +246,10 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden3.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden3.ctx._alpha = 1;
 
-		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden3.ctx.fillStyle = convertColor(64, 64, 64, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden3.ctx.fillStyle = convertColor(64, 64, 64);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden3.ctx.lineWidth = 6;
@@ -247,10 +259,10 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden4.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden4.ctx._alpha = 1;
 
-		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden4.ctx.fillStyle = convertColor(64, 64, 64, this.abConfigMode ? 1 : 0);
+		this.wilsonHidden4.ctx.fillStyle = convertColor(64, 64, 64, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden4.ctx.lineWidth = 6;
@@ -265,7 +277,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.renderer = new THREE.WebGLRenderer({
 			canvas: this.wilson.canvas,
 			antialias: true,
-			context: this.wilson.gl
+			context: this.wilson.gl,
+			alpha: true,
 		});
 
 		this.renderer.setSize(this.resolution, this.resolution, false);
@@ -330,12 +343,30 @@ export class PlanePartitions extends AnimationFrameApplet
 	{
 		if (isFullscreen)
 		{
-			this.wilson.enterFullscreen();
+			this.wilsonNumbers.enterFullscreen();
+
+			const containers = document.querySelectorAll(".WILSON_canvas-container");
+
+			containers[0].appendChild(
+				document.querySelector(".WILSON_exit-fullscreen-button")
+			);
 		}
 
 		else
 		{
-			this.wilson.exitFullscreen();
+			this.wilsonNumbers.exitFullscreen();
+		}
+
+		if (this.in2dView)
+		{
+			setTimeout(() =>
+			{
+				changeOpacity({
+					element: this.wilsonNumbers.canvas,
+					opacity: 1,
+					duration: this.animationTime / 5
+				});
+			}, 300);
 		}
 
 		this.resume();
@@ -354,6 +385,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	editArray = editArray;
 	trimArray = trimArray;
 	removeArray = removeArray;
+	removeAllArrays = removeAllArrays;
 
 	addCube = addCube;
 	addFloor = addFloor;
@@ -362,12 +394,16 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	showHexView = showHexView;
 	show2dView = show2dView;
+	showNumbersCanvas = showNumbersCanvas;
+	hideNumbersCanvas = hideNumbersCanvas;
 	updateCameraHeight = updateCameraHeight;
 	showDimers = showDimers;
 	hideDimers = hideDimers;
 
 	showFloor = showFloor;
 	hideFloor = hideFloor;
+	showWalls = showWalls;
+	hideWalls = hideWalls;
 	removeOutsideFloor = removeOutsideFloor;
 	recalculateHeights = recalculateHeights;
 	drawAll2dViewText = drawAll2dViewText;
@@ -404,6 +440,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	godar1 = godar1;
 	godar1Inverse = godar1Inverse;
+
+	godar2 = godar2;
 
 	algorithmData = {
 		hillmanGrassl:
@@ -465,13 +503,28 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			method: this.godar1Inverse,
 			inputType: ["pp", "pp"]
-		}
+		},
+
+		godar2:
+		{
+			method: this.godar2,
+			inputType: ["pp"]
+		},
 	};
 
 	async beforeSwitchFullscreen()
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		if (this.in2dView)
+		{
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 5
+			});
+		}
+
+		await sleep(33);
 	}
 }

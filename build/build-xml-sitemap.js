@@ -8,13 +8,14 @@ export async function buildXmlSitemap()
 
 	for (const key in sitemap)
 	{
-		const lastModifiedDate = await getModifiedDate(key);
+		const lastModifiedDate = (await getModifiedDate(key)) ?? new Date();
+
 
 		const year = lastModifiedDate.getUTCFullYear();
 		const month = lastModifiedDate.getUTCMonth() + 1;
 		const day = lastModifiedDate.getUTCDate();
 
-		const priority = key === "/home/"
+		const priority = key === "/home"
 			? "1.0"
 			: key.includes("debug")
 				? "0.0"

@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class BrownianTrees extends AnimationFrameApplet
@@ -75,6 +76,6 @@ export class BrownianTrees extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

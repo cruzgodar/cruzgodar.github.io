@@ -1,7 +1,7 @@
-import anime from "/scripts/anime.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { animate } from "/scripts/src/utils.js";
 
 // A demonstration of the n-quotient, not currently public-facing in the applet.
 // It uses the numbers canvas to draw the appropriate edges and move them around.
@@ -114,9 +114,7 @@ export async function drawNQuotient(index, n, m, rects)
 
 	// Fade out the ones we don't care about.
 
-	const dummy = { t: 1 };
-
-	let update = () =>
+	await animate((t) =>
 	{
 		this.wilsonNumbers.ctx.clearRect(
 			0,
@@ -127,7 +125,7 @@ export async function drawNQuotient(index, n, m, rects)
 
 		rects.forEach((rect, index) =>
 		{
-			const opacity = index % n === m ? 1 : dummy.t;
+			const opacity = index % n === m ? 1 : 1 - t;
 
 			this.drawBoundaryRect(
 				array,
@@ -137,16 +135,7 @@ export async function drawNQuotient(index, n, m, rects)
 				[...(rect[3]), opacity]
 			);
 		});
-	};
-
-	await anime({
-		targets: dummy,
-		t: 0,
-		duration: this.animationTime,
-		easing: "easeOutQuad",
-		update,
-		complete: update
-	}).finished;
+	}, this.animationTime);
 
 	this.wilsonNumbers.ctx.clearRect(
 		0,
@@ -202,9 +191,7 @@ export async function drawNQuotient(index, n, m, rects)
 
 
 
-	dummy.t = 0;
-
-	update = () =>
+	await animate((t) =>
 	{
 		this.wilsonNumbers.ctx.clearRect(
 			0,
@@ -217,22 +204,15 @@ export async function drawNQuotient(index, n, m, rects)
 		{
 			this.drawBoundaryRect(
 				array,
-				(1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0],
-				(1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1],
+				(1 - t) * rect[0] + t * targetRects[index][0],
+				(1 - t) * rect[1] + t * targetRects[index][1],
 				rect[2],
 				rect[3]
 			);
 		});
-	};
+	}, this.animationTime, "easeInOutQuad");
 
-	await anime({
-		targets: dummy,
-		t: 1,
-		duration: this.animationTime,
-		easing: "easeInOutQuad",
-		update,
-		complete: update
-	}).finished;
+
 
 	this.wilsonNumbers.ctx.clearRect(
 		0,
@@ -294,9 +274,7 @@ export async function drawNQuotient(index, n, m, rects)
 		bonusRects.push([-1, j, true]);
 	}
 
-	dummy.t = 0;
-
-	update = () =>
+	await animate((t) =>
 	{
 		this.wilsonNumbers.ctx.clearRect(
 			0,
@@ -322,19 +300,10 @@ export async function drawNQuotient(index, n, m, rects)
 				rect[0],
 				rect[1],
 				rect[2],
-				[...(rects[0][3]), dummy.t]
+				[...(rects[0][3]), t]
 			);
 		});
-	};
-
-	await anime({
-		targets: dummy,
-		t: 1,
-		duration: this.animationTime / 2,
-		easing: "easeInQuad",
-		update,
-		complete: update
-	}).finished;
+	}, this.animationTime / 2, "easeInQuad");
 
 	this.wilsonNumbers.ctx.clearRect(
 		0,

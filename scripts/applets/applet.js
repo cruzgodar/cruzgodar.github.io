@@ -237,13 +237,13 @@ export class Applet
 
 	hiddenCanvasContainer;
 
-	createHiddenCanvas(hidden = true)
+	createHiddenCanvas(hidden = true, aspectRatio = 1)
 	{
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
 		hiddenCanvas.style.width = "10px";
-		hiddenCanvas.style.height = "10px";
+		hiddenCanvas.style.height = `${10 / aspectRatio}px`;
 
 		if (!this.hiddenCanvasContainer)
 		{
@@ -252,7 +252,7 @@ export class Applet
 			
 			this.hiddenCanvasContainer.style.position = "fixed";
 			this.hiddenCanvasContainer.style.top = "0";
-			this.hiddenCanvasContainer.style.left = "-200vw";
+			this.hiddenCanvasContainer.style.left = "calc(-1000vw - 100px)";
 			
 			document.body.appendChild(this.hiddenCanvasContainer);
 		}
@@ -355,6 +355,11 @@ export class Applet
 				id: "applet-controls",
 				fromElement: element,
 			}));
+
+			if (!siteSettings.reduceMotion)
+			{
+				element.style.setProperty("view-transition-name", "wilson-help-button");
+			}
 		}, 10);
 
 		return element;
@@ -454,6 +459,7 @@ export class Applet
 
 
 
+// HSV are in [0, 1], and the outputs are in [0, 255].
 export function hsvToRgb(h, s, v)
 {
 	function f(n)
@@ -463,6 +469,43 @@ export function hsvToRgb(h, s, v)
 	}
 
 	return [255 * f(5), 255 * f(3), 255 * f(1)];
+}
+
+export function rgbToHsv(r, g, b)
+{
+	r /= 255;
+	g /= 255;
+	b /= 255;
+
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	const delta = max - min;
+
+	let h = 0;
+	const s = max === 0 ? 0 : delta / max;
+	const v = max;
+
+	if (delta !== 0)
+	{
+		if (max === r)
+		{
+			h = ((g - b) / delta + 6) % 6;
+		}
+
+		else if (max === g)
+		{
+			h = (b - r) / delta + 2;
+		}
+
+		else
+		{
+			h = (r - g) / delta + 4;
+		}
+
+		h /= 6;
+	}
+
+	return [h, s, v];
 }
 
 /*
@@ -612,11 +655,11 @@ export function hexToRgb(hex)
 {
 	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-	return result ? {
-		r: parseInt(result[1], 16),
-		g: parseInt(result[2], 16),
-		b: parseInt(result[3], 16)
-	} : null;
+	return result ? [
+		parseInt(result[1], 16),
+		parseInt(result[2], 16),
+		parseInt(result[3], 16)
+	] : null;
 }
 
 function componentToHex(c)

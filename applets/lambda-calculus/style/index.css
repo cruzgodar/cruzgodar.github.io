@@ -1,0 +1,10 @@
+.invalid
+{
+	background-color: rgba(255, 64, 64, 0.5);
+	border-radius: 4px;
+}
+
+.text-field, .textarea-overlay
+{
+	font-weight: bold;
+}

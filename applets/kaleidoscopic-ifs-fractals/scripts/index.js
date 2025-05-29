@@ -71,6 +71,7 @@ export default function()
 		value: 2,
 		min: minScale,
 		max: 8 / 3,
+		snapPoints: [2],
 		onInput: onSliderInput
 	});
 

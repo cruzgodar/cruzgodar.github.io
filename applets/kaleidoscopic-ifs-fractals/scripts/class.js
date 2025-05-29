@@ -5,6 +5,7 @@ import {
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { clamp } from "/scripts/src/utils.js";
 
 const ns = {
 	tetrahedron: [
@@ -59,23 +60,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 	const loopInternals = Array(numNs).fill(0).map((_, i) =>
 	{
-		if (useForGetColor)
-		{
-			// Reflect along perpendicular bisector planes to the edges connected to
-			// the scale center vertex so that we can compute only the distance
-			// to that single vertex.
-
-			return /* glsl */`
-				float t${i} = dot(pos, n${i}${variableName});
-				
-				if (t${i} < 0.0)
-				{
-					pos -= 2.0 * t${i} * n${i}${variableName};
-					color = mix(color, color${i}, colorScale);
-				}
-			`;
-		}
-
 		return /* glsl */`
 			float t${i} = dot(pos, n${i}${variableName});
 			
@@ -103,7 +87,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			
 			pos = rotationMatrix * pos;
 
-			${useForGetColor ? "colorScale *= .5;" : ""}
+			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .2;" : ""}
 		}
 		
 		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(numIterations))"};
@@ -137,20 +121,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			constantsGlsl.push(glsl);
 		}
 
-		const addGlsl = /* glsl */`
-			const vec3 color0 = vec3(1.0, 0.0, 0.0);
-			const vec3 color1 = vec3(0.0, 1.0, 0.0);
-			const vec3 color2 = vec3(0.0, 0.0, 1.0);
-			const vec3 color3 = vec3(1.0, 1.0, 0.0);
-			const vec3 color4 = color0;
-			const vec3 color5 = color1;
-			const vec3 color6 = color2;
-			const vec3 color7 = color3;
-			const vec3 color8 = color0;
-			const vec3 color9 = color1;
-			
-			${constantsGlsl.join("\n")}
-		`;
+		const addGlsl = constantsGlsl.join("\n");
 
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(shape);
 
@@ -165,7 +136,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		const uniforms = {
 			scale: 2,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
-			numIterations: 56
+			numIterations: 12
 		};
 
 		super({
@@ -180,11 +151,43 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			cameraPos: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
-			epsilonScaling: 1,
+			epsilonScaling: 0.75,
 			stepFactor: .6,
 		});
 
 		this.shape = shape;
+	}
+
+
+
+	drawFrame()
+	{
+		super.drawFrame();
+
+		const distance = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
+
+		// Interpolates from 0 at scale 2 to 3 at scale 1.125.
+		const scaleFactor = (1 / (this.uniforms.scale - 1) - 1) * 2 / 7;
+
+		const numIterations = clamp(
+			Math.floor(
+				14 - Math.log(distance) * 2
+			),
+			14,
+			24
+		)
+			+ Math.round(scaleFactor * 28);
+
+		if (this.uniforms.numIterations === numIterations)
+		{
+			return;
+		}
+
+		this.setUniforms({ numIterations });
 	}
 
 

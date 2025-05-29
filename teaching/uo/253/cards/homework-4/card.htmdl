@@ -1,0 +1,38 @@
+### card homework-4 "Homework 4"
+	
+	*Due Wednesday of Week 5 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-4-pdf
+		download-homework-4-tex
+	###
+
+	- - -
+	
+	In problems 8#, determine if the series converges or diverges.
+
+	#. $$\sum_{n = 1}^\infty \frac{1}{n^2 + \ln(n)}$$.
+
+	#. $$\sum_{k = 2}^\infty \frac{1}{k^2 - k - 1}$$.
+
+	#. $$\sum_{m = 3}^\infty \frac{m}{m^2 - 8}$$.
+
+	#. $$\sum_{n = 1}^\infty \frac{\ln(n)}{n^2 + 2}$$.
+
+	#. $$\sum_{m = 1}^\infty \frac{\sin(m) + 1}{m^{1.5}}$$.
+
+	#. $$\sum_{n = 1}^\infty \frac{1}{\sqrt{n^2 + \ln(n)}}$$ (Hint: factor out an $n$ from the root).
+
+	#. $$\sum_{n = 2}^\infty \frac{1}{n\ln(n)\ln(\ln(n))}$$.
+
+	#. $$\sum_{n = 1}^\infty \frac{\ln^k(n)}{n^2}$$ for $k \geq 1$ any positive integer. Here, $\ln^k(n) = \left( \ln(n) \right)^k$. (Hint: use the limit comparison test with $\frac{1}{n^{1.5}}$.)
+
+	- - -
+
+	#. Give an example of a divergent series $\sum_{n = 1}^\infty a_n$ so that $a_n \leq \frac{1}{n^2}$ for all $n$. Why does this not contradict the comparison test?
+
+	#. If $a_n \geq 0$ and $$\lim_{n \to \infty} \frac{a_n}{1/n} = 0$$, can $\sum_{n = 1}^\infty a_n$ still diverge?
+
+###

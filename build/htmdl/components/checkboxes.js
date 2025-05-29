@@ -18,7 +18,7 @@ export function checkbox(id)
 
 export function checkboxes(options, lines)
 {
-	let html = "<div class='checkboxes'>";
+	let html = "<div class=\"checkboxes\">";
 
 	lines.forEach(line =>
 	{

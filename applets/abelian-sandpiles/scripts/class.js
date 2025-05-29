@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class AbelianSandpiles extends AnimationFrameApplet
@@ -421,6 +422,6 @@ export class AbelianSandpiles extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

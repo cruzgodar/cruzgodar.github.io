@@ -1,6 +1,7 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { animate } from "/scripts/src/utils.js";
 
 export async function showHexView()
 {
@@ -26,8 +27,8 @@ export async function showHexView()
 
 
 	this.updateCameraHeight(true);
-
-	const dummy = { t: this.wilsonNumbers.worldCenterX };
+	const oldCenterX = this.wilsonNumbers.worldCenterX;
+	const newCenterX = 0;
 
 	await Promise.all([
 		anime({
@@ -39,18 +40,12 @@ export async function showHexView()
 			easing: "easeInOutQuad",
 		}).finished,
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: this.animationTime,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.wilsonNumbers.resizeWorld({
-					centerX: dummy.t
-				});
-			}
-		}).finished
+		animate((t) =>
+		{
+			this.wilsonNumbers.resizeWorld({
+				centerX: t * newCenterX + (1 - t) * oldCenterX
+			});
+		}, this.animationTime, "easeInOutQuad"),
 	]
 		.concat(
 			this.arrays.map(array =>
@@ -106,7 +101,8 @@ export async function show2dView()
 
 	this.updateCameraHeight(true);
 
-	const dummy = { t: this.wilsonNumbers.worldCenterX };
+	const oldCenterX = this.wilsonNumbers.worldCenterX;
+	const newCenterX = 0;
 
 	await Promise.all([
 		anime({
@@ -118,18 +114,12 @@ export async function show2dView()
 			easing: "easeInOutQuad"
 		}).finished,
 
-		anime({
-			targets: dummy,
-			t: 0,
-			duration: this.animationTime,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.wilsonNumbers.resizeWorld({
-					centerX: dummy.t
-				});
-			}
-		}).finished
+		animate((t) =>
+		{
+			this.wilsonNumbers.resizeWorld({
+				centerX: t * newCenterX + (1 - t) * oldCenterX
+			});
+		}, this.animationTime, "easeInOutQuad"),
 	]
 		.concat(
 			this.arrays.map(array =>
@@ -169,6 +159,26 @@ export async function show2dView()
 	});
 
 	this.currentlyAnimatingCamera = false;
+}
+
+
+
+export async function showNumbersCanvas()
+{
+	await changeOpacity({
+		element: this.wilsonNumbers.canvas,
+		opacity: 1,
+		duration: this.animationTime / 5
+	});
+}
+
+export async function hideNumbersCanvas()
+{
+	await changeOpacity({
+		element: this.wilsonNumbers.canvas,
+		opacity: 0,
+		duration: this.animationTime / 5
+	});
 }
 
 
@@ -364,12 +374,12 @@ export async function showDimers()
 					targets.push(array.cubes[i][j][k].material[3]);
 					targets.push(array.cubes[i][j][k].material[5]);
 
-					if (this.abConfigMode && i === 0)
+					if (this.addWalls && i === 0)
 					{
 						targets.push(array.rightWall[j][k].material[4]);
 					}
 
-					if (this.abConfigMode && j === 0)
+					if (this.addWalls && j === 0)
 					{
 						targets.push(array.leftWall[i][k].material[0]);
 					}
@@ -447,7 +457,7 @@ export async function showDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -455,7 +465,7 @@ export async function showDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -473,7 +483,7 @@ export async function showDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -481,7 +491,7 @@ export async function showDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
@@ -646,7 +656,7 @@ export async function hideDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -654,7 +664,7 @@ export async function hideDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 		);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -672,7 +682,7 @@ export async function hideDimers()
 			32,
 			32,
 			32,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -680,7 +690,7 @@ export async function hideDimers()
 			64,
 			64,
 			64,
-			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+			this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 		);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 

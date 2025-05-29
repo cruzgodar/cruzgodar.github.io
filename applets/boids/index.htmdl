@@ -1,0 +1,39 @@
+One of the classic examples of emergent behavior, <a href="https://dl.acm.org/doi/pdf/10.1145/37401.37406">Boids</a> is a demonstration of complicated behavior arising from very simple rules. Each bird-oid object (boid) tries to avoid other boids very close to it, aligns itself with the direction of boids somewhat close to it, and tries to remain close to their center of mass. The result is flocking behavior akin to birds and fish, even though each boid follows only simple rules and can only perceive boids close to it. By adding in predators that steer *toward* nearby boids and scare them away, we can create a constantly changing dynamic system. Drag on the canvas to be a boid of prey yourself!
+
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+	### text-boxes
+		resolution
+	###
+
+	### sliders
+		num-boids
+		num-boids-of-prey
+		avoidance-factor
+		alignment-factor
+		fear-factor
+	###
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>

@@ -18,9 +18,12 @@ export function parseText(text)
 		.replaceAll(/\\'/g, "[SINGLEQUOTE]")
 		.replaceAll(/\\comma/g, "[COMMA]")
 		.replaceAll(/\\:/g, "[COLON]")
+		.replaceAll(/\\#/g, "[HASH]")
 		.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `$\\displaystyle ${$1}$`)
 		.replaceAll(/\$(.*?)\$/g, (match, $1) => `$${parseLatex($1)}[END$]`)
-		.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`);
+		.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`)
+		.replaceAll(/#\+([0-9]+)/g, (match, $1) => `${currentNumberedItem + parseInt($1)}`)
+		.replaceAll(/#-([0-9]+)/g, (match, $1) => `${currentNumberedItem - parseInt($1)}`);
 
 
 
@@ -137,15 +140,16 @@ export function parseText(text)
 		.replaceAll(/(\s)'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
 		.replaceAll(/^'(\S)/g, (match, $1) => `&#x2018;${$1}`)
 		.replaceAll(/'/g, "&#x2019;")
-		.replaceAll(/- - -/g, "<span style='height: 32px'></span>")
+		.replaceAll(/- - -/g, "<span style=\"height: 32px\"></span>")
 		.replaceAll(/---/g, "&mdash;")
 		.replaceAll(/--/g, "&ndash;")
 		.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
 		.replaceAll(/\[SINGLEQUOTE\]/g, "'")
+		.replaceAll(/\[HASH\]/g, "#")
 		.replaceAll(/\[COMMA\]/g, ",")
 		.replaceAll(/\[COLON\]/g, ":")
 		.replaceAll(/\[ASTERISK\]/g, "*")
 		.replaceAll(/\[BACKTICK\]/g, "`")
 		.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">$${$1}$${$2}</span>`);
+		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1}">$${$1}$${$2}</span>`);
 }

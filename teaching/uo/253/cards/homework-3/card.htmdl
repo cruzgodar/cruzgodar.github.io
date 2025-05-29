@@ -1,0 +1,38 @@
+### card homework-3 "Homework 3"
+	
+	*Due Wednesday of Week 4 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-3-pdf
+		download-homework-3-tex
+	###
+
+	- - -
+	
+	In problems 6#, determine if the series converges.
+
+	#. $$\sum_{m = 1}^\infty \frac{n}{n^2 + 1}$$.
+
+	#. $$\sum_{n = 1}^\infty \frac{1}{\sqrt{n}}$$.
+
+	#. $$\sum_{k = 1}^\infty \sin(k)$$.
+
+	#. $$\sum_{n = 2}^\infty \frac{1}{n \sqrt{n^2 - 1}}$$.
+
+	#. $$\sum_{n = 2}^\infty \frac{1}{n\ln{n}}$$.
+
+	#. $$\sum_{m = 1}^\infty \frac{\ln(m)}{m^2}$$.
+
+	- - -
+
+	#. For each of the series in problems #-6--#-1 that converges, find a value of $N$ so that the $N$th remainder $R_N$ is below $0.01$. Then compute the $N$th partial sum of the series with a tool like <a href="https://wolframalpha.com">WolframAlpha</a>.
+
+	- - -
+
+	#. You want to play a game with a fair 4-sided die (one with labels 1--4, each with an equal chance of being rolled). However, you only have a 6-sided die. If you roll the 6-sided die and reroll it whenever you get a 5 or 6 until you get a number between 1 and 4, is this equivalent to a 4-sided die?
+
+	#. Is there a way to use only a 6-sided die to emulate a 12-sided one? What about an 8-sided one? A 7-sided one?
+
+###

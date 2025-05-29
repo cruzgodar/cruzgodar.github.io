@@ -1,6 +1,6 @@
 import { applet, initializeApplet } from "../index.js";
 import { CurvedLight } from "/applets/curved-light/scripts/class.js";
-import anime from "/scripts/anime.js";
+import { animate } from "/scripts/src/utils.js";
 
 async function reset({ slide, forward, duration })
 {
@@ -31,27 +31,19 @@ function changeCurvature({ forward, duration = 1000, newC })
 	const newCValues = Array(6).fill(0);
 	newCValues[newC] = 1;
 
-	const dummy = { t: 0 };
+	animate((t) =>
+	{
+		applet.setUniforms({
+			c0: t * newCValues[0] + (1 - t) * oldCValues[0],
+			c1: t * newCValues[1] + (1 - t) * oldCValues[1],
+			c2: t * newCValues[2] + (1 - t) * oldCValues[2],
+			c3: t * newCValues[3] + (1 - t) * oldCValues[3],
+			c4: t * newCValues[4] + (1 - t) * oldCValues[4],
+			c5: t * newCValues[5] + (1 - t) * oldCValues[5],
+		});
 
-	anime({
-		targets: dummy,
-		t: 1,
-		duration,
-		easing: "easeOutQuad",
-		update: () =>
-		{
-			applet.setUniforms({
-				c0: dummy.t * newCValues[0] + (1 - dummy.t) * oldCValues[0],
-				c1: dummy.t * newCValues[1] + (1 - dummy.t) * oldCValues[1],
-				c2: dummy.t * newCValues[2] + (1 - dummy.t) * oldCValues[2],
-				c3: dummy.t * newCValues[3] + (1 - dummy.t) * oldCValues[3],
-				c4: dummy.t * newCValues[4] + (1 - dummy.t) * oldCValues[4],
-				c5: dummy.t * newCValues[5] + (1 - dummy.t) * oldCValues[5],
-			});
-
-			applet.needNewFrame = true;
-		},
-	});
+		applet.needNewFrame = true;
+	}, duration);
 }
 
 export const curvedSpaceBuilds =

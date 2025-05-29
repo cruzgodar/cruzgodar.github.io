@@ -17,7 +17,6 @@ import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
-	asyncFetch,
 	clearTemporaryIntervals,
 	clearTemporaryListeners,
 	clearTemporaryParams,
@@ -35,11 +34,13 @@ import {
 	getQueryParams,
 	revertTheme,
 	setForcedTheme,
+	setOnThemeChange,
 	setRevertThemeTo,
 	siteSettings,
 	toggleDarkTheme
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
+import { asyncFetch, sleep } from "./utils.js";
 
 export let currentlyRedirecting = false;
 
@@ -88,64 +89,85 @@ export async function redirect({
 			const [trimmedUrl, params] = url.split("?");
 
 			url = trimmedUrl;
+			
 			return params;
 		}
 
 		return "";
 	})();
 
+	if (url[url.length - 1] === "/")
+	{
+		url = url.slice(0, -1);
+	}
+
 	currentlyRedirecting = true;
 
 	const temp = window.scrollY;
 
 	navigationTransitionType = getTransitionType(url);
+	
+	async function swapPageContents()
+	{
+		// Get the new data, fade out the page,
+		// and preload the next page's banner if it exists.
+		// When all of those things are successfully done,
+		// replace the current html with the new stuff.
+		
+		const [text] = await Promise.all([
+			asyncFetch(`${url}/data.html`),
+			preloadBanner(url),
+			fadeOutPage(noFadeOut),
+			cardIsOpen ? hideCard() : Promise.resolve()
+		]);
 
-	// Get the new data, fade out the page, and preload the next page's banner if it exists.
-	// When all of those things are successfully done, replace the current html with the new stuff.
-	const [text] = await Promise.all([
-		asyncFetch(`${url}data.html`),
-		preloadBanner(url),
-		fadeOutPage(noFadeOut),
-		cardIsOpen ? hideCard() : Promise.resolve()
-	]);
+		
+
+		loadBanner({ url });
+
+		if (forceThemePages[url])
+		{
+			setForcedTheme(true);
+
+			if (siteSettings.darkTheme !== forceThemePages[url])
+			{
+				setRevertThemeTo(siteSettings.darkTheme);
+				await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
+			}
+		}
+
+		else if (!forceThemePages[url])
+		{
+			await revertTheme();
+		}
+
+		unloadPage();
+
+		document.body.firstElementChild.insertAdjacentHTML(
+			"beforebegin",
+			`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
+		);
+
+		setPageUrl(url);
+
+		urlsFetched.push(url);
+
+		loadPage();
+	}
+
+
+	if (siteSettings.reduceMotion && document.startViewTransition)
+	{
+		await document.startViewTransition(swapPageContents).finished;
+	}
+
+	else
+	{
+		await swapPageContents();
+	}
+
 
 	
-
-	loadBanner({ url });
-
-	if (forceThemePages[url])
-	{
-		setForcedTheme(true);
-
-		if (siteSettings.darkTheme !== forceThemePages[url])
-		{
-			setRevertThemeTo(siteSettings.darkTheme);
-			await toggleDarkTheme({ force: true });
-		}
-	}
-
-	else if (!forceThemePages[url])
-	{
-		await revertTheme();
-	}
-
-
-
-	unloadPage();
-
-	document.body.firstElementChild.insertAdjacentHTML(
-		"beforebegin",
-		`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
-	);
-
-	setPageUrl(url);
-
-	urlsFetched.push(url);
-
-	loadPage();
-
-
-
 	// Record the page change in the url bar and in the browser history.
 	if (noStatePush)
 	{
@@ -154,7 +176,7 @@ export async function redirect({
 
 	else
 	{
-		history.pushState({ url }, document.title, getDisplayUrl(queryParams));
+		history.pushState({ url }, document.title, getDisplayUrl(queryParams) || "/");
 	}
 
 
@@ -172,11 +194,6 @@ export async function redirect({
 		window.scrollTo(0, lastPageScroll);
 	}
 
-	else
-	{
-		window.scrollTo(0, 0);
-	}
-
 	lastPageScroll = temp;
 }
 
@@ -187,7 +204,7 @@ export async function redirect({
 // -2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
-	if (!(url in sitemap) || url === pageUrl || !pageUrl || siteSettings.reduceMotion)
+	if (!(url in sitemap) || url === pageUrl || !pageUrl)
 	{
 		return 0;
 	}
@@ -243,12 +260,14 @@ export function getDisplayUrl(additionalQueryParams)
 {
 	const queryParams = getQueryParams() + (additionalQueryParams ? `&${additionalQueryParams}` : "");
 
-	let displayUrl = pageUrl.replace(/\/home\//, "/") + (queryParams ? `?${queryParams}` : "");
-
-	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
+	let displayUrl = pageUrl.replace(/\/home/, "/");
+	
+	if (displayUrl[displayUrl.length - 1] === "/")
 	{
-		displayUrl = displayUrl.slice(0, displayUrl.length - 1);
+		displayUrl = displayUrl.slice(0, -1);
 	}
+	
+	displayUrl = displayUrl + (queryParams ? `/?${queryParams}` : "");
 
 	return displayUrl;
 }
@@ -262,9 +281,14 @@ async function fadeOutPage(noFadeOut)
 		return;
 	}
 
-	if (noFadeOut)
+	if (noFadeOut || siteSettings.reduceMotion)
 	{
 		pageElement.style.opacity = 0;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 0;
+		}
 
 		return;
 	}
@@ -340,7 +364,7 @@ async function fadeOutPage(noFadeOut)
 		}
 	})();
 
-	await new Promise(resolve => setTimeout(resolve, 33));
+	await sleep(33);
 }
 
 
@@ -400,12 +424,16 @@ function unloadPage()
 	window.history.replaceState(
 		{ url: pageUrl },
 		"",
-		pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+		pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 	);
 
 	clearTemporaryParams();
 
 	document.documentElement.style.overscrollBehaviorY = "auto";
+
+
+
+	setOnThemeChange(() => {});
 
 
 
@@ -435,23 +463,23 @@ export async function prefetchPage(url)
 
 	urlsFetched.push(url);
 
-	const urlsToFetch = [`${url}data.html`];
+	const urlsToFetch = [`${url}/data.html`];
 
 	if (bannerPages.includes(url))
 	{
-		urlsToFetch.push(`${url}banners/small.webp`);
+		urlsToFetch.push(`${url}/banners/small.webp`);
 	}
 	
 	const sitemapEntry = sitemap[url];
 
 	if (sitemapEntry?.customScript)
 	{
-		urlsToFetch.push(`${url}scripts/index.min.js`);
+		urlsToFetch.push(`${url}/scripts/index.min.js`);
 	}
 
 	if (sitemapEntry?.customStyle)
 	{
-		urlsToFetch.push(`${url}style/index.min.css`);
+		urlsToFetch.push(`${url}/style/index.min.css`);
 	}
 
 	await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));

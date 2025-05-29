@@ -8,30 +8,30 @@ import { center } from "./components/center.js";
 import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
 import { dropdown } from "./components/dropdown.js";
-import { galleryBlock } from "./components/gallery-block.js";
+import { fileUpload } from "./components/fileUpload.js";
+import { galleryBlock } from "./components/galleryBlock.js";
 import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
-import { notesEnvironment, notesEnvironmentNames } from "./components/notes-environment.js";
-import { raymarchControls } from "./components/raymarch-controls.js";
+import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
+import { raymarchControls } from "./components/raymarchControls.js";
+import { showSolutions } from "./components/showSolutions.js";
 import { sliders } from "./components/sliders.js";
-import { textBoxes } from "./components/text-boxes.js";
+import { solution } from "./components/solution.js";
 import { parseText } from "./components/text.js";
 import { textarea } from "./components/textarea.js";
-import { wilson } from "./components/wilson.js";
-
-// const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
+import { textBoxes } from "./components/textBoxes.js";
 
 let sitemap;
 let parentFolder;
 
 const manualHeaderPages =
 [
-	"/home/",
+	"/home",
 
 	"/projects/wilson",
 
-	"/writing/caligo/",
+	"/writing/caligo",
 ];
 
 const singleLineComponents = [
@@ -41,12 +41,13 @@ const singleLineComponents = [
 	"center",
 	"desmos",
 	"dropdown",
-	"glsl-docs",
+	"file-upload",
 	"image",
 	"nav-buttons",
 	"raymarch-controls",
+	"show-solutions",
+	"solution",
 	"textarea",
-	"wilson"
 ];
 
 const components = {
@@ -59,16 +60,18 @@ const components = {
 	"checkboxes": checkboxes,
 	"desmos": desmos,
 	"dropdown": dropdown,
+	"file-upload": fileUpload,
 	"gallery-block": galleryBlock,
 	"image": image,
 	"image-links": imageLinks,
 	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
 	"raymarch-controls": raymarchControls,
+	"show-solutions": showSolutions,
 	"sliders": sliders,
+	"solution": solution,
 	"textarea": textarea,
 	"text-boxes": textBoxes,
-	"wilson": wilson
 };
 
 export let currentNumberedItem = 1;
@@ -80,7 +83,7 @@ export function setCurrentNumberedItem(newCurrentNumberedItem)
 
 export function parseUrl(url)
 {
-	return url[0] === "/" ? url : parentFolder + url;
+	return url[0] === "/" ? url : parentFolder + "/" + url;
 }
 
 export function splitCommandLine(line)
@@ -129,21 +132,20 @@ function decodeHTMDL(html)
 
 	html = html.replaceAll(/\t/g, "");
 
-
+	
 
 	// Automatically add a header if there's not one already here.
-	if (!html.match(/^[\n\t\s]*?\n#\s/g) && !manualHeaderPages.includes(parentFolder))
-	{
-		if (!sitemap[parentFolder])
-		{
-			throw new Error(`${parentFolder} is not in sitemap!`);
-		}
+	if (
+		!html.match(/^[\n\t\s]*?\n#\s/g)
+		&& !manualHeaderPages.includes(parentFolder)
+		&& sitemap[parentFolder]
+	) {
 		const title = sitemap[parentFolder].title;
 
 		html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);
 	}
 
-
+	let hasHeading = false;
 
 	let pageTitle = "";
 
@@ -211,7 +213,7 @@ function decodeHTMDL(html)
 
 			lines[i] = "\\end{align*}$$</span></p>";
 
-			lines[startI] = /* html */`<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
+			lines[startI] = /* html */`<p class="body-text" style="text-align: center; line-height: 0"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
 		}
 
 
@@ -293,7 +295,7 @@ function decodeHTMDL(html)
 			{
 				lines[i] = components[words[0]](options, ...(words.slice(1)));
 
-				if (words[0] === "card")
+				if (words[0] === "card" && !options.includes("e"))
 				{
 					inEnvironment = true;
 				}
@@ -353,6 +355,8 @@ function decodeHTMDL(html)
 		// A heading. Only one of these per file.
 		else if (lines[i][0] === "#" && lines[i][1] !== ".")
 		{
+			hasHeading = true;
+
 			const title = parseText(lines[i].slice(2));
 
 			pageTitle = title;
@@ -363,7 +367,7 @@ function decodeHTMDL(html)
 				${bannerHtml}
 				<header>
 					<div id="logo">
-						<a href="/home/" tabindex="-1">
+						<a href="/home" tabindex="-1">
 							<img src="/graphics/general-icons/logo.webp" alt="Logo" tabindex="1"></img>
 						</a>
 					</div>
@@ -383,9 +387,9 @@ function decodeHTMDL(html)
 		{
 			const content = parseText(lines[i]);
 
-			if (content.match(/^#+?\./))
+			if (content.match(/^#\./))
 			{
-				lines[i] = /* html */`<p class="body-text numbered-list-item">${content.replace(/^#+?\./, `${currentNumberedItem}.`)}</p>`;
+				lines[i] = /* html */`<p class="body-text numbered-list-item">${content.replace(/^#\./, `${currentNumberedItem}.`)}</p>`;
 
 				currentNumberedItem++;
 			}
@@ -425,7 +429,10 @@ function decodeHTMDL(html)
 
 	// End the HTML properly.
 
-	html = /* html */`${html}</section></main>`;
+	if (hasHeading)
+	{
+		html = /* html */`${html}</section></main>`;
+	}
 
 	if (usesBanner)
 	{
@@ -439,7 +446,7 @@ function decodeHTMDL(html)
 		pageTitle = "Cruz Godar";
 	}
 
-	const headHtml = /* html */`<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
+	const headHtml = /* html */`<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}/cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 
 	const indexHtml = /* html */`<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript><script src="/scripts/init.min.js"></script></body></html>`;
 
@@ -456,7 +463,7 @@ export default async function buildHTMLFile(file, fileParentFolder, sitemapArgum
 
 	const [html, indexHtml] = decodeHTMDL("\n" + file);
 
-	write(`${fileParentFolder}data.html`, html);
+	write(`${fileParentFolder}/data.html`, html);
 
-	write(`${fileParentFolder}index.html`, indexHtml);
+	write(`${fileParentFolder}/index.html`, indexHtml);
 }

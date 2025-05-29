@@ -13,8 +13,6 @@ export class SudokuGenerator extends Applet
 
 	webWorker;
 
-	generatedFirstPuzzle = false;
-
 
 
 	constructor({ canvas })
@@ -23,7 +21,8 @@ export class SudokuGenerator extends Applet
 
 		const options =
 		{
-			canvasWidth: this.resolution,		};
+			canvasWidth: this.resolution,
+		};
 
 		this.wilson = new WilsonCPU(canvas, options);
 
@@ -45,10 +44,7 @@ export class SudokuGenerator extends Applet
 			}
 		}
 
-		if (this.generatedFirstPuzzle)
-		{
-			await changeOpacity({ element: this.canvas, opacity: 0 });
-		}
+		await changeOpacity({ element: this.canvas, opacity: 0 });
 
 		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 
@@ -60,12 +56,7 @@ export class SudokuGenerator extends Applet
 
 			this.drawGrid(false);
 
-			if (!this.generatedFirstPuzzle)
-			{
-				changeOpacity({ element: this.canvas, opacity: 1 });
-			}
-
-			this.generatedFirstPuzzle = true;
+			changeOpacity({ element: this.canvas, opacity: 1 });
 		};
 		
 		this.webWorker.postMessage([]);

@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 6 | Math 341 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 7 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 7}
+
+In problems 1--5, determine if the set $X$ is a subspace of the vector space $V$. If it is, show that $X$ is closed under addition and scalar multiplication and contains the zero vector, and if not, give an example showing one of those three fails.
+
+1. $X$ is the set of vectors of the form $\left[\begin{array}{c} x \\ y \\ 1 \end{array}\right]$ for real numbers $x$ and $y$, and $V = \mathbb{R}^3$.
+
+2. $X = \operatorname{span} \{ \cos(x), \sin(x) \}$, and $V = C^0(\mathbb{R})$.
+
+3. $X$ is the set of matrices of the form $\left[\begin{array}{cc} a& 0 \\ 0& b \end{array}\right]$, and $V = M_{2 \times 2}(\mathbb{R})$.
+
+4. $X$ is the set of linear transformations $T : \mathbb{R}^2 \to \mathbb{R}^2$ such that $T \left( \left[\begin{array}{c} 1 \\ 1 \end{array}\right] \right) = \left[\begin{array}{c} 1 \\ 1 \end{array}\right]$, and $V = \mathcal{L}(\mathbb{R}^2, \mathbb{R}^2)$.
+
+5. $X$ is the set of linear transformations $T : \mathbb{R}^3 \to \mathbb{R}^2$ with
+
+$$
+	\ker T = \operatorname{span}\left\{ \left[\begin{array}{c} 1 \\ 1 \\ 0 \end{array}\right], \left[\begin{array}{c} 0 \\ 0 \\ 1 \end{array}\right] \right\},
+$$
+
+and $V = \mathcal{L}(\mathbb{R}^3, \mathbb{R}^2)$.
+
+~\\
+
+In problems 6--10, determine if the given function $T$ is a linear transformation. If it is, show that $T$ splits across addition and scalar multiplication, and if it is not, give an example showing one of those two things fails. If $T$ is a linear transformation, also find $\ker T$ and write it as a span of vectors.
+
+6. $T : \mathbb{R}^3 \to \mathbb{R}^2$, defined by
+
+$$
+	T \left( \left[\begin{array}{c} x \\ y \\ z \end{array}\right] \right) = \left[\begin{array}{c} x + y + z \\ 2x - y - z \end{array}\right].
+$$
+
+7. $T : \mathbb{R}[x] \to \mathbb{R}$ given by $T(p(x)) = p''(x)$.
+
+8. $T : \mathbb{R}^\mathbb{R} \to \mathbb{R}$ given by $T(f) = f(0)$. In this problem, just describe the kernel in words rather than as a span.
+
+9. $T : M_{2 \times 2}(\mathbb{R}) \to \mathbb{R}$ given by $T(A) = \det A$.
+
+10. $T : \mathcal{L}(\mathbb{R}^2, \mathbb{R}^2) \to \mathbb{R}^2$ given by $T(S) = S\left( \left[\begin{array}{c} 1 \\ 1 \end{array}\right] \right)$.
+
+
+\end{document}

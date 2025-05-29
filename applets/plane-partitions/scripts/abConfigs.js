@@ -1,4 +1,5 @@
 import { verifyPp } from "./parseAndVerify.js";
+import { clamp } from "/scripts/src/utils.js";
 
 const absoluteMinAEntry = -5;
 
@@ -779,7 +780,7 @@ export function getArrayVersionOfABConfig({
 
 			if (row >= 0 && row < A.length && col >= 0 && col < A[row].length)
 			{
-				bigA[i][j] = Math.min(Math.max(A[row][col] + 8, 0), 16);
+				bigA[i][j] = clamp(A[row][col] + 8, 0, 16);
 			}
 
 			else
@@ -827,7 +828,7 @@ export function getArrayVersionOfABConfig({
 					return -Infinity;
 				})();
 
-				bigA[i][j] = Math.min(Math.max(aEntry + 8, 0), 16);
+				bigA[i][j] = clamp(aEntry + 8, 0, 16);
 			}
 
 			if (bigA[i][j] === 16)

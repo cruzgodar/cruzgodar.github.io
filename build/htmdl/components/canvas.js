@@ -7,6 +7,6 @@ export function canvas(options, id)
 
 	else
 	{
-		return "<canvas id='output-canvas' class='output-canvas'></canvas>";
+		return "<canvas id=\"output-canvas\" class=\"output-canvas\"></canvas>";
 	}
 }

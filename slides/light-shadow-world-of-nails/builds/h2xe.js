@@ -1,8 +1,8 @@
 import { applet, canvasBundle, initializeApplet } from "../index.js";
 import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H2xERooms } from "/applets/thurston-geometries/scripts/geometries/h2xe.js";
-import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { animate } from "/scripts/src/utils.js";
 
 let geometryData;
 
@@ -34,81 +34,59 @@ async function reset({ slide, forward, duration })
 
 async function build0({ forward })
 {
-	const dummy = { t: 0 };
-
 	if (forward)
 	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			applet.automovingDirection = () =>
 			{
-				applet.automovingDirection = () =>
-				{
-					geometryData.cameraPos[0] *= .99;
-					geometryData.cameraPos[1] *= .99;
-					geometryData.cameraPos[2] = Math.sqrt(
-						geometryData.cameraPos[0] ** 2
-						+ geometryData.cameraPos[1] ** 2
-						+ 1
-					);
+				geometryData.cameraPos[0] *= .99;
+				geometryData.cameraPos[1] *= .99;
+				geometryData.cameraPos[2] = Math.sqrt(
+					geometryData.cameraPos[0] ** 2
+					+ geometryData.cameraPos[1] ** 2
+					+ 1
+				);
 
-					return [
-						0,
-						1 * (1 - dummy.t) + 0 * dummy.t,
-						0,
-						0 * (1 - dummy.t) + 1 * dummy.t,
-					];
-				};
-			}
-		}).finished;
+				return [
+					0,
+					1 * (1 - t) + 0 * t,
+					0,
+					0 * (1 - t) + 1 * t,
+				];
+			};
+		}, 1000);
 	}
 
 	else
 	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			applet.automovingDirection = () =>
 			{
-				applet.automovingDirection = () =>
-				{
-					geometryData.cameraPos[3] += .01 * (
-						Math.abs(((geometryData.cameraPos[3] + 1.875 / 2) % 1.875) - 1.875 / 2)
-					);
+				geometryData.cameraPos[3] += .01 * (
+					Math.abs(((geometryData.cameraPos[3] + 1.875 / 2) % 1.875) - 1.875 / 2)
+				);
 
-					return [
-						0,
-						0 * (1 - dummy.t) + 1 * dummy.t,
-						0,
-						1 * (1 - dummy.t) + 0 * dummy.t,
-					];
-				};
-			}
-		}).finished;
+				return [
+					0,
+					0 * (1 - t) + 1 * t,
+					0,
+					1 * (1 - t) + 0 * t,
+				];
+			};
+		}, 1000);
 	}
 }
 
 async function build1({ forward })
 {
-	const dummy = { t: 0 };
-
-	await anime({
-		targets: dummy,
-		t: 1,
-		duration: 500,
-		easing: "easeOutCubic",
-		update: () =>
-		{
-			geometryData.sliderValues.wallThickness = forward
-				? (1 - dummy.t) * 1.2 + dummy.t * (-.75)
-				: (1 - dummy.t) * (-.75) + dummy.t * 1.2;
-		}
-	}).finished;
+	await animate((t) =>
+	{
+		geometryData.sliderValues.wallThickness = forward
+			? (1 - t) * 1.2 + t * (-.75)
+			: (1 - t) * (-.75) + t * 1.2;
+	}, 500, "easeOutCubic");
 }
 
 export const h2xeBuilds =

@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 8 | Math 341 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 9 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 9}
+
+In problems 1--3, find the change of basis matrix $B$ that converts from the basis $\mathcal{B}$for the vector space $V$ to the standard basis, and use it to find $[\vec{v}]_\mathcal{B}$ for the given vector $\vec{v}$.
+
+1. $V$ is the subspace of $\mathbb{R}[x]$ of polynomials with degree at most $3$, $\mathcal{B} = \{1, x + x^2 + x^3, x^3 - x, x^3 + 2x^2\}$, and $\vec{v} = 2 + 7x - x^2$.
+
+2. $V = M_{2 \times 2}(\mathbb{R})$,
+
+\begin{align*}
+	\mathcal{B} = \left\{ \left[\begin{array}{cc} 1& 0 \\ 0& 1 \end{array}\right], \left[\begin{array}{cc} 0& 1 \\ -1& 0 \end{array}\right], \left[\begin{array}{cc} 0& 1 \\ 1& 0 \end{array}\right], \left[\begin{array}{cc} 1& 0 \\ 0& -1 \end{array}\right] \right\},
+\end{align*}
+
+and $\vec{v} = \left[\begin{array}{cc} 1& 2 \\ -1& 3 \end{array}\right]$.
+
+3. $V = \mathcal{L}(\mathbb{R}^4, \mathbb{R})$, $\mathcal{B} = \{T_1, T_2, T_3, T_4\}$, where
+
+$$
+	T_1\left(\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right]\right) = 2x + y - z \qquad T_2\left(\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right]\right) = x - w \qquad T_3\left(\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right]\right) = y + z \qquad T_4\left(\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right]\right) = x + y + z + w,
+$$
+
+and $\vec{v} : \mathbb{R}^4 \to \mathbb{R}$ is defined by $\vec{v}\left(\left[\begin{array}{c} x \\ y \\ z \\ w \end{array}\right]\right) = 2x - 2y + 4z + 2w$.
+
+~\\
+
+In problems 4--6, find bases for $V$, $\ker T$ and $\operatorname{image} T$, and verify that the fundamental theorem of linear algebra correctly relates the three.
+
+4. $T : V \to \mathbb{R}$, where $V$ is the subspace of $\mathbb{R}[x]$ of polynomials with degree at most $3$, is defined by $T(a + bx + cx^2 + dx^3) = d - c$.
+
+5. $T : M_{2 \times 3}(\mathbb{R}) \to \mathbb{R}^3$ is defined by
+
+\begin{align*}
+	T\left( \left[\begin{array}{ccc} a& b& c \\ d& e& f \end{array}\right] \right) = \left[\begin{array}{c} a \\ b \\ c \end{array}\right].
+\end{align*}
+
+6. $T : \mathbb{R}^2 \to \mathcal{L}(\mathbb{R}^2, \mathbb{R}^2)$ is defined by $T\left(\left[\begin{array}{c} x \\ y \end{array}\right]\right) = S_{x, y}$, where
+
+\begin{align*}
+	S_{x, y}\left( \left[\begin{array}{c} 1 \\ 0 \end{array}\right] \right) &= \left[\begin{array}{c} x - y \\ 0 \end{array}\right]\\
+	S_{x, y}\left( \left[\begin{array}{c} 0 \\ 1 \end{array}\right] \right) &= \left[\begin{array}{c} 0 \\ y - x \end{array}\right].
+\end{align*}
+
+
+\end{document}

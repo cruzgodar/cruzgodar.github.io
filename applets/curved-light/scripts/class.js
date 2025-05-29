@@ -118,7 +118,6 @@ export class CurvedLight extends RaymarchApplet
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
 			lightBrightness: 1.25,
-			useOppositeLight: true,
 			oppositeLightBrightness: 1,
 			ambientLight: .25,
 			useBloom: false,

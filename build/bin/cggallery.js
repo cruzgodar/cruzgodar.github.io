@@ -97,9 +97,9 @@ async function testImageData(files)
 		}
 
 		let appletLink = imageData.appletLink.slice(1);
-		if (appletLink.indexOf("?" !== -1))
+		if (appletLink.indexOf("?") !== -1)
 		{
-			appletLink = appletLink.slice(0, appletLink.indexOf("?"));
+			appletLink = appletLink.slice(0, appletLink.indexOf("?") - 1);
 		}
 
 		const applet = await getModifiedDate(`${appletLink}/index.htmdl`);

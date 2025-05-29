@@ -1,4 +1,6 @@
-export async function pak(index)
+import { sleep } from "/scripts/src/utils.js";
+
+export async function pak(index, ignoreLegs = true)
 {
 	const array = this.arrays[index];
 
@@ -28,9 +30,12 @@ export async function pak(index)
 		bottomLegSize++;
 	}
 
-	// Todo: remove eventually
-	rightLegSize = 0;
-	bottomLegSize = 0;
+	if (ignoreLegs)
+	{
+		// Todo: remove eventually
+		rightLegSize = 0;
+		bottomLegSize = 0;
+	}
 
 	let numCorners = 0;
 
@@ -239,7 +244,7 @@ export async function pak(index)
 
 			if (coordinatesToColor.length !== 0)
 			{
-				await new Promise(resolve => setTimeout(resolve, this.animationTime));
+				await sleep(this.animationTime);
 			}
 		}
 	}
@@ -401,7 +406,7 @@ export async function pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
 				continue;
 			}
 
-			await new Promise(resolve => setTimeout(resolve, this.animationTime));
+			await sleep(this.animationTime);
 
 
 
@@ -479,7 +484,7 @@ export async function pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
 
 			this.recalculateHeights(array);
 
-			await new Promise(resolve => setTimeout(resolve, this.animationTime));
+			await sleep(this.animationTime);
 		}
 	}
 

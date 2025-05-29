@@ -1,0 +1,79 @@
+### nav-buttons
+
+
+
+With a solid foundation of trig functions, we can begin to explore some of their many applications. This section, along with the next two, is largely a grab bag of different uses and techniques, and while the one we start with won't be the flashiest or most immediately useful, it will help pave the way for future topics and math courses.
+
+## Radians
+
+We've been measuring angles with degrees so far, but as it happens, this is equivalent to using feet instead of meters in physics --- there's a much more widely-used and useful unit! The value of $360^\circ$ being a full circle is arbitrary and chosen only for convenience, since it's a very divisible number. If we're looking for something more natural, we need a way to measure angles in any circle. We could try to measure angles by the length of the arcs they cut out, but that changes based on the radius of the circle: for example, a full $360^\circ$ angle would produce a full-circumference arc of length $2\pi r = 2\pi$ in a circle of radius $1$, but $4\pi$ in a circle of radius $2$. What doesn't change between those two, though, is the total circumference *relative* to the radius. Since the circumference of a radius-$r$ circle is always $2\pi r$, it always takes $2\pi \approx 6.28$ copies of the radius to wrap completely around the circle.
+
+### desmos radiusWrap
+
+### def "radians"
+
+	The measure of an angle in **radians** is the length of the portion of the circumference that it cuts out on the unit circle. Equivalently, a full angle of $360^\circ$ is equal to $2\pi$ radians. Since radians are arc length divided by radius, both of which are units of length, radians are **unitless**. We therefore typically write equations like $360^\circ = 2\pi$, where the right side is simply a number. To convert an angle measure in degrees to radians, we can multiply it by $\frac{2\pi}{360^\circ} = \frac{\pi}{180^\circ}$, and to convert one in radians to degrees, we can multiply it by $\frac{180^\circ}{\pi}$.
+
+###
+
+### exc "radians"
+
+	Evaluate the following expressions:
+
+	1. $$\sin\left( \pi \right)$$.
+
+	2. $$\cos\left( -\frac{\pi}{6} \right)$$.
+
+	3. $$\tan\left( \frac{7\pi}{3} \right)$$.
+
+###
+
+We'll come to see that many, *many* formulas are better expressed in radians rather than degrees. While a lot of these will have to wait until calculus, we can see a few of them now. First of all, since we've defined radians in terms of arc length, we can very easily find arc length from an angle that's given in radians. A full angle of $2\pi$ radians corresponds to an arc length that is the entire circumference of a circle --- i.e. $2\pi r$ for a circle of radius $r$. Similarly, a half-circle angle of $\pi$ has an arc length of $\pi r$, and in general, an angle of $\theta$ in radians has an arc length of $r\theta$. We can make the same argument with the area of a sector cut out by an angle instead of arc length: a full arc has the area of a full circle, which is $\pi r^2$, half a circle has an area of $\frac{1}{2} \pi r^2$, and in general, an angle of $\theta$ cuts out an arc of area $\frac{1}{2} r^2 \theta$. Let's write down these two results properly.
+
+### prop "arc length and sector area"
+
+	Let $\theta$ be an angle measured in radians in a circle of radius $r$. The arc length cut out by $\theta$ (in purple below) is $r\theta$, and the sector area (in blue) is $\frac{1}{2} r^2 \theta$.
+
+	### desmos arcLengthEtc
+
+###
+
+### exc "arc length and sector area"
+
+	1. Find the arc length and area for a sector with angle $120^\circ$ in a circle of radius $6$.
+
+	2. If we want a sector of area $1$ in a circle of radius $r$, what must $\theta$ be in terms of $r$? How does this change as $r$ changes?
+
+###
+
+
+
+## Trigonometric Equations
+
+With the groundwork of radians behind us, we can turn our attention to other topics. In the last section, we introduced arc functions as a way of going backward, taking in coordinates or slopes of points on the unit circle and producing a corresponding angle in a particular range. While the work we did to make the trig functions invertible by restricting their domains was useful and necessary, though, it also destroyed quite a bit of information. For example, $\arcsin\left( \frac{1}{2} \right) = \frac{\pi}{6}$ tells us that one possible angle whose sine is $\frac{1}{2}$ is $\frac{\pi}{6}$ (i.e. $30^\circ$), but there are so many more angles $x$ for which $\sin(x) = \frac{1}{2}$ --- for example, $\frac{5\pi}{6}$, $\frac{13\pi}{6}$, $-\frac{7\pi}{6}$, and infinitely many more. If we're trying to solve the equation $\sin(x) = \frac{1}{2}$, then, $\arcsin$ is a tool that can get us *one* solution, but we'll need to do more to get all of them.
+
+While the idea of there being infinitely many other angles is daunting, it's a complexity that we can tame without too much trouble. Focusing on $\sin(x) = \frac{1}{2}$ for the moment, $\arcsin\left( \frac{1}{2} \right)$ gives us one point whose $y$-coordinate is $\frac{1}{2}$, and there's only one other point with that coordinate. To find it, we want to intersect the unit circle with the line $y = \frac{1}{2}$, or in other words, draw a horizontal line from the first point we found and figure out where the other point it intersects is.
+
+### desmos circleAndLine
+
+Since it's a horizontal line, the other point is just a reflection of the first point over the $y$-axis, meaning it has an angle of $\pi - \frac{\pi}{6} = \frac{5\pi}{6}$. The only other way to get points with this $y$-coordinate is to add an integer multiple of $2\pi = 360^\circ$ to either of these points, effectively wrapping back around the circle. In other words, the complete solution to $\sin(x) = \frac{1}{2}$ is
+$$
+	x = \frac{\pi}{6} + 2\pi k \quad\text{or}\quad \frac{5\pi}{6} + 2\pi k
+$$
+for any integer $k$.
+
+We can apply logic like this to solve any equation in which $x$ is stuck inside of a trig function. We solve as usual, and when there's nothing left to do except get rid of the trig function, we take the corresponding arc function of both sides. That gives us one angle (or possibly indicates there's no solutions, if for instance we find ourselves taking $\arcsin(2)$). To find the other angle, we draw a line from the first point --- horizontal for $\sin$, vertical for cosine, and diagonal through the origin for tangent, since those will intersect the unit circle at the other point with the same $y$-coordinate, $x$-coordinate, or slope, respectively. We take those two angles in radians, add $2\pi k$ for a variable $k$ representing any integer, and those are our solutions. If we're asked to find all of the solutions within a certain range, we can plug in different values of $k$ to see which ones fall within our particular range.
+
+### exc "trigonometric equations"
+
+	1. Solve $2\sin\left( x - 1 \right) = -\sqrt{3}$ for $x$.
+
+	2. Find all solutions to $\sqrt{3}\tan\left( 2t + 2 \right) = -1$ for which $-5 \leq t \leq 5$.
+
+	3. Where does the line $y = 3$ intersect the graph of $y = 2\cos(3x) + 1$?
+
+###
+
+
+
+### nav-buttons

@@ -14,19 +14,20 @@
 		"**/home/**/index.html": true,
 		"**/ms-icon*": true,
 		"**/scripts/src/sitemap.js": true,
+		"**/scripts/three.js": true,
 		"**/sitemap.xml": true,
+		"**/slides/index.html": true,
 		"**/teaching/**/index.html": true,
 		"**/teaching/uo/342/extra/eigenfaces-demo/scripts/data.js": true,
 		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js": true,
 		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/vData.js": true,
-		"**/writing/**/index.html": true,
-		"/scripts/anime.js": true,
-		"/scripts/three.js": true
+		"**/writing/**/index.html": true
 	},
 	"editor.wordWrap": "on",
 	"editor.wordWrapColumn": 128,
 	"editor.formatOnSave": false,
 	"editor.maxTokenizationLineLength": 200000,
 	"editor.autoIndent": "advanced",
-	"liveServer.settings.port": 5500
+	"liveServer.settings.port": 5500,
+	"explorer.sortOrder": "modified"
 }

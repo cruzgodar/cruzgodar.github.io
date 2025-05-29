@@ -1,0 +1,86 @@
+### card homework-6 "Homework 6"
+	
+	*Due Wednesday of Week 7 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-6-pdf
+		download-homework-6-tex
+	###
+
+
+	
+	<!-- ## Section 7 -->
+	
+	<!-- In problems 5#, find the general solution of the given DE. -->
+	
+	<!-- #. $$y''' + 4y' = 0.$$ -->
+	
+	<!-- #. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$ -->
+	
+	<!-- #. $$y^{(4)} = -16y.$$ -->
+	
+	<!-- #. $$y^{(8)} - 2y^{(4)} + y = 0.$$ -->
+	
+	<!-- #. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$. -->
+	
+
+
+	<!-- - - - -->
+
+	<!-- #. Consider the DE $$y''' + y' = 0$$. -->
+	
+	<!-- > a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$ -->
+	
+	<!-- > b) The Wronskian for a third-order DE is defined as -->
+	
+	<!-- $$ -->
+	<!-- 	W[y_1, y_2, y_3] = \det [[y_1, y_2, y_3 ; y_1', y_2', y_3' ; y_1'', y_2'', y_3'' ]]. -->
+	<!-- $$ -->
+	
+	<!-- > Write out this matrix (but don't take any determinants yet). -->
+	
+	<!-- > c) For a $3 \times 3$ matrix $**A**$, we can find $\det **A**$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing -->
+	
+	<!-- $$ -->
+	<!-- 	\det **A** = (-1)^{j + 1} (a_{1j} \det **A_{1j}** - a_{2j} \det **A_{2j}** + a_{3j} \det **A_{3j}**), -->
+	<!-- $$ -->
+	
+	<!-- > where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others! -->
+	
+	<!-- > d) Interpret the Wronskian: did you successfully find the general solution in part a)? -->
+
+	## Section 8
+	
+	In problems 5#, evaluate the product.
+	
+	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
+	
+	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
+	
+	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
+	
+
+
+	- - -
+
+	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
+	
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+	
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+###

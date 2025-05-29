@@ -1,3 +1,5 @@
+import { sleep } from "/scripts/src/utils.js";
+
 export async function hillmanGrassl(index)
 {
 	const array = this.arrays[index];
@@ -112,9 +114,9 @@ export async function hillmanGrassl(index)
 		}
 	}
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime));
+	await sleep(this.animationTime);
 
 
 
@@ -151,7 +153,7 @@ export async function hillmanGrassl(index)
 
 
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
+		await sleep(this.animationTime / 5);
 
 		// Find the pivot and rearrange the shape into a hook.
 		const pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
@@ -227,7 +229,7 @@ export async function hillmanGrassl(index)
 
 
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		await sleep(this.animationTime);
 	}
 
 	this.currentlyAnimatingCamera = false;
@@ -293,7 +295,7 @@ export async function hillmanGrasslInverse(index)
 
 	const planePartition = structuredClone(emptyArray);
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
 
 
@@ -363,7 +365,7 @@ export async function hillmanGrasslInverse(index)
 
 
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+	await sleep(this.animationTime / 2);
 
 
 
@@ -479,7 +481,7 @@ export async function hillmanGrasslInverse(index)
 
 
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+		await sleep(this.animationTime / 2);
 	}
 
 	this.currentlyAnimatingCamera = false;

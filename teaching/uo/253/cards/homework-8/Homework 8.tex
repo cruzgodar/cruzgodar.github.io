@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 8 | Math 253 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 10 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+~\\
+
+In problems 1--5, find a Taylor series for $f(x)$ centered at $x = a$ and determine its interval of convergence.
+
+1. $\displaystyle f(x) = \cos(x)$, $\displaystyle a = 0$.
+
+2. $\displaystyle f(x) = \sin(2x)$, $\displaystyle a = \frac{\pi}{2}$.
+
+3. $\displaystyle f(x) = \ln(-x)$, $\displaystyle a = -1$.
+
+4. $\displaystyle f(x) = \frac{1}{x}$, $\displaystyle a = 1$.
+
+5. $\displaystyle f(x) = \sqrt[3]{x + 1}$, $\displaystyle a = 1$.
+
+~\\
+
+In problems 6--9, compute the value of the series and justify your answer.
+
+6. $\displaystyle \sum_{n = 0}^\infty \frac{2^n}{n!}$.
+
+7. $\displaystyle \sum_{n = 0}^\infty \frac{(-1)^n}{n + 1}$.
+
+8. $\displaystyle \sum_{n = 0}^\infty (n + 1)\left( \frac{1}{2} \right)^n$.
+
+9. $\displaystyle \sum_{n = 0}^\infty \frac{(-4)^n}{(2n)!}$.
+
+~\\
+
+In problems 10--13, approximate the value to within $0.01$ using Taylor series. 
+
+10. $\displaystyle \cos(2)$.
+
+11. $\displaystyle \frac{1}{e^2}$.
+
+12. $\displaystyle \ln\left( \frac{1}{2} \right)$.
+
+13. $\displaystyle \sqrt[4]{\frac{1}{2}}$.
+
+~\\
+
+14. Using the fact that $\displaystyle \sum_{n = 1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$, evaluate $\displaystyle \int_0^1 \frac{\ln(1 + x)}{x}$.
+
+15. Find a series solution to $\displaystyle \frac{1}{x} + y'' = \frac{y}{x}$.
+
+~\\
+
+16. The function $\sin(x)$ has zeroes at exactly $x = \pi n$ for integers $n$, and this allows us to write $\sin(x)$ as
+
+$$
+	\sin(x) = x\left( 1 - \frac{x}{\pi} \right)\left( 1 + \frac{x}{\pi} \right)\left( 1 - \frac{x}{2\pi} \right)\left( 1 + \frac{x}{2\pi} \right) \cdots.
+$$
+
+Note that this isn't true for functions in general! There can often be a lot more going on with a function than we can determine by its zeros.
+
+\begin{enumerate}
+
+	\item Divide by $x$ to find an expression for $\displaystyle \frac{\sin(x)}{x}$.
+
+	\item Use the difference of squares formula $(a - b)(a + b) = a^2 - b^2$ to group each two consecutive factors in the product.
+
+	\item Expand $\displaystyle \frac{\sin(x)}{x}$ as a Maclaurin series. What is the coefficient of $x^2$?
+
+	\item In the grouped product, what is the coefficient of $x^2$? You'll likely need to express it as a sum.
+
+	\item Set the two sides equal to one another. What have you shown?
+
+\end{enumerate}
+
+
+\end{document}

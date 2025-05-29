@@ -31,8 +31,8 @@ body
 #order-demo p
 {
 	width: fit-content !important;
-	padding-left: .4vw;
-	padding-right: .4vw;
+	padding-left: calc(0.4 * var(--vl));
+	padding-right: calc(0.4 * var(--vl));
 }
 
 
@@ -46,11 +46,11 @@ body
 	bottom: 0;
 	right: 0;
 	
-	width: 7.5vw;
+	width: calc(7.5 * var(--vl));
 	height: 0;
 	
 	transform-origin: center bottom;
-	transform: rotate(45deg) translate(-4.75vw, 8.5vw);
+	transform: rotate(45deg) translate(calc(-4.75 * var(--vl)), calc(8.5 * var(--vl)));
 }
 
 
@@ -62,12 +62,12 @@ body
 	
 	position: absolute;
 	
-	bottom: -10vw;
+	bottom: calc(-10 * var(--vl));
 	left: -50%;
 	
 	width: 200%;
 	
-	height: 10vw;
+	height: calc(10 * var(--vl));
 	
 	animation: 61s linear infinite moveWave;
 	
@@ -76,13 +76,13 @@ body
 
 .purple-wave-2
 {
-	transform: translateX(4vw);
+	transform: translateX(calc(4 * var(--vl)));
 	animation: 47s linear infinite reverse moveWave;
 }
 
 .purple-wave-3
 {
-	transform: translateX(15vw);
+	transform: translateX(calc(15 * var(--vl)));
 	animation: 31s linear infinite moveWave;
 }
 
@@ -95,7 +95,7 @@ body
 
 	to
 	{
-		margin-left: calc(10vw * 2.62985);
+		margin-left: calc(10 * var(--vl) * 2.62985);
 	}
 }
 
@@ -110,9 +110,9 @@ body
 	
 	text-align: center;
 
-	border: .35vw solid rgb(64, 64, 64);
-	border-radius: 1.5vw;
-	padding: 1vw;
+	border: calc(0.35 * var(--vl)) solid rgb(64, 64, 64);
+	border-radius: calc(1.5 * var(--vl));
+	padding: calc(1 * var(--vl));
 	font-size: 100%;
 	
 	cursor: pointer;
@@ -171,7 +171,7 @@ html.dark-industrial-theme-1
 {
 	background-color: rgb(24, 24, 24);
 	
-	border: 4px solid rgb(127, 127, 127);
+	border: calc(0.5 * var(--vl)) solid rgb(127, 127, 127);
 	border-radius: 0;
 	
 	box-shadow: 0px 0px 0px 0px rgb(127, 127, 127);
@@ -209,7 +209,7 @@ html.blue-whimsical-theme-1
 
 #lapsa-slide-container.blue-whimsical-theme-1 .lapsa-slide .rainbow-gradient
 {
-	height: 22.5vw;
+	height: calc(22.5 * var(--vl));
 }
 
 #lapsa-slide-container.blue-whimsical-theme-2 .lapsa-slide h1, #lapsa-slide-container.blue-whimsical-theme-2 .lapsa-slide h2
@@ -237,9 +237,9 @@ html.dark-futuristic-theme-1
 {
 	background-color: rgb(0, 0, 0);
 	
-	border: 2px solid rgb(127, 127, 102);
+	border: calc(0.25 * var(--vl)) solid rgb(127, 127, 102);
 	
-	border-radius: 1vw;
+	border-radius: calc(1 * var(--vl));
 	
 	box-shadow: 0px 0px 0px 0px rgb(127, 127, 127);
 }
@@ -251,12 +251,12 @@ html.dark-futuristic-theme-1
 
 #lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-2
 {
-	bottom: -2vw;
+	bottom: calc(-2 * var(--vl));
 }
 
 #lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-3
 {
-	bottom: -4vw;
+	bottom: calc(-4 * var(--vl));
 }
 
 #lapsa-slide-container.dark-futuristic-theme-2 .lapsa-slide h1, #lapsa-slide-container.dark-futuristic-theme-2 .lapsa-slide h2
@@ -275,68 +275,4 @@ html.dark-futuristic-theme-1
 	text-align: justify;
 	
 	font-family: "Oswald", sans-serif;
-}
-
-
-
-@media (min-aspect-ratio: 152/89)
-{
-	.rainbow-gradient
-	{	
-		width: calc(7.5 * var(--safe-vh) * 152 / 89);
-		
-		transform: rotate(45deg) translate(calc(-4.75 * var(--safe-vh) * 152 / 89), calc(8.5 * var(--safe-vh) * 152 / 89));
-	}
-	
-	
-	
-	.purple-wave
-	{
-		height: calc(10 * var(--safe-vh) * 152 / 89);
-		bottom: calc(-10 * var(--safe-vh) * 152 / 89);
-	}
-	
-	.purple-wave-2
-	{
-		transform: translateX(calc(4 * var(--safe-vh) * 152 / 89));
-	}
-	
-	.purple-wave-3
-	{
-		transform: translateX(calc(15 * var(--safe-vh) * 152 / 89));
-	}
-	
-	
-	
-	.text-button
-	{
-		border: calc(.35 * var(--safe-vh) * 152 / 89) solid rgb(64, 64, 64);
-		border-radius: calc(1.5 * var(--safe-vh) * 152 / 89);
-		padding: calc(1 * var(--safe-vh) * 152 / 89);
-	}
-	
-	
-	
-	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide
-	{
-		border-radius: calc(var(--safe-vh) * 152 / 89);
-	}
-
-	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-2
-	{
-		bottom: calc(-2 * var(--safe-vh) * 152 / 89);
-	}
-
-	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-3
-	{
-		bottom: calc(-4 * var(--safe-vh) * 152 / 89);
-	}
-
-	@keyframes moveWave
-	{
-		to
-		{
-			margin-left: calc(10 * var(--safe-vh) * 2.62985 * 152 / 89);
-		}
-	}
 }

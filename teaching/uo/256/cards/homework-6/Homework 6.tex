@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 6 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 7 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 8}
+
+In problems 1--5, evaluate the product.
+
+1. $\displaystyle \left[\begin{array}{cc}3& 0 \\ 6& -2\end{array}\right]\left[\begin{array}{c}1 \\ -1\end{array}\right].$
+
+2. $\displaystyle \left[\begin{array}{ccc}1& 2& 3\end{array}\right]\left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right].$
+
+3. $\displaystyle \left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right]\left[\begin{array}{ccc}1& 2& 3\end{array}\right].$
+
+4. $\displaystyle \left[\begin{array}{c}1 \\ 2 \\ 3\end{array}\right]\left[\begin{array}{c}4 \\ 5 \\ 6\end{array}\right].$
+
+5. $\displaystyle \left[\begin{array}{cc}1& 0 \\ 0& 1 \\ 1& 1\end{array}\right]\left[\begin{array}{cccc}1& -1& 1& -1 \\ -1& 1& -1& 1\end{array}\right].$
+
+~\\
+
+6. Suppose that for a square matrix $\mathbf{A}$, there are matrices $\mathbf{B}$ and $\mathbf{C}$ so that $\mathbf{AB} = \mathbf{I}$ and $\mathbf{CA} = \mathbf{I}$. Show that it must be the case that $\mathbf{B} = \mathbf{C}$. Hint: multiply both sides of the second equation by something.
+
+~\\
+
+7. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+
+\begin{enumerate}
+
+	\item For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+
+	\item The $i$th row of $A$ is $\left[\begin{array}{cccc}a_{i1}& a_{i2}& \cdots& a_{in}\end{array}\right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+
+	\item What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+\end{enumerate}
+
+
+\end{document}

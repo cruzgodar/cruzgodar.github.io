@@ -1,9 +1,12 @@
 import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
+import { loadImages } from "./images.js";
 import { $$, pageElement, pageUrl } from "./main.js";
+import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
-import { metaThemeColorElement, siteSettings } from "./settings.js";
+import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
+import { animate, asyncFetch, sleep } from "./utils.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
@@ -12,7 +15,7 @@ export let cardIsAnimating = false;
 
 const easing = "cubicBezier(.25, 1, .25, 1)";
 
-const container = document.querySelector("#card-container");
+export const cardContainer = document.querySelector("#card-container");
 
 export let currentCard;
 
@@ -33,8 +36,6 @@ if (closeButton)
 	});
 }
 
-
-
 export let scrollBeforeCard = 0;
 
 
@@ -54,7 +55,29 @@ export function initCards()
 			}
 		});
 	});
+
+	if (window.DEBUG)
+	{
+		cardContainer.addEventListener("scroll", () => setScroll());
+	}
 }
+
+
+
+// This system lets pages do stuff with the DOM after it's changed
+// due to loading external cards. It's only called once for each
+// card, so it's safe to use it for things like initializing custom
+// elements.
+
+// eslint-disable-next-line no-unused-vars
+let onLoadExternalCard = (card, id) => {};
+
+export function setOnLoadExternalCard(callback)
+{
+	onLoadExternalCard = callback;
+}
+
+
 
 export async function showCard({
 	id,
@@ -79,18 +102,38 @@ export async function showCard({
 	
 	siteSettings.card = id;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
-	
-	container.style.display = "flex";
-	container.style.opacity = 1;
-	container.style.top = "100vh";
-	container.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
-	container.appendChild(currentCard);
+	if (currentCard.classList.contains("external-card"))
+	{
+		const data = await asyncFetch(`${pageUrl}/cards/${id}/data.html`);
+		const dataInnards = data
+			.replaceAll(/^<div.*?>/g, "")
+			.replaceAll(/<\/div>$/g, "");
+		currentCard.innerHTML = dataInnards;
+		
+		await Promise.all([
+			typesetMath(),
+			loadImages()
+		]);
+
+		onLoadExternalCard(currentCard, id);
+
+		await sleep(10);
+	}
+
+	cardContainer.style.display = "flex";
+	cardContainer.style.opacity = 1;
+	cardContainer.style.top = "100vh";
+	cardContainer.style.transform = "";
+
+
+
+	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
 
-	container.scroll(0, 0);
+	cardContainer.scroll(0, 0);
 
 	const backgroundScale = siteSettings.reduceMotion ? 1 : .975;
 
@@ -100,17 +143,17 @@ export async function showCard({
 
 	if (rect.height > window.innerHeight - 32)
 	{
-		container.style.justifyContent = "flex-start";
+		cardContainer.style.justifyContent = "flex-start";
 	}
 
 	else
 	{
-		container.style.justifyContent = "center";
+		cardContainer.style.justifyContent = "center";
 	}
 
 
 
-	const image = currentCard.querySelector("img");
+	const image = currentCard.querySelector("img.gallery-card-image");
 
 	if (image)
 	{
@@ -129,7 +172,7 @@ export async function showCard({
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await sleep(100);
 		}
 	}
 
@@ -163,13 +206,13 @@ export async function showCard({
 
 	if (siteSettings.reduceMotion)
 	{
-		container.style.opacity = 0;
-		container.style.top = 0;
+		cardContainer.style.opacity = 0;
+		cardContainer.style.top = 0;
 	}
 
 	await Promise.all([
 		anime({
-			targets: container,
+			targets: cardContainer,
 			top: 0,
 			opacity: 1,
 			duration: animationTime,
@@ -214,8 +257,13 @@ export async function showCard({
 
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
-	container.scrollTo(0, 0);
+	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
+
+	if (window.DEBUG)
+	{
+		setScroll();
+	}
 }
 
 export async function hideCard(animationTime = cardAnimationTime)
@@ -237,7 +285,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 	siteSettings.card = undefined;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
@@ -247,32 +295,25 @@ export async function hideCard(animationTime = cardAnimationTime)
 		pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 	}
 
-	const dummy = { t: 0 };
-	const containerOldScroll = container.scrollTop;
+	const containerOldScroll = cardContainer.scrollTop;
 	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
 	const hidePromise = siteSettings.reduceMotion
 		? anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 0,
 			duration: animationTime,
 			easing,
 		}).finished
-		: anime({
-			targets: dummy,
-			t: 1,
-			duration: animationTime,
-			easing,
-			update: () =>
-			{
-				const heightMoved = dummy.t * totalHeightToMove;
-				const scroll = Math.max(containerOldScroll - heightMoved, 0);
-				container.scrollTo(0, scroll);
+		: animate((t) =>
+		{
+			const heightMoved = t * totalHeightToMove;
+			const scroll = Math.max(containerOldScroll - heightMoved, 0);
+			cardContainer.scrollTo(0, scroll);
 
-				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
-				container.style.top = `${remainingHeight}px`;
-			}
-		}).finished;
+			const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
+			cardContainer.style.top = `${remainingHeight}px`;
+		}, animationTime, easing);
 
 	await Promise.all([
 		anime({
@@ -324,15 +365,20 @@ export async function hideCard(animationTime = cardAnimationTime)
 	document.documentElement.style.backgroundColor = "var(--background)";
 	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
-	container.style.display = "none";
+	cardContainer.style.display = "none";
 
 	pageElement.appendChild(currentCard);
 
-	container.appendChild(closeButton);
+	cardContainer.appendChild(closeButton);
 
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
 	cardIsAnimating = false;
+
+	if (window.DEBUG)
+	{
+		setScroll();
+	}
 }
 
 
@@ -349,7 +395,7 @@ async function getClosedContainerStyle({
 
 	const scale = computedScale * fromElementRect.width / toElementRect.width;
 
-	container.style.transform = `scale(${scale})`;
+	cardContainer.style.transform = `scale(${scale})`;
 	
 	toElementRect = toElement.getBoundingClientRect();
 	const translateX = fromElementRect.left - toElementRect.left
@@ -357,9 +403,9 @@ async function getClosedContainerStyle({
 	const translateY = fromElementRect.top - toElementRect.top
 		- (computedScale - 1) / 2 * fromElementRect.height;
 
-	container.style.transform = "translateX(0) translateY(0) scale(1)";
+	cardContainer.style.transform = "translateX(0) translateY(0) scale(1)";
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	return [translateX, translateY, scale];
 }
@@ -404,10 +450,10 @@ export async function showZoomCard({
 
 
 
-	container.style.display = "flex";
-	container.style.opacity = 0.002;
-	container.style.top = 0;
-	container.style.transform = "";
+	cardContainer.style.display = "flex";
+	cardContainer.style.opacity = 0.002;
+	cardContainer.style.top = 0;
+	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
@@ -416,10 +462,10 @@ export async function showZoomCard({
 		toElement = currentCard;
 	}
 
-	container.appendChild(currentCard);
+	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
 
-	container.scroll(0, 0);
+	cardContainer.scroll(0, 0);
 
 	
 
@@ -427,17 +473,17 @@ export async function showZoomCard({
 
 	if (rect.height > window.innerHeight - 32)
 	{
-		container.style.justifyContent = "flex-start";
+		cardContainer.style.justifyContent = "flex-start";
 	}
 
 	else
 	{
-		container.style.justifyContent = "center";
+		cardContainer.style.justifyContent = "center";
 	}
 
 
 
-	const image = currentCard.querySelector("img");
+	const image = currentCard.querySelector("img.gallery-card-image");
 
 	if (image)
 	{
@@ -456,7 +502,7 @@ export async function showZoomCard({
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 90));
+			await sleep(90);
 		}
 	}
 
@@ -494,13 +540,13 @@ export async function showZoomCard({
 		toElement,
 	});
 
-	container.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
+	cardContainer.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
 
-	container.style.opacity = .75;
+	cardContainer.style.opacity = .75;
 
 	await Promise.all([
 		anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 1,
 			scale: 1,
 			translateX: 0,
@@ -547,7 +593,7 @@ export async function showZoomCard({
 
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
-	container.scrollTo(0, 0);
+	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
 }
 
@@ -570,7 +616,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	siteSettings.card = undefined;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	await new Promise(resolve => setTimeout(resolve, 0));
+	await sleep(0);
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
@@ -617,7 +663,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 		}).finished,
 
 		anime({
-			targets: container,
+			targets: cardContainer,
 			opacity: 0,
 			scale: siteSettings.reduceMotion ? 1 : .925,
 			duration: animationTime,
@@ -636,11 +682,11 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	document.documentElement.style.backgroundColor = "var(--background)";
 	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
-	container.style.display = "none";
+	cardContainer.style.display = "none";
 
 	pageElement.appendChild(currentCard);
 
-	container.appendChild(closeButton);
+	cardContainer.appendChild(closeButton);
 
 	document.documentElement.removeEventListener("click", handleClickEventZoom);
 
@@ -675,12 +721,12 @@ export function resizeCard()
 
 		if (rect.height > window.innerHeight - 32)
 		{
-			container.style.justifyContent = "flex-start";
+			cardContainer.style.justifyContent = "flex-start";
 		}
 
 		else
 		{
-			container.style.justifyContent = "center";
+			cardContainer.style.justifyContent = "center";
 		}
 	}
 }

@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 253 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 2 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers. 
+
+~\\
+
+In problems 1--6, write the first five terms of the sequence and find an explicit formula for the $n$th term of the sequence if it is not already given.
+
+1. $\displaystyle a_n = \left( \frac{1}{2} \right)^n$.
+
+2. $\displaystyle b_n = \cos\left( \frac{\pi}{2} n \right)$.
+
+3. $\displaystyle c_1 = 1$ and $\displaystyle c_n = nc_{n - 1}$ for $n \geq 2$.
+
+4. $\displaystyle d_1 = \frac{1}{5}$, $\displaystyle d_2 = \frac{1}{5}$, and $d_n = d_{n - 1}d_{n - 2}$ for $n \geq 3$. (You may state your explicit formula in terms of another sequence).
+
+5. $e_1 = 6$, $e_2 = 2$, and $(e_n)$ is an arithmetic sequence.
+
+6. $f_1 = 6$, $f_2 = 2$, and $(f_n)$ is a geometric sequence.
+
+7. For each of the sequences in problems 1--6, find the limit if it exists. If it does exist, find a positive integer $N$ so that all terms of the sequence with index at least $N$ are within $\varepsilon = 0.1$ of the limit.
+
+~\\
+
+In problems 8--12, determine if the sequence converges and find the limit of the sequence if it does. Justify your answers.
+
+8. $\displaystyle a_n = \frac{3n^3 - 2n^2}{n^3 + 1}$.
+
+9. $\displaystyle b_n = \frac{(-1)^n}{\sqrt{n}}$.
+
+10. $\displaystyle c_n = \tan(n)$.
+
+11. $\displaystyle d_n = \frac{2^n}{n!}$.
+
+12. $\displaystyle e_n = \frac{n^n}{n!}$.
+
+~\\
+
+13. Give an example of a sequence that is monotone increasing that does not converge, and a sequence that is bounded below but does not converge.
+
+14. If a sequence is not bounded above, can it converge? Explain.
+
+15. If a sequence $a_n$ has infinitely many positive terms \textit{and} infinitely many negative terms, can it still converge? If so, are there restrictions on what it can converge to?
+
+16. Suppose $(a_n)$ is a sequence of rational numbers with $(a_n) \to a$. Is $a$ necessarily a rational number?
+
+17. Let $a_n$ be a sequence and let $b_n = \left| a_{n + 1} - a_n \right|$. If $(b_n) \to 0$, does $(a_n)$ have to converge?
+
+
+\end{document}

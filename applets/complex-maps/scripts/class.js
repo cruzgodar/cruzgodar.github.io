@@ -1,6 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class ComplexMaps extends AnimationFrameApplet
@@ -19,7 +20,6 @@ export class ComplexMaps extends AnimationFrameApplet
 	draggableCallback;
 
 	addIndicatorDraggable = false;
-	useSelectorMode = false;
 
 
 
@@ -153,8 +153,6 @@ export class ComplexMaps extends AnimationFrameApplet
 				float fract2 = (imageZ.y - whole2);
 				
 				gl_FragColor = vec4(whole1 / 256.0, fract1, whole2 / 256.0, fract2);
-				
-				return;
 			`
 			: "";
 
@@ -195,8 +193,6 @@ export class ComplexMaps extends AnimationFrameApplet
 				
 				vec2 imageZ = f(z);
 				
-				${selectorModeString}
-				
 				float modulus = length(imageZ);
 				
 				float h = atan(imageZ.y, imageZ.x) / 6.283;
@@ -204,6 +200,8 @@ export class ComplexMaps extends AnimationFrameApplet
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * blackPoint * blackPoint)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsvToRgb(vec3(h, s, v)), 1.0);
+
+				${selectorModeString}
 			}
 		`;
 
@@ -231,9 +229,9 @@ export class ComplexMaps extends AnimationFrameApplet
 
 
 
-	onGrabCanvas({ x, y })
+	onGrabCanvas({ x, y, event })
 	{
-		if (this.useSelectorMode)
+		if (event.metaKey && window.DEBUG)
 		{
 			this.run({
 				selectorMode: true
@@ -265,8 +263,6 @@ export class ComplexMaps extends AnimationFrameApplet
 				this.run({
 					selectorMode: false
 				});
-
-				this.useSelectorMode = false;
 			}, 20);
 
 			this.timeoutIds.push(timeoutId);
@@ -306,6 +302,6 @@ export class ComplexMaps extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

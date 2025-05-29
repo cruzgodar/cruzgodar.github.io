@@ -1,13 +1,14 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
 
-export async function addNewArray(
+export async function addNewArray({
 	index,
 	numbers,
 	keepNumbersCanvasVisible = false,
-	horizontalLegs = true
-) {
+	horizontalLegs = true,
+}) {
 	if (this.currentlyAnimatingCamera)
 	{
 		return;
@@ -16,8 +17,6 @@ export async function addNewArray(
 	this.currentlyAnimatingCamera = true;
 
 	let updatingCamera = false;
-
-
 
 	const array = {
 		numbers,
@@ -210,7 +209,7 @@ export async function addNewArray(
 
 
 	// Add walls. Disabled by default.
-	if (this.abConfigMode)
+	if (this.addWalls)
 	{
 		array.leftWall = new Array(this.wallWidth);
 		array.rightWall = new Array(this.wallWidth);
@@ -284,7 +283,7 @@ export async function addNewArray(
 
 	if (index !== this.arrays.length - 1)
 	{
-		await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		await sleep(this.animationTime);
 	}
 
 
@@ -339,7 +338,7 @@ export async function editArray(index, numbers)
 
 	await this.removeArray(index);
 
-	await this.addNewArray(index, numbers);
+	await this.addNewArray({ index, numbers });
 
 	this.currentlyAnimatingCamera = false;
 
@@ -404,7 +403,7 @@ export async function trimArray(index)
 
 	await this.removeArray(index);
 
-	await this.addNewArray(index, newNumbers);
+	await this.addNewArray({ index, numbers: newNumbers });
 
 	if (!this.in2dView)
 	{
@@ -548,5 +547,13 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 	if (this.arrays.length !== 0 && !keepNumbersCanvasVisible)
 	{
 		this.updateCameraHeight(true);
+	}
+}
+
+export async function removeAllArrays()
+{
+	for (let i = this.arrays.length - 1; i >= 0; i--)
+	{
+		await this.removeArray(i);
 	}
 }

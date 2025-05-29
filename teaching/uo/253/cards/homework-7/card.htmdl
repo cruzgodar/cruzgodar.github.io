@@ -1,0 +1,50 @@
+### card homework-7 "Homework 7"
+	
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-7-pdf
+		download-homework-7-tex
+	###
+
+	- - -
+	
+	In problems 3#, find a power series for the function using power series multiplication and determine its interval of convergence.
+
+	#. $$\left( \frac{1}{1 - x} \right)\left( \frac{1}{1 + x} \right)$$.
+
+	#. $$\left( \frac{1}{1 - x} \right)\left( \frac{1}{(1 + x)^2} \right)$$.
+
+	#. $$\left( \frac{1}{(1 - x)^2} \right)\left( \frac{1}{(1 + x)^2} \right)$$.
+
+	- - -
+
+	In problems 2#, find a power series for the given function using calculus and determine its interval of convergence.
+
+	#. $$\ln\left( 1 + x^2 \right)$$.
+
+	#. $$\frac{1}{(1 + 2x)^4}$$.
+
+	- - -
+
+	#. Let $$f(x) = \sum_{n = 0}^\infty c_n x^n$$ on $(-R, R)$, so that the series does not converge at $x = R$. Is it possible for the series for $f'(x)$ to converge at $x = R$? Give an example of a series where this is true or justify why no such series can exist.
+	
+	#. Let $$f(x) = \sum_{n = 0}^\infty c_n x^n$$ on $(-R, R)$, so that the series does not converge at $x = R$. Is it possible for the series for $$\int f(x)\,\d x$$ to converge at $x = R$? Give an example of a series where this is true or justify why no such series can exist.
+
+	- - -
+
+	#. Let $f(x) = \sin(x)$.
+
+	> a) What are $f(0)$ and $f'(0)$?
+
+	> b) Suppose $$f(x) = \sum_{n = 0}^\infty c_n x^n$$. What are $c_0$ and $c_1$?
+
+	> c) Since $f''(x) = -\sin(x) = -f(x)$, the coefficient sequence $(c_n)$ satisfies a recurrence. Write that recurrence down.
+
+	> d) Find an explicit formula for $c_n$. (Hint: handle even and odd $n$ separately).
+
+	> e) What is the interval of convergence for $$\sum_{n = 0}^\infty c_n x^n$$?
+	
+###

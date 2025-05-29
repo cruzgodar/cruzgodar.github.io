@@ -1,0 +1,138 @@
+### nav-buttons
+
+
+
+We're almost done with the core material of our course! In this section, we'll look at the main function beyond sine and cosine that will be very useful, and then we'll explore ways in which we can undo all three trig functions.
+
+
+
+## The Tangent Function
+
+As we've seen, sine and cosine take in angles and output coordinates on the unit circle. Equivalently, we can think of them as ratios of sides in a right triangle: sine is computed with the opposite side to an angle and the hypotenuse, and cosine with the adjacent side and the hypotenuse. No function currently involves the opposite and adjacent sides, though, and it will prove surprisingly helpful for us to define one.
+
+### def "the tangent function"
+
+	Let $\theta$ be an angle. The **tangent** of $\theta$, written $\tan(\theta)$, is defined as
+	$$
+		\tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)}.
+	$$
+	Equivalently, if $\theta$ is an angle in a right triangle, then
+	$$
+		\tan(\theta) = \frac{\text{opposite}}{\text{adjacent}}.
+	$$
+
+###
+
+Geometrically, $\tan(\theta)$ is the *slope* of the line from the origin to the point with angle $\theta$, since $\frac{\sin(\theta)}{\cos(\theta)}$ is the rise over the run to get to that point.
+
+### desmos tanAsSlope
+
+### exc "exact values of tangent"
+
+	1. Find the exact values of $\tan\left( 0^\circ \right)$, $\tan\left( 30^\circ \right)$, $\tan\left( 45^\circ \right)$, $\tan\left( 60^\circ \right)$, and $\tan\left( 90^\circ \right)$. Do they make sense as slopes?
+
+	2. What is the formula for the line that intersects the $y$-axis at $(0, 2)$ and makes an angle of $30^\circ$ with it, as shown?
+
+	### desmos slopedLine
+
+	3. In a right triangle, the hypotenuse has length $5$, and one of the non-right angles $\theta$ has $\tan(\theta) = 2$. What are the lengths of the other two sides, and what is the tangent of the other non-right angle?
+
+###
+
+Just like we did with sine and cosine, we can use reference triangles to compute other values of tangent.
+
+### ex "tangent and reference triangles"
+
+	Compute the exact value of $\tan\left( 210^\circ \right)$.
+
+	### desmos tanReferenceTriangle
+
+	### solution
+
+	From this reference triangle, we have a reference angle of $30^\circ$, and so we have $\sin\left( 210^\circ \right) = -\frac{1}{2}$ and $\cos\left( 210^\circ \right) = -\frac{\sqrt{3}}{2}$. The tangent is therefore
+	$$
+		\tan\left( 210^\circ \right) = \frac{\sin\left( 210^\circ \right)}{\cos\left( 210^\circ \right)} = \frac{1}{\sqrt{3}}.
+	$$
+
+###
+
+With a fair amount more work like this, we're ready sketch a rough graph of tangent!
+
+### desmos tanGraph
+
+There are a few new properties of the graph of $\tan(x)$ that we haven't seen with sine and cosine. First of all, while $\tan$ is still periodic, it has period $180^\circ$ instead of $360^\circ$. That's because the slopes of lines in the unit circle repeat when we rotate them $180^\circ$ counterclockwise --- they remain parallel!
+
+Secondly, this graph has **asymptotes** --- at $90^\circ$, $270^\circ$, and any other angle that is $90^\circ$ more than a multiple of $180^\circ$, tangent is undefined since the line in the unit circle is straight up or down. Focusing on $90^\circ$, angles just below $90^\circ$ have lines with slopes that are extremely large and positive, while angles just after have lines with slopes that are extremely large and negative. The result is that the graph of $\tan(x)$ shoots up toward infinity right before $x = 90^\circ$, and returns up from negative infinity right after.
+
+### exc "the graph of tangent"
+
+	1. Sketch a graph of $y = \tan\left( \frac{1}{2}x \right) - 1$ by transforming the graph of $y = \tan(x)$.
+
+	2. A **tangent** line to a curve is a line that touches the curve at only one point, only barely grazing it. For example, the tangent line to the unit circle at $(1, 0)$ is the vertical line $x = 1$. If we extend that line to meet the line from the origin through $(\cos(\theta), \sin(\theta))$, as in the following graph, then what is the length of the portion of the tangent line (the green one)?
+
+	### desmos tangentLines
+
+	3. What are the angles of the two different points on the unit circle whose tangent is $1$?
+
+###
+
+
+
+## Inverse Trig Functions
+
+This exercise will take us neatly into the following part of the section! While we've focused so far on functions that take in angles and give us coordinates or ratios in the unit circle, we can also go the other direction: given an $x$-coordinate, $y$-coordinate, or slope of a point on the unit circle, we can find the angle of that point. As we talked about earlier in the term, this is a textbook example of an **inverse function**: one that undoes a function by taking its outputs back to inputs.
+
+Let's begin by focusing on $\sin(\theta)$. Its outputs are $y$-coordinates in the unit circle, which are between $-1$ and $1$, meaning if we invert the function, that inverse will only accept inputs between $-1$ and $1$. More troubling, though, there's more than one point on the unit circle with any given $y$-coordinate! For example, $y = \frac{1}{2}$ appears from points with angles $\theta = 30^\circ$ and $\theta = 150^\circ$, as well as any multiple of $360^\circ$ (positive or negative) added to those two. This is to say that $y = \sin(x)$ is not a one-to-one function, and so if we want to take a $y$-coordinate back to an angle, we'll have to make a choice.
+
+### desmos sinRange
+
+Pictured here is the widest we can draw a portion of the unit circle so that it includes the angle $0^\circ$ and completely covers the range of $\sin$. Any further and it would start to loop back on itself, and any less far and we wouldn't cover the whole range of $y$-coordinates. Since it includes the angle of $0^\circ$, the complete range of angles is $\left[ -90^\circ, 90^\circ \right]$ --- that is, every angle between $-90^\circ$ and $90^\circ$, inclusive. With this range, we can do as good of a job as possible at inverting the sine function, and we're ready to give it a name.
+
+### def "the arcsine function"
+
+	Let $y$ be a number in the interval $\left[ -1, 1 \right]$. The **arcsine** of $y$, written $\arcsin(y)$, is the angle $\theta$ in $\left[ -90^\circ, 90^\circ \right]$ so that $\sin(\theta) = y$.
+
+###
+
+For example, $\sin\left( 30^\circ \right) = \frac{1}{2}$, and so $\arcsin\left( \frac{1}{2} \right) = 30^\circ$. It's also true that $\sin\left( 150^\circ \right) = \frac{1}{2}$, but we only take the angle that lives in $\left[ -90^\circ, 90^\circ \right]$. Similarly, while $\sin\left( 210^\circ \right) = -\frac{1}{2}$, evaluating $\arcsin\left( -\frac{1}{2} \right)$ requires us to find an angle within $\left[ -90^\circ, 90^\circ \right]$. In this case, that's $-30^\circ$, since $\sin\left( -30^\circ \right) = -\frac{1}{2}$.
+
+Instead of $\arcsin$, many textbooks and sources write $\sin^{-1}$. This is unfortunately fairly confusing: first of all, the superscript of $-1$ looks like this means $\sin^{-1}(x) = \frac{1}{\sin(x)}$. Not only is that not the case, but we'll actually talk a little bit about a function that *is* equal to $\frac{1}{\sin(x)}$ later in the term. The other issue is that the inverse notation implies $y = \sin(x)$ is an invertible function, and as we've seen, that's absolutely not the case without a lot of extra work. For both of these reasons, we'll stick with $\arcsin$ (and $\arccos$ and $\arctan$, as we're about to see).
+
+### exc "the arc functions"
+
+	1. What angle ranges should we pick for complete coverage of the output values of $\cos$ and $\tan$? Ideally, include $0^\circ$ in both.
+
+	2. Evaluate $\arcsin(1)$, $\arccos\left( -\frac{\sqrt{2}}{2} \right)$, and $\arctan\left( \sqrt{3} \right)$.
+
+	3. Is it always true that $\sin(\arcsin(x)) = x$? What about $\arcsin(\sin(x))$?
+
+	4. Sketch graphs of $y = \arcsin(x)$, $y = \arccos(x)$, and $y = \arctan(x)$, using the fact that they're (at least partially) inverses to $y = \sin(x)$, $y = \cos(x)$, and $y = \tan(x)$.
+
+	5. Sketch a graph of $y = 2\arctan(-x) - 1$.
+
+###
+
+Since the trig functions also output ratios in right triangles, the arc functions can also take in those ratios.
+
+### ex "the arc functions in right triangles"
+
+	The following right triangle has a hypotenuse of length $4$. Determine both of its non-right angles.
+
+	### desmos arcFunctionsTriangle
+
+	### solution
+
+	The vertical leg looks to have length $2$, and so to compute the angle at the origin, we can evaluate $\arcsin\left( \frac{2}{4} \right) = 30^\circ$. We can find the other angle by subtracting $30^\circ$ from $90^\circ$ to get $60^\circ$, or we can use the $\arccos$ function: the remaining angle is
+	$$
+		\arccos\left( \frac{2}{4} \right) = \arccos\left( \frac{1}{2} \right) = 60^\circ.
+	$$
+	Alternatively, the Pythagorean theorem tells us that the remaining side has length $\sqrt{4^2 - 2^2} = \sqrt{12}$, and so the remaining angle is
+	$$
+		\arcsin\left( \frac{\sqrt{12}}{4} \right) = \arcsin\left( \frac{\sqrt{3}}{2} \right) = 60^\circ.
+	$$
+
+###
+
+
+
+### nav-buttons

@@ -70,6 +70,7 @@ export default function()
 
 
 		const highResImageElement = document.createElement("img");
+		highResImageElement.classList.add("gallery-card-image");
 
 		const element = $("#high-res-viewer-card img");
 		element.parentNode.insertBefore(highResImageElement, element);

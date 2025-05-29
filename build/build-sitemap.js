@@ -31,22 +31,22 @@ export async function buildSitemap()
 
 
 	let sitemap = `export const sitemap =\n{${await getPageString(
-		"/home/",
+		"/home",
 		"",
 		[
-			"/gallery/",
-			"/applets/",
-			"/teaching/",
-			"/slides/",
-			"/writing/",
-			"/about/",
-			"/404/",
-			"/debug/"
+			"/gallery",
+			"/applets",
+			"/teaching",
+			"/slides",
+			"/writing",
+			"/about",
+			"/404",
+			"/debug"
 		],
 		"Cruz Godar"
 	)}`;
 
-	lines[0] = "/home/";
+	lines[0] = "/home";
 
 	for (let i = 1; i < lines.length; i++)
 	{
@@ -73,12 +73,12 @@ export async function buildSitemap()
 
 		if (lines[i][0] !== "/")
 		{
-			lines[i] = `${parent}${lines[i]}/`;
+			lines[i] = `${parent}/${lines[i]}`;
 		}
 
 		else
 		{
-			lines[i] = `${lines[i]}/`;
+			lines[i] = `${lines[i]}`;
 		}
 
 		// To find all the children, we search ahead and find everything at
@@ -99,12 +99,12 @@ export async function buildSitemap()
 				// correctly, so we modify them (but not in place, since we'll get to them later).
 				if (lines[j][0] !== "/")
 				{
-					children.push(`${lines[i]}${child}/`);
+					children.push(`${lines[i]}/${child}`);
 				}
 
 				else
 				{
-					children.push(`${child}/`);
+					children.push(`${child}`);
 				}
 			}
 
@@ -113,7 +113,7 @@ export async function buildSitemap()
 
 
 
-		const realParent = parent === "/" ? "/home/" : parent;
+		const realParent = parent === "" ? "/home" : parent;
 
 		sitemap = `${sitemap}${await getPageString(lines[i], realParent, children, title)}`;
 	}

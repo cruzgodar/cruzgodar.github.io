@@ -9,6 +9,7 @@ import {
 	getMaxGlslString,
 	tempShader
 } from "/scripts/applets/applet.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet
@@ -179,6 +180,7 @@ export class VectorFields extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
+				crossfade: true,
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
@@ -198,7 +200,7 @@ export class VectorFields extends AnimationFrameApplet
 
 	async run({
 		generatingCode,
-		resolution = 500,
+		resolution = 750,
 		maxParticles = 6000,
 		dt = .00375,
 		lifetime = 150,
@@ -411,45 +413,28 @@ export class VectorFields extends AnimationFrameApplet
 
 	getSamplingGlsl()
 	{
-		const radius = this.particleDilation ?? Math.floor(this.resolution / 500);
-
-		if (radius === 0)
-		{
-			return /* glsl */`
-				gl_FragColor = vec4(getPixel(uv), 1.0);
-			`;
-		}
-		if (radius === 1)
-		{
-			return /* glsl */`
-				vec3 distance1 = getPixel(uv);
-
-				// Make a 2x2 square down and right.
-				vec3 distance2 = getPixel(uv + vec2(stepSize.x, 0.0));
-				vec3 distance3 = getPixel(uv + vec2(0.0, stepSize.y));
-				vec3 distance4 = getPixel(uv + stepSize);
-
-				gl_FragColor = vec4(${getMaxGlslString("distance", 4)}, 1.0);
-			`;
-		}
+		const radius = this.particleDilation
+			?? Math.max(this.resolution / 500, 0);
 
 		let glsl = "";
 		let numDistances = 0;
 
-		for (let i = -radius + 1; i < radius; i++)
+		for (let i = -Math.ceil(radius); i <= Math.ceil(radius); i++)
 		{
-			for (let j = -radius + 1; j < radius; j++)
+			for (let j = -Math.ceil(radius); j <= Math.ceil(radius); j++)
 			{
-				const distanceToCenter2 = i * i + j * j;
+				const distanceToCenter = Math.sqrt(i * i + j * j);
 
-				if (distanceToCenter2 > (radius - 0.5) * (radius - 0.5))
+				if (distanceToCenter > radius + 1)
 				{
 					continue;
 				}
 
+				const dimFactor = 1 - Math.max(0, distanceToCenter - radius);
+
 				numDistances++;
 				glsl += /* glsl */`
-					vec3 distance${numDistances} = getPixel(
+					vec3 distance${numDistances} = ${getFloatGlsl(dimFactor)} * getPixel(
 						uv + vec2(
 							${getFloatGlsl(i)} * stepSize.x,
 							${getFloatGlsl(j)} * stepSize.y
@@ -892,6 +877,6 @@ export class VectorFields extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

@@ -1,7 +1,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { SL2RRooms } from "/applets/thurston-geometries/scripts/geometries/sl2r.js";
-import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { animate } from "/scripts/src/utils.js";
 
 let geometryData;
 
@@ -38,65 +38,51 @@ async function reset({ slide, forward, duration })
 
 async function build0({ forward })
 {
-	const dummy = { t: 0 };
-
 	if (forward)
 	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
+		await animate((t) =>
+		{
+			applet.automovingDirection = () =>
 			{
-				applet.automovingDirection = () =>
+				geometryData.cameraPos[2] *= .99;
+				geometryData.cameraPos[3] *= .99;
+
+				if (Math.abs(geometryData.cameraPos[2]) < .0005)
 				{
-					geometryData.cameraPos[2] *= .99;
-					geometryData.cameraPos[3] *= .99;
+					geometryData.cameraPos[2] = Math.sign(geometryData.cameraPos[2]) * .0005;
+				}
 
-					if (Math.abs(geometryData.cameraPos[2]) < .0005)
-					{
-						geometryData.cameraPos[2] = Math.sign(geometryData.cameraPos[2]) * .0005;
-					}
+				if (Math.abs(geometryData.cameraPos[3]) < .0005)
+				{
+					geometryData.cameraPos[3] = Math.sign(geometryData.cameraPos[3]) * .0005;
+				}
 
-					if (Math.abs(geometryData.cameraPos[3]) < .0005)
-					{
-						geometryData.cameraPos[3] = Math.sign(geometryData.cameraPos[3]) * .0005;
-					}
-
-					return [
-						1 * (1 - dummy.t) + 0 * dummy.t,
-						0,
-						0,
-						0 * (1 - dummy.t) + 1 * dummy.t,
-					];
-				};
-			}
-		}).finished;
+				return [
+					1 * (1 - t) + 0 * t,
+					0,
+					0,
+					0 * (1 - t) + 1 * t,
+				];
+			};
+		}, 1000);
 	}
 
 	else
 	{
 		applet.automoving = false;
 
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				geometryData.cameraPos[0] += .05 * (geometryData.cameraPos[0] - 1);
-				geometryData.cameraPos[1] *= .95;
-				geometryData.cameraPos[2] *= .95;
-				geometryData.cameraPos[3] *= .95;
-				geometryData.cameraFiber *= .95;
+		await animate(() =>
+		{
+			geometryData.cameraPos[0] += .05 * (geometryData.cameraPos[0] - 1);
+			geometryData.cameraPos[1] *= .95;
+			geometryData.cameraPos[2] *= .95;
+			geometryData.cameraPos[3] *= .95;
+			geometryData.cameraFiber *= .95;
 
-				geometryData.cameraPos = geometryData.correctPosition(geometryData.cameraPos);
+			geometryData.cameraPos = geometryData.correctPosition(geometryData.cameraPos);
 
-				applet.needNewFrame = true;
-			}
-		}).finished;
+			applet.needNewFrame = true;
+		}, 1000);
 
 		geometryData.cameraPos = [1, 0, 0, 0];
 		geometryData.cameraFiber = 0;
@@ -111,20 +97,12 @@ async function build0({ forward })
 
 async function build1({ forward })
 {
-	const dummy = { t: 0 };
-
-	await anime({
-		targets: dummy,
-		t: 1,
-		duration: 500,
-		easing: "easeOutCubic",
-		update: () =>
-		{
-			geometryData.sliderValues.wallThickness = forward
-				? (1 - dummy.t) * .125 + dummy.t * (-.05)
-				: (1 - dummy.t) * (-.05) + dummy.t * .125;
-		}
-	}).finished;
+	await animate((t) =>
+	{
+		geometryData.sliderValues.wallThickness = forward
+			? (1 - t) * .125 + t * (-.05)
+			: (1 - t) * (-.05) + t * .125;
+	}, 500, "easeOutCubic");
 }
 
 export const sl2rBuilds =

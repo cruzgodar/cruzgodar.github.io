@@ -23,12 +23,13 @@ async function reset({ slide, forward, duration })
 
 	applet.animationTime = 0;
 
-	for (let i = applet.arrays.length - 1; i >= 0; i--)
-	{
-		await applet.removeArray(0);
-	}
+	await applet.removeAllArrays();
 
-	await applet.addNewArray(0, rpp, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: rpp,
+		horizontalLegs: false
+	});
 
 	if (!applet.in2dView)
 	{

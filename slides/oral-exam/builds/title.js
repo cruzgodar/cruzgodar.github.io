@@ -28,12 +28,13 @@ async function reset({ slide, duration })
 		[1, 0, 0, 0, 0, 0]
 	];
 
-	for (let i = applet.arrays.length - 1; i >= 0; i--)
-	{
-		await applet.removeArray(0);
-	}
+	await applet.removeAllArrays();
 
-	await applet.addNewArray(0, planePartition, false, false);
+	await applet.addNewArray({
+		index: 0,
+		numbers: planePartition,
+		horizontalLegs: false
+	});
 
 	if (!applet.inExactHexView)
 	{

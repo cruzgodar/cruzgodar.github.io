@@ -1,3 +1,5 @@
+import { sleep } from "/scripts/src/utils.js";
+
 export async function sulzgruber(index)
 {
 	const array = this.arrays[index];
@@ -241,9 +243,9 @@ export async function sulzgruber(index)
 		}
 	}
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
-	await new Promise(resolve => setTimeout(resolve, this.animationTime));
+	await sleep(this.animationTime);
 
 
 
@@ -277,7 +279,7 @@ export async function sulzgruber(index)
 
 
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
+		await sleep(this.animationTime / 5);
 
 		// Find the pivot and rearrange the shape into a hook.
 		// The end of the Q-path is the same as the end of the rim-hook,
@@ -350,7 +352,7 @@ export async function sulzgruber(index)
 
 
 
-		await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		await sleep(this.animationTime);
 	}
 
 	this.currentlyAnimatingCamera = false;
@@ -455,7 +457,7 @@ export async function sulzgruberInverse(index)
 		}
 	}
 
-	const outputArray = await this.addNewArray(index + 1, emptyArray);
+	const outputArray = await this.addNewArray({ index: index + 1, numbers: emptyArray });
 
 
 
@@ -681,7 +683,7 @@ export async function sulzgruberInverse(index)
 
 				currentHueIndex++;
 
-				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
+				await sleep(this.animationTime / 2);
 			}
 		}
 	}

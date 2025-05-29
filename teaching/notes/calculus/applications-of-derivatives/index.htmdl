@@ -1,0 +1,118 @@
+### nav-buttons
+
+
+While we've touched on a few applications of derivatives so far, let's take a section to talk about a handful more.
+
+The most important thing to mention is an alternate way to interpret derivatives. For some functions, we understand their rate of change as its own concept --- the derivative of position is velocity, and we don't need any metaphors to understand what a velocity function measures --- it's just speed in a certain direction. For less physically-defined functions, though, this is slightly more complicated. Thankfully, there is a sense in which we can understand it without too much trouble.
+
+### exc "linear approximations"
+
+	Let $P(t)$ be a differentiable function that models the population of a city after $t$ years of measurement. Let's attempt to understand how to interpret $P'(t)$.
+
+	1. Sketch a graph that could reasonably be of $P(t)$ from $t = 0$ to $t = 20$.
+
+	2. What are the units of $P'(t)$? You may find it helpful to use the limit definition of the derivative.
+
+	3. Sketch the tangent line to the graph at $t = 10$. What is the equation of that line in point-slope form in terms of $P(10)$ and $P'(10)$?
+
+	4. Let's call that tangent line function $l(t)$. What are $l(10)$ and $l(11)$ in terms of only the functions $P$ and $P'$? Is $l(11)$ close to $P(11)$?
+
+	5. With these equations, solve for $P'(10)$ in terms of $P(10)$ and $P(11)$. In a sentence, what does this mean $P'(10)$ is roughly equal to?
+
+	6. More generally, if $a$ is any number close to zero, what is $P(t + a)$ approximately equal to in terms of $P(t)$ and $P'(t)$? Do the units of $P'(t)$ make sense?
+
+###
+
+
+
+## Average Velocity
+
+We've already seen how derivatives relate to position, velocity, and acceleration: if those functions are given by $s(t)$, $v(t)$, and $a(t)$ respectively, then $v(t) = s'(t)$ and $a(t) = v'(t) = s''(t)$. One more thing to mention is **average velocity**, which is defined to just be the change in position between two points in time, divided by the change in time.
+
+
+
+### def "average velocity"
+	
+	Let $s(t)$ be the position of an object at time $t$. The **average velocity** between times $t = a$ and $t = b$ is
+	
+	$$
+		v_{avg} = \frac{s(b) - s(a)}{b - a}.
+	$$
+	
+###
+
+
+
+This is how you probably approximate velocity in your head: if a car drives 45 miles in half in hour, it's probably going about 90 miles an hour. The way we make that formal is with average velocity: over those 30 minutes, the car's average velocity is 90 miles per hour.
+
+
+
+## Tangent Line Equations
+
+Another small topic to cover: the derivative of a function gives the slope of a tangent line, but what about the equation of that line? For that, we can use **point-slope form:** the equation of a line with slope $m$ passing through the point $(x_0, y_0)$ is $y = y_0 + m(x - x_0)$. When $x = a$, the tangent line to the graph of $f(x)$ passes through $(a, f(a))$ and has slope $f'(a)$, which means:
+
+
+
+### prop "tangent line equation"
+	
+	Let $f$ be a function differentiable at $x = a$. Then the equation of the tangent line to $f$ at $x = a$ is
+	
+	$$
+		y = f(a) + f'(a) \cdot (x - a).
+	$$
+	
+###
+
+
+
+## Applications to Business
+
+One last handful of applications: we can apply derivatives to some functions used in business and economics. We need a few quick definitions first. If we're selling items for profit, the cost function $C(x)$ gives the total cost to **us** for aquiring $x$ items --- not the selling price, but the cost we pay to get the supply. Similarly, $R(x)$ is the revenue we receive from selling $x$ items. Finally, $P(x)$ is the profit we make from selling $x$ items --- so $P(x) = R(x) - C(x)$.
+
+Of particular use to us are the derivatives of these functions. In the terminology of business applications, we call these **marginal functions**. The marginal cost function is $MC(x) = C'(x)$, and similarly for the marginal revenue and profit functions, $MR(x) = R'(x)$ and $MP(x) = P'(x)$. Using the interpretation of the derivative from earlier in the section, these marginal functions are approximately the cost, revenue, and profit we get from selling item number $x + 1$. For example,
+
+$$
+	MC(4) = C'(4) \approx C(5) - C(4),
+$$
+
+which is the cost to us to acquire the fifth item.
+
+
+
+### ex "business applications"
+	
+	You're selling whiteboard markers. When you sell $x$ of them, you charge $p(x) = 1 - .01x$ dollars per marker. Each one costs you $5$ cents to produce. What is the profit you make from selling the 20th marker?
+
+	### solution
+	
+	The total cost to us to get $x$ markers is $0.05$ dollars per marker times $x$ markers, so $C(x) = .05x$. Similarly,
+	
+	$$
+		R(x) = x \cdot p(x) = x - .01x^2,
+	$$
+	
+	so
+	
+	$$
+		P(x) = R(x) - C(x) = .95x - .01x^2.
+	$$
+	
+	Now we need to compute
+	
+	$$
+		MP(x) = P'(x) = .95 - .02x.
+	$$
+	
+	Therefore, the profit from item 20 is
+	
+	$$
+		MP(19) = .95 - .38 = .57,
+	$$
+	
+	so we make a profit of $57$ cents from that particular marker.
+
+###
+
+
+
+### nav-buttons

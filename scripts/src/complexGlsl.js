@@ -1,4 +1,4 @@
-import { asyncFetch } from "./main.js";
+import { asyncFetch } from "./utils.js";
 
 const glslFilenames =
 [

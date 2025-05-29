@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Lapsa_instances, _Lapsa_rootSelector, _Lapsa_bottomMarginElement, _Lapsa_shelfContainer, _Lapsa_slideShelf, _Lapsa_shelfMargin, _Lapsa_shelfIsOpen, _Lapsa_shelfIsAnimating, _Lapsa_shelfIndicatorContainer, _Lapsa_slideShelfIndicator, _Lapsa_transitionAnimationDistance, _Lapsa_useSearchParams, _Lapsa_startingSlide, _Lapsa_numBuilds, _Lapsa_currentlyAnimating, _Lapsa_inTableView, _Lapsa_handleKeydownEventBound, _Lapsa_handleTouchstartEventBound, _Lapsa_handleTouchmoveEventBound, _Lapsa_handleMousemoveEventBound, _Lapsa_onResizeBound, _Lapsa_currentlyTouchDevice, _Lapsa_lastMousemoveEvent, _Lapsa_lastWindowHeight, _Lapsa_startWindowHeight, _Lapsa_windowHeightAnimationFrame, _Lapsa_windowHeightAnimationLastTimestamp, _Lapsa_resizeAnimationBound, _Lapsa_missedResizeAnimation, _Lapsa_currentlyDragging, _Lapsa_dragDistanceX, _Lapsa_lastTouchX, _Lapsa_dragDistanceY, _Lapsa_lastTouchY, _Lapsa_lastMoveThisDrag, _Lapsa_safeVh, _Lapsa_updateSearchParams, _Lapsa_onResize, _Lapsa_resizeAnimation, _Lapsa_showSlideShelf, _Lapsa_hideSlideShelf, _Lapsa_showSlideShelfIndicator, _Lapsa_hideSlideShelfIndicator, _Lapsa_handleKeydownEvent, _Lapsa_handleTouchstartEvent, _Lapsa_handleTouchmoveEvent, _Lapsa_handleMousemoveEvent;
+var _Lapsa_instances, _Lapsa_rootSelector, _Lapsa_bottomMarginElement, _Lapsa_shelfContainer, _Lapsa_slideShelf, _Lapsa_shelfMargin, _Lapsa_shelfIsOpen, _Lapsa_shelfAnimationPromise, _Lapsa_shelfIndicatorContainer, _Lapsa_slideShelfIndicator, _Lapsa_transitionAnimationDistance, _Lapsa_useSearchParams, _Lapsa_startingSlide, _Lapsa_numBuilds, _Lapsa_currentlyAnimating, _Lapsa_inTableView, _Lapsa_handleKeydownEventBound, _Lapsa_handleTouchstartEventBound, _Lapsa_handleTouchmoveEventBound, _Lapsa_handleMousemoveEventBound, _Lapsa_onResizeBound, _Lapsa_currentlyTouchDevice, _Lapsa_lastMousemoveEvent, _Lapsa_lastWindowHeight, _Lapsa_startWindowHeight, _Lapsa_windowHeightAnimationFrame, _Lapsa_windowHeightAnimationLastTimestamp, _Lapsa_resizeAnimationBound, _Lapsa_missedResizeAnimation, _Lapsa_currentlyDragging, _Lapsa_dragDistanceX, _Lapsa_lastTouchX, _Lapsa_dragDistanceY, _Lapsa_lastTouchY, _Lapsa_lastMoveThisDrag, _Lapsa_safeVh, _Lapsa_updateSearchParams, _Lapsa_onResize, _Lapsa_resizeAnimation, _Lapsa_showSlideShelf, _Lapsa_hideSlideShelf, _Lapsa_showSlideShelfIndicator, _Lapsa_hideSlideShelfIndicator, _Lapsa_handleKeydownEvent, _Lapsa_handleTouchstartEvent, _Lapsa_handleTouchmoveEvent, _Lapsa_handleMousemoveEvent;
 const defaultOptions = {
     builds: {},
     setupBuild: (data) => { },
@@ -47,7 +47,7 @@ class Lapsa {
         _Lapsa_slideShelf.set(this, void 0);
         _Lapsa_shelfMargin.set(this, 15);
         _Lapsa_shelfIsOpen.set(this, false);
-        _Lapsa_shelfIsAnimating.set(this, false);
+        _Lapsa_shelfAnimationPromise.set(this, void 0);
         _Lapsa_shelfIndicatorContainer.set(this, void 0);
         _Lapsa_slideShelfIndicator.set(this, void 0);
         _Lapsa_transitionAnimationDistance.set(this, 0);
@@ -151,7 +151,9 @@ class Lapsa {
             element.classList.add("lapsa-slide");
             const wrapper = document.createElement("div");
             wrapper.classList.add("lapsa-slide-wrapper");
-            wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89 ? `calc(${index * 100 + 2.5} * var(--safe-vh))` : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
+            wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89
+                ? `calc(${index * 100 + 2.5} * var(--safe-vh))`
+                : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
             this.slideContainer.insertBefore(wrapper, element);
             wrapper.appendChild(element);
             if (element.lastElementChild) {
@@ -191,8 +193,10 @@ class Lapsa {
         __classPrivateFieldSet(this, _Lapsa_transitionAnimationDistance, window.innerWidth / window.innerHeight >= 152 / 89
             ? window.innerHeight * this.transitionAnimationDistanceFactor * 159 / 82
             : window.innerWidth * this.transitionAnimationDistanceFactor, "f");
-        __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
+            ? `${window.innerHeight / 100 * 152 / 89}px`
+            : `${window.innerWidth / 100}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_shelfContainer, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").id = "lapsa-slide-shelf-container";
         __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").innerHTML = /* html */ `
@@ -233,7 +237,6 @@ class Lapsa {
         if (this.permanentShelf) {
             __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").classList.add("permanent-shelf");
             __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_showSlideShelf).call(this, __classPrivateFieldGet(this, _Lapsa_slideShelf, "f"));
-            __classPrivateFieldSet(this, _Lapsa_shelfIsAnimating, false, "f");
             __classPrivateFieldSet(this, _Lapsa_shelfIsOpen, true, "f");
         }
         else {
@@ -244,23 +247,23 @@ class Lapsa {
                 this.showShelf();
             }
         });
-        __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").addEventListener("mouseleave", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !this.permanentShelf && this.useShelf) {
+        __classPrivateFieldGet(this, _Lapsa_shelfContainer, "f").addEventListener("mouseleave", (e) => {
+            if (e.relatedTarget && __classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !this.permanentShelf && this.useShelf) {
                 this.hideShelf();
             }
         });
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").children[0].addEventListener("click", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !__classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f")) {
+            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f")) {
                 this.previousSlide(true);
             }
         });
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").children[1].addEventListener("click", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !__classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f")) {
+            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f")) {
                 this.previousSlide();
             }
         });
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").children[2].addEventListener("click", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !__classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f")) {
+            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f")) {
                 if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
                     this.closeTableView(this.currentSlide);
                 }
@@ -270,12 +273,12 @@ class Lapsa {
             }
         });
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").children[3].addEventListener("click", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !__classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f")) {
+            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f")) {
                 this.nextSlide();
             }
         });
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").children[4].addEventListener("click", () => {
-            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f") && !__classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f")) {
+            if (__classPrivateFieldGet(this, _Lapsa_shelfIsOpen, "f")) {
                 this.nextSlide(true);
             }
         });
@@ -288,9 +291,10 @@ class Lapsa {
         __classPrivateFieldSet(this, _Lapsa_handleMousemoveEventBound, __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_handleMousemoveEvent).bind(this), "f");
         __classPrivateFieldSet(this, _Lapsa_onResizeBound, __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_onResize).bind(this), "f");
         document.documentElement.addEventListener("keydown", __classPrivateFieldGet(this, _Lapsa_handleKeydownEventBound, "f"));
-        document.documentElement.addEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
-        document.documentElement.addEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
-        document.documentElement.addEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.addEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
+        document.body.addEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
+        document.body.addEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.style.touchAction = "none";
         window.addEventListener("resize", __classPrivateFieldGet(this, _Lapsa_onResizeBound, "f"));
         setTimeout(() => this.jumpToSlide(__classPrivateFieldGet(this, _Lapsa_startingSlide, "f")), 500);
     }
@@ -304,9 +308,10 @@ class Lapsa {
         document.body.style.height = "fit-content";
         document.body.style.userSelect = "auto";
         document.documentElement.removeEventListener("keydown", __classPrivateFieldGet(this, _Lapsa_handleKeydownEventBound, "f"));
-        document.documentElement.removeEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
-        document.documentElement.removeEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
-        document.documentElement.removeEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.removeEventListener("touchstart", __classPrivateFieldGet(this, _Lapsa_handleTouchstartEventBound, "f"));
+        document.body.removeEventListener("touchmove", __classPrivateFieldGet(this, _Lapsa_handleTouchmoveEventBound, "f"));
+        document.body.removeEventListener("mousemove", __classPrivateFieldGet(this, _Lapsa_handleMousemoveEventBound, "f"));
+        document.body.style.touchAction = "";
         window.removeEventListener("resize", __classPrivateFieldGet(this, _Lapsa_onResizeBound, "f"));
     }
     async nextSlide(skipBuilds = false) {
@@ -527,6 +532,7 @@ class Lapsa {
         }
         document.body.style.overflowY = "visible";
         document.body.style.position = "relative";
+        document.body.style.touchAction = "";
         this.slideContainer.style.overflowY = "visible";
         const bodyRect = document.body.getBoundingClientRect();
         // The goal is to have room to display just under 4 slides vertically,
@@ -670,6 +676,7 @@ class Lapsa {
         const correctTop = this.slides[0].getBoundingClientRect().top;
         document.documentElement.style.overflowY = "hidden";
         document.body.style.overflowY = "hidden";
+        document.body.style.touchAction = "none";
         this.slideContainer.style.transformOrigin = `center calc(${centerSlide * 100 + 50} * var(--safe-vh))`;
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
@@ -763,31 +770,39 @@ class Lapsa {
         });
     }
     async showShelf() {
-        if (this.permanentShelf || __classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f") || !__classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement) {
+        if (__classPrivateFieldGet(this, _Lapsa_shelfAnimationPromise, "f")) {
+            await __classPrivateFieldGet(this, _Lapsa_shelfAnimationPromise, "f");
+        }
+        if (this.permanentShelf || !__classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement) {
             return;
         }
         __classPrivateFieldSet(this, _Lapsa_shelfIsOpen, true, "f");
-        __classPrivateFieldSet(this, _Lapsa_shelfIsAnimating, true, "f");
+        let resolve = () => { };
+        __classPrivateFieldSet(this, _Lapsa_shelfAnimationPromise, new Promise(r => resolve = r), "f");
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").style.display = "flex";
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement.style.paddingRight = "100px";
         setTimeout(async () => {
             __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_hideSlideShelfIndicator).call(this, __classPrivateFieldGet(this, _Lapsa_slideShelfIndicator, "f"));
             await __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_showSlideShelf).call(this, __classPrivateFieldGet(this, _Lapsa_slideShelf, "f"));
-            __classPrivateFieldSet(this, _Lapsa_shelfIsAnimating, false, "f");
+            resolve();
         }, 16);
     }
     async hideShelf() {
-        if (this.permanentShelf || __classPrivateFieldGet(this, _Lapsa_shelfIsAnimating, "f") || !__classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement) {
+        if (__classPrivateFieldGet(this, _Lapsa_shelfAnimationPromise, "f")) {
+            await __classPrivateFieldGet(this, _Lapsa_shelfAnimationPromise, "f");
+        }
+        if (this.permanentShelf || !__classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement) {
             return;
         }
         __classPrivateFieldSet(this, _Lapsa_shelfIsOpen, false, "f");
-        __classPrivateFieldSet(this, _Lapsa_shelfIsAnimating, true, "f");
+        let resolve = () => { };
+        __classPrivateFieldSet(this, _Lapsa_shelfAnimationPromise, new Promise(r => resolve = r), "f");
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement.style.paddingRight = "0";
         __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_showSlideShelfIndicator).call(this, __classPrivateFieldGet(this, _Lapsa_slideShelfIndicator, "f"));
         await __classPrivateFieldGet(this, _Lapsa_instances, "m", _Lapsa_hideSlideShelf).call(this, __classPrivateFieldGet(this, _Lapsa_slideShelf, "f"));
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").style.display = "none";
         __classPrivateFieldGet(this, _Lapsa_slideShelf, "f").parentElement.style.paddingRight = "";
-        __classPrivateFieldSet(this, _Lapsa_shelfIsAnimating, false, "f");
+        resolve();
     }
     async fadeUpIn(element, duration) {
         element.style.marginTop = `${__classPrivateFieldGet(this, _Lapsa_transitionAnimationDistance, "f")}px`;
@@ -876,7 +891,7 @@ class Lapsa {
         });
     }
 }
-_Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(), _Lapsa_shelfContainer = new WeakMap(), _Lapsa_slideShelf = new WeakMap(), _Lapsa_shelfMargin = new WeakMap(), _Lapsa_shelfIsOpen = new WeakMap(), _Lapsa_shelfIsAnimating = new WeakMap(), _Lapsa_shelfIndicatorContainer = new WeakMap(), _Lapsa_slideShelfIndicator = new WeakMap(), _Lapsa_transitionAnimationDistance = new WeakMap(), _Lapsa_useSearchParams = new WeakMap(), _Lapsa_startingSlide = new WeakMap(), _Lapsa_numBuilds = new WeakMap(), _Lapsa_currentlyAnimating = new WeakMap(), _Lapsa_inTableView = new WeakMap(), _Lapsa_handleKeydownEventBound = new WeakMap(), _Lapsa_handleTouchstartEventBound = new WeakMap(), _Lapsa_handleTouchmoveEventBound = new WeakMap(), _Lapsa_handleMousemoveEventBound = new WeakMap(), _Lapsa_onResizeBound = new WeakMap(), _Lapsa_currentlyTouchDevice = new WeakMap(), _Lapsa_lastMousemoveEvent = new WeakMap(), _Lapsa_lastWindowHeight = new WeakMap(), _Lapsa_startWindowHeight = new WeakMap(), _Lapsa_windowHeightAnimationFrame = new WeakMap(), _Lapsa_windowHeightAnimationLastTimestamp = new WeakMap(), _Lapsa_resizeAnimationBound = new WeakMap(), _Lapsa_missedResizeAnimation = new WeakMap(), _Lapsa_currentlyDragging = new WeakMap(), _Lapsa_dragDistanceX = new WeakMap(), _Lapsa_lastTouchX = new WeakMap(), _Lapsa_dragDistanceY = new WeakMap(), _Lapsa_lastTouchY = new WeakMap(), _Lapsa_lastMoveThisDrag = new WeakMap(), _Lapsa_safeVh = new WeakMap(), _Lapsa_instances = new WeakSet(), _Lapsa_updateSearchParams = function _Lapsa_updateSearchParams() {
+_Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(), _Lapsa_shelfContainer = new WeakMap(), _Lapsa_slideShelf = new WeakMap(), _Lapsa_shelfMargin = new WeakMap(), _Lapsa_shelfIsOpen = new WeakMap(), _Lapsa_shelfAnimationPromise = new WeakMap(), _Lapsa_shelfIndicatorContainer = new WeakMap(), _Lapsa_slideShelfIndicator = new WeakMap(), _Lapsa_transitionAnimationDistance = new WeakMap(), _Lapsa_useSearchParams = new WeakMap(), _Lapsa_startingSlide = new WeakMap(), _Lapsa_numBuilds = new WeakMap(), _Lapsa_currentlyAnimating = new WeakMap(), _Lapsa_inTableView = new WeakMap(), _Lapsa_handleKeydownEventBound = new WeakMap(), _Lapsa_handleTouchstartEventBound = new WeakMap(), _Lapsa_handleTouchmoveEventBound = new WeakMap(), _Lapsa_handleMousemoveEventBound = new WeakMap(), _Lapsa_onResizeBound = new WeakMap(), _Lapsa_currentlyTouchDevice = new WeakMap(), _Lapsa_lastMousemoveEvent = new WeakMap(), _Lapsa_lastWindowHeight = new WeakMap(), _Lapsa_startWindowHeight = new WeakMap(), _Lapsa_windowHeightAnimationFrame = new WeakMap(), _Lapsa_windowHeightAnimationLastTimestamp = new WeakMap(), _Lapsa_resizeAnimationBound = new WeakMap(), _Lapsa_missedResizeAnimation = new WeakMap(), _Lapsa_currentlyDragging = new WeakMap(), _Lapsa_dragDistanceX = new WeakMap(), _Lapsa_lastTouchX = new WeakMap(), _Lapsa_dragDistanceY = new WeakMap(), _Lapsa_lastTouchY = new WeakMap(), _Lapsa_lastMoveThisDrag = new WeakMap(), _Lapsa_safeVh = new WeakMap(), _Lapsa_instances = new WeakSet(), _Lapsa_updateSearchParams = function _Lapsa_updateSearchParams() {
     if (!__classPrivateFieldGet(this, _Lapsa_useSearchParams, "f")) {
         return;
     }
@@ -932,8 +947,11 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         }
     }
     else {
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / window.innerHeight >= 152 / 89
+            ? `${window.innerHeight / 100 * 152 / 89}px`
+            : `${window.innerWidth / 100}px`);
         __classPrivateFieldSet(this, _Lapsa_safeVh, window.innerHeight / 100, "f");
-        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+        __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${window.innerHeight / 100}px`);
         this.slides.forEach((element, index) => {
             if (!element.parentElement) {
                 return;
@@ -955,7 +973,10 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     const newHeight = __classPrivateFieldGet(this, _Lapsa_startWindowHeight, "f") * (1 - t) + window.innerHeight * t;
     __classPrivateFieldSet(this, _Lapsa_lastWindowHeight, newHeight, "f");
     __classPrivateFieldSet(this, _Lapsa_safeVh, newHeight / 100, "f");
-    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${__classPrivateFieldGet(this, _Lapsa_safeVh, "f")}px`);
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--vl", window.innerWidth / newHeight >= 152 / 89
+        ? `${newHeight / 100 * 152 / 89}px`
+        : `${window.innerWidth / 100}px`);
+    __classPrivateFieldGet(this, _Lapsa_rootSelector, "f").style.setProperty("--safe-vh", `${newHeight / 100}px`);
     if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
         const slidesPerScreen = window.innerWidth / newHeight >= 152 / 89
             ? 1
@@ -1027,6 +1048,14 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     }
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         this.previousSlide();
+    }
+    else if (e.key === "Escape") {
+        if (__classPrivateFieldGet(this, _Lapsa_inTableView, "f")) {
+            this.closeTableView(this.currentSlide);
+        }
+        else {
+            this.openTableView();
+        }
     }
 }, _Lapsa_handleTouchstartEvent = function _Lapsa_handleTouchstartEvent(e) {
     __classPrivateFieldSet(this, _Lapsa_currentlyTouchDevice, true, "f");

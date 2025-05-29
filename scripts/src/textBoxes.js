@@ -4,6 +4,7 @@ import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { $$, addTemporaryListener, addTemporaryParam, pageElement, pageUrl } from "./main.js";
 import { siteSettings } from "./settings.js";
+import { clamp } from "./utils.js";
 
 let uncapEverything = false;
 
@@ -89,10 +90,24 @@ export class TextBox extends InputElement
 			
 			if (value)
 			{
-				setTimeout(() => this.setValue(decodeURIComponent(value), true), 10);
+				setTimeout(() =>
+				{
+					this.setValue(decodeURIComponent(value), true);
+					this.loadResolve();
+				}, 10);
+			}
+
+			else
+			{
+				this.loadResolve();
 			}
 
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 
@@ -179,7 +194,7 @@ export class TextBox extends InputElement
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 			);
 		}
 
@@ -376,7 +391,13 @@ export class TextBox extends InputElement
 
 		dialog.style.top = `${window.scrollY + rect.top + rect.height + 4}px`;
 
-		dialog.style.left = `${Math.min(Math.max(rect.left - (dialogRect.width + 12 - rect.width) / 2, 12), window.innerWidth - 12 - dialogRect.width)}px`;
+		const left = clamp(
+			rect.left - (dialogRect.width + 12 - rect.width) / 2,
+			12,
+			window.innerWidth - 12 - dialogRect.width
+		);
+
+		dialog.style.left = `${left}px`;
 	}
 }
 

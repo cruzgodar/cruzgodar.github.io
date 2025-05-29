@@ -10,16 +10,16 @@ import {
 	bannerElement,
 	initBanner
 } from "./banners.js";
-import { initNavButtons, initTextButtons } from "./buttons.js";
-import { initCards, showCard } from "./cards.js";
+import { Button, initNavButtons, initTextButtons } from "./buttons.js";
+import { initCards } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { listenForFullscreenKey } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
+	$,
 	$$,
-	asyncFetch,
 	pageElement,
 	pageUrl,
 	updatePageElement
@@ -31,14 +31,9 @@ import {
 	setCurrentlyRedirecting
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
-import {
-	siteSettings
-} from "./settings.js";
+import { siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
-
-const blockCardPages = [
-	"/gallery/"
-];
+import { animate, asyncFetch, sleep } from "./utils.js";
 
 export let pageShown = true;
 
@@ -72,6 +67,8 @@ export async function loadPage()
 
 	disableLinks();
 
+	initSolutions();
+
 	initHoverEvents();
 
 	initTextButtons();
@@ -95,31 +92,14 @@ export async function loadPage()
 	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 50);
 	setTimeout(equalizeAppletColumns, 100);
+
+	window.scrollTo(0, 0);
 }
 
 
 
 export async function showPage()
 {
-	await new Promise(resolve => setTimeout(resolve, 10));
-
-	if (siteSettings.card)
-	{
-		if (!blockCardPages.includes(pageUrl))
-		{
-			showCard({
-				id: siteSettings.card,
-				fromElement: pageElement,
-				animationTime: 10
-			});
-		}
-
-		else
-		{
-			siteSettings.card = undefined;
-		}
-	}
-
 	await fadeInPage();
 
 	setCurrentlyRedirecting(false);
@@ -137,7 +117,7 @@ async function loadCustomStyle()
 	const element = document.createElement("style");
 
 	element.textContent = await asyncFetch(
-		`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`);
+		`${pageUrl}/style/index.${window.DEBUG ? "css" : "min.css"}`);
 	
 	element.classList.add("temporary-style");
 	
@@ -160,12 +140,27 @@ function loadCustomScripts()
 		return;
 	}
 	
-	import(`${pageUrl}scripts/index.${window.DEBUG ? "js" : "min.js"}`)
+	import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`)
 		.then(Module => Module.default());
 }
 
 async function fadeInPage()
 {
+	if (siteSettings.reduceMotion)
+	{
+		document.querySelector("#header").style.opacity = 1;
+		document.querySelector("#header-container").style.opacity = 1;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 1;
+		}
+
+		pageElement.style.opacity = 1;
+
+		return;
+	}
+
 	fadeIn({ element: document.querySelector("#header") });
 	document.querySelector("#header-container").style.opacity = 1;
 
@@ -296,5 +291,91 @@ export function disableLinks()
 	$$("a:not(.real-link)").forEach(link =>
 	{
 		link.addEventListener("click", e => e.preventDefault());
+	});
+}
+
+function packageSolution(solutionElement, showButton = true)
+{
+	while (solutionElement.nextElementSibling)
+	{
+		solutionElement.appendChild(solutionElement.nextElementSibling);
+	}
+
+	solutionElement.style.position = "fixed";
+	solutionElement.style.top = "0";
+	solutionElement.style.left = "0";
+	solutionElement.style.opacity = 0;
+	solutionElement.style.zIndex = -100;
+
+	if (!showButton)
+	{
+		return;
+	}
+
+	const textButtonsElement = document.createElement("div");
+	textButtonsElement.classList.add("text-buttons");
+	textButtonsElement.style.marginBottom = "16px";
+	solutionElement.parentElement.appendChild(textButtonsElement);
+
+	const childElement = document.createElement("div");
+	childElement.classList.add("focus-on-child");
+	childElement.tabIndex = 1;
+	childElement.style.margin = "0px auto";
+	textButtonsElement.appendChild(childElement);
+
+	const buttonElement = document.createElement("button");
+	buttonElement.classList.add("text-button");
+	buttonElement.type = "button";
+	buttonElement.tabIndex = -1;
+	childElement.appendChild(buttonElement);
+
+	
+
+	new Button({
+		element: buttonElement,
+		name: "Show Solution",
+		linked: false,
+		onClick: async () =>
+		{
+			solutionElement.style.height = "auto";
+			solutionElement.style.width =
+				solutionElement.parentElement.getBoundingClientRect().width - 12 + "px";
+
+			await sleep(10);
+
+			const solutionElementHeight = solutionElement.getBoundingClientRect().height;
+			const textButtonsElementHeight = textButtonsElement.getBoundingClientRect().height;
+			const textButtonsElementMarginTop = parseFloat(
+				window.getComputedStyle(textButtonsElement).marginTop
+			);
+
+			solutionElement.style.height = 0;
+			solutionElement.style.position = "relative";
+
+			await animate((t) =>
+			{
+				solutionElement.style.height = `${solutionElementHeight * t}px`;
+				textButtonsElement.style.height = `${textButtonsElementHeight * (1 - t)}px`;
+				textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - t)}px`;
+				textButtonsElement.style.opacity = 1 - t;
+				solutionElement.style.opacity = t;
+			}, 450, "easeOutQuint");
+
+			solutionElement.style.height = "auto";
+			solutionElement.style.width = "auto";
+			textButtonsElement.remove();
+		}
+	});
+}
+
+function initSolutions()
+{
+	$$(".notes-ex .solution").forEach(e => e.remove());
+
+	const element = $("#show-solutions");
+
+	$$(".notes-exc .solution").forEach(e =>
+	{
+		packageSolution(e, element !== null || window.DEBUG);
 	});
 }

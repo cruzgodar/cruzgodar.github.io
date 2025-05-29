@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 8 | Math 342 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 10 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+~\\
+
+In problems 1--5, do the following:
+
+\begin{enumerate}
+
+	\item Find the eigenvalues of $A$.
+
+	\item Find the corresponding eigenvectors and generalized eigenvectors of $A$.
+
+	\item Determine if $A$ is diagonalizable. If it is, write $A = BDB^{-1}$ for a diagonal matrix $D$, and if not, write $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form (you don't need to invert $B$).
+
+	\item If $A$ is diagonalizable, determine if there is an orthonormal basis of eigenvectors; if so, find it.
+
+	\item If the eigenvalues of $A$ are distinct, find the general solution to the system of differential equations $\vec{x}' = A\vec{x}$.
+
+\end{enumerate}
+
+1. $A = \left[\begin{array}{cc} 3& 1 \\ -1& 1 \end{array}\right]$.
+
+2. $A = \left[\begin{array}{ccc} 2& 1& 0 \\ 0& 1& 0 \\ 1& -1& 3 \end{array}\right]$.
+
+3. $A = \left[\begin{array}{ccc} -3& -1& -3 \\ -8& -3& -8 \\ 4& 1& 3 \end{array}\right]$.
+
+4. $A = \left[\begin{array}{ccc} -9& -10& -10 \\ 4& 4& 3 \\ 1& 2& 3 \end{array}\right]$.
+
+5. $A = \left[\begin{array}{cccc} 1& 3& 0& 0 \\ 3& 1& 0& 0 \\ 0& 0& 1& -3 \\ 0& 0& -3& 1 \end{array}\right]$.
+
+~\\
+
+In problems 6--8, do the following:
+
+\begin{enumerate}
+
+	\item Find a singular value decomposition $A = U \Sigma V^T$.
+
+	\item Find a least-squares solution to $A\vec{x} = \vec{b}$.
+
+	\item Determine if the least-squares solution is unique.
+
+\end{enumerate}
+
+6. $A = \left[\begin{array}{cc} 1& 2 \\ 2& 1 \\ 1& 1 \end{array}\right]$ and $\vec{b} = \left[\begin{array}{c} 1 \\ 2 \\ 2 \end{array}\right]$.
+
+7. $A = \left[\begin{array}{ccc} 3& 1& 4 \\ 2& 0& 1 \end{array}\right]$ and $\vec{b} = \left[\begin{array}{c} 1 \\ -2 \end{array}\right]$.
+
+8. $A = \left[\begin{array}{ccc} 1& -1& 0 \\ 1& 0& 1 \\ 2& -1& 1 \end{array}\right]$ and $\vec{b} = \left[\begin{array}{c} 1 \\ 2 \\ -1 \end{array}\right]$.
+
+~\\
+
+In problems 9--12, do the following:
+
+\begin{enumerate}
+
+	\item Find an orthonormal basis for the given inner product space $X$, and then extend it to an orthonormal basis for $V$.
+
+	\item Find the orthogonal decomposition of the vector $\vec{v}$ as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+\end{enumerate}
+
+9. $V = \mathbb{R}^3$ with $\left< \vec{v}, \vec{w} \right> = \vec{v} \bullet \vec{w}$, $X = \operatorname{span}\left\{ \left[\begin{array}{c} 1 \\ 2 \\ 0 \end{array}\right], \left[\begin{array}{c} -1 \\ 3 \\ 1 \end{array}\right] \right\}$, and $\vec{v} = \left[\begin{array}{c} 4 \\ 5 \\ 2 \end{array}\right]$.
+
+10. $V = \operatorname{span}\left\{ 1, x, x^2 \right\}$ with $\left< p, q \right> = \sum_{n = 0}^2 p(n)q(n)$, $X$ is the subspace of polynomials $p$ with $p'(0) = 0$, and $\vec{v} = 1 + 2x + x^2$.
+
+11. (optional) $V = \operatorname{span}\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,\text{d} x$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+
+12. (optional; more recommended than the previous problem) $V = \operatorname{span}\left\{ 1, \cos(x) \right\}$ with $\left< f, g \right> = \int_0^{\pi/2} f(x)g(x)\,\text{d} x$, $X = \operatorname{span}\{1\}$, and $\vec{v} = \cos(x) - 2$.
+
+
+\end{document}

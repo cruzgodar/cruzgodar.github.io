@@ -1,6 +1,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { NilRooms } from "/applets/thurston-geometries/scripts/geometries/nil.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { sleep } from "/scripts/src/utils.js";
 
 async function reset({ slide, duration })
 {
@@ -18,7 +19,7 @@ async function reset({ slide, duration })
 
 	applet.run(geometryData);
 
-	await new Promise(resolve => setTimeout(resolve, 50));
+	await sleep(50);
 
 	applet.wilson.resizeCanvas({ width: 1000 });
 	applet.moveForever({

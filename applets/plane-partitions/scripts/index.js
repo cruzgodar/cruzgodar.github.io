@@ -245,7 +245,7 @@ export default function()
 
 	const planePartition = generateRandomPlanePartition();
 	addArrayTextarea.setValue(arrayToAscii(planePartition));
-	applet.addNewArray(0, planePartition);
+	applet.addNewArray({ index: 0, numbers: planePartition });
 
 	// testABConfigs();
 
@@ -262,10 +262,10 @@ export default function()
 	
 	async function addArray()
 	{
-		applet.addNewArray(
-			applet.arrays.length,
-			parseArray(addArrayTextarea.value)
-		);
+		applet.addNewArray({
+			index: applet.arrays.length,
+			numbers: parseArray(addArrayTextarea.value)
+		});
 	}
 
 	async function editArray()
@@ -427,8 +427,8 @@ export default function()
 
 		const [bigA, bigB] = applet.getArrayVersionOfABConfig({ lambda, mu, nu, A, B });
 
-		await applet.addNewArray(0, bigA);
-		await applet.addNewArray(0, bigB);
+		await applet.addNewArray({ index: 0, numbers: bigA });
+		await applet.addNewArray({ index: 0, numbers: bigB });
 		applet.updateCameraHeight();
 
 		applet.colorABConfigRegions({

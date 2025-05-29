@@ -1,0 +1,87 @@
+One of the most minimal Turing-complete languages, <a href="https://en.wikipedia.org/wiki/Lambda_calculus">lambda calculus</a> is a tiny programming language in which the only objects are functions. The notation `λx.E` is a function taking the variable `x` and returning the expression `E` --- it's equivalent to `(x) => E` in JavaScript or `lambda x: E` in Python. Functions can also construct other functions and return them: `λx.λy.x` is a function that takes `x` and returns a one-variable constant function that takes in a variable `y` but just returns `x`.
+
+Two expressions next to one another represent function application, so `λz.zz` is a function taking an argument `z` (which is itself a function) and returning the composition `z(z)`. If we evaluate a function defined with a lambda constructor directly on another function, as in `(λz.zz)(λx.λy.x)`, then we can plug the argument `(λx.λy.x)` in for `z` in the first lambda to get `(λx.λy.x)(λx.λy.x)`. Then we can plug the second lambda `(λx.λy.x)` in for `x` in the first to finally find `λy.λx.λy.x`, a function of three variables that returns the second. This evaluation process is called **beta reduction**, and it is the only way to substantively change an expression while preserving its meaning.
+
+While there are a number of ways to visually represent a lambda expression, I find <a href="https://tromp.github.io/cl/diagrams.html">those made by John Tromp</a> to be particularly pleasing. Lambda terms like `λx.E` are represented by horizontal lines over their body `E`, and any uses of `x` within `E` are represented by vertical lines connecting to that bar. An application of one function to another is given by a horizontal bar connecting the bottom-left corners of the two, with the function on the left and its input on the right.
+
+Without any concept of non-function objects, defining a useful concept of numbers, arithmetic, and logic is not as straightforward as we might like. The standard approach is to represent true and false by the selector functions `T = λx.λy.x` and `F = λx.λy.y`, and natural numbers by `n = λf.λx.f(...(f(x))...)`, where there are `n` copies of `f` in the composition. From these building blocks, we can define everything we need, and even extend to recursion, `for` loops, and more.
+
+I learned about these diagrams from the YouTuber <a href="https://www.youtube.com/@twoswap">2swap</a>, who made an <a href="https://www.youtube.com/watch?v=RcVA8Nj6HEo">excellent video</a> animating the process of beta reduction. I wanted to take on the challenge of animating them myself --- this applet allows for freely entering any lambda expression (just type an `L` to insert a `λ`), color-codes the diagrams by assigning colors to `λ` terms and their bound variables (and also syntax-highlights the expression accordingly), and finally animates the reduction process. It also supports a number of shorthand variables featured in the examples and documented in the guide (the top-left help button). This was a staggeringly complicated applet to write, but I'm very happy with the result!
+
+### dropdown examples
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
+	### checkboxes
+		expand-shorthands
+	###
+
+	### textarea expression
+
+	### buttons
+		reduce
+		play-pause
+	###
+
+	### sliders
+		animation-time
+	###
+</div>
+
+
+
+<div id="canvas-landscape-middle">
+
+### canvas
+
+</div>
+
+
+
+<div id="canvas-landscape-right">
+
+### buttons
+	download
+###
+
+</div>
+
+</div>
+
+### card applet-controls "Controls"
+	A number of common operations and combinators have shorthands that can optionally be expanded directly (although those expansions tend to get very messy very fast).
+
+	- - -
+
+	`T`: the function `λx.λy.x`, used as the boolean value `true`.
+	`F`: the function `λx.λy.y`, used as the boolean value `false`.
+	`!`: the boolean negation operator `λx.xFT`.
+	`&`: the boolean and operator `λx.λy.xyF`.
+	`|`: the boolean or operator `λx.λy.xTy`.
+	
+	- - -
+
+	`0-9`: A Church numeral.
+	`_`: the `isZero` function `λn.n(λx.F)T`.
+	`>`: the increment operator `λn.λf.λx.f(nf(x))`.
+	`&lt;`: the decrement operator `λn.λf.λx.n(λg.λh.h(gf))(λu.x)(λu.u)` (returns `0` if `n` is `0`).
+	`+`: the addition operator `λa.λb.λf.λx.(af)(bfx)`.
+	`*`: the multiplication operator `λa.λb.λf.b(af)`.
+	`^`: the exponentiation operator `λa.λb.ba`.
+	`-`: the subtraction operator `λa.λb.a&lt;b` (returns `0` if `a < b`).
+	`=`: the equality operator `λa.λb.&(_(-ab))(_(-ba))`.
+
+	- - -
+
+	`I`: The identity function `λx.x`.
+	`T` or `K`: The first-argument function `λx.λy.x`, also used as the boolean value `true`.
+	`S`: The substitution operator `λx.λy.λz.(xz)(yz)`.
+	`Y`: The Y combinator `λf.(λx.f(xx))(λx.f(xx))`, used to implement recursion.
+
+	- - -
+
+	`,`: The pairing operator `λx.λy.λz.zxy`. Packs `x` and `y` into an ordered pair.
+	`'`: The first-entry extractor `λp.p(λx.λy.x)`. Retrieves the first entry of `p`.
+	`"`: The second-entry extractor `λp.p(λx.λy.y)`. Retrieves the second entry of `p`.
+###

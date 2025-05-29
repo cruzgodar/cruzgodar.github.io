@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 5 | Math 256 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Wednesday of Week 6 at the start of class}
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+\section{Section 5}
+
+In problems 1--6, solve the DE. If possible, verify that you've found the general solution with the Wronskian.
+
+1. $\displaystyle y'' + 6y' + 9y = 0.$
+
+2. $\displaystyle ty'' + y' = 0.$
+
+3. $\displaystyle y'' + 10y' + 26y = 0.$
+
+4. $\displaystyle y'' - 2y' - 8y = 0.$
+
+5. $\displaystyle y'' - 100y = 0.$
+
+6. $\displaystyle y'' + 100y = 0.$
+
+~\\
+
+In problems 7--8, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+
+7. $\displaystyle y'' - 2y' + 17y = 0,$ $\displaystyle y(0) = 4,$ $\displaystyle y'(0) = -4.$
+
+8. $\displaystyle y'' + 8y' + 16y = 0,$ $\displaystyle y(0) = 1,$ $\displaystyle y'(0) = 0.$
+
+~\\
+
+9. One fundamental solution to $\displaystyle ty'' - y' + t^3y = 0$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
+
+10. One fundamental solution to $\displaystyle t^2y'' + ty' + y = 0$ is $y = \sin(\log(t))$. Find the other.
+
+\section{Section 6}
+
+In problems 11--18, find the general solution to the DE.
+
+11. $\displaystyle y'' - 2y' - 3y = 8e^t.$
+
+12. $\displaystyle y'' - 2y' - 3y = 8e^{3t}.$
+
+13. $\displaystyle y'' + y = 3\sin(t) + e^t.$
+
+14. $\displaystyle y'' + 6y' + 9y = 120t^2e^{-3t}.$
+
+15. $\displaystyle 4y'' + y = \sec\left(\frac{t}{2}\right).$
+
+16. $\displaystyle y'' + 2y' + y = 2t\sin(t).$
+
+17. $\displaystyle y'' + 4y' + 4y = t^{-2} e^{-2t}.$
+
+18. $\displaystyle y'' + 3y' + 2y = \frac{1}{1 + e^t}.$
+
+
+\end{document}

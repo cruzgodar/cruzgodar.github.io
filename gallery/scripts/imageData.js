@@ -1,12 +1,12 @@
 /* eslint-disable quotes */
 
-const bridges2022 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference'>2022 Bridges conference</a>`;
-const bridges2023 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference'>2023 Bridges conference</a>`;
-const bridges2024 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art'>2024 Bridges conference</a>`;
-const jsma = /* html */`the <a href='https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885'>Jordan Schnitzer Museum of Art</a>`;
-const emu = /* html */`<a href='https://www.facebook.com/visualartsteam/videos/4909794042367446/'>UO&#x2019;s Erb Memorial Union</a>`;
-const researchAsArt = /* html */`<a href='https://www.artscioregon.com/2020-gallery'>UO&#x2019;s 2020 Research as Art Competition</a>`;
-const girlsAngle = /* html */`the <a href='https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf'>Girls&#x2019; Angle Bulletin magazine</a>`;
+const bridges2022 = /* html */`the <a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022 Bridges conference</a>`;
+const bridges2023 = /* html */`the <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023 Bridges conference</a>`;
+const bridges2024 = /* html */`the <a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art">2024 Bridges conference</a>`;
+const jsma = /* html */`the <a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Jordan Schnitzer Museum of Art</a>`;
+const emu = /* html */`<a href="https://www.facebook.com/visualartsteam/videos/4909794042367446/">UO&#x2019;s Erb Memorial Union</a>`;
+const researchAsArt = /* html */`<a href="https://www.artscioregon.com/2020-gallery">UO&#x2019;s 2020 Research as Art Competition</a>`;
+const girlsAngle = /* html */`the <a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls&#x2019; Angle Bulletin magazine</a>`;
 
 export const galleryImageData =
 {
@@ -28,7 +28,7 @@ export const galleryImageData =
 	{
 		title: "An Aztec Diamond",
 
-		appletLink: "/applets/domino-shuffling/",
+		appletLink: "/applets/domino-shuffling",
 
 		driveId: "1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH"
 	},
@@ -39,7 +39,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${jsma} and ${girlsAngle}`,
 
-		appletLink: "/applets/barnsley-fern/",
+		appletLink: "/applets/barnsley-fern",
 
 		driveId: "1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA"
 	},
@@ -50,7 +50,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/brownian-trees/",
+		appletLink: "/applets/brownian-trees",
 
 		driveId: "1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh"
 	},
@@ -68,7 +68,7 @@ export const galleryImageData =
 	{
 		title: "A Double Pendulum Fractal",
 
-		appletLink: "/applets/double-pendulum-fractal/",
+		appletLink: "/applets/double-pendulum-fractal",
 
 		featured: `Featured in ${bridges2024}`,
 
@@ -88,7 +88,7 @@ export const galleryImageData =
 	{
 		title: "An Extruded Cube",
 
-		appletLink: "/applets/extruded-cube/",
+		appletLink: "/applets/extruded-cube",
 		
 		driveId: "130jI2YEQehE_VENFUDplZNSZHgbX_GN2"
 	},
@@ -153,7 +153,7 @@ export const galleryImageData =
 	{
 		title: "A Hitomezashi Pattern",
 
-		appletLink: "/applets/hitomezashi-patterns/",
+		appletLink: "/applets/hitomezashi-patterns",
 
 		driveId: "1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8"
 	},
@@ -172,7 +172,7 @@ export const galleryImageData =
 	{
 		title: "A Julia Set",
 
-		appletLink: "/applets/julia-set-explorer/",
+		appletLink: "/applets/julia-set-explorer",
 
 		driveId: "1She5ljhYilPIXpiSN80QyZEspWbnz6mu"
 	},
@@ -251,7 +251,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679",
 
-		driveId: "164SyXm3-le_Le1QuM_mDJoOZLChzTCDD"
+		driveId: "17-UW2b0uTMbv-VYDVRstnkge-8D4sdDT"
 	},
 
 	"kaleidoscopic-ifs-2":
@@ -265,7 +265,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046",
 
-		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
+		driveId: "1GSG-LNt7oqQjE-pmO8TfsgAvZDQ9wA1_"
 	},
 
 	"kaleidoscopic-ifs-3":
@@ -279,7 +279,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299",
 
-		driveId: "1xXGP5T566_nSHjF3_kRmBHNl73qJfsq-"
+		driveId: "1iwHMZWhC1vTKv9IvTNRSVRPfEis3x3dP"
 	},
 
 	"kicked-rotator":
@@ -292,7 +292,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}. The current version was featured in ${emu}.`,
 
-		appletLink: "/applets/kicked-rotator/",
+		appletLink: "/applets/kicked-rotator",
 
 		driveId: "1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66"
 	},
@@ -312,7 +312,7 @@ export const galleryImageData =
 	{
 		title: "A Magic Carpet",
 
-		appletLink: "/applets/magic-carpets/",
+		appletLink: "/applets/magic-carpets",
 
 		driveId: "1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98"
 	},
@@ -323,9 +323,27 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}, ${researchAsArt}, and ${bridges2022}. It is currently on display at the Eugene airport.`,
 
-		appletLink: "/applets/the-mandelbulb/",
+		appletLink: "/applets/the-mandelbulb",
 
 		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
+	},
+
+	"maurer-rose":
+	{
+		title: "A Maurer Rose",
+
+		appletLink: "/applets/maurer-roses",
+
+		driveId: "1RolPnj-o5o1havy0jii4XPIa_iw9JID-"
+	},
+
+	"maurer-rose-2":
+	{
+		title: "A Maurer Rose",
+
+		appletLink: "/applets/maurer-roses",
+
+		driveId: "1J9qEixnXoO-JgoS0hYVvLLUiDU0hVQ16"
 	},
 
 	"menger-sponge":
@@ -364,11 +382,9 @@ export const galleryImageData =
 			Roots at $(\\pm 1, 0), (0, \\pm 1.5), (\\pm 1.5, \\pm 1.5)$
 		`,
 
-		featured: `A prior version of this image was featured in ${emu}.`,
+		appletLink: "/applets/newtons-method",
 
-		appletLink: "/applets/newtons-method/",
-
-		driveId: "1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6"
+		driveId: "1RlX0QW3PeGd-ec3jAHKZsZChaiwJpF6-"
 	},
 
 	"newtons-method-extended":
@@ -379,7 +395,7 @@ export const galleryImageData =
 			Generated from $\\sin(z)\\left( -\\sin\\left( \\operatorname{Im}(z) \\right) + i\\sin \\left( \\operatorname{Re} z \\right) \\right)$
 		`,
 
-		appletLink: "/applets/newtons-method-extended/",
+		appletLink: "/applets/newtons-method-extended",
 
 		driveId: "1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B"
 	},
@@ -390,7 +406,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/quasi-fuchsian-groups/",
+		appletLink: "/applets/quasi-fuchsian-groups",
 
 		driveId: "1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ"
 	},
@@ -405,7 +421,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${bridges2023}.`,
 
-		appletLink: "/applets/quaternionic-julia-sets/",
+		appletLink: "/applets/quaternionic-julia-sets",
 
 		driveId: "1L2juSwwawdW322PyVNIej1DM0m0vHekk"
 	},
@@ -415,21 +431,21 @@ export const galleryImageData =
 		title: "The Secant Method",
 
 		parameters: /* html */`
-			Generated from the polynomial $z^6 - 1$ with $a = 1.5$
+			Generated from the polynomial $z^6 - 1$ with $a = 1.15$
 		`,
 
 		appletLink: "/applets/newtons-method/?switch-method-button=1",
 
-		featured: `Featured in ${emu}`,
+		featured: `A prior version of this image was featured in ${emu}.`,
 
-		driveId: "1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk"
+		driveId: "1V5EYzz_CjgNRAx2zVd1Jeb2hsO9bGBqI"
 	},
 
 	"snowflake":
 	{
 		title: "A Gravner-Griffeath Snowflake",
 
-		appletLink: "/applets/snowflakes/",
+		appletLink: "/applets/snowflakes",
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
@@ -440,7 +456,7 @@ export const galleryImageData =
 	{
 		title: "A Lorenz Attractor",
 
-		appletLink: "/applets/strange-attractors/",
+		appletLink: "/applets/strange-attractors",
 
 		driveId: "1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ"
 	},
@@ -536,7 +552,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma} and ${girlsAngle}. This version was featured in ${emu} and ${bridges2024}.`,
 
-		appletLink: "/applets/wilsons-algorithm/",
+		appletLink: "/applets/wilsons-algorithm",
 
 		driveId: "1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ"
 	},

@@ -1,13 +1,27 @@
+import { cardContainer, showCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
-import { initDarkTheme, initIncreaseContrast, initReduceMotion } from "./settings.js";
+import {
+	initDarkTheme,
+	initIncreaseContrast,
+	initReduceMotion,
+	setScroll,
+	siteSettings
+} from "./settings.js";
+import { sleep } from "./utils.js";
+
+const blockCardPages = [
+	"/gallery"
+];
 
 export let pageElement = document.createElement("div");
 
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
+
+export const raw = String.raw;
 
 export function updatePageElement()
 {
@@ -23,6 +37,11 @@ const params = new URLSearchParams(document.location.search);
 
 export let pageUrl = decodeURIComponent(params.get("page")).replace("index.html", "");
 
+if (pageUrl[pageUrl.length - 1] === "/")
+{
+	pageUrl = pageUrl.slice(0, -1);
+}
+
 export function setPageUrl(newPageUrl)
 {
 	pageUrl = newPageUrl;
@@ -30,15 +49,15 @@ export function setPageUrl(newPageUrl)
 
 if (pageUrl === "null")
 {
-	pageUrl = "/home/";
+	pageUrl = "/home";
 }
 
 
 export let temporaryListeners = [];
 
-export function addTemporaryListener({ object, event, callback })
+export function addTemporaryListener({ object, event, callback, options = {} })
 {
-	object.addEventListener(event, callback);
+	object.addEventListener(event, callback, options);
 
 	temporaryListeners.push([object, event, callback]);
 }
@@ -52,13 +71,9 @@ export function clearTemporaryListeners()
 
 export let temporaryIntervals = [];
 
-export function addTemporaryInterval({ callback, delay })
+export function addTemporaryInterval(refreshId)
 {
-	const refreshId = setInterval(callback, delay);
-
 	temporaryIntervals.push(refreshId);
-
-	return refreshId;
 }
 
 export function clearTemporaryIntervals()
@@ -170,7 +185,15 @@ export async function loadSite(url = pageUrl)
 		});
 	});
 
-	if (!window.DEBUG)
+	
+
+	if (window.DEBUG)
+	{
+		window.addEventListener("scroll", () => setScroll());
+		window.addEventListener("resize", () => setScroll());
+	}
+
+	else
 	{
 		addStyle(".DEBUG {display: none;}", false);
 	}
@@ -191,11 +214,13 @@ export async function loadSite(url = pageUrl)
 
 	else
 	{
-		redirect({
+		await redirect({
 			url,
 			noStatePush: true,
 			noFadeOut: true
 		});
+
+		showAndRestoreScroll();
 	}
 }
 
@@ -280,20 +305,41 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 }
 
 
-
-export async function asyncFetch(url)
+async function showAndRestoreScroll()
 {
-	return new Promise((resolve, reject) =>
+	const scroll = siteSettings.scroll;
+	siteSettings.scroll = undefined;
+
+	await sleep(10);
+	
+	if (siteSettings.card)
 	{
-		const fetcher = new Worker("/scripts/src/asyncFetcher.js");
-
-		fetcher.postMessage([url]);
-
-		fetcher.onmessage = (e) =>
+		if (!blockCardPages.includes(pageUrl))
 		{
-			resolve(e.data[0]);
-		};
+			showCard({
+				id: siteSettings.card,
+				fromElement: pageElement,
+				animationTime: 10
+			}).then(() =>
+			{
+				cardContainer.scrollTo(0, scroll);
 
-		fetcher.onerror = reject;
-	});
+				setTimeout(() =>
+				{
+					cardContainer.scrollTo(0, scroll);
+				}, 100);
+			});
+		}
+
+		else
+		{
+			siteSettings.card = undefined;
+		}
+	}
+
+	else
+	{
+		window.scrollTo(0, scroll);
+		setTimeout(() => window.scrollTo(0, scroll), 100);
+	}
 }

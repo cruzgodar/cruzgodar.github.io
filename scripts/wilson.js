@@ -9,10 +9,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenFillScreen, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_exitFullscreen, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderPrograms, _WilsonGPU_uniforms, _WilsonGPU_loadShaderInternal, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_framebuffers, _WilsonGPU_textures;
+var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenCanvasRect, _Wilson_fullscreenInitialWindowInnerWidth, _Wilson_fullscreenInitialWindowInnerHeight, _Wilson_fullscreenFillScreen, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseenter, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_addEnterFullscreenFillScreenTransitionStyle, _Wilson_exitFullscreen, _Wilson_addExitFullscreenFillScreenTransitionStyle, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderPrograms, _WilsonGPU_uniforms, _WilsonGPU_loadShaderInternal, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_framebuffers, _WilsonGPU_textures;
 const defaultInteractionCallbacks = {
     mousedown: ({ x, y, event }) => { },
     mouseup: ({ x, y, event }) => { },
+    mouseenter: ({ x, y, event }) => { },
     mouseleave: ({ x, y, event }) => { },
     mousemove: ({ x, y, xDelta, yDelta, event }) => { },
     mousedrag: ({ x, y, xDelta, yDelta, event }) => { },
@@ -28,7 +29,7 @@ const defaultDraggableCallbacks = {
 };
 class Wilson {
     constructor(canvas, options) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31;
         _Wilson_instances.add(this);
         _Wilson_destroyed.set(this, false);
         // Duplicated properties like this are effectively readonly. Whenever we
@@ -88,6 +89,9 @@ class Wilson {
         _Wilson_currentlyFullscreen.set(this, false);
         this.currentlyFullscreen = false;
         _Wilson_fullscreenOldScroll.set(this, 0);
+        _Wilson_fullscreenCanvasRect.set(this, new DOMRect());
+        _Wilson_fullscreenInitialWindowInnerWidth.set(this, window.innerWidth);
+        _Wilson_fullscreenInitialWindowInnerHeight.set(this, window.innerHeight);
         _Wilson_fullscreenFillScreen.set(this, void 0);
         _Wilson_fullscreenUseButton.set(this, void 0);
         _Wilson_fullscreenEnterFullscreenButton.set(this, null);
@@ -112,7 +116,6 @@ class Wilson {
                     this.canvas.style.height = "100vh";
                     // A sketchy hack to make rotating on iOS work properly.
                     requestAnimationFrame(() => this.canvas.style.height = "100%");
-                    window.scroll(0, 0);
                     __classPrivateFieldSet(this, _Wilson_worldWidth, Math.max(__classPrivateFieldGet(this, _Wilson_nonFullscreenWorldWidth, "f") * aspectRatioChange, __classPrivateFieldGet(this, _Wilson_nonFullscreenWorldWidth, "f")), "f");
                     this.worldWidth = __classPrivateFieldGet(this, _Wilson_worldWidth, "f");
                     __classPrivateFieldSet(this, _Wilson_worldHeight, Math.max(__classPrivateFieldGet(this, _Wilson_nonFullscreenWorldHeight, "f") / aspectRatioChange, __classPrivateFieldGet(this, _Wilson_nonFullscreenWorldHeight, "f")), "f");
@@ -346,13 +349,14 @@ class Wilson {
         __classPrivateFieldSet(this, _Wilson_draggableCallbacks, { ...defaultDraggableCallbacks, ...(_13 = options.draggableOptions) === null || _13 === void 0 ? void 0 : _13.callbacks }, "f");
         __classPrivateFieldSet(this, _Wilson_fullscreenFillScreen, (_15 = (_14 = options.fullscreenOptions) === null || _14 === void 0 ? void 0 : _14.fillScreen) !== null && _15 !== void 0 ? _15 : false, "f");
         this.animateFullscreen = (_17 = (_16 = options.fullscreenOptions) === null || _16 === void 0 ? void 0 : _16.animate) !== null && _17 !== void 0 ? _17 : true;
-        this.closeFullscreenWithEscape = (_19 = (_18 = options.fullscreenOptions) === null || _18 === void 0 ? void 0 : _18.closeWithEscape) !== null && _19 !== void 0 ? _19 : true;
-        this.beforeSwitchFullscreen = (_21 = (_20 = options.fullscreenOptions) === null || _20 === void 0 ? void 0 : _20.beforeSwitch) !== null && _21 !== void 0 ? _21 : (() => { });
-        this.onSwitchFullscreen = (_23 = (_22 = options.fullscreenOptions) === null || _22 === void 0 ? void 0 : _22.onSwitch) !== null && _23 !== void 0 ? _23 : (() => { });
-        __classPrivateFieldSet(this, _Wilson_fullscreenUseButton, (_25 = (_24 = options.fullscreenOptions) === null || _24 === void 0 ? void 0 : _24.useFullscreenButton) !== null && _25 !== void 0 ? _25 : false, "f");
-        if ((_26 = options.fullscreenOptions) === null || _26 === void 0 ? void 0 : _26.useFullscreenButton) {
-            __classPrivateFieldSet(this, _Wilson_fullscreenEnterFullscreenButtonIconPath, (_27 = options.fullscreenOptions) === null || _27 === void 0 ? void 0 : _27.enterFullscreenButtonIconPath, "f");
-            __classPrivateFieldSet(this, _Wilson_fullscreenExitFullscreenButtonIconPath, (_28 = options.fullscreenOptions) === null || _28 === void 0 ? void 0 : _28.exitFullscreenButtonIconPath, "f");
+        this.crossfadeFullscreen = (_19 = (_18 = options.fullscreenOptions) === null || _18 === void 0 ? void 0 : _18.crossfade) !== null && _19 !== void 0 ? _19 : false;
+        this.closeFullscreenWithEscape = (_21 = (_20 = options.fullscreenOptions) === null || _20 === void 0 ? void 0 : _20.closeWithEscape) !== null && _21 !== void 0 ? _21 : true;
+        this.beforeSwitchFullscreen = (_23 = (_22 = options.fullscreenOptions) === null || _22 === void 0 ? void 0 : _22.beforeSwitch) !== null && _23 !== void 0 ? _23 : (() => { });
+        this.onSwitchFullscreen = (_25 = (_24 = options.fullscreenOptions) === null || _24 === void 0 ? void 0 : _24.onSwitch) !== null && _25 !== void 0 ? _25 : (() => { });
+        __classPrivateFieldSet(this, _Wilson_fullscreenUseButton, (_27 = (_26 = options.fullscreenOptions) === null || _26 === void 0 ? void 0 : _26.useFullscreenButton) !== null && _27 !== void 0 ? _27 : false, "f");
+        if ((_28 = options.fullscreenOptions) === null || _28 === void 0 ? void 0 : _28.useFullscreenButton) {
+            __classPrivateFieldSet(this, _Wilson_fullscreenEnterFullscreenButtonIconPath, (_29 = options.fullscreenOptions) === null || _29 === void 0 ? void 0 : _29.enterFullscreenButtonIconPath, "f");
+            __classPrivateFieldSet(this, _Wilson_fullscreenExitFullscreenButtonIconPath, (_30 = options.fullscreenOptions) === null || _30 === void 0 ? void 0 : _30.exitFullscreenButtonIconPath, "f");
         }
         // Initialize the container structure.
         __classPrivateFieldSet(this, _Wilson_appletContainer, document.createElement("div"), "f");
@@ -393,7 +397,7 @@ class Wilson {
         requestAnimationFrame(__classPrivateFieldGet(this, _Wilson_animationFrameLoop, "f"));
         window.addEventListener("resize", __classPrivateFieldGet(this, _Wilson_onResizeWindow, "f"));
         document.documentElement.addEventListener("keydown", __classPrivateFieldGet(this, _Wilson_handleKeydownEvent, "f"));
-        if ((_29 = options.draggableOptions) === null || _29 === void 0 ? void 0 : _29.draggables) {
+        if ((_31 = options.draggableOptions) === null || _31 === void 0 ? void 0 : _31.draggables) {
             this.setDraggables(options.draggableOptions.draggables);
         }
         console.log(`[Wilson] Initialized a ${__classPrivateFieldGet(this, _Wilson_canvasWidth, "f")}x${__classPrivateFieldGet(this, _Wilson_canvasHeight, "f")} canvas`
@@ -550,7 +554,8 @@ class Wilson {
         }
         // @ts-ignore
         if (document.startViewTransition) {
-            if (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") && !this.reduceMotion) {
+            const styleElement = __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") ? __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_addEnterFullscreenFillScreenTransitionStyle).call(this) : null;
+            if (!this.reduceMotion && !this.crossfadeFullscreen) {
                 if (__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f")) {
                     __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").style.setProperty("view-transition-name", `WILSON_fullscreen-button-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
                 }
@@ -564,7 +569,14 @@ class Wilson {
             }
             if (this.animateFullscreen) {
                 // @ts-ignore
-                document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this));
+                const transition = document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this));
+                if (transition.finished !== undefined) {
+                    await transition.finished;
+                    styleElement === null || styleElement === void 0 ? void 0 : styleElement.remove();
+                }
+                else {
+                    setTimeout(() => styleElement === null || styleElement === void 0 ? void 0 : styleElement.remove(), 1000);
+                }
             }
             else {
                 __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this);
@@ -576,14 +588,46 @@ class Wilson {
     }
     async exitFullscreen() {
         await this.beforeSwitchFullscreen(false);
+        const elements = [
+            __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f"),
+            __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f"),
+            this.canvas,
+            ...(Object.values(__classPrivateFieldGet(this, _Wilson_draggables, "f")).map(draggable => draggable.element))
+        ];
+        for (const element of elements) {
+            if (element) {
+                element.style.removeProperty("view-transition-name");
+            }
+        }
         // @ts-ignore
         if (document.startViewTransition) {
-            if (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") && !this.reduceMotion) {
+            const styleElement = __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") ? __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_addExitFullscreenFillScreenTransitionStyle).call(this) : null;
+            if (!this.reduceMotion
+                && !this.crossfadeFullscreen
+                && (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f")
+                    || (window.innerWidth == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerWidth, "f")
+                        && window.innerHeight == __classPrivateFieldGet(this, _Wilson_fullscreenInitialWindowInnerHeight, "f")))) {
+                if (__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f")) {
+                    __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").style.setProperty("view-transition-name", `WILSON_fullscreen-button-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
+                }
+                if (__classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f")) {
+                    __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f").style.setProperty("view-transition-name", `WILSON_fullscreen-button-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
+                }
                 this.canvas.style.setProperty("view-transition-name", `WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
+                for (const [id, data] of Object.entries(__classPrivateFieldGet(this, _Wilson_draggables, "f"))) {
+                    data.element.style.setProperty("view-transition-name", `WILSON_draggable-${id}-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
+                }
             }
             if (this.animateFullscreen) {
                 // @ts-ignore
-                document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this));
+                const transition = document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this));
+                if (transition.finished !== undefined) {
+                    await transition.finished;
+                    styleElement === null || styleElement === void 0 ? void 0 : styleElement.remove();
+                }
+                else {
+                    setTimeout(() => styleElement === null || styleElement === void 0 ? void 0 : styleElement.remove(), 1000);
+                }
             }
             else {
                 __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this);
@@ -591,6 +635,11 @@ class Wilson {
         }
         else {
             __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this);
+        }
+        for (const element of elements) {
+            if (element) {
+                element.style.removeProperty("view-transition-name");
+            }
         }
     }
     interpolateCanvasToWorld([row, col]) {
@@ -610,7 +659,7 @@ class Wilson {
         ];
     }
 }
-_Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_canvasHeight = new WeakMap(), _Wilson_lastCanvasWidth = new WeakMap(), _Wilson_lastCanvasHeight = new WeakMap(), _Wilson_canvasAspectRatio = new WeakMap(), _Wilson_worldWidth = new WeakMap(), _Wilson_worldHeight = new WeakMap(), _Wilson_worldCenterX = new WeakMap(), _Wilson_worldCenterY = new WeakMap(), _Wilson_nonFullscreenWorldWidth = new WeakMap(), _Wilson_nonFullscreenWorldHeight = new WeakMap(), _Wilson_minWorldWidth = new WeakMap(), _Wilson_maxWorldWidth = new WeakMap(), _Wilson_minWorldHeight = new WeakMap(), _Wilson_maxWorldHeight = new WeakMap(), _Wilson_minWorldX = new WeakMap(), _Wilson_maxWorldX = new WeakMap(), _Wilson_minWorldY = new WeakMap(), _Wilson_maxWorldY = new WeakMap(), _Wilson_onResizeCanvasCallback = new WeakMap(), _Wilson_useP3ColorSpace = new WeakMap(), _Wilson_needDraggablesContainerSizeUpdate = new WeakMap(), _Wilson_interactionCallbacks = new WeakMap(), _Wilson_needPanAndZoomUpdate = new WeakMap(), _Wilson_interactionOnPanAndZoom = new WeakMap(), _Wilson_numPreviousVelocities = new WeakMap(), _Wilson_lastVelocityFactors = new WeakMap(), _Wilson_lastPanVelocityX = new WeakMap(), _Wilson_lastPanVelocityY = new WeakMap(), _Wilson_lastZoomVelocity = new WeakMap(), _Wilson_lastPanVelocitiesX = new WeakMap(), _Wilson_lastPanVelocitiesY = new WeakMap(), _Wilson_lastZoomVelocities = new WeakMap(), _Wilson_panVelocityX = new WeakMap(), _Wilson_panVelocityY = new WeakMap(), _Wilson_zoomVelocity = new WeakMap(), _Wilson_panFriction = new WeakMap(), _Wilson_zoomFriction = new WeakMap(), _Wilson_panVelocityThreshold = new WeakMap(), _Wilson_zoomVelocityThreshold = new WeakMap(), _Wilson_draggablesRadius = new WeakMap(), _Wilson_draggablesStatic = new WeakMap(), _Wilson_draggableCallbacks = new WeakMap(), _Wilson_draggablesContainerWidth = new WeakMap(), _Wilson_draggablesContainerHeight = new WeakMap(), _Wilson_draggablesContainerRestrictedWidth = new WeakMap(), _Wilson_draggablesContainerRestrictedHeight = new WeakMap(), _Wilson_currentlyFullscreen = new WeakMap(), _Wilson_fullscreenOldScroll = new WeakMap(), _Wilson_fullscreenFillScreen = new WeakMap(), _Wilson_fullscreenUseButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButton = new WeakMap(), _Wilson_fullscreenExitFullscreenButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButtonIconPath = new WeakMap(), _Wilson_fullscreenExitFullscreenButtonIconPath = new WeakMap(), _Wilson_appletContainer = new WeakMap(), _Wilson_canvasContainer = new WeakMap(), _Wilson_draggablesContainer = new WeakMap(), _Wilson_fullscreenContainer = new WeakMap(), _Wilson_fullscreenContainerLocation = new WeakMap(), _Wilson_metaThemeColorElement = new WeakMap(), _Wilson_oldMetaThemeColor = new WeakMap(), _Wilson_salt = new WeakMap(), _Wilson_onResizeWindow = new WeakMap(), _Wilson_handleKeydownEvent = new WeakMap(), _Wilson_currentlyDragging = new WeakMap(), _Wilson_currentlyPinching = new WeakMap(), _Wilson_currentlyWheeling = new WeakMap(), _Wilson_currentlyWheelingTimeoutId = new WeakMap(), _Wilson_ignoreTouchendCooldown = new WeakMap(), _Wilson_atMaxWorldSize = new WeakMap(), _Wilson_atMinWorldSize = new WeakMap(), _Wilson_lastInteractionRow = new WeakMap(), _Wilson_lastInteractionCol = new WeakMap(), _Wilson_lastInteractionRow2 = new WeakMap(), _Wilson_lastInteractionCol2 = new WeakMap(), _Wilson_zoomFixedPoint = new WeakMap(), _Wilson_lastPanAndZoomTimestamp = new WeakMap(), _Wilson_animationFrameLoop = new WeakMap(), _Wilson_draggables = new WeakMap(), _Wilson_draggableDefaultId = new WeakMap(), _Wilson_currentMouseDraggableId = new WeakMap(), _Wilson_documentDraggableMousemoveListener = new WeakMap(), _Wilson_documentDraggableMouseupListener = new WeakMap(), _Wilson_preventGestures = new WeakMap(), _Wilson_canvasOldWidth = new WeakMap(), _Wilson_canvasOldWidthStyle = new WeakMap(), _Wilson_canvasOldHeightStyle = new WeakMap(), _Wilson_instances = new WeakSet(), _Wilson_resizeCanvas = function _Wilson_resizeCanvas(dimensions) {
+_Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_canvasHeight = new WeakMap(), _Wilson_lastCanvasWidth = new WeakMap(), _Wilson_lastCanvasHeight = new WeakMap(), _Wilson_canvasAspectRatio = new WeakMap(), _Wilson_worldWidth = new WeakMap(), _Wilson_worldHeight = new WeakMap(), _Wilson_worldCenterX = new WeakMap(), _Wilson_worldCenterY = new WeakMap(), _Wilson_nonFullscreenWorldWidth = new WeakMap(), _Wilson_nonFullscreenWorldHeight = new WeakMap(), _Wilson_minWorldWidth = new WeakMap(), _Wilson_maxWorldWidth = new WeakMap(), _Wilson_minWorldHeight = new WeakMap(), _Wilson_maxWorldHeight = new WeakMap(), _Wilson_minWorldX = new WeakMap(), _Wilson_maxWorldX = new WeakMap(), _Wilson_minWorldY = new WeakMap(), _Wilson_maxWorldY = new WeakMap(), _Wilson_onResizeCanvasCallback = new WeakMap(), _Wilson_useP3ColorSpace = new WeakMap(), _Wilson_needDraggablesContainerSizeUpdate = new WeakMap(), _Wilson_interactionCallbacks = new WeakMap(), _Wilson_needPanAndZoomUpdate = new WeakMap(), _Wilson_interactionOnPanAndZoom = new WeakMap(), _Wilson_numPreviousVelocities = new WeakMap(), _Wilson_lastVelocityFactors = new WeakMap(), _Wilson_lastPanVelocityX = new WeakMap(), _Wilson_lastPanVelocityY = new WeakMap(), _Wilson_lastZoomVelocity = new WeakMap(), _Wilson_lastPanVelocitiesX = new WeakMap(), _Wilson_lastPanVelocitiesY = new WeakMap(), _Wilson_lastZoomVelocities = new WeakMap(), _Wilson_panVelocityX = new WeakMap(), _Wilson_panVelocityY = new WeakMap(), _Wilson_zoomVelocity = new WeakMap(), _Wilson_panFriction = new WeakMap(), _Wilson_zoomFriction = new WeakMap(), _Wilson_panVelocityThreshold = new WeakMap(), _Wilson_zoomVelocityThreshold = new WeakMap(), _Wilson_draggablesRadius = new WeakMap(), _Wilson_draggablesStatic = new WeakMap(), _Wilson_draggableCallbacks = new WeakMap(), _Wilson_draggablesContainerWidth = new WeakMap(), _Wilson_draggablesContainerHeight = new WeakMap(), _Wilson_draggablesContainerRestrictedWidth = new WeakMap(), _Wilson_draggablesContainerRestrictedHeight = new WeakMap(), _Wilson_currentlyFullscreen = new WeakMap(), _Wilson_fullscreenOldScroll = new WeakMap(), _Wilson_fullscreenCanvasRect = new WeakMap(), _Wilson_fullscreenInitialWindowInnerWidth = new WeakMap(), _Wilson_fullscreenInitialWindowInnerHeight = new WeakMap(), _Wilson_fullscreenFillScreen = new WeakMap(), _Wilson_fullscreenUseButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButton = new WeakMap(), _Wilson_fullscreenExitFullscreenButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButtonIconPath = new WeakMap(), _Wilson_fullscreenExitFullscreenButtonIconPath = new WeakMap(), _Wilson_appletContainer = new WeakMap(), _Wilson_canvasContainer = new WeakMap(), _Wilson_draggablesContainer = new WeakMap(), _Wilson_fullscreenContainer = new WeakMap(), _Wilson_fullscreenContainerLocation = new WeakMap(), _Wilson_metaThemeColorElement = new WeakMap(), _Wilson_oldMetaThemeColor = new WeakMap(), _Wilson_salt = new WeakMap(), _Wilson_onResizeWindow = new WeakMap(), _Wilson_handleKeydownEvent = new WeakMap(), _Wilson_currentlyDragging = new WeakMap(), _Wilson_currentlyPinching = new WeakMap(), _Wilson_currentlyWheeling = new WeakMap(), _Wilson_currentlyWheelingTimeoutId = new WeakMap(), _Wilson_ignoreTouchendCooldown = new WeakMap(), _Wilson_atMaxWorldSize = new WeakMap(), _Wilson_atMinWorldSize = new WeakMap(), _Wilson_lastInteractionRow = new WeakMap(), _Wilson_lastInteractionCol = new WeakMap(), _Wilson_lastInteractionRow2 = new WeakMap(), _Wilson_lastInteractionCol2 = new WeakMap(), _Wilson_zoomFixedPoint = new WeakMap(), _Wilson_lastPanAndZoomTimestamp = new WeakMap(), _Wilson_animationFrameLoop = new WeakMap(), _Wilson_draggables = new WeakMap(), _Wilson_draggableDefaultId = new WeakMap(), _Wilson_currentMouseDraggableId = new WeakMap(), _Wilson_documentDraggableMousemoveListener = new WeakMap(), _Wilson_documentDraggableMouseupListener = new WeakMap(), _Wilson_preventGestures = new WeakMap(), _Wilson_canvasOldWidth = new WeakMap(), _Wilson_canvasOldWidthStyle = new WeakMap(), _Wilson_canvasOldHeightStyle = new WeakMap(), _Wilson_instances = new WeakSet(), _Wilson_resizeCanvas = function _Wilson_resizeCanvas(dimensions) {
     const aspectRatio = (__classPrivateFieldGet(this, _Wilson_currentlyFullscreen, "f") && __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f"))
         ? window.innerWidth / window.innerHeight
         : __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f");
@@ -808,6 +857,14 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     __classPrivateFieldSet(this, _Wilson_lastInteractionRow, e.clientY, "f");
     __classPrivateFieldSet(this, _Wilson_lastInteractionCol, e.clientX, "f");
     __classPrivateFieldGet(this, _Wilson_interactionCallbacks, "f").mouseup({ x, y, event: e });
+}, _Wilson_onMouseenter = function _Wilson_onMouseenter(e) {
+    if (this.useInteractionForPanAndZoom) {
+        e.preventDefault();
+    }
+    const [x, y] = __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_interpolatePageToWorld).call(this, [e.clientY, e.clientX]);
+    __classPrivateFieldSet(this, _Wilson_lastInteractionRow, e.clientY, "f");
+    __classPrivateFieldSet(this, _Wilson_lastInteractionCol, e.clientX, "f");
+    __classPrivateFieldGet(this, _Wilson_interactionCallbacks, "f").mouseenter({ x, y, event: e });
 }, _Wilson_onMouseleave = function _Wilson_onMouseleave(e) {
     if (e.target instanceof HTMLElement && e.target.classList.contains("WILSON_draggable")) {
         return;
@@ -1072,6 +1129,7 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
         canvas.addEventListener("touchend", (e) => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_onTouchend).call(this, e));
         canvas.addEventListener("touchmove", (e) => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_onTouchmove).call(this, e));
         canvas.addEventListener("wheel", (e) => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_onWheel).call(this, e));
+        canvas.addEventListener("mouseenter", (e) => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_onMouseenter).call(this, e));
         canvas.addEventListener("mouseleave", (e) => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_onMouseleave).call(this, e));
     }
 }, _Wilson_initDraggables = function _Wilson_initDraggables() {
@@ -1255,6 +1313,8 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
 }, _Wilson_enterFullscreen = function _Wilson_enterFullscreen() {
     __classPrivateFieldSet(this, _Wilson_currentlyFullscreen, true, "f");
     this.currentlyFullscreen = __classPrivateFieldGet(this, _Wilson_currentlyFullscreen, "f");
+    __classPrivateFieldSet(this, _Wilson_fullscreenInitialWindowInnerWidth, window.innerWidth, "f");
+    __classPrivateFieldSet(this, _Wilson_fullscreenInitialWindowInnerHeight, window.innerHeight, "f");
     __classPrivateFieldSet(this, _Wilson_fullscreenOldScroll, window.scrollY, "f");
     if (__classPrivateFieldGet(this, _Wilson_metaThemeColorElement, "f")) {
         __classPrivateFieldSet(this, _Wilson_oldMetaThemeColor, __classPrivateFieldGet(this, _Wilson_metaThemeColorElement, "f").getAttribute("content"), "f");
@@ -1266,10 +1326,10 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     this.canvas.classList.add("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").classList.add("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.add("WILSON_fullscreen");
-    document.documentElement.style.overflowY = "hidden";
-    document.body.style.overflowY = "hidden";
-    document.body.style.width = "100vw";
-    document.body.style.height = "100%";
+    // document.documentElement.style.overflowY = "hidden";
+    // document.body.style.overflowY = "hidden";
+    // document.body.style.width = "100vw";
+    // document.body.style.height = "100%";
     document.documentElement.style.userSelect = "none";
     document.addEventListener("gesturestart", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
     document.addEventListener("gesturechange", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
@@ -1281,7 +1341,6 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
         __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.add("WILSON_fullscreen-fill-screen");
         this.canvas.style.width = "100vw";
         this.canvas.style.height = "100%";
-        window.scroll(0, 0);
         const windowAspectRatio = window.innerWidth / window.innerHeight;
         const aspectRatioChange = windowAspectRatio / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f");
         __classPrivateFieldSet(this, _Wilson_worldWidth, Math.max(__classPrivateFieldGet(this, _Wilson_worldWidth, "f") * aspectRatioChange, __classPrivateFieldGet(this, _Wilson_worldWidth, "f")), "f");
@@ -1296,6 +1355,84 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     }
     __classPrivateFieldGet(this, _Wilson_onResizeWindow, "f").call(this);
     this.onSwitchFullscreen(true);
+    setTimeout(() => {
+        __classPrivateFieldSet(this, _Wilson_fullscreenInitialWindowInnerWidth, window.innerWidth, "f");
+        __classPrivateFieldSet(this, _Wilson_fullscreenInitialWindowInnerHeight, window.innerHeight, "f");
+    }, 100);
+}, _Wilson_addEnterFullscreenFillScreenTransitionStyle = function _Wilson_addEnterFullscreenFillScreenTransitionStyle() {
+    const canvasRect = this.canvas.getBoundingClientRect();
+    __classPrivateFieldSet(this, _Wilson_fullscreenCanvasRect, canvasRect, "f");
+    // The old canvas snaps to being as large as possible, so we correct it.
+    const windowAspectRatio = window.innerWidth / window.innerHeight;
+    const scaleStart = windowAspectRatio >= __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f")
+        ? canvasRect.height / window.innerHeight
+        : canvasRect.width / window.innerWidth;
+    const scaleEnd = windowAspectRatio >= __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f")
+        ? window.innerHeight / (window.innerWidth / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"))
+        : 1;
+    const oldWidthEnd = Math.min(window.innerWidth, window.innerHeight * __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"));
+    const oldHeightEnd = Math.min(window.innerHeight, window.innerWidth / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"));
+    const oldLeftEnd = (window.innerWidth - oldWidthEnd) / 2;
+    const oldTopEnd = (window.innerHeight - oldHeightEnd) / 2;
+    // Position the center of the new canvas over the old one.
+    const newTopStart = canvasRect.top - (window.innerHeight * scaleStart - canvasRect.height) / 2;
+    const newLeftStart = canvasRect.left - (window.innerWidth * scaleStart - canvasRect.width) / 2;
+    const temporaryStyle = /* css */ `
+			@keyframes WILSON_move-out
+			{
+				from
+				{
+					transform: translate(${__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").left}px, ${__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").top}px) scale(${scaleStart * scaleEnd});
+					transform-origin: top left;
+					opacity: 1;
+				}
+
+				to
+				{
+					transform: translate(${oldLeftEnd}px, ${oldTopEnd}px) scale(${scaleEnd});
+					transform-origin: top left;
+					opacity: 0;
+				}
+			}
+
+			@keyframes WILSON_move-in
+			{
+				from
+				{
+					transform: translate(${newLeftStart}px, ${newTopStart}px) scale(${scaleStart});
+					transform-origin: top left;
+					opacity: 0;
+				}
+
+				to
+				{
+					transform: translate(0px, 0px) scale(1);
+					transform-origin: top left;
+					opacity: 1;
+				}
+			}
+			
+			::view-transition-group(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation: none;
+			}
+
+			::view-transition-old(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation-name: WILSON_move-out;
+				mix-blend-mode: plus-lighter;
+			}
+
+			::view-transition-new(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation-name: WILSON_move-in;
+				mix-blend-mode: plus-lighter;
+			}
+		`;
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = temporaryStyle;
+    document.head.appendChild(styleElement);
+    return styleElement;
 }, _Wilson_exitFullscreen = function _Wilson_exitFullscreen() {
     __classPrivateFieldSet(this, _Wilson_currentlyFullscreen, false, "f");
     this.currentlyFullscreen = __classPrivateFieldGet(this, _Wilson_currentlyFullscreen, "f");
@@ -1318,10 +1455,10 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     this.canvas.classList.remove("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").classList.remove("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.remove("WILSON_fullscreen");
-    document.documentElement.style.overflowY = "scroll";
-    document.body.style.overflowY = "visible";
-    document.body.style.width = "";
-    document.body.style.height = "";
+    // document.documentElement.style.overflowY = "scroll";
+    // document.body.style.overflowY = "visible";
+    // document.body.style.width = "";
+    // document.body.style.height = "";
     document.documentElement.style.userSelect = "auto";
     document.removeEventListener("gesturestart", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
     document.removeEventListener("gesturechange", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
@@ -1342,6 +1479,80 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
         window.scrollTo(0, __classPrivateFieldGet(this, _Wilson_fullscreenOldScroll, "f"));
         setTimeout(() => window.scrollTo(0, __classPrivateFieldGet(this, _Wilson_fullscreenOldScroll, "f")), 10);
     }
+}, _Wilson_addExitFullscreenFillScreenTransitionStyle = function _Wilson_addExitFullscreenFillScreenTransitionStyle() {
+    // This one starts aligned to the shrunk canvas, so we have to undo the transforms
+    // in weird ways.
+    const oldLeftStart = -__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").left;
+    const oldTopStart = -__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").top;
+    const windowAspectRatio = window.innerWidth / window.innerHeight;
+    const scaleStart = __classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").width / window.innerWidth;
+    const scaleEnd = windowAspectRatio >= __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f")
+        ? window.innerHeight / (window.innerWidth / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"))
+        : 1;
+    const oldWidthEnd = window.innerWidth * scaleStart / scaleEnd;
+    const oldHeightEnd = window.innerHeight * scaleStart / scaleEnd;
+    const oldLeftEnd = (__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").width - oldWidthEnd) / 2;
+    const oldTopEnd = (__classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").height - oldHeightEnd) / 2;
+    const newWidthStart = Math.min(window.innerWidth, window.innerHeight * __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"));
+    const newHeightStart = Math.min(window.innerHeight, window.innerWidth / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f"));
+    const newLeftStart = (window.innerWidth - newWidthStart) / 2 - __classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").left;
+    const newTopStart = (window.innerHeight - newHeightStart) / 2 - __classPrivateFieldGet(this, _Wilson_fullscreenCanvasRect, "f").top;
+    const temporaryStyle = /* css */ `
+			@keyframes WILSON_move-out
+			{
+				from
+				{
+					transform: translate(${oldLeftStart}px, ${oldTopStart}px) scale(${1 / scaleStart});
+					transform-origin: top left;
+					opacity: 1;
+				}
+
+				to
+				{
+					transform: translate(${oldLeftEnd}px, ${oldTopEnd}px) scale(${1 / scaleEnd});
+					transform-origin: top left;
+					opacity: 0;
+				}
+			}
+
+			@keyframes WILSON_move-in
+			{
+				from
+				{
+					transform: translate(${newLeftStart}px, ${newTopStart}px) scale(${scaleEnd / scaleStart});
+					transform-origin: top left;
+					opacity: 0;
+				}
+
+				to
+				{
+					transform: translate(0px, 0px) scale(1);
+					transform-origin: top left;
+					opacity: 1;
+				}
+			}
+			
+			::view-transition-group(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation: none;
+			}
+
+			::view-transition-old(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation-name: WILSON_move-out;
+				mix-blend-mode: plus-lighter;
+			}
+
+			::view-transition-new(WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")})
+			{
+				animation-name: WILSON_move-in;
+				mix-blend-mode: plus-lighter;
+			}
+		`;
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = temporaryStyle;
+    document.head.appendChild(styleElement);
+    return styleElement;
 }, _Wilson_interpolatePageToWorld = function _Wilson_interpolatePageToWorld([row, col]) {
     const rect = this.canvas.getBoundingClientRect();
     const computedStyle = window.getComputedStyle(this.canvas);
@@ -1606,11 +1817,16 @@ export class WilsonGPU extends Wilson {
             throw new Error(`[Wilson] Tried to set a texture with id ${id}, but the data type does not match the texture type (the data type should be a ${__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === 'unsignedByte' ? 'Uint8Array' : 'Float32Array'}).`);
         }
         this.gl.bindTexture(this.gl.TEXTURE_2D, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float" && this.gl instanceof WebGL2RenderingContext)
-            ? this.gl.RGBA32F
-            : this.gl.RGBA, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].width, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].height, 0, this.gl.RGBA, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float"
-            ? this.gl.FLOAT
-            : this.gl.UNSIGNED_BYTE, data);
+        if (data === null || data instanceof Uint8Array || data instanceof Float32Array) {
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float" && this.gl instanceof WebGL2RenderingContext)
+                ? this.gl.RGBA32F
+                : this.gl.RGBA, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].width, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].height, 0, this.gl.RGBA, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float"
+                ? this.gl.FLOAT
+                : this.gl.UNSIGNED_BYTE, data);
+        }
+        else {
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        }
     }
     readPixels(options) {
         const defaultOptions = {

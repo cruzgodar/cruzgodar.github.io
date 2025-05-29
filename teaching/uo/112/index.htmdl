@@ -6,7 +6,8 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 
 ### image-links
 	syllabus -c "Syllabus"
-	https://uowebwork.uoregon.edu/webwork2/Math112Z-23471/ -e "WebWork" /teaching/uo/112/cards/webwork.webp
+	extra/final-review-worksheet/final-review-worksheet.pdf "Final Review Worksheet"
+	extra/final-review-worksheet-solutions/final-review-worksheet-solutions.pdf "Final Review Worksheet Solutions"
 ###
 
 
@@ -14,8 +15,14 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 ## Interactive Notes
 
 ### image-links
-	notes/1-transformations/
-	notes/2-periodic-functions/
+	/teaching/notes/trig/transformations
+	/teaching/notes/trig/periodic-functions
+	/teaching/notes/trig/the-unit-circle
+	/teaching/notes/trig/sine-and-cosine
+	/teaching/notes/trig/tangent-and-inverses
+	/teaching/notes/trig/radians-and-equations
+	/teaching/notes/trig/non-right-triangles-and-identities
+	/teaching/notes/trig/vectors
 ###
 
 

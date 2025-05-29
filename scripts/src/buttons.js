@@ -76,9 +76,15 @@ export class DownloadButton extends Button
 			{
 				if (window.DEBUG && (e.metaKey || e.ctrlKey))
 				{
-					if (applet.downloadBokehFrame)
+					if (e.altKey && applet.downloadBokehFrame)
 					{
 						applet.downloadBokehFrame();
+						return;
+					}
+
+					else if (applet.makeMosaic)
+					{
+						applet.makeMosaic({});
 						return;
 					}
 				}
@@ -141,7 +147,7 @@ export class ToggleButton extends Button
 				window.history.replaceState(
 					{ url: pageUrl },
 					"",
-					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 				);
 			}
 
@@ -175,6 +181,8 @@ export class ToggleButton extends Button
 						newState: true,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
@@ -186,10 +194,22 @@ export class ToggleButton extends Button
 						newState: false,
 						callOnInput: true
 					});
+
+					this.loadResolve();
 				}, 10);
 			}
 
+			else
+			{
+				this.loadResolve();
+			}
+
 			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
 		}
 	}
 
@@ -220,7 +240,7 @@ export class ToggleButton extends Button
 				window.history.replaceState(
 					{ url: pageUrl },
 					"",
-					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
 				);
 			}
 
@@ -365,5 +385,14 @@ export function initNavButtons()
 	else
 	{
 		$$(".next-nav-button").forEach(element => element.parentNode.remove());
+	}
+
+
+
+	const navButtons = $$(".nav-buttons");
+	if (navButtons && navButtons.length > 0)
+	{
+		navButtons[0].style.marginTop = "0";
+		navButtons[0].style.marginBottom = "32px";
 	}
 }

@@ -4,6 +4,7 @@ import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { edgeDetectShader } from "/scripts/applets/raymarchApplet.js";
 import { $ } from "/scripts/src/main.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 
@@ -179,23 +180,16 @@ export class ThurstonGeometries extends Applet
 			{
 				if (key === "z")
 				{
-					const dummy = { t: 0 };
 					const oldFactor = pressed ? 1 : 0.4;
 					const newFactor = pressed ? 0.4 : 1;
 
-					anime({
-						targets: dummy,
-						t: 1,
-						duration: 250,
-						easing: "easeOutCubic",
-						update: () =>
-						{
-							this.fovFactor = (1 - dummy.t) * oldFactor
-								+ dummy.t * newFactor;
+					animate((t) =>
+					{
+						this.fovFactor = (1 - t) * oldFactor
+							+ t * newFactor;
 
-							this.needNewFrame = true;
-						}
-					});
+						this.needNewFrame = true;
+					}, 250, "easeOutCubic");
 				}
 			});
 	}
@@ -610,7 +604,7 @@ export class ThurstonGeometries extends Applet
 				link.click();
 			});
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await sleep(100);
 
 			this.wilson.setUniforms({
 				uvScale: 1,
@@ -659,7 +653,7 @@ export class ThurstonGeometries extends Applet
 
 			ctx.putImageData(imageData, 0, 0);
 
-			await new Promise(resolve => setTimeout(resolve, 500));
+			await sleep(500);
 
 			j++;
 			if (j === size)
@@ -1075,26 +1069,11 @@ export class ThurstonGeometries extends Applet
 			duration
 		});
 
-		const dummy = { t: 0 };
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				this.geometryData.sliderValues.sceneTransition =
-					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
-			},
-			complete: () =>
-			{
-				dummy.t = 1;
-
-				this.geometryData.sliderValues.sceneTransition =
-					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
-			}
-		});
+		animate((t) =>
+		{
+			this.geometryData.sliderValues.sceneTransition =
+				(1 - t) * oldSceneTransition + t * newSceneTransition;
+		}, duration, "easeInOutQuad");
 	}
 
 
@@ -1105,48 +1084,25 @@ export class ThurstonGeometries extends Applet
 	}) {
 		const oldCameraPos = [...this.geometryData.cameraPos];
 
-		const dummy = { t: 0 };
 		let oldT = 0;
 		
 		// Extreme measures, but this ensures that the vectors don't desync while moving.
 		const numSubSteps = 60;
 
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration,
-			easing: "easeInOutSine",
-			update: () =>
+		await animate((t) =>
+		{
+			for (let i = 0; i < numSubSteps; i++)
 			{
-				for (let i = 0; i < numSubSteps; i++)
-				{
-					const t = oldT + (dummy.t - oldT) * i / numSubSteps;
+				const interpolatedT = oldT + (t - oldT) * i / numSubSteps;
 
-					this.geometryData.cameraPos = this.geometryData.correctPosition(
-						[
-							(1 - t) * oldCameraPos[0] + t * newCameraPos[0],
-							(1 - t) * oldCameraPos[1] + t * newCameraPos[1],
-							(1 - t) * oldCameraPos[2] + t * newCameraPos[2],
-							(1 - t) * oldCameraPos[3] + t * newCameraPos[3]
-						]
-					);
-
-					this.geometryData.normalVec = this.geometryData.getNormalVec(
-						this.geometryData.cameraPos
-					);
-
-					this.geometryData.correctVectors();
-
-					this.handleRotating();
-				}
-
-				this.needNewFrame = true;
-
-				oldT = dummy.t;
-			},
-			complete: () =>
-			{
-				this.geometryData.cameraPos = this.geometryData.correctPosition(newCameraPos);
+				this.geometryData.cameraPos = this.geometryData.correctPosition(
+					[
+						(1 - interpolatedT) * oldCameraPos[0] + interpolatedT * newCameraPos[0],
+						(1 - interpolatedT) * oldCameraPos[1] + interpolatedT * newCameraPos[1],
+						(1 - interpolatedT) * oldCameraPos[2] + interpolatedT * newCameraPos[2],
+						(1 - interpolatedT) * oldCameraPos[3] + interpolatedT * newCameraPos[3]
+					]
+				);
 
 				this.geometryData.normalVec = this.geometryData.getNormalVec(
 					this.geometryData.cameraPos
@@ -1155,10 +1111,12 @@ export class ThurstonGeometries extends Applet
 				this.geometryData.correctVectors();
 
 				this.handleRotating();
-
-				this.needNewFrame = true;
 			}
-		}).finished;
+
+			this.needNewFrame = true;
+
+			oldT = t;
+		}, duration, "easeInOutSine");
 	}
 
 	switchFullscreen()
@@ -1170,6 +1128,6 @@ export class ThurstonGeometries extends Applet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

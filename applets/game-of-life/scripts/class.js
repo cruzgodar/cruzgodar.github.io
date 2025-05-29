@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
@@ -423,6 +424,6 @@ export class GameOfLife extends AnimationFrameApplet
 	{
 		this.animationPaused = true;
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

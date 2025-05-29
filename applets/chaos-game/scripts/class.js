@@ -1,6 +1,7 @@
 import { getVectorGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
+import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const numIterationsByNumVertices = {
@@ -347,6 +348,6 @@ export class ChaosGame extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 33));
+		await sleep(33);
 	}
 }

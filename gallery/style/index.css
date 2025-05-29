@@ -45,6 +45,9 @@ section
 	grid-template-rows: repeat(3, 1fr);
 	
 	grid-gap: 10px;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .gallery-image-1-1, .gallery-image-2-2, .gallery-image-3-3
@@ -87,10 +90,13 @@ section
 
 #high-res-viewer-card img
 {
-	max-width: 100%;
 	width: calc(100vh - 300px);
+	max-width: 100%;
 	aspect-ratio: 1;
 	border-radius: 16px;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .card

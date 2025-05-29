@@ -37,19 +37,27 @@
 				
 				<div class="narrow-image-links" style="margin-top: 20px">
 					### image-links
-						/gallery/
+						/gallery
 						
-						/applets/
+						/applets
 						
-						/teaching/
+						/teaching
 						
-						/slides/
+						/slides
 						
-						/writing/
+						/writing
 						
-						/about/
+						/about
 					###
 				</div>
+
+				???
+					<div style="margin-top: 64px; display: flex; justify-content: center; width: 100%">
+						<a href="/debug/htmdl-docs" style="margin-right: 32px">HTMDL Documentation</a>
+
+						<a href="/debug/glsl-docs">GLSL Docs</a>
+					</div>
+				???
 			</header>
 		</main>
 	</div>

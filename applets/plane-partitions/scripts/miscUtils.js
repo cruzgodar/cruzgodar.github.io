@@ -31,6 +31,85 @@ export function hideFloor()
 
 
 
+export async function showWalls(opacity = 1)
+{
+	this.wilsonHidden3.ctx._alpha = 1;
+
+	this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
+
+	this.wilsonHidden3.ctx.fillStyle = convertColor(
+		32,
+		32,
+		32,
+		this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+	);
+	this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
+
+	this.wilsonHidden3.ctx.fillStyle = convertColor(
+		64,
+		64,
+		64,
+		this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+	);
+	this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
+
+	this.floorTexture.needsUpdate = true;
+
+
+
+	this.wilsonHidden4.ctx._alpha = 1;
+
+	this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
+
+	this.wilsonHidden4.ctx.fillStyle = convertColor(
+		32,
+		32,
+		32,
+		this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+	);
+	this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
+
+	this.wilsonHidden4.ctx.fillStyle = convertColor(
+		64,
+		64,
+		64,
+		this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+	);
+	this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
+
+	this.floorTexture2.needsUpdate = true;
+
+	this.needNewFrame = true;
+
+
+	const targets = [];
+
+	this.arrays.forEach(array =>
+	{
+		array.leftWall.concat(array.rightWall).forEach(row =>
+		{
+			row.forEach(floor =>
+			{
+				floor.material.forEach(material => targets.push(material));
+			});
+		});
+	});
+
+	return anime({
+		targets,
+		opacity,
+		duration: this.animationTime / 2,
+		easing: "easeOutQuad",
+	}).finished;
+}
+
+export function hideWalls()
+{
+	return this.hideFloor(0);
+}
+
+
+
 // Removes the floor from right to left in each row until
 // a box with positive size is reached --- used to make RPPs display a little better.
 export function removeOutsideFloor(array)
