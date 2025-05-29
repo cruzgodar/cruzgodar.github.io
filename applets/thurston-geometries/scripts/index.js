@@ -125,10 +125,15 @@ export default function()
 		
 		const alwaysShown = "#fov-slider, #download-button";
 
-		$$(`.info-text:not(#${geometry}-text)`)
-			.forEach(element => element.style.display = "none");
-		$$(`#${geometry}-text`)
-			.forEach(element => element.style.display = "block");
+		for (const element of $$(`.info-text:not(#${geometry}-text)`))
+		{
+			element.style.display = "none";
+		}
+
+		for (const element of $$(`#${geometry}-text`))
+		{
+			element.style.display = "block";
+		}
 
 		const GeometryDataClass = scenes[geometry];
 
@@ -160,7 +165,11 @@ export default function()
 				`)
 		).map(element => element.parentNode);
 
-		elementsToShow.forEach(element => element.style.display = "");
+		for (const element of elementsToShow)
+		{
+			element.style.display = "";
+		}
+
 		$(".sliders").style.display = "";
 
 		if (geometry === "sl2r")
@@ -173,7 +182,10 @@ export default function()
 			$$(".text-buttons")[1].style.display = "";
 		}
 
-		elementsToHide.forEach(element => element.style.display = "none");
+		for (const element of elementsToHide)
+		{
+			element.style.display = "none";
+		}
 
 		setTimeout(() => equalizeAppletColumns(), 0);
 
@@ -213,7 +225,10 @@ export default function()
 		applet.run(geometryData);
 	}
 
-	$$(".slider-container").forEach(element => element.style.display = "none");
+	for (const element of $$(".slider-container"))
+	{
+		element.style.display = "none";
+	}
 
 
 

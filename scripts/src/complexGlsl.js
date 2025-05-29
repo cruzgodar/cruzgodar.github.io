@@ -176,7 +176,10 @@ async function loadGlslLogic()
 		});
 	}));
 
-	glslFilenames.forEach(filename => splitGlslFile(filename, texts[filename]));
+	for (const filename of glslFilenames)
+	{
+		splitGlslFile(filename, texts[filename]);
+	}
 
 
 
@@ -184,19 +187,25 @@ async function loadGlslLogic()
 
 	const filenames = Object.keys(glslFiles);
 
-	filenames.forEach(filename => glslFiles[filename].parents = []);
+	for (const filename of filenames)
+	{
+		glslFiles[filename].parents = [];
+	}
 
-	filenames.forEach(filename =>
+	for (const filename of filenames)
 	{
 		const dependencies = glslFiles[filename].dependencies;
 
-		dependencies.forEach(dependency => glslFiles[dependency].parents.push(filename));
+		for (const dependency of dependencies)
+		{
+			glslFiles[dependency].parents.push(filename);
+		}
 
 		if (dependencies.length === 0 && filename !== "main")
 		{
 			glslFiles.main.parents.push(filename);
 		}
-	});
+	}
 
 
 
@@ -209,7 +218,7 @@ async function loadGlslLogic()
 
 		glslFilesByDepth.push([]);
 
-		activeNodes.forEach(filename =>
+		for (const filename of activeNodes)
 		{
 			if (glslFiles[filename].depth === undefined)
 			{
@@ -223,14 +232,14 @@ async function loadGlslLogic()
 
 			const parents = glslFiles[filename].parents;
 
-			parents.forEach(parent =>
+			for (const parent of parents)
 			{
 				if (!nextActiveNodes.includes(parent))
 				{
 					nextActiveNodes.push(parent);
 				}
-			});
-		});
+			}
+		}
 
 		depth++;
 		activeNodes = nextActiveNodes;
@@ -238,7 +247,10 @@ async function loadGlslLogic()
 
 
 
-	filenames.forEach(filename => glslFilesByDepth[glslFiles[filename].depth].push(filename));
+	for (const filename of filenames)
+	{
+		glslFilesByDepth[glslFiles[filename].depth].push(filename);
+	}
 
 
 
@@ -264,7 +276,10 @@ export function getGlslBundle(codeString)
 
 	const filesToInclude = {};
 
-	filenames.forEach(filename => filesToInclude[filename] = false);
+	for (const filename of filenames)
+	{
+		filesToInclude[filename] = false;
+	}
 
 	// main is always required.
 	filesToInclude.main = true;
@@ -287,17 +302,20 @@ export function getGlslBundle(codeString)
 			debugMessage += "\n                     " + "   ".repeat(depth) + `↳ ${filename}`;
 		}
 
-		glslFiles[filename].dependencies.forEach(dependency => addToBundle(dependency, depth + 1));
+		for (const dependency of glslFiles[filename].dependencies)
+		{
+			addToBundle(dependency, depth + 1);
+		}
 	}
 
-	filenames.forEach(filename =>
+	for (const filename of filenames)
 	{
 		if (filesToInclude[filename])
 		{
 			return;
 		}
 
-		keywords.forEach(keyword =>
+		for (const keyword of keywords)
 		{
 			if (glslFiles[filename].keywords.indexOf(keyword) !== -1)
 			{
@@ -307,8 +325,8 @@ export function getGlslBundle(codeString)
 
 				console.log(debugMessage);
 			}
-		});
-	});
+		}
+	}
 
 
 
@@ -317,13 +335,13 @@ export function getGlslBundle(codeString)
 
 	for (let i = 1; i < glslFilesByDepth.length; i++)
 	{
-		glslFilesByDepth[i].forEach(filename =>
+		for (const filename of glslFilesByDepth[i])
 		{
 			if (filesToInclude[filename])
 			{
 				bundle += glslFiles[filename].content;
 			}
-		});
+		}
 	}
 
 

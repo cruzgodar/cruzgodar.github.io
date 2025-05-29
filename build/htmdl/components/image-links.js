@@ -81,12 +81,12 @@ export function imageLinks(options, lines)
 		<div class="image-links">
 	`;
 
-	lines.forEach(line =>
+	for (const line of lines)
 	{
 		const [words, options] = splitCommandLine(line);
 
 		html = `${html}${imageLink(options, ...words)}`;
-	});
+	}
 
 	html = /* html */`${html}</div>`;
 

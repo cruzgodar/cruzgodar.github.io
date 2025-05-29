@@ -78,33 +78,33 @@ const elementSelectorsWithScale =
 // Adds a listener to every element that needs a hover event.
 export function initHoverEvents()
 {
-	elementSelectors.forEach(selector =>
+	for (const selector of elementSelectors)
 	{
-		$$(selector[0]).forEach(element =>
+		for (const element of $$(selector[0]))
 		{
 			addHoverEventWithScale({
 				element,
 				scale: selector[1],
 				addBounceOnTouch: selector[2]
 			});
-		});
-	});
-
-	Object.keys(elementSelectorsWithScale).forEach(selector =>
+		}
+	}
+	
+	for (const [selector, options] of Object.entries(elementSelectorsWithScale))
 	{
-		$$(selector).forEach(element =>
+		for (const element of $$(selector))
 		{
 			addHoverEventWithScale({
 				element,
-				scale: elementSelectorsWithScale[selector].scale,
-				addBounceOnTouch: elementSelectorsWithScale[selector].addBounceOnTouch,
+				scale: options.scale,
+				addBounceOnTouch: options.addBounceOnTouch,
 				preventScaleWithIncreasedContrast:
-					elementSelectorsWithScale[selector].preventScaleWithIncreasedContrast
+					options.preventScaleWithIncreasedContrast
 			});
-		});
-	});
+		}
+	}
 
-	$$("a").forEach(element =>
+	for (const element of $$("a"))
 	{
 		element.addEventListener("mouseenter", () =>
 		{
@@ -113,7 +113,7 @@ export function initHoverEvents()
 				prefetchPage(element.href);
 			}
 		});
-	});
+	}
 }
 
 export function addHoverEvent({
@@ -243,16 +243,19 @@ export function removeHoverEvents()
 		.concat(Object.keys(elementSelectorsWithScale))
 		.join(",");
 
-	$$(globalSelector).forEach(element => element.classList.remove("hover"));
+	for (const element of $$(globalSelector))
+	{
+		element.classList.remove("hover");
+	}
 }
 
 export function initFocusEvents()
 {
-	$$(".focus-on-child").forEach(element =>
+	for (const element of $$(".focus-on-child"))
 	{
 		element.addEventListener("focus", () =>
 		{
 			element.children[0].focus();
 		});
-	});
+	}
 }

@@ -387,16 +387,20 @@ export async function hillmanGrasslInverse(index)
 		{
 			array.cubes[j][col][height] = this.addCube(array, col, height, j);
 
-			array.cubes[j][col][height].material
-				.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			for (const material of array.cubes[j][col][height].material)
+			{
+				material.color.setHSL(hue, 1, this.cubeLightness);
+			}
 		}
 
 		for (let j = rowStarts[row]; j < col; j++)
 		{
 			array.cubes[row][j][height] = this.addCube(array, j, height, row);
 
-			array.cubes[row][j][height].material
-				.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			for (const material of array.cubes[row][j][height].material)
+			{
+				material.color.setHSL(hue, 1, this.cubeLightness);
+			}
 		}
 
 
@@ -446,7 +450,10 @@ export async function hillmanGrasslInverse(index)
 
 		const targetHeight = outputArray.height + 1;
 
-		targetCoordinates.forEach(entry => entry[2] = targetHeight);
+		for (const entry of targetCoordinates)
+		{
+			entry[2] = targetHeight;
+		}
 
 		array.numbers[row][col]--;
 
@@ -463,20 +470,23 @@ export async function hillmanGrasslInverse(index)
 
 		await this.lowerCubes(outputArray, targetCoordinates);
 
-		targetCoordinates.forEach((entry) =>
+		for (const entry of targetCoordinates)
 		{
 			outputArray.numbers[entry[0]][entry[1]]++;
-		});
+		}
 
 		this.recalculateHeights(outputArray);
 
 		if (this.in2dView)
 		{
-			targetCoordinates.forEach(entry => this.drawSingleCell2dViewText(
-				outputArray,
-				entry[0],
-				entry[1]
-			));
+			for (const entry of targetCoordinates)
+			{
+				this.drawSingleCell2dViewText(
+					outputArray,
+					entry[0],
+					entry[1]
+				);
+			}
 		}
 
 

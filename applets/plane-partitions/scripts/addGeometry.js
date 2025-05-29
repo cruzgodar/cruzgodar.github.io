@@ -40,7 +40,10 @@ export function addCube(array, x, y, z, h = 0, s = 0, v = this.cubeLightness)
 		})
 	];
 
-	materials.forEach(material => material.color.setHSL(h, s, v));
+	for (const material of materials)
+	{
+		material.color.setHSL(h, s, v);
+	}
 
 	const cube = new THREE.Mesh(this.cubeGeometry, materials);
 
@@ -101,7 +104,10 @@ export function addFloor(array, x, z, h = 0, s = 0, v = this.floorLightness)
 		})
 	];
 
-	materials.forEach(material => material.color.setHSL(h, s, v));
+	for (const material of materials)
+	{
+		material.color.setHSL(h, s, v);
+	}
 
 	const floor = new THREE.Mesh(this.floorGeometry, materials);
 
@@ -167,7 +173,10 @@ export function addLeftWall(array, y, z, h = 0, s = 0, v = this.floorLightness)
 		})
 	];
 
-	materials.forEach(material => material.color.setHSL(h, s, v));
+	for (const material of materials)
+	{
+		material.color.setHSL(h, s, v);
+	}
 
 	const wall = new THREE.Mesh(this.wallLeftGeometry, materials);
 
@@ -233,7 +242,10 @@ export function addRightWall(array, x, y, h = 0, s = 0, v = this.floorLightness)
 		})
 	];
 
-	materials.forEach(material => material.color.setHSL(h, s, v));
+	for (const material of materials)
+	{
+		material.color.setHSL(h, s, v);
+	}
 
 	const wall = new THREE.Mesh(this.wallRightGeometry, materials);
 

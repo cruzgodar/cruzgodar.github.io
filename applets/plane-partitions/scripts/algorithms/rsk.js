@@ -306,7 +306,13 @@ export async function rskInverse(index)
 
 	let numEntries = 0;
 
-	tableau.forEach(row => row.forEach(entry => numEntries += entry));
+	for (const row of tableau)
+	{
+		for (const entry of row)
+		{
+			numEntries += entry;
+		}
+	}
 
 	// The largest possible shape for these two is a straight line,
 	// requiring all the inserted elements to be increasing or decreasing.
@@ -450,16 +456,20 @@ export async function rskInverse(index)
 		{
 			array.cubes[row][j][height] = this.addCube(array, j, height, row);
 
-			array.cubes[row][j][height].material
-				.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			for (const material of array.cubes[row][j][height].material)
+			{
+				material.color.setHSL(hue, 1, this.cubeLightness);
+			}
 		}
 
 		for (let j = row - 1; j >= 0; j--)
 		{
 			array.cubes[j][col][height] = this.addCube(array, col, height, j);
 			
-			array.cubes[j][col][height].material
-				.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			for (const material of array.cubes[j][col][height].material)
+			{
+				material.color.setHSL(hue, 1, this.cubeLightness);
+			}
 		}
 
 		// This is the duplicate cube. As usual, we need to store it
@@ -468,8 +478,10 @@ export async function rskInverse(index)
 
 		array.cubes[row][col][height + 1] = this.addCube(array, col, height, row);
 
-		array.cubes[row][col][height + 1].material
-			.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+		for (const material of array.cubes[row][col][height + 1].material)
+		{
+			material.color.setHSL(hue, 1, this.cubeLightness);
+		}
 
 
 

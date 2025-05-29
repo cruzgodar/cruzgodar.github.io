@@ -12,13 +12,18 @@ export async function colorCubes(array, coordinates, hue, saturation = 1)
 
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
-		array.cubes[xyz[0]][xyz[1]][xyz[2]].material
-			.forEach(material => targets.push(material.color));
-	});
+		for (const material of array.cubes[xyz[0]][xyz[1]][xyz[2]].material)
+		{
+			targets.push(material.color);
+		}
+	}
 
-	targets.forEach(color => color.getRGB(color));
+	for (const color of targets)
+	{
+		color.getRGB(color);
+	}
 
 	// Convert HSV to HSL.
 	const v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
@@ -38,12 +43,20 @@ export async function colorCubes(array, coordinates, hue, saturation = 1)
 		easing: "easeOutQuad",
 		update: () =>
 		{
-			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			for (const color of targets)
+			{
+				color.setRGB(color.r, color.g, color.b);
+			}
+
 			this.needNewFrame = true;
 		},
 		complete: () =>
 		{
-			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			for (const color of targets)
+			{
+				color.setRGB(color.r, color.g, color.b);
+			}
+			
 			this.needNewFrame = true;
 		}
 	}).finished;
@@ -55,13 +68,18 @@ export async function uncolorCubes(array, coordinates)
 {
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
-		array.cubes[xyz[0]][xyz[1]][xyz[2]].material
-			.forEach(material => targets.push(material.color));
-	});
+		for (const material of array.cubes[xyz[0]][xyz[1]][xyz[2]].material)
+		{
+			targets.push(material.color);
+		}
+	}
 
-	targets.forEach(color => color.getHSL(color));
+	for (const color of targets)
+	{
+		color.getHSL(color);
+	}
 
 	await anime({
 		targets,
@@ -70,21 +88,27 @@ export async function uncolorCubes(array, coordinates)
 		easing: "easeOutQuad",
 		update: () =>
 		{
-			targets.forEach(color => color.setHSL(
-				color.h,
-				color.s,
-				this.cubeLightness
-			));
+			for (const color of targets)
+			{
+				color.setHSL(
+					color.h,
+					color.s,
+					this.cubeLightness
+				);
+			}
 
 			this.needNewFrame = true;
 		},
 		complete: () =>
 		{
-			targets.forEach(color => color.setHSL(
-				color.h,
-				color.s,
-				this.cubeLightness
-			));
+			for (const color of targets)
+			{
+				color.setHSL(
+					color.h,
+					color.s,
+					this.cubeLightness
+				);
+			}
 
 			this.needNewFrame = true;
 		}
@@ -97,15 +121,21 @@ export async function colorWalls(array, hue, saturation = 1)
 {
 	const targets = [];
 
-	array.floor.concat(array.leftWall).concat(array.rightWall).forEach(row =>
+	for (const row of array.floor.concat(array.leftWall).concat(array.rightWall))
 	{
-		row.forEach(wall =>
+		for (const wall of row)
 		{
-			wall.material.forEach(material => targets.push(material.color));
-		});
-	});
+			for (const material of wall.material)
+			{
+				targets.push(material.color);
+			}
+		}
+	}
 
-	targets.forEach(color => color.getRGB(color));
+	for (const color of targets)
+	{
+		color.getRGB(color);
+	}
 
 	// Convert HSV to HSL.
 	const v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
@@ -125,12 +155,20 @@ export async function colorWalls(array, hue, saturation = 1)
 		easing: "easeOutQuad",
 		update: () =>
 		{
-			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			for (const color of targets)
+			{
+				color.setRGB(color.r, color.g, color.b);
+			}
+
 			this.needNewFrame = true;
 		},
 		complete: () =>
 		{
-			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			for (const color of targets)
+			{
+				color.setRGB(color.r, color.g, color.b);
+			}
+			
 			this.needNewFrame = true;
 		}
 	}).finished;
@@ -145,7 +183,7 @@ export async function raiseCubes(array, coordinates, height)
 
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
 		targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 
@@ -153,7 +191,7 @@ export async function raiseCubes(array, coordinates, height)
 		{
 			console.error("Cannot raise cubes from an infinite height");
 		}
-	});
+	}
 
 	await anime({
 		targets,
@@ -174,7 +212,7 @@ export async function lowerCubes(array, coordinates)
 
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
 		targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 
@@ -182,7 +220,7 @@ export async function lowerCubes(array, coordinates)
 		{
 			console.error("Cannot lower cubes onto an infinite height");
 		}
-	});
+	}
 
 	await anime({
 		targets,
@@ -193,13 +231,13 @@ export async function lowerCubes(array, coordinates)
 		complete: () => this.needNewFrame = true
 	}).finished;
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
 		array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]]
 			= array.cubes[xyz[0]][xyz[1]][xyz[2]];
 
 		array.cubes[xyz[0]][xyz[1]][xyz[2]] = undefined;
-	});
+	}
 }
 
 
@@ -214,7 +252,7 @@ export async function moveCubes(
 ) {
 	const targets = [];
 
-	sourceCoordinates.forEach(xyz =>
+	for (const xyz of sourceCoordinates)
 	{
 		targets.push(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 		targetArray.cubeGroup.attach(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
@@ -223,13 +261,13 @@ export async function moveCubes(
 		{
 			console.error("Cannot move cubes from an infinite height");
 		}
-	});
+	}
 
 	await anime({
 		targets,
-		x: (element, index) => targetCoordinates[index][1] - (targetArray.footprint - 1) / 2,
-		y: (element, index) => targetCoordinates[index][2],
-		z: (element, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
+		x: (_, index) => targetCoordinates[index][1] - (targetArray.footprint - 1) / 2,
+		y: (_, index) => targetCoordinates[index][2],
+		z: (_, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
 		duration: this.animationTime,
 		easing: "easeInOutQuad",
 		update: () => this.needNewFrame = true,
@@ -242,9 +280,7 @@ export async function moveCubes(
 		const sourceCubes = sourceCoordinates
 			.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
-		sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
-
-		targetCoordinates.forEach((xyz, index) =>
+		for (const [index, xyz] of targetCoordinates.entries())
 		{
 			if (targetArray.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
@@ -260,7 +296,7 @@ export async function moveCubes(
 			}
 
 			targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] = sourceCubes[index];
-		});
+		}
 	}
 }
 
@@ -276,16 +312,18 @@ export async function revealCubes(array, coordinates)
 
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
-		array.cubes[xyz[0]][xyz[1]][xyz[2]].material
-			.forEach(material => targets.push(material));
+		for (const material of array.cubes[xyz[0]][xyz[1]][xyz[2]].material)
+		{
+			targets.push(material);
+		}
 
 		if (array.numbers[xyz[0]][xyz[1]] === Infinity)
 		{
 			console.error("Cannot reveal cubes at an infinite height");
 		}
-	});
+	}
 
 	await anime({
 		targets,
@@ -305,11 +343,13 @@ export async function deleteCubes(array, coordinates, allAtOnce = false, noAnima
 {
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
-		array.cubes[xyz[0]][xyz[1]][xyz[2]].material
-			.forEach(material => targets.push(material));
-	});
+		for (const material of array.cubes[xyz[0]][xyz[1]][xyz[2]].material)
+		{
+			targets.push(material);
+		}
+	}
 
 	await anime({
 		targets,
@@ -321,14 +361,17 @@ export async function deleteCubes(array, coordinates, allAtOnce = false, noAnima
 		complete: () => this.needNewFrame = true
 	}).finished;
 
-	targets.forEach(material => material.dispose());
+	for (const material of targets)
+	{
+		material.dispose();
+	}
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
 		array.cubeGroup.remove(array.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
 		array.cubes[xyz[0]][xyz[1]][xyz[2]] = undefined;
-	});
+	}
 }
 
 
@@ -338,10 +381,13 @@ export async function deleteFloor(array, coordinates)
 {
 	const targets = [];
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
-		array.floor[xyz[0]][xyz[1]].material.forEach(material => targets.push(material));
-	});
+		for (const material of array.floor[xyz[0]][xyz[1]].material)
+		{
+			targets.push(material);
+		}
+	}
 
 	await anime({
 		targets,
@@ -352,12 +398,15 @@ export async function deleteFloor(array, coordinates)
 		complete: () => this.needNewFrame = true
 	}).finished;
 
-	targets.forEach(material => material.dispose());
+	for (const material of targets)
+	{
+		material.dispose();
+	}
 
-	coordinates.forEach(xyz =>
+	for (const xyz of coordinates)
 	{
 		array.cubeGroup.remove(array.floor[xyz[0]][xyz[1]]);
 
 		array.cubes[xyz[0]][xyz[1]] = undefined;
-	});
+	}
 }

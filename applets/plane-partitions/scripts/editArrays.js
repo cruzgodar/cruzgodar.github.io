@@ -294,7 +294,10 @@ export async function addNewArray({
 	{
 		if (node.material)
 		{
-			node.material.forEach(material => thingsToAnimate.push(material));
+			for (const material of node.material)
+			{
+				thingsToAnimate.push(material);
+			}
 		}
 	});
 
@@ -450,7 +453,10 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 	{
 		if (node.material)
 		{
-			node.material.forEach(material => thingsToAnimate.push(material));
+			for (const material of node.material)
+			{
+				thingsToAnimate.push(material);
+			}
 		}
 	});
 
@@ -476,8 +482,10 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 				{
 					if (this.arrays[index].cubes[i][j][k])
 					{
-						this.arrays[index].cubes[i][j][k].material
-							.forEach(material => material.dispose());
+						for (const material of this.arrays[index].cubes[i][j][k].material)
+						{
+							material.dispose();
+						}
 					}
 				}
 			}

@@ -57,7 +57,7 @@ function prepareContents()
 	contentsElement.id = "contents";
 	contentsContainerElement.append(contentsElement);
 
-	$$(contentsSelector).forEach(element =>
+	for (const element of $$(contentsSelector))
 	{
 		const clonedElement = element.cloneNode(true);
 
@@ -88,7 +88,7 @@ function prepareContents()
 			scale: 1.025,
 			addBounceOnTouch: () => true
 		});
-	});
+	}
 
 	contentsContainerElement.style.opacity = 0;
 	contentsContainerElement.style.marginRight = siteSettings.reduceMotion ? 0 : "-32px";

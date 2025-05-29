@@ -246,7 +246,7 @@ async function fadeInPage()
 
 function setLinks()
 {
-	$$("a:not([data-card-id])").forEach(link =>
+	for (const link of $$("a:not([data-card-id])"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -265,9 +265,9 @@ function setLinks()
 			
 			redirect({ url: href, inNewTab: inNewTab || e.metaKey });
 		});
-	});
+	}
 
-	$$("a[data-card-id]").forEach(link =>
+	for (const link of $$("a[data-card-id]"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -283,15 +283,15 @@ function setLinks()
 				redirect({ url: href, inNewTab: true });
 			}
 		});
-	});
+	}
 }
 
 export function disableLinks()
 {
-	$$("a:not(.real-link)").forEach(link =>
+	for (const link of $$("a:not(.real-link)"))
 	{
 		link.addEventListener("click", e => e.preventDefault());
-	});
+	}
 }
 
 function packageSolution(solutionElement, showButton = true)
@@ -370,12 +370,15 @@ function packageSolution(solutionElement, showButton = true)
 
 function initSolutions()
 {
-	$$(".notes-ex .solution").forEach(e => e.remove());
+	for (const e of $$(".notes-ex .solution"))
+	{
+		e.remove();
+	}
 
 	const element = $("#show-solutions");
 
-	$$(".notes-exc .solution").forEach(e =>
+	for (const e of $$(".notes-exc .solution"))
 	{
 		packageSolution(e, element !== null || window.DEBUG);
-	});
+	}
 }

@@ -13,12 +13,12 @@ export function buttons(_options, lines)
 {
 	let html = "<div class=\"text-buttons\">";
 
-	lines.forEach(line =>
+	for (const line of lines)
 	{
 		const [words] = splitCommandLine(line);
 
 		html = `${html}${button(...words)}`;
-	});
+	}
 
 	html = /* html */`${html}</div>`;
 

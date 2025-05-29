@@ -69,7 +69,10 @@ async function reset({ slide, duration })
 
 	for (const floor of floors)
 	{
-		floor.material.forEach(material => material.opacity = 1);
+		for (const material of floor.material)
+		{
+			material.opacity = 1;
+		}
 	}
 
 	await applet.showHexView();

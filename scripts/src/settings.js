@@ -400,13 +400,13 @@ export async function toggleReduceMotion()
 
 	siteSettings.reduceMotion = !siteSettings.reduceMotion;
 
-	currentlyLoadedApplets.forEach(applet =>
+	for (const applet of currentlyLoadedApplets)
 	{
 		for (const wilson of applet.wilsons)
 		{
 			wilson.reduceMotion = siteSettings.reduceMotion;
 		}
-	});
+	}
 
 	const helpButton = document.querySelector(".wilson-help-button");
 	if (helpButton)

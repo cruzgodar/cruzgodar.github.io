@@ -88,7 +88,10 @@ export default function()
 
 	function onDropdownInput()
 	{
-		$$(".info-text").forEach(element => element.style.display = "none");
+		for (const element of $$(".info-text"))
+		{
+			element.style.display = "none";
+		}
 
 		const value = algorithmsDropdown.value || "bubble";
 

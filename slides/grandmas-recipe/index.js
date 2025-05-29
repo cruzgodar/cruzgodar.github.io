@@ -13,8 +13,10 @@ export const applet = new QuasiFuchsianGroups({
 
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
 
-document.body.querySelectorAll(".WILSON_draggable")
-	.forEach(element => element.classList.add("lapsa-interactable"));
+for (const element of document.body.querySelectorAll(".WILSON_draggable"))
+{
+	element.classList.add("lapsa-interactable");
+}
 
 
 

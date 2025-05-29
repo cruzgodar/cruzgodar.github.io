@@ -16,9 +16,14 @@ async function reset({ slide, forward, duration })
 		duration
 	});
 
-	[
+	const extraUniforms = [
 		"showSphereAmount",
-	].forEach(name => applet.setUniforms({ [name]: 1 }));
+	];
+	
+	for (const name of extraUniforms)
+	{
+		applet.setUniforms({ [name]: 1 });
+	}
 
 	if (!forward)
 	{

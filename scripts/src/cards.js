@@ -42,7 +42,7 @@ export let scrollBeforeCard = 0;
 
 export function initCards()
 {
-	$$("[data-card-id]").forEach(element =>
+	for (const element of $$("[data-card-id]"))
 	{
 		element.addEventListener("click", (e) =>
 		{
@@ -54,7 +54,7 @@ export function initCards()
 				});
 			}
 		});
-	});
+	}
 
 	if (window.DEBUG)
 	{

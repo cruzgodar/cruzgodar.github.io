@@ -332,9 +332,10 @@ export class PlanePartitions extends AnimationFrameApplet
 	{
 		this.inExactHexView = this.wilsonNumbers.worldCenterX === 0;
 
-		this.scene.children.forEach(object =>
-			object.rotation.y = -1.5 * this.wilsonNumbers.worldCenterX
-		);
+		for (const object of this.scene.children)
+		{
+			object.rotation.y = -1.5 * this.wilsonNumbers.worldCenterX;
+		}
 
 		this.renderer.render(this.scene, this.orthographicCamera);
 	}

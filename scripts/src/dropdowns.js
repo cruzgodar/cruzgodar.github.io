@@ -79,7 +79,7 @@ export class Dropdown extends InputElement
 
 		this.optionElements = [];
 		
-		this.selectOptionElements.forEach((option, index) =>
+		for (const [index, option] of this.selectOptionElements.entries())
 		{
 			const optionElement = document.createElement("div");
 
@@ -91,14 +91,14 @@ export class Dropdown extends InputElement
 			optionElement.setAttribute("data-option-index", index);
 			this.optionElements.push(optionElement);
 			this.optionContainerElement.appendChild(optionElement);
-		});
+		}
 
 		setTimeout(() =>
 		{
-			this.optionElements.slice(1).forEach(element =>
+			for (const element of this.optionElements.slice(1))
 			{
 				addHoverEvent({ element });
-			});
+			}
 
 			this.optionElements[0].innerHTML +=
 				" <span style=\"font-size: 12px; margin-right: -2px\">&#x25BC;</span>";
@@ -192,7 +192,8 @@ export class Dropdown extends InputElement
 		let titleWidth = 0;
 		let maxWidth1 = 0;
 		let maxWidth2 = 0;
-		this.optionElements.forEach((element, index) =>
+
+		for (const [index, element] of this.optionElements.entries())
 		{
 			if (index === 0)
 			{
@@ -214,7 +215,7 @@ export class Dropdown extends InputElement
 					element.getBoundingClientRect().width / buttonElementScale
 				);
 			}
-		});
+		}
 
 		const maxWidth = Math.max(
 			this.optionContainerElement.classList.contains("two-column")
