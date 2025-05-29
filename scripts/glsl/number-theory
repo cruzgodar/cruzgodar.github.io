@@ -75,12 +75,20 @@ vec2 theta4(vec2 z, vec2 t) {
 // auxiliary function
 #function eisenstein4
 #requires cexp cpow
-vec2 eisenstein4(vec2 z)
-{
+vec2 eisenstein4(vec2 z) {
+	z.x = fract(z.x);
+	
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 automorphyFactor = vec2(1.0,0.0);
+	if (z.y*z.y<1.0) {
+		automorphyFactor = cpow(z,-4.0);	
+		z = cdiv(-1.0,z);
+	}
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
 
@@ -104,7 +112,7 @@ vec2 eisenstein4(vec2 z)
 	b = 2.0 * b + ONE;
 	c = 2.0 * c + ONE;
 
-	return (cpow(a,8.0)+cpow(b,8.0)+cpow(c,8.0))/2.0;
+	return cmul(automorphyFactor,(cpow(a,8.0)+cpow(b,8.0)+cpow(c,8.0))/2.0);
 }
 #endfunction
 
@@ -128,6 +136,13 @@ vec2 eisenstein6(vec2 z)
 	{
 		return ZERO;
 	}
+
+	vec2 automorphyFactor = vec2(1.0,0.0);
+	if (z.y*z.y<1.0) {
+		automorphyFactor = cpow(z,-6.0);	
+		z = cdiv(-1.0,z);
+	}
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
 
@@ -152,7 +167,7 @@ vec2 eisenstein6(vec2 z)
 
 	vec2 summer = -3.0 * cmul(cpow(a,8.0),cpow(b,4.0) + cpow(c,4.0));
 	summer += cpow(b,12.0) + cpow(c,12.0);
-	return 0.5 * summer;
+	return cmul(automorphyFactor,0.5 * summer);
 }
 #endfunction
 
