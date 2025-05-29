@@ -211,7 +211,7 @@ async function buildJSFile(file)
 	// that prevents dynamic imports from getting screwed up.
 	await write(
 		outputFile,
-		js.replace(/(import[ {].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)
+		js.replace(/(import[ {*].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)
 	);
 }
 
