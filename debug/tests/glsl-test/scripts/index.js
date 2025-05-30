@@ -162,43 +162,46 @@ export default async function()
 
 	const wilson = new WilsonGPU($("#output-canvas"), options);
 	
-	
+	function wrapShader(shader)
+	{
+		return /* glsl */`
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			
+			
+			${getGlslBundle(shader)}
+			
+			
+			
+			bool unitTest(void)
+			{
+				${shader};
+			}
+			
+			
+			
+			void main(void)
+			{
+				if (unitTest())
+				{
+					gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+				}
+				
+				else
+				{
+					gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+				}
+			}
+		`;
+	}
 	
 	function unitTest(shader)
 	{
 		try
 		{
-			const wrappedShader = /* glsl */`
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				
-				
-				${getGlslBundle(shader)}
-				
-				
-				
-				bool unitTest(void)
-				{
-					${shader};
-				}
-				
-				
-				
-				void main(void)
-				{
-					if (unitTest())
-					{
-						gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-					}
-					
-					else
-					{
-						gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-					}
-				}
-			`;
+			const wrappedShader = wrapShader(shader);
 			
 			wilson.loadShader({
 				id: "0",
@@ -244,7 +247,7 @@ export default async function()
 	{
 		if (testResults[i] !== 0)
 		{
-			console.error(`Test ${i} returned false: ${tests[i]}`);
+			console.error(`Test ${i} returned false: ${wrapShader(tests[i])}`);
 		}
 	}
 
