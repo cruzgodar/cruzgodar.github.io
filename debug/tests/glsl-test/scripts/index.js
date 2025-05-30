@@ -248,5 +248,5 @@ export default async function()
 		}
 	}
 
-	console.log(`Tests passed: ${passes} / ${tests.length}`);
+	$("#num-tests").textContent = `Tests passed: ${passes} / ${tests.length}`;
 }

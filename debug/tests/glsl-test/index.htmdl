@@ -5,4 +5,8 @@
 		<div class="canvas-landscape">
 		<canvas id="output-canvas" class="output-canvas"></canvas>
 	</div>
+
+	<div style="margin-top: 32px">
+		<p class="body-text" id="num-tests" style="font-weight: bold; text-align: center; margin: 0 auto"> Tests passed: 0 / 0</p>
+	</div>
 </div>
