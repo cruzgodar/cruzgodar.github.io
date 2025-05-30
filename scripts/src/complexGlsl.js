@@ -153,12 +153,19 @@ export async function loadGlsl()
 async function loadGlslLogic()
 {
 	// constants and main are always fetched.
-	glslFiles.constants.content = await asyncFetch("/scripts/glsl/constants");
-	glslFiles.main.content = await asyncFetch("/scripts/glsl/main");
-	doubleEmulationGlsl = await asyncFetch("/scripts/glsl/double_emulation");
-	doubleEncodingGlsl = await asyncFetch("/scripts/glsl/double_encoding");
+	[
+		glslFiles.constants.content,
+		glslFiles.main.content,
+		doubleEmulationGlsl,
+		doubleEncodingGlsl
+	] = await Promise.all([
+		asyncFetch("/scripts/glsl/constants"),
+		asyncFetch("/scripts/glsl/main"),
+		asyncFetch("/scripts/glsl/double_emulation"),
+		asyncFetch("/scripts/glsl/double_encoding")
+	]);
 
-
+	
 
 	const texts = {};
 
@@ -181,7 +188,7 @@ async function loadGlslLogic()
 		splitGlslFile(filename, texts[filename]);
 	}
 
-
+	
 
 	// Figure out the depth of everything.
 
@@ -312,7 +319,7 @@ export function getGlslBundle(codeString)
 	{
 		if (filesToInclude[filename])
 		{
-			return;
+			continue;
 		}
 
 		for (const keyword of keywords)
