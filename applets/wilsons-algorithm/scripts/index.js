@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { WilsonsAlgorithm } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -39,8 +38,6 @@ export default function()
 		name: "Draw borders",
 		checked: true
 	});
-
-	showPage();
 
 	function run()
 	{

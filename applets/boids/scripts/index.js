@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { Boids } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -84,6 +83,4 @@ export default function()
 		alignmentFactor: alignmentFactorSlider.value / 100,
 		fearFactor: fearFactorSlider.value / 1000,
 	});
-
-	showPage();
 }

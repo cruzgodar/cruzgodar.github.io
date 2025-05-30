@@ -1,5 +1,4 @@
 import { getGlslBundle, loadGlsl } from "../../../../scripts/src/complexGlsl.js";
-import { showPage } from "../../../../scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
@@ -256,8 +255,4 @@ export default async function()
 			break;
 		}
 	}
-	
-	
-	
-	showPage();
 }

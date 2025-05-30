@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { SudokuGenerator } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -24,8 +23,4 @@ export default function()
 	{
 		applet.run();
 	}
-
-
-
-	showPage();
 }

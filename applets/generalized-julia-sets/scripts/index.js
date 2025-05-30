@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
@@ -91,8 +90,6 @@ export default function()
 		onEnter: run,
 		onInput: changeResolution
 	});
-
-	showPage();
 
 	function run()
 	{

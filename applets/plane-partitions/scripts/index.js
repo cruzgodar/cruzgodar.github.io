@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
 import { generateRandomPlanePartition } from "./generateRandomData.js";
 import { arrayToAscii, parseArray } from "./parseAndVerify.js";
@@ -250,8 +249,6 @@ export default function()
 	applet.addNewArray({ index: 0, numbers: planePartition });
 
 	// testABConfigs();
-
-	showPage();
 
 	function changeResolution()
 	{

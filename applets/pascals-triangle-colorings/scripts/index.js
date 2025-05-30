@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { PascalsTriangleColorings } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -45,8 +44,6 @@ export default function()
 		minValue: 1,
 		onEnter: run
 	});
-
-	showPage();
 
 	function run()
 	{

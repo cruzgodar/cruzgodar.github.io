@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { MagicCarpets } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -64,6 +63,4 @@ export default function()
 	}
 
 	run();
-
-	showPage();
 }

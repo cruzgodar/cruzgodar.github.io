@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSets } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -95,8 +94,6 @@ export default function()
 	typesetMath();
 
 	onSliderInput();
-
-	showPage();
 
 	function changeResolution()
 	{

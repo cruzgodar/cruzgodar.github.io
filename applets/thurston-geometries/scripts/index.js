@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { ThurstonGeometries, rotateVectors } from "./class.js";
 import { E3Rooms } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
@@ -334,8 +333,6 @@ export default function()
 	}
 
 	run();
-
-	showPage();
 
 	function changeResolution()
 	{

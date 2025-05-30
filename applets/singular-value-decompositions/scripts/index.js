@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { SingularValueDecompositions } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { FileUpload } from "/scripts/src/fileUploads.js";
@@ -42,8 +41,6 @@ export default function()
 		applet,
 		filename: "a-singular-value-decomposition.png"
 	});
-
-	showPage();
 
 	run();
 

@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSetExplorer } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -42,8 +41,6 @@ export default function()
 		maxValue: 2000,
 		onInput: changeResolution
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

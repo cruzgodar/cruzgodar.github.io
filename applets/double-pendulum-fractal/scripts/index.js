@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { DoublePendulumFractal } from "./class.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -50,8 +49,6 @@ export default function()
 		element: $("#center-unstable-equilibrium-checkbox"),
 		name: "Center unstable equilibrium"
 	});
-
-	showPage();
 
 	function run()
 	{

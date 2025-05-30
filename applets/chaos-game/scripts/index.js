@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { ChaosGame } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -37,8 +36,6 @@ export default function()
 		maxValue: 7,
 		onEnter: run,
 	});
-	
-	showPage();
 
 	function run()
 	{

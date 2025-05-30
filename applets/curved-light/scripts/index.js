@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { CurvedLight } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -83,8 +82,6 @@ export default function()
 		name: "Antialiasing",
 		onInput: onCheckboxInput
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

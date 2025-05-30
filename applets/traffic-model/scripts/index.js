@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { AbelianSandpiles } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -58,8 +57,6 @@ export default function()
 		applet,
 		filename: "a-traffic-jam.png"
 	});
-
-	showPage();
 
 	function run()
 	{

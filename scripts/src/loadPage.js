@@ -61,8 +61,6 @@ export async function loadPage()
 
 	await loadCustomStyle();
 
-	loadCustomScripts();
-
 	setLinks();
 
 	disableLinks();
@@ -94,12 +92,9 @@ export async function loadPage()
 	setTimeout(equalizeAppletColumns, 100);
 
 	window.scrollTo(0, 0);
-}
 
+	await loadCustomScripts();
 
-
-export async function showPage()
-{
 	await fadeInPage();
 
 	setCurrentlyRedirecting(false);
@@ -131,17 +126,16 @@ async function loadCustomStyle()
 
 
 
-function loadCustomScripts()
+async function loadCustomScripts()
 {
 	if (!sitemap[pageUrl].customScript)
 	{
-		requestAnimationFrame(showPage);
-
 		return;
 	}
 	
-	import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`)
-		.then(Module => Module.default());
+	const module = await import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`);
+
+	module.default();
 }
 
 async function fadeInPage()

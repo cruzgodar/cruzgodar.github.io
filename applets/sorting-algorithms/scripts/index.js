@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithms } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -73,8 +72,6 @@ export default function()
 		},
 		onInput: onDropdownInput
 	});
-
-	showPage();
 
 	function run()
 	{

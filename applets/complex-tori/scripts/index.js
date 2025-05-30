@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMaps } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
 import { $ } from "/scripts/src/main.js";
@@ -86,8 +85,6 @@ export default function()
 	});
 
 	typesetMath();
-
-	showPage();
 
 	function onDragDraggable({ x, y })
 	{

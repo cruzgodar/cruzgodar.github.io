@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractals } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
@@ -106,8 +105,6 @@ export default function()
 	});
 
 	typesetMath();
-
-	showPage();
 
 	function onSliderInput()
 	{

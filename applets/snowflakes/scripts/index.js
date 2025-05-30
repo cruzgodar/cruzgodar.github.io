@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { Snowflakes } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -106,10 +105,6 @@ export default function()
 		applet,
 		filename: "a-gravner-griffeath-snowflake.png"
 	});
-
-
-
-	showPage();
 
 
 

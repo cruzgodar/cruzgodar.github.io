@@ -1,13 +1,12 @@
-import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    desmosRed,
+    getDesmosPoint,
+    getDesmosSlider,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 
 export default function()
@@ -75,6 +74,4 @@ export default function()
 	});
 
 	createDesmosGraphs();
-
-	showPage();
 }

@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { FlagOverlap } from "./class.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -33,8 +32,6 @@ export default async function()
 
 	setTimeout(() => applet.guessFlag("sc"), 1000);
 	setTimeout(() => applet.guessFlag("us"), 6000);
-
-	showPage();
 
 	function onCheckboxInput()
 	{

@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { CalcudokuGenerator } from "./class.js";
 import { Button, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -41,8 +40,6 @@ export default function()
 		maxValue: 5,
 		onEnter: run,
 	});
-
-	showPage();
 
 	function run()
 	{

@@ -1,5 +1,4 @@
  
-import { showPage } from "../../scripts/src/loadPage.js";
 import { galleryImageData } from "./imageData.js";
 import { showZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
@@ -116,6 +115,4 @@ export default function()
 	{
 		redirect({ url: `https://drive.google.com/uc?id=${galleryImageData[currentId].driveId}&export=download`, inNewTab: true });
 	});
-
-	showPage();
 }

@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { DominoShuffling } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -44,8 +43,6 @@ export default function()
 		name: "Use smooth colors",
 		checked: true
 	});
-
-	showPage();
 
 	function run()
 	{

@@ -1,9 +1,8 @@
-import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -29,6 +28,4 @@ export default function()
 	});
 
 	createDesmosGraphs();
-
-	showPage();
 }
