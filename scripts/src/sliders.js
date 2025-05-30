@@ -222,7 +222,10 @@ export class Slider extends InputElement
 
 	addTickMarks()
 	{
-		this.tickElements.forEach(tick => tick.remove());
+		for (const tick of this.tickElements)
+		{
+			tick.remove();
+		}
 
 		const ticks = this.snapPoints.length
 			? this.snapPoints

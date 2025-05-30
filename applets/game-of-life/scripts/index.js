@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
 import { acorn } from "./startingStates/acorn.js";
 import { expansion } from "./startingStates/expansion.js";
@@ -112,8 +111,6 @@ export default function()
 		"grayship": grayship,
 		"spaceshipFactory": spaceshipFactory
 	};
-
-	showPage();
 
 	function run(pauseUpdating = true)
 	{

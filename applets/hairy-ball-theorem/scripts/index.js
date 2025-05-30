@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { HairyBall } from "./class.js";
 import { parseNaturalGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
@@ -107,8 +106,6 @@ export default function()
 		applet,
 		filename: "a-hairy-ball.png"
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

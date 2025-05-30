@@ -157,7 +157,10 @@ export async function loadSite(url = pageUrl)
 		document.documentElement.style.userSelect = "none";
 		document.documentElement.style.WebkitTouchCallout = "none";
 
-		$$("body *").forEach(element => element.setAttribute("draggable", "false"));
+		for (const element of $$("body *"))
+		{
+			element.setAttribute("draggable", "false");
+		}
 
 		// Also add a little extra spacing at the top of each page
 		// to keep content from feeling too close to the top of the screen.

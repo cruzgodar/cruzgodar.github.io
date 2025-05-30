@@ -1,7 +1,6 @@
 import { A, eigendata, uVectors } from "./data.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -50,8 +49,6 @@ export default function()
 		max: 21,
 		onInput: onSliderInput
 	});
-
-	showPage();
 
 	function onSliderInput()
 	{

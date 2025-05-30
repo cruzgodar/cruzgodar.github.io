@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithms } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -74,8 +73,6 @@ export default function()
 		onInput: onDropdownInput
 	});
 
-	showPage();
-
 	function run()
 	{
 		applet.run({
@@ -88,7 +85,10 @@ export default function()
 
 	function onDropdownInput()
 	{
-		$$(".info-text").forEach(element => element.style.display = "none");
+		for (const element of $$(".info-text"))
+		{
+			element.style.display = "none";
+		}
 
 		const value = algorithmsDropdown.value || "bubble";
 

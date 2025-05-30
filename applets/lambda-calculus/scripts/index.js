@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { LambdaCalculus } from "./class.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -119,8 +118,6 @@ export default function()
 		applet,
 		filename: "a-lambda-diagram.png"
 	});
-
-	showPage();
 
 	setTimeout(() => run(), 10);
 

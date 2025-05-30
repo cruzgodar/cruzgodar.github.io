@@ -23,7 +23,7 @@ class Carousel
 		this.children = element.firstElementChild.children;
 		this.dots = Array.from(element.lastElementChild.children);
 
-		this.dots.forEach((dot, index) =>
+		for (const [index, dot] of this.dots.entries())
 		{
 			dot.addEventListener("click", () =>
 			{
@@ -33,7 +33,7 @@ class Carousel
 					this.advance(index);
 				}
 			});
-		});
+		}
 
 
 
@@ -221,5 +221,8 @@ class Carousel
 
 export function initCarousels()
 {
-	$$(".carousel").forEach(element => new Carousel(element));
+	for (const element of $$(".carousel"))
+	{
+		new Carousel(element);
+	}
 }

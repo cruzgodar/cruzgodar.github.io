@@ -116,26 +116,25 @@ export function addHeader()
 
 
 
-		document.body.querySelectorAll("#header-logo, #header-links a")
-			.forEach(link =>
+		for (const link of document.body.querySelectorAll("#header-logo, #header-links a"))
+		{
+			const addBounceOnTouch = link.id === "header-logo"
+				? () => window.innerWidth <= 700
+				: () => window.innerWidth <= 550;
+
+			addHoverEvent({ element: link, addBounceOnTouch });
+
+			const href = link.getAttribute("href");
+
+			link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
+
+			link.addEventListener("click", e =>
 			{
-				const addBounceOnTouch = link.id === "header-logo"
-					? () => window.innerWidth <= 700
-					: () => window.innerWidth <= 550;
+				e.preventDefault();
 
-				addHoverEvent({ element: link, addBounceOnTouch });
-
-				const href = link.getAttribute("href");
-
-				link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
-
-				link.addEventListener("click", e =>
-				{
-					e.preventDefault();
-
-					redirect({ url: href, inNewTab: e.metaKey });
-				});
+				redirect({ url: href, inNewTab: e.metaKey });
 			});
+		}
 
 		
 

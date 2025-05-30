@@ -64,8 +64,10 @@ export async function initializeApplet({
 		}
 	});
 
-	document.body.querySelectorAll(".WILSON_draggables-container")
-		.forEach(element => element.classList.add("lapsa-interactable"));
+	for (const element of document.body.querySelectorAll(".WILSON_draggables-container"))
+	{
+		element.classList.add("lapsa-interactable");
+	}
 
 	changeOpacity({
 		element: canvasBundle,
@@ -98,7 +100,11 @@ const options =
 
 	setupBuild: () =>
 	{
-		uniformLoop.forEach(uniformLoop => uniformLoop?.pause && uniformLoop.pause());
+		for (const loop of uniformLoop)
+		{
+			loop?.pause && loop.pause();
+		}
+
 		uniformLoop = [];
 		applet?.pause && applet.pause();
 		if (applet)

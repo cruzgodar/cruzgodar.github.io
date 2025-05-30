@@ -223,7 +223,10 @@ export async function sulzgruber(index)
 				path.push([row, col, planePartition[row][col] - 1]);
 			}
 
-			path.forEach(box => planePartition[box[0]][box[1]]--);
+			for (const box of path)
+			{
+				planePartition[box[0]][box[1]]--;
+			}
 
 			qPaths.push(path);
 		}
@@ -265,7 +268,7 @@ export async function sulzgruber(index)
 
 
 		// Now we actually delete the cubes.
-		qPaths[i].forEach(box =>
+		for (const box of qPaths[i])
 		{
 			array.numbers[box[0]][box[1]]--;
 
@@ -273,7 +276,7 @@ export async function sulzgruber(index)
 			{
 				this.drawSingleCell2dViewText(array, box[0], box[1]);
 			}
-		});
+		}
 
 		this.recalculateHeights(array);
 
@@ -495,16 +498,20 @@ export async function sulzgruberInverse(index)
 				{
 					array.cubes[k][col][height] = this.addCube(array, col, height, k);
 
-					array.cubes[k][col][height].material
-						.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+					for (const material of array.cubes[k][col][height].material)
+					{
+						material.color.setHSL(hue, 1, this.cubeLightness);
+					}
 				}
 
 				for (let k = rowStarts[row]; k < col; k++)
 				{
 					array.cubes[row][k][height] = this.addCube(array, k, height, row);
 
-					array.cubes[row][k][height].material
-						.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+					for (const material of array.cubes[row][k][height].material)
+					{
+						material.color.setHSL(hue, 1, this.cubeLightness);
+					}
 				}
 
 
@@ -616,19 +623,19 @@ export async function sulzgruberInverse(index)
 					{
 						await this.lowerCubes(outputArray, coordinates);
 
-						coordinates.forEach(coordinate =>
+						for (const coordinate of coordinates)
 						{
 							outputArray.numbers[coordinate[0]][coordinate[1]]++;
-						});
+						}
 
 						this.recalculateHeights(outputArray);
 
 						if (this.in2dView)
 						{
-							coordinates.forEach(entry =>
+							for (const entry of coordinates)
 							{
 								this.drawSingleCell2dViewText(outputArray, entry[0], entry[1]);
-							});
+							}
 						}
 
 						currentIndex = nextIndex;

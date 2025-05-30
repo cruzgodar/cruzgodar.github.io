@@ -13,12 +13,12 @@ export function galleryBlock(options, lines)
 {
 	let html = "<div class=\"gallery-block\">";
 
-	lines.forEach(line =>
+	for (const line of lines)
 	{
 		const [words, options] = splitCommandLine(line);
 
 		html = `${html}${galleryImage(options, ...words)}`;
-	});
+	}
 
 	html = /* html */`${html}</div>`;
 

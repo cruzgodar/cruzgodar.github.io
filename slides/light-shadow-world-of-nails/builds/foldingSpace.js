@@ -15,7 +15,7 @@ async function reset({ slide, forward, duration })
 		resolution: 500
 	});
 
-	[
+	const extraUniforms = [
 		"showSphereAmount",
 		"lightAmount",
 		"ambientOcclusionAmount",
@@ -24,7 +24,12 @@ async function reset({ slide, forward, duration })
 		"pointLightAmount",
 		"softShadowAmount",
 		"reflectivityAmount",
-	].forEach(name => applet.setUniforms({ [name]: 1 }));
+	];
+	
+	for (const name of extraUniforms)
+	{
+		applet.setUniforms({ [name]: 1 });
+	}
 
 	if (!forward)
 	{

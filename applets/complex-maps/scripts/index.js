@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMaps } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -73,8 +72,6 @@ export default function()
 		},
 		onEnter: run
 	});
-
-	showPage();
 
 	function run()
 	{

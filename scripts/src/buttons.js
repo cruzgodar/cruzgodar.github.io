@@ -274,10 +274,10 @@ export function initTextButtons()
 // Makes linked text buttons have the same width and height.
 export function equalizeTextButtons()
 {
-	$$(".text-button").forEach(textButton =>
+	for (const textButton of $$(".text-button"))
 	{
 		textButton.parentNode.style.margin = "0 auto";
-	});
+	}
 
 	const heights = [];
 	let maxHeight = 0;
@@ -287,7 +287,7 @@ export function equalizeTextButtons()
 
 	const elements = $$(".linked-text-button");
 
-	elements.forEach((element, index) =>
+	for (const [index, element] of elements.entries())
 	{
 		element.style.height = "fit-content";
 		element.style.width = "fit-content";
@@ -305,9 +305,9 @@ export function equalizeTextButtons()
 		{
 			maxWidth = widths[index];
 		}
-	});
+	}
 
-	elements.forEach((element, index) =>
+	for (const [index, element] of elements.entries())
 	{
 		if (heights[index] < maxHeight)
 		{
@@ -330,7 +330,7 @@ export function equalizeTextButtons()
 		}
 
 		element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
-	});
+	}
 }
 
 export function initNavButtons()
@@ -354,37 +354,42 @@ export function initNavButtons()
 
 	if (index > 0)
 	{
-		$$(".previous-nav-button").forEach(element =>
+		for (const element of $$(".previous-nav-button"))
 		{
 			element.addEventListener("click", () => redirect({ url: list[index - 1] }));
-		});
+		}
 	}
 
 	else
 	{
-		$$(".previous-nav-button").forEach(element => element.parentNode.remove());
+		for (const element of $$(".previous-nav-button"))
+		{
+			element.parentNode.remove();
+		}
 	}
 
 
-
-	$$(".home-nav-button").forEach(element =>
+	for (const element of $$(".home-nav-button"))
 	{
 		element.addEventListener("click", () => redirect({ url: sitemap[pageUrl].parent }));
-	});
+	}
 
 
 
 	if (index < list.length - 1)
 	{
-		$$(".next-nav-button").forEach(element =>
+		for (const element of $$(".next-nav-button"))
 		{
 			element.addEventListener("click", () => redirect({ url: list[index + 1] }));
-		});
+		}
 	}
 
 	else
 	{
-		$$(".next-nav-button").forEach(element => element.parentNode.remove());
+		for (const element of $$(".next-nav-button"))
+		{
+			element.parentNode.remove();
+		}
 	}
 
 

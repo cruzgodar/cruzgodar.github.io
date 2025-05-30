@@ -360,11 +360,11 @@ export class TextBox extends InputElement
 
 				if (uncapEverything)
 				{
-					$$(".capped-input-max, .capped-input-min").forEach(cappedInputElement =>
+					for (const cappedInputElement of $$(".capped-input-max, .capped-input-min"))
 					{
 						cappedInputElement.classList.remove("capped-input-max");
 						cappedInputElement.classList.remove("capped-input-min");
-					});
+					}
 				}
 			}
 		
@@ -417,7 +417,10 @@ function hideAllCapDialogs()
 			easing: "easeOutQuad",
 			complete: () =>
 			{
-				dialogs.forEach(dialog => dialog.remove());
+				for (const dialog of dialogs)
+				{
+					dialog.remove();
+				}
 			}
 		});
 	}

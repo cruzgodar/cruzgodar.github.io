@@ -192,7 +192,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			const futureActive = new Set();
 
-			active.forEach(dot =>
+			for (const dot of active)
 			{
 				const pieces = dot.split(",");
 				const [row, col] = [parseInt(pieces[0]), parseInt(pieces[1])];
@@ -236,7 +236,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 				) {
 					futureActive.add(`${row},${col - 1}`);
 				}
-			});
+			}
 
 			explored = explored.union(active);
 
@@ -443,8 +443,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 			const sourceColorDot = oldComponents[fragmentIndices[biggestFragmentIndex]][0];
 			const newColor = this.colors[sourceColorDot[0]][sourceColorDot[1]];
-
-			this.components[i].forEach(dot =>
+			
+			for (const dot of this.components[i])
 			{
 				const [row, col] = dot;
 
@@ -465,7 +465,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 				) {
 					this.drawEdge(row, col, 1);
 				}
-			});
+			}
 		}
 	}
 
@@ -560,7 +560,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 				const newColor = this.getRandomColor();
 
-				this.components[fragmentIndices[j]].forEach(dot =>
+				for (const dot of this.components[fragmentIndices[j]])
 				{
 					const [row, col] = dot;
 
@@ -581,7 +581,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					) {
 						this.drawEdge(row, col, 1);
 					}
-				});
+				}
 			}
 		}
 	}

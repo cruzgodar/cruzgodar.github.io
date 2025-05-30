@@ -20,12 +20,12 @@ export function checkboxes(options, lines)
 {
 	let html = "<div class=\"checkboxes\">";
 
-	lines.forEach(line =>
+	for (const line of lines)
 	{
 		const [words] = splitCommandLine(line);
 
 		html = `${html}${checkbox(...words)}`;
-	});
+	}
 
 	html = /* html */`${html}</div>`;
 

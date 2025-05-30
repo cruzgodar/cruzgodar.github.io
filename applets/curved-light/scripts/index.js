@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { CurvedLight } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -84,8 +83,6 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	showPage();
-
 	function changeResolution()
 	{
 		applet.wilson.resizeCanvas({
@@ -110,15 +107,15 @@ export default function()
 		const newC = effects.indexOf(effectsDropdown.value);
 		newCValues[newC] = 1;
 
-		$$(".slider-container").forEach(element =>
+		for (const element of $$(".slider-container"))
 		{
 			element.style.display = "none";
-		});
+		}
 		
-		visibleSliders[effectsDropdown.value].forEach(queryString =>
+		for (const queryString of visibleSliders[effectsDropdown.value])
 		{
 			$(queryString).parentElement.style.display = "block";
-		});
+		}
 
 
 		animate((t) => {

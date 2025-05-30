@@ -15,12 +15,12 @@ export function sliders(options, lines)
 {
 	let html = "<div class=\"sliders\">";
 
-	lines.forEach(line =>
+	for (const line of lines)
 	{
 		const [words, options] = splitCommandLine(line);
 
 		html = `${html}${slider(options, ...words)}`;
-	});
+	}
 
 	html = /* html */`${html}</div>`;
 

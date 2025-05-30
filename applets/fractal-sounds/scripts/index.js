@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { FractalSounds } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -114,8 +113,6 @@ export default function()
 		onEnter: run,
 		onInput: changeResolution
 	});
-
-	showPage();
 
 	function run()
 	{

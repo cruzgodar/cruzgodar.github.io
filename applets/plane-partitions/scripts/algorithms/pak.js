@@ -98,13 +98,13 @@ export async function pak(index, ignoreLegs = true)
 
 			coordinatesToColor = [];
 
-			diagonalCoordinates.forEach(coordinate =>
+			for (const coordinate of diagonalCoordinates)
 			{
 				if (coordinate[2] >= 0)
 				{
 					coordinatesToColor.push(coordinate);
 				}
-			});
+			}
 
 			await this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6 / 7);
 
@@ -115,7 +115,7 @@ export async function pak(index, ignoreLegs = true)
 			// since they don't have as many neighbors.
 			const newDiagonalHeight = new Array(diagonalCoordinates.length);
 
-			diagonalCoordinates.forEach((coordinate, index) =>
+			for (const [index, coordinate] of diagonalCoordinates.entries())
 			{
 				const i = coordinate[0];
 				const j = coordinate[1];
@@ -150,7 +150,7 @@ export async function pak(index, ignoreLegs = true)
 				{
 					newDiagonalHeight[index] = planePartition[i][j] - newDiagonalHeight[index];
 				}
-			});
+			}
 
 
 
@@ -218,13 +218,13 @@ export async function pak(index, ignoreLegs = true)
 
 			const coordinatesToUncolor = [];
 
-			coordinatesToColor.forEach((coordinate, index) =>
+			for (const [index, coordinate] of coordinatesToColor.entries())
 			{
 				if (index !== 0 && coordinate[2] < planePartition[coordinate[0]][coordinate[1]])
 				{
 					coordinatesToUncolor.push(coordinate);
 				}
-			});
+			}
 
 			if (this.in2dView)
 			{
@@ -326,7 +326,7 @@ export async function pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
 
 			let anyChange = false;
 
-			diagonalCoordinates.forEach((coordinate, index) =>
+			for (const [index, coordinate] of diagonalCoordinates.entries())
 			{
 				const i = coordinate[0];
 				const j = coordinate[1];
@@ -367,7 +367,7 @@ export async function pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
 				{
 					anyChange = true;
 				}
-			});
+			}
 
 
 

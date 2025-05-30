@@ -88,10 +88,10 @@ export async function drawBoundary(index, n)
 		j++;
 	}
 
-	rects.forEach(rect =>
+	for (const rect of rects)
 	{
 		this.drawBoundaryRect(array, rect[0], rect[1], rect[2], rect[3]);
-	});
+	}
 
 
 
@@ -123,7 +123,7 @@ export async function drawNQuotient(index, n, m, rects)
 			this.wilsonNumbers.canvasHeight
 		);
 
-		rects.forEach((rect, index) =>
+		for (const [index, rect] of rects.entries())
 		{
 			const opacity = index % n === m ? 1 : 1 - t;
 
@@ -134,7 +134,7 @@ export async function drawNQuotient(index, n, m, rects)
 				rect[2],
 				[...(rect[3]), opacity]
 			);
-		});
+		}
 	}, this.animationTime);
 
 	this.wilsonNumbers.ctx.clearRect(
@@ -144,7 +144,7 @@ export async function drawNQuotient(index, n, m, rects)
 		this.wilsonNumbers.canvasHeight
 	);
 
-	rects.forEach((rect, index) =>
+	for (const [index, rect] of rects.entries())
 	{
 		const opacity = index % n === m ? 1 : 0;
 
@@ -155,7 +155,7 @@ export async function drawNQuotient(index, n, m, rects)
 			rect[2],
 			[...(rect[3]), opacity]
 		);
-	});
+	}
 
 
 
@@ -174,7 +174,7 @@ export async function drawNQuotient(index, n, m, rects)
 	let row = numVerticalEdges - 1;
 	let col = 0;
 
-	rects.forEach((rect, index) =>
+	for (const [index, rect] of rects.entries())
 	{
 		targetRects[index] = [row, col];
 
@@ -187,7 +187,7 @@ export async function drawNQuotient(index, n, m, rects)
 		{
 			row--;
 		}
-	});
+	}
 
 
 
@@ -200,7 +200,7 @@ export async function drawNQuotient(index, n, m, rects)
 			this.wilsonNumbers.canvasHeight
 		);
 
-		rects.forEach((rect, index) =>
+		for (const [index, rect] of rects.entries())
 		{
 			this.drawBoundaryRect(
 				array,
@@ -209,7 +209,7 @@ export async function drawNQuotient(index, n, m, rects)
 				rect[2],
 				rect[3]
 			);
-		});
+		}
 	}, this.animationTime, "easeInOutQuad");
 
 
@@ -221,7 +221,7 @@ export async function drawNQuotient(index, n, m, rects)
 		this.wilsonNumbers.canvasHeight
 	);
 
-	rects.forEach((rect, index) =>
+	for (const [index, rect] of rects.entries())
 	{
 		this.drawBoundaryRect(
 			array,
@@ -230,7 +230,7 @@ export async function drawNQuotient(index, n, m, rects)
 			rect[2],
 			rect[3]
 		);
-	});
+	}
 
 
 
@@ -240,7 +240,7 @@ export async function drawNQuotient(index, n, m, rects)
 
 	const cubesToDelete = [];
 
-	targetRects.forEach((rect, index) =>
+	for (const [index, rect] of targetRects.entries())
 	{
 		if (!rects[index][2])
 		{
@@ -255,7 +255,7 @@ export async function drawNQuotient(index, n, m, rects)
 				}
 			}
 		}
-	});
+	}
 
 	this.deleteCubes(array, cubesToDelete, true);
 
@@ -283,7 +283,7 @@ export async function drawNQuotient(index, n, m, rects)
 			this.wilsonNumbers.canvasHeight
 		);
 
-		rects.forEach((rect, index) =>
+		for (const [index, rect] of rects.entries())
 		{
 			this.drawBoundaryRect(
 				array,
@@ -291,9 +291,9 @@ export async function drawNQuotient(index, n, m, rects)
 				targetRects[index][1],
 				rect[2],
 				rect[3]);
-		});
+		}
 
-		bonusRects.forEach(rect =>
+		for (const rect of bonusRects)
 		{
 			this.drawBoundaryRect(
 				array,
@@ -302,7 +302,7 @@ export async function drawNQuotient(index, n, m, rects)
 				rect[2],
 				[...(rects[0][3]), t]
 			);
-		});
+		}
 	}, this.animationTime / 2, "easeInQuad");
 
 	this.wilsonNumbers.ctx.clearRect(
@@ -312,7 +312,7 @@ export async function drawNQuotient(index, n, m, rects)
 		this.wilsonNumbers.canvasHeight
 	);
 
-	rects.forEach((rect, index) =>
+	for (const [index, rect] of rects.entries())
 	{
 		this.drawBoundaryRect(
 			array,
@@ -321,9 +321,9 @@ export async function drawNQuotient(index, n, m, rects)
 			rect[2],
 			rect[3]
 		);
-	});
+	}
 
-	bonusRects.forEach(rect =>
+	for (const rect of bonusRects)
 	{
 		this.drawBoundaryRect(
 			array,
@@ -332,7 +332,7 @@ export async function drawNQuotient(index, n, m, rects)
 			rect[2],
 			rect[3]
 		);
-	});
+	}
 
 	this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 }

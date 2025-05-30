@@ -1,11 +1,10 @@
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { $, raw } from "/scripts/src/main.js";
 
 export default function()
@@ -88,8 +87,4 @@ export default function()
 		});
 		eigenvectorAxesApplet.pauseWhenOffscreen();
 	});
-
-
-
-	showPage();
 }

@@ -251,7 +251,7 @@ vec2 csech(vec2 a) {
 }
 
 float csech(float a) {
-	return ccsch(vec2(a,0.0)).x;
+	return csech(vec2(a,0.0)).x;
 }
 #endfunction
 

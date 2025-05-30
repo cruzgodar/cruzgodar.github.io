@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "./class.js";
 import { hexToRgb } from "/scripts/applets/applet.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
@@ -109,8 +108,6 @@ export default function()
 
 		applet.setColor({ rgb: [rgb[0], rgb[1], rgb[2]] });
 	});
-
-	showPage();
 
 	function setRoot()
 	{

@@ -1,5 +1,4 @@
  
-import { showPage } from "../../scripts/src/loadPage.js";
 import { galleryImageData } from "./imageData.js";
 import { showZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
@@ -93,8 +92,10 @@ export default function()
 	}
 
 
-
-	$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
+	
+	for (const element of
+		$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img")
+	)
 	{
 		element.addEventListener(
 			"click",
@@ -103,7 +104,7 @@ export default function()
 				fromElement: element
 			})
 		);
-	});
+	}
 
 	appletLinkElement.addEventListener("click", () =>
 	{
@@ -114,6 +115,4 @@ export default function()
 	{
 		redirect({ url: `https://drive.google.com/uc?id=${galleryImageData[currentId].driveId}&export=download`, inNewTab: true });
 	});
-
-	showPage();
 }

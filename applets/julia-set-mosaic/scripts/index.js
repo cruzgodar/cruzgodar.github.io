@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSetMosaic } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -32,8 +31,6 @@ export default function()
 		max: 20,
 		onInput: onSliderInput
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

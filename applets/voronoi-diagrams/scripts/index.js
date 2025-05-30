@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { VoronoiDiagrams } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -66,8 +65,6 @@ export default function()
 		element: $("#maximum-speed-checkbox"),
 		name: "Maximum speed"
 	});
-
-	showPage();
 
 	function run()
 	{

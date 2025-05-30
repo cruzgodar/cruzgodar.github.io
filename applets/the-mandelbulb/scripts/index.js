@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
@@ -124,8 +123,6 @@ export default function()
 	});
 
 	typesetMath();
-
-	showPage();
 
 	function onSliderInput()
 	{

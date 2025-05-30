@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { FiniteSubdivisions } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -41,8 +40,6 @@ export default function()
 	});
 
 	run();
-
-	showPage();
 
 	function run()
 	{

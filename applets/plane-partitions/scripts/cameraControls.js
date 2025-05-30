@@ -344,7 +344,7 @@ export async function showDimers()
 	const targets = [];
 
 	// Hide everything not visible by the camera.
-	this.arrays.forEach(array =>
+	for (const array of this.arrays)
 	{
 		for (let i = 0; i < array.footprint; i++)
 		{
@@ -391,9 +391,12 @@ export async function showDimers()
 				}
 			}
 		}
-	});
+	}
 
-	targets.forEach(material => material.opacity = 0);
+	for (const material of targets)
+	{
+		material.opacity = 0;
+	}
 
 
 
@@ -543,7 +546,7 @@ export async function hideDimers()
 	const targets = [];
 
 	// Show everything not visible by the camera.
-	this.arrays.forEach(array =>
+	for (const array of this.arrays)
 	{
 		for (let i = 0; i < array.footprint; i++)
 		{
@@ -594,7 +597,7 @@ export async function hideDimers()
 				}
 			}
 		}
-	});
+	}
 
 	const updateAlpha = () =>
 	{
@@ -719,7 +722,10 @@ export async function hideDimers()
 		complete: updateAlpha
 	}).finished;
 
-	targets.forEach(material => material.opacity = 1);
+	for (const material of targets)
+	{
+		material.opacity = 1;
+	}
 
 	this.currentlyAnimatingCamera = false;
 }

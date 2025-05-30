@@ -61,8 +61,6 @@ export async function loadPage()
 
 	await loadCustomStyle();
 
-	loadCustomScripts();
-
 	setLinks();
 
 	disableLinks();
@@ -94,12 +92,9 @@ export async function loadPage()
 	setTimeout(equalizeAppletColumns, 100);
 
 	window.scrollTo(0, 0);
-}
 
+	await loadCustomScripts();
 
-
-export async function showPage()
-{
 	await fadeInPage();
 
 	setCurrentlyRedirecting(false);
@@ -131,17 +126,16 @@ async function loadCustomStyle()
 
 
 
-function loadCustomScripts()
+async function loadCustomScripts()
 {
 	if (!sitemap[pageUrl].customScript)
 	{
-		requestAnimationFrame(showPage);
-
 		return;
 	}
 	
-	import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`)
-		.then(Module => Module.default());
+	const module = await import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`);
+
+	module.default();
 }
 
 async function fadeInPage()
@@ -246,7 +240,7 @@ async function fadeInPage()
 
 function setLinks()
 {
-	$$("a:not([data-card-id])").forEach(link =>
+	for (const link of $$("a:not([data-card-id])"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -265,9 +259,9 @@ function setLinks()
 			
 			redirect({ url: href, inNewTab: inNewTab || e.metaKey });
 		});
-	});
+	}
 
-	$$("a[data-card-id]").forEach(link =>
+	for (const link of $$("a[data-card-id]"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -283,15 +277,15 @@ function setLinks()
 				redirect({ url: href, inNewTab: true });
 			}
 		});
-	});
+	}
 }
 
 export function disableLinks()
 {
-	$$("a:not(.real-link)").forEach(link =>
+	for (const link of $$("a:not(.real-link)"))
 	{
 		link.addEventListener("click", e => e.preventDefault());
-	});
+	}
 }
 
 function packageSolution(solutionElement, showButton = true)
@@ -370,12 +364,15 @@ function packageSolution(solutionElement, showButton = true)
 
 function initSolutions()
 {
-	$$(".notes-ex .solution").forEach(e => e.remove());
+	for (const e of $$(".notes-ex .solution"))
+	{
+		e.remove();
+	}
 
 	const element = $("#show-solutions");
 
-	$$(".notes-exc .solution").forEach(e =>
+	for (const e of $$(".notes-exc .solution"))
 	{
 		packageSolution(e, element !== null || window.DEBUG);
-	});
+	}
 }

@@ -5,4 +5,10 @@
 		<div class="canvas-landscape">
 		<canvas id="output-canvas" class="output-canvas"></canvas>
 	</div>
+
+	<p class="body-text" id="num-tests" style="margin-top: 32px !important; font-weight: bold; text-align: center; margin: 0 auto"> Tests passed: 0 / 0</p>
+
+	<div id="failed-shaders" style="margin-top: 32px; display: flex; flex-direction: column; row-gap: 16px">
+		
+	</div>
 </div>

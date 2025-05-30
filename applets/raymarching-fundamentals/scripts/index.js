@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComposedFractals } from "./composedFractals.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -34,8 +33,6 @@ export default function()
 		name: "Test",
 		onInput: test
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

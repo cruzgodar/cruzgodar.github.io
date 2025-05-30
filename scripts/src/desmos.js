@@ -59,17 +59,17 @@ export async function createDesmosGraphs(recreating = false)
 
 	for (const key in data)
 	{
-		data[key].expressions.forEach(expression =>
+		for (const expression of data[key].expressions)
 		{
 			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
 			expression.latex = expression.latex.replace(/\)/g, raw`\right)`);
 
 			expression.latex = expression.latex.replace(/\[/g, raw`\left[`);
 			expression.latex = expression.latex.replace(/\]/g, raw`\right]`);
-		});
+		}
 	}
 
-	$$(".desmos-container").forEach(element =>
+	for (const element of $$(".desmos-container"))
 	{
 		const options = {
 			keypad: false,
@@ -121,7 +121,7 @@ export async function createDesmosGraphs(recreating = false)
 				}
 			});
 		}
-	});
+	}
 }
 
 // Animates out and back in all the Desmos graphs. Used when switching themes.

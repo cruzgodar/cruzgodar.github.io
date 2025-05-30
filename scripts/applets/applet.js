@@ -82,21 +82,21 @@ export class Applet
 	{
 		this.animationPaused = true;
 
-		this.workers.forEach(worker =>
+		for (const worker of this.workers)
 		{
 			if (worker?.terminate)
 			{
-				worker?.terminate();
+				worker.terminate();
 			}
-		});
+		}
 
-		this.timeoutIds.forEach(timeoutId =>
+		for (const timeoutId of this.timeoutIds)
 		{
 			if (timeoutId != null)
 			{
 				clearTimeout(timeoutId);
 			}
-		});
+		}
 
 		if (this.hiddenCanvasContainer)
 		{
@@ -426,7 +426,10 @@ export class Applet
 			}
 		}
 
-		keys.forEach(key => this.keysPressed[key] = false);
+		for (const key of keys)
+		{
+			this.keysPressed[key] = false;
+		}
 
 		addTemporaryListener({
 			object: document.documentElement,

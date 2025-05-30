@@ -1,11 +1,10 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	getDesmosSlider,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    getDesmosSlider,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
@@ -92,6 +91,4 @@ export default function()
 	});
 
 	createDesmosGraphs();
-
-	showPage();
 }

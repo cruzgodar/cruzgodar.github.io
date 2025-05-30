@@ -221,9 +221,9 @@ export function isValidABConfig({
 			const nextActive = [];
 
 			// Each element of active checks everything around it.
-			active.forEach(activeBox =>
+			for (const activeBox of active)
 			{
-				directions.forEach(direction =>
+				for (const direction of directions)
 				{
 					const adjacentBox = [
 						activeBox[0] + direction[0],
@@ -238,8 +238,8 @@ export function isValidABConfig({
 						nextActive.push(unexplored[index]);
 						unexplored.splice(index, 1);
 					}
-				});
-			});
+				}
+			}
 
 			component = component.concat(active);
 			active = nextActive;
@@ -270,12 +270,12 @@ export function isValidABConfig({
 
 		const [label] = labels;
 
-		components[i].forEach(box =>
+		for (const box of components[i])
 		{
 			const index = boxIsInArray(box, boxes);
 
 			boxes[index][3] = label;
-		});
+		}
 	}
 
 	return [true, boxes, components];

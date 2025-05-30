@@ -1,6 +1,5 @@
 import { eigendata, uVectors } from "./data.js";
 import { VSingularValues, VU, VW } from "./vData.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { WilsonCPU } from "/scripts/wilson.js";
@@ -10,8 +9,6 @@ export default function()
 	initValueWilson();
 
 	initEigenfaces();
-
-	showPage();
 
 
 

@@ -5,16 +5,19 @@ export async function showFloor(opacity = 1)
 {
 	const targets = [];
 
-	this.arrays.forEach(array =>
+	for (const array of this.arrays)
 	{
-		array.floor.forEach(row =>
+		for (const row of array.floor)
 		{
-			row.forEach(floor =>
+			for (const floor of row)
 			{
-				floor.material.forEach(material => targets.push(material));
-			});
-		});
-	});
+				for (const material of floor.material)
+				{
+					targets.push(material);
+				}
+			}
+		}
+	}
 
 	return anime({
 		targets,
@@ -84,16 +87,19 @@ export async function showWalls(opacity = 1)
 
 	const targets = [];
 
-	this.arrays.forEach(array =>
+	for (const array of this.arrays)
 	{
-		array.leftWall.concat(array.rightWall).forEach(row =>
+		for (const row of array.leftWall.concat(array.rightWall))
 		{
-			row.forEach(floor =>
+			for (const floor of row)
 			{
-				floor.material.forEach(material => targets.push(material));
-			});
-		});
-	});
+				for (const material of floor.material)
+				{
+					targets.push(material);
+				}
+			}
+		}
+	}
 
 	return anime({
 		targets,
@@ -126,20 +132,26 @@ export function removeOutsideFloor(array)
 				break;
 			}
 
-			array.floor[i][j].material.forEach(material => targets.push(material));
+			for (const material of array.floor[i][j].material)
+			{
+				targets.push(material);
+			}
+
 			removals.push([i, j]);
 		}
 	}
 
-	removals.forEach(coordinates =>
+	for (const coordinates of removals)
 	{
-		array.floor[coordinates[0]][coordinates[1]].material
-			.forEach(material => material.dispose());
+		for (const material of array.floor[coordinates[0]][coordinates[1]].material)
+		{
+			material.dispose();
+		}
 
 		array.cubeGroup.remove(array.floor[coordinates[0]][coordinates[1]]);
 
 		array.floor[coordinates[0]][coordinates[1]] = undefined;
-	});
+	}
 
 	if (this.in2dView)
 	{
@@ -154,16 +166,16 @@ export function recalculateHeights(array)
 {
 	array.height = 0;
 
-	array.numbers.forEach(row =>
+	for (const row of array.numbers)
 	{
-		row.forEach(entry =>
+		for (const entry of row)
 		{
 			if (entry !== Infinity)
 			{
 				array.height = Math.max(entry, array.height);
 			}
-		});
-	});
+		}
+	}
 
 	array.size = Math.max(array.footprint, array.height);
 
@@ -171,10 +183,13 @@ export function recalculateHeights(array)
 
 	this.totalArrayHeight = 0;
 
-	this.arrays.forEach(array => this.totalArrayHeight = Math.max(
-		array.height,
-		this.totalArrayHeight
-	));
+	for (const array of this.arrays)
+	{
+		this.totalArrayHeight = Math.max(
+			array.height,
+			this.totalArrayHeight
+		);
+	}
 
 
 
@@ -205,7 +220,7 @@ export function drawAll2dViewText()
 		this.wilsonNumbers.canvasHeight
 	);
 
-	this.arrays.forEach(array =>
+	for (const array of this.arrays)
 	{
 		// Show the numbers in the right places.
 		for (let i = 0; i < array.footprint; i++)
@@ -218,7 +233,7 @@ export function drawAll2dViewText()
 				}
 			}
 		}
-	});
+	}
 }
 
 

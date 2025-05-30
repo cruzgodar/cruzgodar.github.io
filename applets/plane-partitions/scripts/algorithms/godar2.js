@@ -240,13 +240,13 @@ async function toggleDiagonal(array, row, col, hue)
 
 	coordinatesToColor = [];
 
-	diagonalCoordinates.forEach(coordinate =>
+	for (const coordinate of diagonalCoordinates)
 	{
 		if (coordinate[2] >= 0)
 		{
 			coordinatesToColor.push(coordinate);
 		}
-	});
+	}
 
 	await this.colorCubes(array, coordinatesToColor, hue);
 
@@ -257,7 +257,7 @@ async function toggleDiagonal(array, row, col, hue)
 	// since they don't have as many neighbors.
 	const newDiagonalHeight = new Array(diagonalCoordinates.length);
 
-	diagonalCoordinates.forEach((coordinate, index) =>
+	for (const [index, coordinate] of diagonalCoordinates.entries())
 	{
 		const i = coordinate[0];
 		const j = coordinate[1];
@@ -284,9 +284,7 @@ async function toggleDiagonal(array, row, col, hue)
 
 		newDiagonalHeight[index] +=
 			Math.min(neighbor1, neighbor2) - planePartition[i][j];
-	});
-
-	console.log(row, col, newDiagonalHeight);
+	}
 
 
 

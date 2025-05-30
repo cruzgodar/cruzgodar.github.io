@@ -330,7 +330,7 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 
 
 
-	validSides.forEach(side1 =>
+	for (const side1 of validSides)
 	{
 		const side2 = size / side1;
 
@@ -397,7 +397,7 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 				}
 			}
 		}
-	});
+	}
 
 	return numSolutions;
 }

@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { HopfFibration } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -80,8 +79,6 @@ export default function()
 			instant ? 10 : 0
 		),
 	});
-
-	showPage();
 
 	function changeResolution()
 	{

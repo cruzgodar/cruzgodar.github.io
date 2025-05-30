@@ -1,7 +1,6 @@
 import { Button } from "/scripts/src/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { pageUrl } from "/scripts/src/main.js";
 import { downloadFile } from "/scripts/src/utils.js";
 
@@ -70,6 +69,4 @@ export default async function load()
 			}
 		});
 	});
-
-	showPage();
 }

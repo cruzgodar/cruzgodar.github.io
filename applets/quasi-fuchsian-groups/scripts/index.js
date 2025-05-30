@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuasiFuchsianGroups } from "./class.js";
 import { GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -49,8 +48,6 @@ export default function()
 		element: $("#generate-button"),
 		onClick: run
 	});
-
-	showPage();
 
 	async function run()
 	{

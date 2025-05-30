@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
 import { generateRandomPlanePartition } from "./generateRandomData.js";
 import { arrayToAscii, parseArray } from "./parseAndVerify.js";
@@ -240,16 +239,16 @@ export default function()
 
 	let visibleSection = "viewControls";
 
-	sectionElements[visibleSection]
-		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
+	for (const element of sectionElements[visibleSection])
+	{
+		canvasLandscapeLeftElement.appendChild(element);
+	}
 
 	const planePartition = generateRandomPlanePartition();
 	addArrayTextarea.setValue(arrayToAscii(planePartition));
 	applet.addNewArray({ index: 0, numbers: planePartition });
 
 	// testABConfigs();
-
-	showPage();
 
 	function changeResolution()
 	{
@@ -306,19 +305,19 @@ export default function()
 
 	function onDropdownInput()
 	{
-		sectionElements[visibleSection]
-			.forEach(element => categoryHolderElement.appendChild(element));
-
-		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("moved-to-left"));
-
-		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("moved-to-right"));
+		for (const element of sectionElements[visibleSection])
+		{
+			categoryHolderElement.appendChild(element);
+			element.classList.remove("moved-to-left");
+			element.classList.remove("moved-to-right");
+		}
 
 		visibleSection = categoriesDropdown.value || "viewControls";
 
-		sectionElements[visibleSection]
-			.forEach(element => canvasLandscapeLeftElement.appendChild(element));
+		for (const element of sectionElements[visibleSection])
+		{
+			canvasLandscapeLeftElement.appendChild(element);
+		}
 
 		equalizeTextButtons();
 		setTimeout(equalizeTextButtons, 10);

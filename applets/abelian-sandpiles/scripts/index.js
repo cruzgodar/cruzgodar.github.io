@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { AbelianSandpiles } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -79,8 +78,6 @@ export default function()
 		applet,
 		filename: "an-abelian-sandpile.png"
 	});
-
-	showPage();
 
 	function run()
 	{

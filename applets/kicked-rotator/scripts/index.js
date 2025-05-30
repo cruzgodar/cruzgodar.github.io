@@ -1,4 +1,3 @@
-import { showPage } from "../../../scripts/src/loadPage.js";
 import { KickedRotator } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
@@ -36,8 +35,6 @@ export default function()
 		maxValue: 4,
 		onEnter: run
 	});
-
-	showPage();
 
 	function run()
 	{

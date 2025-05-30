@@ -372,20 +372,28 @@ async function fadeOutPage(noFadeOut)
 function unloadPage()
 {
 	// Remove temporary things outside the page element.
-	document.querySelectorAll(
+	const elements = document.querySelectorAll(
 		"script, .temporary-style, .WILSON_fullscreen-container, .temporary-element"
-	).forEach(element => element.remove());
+	);
+
+	for (const element of elements)
+	{
+		element.remove();
+	}
 	
-	temporaryListeners.forEach(temporaryListener =>
+	for (const temporaryListener of temporaryListeners)
 	{
 		temporaryListener[0].removeEventListener(temporaryListener[1], temporaryListener[2]);
-	});
+	}
 
 	clearTemporaryListeners();
 
 
 
-	temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
+	for (const refreshId of temporaryIntervals)
+	{
+		clearInterval(refreshId);
+	}
 
 	clearTemporaryIntervals();
 
@@ -414,10 +422,10 @@ function unloadPage()
 
 	const searchParams = new URLSearchParams(window.location.search);
 
-	temporaryParams.forEach(key =>
+	for (const key of temporaryParams)
 	{
 		searchParams.delete(key);
-	});
+	}
 
 	const string = searchParams.toString();
 
@@ -436,14 +444,14 @@ function unloadPage()
 	setOnThemeChange(() => {});
 
 
-
-	currentlyLoadedApplets.forEach(applet =>
+	
+	for (const applet of currentlyLoadedApplets)
 	{
 		if (applet?.destroy)
 		{
 			applet.destroy();
 		}
-	});
+	}
 
 	clearCurrentlyLoadedApplets();
 

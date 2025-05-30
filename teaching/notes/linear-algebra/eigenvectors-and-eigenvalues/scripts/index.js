@@ -3,15 +3,14 @@ import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.j
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGreen,
-	desmosPurple,
-	desmosRed,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGreen,
+    desmosPurple,
+    desmosRed,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()
@@ -75,8 +74,4 @@ export default function()
 		worldWidth: 2
 	});
 	vectorFieldApplet.pauseWhenOffscreen();
-
-
-
-	showPage();
 }
