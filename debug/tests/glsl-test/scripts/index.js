@@ -83,7 +83,7 @@ export default async function()
 		/* glsl */ `return equal_within_relative_tolerance(cacsch(ONE+I/2.0), vec2(0.763884345953711, -0.311225797244761));`,
 		/* glsl */ `return equal_within_relative_tolerance(cacsch(ONE-I/2.0), vec2(0.763884345953711, 0.311225797244761));`,
 			// asech
-		/* glsl */ `return equal_within_relative_tolerance(casech(ONE+I/2.0), vec2(0.533218290584112, -0.797709970075392));`,
+		/* glsl */ `return equal_within_relative_tolerance(casech(ONE/2.0), vec2(0.533218290584112, -0.797709970075392));`,
 		
 		/* glsl */ `return equal_within_relative_tolerance(casech(ONE-I/2.0), vec2(0.533218290584112, 0.797709970075392));`,
 			// acoth
@@ -264,7 +264,7 @@ export default async function()
 
 			failedShadersElement.lastElementChild.insertAdjacentHTML(
 				"afterend",
-				`<textarea style="overflow: scroll; height: 300px; border-radius: 16px; border: 2px solid var(--normal-contrast); width: 100%; background-color: rgba(255, 0, 0, 0.5)">${shader}</textarea>`
+				`<textarea style="overflow: scroll; height: 300px; border-radius: 16px; border: 2px solid var(--normal-contrast); background-color: rgba(255, 0, 0, 0.5)">${shader}</textarea>`
 			);
 
 		}
