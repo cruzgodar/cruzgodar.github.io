@@ -238,7 +238,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 		
 		this.listenForKeysPressed(
-			["w", "s", "a", "d", "q", "e", " ", "shift", "z", "control"],
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z", "c"],
 			(key, pressed) =>
 			{
 				if (key === "z")
@@ -1363,7 +1363,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const mosaicSize = 10;
+		const mosaicSize = 4;
+		const blurAmount = 1;
 
 		const returnToAntialiasing = this.useAntialiasing;
 		await loadGlsl();
@@ -1390,7 +1391,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
 		const minRadius = 0.5;
-		const maxRadius = resolution / 250;
+		const maxRadius = resolution / 250 * blurAmount;
 
 		const canvas = this.createHiddenCanvas();
 		const options = { canvasWidth: resolution };
@@ -1606,7 +1607,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[2] = -1;
 		}
 
-		const movingSpeed = (this.keysPressed.control ? 0.1 : 1) * this.movingSpeed;
+		const movingSpeed = (this.keysPressed.c ? 0.05 : 1) * this.movingSpeed;
 
 		if (!this.lockedOnOrigin && (
 			this.moveVelocity[0] !== 0
