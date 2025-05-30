@@ -243,13 +243,34 @@ export default async function()
 		testResults.push(result);
 	}
 
+	const failedShadersElement = $("#failed-shaders");
+
+	if (passes !== tests.length)
+	{
+		const titleElement = document.createElement("p");
+		titleElement.classList.add("body-text");
+		titleElement.style.fontWeight = "bold";
+		titleElement.textContent = "Failing shaders:";
+		titleElement.style.margin = "0 auto";
+
+		failedShadersElement.appendChild(titleElement);
+	}
+
 	for (let i = 0; i < tests.length; i++)
 	{
 		if (testResults[i] !== 0)
 		{
-			console.error(`Test ${i} returned false: ${wrapShader(tests[i])}`);
+			const shader = wrapShader(tests[i]);
+
+			failedShadersElement.lastElementChild.insertAdjacentHTML(
+				"afterend",
+				`<textarea style="overflow: scroll; height: 300px; border-radius: 16px; border: 2px solid var(--normal-contrast); width: 100%; background-color: rgba(255, 0, 0, 0.5)">${shader}</textarea>`
+			);
+
 		}
 	}
 
 	$("#num-tests").textContent = `Tests passed: ${passes} / ${tests.length}`;
+
+	$(".canvas-landscape").remove();
 }
