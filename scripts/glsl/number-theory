@@ -76,7 +76,7 @@ vec2 theta4(vec2 z, vec2 t) {
 #function eisenstein4
 #requires cexp cpow
 vec2 eisenstein4(vec2 z) {
-	z.x = fract(z.x);
+	
 	
 	if (z.y <= 0.0)
 	{
@@ -84,10 +84,15 @@ vec2 eisenstein4(vec2 z) {
 	}
 
 	vec2 automorphyFactor = vec2(1.0,0.0);
-	if (z.y*z.y<1.0) {
-		automorphyFactor = cpow(z,-4.0);	
-		z = cdiv(-1.0,z);
+
+	for (int j = 1; j < THETA_BOUND; j++) {
+		z.x = fract(z.x);
+		if (z.y*z.y<1.0) {
+			automorphyFactor = cmul(automorphyFactor,cpow(z,-4.0));	
+			z = cdiv(-1.0,z);
+		}
 	}
+	z.x = fract(z.x);
 
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
@@ -138,10 +143,14 @@ vec2 eisenstein6(vec2 z)
 	}
 
 	vec2 automorphyFactor = vec2(1.0,0.0);
-	if (z.y*z.y<1.0) {
-		automorphyFactor = cpow(z,-6.0);	
-		z = cdiv(-1.0,z);
+	for (int j = 1; j < THETA_BOUND; j++) {
+		z.x = fract(z.x);
+		if (z.y*z.y<1.0) {
+			automorphyFactor = cmul(automorphyFactor,cpow(z,-6.0));	
+			z = cdiv(-1.0,z);
+		}
 	}
+	z.x = fract(z.x);
 
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
@@ -191,19 +200,28 @@ vec2 g3(vec2 z) {
 //TODO: implement eisenstein(k,q)
 #function eisenstein
 #requires eisenstein4 eisenstein6 cpow
-vec2 eisenstein(float k, vec2 z)
-{
+vec2 eisenstein(float k, vec2 z) {
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 automorphyFactor = vec2(1.0,0.0);
+	for (int j = 1; j < THETA_BOUND; j++) {
+		z.x = fract(z.x);
+		if (z.y*z.y<1.0) {
+			automorphyFactor = cmul(automorphyFactor,cpow(z,-k));	
+			z = cdiv(-1.0,z);
+		}
+	}
+
 	if (k == 4.0) 
 	{
-		return eisenstein4(z);
+		return cmul(automorphyFactor,eisenstein4(z));
 	} 
 	if (k == 6.0) 
 	{
-		return eisenstein6(z);
+		return cmul(automorphyFactor,eisenstein6(z));
 	}
 
 	if (k > 6.0)
@@ -211,28 +229,28 @@ vec2 eisenstein(float k, vec2 z)
 		vec2 e4 = eisenstein4(z);
 		if (k == 8.0)
 		{
-			return cmul(e4,e4);
+			return cmul(automorphyFactor,cmul(e4,e4));
 		}
 		vec2 e6 = eisenstein6(z);
 		// can probably save a lot of operations copy pasting the eisenstein4/6 code here to reuse variables
 		if (k == 10.0)
 			// todo: distribute the division
 		{
-			return cmul(e4,e6);
+			return cmul(automorphyFactor,cmul(e4,e6));
 		} else if (k == 12.0) {
-			return 0.638205499276411*cpow(e4,3.0) + 0.361794500723589 * cpow(e6,2.0);
+			return cmul(automorphyFactor,0.638205499276411*cpow(e4,3.0) + 0.361794500723589 * cpow(e6,2.0));
 		} else if (k == 14.0) {
-			return cmul(cpow(e4,2.0), e6);
+			return cmul(automorphyFactor,cmul(cpow(e4,2.0), e6));
 		} else if (k == 16.0) {
-			return 1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0)));
+			return cmul(automorphyFactor,1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0))));
 		} else if (k == 18.0) {
-			return 1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0));
+			return cmul(automorphyFactor,1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0)));
 		} else if (k == 20.0) {
-			return 1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0)));
+			return cmul(automorphyFactor,1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0))));
 		} else if (k == 22.0) {
-			return 1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0)));
+			return cmul(automorphyFactor,1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0))));
 		} else if (k == 24.0) {
-			return 1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0));
+			return cmul(automorphyFactor,1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0)));
 		}
         // todo: k > 24??
 	}
@@ -542,12 +560,13 @@ vec2 kleinj(vec2 z) {
 	if (z.y <= 0.0) {
 		return ZERO;
 	}
-	// if (z.x == 0.0)
-	// {
-	// 	return ZERO;
-	// } else if (z.y < 0.0) { //this should work
-	// 	z = cdiv(-ONE,z);
-	// }
+
+	for (int j = 1; j < 30; j++) {
+		z.x = fract(z.x);
+		if (z.y*z.y<1.0) {
+			z = cdiv(-1.0,z);
+		}
+	}
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 
 	vec2 a = ONE;
@@ -578,36 +597,9 @@ vec2 kleinj(vec2 z) {
 
 // =j(z)/1728
 #function kleinJ
-#requires cexp cpow
+#requires cexp cpow kleinj
 vec2 kleinJ(vec2 z) {
-	if (z.y <= 0.0)
-	{
-		return ZERO;
-	}
-
-	vec2 q = cexp(PI * vec2(-z.y,z.x));
-
-	vec2 a = ONE;
-	vec2 b = ZERO;
-	vec2 c = ZERO;
-
-	float alternate_j = -1.0;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		a += cpow(q,float(j*(j+1)));
-		b += cpow(q,float(j*j));
-		c += alternate_j *cpow(q,float(j*j));
-
-		alternate_j = -alternate_j;
-	}
-
-	a = 2.0 * a;
-	b = 2.0 * b + ONE;
-	c = 2.0 * c + ONE;
-
-	a = cmul(q,cmul(q,cpow(a,8.0)));
-	b = cpow(b,8.0);
-	c = cpow(c,8.0);
-	return cdiv(cpow(a+b+c,3.0),54.0*cmul(cmul(a,b),c));
+	return kleinj(z)/1728.0;
 }
 #endfunction
 
