@@ -1,9 +1,156 @@
+
+#function round
+float round(float x) {
+	return floor(x+0.5);
+}
+#endfunction
+
+// Matrix multiplication for 2x2 matrices (stored as vec4: [a,b,c,d])
+#function mat_mul
+vec4 mat_mul(vec4 m1, vec4 m2) {
+    return vec4(
+        m1.x * m2.x + m1.y * m2.z,  // a
+        m1.x * m2.y + m1.y * m2.w,  // b
+        m1.z * m2.x + m1.w * m2.z,  // c
+        m1.z * m2.y + m1.w * m2.w   // d
+    );
+}
+#endfunction
+
+
+#function apply_transform
+// Apply matrix transformation: (az + b) / (cz + d)
+vec2 apply_transform(vec4 matrix, vec2 z) {
+    vec2 numerator = vec2(matrix.x * z.x + matrix.y, matrix.x * z.y);
+    vec2 denominator = vec2(matrix.z * z.x + matrix.w, matrix.z * z.y);
+    return cdiv(numerator, denominator);
+}
+#endfunction
+
+// claude wrote this code for me
+
+// Euclidean algorithm for rational approximation
+// Returns vec3(p, q, error) where p/q approximates x
+#function rational_approx
+vec3 rational_approx(float x, int max_denom) {
+    if (abs(x) < 1e-10) return vec3(0.0, 1.0, 0.0);
+    
+    // Handle negative numbers
+    float sign_x = sign(x);
+    x = abs(x);
+    
+    // Initialize convergents
+    float h0 = 1.0, h1 = 0.0;
+    float k0 = 0.0, k1 = 1.0;
+    
+    float remainder = x;
+    
+    for (int i = 0; i < 20; i++) { // Limit iterations to prevent infinite loops
+        if (remainder < 1e-10) break;
+        
+        float a = floor(remainder);
+        
+        // Update convergents
+        float h2 = a * h1 + h0;
+        float k2 = a * k1 + k0;
+        
+        // Check if denominator exceeds limit
+        if (k2 > float(max_denom)) break;
+        
+        h0 = h1; h1 = h2;
+        k0 = k1; k1 = k2;
+        
+        // Update remainder for continued fraction
+        remainder = 1.0 / (remainder - a);
+    }
+    
+    return vec3(sign_x * h1, k1, abs(x - sign_x * h1 / k1));
+}
+#endfunction
+
+// Main function to reduce z to fundamental domain
+// Returns: xy = reduced point, zw = matrix elements a,b (c,d stored separately)
+#function reduce_to_fundamental_domain
+#requires mat_mul rational_approx round
+vec4 reduce_to_fundamental_domain(vec2 z, out vec2 matrix_cd) {
+    const float EPS = 1e-8;
+    const int MAX_ITER = 20;
+    
+    vec4 matrix = vec4(1.0, 0.0, 0.0, 1.0); // Identity matrix [a,b,c,d]
+    
+    // If imaginary part is very small, use direct rational approximation
+    if (z.y < 1e-6) {
+        vec3 approx = rational_approx(z.x, 1000);
+        float p = approx.x;
+        float q = approx.y;
+        
+        // Build transformation matrix to move p/q to fundamental domain
+        if (abs(p/q) > 0.5) {
+            float n = round(p/q);
+            matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
+            z.x -= n;
+        }
+        
+        matrix_cd = matrix.zw;
+        return vec4(z, matrix.xy);
+    }
+    
+    // Standard continued fraction algorithm
+    for (int iter = 0; iter < MAX_ITER; iter++) {
+        // Translation step
+        float re_z = z.x;
+        if (abs(re_z) > 0.5 + EPS) {
+            float n = round(re_z);
+            z=vec2(z.x - n,z.y);
+            matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
+        }
+        
+        // Check if we're in fundamental domain
+        float abs_z = cabs(z);
+        if (abs_z >= 1.0 - EPS && abs(z.x) <= 0.5 + EPS) {
+            break;
+        }
+        
+        // Inversion step: z -> -1/z
+        if (abs_z > EPS) {
+            z = -cinv(z);
+            matrix = mat_mul(vec4(0.0, -1.0, 1.0, 0.0),matrix);
+        } else {
+            break; // Avoid division by zero
+        }
+    }
+    
+    matrix_cd = matrix.zw;
+    return vec4(z, matrix.xy);
+}
+#endfunction
+
+// // Helper function to check if point is in fundamental domain
+// bool in_fundamental_domain(vec2 z) {
+//     return cabs(z) >= 1.0 - 1e-6 && abs(z.x) <= 0.5 + 1e-6;
+// }
+
+// // Example usage function
+// vec2 example_usage(vec2 input_z) {
+//     vec2 matrix_cd;
+//     vec4 result = reduce_to_fundamental_domain(input_z, matrix_cd);
+    
+//     vec2 reduced_point = result.xy;
+//     vec4 full_matrix = vec4(result.zw, matrix_cd);
+    
+//     // Verify the transformation
+//     vec2 verification = apply_transform(full_matrix, input_z);
+    
+//     return reduced_point;
+// }
+// #endfunction
+
+
 // https://arxiv.org/pdf/1806.06725.pdf
 // TODO: implement quasiperiodicity, a la https://mathworld.wolfram.com/JacobiThetaFunctions.html
 #function theta1
 #requires cexp cpow
 vec2 theta1(vec2 z, vec2 t) {
-	
 
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
@@ -74,13 +221,23 @@ vec2 theta4(vec2 z, vec2 t) {
 
 // auxiliary function
 #function eisenstein4
-#requires cexp cpow
-vec2 eisenstein4(vec2 z)
-{
+#requires cexp cpow reduce_to_fundamental_domain
+vec2 eisenstein4(vec2 z) {
+	
+	
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-4.0);
+	z = result.xy;
+	// E_k(z) = (cz+d)^-k*E(gamma(z))
+	
+    
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
 
@@ -104,7 +261,7 @@ vec2 eisenstein4(vec2 z)
 	b = 2.0 * b + ONE;
 	c = 2.0 * c + ONE;
 
-	return (cpow(a,8.0)+cpow(b,8.0)+cpow(c,8.0))/2.0;
+	return cmul(automorphyFactor,(cpow(a,8.0)+cpow(b,8.0)+cpow(c,8.0))/2.0);
 }
 #endfunction
 
@@ -121,13 +278,20 @@ vec2 g2(vec2 z) {
 
 
 #function eisenstein6
-#requires cexp cpow
+#requires cexp cpow reduce_to_fundamental_domain
 vec2 eisenstein6(vec2 z)
 {
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-6.0);
+	z = result.xy;
+	// E_k(z) = (cz+d)^-k*E(gamma(z))
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
 
@@ -152,7 +316,7 @@ vec2 eisenstein6(vec2 z)
 
 	vec2 summer = -3.0 * cmul(cpow(a,8.0),cpow(b,4.0) + cpow(c,4.0));
 	summer += cpow(b,12.0) + cpow(c,12.0);
-	return 0.5 * summer;
+	return cmul(automorphyFactor,0.5 * summer);
 }
 #endfunction
 
@@ -175,20 +339,27 @@ vec2 g3(vec2 z) {
 // Uses equation (1.3) from https://arxiv.org/pdf/math/0009130.pdf.
 //TODO: implement eisenstein(k,q)
 #function eisenstein
-#requires eisenstein4 eisenstein6 cpow
-vec2 eisenstein(float k, vec2 z)
-{
+#requires eisenstein4 eisenstein6 cpow reduce_to_fundamental_domain
+vec2 eisenstein(float k, vec2 z) {
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-k);
+	z = result.xy;
+	// E_k(z) = (cz+d)^-k*E(gamma(z))
+
+
 	if (k == 4.0) 
 	{
-		return eisenstein4(z);
+		return cmul(automorphyFactor,eisenstein4(z));
 	} 
 	if (k == 6.0) 
 	{
-		return eisenstein6(z);
+		return cmul(automorphyFactor,eisenstein6(z));
 	}
 
 	if (k > 6.0)
@@ -196,28 +367,28 @@ vec2 eisenstein(float k, vec2 z)
 		vec2 e4 = eisenstein4(z);
 		if (k == 8.0)
 		{
-			return cmul(e4,e4);
+			return cmul(automorphyFactor,cmul(e4,e4));
 		}
 		vec2 e6 = eisenstein6(z);
 		// can probably save a lot of operations copy pasting the eisenstein4/6 code here to reuse variables
 		if (k == 10.0)
 			// todo: distribute the division
 		{
-			return cmul(e4,e6);
+			return cmul(automorphyFactor,cmul(e4,e6));
 		} else if (k == 12.0) {
-			return 0.638205499276411*cpow(e4,3.0) + 0.361794500723589 * cpow(e6,2.0);
+			return cmul(automorphyFactor,0.638205499276411*cpow(e4,3.0) + 0.361794500723589 * cpow(e6,2.0));
 		} else if (k == 14.0) {
-			return cmul(cpow(e4,2.0), e6);
+			return cmul(automorphyFactor,cmul(cpow(e4,2.0), e6));
 		} else if (k == 16.0) {
-			return 1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0)));
+			return cmul(automorphyFactor,1.0/3617.0 * (1617.0*cpow(e4,4.0) + 2000.0*cmul(e4,cpow(e6,2.0))));
 		} else if (k == 18.0) {
-			return 1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0));
+			return cmul(automorphyFactor,1.0/43867.0 * (38367.0*cmul(cpow(e4,3.0),e6) + 550.0 * cpow(e6,3.0)));
 		} else if (k == 20.0) {
-			return 1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0)));
+			return cmul(automorphyFactor,1.0/ 174611.0 * (53361.0*cpow(e4,5.0) + 121250.0*cmul(cpow(e4,2.0),cpow(e6,2.0))));
 		} else if (k == 22.0) {
-			return 1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0)));
+			return cmul(automorphyFactor,1.0/77683.0*(57183.0*cmul(cpow(e4,4.0),e6) + 20500.0 * cmul(e4,cpow(e6,3.0))));
 		} else if (k == 24.0) {
-			return 1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0));
+			return cmul(automorphyFactor,1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0)));
 		}
         // todo: k > 24??
 	}
@@ -229,13 +400,21 @@ vec2 eisenstein(float k, vec2 z)
 
 // Returns eta^24 where eta is the dedekind eta function
 // Note: this is the modular discriminant over (2pi)^12
+// equivalently, E_4^3 - 27E_6^2
 #function delta
-#requires cexp cpow
+#requires cexp cpow reduce_to_fundamental_domain
 vec2 delta(vec2 z) {
 	if (z.y <= 0.0)
 	{
 		return ZERO;
 	}
+
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-12.0);
+	z = result.xy;
+	// D(z) = (cz+d)^-12*D(gamma(z))
+
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
 
@@ -258,7 +437,7 @@ vec2 delta(vec2 z) {
 
 	vec2 prod = cpow(0.5*cmul(cmul(a,b),c),8.0);
 	// can multiply by (2*pi)^12... or not
-	return prod;
+	return cmul(automorphyFactor,prod);
 }
 #endfunction
 
@@ -286,13 +465,36 @@ vec2 deltaq(vec2 z) {
 // Returns the weierstrass p function with w1 = 1, w2 = tau
 // Algorithms from equation 1.10 of https://arxiv.org/pdf/1806.06725.pdf
 #function wp wpHelper weierstrassp
-#requires cexp cpow
+#requires cexp cpow reduce_to_fundamental_domain
 
 vec2 wpHelper(vec2 z, vec2 t) {
+
+	// now that t is in the fundamental domain, reflect it....
+
+	vec2 t_prime = cdiv(-1.0, t);
+	vec2 z_prime = cdiv(z, t);
+
+
+	// Shift z to be in the fundamental parallelogram
+	
+
+	z_prime -= floor(z_prime.y/t_prime.y)*t_prime;
+	z_prime.x = fract(z_prime.x);
+
+	// wp is even
+	if (z_prime.x < 0.0) {
+		z_prime *= -1.0;
+	}
+
+	// extend domain to allow strange tau values
+	if (t_prime.y < 0.0) {
+		t_prime = -t_prime;
+	}
+
 	// Manually compute thetas here since you can reuse variables instead of calling separately
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 q = cexp(PI * vec2(-t_prime.y,t_prime.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t_prime.y,t_prime.x));
+	vec2 w = cexp(PI * vec2(-z_prime.y,z_prime.x));
 	vec2 v = cdiv(1.0,w);
 
 	vec2 thetaz1 = w-v;
@@ -327,50 +529,29 @@ vec2 wpHelper(vec2 z, vec2 t) {
 
 	// pi * pi / 3 = 3.2898681336964528729
 	prod -= 3.2898681336964528729 * (theta02+theta03);
-	return prod;
+	return cdiv(prod,cmul(t,t));
 }
 
 vec2 wp(vec2 z, vec2 t) {
-
-	// wp is expressible in terms of the nome q = e^(pi i t) so it's periodic in t -> t+2
-	if (t.x > 2.0) {
-		t = vec2(t.x-2.0*floor(t.x/2.0),t.y);
-	}
-
-	// Shift z to be in the fundamental parallelogram
-	
-
-	z -= floor(z.y/t.y)*t;
-	z.x = fract(z.x);
-
-	// wp is even
-	if (z.x < 0.0) {
-		z *= -1.0;
-	}
 
 	// extend domain to allow strange tau values
 	if (t.y < 0.0) {
 		t = -t;
 	}
-	float z_abs = cabs(z);
 
-	float t_magnitude = length(t); // |t|
-	if (t_magnitude > 1.0) { // Threshold for "large"
-		vec2 t_prime = cdiv(-1.0, t);
-		if (t_prime.x > 2.0) {
-			t_prime = vec2(t_prime.x-2.0*floor(t_prime.x/2.0),t_prime.y);
-		}
-
-		// Transform z: z' = z / t
-		vec2 z_prime = cdiv(z, t);
-
-		vec2 wp_transformed = wpHelper(z_prime, t_prime);
-
-		return cdiv(wp_transformed,cmul(t, t)); // wp(z; t) = t^-2 * wp(z/t; -1/t)
-	} else {
-		return wpHelper(z,t);
-	}
+	// p(z,t) = (ct+d)^-2 * p(z/(ct+d),(at+b)/(ct+d))
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
+	float c = matrix_cd.x;
+	float d = matrix_cd.y;
+	vec2 automorphyFactor = cpow(c*t+d*ONE,-2.0);
+	
+	z = cdiv(z,c*t+d*ONE);
+	t = result.xy;
+	
+	return cmul(automorphyFactor,wpHelper(z,t));
 }
+
 
 
 vec2 weierstrassp(vec2 z, vec2 tau) {
@@ -386,13 +567,35 @@ vec2 weierstrassp(vec2 z, vec2 tau) {
 // Can check by plotting cpow(wpprime(z,rho),2.0)-4.0*cpow(wp(z,rho),3.0) + g3(rho)
 // or cpow(wpprime(z,draggableArg),2.0)-4.0*cpow(wp(z,draggableArg),3.0)  +cmul(g2(draggableArg),wp(z,draggableArg)) + g3(draggableArg)
 #function wpprime wpprimeHelper
-#requires cexp cpow
+#requires cexp cpow reduce_to_fundamental_domain
 vec2 wpprimeHelper(vec2 z, vec2 t) {
 
+	// now that t is in the fundamental domain, reflect it....
+
+	vec2 t_prime = cdiv(-1.0, t);
+	vec2 z_prime = cdiv(z, t);
+
+
+	// Shift z to be in the fundamental parallelogram
+	
+
+	z_prime -= floor(z_prime.y/t_prime.y)*t_prime;
+	z_prime.x = fract(z_prime.x);
+
+	// wp is even
+	if (z_prime.x < 0.0) {
+		z_prime *= -1.0;
+	}
+
+	// extend domain to allow strange tau values
+	if (t_prime.y < 0.0) {
+		t_prime = -t_prime;
+	}
+
 	// Manually compute thetas here since you can reuse variables instead of calling separately
-	vec2 q = cexp(PI * vec2(-t.y,t.x));
-	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
-	vec2 w = cexp(PI * vec2(-z.y,z.x));
+	vec2 q = cexp(PI * vec2(-t_prime.y,t_prime.x));
+	vec2 q4 = cexp(PI/4.0 * vec2(-t_prime.y,t_prime.x));
+	vec2 w = cexp(PI * vec2(-z_prime.y,z_prime.x));
 	vec2 v = cdiv(1.0,w);
 
 	vec2 thetaz1 = w-v;
@@ -431,41 +634,27 @@ vec2 wpprimeHelper(vec2 z, vec2 t) {
 	prod = cmul(2.0*prod,thetaz4);
 	prod = cmul(prod, cmul(thetaz1,thetaz4_prime)-cmul(thetaz4,thetaz1_prime));
 	prod = cmul(prod,cpow(thetaz1,-3.0));
-	return prod;
+	return cdiv(prod,cpow(t,3.0));
 }
 
 
 vec2 wpprime(vec2 z, vec2 t) {
-	// Shift z to be in the fundamental parallelogram
-	z -= floor(z.y/t.y)*t;
-	z.x = fract(z.x);
-
-	if (t.x > 2.0) {
-		t = vec2(t.x-2.0*floor(t.x/2.0),t.y);
-	}
-
 	// extend domain to allow strange tau values
 	if (t.y < 0.0) {
 		t = -t;
 	}
-	float t_magnitude = length(t); // |t|
-	if (t_magnitude > 1.0) { // Threshold for "large"
-		vec2 t_prime = cdiv(-1.0, t);
-		if (t_prime.x > 2.0) {
-			t_prime = vec2(t_prime.x-2.0*floor(t_prime.x/2.0),t_prime.y);
-		}
 
-		// Transform z: z' = z / t
-		vec2 z_prime = cdiv(z, t);
-
-		vec2 wp_transformed = wpprimeHelper(z_prime, t_prime);
-
-		// wp(z; t) = t^-2 * wp(z/t; -1/t)
-		// so d/dz wp(z,t) = t^-3*wp(z/t,-1/t)
-		return cdiv(wp_transformed,cpow(t,3.0));
-	} else {
-		return wpprimeHelper(z,t);
-	}
+	// p'(z,t) = (ct+d)^-3 * p'(z/(ct+d),(at+b)/(ct+d))
+	vec2 matrix_cd;
+    vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
+	float c = matrix_cd.x;
+	float d = matrix_cd.y;
+	vec2 automorphyFactor = cpow(c*t+d*ONE,-3.0);
+	
+	z = cdiv(z,c*t+d*ONE);
+	t = result.xy;
+	
+	return cmul(automorphyFactor,wpprimeHelper(z,t));
 }
 
 #endfunction
@@ -523,16 +712,19 @@ vec2 wsigma(vec2 z, vec2 t) {
 // Klein's j-invariant
 // Implemented via https://en.wikipedia.org/wiki/J-invariant, ``Expressions in terms of theta functions''
 #function kleinj
-#requires cexp cpow
+#requires cexp cpow reduce_to_fundamental_domain
 vec2 kleinj(vec2 z) {
 	if (z.y <= 0.0) {
 		return ZERO;
 	}
-	// if (z.x == 0.0)
-	// {
-	// 	return ZERO;
-	// } else if (z.y < 0.0) { //this should work
-	// 	z = cdiv(-ONE,z);
+	vec2 matrix_cd;
+	z=reduce_to_fundamental_domain(z,matrix_cd).xy;
+
+	// for (int j = 1; j < 30; j++) {
+	// 	z.x = fract(z.x);
+	// 	if (z.y*z.y<1.0) {
+	// 		z = cdiv(-1.0,z);
+	// 	}
 	// }
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 
@@ -564,36 +756,9 @@ vec2 kleinj(vec2 z) {
 
 // =j(z)/1728
 #function kleinJ
-#requires cexp cpow
+#requires cexp cpow kleinj
 vec2 kleinJ(vec2 z) {
-	if (z.y <= 0.0)
-	{
-		return ZERO;
-	}
-
-	vec2 q = cexp(PI * vec2(-z.y,z.x));
-
-	vec2 a = ONE;
-	vec2 b = ZERO;
-	vec2 c = ZERO;
-
-	float alternate_j = -1.0;
-	for (int j = 1; j < THETA_BOUND; j++) {
-		a += cpow(q,float(j*(j+1)));
-		b += cpow(q,float(j*j));
-		c += alternate_j *cpow(q,float(j*j));
-
-		alternate_j = -alternate_j;
-	}
-
-	a = 2.0 * a;
-	b = 2.0 * b + ONE;
-	c = 2.0 * c + ONE;
-
-	a = cmul(q,cmul(q,cpow(a,8.0)));
-	b = cpow(b,8.0);
-	c = cpow(c,8.0);
-	return cdiv(cpow(a+b+c,3.0),54.0*cmul(cmul(a,b),c));
+	return kleinj(z)/1728.0;
 }
 #endfunction
 

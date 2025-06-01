@@ -29,5 +29,35 @@
 	"editor.maxTokenizationLineLength": 200000,
 	"editor.autoIndent": "advanced",
 	"liveServer.settings.port": 5500,
-	"explorer.sortOrder": "modified"
+	"explorer.sortOrder": "modified",
+	"files.associations": {
+		"powers": "c"
+	},
+	"glsllint.glslifyOptions": {
+		
+	},
+	"terminal.integrated.shellIntegration.enabled": false,
+	"glsllint.additionalStageAssociations": {
+		".shader": "garbo"
+	},
+	"glsllint.languageSettings": {
+
+		"javascript": {
+			"parser": "TSAST"
+		},
+		"javascriptreact": {
+			"parser": "TSAST"
+		},
+		"typescript": {
+			"parser": "TSAST"
+		},
+		"typescriptreact": {
+			"parser": "TSAST"
+		},
+		"elm": {
+			"parser": "REGEX",
+			"patternStart": "\\[glsl",
+			"patternEnd": "\\|\\]"
+		}
+	}
 }

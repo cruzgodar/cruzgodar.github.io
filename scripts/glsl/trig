@@ -69,9 +69,13 @@ float ccos(float z)
 
 //Returns tan(z).
 #function ctan
-#requires cexp
+#requires ccosh csinh
 vec2 ctan(vec2 z)
 {
+
+	if (cabs(z) > 10.0) {
+		return vec2(sin(2.0*z.x)/(cos(2.0*z.x)+ccosh(2.0*z.y)),csinh(2.0*z.y)/(cos(2.0*z.x)+ccosh(2.0*z.y)));
+	}
 	vec2 temp = cexp(2.0 * vec2(-z.y,z.x));
 	temp = cdiv(vec2(-1.0+temp.x,temp.y),vec2(1.0+temp.x,temp.y));
 	return vec2(temp.y,-temp.x);
@@ -101,7 +105,7 @@ float ccsc(float z)
 
 
 
-//Returns csc(z).
+//Returns sec(z).
 #function csec
 #requires ccos
 vec2 csec(vec2 z)
