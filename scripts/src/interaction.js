@@ -69,6 +69,7 @@ function handleTouchEvent()
 		document.activeElement.tagName !== "INPUT"
 		&& document.activeElement.tagName !== "TEXTAREA"
 		&& document.activeElement.tagName !== "SELECT"
+		&& document.activeElement.getAttribute("contenteditable") !== "true"
 	) {
 		document.activeElement.blur();
 	}
