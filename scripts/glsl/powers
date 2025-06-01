@@ -23,6 +23,22 @@ vec2 cpow(vec2 z, vec2 w)
 
 vec2 cpow(vec2 z, float w)
 {
+	if (w == 1.0) {
+		return z;
+	}
+	if (w == 2.0) {
+		return cmul(z,z);	
+	}
+	if (w == 4.0) {
+		vec2 z2 = cmul(z,z);
+		return cmul(z2,z2);	
+	}
+	if (w == 8.0) {
+		vec2 z2 = cmul(z,z);
+		vec2 z4 = cmul(z2,z2);
+		return cmul(z4,z4);	
+	}
+	
 	float arg = carg(z);
 	float magnitude = z.x * z.x + z.y * z.y;
 	
