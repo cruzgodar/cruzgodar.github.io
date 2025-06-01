@@ -8,7 +8,7 @@ vec2 cpow_positive_int(vec2 z, int k) {
     vec2 base = z;
     int exp = k;
     // computes z^k using a binary tree
-    for (int i = 0; i < 5; i++){ 
+    for (int i = 0; i < 7; i++){ 
 	 	if(exp > 0) {
 			if ((exp/2)*2 != exp) {
 				result = cmul(result, base);
@@ -43,7 +43,7 @@ vec2 cpow(vec2 z, vec2 w)
 
 vec2 cpow(vec2 z, float w) {
 	// Handle small integer powers with exact multiplication
-    if ((abs(w - round(w)) < 1e-10) && abs(w)<30.0) { // w is essentially an integer, |w|<30
+    if ((abs(w - round(w)) < 1e-10) && abs(w)<33.0) { // w is essentially an integer, |w|<=32
         int k = int(round(w));
         
         // Handle negative integer powers
