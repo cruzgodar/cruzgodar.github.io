@@ -24,6 +24,8 @@
 	--link: color-mix(in srgb, var(--link-normal-contrast), var(--link-high-contrast) calc(var(--contrast) * 100%));
 	--link-hover: color-mix(in srgb, var(--link-hover-normal-contrast), var(--link-hover-high-contrast) calc(var(--contrast) * 100%));
 
+	--cap-min-color: color-mix(in srgb, rgb(48, 96, 255), rgb(48, 96, 255) calc(var(--theme) * 100%));
+
 
 
 	--gallery-color: rgb(176, 238, 173);
@@ -1243,31 +1245,31 @@ body > .WILSON_fullscreen-container .fps-canvas
 	transition: color .25s ease-out;
 }
 
-.text-box-container.capped-input-max .text-box
+.text-box.capped-input-max
 {
 	border-bottom: 2px solid rgb(192, 0, 0) !important;
 	color: rgb(192, 0, 0) !important;
 }
 
-.text-box-container.capped-input-max .text-box-subtext span
+.text-box.capped-input-max ~ .text-box-subtext span
 {
 	color: rgb(192, 0, 0) !important;
 	cursor: pointer;
 }
 
-.text-box-container.capped-input-min .text-box
+.text-box.capped-input-min
 {
-	border-bottom: 2px solid rgb(0, 0, 255) !important;
-	color: rgb(0, 0, 255) !important;
+	border-bottom: 2px solid var(--cap-min-color) !important;
+	color: var(--cap-min-color) !important;
 }
 
-.text-box-container.capped-input-min .text-box-subtext span
+.text-box.capped-input-min ~ .text-box-subtext span
 {
-	color: rgb(0, 0, 255) !important;
+	color: var(--cap-min-color) !important;
 	cursor: pointer;
 }
 
-.text-box-subtext .triangle
+.cap-triangle
 {
 	width: 0;
 	padding-left: 0;
@@ -1275,11 +1277,11 @@ body > .WILSON_fullscreen-container .fps-canvas
 	
 	font-size: 12px;
 	
-	transition: width .25s ease-out, opacity .25s ease-out, padding .25s ease-out, color .25s ease-out;
+	transition: width .25s ease-out, opacity .25s ease-out, padding .25s ease-out, color .25s ease-out !important;
 }
 
-.text-box-container.capped-input-max .body-text .triangle,
-.text-box-container.capped-input-min .body-text .triangle
+.text-box.capped-input-max ~ .text-box-subtext .cap-triangle,
+.text-box.capped-input-min ~ .text-box-subtext .cap-triangle
 {
 	width: 12px;
 	padding-left: 2px;
@@ -1414,6 +1416,8 @@ body > .WILSON_fullscreen-container .fps-canvas
 	width: 100%;
 	height: 2.5px;
 	border-radius: 2.5px;
+
+	transition: background 0.25s ease-out;
 }
 
 .slider-tick
@@ -1426,7 +1430,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	position: absolute;
 	top: 0px;
 
-	transition: top 0.125s ease-in-out, height 0.125s ease-in-out;
+	transition: top 0.125s ease-in-out, height 0.125s ease-in-out, background 0.25s ease-out;
 }
 
 .slider-thumb
@@ -1447,7 +1451,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	touch-action: none;
 	-webkit-user-select: none;
 
-	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out !important;
+	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out, border-color 0.25s ease-out !important;
 }
 
 .slider-thumb:active
@@ -1460,25 +1464,73 @@ body > .WILSON_fullscreen-container .fps-canvas
 	margin-left: 6px;
 }
 
-.slider-container p
+.slider-subtext
 {
 	text-align: center;
+	margin-top: 16px;
 	margin-bottom: 0 !important;
 	width: 100% !important;
 	user-select: none;
 	-webkit-user-select: none;
 	color: var(--normal-contrast);
-}
 
-.slider-subtext
-{
-	white-space: nowrap;
+	transition: color 0.25s ease-out;
 }
 
 .slider-subtext span
 {
+	text-align: center;
+}
+
+.slider-subtext .slider-value
+{
 	font-family: Menlo, Monaco, Consolas, monospace;
 	cursor: text;
+	text-align: center;
+}
+
+
+
+.slider-container.capped-input-max .slider-bar,
+.slider-container.capped-input-max .slider-tick
+{
+	background: rgb(192, 0, 0);
+}
+
+.slider-container.capped-input-max .slider-thumb
+{
+	border: 2.5px solid rgb(192, 0, 0);
+}
+
+.slider-container.capped-input-max .slider-subtext
+{
+	color: rgb(192, 0, 0);
+	cursor: pointer;
+}
+
+.slider-container.capped-input-min .slider-bar,
+.slider-container.capped-input-min .slider-tick
+{
+	background: var(--cap-min-color);
+}
+
+.slider-container.capped-input-min .slider-thumb
+{
+	border: 2.5px solid var(--cap-min-color);
+}
+
+.slider-container.capped-input-min .slider-subtext
+{
+	color: var(--cap-min-color);
+	cursor: pointer;
+}
+
+.slider-container.capped-input-max .cap-triangle,
+.slider-container.capped-input-min .cap-triangle
+{
+	width: 12px;
+	padding-left: 2px;
+	opacity: 1;
 }
 
 

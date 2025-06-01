@@ -107,7 +107,7 @@ export default function()
 
 	const speedSlider = new Slider({
 		element: $("#speed-slider"),
-		name: "Simulation Speed",
+		name: "Speed",
 		value: 1,
 		min: 0.5,
 		max: 3,

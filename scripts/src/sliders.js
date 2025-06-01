@@ -1,13 +1,12 @@
+import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
-import { InputElement } from "./inputElement.js";
-import { currentlyTouchDevice } from "./interaction.js";
 import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
 import { clamp } from "./utils.js";
 
 const trackWidth = 170;
 const thumbWidth = 24;
 
-export class Slider extends InputElement
+export class Slider extends CappedInputElement
 {
 	trackElement;
 	subtextElement;
@@ -48,7 +47,15 @@ export class Slider extends InputElement
 		persistState = true,
 		onInput = () => {}
 	}) {
-		super({ element, name });
+		super({
+			element,
+			name,
+			max: parseFloat(max),
+			min: parseFloat(min),
+			labelElement: element.nextElementSibling,
+			capClassElement: element.parentElement
+		});
+
 		this.subtextElement = this.element.nextElementSibling;
 		this.trackElement = this.element.previousElementSibling;
 
@@ -85,6 +92,7 @@ export class Slider extends InputElement
 
 		this.subtextElement.textContent = `${name}: `;
 		this.valueElement = document.createElement("span");
+		this.valueElement.classList.add("slider-value");
 		this.valueElement.textContent = this.displayValue;
 		this.lastValueElementTextContent = this.valueElement.textContent;
 		this.valueElement.setAttribute("contenteditable", "true");
@@ -107,6 +115,8 @@ export class Slider extends InputElement
 			setCaretPosition(this.valueElement, offset + offsetAdjustment);
 
 			this.setValue(parseFloat(this.valueElement.textContent), true, false);
+
+			this.updatePersistedState();
 		});
 
 		this.valueElement.addEventListener("blur", () =>
@@ -114,12 +124,16 @@ export class Slider extends InputElement
 			if (this.valueElement.textContent === "")
 			{
 				this.setValue(this.defaultValue, true);
+
+				this.updatePersistedState();
 			}
+
+			this.updateCaps();
 		});
 
-		
+		this.setCap();
 
-		this.subtextElement.style.marginTop = currentlyTouchDevice ? "16px" : "12px";
+		
 
 		addHoverEventWithScale({
 			element: this.element,
@@ -285,36 +299,41 @@ export class Slider extends InputElement
 		}
 	}
 
-
-
 	onEndDrag()
 	{
 		if (this.currentlyDragging)
 		{
 			this.onReleaseThumb();
 
-			if (this.persistState)
-			{
-				const searchParams = new URLSearchParams(window.location.search);
-
-				if (this.value !== undefined)
-				{
-					searchParams.set(
-						this.element.id,
-						encodeURIComponent(this.value)
-					);
-				}
-
-				const string = searchParams.toString();
-
-				window.history.replaceState(
-					{ url: pageUrl },
-					"",
-					pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
-				);
-			}
+			this.updatePersistedState();
 		}
 	}
+
+	updatePersistedState()
+	{
+		if (this.persistState)
+		{
+			const searchParams = new URLSearchParams(window.location.search);
+
+			if (this.value !== undefined)
+			{
+				searchParams.set(
+					this.element.id,
+					encodeURIComponent(this.value)
+				);
+			}
+
+			const string = searchParams.toString();
+
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+			);
+		}
+	}
+
+
 
 	// Sets the value using a proportion between 0 and 1.
 	setRawValue(newValue)
@@ -358,6 +377,22 @@ export class Slider extends InputElement
 	setValue(newValue, callOnInput = false, updateValueElement = true)
 	{
 		this.value = newValue;
+
+		if (this.value >= this.max && !uncapEverything)
+		{
+			this.value = this.max;
+		}
+
+		else if (this.value <= this.min && !uncapEverything)
+		{
+			this.value = this.min;
+		}
+
+		else
+		{
+			this.capClassElement.classList.remove("capped-input-max");
+			this.capClassElement.classList.remove("capped-input-min");
+		}
 
 		const sliderProportion = this.logarithmic
 			? (Math.log(this.value) - this.logMin) / (this.logMax - this.logMin)
@@ -414,35 +449,47 @@ export class Slider extends InputElement
 	}
 }
 
-function getCaretCharacterOffsetWithin(el) {
+function getCaretCharacterOffsetWithin(el)
+{
 	const sel = window.getSelection();
+
 	let charCount = 0;
-	if (sel.anchorNode && el.contains(sel.anchorNode)) {
+
+	if (sel.anchorNode && el.contains(sel.anchorNode))
+	{
 		const range = sel.getRangeAt(0);
 		const preRange = range.cloneRange();
 		preRange.selectNodeContents(el);
 		preRange.setEnd(range.startContainer, range.startOffset);
 		charCount = preRange.toString().length;
 	}
+
 	return charCount;
 }
 
-function setCaretPosition(el, offset) {
+function setCaretPosition(el, offset)
+{
 	const range = document.createRange();
 	const sel = window.getSelection();
 	let charCount = 0;
 
 	const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+
 	let node;
-	while ((node = walker.nextNode())) {
+
+	while ((node = walker.nextNode()))
+	{
 		const nextCharCount = charCount + node.length;
-		if (offset <= nextCharCount) {
+
+		if (offset <= nextCharCount)
+		{
 			range.setStart(node, offset - charCount);
 			range.collapse(true);
 			sel.removeAllRanges();
 			sel.addRange(range);
 			return;
 		}
+		
 		charCount = nextCharCount;
 	}
 }
