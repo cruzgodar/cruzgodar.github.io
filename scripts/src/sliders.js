@@ -378,6 +378,11 @@ export class Slider extends CappedInputElement
 	{
 		this.value = newValue;
 
+		if (isNaN(this.value))
+		{
+			this.value = this.defaultValue;
+		}
+
 		if (this.value >= this.max && !uncapEverything)
 		{
 			this.value = this.max;
