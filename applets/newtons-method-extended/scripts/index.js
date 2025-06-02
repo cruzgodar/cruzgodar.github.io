@@ -3,7 +3,6 @@ import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js"
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
@@ -37,15 +36,6 @@ export default function()
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution
-	});
-
-	const derivativePrecisionSlider = new Slider({
-		element: $("#derivative-precision-slider"),
-		name: "Derivative Precision",
-		value: 6,
-		min: 3,
-		max: 20,
-		onInput: onSliderInput
 	});
 
 	const examples =
@@ -103,20 +93,5 @@ export default function()
 		glslTextarea.setValue(examples[examplesDropdown.value]);
 
 		run();
-	}
-
-	function onSliderInput()
-	{
-		applet.derivativePrecision = derivativePrecisionSlider.value;
-
-		applet.wilson.setUniforms({
-			derivativePrecision: applet.derivativePrecision
-		});
-
-		applet.wilsonHidden.setUniforms({
-			derivativePrecision: applet.derivativePrecision
-		});
-
-		applet.needNewFrame = true;
 	}
 }

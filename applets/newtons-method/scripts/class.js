@@ -1,4 +1,4 @@
-import { hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
+import { getFloatGlsl, hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -43,7 +43,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 		rootSetterElement,
 		rootAInput,
 		rootBInput,
-		colorSetterElement
+		colorSetterElement,
+		derivativePrecision = 10
 	}) {
 		super(canvas);
 
@@ -93,7 +94,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 			uniform float secantProportion;
 			
-			const float derivativePrecision = 6.0;
+			const float derivativePrecision = ${getFloatGlsl(derivativePrecision)};
 			
 			const float threshhold = .05;
 			
@@ -170,7 +171,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 cderiv(vec2 z)
 			{
-				return derivativePrecision * (cpoly(z + vec2(1.0 / (2.0*derivativePrecision), 0.0)) - cpoly(z - vec2(1.0 / (2.0*derivativePrecision), 0.0)));
+				return 1.0 / 12.0 * derivativePrecision * (
+					-cpoly(z + vec2(2.0 / derivativePrecision, 0.0))
+					+ 8.0 * cpoly(z + vec2(1.0 / derivativePrecision, 0.0))
+					- 8.0 * cpoly(z - vec2(1.0 / derivativePrecision, 0.0))
+					+ cpoly(z - vec2(2.0 / derivativePrecision, 0.0))
+				);
 			}
 
 

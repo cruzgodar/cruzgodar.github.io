@@ -25,8 +25,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	resolution = 500;
 	resolutionHidden = 100;
 
-	derivativePrecision = 6;
-
 	colors;
 
 
@@ -105,7 +103,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			uniform vec2 worldCenter;
 			uniform vec2 worldSize;
 			
-			uniform float derivativePrecision;
+			const float derivativePrecision = 20.0;
 			
 			uniform vec3 color0;
 			uniform vec3 color1;
@@ -137,7 +135,12 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 cderiv(vec2 z)
 			{
-				return derivativePrecision * (f(z + vec2(1.0 / (2.0*derivativePrecision), 0.0)) - f(z - vec2(1.0 / (2.0*derivativePrecision), 0.0)));
+				return 1.0 / 12.0 * derivativePrecision * (
+					-f(z + vec2(2.0 / derivativePrecision, 0.0))
+					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0))
+					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0))
+					+ f(z - vec2(2.0 / derivativePrecision, 0.0))
+				);
 			}
 			
 			
@@ -208,7 +211,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				derivativePrecision: this.derivativePrecision,
 				color0: [this.colors[0], this.colors[1], this.colors[2]],
 				color1: [this.colors[3], this.colors[4], this.colors[5]],
 				color2: [this.colors[6], this.colors[7], this.colors[8]],
@@ -225,7 +227,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				derivativePrecision: this.derivativePrecision,
 				color0: [this.colors[0], this.colors[1], this.colors[2]],
 				color1: [this.colors[3], this.colors[4], this.colors[5]],
 				color2: [this.colors[6], this.colors[7], this.colors[8]],

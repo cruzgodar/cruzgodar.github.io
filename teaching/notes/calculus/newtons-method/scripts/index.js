@@ -1,11 +1,11 @@
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosGreen,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosGreen,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -55,7 +55,9 @@ export default function()
 
 	const outputCanvas = $("#newtons-method-canvas");
 
-	const applet = new NewtonsMethod({ canvas: outputCanvas });
+	const applet = new NewtonsMethod({
+		canvas: outputCanvas,
+	});
 
 	applet.pauseWhenOffscreen();
 }
