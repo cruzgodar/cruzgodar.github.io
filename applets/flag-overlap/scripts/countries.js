@@ -38,7 +38,7 @@ export const allCountryNames = {
 	cm: ["Cameroon"],
 	ca: ["Canada"],
 	ky: ["The Cayman Islands"],
-	cf: ["The Central African Republic"],
+	cf: ["The Central African Republic", "CAR"],
 	td: ["Chad"],
 	cl: ["Chile"],
 	cn: ["China"],
