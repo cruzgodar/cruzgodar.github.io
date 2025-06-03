@@ -26,7 +26,7 @@ const CONNECTOR = 3;
 
 const shorthands = {
 	"0": "(λfλxx)",
-	"F": "(λfλxx)",
+	"F": "(λxλyy)",
 	"1": "(λfλxf(x))",
 	"2": "(λfλxf(f(x)))",
 	"3": "(λfλxf(f(f(x))))",
@@ -38,7 +38,7 @@ const shorthands = {
 	"9": "(λfλxf(f(f(f(f(f(f(f(f(x))))))))))",
 
 	">": "(λnλfλxf(nf(x)))",
-	"<": "(λnλfλxn(λgλhh(gf))(λux)(λuu))",
+	"<": "(λnλfλxn(λgλhh(gf))(λux)I)",
 
 	"I": "(λxx)",
 	"K": "(λxλyx)",
@@ -48,11 +48,11 @@ const shorthands = {
 
 	"_": "(λnn(λxF)T)",
 
-	"!": "(λxxFT)",
-	"&": "(λxλyxyF)",
-	"|": "(λxλyxTy)",
+	"!": "(λbbFT)",
+	"&": "(λbλccbF)",
+	"|": "(λbλcbTc)",
 
-	",": "(λxλyλzzxy)",
+	",": "(λxλyλiixy)",
 	"'": "(λpp(λxλyx))",
 	"\"": "(λpp(λxλyy))",
 
@@ -103,7 +103,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 	async run({
 		expression: expressionString,
 		expandShorthands = false,
-		betaReduce = false
+		betaReduce = false,
+		maxBetaReductions = Infinity
 	}) {
 		if (this.needReload)
 		{
@@ -140,12 +141,12 @@ export class LambdaCalculus extends AnimationFrameApplet
 			{
 				const expression = this.parseExpression(expressionString, true);
 				this.setupExpression(expression);
-				this.animateIteratedBetaReduction(expression);
+				this.animateIteratedBetaReduction(expression, maxBetaReductions);
 			}
 
 			else
 			{
-				this.animateIteratedBetaReduction(expression);
+				this.animateIteratedBetaReduction(expression, maxBetaReductions);
 			}
 		}
 
@@ -552,7 +553,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rects = [
 				{
 					type: LAMBDA,
-					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+					color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
 					row: expression.row,
 					col: expression.col,
 					width: expression.width,
@@ -588,7 +589,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			// Vertical connecting bars up to the function and input.
 			const functionConnector = {
 				type: CONNECTOR,
-				color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+				color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
 				col: expression.col + 1,
 				width: 1,
 			};
@@ -624,7 +625,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			const inputConnector = {
 				type: CONNECTOR,
-				color: `rgb(${rgb2[0]}, ${rgb2[1]}, ${rgb2[2]})`,
+				color: `rgb(${Math.round(rgb2[0])}, ${Math.round(rgb2[1])}, ${Math.round(rgb2[2])})`,
 				col: expression.col + expression.function.width + 2,
 				width: 1,
 			};
@@ -659,7 +660,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				// The connecting bar almost at the bottom.
 				{
 					type: APPLICATION,
-					color: `rgb(${rgb3[0]}, ${rgb3[1]}, ${rgb3[2]})`,
+					color: `rgb(${Math.round(rgb3[0])}, ${Math.round(rgb3[1])}, ${Math.round(rgb3[2])})`,
 					row: expression.row + expression.height - 2,
 					// Adjust to ensure we're connecting exactly to the function and inputs.
 					col: expression.col + 1,
@@ -700,7 +701,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rects = [
 				{
 					type: LITERAL,
-					color: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+					color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
@@ -855,7 +856,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		{
 			const color = expression.bindingLambda.literalColor;
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
 
 			const valueText = useForSelfInterpreter
 				? `λa.λb.λc.${expression.valueText}`
@@ -881,11 +882,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 				literalColor.s,
 				literalColor.v * valueFactor
 			);
-			const literalRgbString = `rgb(${literalRgb[0]}, ${literalRgb[1]}, ${literalRgb[2]})`;
+			const literalRgbString = `rgb(${Math.round(literalRgb[0])}, ${Math.round(literalRgb[1])}, ${Math.round(literalRgb[2])})`;
 
 			const color = expression.color;
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-			const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
 
 			const lambdaText = useForSelfInterpreter
 				? `λa.λb.λc.c(λ${expression.argumentText}.`
@@ -927,7 +928,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const color = expression.color;
 		const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-		const rgbString = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
 
 		const applicationString = useForSelfInterpreter
 			? `λa.λb.λc.b(${functionString}${inputString})`
@@ -1516,7 +1517,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-	async animateIteratedBetaReduction(expression)
+	async animateIteratedBetaReduction(expression, maxBetaReductions)
 	{
 		this.animationRunning = true;
 
@@ -1528,7 +1529,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		let collapsedExpressionString = expressionString.replaceAll(/a-zA-Z/g, "x")
 			.replaceAll(/\(\)/g, "");
 
-		outerLoop: for (;;)
+		outerLoop: for (let i = 0; i < maxBetaReductions; i++)
 		{
 			const betaReductions = this.listAllBetaReductions(expression).map(reduction =>
 			{

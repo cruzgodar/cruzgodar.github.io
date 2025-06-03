@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Turing Complete Lines: An Introduction to Lambda Calculus</title>
+
+	<meta property="og:title" content="Turing Complete Lines: An Introduction to Lambda Calculus"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://cruzgodar.com/slides/turing-complete-lines/"/>
+	<meta property="og:image" content="https://cruzgodar.com/slides/turing-complete-lines/cover.webp"/>
+	<meta property="og:locale" content="en_US"/>
+	<meta property="og:site_name" content="Cruz Godar"/>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#181818">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" as="font">
+
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+	<div id="lapsa-slide-container">
+		<div id="title" class="medium-canvas">
+			<h1>Turing Complete Lines: An Introduction to Lambda Calculus</h1>
+			
+			<h2>Cruz Godar</h2>
+			
+			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+
+			<div id="canvas-bundle" style="opacity: 0">
+				<canvas id="output-canvas"></canvas>
+			</div>
+		</div>
+
+		<div>
+			<h1>What's in a Language?</h1>
+
+			<p class="build">A programming language is a syntax that tells a computer what instructions to execute.</p>
+
+			<p class="build">While many, <em>many</em> languages exist, the choice between them is largely stylistic: almost all languages are <dfn>Turing-complete</dfn>, meaning the set of problems they can solve are equal.</p>
+
+			<p class="build">Informally, a language is Turing-complete if it can compute any function whose values are expressible in terms of an algorithm.</p>
+		</div>
+
+		<div>
+			<h1>Why so Small?</h1>
+
+			<p class="build">By understanding extremely minimal Turing-complete languages, we can therefore better understand programming in general.</p>
+
+			<p class="build">They're pretty impractical to ever actually use, but their simplicity also makes them fun to explore, like Peano arithmetic for computer science.</p>
+		</div>
+
+		<div>
+			<h1>Branching</h1>
+
+			<p class="build">Traditionally, a Turing-complete language includes the ability to branch: what we think of as <code>if</code> statements.</p>
+
+			<p class="build">If we're interested in making a tiny grammar for a language, though, we can get away with much less: <em>recursion</em>.</p>
+
+			<p class="build">This is a small part of a fundamental difference in languages, which exist on a spectrum from <dfn>imperative</dfn>, where code tells the computer what to do, to <dfn>functional</dfn>, where code tells the computer how to do things.</p>
+		</div>
+
+		<div>
+			<h1>Iterative Algorithms</h1>
+
+			<div class="build">
+				<p>For example, we could define a factorial function iteratively vs. recursively as</p>
+
+				<div style="display: flex; justify-content: center; width: 100%; column-gap: calc(4 * var(--vl))">
+					<pre><code>function factorial(n)
+{
+    let product = 1;
+
+    for (let i = 1; i &lt;= n; i++)
+    {
+        product *= i;
+    }
+
+    return product;
+}</code></pre> <pre><code>function factorial(n)
+{
+    if (n === 0)
+    {
+        return 1;
+    }
+
+    return n * factorial(n - 1);
+}</code></pre>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<h1>Lambdas</h1>
+
+			<p class="build">Introduced by Alonzo Church in 1936, lambda calculus is an extremely barebones language for expressing functions.</p>
+
+			<p class="build">Let's start with functions, since we need those to do recursion. We write these as <code>λx.E</code>: the <code>λ</code> is a formal symbol that indicates a function, <code>x</code> is its argument, and the return value is <code>E</code>.</p>
+
+			<p class="build">For example, <code>λx.x</code> is the identity function.</p>
+
+			<p class="build"><code>λx.λy.x</code> takes in <code>x</code> and returns a function that takes in an argument <code>y</code>, discards it, and returns <code>x</code>.</p>
+		</div>
+
+		<div>
+			<h1>Beta Reduction</h1>
+
+			<p class="build">The other thing we need to do with functions is plug things into them, which we indicate by (left-associative) juxtaposition.</p>
+
+			<p class="build"><code>(λx.E)y</code> means we plug <code>y</code> into the function <code>λx.E</code>.</p>
+
+			<p class="build">To actually perform the evaluation, we define an equivalence relation on lambda expressions, with the process of evaluating an expression known as <dfn>beta reduction</dfn>.</p>
+
+			<p class="build">If <code>E</code> and <code>y</code> are lambda expressions, then <code>(λx.E)y</code> can be beta reduced to <code>E</code> with every <code>x</code> replaced by a <code>y</code>. We write <code>E ≡ F</code> for expressions that can both beta reduce to the same expression.</p>
+		</div>
+
+		<div>
+			<h1>Diagrams</h1>
+
+			<p class="build">Lambda diagrams have a beautiful visual representation, introduced by John Tromp and defined recursively.</p>
+
+			<p class="build">A lambda like <code>λx.E</code> is represented by a horizontal line over the diagram for <code>E</code>.</p>
+
+			<p class="build">A variable like <code>x</code> is represented by a vertical line drawn down from its binding lambda's horizontal line. An expression <code>E</code> used in an evaluation is represented by a vertical line drawn down from its expression's diagram.</p>
+
+			<p class="build">An evaluation like <code>EF</code> is represented by connecting the vertical lines for <code>E</code> and <code>F</code> with a horizontal line.</p>
+		</div>
+
+		<div id="diagrams" class="large-canvas">
+			<p>Ex: the diagram for <code><span style="color: rgb(255, 76, 76)">(</span><span style="color: rgb(255, 51, 51)">λx.</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 76, 76)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code>.</p>
+		</div>
+
+		<div id="betaReduction" class="medium-canvas">
+			<p>Ex: beta reducing an expression.</p>
+
+			<p class="left-text"><code><span style="color: rgb(255, 76, 76)">(</span><span style="color: rgb(255, 51, 51)">λx.</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 76, 76)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code></p>
+
+			<p class="build left-text"><code><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code></p>
+
+			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
+
+			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λy.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">y</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
+
+			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 255, 51)">λy.</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(51, 255, 51)">y</span></code></p>
+		</div>
+
+		<div>
+			<h1>Constants</h1>
+
+			<p class="build">At this point, we might expect to start introducing formal constants that represent numbers, booleans, and so on, but the magic of lambda calculus is that we can represent <em>all</em> of these with irreducible lambda expressions.</p>
+
+			<p class="build">At this point, we might expect to start introducing formal constants that represent numbers, booleans, and so on, but the magic of lambda calculus is that we can represent <em>all</em> of these with more lambda expressions.</p>
+		</div>
+
+		<div>
+			<h1>Booleans</h1>
+
+			<p class="build">By conventions, booleans are two-argument <em>selector functions</em>: true is <code>T := λx.λy.x</code> and false is <code>F := λx.λy.y</code>. We can build up boolean operators from these.</p>
+
+			<p class="build">Not: <code>! := λb.bFT</code></p>
+
+			<p class="build">And: <code>& := λb.λc.bcF</code></p>
+
+			<p class="build">Or: <code>| := λb.λc.bTc</code></p>
+		</div>
+
+		<div id="booleans" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(255, 155, 89)">&amp;</span><span style="color: rgb(137, 255, 51)">T</span><span style="color: rgb(168, 110, 255)">(</span><span style="color: rgb(89, 255, 176)">|</span><span style="color: rgb(150, 96, 255)">(</span><span style="color: rgb(89, 98, 255)">!</span><span style="color: rgb(201, 51, 255)">F</span><span style="color: rgb(150, 96, 255)">)</span><span style="color: rgb(255, 51, 180)">F</span><span style="color: rgb(168, 110, 255)">)</span> ≡ <span style="color: rgb(137, 255, 51)">T</span></code>.</p>
+		</div>
+
+		<div>
+			<h1>Church Numerals</h1>
+
+			<p class="build">We represent nonnegative integers by repeated composition: for example, <code>3 := λf.λx.f(f(f(x)))</code>.</p>
+
+			<p class="build">These are more complicated to work with, but we can begin with a function that tests if a number is zero: <code>_ := λn.n(λx.F)T</code>.</p>
+
+			<p class="build">Successor: <code>&gt; := λn.λf.λx.f(nf(x))</code></p>
+
+			<p class="build">The predecessor operator <code>&lt;</code> is <em>much</em> more complicated, since there isn't a natural way to undo function application. We'll get to it later if there's time.</p>
+		</div>
+
+		<div>
+			<h1>Arithmetic</h1>
+
+			<p class="build">Addition: <code>+ := λa.λb.λf.λx.(af)(bfx)</code>.</p>
+
+			<p class="build">Multiplication: <code>* := λa.λb.λf.b(af)</code>.</p>
+
+			<p class="build">Exponentiation: <code>^ := λa.λb.ba</code>.</p>
+		</div>
+
+		<div id="addition" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(250, 255, 108)">+</span><span style="color: rgb(96, 150, 255)">3</span><span style="color: rgb(255, 99, 223)">4</span> ≡ <span style="color: rgb(255, 204, 51)">7</span></code>.</p>
+		</div>
+
+		<div id="multiplication" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(255, 231, 89)">*</span><span style="color: rgb(96, 204, 255)">3</span><span style="color: rgb(255, 99, 241)">4</span> ≡ <span style="color: rgb(255, 51, 51)">12</span></code>.</p>
+		</div>
+
+		<div id="exponentiation" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(255, 166, 76)">^</span><span style="color: rgb(96, 255, 235)">3</span><span style="color: rgb(245, 99, 255)">4</span> ≡ <span style="color: rgb(51, 51, 255)">81</span></code>.</p>
+		</div>
+
+		<div>
+			<h1>Recursion</h1>
+
+			<p class="build">Let's try to define the factorial function <code>f</code>:</p>
+
+			<p class="build"><code>f := λn._(&lt;n)1(*n(f(&lt;n)))</code></p>
+
+			<p class="build">Unfortunately, this definition is recursive and therefore not a valid lambda expression.</p>
+
+			<div class="build">
+				<p>To get around this, we can use a tool called the <dfn>Y combinator:</dfn></p>
+				<p><code>Y := λf.(λx.f(xx))(λx.f(xx))</code></p>.
+			</div>
+		</div>
+
+		<div>
+			<p>For any expression <code>g</code>,</p>
+<pre><code>Yg = (λf.(λx.f(xx))(λx.f(xx)))g</code>
+
+<code>   ≡ (λx.g(xx))(λx.g(xx))</code>
+
+<code>   ≡ g((λx.g(xx))(λx.g(xx)))</code>
+
+<code>   = g(Yg)</code>
+
+<code>   ≡ g(g(Yg))</code>
+
+<code>   ≡ g(g(g(Yg))) ≡ ...</code></pre> <div class="lapsa-padding-bottom"></div>
+
+			<p class="build">Now <code>Yλf.λn._(&lt;n)1(*n(f(&lt;n)))</code> <em>is</em> the factorial function!</p>
+		</div>
+
+		<div id="factorial" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(255, 158, 254)">(</span><span style="color: rgb(255, 148, 115)">Y</span><span style="color: rgb(255, 51, 166)">λf.</span><span style="color: rgb(255, 51, 204)">λn.</span><span style="color: rgb(227, 255, 89)">_</span><span style="color: rgb(101, 133, 255)">(</span><span style="color: rgb(100, 255, 152)">&lt;</span><span style="color: rgb(255, 51, 204)">n</span><span style="color: rgb(101, 133, 255)">)</span><span style="color: rgb(76, 238, 255)">1</span><span style="color: rgb(228, 124, 255)">(</span><span style="color: rgb(89, 162, 255)">*</span><span style="color: rgb(255, 51, 204)">n</span><span style="color: rgb(255, 102, 228)">(</span><span style="color: rgb(255, 51, 166)">f</span><span style="color: rgb(242, 101, 255)">(</span><span style="color: rgb(190, 100, 255)">&lt;</span><span style="color: rgb(255, 51, 204)">n</span><span style="color: rgb(242, 101, 255)">)</span><span style="color: rgb(255, 102, 228)">)</span><span style="color: rgb(228, 124, 255)">)</span><span style="color: rgb(255, 158, 254)">)</span><span style="color: rgb(255, 99, 130)">3</span> ≡ <span style="color: rgb(51, 255, 255)">6</span></code>.</p>
+		</div>
+
+		<div>
+			<h1>Iterative Methods</h1>
+
+			<p class="build">Unfortunately, recursion is slow and kind of awful. We can improve it with an iterative design, much closer to a <code>for</code> loop.</p>
+
+			<p class="build">The design <code>(λn.n(λg.λa.λb.g(>a)(*ab))(λa.λb.b)11)4</code> looks bad, but isn't terrible if we explain it in symbols: if we let <code>L := λg.λa.λb.g(>a)(*ab)</code>, then</p>
+
+			<p class="build">$$\begin{align*} L(g) &= (a, b) \mapsto g(a + 1, ab) \\ L(L(g)) &= (a, b) \mapsto L(g)(a + 1, ab) \\ &= (a, b) \mapsto g(a + 2, (a+1)ab) \end{align*}$$</p>
+		</div>
+
+		<div>
+			<p>The loop design iterates <code>L</code> a total of <code>n</code> times, and then sets <code>g = λa.λb.b</code>, which extracts the second argument of the pair. The result is a function</p>
+
+			<p>$$(a, b) \mapsto (a + n)(a + n - 1)\cdots(a + 1)ab,$$</p>
+
+			<p>and we finally set $a = b = 1$.</p>
+		</div>
+
+		<div id="betterFactorial" class="large-canvas">
+			<p>Ex: <code><span style="color: rgb(123, 170, 255)">(</span><span style="color: rgb(255, 51, 255)">λn.</span><span style="color: rgb(255, 51, 255)">n</span><span style="color: rgb(131, 255, 125)">(</span><span style="color: rgb(51, 255, 187)">λg.</span><span style="color: rgb(51, 255, 119)">λa.</span><span style="color: rgb(51, 255, 51)">λb.</span><span style="color: rgb(51, 255, 187)">g</span><span style="color: rgb(206, 255, 99)">(</span><span style="color: rgb(255, 142, 96)">&gt;</span><span style="color: rgb(51, 255, 119)">a</span><span style="color: rgb(206, 255, 99)">)</span><span style="color: rgb(112, 255, 99)">(</span><span style="color: rgb(200, 255, 89)">*</span><span style="color: rgb(51, 255, 119)">a</span><span style="color: rgb(51, 255, 51)">b</span><span style="color: rgb(112, 255, 99)">)</span><span style="color: rgb(131, 255, 125)">)</span><span style="color: rgb(51, 255, 255)">(</span><span style="color: rgb(51, 187, 255)">λa.</span><span style="color: rgb(51, 255, 255)">λb.</span><span style="color: rgb(51, 255, 255)">b</span><span style="color: rgb(51, 255, 255)">)</span><span style="color: rgb(76, 106, 255)">1</span><span style="color: rgb(166, 76, 255)">1</span><span style="color: rgb(123, 170, 255)">)</span><span style="color: rgb(255, 99, 154)">4</span> ≡ <span style="color: rgb(255, 255, 51)">24</span></code>.</p>
+		</div>
+
+		<div>
+			<p>To close out, here's a function I designed that computes $a \uparrow^n b$:</p>
+
+			<pre><code>Yλf.λn.λa.λb.
+(
+    _(&lt;n)
+    (
+        ba
+    )
+    (
+        ( (&lt;b) (λg.λc.λd.gc(f(&lt;n)cd)) ) (λc.λd.d) a a
+    )
+)</code></pre>
+		</div>
+
+		<div id="upArrows" class="large-canvas">
+			<p>Ex: $2 \uparrow \uparrow 3 = 16$.</p>
+		</div>
+
+		<div style="display: flex; flex-direction: column; justify-content: center">
+			<h1 style="text-align: center">Thank You!</h1>
+		</div>
+	</div>
+
+	<script>
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>

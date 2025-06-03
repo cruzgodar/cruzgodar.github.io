@@ -1814,6 +1814,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/slides/turing-complete-lines",
 			"/slides/dissertation-defense",
 			"/slides/light-shadow-world-of-nails",
 			"/slides/marys-3-manifold",
@@ -1823,6 +1824,15 @@ export const sitemap =
 		]
 	},
 		
+	"/slides/turing-complete-lines":
+	{
+		"title": "Turing Complete Lines: An Introduction to Lambda Calculus",
+		
+		"parent": "/slides",
+		
+		"children": []
+	},
+	
 	"/slides/dissertation-defense":
 	{
 		"title": "Dissertation Defense",

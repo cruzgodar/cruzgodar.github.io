@@ -56,9 +56,9 @@ I learned about these diagrams from the YouTuber <a href="https://www.youtube.co
 
 	`T`: the function `λx.λy.x`, used as the boolean value `true`.
 	`F`: the function `λx.λy.y`, used as the boolean value `false`.
-	`!`: the boolean negation operator `λx.xFT`.
-	`&`: the boolean and operator `λx.λy.xyF`.
-	`|`: the boolean or operator `λx.λy.xTy`.
+	`!`: the boolean negation operator `λb.bFT`.
+	`&`: the boolean and operator `λb.λc.bcF`.
+	`|`: the boolean or operator `λb.λc.bTc`.
 	
 	- - -
 
@@ -75,7 +75,7 @@ I learned about these diagrams from the YouTuber <a href="https://www.youtube.co
 	- - -
 
 	`I`: The identity function `λx.x`.
-	`T` or `K`: The first-argument function `λx.λy.x`, also used as the boolean value `true`.
+	`K`: The first-argument function `λx.λy.x`, also used as the boolean value `true`.
 	`S`: The substitution operator `λx.λy.λz.(xz)(yz)`.
 	`Y`: The Y combinator `λf.(λx.f(xx))(λx.f(xx))`, used to implement recursion.
 

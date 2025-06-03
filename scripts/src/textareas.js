@@ -96,6 +96,19 @@ export class Textarea extends InputElement
 		this.overlayElement.style.left = this.element.offsetLeft + "px";
 
 		this.element.style.height = this.element.scrollHeight + "px";
+
+		// Remove empty elements.
+		setTimeout(() =>
+		{
+			const elements = Array.from(this.overlayElement.children);
+
+			const removables = elements.filter(element => !element.textContent);
+
+			for (const element of removables)
+			{
+				element.remove();
+			}
+		}, 50);
 	}
 
 	inputCallback()

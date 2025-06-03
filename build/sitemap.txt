@@ -163,6 +163,7 @@ home Cruz Godar
 		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
 	slides Slides
+		turing-complete-lines Turing Complete Lines: An Introduction to Lambda Calculus
 		dissertation-defense Dissertation Defense
 		light-shadow-world-of-nails Light, Shadow, and a World of Nails
 		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization

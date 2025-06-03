@@ -184,7 +184,7 @@ export default function()
 		const [html, text] = await applet.run({
 			expression: expressionTextarea.value,
 			expandShorthands: expandShorthandsCheckbox.checked,
-			betaReduce
+			betaReduce,
 		});
 
 		expressionTextarea.setValue(text);
