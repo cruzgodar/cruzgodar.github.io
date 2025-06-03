@@ -22,6 +22,20 @@ export default async function()
 		persistState: false
 	});
 
+	const guessSelectorInput = $("#guess-selector-input");
+	const countryList = $("#country-list");
+
+	for (const country of ["ad"])
+	{
+		const option = document.createElement("div");
+		option.classList.add("country-list-item");
+		// TODO: add thumbnails
+		option.innerHTML = `
+			<img src="graphics/flags/${country}.png">
+			<p>${country}</p>
+		`;
+	}
+
 	const replayButton = new Button({
 		element: $("#replay-button"),
 		name: "Play Again",

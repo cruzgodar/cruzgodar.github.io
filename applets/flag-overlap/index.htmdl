@@ -11,6 +11,9 @@
 		<div class="text-box-container">
 			<input id="guess-selector-input" class="text-box" type="text" value="" tabindex="1" placeholder="Enter a country">
 		</div>
+		<div id="country-list">
+			
+		</div>
 	</div>
 </div>
 

@@ -118,12 +118,51 @@
 {
 	width: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	row-gap: 16px;
 }
 
 #guess-selector .text-box-container
 {
 	width: 100%;
 	max-width: 300px;
+}
+
+#country-list
+{
+	width: 100%;
+	max-width: 300px;
+	max-height: min(600px, 75vh);
+	overflow-y: auto;
+}
+
+.country-list-item
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	cursor: pointer;
+}
+
+.country-list-item img
+{
+	height: 16px;
+	border-radius: 2px;
+	border: 2px solid var(--normal-contrast);
+}
+
+.country-list-item p
+{
+	
+}
+
+@media (max-aspect-ratio: 1 / 1), (max-width: 750px)
+{
+	#canvas-landscape-middle
+	{
+		margin-top: 32px;
+	}
 }
