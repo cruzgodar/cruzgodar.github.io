@@ -19,9 +19,9 @@ async function reset({ slide, duration, forward })
 
 	if (!forward)
 	{
-		await build0({ slide, duration: 300, forward: true });
 		await build1({ slide, duration: 300, forward: true });
 		await build3({ slide, duration: 300, forward: true });
+		await build6({ slide, duration: 300, forward: true });
 	}
 
 	await changeOpacity({
@@ -31,7 +31,7 @@ async function reset({ slide, duration, forward })
 	});
 }
 
-async function build0({ duration = 1500, forward })
+async function build1({ duration = 1500, forward })
 {
 	if (!forward)
 	{
@@ -79,7 +79,7 @@ async function build0({ duration = 1500, forward })
 	return promise;
 }
 
-async function build1({ duration = 1500, forward })
+async function build3({ duration = 1500, forward })
 {
 	if (!forward)
 	{
@@ -126,7 +126,7 @@ async function build1({ duration = 1500, forward })
 	return promise;
 }
 
-async function build3({ duration = 1500, forward })
+async function build6({ duration = 1500, forward })
 {
 	if (!forward)
 	{
@@ -176,7 +176,7 @@ async function build3({ duration = 1500, forward })
 export const betaReductionBuilds =
 {
 	reset,
-	0: build0,
 	1: build1,
-	3: build3
+	3: build3,
+	6: build6
 };

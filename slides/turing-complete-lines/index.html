@@ -50,7 +50,7 @@
 
 			<p class="build">A programming language is a syntax that tells a computer what instructions to execute.</p>
 
-			<p class="build">While many, <em>many</em> languages exist, the choice between them is largely stylistic: almost all languages are <dfn>Turing-complete</dfn>, meaning the set of problems they can solve are equal.</p>
+			<p class="build">While many, <em>many</em> languages exist, the choice between them is largely stylistic: almost all languages are <dfn>Turing-complete</dfn>, meaning the sets of problems they can solve are equal.</p>
 
 			<p class="build">Informally, a language is Turing-complete if it can compute any function whose values are expressible in terms of an algorithm.</p>
 		</div>
@@ -148,11 +148,11 @@
 
 			<p class="left-text"><code><span style="color: rgb(255, 76, 76)">(</span><span style="color: rgb(255, 51, 51)">λx.</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 51, 51)">x</span><span style="color: rgb(255, 76, 76)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code></p>
 
-			<p class="build left-text"><code><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code></p>
+			<p data-build="0" class="left-text"><code><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span></code></p>
 
-			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
+			<p data-build="2" class="left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
 
-			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λy.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">y</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
+			<p data-build="4" class="left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(76, 255, 255)">(</span><span style="color: rgb(51, 51, 255)">λf.</span><span style="color: rgb(51, 255, 51)">λy.</span><span style="color: rgb(51, 51, 255)">f</span><span style="color: rgb(51, 255, 51)">y</span><span style="color: rgb(76, 255, 255)">)</span><span style="color: rgb(51, 255, 51)">x</span></code></p>
 
 			<p class="build left-text"><code><span style="color: rgb(51, 255, 51)">λx.</span><span style="color: rgb(51, 255, 51)">λy.</span><span style="color: rgb(51, 255, 51)">x</span><span style="color: rgb(51, 255, 51)">y</span></code></p>
 		</div>
@@ -161,8 +161,6 @@
 			<h1>Constants</h1>
 
 			<p class="build">At this point, we might expect to start introducing formal constants that represent numbers, booleans, and so on, but the magic of lambda calculus is that we can represent <em>all</em> of these with irreducible lambda expressions.</p>
-
-			<p class="build">At this point, we might expect to start introducing formal constants that represent numbers, booleans, and so on, but the magic of lambda calculus is that we can represent <em>all</em> of these with more lambda expressions.</p>
 		</div>
 
 		<div>

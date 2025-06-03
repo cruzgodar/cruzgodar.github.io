@@ -1,4 +1,4 @@
-export const countries = {
+export const allCountryNames = {
 	af: ["Afghanistan"],
 	al: ["Albania"],
 	dz: ["Algeria"],
@@ -25,10 +25,8 @@ export const countries = {
 	bm: ["Bermuda"],
 	bt: ["Bhutan"],
 	bo: ["Bolivia", "Plurinational State of Bolivia"],
-	bq: ["Bonaire, Sint Eustatius and Saba"],
 	ba: ["Bosnia and Herzegovina"],
 	bw: ["Botswana"],
-	bv: ["Bouvet Island"],
 	br: ["Brazil"],
 	io: ["The British Indian Ocean Territory"],
 	bn: ["Brunei", "Brunei Darussalam"],
@@ -95,7 +93,6 @@ export const countries = {
 	gw: ["Guinea-Bissau"],
 	gy: ["Guyana"],
 	ht: ["Haiti"],
-	hm: ["Heard Island and McDonald Islands"],
 	va: ["Vatican City", "The Holy See"],
 	hn: ["Honduras"],
 	hk: ["Hong Kong"],
@@ -182,7 +179,6 @@ export const countries = {
 	ru: ["Russia", "The Russian Federation"],
 	rw: ["Rwanda"],
 	re: ["Réunion", "Reunion"],
-	bl: ["Saint Barthélemy"],
 	sh: ["Saint Helena, Ascension and Tristan da Cunha"],
 	kn: ["Saint Kitts and Nevis"],
 	lc: ["Saint Lucia"],
@@ -250,4 +246,9 @@ export const countries = {
 	zm: ["Zambia"],
 	zw: ["Zimbabwe"],
 	ax: ["Åland Islands"]
+};
+
+export const possibleAnswers = {
+	// eslint-disable-next-line max-len
+	all: ["af", "al", "dz", "as", "ad", "ao", "ai", "aq", "ag", "ar", "am", "aw", "au", "at", "az", "bs", "bh", "bd", "bb", "by", "be", "bz", "bj", "bm", "bt", "bo", "ba", "bw", "br", "io", "bn", "bg", "bf", "bi", "cv", "kh", "cm", "ca", "ky", "cf", "td", "cl", "cn", "cx", "cc", "co", "km", "cd", "cg", "ck", "cr", "hr", "cu", "cw", "cy", "cz", "ci", "dk", "dj", "dm", "do", "ec", "eg", "sv", "gq", "er", "ee", "sz", "et", "fk", "fo", "fj", "fi", "fr", "gf", "pf", "tf", "ga", "gm", "ge", "de", "gh", "gi", "gr", "gl", "gd", "gp", "gu", "gt", "gg", "gn", "gw", "gy", "ht", "hm", "va", "hn", "hk", "hu", "is", "in", "id", "ir", "iq", "ie", "im", "il", "it", "jm", "jp", "je", "jo", "kz", "ke", "ki", "kp", "kr", "kw", "kg", "la", "lv", "lb", "ls", "lr", "ly", "li", "lt", "lu", "mo", "mg", "mw", "my", "mv", "ml", "mt", "mh", "mq", "mr", "mu", "mx", "fm", "md", "mc", "mn", "me", "ms", "ma", "mz", "mm", "na", "nr", "np", "nl", "nc", "nz", "ni", "ne", "ng", "nu", "nf", "mk", "mp", "no", "om", "pk", "pw", "ps", "pa", "pg", "py", "pe", "ph", "pn", "pl", "pt", "pr", "qa", "ro", "ru", "rw", "re", "sh", "kn", "lc", "pm", "vc", "ws", "sm", "st", "sa", "sn", "rs", "sc", "sl", "sg", "sx", "sk", "si", "sb", "so", "za", "gs", "ss", "es", "lk", "sd", "sr", "sj", "se", "ch", "sy", "tw", "tj", "tz", "th", "tl", "tg", "tk", "to", "tt", "tn", "tr", "tm", "tc", "tv", "ug", "ua", "ae", "gb", "us", "uy", "uz", "vu", "ve", "vn", "vg", "vi", "wf", "eh", "ye", "zm", "zw", "ax"]
 };
