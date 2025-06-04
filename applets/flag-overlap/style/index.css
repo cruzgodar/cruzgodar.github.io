@@ -93,6 +93,7 @@
 	background-color: rgba(0, 0, 0, .5);
 	opacity: 0;
 	z-index: -1;
+	border-radius: 8px;
 }
 
 #win-text

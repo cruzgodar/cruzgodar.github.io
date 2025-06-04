@@ -1,4 +1,5 @@
 import { FlagOverlap } from "./class.js";
+import { possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -25,15 +26,15 @@ export default async function()
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
 
-	for (const country of ["ad"])
+	for (let i = 0; i < possibleAnswers.all.length; i++)
 	{
-		const option = document.createElement("div");
-		option.classList.add("country-list-item");
-		// TODO: add thumbnails
-		option.innerHTML = `
-			<img src="graphics/flags/${country}.png">
-			<p>${country}</p>
-		`;
+		// const option = document.createElement("div");
+		// option.classList.add("country-list-item");
+		// // TODO: add thumbnails
+		// option.innerHTML = `
+		// 	<img src="graphics/flags/${country}.png">
+		// 	<p>${country}</p>
+		// `;
 	}
 
 	const replayButton = new Button({
@@ -44,8 +45,8 @@ export default async function()
 
 	await applet.loadPromise;
 
-	setTimeout(() => applet.guessFlag("sc"), 1000);
-	setTimeout(() => applet.guessFlag("us"), 6000);
+	setTimeout(() => applet.guessFlag("mc"), 1000);
+	setTimeout(() => applet.guessFlag("id"), 6000);
 
 	function onCheckboxInput()
 	{

@@ -8,8 +8,6 @@ import { Wilson } from "/scripts/wilson.js";
 export default function()
 {
 	const options = {
-		renderer: "cpu",
-	
 		canvasWidth: 162,
 		canvasHeight: 200
 	};

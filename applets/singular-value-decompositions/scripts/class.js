@@ -18,8 +18,6 @@ export class SingularValueDecompositions extends Applet
 		super(canvas);
 
 		const options = {
-			renderer: "cpu",
-
 			canvasWidth: 500,
 		};
 
@@ -35,7 +33,7 @@ export class SingularValueDecompositions extends Applet
 		await this.loadPromise;
 
 		const canvas = document.createElement("canvas");
-		const ctx = canvas.getContext("2d");
+		const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
 		this.imageData = [];
 

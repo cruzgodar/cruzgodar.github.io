@@ -21,7 +21,7 @@ export class FlagOverlap extends Applet
 	wilsonCorrectFlag;
 	// Double the resolution of the flag images.
 	resolution = 2048;
-	correctFlag = "us";
+	correctFlag = "mc";
 	correctPixels;
 	correctHsv;
 
@@ -131,6 +131,8 @@ export class FlagOverlap extends Applet
 			wilson.canvasHeight,
 		).data;
 
+		console.log(wilson, pixels);
+
 		const hsvData = new Array(wilson.canvasWidth * wilson.canvasHeight * 3);
 
 		for (let i = 0; i < wilson.canvasWidth * wilson.canvasHeight; i++)
@@ -140,6 +142,14 @@ export class FlagOverlap extends Applet
 			hsvData[3 * i] = hsv[0];
 			hsvData[3 * i + 1] = hsv[1];
 			hsvData[3 * i + 2] = hsv[2];
+			
+			// if (pixels[4 * i + 3] === 0)
+			// {
+			// 	pixels[4 * i] = 32;
+			// 	pixels[4 * i + 1] = 32;
+			// 	pixels[4 * i + 2] = 32;
+			// 	pixels[4 * i + 3] = 255;
+			// }
 		}
 
 		return {
@@ -263,6 +273,7 @@ export class FlagOverlap extends Applet
 				guess.pixels[4 * i] = 32;
 				guess.pixels[4 * i + 1] = 32;
 				guess.pixels[4 * i + 2] = 32;
+				guess.pixels[4 * i + 3] = 255;
 			}
 
 			else
