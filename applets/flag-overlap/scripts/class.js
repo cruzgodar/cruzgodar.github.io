@@ -131,8 +131,6 @@ export class FlagOverlap extends Applet
 			wilson.canvasHeight,
 		).data;
 
-		console.log(wilson, pixels);
-
 		const hsvData = new Array(wilson.canvasWidth * wilson.canvasHeight * 3);
 
 		for (let i = 0; i < wilson.canvasWidth * wilson.canvasHeight; i++)
@@ -264,9 +262,9 @@ export class FlagOverlap extends Applet
 			const deltaS = Math.abs(guess.hsvData[3 * i + 1] - this.correctHsv[3 * i + 1]);
 			const deltaV = Math.abs(guess.hsvData[3 * i + 2] - this.correctHsv[3 * i + 2]);
 
-			guess.matchingPixels[i] = deltaH < hThreshold
-				&& deltaS < sThreshold
-				&& deltaV < vThreshold;
+			guess.matchingPixels[i] = guess.hsvData[3 * i + 2] === 0
+				? deltaV === 0 // Black guesses only overlap with black pixels.
+				: (deltaH < hThreshold && deltaS < sThreshold && deltaV < vThreshold);
 
 			if (!guess.matchingPixels[i])
 			{
@@ -286,13 +284,13 @@ export class FlagOverlap extends Applet
 			changeOpacity({
 				element: guess.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 500
+				duration: 250
 			}),
 
 			changeOpacity({
 				element: this.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 500
+				duration: 250
 			})
 		]);
 
@@ -334,19 +332,19 @@ export class FlagOverlap extends Applet
 
 		if (this.showDiffs)
 		{
-			await sleep(400);
+			await sleep(100);
 
 			await Promise.all([
 				changeOpacity({
 					element: guess.wilsonOverlay.canvas,
 					opacity: 0,
-					duration: 300
+					duration: 250
 				}),
 
 				changeOpacity({
 					element: this.wilsonOverlay.canvas,
 					opacity: 0,
-					duration: 300
+					duration: 250
 				})
 			]);
 		}

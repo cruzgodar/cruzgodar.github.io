@@ -119,7 +119,9 @@ export function initHoverEvents()
 export function addHoverEvent({
 	element,
 	scale = 1.1,
-	addBounceOnTouch = () => false
+	addBounceOnTouch = () => false,
+	// eslint-disable-next-line no-unused-vars
+	callback = (isHovering) => {}
 }) {
 	element.addEventListener("mouseenter", () =>
 	{
@@ -136,6 +138,8 @@ export function addHoverEvent({
 			{
 				element.firstElementChild.classList.add("hover");
 			}
+
+			callback(true);
 		}
 	});
 
@@ -159,6 +163,8 @@ export function addHoverEvent({
 			{
 				element.blur();
 			}
+
+			callback(false);
 		}
 	});
 
@@ -179,7 +185,9 @@ export function addHoverEventWithScale({
 	element,
 	scale,
 	addBounceOnTouch = () => false,
-	preventScaleWithIncreasedContrast = false
+	preventScaleWithIncreasedContrast = false,
+	// eslint-disable-next-line no-unused-vars
+	callback = (isHovering) => {}
 }) {
 	element.addEventListener("mouseenter", () =>
 	{
@@ -191,6 +199,8 @@ export function addHoverEventWithScale({
 			}
 
 			element.classList.add("hover");
+
+			callback(true);
 
 			if (siteSettings.reduceMotion)
 			{
@@ -219,6 +229,8 @@ export function addHoverEventWithScale({
 
 			element.classList.remove("hover");
 			element.classList.remove("hover-reduce-motion");
+
+			callback(false);
 
 			changeScale({ element, scale: 1 });
 		}

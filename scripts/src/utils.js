@@ -53,3 +53,77 @@ export async function animate(
 		complete: () => update(1),
 	}).finished;
 }
+
+export function fuzzySearch(query, names, threshold = 0.3)
+{
+	const results = [];
+	const lowerQuery = query.toLowerCase();
+	
+	for (const name of names)
+	{
+		const score = calculateSimilarity(lowerQuery, name.toLowerCase());
+		
+		if (score >= threshold)
+		{
+			results.push({ name, score });
+		}
+	}
+	
+	// Sort by score (highest first)
+	return results.sort((a, b) => b.score - a.score);
+}
+
+function calculateSimilarity(query, target)
+{
+	// Handle exact matches
+	if (query === target)
+	{
+		return 1.0;
+	}
+	
+	// Handle empty strings
+	if (query.length === 0 || target.length === 0)
+	{
+		return 0;
+	}
+	
+	// Strong bias for starts-with matches
+	if (target.startsWith(query))
+	{
+		return 0.95 + (0.05 * (query.length / target.length));
+	}
+	
+	// Check for matches at word boundaries (after spaces)
+	const words = target.split(" ");
+	for (const word of words)
+	{
+		if (word.startsWith(query))
+		{
+			return 0.85 + (0.1 * (query.length / word.length));
+		}
+	}
+	
+	// Substring match (but not at start)
+	if (target.includes(query))
+	{
+		return 0.6 + (0.2 * (query.length / target.length));
+	}
+	
+	// Calculate positional character matching with heavy start bias
+	let score = 0;
+	let queryIndex = 0;
+	
+	for (let i = 0; i < target.length && queryIndex < query.length; i++)
+	{
+		if (target[i] === query[queryIndex])
+		{
+			// Give much higher weight to earlier matches
+			const positionWeight = 1.0 - (i / target.length * 0.8);
+			score += positionWeight;
+			queryIndex++;
+		}
+	}
+	
+	// Normalize by query length
+	return Math.min(score / query.length, 0.5); // Cap at 0.5 for non-substring matches
+}
