@@ -149,13 +149,13 @@
 
 	width: 100%;
 	max-width: 300px;
-	max-height: min(600px, 75vh);
 	overflow-y: auto;
 
 	background: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
 	outline: 2px solid var(--dark-outline-color);
 	border-radius: 18px;
+	padding-top: 12px;
 
 	transition: transform .125s ease-out, opacity .125s ease-out;
 }
@@ -168,6 +168,7 @@
 	align-items: center;
 	padding: 6px;
 	margin: 6px;
+	margin-top: -6px;
 	border-radius: 12px;
 	cursor: pointer;
 }
@@ -175,11 +176,6 @@
 .country-list-item.hover
 {
 	background-color: var(--neutral-hover);
-}
-
-.country-list-item:not(:first-child)
-{
-	margin-top: -6px;
 }
 
 .country-list-item img

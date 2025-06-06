@@ -1,5 +1,5 @@
 import { FlagOverlap } from "./class.js";
-import { countryNameList, countryNames, possibleAnswers } from "./countryData.js";
+import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
@@ -25,15 +25,22 @@ export default async function()
 		persistState: false
 	});
 
+	const replayButton = new Button({
+		element: $("#replay-button"),
+		name: "Play Again",
+		onClick: () => applet.replay()
+	});
+
 
 
 	let guessSelectorFocused = false;
 	let selectedItemIndex = 0;
+	let currentResults = possibleAnswers.all;
 
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
 
-	for (const [index, countryCode] of possibleAnswers.all.entries())
+	for (const [index, countryCode] of currentResults.entries())
 	{
 		const option = document.createElement("div");
 		option.classList.add("country-list-item");
@@ -42,6 +49,7 @@ export default async function()
 			<img src="graphics/${countryCode}.png">
 			<p class="body-text">${countryNames[countryCode]}</p>
 		`;
+		option.style.order = index;
 
 		countryList.appendChild(option);
 
@@ -68,8 +76,21 @@ export default async function()
 		{
 			await applet.loadPromise;
 
+			guessSelectorInput.value = "";
+
 			applet.guessFlag(countryCode);
 		});
+	}
+
+	
+
+	function onResize()
+	{
+		const guessSelectorTop = guessSelectorInput.getBoundingClientRect().top;
+		
+		const maxHeight = Math.min(window.innerHeight - guessSelectorTop - 100, 500);
+
+		countryList.style.maxHeight = `${maxHeight}px`;
 	}
 
 	function showCountryList()
@@ -77,6 +98,7 @@ export default async function()
 		guessSelectorFocused = true;
 
 		countryList.style.display = "flex";
+		onResize();
 
 		if (countryList.children.length > selectedItemIndex)
 		{
@@ -129,15 +151,48 @@ export default async function()
 
 	function updateCountryListEntries()
 	{
+		if (guessSelectorInput.value.length === 0)
+		{
+			for (const option of countryList.children)
+			{
+				option.style.display = "flex";
+				option.style.order = 0;
+			}
+
+			return;
+		}
+
 		// Remove all entries that have been guessed.
-		const results = fuzzySearch(guessSelectorInput.value, countryNameList);
+		currentResults = fuzzySearch(guessSelectorInput.value, countryNameList)
+			.map(name => countriesByName[name]);
+
+		for (const option of countryList.children)
+		{
+			option.style.display = "none";
+		}
+
+		for (const [resultIndex, code] of currentResults.entries())
+		{
+			const index = possibleAnswers.all.indexOf(code);
+			const option = countryList.children[index];
+			option.style.display = "flex";
+			option.style.order = resultIndex;
+		}
 
 		showCountryList();
 	}
 
+
+
 	guessSelectorInput.addEventListener("focus", showCountryList);
 	guessSelectorInput.addEventListener("blur", hideCountryList);
 	guessSelectorInput.addEventListener("input", updateCountryListEntries);
+	
+	addTemporaryListener({
+		object: window,
+		event: "resize",
+		callback: onResize
+	});
 
 	addTemporaryListener({
 		object: document.documentElement,
@@ -161,19 +216,16 @@ export default async function()
 
 			else if (e.key === "Enter")
 			{
-				countryList.children[selectedItemIndex].click();
-				hideCountryList();
+				if (guessSelectorFocused)
+				{
+					countryList.children[selectedItemIndex].click();
+					hideCountryList();
+				}
 			}
 		}
 	});
 
 
-
-	const replayButton = new Button({
-		element: $("#replay-button"),
-		name: "Play Again",
-		onClick: () => applet.replay()
-	});
 
 	await applet.loadPromise;
 

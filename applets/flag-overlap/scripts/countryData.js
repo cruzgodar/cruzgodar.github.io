@@ -243,7 +243,7 @@ export const countryNames = {
 	zw: "Zimbabwe",
 };
 
-const countriesByName = {
+export const countriesByName = {
 	"Afghanistan": "af",
 	"Albania": "al",
 	"Algeria": "dz",

@@ -70,7 +70,9 @@ export function fuzzySearch(query, names, threshold = 0.3)
 	}
 	
 	// Sort by score (highest first)
-	return results.sort((a, b) => b.score - a.score);
+	return results
+		.sort((a, b) => b.score - a.score)
+		.map(result => result.name);
 }
 
 function calculateSimilarity(query, target)

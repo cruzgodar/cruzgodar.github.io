@@ -94,6 +94,7 @@ body
 	padding-left: max(16px, env(safe-area-inset-left));
 	padding-right: max(16px, env(safe-area-inset-right));
 	padding-bottom: env(safe-area-inset-bottom);
+	min-height: 100vh;
 }
 
 @media (min-width: 501px)
