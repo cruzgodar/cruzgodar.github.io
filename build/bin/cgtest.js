@@ -91,7 +91,7 @@ async function validateAllLinks(files)
 
 	for (let i = 0; i < statuses.length; i++)
 	{
-		if (!statuses[i])
+		if (!statuses[i] && !links[i].startsWith("mailto"))
 		{
 			console.error(`Invalid link: ${links[i]}`);
 		}

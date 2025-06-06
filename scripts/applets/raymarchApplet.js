@@ -9,6 +9,8 @@ import {
 	tempShader
 } from "./applet.js";
 
+const edgeDetectThreshold = 0.25;
+
 export const edgeDetectShader = /* glsl */`
 	precision highp float;
 	
@@ -38,7 +40,7 @@ export const edgeDetectShader = /* glsl */`
 		float luminance = max(
 			max(sampleN, sampleS),
 			max(sampleE, sampleW)
-		);
+		) > ${getFloatGlsl(edgeDetectThreshold)} ? 1.0 : 0.0;
 		
 		gl_FragColor = vec4(
 			texture2D(uTexture, texCoord).xyz,
@@ -834,7 +836,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 						vec4 sample = texture2D(uTexture, texCoord);
 						
-						if (sample.w > 0.15)
+						if (sample.w > 0.5)
 						{
 							vec3 aaSample = (
 								sample.xyz
