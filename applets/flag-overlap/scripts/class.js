@@ -1,6 +1,5 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { pageUrl } from "/scripts/src/main.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -122,7 +121,7 @@ export class FlagOverlap extends Applet
 			resolve();
 		};
 
-		img.src = `${pageUrl}/graphics/${flagId}.png`;
+		img.src = `/applets/flag-overlap/graphics/${flagId}.webp`;
 
 		await promise;
 
@@ -142,14 +141,6 @@ export class FlagOverlap extends Applet
 			hsvData[3 * i] = hsv[0];
 			hsvData[3 * i + 1] = hsv[1];
 			hsvData[3 * i + 2] = hsv[2];
-			
-			// if (pixels[4 * i + 3] === 0)
-			// {
-			// 	pixels[4 * i] = 32;
-			// 	pixels[4 * i + 1] = 32;
-			// 	pixels[4 * i + 2] = 32;
-			// 	pixels[4 * i + 3] = 255;
-			// }
 		}
 
 		return {

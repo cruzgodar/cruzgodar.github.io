@@ -60,9 +60,8 @@ export default async function()
 	{
 		const option = document.createElement("div");
 		option.classList.add("country-list-item");
-		// TODO: add thumbnails
 		option.innerHTML = /* html */`
-			<img src="graphics/${countryCode}.png">
+			<img src="graphics/thumbnails/${countryCode}.webp">
 			<p class="body-text">${countryNames[countryCode]}</p>
 		`;
 		option.style.order = index;
