@@ -4,8 +4,8 @@ import { pageUrl } from "/scripts/src/main.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-const hThreshold = 0.075;
-const sThreshold = 0.4;
+const hThreshold = 0.05;
+const sThreshold = 0.45;
 const vThreshold = 0.4;
 
 export class FlagOverlap extends Applet
@@ -198,6 +198,7 @@ export class FlagOverlap extends Applet
 	{
 		if (this.won || this.currentlyAnimating)
 		{
+			console.log(this.won);
 			return;
 		}
 
@@ -378,7 +379,6 @@ export class FlagOverlap extends Applet
 	async win()
 	{
 		this.currentlyAnimating = true;
-
 		this.won = true;
 
 		await sleep(200);
@@ -550,6 +550,13 @@ export class FlagOverlap extends Applet
 
 	async replay()
 	{
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
+
+		this.currentlyAnimating = true;
+
 		for (const progressBar of this.progressBars)
 		{
 			const width = progressBar.getBoundingClientRect().width;
@@ -566,19 +573,20 @@ export class FlagOverlap extends Applet
 
 		this.replaceMainCanvas();
 
-		changeOpacity({
+
+		await changeOpacity({
 			element: this.winOverlay,
 			opacity: 0,
 			duration: 250
-		}).then(() =>
-		{
-			this.winOverlay.display = "none";
-			this.winOverlay.style.zIndex = -1;
 		});
+
+		this.winOverlay.display = "none";
+		this.winOverlay.style.zIndex = -1;
 
 		this.guesses = [];
 		this.correctFlag = undefined;
 		this.won = false;
+		this.currentlyAnimating = false;
 	}
 
 

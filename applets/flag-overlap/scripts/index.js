@@ -37,6 +37,9 @@ export default async function()
 
 	let guessSelectorFocused = false;
 
+	// Quick flag to prevent the selected item from moving when we type.
+	let preventFocusWithMouse = false;
+
 	// This is the *apparent* index of the currently selected item,
 	// which is dependent on the ordering.
 	let selectedItemApparentIndex = 0;
@@ -69,8 +72,21 @@ export default async function()
 		addHoverEvent({
 			element: option,
 			addBounceOnTouch: () => true,
+			scale: 1.05,
 			callback: (isHovering) =>
 			{
+				if (isHovering && preventFocusWithMouse)
+				{
+					if (option.style.order !== "0")
+					{
+						option.classList.remove("hover");
+					}
+
+					selectItem(selectedItemApparentIndex);
+					
+					return;
+				}
+
 				if (isHovering)
 				{
 					if (selectedItemApparentIndex !== domToApparentOrder[index])
@@ -96,6 +112,28 @@ export default async function()
 		});
 	}
 
+
+
+	function selectItem(apparentIndex)
+	{
+		const oldSelectedItemDomIndex =
+			apparentToDomOrder[selectedItemApparentIndex];
+		
+		if (oldSelectedItemDomIndex !== undefined)
+		{
+			countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
+		}
+
+		selectedItemApparentIndex = apparentIndex;
+
+		const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+		if (countryList.children.length > 0 && selectedItemDomIndex !== undefined)
+		{
+			countryList.children[selectedItemDomIndex].classList.add("hover");
+		}
+	}
+
 	
 
 	function onResize()
@@ -112,21 +150,10 @@ export default async function()
 		guessSelectorFocused = true;
 
 		countryList.style.display = "flex";
+
 		onResize();
 
-		const oldSelectedItemDomIndex =
-			apparentToDomOrder[selectedItemApparentIndex];
-		
-		countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
-
-		selectedItemApparentIndex = 0;
-
-		const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
-
-		if (countryList.children.length > 0)
-		{
-			countryList.children[selectedItemDomIndex].classList.add("hover");
-		}
+		selectItem(0);
 		
 		requestAnimationFrame(() =>
 		{
@@ -147,16 +174,7 @@ export default async function()
 	{
 		if (selectedItemApparentIndex > 0)
 		{
-			const oldSelectedItemDomIndex =
-				apparentToDomOrder[selectedItemApparentIndex];
-
-			countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
-
-			selectedItemApparentIndex--;
-
-			const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
-
-			countryList.children[selectedItemDomIndex].classList.add("hover");
+			selectItem(selectedItemApparentIndex - 1);
 		}
 	}
 
@@ -164,21 +182,15 @@ export default async function()
 	{
 		if (selectedItemApparentIndex < currentResults.length - 1)
 		{
-			const oldSelectedItemDomIndex =
-				apparentToDomOrder[selectedItemApparentIndex];
-
-			countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
-
-			selectedItemApparentIndex++;
-
-			const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
-
-			countryList.children[selectedItemDomIndex].classList.add("hover");
+			selectItem(selectedItemApparentIndex + 1);
 		}
 	}
 
 	function updateCountryListEntries()
 	{
+		preventFocusWithMouse = true;
+		setTimeout(() => preventFocusWithMouse = false, 100);
+
 		if (guessSelectorInput.value.length === 0)
 		{
 			apparentToDomOrder = Array.from({ length: possibleAnswers.all.length }, (_, i) => i);
@@ -187,18 +199,15 @@ export default async function()
 			for (const option of countryList.children)
 			{
 				option.style.display = "flex";
-				option.style.order = 0;
+				option.classList.remove("hover");
+				// 1 and not 0 fixes an obscure double-select bug.
+				option.style.order = 1;
 			}
+
+			selectItem(0);
 
 			return;
 		}
-
-
-
-		const oldSelectedItemDomIndex =
-			apparentToDomOrder[selectedItemApparentIndex];
-		
-		countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
 		
 
 
@@ -224,6 +233,7 @@ export default async function()
 			const option = countryList.children[index];
 			option.style.display = "flex";
 			option.style.order = resultIndex;
+			option.classList.remove("hover");
 
 			apparentToDomOrder[resultIndex] = index;
 			domToApparentOrder[index] = resultIndex;
