@@ -27,6 +27,7 @@ export class FlagOverlap extends Applet
 	correctFlag;
 	correctPixels;
 	correctHsv;
+	lastGuessFlagId;
 
 	// Each entry is an object of the form
 	// {
@@ -103,8 +104,6 @@ export class FlagOverlap extends Applet
 		this.correctFlag = this.possibleFlags[
 			Math.floor(Math.random() * this.possibleFlags.length)
 		];
-
-		this.correctFlag = "ca";
 	}
 
 
@@ -214,6 +213,7 @@ export class FlagOverlap extends Applet
 		}
 
 		const guess = {};
+		this.lastGuessFlagId = flagId;
 		guess.flagId = flagId;
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 

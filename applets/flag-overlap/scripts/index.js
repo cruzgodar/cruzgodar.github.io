@@ -284,6 +284,13 @@ export default async function()
 						applet.replay();
 						return;
 					}
+
+					else if (
+						guessSelectorInput.value.length === 0
+						&& this.lastGuessFlagId
+					) {
+						applet.guessFlag(this.lastGuessFlagId);
+					}
 					
 					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
 

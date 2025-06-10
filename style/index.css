@@ -1737,7 +1737,7 @@ option
 	padding-left: 5px;
 }
 
-#header-logo.hover
+#header-logo.hover, #header-logo:not(.hover):focus
 {
 	background-color: rgb(224, 224, 224);
 
