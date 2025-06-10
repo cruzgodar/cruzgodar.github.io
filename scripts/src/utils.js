@@ -122,6 +122,7 @@ function calculateSimilarity(query, target)
 			// Give much higher weight to earlier matches
 			const positionWeight = 1.0 - (i / target.length * 0.8);
 			score += positionWeight;
+			i++;
 			queryIndex++;
 		}
 	}

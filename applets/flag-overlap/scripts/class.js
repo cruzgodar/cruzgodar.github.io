@@ -1,6 +1,6 @@
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { addTemporaryListener, pageUrl } from "/scripts/src/main.js";
+import { pageUrl } from "/scripts/src/main.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -10,7 +10,10 @@ const vThreshold = 0.4;
 
 export class FlagOverlap extends Applet
 {
-	loadPromise;
+	possibleFlags = [];
+	won = false;
+	currentlyAnimating = false;
+
 	guessCanvases;
 	overlayCanvases;
 	progressBars;
@@ -21,7 +24,7 @@ export class FlagOverlap extends Applet
 	wilsonCorrectFlag;
 	// Double the resolution of the flag images.
 	resolution = 2048;
-	correctFlag = "mc";
+	correctFlag;
 	correctPixels;
 	correctHsv;
 
@@ -91,17 +94,17 @@ export class FlagOverlap extends Applet
 
 		const hiddenCanvas = this.createHiddenCanvas(true, 1024 / 683);
 		this.wilsonCorrectFlag = new WilsonCPU(hiddenCanvas, optionsHidden);
+	}
 
-		this.loadPromise = new Promise(resolve =>
-		{
-			this.drawFlag(this.wilsonCorrectFlag, this.correctFlag)
-				.then(returnValue =>
-				{
-					this.correctPixels = returnValue.pixels;
-					this.correctHsv = returnValue.hsvData;
-					resolve();
-				});
-		});
+
+
+	chooseCorrectFlag()
+	{
+		this.correctFlag = this.possibleFlags[
+			Math.floor(Math.random() * this.possibleFlags.length)
+		];
+
+		this.correctFlag = "ca";
 	}
 
 
@@ -194,6 +197,22 @@ export class FlagOverlap extends Applet
 
 	async guessFlag(flagId)
 	{
+		if (this.won || this.currentlyAnimating)
+		{
+			return;
+		}
+
+		this.currentlyAnimating = true;
+
+		if (this.correctFlag === undefined)
+		{
+			this.chooseCorrectFlag();
+
+			const returnValue = await this.drawFlag(this.wilsonCorrectFlag, this.correctFlag);
+			this.correctPixels = returnValue.pixels;
+			this.correctHsv = returnValue.hsvData;
+		}
+
 		const guess = {};
 		guess.flagId = flagId;
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
@@ -235,6 +254,8 @@ export class FlagOverlap extends Applet
 				},
 			},
 		};
+
+		console.log(this.guessCanvases[this.guesses.length]);
 
 		guess.wilson = new WilsonCPU(
 			this.guessCanvases[this.guesses.length],
@@ -348,13 +369,19 @@ export class FlagOverlap extends Applet
 				})
 			]);
 		}
+
+		this.currentlyAnimating = false;
 	}
 
 
 
 	async win()
 	{
-		await sleep(500);
+		this.currentlyAnimating = true;
+
+		this.won = true;
+
+		await sleep(200);
 
 		this.wilsonOverlay.canvas.style.padding = "24px";
 		this.wilsonOverlay.canvas.style.borderColor = "transparent";
@@ -370,24 +397,188 @@ export class FlagOverlap extends Applet
 			duration: 300
 		});
 
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: (e) =>
-			{
-				if (e.key === "Enter")
-				{
-					this.replay();
-				}
-			}
-		});
+		this.currentlyAnimating = false;
 	}
 
+	
 
+	async replaceGuessCanvas(index)
+	{
+		this.guesses[index].wilson.destroy();
+		this.guesses[index].wilsonOverlay.destroy();
+
+		const newGuessCanvas = document.createElement("canvas");
+		newGuessCanvas.classList.add("guess-canvas");
+		newGuessCanvas.style.position = "absolute";
+		newGuessCanvas.style.top = "0";
+		newGuessCanvas.style.left = "0";
+
+		this.guessCanvases[index].parentNode.insertBefore(
+			newGuessCanvas,
+			this.guessCanvases[index]
+		);
+
+		const newOverlayCanvasContainer = document.createElement("div");
+		newOverlayCanvasContainer.classList.add("overlay-canvas-container");
+
+		this.guessCanvases[index].parentNode.insertBefore(
+			newOverlayCanvasContainer,
+			this.overlayCanvases[index].parentNode
+		);
+
+		const newOverlayCanvas = document.createElement("canvas");
+		newOverlayCanvas.classList.add("overlay-canvas");
+
+		newOverlayCanvasContainer.appendChild(newOverlayCanvas);
+
+		await Promise.all([
+			changeOpacity({
+				element: this.guessCanvases[index],
+				opacity: 0,
+				duration: 250
+			}),
+			changeOpacity({
+				element: this.overlayCanvases[index],
+				opacity: 0,
+				duration: 250
+			})
+		]);
+
+		newGuessCanvas.style.position = "";
+		this.guessCanvases[index].remove();
+		this.overlayCanvases[index].parentNode.remove();
+
+		this.guessCanvases[index] = newGuessCanvas;
+		this.overlayCanvases[index] = newOverlayCanvas;
+	}
+
+	async replaceMainCanvas()
+	{
+		// this.wilsonOverlay.canvas.style.transition = "";
+		// await new Promise(resolve =>
+		// {
+		// 	requestAnimationFrame(() => resolve());
+		// });
+
+		// this.wilsonOverlay.canvas.style.margin = "0";
+		// this.wilsonOverlay.canvas.style.padding = "0";
+		// this.wilsonOverlay.canvas.style.borderRadius = "8px";
+
+		this.wilson.destroy();
+		this.wilsonOverlay.destroy();
+
+		const newGuessCanvas = document.createElement("canvas");
+		newGuessCanvas.id = "output-canvas";
+		newGuessCanvas.classList.add("output-canvas");
+		newGuessCanvas.style.position = "absolute";
+		newGuessCanvas.style.top = "0";
+		newGuessCanvas.style.left = "0";
+
+		this.wilson.canvas.parentNode.insertBefore(
+			newGuessCanvas,
+			this.wilson.canvas
+		);
+
+		const newOverlayCanvas = document.createElement("canvas");
+		newOverlayCanvas.id = "overlay-canvas";
+		newOverlayCanvas.classList.add("output-canvas");
+		newOverlayCanvas.style.position = "absolute";
+		newOverlayCanvas.style.top = "0";
+		newOverlayCanvas.style.left = "0";
+
+		this.wilsonOverlay.canvas.parentNode.insertBefore(
+			newOverlayCanvas,
+			this.wilsonOverlay.canvas
+		);
+
+		await Promise.all([
+			changeOpacity({
+				element: this.wilson.canvas,
+				opacity: 0,
+				duration: 250
+			}),
+			changeOpacity({
+				element: this.wilsonOverlay.canvas,
+				opacity: 0,
+				duration: 250
+			})
+		]);
+
+		newGuessCanvas.style.position = "";
+		newGuessCanvas.style.top = "";
+		newGuessCanvas.style.left = "";
+		newOverlayCanvas.style.position = "";
+		newOverlayCanvas.style.top = "";
+		newOverlayCanvas.style.left = "";
+
+		this.wilson.canvas.remove();
+		this.wilsonOverlay.canvas.remove();
+
+		const switchFullscreen = () =>
+		{
+			if (this.wilson.currentlyFullscreen)
+			{
+				this.wilson.exitFullscreen();
+			}
+
+			else
+			{
+				this.wilson.enterFullscreen();
+			}
+		};
+
+		const options =
+		{
+			canvasWidth: this.resolution,
+
+			interactionOptions: {
+				callbacks: {
+					mousedown: switchFullscreen,
+					touchstart: switchFullscreen
+				},
+			},
+		};
+
+		await new Promise(resolve =>
+		{
+			requestAnimationFrame(() => resolve());
+		});
+
+		this.wilson = new WilsonCPU(newGuessCanvas, options);
+		this.wilsonOverlay = new WilsonCPU(newOverlayCanvas, options);
+	}
 
 	async replay()
 	{
+		for (const progressBar of this.progressBars)
+		{
+			const width = progressBar.getBoundingClientRect().width;
+			animate((t) =>
+			{
+				progressBar.style.width = `${(1 - t) * width}px`;
+			}, 250, "easeInOutQuad");
+		}
 
+		for (let i = 0; i < this.guesses.length; i++)
+		{
+			this.replaceGuessCanvas(i);
+		}
+
+		this.replaceMainCanvas();
+
+		changeOpacity({
+			element: this.winOverlay,
+			opacity: 0,
+			duration: 250
+		}).then(() =>
+		{
+			this.winOverlay.display = "none";
+			this.winOverlay.style.zIndex = -1;
+		});
+
+		this.guesses = [];
+		this.correctFlag = undefined;
+		this.won = false;
 	}
 
 

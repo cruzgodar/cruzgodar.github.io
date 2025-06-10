@@ -31,11 +31,24 @@ export default async function()
 		onClick: () => applet.replay()
 	});
 
+	applet.possibleFlags = possibleAnswers.all;
+
 
 
 	let guessSelectorFocused = false;
-	let selectedItemIndex = 0;
+
+	// This is the *apparent* index of the currently selected item,
+	// which is dependent on the ordering.
+	let selectedItemApparentIndex = 0;
+
+	// An ordered array of country codes shown in the dropdown.
 	let currentResults = possibleAnswers.all;
+
+	// For example, the 2nd element of this array is the actual index of the
+	// 2nd element shown in the dropdown.
+	let apparentToDomOrder = Array.from({ length: possibleAnswers.all.length }, (_, i) => i);
+
+	let domToApparentOrder = [...apparentToDomOrder];
 
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
@@ -60,14 +73,15 @@ export default async function()
 			{
 				if (isHovering)
 				{
-					if (
-						countryList.children.length > selectedItemIndex
-						&& selectedItemIndex !== index
-					) {
-						countryList.children[selectedItemIndex].classList.remove("hover");
+					if (selectedItemApparentIndex !== domToApparentOrder[index])
+					{
+						const oldSelectedItemDomIndex =
+							apparentToDomOrder[selectedItemApparentIndex];
+						
+						countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
 					}
 
-					selectedItemIndex = index;
+					selectedItemApparentIndex = domToApparentOrder[index];
 				}
 			}
 		});
@@ -100,16 +114,18 @@ export default async function()
 		countryList.style.display = "flex";
 		onResize();
 
-		if (countryList.children.length > selectedItemIndex)
-		{
-			countryList.children[selectedItemIndex].classList.remove("hover");
-		}
+		const oldSelectedItemDomIndex =
+			apparentToDomOrder[selectedItemApparentIndex];
+		
+		countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
 
-		selectedItemIndex = 0;
+		selectedItemApparentIndex = 0;
+
+		const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
 
 		if (countryList.children.length > 0)
 		{
-			countryList.children[0].classList.add("hover");
+			countryList.children[selectedItemDomIndex].classList.add("hover");
 		}
 		
 		requestAnimationFrame(() =>
@@ -121,8 +137,6 @@ export default async function()
 
 	function hideCountryList()
 	{
-		guessSelectorFocused = false;
-
 		countryList.style.transform = "scale(0.975)";
 		countryList.style.opacity = 0;
 
@@ -131,21 +145,35 @@ export default async function()
 
 	function navigateCountryListUp()
 	{
-		if (selectedItemIndex > 0)
+		if (selectedItemApparentIndex > 0)
 		{
-			countryList.children[selectedItemIndex].classList.remove("hover");
-			selectedItemIndex--;
-			countryList.children[selectedItemIndex].classList.add("hover");
+			const oldSelectedItemDomIndex =
+				apparentToDomOrder[selectedItemApparentIndex];
+
+			countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
+
+			selectedItemApparentIndex--;
+
+			const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+			countryList.children[selectedItemDomIndex].classList.add("hover");
 		}
 	}
 
 	function navigateCountryListDown()
 	{
-		if (selectedItemIndex < countryList.children.length - 1)
+		if (selectedItemApparentIndex < currentResults.length - 1)
 		{
-			countryList.children[selectedItemIndex].classList.remove("hover");
-			selectedItemIndex++;
-			countryList.children[selectedItemIndex].classList.add("hover");
+			const oldSelectedItemDomIndex =
+				apparentToDomOrder[selectedItemApparentIndex];
+
+			countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
+
+			selectedItemApparentIndex++;
+
+			const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+			countryList.children[selectedItemDomIndex].classList.add("hover");
 		}
 	}
 
@@ -153,6 +181,9 @@ export default async function()
 	{
 		if (guessSelectorInput.value.length === 0)
 		{
+			apparentToDomOrder = Array.from({ length: possibleAnswers.all.length }, (_, i) => i);
+			domToApparentOrder = [...apparentToDomOrder];
+
 			for (const option of countryList.children)
 			{
 				option.style.display = "flex";
@@ -162,9 +193,25 @@ export default async function()
 			return;
 		}
 
+
+
+		const oldSelectedItemDomIndex =
+			apparentToDomOrder[selectedItemApparentIndex];
+		
+		countryList.children[oldSelectedItemDomIndex].classList.remove("hover");
+		
+
+
 		// Remove all entries that have been guessed.
-		currentResults = fuzzySearch(guessSelectorInput.value, countryNameList)
-			.map(name => countriesByName[name]);
+		currentResults = Array.from(
+			new Set(
+				fuzzySearch(guessSelectorInput.value, countryNameList)
+					.map(name => countriesByName[name])
+			)
+		);
+
+
+		apparentToDomOrder = new Array(currentResults.length);
 
 		for (const option of countryList.children)
 		{
@@ -177,6 +224,9 @@ export default async function()
 			const option = countryList.children[index];
 			option.style.display = "flex";
 			option.style.order = resultIndex;
+
+			apparentToDomOrder[resultIndex] = index;
+			domToApparentOrder[index] = resultIndex;
 		}
 
 		showCountryList();
@@ -185,7 +235,13 @@ export default async function()
 
 
 	guessSelectorInput.addEventListener("focus", showCountryList);
-	guessSelectorInput.addEventListener("blur", hideCountryList);
+
+	guessSelectorInput.addEventListener("blur", () =>
+	{
+		guessSelectorFocused = false;
+		hideCountryList();
+	});
+
 	guessSelectorInput.addEventListener("input", updateCountryListEntries);
 	
 	addTemporaryListener({
@@ -202,15 +258,20 @@ export default async function()
 			if (e.key === "Escape" && guessSelectorFocused)
 			{
 				document.activeElement.blur();
+				guessSelectorFocused = false;
 			}
 
 			else if (e.key === "ArrowDown")
 			{
+				e.preventDefault();
+
 				navigateCountryListDown();
 			}
 
 			else if (e.key === "ArrowUp")
 			{
+				e.preventDefault();
+
 				navigateCountryListUp();
 			}
 
@@ -218,7 +279,15 @@ export default async function()
 			{
 				if (guessSelectorFocused)
 				{
-					countryList.children[selectedItemIndex].click();
+					if (applet.won)
+					{
+						applet.replay();
+						return;
+					}
+					
+					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+					countryList.children[selectedItemDomIndex].click();
 					hideCountryList();
 				}
 			}
@@ -226,8 +295,6 @@ export default async function()
 	});
 
 
-
-	await applet.loadPromise;
 
 	function onCheckboxInput()
 	{

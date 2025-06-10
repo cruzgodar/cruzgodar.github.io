@@ -774,16 +774,22 @@ body > .WILSON_fullscreen-container .fps-canvas
 	justify-content: space-between;
 	
 	align-items: center;
+
+	line-height: 0;
 }
 
 #canvas-landscape-left, #canvas-landscape-right
 {
 	width: 100%;
+
+	line-height: 0;
 }
 
 #canvas-landscape-middle
 {
 	width: 60%;
+
+	line-height: 0;
 }
 
 .desmos-border .output-canvas

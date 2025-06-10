@@ -94,6 +94,7 @@
 	opacity: 0;
 	z-index: -1;
 	border-radius: 8px;
+	row-gap: 24px;
 }
 
 #win-text
