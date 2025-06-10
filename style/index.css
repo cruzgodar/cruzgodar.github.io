@@ -1351,6 +1351,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	pointer-events: none;
 	z-index: 1;
 	height: 100px;
+	line-height: 20px;
 
 	border: 2px solid var(--normal-contrast);
 }
