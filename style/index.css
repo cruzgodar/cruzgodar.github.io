@@ -1184,18 +1184,11 @@ body > .WILSON_fullscreen-container .fps-canvas
 	
 	background: var(--normal-contrast);
 	opacity: 0;
-	
-	transition: opacity .125s ease-in-out;
 }
 
 .checkbox-row:not(.disabled) .checkbox-container > input ~ .checkbox
 {
 	cursor: pointer;
-}
-
-.checkbox-container > input:checked ~ .checkbox
-{
-	opacity: 1;
 }
 
 

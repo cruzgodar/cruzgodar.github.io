@@ -1,3 +1,4 @@
+import { changeOpacity } from "./animation.js";
 import { InputElement } from "./inputElement.js";
 import { addTemporaryParam, pageUrl } from "./main.js";
 
@@ -5,6 +6,7 @@ export class Checkbox extends InputElement
 {
 	checked;
 	persistState;
+	checkboxElement;
 
 	constructor({
 		element,
@@ -15,6 +17,7 @@ export class Checkbox extends InputElement
 	}) {
 		super({ element, name });
 
+		this.checkboxElement = element.nextElementSibling;
 		this.checked = checked;
 		this.onInput = onInput;
 		
@@ -58,7 +61,8 @@ export class Checkbox extends InputElement
 				{
 					this.setChecked({
 						newChecked: true,
-						callOnInput: true
+						callOnInput: true,
+						animate: false
 					});
 
 					this.loadResolve();
@@ -71,7 +75,8 @@ export class Checkbox extends InputElement
 				{
 					this.setChecked({
 						newChecked: false,
-						callOnInput: true
+						callOnInput: true,
+						animate: false
 					});
 
 					this.loadResolve();
@@ -92,10 +97,16 @@ export class Checkbox extends InputElement
 		}
 	}
 
-	setChecked({ newChecked, callOnInput = false })
+	setChecked({ newChecked, callOnInput = false, animate = true })
 	{
 		this.element.checked = newChecked;
 		this.checked = newChecked;
+
+		changeOpacity({
+			element: this.checkboxElement,
+			opacity: this.checked ? 1 : 0,
+			duration: animate ? 125 : 0
+		});
 
 		if (callOnInput)
 		{
