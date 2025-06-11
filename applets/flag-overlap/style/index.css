@@ -25,6 +25,22 @@
 	column-gap: 16px;
 }
 
+@media (max-width: 450px), (min-width: 750px) and (max-width: 1250px)
+{
+	#guess-canvases
+	{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 275px)
+{
+	#guess-canvases
+	{
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
 .guess
 {
 	line-height: 0;
@@ -67,6 +83,7 @@
 	display: flex;
 	column-gap: 4px;
 	width: 100%;
+	margin-top: 4px;
 }
 
 .guess-overlap-checkbox
@@ -74,7 +91,6 @@
 	position: relative;
 	height: 16px;
 	width: 16px;
-	margin-top: 4px;
 	padding: 2px;
 	border: 2px solid var(--normal-contrast);
 	border-radius: 8px;
@@ -118,12 +134,12 @@
 
 .progress-bar-container
 {
+	position: relative;
 	width: calc(100% - 8px);
 	border-radius: 8px;
 	padding: 2px;
 	border: 2px solid var(--normal-contrast);
 	height: 16px;
-	margin-top: 4px;
 }
 
 .progress-bar
@@ -131,6 +147,27 @@
 	width: 0;
 	border-radius: 4px;
 	height: 16px;
+}
+
+.progress-bar-text
+{
+	color: var(--high-contrast);
+	height: fit-content;
+	margin: 0 !important;
+	position: absolute !important;
+	right: 5px;
+	top: 9px;
+	width: fit-content;
+	height: fit-content;
+	font-size: 15px !important;
+	font-weight: bolder;
+	opacity: 0;
+	user-select: none;
+	font-family: "Source Code Pro", monospace;
+
+	--text-shadow-color: rgba(0, 0, 0, var(--theme));
+
+	text-shadow: 0.75px 0.75px 1px var(--text-shadow-color), -0.75px -0.75px 1px var(--text-shadow-color), 0.75px -0.75px 1px var(--text-shadow-color), -0.75px 0.75px 1px var(--text-shadow-color);
 }
 
 #win-overlay

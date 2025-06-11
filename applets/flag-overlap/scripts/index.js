@@ -13,6 +13,7 @@ export default async function()
 		guessCanvases: Array.from($$(".guess-canvas")),
 		overlayCanvases: Array.from($$(".overlay-canvas")),
 		progressBars: Array.from($$(".progress-bar")),
+		progressBarTexts: Array.from($$(".progress-bar-text")),
 		overlapCheckboxes: Array.from($$(".guess-overlap-checkbox")),
 		winOverlay: $("#win-overlay")
 	});

@@ -16,6 +16,7 @@ export class FlagOverlap extends Applet
 	guessCanvases;
 	overlayCanvases;
 	progressBars;
+	progressBarTexts;
 	overlapCheckboxes;
 	winOverlay;
 
@@ -48,6 +49,7 @@ export class FlagOverlap extends Applet
 		guessCanvases,
 		overlayCanvases,
 		progressBars,
+		progressBarTexts,
 		overlapCheckboxes,
 		winOverlay
 	}) {
@@ -56,6 +58,7 @@ export class FlagOverlap extends Applet
 		this.guessCanvases = guessCanvases;
 		this.overlayCanvases = overlayCanvases;
 		this.progressBars = progressBars;
+		this.progressBarTexts = progressBarTexts;
 		this.overlapCheckboxes = overlapCheckboxes;
 		this.winOverlay = winOverlay;
 
@@ -75,6 +78,8 @@ export class FlagOverlap extends Applet
 		const options =
 		{
 			canvasWidth: this.resolution,
+
+			useP3ColorSpace: false,
 
 			interactionOptions: {
 				callbacks: {
@@ -105,6 +110,8 @@ export class FlagOverlap extends Applet
 		this.correctFlag = this.possibleFlags[
 			Math.floor(Math.random() * this.possibleFlags.length)
 		];
+
+		this.correctFlag = "ca";
 	}
 
 
@@ -242,6 +249,8 @@ export class FlagOverlap extends Applet
 		{
 			canvasWidth: this.resolution,
 
+			useP3ColorSpace: false,
+
 			interactionOptions: {
 				callbacks: {
 					mousedown: switchFullscreen,
@@ -249,8 +258,6 @@ export class FlagOverlap extends Applet
 				},
 			},
 		};
-
-		console.log(this.guessCanvases[this.guesses.length]);
 
 		guess.wilson = new WilsonCPU(
 			this.guessCanvases[this.guesses.length],
@@ -327,13 +334,40 @@ export class FlagOverlap extends Applet
 		// Animate the progress bar.
 
 		const progressBar = this.progressBars[this.guesses.length - 1];
-		const fillProportion = numMatchingPixels
+		const progressBarText = this.progressBarTexts[this.guesses.length - 1];
+
+		changeOpacity({
+			element: progressBarText,
+			opacity: 1,
+			duration: 125
+		});
+
+		let fillProportion = numMatchingPixels
 			/ (this.wilson.canvasWidth * this.wilson.canvasHeight);
+
+		if (flagId === this.correctFlag)
+		{
+			fillProportion = 1;
+		}
+
+		else if (fillProportion >= 0.999)
+		{
+			fillProportion = 0.999;
+		}
 
 		await animate((t) =>
 		{
 			progressBar.style.width = `${t * fillProportion * 100}%`;
 			progressBar.style.background = `hsl(${t * fillProportion * 120}, 70%, 50%)`;
+
+			// Always display exactly one decimal place.
+
+			progressBarText.innerText = `${(t * fillProportion * 100).toFixed(1)}%`;
+			// // From 50 to 60%, darken the text.
+			// const darknessAmount = 1 - (
+			// 	clamp(t * fillProportion, 0.5, 0.6) - 0.5
+			// ) * 10;
+			// progressBarText.style.filter = `brightness(calc(${darknessAmount}))`;
 		}, 500 + fillProportion * 500, "easeInOutQuad");
 
 
@@ -459,16 +493,6 @@ export class FlagOverlap extends Applet
 
 	async replaceMainCanvas()
 	{
-		// this.wilsonOverlay.canvas.style.transition = "";
-		// await new Promise(resolve =>
-		// {
-		// 	requestAnimationFrame(() => resolve());
-		// });
-
-		// this.wilsonOverlay.canvas.style.margin = "0";
-		// this.wilsonOverlay.canvas.style.padding = "0";
-		// this.wilsonOverlay.canvas.style.borderRadius = "8px";
-
 		this.wilson.destroy();
 		this.wilsonOverlay.destroy();
 
@@ -535,6 +559,8 @@ export class FlagOverlap extends Applet
 		const options =
 		{
 			canvasWidth: this.resolution,
+
+			useP3ColorSpace: false,
 
 			interactionOptions: {
 				callbacks: {
