@@ -156,7 +156,7 @@
 	margin: 0 !important;
 	position: absolute !important;
 	right: 5px;
-	top: 9px;
+	top: -0.5px;
 	width: fit-content;
 	height: fit-content;
 	font-size: 15px !important;
@@ -164,6 +164,7 @@
 	opacity: 0;
 	user-select: none;
 	font-family: "Source Code Pro", monospace;
+	line-height: normal;
 
 	--text-shadow-color: rgba(0, 0, 0, var(--theme));
 
@@ -196,6 +197,8 @@
 	font-weight: bold;
 	color: white;
 	text-shadow: 0 0 16px black;
+
+	line-height: normal;
 }
 
 #correct-flag-text
@@ -204,7 +207,7 @@
 	margin-top: 32px;
 }
 
-#replay-button
+#replay-button, #view-flag-button
 {
 	color: white;
 	border-color: white;

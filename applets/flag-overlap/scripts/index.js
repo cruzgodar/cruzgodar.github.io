@@ -15,13 +15,20 @@ export default async function()
 		progressBars: Array.from($$(".progress-bar")),
 		progressBarTexts: Array.from($$(".progress-bar-text")),
 		overlapCheckboxes: Array.from($$(".guess-overlap-checkbox")),
-		winOverlay: $("#win-overlay")
+		winOverlay: $("#win-overlay"),
+		viewFlagButtonContainer: $("#view-flag-button").parentElement
 	});
 
 	new Button({
 		element: $("#replay-button"),
 		name: "Play Again",
 		onClick: () => applet.replay()
+	});
+
+	new Button({
+		element: $("#view-flag-button"),
+		name: "View Flag",
+		onClick: () => applet.wilsonOverlay.enterFullscreen()
 	});
 
 	applet.possibleFlags = possibleAnswers.all;

@@ -20,6 +20,7 @@ export class FlagOverlap extends Applet
 	progressBarTexts;
 	overlapCheckboxes;
 	winOverlay;
+	viewFlagButtonContainer;
 
 	wilsonOverlay;
 
@@ -52,7 +53,8 @@ export class FlagOverlap extends Applet
 		progressBars,
 		progressBarTexts,
 		overlapCheckboxes,
-		winOverlay
+		winOverlay,
+		viewFlagButtonContainer
 	}) {
 		super(canvas);
 
@@ -62,9 +64,17 @@ export class FlagOverlap extends Applet
 		this.progressBarTexts = progressBarTexts;
 		this.overlapCheckboxes = overlapCheckboxes;
 		this.winOverlay = winOverlay;
+		this.viewFlagButtonContainer = viewFlagButtonContainer;
 
 		const switchFullscreen = () =>
 		{
+			// Handles the view-flag button
+			if (this.gameOver)
+			{
+				this.wilsonOverlay.exitFullscreen();
+				return;
+			}
+
 			if (this.wilson.currentlyFullscreen)
 			{
 				this.wilson.exitFullscreen();
@@ -197,7 +207,6 @@ export class FlagOverlap extends Applet
 	{
 		if (this.gameOver || this.currentlyAnimating)
 		{
-			console.log(this.gameOver);
 			return;
 		}
 
@@ -288,7 +297,7 @@ export class FlagOverlap extends Applet
 				? deltaV === 0 // Black guesses only overlap with black pixels.
 				: (deltaH < hThreshold && deltaS < sThreshold && deltaV < vThreshold);
 
-			if (!guess.matchingPixels[i])
+			if (!guess.matchingPixels[i] && flagId !== this.correctFlag)
 			{
 				guess.pixels[4 * i] = 32;
 				guess.pixels[4 * i + 1] = 32;
@@ -436,7 +445,9 @@ export class FlagOverlap extends Applet
 		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
 		this.winOverlay.children[0].textContent = "Got it!";
+		this.winOverlay.children[0].style.fontSize = "48px";
 		this.winOverlay.children[1].style.display = "none";
+		this.viewFlagButtonContainer.style.display = "none";
 		this.winOverlay.style.zIndex = 1;
 	
 		changeOpacity({
@@ -462,15 +473,28 @@ export class FlagOverlap extends Applet
 		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
 		this.winOverlay.children[0].textContent = "Maybe next time!";
+		this.winOverlay.children[0].style.fontSize = "36px";
 		this.winOverlay.children[1].style.display = "block";
 		this.winOverlay.children[1].textContent = "Correct flag: " + countryNames[this.correctFlag];
+		this.viewFlagButtonContainer.style.display = "block";
 		this.winOverlay.style.zIndex = 1;
+
+		await this.drawFlag(this.wilsonOverlay, this.correctFlag);
 	
-		changeOpacity({
-			element: this.winOverlay,
-			opacity: 1,
-			duration: 300
-		});
+		await Promise.all([
+			changeOpacity({
+				element: this.winOverlay,
+				opacity: 1,
+				duration: 300
+			}),
+			changeOpacity({
+				element: this.wilsonOverlay.canvas,
+				opacity: 1,
+				duration: 300
+			})
+		]);
+
+		await this.drawFlag(this.wilson, this.correctFlag);
 
 		this.currentlyAnimating = false;
 	}
@@ -631,6 +655,15 @@ export class FlagOverlap extends Applet
 			{
 				progressBar.style.width = `${(1 - t) * width}px`;
 			}, 250, "easeInOutQuad");
+		}
+
+		for (const progressBarText of this.progressBarTexts)
+		{
+			changeOpacity({
+				element: progressBarText,
+				opacity: 0,
+				duration: 250
+			});
 		}
 
 		for (const checkbox of this.overlapCheckboxes)
