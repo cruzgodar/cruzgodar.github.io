@@ -104,7 +104,6 @@
 	border-radius: 4px;
 	background: var(--normal-contrast);
 	opacity: 0;
-	transition: opacity .125s ease-out;
 }
 
 .guess-overlap-checkbox.checked .cap-background

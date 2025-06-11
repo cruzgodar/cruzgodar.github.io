@@ -210,7 +210,6 @@ export class FlagOverlap extends Applet
 		this.lastGuessFlagId = flagId;
 		guess.flagId = flagId;
 		guess.showDiffs = true;
-		this.overlapCheckboxes[this.guesses.length].classList.add("checked");
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
 		const switchFullscreen = () =>
@@ -351,6 +350,8 @@ export class FlagOverlap extends Applet
 
 		if (guess.showDiffs)
 		{
+			this.overlapCheckboxes[this.guesses.length - 1].classList.add("checked");
+
 			await Promise.all([
 				changeOpacity({
 					element: guess.wilsonOverlay.canvas,
@@ -568,6 +569,11 @@ export class FlagOverlap extends Applet
 			{
 				progressBar.style.width = `${(1 - t) * width}px`;
 			}, 250, "easeInOutQuad");
+		}
+
+		for (const checkbox of this.overlapCheckboxes)
+		{
+			checkbox.classList.remove("checked");
 		}
 
 		for (let i = 0; i < this.guesses.length; i++)

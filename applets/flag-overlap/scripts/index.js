@@ -2,7 +2,7 @@ import { FlagOverlap } from "./class.js";
 import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
-import { $, $$, addTemporaryListener } from "/scripts/src/main.js";
+import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
 import { fuzzySearch } from "/scripts/src/utils.js";
 
 export default async function()
@@ -39,9 +39,19 @@ export default async function()
 		{
 			checkbox.classList.toggle("checked");
 
+			// checkbox.style.transition = "opacity .125s ease-out";
+
 			applet.setShowDiffs(checkbox.classList.contains("checked"), index);
 		});
 	}
+
+	// Prevents a gross loading bug
+	addStyle(/* css */`
+		.cap-background
+		{
+			transition: opacity .125s ease-out;
+		}
+	`);
 
 
 
