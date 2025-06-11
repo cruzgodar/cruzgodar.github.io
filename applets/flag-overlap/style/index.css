@@ -62,6 +62,61 @@
 	cursor: pointer;
 }
 
+.guess-details
+{
+	display: flex;
+	column-gap: 4px;
+	width: 100%;
+}
+
+.guess-overlap-checkbox
+{
+	position: relative;
+	height: 16px;
+	width: 16px;
+	margin-top: 4px;
+	padding: 2px;
+	border: 2px solid var(--normal-contrast);
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.cap-icon
+{
+	height: 8px;
+	width: 6px;
+	border: 2px solid var(--normal-contrast);
+	transition: filter .125s ease-out;
+	border-radius: 50px 50px 0 0;
+	border-bottom-width: 0;
+	margin: 3px;
+	transform: translateY(-0.25px);
+	transition: filter .125s ease-out;
+}
+
+.cap-background
+{
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	border-radius: 4px;
+	background: var(--normal-contrast);
+	opacity: 0;
+	transition: opacity .125s ease-out;
+}
+
+.guess-overlap-checkbox.checked .cap-background
+{
+	opacity: 1;
+}
+
+.guess-overlap-checkbox.checked .cap-icon
+{
+	filter: invert(1);
+}
+
 .progress-bar-container
 {
 	width: calc(100% - 8px);

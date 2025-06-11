@@ -1,8 +1,7 @@
 import { FlagOverlap } from "./class.js";
 import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { addHoverEvent } from "/scripts/src/hoverEvents.js";
+import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addTemporaryListener } from "/scripts/src/main.js";
 import { fuzzySearch } from "/scripts/src/utils.js";
 
@@ -14,24 +13,35 @@ export default async function()
 		guessCanvases: Array.from($$(".guess-canvas")),
 		overlayCanvases: Array.from($$(".overlay-canvas")),
 		progressBars: Array.from($$(".progress-bar")),
+		overlapCheckboxes: Array.from($$(".guess-overlap-checkbox")),
 		winOverlay: $("#win-overlay")
 	});
 
-	const showDiffsCheckbox = new Checkbox({
-		element: $("#show-diffs-checkbox"),
-		name: "Show guess overlaps",
-		onInput: onCheckboxInput,
-		checked: true,
-		persistState: false
-	});
-
-	const replayButton = new Button({
+	new Button({
 		element: $("#replay-button"),
 		name: "Play Again",
 		onClick: () => applet.replay()
 	});
 
 	applet.possibleFlags = possibleAnswers.all;
+
+
+
+	for (const [index, checkbox] of applet.overlapCheckboxes.entries())
+	{
+		addHoverEventWithScale({
+			element: checkbox,
+			scale: 1.1,
+			addBounceOnTouch: () => true,
+		});
+
+		checkbox.addEventListener("click", () =>
+		{
+			checkbox.classList.toggle("checked");
+
+			applet.setShowDiffs(checkbox.classList.contains("checked"), index);
+		});
+	}
 
 
 
@@ -309,11 +319,4 @@ export default async function()
 			}
 		}
 	});
-
-
-
-	function onCheckboxInput()
-	{
-		applet.setShowDiffs(showDiffsCheckbox.checked);
-	}
 }

@@ -16,6 +16,7 @@ export class FlagOverlap extends Applet
 	guessCanvases;
 	overlayCanvases;
 	progressBars;
+	overlapCheckboxes;
 	winOverlay;
 
 	wilsonOverlay;
@@ -31,6 +32,7 @@ export class FlagOverlap extends Applet
 	// Each entry is an object of the form
 	// {
 	//	 flagId,
+	//   showDiffs: whether to show the guess overlaps
 	//   matchingPixels: 1D list of booleans per pixel
 	//   pixels: matching pixels that can be drawn to the guess canvas
 	//   hsvData: same, but hsv
@@ -38,8 +40,6 @@ export class FlagOverlap extends Applet
 	//   wilsonOverlay: instance for drawing the overlay flag
 	// }
 	guesses = [];
-
-	showDiffs = true;
 	
 
 	constructor({
@@ -48,6 +48,7 @@ export class FlagOverlap extends Applet
 		guessCanvases,
 		overlayCanvases,
 		progressBars,
+		overlapCheckboxes,
 		winOverlay
 	}) {
 		super(canvas);
@@ -55,6 +56,7 @@ export class FlagOverlap extends Applet
 		this.guessCanvases = guessCanvases;
 		this.overlayCanvases = overlayCanvases;
 		this.progressBars = progressBars;
+		this.overlapCheckboxes = overlapCheckboxes;
 		this.winOverlay = winOverlay;
 
 		const switchFullscreen = () =>
@@ -121,7 +123,7 @@ export class FlagOverlap extends Applet
 			resolve();
 		};
 
-		img.src = `/applets/flag-overlap/graphics/${flagId}.webp`;
+		img.src = `/applets/flag-overlap/graphics/flags/${flagId}.webp`;
 
 		await promise;
 
@@ -207,6 +209,8 @@ export class FlagOverlap extends Applet
 		const guess = {};
 		this.lastGuessFlagId = flagId;
 		guess.flagId = flagId;
+		guess.showDiffs = true;
+		this.overlapCheckboxes[this.guesses.length].classList.add("checked");
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
 		const switchFullscreen = () =>
@@ -223,7 +227,7 @@ export class FlagOverlap extends Applet
 
 			else
 			{
-				if (this.showDiffs)
+				if (guess.showDiffs)
 				{
 					guess.wilson.enterFullscreen();
 				}
@@ -341,12 +345,12 @@ export class FlagOverlap extends Applet
 			return;
 		}
 
+		
 
+		await sleep(100);
 
-		if (this.showDiffs)
+		if (guess.showDiffs)
 		{
-			await sleep(100);
-
 			await Promise.all([
 				changeOpacity({
 					element: guess.wilsonOverlay.canvas,
@@ -360,6 +364,15 @@ export class FlagOverlap extends Applet
 					duration: 250
 				})
 			]);
+		}
+
+		else
+		{
+			await changeOpacity({
+				element: this.wilsonOverlay.canvas,
+				opacity: 0,
+				duration: 250
+			});
 		}
 
 		this.currentlyAnimating = false;
@@ -582,15 +595,17 @@ export class FlagOverlap extends Applet
 
 
 
-	setShowDiffs(showDiffs)
+	setShowDiffs(showDiffs, index)
 	{
-		this.showDiffs = showDiffs;
+		const guess = this.guesses[index];
+
+		guess.showDiffs = showDiffs;
 
 		for (const guess of this.guesses)
 		{
 			changeOpacity({
 				element: guess.wilsonOverlay.canvas,
-				opacity: this.showDiffs ? 0 : 1,
+				opacity: guess.showDiffs ? 0 : 1,
 				duration: 150
 			});
 		}
