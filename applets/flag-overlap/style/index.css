@@ -286,6 +286,11 @@
 	border: 2px solid var(--normal-contrast);
 }
 
+#country-list.hard-mode .country-list-item img
+{
+	display: none;
+}
+
 .country-list-item p
 {
 	margin: 0;

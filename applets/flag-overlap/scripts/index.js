@@ -1,12 +1,16 @@
 import { FlagOverlap } from "./class.js";
 import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
 import { fuzzySearch } from "/scripts/src/utils.js";
 
 export default async function()
 {
+	const guessSelectorInput = $("#guess-selector-input");
+	const countryList = $("#country-list");
+
 	const applet = new FlagOverlap({
 		canvas: $("#output-canvas"),
 		overlayCanvas: $("#overlay-canvas"),
@@ -29,6 +33,18 @@ export default async function()
 		element: $("#view-flag-button"),
 		name: "View Flag",
 		onClick: () => applet.wilsonOverlay.enterFullscreen()
+	});
+
+	const hideFlagIconsCheckbox = new Checkbox({
+		element: $("#hide-flag-icons-checkbox"),
+		name: "Hide flags in dropdown",
+		onInput: () =>
+		{
+			setTimeout(() =>
+			{
+				countryList.classList.toggle("hard-mode", hideFlagIconsCheckbox.checked);
+			}, 100);
+		}
 	});
 
 	applet.possibleFlags = possibleAnswers.all;
@@ -82,9 +98,6 @@ export default async function()
 	let apparentToDomOrder = Array.from({ length: possibleAnswers.all.length }, (_, i) => i);
 
 	let domToApparentOrder = [...apparentToDomOrder];
-
-	const guessSelectorInput = $("#guess-selector-input");
-	const countryList = $("#country-list");
 
 	for (const [index, countryCode] of currentResults.entries())
 	{
