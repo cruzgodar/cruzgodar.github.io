@@ -26,6 +26,8 @@ export default async function()
 
 	applet.possibleFlags = possibleAnswers.all;
 
+	let lastGuessFlagId = undefined;
+
 
 
 	for (const [index, checkbox] of applet.overlapCheckboxes.entries())
@@ -129,6 +131,8 @@ export default async function()
 			guessSelectorInput.value = "";
 
 			applet.guessFlag(countryCode);
+			lastGuessFlagId = countryCode;
+			updateCountryListEntries();
 		});
 	}
 
@@ -309,7 +313,7 @@ export default async function()
 			{
 				if (guessSelectorFocused)
 				{
-					if (applet.won)
+					if (applet.gameOver)
 					{
 						applet.replay();
 						return;
@@ -317,9 +321,11 @@ export default async function()
 
 					else if (
 						guessSelectorInput.value.length === 0
-						&& this.lastGuessFlagId
+						&& lastGuessFlagId
 					) {
-						applet.guessFlag(this.lastGuessFlagId);
+						applet.guessFlag(lastGuessFlagId);
+						lastGuessFlagId = undefined;
+						updateCountryListEntries();
 					}
 					
 					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];

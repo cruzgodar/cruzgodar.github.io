@@ -1,3 +1,4 @@
+import { countryNames } from "./countryData.js";
 import { Applet, rgbToHsv } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { animate, sleep } from "/scripts/src/utils.js";
@@ -10,7 +11,7 @@ const vThreshold = 0.4;
 export class FlagOverlap extends Applet
 {
 	possibleFlags = [];
-	won = false;
+	gameOver = false;
 	currentlyAnimating = false;
 
 	guessCanvases;
@@ -110,8 +111,6 @@ export class FlagOverlap extends Applet
 		this.correctFlag = this.possibleFlags[
 			Math.floor(Math.random() * this.possibleFlags.length)
 		];
-
-		this.correctFlag = "ca";
 	}
 
 
@@ -196,9 +195,9 @@ export class FlagOverlap extends Applet
 
 	async guessFlag(flagId)
 	{
-		if (this.won || this.currentlyAnimating)
+		if (this.gameOver || this.currentlyAnimating)
 		{
-			console.log(this.won);
+			console.log(this.gameOver);
 			return;
 		}
 
@@ -410,6 +409,14 @@ export class FlagOverlap extends Applet
 			});
 		}
 
+
+
+		if (this.guesses.length === 6)
+		{
+			await this.lose();
+			return;
+		}
+
 		this.currentlyAnimating = false;
 	}
 
@@ -418,7 +425,7 @@ export class FlagOverlap extends Applet
 	async win()
 	{
 		this.currentlyAnimating = true;
-		this.won = true;
+		this.gameOver = true;
 
 		await sleep(200);
 
@@ -428,6 +435,35 @@ export class FlagOverlap extends Applet
 		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
 		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
+		this.winOverlay.children[0].textContent = "Got it!";
+		this.winOverlay.children[1].style.display = "none";
+		this.winOverlay.style.zIndex = 1;
+	
+		changeOpacity({
+			element: this.winOverlay,
+			opacity: 1,
+			duration: 300
+		});
+
+		this.currentlyAnimating = false;
+	}
+
+	async lose()
+	{
+		this.currentlyAnimating = true;
+		this.gameOver = true;
+
+		await sleep(200);
+
+		this.wilsonOverlay.canvas.style.padding = "24px";
+		this.wilsonOverlay.canvas.style.borderColor = "transparent";
+		this.wilsonOverlay.canvas.style.marginTop = "-22px";
+		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
+		this.wilsonOverlay.canvas.style.borderRadius = "32px";
+		
+		this.winOverlay.children[0].textContent = "Maybe next time!";
+		this.winOverlay.children[1].style.display = "block";
+		this.winOverlay.children[1].textContent = "Correct flag: " + countryNames[this.correctFlag];
 		this.winOverlay.style.zIndex = 1;
 	
 		changeOpacity({
@@ -621,7 +657,7 @@ export class FlagOverlap extends Applet
 
 		this.guesses = [];
 		this.correctFlag = undefined;
-		this.won = false;
+		this.gameOver = false;
 		this.currentlyAnimating = false;
 	}
 

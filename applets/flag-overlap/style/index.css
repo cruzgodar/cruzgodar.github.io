@@ -25,7 +25,7 @@
 	column-gap: 16px;
 }
 
-@media (max-width: 450px), (min-width: 750px) and (max-width: 1250px)
+@media (max-width: 450px), (min-width: 750px) and (max-width: 1250px) and (min-aspect-ratio: 1/1)
 {
 	#guess-canvases
 	{
@@ -188,7 +188,7 @@
 	row-gap: 24px;
 }
 
-#win-text
+#win-text, #correct-flag-text
 {
 	user-select: none;
 	-webkit-user-select: none;
@@ -196,6 +196,12 @@
 	font-weight: bold;
 	color: white;
 	text-shadow: 0 0 16px black;
+}
+
+#correct-flag-text
+{
+	font-size: 24px;
+	margin-top: 32px;
 }
 
 #replay-button

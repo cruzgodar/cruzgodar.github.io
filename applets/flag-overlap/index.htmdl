@@ -17,7 +17,9 @@
 		<canvas id="overlay-canvas" class="output-canvas"></canvas>
 	</div>
 	<div id="win-overlay">
-		<p id="win-text">Got it!</p>
+		<p id="win-text"></p>
+
+		<p id="correct-flag-text"></p>
 
 		### buttons
 			replay
