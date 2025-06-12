@@ -212,17 +212,20 @@ export default async function()
 	{
 		guessSelectorFocused = true;
 
-		countryList.style.display = "flex";
-
 		onResize();
 
 		selectItem(0);
 
-		animate((t) =>
+		if (countryList.style.display !== "flex")
 		{
-			countryList.style.transform = `scale(${.975 + t * .025})`;
-			countryList.style.opacity = t;
-		}, 125, "easeOutQuad");
+			countryList.style.display = "flex";
+
+			animate((t) =>
+			{
+				countryList.style.transform = `scale(${.975 + t * .025})`;
+				countryList.style.opacity = t;
+			}, 125, "easeOutQuad");
+		}
 	}
 
 	async function hideCountryList()
@@ -339,8 +342,7 @@ export default async function()
 		{
 			if (e.key === "Escape" && guessSelectorFocused)
 			{
-				document.activeElement.blur();
-				guessSelectorFocused = false;
+				hideCountryList();
 			}
 
 			else if (e.key === "ArrowDown")
@@ -372,15 +374,16 @@ export default async function()
 						&& lastGuessFlagId
 						&& selectedItemApparentIndex === undefined
 					) {
-						setTimeout(() => applet.guessFlag(lastGuessFlagId), 50);
+						applet.guessFlag(lastGuessFlagId);
 						lastGuessFlagId = undefined;
 					}
 
 					if (selectedItemApparentIndex !== undefined)
 					{
 						const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
-
-						countryList.children[selectedItemDomIndex].click();
+						
+						hideCountryList();
+						setTimeout(() => countryList.children[selectedItemDomIndex].click(), 50);
 					}
 				}
 			}
