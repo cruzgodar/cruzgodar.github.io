@@ -235,6 +235,13 @@ export class FlagOverlap extends Applet
 
 		const switchFullscreen = () =>
 		{
+			// Handles the view-flag button
+			if (this.gameOver)
+			{
+				this.wilsonOverlay.exitFullscreen();
+				return;
+			}
+
 			if (guess.wilsonOverlay.currentlyFullscreen)
 			{
 				guess.wilsonOverlay.exitFullscreen();
@@ -450,9 +457,9 @@ export class FlagOverlap extends Applet
 		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
 		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
-		this.winOverlay.children[0].textContent = "Got it!";
-		this.winOverlay.children[0].style.fontSize = "48px";
+		this.winOverlay.children[0].style.display = "block";
 		this.winOverlay.children[1].style.display = "none";
+		this.winOverlay.children[2].style.display = "none";
 		this.viewFlagButtonContainer.style.display = "none";
 		this.winOverlay.style.zIndex = 1;
 	
@@ -478,10 +485,10 @@ export class FlagOverlap extends Applet
 		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
 		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
-		this.winOverlay.children[0].textContent = "Maybe next time!";
-		this.winOverlay.children[0].style.fontSize = "36px";
+		this.winOverlay.children[0].style.display = "none";
 		this.winOverlay.children[1].style.display = "block";
-		this.winOverlay.children[1].textContent = "Correct flag: " + countryNames[this.correctFlag];
+		this.winOverlay.children[2].style.display = "block";
+		this.winOverlay.children[2].textContent = "Correct flag: " + countryNames[this.correctFlag];
 		this.viewFlagButtonContainer.style.display = "block";
 		this.winOverlay.style.zIndex = 1;
 
@@ -611,6 +618,13 @@ export class FlagOverlap extends Applet
 
 		const switchFullscreen = () =>
 		{
+			// Handles the view-flag button
+			if (this.gameOver)
+			{
+				this.wilsonOverlay.exitFullscreen();
+				return;
+			}
+
 			if (this.wilson.currentlyFullscreen)
 			{
 				this.wilson.exitFullscreen();

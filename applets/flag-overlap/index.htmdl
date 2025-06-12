@@ -1,4 +1,6 @@
-### dropdown possible-flags 
+Guess the secret flag in six tries or fewer! Every flag you guess is overlapped with the secret one, and only the overlaps are shown. Tap or click on any flag to take a closer look, and use the <span class="cap-icon" style="transform: translateY(3px)"></span> button on a guess to toggle between the guessed flag and its overlap. Good luck!
+
+### dropdown possible-flags
 
 <div id="canvas-landscape" style="margin-top: 32px">
 

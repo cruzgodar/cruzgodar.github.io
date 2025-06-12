@@ -50,10 +50,10 @@ export default async function()
 
 	const possibleFlagsDropdown = new Dropdown({
 		element: $("#possible-flags-dropdown"),
-		name: "Possible Answers",
+		name: "Possible Secret Flags",
 		options: {
 			all: "All Countries and Territories",
-			un: "United Nations Members and Observers",
+			un: "UN Members and Observers",
 			americas: "The Americas",
 			europe: "Europe",
 			africa: "Africa",
