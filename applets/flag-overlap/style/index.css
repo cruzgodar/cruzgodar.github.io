@@ -396,8 +396,6 @@
 	outline: 2px solid var(--dark-outline-color);
 	border-radius: 18px;
 	padding-top: 12px;
-
-	transition: transform .125s ease-out, opacity .125s ease-out;
 }
 
 .country-list-item

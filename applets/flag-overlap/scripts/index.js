@@ -5,7 +5,7 @@ import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
-import { fuzzySearch } from "/scripts/src/utils.js";
+import { animate, fuzzySearch } from "/scripts/src/utils.js";
 
 export default async function()
 {
@@ -85,8 +85,6 @@ export default async function()
 		checkbox.addEventListener("click", () =>
 		{
 			checkbox.classList.toggle("checked");
-
-			// checkbox.style.transition = "opacity .125s ease-out";
 
 			applet.setShowDiffs(checkbox.classList.contains("checked"), index);
 		});
@@ -220,25 +218,25 @@ export default async function()
 		onResize();
 
 		selectItem(0);
-		
-		requestAnimationFrame(() =>
+
+		animate((t) =>
 		{
-			countryList.style.transform = "scale(1)";
-			countryList.style.opacity = 1;
-		});
+			countryList.style.transform = `scale(${.975 + t * .025})`;
+			countryList.style.opacity = t;
+		}, 125, "easeOutQuad");
 	}
 
-	function hideCountryList()
+	async function hideCountryList()
 	{
-		countryList.style.transform = "scale(0.975)";
-		countryList.style.opacity = 0;
-
-		setTimeout(() =>
+		await animate((t) =>
 		{
-			countryList.style.display = "none";
-			selectedItemApparentIndex = undefined;
-			updateCountryListEntries();
-		}, 125);
+			countryList.style.transform = `scale(${1 - t * .025})`;
+			countryList.style.opacity = 1 - t;
+		}, 125, "easeOutQuad");
+
+		countryList.style.display = "none";
+		selectedItemApparentIndex = undefined;
+		updateCountryListEntries();
 	}
 
 	function navigateCountryListUp()
