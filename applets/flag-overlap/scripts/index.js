@@ -109,7 +109,7 @@ export default async function()
 
 	// This is the *apparent* index of the currently selected item,
 	// which is dependent on the ordering.
-	let selectedItemApparentIndex = 0;
+	let selectedItemApparentIndex = undefined;
 
 	// An ordered array of country codes shown in the dropdown.
 	let currentResults = possibleAnswers.all;
@@ -125,7 +125,7 @@ export default async function()
 		const option = document.createElement("div");
 		option.classList.add("country-list-item");
 		option.innerHTML = /* html */`
-			<img src="graphics/thumbnails/${countryCode}.webp">
+			<img src="/applets/flag-overlap/graphics/thumbnails/${countryCode}.webp">
 			<p class="body-text">${countryNames[countryCode]}</p>
 		`;
 		option.style.order = index;
@@ -181,8 +181,9 @@ export default async function()
 
 	function selectItem(apparentIndex)
 	{
-		const oldSelectedItemDomIndex =
-			apparentToDomOrder[selectedItemApparentIndex];
+		const oldSelectedItemDomIndex = selectedItemApparentIndex === undefined
+			? undefined
+			: apparentToDomOrder[selectedItemApparentIndex];
 		
 		if (oldSelectedItemDomIndex !== undefined)
 		{
@@ -235,6 +236,7 @@ export default async function()
 		setTimeout(() =>
 		{
 			countryList.style.display = "none";
+			selectedItemApparentIndex = undefined;
 			updateCountryListEntries();
 		}, 125);
 	}
@@ -307,6 +309,8 @@ export default async function()
 			apparentToDomOrder[resultIndex] = index;
 			domToApparentOrder[index] = resultIndex;
 		}
+
+		countryList.scrollTo(0, 0);
 	}
 
 
@@ -369,6 +373,7 @@ export default async function()
 					else if (
 						guessSelectorInput.value.length === 0
 						&& lastGuessFlagId
+						&& selectedItemApparentIndex === undefined
 					) {
 						applet.guessFlag(lastGuessFlagId);
 						lastGuessFlagId = undefined;

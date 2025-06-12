@@ -183,17 +183,21 @@
 	justify-content: center;
 	flex-direction: column;
 	background-color: rgba(0, 0, 0, .5);
-	opacity: 0;
-	z-index: -1;
+	opacity: 1;
+	z-index: 1;
 	border-radius: 8px;
 	row-gap: 24px;
 }
 
-#win-text, #correct-flag-text
+#win-overlay .text-buttons
+{
+	margin-top: 0;
+}
+
+#win-text, #loss-text, #correct-flag-text
 {
 	user-select: none;
 	-webkit-user-select: none;
-	font-size: 48px;
 	font-weight: bold;
 	color: white;
 	text-shadow: 0 0 16px black;
@@ -201,10 +205,22 @@
 	line-height: normal;
 }
 
+#win-text
+{
+	font-size: 48px;
+	display: none;
+}
+
+#loss-text
+{
+	font-size: 36px;
+	/* display: none; */
+}
+
 #correct-flag-text
 {
 	font-size: 24px;
-	margin-top: 32px;
+	/* display: none; */
 }
 
 #replay-button, #view-flag-button
@@ -214,6 +230,128 @@
 	background-color: transparent;
 	text-shadow: 0 0 16px black;
 	box-shadow: 0 0 16px black;
+}
+
+@media (min-width: 750px) and (max-width: 1200px)
+{
+	#win-text
+	{
+		font-size: 36px;
+	}
+
+	#loss-text
+	{
+		font-size: 28px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 16px;
+	}
+
+	#win-overlay .text-buttons
+	{
+		transform: scale(0.8);
+		width: 125%;
+		margin-left: -12.5%;
+	}
+}
+
+@media (min-width: 750px) and (max-width: 900px)
+{
+	#loss-text
+	{
+		font-size: 24px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 600px)
+{
+	#loss-text
+	{
+		font-size: 28px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 500px)
+{
+	#win-text
+	{
+		font-size: 36px;
+	}
+
+	#loss-text
+	{
+		font-size: 24px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 425px)
+{
+	#win-text
+	{
+		font-size: 36px;
+	}
+
+	#win-overlay .text-buttons
+	{
+		transform: scale(0.8);
+		width: 125%;
+		margin-left: -12.5%;
+	}
+}
+
+@media (max-width: 300px)
+{
+	#loss-text
+	{
+		font-size: 20px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 225px)
+{
+	#win-text
+	{
+		font-size: 32px;
+	}
+
+	#loss-text
+	{
+		font-size: 18px;
+	}
+
+	#correct-flag-text
+	{
+		font-size: 10px;
+	}
+
+	#win-overlay .text-buttons
+	{
+		transform: scale(0.65);
+		width: 153.85%;
+		margin-left: -26.925%;
+	}
 }
 
 #guess-selector
