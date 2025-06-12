@@ -9,6 +9,12 @@ header
 	margin-bottom: 64px !important;
 }
 
+.name-text-container
+{
+	user-select: none;
+	-webkit-user-select: none;
+}
+
 
 .name-text
 {

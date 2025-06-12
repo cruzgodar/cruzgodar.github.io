@@ -109,6 +109,20 @@ body
 
 
 
+*
+{
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+p, h1, h2, p span, em, strong, dfn, a, code
+{
+	user-select: auto;
+	-webkit-user-select: auto;
+}
+
+
+
 .hover-reduce-motion
 {
 	filter: brightness(.85);
@@ -991,9 +1005,6 @@ body > .WILSON_fullscreen-container .fps-canvas
 	
 	cursor: pointer;
 	outline: none;
-
-	user-select: none;
-	-webkit-user-select: none;
 	
 	z-index: 10;
 }
@@ -1243,6 +1254,8 @@ body > .WILSON_fullscreen-container .fps-canvas
 .text-box-subtext span
 {
 	transition: color .25s ease-out;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .text-box.capped-input-max
@@ -1448,9 +1461,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	height: 24px;
 
 	z-index: 10;
-	user-select: none;
 	touch-action: none;
-	-webkit-user-select: none;
 
 	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out, border-color 0.25s ease-out !important;
 }
@@ -1481,6 +1492,8 @@ body > .WILSON_fullscreen-container .fps-canvas
 .slider-subtext span
 {
 	text-align: center;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .slider-subtext .slider-value
@@ -1693,9 +1706,6 @@ option
 	z-index: 110;
 	
 	transform-origin: 50% 50vh;
-
-	user-select: none;
-	-webkit-user-select: none;
 }
 
 
@@ -2164,9 +2174,6 @@ option
 	width: 100%;
 	
 	border-radius: 10%;
-
-	user-select: none;
-	-webkit-user-select: none;
 }
 
 .image-link img
