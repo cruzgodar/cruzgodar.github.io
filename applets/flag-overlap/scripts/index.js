@@ -12,6 +12,8 @@ export default async function()
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
 
+	let preventOpeningCountryList = false;
+
 	const applet = new FlagOverlap({
 		canvas: $("#output-canvas"),
 		overlayCanvas: $("#overlay-canvas"),
@@ -27,7 +29,12 @@ export default async function()
 	new Button({
 		element: $("#replay-button"),
 		name: "Play Again",
-		onClick: () => applet.replay()
+		onClick: () =>
+		{
+			applet.replay();
+			preventOpeningCountryList = true;
+			guessSelectorInput.focus();
+		}
 	});
 
 	new Button({
@@ -210,6 +217,12 @@ export default async function()
 
 	function showCountryList()
 	{
+		if (preventOpeningCountryList)
+		{
+			preventOpeningCountryList = false;
+			return;
+		}
+		
 		guessSelectorFocused = true;
 
 		onResize();
@@ -372,10 +385,10 @@ export default async function()
 					else if (
 						guessSelectorInput.value.length === 0
 						&& lastGuessFlagId
+						&& applet.guesses.length === 0
 						&& selectedItemApparentIndex === undefined
 					) {
 						applet.guessFlag(lastGuessFlagId);
-						lastGuessFlagId = undefined;
 					}
 
 					if (selectedItemApparentIndex !== undefined)

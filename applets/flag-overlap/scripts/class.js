@@ -235,13 +235,6 @@ export class FlagOverlap extends Applet
 
 		const switchFullscreen = () =>
 		{
-			// Handles the view-flag button
-			if (this.gameOver)
-			{
-				this.wilsonOverlay.exitFullscreen();
-				return;
-			}
-
 			if (guess.wilsonOverlay.currentlyFullscreen)
 			{
 				guess.wilsonOverlay.exitFullscreen();
@@ -463,7 +456,7 @@ export class FlagOverlap extends Applet
 		this.viewFlagButtonContainer.style.display = "none";
 		this.winOverlay.style.zIndex = 1;
 	
-		changeOpacity({
+		await changeOpacity({
 			element: this.winOverlay,
 			opacity: 1,
 			duration: 300
@@ -478,12 +471,6 @@ export class FlagOverlap extends Applet
 		this.gameOver = true;
 
 		await sleep(200);
-
-		this.wilsonOverlay.canvas.style.padding = "24px";
-		this.wilsonOverlay.canvas.style.borderColor = "transparent";
-		this.wilsonOverlay.canvas.style.marginTop = "-22px";
-		this.wilsonOverlay.canvas.style.marginLeft = "-22px";
-		this.wilsonOverlay.canvas.style.borderRadius = "32px";
 		
 		this.winOverlay.children[0].style.display = "none";
 		this.winOverlay.children[1].style.display = "block";
