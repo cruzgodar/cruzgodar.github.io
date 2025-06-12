@@ -169,9 +169,8 @@ export default async function()
 
 			guessSelectorInput.value = "";
 
-			applet.guessFlag(countryCode);
+			setTimeout(() => applet.guessFlag(countryCode), 50);
 			lastGuessFlagId = countryCode;
-			hideCountryList();
 		});
 	}
 
@@ -373,7 +372,7 @@ export default async function()
 						&& lastGuessFlagId
 						&& selectedItemApparentIndex === undefined
 					) {
-						applet.guessFlag(lastGuessFlagId);
+						setTimeout(() => applet.guessFlag(lastGuessFlagId), 50);
 						lastGuessFlagId = undefined;
 					}
 
