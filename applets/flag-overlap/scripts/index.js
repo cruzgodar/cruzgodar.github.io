@@ -2,6 +2,7 @@ import { FlagOverlap } from "./class.js";
 import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
 import { fuzzySearch } from "/scripts/src/utils.js";
@@ -37,7 +38,7 @@ export default async function()
 
 	const hideFlagIconsCheckbox = new Checkbox({
 		element: $("#hide-flag-icons-checkbox"),
-		name: "Hide flags in dropdown",
+		name: "Hide flags in list",
 		onInput: () =>
 		{
 			setTimeout(() =>
@@ -47,7 +48,27 @@ export default async function()
 		}
 	});
 
-	applet.possibleFlags = possibleAnswers.all;
+	const possibleFlagsDropdown = new Dropdown({
+		element: $("#possible-flags-dropdown"),
+		name: "Possible Answers",
+		options: {
+			all: "All Countries and Territories",
+			un: "United Nations Members and Observers",
+			americas: "The Americas",
+			europe: "Europe",
+			africa: "Africa",
+			asiaAndPacific: "Asia and the Pacific"
+		},
+		onInput: () =>
+		{
+			applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value];
+		}
+	});
+
+	possibleFlagsDropdown.loaded.then(() =>
+	{
+		applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value || "all"];
+	});
 
 	let lastGuessFlagId = undefined;
 
@@ -152,7 +173,7 @@ export default async function()
 
 			applet.guessFlag(countryCode);
 			lastGuessFlagId = countryCode;
-			updateCountryListEntries();
+			hideCountryList();
 		});
 	}
 
@@ -211,7 +232,11 @@ export default async function()
 		countryList.style.transform = "scale(0.975)";
 		countryList.style.opacity = 0;
 
-		setTimeout(() => countryList.style.display = "none", 125);
+		setTimeout(() =>
+		{
+			countryList.style.display = "none";
+			updateCountryListEntries();
+		}, 125);
 	}
 
 	function navigateCountryListUp()
@@ -282,8 +307,6 @@ export default async function()
 			apparentToDomOrder[resultIndex] = index;
 			domToApparentOrder[index] = resultIndex;
 		}
-
-		showCountryList();
 	}
 
 
@@ -296,7 +319,11 @@ export default async function()
 		hideCountryList();
 	});
 
-	guessSelectorInput.addEventListener("input", updateCountryListEntries);
+	guessSelectorInput.addEventListener("input", () =>
+	{
+		updateCountryListEntries();
+		showCountryList();
+	});
 	
 	addTemporaryListener({
 		object: window,
@@ -345,13 +372,11 @@ export default async function()
 					) {
 						applet.guessFlag(lastGuessFlagId);
 						lastGuessFlagId = undefined;
-						updateCountryListEntries();
 					}
 					
 					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
 
 					countryList.children[selectedItemDomIndex].click();
-					hideCountryList();
 				}
 			}
 		}

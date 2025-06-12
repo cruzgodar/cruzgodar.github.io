@@ -1,10 +1,12 @@
-### checkboxes
-	hide-flag-icons
-###
+### dropdown possible-flags 
 
 <div id="canvas-landscape" style="margin-top: 32px">
 
 <div id="canvas-landscape-left">
+	### checkboxes
+		hide-flag-icons
+	###
+
 	<div id="guess-selector">
 		<div class="text-box-container">
 			<input id="guess-selector-input" class="text-box" type="text" value="" tabindex="1" placeholder="Enter a country">

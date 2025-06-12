@@ -28,6 +28,7 @@ export class FlagOverlap extends Applet
 	// Double the resolution of the flag images.
 	resolution = 2048;
 	correctFlag;
+	lastCorrectFlag;
 	correctPixels;
 	correctHsv;
 	lastGuessFlagId;
@@ -118,9 +119,14 @@ export class FlagOverlap extends Applet
 
 	chooseCorrectFlag()
 	{
-		this.correctFlag = this.possibleFlags[
-			Math.floor(Math.random() * this.possibleFlags.length)
-		];
+		do
+		{
+			this.correctFlag = this.possibleFlags[
+				Math.floor(Math.random() * this.possibleFlags.length)
+			];
+		} while (this.correctFlag === this.lastCorrectFlag);
+
+		this.lastCorrectFlag = this.correctFlag;
 	}
 
 
