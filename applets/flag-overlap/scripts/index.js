@@ -275,7 +275,7 @@ export default async function()
 				option.style.order = 1;
 			}
 
-			selectItem(0);
+			selectedItemApparentIndex = undefined;
 
 			return;
 		}
@@ -378,10 +378,13 @@ export default async function()
 						applet.guessFlag(lastGuessFlagId);
 						lastGuessFlagId = undefined;
 					}
-					
-					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
 
-					countryList.children[selectedItemDomIndex].click();
+					if (selectedItemApparentIndex !== undefined)
+					{
+						const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+						countryList.children[selectedItemDomIndex].click();
+					}
 				}
 			}
 		}
