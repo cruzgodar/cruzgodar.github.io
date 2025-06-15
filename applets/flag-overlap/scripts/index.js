@@ -1,5 +1,5 @@
 import { FlagOverlap } from "./class.js";
-import { countriesByName, countryNameList, countryNames, possibleAnswers } from "./countryData.js";
+import { countriesByName, countryNameList, countryNames, largestAreaCountries, largestPopulationCountries, possibleAnswers, unMembers } from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -55,21 +55,35 @@ export default async function()
 		}
 	});
 
+	const unMembersOnlyCheckbox = new Checkbox({
+		element: $("#un-members-only-checkbox"),
+		name: "UN members only",
+		onInput: onCheckboxInput
+	});
+
+	const largeAreaOnlyCheckbox = new Checkbox({
+		element: $("#large-area-only-checkbox"),
+		name: "Large area countries only",
+		onInput: onCheckboxInput
+	});
+
+	const largePopulationOnlyCheckbox = new Checkbox({
+		element: $("#large-population-only-checkbox"),
+		name: "Large population countries only",
+		onInput: onCheckboxInput
+	});
+
 	const possibleFlagsDropdown = new Dropdown({
 		element: $("#possible-flags-dropdown"),
 		name: "Possible Secret Flags",
 		options: {
 			all: "All Countries and Territories",
-			un: "UN Members and Observers",
 			americas: "The Americas",
 			europe: "Europe",
 			africa: "Africa",
 			asiaAndPacific: "Asia and the Pacific"
 		},
-		onInput: () =>
-		{
-			applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value];
-		}
+		onInput: onCheckboxInput
 	});
 
 	possibleFlagsDropdown.loaded.then(() =>
@@ -402,4 +416,12 @@ export default async function()
 			}
 		}
 	});
+
+	function onCheckboxInput()
+	{
+		applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value]
+			.filter(country => !unMembersOnlyCheckbox.checked || unMembers.includes(country))
+			.filter(country => !largeAreaOnlyCheckbox.checked || largestAreaCountries.includes(country))
+			.filter(country => !largePopulationOnlyCheckbox.checked || largestPopulationCountries.includes(country));
+	}
 }
