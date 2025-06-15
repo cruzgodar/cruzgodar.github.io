@@ -1,5 +1,13 @@
 import { FlagOverlap } from "./class.js";
-import { countriesByName, countryNameList, countryNames, largestAreaCountries, largestPopulationCountries, possibleAnswers, unMembers } from "./countryData.js";
+import {
+	countriesByName,
+	countryNameList,
+	countryNames,
+	largestAreaCountries,
+	largestPopulationCountries,
+	possibleAnswers,
+	unMembers
+} from "./countryData.js";
 import { Button } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -343,6 +351,7 @@ export default async function()
 
 
 	guessSelectorInput.addEventListener("focus", showCountryList);
+	guessSelectorInput.addEventListener("click", showCountryList);
 
 	guessSelectorInput.addEventListener("blur", () =>
 	{
@@ -417,11 +426,27 @@ export default async function()
 		}
 	});
 
-	function onCheckboxInput()
+	async function onCheckboxInput()
 	{
-		applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value]
-			.filter(country => !unMembersOnlyCheckbox.checked || unMembers.includes(country))
-			.filter(country => !largeAreaOnlyCheckbox.checked || largestAreaCountries.includes(country))
-			.filter(country => !largePopulationOnlyCheckbox.checked || largestPopulationCountries.includes(country));
+		await Promise.all([
+			unMembersOnlyCheckbox.loaded,
+			largeAreaOnlyCheckbox.loaded,
+			largePopulationOnlyCheckbox.loaded,
+			possibleFlagsDropdown.loaded
+		]);
+
+		applet.possibleFlags = possibleAnswers[possibleFlagsDropdown.value || "all"]
+			.filter(country =>
+				!unMembersOnlyCheckbox.checked
+				|| unMembers.includes(country)
+			)
+			.filter(country =>
+				!largeAreaOnlyCheckbox.checked
+				|| largestAreaCountries.includes(country)
+			)
+			.filter(country =>
+				!largePopulationOnlyCheckbox.checked
+				|| largestPopulationCountries.includes(country)
+			);
 	}
 }
