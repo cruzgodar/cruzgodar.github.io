@@ -42,6 +42,7 @@ export class FlagOverlap extends Applet
 	//   hsvData: same, but hsv
 	//   wilson: instance for drawing
 	//   wilsonOverlay: instance for drawing the overlay flag
+	//   currentlyFullscreen
 	// }
 	guesses = [];
 	
@@ -232,31 +233,81 @@ export class FlagOverlap extends Applet
 		guess.flagId = flagId;
 		guess.showDiffs = true;
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
+		guess.currentlyFullscreen = false;
 
-		const switchFullscreen = () =>
+		const beforeSwitchFullscreen = async () =>
 		{
-			if (guess.wilsonOverlay.currentlyFullscreen)
-			{
-				guess.wilsonOverlay.exitFullscreen();
-			}
+			this.overlapCheckboxes[this.guesses.length - 1].style.setProperty(
+				"view-transition-name",
+				"checkbox"
+			);
 
-			else if (guess.wilson.currentlyFullscreen)
+			await sleep(10);
+		};
+
+		const onSwitchFullscreen = () =>
+		{
+			if (guess.wilsonOverlay.currentlyFullscreen || guess.wilson.currentlyFullscreen)
 			{
-				guess.wilson.exitFullscreen();
+				this.overlapCheckboxes[this.guesses.length - 1].classList.add("fullscreen");
 			}
 
 			else
 			{
-				if (guess.showDiffs)
+				this.overlapCheckboxes[this.guesses.length - 1].classList.remove("fullscreen");
+			}
+		};
+
+		const switchFullscreen = () =>
+		{
+			guess.currentlyFullscreen = !guess.currentlyFullscreen;
+
+			document.startViewTransition(
+				() =>
 				{
 					guess.wilson.enterFullscreen();
-				}
-
-				else
-				{
 					guess.wilsonOverlay.enterFullscreen();
 				}
-			}
+			);
+
+			// guess.currentlyFullscreen
+			// 	? guess.wilson.enterFullscreen()
+			// 	: guess.wilson.exitFullscreen();
+
+			// setTimeout(() =>
+			// {
+			// 	guess.currentlyFullscreen
+			// 		? guess.wilsonOverlay.enterFullscreen()
+			// 		: guess.wilsonOverlay.exitFullscreen();
+			// }, 300);
+
+			// if (guess.showDiffs)
+			// {
+			// 	guess.currentlyFullscreen
+			// 		? guess.wilson.enterFullscreen()
+			// 		: guess.wilson.exitFullscreen();
+
+			// 	setTimeout(() =>
+			// 	{
+			// 		guess.currentlyFullscreen
+			// 			? guess.wilsonOverlay.enterFullscreen()
+			// 			: guess.wilsonOverlay.exitFullscreen();
+			// 	}, 300);
+			// }
+
+			// else
+			// {
+			// 	guess.currentlyFullscreen
+			// 		? guess.wilsonOverlay.enterFullscreen()
+			// 		: guess.wilsonOverlay.exitFullscreen();
+
+			// 	setTimeout(() =>
+			// 	{
+			// 		guess.currentlyFullscreen
+			// 			? guess.wilson.enterFullscreen()
+			// 			: guess.wilson.exitFullscreen();
+			// 	}, 300);
+			// }
 		};
 
 		const options =
@@ -264,6 +315,11 @@ export class FlagOverlap extends Applet
 			canvasWidth: this.resolution,
 
 			useP3ColorSpace: false,
+
+			fullscreenOptions: {
+				beforeSwitch: beforeSwitchFullscreen,
+				onSwitch: onSwitchFullscreen,
+			},
 
 			interactionOptions: {
 				callbacks: {

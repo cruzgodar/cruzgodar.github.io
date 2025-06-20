@@ -97,6 +97,14 @@
 	cursor: pointer;
 }
 
+.guess-overlap-checkbox.fullscreen
+{
+	position: fixed;
+	bottom: calc(10px + env(safe-area-inset-right));
+	left: calc(10px + env(safe-area-inset-right));
+	z-index: 1500;
+}
+
 .cap-icon
 {
 	height: 8px;
@@ -440,4 +448,9 @@
 	{
 		margin-top: 32px;
 	}
+}
+
+body > .WILSON_fullscreen-container:last-child
+{
+	background-color: transparent !important;
 }

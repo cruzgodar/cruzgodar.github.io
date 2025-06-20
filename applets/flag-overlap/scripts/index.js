@@ -13,7 +13,7 @@ import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
-import { animate, fuzzySearch } from "/scripts/src/utils.js";
+import { animate, fuzzySearch, sleep } from "/scripts/src/utils.js";
 
 export default async function()
 {
@@ -203,6 +203,17 @@ export default async function()
 		});
 	}
 
+	const noResultsElement = document.createElement("div");
+	noResultsElement.classList.add("country-list-item");
+	noResultsElement.innerHTML = /* html */`
+		<p class="body-text" style="text-align: center; opacity: 0.5">No results</p>
+	`;
+	noResultsElement.style.order = countryList.children.length;
+	noResultsElement.style.cursor = "default";
+	noResultsElement.style.display = "none";
+
+	countryList.appendChild(noResultsElement);
+
 
 
 	function selectItem(apparentIndex)
@@ -237,7 +248,7 @@ export default async function()
 		countryList.style.maxHeight = `${maxHeight}px`;
 	}
 
-	function showCountryList()
+	async function showCountryList()
 	{
 		if (preventOpeningCountryList)
 		{
@@ -249,13 +260,17 @@ export default async function()
 
 		onResize();
 
+		countryList.scrollTo(0, 0);
+
 		selectItem(0);
+
+		await sleep(20);
 
 		if (countryList.style.display !== "flex")
 		{
 			countryList.style.display = "flex";
 
-			animate((t) =>
+			await animate((t) =>
 			{
 				countryList.style.transform = `scale(${.975 + t * .025})`;
 				countryList.style.opacity = t;
@@ -312,6 +327,8 @@ export default async function()
 
 			selectedItemApparentIndex = undefined;
 
+			noResultsElement.style.display = "none";
+
 			return;
 		}
 		
@@ -324,6 +341,8 @@ export default async function()
 					.map(name => countriesByName[name])
 			)
 		);
+
+		console.log(currentResults);
 
 
 		apparentToDomOrder = new Array(currentResults.length);
@@ -346,6 +365,10 @@ export default async function()
 		}
 
 		countryList.scrollTo(0, 0);
+
+		noResultsElement.style.display = currentResults.length === 0
+			? "block"
+			: "none";
 	}
 
 
@@ -422,6 +445,12 @@ export default async function()
 						setTimeout(() => countryList.children[selectedItemDomIndex].click(), 50);
 					}
 				}
+			}
+
+			else if (e.key.length === 1)
+			{
+				guessSelectorInput.focus();
+				// guessSelectorInput.value += e.key;
 			}
 		}
 	});
