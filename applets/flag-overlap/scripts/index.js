@@ -360,7 +360,7 @@ export default async function()
 
 		for (const [resultIndex, code] of currentResults.entries())
 		{
-			const index = possibleAnswers.all.indexOf(code);
+			const index = countryCodesAlphabetical.indexOf(code);
 			const option = countryList.children[index];
 			option.style.display = "flex";
 			option.style.order = resultIndex;
@@ -448,6 +448,8 @@ export default async function()
 					if (selectedItemApparentIndex !== undefined)
 					{
 						const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+						guessSelectorInput.value = "";
 						
 						hideCountryList();
 						setTimeout(() =>
@@ -456,6 +458,8 @@ export default async function()
 								.getAttribute("data-country-code");
 
 							applet.guessFlag(countryCode);
+
+							lastGuessFlagId = countryCode;
 						}, 100);
 					}
 				}
