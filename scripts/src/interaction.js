@@ -126,9 +126,14 @@ export function listenForFullscreenKey()
 					}
 				}
 
+				if (!currentlyLoadedApplets[minIndex].allowFullscreenWithKeyboard)
+				{
+					return;
+				}
+
 				const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
 					?? currentlyLoadedApplets[minIndex].wilson;
-
+	
 				wilson.enterFullscreen();
 			}
 		}

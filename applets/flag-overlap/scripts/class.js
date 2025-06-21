@@ -10,6 +10,8 @@ const vThreshold = 0.4;
 
 export class FlagOverlap extends Applet
 {
+	allowFullscreenWithKeyboard = false;
+
 	possibleFlags = [];
 	gameOver = false;
 	currentlyAnimating = false;
@@ -41,6 +43,9 @@ export class FlagOverlap extends Applet
 	//   pixels: matching pixels that can be drawn to the guess canvas
 	//   hsvData: same, but hsv
 	//   wilson: instance for drawing
+	//   wilsonOverlay: instance for drawing the overlay flag,
+	//   flagImageData: image data for the flag
+	//   overlapImageData: image data for the overlap
 	//   currentlyFullscreen
 	// }
 	guesses = [];
@@ -50,6 +55,7 @@ export class FlagOverlap extends Applet
 		canvas,
 		overlayCanvas,
 		guessCanvases,
+		overlayCanvases,
 		progressBars,
 		progressBarTexts,
 		overlapCheckboxes,
@@ -59,6 +65,7 @@ export class FlagOverlap extends Applet
 		super(canvas);
 
 		this.guessCanvases = guessCanvases;
+		this.overlayCanvases = overlayCanvases;
 		this.progressBars = progressBars;
 		this.progressBarTexts = progressBarTexts;
 		this.overlapCheckboxes = overlapCheckboxes;
@@ -232,11 +239,13 @@ export class FlagOverlap extends Applet
 		guess.matchingPixels = new Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 		guess.currentlyFullscreen = false;
 
+		const index = this.guesses.length;
+
 		const beforeSwitchFullscreen = async () =>
 		{
-			this.overlapCheckboxes[this.guesses.length - 1].style.setProperty(
+			this.overlapCheckboxes[index].style.setProperty(
 				"view-transition-name",
-				"checkbox"
+				`checkbox-${index}`
 			);
 
 			await sleep(10);
@@ -244,67 +253,31 @@ export class FlagOverlap extends Applet
 
 		const onSwitchFullscreen = () =>
 		{
+			guess.currentlyFullscreen = !guess.currentlyFullscreen;
+
 			if (guess.wilsonOverlay.currentlyFullscreen || guess.wilson.currentlyFullscreen)
 			{
-				this.overlapCheckboxes[this.guesses.length - 1].classList.add("fullscreen");
+				this.overlapCheckboxes[index].classList.add("fullscreen");
 			}
 
 			else
 			{
-				this.overlapCheckboxes[this.guesses.length - 1].classList.remove("fullscreen");
+				this.overlapCheckboxes[index].classList.remove("fullscreen");
+
+				setTimeout(() =>
+				{
+					this.overlapCheckboxes[index].style.removeProperty(
+						"view-transition-name",
+					);
+				}, 500);
 			}
 		};
 
 		const switchFullscreen = () =>
 		{
-			guess.currentlyFullscreen = !guess.currentlyFullscreen;
-
-			document.startViewTransition(
-				() =>
-				{
-					guess.wilson.enterFullscreen();
-					guess.wilsonOverlay.enterFullscreen();
-				}
-			);
-
-			// guess.currentlyFullscreen
-			// 	? guess.wilson.enterFullscreen()
-			// 	: guess.wilson.exitFullscreen();
-
-			// setTimeout(() =>
-			// {
-			// 	guess.currentlyFullscreen
-			// 		? guess.wilsonOverlay.enterFullscreen()
-			// 		: guess.wilsonOverlay.exitFullscreen();
-			// }, 300);
-
-			// if (guess.showDiffs)
-			// {
-			// 	guess.currentlyFullscreen
-			// 		? guess.wilson.enterFullscreen()
-			// 		: guess.wilson.exitFullscreen();
-
-			// 	setTimeout(() =>
-			// 	{
-			// 		guess.currentlyFullscreen
-			// 			? guess.wilsonOverlay.enterFullscreen()
-			// 			: guess.wilsonOverlay.exitFullscreen();
-			// 	}, 300);
-			// }
-
-			// else
-			// {
-			// 	guess.currentlyFullscreen
-			// 		? guess.wilsonOverlay.enterFullscreen()
-			// 		: guess.wilsonOverlay.exitFullscreen();
-
-			// 	setTimeout(() =>
-			// 	{
-			// 		guess.currentlyFullscreen
-			// 			? guess.wilson.enterFullscreen()
-			// 			: guess.wilson.exitFullscreen();
-			// 	}, 300);
-			// }
+			guess.currentlyFullscreen
+				? guess.wilson.exitFullscreen()
+				: guess.wilson.enterFullscreen();
 		};
 
 		const options =
@@ -328,6 +301,11 @@ export class FlagOverlap extends Applet
 
 		guess.wilson = new WilsonCPU(
 			this.guessCanvases[this.guesses.length],
+			options
+		);
+
+		guess.wilsonOverlay = new WilsonCPU(
+			this.overlayCanvases[this.guesses.length],
 			options
 		);
 
@@ -379,11 +357,20 @@ export class FlagOverlap extends Applet
 			})
 		]);
 
-		guess.wilson.ctx.putImageData(new ImageData(
+		guess.overlapImageData = new ImageData(
 			guess.pixels,
 			this.wilson.canvasWidth,
 			this.wilson.canvasHeight
-		), 0, 0);
+		);
+
+		guess.flagImageData = guess.wilsonOverlay.ctx.getImageData(
+			0,
+			0,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight
+		);
+
+		guess.wilson.ctx.putImageData(guess.overlapImageData, 0, 0);
 
 		this.guesses.push(guess);
 
@@ -578,16 +565,25 @@ export class FlagOverlap extends Applet
 
 		newOverlayCanvasContainer.appendChild(newOverlayCanvas);
 
-		await changeOpacity({
-			element: this.guessCanvases[index],
-			opacity: 0,
-			duration: 250
-		});
+		await Promise.all([
+			changeOpacity({
+				element: this.guessCanvases[index],
+				opacity: 0,
+				duration: 250
+			}),
+			changeOpacity({
+				element: this.overlayCanvases[index],
+				opacity: 0,
+				duration: 250
+			})
+		]);
 
 		newGuessCanvas.style.position = "";
 		this.guessCanvases[index].remove();
+		this.overlayCanvases[index].parentNode.remove();
 
 		this.guessCanvases[index] = newGuessCanvas;
+		this.overlayCanvases[index] = newOverlayCanvas;
 	}
 
 	async replaceMainCanvas()
@@ -750,11 +746,26 @@ export class FlagOverlap extends Applet
 
 		for (const guess of this.guesses)
 		{
-			changeOpacity({
-				element: guess.wilsonOverlay.canvas,
-				opacity: guess.showDiffs ? 0 : 1,
-				duration: 150
-			});
+			const showDiffs = () =>
+			{
+				guess.wilson.ctx.putImageData(
+					guess.showDiffs
+						? guess.overlapImageData
+						: guess.flagImageData,
+					0,
+					0
+				);
+			};
+
+			if (document.startViewTransition)
+			{
+				document.startViewTransition(showDiffs);
+			}
+
+			else
+			{
+				showDiffs();
+			}
 		}
 	}
 }

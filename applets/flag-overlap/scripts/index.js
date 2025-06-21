@@ -342,8 +342,6 @@ export default async function()
 			)
 		);
 
-		console.log(currentResults);
-
 
 		apparentToDomOrder = new Array(currentResults.length);
 
@@ -393,6 +391,8 @@ export default async function()
 		event: "resize",
 		callback: onResize
 	});
+
+	const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
 	addTemporaryListener({
 		object: document.documentElement,
@@ -445,6 +445,25 @@ export default async function()
 						setTimeout(() => countryList.children[selectedItemDomIndex].click(), 50);
 					}
 				}
+			}
+
+			else if (e.key === "Tab")
+			{
+				for (const [index, guess] of applet.guesses.entries())
+				{
+					if (guess.currentlyFullscreen)
+					{
+						e.preventDefault();
+						applet.setShowDiffs(!guess.showDiffs, index);
+						applet.overlapCheckboxes[index].classList.toggle("checked");
+						return;
+					}
+				}
+			}
+
+			else if (numbers.includes(e.key))
+			{
+				/* ignore */
 			}
 
 			else if (e.key.length === 1)
