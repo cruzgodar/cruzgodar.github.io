@@ -1,6 +1,7 @@
 import { FlagOverlap } from "./class.js";
 import {
 	countriesByName,
+	countryCodesAlphabetical,
 	countryNameList,
 	countryNames,
 	largestAreaCountries,
@@ -30,6 +31,7 @@ export default async function()
 		progressBars: Array.from($$(".progress-bar")),
 		progressBarTexts: Array.from($$(".progress-bar-text")),
 		overlapCheckboxes: Array.from($$(".guess-overlap-checkbox")),
+		loadingOverlay: $("#loading-overlay"),
 		winOverlay: $("#win-overlay"),
 		viewFlagButtonContainer: $("#view-flag-button").parentElement
 	});
@@ -125,6 +127,11 @@ export default async function()
 		{
 			transition: opacity .125s ease-out;
 		}
+
+		#loading-overlay
+		{
+			transition: opacity 0.125s 0.25s ease-out;
+		}
 	`);
 
 
@@ -147,10 +154,11 @@ export default async function()
 
 	let domToApparentOrder = [...apparentToDomOrder];
 
-	for (const [index, countryCode] of currentResults.entries())
+	for (const [index, countryCode] of countryCodesAlphabetical.entries())
 	{
 		const option = document.createElement("div");
 		option.classList.add("country-list-item");
+		option.setAttribute("data-country-code", countryCode);
 		option.innerHTML = /* html */`
 			<img src="/applets/flag-overlap/graphics/thumbnails/${countryCode}.webp">
 			<p class="body-text">${countryNames[countryCode]}</p>
@@ -192,13 +200,13 @@ export default async function()
 			}
 		});
 
-		option.addEventListener("click", async () =>
+		option.addEventListener("pointerdown", async () =>
 		{
 			await applet.loadPromise;
 
 			guessSelectorInput.value = "";
 
-			setTimeout(() => applet.guessFlag(countryCode), 50);
+			setTimeout(() => applet.guessFlag(countryCode), 100);
 			lastGuessFlagId = countryCode;
 		});
 	}
@@ -442,7 +450,13 @@ export default async function()
 						const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
 						
 						hideCountryList();
-						setTimeout(() => countryList.children[selectedItemDomIndex].click(), 50);
+						setTimeout(() =>
+						{
+							const countryCode = countryList.children[selectedItemDomIndex]
+								.getAttribute("data-country-code");
+
+							applet.guessFlag(countryCode);
+						}, 100);
 					}
 				}
 			}
@@ -458,6 +472,18 @@ export default async function()
 						applet.overlapCheckboxes[index].classList.toggle("checked");
 						return;
 					}
+				}
+
+				// Else just do the last one.
+
+				if (applet.guesses.length !== 0)
+				{
+					const index = applet.guesses.length - 1;
+					const guess = applet.guesses[index];
+					e.preventDefault();
+					applet.setShowDiffs(!guess.showDiffs, index);
+					applet.overlapCheckboxes[index].classList.toggle("checked");
+					return;
 				}
 			}
 

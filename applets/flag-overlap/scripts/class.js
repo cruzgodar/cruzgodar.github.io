@@ -59,6 +59,7 @@ export class FlagOverlap extends Applet
 		progressBars,
 		progressBarTexts,
 		overlapCheckboxes,
+		loadingOverlay,
 		winOverlay,
 		viewFlagButtonContainer
 	}) {
@@ -69,6 +70,7 @@ export class FlagOverlap extends Applet
 		this.progressBars = progressBars;
 		this.progressBarTexts = progressBarTexts;
 		this.overlapCheckboxes = overlapCheckboxes;
+		this.loadingOverlay = loadingOverlay;
 		this.winOverlay = winOverlay;
 		this.viewFlagButtonContainer = viewFlagButtonContainer;
 
@@ -139,6 +141,8 @@ export class FlagOverlap extends Applet
 	// Draws the flag on the given wilson's canvas and parses it as hsv.
 	async drawFlag(wilson, flagId)
 	{
+		this.loadingOverlay.style.opacity = 1;
+
 		let resolve;
 		const promise = new Promise(r => resolve = r);
 
@@ -375,6 +379,8 @@ export class FlagOverlap extends Applet
 		this.guesses.push(guess);
 
 		this.updateMainCanvas();
+
+		this.loadingOverlay.style.opacity = 0;
 
 		await sleep(100);
 

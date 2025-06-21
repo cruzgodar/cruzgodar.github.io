@@ -117,6 +117,7 @@ export const countryNames = {
 	"kz": "Kazakhstan",
 	"ke": "Kenya",
 	"ki": "Kiribati",
+	"xk": "Kosovo",
 	"kw": "Kuwait",
 	"kg": "Kyrgyzstan",
 	"la": "Laos",
@@ -242,11 +243,12 @@ export const countryNames = {
 	"vn": "Vietnam",
 	"wf": "Wallis and Futuna",
 	"eh": "Western Sahara",
-	"xk": "Kosovo",
 	"ye": "Yemen",
 	"zm": "Zambia",
 	"zw": "Zimbabwe",
 };
+
+export const countryCodesAlphabetical = Object.keys(countryNames);
 
 export const countriesByName = {
 	"Afghanistan": "af",

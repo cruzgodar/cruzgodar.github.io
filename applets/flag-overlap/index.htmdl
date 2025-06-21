@@ -1,4 +1,4 @@
-Guess the secret flag in six tries or fewer! Every flag you guess is overlapped with the secret one, and only the overlaps are shown. Tap or click on any flag to take a closer look, and use the <span class="cap-icon" style="transform: translateY(3px)"></span> button on a guess to toggle between the guessed flag and its overlap. Good luck!
+Guess the secret flag in six tries or fewer! Every flag you guess is overlapped with the secret one, and only the overlaps are shown. Tap or click on any flag to take a closer look, and use the <span class="cap-icon" style="transform: translateY(3px)"></span> button on a guess (or press tab) to toggle between the guessed flag and its overlap. Good luck!
 
 ### dropdown possible-flags
 
@@ -27,9 +27,24 @@ Guess the secret flag in six tries or fewer! Every flag you guess is overlapped 
 
 <div id="canvas-landscape-middle" style="position: relative">
 	<canvas id="output-canvas" class="output-canvas"></canvas>
+
+	<div id="loading-overlay">
+		<div id="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+	</div>
+
 	<div style="position: absolute; top: 0; left: 0">
 		<canvas id="overlay-canvas" class="output-canvas"></canvas>
 	</div>
+
 	<div id="win-overlay">
 		<p id="win-text">Got it!</p>
 
