@@ -41,7 +41,6 @@ export class FlagOverlap extends Applet
 	//   pixels: matching pixels that can be drawn to the guess canvas
 	//   hsvData: same, but hsv
 	//   wilson: instance for drawing
-	//   wilsonOverlay: instance for drawing the overlay flag
 	//   currentlyFullscreen
 	// }
 	guesses = [];
@@ -51,7 +50,6 @@ export class FlagOverlap extends Applet
 		canvas,
 		overlayCanvas,
 		guessCanvases,
-		overlayCanvases,
 		progressBars,
 		progressBarTexts,
 		overlapCheckboxes,
@@ -61,7 +59,6 @@ export class FlagOverlap extends Applet
 		super(canvas);
 
 		this.guessCanvases = guessCanvases;
-		this.overlayCanvases = overlayCanvases;
 		this.progressBars = progressBars;
 		this.progressBarTexts = progressBarTexts;
 		this.overlapCheckboxes = overlapCheckboxes;
@@ -334,11 +331,6 @@ export class FlagOverlap extends Applet
 			options
 		);
 
-		guess.wilsonOverlay = new WilsonCPU(
-			this.overlayCanvases[this.guesses.length],
-			options
-		);
-
 		const [returnValue] = await Promise.all([
 			this.drawFlag(guess.wilsonOverlay, flagId),
 			this.drawFlag(this.wilsonOverlay, flagId)
@@ -586,25 +578,16 @@ export class FlagOverlap extends Applet
 
 		newOverlayCanvasContainer.appendChild(newOverlayCanvas);
 
-		await Promise.all([
-			changeOpacity({
-				element: this.guessCanvases[index],
-				opacity: 0,
-				duration: 250
-			}),
-			changeOpacity({
-				element: this.overlayCanvases[index],
-				opacity: 0,
-				duration: 250
-			})
-		]);
+		await changeOpacity({
+			element: this.guessCanvases[index],
+			opacity: 0,
+			duration: 250
+		});
 
 		newGuessCanvas.style.position = "";
 		this.guessCanvases[index].remove();
-		this.overlayCanvases[index].parentNode.remove();
 
 		this.guessCanvases[index] = newGuessCanvas;
-		this.overlayCanvases[index] = newOverlayCanvas;
 	}
 
 	async replaceMainCanvas()

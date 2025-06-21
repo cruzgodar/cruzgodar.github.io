@@ -15,14 +15,16 @@ export default function()
 		element: $("#root-a-input"),
 		name: "Root a",
 		value: 0,
-		onInput: setRoot
+		onInput: setRoot,
+		persistState: false,
 	});
 
 	const rootBInput = new TextBox({
 		element: $("#root-b-input"),
 		name: "Root b",
 		value: 0,
-		onInput: setRoot
+		onInput: setRoot,
+		persistState: false,
 	});
 
 	const applet = new NewtonsMethod({

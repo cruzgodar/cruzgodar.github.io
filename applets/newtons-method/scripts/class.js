@@ -409,6 +409,20 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		this.spreadRoots({ doAnimation: false });
 
+		if (this.colorSetterElement)
+		{
+			setTimeout(() =>
+			{
+				const color = this.colors.root0;
+
+				this.colorSetterElement.firstElementChild.value = rgbToHex(
+					color[0] * 255,
+					color[1] * 255,
+					color[2] * 255
+				);
+			}, 16);
+		}
+
 		this.resume();
 	}
 
@@ -487,6 +501,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 			duration: 1000
 		});
 
+		this.onReleaseDraggable({ id: `root${this.numRoots - 1}` });
+
 		this.needNewFrame = true;
 	}
 
@@ -500,6 +516,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 		}
 
 		this.numRoots--;
+
+		this.onReleaseDraggable({ id: `root${this.numRoots - 1}` });
 
 		const [x, y] = this.wilson.draggables[`root${this.numRoots}`].location;
 
@@ -705,15 +723,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		if (this.rootSetterElement && this.colorSetterElement)
 		{
-			this.rootAInput.setValue(
-				Math.round(this.wilson.draggables[this.lastActiveRoot].location[0] * 1000) / 1000,
-				false
-			);
-			
-			this.rootBInput.setValue(
-				Math.round(this.wilson.draggables[this.lastActiveRoot].location[1] * 1000) / 1000,
-				false
-			);
+			this.updateRootSetterValues();
 
 			if (this.lastActiveRoot in this.colors)
 			{
@@ -728,10 +738,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 		}
 	}
 
+	updateRootSetterValues()
+	{
+		if (this.rootSetterElement && this.colorSetterElement)
+		{
+			this.rootAInput.setValue(
+				Math.round(this.wilson.draggables[this.lastActiveRoot].location[0] * 1000) / 1000,
+				false
+			);
+			
+			this.rootBInput.setValue(
+				Math.round(this.wilson.draggables[this.lastActiveRoot].location[1] * 1000) / 1000,
+				false
+			);
+		}
+	}
+
 	
 
 	drawFrame()
 	{
+		this.updateRootSetterValues();
+
 		this.wilsonHidden.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY]
