@@ -4,8 +4,8 @@ import { changeOpacity } from "/scripts/src/animation.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-const hThreshold = 0.05;
-const sThreshold = 0.45;
+const hThreshold = 0.051;
+const sThreshold = 0.4;
 const vThreshold = 0.4;
 
 export class FlagOverlap extends Applet

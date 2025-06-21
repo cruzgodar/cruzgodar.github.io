@@ -109,20 +109,6 @@ body
 
 
 
-*
-{
-	user-select: none;
-	-webkit-user-select: none;
-}
-
-p, h1, h2, p span, em, strong, dfn, a, code
-{
-	user-select: auto;
-	-webkit-user-select: auto;
-}
-
-
-
 .hover-reduce-motion
 {
 	filter: brightness(.85);
@@ -1007,6 +993,9 @@ body > .WILSON_fullscreen-container .fps-canvas
 	outline: none;
 	
 	z-index: 10;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .text-button:not(:hover):focus
@@ -1706,6 +1695,9 @@ option
 	z-index: 110;
 	
 	transform-origin: 50% 50vh;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 
@@ -2186,6 +2178,9 @@ option
 	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
 
 	outline: 2px solid var(--contrast-border-color);
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .image-link img:not(:hover):focus

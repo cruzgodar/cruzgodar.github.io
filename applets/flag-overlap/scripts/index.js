@@ -214,7 +214,7 @@ export default async function()
 	const noResultsElement = document.createElement("div");
 	noResultsElement.classList.add("country-list-item");
 	noResultsElement.innerHTML = /* html */`
-		<p class="body-text" style="text-align: center; opacity: 0.5">No results</p>
+		<p class="body-text" style="text-align: center; opacity: 0.5; width: 100%">No results</p>
 	`;
 	noResultsElement.style.order = countryList.children.length;
 	noResultsElement.style.cursor = "default";
@@ -428,40 +428,37 @@ export default async function()
 
 			else if (e.key === "Enter")
 			{
-				if (guessSelectorFocused)
+				if (applet.gameOver)
 				{
-					if (applet.gameOver)
+					applet.replay();
+					return;
+				}
+
+				else if (
+					guessSelectorInput.value.length === 0
+					&& lastGuessFlagId
+					&& applet.guesses.length === 0
+					&& selectedItemApparentIndex === undefined
+				) {
+					applet.guessFlag(lastGuessFlagId);
+				}
+
+				if (selectedItemApparentIndex !== undefined)
+				{
+					const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+					guessSelectorInput.value = "";
+					
+					hideCountryList();
+					setTimeout(() =>
 					{
-						applet.replay();
-						return;
-					}
+						const countryCode = countryList.children[selectedItemDomIndex]
+							.getAttribute("data-country-code");
 
-					else if (
-						guessSelectorInput.value.length === 0
-						&& lastGuessFlagId
-						&& applet.guesses.length === 0
-						&& selectedItemApparentIndex === undefined
-					) {
-						applet.guessFlag(lastGuessFlagId);
-					}
+						applet.guessFlag(countryCode);
 
-					if (selectedItemApparentIndex !== undefined)
-					{
-						const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
-
-						guessSelectorInput.value = "";
-						
-						hideCountryList();
-						setTimeout(() =>
-						{
-							const countryCode = countryList.children[selectedItemDomIndex]
-								.getAttribute("data-country-code");
-
-							applet.guessFlag(countryCode);
-
-							lastGuessFlagId = countryCode;
-						}, 100);
-					}
+						lastGuessFlagId = countryCode;
+					}, 100);
 				}
 			}
 
