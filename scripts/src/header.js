@@ -51,11 +51,6 @@ export function addHeader()
 					<img src="/graphics/header-icons/slides.webp"></img>
 				</a>
 				
-				<a id="header-writing-link" href="/writing">
-					<span>Writing</span>
-					<img src="/graphics/header-icons/writing.webp"></img>
-				</a>
-				
 				<a id="header-about-link" href="/about">
 					<span>About</span>
 					<img src="/graphics/header-icons/about.webp"></img>

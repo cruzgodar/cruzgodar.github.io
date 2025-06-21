@@ -37,14 +37,11 @@
 	--teaching-color: rgb(255, 216, 150);
 	/* --teaching-color: lch(90% 35 80); */
 
-	--slides-color: rgb(244, 199, 255);
-	/* --slides-color: lch(90% 70 300); */
+	--slides-color: rgb(175, 229, 255);
+	/* --slides-color: lch(90% 30 255); */
 
-	--writing-color: rgb(175, 229, 255);
-	/* --writing-color: lch(90% 30 255); */
-
-	--about-color: rgb(222, 222, 222);
-	/* --about-color: lch(90% 0 0); */
+	--about-color: rgb(244, 199, 255);
+	/* --about-color: lch(90% 70 300); */
 
 
 
@@ -1830,11 +1827,6 @@ option
 	background-color: var(--slides-color);
 }
 
-#header-writing-link.hover
-{
-	background-color: var(--writing-color);
-}
-
 #header-about-link.hover
 {
 	background-color: var(--about-color);
@@ -2226,11 +2218,6 @@ img[src="/teaching/cover.webp"]
 img[src="/slides/cover.webp"]
 {
 	background-color: var(--slides-color);
-}
-
-img[src="/writing/cover.webp"]
-{
-	background-color: var(--writing-color);
 }
 
 img[src="/about/cover.webp"]

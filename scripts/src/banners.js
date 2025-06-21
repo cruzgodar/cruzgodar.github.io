@@ -163,8 +163,8 @@ export const multibannerPages =
 {
 	"/home":
 	{
-		currentBanner: Math.floor(Math.random() * 11) + 1,
-		numBanners: 11
+		currentBanner: Math.floor(Math.random() * 12) + 1,
+		numBanners: 12
 	}
 };
 
