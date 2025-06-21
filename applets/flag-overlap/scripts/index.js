@@ -209,6 +209,7 @@ export default async function()
 			await applet.loadPromise;
 
 			guessSelectorInput.value = "";
+			guessSelectorInput.blur();
 
 			setTimeout(() => applet.guessFlag(countryCode), 100);
 			lastGuessFlagId = countryCode;
@@ -453,7 +454,8 @@ export default async function()
 
 					guessSelectorInput.value = "";
 					
-					hideCountryList();
+					guessSelectorInput.blur();
+					
 					setTimeout(() =>
 					{
 						const countryCode = countryList.children[selectedItemDomIndex]

@@ -750,28 +750,26 @@ export class FlagOverlap extends Applet
 
 		guess.showDiffs = showDiffs;
 
-		for (const guess of this.guesses)
+		const setImageData = () =>
 		{
-			const showDiffs = () =>
-			{
-				guess.wilson.ctx.putImageData(
-					guess.showDiffs
-						? guess.overlapImageData
-						: guess.flagImageData,
-					0,
-					0
-				);
-			};
+			guess.wilson.ctx.putImageData(
+				guess.showDiffs
+					? guess.overlapImageData
+					: guess.flagImageData,
+				0,
+				0
+			);
+		};
 
-			if (document.startViewTransition)
-			{
-				document.startViewTransition(showDiffs);
-			}
+		if (document.startViewTransition)
+		{
 
-			else
-			{
-				showDiffs();
-			}
+			document.startViewTransition(setImageData);
+		}
+
+		else
+		{
+			setImageData();
 		}
 	}
 }
