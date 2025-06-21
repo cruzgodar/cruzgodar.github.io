@@ -21,6 +21,7 @@ export default async function()
 	// Get "leo" url var.
 	const leoUrl = new URLSearchParams(window.location.search).get("leo");
 
+	const guessSelectorElement = $("#guess-selector");
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
 
@@ -204,12 +205,14 @@ export default async function()
 			}
 		});
 
-		option.addEventListener("pointerdown", async () =>
+		option.addEventListener("click", async () =>
 		{
 			await applet.loadPromise;
 
 			guessSelectorInput.value = "";
+			guessSelectorFocused = false;
 			guessSelectorInput.blur();
+			hideCountryList();
 
 			setTimeout(() => applet.guessFlag(countryCode), 100);
 			lastGuessFlagId = countryCode;
@@ -387,10 +390,18 @@ export default async function()
 	guessSelectorInput.addEventListener("focus", showCountryList);
 	guessSelectorInput.addEventListener("click", showCountryList);
 
-	guessSelectorInput.addEventListener("blur", () =>
-	{
-		guessSelectorFocused = false;
-		hideCountryList();
+	addTemporaryListener({
+		object: document.documentElement,
+		event: "pointerdown",
+		callback: (e) =>
+		{
+			if (!guessSelectorElement.contains(e.target))
+			{
+				guessSelectorInput.blur();
+				guessSelectorFocused = false;
+				hideCountryList();
+			}
+		}
 	});
 
 	guessSelectorInput.addEventListener("input", () =>
@@ -414,6 +425,8 @@ export default async function()
 		{
 			if (e.key === "Escape" && guessSelectorFocused)
 			{
+				guessSelectorInput.blur();
+				guessSelectorFocused = false;
 				hideCountryList();
 			}
 
@@ -455,7 +468,9 @@ export default async function()
 					guessSelectorInput.value = "";
 					
 					guessSelectorInput.blur();
-					
+					guessSelectorFocused = false;
+					hideCountryList();
+
 					setTimeout(() =>
 					{
 						const countryCode = countryList.children[selectedItemDomIndex]
