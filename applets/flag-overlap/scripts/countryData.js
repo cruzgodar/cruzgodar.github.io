@@ -578,4 +578,6 @@ export const possibleAnswers = {
 	africa: ["ic", "dz", "ao", "bj", "bw", "bf", "bi", "cv", "cm", "cf", "td", "km", "cg", "ci", "cd", "dj", "eg", "gq", "er", "sz", "et", "tf", "ga", "gm", "gh", "gw", "gn", "ke", "ls", "lr", "ly", "mg", "mw", "ml", "mr", "mu", "ma", "mz", "na", "ne", "ng", "rw", "st", "sn", "sc", "sl", "so", "za", "ss", "sd", "tz", "tg", "tn", "ug", "eh", "zm", "zw"],
 
 	asiaAndPacific: ["af", "as", "am", "au", "az", "bh", "bd", "bt", "io", "bn", "kh", "cn", "cx", "cc", "ck", "fj", "pf", "ge", "gu", "hk", "in", "id", "ir", "iq", "il", "jp", "jo", "kz", "ki", "kw", "kg", "la", "lb", "mo", "my", "mv", "mh", "fm", "mn", "mm", "nr", "np", "nc", "nz", "ni", "nf", "kp", "mp", "om", "pk", "pw", "ps", "pg", "ph", "pn", "qa", "re", "ru", "ws", "sa", "sg", "sb", "kr", "lk", "sy", "tw", "tj", "th", "tl", "tk", "to", "tr", "tm", "tv", "ae", "uz", "vu", "vn", "wf", "ye"],
+
+	leo: ["ax", "as", "ai", "aq", "aw", "bm", "io", "vg", "ky", "cx", "cc", "ck", "cw", "fk", "fo", "gf", "pf", "tf", "gi", "gl", "gp", "gu", "gg", "hk", "im", "je", "mo", "mq", "ms", "nc", "nu", "nf", "mp", "pn", "pr", "re", "pm", "sx", "gs", "sj", "tw", "tk", "tc", "vi", "wf", "eh", "ic", "xk", "bq-sa", "bq-bo", "bq-se"]
 };

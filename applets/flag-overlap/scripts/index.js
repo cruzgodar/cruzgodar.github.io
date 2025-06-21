@@ -18,6 +18,9 @@ import { animate, fuzzySearch, sleep } from "/scripts/src/utils.js";
 
 export default async function()
 {
+	// Get "leo" url var.
+	const leoUrl = new URLSearchParams(window.location.search).get("leo");
+
 	const guessSelectorInput = $("#guess-selector-input");
 	const countryList = $("#country-list");
 
@@ -91,7 +94,8 @@ export default async function()
 			americas: "The Americas",
 			europe: "Europe",
 			africa: "Africa",
-			asiaAndPacific: "Asia and the Pacific"
+			asiaAndPacific: "Asia and the Pacific",
+			...(leoUrl ? { leo: "Leo" } : {})
 		},
 		onInput: onCheckboxInput
 	});
