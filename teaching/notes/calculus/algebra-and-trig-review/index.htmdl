@@ -18,7 +18,7 @@ A **function** is a rule that associates a set of inputs with a set of outputs. 
 
 ### desmos functions
 
-A handful of the other functions whose graphs you should know are also plotted there --- click the empty circles to the left of the equations to toggle them on one-by-one and have a look at the graphs.
+A handful of the other functions whose graphs you should know are also plotted there --- <span class="click-tap"><span>click</span><span>tap</span></span> the empty circles to the left of the equations to toggle them on one-by-one and have a look at the graphs.
 
 The **domain** of a function is the set of numbers we can plug into it. For example, the domain of $y = \sqrt{x}$ is $[0, \infty)$, since we can take the square root of any nonnegative real number and get a sensible result. On the other hand, the domain of $y = x^2$ is $(-\infty, \infty)$, since any real number can be squared. On a graph, the domain is the part of the $x$-axis that has the graph above it.
 

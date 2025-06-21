@@ -55,5 +55,5 @@ again. The function will flip-flop between those two numbers forever, and what's
 </div>
 
 ### card applet-controls "Controls"
-	Drag on the scene to look around, and pinch or scroll to zoom. Hover or drag on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set.
+	Drag on the scene to look around and <span class="click-tap"><span>scroll</span><span>pinch</span></span> to zoom. <span class="click-tap"><span>Hover</span><span>Drag</span></span> on the Mandelbrot set to pick a Julia set after <span class="click-tap"><span>clicking</span><span>tapping</span></span> the button and <span class="click-tap"><span>click</span><span>release</span></span> to explore that Julia set.
 ###

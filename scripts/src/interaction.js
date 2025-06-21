@@ -37,6 +37,8 @@ export function initInteractionListeners()
 				&& timeBetweenMousemoves !== 33
 			) {
 				currentlyTouchDevice = false;
+
+				updateTapClickElements();
 			}
 		}
 	});
@@ -79,6 +81,28 @@ function handleTouchEvent()
 		removeHoverEvents();
 
 		currentlyTouchDevice = true;
+
+		updateTapClickElements();
+	}
+}
+
+export function updateTapClickElements()
+{
+	const tapClickElements = Array.from(document.body.querySelectorAll("span.click-tap"));
+
+	for (const tapClickElement of tapClickElements)
+	{
+		if (currentlyTouchDevice)
+		{
+			tapClickElement.firstElementChild.style.display = "none";
+			tapClickElement.lastElementChild.style.display = "inline";
+		}
+
+		else
+		{
+			tapClickElement.firstElementChild.style.display = "inline";
+			tapClickElement.lastElementChild.style.display = "none";
+		}
 	}
 }
 

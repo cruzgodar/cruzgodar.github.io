@@ -42,7 +42,7 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 	### solution
 	
-	The first three can be read directly off the graph. Try clicking or tapping the relevant points!
+	The first three can be read directly off the graph. Try <span class="click-tap"><span>clicking</span><span>tapping</span></span> the relevant points!
 	
 	$g(0) = -1$.
 	
@@ -190,7 +190,7 @@ Speaking of the second derivative, $x$-values that make *it* zero are called **i
 
 ### desmos secondDerivativeTest
 
-You can click the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
+You can <span class="click-tap"><span>click</span><span>tap</span></span> the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
 
 This is just about everything we'll need from calculus I! The last bit is **L'H&#x00F4;pital's rule**, which lets us calculate difficult limits with derivatives.
 

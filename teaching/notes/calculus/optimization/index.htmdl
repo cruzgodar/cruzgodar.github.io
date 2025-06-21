@@ -128,7 +128,7 @@ This is a fine start, but we really ought to know whether critical points are lo
 	
 ### desmos concavity
 
-Here, the red parts of the graph are **concave up**, and the blue are **concave down**, corresponding to the places where $f''(x)$ is positive and negative, respectively. Click the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
+Here, the red parts of the graph are **concave up**, and the blue are **concave down**, corresponding to the places where $f''(x)$ is positive and negative, respectively. <span class="click-tap"><span>Click</span><span>Tap</span></span> the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
 
 Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$, then the graph is concave down --- in other words, it's curving down, so $x = a$ must be a local maximum. If $f''(a) > 0$, then $x = a$ must be a local minimum. If $f''(a) = 0$, we don't know for sure what's going on, but still, this process is very useful for classifying critical points. This is called the **second derivative test**, and it lets us classify most extrema.
 

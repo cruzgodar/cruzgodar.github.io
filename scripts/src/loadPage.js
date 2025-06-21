@@ -15,7 +15,7 @@ import { initCards } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
-import { listenForFullscreenKey } from "./interaction.js";
+import { listenForFullscreenKey, updateTapClickElements } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$,
@@ -84,6 +84,8 @@ export async function loadPage()
 	initCards();
 
 	onResize();
+
+	updateTapClickElements();
 
 	listenForFullscreenKey();
 

@@ -134,7 +134,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 	### solution
 	
-	Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
+	Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (<span class="click-tap"><span>click</span><span>tap</span></span> the circle next to $f'(x)$ to see it).
 	
 ###
 
