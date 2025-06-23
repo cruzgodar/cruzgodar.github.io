@@ -69,8 +69,8 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.loopEdges = loopEdges;
 
-		this.panZoomDimCanvas = this.createHiddenCanvas();
-		this.updateCanvas = this.createHiddenCanvas();
+		this.panZoomDimCanvas = this.createOffscreenCanvas();
+		this.updateCanvas = this.createOffscreenCanvas();
 
 		const optionsUpdate =
 		{

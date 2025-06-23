@@ -105,7 +105,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			},
 		};
 
-		const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createOffscreenCanvas();
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
 			...options,

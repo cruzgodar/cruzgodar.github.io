@@ -1,12 +1,12 @@
 import {
-	colorABConfigRegions,
-	colorABConfigs,
-	getArrayVersionOfABConfig,
-	getMinimalABConfig,
-	isValidABConfig,
-	iterateThroughEntries,
-	printABConfig,
-	testAllEntriesOfABConfig
+    colorABConfigRegions,
+    colorABConfigs,
+    getArrayVersionOfABConfig,
+    getMinimalABConfig,
+    isValidABConfig,
+    iterateThroughEntries,
+    printABConfig,
+    testAllEntriesOfABConfig
 } from "./abConfigs.js";
 import { addCube, addFloor, addLeftWall, addRightWall } from "./addGeometry.js";
 import { godar1, godar1Inverse } from "./algorithms/godar1.js";
@@ -16,37 +16,37 @@ import { pak, pakInverse } from "./algorithms/pak.js";
 import { rsk, rskInverse } from "./algorithms/rsk.js";
 import { sulzgruber, sulzgruberInverse } from "./algorithms/sulzgruber.js";
 import {
-	hideDimers,
-	hideNumbersCanvas,
-	show2dView,
-	showDimers,
-	showHexView,
-	showNumbersCanvas,
-	updateCameraHeight
+    hideDimers,
+    hideNumbersCanvas,
+    show2dView,
+    showDimers,
+    showHexView,
+    showNumbersCanvas,
+    updateCameraHeight
 } from "./cameraControls.js";
 import { addNewArray, editArray, removeAllArrays, removeArray, trimArray } from "./editArrays.js";
 import {
-	drawAll2dViewText,
-	drawSingleCell2dViewText,
-	hideFloor,
-	hideWalls,
-	recalculateHeights,
-	removeOutsideFloor,
-	showFloor,
-	showWalls
+    drawAll2dViewText,
+    drawSingleCell2dViewText,
+    hideFloor,
+    hideWalls,
+    recalculateHeights,
+    removeOutsideFloor,
+    showFloor,
+    showWalls
 } from "./miscUtils.js";
 import { drawBoundary, drawBoundaryRect, drawNQuotient } from "./nQuotients.js";
 import { runAlgorithm, runExample } from "./runAlgorithm.js";
 import {
-	colorCubes,
-	colorWalls,
-	deleteCubes,
-	deleteFloor,
-	lowerCubes,
-	moveCubes,
-	raiseCubes,
-	revealCubes,
-	uncolorCubes
+    colorCubes,
+    colorWalls,
+    deleteCubes,
+    deleteFloor,
+    lowerCubes,
+    moveCubes,
+    raiseCubes,
+    revealCubes,
+    uncolorCubes
 } from "./styleCubes.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
@@ -144,10 +144,10 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.backgroundColor = backgroundColor;
 
-		const hiddenCanvas = this.createHiddenCanvas();
-		const hiddenCanvas2 = this.createHiddenCanvas();
-		const hiddenCanvas3 = this.createHiddenCanvas();
-		const hiddenCanvas4 = this.createHiddenCanvas();
+		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas2 = this.createOffscreenCanvas();
+		const hiddenCanvas3 = this.createOffscreenCanvas();
+		const hiddenCanvas4 = this.createOffscreenCanvas();
 
 		const options =
 		{

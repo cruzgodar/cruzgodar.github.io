@@ -221,7 +221,7 @@ export default function()
 			geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		}
 
-		applet.run(geometryData);
+		applet.run(geometryData, antialiasingCheckbox.checked);
 	}
 
 	for (const element of $$(".slider-container"))
@@ -364,7 +364,7 @@ export default function()
 
 	function onCheckboxInput()
 	{
-		applet.useAntialiasing = antialiasingCheckbox.checked;
-		applet.run(applet.geometryData, false);
+		applet.wilson.setAntialiasing(antialiasingCheckbox.checked);
+		applet.needNewFrame = true;
 	}
 }

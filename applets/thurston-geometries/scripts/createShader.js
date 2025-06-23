@@ -166,6 +166,7 @@ export function createShader({
 	
 	const shader = /* glsl */`
 		precision highp float;
+		precision highp sampler2D;
 		
 		varying vec2 uv;
 

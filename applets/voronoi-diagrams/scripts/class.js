@@ -1,9 +1,9 @@
 import {
-	Applet,
-	getMinGlslString,
-	getVectorGlsl,
-	hsvToRgb,
-	tempShader
+    Applet,
+    getMinGlslString,
+    getVectorGlsl,
+    hsvToRgb,
+    tempShader
 } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { sleep } from "/scripts/src/utils.js";
@@ -76,7 +76,7 @@ export class VoronoiDiagrams extends Applet
 			canvasWidth: this.resolutionHidden,
 		};
 
-		this.wilsonHidden = new WilsonGPU(this.createHiddenCanvas(), optionsHidden);
+		this.wilsonHidden = new WilsonGPU(this.createOffscreenCanvas(), optionsHidden);
 	}
 
 

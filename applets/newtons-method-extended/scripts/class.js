@@ -33,7 +33,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createOffscreenCanvas();
 		
 		const options = {
 			shader: tempShader,

@@ -24,7 +24,7 @@ export class KickedRotator extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createOffscreenCanvas();
 
 		const optionsUpdate =
 		{

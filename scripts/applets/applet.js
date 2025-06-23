@@ -8,6 +8,9 @@ import {
 import { siteSettings } from "../src/settings.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 
+export const realTimeAntialiasingAmount = 0.8;
+export const downloadAntialiasingAmount = 0.95;
+
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
 // or "float | vec2" to indicate that the function can return either.
@@ -41,6 +44,8 @@ export class Applet
 	wilsonForFullscreen;
 	wilsons = [];
 	allowFullscreenWithKeyboard = true;
+
+	antialiasing = false;
 
 	fpsDisplayCtx;
 
@@ -237,7 +242,7 @@ export class Applet
 
 	hiddenCanvasContainer;
 
-	createHiddenCanvas(hidden = true, aspectRatio = 1)
+	createOffscreenCanvas(hidden = true, aspectRatio = 1)
 	{
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");

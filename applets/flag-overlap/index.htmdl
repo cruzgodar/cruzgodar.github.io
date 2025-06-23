@@ -1,4 +1,4 @@
-Guess the secret flag in six tries or fewer! Every flag you guess is overlapped with the secret one, and only the overlaps are shown. <span class="click-tap">Click</span> on any flag to take a closer look, and use the <span class="cap-icon" style="transform: translateY(3px)"></span> button on a guess (or press tab) to toggle between the guessed flag and its overlap. Good luck!
+Guess the secret flag in six tries or fewer! Every flag you guess is overlapped with the secret one, and only the overlaps are shown. <span class="click-tap"><span>Click</span><span>Tap</span></span> on any flag to take a closer look, and use the <span class="cap-icon" style="transform: translateY(3px)"></span> button on a guess <span class="click-tap"><span style="white-space: pre">(or press tab) </span><span></span></span>to toggle between the guessed flag and its overlap. Good luck!
 
 ### dropdown possible-flags
 

@@ -213,7 +213,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			}
 		`;
 
-		const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createOffscreenCanvas();
 
 		const optionsUpdate = {
 			shaders: {

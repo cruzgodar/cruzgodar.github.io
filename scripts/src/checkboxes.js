@@ -24,8 +24,6 @@ export class Checkbox extends InputElement
 		this.element.parentNode.nextElementSibling.firstElementChild.textContent = this.name;
 		this.persistState = persistState;
 
-		this.element.checked = this.checked;
-
 		this.element.addEventListener("input", () =>
 		{
 			this.element.blur();
@@ -85,6 +83,15 @@ export class Checkbox extends InputElement
 
 			else
 			{
+				if (this.checked)
+				{
+					this.setChecked({
+						newChecked: true,
+						callOnInput: false,
+						animate: false
+					});
+				}
+				
 				this.loadResolve();
 			}
 
@@ -93,6 +100,15 @@ export class Checkbox extends InputElement
 
 		else
 		{
+			if (this.checked)
+			{
+				this.setChecked({
+					newChecked: true,
+					callOnInput: false,
+					animate: false
+				});
+			}
+
 			this.loadResolve();
 		}
 	}
