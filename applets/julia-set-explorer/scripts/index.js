@@ -1,5 +1,6 @@
 import { JuliaSetExplorer } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -33,6 +34,15 @@ export default function()
 		}
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput,
+		checked: true
+	});
+	
+	// onCheckboxInput();
+
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
@@ -51,5 +61,14 @@ export default function()
 	function advanceJuliaMode()
 	{
 		applet.advanceJuliaMode();
+	}
+
+	function onCheckboxInput()
+	{
+		applet.antialiasing = antialiasingCheckbox.checked;
+
+		applet.wilson.setAntialiasing(applet.antialiasing);
+
+		applet.needNewFrame = true;
 	}
 }

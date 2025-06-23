@@ -1,5 +1,5 @@
 import { NewtonsMethod } from "./class.js";
-import { hexToRgb, realTimeAntialiasingAmount } from "/scripts/applets/applet.js";
+import { hexToRgb } from "/scripts/applets/applet.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -104,8 +104,11 @@ export default function()
 	const antialiasingCheckbox = new Checkbox({
 		element: $("#antialiasing-checkbox"),
 		name: "Antialiasing",
-		onInput: onCheckboxInput
+		onInput: onCheckboxInput,
+		checked: true
 	});
+
+	onCheckboxInput();
 
 	const rootColorInputElement = $("#root-color-input");
 
@@ -132,12 +135,8 @@ export default function()
 
 	function onCheckboxInput()
 	{
-		applet.wilson.setAntialiasing(
-			antialiasingCheckbox.checked
-				? realTimeAntialiasingAmount
-				: 0
-		);
-		
+		applet.wilson.setAntialiasing(antialiasingCheckbox.checked);
+
 		applet.needNewFrame = true;
 	}
 }

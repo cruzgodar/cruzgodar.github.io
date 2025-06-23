@@ -1,5 +1,6 @@
 import { JuliaSetMosaic } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -32,6 +33,15 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput,
+		checked: true
+	});
+
+	onCheckboxInput();
+
 	function changeResolution()
 	{
 		applet.wilson.resizeCanvas({ width: resolutionInput.value });
@@ -40,6 +50,13 @@ export default function()
 	function onSliderInput()
 	{
 		applet.wilson.setUniforms({ setDensity: setDensitySlider.value });
+		applet.needNewFrame = true;
+	}
+
+	function onCheckboxInput()
+	{
+		applet.wilson.setAntialiasing(antialiasingCheckbox.checked);
+
 		applet.needNewFrame = true;
 	}
 }

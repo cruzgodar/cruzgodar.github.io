@@ -10,6 +10,10 @@ The <a href="/applets/julia-set-explorer">Mandelbrot set and Julia sets</a> shar
 	resolution
 ###
 
+### checkboxes
+	antialiasing
+###
+
 ### sliders
 	set-density
 ###

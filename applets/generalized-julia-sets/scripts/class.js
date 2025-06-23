@@ -343,6 +343,8 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		this.wilson.useShader(this.juliaMode);
 		this.wilsonHidden.useShader(this.juliaMode);
 
+		this.wilson.setAntialiasing(this.antialiasing);
+
 		this.pastBrightnessScales = [];
 
 		this.wilson.draggables.draggableArg.element.style.display =
@@ -398,6 +400,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		this.pastBrightnessScales = [];
 
 		this.wilson.useShader(this.juliaMode);
+		this.wilson.setAntialiasing(this.antialiasing);
 		this.wilsonHidden.useShader(this.juliaMode);
 		this.wilson.useInteractionForPanAndZoom = this.juliaMode !== "juliaPicker";
 		if (this.switchJuliaModeButton)

@@ -343,6 +343,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.pastBrightnessScales = [];
 
 		this.wilson.useShader(this.juliaMode);
+		this.wilson.setAntialiasing(this.antialiasing);
 		this.wilsonHidden.useShader(this.juliaMode);
 		this.wilson.useInteractionForPanAndZoom = this.juliaMode !== "juliaPicker";
 		if (this.switchJuliaModeButton)

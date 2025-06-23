@@ -16,6 +16,10 @@ Much of the code implementing complex functions was contributed by <a href='http
 	resolution
 ###
 
+### checkboxes
+	antialiasing
+###
+
 ### buttons
 	generate
 	switch-julia-mode

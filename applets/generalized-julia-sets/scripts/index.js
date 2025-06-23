@@ -1,6 +1,7 @@
 import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -91,6 +92,15 @@ export default function()
 		onInput: changeResolution
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput,
+		checked: true
+	});
+
+	onCheckboxInput();
+
 	function run()
 	{
 		switchJuliaModeButton.setState({ newState: false });
@@ -127,5 +137,16 @@ export default function()
 		}
 
 		run();
+	}
+
+	async function onCheckboxInput()
+	{
+		await applet.loadPromise;
+
+		applet.antialiasing = antialiasingCheckbox.checked;
+
+		applet.wilson.setAntialiasing(applet.antialiasing);
+
+		applet.needNewFrame = true;
 	}
 }

@@ -6,7 +6,6 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	getFloatGlsl,
 	getVectorGlsl,
-	realTimeAntialiasingAmount,
 	tempShader
 } from "./applet.js";
 
@@ -847,7 +846,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				useForDepthBuffer,
 			}),
 			uniforms: this.uniforms,
-			antialiasing: this.useAntialiasing ? realTimeAntialiasingAmount : 0
+			antialiasing: this.useAntialiasing
 		});
 
 		this.calculateVectors();
