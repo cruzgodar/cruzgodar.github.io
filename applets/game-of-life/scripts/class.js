@@ -24,7 +24,7 @@ export class GameOfLife extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		// Writes out the current state without iterating it.
 		const shaderNoUpdate = /* glsl */`

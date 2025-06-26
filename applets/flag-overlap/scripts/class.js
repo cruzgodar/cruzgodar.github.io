@@ -118,7 +118,7 @@ export class FlagOverlap extends Applet
 			canvasWidth: this.resolution,
 		};
 
-		const hiddenCanvas = this.createOffscreenCanvas(true, 1024 / 683);
+		const hiddenCanvas = this.createHiddenCanvas(true, 1024 / 683);
 		this.wilsonCorrectFlag = new WilsonCPU(hiddenCanvas, optionsHidden);
 	}
 

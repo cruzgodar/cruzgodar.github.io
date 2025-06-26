@@ -42,8 +42,6 @@ export class Applet
 	wilsons = [];
 	allowFullscreenWithKeyboard = true;
 
-	antialiasing = false;
-
 	fpsDisplayCtx;
 
 	workers = [];
@@ -239,7 +237,7 @@ export class Applet
 
 	hiddenCanvasContainer;
 
-	createOffscreenCanvas(hidden = true, aspectRatio = 1)
+	createHiddenCanvas(hidden = true, aspectRatio = 1)
 	{
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");

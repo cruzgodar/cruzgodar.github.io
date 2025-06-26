@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenCanvasRect, _Wilson_fullscreenInitialWindowInnerWidth, _Wilson_fullscreenInitialWindowInnerHeight, _Wilson_fullscreenFillScreen, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseenter, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_addEnterFullscreenFillScreenTransitionStyle, _Wilson_exitFullscreen, _Wilson_addExitFullscreenFillScreenTransitionStyle, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderProgramSources, _WilsonGPU_shaderPrograms, _WilsonGPU_antialiasingShaderPrograms, _WilsonGPU_maxNumTextures, _WilsonGPU_uniforms, _WilsonGPU_antialiasingUniforms, _WilsonGPU_useAntialiasing, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_loadShader, _WilsonGPU_createAndLoadAntialiasingShader, _WilsonGPU_setAntialiasingUniforms, _WilsonGPU_framebuffers, _WilsonGPU_textures, _WilsonGPU_createFramebufferTexturePair;
+var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenCanvasRect, _Wilson_fullscreenInitialWindowInnerWidth, _Wilson_fullscreenInitialWindowInnerHeight, _Wilson_fullscreenFillScreen, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseenter, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_addEnterFullscreenFillScreenTransitionStyle, _Wilson_exitFullscreen, _Wilson_addExitFullscreenFillScreenTransitionStyle, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderPrograms, _WilsonGPU_uniforms, _WilsonGPU_loadShaderInternal, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_framebuffers, _WilsonGPU_textures;
 const defaultInteractionCallbacks = {
     mousedown: ({ x, y, event }) => { },
     mouseup: ({ x, y, event }) => { },
@@ -1620,35 +1620,21 @@ const uniformFunctions = {
     mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]),
     mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]),
     mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]),
-    sampler2D: (gl, location, value) => gl.uniform1i(location, value),
 };
 export class WilsonGPU extends Wilson {
     constructor(canvas, options) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c;
         super(canvas, options);
         _WilsonGPU_instances.add(this);
         _WilsonGPU_useWebGL2.set(this, void 0);
-        _WilsonGPU_shaderProgramSources.set(this, {});
         _WilsonGPU_shaderPrograms.set(this, {});
-        _WilsonGPU_antialiasingShaderPrograms.set(this, {});
-        _WilsonGPU_maxNumTextures.set(this, void 0);
         _WilsonGPU_uniforms.set(this, {});
-        _WilsonGPU_antialiasingUniforms.set(this, {});
-        _WilsonGPU_useAntialiasing.set(this, {});
         _WilsonGPU_numShaders.set(this, 0);
         _WilsonGPU_currentShaderId.set(this, "0");
         _WilsonGPU_framebuffers.set(this, {});
         _WilsonGPU_textures.set(this, {});
         this.resizeCanvasGPU = () => {
             this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
-            if (__classPrivateFieldGet(this, _WilsonGPU_useAntialiasing, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]) {
-                __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_setAntialiasingUniforms).call(this);
-                __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_createFramebufferTexturePair).call(this, {
-                    id: "_WILSON_antialiasing",
-                    textureType: "unsignedByte",
-                });
-                this.useTexture("_WILSON_antialiasing", __classPrivateFieldGet(this, _WilsonGPU_maxNumTextures, "f") - 1);
-            }
         };
         __classPrivateFieldSet(this, _WilsonGPU_useWebGL2, (_a = options.useWebGL2) !== null && _a !== void 0 ? _a : true, "f");
         const gl = __classPrivateFieldGet(this, _WilsonGPU_useWebGL2, "f")
@@ -1670,12 +1656,10 @@ export class WilsonGPU extends Wilson {
         if ("drawingBufferColorSpace" in this.gl && this.useP3ColorSpace) {
             this.gl.drawingBufferColorSpace = "display-p3";
         }
-        __classPrivateFieldSet(this, _WilsonGPU_maxNumTextures, this.gl.getParameter(this.gl.MAX_TEXTURE_IMAGE_UNITS), "f");
         if ("shader" in options) {
             this.loadShader({
                 shader: options.shader,
                 uniforms: options.uniforms,
-                antialiasing: (_c = options.antialiasing) !== null && _c !== void 0 ? _c : false,
             });
         }
         else if ("shaders" in options) {
@@ -1683,8 +1667,7 @@ export class WilsonGPU extends Wilson {
                 this.loadShader({
                     id,
                     shader,
-                    uniforms: (_d = options.uniforms) === null || _d === void 0 ? void 0 : _d[id],
-                    antialiasing: (_f = (_e = options.antialiasing) === null || _e === void 0 ? void 0 : _e[id]) !== null && _f !== void 0 ? _f : false,
+                    uniforms: (_c = options.uniforms) === null || _c === void 0 ? void 0 : _c[id],
                 });
             }
         }
@@ -1693,59 +1676,80 @@ export class WilsonGPU extends Wilson {
         }
     }
     drawFrame() {
-        if (!__classPrivateFieldGet(this, _WilsonGPU_useAntialiasing, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]) {
-            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-            return;
-        }
-        this.useFramebuffer("_WILSON_antialiasing");
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-        this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_antialiasingShaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
-        this.useFramebuffer(null);
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-        this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
     }
-    loadShader({ id = __classPrivateFieldGet(this, _WilsonGPU_numShaders, "f").toString(), shader, uniforms = {}, antialiasing = false, }) {
-        __classPrivateFieldGet(this, _WilsonGPU_shaderProgramSources, "f")[id] = shader;
-        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_loadShader).call(this, {
-            id,
-            shader,
-            uniforms,
-            isAntialiasingShader: false,
-        });
-        __classPrivateFieldGet(this, _WilsonGPU_useAntialiasing, "f")[id] = antialiasing;
-        if (__classPrivateFieldGet(this, _WilsonGPU_useAntialiasing, "f")[id]) {
-            const antialiasingUniforms = {
-                ...uniforms,
-                _WILSON_antialiasingTexture: __classPrivateFieldGet(this, _WilsonGPU_maxNumTextures, "f") - 1,
-                _WILSON_stepSize: [1 / this.canvasWidth, 1 / this.canvasHeight],
-                _WILSON_contrastThreshold: 0.2
-            };
-            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_createAndLoadAntialiasingShader).call(this, {
-                id,
-                shader,
-                uniforms: antialiasingUniforms,
-            });
-            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_setAntialiasingUniforms).call(this, id);
-            if (!("_WILSON_antialiasing" in __classPrivateFieldGet(this, _WilsonGPU_textures, "f"))) {
-                __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_createFramebufferTexturePair).call(this, {
-                    id: "_WILSON_antialiasing",
-                    textureType: "unsignedByte",
-                });
-                this.useTexture("_WILSON_antialiasing", __classPrivateFieldGet(this, _WilsonGPU_maxNumTextures, "f") - 1);
+    loadShader({ id = __classPrivateFieldGet(this, _WilsonGPU_numShaders, "f").toString(), shader, uniforms = {} }) {
+        const vertexShaderSource = /* glsl*/ `
+			attribute vec3 position;
+			varying vec2 uv;
+
+			void main(void)
+			{
+				gl_Position = vec4(position, 1.0);
+
+				//Interpolate quad coordinates in the fragment shader.
+				uv = position.xy;
+			}
+		`;
+        const vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
+        const fragShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
+        if (!vertexShader || !fragShader) {
+            throw new Error(`[Wilson] Couldn't create shader: ${vertexShader}, ${fragShader}`);
+        }
+        const shaderProgram = this.gl.createProgram();
+        if (!shaderProgram) {
+            throw new Error(`[Wilson] Couldn't create shader program. Full shader source: ${shader}`);
+        }
+        __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id] = shaderProgram;
+        this.gl.attachShader(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], vertexShader);
+        this.gl.attachShader(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], fragShader);
+        this.gl.shaderSource(vertexShader, vertexShaderSource);
+        this.gl.shaderSource(fragShader, shader);
+        this.gl.compileShader(vertexShader);
+        this.gl.compileShader(fragShader);
+        this.gl.linkProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
+        if (!this.gl.getProgramParameter(shaderProgram, this.gl.LINK_STATUS)) {
+            throw new Error(`[Wilson] Couldn't link shader program: ${this.gl.getProgramInfoLog(shaderProgram)}. Full shader source: ${shader}`);
+        }
+        this.useShader(id);
+        const positionBuffer = this.gl.createBuffer();
+        if (!positionBuffer) {
+            throw new Error(`[Wilson] Couldn't create position buffer. Full shader source: ${shader}`);
+        }
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
+        const quad = [
+            -1, -1, 0,
+            -1, 1, 0,
+            1, -1, 0,
+            1, 1, 0
+        ];
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(quad), this.gl.STATIC_DRAW);
+        const positionAttribute = this.gl.getAttribLocation(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], "position");
+        if (positionAttribute === -1) {
+            throw new Error(`[Wilson] Couldn't get position attribute. Full shader source: ${shader}`);
+        }
+        this.gl.enableVertexAttribArray(positionAttribute);
+        this.gl.vertexAttribPointer(positionAttribute, 3, this.gl.FLOAT, false, 0, 0);
+        this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
+        // Initialize the uniforms.
+        __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[id] = {};
+        for (const [name, value] of Object.entries(uniforms)) {
+            const location = this.gl.getUniformLocation(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], name);
+            if (location === null) {
+                throw new Error(`[Wilson] Couldn't get uniform location for ${name}. Check that it is used in the shader (so that it is not compiled away). Full shader source: ${shader}`);
             }
+            // Match strings like "uniform int foo;" to "int".
+            const match = shader.match(new RegExp(`uniform\\s+(\\S+?)\\s+${name}(\\[\\d+\\])?\\s*;`));
+            if (!match) {
+                throw new Error(`[Wilson] Couldn't find uniform ${name} in shader source: ${shader}`);
+            }
+            const type = match[1].trim() + (match[2] ? "Array" : "");
+            if (!(type in uniformFunctions)) {
+                throw new Error(`[Wilson] Invalid uniform type ${type} for uniform ${name} in shader source: ${shader}`);
+            }
+            __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[id][name] = { location, type: type };
+            this.setUniforms({ [name]: value });
         }
-        this.setUniforms(uniforms);
-    }
-    setAntialiasing(antialiasing, id = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
-        const uniforms = Object.fromEntries(Object.entries(__classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[id])
-            .map(entry => [entry[0], entry[1].value])
-            .filter(entry => entry[1] !== undefined));
-        this.loadShader({
-            id,
-            shader: __classPrivateFieldGet(this, _WilsonGPU_shaderProgramSources, "f")[id],
-            uniforms,
-            antialiasing
-        });
     }
     setUniforms(uniforms, shader = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
         this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[shader]);
@@ -1756,18 +1760,6 @@ export class WilsonGPU extends Wilson {
             const { location, type } = __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name];
             const uniformFunction = uniformFunctions[type];
             uniformFunction(this.gl, location, value);
-            __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name].value = value;
-        }
-        if (__classPrivateFieldGet(this, _WilsonGPU_useAntialiasing, "f")[shader]) {
-            this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_antialiasingShaderPrograms, "f")[shader]);
-            for (const [name, value] of Object.entries(uniforms)) {
-                if (__classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")[shader][name] === undefined) {
-                    throw new Error(`Uniform ${name} not found in shader ${shader}`);
-                }
-                const { location, type } = __classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")[shader][name];
-                const uniformFunction = uniformFunctions[type];
-                uniformFunction(this.gl, location, value);
-            }
         }
         this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
     }
@@ -1775,30 +1767,54 @@ export class WilsonGPU extends Wilson {
         __classPrivateFieldSet(this, _WilsonGPU_currentShaderId, id, "f");
         this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
     }
-    createFramebufferTexturePair({ id, textureType, width = this.canvasWidth, height = this.canvasHeight, }) {
-        if (id.startsWith("_WILSON")) {
-            throw new Error(`[Wilson] Reserved texture ID ${id}`);
+    createFramebufferTexturePair({ id, width = this.canvasWidth, height = this.canvasHeight, textureType }) {
+        if (textureType !== "unsignedByte" && textureType !== "float") {
+            throw new Error(`[Wilson] Invalid texture type "${textureType}".`);
         }
-        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_createFramebufferTexturePair).call(this, {
-            id,
-            textureType,
+        const framebuffer = this.gl.createFramebuffer();
+        if (!framebuffer) {
+            throw new Error(`[Wilson] Couldn't create a framebuffer with id ${id}.`);
+        }
+        const texture = this.gl.createTexture();
+        if (!texture) {
+            throw new Error(`[Wilson] Couldn't create a texture with id ${id}.`);
+        }
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (textureType === "float" && this.gl instanceof WebGL2RenderingContext)
+            ? this.gl.RGBA32F
+            : this.gl.RGBA, width, height, 0, this.gl.RGBA, textureType === "float"
+            ? this.gl.FLOAT
+            : this.gl.UNSIGNED_BYTE, null);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
+        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
+        __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id] = framebuffer;
+        __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id] = {
+            texture,
             width,
             height,
-        });
+            type: textureType,
+        };
     }
     useFramebuffer(id) {
-        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, id === null
-            ? null
-            : __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]);
+        if (id === null) {
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            return;
+        }
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]);
     }
-    useTexture(id, unit = 0) {
-        // @ts-expect-error
-        this.gl.activeTexture(this.gl[`TEXTURE${unit}`]);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, id === null
-            ? null
-            : __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
+    useTexture(id) {
+        if (id === null) {
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+            return;
+        }
+        this.gl.bindTexture(this.gl.TEXTURE_2D, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
     }
-    setTexture({ id, data, unit = 0 }) {
+    setTexture({ id, data, }) {
         if (!__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id]) {
             throw new Error(`[Wilson] Tried to set a texture with id ${id}, but it doesn't exist.`);
         }
@@ -1806,8 +1822,6 @@ export class WilsonGPU extends Wilson {
             || (data instanceof Float32Array && __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type !== "float")) {
             throw new Error(`[Wilson] Tried to set a texture with id ${id}, but the data type does not match the texture type (the data type should be a ${__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === 'unsignedByte' ? 'Uint8Array' : 'Float32Array'}).`);
         }
-        // @ts-expect-error
-        this.gl.activeTexture(this.gl[`TEXTURE${unit}`]);
         this.gl.bindTexture(this.gl.TEXTURE_2D, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
         if (data === null || data instanceof Uint8Array || data instanceof Float32Array) {
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float" && this.gl instanceof WebGL2RenderingContext)
@@ -1854,212 +1868,12 @@ export class WilsonGPU extends Wilson {
         });
     }
 }
-_WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderProgramSources = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(), _WilsonGPU_antialiasingShaderPrograms = new WeakMap(), _WilsonGPU_maxNumTextures = new WeakMap(), _WilsonGPU_uniforms = new WeakMap(), _WilsonGPU_antialiasingUniforms = new WeakMap(), _WilsonGPU_useAntialiasing = new WeakMap(), _WilsonGPU_numShaders = new WeakMap(), _WilsonGPU_currentShaderId = new WeakMap(), _WilsonGPU_framebuffers = new WeakMap(), _WilsonGPU_textures = new WeakMap(), _WilsonGPU_instances = new WeakSet(), _WilsonGPU_loadShader = function _WilsonGPU_loadShader({ id = __classPrivateFieldGet(this, _WilsonGPU_numShaders, "f").toString(), shader, uniforms = {}, isAntialiasingShader = false, }) {
-    const matches = Array.from(shader.matchAll(/\bvarying\s+vec2\s+uv\b/g));
-    if (matches.length === 0 && !isAntialiasingShader) {
-        throw new Error(`[Wilson] Could not find the declaration\`varying vec2 uv;\`. Full shader source: ${shader}`);
+_WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(), _WilsonGPU_uniforms = new WeakMap(), _WilsonGPU_numShaders = new WeakMap(), _WilsonGPU_currentShaderId = new WeakMap(), _WilsonGPU_framebuffers = new WeakMap(), _WilsonGPU_textures = new WeakMap(), _WilsonGPU_instances = new WeakSet(), _WilsonGPU_loadShaderInternal = function _WilsonGPU_loadShaderInternal(type, source) {
+    const shader = this.gl.createShader(type);
+    if (!shader) {
+        throw new Error(`[Wilson] Couldn't create shader: ${shader}`);
     }
-    const varingName = isAntialiasingShader ? "_WILSON_uv" : "uv";
-    const vertexShaderSource = /* glsl */ `
-			attribute vec3 position;
-			varying vec2 ${varingName};
-
-			void main(void)
-			{
-				gl_Position = vec4(position, 1.0);
-
-				//Interpolate quad coordinates in the fragment shader.
-				${varingName} = position.xy;
-			}
-		`;
-    const vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
-    const fragShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
-    if (!vertexShader || !fragShader) {
-        throw new Error(`[Wilson] Couldn't create shader: ${vertexShader}, ${fragShader}`);
-    }
-    const shaderProgram = this.gl.createProgram();
-    if (!shaderProgram) {
-        throw new Error(`[Wilson] Couldn't create shader program. Full shader source: ${shader}`);
-    }
-    const shaderProgramsList = isAntialiasingShader
-        ? __classPrivateFieldGet(this, _WilsonGPU_antialiasingShaderPrograms, "f")
-        : __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f");
-    shaderProgramsList[id] = shaderProgram;
-    this.gl.attachShader(shaderProgram, vertexShader);
-    this.gl.attachShader(shaderProgram, fragShader);
-    this.gl.shaderSource(vertexShader, vertexShaderSource);
-    this.gl.shaderSource(fragShader, shader);
-    this.gl.compileShader(vertexShader);
-    this.gl.compileShader(fragShader);
-    this.gl.linkProgram(shaderProgram);
-    if (!this.gl.getProgramParameter(shaderProgram, this.gl.LINK_STATUS)) {
-        throw new Error(`[Wilson] Couldn't link shader program: ${this.gl.getProgramInfoLog(shaderProgram)}. Full shader source: ${shader}`);
-    }
-    this.useShader(id);
-    const positionBuffer = this.gl.createBuffer();
-    if (!positionBuffer) {
-        throw new Error(`[Wilson] Couldn't create position buffer. Full shader source: ${shader}`);
-    }
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
-    const quad = [
-        -1, -1, 0,
-        -1, 1, 0,
-        1, -1, 0,
-        1, 1, 0
-    ];
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(quad), this.gl.STATIC_DRAW);
-    const positionAttribute = this.gl.getAttribLocation(shaderProgram, "position");
-    if (positionAttribute === -1) {
-        throw new Error(`[Wilson] Couldn't get position attribute. Full shader source: ${shader}`);
-    }
-    this.gl.enableVertexAttribArray(positionAttribute);
-    this.gl.vertexAttribPointer(positionAttribute, 3, this.gl.FLOAT, false, 0, 0);
-    this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
-    // Initialize the uniforms.
-    const uniformsList = isAntialiasingShader
-        ? __classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")
-        : __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f");
-    uniformsList[id] = {};
-    for (const [name, value] of Object.entries(uniforms)) {
-        const location = this.gl.getUniformLocation(shaderProgram, name);
-        if (location === null) {
-            throw new Error(`[Wilson] Couldn't get uniform location for ${name}. Check that it is used in the shader (so that it is not compiled away). Full shader source: ${shader}`);
-        }
-        // Match strings like "uniform int foo;" to "int".
-        const match = shader.match(new RegExp(`uniform\\s+(\\S+?)\\s+${name}(\\[\\d+\\])?\\s*;`));
-        if (!match) {
-            throw new Error(`[Wilson] Couldn't find uniform ${name} in shader source: ${shader}`);
-        }
-        const type = match[1].trim() + (match[2] ? "Array" : "");
-        if (!(type in uniformFunctions)) {
-            throw new Error(`[Wilson] Invalid uniform type ${type} for uniform ${name} in shader source: ${shader}`);
-        }
-        uniformsList[id][name] = { location, type: type };
-    }
-}, _WilsonGPU_createAndLoadAntialiasingShader = function _WilsonGPU_createAndLoadAntialiasingShader({ id, shader, uniforms, }) {
-    // Add a new sampler2D uniform and a stepSize one after the last precision directive
-    const precisionMatches = Array.from(shader.matchAll(/precision\s+[^;]+;/g));
-    const lastMatch = precisionMatches[precisionMatches.length - 1];
-    const insertionIndex = lastMatch === undefined
-        ? 0
-        : lastMatch.index + lastMatch[0].length;
-    const shaderWithExtraTexture = /* glsl */ `${shader.slice(0, insertionIndex)}
-		
-		uniform sampler2D _WILSON_antialiasingTexture;
-		uniform vec2 _WILSON_stepSize;
-		uniform float _WILSON_contrastThreshold;
-		
-		${shader.slice(insertionIndex)}`;
-    // Replace the varing vec2 uv declaration with a different name
-    // (it's guaranteed to be present at this point).
-    const shaderWithReplacedVarying = shaderWithExtraTexture.replace(/\bvarying\s+vec2\s+uv\b/, "varying vec2 _WILSON_uv");
-    // Replace the main function (yeesh).
-    const shaderWithReplacedMain = shaderWithReplacedVarying.replace(/void\s+main\s*\(.*?\)/, "void _WILSON_main(vec2 uv)");
-    // Add a new main function in at the end.
-    const shaderWithNewMain = /* glsl */ `${shaderWithReplacedMain}
-
-		float getLuminanceAtTexel(vec2 texCoord)
-		{
-			vec3 color = texture2D(_WILSON_antialiasingTexture, texCoord).xyz;
-
-			return dot(color, vec3(0.299, 0.587, 0.114));
-		}
-		
-		void main(void)
-		{
-			vec2 texCoord = 0.5 * _WILSON_uv + vec2(0.5);
-			vec3 sample = texture2D(_WILSON_antialiasingTexture, texCoord).xyz;
-
-			float tm = getLuminanceAtTexel(texCoord + vec2(0.0, _WILSON_stepSize.y));
-			float bm = getLuminanceAtTexel(texCoord + vec2(0.0, -_WILSON_stepSize.y));
-			float mr = getLuminanceAtTexel(texCoord + vec2(_WILSON_stepSize.x, 0.0));
-			float ml = getLuminanceAtTexel(texCoord + vec2(-_WILSON_stepSize.x, 0.0));
-
-			float tr = getLuminanceAtTexel(texCoord + vec2(_WILSON_stepSize.x, _WILSON_stepSize.y));
-			float tl = getLuminanceAtTexel(texCoord + vec2(-_WILSON_stepSize.x, _WILSON_stepSize.y));
-			float br = getLuminanceAtTexel(texCoord + vec2(_WILSON_stepSize.x, -_WILSON_stepSize.y));
-			float bl = getLuminanceAtTexel(texCoord + vec2(-_WILSON_stepSize.x, -_WILSON_stepSize.y));
-
-			float sobelX = (tr + 2.0 * mr + br) - (tl + 2.0 * ml + bl);
-			float sobelY = (bl + 2.0 * bm + br) - (tl + 2.0 * tm + tr);
-			
-			if (
-				sobelX * sobelX + sobelY * sobelY > _WILSON_contrastThreshold * _WILSON_contrastThreshold
-			) {
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(0.0, _WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(0.0, -_WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(_WILSON_stepSize.x, 0.0));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(-_WILSON_stepSize.x, 0.0));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(_WILSON_stepSize.x, _WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(_WILSON_stepSize.x, -_WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(-_WILSON_stepSize.x, _WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				_WILSON_main(_WILSON_uv + ${2 / 3} * vec2(-_WILSON_stepSize.x, -_WILSON_stepSize.y));
-				sample += clamp(gl_FragColor.xyz, 0.0, 1.0);
-
-				sample *= ${1 / 9};
-			}
-
-			gl_FragColor = vec4(sample, 1.0);
-		}`;
-    __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_loadShader).call(this, {
-        id,
-        shader: shaderWithNewMain,
-        uniforms,
-        isAntialiasingShader: true
-    });
-}, _WilsonGPU_setAntialiasingUniforms = function _WilsonGPU_setAntialiasingUniforms(id = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
-    this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_antialiasingShaderPrograms, "f")[id]);
-    const { location: location1, type: type1 } = __classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")[id]._WILSON_antialiasingTexture;
-    uniformFunctions[type1](this.gl, location1, __classPrivateFieldGet(this, _WilsonGPU_maxNumTextures, "f") - 1);
-    const { location: location2, type: type2 } = __classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")[id]._WILSON_stepSize;
-    uniformFunctions[type2](this.gl, location2, [1 / this.canvasWidth, 1 / this.canvasHeight]);
-    const { location: location3, type: type3 } = __classPrivateFieldGet(this, _WilsonGPU_antialiasingUniforms, "f")[id]._WILSON_contrastThreshold;
-    uniformFunctions[type3](this.gl, location3, 0.3);
-    this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
-}, _WilsonGPU_createFramebufferTexturePair = function _WilsonGPU_createFramebufferTexturePair({ id, textureType, width = this.canvasWidth, height = this.canvasHeight, }) {
-    if (textureType !== "unsignedByte" && textureType !== "float") {
-        throw new Error(`[Wilson] Invalid texture type "${textureType}".`);
-    }
-    const framebuffer = this.gl.createFramebuffer();
-    if (!framebuffer) {
-        throw new Error(`[Wilson] Couldn't create a framebuffer with id ${id}.`);
-    }
-    const texture = this.gl.createTexture();
-    if (!texture) {
-        throw new Error(`[Wilson] Couldn't create a texture with id ${id}.`);
-    }
-    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (textureType === "float" && this.gl instanceof WebGL2RenderingContext)
-        ? this.gl.RGBA32F
-        : this.gl.RGBA, width, height, 0, this.gl.RGBA, textureType === "float"
-        ? this.gl.FLOAT
-        : this.gl.UNSIGNED_BYTE, null);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-    this.gl.disable(this.gl.DEPTH_TEST);
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
-    this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
-    __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id] = framebuffer;
-    __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id] = {
-        texture,
-        width,
-        height,
-        type: textureType,
-    };
+    this.gl.shaderSource(shader, source);
+    this.gl.compileShader(shader);
+    return shader;
 };

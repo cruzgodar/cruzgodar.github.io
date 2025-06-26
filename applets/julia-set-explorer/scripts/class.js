@@ -289,7 +289,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
 			...options,

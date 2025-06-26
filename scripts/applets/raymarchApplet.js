@@ -9,6 +9,46 @@ import {
 	tempShader
 } from "./applet.js";
 
+const edgeDetectThreshold = 0.25;
+
+export const edgeDetectShader = /* glsl */`
+	precision highp float;
+	
+	varying vec2 uv;
+
+	uniform sampler2D uTexture;
+
+	uniform vec2 stepSize;
+
+	float getSampleLuminanceDelta(vec3 color, vec2 texCoord)
+	{
+		vec3 sample = texture2D(uTexture, texCoord).xyz;
+		return 0.299 * abs(sample.x - color.x)
+			+ 0.587 * abs(sample.y - color.y)
+			+ 0.114 * abs(sample.z - color.z);
+	}
+
+	void main(void)
+	{
+		vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+		vec3 sample = texture2D(uTexture, texCoord).xyz;
+		float sampleN = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, stepSize.y));
+		float sampleS = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, -stepSize.y));
+		float sampleE = getSampleLuminanceDelta(sample, texCoord + vec2(stepSize.x, 0.0));
+		float sampleW = getSampleLuminanceDelta(sample, texCoord + vec2(-stepSize.x, 0.0));
+
+		float luminance = max(
+			max(sampleN, sampleS),
+			max(sampleE, sampleW)
+		) > ${getFloatGlsl(edgeDetectThreshold)} ? 1.0 : 0.0;
+		
+		gl_FragColor = vec4(
+			texture2D(uTexture, texCoord).xyz,
+			luminance
+		);
+	}
+`;
+
 export class RaymarchApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
@@ -289,6 +329,42 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniforms: this.uniforms
 		});
 
+		if (this.useAntialiasing)
+		{
+			this.wilson.loadShader({
+				id: "edgeDetect",
+				shader: edgeDetectShader,
+				uniforms: {
+					stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+				}
+			});
+
+			const aaShader = shader ?? this.createShader({
+				distanceEstimatorGlsl,
+				getColorGlsl,
+				getReflectivityGlsl,
+				getGeodesicGlsl,
+				addGlsl,
+				antialiasing: !addGlsl.includes("sampler2D")
+			});
+
+			this.wilson.loadShader({
+				id: "antialias",
+				shader: aaShader,
+				uniforms: {
+					...this.uniforms,
+					stepSize: [
+						2 / (this.wilson.canvasWidth * 3),
+						2 / (this.wilson.canvasHeight * 3)
+					]
+				}
+			});
+
+			this.wilson.useShader("draw");
+
+			this.createTextures();
+		}
+
 
 
 		if (this.useFor3DPrinting)
@@ -351,6 +427,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getReflectivityGlsl = this.getReflectivityGlsl,
 		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
+		antialiasing = false,
 		useForDepthBuffer = false,
 	}) {
 		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
@@ -742,6 +819,42 @@ export class RaymarchApplet extends AnimationFrameApplet
 				`;
 			}
 
+			if (antialiasing)
+			{
+				return /* glsl */`${""}
+					vec3 raymarchHelper(vec2 uvAdjust)
+					{
+						return raymarch(
+							imagePlaneCenterPos
+								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatio.x
+								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) * aspectRatio.y
+						);
+					}
+					
+					void main(void)
+					{
+						vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+						vec4 sample = texture2D(uTexture, texCoord);
+						
+						if (sample.w > 0.5)
+						{
+							vec3 aaSample = (
+								sample.xyz
+								+ raymarchHelper(vec2(stepSize.x, 0.0))
+								+ raymarchHelper(vec2(0.0, stepSize.y))
+								+ raymarchHelper(vec2(-stepSize.x, 0.0))
+								+ raymarchHelper(vec2(0.0, -stepSize.y))
+							) / 5.0;
+							
+							gl_FragColor = vec4(aaSample, 1.0);
+							return;
+						}
+
+						gl_FragColor = vec4(sample.xyz, 1.0);
+					}
+				`;
+			}
+
 			return /* glsl */`${""}
 				void main(void)
 				{
@@ -762,6 +875,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			varying vec2 uv;
 
 			${this.uniformsGlsl}
+
+			${antialiasing ? /* glsl */`
+				uniform sampler2D uTexture;
+				uniform vec2 stepSize;
+			` : ""}
 			
 			const vec3 lightPos = ${getVectorGlsl(this.lightPos)};
 			const float lightBrightness = ${getFloatGlsl(this.lightBrightness)};
@@ -834,8 +952,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getColorGlsl,
 		getReflectivityGlsl,
 		addGlsl,
+		useAntialiasing = this.useAntialiasing,
 		useForDepthBuffer
 	} = {}) {
+		this.useAntialiasing = useAntialiasing;
+
 		this.wilson.loadShader({
 			id: "draw",
 			shader: this.createShader({
@@ -856,6 +977,33 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
+	createTextures()
+	{
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "float"
+		});
+		this.wilson.createFramebufferTexturePair({
+			id: "1",
+			textureType: "float"
+		});
+		
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("0");
+
+		this.wilson.setUniforms({
+			stepSize:[1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+		}, "edgeDetect");
+
+		this.wilson.setUniforms({
+			stepSize: [2 / (this.wilson.canvasWidth * 3), 2 / (this.wilson.canvasHeight * 3)]
+		}, "antialias");
+
+		this.wilson.useShader("draw");
+	}
+
+
+
 	setUniforms(uniforms)
 	{
 		this.uniforms = {
@@ -864,6 +1012,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		this.wilson.setUniforms(uniforms, "draw");
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.setUniforms(uniforms, "antialias");
+		}
 
 		this.needNewFrame = true;
 	}
@@ -964,7 +1117,28 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.calculateVectors();
 
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.useFramebuffer("0");
+		}
+
 		this.wilson.drawFrame();
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.useShader("edgeDetect");
+			this.wilson.useTexture("0");
+			this.wilson.useFramebuffer("1");
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("antialias");
+			this.wilson.useTexture("1");
+			this.wilson.useFramebuffer(null);
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("draw");
+		}
 	}
 
 	async downloadFrame(filename)
@@ -1160,22 +1334,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const blurAmount = 1;
 
 		const returnToAntialiasing = this.useAntialiasing;
-		this.useAntialiasing = true;
 		await loadGlsl();
 
 		this.reloadShader({
+			useAntialiasing: true,
 			useForDepthBuffer: false
 		});
-
 		const colors = await this.makeMosaic({
 			size: mosaicSize,
 			returnPixels: true
 		});
 		
 		this.reloadShader({
+			useAntialiasing: false,
 			useForDepthBuffer: true
 		});
-
 		const depths = await this.makeMosaic({
 			size: mosaicSize,
 			useForDepthBuffer: true
@@ -1187,7 +1360,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const minRadius = 0.5;
 		const maxRadius = resolution / 250 * blurAmount;
 
-		const canvas = this.createOffscreenCanvas();
+		const canvas = this.createHiddenCanvas();
 		const options = { canvasWidth: resolution };
 		const wilsonHidden = new WilsonCPU(canvas, options);
 
@@ -1313,9 +1486,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		wilsonHidden.downloadFrame("bokeh-render.png");
 
-		this.useAntialiasing = returnToAntialiasing;
-		
 		this.reloadShader({
+			useAntialiasing: returnToAntialiasing,
 			useForDepthBuffer: false
 		});
 
@@ -1481,6 +1653,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			],
 			resolution: this.resolution
 		});
+
+		if (this.useAntialiasing)
+		{
+			this.createTextures();
+		}
 
 		this.needNewFrame = true;
 	}

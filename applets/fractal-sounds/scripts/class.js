@@ -63,7 +63,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		const optionsHidden =
 		{

@@ -32,7 +32,6 @@ export class HairyBall extends RaymarchApplet
 		`;
 
 		const addGlsl = /* glsl */`
-			precision highp sampler2D;
 			uniform sampler2D uTexture;
 		`;
 
@@ -57,7 +56,7 @@ export class HairyBall extends RaymarchApplet
 		this.vectorFieldAppletResolution = vectorFieldAppletResolution;
 		this.vectorFieldDilation = vectorFieldDilation;
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		this.vectorFieldApplet = new VectorFields({
 			canvas: hiddenCanvas,

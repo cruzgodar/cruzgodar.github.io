@@ -53,7 +53,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		this.rootBInput = rootBInput;
 		this.colorSetterElement = colorSetterElement;
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		this.randomizeColors(false);
 

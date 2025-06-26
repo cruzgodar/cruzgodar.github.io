@@ -38,10 +38,6 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 	resolution
 ###
 
-### checkboxes
-	antialiasing
-###
-
 ### buttons
 	switch-method
 	add-root

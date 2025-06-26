@@ -1,7 +1,6 @@
 import { NewtonsMethod } from "./class.js";
 import { hexToRgb } from "/scripts/applets/applet.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -101,15 +100,6 @@ export default function()
 		onInput: changeResolution
 	});
 
-	const antialiasingCheckbox = new Checkbox({
-		element: $("#antialiasing-checkbox"),
-		name: "Antialiasing",
-		onInput: onCheckboxInput,
-		checked: true
-	});
-
-	onCheckboxInput();
-
 	const rootColorInputElement = $("#root-color-input");
 
 	rootColorInputElement.addEventListener("input", () =>
@@ -131,12 +121,5 @@ export default function()
 		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		applet.wilson.resizeCanvas({ width: applet.resolution });
-	}
-
-	function onCheckboxInput()
-	{
-		applet.wilson.setAntialiasing(antialiasingCheckbox.checked);
-
-		applet.needNewFrame = true;
 	}
 }

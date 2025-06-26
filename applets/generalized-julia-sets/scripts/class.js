@@ -29,7 +29,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		const options = {
 			shader: tempShader,

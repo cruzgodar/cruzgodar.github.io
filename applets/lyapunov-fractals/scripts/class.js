@@ -20,7 +20,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createOffscreenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		const options =
 		{
