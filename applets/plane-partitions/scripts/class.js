@@ -276,7 +276,6 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.renderer = new THREE.WebGLRenderer({
 			canvas: this.wilson.canvas,
-			antialias: true,
 			context: this.wilson.gl,
 			alpha: true,
 		});

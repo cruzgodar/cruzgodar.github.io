@@ -85,12 +85,6 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const antialiasingCheckbox = new Checkbox({
-		element: $("#antialiasing-checkbox"),
-		name: "Antialiasing",
-		onInput: onCheckboxInput
-	});
-
 	typesetMath();
 
 	onSliderInput();
@@ -121,10 +115,8 @@ export default function()
 
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
-			|| applet.useAntialiasing !== antialiasingCheckbox.checked
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
-			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

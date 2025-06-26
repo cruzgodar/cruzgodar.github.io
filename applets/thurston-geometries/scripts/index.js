@@ -9,7 +9,6 @@ import { S3Rooms } from "./geometries/s3.js";
 import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -59,12 +58,6 @@ export default function()
 		max: 120,
 		snapPoints: [100],
 		onInput: onSliderInput
-	});
-
-	const antialiasingCheckbox = new Checkbox({
-		element: $("#antialiasing-checkbox"),
-		name: "Antialiasing",
-		onInput: onCheckboxInput
 	});
 
 	const switchSceneButton = new ToggleButton({
@@ -364,7 +357,6 @@ export default function()
 
 	function onCheckboxInput()
 	{
-		applet.useAntialiasing = antialiasingCheckbox.checked;
 		applet.run(applet.geometryData, false);
 	}
 }

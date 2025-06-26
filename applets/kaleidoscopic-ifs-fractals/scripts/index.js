@@ -87,12 +87,6 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const antialiasingCheckbox = new Checkbox({
-		element: $("#antialiasing-checkbox"),
-		name: "Antialiasing",
-		onInput: onCheckboxInput
-	});
-
 	const applet = new KaleidoscopicIFSFractals({
 		canvas: $("#output-canvas"),
 		shape: polyhedraDropdown.value || "octahedron",
@@ -145,12 +139,9 @@ export default function()
 	{
 		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
 
-		if (
-			applet.useShadows !== shadowsCheckbox.checked
-			|| applet.useAntialiasing !== antialiasingCheckbox.checked
-		) {
+		if (applet.useShadows !== shadowsCheckbox.checked)
+		{
 			applet.useShadows = shadowsCheckbox.checked;
-			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

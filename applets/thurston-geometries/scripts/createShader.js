@@ -23,7 +23,6 @@ export function createShader({
 	updateTGlsl,
 
 	useReflections = false,
-	antialiasing = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
@@ -113,56 +112,21 @@ export function createShader({
 		}
 	` : "";
 
-	const mainFunctionGlsl = antialiasing
-		? /* glsl */`${""}
-			vec3 raymarchHelper(vec2 uvAdjust)
-			{
-				return raymarch(
+	const mainFunctionGlsl = /* glsl */`${""}
+		void main(void)
+		{
+			gl_FragColor = vec4(
+				raymarch(
 					geometryNormalize(
 						forwardVec
-						+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * worldSize.x * fov
-						+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) * worldSize.y * fov
+						+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
+						+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
 					)
-				);
-			}
-			
-			void main(void)
-			{
-				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
-				vec4 sample = texture2D(uTexture, texCoord);
-				
-				if (sample.w > 0.15)
-				{
-					vec3 aaSample = (
-						sample.xyz	
-						+ raymarchHelper(vec2(stepSize.x, 0.0))
-						+ raymarchHelper(vec2(0.0, stepSize.y))
-						+ raymarchHelper(vec2(-stepSize.x, 0.0))
-						+ raymarchHelper(vec2(0.0, -stepSize.y))
-					) / 5.0;
-					
-					gl_FragColor = vec4(aaSample, 1.0);
-					return;
-				}
-
-				gl_FragColor = vec4(sample.xyz, 1.0);
-			}
-		`
-		: /* glsl */`${""}
-			void main(void)
-			{
-				gl_FragColor = vec4(
-					raymarch(
-						geometryNormalize(
-							forwardVec
-							+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
-							+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
-						)
-					),
-					1.0
-				);
-			}
-		`;
+				),
+				1.0
+			);
+		}
+	`;
 	
 	const shader = /* glsl */`
 		precision highp float;
@@ -179,11 +143,6 @@ export function createShader({
 		uniform vec4 upVec;
 		uniform vec4 rightVec;
 		uniform vec4 forwardVec;
-
-		${antialiasing ? /* glsl */`
-			uniform vec2 stepSize;
-			uniform sampler2D uTexture;
-		` : ""}
 		
 		const float pi = ${Math.PI};
 		const float epsilon = 0.00001;

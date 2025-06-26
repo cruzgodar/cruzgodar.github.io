@@ -92,12 +92,6 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const antialiasingCheckbox = new Checkbox({
-		element: $("#antialiasing-checkbox"),
-		name: "Antialiasing",
-		onInput: onCheckboxInput
-	});
-
 	typesetMath();
 
 	function changeResolution()
@@ -131,11 +125,9 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 			|| applet.useReflections !== reflectionsCheckbox.checked
-			|| applet.useAntialiasing !== antialiasingCheckbox.checked
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.useReflections = reflectionsCheckbox.checked;
-			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}
