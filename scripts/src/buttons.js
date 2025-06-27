@@ -79,9 +79,14 @@ export class DownloadButton extends Button
 						applet.downloadBokehFrame();
 					}
 
+					else if (applet.downloadHighResFrame)
+					{
+						applet.downloadHighResFrame(filename, 8);
+					}
+
 					else
 					{
-						applet.wilson.downloadFrame(filename, 16);
+						applet.wilson.downloadHighResFrame(filename, 8);
 					}
 
 					return;

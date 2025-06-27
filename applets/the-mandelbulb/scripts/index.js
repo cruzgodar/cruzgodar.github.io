@@ -25,6 +25,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
+		filename: "the-mandelbulb.png"
 	});
 
 	const resolutionInput = new TextBox({

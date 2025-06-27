@@ -1854,8 +1854,24 @@ export class WilsonGPU extends Wilson {
             : this.gl.UNSIGNED_BYTE, pixels);
         return pixels;
     }
-    downloadFrame(filename, resolutionMultiplier = 1, uniforms = {}) {
-        const workerCode = `
+    downloadFrame(filename, drawNewFrame = true) {
+        if (drawNewFrame) {
+            this.drawFrame();
+        }
+        this.canvas.toBlob((blob) => {
+            if (!blob) {
+                console.error("[Wilson] Could not create a canvas blob");
+                return;
+            }
+            const link = document.createElement("a");
+            link.download = filename;
+            link.href = window.URL.createObjectURL(blob);
+            link.click();
+            link.remove();
+        });
+    }
+    downloadHighResFrame(filename, resolutionMultiplier = 1, uniforms = {}) {
+        const workerCode = `${""}
 			const uniformFunctions = {
 				int: (
 					gl,
