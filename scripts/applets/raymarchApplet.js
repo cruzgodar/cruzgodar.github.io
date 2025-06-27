@@ -963,12 +963,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.drawFrame();
 	}
 
-	async downloadFrame(filename)
-	{
-		this.drawFrame();
-		this.wilson.downloadFrame(filename, false);
-	}
-
 	async makeMosaic({
 		size = 16,
 		returnPixels = false,

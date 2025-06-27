@@ -66,8 +66,6 @@ export class DownloadButton extends Button
 		applet,
 		filename
 	}) {
-		const downloadFrame = applet.downloadFrame ?? applet.wilson.downloadFrame;
-
 		super({
 			element,
 			name: "Download",
@@ -79,17 +77,23 @@ export class DownloadButton extends Button
 					if (e.altKey && applet.downloadBokehFrame)
 					{
 						applet.downloadBokehFrame();
-						return;
 					}
 
-					else if (applet.makeMosaic)
+					else
 					{
-						applet.makeMosaic({});
-						return;
+						applet.wilson.downloadFrame(filename, 16);
 					}
+
+					return;
 				}
 
-				downloadFrame.bind(applet)(filename);
+				if (applet.downloadFrame)
+				{
+					applet.downloadFrame(filename);
+					return;
+				}
+
+				applet.wilson.downloadFrame(filename);
 			},
 		});
 	}

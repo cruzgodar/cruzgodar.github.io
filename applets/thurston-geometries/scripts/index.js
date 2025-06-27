@@ -354,9 +354,4 @@ export default function()
 		
 		run();
 	}
-
-	function onCheckboxInput()
-	{
-		applet.run(applet.geometryData, false);
-	}
 }
