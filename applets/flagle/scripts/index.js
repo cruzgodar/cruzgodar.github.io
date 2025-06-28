@@ -132,11 +132,6 @@ export default async function()
 		{
 			transition: opacity .125s ease-out;
 		}
-
-		#loading-overlay
-		{
-			transition: opacity 0.125s 0.25s ease-out;
-		}
 	`);
 
 

@@ -35,6 +35,8 @@ export class FlagOverlap extends Applet
 	correctHsv;
 	lastGuessFlagId;
 
+	guessTimeoutId;
+
 	// Each entry is an object of the form
 	// {
 	//	 flagId,
@@ -141,7 +143,14 @@ export class FlagOverlap extends Applet
 	// Draws the flag on the given wilson's canvas and parses it as hsv.
 	async drawFlag(wilson, flagId)
 	{
-		this.loadingOverlay.style.opacity = 1;
+		this.guessTimeoutId = setTimeout(() =>
+		{
+			changeOpacity({
+				element: this.loadingOverlay,
+				opacity: 1,
+				duration: 125,
+			});
+		}, 250);
 
 		let resolve;
 		const promise = new Promise(r => resolve = r);
@@ -351,13 +360,13 @@ export class FlagOverlap extends Applet
 			changeOpacity({
 				element: guess.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 250
+				duration: 200
 			}),
 
 			changeOpacity({
 				element: this.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 250
+				duration: 200
 			})
 		]);
 
@@ -380,7 +389,13 @@ export class FlagOverlap extends Applet
 
 		this.updateMainCanvas();
 
-		this.loadingOverlay.style.opacity = 0;
+		clearTimeout(this.guessTimeoutId);
+
+		changeOpacity({
+			element: this.loadingOverlay,
+			opacity: 0,
+			duration: 125,
+		});
 
 		await sleep(100);
 
@@ -410,7 +425,9 @@ export class FlagOverlap extends Applet
 			fillProportion = 0.999;
 		}
 
-		await animate((t) =>
+		await sleep(100);
+
+		animate((t) =>
 		{
 			progressBar.style.width = `${t * fillProportion * 100}%`;
 			progressBar.style.background = `hsl(${t * fillProportion * 120}, 70%, 50%)`;
@@ -425,7 +442,7 @@ export class FlagOverlap extends Applet
 			// progressBarText.style.filter = `brightness(calc(${darknessAmount}))`;
 		}, 500 + fillProportion * 500, "easeInOutQuad");
 
-
+		
 
 		if (flagId === this.correctFlag)
 		{
@@ -435,8 +452,6 @@ export class FlagOverlap extends Applet
 
 		
 
-		await sleep(100);
-
 		if (guess.showDiffs)
 		{
 			this.overlapCheckboxes[this.guesses.length - 1].classList.add("checked");
@@ -445,24 +460,26 @@ export class FlagOverlap extends Applet
 				changeOpacity({
 					element: guess.wilsonOverlay.canvas,
 					opacity: 0,
-					duration: 250
+					duration: 400
 				}),
 
 				changeOpacity({
 					element: this.wilsonOverlay.canvas,
 					opacity: 0,
-					duration: 250
+					duration: 400
 				})
 			]);
 		}
 
 		else
 		{
-			await changeOpacity({
-				element: this.wilsonOverlay.canvas,
-				opacity: 0,
-				duration: 250
-			});
+			await Promise.all([
+				changeOpacity({
+					element: this.wilsonOverlay.canvas,
+					opacity: 0,
+					duration: 400
+				}),
+			]);
 		}
 
 
