@@ -165,7 +165,7 @@ export default async function()
 		option.classList.add("country-list-item");
 		option.setAttribute("data-country-code", countryCode);
 		option.innerHTML = /* html */`
-			<img src="/applets/flag-overlap/graphics/thumbnails/${countryCode}.webp">
+			<img src="/applets/flagle/graphics/thumbnails/${countryCode}.webp">
 			<p class="body-text">${countryNames[countryCode]}</p>
 		`;
 		option.style.order = index;

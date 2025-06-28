@@ -44,7 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
-			"/applets/flag-overlap",
+			"/applets/flagle",
 			"/applets/boids",
 			"/applets/lambda-calculus",
 			"/applets/maurer-roses",
@@ -97,9 +97,9 @@ export const sitemap =
 		]
 	},
 		
-	"/applets/flag-overlap":
+	"/applets/flagle":
 	{
-		"title": "Flag Overlap",
+		"title": "Flagle",
 		
 		"parent": "/applets",
 		

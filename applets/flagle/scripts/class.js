@@ -154,7 +154,7 @@ export class FlagOverlap extends Applet
 			resolve();
 		};
 
-		img.src = `/applets/flag-overlap/graphics/flags/${flagId}.webp`;
+		img.src = `/applets/flagle/graphics/flags/${flagId}.webp`;
 
 		await promise;
 
