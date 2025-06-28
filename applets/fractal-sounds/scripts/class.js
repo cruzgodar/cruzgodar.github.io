@@ -623,8 +623,8 @@ export class FractalSounds extends AnimationFrameApplet
 		await sleep(33);
 	}
 
-	downloadFrame(filename)
+	downloadHighResFrame(filename, resolution)
 	{
-		this.wilsonJulia.downloadFrame(filename);
+		this.wilsonJulia.downloadHighResFrame(filename, resolution);
 	}
 }

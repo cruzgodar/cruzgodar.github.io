@@ -8,7 +8,7 @@ import { S2xERooms } from "./geometries/s2xe.js";
 import { S3Rooms } from "./geometries/s3.js";
 import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
-import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -224,8 +224,8 @@ export default function()
 
 
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "a-thurston-geometry.png"
 	});

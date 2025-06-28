@@ -1,5 +1,5 @@
 import { CurvedLight } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -37,8 +37,8 @@ export default function()
 		onInput: onDropdownInput
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "curved-light.png"
 	});

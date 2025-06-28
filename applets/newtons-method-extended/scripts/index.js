@@ -1,5 +1,5 @@
 import { NewtonsMethodExtended } from "./class.js";
-import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Button, DownloadHighResButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -23,8 +23,8 @@ export default function()
 		onClick: () => applet.animatePaletteChange()
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "newtons-method-extended.png"
 	});

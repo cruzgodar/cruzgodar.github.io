@@ -1,5 +1,5 @@
 import { VoronoiDiagrams } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -33,8 +33,8 @@ export default function()
 		onClick: run
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "a-voronoi-diagram.png"
 	});

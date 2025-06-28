@@ -156,32 +156,4 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			this.needNewFrame = true;
 		}, instant ? 0 : 1000, "easeInOutQuad");
 	}
-
-
-
-	downloadFrame()
-	{
-		if (this.uniforms.juliaProportion < .5)
-		{
-			this.wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
-		}
-
-		else
-		{
-			this.wilson.downloadFrame("a-quaternionic-julia-set.png");
-		}
-	}
-
-	downloadHighResFrame(filename, resolutionMultiplier = 1)
-	{
-		if (this.uniforms.juliaProportion < .5)
-		{
-			super.downloadHighResFrame("the-quaternionic-mandelbrot-set.png", resolutionMultiplier);
-		}
-
-		else
-		{
-			super.downloadHighResFrame("a-quaternionic-julia-set.png", resolutionMultiplier);
-		}
-	}
 }

@@ -1,5 +1,5 @@
 import { FractalSounds } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -14,8 +14,8 @@ export default function()
 
 	applet.loadPromise.then(() => run());
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "a-sound-fractal.png"
 	});

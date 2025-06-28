@@ -31,9 +31,7 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 <div id="canvas-location"></div>
 
-<div>
-	<canvas id="output-canvas" class="output-canvas"></canvas>
-</div>
+### canvas
 
 </div>
 
@@ -41,9 +39,7 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 <div id="canvas-landscape-right">
 
-### buttons
-	download
-###
+### dropdown download
 
 </div>
 

@@ -1,5 +1,5 @@
 import { ExtrudedCube } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -10,8 +10,8 @@ export default function()
 {
 	const applet = new ExtrudedCube({ canvas: $("#output-canvas") });
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "an-extruded-cube.png"
 	});

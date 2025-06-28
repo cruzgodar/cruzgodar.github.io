@@ -1,6 +1,6 @@
 import { MengerSponge } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -12,8 +12,8 @@ export default function()
 {
 	const applet = new MengerSponge({ canvas: $("#output-canvas") });
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
 		filename: () => "a-menger-sponge.png"
 	});
