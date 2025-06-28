@@ -211,7 +211,6 @@ export const countryNames = {
 	"lk": "Sri Lanka",
 	"sd": "Sudan",
 	"sr": "Suriname",
-	"sj": "Svalbard and Jan Mayen",
 	"se": "Sweden",
 	"ch": "Switzerland",
 	"sy": "Syria",
@@ -501,7 +500,6 @@ export const countriesByName = {
 	"Sudan": "sd",
 	"The Sudan": "sd",
 	"Suriname": "sr",
-	"Svalbard and Jan Mayen": "sj",
 	"Sweden": "se",
 	"Switzerland": "ch",
 	"Syria": "sy",
@@ -569,15 +567,15 @@ export const largestAreaCountries = ["ru", "ca", "cn", "us", "br", "au", "in", "
 export const largestPopulationCountries = ["in", "cn", "us", "id", "pk", "ng", "br", "bd", "ru", "mx", "jp", "ph", "et", "cd", "eg", "vn", "ir", "tr", "de", "fr", "gb", "tz", "th", "za", "it", "co", "ke", "mm", "kr", "sd", "es", "dz", "ar", "ug", "iq", "af", "ca", "uz", "pl", "ma", "sa", "ao", "my", "pe", "mz", "gh", "ua", "ye", "mg", "ci", "np", "cm", "ve", "au", "ne", "kp", "sy", "bf", "ml", "lk", "kz", "mw", "cl", "zm", "ro", "so", "td", "sn", "nl", "gt", "kh", "ec", "zw", "ss", "gn", "rw", "bj", "bi", "tn", "ht", "be", "pg", "jo", "bo", "cu", "cz", "do", "ae", "pt", "se", "gr", "tj", "az", "il", "hn", "hu", "at", "by", "ch", "sl"];
 
 export const possibleAnswers = {
-	all: ["af", "ax", "al", "dz", "as", "ad", "ao", "ai", "aq", "ag", "ar", "am", "aw", "au", "at", "az", "bs", "bh", "bd", "bb", "by", "be", "bz", "bj", "bm", "bt", "bo", "ba", "bw", "br", "io", "vg", "bn", "bg", "bf", "bi", "cv", "kh", "cm", "ca", "ky", "cf", "td", "cl", "cn", "cx", "cc", "co", "km", "cg", "ck", "cr", "ci", "hr", "cu", "cw", "cy", "cz", "cd", "dk", "dj", "dm", "do", "ec", "eg", "sv", "gq", "er", "ee", "sz", "et", "fk", "fo", "fj", "fi", "fr", "gf", "pf", "tf", "ga", "gm", "ge", "de", "gh", "gi", "gr", "gl", "gd", "gp", "gu", "gt", "gg", "gw", "gn", "gy", "ht", "hn", "hk", "hu", "is", "in", "id", "ir", "iq", "ie", "im", "il", "it", "jm", "jp", "je", "jo", "kz", "ke", "ki", "kw", "kg", "la", "lv", "lb", "ls", "lr", "ly", "li", "lt", "lu", "mo", "mg", "mw", "my", "mv", "ml", "mt", "mh", "mq", "mr", "mu", "mx", "fm", "md", "mc", "mn", "me", "ms", "ma", "mz", "mm", "na", "nr", "np", "nl", "nc", "nz", "ni", "ne", "ng", "nu", "nf", "kp", "mk", "mp", "no", "om", "pk", "pw", "ps", "pa", "pg", "py", "pe", "ph", "pn", "pl", "pt", "pr", "qa", "re", "ro", "ru", "rw", "kn", "lc", "pm", "vc", "ws", "sm", "st", "sa", "sn", "rs", "sc", "sl", "sg", "sx", "sk", "si", "sb", "so", "za", "gs", "kr", "ss", "es", "lk", "sd", "sr", "sj", "se", "ch", "sy", "tw", "tj", "tz", "th", "tl", "tg", "tk", "to", "tt", "tn", "tr", "tm", "tc", "tv", "ug", "ua", "ae", "gb", "us", "uy", "vi", "uz", "vu", "va", "ve", "vn", "wf", "eh", "ye", "zm", "zw", "ic", "xk", "bq-sa", "bq-bo", "bq-se"],
+	all: ["af", "ax", "al", "dz", "as", "ad", "ao", "ai", "aq", "ag", "ar", "am", "aw", "au", "at", "az", "bs", "bh", "bd", "bb", "by", "be", "bz", "bj", "bm", "bt", "bo", "ba", "bw", "br", "io", "vg", "bn", "bg", "bf", "bi", "cv", "kh", "cm", "ca", "ky", "cf", "td", "cl", "cn", "cx", "cc", "co", "km", "cg", "ck", "cr", "ci", "hr", "cu", "cw", "cy", "cz", "cd", "dk", "dj", "dm", "do", "ec", "eg", "sv", "gq", "er", "ee", "sz", "et", "fk", "fo", "fj", "fi", "fr", "gf", "pf", "tf", "ga", "gm", "ge", "de", "gh", "gi", "gr", "gl", "gd", "gp", "gu", "gt", "gg", "gw", "gn", "gy", "ht", "hn", "hk", "hu", "is", "in", "id", "ir", "iq", "ie", "im", "il", "it", "jm", "jp", "je", "jo", "kz", "ke", "ki", "kw", "kg", "la", "lv", "lb", "ls", "lr", "ly", "li", "lt", "lu", "mo", "mg", "mw", "my", "mv", "ml", "mt", "mh", "mq", "mr", "mu", "mx", "fm", "md", "mc", "mn", "me", "ms", "ma", "mz", "mm", "na", "nr", "np", "nl", "nc", "nz", "ni", "ne", "ng", "nu", "nf", "kp", "mk", "mp", "no", "om", "pk", "pw", "ps", "pa", "pg", "py", "pe", "ph", "pn", "pl", "pt", "pr", "qa", "re", "ro", "ru", "rw", "kn", "lc", "pm", "vc", "ws", "sm", "st", "sa", "sn", "rs", "sc", "sl", "sg", "sx", "sk", "si", "sb", "so", "za", "gs", "kr", "ss", "es", "lk", "sd", "sr", "se", "ch", "sy", "tw", "tj", "tz", "th", "tl", "tg", "tk", "to", "tt", "tn", "tr", "tm", "tc", "tv", "ug", "ua", "ae", "gb", "us", "uy", "vi", "uz", "vu", "va", "ve", "vn", "wf", "eh", "ye", "zm", "zw", "ic", "xk", "bq-sa", "bq-bo", "bq-se"],
 
 	americas: ["ca", "mx", "us", "bs", "kn", "ht", "do", "gt", "bz", "cu", "ag", "sv", "ni", "jm", "dm", "hn", "vc", "cr", "bb", "lc", "pa", "tt", "co", "gy", "gd", "ec", "sr", "gf", "pe", "bo", "br", "py", "cl", "ar", "uy", "fk", "gs", "gl", "bm", "gp", "ai", "aw", "ky", "vg", "cw", "gl", "mq", "ms", "pr", "pm", "sx", "tc", "vi", "ve", "bq-sa", "bq-bo", "bq-se"],
 
-	europe: ["sj", "is", "fo", "no", "se", "fi", "dk", "ax", "gb", "ie", "ee", "lt", "lv", "by", "ua", "md", "ro", "bg", "pl", "cz", "at", "gr", "cy", "mt", "it", "va", "de", "fr", "mc", "ad", "pt", "es", "nl", "be", "lu", "ch", "li", "si", "sk", "hu", "hr", "ba", "rs", "me", "xk", "al", "mk", "sm", "gi", "gg", "im", "je"],
+	europe: ["is", "fo", "no", "se", "fi", "dk", "ax", "gb", "ie", "ee", "lt", "lv", "by", "ua", "md", "ro", "bg", "pl", "cz", "at", "gr", "cy", "mt", "it", "va", "de", "fr", "mc", "ad", "pt", "es", "nl", "be", "lu", "ch", "li", "si", "sk", "hu", "hr", "ba", "rs", "me", "xk", "al", "mk", "sm", "gi", "gg", "im", "je"],
 
 	africa: ["ic", "dz", "ao", "bj", "bw", "bf", "bi", "cv", "cm", "cf", "td", "km", "cg", "ci", "cd", "dj", "eg", "gq", "er", "sz", "et", "tf", "ga", "gm", "gh", "gw", "gn", "ke", "ls", "lr", "ly", "mg", "mw", "ml", "mr", "mu", "ma", "mz", "na", "ne", "ng", "rw", "st", "sn", "sc", "sl", "so", "za", "ss", "sd", "tz", "tg", "tn", "ug", "eh", "zm", "zw"],
 
 	asiaAndPacific: ["af", "as", "am", "au", "az", "bh", "bd", "bt", "io", "bn", "kh", "cn", "cx", "cc", "ck", "fj", "pf", "ge", "gu", "hk", "in", "id", "ir", "iq", "il", "jp", "jo", "kz", "ki", "kw", "kg", "la", "lb", "mo", "my", "mv", "mh", "fm", "mn", "mm", "nr", "np", "nc", "nz", "ni", "nf", "kp", "mp", "om", "pk", "pw", "ps", "pg", "ph", "pn", "qa", "re", "ru", "ws", "sa", "sg", "sb", "kr", "lk", "sy", "tw", "tj", "th", "tl", "tk", "to", "tr", "tm", "tv", "ae", "uz", "vu", "vn", "wf", "ye"],
 
-	leo: ["ax", "as", "ai", "aq", "aw", "bm", "io", "vg", "ky", "cx", "cc", "ck", "cw", "fk", "fo", "gf", "pf", "tf", "gi", "gl", "gp", "gu", "gg", "hk", "im", "je", "mo", "mq", "ms", "nc", "nu", "nf", "mp", "pn", "pr", "re", "pm", "sx", "gs", "sj", "tw", "tk", "tc", "vi", "wf", "eh", "ic", "xk", "bq-sa", "bq-bo", "bq-se"]
+	leo: ["ax", "as", "ai", "aq", "aw", "bm", "io", "vg", "ky", "cx", "cc", "ck", "cw", "fk", "fo", "gf", "pf", "tf", "gi", "gl", "gp", "gu", "gg", "hk", "im", "je", "mo", "mq", "ms", "nc", "nu", "nf", "mp", "pn", "pr", "re", "pm", "sx", "gs", "tw", "tk", "tc", "vi", "wf", "eh", "ic", "xk", "bq-sa", "bq-bo", "bq-se"]
 };
