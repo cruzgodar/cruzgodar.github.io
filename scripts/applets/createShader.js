@@ -304,7 +304,7 @@ function getRaymarchGlsl({
 				
 				else if (t > clipDistance)
 				{
-					${clippedGlsl}
+					break;
 				}
 				
 				t += distanceToScene;
