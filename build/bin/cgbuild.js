@@ -25,6 +25,7 @@ const excludeFromBuild =
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
+	pdf: process.argv.slice(2).includes("--pdf"),
 };
 
 const courseNames = {
@@ -138,8 +139,10 @@ async function buildFile(file)
 		}
 	}
 
-	else if (extension === "htmdl" && filename === "card")
-	{
+	else if (
+		extension === "htmdl" && filename === "card"
+		&& (!options.clean || (options.clean && options.pdf))
+	) {
 		const text = await read(file);
 		
 		if (text)
@@ -178,8 +181,10 @@ async function buildFile(file)
 		}
 	}
 
-	else if (extension === "pdf")
-	{
+	else if (
+		extension === "pdf"
+		&& (!options.clean || (options.clean && options.pdf))
+	) {
 		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
 
 		if (!(files.some(f => f.endsWith(".htmdl"))))
