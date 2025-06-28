@@ -26,6 +26,11 @@ export class Checkbox extends InputElement
 
 		this.element.checked = this.checked;
 
+		if (this.checked)
+		{
+			this.checkboxElement.style.opacity = 1;
+		}
+
 		this.element.addEventListener("input", () =>
 		{
 			this.element.blur();
