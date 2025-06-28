@@ -17,7 +17,7 @@ Guess the secret flag in six tries or fewer! Every flag you guess is overlapped 
 
 	<div id="guess-selector">
 		<div class="text-box-container">
-			<input id="guess-selector-input" class="text-box" type="text" value="" tabindex="1" placeholder="Enter a country">
+			<input id="guess-selector-input" class="text-box" type="text" value="" tabindex="1" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Enter a country">
 		</div>
 		<div id="country-list">
 			

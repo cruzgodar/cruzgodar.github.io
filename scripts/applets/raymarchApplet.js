@@ -274,7 +274,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-			}
+			},
+
+			verbose: window.DEBUG
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
@@ -568,7 +570,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const maxRadius = resolution / 250 * blurAmount;
 
 		const canvas = this.createHiddenCanvas();
-		const options = { canvasWidth: resolution };
+		const options = {
+			canvasWidth: resolution,
+			verbose: window.DEBUG
+		};
 		const wilsonHidden = new WilsonCPU(canvas, options);
 
 		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";

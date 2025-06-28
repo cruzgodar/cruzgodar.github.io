@@ -108,14 +108,14 @@ export class Applet
 			wilson.destroy();
 		}
 
-		const vowel = ["a", "e", "i", "o", "u", "y"]
+		const n = ["a", "e", "i", "o", "u", "y"]
 			.includes(this.constructor.name[0].toLowerCase())
 			? "n"
 			: "";
 		
 		if (window.DEBUG)
 		{
-			console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
+			console.log(`Destroyed a${n} ${this.constructor.name} applet`);
 		}
 	}
 
