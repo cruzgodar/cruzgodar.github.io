@@ -360,13 +360,13 @@ export class FlagOverlap extends Applet
 			changeOpacity({
 				element: guess.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 200
+				duration: 250
 			}),
 
 			changeOpacity({
 				element: this.wilsonOverlay.canvas,
 				opacity: 1,
-				duration: 200
+				duration: 250
 			})
 		]);
 
@@ -397,7 +397,7 @@ export class FlagOverlap extends Applet
 			duration: 125,
 		});
 
-		await sleep(100);
+		await sleep(150);
 
 
 
