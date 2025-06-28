@@ -112,8 +112,11 @@ export class Applet
 			.includes(this.constructor.name[0].toLowerCase())
 			? "n"
 			: "";
-
-		console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
+		
+		if (window.DEBUG)
+		{
+			console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
+		}
 	}
 
 	runWhenOnscreen(data)

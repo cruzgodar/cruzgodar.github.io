@@ -163,7 +163,9 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				onSwitch: this.onSwitchFullscreen.bind(this),
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
@@ -189,6 +191,8 @@ export class PlanePartitions extends AnimationFrameApplet
 				animate: false,
 				closeWithEscape: false,
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonNumbers = new WilsonCPU(numbersCanvas, optionsNumbers);
@@ -212,6 +216,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		const optionsHidden =
 		{
 			canvasWidth: 64,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonHidden = new WilsonCPU(hiddenCanvas, optionsHidden);

@@ -163,6 +163,8 @@ export class GameOfLife extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
@@ -246,7 +248,9 @@ export class GameOfLife extends AnimationFrameApplet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

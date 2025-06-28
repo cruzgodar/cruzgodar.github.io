@@ -56,6 +56,8 @@ export class LyapunovFractals extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
@@ -65,6 +67,8 @@ export class LyapunovFractals extends AnimationFrameApplet
 			shader: tempShader,
 
 			canvasWidth: this.resolutionHidden,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);

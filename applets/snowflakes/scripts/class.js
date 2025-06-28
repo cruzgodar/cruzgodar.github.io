@@ -500,6 +500,8 @@ export class Snowflakes extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

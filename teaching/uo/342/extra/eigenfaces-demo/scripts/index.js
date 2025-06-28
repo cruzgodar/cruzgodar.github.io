@@ -9,7 +9,8 @@ export default function()
 {
 	const options = {
 		canvasWidth: 162,
-		canvasHeight: 200
+		canvasHeight: 200,
+		verbose: window.DEBUG,
 	};
 	
 	const wilson = new Wilson($("#output-canvas"), options);

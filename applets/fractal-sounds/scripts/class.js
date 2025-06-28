@@ -56,7 +56,9 @@ export class FractalSounds extends AnimationFrameApplet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
@@ -70,6 +72,8 @@ export class FractalSounds extends AnimationFrameApplet
 			shader: tempShader,
 
 			canvasWidth: this.resolutionHidden,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
@@ -109,6 +113,8 @@ export class FractalSounds extends AnimationFrameApplet
 				animate: false,
 				closeWithEscape: false,
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonCPU(lineDrawerCanvas, options);

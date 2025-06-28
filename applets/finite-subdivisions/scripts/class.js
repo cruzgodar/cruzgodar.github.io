@@ -37,6 +37,8 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);

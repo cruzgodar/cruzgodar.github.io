@@ -125,6 +125,8 @@ export class EllipticCurve extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			worldWidth: 8,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

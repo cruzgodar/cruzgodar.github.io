@@ -19,6 +19,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: this.resolution,
+
 			fullscreenOptions: {
 				onSwitch: this.switchFullscreen.bind(this),
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
@@ -26,6 +27,8 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);

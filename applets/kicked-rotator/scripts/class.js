@@ -36,6 +36,8 @@ export class KickedRotator extends AnimationFrameApplet
 			worldCenterY: Math.PI,
 
 			worldWidth: 2 * Math.PI,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
@@ -89,6 +91,8 @@ export class KickedRotator extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

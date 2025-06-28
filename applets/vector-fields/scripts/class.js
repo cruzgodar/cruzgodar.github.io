@@ -78,6 +78,8 @@ export class VectorFields extends AnimationFrameApplet
 
 			canvasWidth: 100,
 			canvasHeight: 100,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonUpdate = new WilsonGPU(this.updateCanvas, optionsUpdate);
@@ -136,7 +138,9 @@ export class VectorFields extends AnimationFrameApplet
 				fillScreen: true,
 				animate: false,
 				closeWithEscape: false,
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonPanZoomDim = new WilsonGPU(this.panZoomDimCanvas, optionsPanZoomDim);
@@ -186,7 +190,9 @@ export class VectorFields extends AnimationFrameApplet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

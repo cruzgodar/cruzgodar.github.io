@@ -48,6 +48,8 @@ export class ChaosGame extends AnimationFrameApplet
 			shader: tempShader,
 
 			canvasWidth: this.computeResolution,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
@@ -102,6 +104,8 @@ export class ChaosGame extends AnimationFrameApplet
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);

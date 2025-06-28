@@ -16,6 +16,8 @@ export default function()
 	{
 		const options = {
 			canvasWidth: 400,
+
+			verbose: window.DEBUG,
 		};
 		
 		const wilson = new WilsonCPU($("#v-canvas"), options);
@@ -90,6 +92,8 @@ export default function()
 
 		const options = {
 			canvasWidth: 100,
+
+			verbose: window.DEBUG,
 		};
 		
 		const wilson = new WilsonCPU($("#eigenface-canvas"), options);

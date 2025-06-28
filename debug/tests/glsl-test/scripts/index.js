@@ -158,6 +158,8 @@ export default async function()
 		canvasWidth: 1,
 
 		shader: tempShader,
+
+		verbose: window.DEBUG,
 	};
 
 	const wilson = new WilsonGPU($("#output-canvas"), options);

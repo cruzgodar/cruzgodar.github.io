@@ -17,8 +17,11 @@ export class SingularValueDecompositions extends Applet
 	{
 		super(canvas);
 
-		const options = {
+		const options =
+		{
 			canvasWidth: 500,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);

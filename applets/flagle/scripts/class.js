@@ -108,6 +108,8 @@ export class FlagOverlap extends Applet
 					touchstart: switchFullscreen
 				},
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonCPU(canvas, options);
@@ -118,6 +120,8 @@ export class FlagOverlap extends Applet
 		const optionsHidden =
 		{
 			canvasWidth: this.resolution,
+
+			verbose: window.DEBUG,
 		};
 
 		const hiddenCanvas = this.createHiddenCanvas(true, 1024 / 683);
@@ -310,6 +314,8 @@ export class FlagOverlap extends Applet
 					touchstart: switchFullscreen
 				},
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		guess.wilson = new WilsonCPU(
@@ -696,6 +702,8 @@ export class FlagOverlap extends Applet
 					touchstart: switchFullscreen
 				},
 			},
+
+			verbose: window.DEBUG,
 		};
 
 		await new Promise(resolve =>

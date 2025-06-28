@@ -62,7 +62,9 @@ export class VoronoiDiagrams extends Applet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
-			}
+			},
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilson = new WilsonGPU(this.canvas, options);
@@ -74,6 +76,8 @@ export class VoronoiDiagrams extends Applet
 			shader: tempShader,
 
 			canvasWidth: this.resolutionHidden,
+
+			verbose: window.DEBUG,
 		};
 
 		this.wilsonHidden = new WilsonGPU(this.createHiddenCanvas(), optionsHidden);
