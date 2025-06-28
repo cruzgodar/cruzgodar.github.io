@@ -554,6 +554,7 @@ export class FlagOverlap extends Applet
 
 		await this.drawFlag(this.wilson, this.correctFlag);
 
+		clearTimeout(this.guessTimeoutId);
 		this.loadingOverlay.style.opacity = 0;
 
 		this.currentlyAnimating = false;
@@ -744,7 +745,8 @@ export class FlagOverlap extends Applet
 		}
 
 		this.replaceMainCanvas();
-
+		
+		this.loadingOverlay.style.opacity = 0;
 
 		await changeOpacity({
 			element: this.winOverlay,

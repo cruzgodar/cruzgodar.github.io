@@ -441,6 +441,9 @@ export default async function()
 
 			else if (e.key === "Enter")
 			{
+				e.preventDefault();
+				e.stopPropagation();
+
 				if (applet.gameOver)
 				{
 					applet.replay();
@@ -522,7 +525,10 @@ export default async function()
 		name: "Give Up",
 		onClick: () =>
 		{
-			applet.lose();
+			if (applet.guesses.length !== 0)
+			{
+				applet.lose();
+			}
 		}
 	});
 
