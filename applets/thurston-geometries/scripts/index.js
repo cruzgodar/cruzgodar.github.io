@@ -227,7 +227,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-thurston-geometry.png"
+		filename: () => "a-thurston-geometry.png"
 	});
 
 

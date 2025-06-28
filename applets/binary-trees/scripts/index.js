@@ -9,6 +9,6 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-binary-tree.png"
+		filename: () => "a-binary-tree.png"
 	});
 }

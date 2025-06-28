@@ -1,5 +1,5 @@
 import { JuliaSetMosaic } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -8,10 +8,10 @@ export default function()
 {
 	const applet = new JuliaSetMosaic({ canvas: $("#output-canvas") });
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
-		filename: "a-julia-set-mosaic.png"
+		filename: () => "a-julia-set-mosaic.png"
 	});
 
 	const resolutionInput = new TextBox({

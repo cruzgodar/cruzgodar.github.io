@@ -1,6 +1,6 @@
 import { NewtonsMethod } from "./class.js";
 import { hexToRgb } from "/scripts/applets/applet.js";
-import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Button, DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -85,10 +85,10 @@ export default function()
 		onClick: () => applet.randomizeColors()
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
-		filename: "newtons-method.png"
+		filename: () => "newtons-method.png"
 	});
 
 	const resolutionInput = new TextBox({

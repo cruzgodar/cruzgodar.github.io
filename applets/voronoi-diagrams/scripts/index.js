@@ -36,7 +36,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-voronoi-diagram.png"
+		filename: () => "a-voronoi-diagram.png"
 	});
 
 	const metricSlider = new Slider({

@@ -17,7 +17,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-sound-fractal.png"
+		filename: () => "a-sound-fractal.png"
 	});
 
 

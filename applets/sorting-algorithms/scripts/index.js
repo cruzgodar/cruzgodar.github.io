@@ -26,7 +26,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-sorting-algorithm.png"
+		filename: () => "a-sorting-algorithm.png"
 	});
 
 	const resolutionInput = new TextBox({

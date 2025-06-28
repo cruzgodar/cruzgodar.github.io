@@ -25,7 +25,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "wilsons-algorithm.png"
+		filename: () => "wilsons-algorithm.png"
 	});
 
 	const maximumSpeedCheckbox = new Checkbox({

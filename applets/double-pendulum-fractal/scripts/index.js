@@ -33,7 +33,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "the-double-pendulum-fractal.png"
+		filename: () => "the-double-pendulum-fractal.png"
 	});
 
 	const resolutionInput = new TextBox({

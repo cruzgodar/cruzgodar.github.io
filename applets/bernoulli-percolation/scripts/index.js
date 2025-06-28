@@ -55,7 +55,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "bernoulli-percolation.png"
+		filename: () => "bernoulli-percolation.png"
 	});
 
 	run();

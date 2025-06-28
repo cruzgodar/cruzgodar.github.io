@@ -16,7 +16,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-pascals-triangle-coloring.png"
+		filename: () => "a-pascals-triangle-coloring.png"
 	});
 
 	const resolutionInput = new TextBox({

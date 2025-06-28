@@ -21,7 +21,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		wilson,
-		filename: "eigenface.png"
+		filename: () => "eigenface.png"
 	});
 
 	const eigenfaceCheckbox = new Checkbox({

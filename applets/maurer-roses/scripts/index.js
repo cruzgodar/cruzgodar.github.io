@@ -47,7 +47,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-maurer-rose.png"
+		filename: () => "a-maurer-rose.png"
 	});
 
 	redraw();

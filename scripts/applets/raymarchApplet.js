@@ -963,16 +963,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.drawFrame();
 	}
 
-	downloadHighResFrame(filename, resolutionMultiplier = 1)
+	downloadHighResFrame(filename, resolution = this.resolution)
 	{
 		this.wilson.downloadHighResFrame(
 			filename,
-			resolutionMultiplier,
+			resolution,
 			{
-				resolution: Math.min(
-					this.resolution * resolutionMultiplier,
-					4000
-				)
+				resolution: Math.min(resolution, 4096)
 			}
 		);
 	}

@@ -103,7 +103,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-gravner-griffeath-snowflake.png"
+		filename: () => "a-gravner-griffeath-snowflake.png"
 	});
 
 

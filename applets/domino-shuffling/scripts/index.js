@@ -17,7 +17,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-domino-tiling.png"
+		filename: () => "a-domino-tiling.png"
 	});
 
 	const resolutionInput = new TextBox({

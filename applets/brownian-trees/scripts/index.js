@@ -16,7 +16,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-brownian-tree.png"
+		filename: () => "a-brownian-tree.png"
 	});
 
 	const resolutionInput = new TextBox({

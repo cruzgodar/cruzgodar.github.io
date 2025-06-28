@@ -15,7 +15,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-menger-sponge.png"
+		filename: () => "a-menger-sponge.png"
 	});
 
 	const resolutionInput = new TextBox({

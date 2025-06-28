@@ -1870,7 +1870,7 @@ export class WilsonGPU extends Wilson {
             link.remove();
         });
     }
-    downloadHighResFrame(filename, resolutionMultiplier = 1, uniforms = {}) {
+    downloadHighResFrame(filename, resolution = Math.round(Math.sqrt(this.canvasWidth * this.canvasHeight)), uniforms = {}) {
         const workerCode = `${""}
 			const uniformFunctions = {
 				int: (
@@ -2060,8 +2060,8 @@ export class WilsonGPU extends Wilson {
         const blob = new Blob([workerCode], { type: "application/javascript" });
         const workerUrl = URL.createObjectURL(blob);
         const worker = new Worker(workerUrl);
-        const canvasWidth = Math.round(this.canvasWidth * resolutionMultiplier);
-        const canvasHeight = Math.round(this.canvasHeight * resolutionMultiplier);
+        const canvasWidth = Math.round(Math.sqrt(resolution * resolution * this.canvasWidth / this.canvasHeight));
+        const canvasHeight = Math.round(Math.sqrt(resolution * resolution * this.canvasHeight / this.canvasWidth));
         worker.addEventListener("message", (event) => {
             if (event.data.type === "frame-ready") {
                 const { imageData } = event.data;

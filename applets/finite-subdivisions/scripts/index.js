@@ -16,7 +16,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-finite-subdivision.png"
+		filename: () => "a-finite-subdivision.png"
 	});
 
 	const numVerticesInput = new TextBox({

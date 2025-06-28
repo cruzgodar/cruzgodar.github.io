@@ -104,7 +104,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-hairy-ball.png"
+		filename: () => "a-hairy-ball.png"
 	});
 
 	function changeResolution()

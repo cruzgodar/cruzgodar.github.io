@@ -28,7 +28,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-magic-carpet.png"
+		filename: () => "a-magic-carpet.png"
 	});
 
 	const gridSizeInput = new TextBox({

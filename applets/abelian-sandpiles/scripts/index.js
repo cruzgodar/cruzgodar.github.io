@@ -76,7 +76,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "an-abelian-sandpile.png"
+		filename: () => "an-abelian-sandpile.png"
 	});
 
 	function run()

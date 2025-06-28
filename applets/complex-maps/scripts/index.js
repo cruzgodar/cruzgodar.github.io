@@ -21,7 +21,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-complex-map.png"
+		filename: () => "a-complex-map.png"
 	});
 
 	const resolutionInput = new TextBox({

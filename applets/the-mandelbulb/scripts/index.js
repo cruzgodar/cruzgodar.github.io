@@ -1,6 +1,6 @@
 import { Mandelbulb } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
-import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -22,10 +22,12 @@ export default function()
 		onClick1: (instant) => applet.switchBulb(instant)
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
-		filename: "the-mandelbulb.png"
+		filename: () => applet.uniforms.juliaProportion < 0.5
+			? "the-mandelbulb.png"
+			: "a-juliabulb.png"
 	});
 
 	const resolutionInput = new TextBox({

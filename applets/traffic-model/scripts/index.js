@@ -55,7 +55,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-traffic-jam.png"
+		filename: () => "a-traffic-jam.png"
 	});
 
 	function run()

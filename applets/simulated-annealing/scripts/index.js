@@ -17,7 +17,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "simulated-annealing.png"
+		filename: () => "simulated-annealing.png"
 	});
 
 	const resolutionInput = new TextBox({

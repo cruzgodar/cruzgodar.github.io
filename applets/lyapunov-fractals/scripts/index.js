@@ -11,7 +11,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-lyapunov-fractal.png"
+		filename: () => "a-lyapunov-fractal.png"
 	});
 
 	const resolutionInput = new TextBox({

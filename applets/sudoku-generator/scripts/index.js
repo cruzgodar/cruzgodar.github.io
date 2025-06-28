@@ -14,7 +14,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "sudoku.png"
+		filename: () => "sudoku.png"
 	});
 
 

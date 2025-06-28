@@ -17,7 +17,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-hitomezashi-pattern.png"
+		filename: () => "a-hitomezashi-pattern.png"
 	});
 
 	const resolutionInput = new TextBox({

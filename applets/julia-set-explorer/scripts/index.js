@@ -1,5 +1,5 @@
 import { JuliaSetExplorer } from "./class.js";
-import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -20,17 +20,12 @@ export default function()
 		switchJuliaModeButton
 	});
 
-	new Button({
-		element: $("#download-button"),
-		name: "Download",
-		onClick: () =>
-		{
-			applet.wilson.downloadFrame(
-				applet.juliaMode === "mandelbrot"
-					? "the-mandelbrot-set.png"
-					: "a-julia-set.png"
-			);
-		}
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
+		applet,
+		filename: () => applet.juliaMode === "mandelbrot"
+			? "the-mandelbrot-set.png"
+			: "a-julia-set.png"
 	});
 
 	const resolutionInput = new TextBox({

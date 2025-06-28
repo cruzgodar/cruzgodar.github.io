@@ -71,7 +71,6 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 
 <div>
 	<canvas id="output-canvas" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
 </div>
 
 </div>
@@ -80,9 +79,7 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 
 <div id="canvas-landscape-right">
 
-### buttons
-	download
-###
+### dropdown download
 
 </div>
 

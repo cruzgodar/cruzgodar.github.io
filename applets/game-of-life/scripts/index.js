@@ -71,7 +71,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-game-of-life.png"
+		filename: () => "a-game-of-life.png"
 	});
 
 	const torusCheckbox = new Checkbox({

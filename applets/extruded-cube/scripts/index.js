@@ -13,7 +13,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "an-extruded-cube.png"
+		filename: () => "an-extruded-cube.png"
 	});
 
 	const resolutionInput = new TextBox({

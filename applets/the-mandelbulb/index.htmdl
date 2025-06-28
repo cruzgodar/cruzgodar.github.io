@@ -43,9 +43,7 @@ The typical Mandelbulb uses a power-8 formula, but any power at least 2 works to
 
 <div id="canvas-landscape-right">
 
-### buttons
-	download
-###
+### dropdown download
 
 </div>
 

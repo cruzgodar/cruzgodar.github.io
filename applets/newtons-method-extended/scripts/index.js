@@ -26,7 +26,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "newtons-method-extended.png"
+		filename: () => "newtons-method-extended.png"
 	});
 
 	const resolutionInput = new TextBox({

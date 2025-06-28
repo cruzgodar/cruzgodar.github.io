@@ -1,4 +1,5 @@
 import { changeOpacity } from "./animation.js";
+import { Dropdown } from "./dropdowns.js";
 import { InputElement } from "./inputElement.js";
 import {
 	$$,
@@ -64,42 +65,68 @@ export class DownloadButton extends Button
 		element,
 		linked = true,
 		applet,
-		filename
+		filename = () => {}
 	}) {
 		super({
 			element,
 			name: "Download",
 			linked,
-			onClick: (e) =>
+			onClick: () =>
 			{
-				if (window.DEBUG && (e.metaKey || e.ctrlKey))
-				{
-					if (e.altKey && applet.downloadBokehFrame)
-					{
-						applet.downloadBokehFrame();
-					}
-
-					else if (applet.downloadHighResFrame)
-					{
-						applet.downloadHighResFrame(filename, 8);
-					}
-
-					else
-					{
-						applet.wilson.downloadHighResFrame(filename, 8);
-					}
-
-					return;
-				}
-
 				if (applet.downloadFrame)
 				{
-					applet.downloadFrame(filename);
+					applet.downloadFrame(filename());
 					return;
 				}
 
-				applet.wilson.downloadFrame(filename);
+				applet.wilson.downloadFrame(filename());
 			},
+		});
+	}
+}
+
+export class DownloadHighResButton extends Dropdown
+{
+	constructor({
+		element,
+		applet,
+		filename = () => {}
+	}) {
+		const options = {
+			"current": "Current",
+			"1k": "1K",
+			"2k": "2K",
+			"4k": "4K",
+			"8k": "8K"
+		};
+
+		const resolutions = {
+			"1k": 1024,
+			"2k": 2048,
+			"4k": 4096,
+			"8k": 8128
+		};
+
+		function onInput()
+		{
+			const resolution = resolutions[this.value];
+
+			if (applet.downloadHighResFrame)
+			{
+				applet.downloadHighResFrame(filename(), resolution);
+				return;
+			}
+
+			applet.wilson.downloadHighResFrame(filename(), resolution);
+		}
+
+		super({
+			element,
+			name: "Download",
+			options,
+			roundCorners: false,
+			returnToTitleOnSelect: true,
+			onInput
 		});
 	}
 }

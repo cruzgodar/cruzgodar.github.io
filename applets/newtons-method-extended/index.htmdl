@@ -33,7 +33,6 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 <div>
 	<canvas id="output-canvas" class="output-canvas"></canvas>
-	<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
 </div>
 
 </div>

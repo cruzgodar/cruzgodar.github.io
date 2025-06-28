@@ -1,6 +1,6 @@
 import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
-import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -33,10 +33,12 @@ export default function()
 		onClick: run
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
-		filename: "a-generalized-julia-set.png"
+		filename: () => applet.juliaMode === "mandelbrot"
+			? "a-generalized-mandelbrot-set.png"
+			: "a-generalized-julia-set.png"
 	});
 
 	const examples =

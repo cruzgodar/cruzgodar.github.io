@@ -1,6 +1,6 @@
 import { KaleidoscopicIFSFractals } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -92,10 +92,10 @@ export default function()
 		shape: polyhedraDropdown.value || "octahedron",
 	});
 
-	new DownloadButton({
-		element: $("#download-button"),
+	new DownloadHighResButton({
+		element: $("#download-dropdown"),
 		applet,
-		filename: "a-kaleidoscopic-ifs-fractal.png"
+		filename: () => "a-kaleidoscopic-ifs-fractal.png"
 	});
 
 	typesetMath();

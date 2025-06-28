@@ -40,7 +40,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "curved-light.png"
+		filename: () => "curved-light.png"
 	});
 
 	const resolutionInput = new TextBox({

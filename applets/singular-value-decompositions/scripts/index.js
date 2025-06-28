@@ -39,7 +39,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-singular-value-decomposition.png"
+		filename: () => "a-singular-value-decomposition.png"
 	});
 
 	run();

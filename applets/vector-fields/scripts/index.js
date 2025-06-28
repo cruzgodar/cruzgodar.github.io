@@ -102,7 +102,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-vector-field.png"
+		filename: () => "a-vector-field.png"
 	});
 
 	const speedSlider = new Slider({

@@ -72,7 +72,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "boids.png"
+		filename: () => "boids.png"
 	});
 
 	applet.run({

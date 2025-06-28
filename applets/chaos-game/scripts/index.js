@@ -16,7 +16,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-chaos-game.png"
+		filename: () => "a-chaos-game.png"
 	});
 
 	const resolutionInput = new TextBox({

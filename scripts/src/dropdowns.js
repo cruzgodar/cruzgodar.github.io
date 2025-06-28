@@ -14,6 +14,7 @@ export class Dropdown extends InputElement
 	options;
 	persistState;
 	onInput;
+	returnToTitleOnSelect;
 
 	buttonElement;
 	optionContainerElement;
@@ -28,6 +29,8 @@ export class Dropdown extends InputElement
 	constructor({
 		element,
 		name,
+		roundCorners = true,
+		returnToTitleOnSelect = false,
 		persistState = true,
 		options,
 		onInput = () => {}
@@ -38,6 +41,7 @@ export class Dropdown extends InputElement
 		this.onInput = onInput;
 		this.value = "";
 		this.persistState = persistState;
+		this.returnToTitleOnSelect = returnToTitleOnSelect;
 
 		this.buttonElement = this.element.previousElementSibling;
 
@@ -46,6 +50,11 @@ export class Dropdown extends InputElement
 		const numItems = Object.keys(this.options).length;
 
 		this.buttonElement.textContent = this.name;
+
+		if (!roundCorners)
+		{
+			this.buttonElement.style.borderRadius = "10px";
+		}
 
 		this.selectOptionElements = [];
 
@@ -391,7 +400,7 @@ export class Dropdown extends InputElement
 		
 		if (newValue)
 		{
-			const element = this.optionContainerElement.querySelector(`[data-option-name=${newValue}]`);
+			const element = this.optionContainerElement.querySelector(`[data-option-name="${newValue}"]`);
 
 			// Using || rather than ?? handles both the case where we click the background
 			// and clicking the title option.
@@ -414,6 +423,11 @@ export class Dropdown extends InputElement
 			
 			// eslint-disable-next-line no-unused-vars
 			catch(_ex) { /* No onInput */ }
+		}
+
+		if (this.returnToTitleOnSelect)
+		{
+			this.selectedItem = 0;
 		}
 		
 		const titleRect = this.optionContainerElement.children[0].getBoundingClientRect();

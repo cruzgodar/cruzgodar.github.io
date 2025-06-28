@@ -116,7 +116,7 @@ export default function()
 	new DownloadButton({
 		element: $("#download-button"),
 		applet,
-		filename: "a-lambda-diagram.png"
+		filename: () => "a-lambda-diagram.png"
 	});
 
 	setTimeout(() => run(), 10);
