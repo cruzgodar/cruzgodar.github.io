@@ -183,7 +183,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-x-slider=0.8",
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8",
 
 		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
 	},
@@ -194,7 +194,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-y-slider=0.8",
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-y-slider=0.8",
 
 		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
 	},
@@ -205,7 +205,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8",
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8",
 
 		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
 	},
@@ -215,7 +215,7 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/the-mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
+		appletLink: "/applets/mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
 
 		driveId: "1PNVXqlPub0RNvj3EpyYj0kiLi3YwnPvj"
 	},
@@ -225,7 +225,7 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-x-slider=0.8&lock-on-origin-checkbox=0",
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8&lock-on-origin-checkbox=0",
 
 		driveId: "1AAENn9-QgCVjTYaFP_HcPcDjakM0pBYc"
 	},
@@ -235,7 +235,7 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0",
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0",
 
 		driveId: "1i7jSyoBnkKF0CG-PdrwBFPccIgyzJbFh"
 	},
@@ -323,7 +323,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}, ${researchAsArt}, and ${bridges2022}. It is currently on display at the Eugene airport.`,
 
-		appletLink: "/applets/the-mandelbulb",
+		appletLink: "/applets/mandelbulb",
 
 		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
 	},

@@ -1,4 +1,7 @@
 export const redirects = {
+	"/applets/the-mandelbulb": "/applets/mandelbulb",
+	"/applets/flag-overlap": "/applets/flagle",
+	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
 		"/teaching/notes/linear-algebra/linear-algebra-1-review",

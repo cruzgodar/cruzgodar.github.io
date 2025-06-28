@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		
 		flagle Flagle
 		boids Boids!
 		lambda-calculus Lambda Calculus
@@ -33,7 +34,7 @@ home Cruz Godar
 		lyapunov-fractals Lyapunov Fractals
 		newtons-method-extended Newton's Method, Extended
 		quasi-fuchsian-groups Quasi-Fuchsian Groups
-		the-mandelbulb The Mandelbulb
+		mandelbulb The Mandelbulb
 		kaleidoscopic-ifs-fractals Kaleidoscopic IFS Fractals
 		binary-trees Binary Trees
 		snowflakes Gravner-Griffeath Snowflakes

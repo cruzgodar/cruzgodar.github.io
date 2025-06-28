@@ -75,7 +75,7 @@ export const sitemap =
 			"/applets/lyapunov-fractals",
 			"/applets/newtons-method-extended",
 			"/applets/quasi-fuchsian-groups",
-			"/applets/the-mandelbulb",
+			"/applets/mandelbulb",
 			"/applets/kaleidoscopic-ifs-fractals",
 			"/applets/binary-trees",
 			"/applets/snowflakes",
@@ -462,7 +462,7 @@ export const sitemap =
 		"customStyle": true
 	},
 	
-	"/applets/the-mandelbulb":
+	"/applets/mandelbulb":
 	{
 		"title": "The Mandelbulb",
 		

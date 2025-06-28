@@ -119,7 +119,7 @@ In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anyt
 
 **Tools and Packages**
 
-> - WebGL (examples: <a href="/applets/the-mandelbulb">the Mandelbulb</a>, <a href="/applets/double-pendulum-fractal">the double pendulum fractal</a>, <a href="/applets/newtons-method">Newton's method fractals</a>)
+> - WebGL (examples: <a href="/applets/mandelbulb">the Mandelbulb</a>, <a href="/applets/double-pendulum-fractal">the double pendulum fractal</a>, <a href="/applets/newtons-method">Newton's method fractals</a>)
 
 > - WebAssembly (examples: <a href="/applets/wilsons-algorithm">Wilson's algorithm</a>, <a href="/applets/calcudoku-generator">Calcudoku generator</a>)
 
