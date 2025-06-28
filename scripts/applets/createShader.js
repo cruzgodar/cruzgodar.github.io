@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import { doubleEncodingGlsl } from "../src/complexGlsl.js";
 import { getFloatGlsl, getVectorGlsl } from "./applet.js";
 
@@ -270,87 +271,11 @@ function getRaymarchGlsl({
 	getGeodesicGlsl,
 	useBloom
 }) {
-	if (useForDepthBuffer)
-	{
-		return /* glsl */`
-			vec3 raymarch(vec3 startPos)
-			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(stepFactor)};
-				
-				float t = 0.0;
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
-					
-					float distanceToScene = distanceEstimator(pos);
-
-					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
-					
-					if (distanceToScene < epsilon)
-					{
-						return computeShading(
-							pos,
-							epsilon,
-							distanceToScene,
-							iteration
-						);
-					}
-					
-					else if (t > clipDistance)
-					{
-						gl_FragColor = encodeFloat(clipDistance);
-						return vec3(0.0);
-					}
-					
-					t += distanceToScene;
-				}
-				
-				gl_FragColor = encodeFloat(clipDistance);
-				return vec3(0.0);
-			}
-		`;
-	}
-
-	if (useBloom)
-	{
-		return /* glsl */`
-			vec3 raymarch(vec3 startPos)
-			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(stepFactor)};
-				
-				float t = 0.0;
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
-					
-					float distanceToScene = distanceEstimator(pos);
-
-					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
-					
-					if (distanceToScene < epsilon)
-					{
-						return computeShading(
-							pos,
-							epsilon,
-							distanceToScene,
-							iteration
-						);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));
-					}
-					
-					t += distanceToScene;
-				}
-				
-				return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));
-			}
-		`;
-	}
+	const clippedGlsl = useForDepthBuffer
+		? /* glsl */`gl_FragColor = encodeFloat(clipDistance); return vec3(0.0);`
+		: useBloom
+			? /* glsl */`return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));`
+			: /* glsl */`return fogColor;`;
 
 	return /* glsl */`
 		vec3 raymarch(vec3 startPos)
@@ -379,13 +304,13 @@ function getRaymarchGlsl({
 				
 				else if (t > clipDistance)
 				{
-					return fogColor;
+					${clippedGlsl}
 				}
 				
 				t += distanceToScene;
 			}
 			
-			return fogColor;
+			${clippedGlsl}
 		}
 	`;
 }
