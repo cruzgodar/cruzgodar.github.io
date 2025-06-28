@@ -537,6 +537,8 @@ export class FlagOverlap extends Applet
 
 		await this.drawFlag(this.wilson, this.correctFlag);
 
+		this.loadingOverlay.style.opacity = 0;
+
 		this.currentlyAnimating = false;
 	}
 

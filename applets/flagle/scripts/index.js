@@ -522,6 +522,15 @@ export default async function()
 		}
 	});
 
+	new Button({
+		element: $("#give-up-button"),
+		name: "Give Up",
+		onClick: () =>
+		{
+			applet.lose();
+		}
+	});
+
 	async function onCheckboxInput()
 	{
 		await Promise.all([

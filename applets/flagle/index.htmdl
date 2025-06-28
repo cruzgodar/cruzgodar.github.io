@@ -23,6 +23,10 @@ Guess the secret flag in six tries or fewer! Every flag you guess is overlapped 
 			
 		</div>
 	</div>
+
+	### buttons
+		give-up
+	###
 </div>
 
 <div id="canvas-landscape-middle" style="position: relative">
