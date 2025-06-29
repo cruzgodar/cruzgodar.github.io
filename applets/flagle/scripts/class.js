@@ -435,6 +435,12 @@ export class FlagOverlap extends Applet
 
 		animate((t) =>
 		{
+			// Catch the case where we've already replayed.
+			if (index >= this.guesses.length)
+			{
+				return;
+			}
+
 			progressBar.style.width = `${t * fillProportion * 100}%`;
 			progressBar.style.background = `hsl(${t * fillProportion * 120}, 70%, 50%)`;
 
@@ -792,7 +798,8 @@ export class FlagOverlap extends Applet
 
 		if (document.startViewTransition)
 		{
-
+			// ???
+			void document.startViewTransition;
 			document.startViewTransition(setImageData);
 		}
 

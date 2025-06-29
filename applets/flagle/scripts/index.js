@@ -425,14 +425,14 @@ export default async function()
 				hideCountryList();
 			}
 
-			else if (e.key === "ArrowDown")
+			else if (e.key === "ArrowDown" || e.keyCode === 40)
 			{
 				e.preventDefault();
 
 				navigateCountryListDown();
 			}
 
-			else if (e.key === "ArrowUp")
+			else if (e.key === "ArrowUp" || e.keyCode === 38)
 			{
 				e.preventDefault();
 
