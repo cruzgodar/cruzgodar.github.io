@@ -23,7 +23,7 @@ export class Mandelbulb extends RaymarchApplet
 					break;
 				}
 				
-				float theta = acos(z.z / r);
+				float theta = acos(clamp(z.z / r, -1.0, 1.0));
 				
 				float phi = atan(z.y, z.x);
 				
@@ -54,7 +54,7 @@ export class Mandelbulb extends RaymarchApplet
 			vec3 color = vec3(1.0, 1.0, 1.0);
 			float colorScale = .5;
 			
-			for (int iteration = 0; iteration < 100; iteration++)
+			for (int iteration = 0; iteration < 8; iteration++)
 			{
 				if (r > 16.0)
 				{

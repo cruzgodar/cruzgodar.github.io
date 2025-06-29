@@ -37,7 +37,7 @@ function getComputeShadowIntensityGlsl({
 
 					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
-					if (t > clipDistance || length(pos - lightPos) < 0.2)
+					if (t > clipDistance || dot(pos - lightPos, pos - lightPos) < 0.2*0.2)
 					{
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
@@ -490,15 +490,14 @@ export function createShader({
 		
 		vec3 getSurfaceNormal(vec3 pos, float epsilon)
 		{
-			float xStep1 = distanceEstimator(pos + vec3(epsilon, 0.0, 0.0));
-			float yStep1 = distanceEstimator(pos + vec3(0.0, epsilon, 0.0));
-			float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, epsilon));
-			
-			float xStep2 = distanceEstimator(pos - vec3(epsilon, 0.0, 0.0));
-			float yStep2 = distanceEstimator(pos - vec3(0.0, epsilon, 0.0));
-			float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, epsilon));
-			
-			return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
+			// Tetrahedral offsets - more accurate and potentially faster
+			vec2 e = vec2(1.0, -1.0) * epsilon;
+			return normalize(
+				e.xyy * distanceEstimator(pos + e.xyy)
+				+ e.yyx * distanceEstimator(pos + e.yyx)
+				+ e.yxy * distanceEstimator(pos + e.yxy)
+				+ e.xxx * distanceEstimator(pos + e.xxx)
+			);
 		}
 
 		${computeBloomGlsl}
