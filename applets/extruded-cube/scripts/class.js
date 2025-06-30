@@ -52,7 +52,7 @@ export class ExtrudedCube extends RaymarchApplet
 
 			pos = abs(pos);
 
-			for (int iteration = 0; iteration < maxIterations; iteration++)
+			for (int iteration = 0; iteration < 8; iteration++)
 			{
 				if (iteration == iterations)
 				{

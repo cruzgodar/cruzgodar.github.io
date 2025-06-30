@@ -43,7 +43,7 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 		float edgeShortRadius = 0.5 * (1.0 - invScale);
 		float edgeCenter = 0.5 * (1.0 + invScale);
 
-		for (int iteration = 0; iteration < maxIterations; iteration++)
+		for (int iteration = 0; iteration < ${useForGetColor ? 8 : "maxIterations"}; iteration++)
 		{
 			if (iteration == iterations)
 			{

@@ -1,4 +1,4 @@
-import { Mandelbulb } from "./class.js";
+import { Mandelbox } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
@@ -10,16 +10,16 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new Mandelbulb({
+	const applet = new Mandelbox({
 		canvas: $("#output-canvas"),
 	});
 
 	new ToggleButton({
-		element: $("#switch-bulb-button"),
-		name0: "Switch to Juliabulb",
-		name1: "Return to Mandelbulb",
-		onClick0: (instant) => applet.switchBulb(instant),
-		onClick1: (instant) => applet.switchBulb(instant)
+		element: $("#switch-box-button"),
+		name0: "Switch to Juliabox",
+		name1: "Return to Mandelbox",
+		onClick0: (instant) => applet.switchBox(instant),
+		onClick1: (instant) => applet.switchBox(instant)
 	});
 
 	new DownloadHighResButton({
@@ -33,19 +33,18 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 400,
+		value: 500,
 		minValue: 100,
-		maxValue: 750,
+		maxValue: 1000,
 		onInput: changeResolution
 	});
 
-	const powerSlider = new Slider({
-		element: $("#power-slider"),
-		name: "Power",
-		value: 8,
-		min: 2,
-		max: 12,
-		snapPoints: [3, 4, 5, 6, 7, 8, 9, 10, 11],
+	const scaleSlider = new Slider({
+		element: $("#scale-slider"),
+		name: "Scale",
+		value: 2,
+		min: 1.15,
+		max: 4,
 		onInput: onSliderInput
 	});
 
@@ -84,7 +83,7 @@ export default function()
 		name: "$\\theta_x$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: Math.PI * 2,
 		onInput: onSliderInput
 	});
 
@@ -93,7 +92,7 @@ export default function()
 		name: "$\\theta_y$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: Math.PI * 2,
 		onInput: onSliderInput
 	});
 
@@ -102,7 +101,7 @@ export default function()
 		name: "$\\theta_z$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: Math.PI * 2,
 		onInput: onSliderInput
 	});
 
@@ -119,19 +118,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const fountainAnimationCheckbox = new Checkbox({
-		element: $("#fountain-animation-checkbox"),
-		name: "Fountain animation",
-		onInput: onCheckboxInput,
-		persistState: false
-	});
-
 	typesetMath();
 
 	function onSliderInput()
 	{
 		applet.setUniforms({
-			power: powerSlider.value,
+			scale: scaleSlider.value,
 			c: [cXSlider.value, cYSlider.value, cZSlider.value],
 			rotationMatrix: getRotationMatrix(
 				rotationAngleXSlider.value,
@@ -158,7 +150,5 @@ export default function()
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
 		}
-
-		applet.setFountainAnimation(fountainAnimationCheckbox.checked);
 	}
 }

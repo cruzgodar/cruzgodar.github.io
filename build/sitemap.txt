@@ -2,7 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
-		
+		mandelbox The Mandelbox
 		flagle Flagle
 		boids Boids!
 		lambda-calculus Lambda Calculus

@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/mandelbox",
 			"/applets/flagle",
 			"/applets/boids",
 			"/applets/lambda-calculus",
@@ -97,6 +98,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/mandelbox":
+	{
+		"title": "The Mandelbox",
+		
+		"parent": "/applets",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/flagle":
 	{
 		"title": "Flagle",

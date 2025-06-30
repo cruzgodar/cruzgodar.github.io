@@ -1,3 +1,4 @@
+import anime from "/scripts/anime.js";
 import {
 	magnitude,
 	mat3TimesVector,
@@ -7,6 +8,9 @@ import { animate } from "/scripts/src/utils.js";
 
 export class Mandelbulb extends RaymarchApplet
 {
+	animeLoop;
+	fountainFactor = 0;
+
 	constructor({
 		canvas,
 	}) {
@@ -29,11 +33,15 @@ export class Mandelbulb extends RaymarchApplet
 				
 				dr = pow(r, power - 1.0) * power * dr + 1.0;
 				
-				theta *= power;
+				theta = power * theta + fountainAmount;
 				
 				phi *= power;
 				
-				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				z = pow(r, power) * vec3(
+					sin(theta) * cos(phi),
+					sin(theta) * sin(phi),
+					cos(theta)
+				);
 				
 				z += mix(pos, c, juliaProportion);
 				
@@ -67,11 +75,15 @@ export class Mandelbulb extends RaymarchApplet
 				
 				dr = pow(r, power - 1.0) * power * dr + 1.0;
 				
-				theta *= power;
+				theta = power * theta + fountainAmount;
 				
 				phi *= power;
 				
-				z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				z = pow(r, power) * vec3(
+					sin(theta) * cos(phi),
+					sin(theta) * sin(phi),
+					cos(theta)
+				);
 				
 				z += mix(pos, c, juliaProportion);
 				
@@ -94,6 +106,7 @@ export class Mandelbulb extends RaymarchApplet
 			uniform vec3 c;
 			uniform float juliaProportion;
 			uniform mat3 rotationMatrix;
+			uniform float fountainAmount;
 		`;
 
 		const uniforms = {
@@ -101,6 +114,7 @@ export class Mandelbulb extends RaymarchApplet
 			c: [0, 0, 0],
 			juliaProportion: 0,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+			fountainAmount: 0,
 		};
 
 		super({
@@ -120,6 +134,18 @@ export class Mandelbulb extends RaymarchApplet
 
 
 
+	destroy()
+	{
+		super.destroy();
+
+		if (this.animeLoop)
+		{
+			this.animeLoop.pause();
+		}
+	}
+
+
+
 	distanceEstimator(x, y, z)
 	{
 		let mutableZ = [x, y, z];
@@ -131,6 +157,7 @@ export class Mandelbulb extends RaymarchApplet
 		const juliaProportion = this.uniforms.juliaProportion;
 		const power = this.uniforms.power;
 		const rotationMatrix = this.uniforms.rotationMatrix;
+		const fountainAmount = this.uniforms.fountainAmount;
 
 		for (let iteration = 0; iteration < 16; iteration++)
 		{
@@ -147,7 +174,7 @@ export class Mandelbulb extends RaymarchApplet
 
 			dr = Math.pow(r, power - 1.0) * power * dr + 1.0;
 
-			theta *= power;
+			theta = theta * power + fountainAmount;
 
 			phi *= power;
 
@@ -182,5 +209,47 @@ export class Mandelbulb extends RaymarchApplet
 
 			this.needNewFrame = true;
 		}, instant ? 0 : 650, "easeOutQuad");
+	}
+
+	async setFountainAnimation(enabled)
+	{
+		if (enabled)
+		{
+			const dummy = { t: 0 };
+
+			this.animeLoop = anime({
+				targets: dummy,
+				t: -2 * Math.PI,
+				duration: 3000,
+				easing: "linear",
+				loop: true,
+				direction: "forward",
+				update: () =>
+				{
+					this.setUniforms({
+						fountainAmount: dummy.t * this.fountainFactor
+					});
+				},
+			});
+
+			animate((t) =>
+			{
+				this.fountainFactor = t;
+			}, 1000);
+		}
+
+		else
+		{
+			this.animeLoop.pause();
+
+			const startingFountainAmount = this.uniforms.fountainAmount * this.fountainFactor;
+
+			animate((t) =>
+			{
+				this.setUniforms({
+					fountainAmount: startingFountainAmount * (1 - t) - 2 * Math.PI * t
+				});
+			}, (startingFountainAmount + 2 * Math.PI) * 400, "easeOutQuad");
+		}
 	}
 }

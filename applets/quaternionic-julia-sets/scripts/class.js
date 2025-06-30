@@ -39,7 +39,7 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			vec3 color = vec3(1.0, 1.0, 1.0);
 			float colorScale = .5;
 			
-			for (int iteration = 0; iteration < 16; iteration++)
+			for (int iteration = 0; iteration < 8; iteration++)
 			{
 				r = length(z);
 				
