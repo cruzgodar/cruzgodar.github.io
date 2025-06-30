@@ -245,6 +245,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilsonUpdate.useFramebuffer(framebufferId);
 
 		this.wilsonUpdate.drawFrame();
+		
 		const floats = this.wilsonUpdate.readPixels({
 			format: "float"
 		});
