@@ -1,5 +1,5 @@
 import anime from "../anime.js";
-import { changeOpacity, opacityAnimationTime } from "./animation.js";
+import { opacityAnimationTime } from "./animation.js";
 import { headerElement } from "./header.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
@@ -134,7 +134,15 @@ export class Dropdown extends InputElement
 			{
 				if (!this.isOpen)
 				{
-					this.open();
+					if (document.startViewTransition && siteSettings.reduceMotion)
+					{
+						document.startViewTransition(() => this.open(0));
+					}
+
+					else
+					{
+						this.open();
+					}
 				}
 			});
 
@@ -172,19 +180,6 @@ export class Dropdown extends InputElement
 	async open(animationTime = opacityAnimationTime)
 	{
 		this.isOpen = true;
-
-		if (siteSettings.reduceMotion)
-		{
-			await changeOpacity({
-				element: this.buttonElement,
-				opacity: 0,
-				duration: 75,
-			});
-
-			this.buttonElement.classList.remove("hover-reduce-motion");
-
-			animationTime = 10;
-		}
 
 		this.buttonElement.classList.add("expanded");
 		this.buttonElement.classList.add("no-hover");
@@ -313,39 +308,40 @@ export class Dropdown extends InputElement
 			translateX = 10 + safeAreaInsetLeft - leftWhenOpen;
 		}
 
+		if (!animationTime)
+		{
+			this.buttonElement.style.height = openHeight + "px";
+			this.buttonElement.style.width = openWidth + "px";
+			this.buttonElement.style.transform = `translateY(${translateY}px) translateX(${translateX}px) scale(${this.scale})`;
 
+			this.optionContainerElement.style.transform = "translateX(0px) translateY(0px)";
+		}
 
-		await Promise.all([
-			anime({
-				targets: this.buttonElement,
-				height: openHeight,
-				width: openWidth,
-				translateY,
-				translateX,
-				scale: this.scale,
-				easing: "easeOutQuad",
-				duration: animationTime
-			}).finished,
+		else
+		{
+			await Promise.all([
+				anime({
+					targets: this.buttonElement,
+					height: openHeight,
+					width: openWidth,
+					translateY,
+					translateX,
+					scale: this.scale,
+					easing: "easeOutQuad",
+					duration: animationTime
+				}).finished,
 
-			anime({
-				targets: this.optionContainerElement,
-				translateY: 0,
-				translateX: 0,
-				easing: "easeOutQuad",
-				duration: animationTime
-			}).finished,
-		]);
+				anime({
+					targets: this.optionContainerElement,
+					translateY: 0,
+					translateX: 0,
+					easing: "easeOutQuad",
+					duration: animationTime
+				}).finished,
+			]);
+		}
 
 		document.documentElement.addEventListener("click", this.boundClose);
-
-		if (siteSettings.reduceMotion)
-		{
-			await changeOpacity({
-				element: this.buttonElement,
-				opacity: 1,
-				duration: 100
-			});
-		}
 	}
 
 	async close(e)
@@ -371,26 +367,44 @@ export class Dropdown extends InputElement
 		instant = false,
 		fromOnClickHandler = false
 	}) {
+		if (document.startViewTransition && siteSettings.reduceMotion)
+		{
+			document.startViewTransition(
+				() => this.#setValue({ newValue, instant: true, fromOnClickHandler })
+			);
+		}
+
+		else
+		{
+			this.#setValue({ newValue, instant, fromOnClickHandler });
+		}
+	}
+
+	async #setValue({
+		newValue,
+		instant = false,
+		fromOnClickHandler = false
+	}) {
 		const needToOpen = !this.isOpen;
 
-		if (needToOpen)
-		{
-			if (instant)
-			{
-				this.buttonElement.style.opacity = 0;
-			}
+		// if (needToOpen)
+		// {
+		// 	if (instant)
+		// 	{
+		// 		this.buttonElement.style.opacity = 0;
+		// 	}
 
-			else
-			{
-				await changeOpacity({
-					element: this.buttonElement,
-					opacity: 0,
-					duration: opacityAnimationTime / 2.5
-				});
-			}
+		// 	else
+		// 	{
+		// 		await changeOpacity({
+		// 			element: this.buttonElement,
+		// 			opacity: 0,
+		// 			duration: opacityAnimationTime / 2.5
+		// 		});
+		// 	}
 
-			await this.open(10);
-		}
+		// 	await this.open(0);
+		// }
 
 		document.documentElement.removeEventListener("click", this.boundClose);
 
@@ -474,69 +488,66 @@ export class Dropdown extends InputElement
 		
 
 
-		if (siteSettings.reduceMotion)
-		{
-			await changeOpacity({
-				element: this.buttonElement,
-				opacity: 0,
-				duration: 150,
-			});
-
-			this.buttonElement.classList.remove("hover-reduce-motion");
-
-			instant = true;
-		}
-
 		this.buttonElement.classList.remove("expanded");
 
-		await Promise.all([
-			anime({
-				targets: [this.buttonElement, this.buttonElement.parentNode.parentNode],
-				height: this.optionElements[this.selectedItem].getBoundingClientRect().height
-					/ this.scale + 4,
-				width: (this.optionElements[this.selectedItem].getBoundingClientRect().width
-					/ this.scale + 16),
-				translateY: 0,
-				translateX: 0,
-				scale: 1,
-				easing: "easeOutQuad",
-				duration: instant ? 1 : opacityAnimationTime
-			}).finished,
-
-			anime({
-				targets: this.optionContainerElement,
-				translateY,
-				translateX,
-				easing: "easeOutQuad",
-				duration: instant ? 1 : opacityAnimationTime
-			}).finished,
-		]);
-
-		if (siteSettings.reduceMotion)
+		if (instant)
 		{
-			await changeOpacity({
-				element: this.buttonElement,
-				opacity: 1,
-				duration: 100
-			});
-		}
-
-		if (needToOpen)
-		{
-			if (instant)
+			for (const element of [this.buttonElement, this.buttonElement.parentNode.parentNode])
 			{
-				this.buttonElement.style.opacity = 1;
+				element.style.height = this.optionElements[this.selectedItem]
+					.getBoundingClientRect().height / this.scale + 4 + "px";
+
+				element.style.width = this.optionElements[this.selectedItem]
+					.getBoundingClientRect().width + 16 + "px";
+
+				element.style.transform = "translateY(0px) translateX(0px) scale(1)";
 			}
 
-			else
-			{
-				await changeOpacity({
-					element: this.buttonElement,
-					opacity: 1,
-					duration: opacityAnimationTime / 3
-				});
-			}
+			this.optionContainerElement.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
 		}
+
+		else
+		{
+			await Promise.all([
+				anime({
+					targets: [this.buttonElement, this.buttonElement.parentNode.parentNode],
+					height: this.optionElements[this.selectedItem].getBoundingClientRect().height
+						/ this.scale + 4,
+					width: (this.optionElements[this.selectedItem].getBoundingClientRect().width
+						/ this.scale + 16),
+					translateY: 0,
+					translateX: 0,
+					scale: 1,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+
+				anime({
+					targets: this.optionContainerElement,
+					translateY,
+					translateX,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+			]);
+		}
+
+		// if (needToOpen)
+		// {
+		// 	if (instant)
+		// 	{
+		// 		this.buttonElement.style.opacity = 1;
+		// 	}
+
+		// 	else
+		// 	{
+		// 		await changeOpacity({
+		// 			element: this.buttonElement,
+		// 			opacity: 1,
+		// 			duration: opacityAnimationTime / 3
+		// 		});
+		// 	}
+		// }
 
 		this.buttonElement.classList.remove("no-hover");
 	}
