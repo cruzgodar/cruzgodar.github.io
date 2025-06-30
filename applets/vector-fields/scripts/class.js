@@ -229,7 +229,7 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-		const shaderUpdateBase = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -266,81 +266,21 @@ export class VectorFields extends AnimationFrameApplet
 				}
 				
 				vec2 d = f(sample.x, sample.y);
-		`;
 
-		const shaderUpdateX = /* glsl */`
-				${shaderUpdateBase}
-				
-				gl_FragColor = encodeFloat(dt * d.x + sample.x);
-			}
-		`;
-
-		const shaderUpdateY = /* glsl */`
-				${shaderUpdateBase}
-				
-				gl_FragColor = encodeFloat(dt * d.y + sample.y);
-			}
-		`;
-
-		const shaderUpdateH = /* glsl */`
-				${shaderUpdateBase}
-				
-				gl_FragColor = encodeFloat((atan(d.y, d.x) + 3.14159265) / 6.28318531);
-			}
-		`;
-
-		const shaderUpdateS = /* glsl */`
-				${shaderUpdateBase}
-				
-				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
-			}
-		`;
-
-		const shaderUpdateS2 = /* glsl */`
-				${shaderUpdateBase}
-				
-				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
+				gl_FragColor = vec4(
+					dt * d.x + sample.x,
+					dt * d.y + sample.y,
+					(atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI},
+					1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y))
+				);
 			}
 		`;
 
 		this.wilsonUpdate.loadShader({
-			id: "updateX",
-			shader: shaderUpdateX,
+			id: "update",
+			shader: shaderUpdate,
 			uniforms: {
 				dt: this.dt,
-				...(needDraggable ? { draggableArg: [0, 0] } : {}),
-			}
-		});
-
-		this.wilsonUpdate.loadShader({
-			id: "updateY",
-			shader: shaderUpdateY,
-			uniforms: {
-				dt: this.dt,
-				...(needDraggable ? { draggableArg: [0, 0] } : {}),
-			}
-		});
-
-		this.wilsonUpdate.loadShader({
-			id: "updateH",
-			shader: shaderUpdateH,
-			uniforms: {
-				...(needDraggable ? { draggableArg: [0, 0] } : {}),
-			}
-		});
-
-		this.wilsonUpdate.loadShader({
-			id: "updateS",
-			shader: shaderUpdateS,
-			uniforms: {
-				...(needDraggable ? { draggableArg: [0, 0] } : {}),
-			}
-		});
-
-		this.wilsonUpdate.loadShader({
-			id: "updateS2",
-			shader: shaderUpdateS2,
-			uniforms: {
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
 		});
@@ -502,11 +442,16 @@ export class VectorFields extends AnimationFrameApplet
 
 
 		this.wilsonUpdate.createFramebufferTexturePair({
-			id: "update",
+			id: "update1",
 			textureType: "float"
 		});
-		this.wilsonUpdate.useFramebuffer(null);
-		this.wilsonUpdate.useTexture("update");
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update2",
+			textureType: "float"
+		});
+
+		this.wilsonUpdate.useTexture("update1");
+		this.wilsonUpdate.useFramebuffer("update2");
 
 		this.wilsonPanZoomDim.createFramebufferTexturePair({
 			id: "panZoomDim",
@@ -584,11 +529,7 @@ export class VectorFields extends AnimationFrameApplet
 	{
 		this.wilsonUpdate.setUniforms({
 			dt: this.dt * timeElapsed / 6.944
-		}, "updateX");
-
-		this.wilsonUpdate.setUniforms({
-			dt: this.dt * timeElapsed / 6.944
-		}, "updateY");
+		});
 
 		if (this.frame < this.timeElapsedHistoryLength)
 		{
@@ -729,30 +670,14 @@ export class VectorFields extends AnimationFrameApplet
 		}
 
 		this.wilsonUpdate.setTexture({
-			id: "update",
+			id: "update1",
 			data: this.updateTexture
 		});
 
-		this.wilsonUpdate.useShader("updateX");
 		this.wilsonUpdate.drawFrame();
-		const floatsX = new Float32Array(this.wilsonUpdate.readPixels().buffer);
-
-		this.wilsonUpdate.useShader("updateY");
-		this.wilsonUpdate.drawFrame();
-		const floatsY = new Float32Array(this.wilsonUpdate.readPixels().buffer);
-
-		this.wilsonUpdate.useShader("updateH");
-		this.wilsonUpdate.drawFrame();
-		const floatsH = new Float32Array(this.wilsonUpdate.readPixels().buffer);
-
-		this.wilsonUpdate.useShader("updateS");
-		this.wilsonUpdate.drawFrame();
-		const floatsS = new Float32Array(this.wilsonUpdate.readPixels().buffer);
-
-		// Extremely hacky way to fix the saturation bug on iOS.
-		this.wilsonUpdate.useShader("updateS2");
-		this.wilsonUpdate.drawFrame();
-		const floatsS2 = new Float32Array(this.wilsonUpdate.readPixels().buffer);
+		const floats = this.wilsonUpdate.readPixels({
+			format: "float"
+		});
 
 		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
@@ -762,8 +687,8 @@ export class VectorFields extends AnimationFrameApplet
 
 				if (index < this.particles.length && this.particles[index][2])
 				{
-					this.particles[index][0] = floatsX[index];
-					this.particles[index][1] = floatsY[index];
+					this.particles[index][0] = floats[4 * index];
+					this.particles[index][1] = floats[4 * index + 1];
 
 					let [row, col] = this.wilson.interpolateWorldToCanvas(this.particles[index]);
 
@@ -801,10 +726,9 @@ export class VectorFields extends AnimationFrameApplet
 						const newIndex = row * this.wilson.canvasWidth + col;
 
 						this.panZoomDimTexture[4 * newIndex] = this.lifetime;
-						this.panZoomDimTexture[4 * newIndex + 1] = floatsH[index] * 255;
+						this.panZoomDimTexture[4 * newIndex + 1] = floats[4 * index + 2] * 255;
 
-						this.panZoomDimTexture[4 * newIndex + 2] =
-							Math.max(floatsS[index], floatsS2[index]) * 255;
+						this.panZoomDimTexture[4 * newIndex + 2] = floats[4 * index + 3] * 255;
 
 						this.particles[index][2] -= lifetimeDecrease;
 
@@ -852,12 +776,9 @@ export class VectorFields extends AnimationFrameApplet
 
 	onDragDraggable({ x, y })
 	{
-		for (const shader of ["updateX", "updateY", "updateH", "updateS", "updateS2"])
-		{
-			this.wilsonUpdate.setUniforms({
-				draggableArg: [x, y]
-			}, shader);
-		}
+		this.wilsonUpdate.setUniforms({
+			draggableArg: [x, y]
+		});
 
 		this.needTemporaryDim = true;
 	}

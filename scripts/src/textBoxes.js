@@ -50,9 +50,7 @@ export class TextBox extends CappedInputElement
 		{
 			if (this.element.value === "")
 			{
-				this.element.value = this.defaultValue;
-
-				this.setValue(this.element.value, false);
+				this.setValue(this.defaultValue, false);
 			}
 
 			this.updateCaps();
@@ -64,9 +62,7 @@ export class TextBox extends CappedInputElement
 			{
 				if (this.element.value === "")
 				{
-					this.element.value = this.defaultValue;
-					
-					this.setValue(this.element.value, false);
+					this.setValue(this.defaultValue, false);
 				}
 				
 				this.updateCaps();
@@ -129,6 +125,11 @@ export class TextBox extends CappedInputElement
 		this.value = this.valueTypeIsString
 			? newValue || this.defaultValue
 			: parseFloat(newValue || this.defaultValue);
+
+		if (isNaN(this.value))
+		{
+			this.value = this.defaultValue;
+		}
 
 		if (!this.valueTypeIsString)
 		{
