@@ -26,7 +26,7 @@ export default function()
 		onEnter: run,
 	});
 
-	applet.loadPromise.then(() => run());
+	run();
 
 	async function run()
 	{

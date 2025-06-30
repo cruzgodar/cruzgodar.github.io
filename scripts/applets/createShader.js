@@ -1,5 +1,4 @@
 /* eslint-disable quotes */
-import { doubleEncodingGlsl } from "../src/complexGlsl.js";
 import { getFloatGlsl, getVectorGlsl } from "./applet.js";
 
 function getComputeShadowIntensityGlsl({
@@ -185,7 +184,6 @@ function getComputeReflectionsGlsl({
 
 
 function getComputeShadingGlsl({
-	useForDepthBuffer,
 	useOppositeLight,
 	oppositeLightBrightness,
 	ambientLight,
@@ -193,21 +191,6 @@ function getComputeShadingGlsl({
 	useReflections,
 	stepFactor
 }) {
-	if (useForDepthBuffer)
-	{
-		return /* glsl */`
-			vec3 computeShading(
-				vec3 pos,
-				float epsilon,
-				float distanceToScene,
-				int iteration
-			) {
-				gl_FragColor = encodeFloat(length(pos - cameraPos));
-				return vec3(0.0);
-			}
-		`;
-	}
-
 	return /* glsl */`
 		vec3 computeShading(
 			vec3 pos,
@@ -271,14 +254,21 @@ function getRaymarchGlsl({
 	getGeodesicGlsl,
 	useBloom
 }) {
-	const clippedGlsl = useForDepthBuffer
-		? /* glsl */`gl_FragColor = encodeFloat(clipDistance); return vec3(0.0);`
-		: useBloom
-			? /* glsl */`return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));`
-			: /* glsl */`return fogColor;`;
+	const alpha = useForDepthBuffer ? "t" : "1.0";
+	
+	const clippedGlsl = useBloom
+		? /* glsl */`
+			return vec4(
+				mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec)),
+				${alpha}
+			);
+		`
+		: /* glsl */`
+			return vec4(fogColor, ${alpha});
+		`;
 
 	return /* glsl */`
-		vec3 raymarch(vec3 startPos)
+		vec4 raymarch(vec3 startPos)
 		{
 			vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(stepFactor)};
 			
@@ -294,11 +284,14 @@ function getRaymarchGlsl({
 				
 				if (distanceToScene < epsilon)
 				{
-					return computeShading(
-						pos,
-						epsilon,
-						distanceToScene,
-						iteration
+					return vec4(
+						computeShading(
+							pos,
+							epsilon,
+							distanceToScene,
+							iteration
+						),
+						${alpha}
 					);
 				}
 				
@@ -318,23 +311,8 @@ function getRaymarchGlsl({
 
 
 function getMainFunctionGlsl({
-	useForDepthBuffer,
 	useFor3DPrinting
 }) {
-	if (useForDepthBuffer)
-	{
-		return /* glsl */`${""}
-			void main(void)
-			{
-				raymarch(
-					imagePlaneCenterPos
-						+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
-						+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
-				);
-			}
-		`;
-	}
-
 	if (useFor3DPrinting)
 	{
 		return /* glsl */`${""}
@@ -353,13 +331,11 @@ function getMainFunctionGlsl({
 	return /* glsl */`${""}
 		void main(void)
 		{
-			vec3 finalColor = raymarch(
+			gl_FragColor = raymarch(
 				imagePlaneCenterPos
 					+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
 					+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 			);
-
-			gl_FragColor = vec4(finalColor.xyz, 1.0);
 		}
 	`;
 }
@@ -412,7 +388,6 @@ export function createShader({
 	});
 
 	const computeShadingGlsl = getComputeShadingGlsl({
-		useForDepthBuffer,
 		useOppositeLight,
 		oppositeLightBrightness,
 		ambientLight,
@@ -429,7 +404,6 @@ export function createShader({
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
-		useForDepthBuffer,
 		useFor3DPrinting
 	});
 
@@ -464,8 +438,6 @@ export function createShader({
 		const vec3 fogColor = ${getVectorGlsl(fogColor)};
 		const float fogScaling = ${getFloatGlsl(fogScaling)};
 		const float maxShadowAmount = 0.5;
-
-		${useForDepthBuffer ? doubleEncodingGlsl : ""}
 
 		${addGlsl}
 		

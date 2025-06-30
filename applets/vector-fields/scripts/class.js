@@ -1,5 +1,4 @@
 import {
-	doubleEncodingGlsl,
 	getGlslBundle,
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
@@ -138,6 +137,7 @@ export class VectorFields extends AnimationFrameApplet
 				fillScreen: true,
 				animate: false,
 				closeWithEscape: false,
+				restoreScroll: false,
 			},
 
 			verbose: window.DEBUG,
@@ -184,7 +184,7 @@ export class VectorFields extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
-				crossfade: true,
+				// crossfade: true,
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
@@ -244,8 +244,7 @@ export class VectorFields extends AnimationFrameApplet
 			
 			
 			${getGlslBundle(generatingCode)}
-			
-			${doubleEncodingGlsl}
+		
 			
 			vec2 f(float x, float y)
 			{

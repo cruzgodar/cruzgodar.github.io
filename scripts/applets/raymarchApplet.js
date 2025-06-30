@@ -1,5 +1,4 @@
 import anime from "../anime.js";
-import { loadGlsl } from "../src/complexGlsl.js";
 import { animate, sleep } from "../src/utils.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
@@ -540,30 +539,25 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const mosaicSize = 4;
-		const blurAmount = 1;
+		const blurAmount = 4;
 
-		await loadGlsl();
-
-		this.reloadShader({
-			useForDepthBuffer: false
-		});
-
-		const colors = await this.makeMosaic({
-			size: mosaicSize,
-			returnPixels: true
-		});
-		
 		this.reloadShader({
 			useForDepthBuffer: true
 		});
 
-		const depths = await this.makeMosaic({
-			size: mosaicSize,
-			useForDepthBuffer: true
+		this.wilson.createFramebufferTexturePair({
+			id: "colors",
+			textureType: "float"
 		});
 
-		const resolution = this.resolution * mosaicSize;
+		this.wilson.useFramebuffer("colors");
+		this.drawFrame();
+
+		const pixels = this.wilson.readPixels({
+			format: "float"
+		});
+
+		const resolution = this.resolution;
 
 		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
 		const minRadius = 0.5;
@@ -579,20 +573,24 @@ export class RaymarchApplet extends AnimationFrameApplet
 		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";
 		wilsonHidden.ctx.fillRect(0, 0, resolution, resolution);
 
-		const pixelsByDepth = Array.from(depths).map((depth, i) =>
+		const chunkedPixels = new Array(resolution * resolution);
+
+		for (let i = 0; i < resolution * resolution; i++)
 		{
 			const col = i % resolution;
 			const row = resolution - Math.floor(i / resolution) - 1;
 
-			return [
-				depth,
+			chunkedPixels[i] = [
+				pixels[4 * i + 3],
 				col,
 				row,
-				colors[4 * i],
-				colors[4 * i + 1],
-				colors[4 * i + 2],
+				pixels[4 * i] * 255,
+				pixels[4 * i + 1] * 255,
+				pixels[4 * i + 2] * 255,
 			];
-		}).sort((a, b) => b[0] - a[0]);
+		}
+
+		const pixelsByDepth = chunkedPixels.sort((a, b) => b[0] - a[0]);
 
 		const minDepth = pixelsByDepth[pixelsByDepth.length - 1][0];
 		
@@ -698,9 +696,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		wilsonHidden.downloadFrame("bokeh-render.png");
 
+
+
 		this.reloadShader({
 			useForDepthBuffer: false
 		});
+
+		this.wilson.useFramebuffer(null);
 
 		this.drawFrame();
 

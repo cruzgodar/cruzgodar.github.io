@@ -32,9 +32,6 @@ const glslFiles =
 	}
 };
 
-export let doubleEmulationGlsl;
-export let doubleEncodingGlsl;
-
 function splitGlslFile(filename, text)
 {
 	text = text.replaceAll("\r", "");
@@ -156,13 +153,9 @@ async function loadGlslLogic()
 	[
 		glslFiles.constants.content,
 		glslFiles.main.content,
-		doubleEmulationGlsl,
-		doubleEncodingGlsl
 	] = await Promise.all([
 		asyncFetch("/scripts/glsl/constants"),
 		asyncFetch("/scripts/glsl/main"),
-		asyncFetch("/scripts/glsl/double_emulation"),
-		asyncFetch("/scripts/glsl/double_encoding")
 	]);
 
 	

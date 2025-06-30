@@ -1,6 +1,5 @@
 import { tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
@@ -98,8 +97,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
-
-		this.loadPromise = loadGlsl();
 	}
 
 
@@ -148,8 +145,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 			uniform mat2 A4;
 
 			uniform vec2 b2;
-
-			${doubleEncodingGlsl}
 
 			float rand(vec2 co)
 			{
@@ -245,7 +240,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilsonUpdate.useFramebuffer(framebufferId);
 
 		this.wilsonUpdate.drawFrame();
-		
+
 		const floats = this.wilsonUpdate.readPixels({
 			format: "float"
 		});

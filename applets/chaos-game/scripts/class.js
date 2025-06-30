@@ -1,6 +1,5 @@
 import { getVectorGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
@@ -109,8 +108,6 @@ export class ChaosGame extends AnimationFrameApplet
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
-
-		this.loadPromise = loadGlsl();
 	}
 
 
@@ -203,8 +200,6 @@ export class ChaosGame extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 
 			${vertexGlsl}
-
-			${doubleEncodingGlsl}
 
 			float rand(vec2 co)
 			{

@@ -145,4 +145,6 @@ export default function()
 			applet.reloadShader();
 		}
 	}
+
+	setTimeout(() => applet.downloadBokehFrame(), 1000);
 }
