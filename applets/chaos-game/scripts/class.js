@@ -123,13 +123,16 @@ export class ChaosGame extends AnimationFrameApplet
 		this.numVertices = numVertices;
 
 		this.wilsonUpdate.resizeCanvas({ width: this.computeResolution });
+		
 		this.wilsonUpdate.createFramebufferTexturePair({
-			id: "update",
+			id: "update1",
 			textureType: "float"
 		});
 
-		this.wilsonUpdate.useFramebuffer(null);
-		this.wilsonUpdate.useTexture("update");
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update2",
+			textureType: "float"
+		});
 
 		
 
@@ -191,7 +194,7 @@ export class ChaosGame extends AnimationFrameApplet
 
 
 
-		const shaderUpdateBase = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -217,19 +220,8 @@ export class ChaosGame extends AnimationFrameApplet
 				float r = rand(uv + state);
 
 				${updateGlsl}
-		`;
 
-		const shaderUpdateX = /* glsl */`
-				${shaderUpdateBase}
-
-				gl_FragColor = encodeFloat(state.x);
-			}
-		`;
-
-		const shaderUpdateY = /* glsl */`
-				${shaderUpdateBase}
-
-				gl_FragColor = encodeFloat(state.y);
+				gl_FragColor = vec4(state.x, state.y, 0.0, 0.0);
 			}
 		`;
 
@@ -254,13 +246,13 @@ export class ChaosGame extends AnimationFrameApplet
 		}
 
 		this.wilsonUpdate.loadShader({
-			id: "updateX",
-			shader: shaderUpdateX,
+			id: "update",
+			shader: shaderUpdate,
 		});
 
-		this.wilsonUpdate.loadShader({
-			id: "updateY",
-			shader: shaderUpdateY,
+		this.wilsonUpdate.setTexture({
+			id: "update2",
+			data: this.texture
 		});
 
 		
@@ -279,36 +271,32 @@ export class ChaosGame extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilsonUpdate.setTexture({
-			id: "update",
-			data: this.texture
+		const textureId = this.frame % 2 === 0 ? "update1" : "update2";
+		const framebufferId = this.frame % 2 === 0 ? "update2" : "update1";
+
+		this.wilsonUpdate.useTexture(textureId);
+		this.wilsonUpdate.useFramebuffer(framebufferId);
+
+		this.wilsonUpdate.drawFrame();
+		const floats = this.wilsonUpdate.readPixels({
+			format: "float"
 		});
-
-		this.wilsonUpdate.useShader("updateX");
-		this.wilsonUpdate.drawFrame();
-		const floatsX = new Float32Array(this.wilsonUpdate.readPixels().buffer);
-
-		this.wilsonUpdate.useShader("updateY");
-		this.wilsonUpdate.drawFrame();
-		const floatsY = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
 		for (let i = 0; i < this.computeResolution; i++)
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
 				const index = this.computeResolution * i + j;
-				this.texture[4 * index] = floatsX[index];
-				this.texture[4 * index + 1] = floatsY[index];
 
 				const row = Math.round(
 					(
-						(floatsY[index] - this.wilsonUpdate.worldCenterY)
+						(floats[4 * index + 1] - this.wilsonUpdate.worldCenterY)
 							/ this.wilsonUpdate.worldHeight + .5
 					) * this.resolution);
 
 				const col = Math.round(
 					(
-						(floatsX[index] - this.wilsonUpdate.worldCenterX)
+						(floats[4 * index] - this.wilsonUpdate.worldCenterX)
 							/ this.wilsonUpdate.worldWidth + .5
 					) * this.resolution
 				);
