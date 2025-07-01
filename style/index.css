@@ -111,7 +111,7 @@ body
 	filter: brightness(.85);
 }
 
-.checkbox-row.disabled > .checkbox-container.hover-reduce-motion
+.checkbox-row.disabled > .checkbox-container.hover-reduce-motion, .text-button.dropdown.expanded.hover-reduce-motion
 {
 	filter: unset;
 }
