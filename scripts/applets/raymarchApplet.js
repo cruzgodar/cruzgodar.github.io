@@ -539,25 +539,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const blurAmount = 4;
+		const blurAmount = 1;
+		const resolution = 2048;
 
 		this.reloadShader({
 			useForDepthBuffer: true
 		});
 
-		this.wilson.createFramebufferTexturePair({
-			id: "colors",
-			textureType: "float"
-		});
-
-		this.wilson.useFramebuffer("colors");
-		this.drawFrame();
-
-		const pixels = this.wilson.readPixels({
+		const { pixels } = await this.wilson.readHighResPixels({
+			resolution,
+			uniforms: {
+				resolution
+			},
 			format: "float"
 		});
-
-		const resolution = this.resolution;
 
 		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
 		const minRadius = 0.5;
@@ -578,7 +573,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		for (let i = 0; i < resolution * resolution; i++)
 		{
 			const col = i % resolution;
-			const row = resolution - Math.floor(i / resolution) - 1;
+			const row = Math.floor(i / resolution);
 
 			chunkedPixels[i] = [
 				pixels[4 * i + 3],

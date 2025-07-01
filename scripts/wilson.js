@@ -1339,10 +1339,6 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     this.canvas.classList.add("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").classList.add("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.add("WILSON_fullscreen");
-    // document.documentElement.style.overflowY = "hidden";
-    // document.body.style.overflowY = "hidden";
-    // document.body.style.width = "100vw";
-    // document.body.style.height = "100%";
     document.documentElement.style.userSelect = "none";
     document.addEventListener("gesturestart", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
     document.addEventListener("gesturechange", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
@@ -1468,10 +1464,6 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     this.canvas.classList.remove("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").classList.remove("WILSON_fullscreen");
     __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.remove("WILSON_fullscreen");
-    // document.documentElement.style.overflowY = "scroll";
-    // document.body.style.overflowY = "visible";
-    // document.body.style.width = "";
-    // document.body.style.height = "";
     document.documentElement.style.userSelect = "auto";
     document.removeEventListener("gesturestart", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
     document.removeEventListener("gesturechange", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
@@ -1888,7 +1880,7 @@ export class WilsonGPU extends Wilson {
             link.remove();
         });
     }
-    downloadHighResFrame(filename, resolution = Math.round(Math.sqrt(this.canvasWidth * this.canvasHeight)), uniforms = {}) {
+    async readHighResPixels({ resolution = Math.round(Math.sqrt(this.canvasWidth * this.canvasHeight)), uniforms = {}, format = "unsignedByte", }) {
         const workerCode = `${""}
 			const uniformFunctions = {
 				int: (
@@ -2062,52 +2054,81 @@ export class WilsonGPU extends Wilson {
 					uniformFunction(gl, location, data.value);
 				}
 
+
+
+				const framebuffer = gl.createFramebuffer();
+
+				const texture = gl.createTexture();
+
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+
+				gl.texImage2D(
+					gl.TEXTURE_2D,
+					0,
+					(${format === "float"} && gl instanceof WebGL2RenderingContext)
+						? gl.RGBA32F
+						: gl.RGBA,
+					canvasWidth,
+					canvasHeight,
+					0,
+					gl.RGBA,
+					${format === "float"}
+						? gl.FLOAT
+						: gl.UNSIGNED_BYTE,
+					null
+				);
+
+			
+
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+				gl.disable(gl.DEPTH_TEST);
+
+				gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+
+				gl.framebufferTexture2D(
+					gl.FRAMEBUFFER,
+					gl.COLOR_ATTACHMENT0,
+					gl.TEXTURE_2D,
+					texture,
+					0
+				);
+
+				gl.bindTexture(gl.TEXTURE_2D, null);
+
+
+
 				gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 				gl.finish();
-
-				const pixels = new Uint8Array(canvasWidth * canvasHeight * 4);
-				gl.readPixels(0, 0, canvasWidth, canvasHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-
-				const imageData = new ImageData(new Uint8ClampedArray(pixels), canvasWidth);
+			
+				const pixels = new ${format === "float" ? "Float32Array" : "Uint8Array"}(canvasWidth * canvasHeight * 4);
+				gl.readPixels(0, 0, canvasWidth, canvasHeight, gl.RGBA, ${format === "float" ? "gl.FLOAT" : "gl.UNSIGNED_BYTE"}, pixels);
 
 				self.postMessage({
 					type: "frame-ready",
-					imageData,
+					pixels,
 				});
 			});
 		`;
+        console.log(workerCode);
         const blob = new Blob([workerCode], { type: "application/javascript" });
         const workerUrl = URL.createObjectURL(blob);
         const worker = new Worker(workerUrl);
         const canvasWidth = Math.round(Math.sqrt(resolution * resolution * this.canvasWidth / this.canvasHeight));
         const canvasHeight = Math.round(Math.sqrt(resolution * resolution * this.canvasHeight / this.canvasWidth));
+        let resolve;
+        const promise = new Promise((r) => (resolve = r));
         worker.addEventListener("message", (event) => {
             if (event.data.type === "frame-ready") {
-                const { imageData } = event.data;
-                const canvas = document.createElement("canvas");
-                canvas.width = canvasWidth;
-                canvas.height = canvasHeight;
-                const ctx = canvas.getContext("2d");
-                if (!ctx) {
-                    if (this.verbose) {
-                        console.error("[Wilson] Could not get 2d context for canvas");
-                    }
-                    return;
-                }
-                ctx.putImageData(imageData, 0, 0);
-                canvas.toBlob((blob) => {
-                    if (!blob) {
-                        if (this.verbose) {
-                            console.error("[Wilson] Could not create a canvas blob");
-                        }
-                        return;
-                    }
-                    const link = document.createElement("a");
-                    link.download = filename;
-                    link.href = window.URL.createObjectURL(blob);
-                    link.click();
-                    link.remove();
+                const { pixels } = event.data;
+                resolve({
+                    pixels,
+                    width: canvasWidth,
+                    height: canvasHeight,
                 });
             }
         });
@@ -2135,6 +2156,38 @@ export class WilsonGPU extends Wilson {
                 useP3ColorSpace: this.useP3ColorSpace,
             }
         }, [offscreen]);
+        return promise;
+    }
+    async downloadHighResFrame(filename, resolution = Math.round(Math.sqrt(this.canvasWidth * this.canvasHeight)), uniforms = {}) {
+        const { pixels, width, height } = await this.readHighResPixels({
+            resolution,
+            uniforms,
+        });
+        const imageData = new ImageData(new Uint8ClampedArray(pixels), width);
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+            if (this.verbose) {
+                console.error("[Wilson] Could not get 2d context for canvas");
+            }
+            return;
+        }
+        ctx.putImageData(imageData, 0, 0);
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                if (this.verbose) {
+                    console.error("[Wilson] Could not create a canvas blob");
+                }
+                return;
+            }
+            const link = document.createElement("a");
+            link.download = filename;
+            link.href = window.URL.createObjectURL(blob);
+            link.click();
+            link.remove();
+        });
     }
 }
 _WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(), _WilsonGPU_shaderProgramSources = new WeakMap(), _WilsonGPU_uniforms = new WeakMap(), _WilsonGPU_numShaders = new WeakMap(), _WilsonGPU_currentShaderId = new WeakMap(), _WilsonGPU_framebuffers = new WeakMap(), _WilsonGPU_textures = new WeakMap();
