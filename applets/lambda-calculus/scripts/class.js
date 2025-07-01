@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryInterval } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { animate, clamp, sleep } from "/scripts/src/utils.js";
@@ -63,6 +64,55 @@ const shorthands = {
 	// "=": "λaλb&(_(-ab))(_(-ba))"
 	"=": "(λaλb(a(λnλfλxn(λgλhh(gf))(λux)(λuu))b(λxF)T)(b(λnλfλxn(λgλhh(gf))(λux)(λuu))a(λxF)T)(F))"
 };
+
+function getRgbFromColorString(color)
+{
+	if (color.startsWith("rgba("))
+	{
+		const startIndex = 5; // "rgba(".length;
+		const endIndex = color.lastIndexOf(",");
+		return color
+			.slice(startIndex, endIndex)
+			.replaceAll(" ", "")
+			.split(",")
+			.map(Number);
+	}
+
+	if (color.startsWith("rgb("))
+	{
+		const startIndex = 4; // "rgb(".length;
+		const endIndex = -1;
+		return color
+			.slice(startIndex, endIndex)
+			.replaceAll(" ", "")
+			.split(",")
+			.map(Number);
+	}
+
+	if (color.startsWith("color(display-p3 "))
+	{
+		const startIndex = 17; // "color(display-p3 ".length;
+		// This very conveniently returns -1 if there is no alpha slash,
+		// which then cuts off the last parenthesis anyway.
+		const endIndex = color.lastIndexOf(" /");
+		return color
+			.slice(startIndex, endIndex)
+			.split(" ")
+			.map(x => parseFloat(x) * 255);
+	}
+
+	if (color.startsWith("color(rec2020 "))
+	{
+		const startIndex = 14; // "color(rec2020 ".length;
+		const endIndex = color.lastIndexOf(" /");
+		return color
+			.slice(startIndex, endIndex)
+			.split(" ")
+			.map(x => parseFloat(x) * 255);
+	}
+
+	throw new Error("Invalid color string.");
+}
 
 export class LambdaCalculus extends AnimationFrameApplet
 {
@@ -555,7 +605,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rects = [
 				{
 					type: LAMBDA,
-					color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
+					color: convertColor(...rgb),
 					row: expression.row,
 					col: expression.col,
 					width: expression.width,
@@ -591,7 +641,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			// Vertical connecting bars up to the function and input.
 			const functionConnector = {
 				type: CONNECTOR,
-				color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
+				color: convertColor(...rgb),
 				col: expression.col + 1,
 				width: 1,
 			};
@@ -627,7 +677,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			const inputConnector = {
 				type: CONNECTOR,
-				color: `rgb(${Math.round(rgb2[0])}, ${Math.round(rgb2[1])}, ${Math.round(rgb2[2])})`,
+				color: convertColor(...rgb2),
 				col: expression.col + expression.function.width + 2,
 				width: 1,
 			};
@@ -662,7 +712,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				// The connecting bar almost at the bottom.
 				{
 					type: APPLICATION,
-					color: `rgb(${Math.round(rgb3[0])}, ${Math.round(rgb3[1])}, ${Math.round(rgb3[2])})`,
+					color: convertColor(...rgb3),
 					row: expression.row + expression.height - 2,
 					// Adjust to ensure we're connecting exactly to the function and inputs.
 					col: expression.col + 1,
@@ -703,7 +753,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const rects = [
 				{
 					type: LITERAL,
-					color: `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`,
+					color: convertColor(...rgb),
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
@@ -858,7 +908,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 		{
 			const color = expression.bindingLambda.literalColor;
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-			const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
+			const rgbString = convertColor(...rgb);
 
 			const valueText = useForSelfInterpreter
 				? `λa.λb.λc.${expression.valueText}`
@@ -884,11 +934,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 				literalColor.s,
 				literalColor.v * valueFactor
 			);
-			const literalRgbString = `rgb(${Math.round(literalRgb[0])}, ${Math.round(literalRgb[1])}, ${Math.round(literalRgb[2])})`;
+			const literalRgbString = convertColor(...literalRgb);
 
 			const color = expression.color;
 			const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-			const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
+			const rgbString = convertColor(...rgb);
 
 			const lambdaText = useForSelfInterpreter
 				? `λa.λb.λc.c(λ${expression.argumentText}.`
@@ -930,7 +980,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		const color = expression.color;
 		const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
-		const rgbString = `rgb(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])})`;
+		const rgbString = convertColor(...rgb);
 
 		const applicationString = useForSelfInterpreter
 			? `λa.λb.λc.b(${functionString}${inputString})`
@@ -1280,14 +1330,14 @@ export class LambdaCalculus extends AnimationFrameApplet
 		const rgbOld = Object.fromEntries(
 			Object.entries(expression.rectIndex).map(([key, value]) =>
 			{
-				return [key, value.color.slice(4, -1).split(",").map(Number)];
+				return [key, getRgbFromColorString(value.color)];
 			})
 		);
 
 		const rgbNew = Object.fromEntries(
 			Object.entries(betaReducedExpression.rectIndex).map(([key, value]) =>
 			{
-				return [key, value.color.slice(4, -1).split(",").map(Number)];
+				return [key, getRgbFromColorString(value.color)];
 			})
 		);
 
@@ -1309,20 +1359,25 @@ export class LambdaCalculus extends AnimationFrameApplet
 			for (const key of rectsToFadeDown)
 			{
 				expression.rectIndex[key].row = oldRectIndex[key].row + t;
-				expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
+				
+				const rgb = getRgbFromColorString(oldRectIndex[key].color);
+				expression.rectIndex[key].color = convertColor(...rgb, 1 - t);
 			}
 
 			for (const key of rectsToFadeUp)
 			{
 				expression.rectIndex[key].row = oldRectIndex[key].row - t;
-				expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
+
+				const rgb = getRgbFromColorString(oldRectIndex[key].color);
+				expression.rectIndex[key].color = convertColor(...rgb, 1 - t);
 			}
 
 			if (newRects.length === 0 || replacementIsLiteral)
 			{
 				for (const key of replacementRects)
 				{
-					expression.rectIndex[key].color = `rgba(${oldRectIndex[key].color.slice(4, -1)}, ${1 - t})`;
+					const rgb = getRgbFromColorString(oldRectIndex[key].color);
+					expression.rectIndex[key].color = convertColor(...rgb, 1 - t);
 				}
 			}
 
@@ -1359,8 +1414,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 				const r = (1 - t) * rgbOld[key][0] + t * rgbNew[key][0];
 				const g = (1 - t) * rgbOld[key][1] + t * rgbNew[key][1];
 				const b = (1 - t) * rgbOld[key][2] + t * rgbNew[key][2];
-
-				expression.rectIndex[key].color = `rgb(${r}, ${g}, ${b})`;
+				
+				expression.rectIndex[key].color = convertColor(r, g, b);
 			}
 
 			for (const key of replacementRects)

@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class MaurerRoses extends AnimationFrameApplet
@@ -132,7 +133,7 @@ export class MaurerRoses extends AnimationFrameApplet
 				const endRow = row + t * (nextRow - row);
 				const endCol = col + t * (nextCol - col);
 
-				this.wilson.ctx.strokeStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+				this.wilson.ctx.strokeStyle = convertColor(...rgb);
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(row, col);
 				this.wilson.ctx.lineTo(endRow, endCol);

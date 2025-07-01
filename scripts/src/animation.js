@@ -1,51 +1,27 @@
-import { browserIsIos } from "./browser.js";
 import {
 	navigationAnimationDistanceHorizontal,
 	navigationAnimationDistanceVertical
 } from "./layout.js";
-import anime from "/scripts/anime.js";
-
-const useJsAnimation = browserIsIos;
 
 const baseAnimationTime = 250;
 
-export const opacityAnimationTime = useJsAnimation
-	? baseAnimationTime * .8
-	: baseAnimationTime * .75;
+export const opacityAnimationTime = baseAnimationTime * .75;
 
-export const buttonAnimationTime = useJsAnimation
-	? baseAnimationTime * .4
-	: baseAnimationTime * .35;
+export const buttonAnimationTime = baseAnimationTime * .35;
 	
 export const pageAnimationTime = baseAnimationTime * .475;
 export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
 export const cardAnimationTime = baseAnimationTime * 2;
 
-export const fullscreenAnimationTime = useJsAnimation
-	? baseAnimationTime * .6
-	: baseAnimationTime * .5;
+export const fullscreenAnimationTime = baseAnimationTime * .5;
 
 export const carouselSwitchAnimationTime = 250;
 export const carouselFillAnimationTime = 20000;
 
 
 
-function changeOpacityJs({
-	element,
-	opacity,
-	duration = opacityAnimationTime,
-	easeInOut = false
-}) {
-	return anime({
-		targets: element,
-		opacity,
-		duration,
-		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
-	}).finished;
-}
-
-function changeOpacityCss({
+export function changeOpacity({
 	element,
 	opacity,
 	duration = opacityAnimationTime,
@@ -77,25 +53,7 @@ function changeOpacityCss({
 	});
 }
 
-export const changeOpacity = useJsAnimation ? changeOpacityJs : changeOpacityCss;
-
-
-
-export function changeScaleJs({
-	element,
-	scale,
-	duration = buttonAnimationTime,
-	easeInOut = false
-}) {
-	return anime({
-		targets: element,
-		scale,
-		duration,
-		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
-	}).finished;
-}
-
-function changeScaleCss({
+export function changeScale({
 	element,
 	scale,
 	duration = buttonAnimationTime,
@@ -127,25 +85,7 @@ function changeScaleCss({
 	});
 }
 
-export const changeScale = useJsAnimation ? changeScaleJs : changeScaleCss;
-
-
-
-function fadeLeftJs({
-	element,
-	duration = baseAnimationTime * 3,
-	easeInOut = false
-}) {
-	return anime({
-		targets: element,
-		translateX: 0,
-		opacity: 1,
-		duration,
-		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
-	}).finished;
-}
-
-function fadeLeftCss({
+export function fadeLeft({
 	element,
 	duration = baseAnimationTime * 3,
 	easeInOut = false
@@ -177,28 +117,7 @@ function fadeLeftCss({
 	});
 }
 
-export const fadeLeft = useJsAnimation ? fadeLeftJs : fadeLeftCss;
-
-
-
-function fadeUpInJs({
-	element,
-	duration = pageAnimationTime * 2,
-	opacity = 1
-}) {
-	element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
-	element.style.marginBottom = 0;
-
-	return anime({
-		targets: element,
-		marginTop: "0px",
-		opacity,
-		duration,
-		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
-	}).finished;
-}
-
-function fadeUpInCss({
+export function fadeUpIn({
 	element,
 	duration = pageAnimationTime * 2,
 	opacity = 1
@@ -241,27 +160,7 @@ function fadeUpInCss({
 	});
 }
 
-export const fadeUpIn = useJsAnimation ? fadeUpInJs : fadeUpInCss;
-
-
-
-function fadeUpOutJs({
-	element,
-	duration = pageAnimationTime,
-	noOpacityChange = false
-}) {
-	element.style.marginBottom = "20vmin";
-
-	return anime({
-		targets: element,
-		marginTop: `${-navigationAnimationDistanceVertical}px`,
-		duration,
-		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && { opacity: 0 })
-	}).finished;
-}
-
-function fadeUpOutCss({
+export function fadeUpOut({
 	element,
 	duration = pageAnimationTime,
 	noOpacityChange = false
@@ -306,28 +205,7 @@ function fadeUpOutCss({
 	});
 }
 
-export const fadeUpOut = useJsAnimation ? fadeUpOutJs : fadeUpOutCss;
-
-
-
-function fadeDownInJs({
-	element,
-	duration = pageAnimationTime * 2,
-	opacity = 1
-}) {
-	element.style.marginTop = `${-navigationAnimationDistanceVertical}px`;
-	element.style.marginBottom = 0;
-
-	return anime({
-		targets: element,
-		marginTop: "0px",
-		opacity,
-		duration,
-		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
-	}).finished;
-}
-
-function fadeDownInCss({
+export function fadeDownIn({
 	element,
 	duration = pageAnimationTime * 2,
 	opacity = 1
@@ -369,27 +247,7 @@ function fadeDownInCss({
 	});
 }
 
-export const fadeDownIn = useJsAnimation ? fadeDownInJs : fadeDownInCss;
-
-
-
-function fadeDownOutJs({
-	element,
-	duration = pageAnimationTime,
-	noOpacityChange = false
-}) {
-	element.style.marginBottom = "20vmin";
-
-	return anime({
-		targets: element,
-		marginTop: `${navigationAnimationDistanceVertical}px`,
-		duration,
-		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && { opacity: 0 })
-	}).finished;
-}
-
-function fadeDownOutCss({
+export function fadeDownOut({
 	element,
 	duration = pageAnimationTime,
 	noOpacityChange = false
@@ -434,27 +292,7 @@ function fadeDownOutCss({
 	});
 }
 
-export const fadeDownOut = useJsAnimation ? fadeDownOutJs : fadeDownOutCss;
-
-
-
-function fadeLeftInJs({
-	element,
-	duration = pageAnimationTime * 2,
-	opacity = 1
-}) {
-	element.style.marginLeft = `${navigationAnimationDistanceHorizontal}px`;
-
-	return anime({
-		targets: element,
-		marginLeft: "0px",
-		opacity,
-		duration,
-		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
-	}).finished;
-}
-
-function fadeLeftInCss({
+export function fadeLeftIn({
 	element,
 	duration = pageAnimationTime * 2,
 	opacity = 1
@@ -495,25 +333,7 @@ function fadeLeftInCss({
 	});
 }
 
-export const fadeLeftIn = useJsAnimation ? fadeLeftInJs : fadeLeftInCss;
-
-
-
-function fadeLeftOutJs({
-	element,
-	duration = pageAnimationTime,
-	noOpacityChange = false
-}) {
-	return anime({
-		targets: element,
-		marginLeft: `${-navigationAnimationDistanceHorizontal}px`,
-		duration,
-		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && { opacity: 0 })
-	}).finished;
-}
-
-function fadeLeftOutCss({
+export function fadeLeftOut({
 	element,
 	duration = pageAnimationTime,
 	noOpacityChange = false
@@ -556,27 +376,7 @@ function fadeLeftOutCss({
 	});
 }
 
-export const fadeLeftOut = useJsAnimation ? fadeLeftOutJs : fadeLeftOutCss;
-
-
-
-function fadeRightInJs({
-	element,
-	duration = pageAnimationTime * 2,
-	opacity = 1
-}) {
-	element.style.marginLeft = `${-navigationAnimationDistanceHorizontal}px`;
-
-	return anime({
-		targets: element,
-		marginLeft: "0px",
-		opacity,
-		duration,
-		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
-	}).finished;
-}
-
-function fadeRightInCss({
+export function fadeRightIn({
 	element,
 	duration = pageAnimationTime * 2,
 	opacity = 1
@@ -617,25 +417,7 @@ function fadeRightInCss({
 	});
 }
 
-export const fadeRightIn = useJsAnimation ? fadeRightInJs : fadeRightInCss;
-
-
-
-function fadeRightOutJs({
-	element,
-	duration = pageAnimationTime,
-	noOpacityChange = false
-}) {
-	return anime({
-		targets: element,
-		marginLeft: `${navigationAnimationDistanceHorizontal}px`,
-		duration,
-		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && { opacity: 0 })
-	}).finished;
-}
-
-function fadeRightOutCss({
+export function fadeRightOut({
 	element,
 	duration = pageAnimationTime,
 	noOpacityChange = false
@@ -678,24 +460,7 @@ function fadeRightOutCss({
 	});
 }
 
-export const fadeRightOut = useJsAnimation ? fadeRightOutJs : fadeRightOutCss;
-
-
-
-function fadeInJs({
-	element,
-	duration = pageAnimationTime * 2,
-	opacity = 1
-}) {
-	return anime({
-		targets: element,
-		opacity,
-		duration,
-		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
-	}).finished;
-}
-
-function fadeInCss({
+export function fadeIn({
 	element,
 	duration = pageAnimationTime * 2,
 	opacity = 1
@@ -733,24 +498,7 @@ function fadeInCss({
 	});
 }
 
-export const fadeIn = useJsAnimation ? fadeInJs : fadeInCss;
-
-
-
-function fadeOutJs({
-	element,
-	duration = pageAnimationTime,
-	noOpacityChange = false
-}) {
-	return anime({
-		targets: element,
-		duration,
-		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && { opacity: 0 })
-	}).finished;
-}
-
-function fadeOutCss({
+export function fadeOut({
 	element,
 	duration = pageAnimationTime,
 	noOpacityChange = false
@@ -790,5 +538,3 @@ function fadeOutCss({
 		}, 10);
 	});
 }
-
-export const fadeOut = useJsAnimation ? fadeOutJs : fadeOutCss;

@@ -385,27 +385,6 @@ export class Dropdown extends InputElement
 		instant = false,
 		fromOnClickHandler = false
 	}) {
-		const needToOpen = !this.isOpen;
-
-		// if (needToOpen)
-		// {
-		// 	if (instant)
-		// 	{
-		// 		this.buttonElement.style.opacity = 0;
-		// 	}
-
-		// 	else
-		// 	{
-		// 		await changeOpacity({
-		// 			element: this.buttonElement,
-		// 			opacity: 0,
-		// 			duration: opacityAnimationTime / 2.5
-		// 		});
-		// 	}
-
-		// 	await this.open(0);
-		// }
-
 		document.documentElement.removeEventListener("click", this.boundClose);
 
 		this.isOpen = false;
@@ -531,23 +510,6 @@ export class Dropdown extends InputElement
 				}).finished,
 			]);
 		}
-
-		// if (needToOpen)
-		// {
-		// 	if (instant)
-		// 	{
-		// 		this.buttonElement.style.opacity = 1;
-		// 	}
-
-		// 	else
-		// 	{
-		// 		await changeOpacity({
-		// 			element: this.buttonElement,
-		// 			opacity: 1,
-		// 			duration: opacityAnimationTime / 3
-		// 		});
-		// 	}
-		// }
 
 		this.buttonElement.classList.remove("no-hover");
 	}

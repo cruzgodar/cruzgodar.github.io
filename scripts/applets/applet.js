@@ -1,3 +1,4 @@
+import { convertColor } from "../src/browser.js";
 import { showZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
@@ -222,7 +223,7 @@ export class Applet
 
 			const rgb = hsvToRgb(hue, 1, 1);
 
-			this.fpsDisplayCtx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			this.fpsDisplayCtx.fillStyle = convertColor(...rgb);
 
 			this.fpsDisplayCtx.fillRect(i, 100 - height, 1, height);
 		}

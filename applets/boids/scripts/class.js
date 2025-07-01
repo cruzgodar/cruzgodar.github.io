@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class Boids extends AnimationFrameApplet
@@ -243,7 +244,7 @@ export class Boids extends AnimationFrameApplet
 			v2 / (this.maxVelocity * this.maxVelocity),
 			1
 		);
-		this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		this.wilson.ctx.fillStyle = convertColor(...rgb);
 		
 		// Draw an isoceles triangle centered at (x, y) and pointing toward (x + vx, y + vy).
 		const theta2 = theta + 2 * Math.PI / 3;
