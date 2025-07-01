@@ -492,7 +492,7 @@ class SL2RGeometry extends BaseGeometry
 				// since it's only referred to in the paper as a adjustment by
 				// "the correct multiple of 2pi". This belongs in the paper!!
 				fiber = 2.0 * c * t + 2.0 * atan(-c / kappa * tan(trigArg))
-					- sign(c) * floor(0.5 * kappa * t / 3.14159265 + 0.5) * 6.28318531;
+					- sign(c) * floor(0.5 * kappa * t / ${Math.PI} + 0.5) * ${2 * Math.PI};
 			}
 
 			else
@@ -985,7 +985,7 @@ export class SL2RAxes extends SL2RGeometry
 				// since it's only referred to in the paper as a adjustment by
 				// "the correct multiple of 2pi". This belongs in the paper!!
 				fiber = 2.0 * c * t + 2.0 * atan(-c / kappa * tan(trigArg))
-					- sign(c) * floor(0.5 * kappa * t / 3.14159265 + 0.5) * 6.28318531;
+					- sign(c) * floor(0.5 * kappa * t / ${Math.PI} + 0.5) * ${2 * Math.PI};
 			}
 
 			else

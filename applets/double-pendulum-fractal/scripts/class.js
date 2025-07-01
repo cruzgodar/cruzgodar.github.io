@@ -74,7 +74,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * (3.14159265358 * 2.0);
+				vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * ${2 * Math.PI};
 				
 				float denom = 16.0 - 9.0 * cos(state.x - state.y) * cos(state.x - state.y);
 				
@@ -86,7 +86,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 				
 				
 				
-				state = ((dt * dState + state) / (3.14159265358 * 2.0)) + vec4(.5, .5, .5, .5);
+				state = ((dt * dState + state) / ${2 * Math.PI}) + vec4(.5, .5, .5, .5);
 				
 				state.xy = fract(state.xy);
 				
