@@ -188,4 +188,14 @@ export const redirects = {
 		"/teaching/notes/trig/non-right-triangles-and-identities",
 	"/teaching/uo/112/notes/8-vectors":
 		"/teaching/notes/trig/vectors",
+
+	// All old slides
+	"/slides": "/math",
+	"/slides/turing-complete-lines": "/math/turing-complete-lines",
+	"/slides/dissertation-defense": "/math/dissertation-defense",
+	"/slides/light-shadow-world-of-nails": "/math/light-shadow-world-of-nails",
+	"/slides/marys-3-manifold": "/math/marys-3-manifold",
+	"/slides/grandmas-recipe": "/math/grandmas-recipe",
+	"/slides/oral-exam": "/math/oral-exam",
+	"/slides/lapsa": "/math/lapsa",
 };
