@@ -166,7 +166,7 @@ export class VectorFields extends AnimationFrameApplet
 			minWorldHeight: 0.5,
 			maxWorldHeight: 20,
 
-			onResizeCanvas: () => requestAnimationFrame(() => this.generateNewField({})),
+			onResizeCanvas: () => this.generateNewField({}),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -184,7 +184,6 @@ export class VectorFields extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
-				// crossfade: true,
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
@@ -350,7 +349,6 @@ export class VectorFields extends AnimationFrameApplet
 			maxParticles,
 			dt,
 			lifetime,
-			forceRegenerate: true
 		});
 	}
 
@@ -402,19 +400,7 @@ export class VectorFields extends AnimationFrameApplet
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
-		forceRegenerate = false
 	}) {
-		if (
-			!forceRegenerate && (
-				this.wilson.canvasWidth !== this.wilsonPanZoomDim.canvasWidth
-				|| this.wilson.canvasHeight !== this.wilsonPanZoomDim.canvasHeight
-				|| this.wilson.canvasWidth === this.lastGeneratedCanvasWidth
-				|| this.wilson.canvasHeight === this.lastGeneratedCanvasHeight
-			)
-		) {
-			return;
-		}
-
 		await this.loadPromise;
 
 		this.lastGeneratedCanvasWidth = this.wilson.canvasWidth;
