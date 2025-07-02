@@ -249,12 +249,12 @@ function getComputeShadingGlsl({
 
 
 function getRaymarchGlsl({
-	useForDepthBuffer,
+	includeDepthData,
 	stepFactor,
 	getGeodesicGlsl,
 	useBloom
 }) {
-	const alpha = useForDepthBuffer ? "t" : "1.0";
+	const alpha = includeDepthData ? "t" : "1.0";
 	
 	const clippedGlsl = useBloom
 		? /* glsl */`
@@ -348,7 +348,7 @@ export function createShader({
 	getReflectivityGlsl,
 	getGeodesicGlsl,
 	addGlsl,
-	useForDepthBuffer,
+	includeDepthData,
 
 	useShadows,
 	useSoftShadows,
@@ -397,7 +397,7 @@ export function createShader({
 	});
 
 	const raymarchGlsl = getRaymarchGlsl({
-		useForDepthBuffer,
+		includeDepthData,
 		stepFactor,
 		getGeodesicGlsl,
 		useBloom

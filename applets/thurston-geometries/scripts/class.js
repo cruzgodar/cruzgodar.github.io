@@ -208,11 +208,6 @@ export class ThurstonGeometries extends Applet
 		this.updateAutomaticMoving = () => {};
 		this.movingAmount = [0, 0, 0];
 
-		const posSignature = this.geometryData.usesFiberComponent
-			? "vec4 pos, float fiber"
-			: "vec4 pos";
-		
-		const addFiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
 
 		const shaderParameters = {
 			maxMarches: this.geometryData.maxMarches,
@@ -223,11 +218,10 @@ export class ThurstonGeometries extends Applet
 			normalizeGlsl: this.geometryData.normalizeGlsl,
 			getNormalVecGlsl: this.geometryData.getNormalVecGlsl,
 			functionGlsl: this.geometryData.functionGlsl ?? "",
-			posSignature,
 			distanceEstimatorGlsl: this.geometryData.distanceEstimatorGlsl,
 			getColorGlsl: this.geometryData.getColorGlsl,
-			addFiberArgument,
 			lightGlsl: this.geometryData.lightGlsl,
+			usesFiberComponent: this.geometryData.usesFiberComponent,
 			ambientOcclusionDenominator: this.geometryData.ambientOcclusionDenominator,
 			doClipBrightening: this.geometryData.doClipBrightening,
 			fogGlsl: this.geometryData.fogGlsl,
@@ -236,6 +230,7 @@ export class ThurstonGeometries extends Applet
 			correctPosGlsl: this.geometryData.correctPosGlsl,
 			finalTeleportationGlsl: this.geometryData.finalTeleportationGlsl ?? "",
 			updateTGlsl: this.geometryData.updateTGlsl,
+			includeDepthData: this.geometryData.includeDepthData,
 		};
 
 		const shader = createShader(shaderParameters);
@@ -875,6 +870,35 @@ export class ThurstonGeometries extends Applet
 			oldT = t;
 		}, duration, "easeInOutSine");
 	}
+
+
+
+	async downloadBokehFrame()
+	{
+		const resolution = 4096;
+
+		this.geometryData.includeDepthData = true;
+
+		this.run(this.geometryData);
+
+		const { pixels } = await this.wilson.readHighResPixels({
+			resolution,
+			format: "float"
+		});
+
+		this.downloadBokehFrameFromPixels({
+			pixels,
+			resolution,
+			blurAmount: 3,
+			clipDistance: this.clipDistance
+		});
+
+		this.geometryData.includeDepthData = true;
+
+		this.run(this.geometryData);
+	}
+
+
 
 	switchFullscreen()
 	{

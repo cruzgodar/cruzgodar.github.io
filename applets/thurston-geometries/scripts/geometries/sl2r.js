@@ -1060,7 +1060,7 @@ export class SL2RAxes extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-1.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.5 * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.75 * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	cameraPos = [0.97747, 0.43873, -0.07210, 0.37782];
@@ -1125,7 +1125,7 @@ export class SL2RRooms extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.75 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = loopRoomColors
@@ -1247,7 +1247,7 @@ export class SL2RSpheres extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.75 * max(dotProduct1, dotProduct2);
 	`;
 
 	stepFactor = "0.3";

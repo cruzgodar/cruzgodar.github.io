@@ -8,11 +8,10 @@ export function createShader({
 	normalizeGlsl,
 	getNormalVecGlsl,
 	functionGlsl,
-	posSignature,
 	distanceEstimatorGlsl,
 	getColorGlsl,
-	addFiberArgument,
 	lightGlsl,
+	usesFiberComponent,
 	ambientOcclusionDenominator,
 	doClipBrightening,
 	fogGlsl,
@@ -23,7 +22,14 @@ export function createShader({
 	updateTGlsl,
 
 	useReflections = false,
+	includeDepthData = false,
 }) {
+	const posSignature = usesFiberComponent
+		? "vec4 pos, float fiber"
+		: "vec4 pos";
+
+	const addFiberArgument = usesFiberComponent ? ", fiber" : "";
+
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
 			${posSignature},
@@ -79,17 +85,12 @@ export function createShader({
 				
 				float distanceToScene = distanceEstimator(
 					pos${addFiberArgument},
-					totalT
+					totalT + t
 				);
 				
 				if (distanceToScene < epsilon)
 				{
 					${finalTeleportationGlsl ?? ""}
-
-					if (totalT == 0.0 && clipDistance > 0.0)
-					{
-						totalT = t;
-					}
 					
 					return computeShadingWithoutReflection(
 						pos${addFiberArgument},
@@ -112,21 +113,7 @@ export function createShader({
 		}
 	` : "";
 
-	const mainFunctionGlsl = /* glsl */`${""}
-		void main(void)
-		{
-			gl_FragColor = vec4(
-				raymarch(
-					geometryNormalize(
-						forwardVec
-						+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
-						+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
-					)
-				),
-				1.0
-			);
-		}
-	`;
+	const alpha = includeDepthData ? "totalT + t" : "1.0";
 	
 	const shader = /* glsl */`
 		precision highp float;
@@ -300,10 +287,8 @@ export function createShader({
 		
 		
 		
-		vec3 raymarch(vec4 rayDirectionVec)
+		vec4 raymarch(vec4 rayDirectionVec)
 		{
-			vec3 finalColor = fogColor;
-			
 			float t = 0.0;
 			float totalT = 0.0;
 			
@@ -322,25 +307,23 @@ export function createShader({
 				
 				float distanceToScene = distanceEstimator(
 					pos${addFiberArgument},
-					totalT
+					totalT + t
 				);
 				
 				if (distanceToScene < epsilon)
 				{
 					${finalTeleportationGlsl ?? ""}
-
-					if (totalT == 0.0 && clipDistance > 0.0)
-					{
-						totalT = t;
-					}
 					
-					return computeShading(
-						pos${addFiberArgument},
-						normalize(pos - lastPos),
-						distanceToScene - 2.0 * epsilon,
-						iteration,
-						globalColor,
-						totalT
+					return vec4(
+						computeShading(
+							pos${addFiberArgument},
+							normalize(pos - lastPos),
+							distanceToScene - 2.0 * epsilon,
+							iteration,
+							globalColor,
+							totalT + t
+						),
+						${alpha}
 					);
 				}
 
@@ -348,18 +331,27 @@ export function createShader({
 
 				lastPos = pos;
 
-				if (t > maxT || totalT > maxT)
+				if (totalT + t > maxT)
 				{
-					return fogColor;
+					return vec4(fogColor, ${alpha});
 				}
 			}
-			
-			return fogColor;
+
+			return vec4(fogColor, ${alpha});
 		}
 		
 		
 		
-		${mainFunctionGlsl}
+		void main(void)
+		{
+			gl_FragColor = raymarch(
+				geometryNormalize(
+					forwardVec
+					+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
+					+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
+				)
+			);
+		}
 	`;
 
 	return shader;
