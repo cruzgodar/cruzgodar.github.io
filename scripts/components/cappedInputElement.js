@@ -136,7 +136,7 @@ export class CappedInputElement extends InputElement
 				// No need to clone these since we're removing the original element anyway.
 				wrapper.appendChild(subNodes[i]);
 
-				if (i !== startIndex - 1)
+				if (i !== subNodes.length - 1)
 				{
 					wrapper.appendChild(document.createTextNode(" "));
 				}
@@ -187,6 +187,7 @@ export class CappedInputElement extends InputElement
 
 			this.labelElement.innerHTML = "";
 			this.labelElement.appendChild(beforeModifiedLine);
+			this.labelElement.appendChild(document.createTextNode(" "));
 			this.labelElement.appendChild(afterModifiedLine);
 		}
 
