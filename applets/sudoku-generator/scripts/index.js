@@ -1,5 +1,5 @@
 import { SudokuGenerator } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Button, GenerateButton } from "/scripts/components/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()
@@ -11,10 +11,15 @@ export default function()
 		onClick: run
 	});
 
-	new DownloadButton({
+	new Button({
 		element: $("#download-button"),
-		applet,
-		filename: () => "sudoku.png"
+		name: "Download",
+		onClick: () =>
+		{
+			applet.drawGrid(true);
+			applet.wilson.downloadFrame("a-sudoku-puzzle.png");
+			applet.drawGrid(false);
+		}
 	});
 
 
