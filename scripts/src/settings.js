@@ -13,7 +13,6 @@ import anime from "/scripts/anime.js";
 export const forceThemePages =
 {
 	"/gallery": true,
-	"/slides/oral-exam": true
 };
 
 const rootElement = document.querySelector(":root");

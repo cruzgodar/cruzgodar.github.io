@@ -37,8 +37,8 @@
 	--teaching-color: rgb(255, 216, 150);
 	/* --teaching-color: lch(90% 35 80); */
 
-	--slides-color: rgb(175, 229, 255);
-	/* --slides-color: lch(90% 30 255); */
+	--math-color: rgb(175, 229, 255);
+	/* --math-color: lch(90% 30 255); */
 
 	--about-color: rgb(244, 199, 255);
 	/* --about-color: lch(90% 70 300); */
@@ -1822,9 +1822,9 @@ option
 	background-color: var(--teaching-color);
 }
 
-#header-slides-link.hover
+#header-math-link.hover
 {
-	background-color: var(--slides-color);
+	background-color: var(--math-color);
 }
 
 #header-about-link.hover
@@ -2215,9 +2215,9 @@ img[src="/teaching/cover.webp"]
 	background-color: var(--teaching-color);
 }
 
-img[src="/slides/cover.webp"]
+img[src="/math/cover.webp"]
 {
-	background-color: var(--slides-color);
+	background-color: var(--math-color);
 }
 
 img[src="/about/cover.webp"]

@@ -11,9 +11,9 @@ export const sitemap =
 			"/gallery",
 			"/applets",
 			"/teaching",
-			"/slides",
-			"/writing",
+			"/math",
 			"/about",
+			"/writing",
 			"/404",
 			"/debug"
 		],
@@ -1806,83 +1806,83 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/slides":
+	"/math":
 	{
-		"title": "Slides",
+		"title": "Math",
 		
 		"parent": "/home",
 		
 		"children":
 		[
-			"/slides/turing-complete-lines",
-			"/slides/dissertation-defense",
-			"/slides/light-shadow-world-of-nails",
-			"/slides/marys-3-manifold",
-			"/slides/grandmas-recipe",
-			"/slides/oral-exam",
-			"/slides/lapsa"
+			"/math/turing-complete-lines",
+			"/math/dissertation-defense",
+			"/math/light-shadow-world-of-nails",
+			"/math/marys-3-manifold",
+			"/math/grandmas-recipe",
+			"/math/oral-exam",
+			"/math/lapsa"
 		]
 	},
 		
-	"/slides/turing-complete-lines":
+	"/math/turing-complete-lines":
 	{
 		"title": "Turing Complete Lines: An Introduction to Lambda Calculus",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/dissertation-defense":
+	"/math/dissertation-defense":
 	{
 		"title": "Dissertation Defense",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/light-shadow-world-of-nails":
+	"/math/light-shadow-world-of-nails":
 	{
 		"title": "Light, Shadow, and a World of Nails",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/marys-3-manifold":
+	"/math/marys-3-manifold":
 	{
 		"title": "Mary's 3-Manifold: The Value of Mathematical Visualization",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/grandmas-recipe":
+	"/math/grandmas-recipe":
 	{
 		"title": "Grandma's Recipe for Quasi-Fuchsian Groups",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/oral-exam":
+	"/math/oral-exam":
 	{
 		"title": "Prelude to an Oral Exam",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},
 	
-	"/slides/lapsa":
+	"/math/lapsa":
 	{
 		"title": "Lapsa",
 		
-		"parent": "/slides",
+		"parent": "/math",
 		
 		"children": []
 	},

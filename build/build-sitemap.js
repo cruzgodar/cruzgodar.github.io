@@ -37,9 +37,9 @@ export async function buildSitemap()
 			"/gallery",
 			"/applets",
 			"/teaching",
-			"/slides",
-			"/writing",
+			"/math",
 			"/about",
+			"/writing",
 			"/404",
 			"/debug"
 		],

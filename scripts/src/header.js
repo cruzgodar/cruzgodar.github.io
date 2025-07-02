@@ -46,9 +46,9 @@ export function addHeader()
 					<img src="/graphics/header-icons/teaching.webp"></img>
 				</a>
 				
-				<a id="header-slides-link" href="/slides">
-					<span>Slides</span>
-					<img src="/graphics/header-icons/slides.webp"></img>
+				<a id="header-math-link" href="/math">
+					<span>Math</span>
+					<img src="/graphics/header-icons/math.webp"></img>
 				</a>
 				
 				<a id="header-about-link" href="/about">

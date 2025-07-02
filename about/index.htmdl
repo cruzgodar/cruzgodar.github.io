@@ -87,7 +87,7 @@ In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anyt
 
 **<a href="/applets/thurston-geometries">Immersive Thurston Geometry Applet</a>** (February 2024). A WebGL renderer to experience the perspective of living inside any possible curved space.
 
-**<a href="/slides/lapsa" data-in-new-tab="1">Lapsa</a>** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
+**<a href="/math/lapsa" data-in-new-tab="1">Lapsa</a>** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
 
 **<a href="/teaching">Interactive Class Notes</a>** (January 2022--Present). Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
 
