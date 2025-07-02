@@ -1,9 +1,9 @@
 import { DoublePendulumFractal } from "./class.js";
-import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
+import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

@@ -1,7 +1,7 @@
 import { FiniteSubdivisions } from "./class.js";
-import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Button, DownloadButton } from "/scripts/components/buttons.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

@@ -1,10 +1,10 @@
 import { SortingAlgorithms } from "./class.js";
-import { Button, DownloadButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { Button, DownloadButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

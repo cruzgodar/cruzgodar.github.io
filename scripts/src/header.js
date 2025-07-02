@@ -1,5 +1,5 @@
 import anime from "../anime.js";
-import { Checkbox } from "./checkboxes.js";
+import { Checkbox } from "../components/checkboxes.js";
 import { addHoverEvent, addHoverEventWithScale } from "./hoverEvents.js";
 import { redirect } from "./navigation.js";
 import {

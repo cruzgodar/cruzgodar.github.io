@@ -1,8 +1,8 @@
 import { JuliaSetExplorer } from "./class.js";
-import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

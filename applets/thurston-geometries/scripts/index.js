@@ -8,14 +8,14 @@ import { S2xERooms } from "./geometries/s2xe.js";
 import { S3Rooms } from "./geometries/s3.js";
 import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
-import { DownloadHighResButton, ToggleButton } from "/scripts/src/buttons.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

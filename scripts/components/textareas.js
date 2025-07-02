@@ -1,5 +1,5 @@
+import { addTemporaryParam, pageUrl } from "../src/main.js";
 import { InputElement } from "./inputElement.js";
-import { addTemporaryParam, pageUrl } from "./main.js";
 
 export class Textarea extends InputElement
 {

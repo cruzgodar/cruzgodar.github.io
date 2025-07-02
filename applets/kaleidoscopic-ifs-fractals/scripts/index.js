@@ -1,13 +1,13 @@
 import { KaleidoscopicIFSFractals } from "./class.js";
 import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
-import { DownloadHighResButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { DownloadHighResButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 const minScale = 1.125;
 const minScaleEpsilon = .00003;

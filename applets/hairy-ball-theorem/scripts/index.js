@@ -1,13 +1,13 @@
 import { HairyBall } from "./class.js";
 import { parseNaturalGlsl } from "/scripts/applets/applet.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { Textarea } from "/scripts/components/textareas.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { Textarea } from "/scripts/src/textareas.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

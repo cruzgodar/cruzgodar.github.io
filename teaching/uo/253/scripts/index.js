@@ -1,4 +1,4 @@
-import { Button } from "/scripts/src/buttons.js";
+import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { pageUrl } from "/scripts/src/main.js";

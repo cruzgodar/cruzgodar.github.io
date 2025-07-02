@@ -1,11 +1,11 @@
 import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
-import { DownloadHighResButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { DownloadHighResButton, GenerateButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Textarea } from "/scripts/components/textareas.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
-import { Textarea } from "/scripts/src/textareas.js";
 
 export default function()
 {

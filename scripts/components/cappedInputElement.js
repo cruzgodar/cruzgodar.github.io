@@ -1,10 +1,10 @@
 import anime from "../anime.js";
+import { addHoverEventWithScale } from "../src/hoverEvents.js";
+import { $$, addTemporaryListener, pageElement } from "../src/main.js";
+import { siteSettings } from "../src/settings.js";
+import { clamp } from "../src/utils.js";
 import { Checkbox } from "./checkboxes.js";
-import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
-import { $$, addTemporaryListener, pageElement } from "./main.js";
-import { siteSettings } from "./settings.js";
-import { clamp } from "./utils.js";
 
 export let uncapEverything = false;
 

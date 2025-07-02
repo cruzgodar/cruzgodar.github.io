@@ -1,8 +1,8 @@
 import { A, eigendata, uVectors } from "./data.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
+import { DownloadButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Slider } from "/scripts/components/sliders.js";
 import { $ } from "/scripts/src/main.js";
-import { Slider } from "/scripts/src/sliders.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export default function()

@@ -1,5 +1,5 @@
 import { BinaryTrees } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { DownloadButton } from "/scripts/components/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()

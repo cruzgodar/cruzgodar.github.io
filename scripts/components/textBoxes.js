@@ -1,6 +1,6 @@
+import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { siteSettings } from "../src/settings.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
-import { addTemporaryParam, pageUrl } from "./main.js";
-import { siteSettings } from "./settings.js";
 
 
 

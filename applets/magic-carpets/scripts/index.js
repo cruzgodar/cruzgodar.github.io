@@ -1,8 +1,8 @@
 import { MagicCarpets } from "./class.js";
-import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Button, DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

@@ -1,10 +1,10 @@
 import anime from "../anime.js";
-import { opacityAnimationTime } from "./animation.js";
-import { headerElement } from "./header.js";
-import { addHoverEvent } from "./hoverEvents.js";
+import { opacityAnimationTime } from "../src/animation.js";
+import { headerElement } from "../src/header.js";
+import { addHoverEvent } from "../src/hoverEvents.js";
+import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { siteSettings } from "../src/settings.js";
 import { InputElement } from "./inputElement.js";
-import { addTemporaryParam, pageUrl } from "./main.js";
-import { siteSettings } from "./settings.js";
 
 const maxSingleColumnOptions = 7;
 

@@ -1,7 +1,7 @@
+import { addHoverEventWithScale } from "../src/hoverEvents.js";
+import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "../src/main.js";
+import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
-import { addHoverEventWithScale } from "./hoverEvents.js";
-import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "./main.js";
-import { clamp } from "./utils.js";
 
 const trackWidth = 170;
 const thumbWidth = 24;

@@ -1,9 +1,9 @@
 import { AbelianSandpiles } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 const palettes = {
 	sakura: [[229, 190, 237], [149, 147, 217], [124, 144, 219]],

@@ -1,6 +1,6 @@
-import { changeOpacity } from "./animation.js";
+import { changeOpacity } from "../src/animation.js";
+import { addTemporaryParam, pageUrl } from "../src/main.js";
 import { InputElement } from "./inputElement.js";
-import { addTemporaryParam, pageUrl } from "./main.js";
 
 export class Checkbox extends InputElement
 {

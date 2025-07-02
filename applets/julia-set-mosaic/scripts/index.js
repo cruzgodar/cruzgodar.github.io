@@ -1,8 +1,8 @@
 import { JuliaSetMosaic } from "./class.js";
-import { DownloadHighResButton } from "/scripts/src/buttons.js";
+import { DownloadHighResButton } from "/scripts/components/buttons.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

@@ -1,3 +1,5 @@
+import { Button, initNavButtons, initTextButtons } from "../components/buttons.js";
+import { initCarousels } from "../components/carousels.js";
 import {
 	fadeDownIn,
 	fadeIn,
@@ -10,9 +12,7 @@ import {
 	bannerElement,
 	initBanner
 } from "./banners.js";
-import { Button, initNavButtons, initTextButtons } from "./buttons.js";
 import { initCards } from "./cards.js";
-import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { listenForFullscreenKey, updateTapClickElements } from "./interaction.js";

@@ -1,7 +1,7 @@
 import { KickedRotator } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {

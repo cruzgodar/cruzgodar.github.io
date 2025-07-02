@@ -1,8 +1,8 @@
 import { SingularValueDecompositions } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { FileUpload } from "/scripts/src/fileUploads.js";
+import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { FileUpload } from "/scripts/components/fileUploads.js";
+import { Slider } from "/scripts/components/sliders.js";
 import { $ } from "/scripts/src/main.js";
-import { Slider } from "/scripts/src/sliders.js";
 
 export default function()
 {

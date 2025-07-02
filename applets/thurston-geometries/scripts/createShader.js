@@ -362,10 +362,5 @@ export function createShader({
 		${mainFunctionGlsl}
 	`;
 
-	if (window.DEBUG)
-	{
-		console.log(shader);
-	}
-
 	return shader;
 }

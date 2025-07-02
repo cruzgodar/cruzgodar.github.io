@@ -1,14 +1,14 @@
-import { changeOpacity } from "./animation.js";
-import { Dropdown } from "./dropdowns.js";
-import { InputElement } from "./inputElement.js";
+import { changeOpacity } from "../src/animation.js";
 import {
 	$$,
 	addTemporaryListener,
 	addTemporaryParam,
 	pageUrl
-} from "./main.js";
-import { redirect } from "./navigation.js";
-import { sitemap } from "./sitemap.js";
+} from "../src/main.js";
+import { redirect } from "../src/navigation.js";
+import { sitemap } from "../src/sitemap.js";
+import { Dropdown } from "./dropdowns.js";
+import { InputElement } from "./inputElement.js";
 
 export class Button extends InputElement
 {

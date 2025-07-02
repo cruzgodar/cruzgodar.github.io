@@ -9,9 +9,9 @@ import {
 	possibleAnswers,
 	unMembers
 } from "./countryData.js";
-import { Button } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { Button } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
 import { addHoverEvent, addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { $, $$, addStyle, addTemporaryListener } from "/scripts/src/main.js";
 import { animate, fuzzySearch, sleep } from "/scripts/src/utils.js";

@@ -1,11 +1,11 @@
 import { LambdaCalculus } from "./class.js";
-import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
-import { Dropdown } from "/scripts/src/dropdowns.js";
+import { Button, DownloadButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
+import { Textarea } from "/scripts/components/textareas.js";
 import { $ } from "/scripts/src/main.js";
 import { setOnThemeChange } from "/scripts/src/settings.js";
-import { Slider } from "/scripts/src/sliders.js";
-import { Textarea } from "/scripts/src/textareas.js";
 
 const examples = {
 	identity: "λx.x",
