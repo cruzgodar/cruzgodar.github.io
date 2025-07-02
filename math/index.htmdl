@@ -1,6 +1,17 @@
-### center "A collection of the presentations I've given over time --- all of them are all built with Lapsa, a library I wrote to make simple presentations elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals."
+### center "A collection of the papers I've written, along with the presentations I've given over time --- all of the latter are built with Lapsa, a library I wrote to make slides elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals."
 
 
+
+## Papers
+
+### image-links
+	https://www.combinatorics.org/ojs/index.php/eljc/article/view/v32i2p51 -e "With Benjamin Young: Bijectivizing the PT&ndash;DT Correspondence. Electronic Journal of Combinatorics, 2025" graphics/bijectivizing-the-pt-dt-correspondence.webp
+	dissertation/dissertation.pdf "Dissertation"
+###
+
+
+
+## Presentations
 
 ### image-links
 	turing-complete-lines -t
