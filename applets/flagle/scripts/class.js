@@ -141,8 +141,6 @@ export class FlagOverlap extends Applet
 		} while (this.correctFlag === this.lastCorrectFlag);
 
 		this.lastCorrectFlag = this.correctFlag;
-
-		this.correctFlag = "ca";
 	}
 
 
