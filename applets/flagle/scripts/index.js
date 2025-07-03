@@ -308,6 +308,17 @@ export default async function()
 		{
 			selectItem(selectedItemApparentIndex - 1);
 		}
+
+		const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+		if (countryList.children.length > 0 && selectedItemDomIndex !== undefined)
+		{
+			countryList.children[selectedItemDomIndex].scrollIntoView({
+				behavior: "instant",
+				block: "nearest",
+				inline: "nearest"
+			});
+		}
 	}
 
 	function navigateCountryListDown()
@@ -315,6 +326,17 @@ export default async function()
 		if (selectedItemApparentIndex < currentResults.length - 1)
 		{
 			selectItem(selectedItemApparentIndex + 1);
+		}
+
+		const selectedItemDomIndex = apparentToDomOrder[selectedItemApparentIndex];
+
+		if (countryList.children.length > 0 && selectedItemDomIndex !== undefined)
+		{
+			countryList.children[selectedItemDomIndex].scrollIntoView({
+				behavior: "instant",
+				block: "nearest",
+				inline: "nearest"
+			});
 		}
 	}
 
