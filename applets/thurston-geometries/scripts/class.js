@@ -886,10 +886,14 @@ export class ThurstonGeometries extends Applet
 			format: "float"
 		});
 
+		console.log("Blurring");
+
+		await sleep(1000);
+
 		this.downloadBokehFrameFromPixels({
 			pixels,
 			resolution,
-			blurAmount: 5,
+			blurAmount: 1,
 			clipDistance: this.clipDistance
 		});
 
