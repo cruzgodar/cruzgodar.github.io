@@ -15,6 +15,7 @@ export class FlagOverlap extends Applet
 	possibleFlags = [];
 	gameOver = false;
 	currentlyAnimating = false;
+	replaying = false;
 
 	guessCanvases;
 	overlayCanvases;
@@ -140,6 +141,8 @@ export class FlagOverlap extends Applet
 		} while (this.correctFlag === this.lastCorrectFlag);
 
 		this.lastCorrectFlag = this.correctFlag;
+
+		this.correctFlag = "ca";
 	}
 
 
@@ -436,7 +439,7 @@ export class FlagOverlap extends Applet
 		animate((t) =>
 		{
 			// Catch the case where we've already replayed.
-			if (index >= this.guesses.length)
+			if (index >= this.guesses.length || this.replaying)
 			{
 				return;
 			}
@@ -729,6 +732,7 @@ export class FlagOverlap extends Applet
 		}
 
 		this.currentlyAnimating = true;
+		this.replaying = true;
 
 		for (const progressBar of this.progressBars)
 		{
@@ -775,6 +779,8 @@ export class FlagOverlap extends Applet
 		this.correctFlag = undefined;
 		this.gameOver = false;
 		this.currentlyAnimating = false;
+
+		setTimeout(() => this.replaying = false, 250);
 	}
 
 
