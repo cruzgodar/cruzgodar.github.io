@@ -584,7 +584,7 @@ export class NilAxes extends NilGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.2 + .8 * max(dotProduct1, -.75 * dotProduct1)) * 1.15;
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -.75 * dotProduct1)) * 1.25;
 	`;
 
 	ambientOcclusionDenominator = "250.0";
@@ -688,14 +688,14 @@ export class NilRooms extends NilGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity1 = (.25 + .75 * dotProduct1 * dotProduct1) * 1.25;
+		float lightIntensity1 = (.25 + .75 * dotProduct1 * dotProduct1) * 1.4;
 
 
 
 		vec4 lightDirection2 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity2 = (.2 + .8 * max(dotProduct2, -dotProduct2)) * 1.15;
+		float lightIntensity2 = (.2 + .8 * max(dotProduct2, -dotProduct2)) * 1.25;
 
 
 

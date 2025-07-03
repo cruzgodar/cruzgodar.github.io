@@ -879,7 +879,7 @@ export class ThurstonGeometries extends Applet
 
 		this.geometryData.includeDepthData = true;
 
-		this.run(this.geometryData);
+		this.run(this.geometryData, false);
 
 		const { pixels } = await this.wilson.readHighResPixels({
 			resolution,
@@ -889,7 +889,7 @@ export class ThurstonGeometries extends Applet
 		this.downloadBokehFrameFromPixels({
 			pixels,
 			resolution,
-			blurAmount: 3,
+			blurAmount: 5,
 			clipDistance: this.clipDistance
 		});
 
