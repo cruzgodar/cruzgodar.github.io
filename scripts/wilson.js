@@ -410,6 +410,7 @@ class Wilson {
         }
     }
     destroy() {
+        __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this);
         __classPrivateFieldSet(this, _Wilson_destroyed, true, "f");
         window.removeEventListener("resize", __classPrivateFieldGet(this, _Wilson_onResizeWindow, "f"));
         document.documentElement.removeEventListener("keydown", __classPrivateFieldGet(this, _Wilson_handleKeydownEvent, "f"));

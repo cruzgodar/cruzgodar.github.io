@@ -340,6 +340,24 @@ export default async function()
 		}
 	}
 
+	function isAnyGuessFullscreen()
+	{
+		if (applet.wilson.currentlyFullscreen || applet.wilsonOverlay.currentlyFullscreen)
+		{
+			return true;
+		}
+
+		for (const guess of applet.guesses)
+		{
+			if (guess.currentlyFullscreen)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function updateCountryListEntries()
 	{
 		preventFocusWithMouse = true;
@@ -463,6 +481,11 @@ export default async function()
 
 			else if (e.key === "Enter")
 			{
+				if (isAnyGuessFullscreen())
+				{
+					return;
+				}
+
 				e.preventDefault();
 				e.stopPropagation();
 
