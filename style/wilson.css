@@ -118,40 +118,57 @@
 
 
 
-.WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button
+.WILSON_button-container
 {
-	width: 15px;
-	height: 15px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+
+	z-index: 50;
+
+	display: flex;
+	column-gap: 10px;
+}
+
+.WILSON_fullscreen-container.WILSON_fullscreen .WILSON_button-container
+{
+	position: fixed;
+	
+	right: calc(10px + env(safe-area-inset-right));
+	top: calc(10px + env(safe-area-inset-top));
+
+	z-index: 1000;
+}
+
+
+
+.WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button, .WILSON_reset-button
+{
+	width: 16px;
+	height: 16px;
 	
 	background: rgb(255, 255, 255);
 	border: 2px solid rgb(64, 64, 64);
-	border-radius: 25%;
+	border-radius: 8px;
 	padding: 5px;
 	
 	cursor: pointer;
 	outline: none;
 }
 
-.WILSON_enter-fullscreen-button
-{
-	position: absolute;
-	
-	right: 10px;
-	top: 10px;
-	
-	z-index: 50;
-}
-
 .WILSON_exit-fullscreen-button
 {
-	position: fixed;
-	
-	right: calc(10px + env(safe-area-inset-right));
-	top: calc(10px + env(safe-area-inset-top));
-	
-	z-index: 1000;
-
 	display: none;
+}
+
+.WILSON_reset-button
+{
+	opacity: 0;
+	transition: opacity .15s ease-out;
+
+	width: 20px;
+	height: 20px;
+	padding: 3px;
 }
 
 .WILSON_fullscreen-container.WILSON_fullscreen .WILSON_enter-fullscreen-button
@@ -164,7 +181,7 @@
 	display: block;
 }
 
-.WILSON_enter-fullscreen-button img, .WILSON_exit-fullscreen-button img
+.WILSON_enter-fullscreen-button img, .WILSON_exit-fullscreen-button img, .WILSON_reset-button img
 {
 	width: 100%;
 	height: 100%;

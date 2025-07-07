@@ -106,7 +106,91 @@ export function updateTapClickElements()
 	}
 }
 
-export function listenForFullscreenKey()
+
+
+function handleFullscreenButtonPress()
+{
+	let minDistance = Infinity;
+	let minIndex = 0;
+
+	for (let i = 0; i < currentlyLoadedApplets.length; i++)
+	{
+		const applet = currentlyLoadedApplets[i];
+
+		if (!applet.allowFullscreenWithKeyboard)
+		{
+			continue;
+		}
+
+		const wilson = applet.wilsonForFullscreen ?? applet.wilson;
+		
+		if (wilson.currentlyFullscreen)
+		{
+			wilson.exitFullscreen();
+			return;
+		}
+
+		const rect = applet.canvas.getBoundingClientRect();
+		const center = rect.top + rect.height / 2;
+		const distance = Math.abs(window.innerHeight / 2 - center);
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			minIndex = i;
+		}
+	}
+
+	if (!currentlyLoadedApplets[minIndex].allowFullscreenWithKeyboard)
+	{
+		return;
+	}
+
+	const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
+		?? currentlyLoadedApplets[minIndex].wilson;
+
+	wilson.enterFullscreen();
+}
+
+function handleResetButtonPress()
+{
+	let minDistance = Infinity;
+	let minIndex = 0;
+
+	for (let i = 0; i < currentlyLoadedApplets.length; i++)
+	{
+		const applet = currentlyLoadedApplets[i];
+
+		if (!applet.allowResetWithKeyboard)
+		{
+			continue;
+		}
+
+		const rect = applet.canvas.getBoundingClientRect();
+		const center = rect.top + rect.height / 2;
+		const distance = Math.abs(window.innerHeight / 2 - center);
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			minIndex = i;
+		}
+	}
+
+	if (!currentlyLoadedApplets[minIndex].allowResetWithKeyboard)
+	{
+		return;
+	}
+
+	const wilson = currentlyLoadedApplets[minIndex].wilsonForReset
+		?? currentlyLoadedApplets[minIndex].wilson;
+
+	wilson.resetWorldCoordinates();
+	wilson.resetDraggables();
+	wilson.onReset();
+}
+
+export function listenForWilsonButtons()
 {
 	addTemporaryListener({
 		object: document.documentElement,
@@ -114,51 +198,21 @@ export function listenForFullscreenKey()
 		callback: e =>
 		{
 			if (
-				e.key === "f"
-				&& !(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey)
-				&& document.activeElement.tagName !== "INPUT"
-				&& document.activeElement.tagName !== "TEXTAREA"
+				e.ctrlKey || e.metaKey || e.altKey || e.shiftKey
+				|| document.activeElement.tagName === "INPUT"
+				|| document.activeElement.tagName === "TEXTAREA"
 			) {
-				let minDistance = Infinity;
-				let minIndex = 0;
+				return;
+			}
 
-				for (let i = 0; i < currentlyLoadedApplets.length; i++)
-				{
-					const applet = currentlyLoadedApplets[i];
+			if (e.key === "f")
+			{
+				handleFullscreenButtonPress();
+			}
 
-					if (!applet.allowFullscreenWithKeyboard)
-					{
-						continue;
-					}
-
-					const wilson = applet.wilsonForFullscreen ?? applet.wilson;
-					
-					if (wilson.currentlyFullscreen)
-					{
-						wilson.exitFullscreen();
-						return;
-					}
-
-					const rect = applet.canvas.getBoundingClientRect();
-					const center = rect.top + rect.height / 2;
-					const distance = Math.abs(window.innerHeight / 2 - center);
-
-					if (distance < minDistance)
-					{
-						minDistance = distance;
-						minIndex = i;
-					}
-				}
-
-				if (!currentlyLoadedApplets[minIndex].allowFullscreenWithKeyboard)
-				{
-					return;
-				}
-
-				const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
-					?? currentlyLoadedApplets[minIndex].wilson;
-	
-				wilson.enterFullscreen();
+			if (e.key === "r")
+			{
+				handleResetButtonPress();
 			}
 		}
 	});

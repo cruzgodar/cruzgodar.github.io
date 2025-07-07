@@ -40,8 +40,10 @@ export class Applet
 	canvas;
 	wilson;
 	wilsonForFullscreen;
+	wilsonForReset;
 	wilsons = [];
 	allowFullscreenWithKeyboard = true;
+	allowResetWithKeyboard = true;
 
 	fpsDisplayCtx;
 
@@ -72,7 +74,7 @@ export class Applet
 			}, 50);
 		}
 
-		this.addHoverEventOnFullscreenButton();
+		this.addHoverEventOnWilsonButtons();
 
 		this.setReduceMotionOnWilsons();
 
@@ -268,7 +270,7 @@ export class Applet
 
 	
 
-	addHoverEventOnFullscreenButton()
+	addHoverEventOnWilsonButtons()
 	{
 		let attempts = 0;
 
@@ -281,11 +283,13 @@ export class Applet
 
 			attempts++;
 
-			const fullscreenButtons = $$(
-				".WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button"
-			);
+			const buttons = $$(`
+				.WILSON_enter-fullscreen-button,
+				.WILSON_exit-fullscreen-button,
+				.WILSON_reset-button
+			`);
 
-			for (const button of fullscreenButtons)
+			for (const button of buttons)
 			{
 				addHoverEventWithScale({
 					element: button,
@@ -294,7 +298,7 @@ export class Applet
 				});
 			}
 
-			if (fullscreenButtons.length !== 0)
+			if (buttons.length !== 0)
 			{
 				clearInterval(refreshId);
 			}

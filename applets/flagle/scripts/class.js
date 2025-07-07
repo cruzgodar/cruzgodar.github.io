@@ -105,8 +105,8 @@ export class FlagOverlap extends Applet
 
 			interactionOptions: {
 				callbacks: {
-					mousedown: switchFullscreen,
-					touchstart: switchFullscreen
+					mouseup: switchFullscreen,
+					touchend: switchFullscreen
 				},
 			},
 

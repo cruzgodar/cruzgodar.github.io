@@ -47,16 +47,6 @@ const elementSelectorsWithScale =
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	"#enter-fullscreen-button": {
-		scale: 1.1,
-		addBounceOnTouch: () => false,
-		preventScaleWithIncreasedContrast: false
-	},
-	"#exit-fullscreen-button": {
-		scale: 1.1,
-		addBounceOnTouch: () => false,
-		preventScaleWithIncreasedContrast: false
-	},
 	".gallery-image-1-1 img": {
 		scale: 1.075,
 		addBounceOnTouch: () => true,
