@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { sleep } from "/scripts/src/utils.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class JuliaSetExplorer extends AnimationFrameApplet
@@ -11,8 +11,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	numIterations = 100;
 
 	switchJuliaModeButton;
+	ignoreBrightnessCalculation = false;
 	pastBrightnessScales = [];
-	c = [0, 0];
+	c = [100, 100];
 
 	resolution = 500;
 	resolutionHidden = 50;
@@ -40,11 +41,18 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter;
+				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
 				
 				vec2 c = z;
 				
-				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				vec3 color = normalize(
+					vec3(
+						abs(z.x + z.y) / 2.0,
+						abs(z.x) / 2.0,
+						abs(z.y) / 2.0
+					)
+					+ .1 / length(z) * vec3(1.0)
+				);
 				
 				float brightness = exp(-length(z));
 				
@@ -91,9 +99,16 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter;
+				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
 				
-				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				vec3 color = normalize(
+					vec3(
+						abs(z.x + z.y) / 2.0,
+						abs(z.x) / 2.0,
+						abs(z.y) / 2.0
+					)
+					+ .1 / length(z) * vec3(1.0)
+				);
 				
 				float brightness = exp(-length(z));
 				
@@ -135,16 +150,37 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform vec2 c;
 			uniform int numIterations;
 			uniform float brightnessScale;
+			uniform float juliaRadius;
 			
 			
 			
 			void main(void)
 			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter;
+				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+
+				float distanceFromMouse = clamp(
+					length(z - c + vec2(0.75, 0.0))
+						/ max(worldSize.x, worldSize.y)
+						* juliaRadius * 10.0,
+					0.0,
+					1.0
+				);
+
+				float t = distanceFromMouse < 0.5
+					? 2.0 * distanceFromMouse * distanceFromMouse 
+					: 1.0 - (-2.0 * distanceFromMouse + 2.0) * (-2.0 * distanceFromMouse + 2.0) / 2.0;
 				
-				vec2 mandelbrotC = z;
+				// Remove the bias as the bubble expands.
+				vec2 usableC = mix(c - vec2(0.75, 0.0), z, t);
 				
-				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				vec3 color = normalize(
+					vec3(
+						abs(z.x + z.y) / 2.0,
+						abs(z.x) / 2.0,
+						abs(z.y) / 2.0
+					)
+					+ .1 / length(z) * vec3(1.0)
+				);
 				
 				float brightness = exp(-length(z));
 				
@@ -158,9 +194,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 					{
 						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 						
-						broken = true;
-						
-						break;
+						return;
 					}
 					
 					if (length(z) >= 4.0)
@@ -168,53 +202,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + mandelbrotC;
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
 					
 					brightness += exp(-length(z));
 				}
 				
-				
-				
-				if (!broken)
-				{
-					gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
-				}
-				
-				
-				
-				z = uv * 2.0;
-				
-				color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				
-				brightness = exp(-length(z));
-				
-				broken = false;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor.xyz /= 4.0;
-						
-						broken = true;
-						
-						break;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				if (!broken)
-				{
-					gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
-				}
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 			}
 		`;
 
@@ -227,35 +220,36 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			uniforms: {
 				mandelbrot: {
-					worldCenter: [-0.75, 0],
+					worldCenter: [0, 0],
 					worldSize: [4, 4],
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 				},
 				julia: {
-					worldCenter: [-0.75, 0],
+					worldCenter: [0, 0],
 					worldSize: [4, 4],
 					c: this.c,
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 				},
 				juliaPicker: {
-					worldCenter: [-0.75, 0],
+					worldCenter: [0, 0],
 					worldSize: [4, 4],
 					c: this.c,
 					numIterations: this.numIterations,
 					brightnessScale: 10,
+					juliaRadius: 1,
 				},
 			},
 
 			canvasWidth: this.resolution,
 
 			worldWidth: 4,
-			worldCenterX: -.75,
+			worldCenterX: 0,
 			worldCenterY: 0,
 
-			minWorldX: -2 - 0.75,
-			maxWorldX: 2 - 0.75,
+			minWorldX: -2,
+			maxWorldX: 2,
 			minWorldY: -2,
 			maxWorldY: 2,
 			minWorldWidth: 0.00001,
@@ -308,32 +302,19 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 
-	advanceJuliaMode()
+	async advanceJuliaMode()
 	{
 		if (this.juliaMode === "mandelbrot")
 		{
 			this.juliaMode = "juliaPicker";
 
-			this.c = [0, 0];
+			// Prevent the middle of the mandelbrot set from being distorted.
+			this.c = [1000, 1000];
 		}
 
 		else if (this.juliaMode === "julia")
 		{
 			this.juliaMode = "mandelbrot";
-
-			this.wilson.resizeWorld({
-				width: 4,
-				height: 4,
-				centerX: -.75,
-				centerY: 0,
-				minX: -2 - 0.75,
-				maxX: 2 - 0.75,
-			});
-		}
-
-		else
-		{
-			this.juliaMode = "julia";
 
 			this.wilson.resizeWorld({
 				width: 4,
@@ -345,7 +326,38 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			});
 		}
 
-		this.pastBrightnessScales = [];
+		else
+		{
+			this.ignoreBrightnessCalculation = true;
+
+			// Animate the Julia set out from the clicked location.
+			await animate((t) =>
+			{
+				this.wilson.setUniforms({
+					juliaRadius: 1 - t,
+				});
+				this.wilsonHidden.setUniforms({
+					juliaRadius: 1 - t,
+				});
+
+				this.needNewFrame = true;
+			}, 600, "easeOutQuint");
+
+			this.ignoreBrightnessCalculation = false;
+
+			await animate((t) =>
+			{
+				this.wilson.resizeWorld({
+					minX: -2 + 0.75 * t,
+					maxX: 2 + 0.75 * t,
+				});
+
+				this.needNewFrame = true;
+			}, 300, "easeInOutQuad");
+
+			this.juliaMode = "julia";
+			this.c[0] -= 0.75;
+		}
 
 		this.wilson.useShader(this.juliaMode);
 		this.wilsonHidden.useShader(this.juliaMode);
@@ -398,11 +410,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 	}
 
-	drawFrame()
+	updateBrightnessScale(zoomLevel)
 	{
-		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
-		this.numIterations = Math.ceil(200 + zoomLevel * 40);
-
 		this.wilsonHidden.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
@@ -436,6 +445,17 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		);
 
 		this.pastBrightnessScales.push(brightnessScale);
+	}
+
+	drawFrame()
+	{
+		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
+		this.numIterations = Math.ceil(200 + zoomLevel * 40);
+
+		if (!this.ignoreBrightnessCalculation)
+		{
+			this.updateBrightnessScale(zoomLevel);
+		}
 
 		if (this.pastBrightnessScales.length > 10)
 		{
