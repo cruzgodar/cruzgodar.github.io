@@ -745,13 +745,13 @@ body > .WILSON_fullscreen-container .fps-canvas
 	position: absolute;
 	left: 10px;
 	top: 10px;
-	width: 15px;
-	height: 15px;
+	width: 16px;
+	height: 16px;
 	z-index: 50;
 	background: var(--background);
 	border: 2px solid var(--normal-contrast);
 	padding: 5px;
-	border-radius: 25%;
+	border-radius: 8px;
 	cursor: pointer;
 	outline: none;
 }

@@ -357,6 +357,9 @@ export class NewtonsMethod extends AnimationFrameApplet
 			minWorldHeight: 0.00001,
 			maxWorldHeight: 100,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			interactionOptions: {
@@ -422,6 +425,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 				);
 			}, 16);
 		}
+
+		this.wilson.setCurrentStateAsDefault();
 
 		this.resume();
 	}
@@ -493,7 +498,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 			},
 			easing: "cubicBezier(0, 1, 0.5, 1)",
 			duration: 1000
-		});
+		})
+			.then(() =>
+			{
+				this.wilson.setCurrentStateAsDefault();
+			});
 
 		changeOpacity({
 			element: this.wilson.draggables[`root${this.numRoots - 1}`].element,

@@ -42,6 +42,12 @@ export async function animate(
 	duration,
 	easing = "easeOutQuad",
 ) {
+	if (duration === 0)
+	{
+		update(1);
+		return;
+	}
+	
 	const dummy = { t: 0 };
 	
 	await anime({

@@ -88,6 +88,9 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			interactionOptions: {

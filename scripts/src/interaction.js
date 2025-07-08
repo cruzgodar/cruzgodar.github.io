@@ -185,9 +185,7 @@ function handleResetButtonPress()
 	const wilson = currentlyLoadedApplets[minIndex].wilsonForReset
 		?? currentlyLoadedApplets[minIndex].wilson;
 
-	wilson.resetWorldCoordinates();
-	wilson.resetDraggables();
-	wilson.onReset();
+	wilson.reset();
 }
 
 export function listenForWilsonButtons()

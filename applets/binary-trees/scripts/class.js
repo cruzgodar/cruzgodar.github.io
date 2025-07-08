@@ -25,6 +25,10 @@ export class BinaryTrees extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: this.resolution,
+
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			draggableOptions: {

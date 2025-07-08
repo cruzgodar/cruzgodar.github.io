@@ -24,6 +24,10 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: this.resolution,
+
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+			
 			draggableOptions: {
 				callbacks: {
 					drag: this.onDragDraggable.bind(this),

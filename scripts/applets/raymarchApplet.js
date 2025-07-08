@@ -38,6 +38,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// Changing it also requires upating the camera position.
 	focalLengthFactor;
 	cameraPos;
+	defaultCameraPos;
 	lightPos;
 	lightBrightness;
 	useOppositeLight;
@@ -139,6 +140,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		
 		this.focalLengthFactor = focalLengthFactor;
 		this.cameraPos = cameraPos;
+		this.defaultCameraPos = [...this.cameraPos];
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
@@ -249,6 +251,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			minWorldY: 0.001 - this.worldSize / 2,
 			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
+
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+			onReset: this.onReset.bind(this),
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -512,8 +518,29 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.moveUpdate(timeElapsed);
 	}
 
+	onReset()
+	{
+		const oldCameraPos = [...this.cameraPos];
+
+		animate((t) =>
+		{
+			this.cameraPos = [
+				(1 - t) * oldCameraPos[0] + t * this.defaultCameraPos[0],
+				(1 - t) * oldCameraPos[1] + t * this.defaultCameraPos[1],
+				(1 - t) * oldCameraPos[2] + t * this.defaultCameraPos[2]
+			];
+		}, 150, "easeInOutQuad");
+	}
+
 	drawFrame()
 	{
+		// if (Math.abs(this.wilson.worldCenterX) > 2 * Math.PI)
+		// {
+		// 	this.wilson.resizeWorld({
+		// 		centerX: this.wilson.worldCenterX % (2 * Math.PI),
+		// 	});
+		// }
+
 		this.theta = this.lockedOnOrigin
 			? this.wilson.worldCenterX
 			: 2 * Math.PI - this.wilson.worldCenterX;

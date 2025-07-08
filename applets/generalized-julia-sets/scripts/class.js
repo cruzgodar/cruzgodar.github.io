@@ -43,6 +43,9 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 			minWorldHeight: 0.00001,
 			maxWorldHeight: 100,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			draggableOptions: {

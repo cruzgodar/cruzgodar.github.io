@@ -75,6 +75,10 @@ export class BarnsleyFern extends AnimationFrameApplet
 			worldCenterX: 0,
 			worldCenterY: 5,
 
+			useResetButton: true,
+			animateReset: false,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			draggableOptions: {
 				draggables: {
 					tip: [2.6556, 9.95851]
@@ -330,13 +334,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 			A1: this.A1,
 			A4: this.A4,
 			b2: this.b2
-		}, "updateX");
-
-		this.wilsonUpdate.setUniforms({
-			A1: this.A1,
-			A4: this.A4,
-			b2: this.b2
-		}, "updateY");
+		}, "update");
 	}
 
 	onReleaseDraggable()

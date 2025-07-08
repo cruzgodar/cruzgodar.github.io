@@ -29,6 +29,7 @@ export default function()
 		value: 10,
 		min: 2,
 		max: 20,
+		snapPoints: [10],
 		onInput: onSliderInput
 	});
 
