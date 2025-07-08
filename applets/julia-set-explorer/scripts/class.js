@@ -13,7 +13,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	switchJuliaModeButton;
 	ignoreBrightnessCalculation = false;
 	pastBrightnessScales = [];
-	c = [100, 100];
+	c = [0, 0];
 
 	resolution = 500;
 	resolutionHidden = 50;
@@ -44,62 +44,6 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
 				
 				vec2 c = z;
-				
-				vec3 color = normalize(
-					vec3(
-						abs(z.x + z.y) / 2.0,
-						abs(z.x) / 2.0,
-						abs(z.y) / 2.0
-					)
-					+ .1 / length(z) * vec3(1.0)
-				);
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-
-
-		const shaderJulia = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform vec2 c;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
 				
 				vec3 color = normalize(
 					vec3(
@@ -211,24 +155,129 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			}
 		`;
 
+		const shaderJulia = /* glsl */`
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
+			
+			uniform vec2 c;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			void main(void)
+			{
+				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+				
+				vec3 color = normalize(
+					vec3(
+						abs(z.x + z.y) / 2.0,
+						abs(z.x) / 2.0,
+						abs(z.y) / 2.0
+					)
+					+ .1 / length(z) * vec3(1.0)
+				);
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+
+		const shaderJuliaToMandelbrot = /* glsl */`
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
+			
+			uniform vec2 c;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			uniform float juliaProportion;
+			
+			
+			
+			void main(void)
+			{
+				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+				
+				vec3 color = normalize(
+					vec3(
+						abs(z.x + z.y) / 2.0,
+						abs(z.x) / 2.0,
+						abs(z.y) / 2.0
+					)
+					+ .1 / length(z) * vec3(1.0)
+				);
+				
+				float brightness = exp(-length(z));
+
+				vec2 usableC = mix(z, c, juliaProportion);
+				
+				
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+
 		const options = {
 			shaders: {
 				mandelbrot: shaderMandelbrot,
-				julia: shaderJulia,
 				juliaPicker: shaderJuliaPicker,
+				julia: shaderJulia,
+				juliaToMandelbrot: shaderJuliaToMandelbrot,
 			},
 
 			uniforms: {
 				mandelbrot: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],
-					numIterations: this.numIterations,
-					brightnessScale: 10,
-				},
-				julia: {
-					worldCenter: [0, 0],
-					worldSize: [4, 4],
-					c: this.c,
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 				},
@@ -239,6 +288,21 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 					juliaRadius: 1,
+				},
+				julia: {
+					worldCenter: [0, 0],
+					worldSize: [4, 4],
+					c: this.c,
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+				},
+				juliaToMandelbrot: {
+					worldCenter: [0, 0],
+					worldSize: [4, 4],
+					c: this.c,
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+					juliaProportion: 1,
 				},
 			},
 
@@ -308,26 +372,84 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		{
 			this.juliaMode = "juliaPicker";
 
+			this.wilson.setUniforms({
+				juliaRadius: 1,
+			}, "juliaPicker");
+			this.wilsonHidden.setUniforms({
+				juliaRadius: 1,
+			}, "juliaPicker");
+
 			// Prevent the middle of the mandelbrot set from being distorted.
 			this.c = [1000, 1000];
+
+			this.ignoreBrightnessCalculation = true;
 		}
+
+
 
 		else if (this.juliaMode === "julia")
 		{
-			this.juliaMode = "mandelbrot";
+			this.juliaMode = "juliaToMandelbrot";
 
-			this.wilson.resizeWorld({
-				width: 4,
-				height: 4,
-				centerX: 0,
-				centerY: 0,
-				minX: -2,
-				maxX: 2,
+			this.wilson.useShader(this.juliaMode);
+			this.wilsonHidden.useShader(this.juliaMode);
+
+			this.wilson.setUniforms({
+				juliaProportion: 1,
+				c: this.c,
 			});
+			this.wilsonHidden.setUniforms({
+				juliaProportion: 1,
+				c: this.c,
+			});
+
+			const worldWidth = this.wilson.worldWidth;
+			const worldHeight = this.wilson.worldHeight;
+
+			const levelsToZoom = -Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4));
+
+			await animate((t) =>
+			{
+				this.wilson.resizeWorld({
+					width: worldWidth * (1 - t) + 4 * t,
+					height: worldHeight * (1 - t) + 4 * t,
+				});
+
+				this.needNewFrame = true;
+			}, 500, "easeInOutQuad");
+
+			if (levelsToZoom > 0)
+			{
+				await sleep(100);
+			}
+
+			await animate((t) =>
+			{
+				this.wilson.setUniforms({
+					juliaProportion: 1 - t,
+				});
+				this.wilsonHidden.setUniforms({
+					juliaProportion: 1 - t,
+				});
+
+				this.wilson.resizeWorld({
+					minX: -2 + 0.75 * (1 - t),
+					maxX: 2 + 0.75 * (1 - t),
+				});
+
+				this.needNewFrame = true;
+			}, 600, "easeInOutQuad");
+
+			this.ignoreBrightnessCalculation = false;
+			this.juliaMode = "mandelbrot";
 		}
+
+
 
 		else
 		{
+			this.juliaMode = "julia";
+
 			this.ignoreBrightnessCalculation = true;
 
 			// Animate the Julia set out from the clicked location.
@@ -355,13 +477,16 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				this.needNewFrame = true;
 			}, 300, "easeInOutQuad");
 
-			this.juliaMode = "julia";
 			this.c[0] -= 0.75;
 		}
 
+
+
 		this.wilson.useShader(this.juliaMode);
 		this.wilsonHidden.useShader(this.juliaMode);
+
 		this.wilson.useInteractionForPanAndZoom = this.juliaMode !== "juliaPicker";
+
 		if (this.switchJuliaModeButton)
 		{
 			this.switchJuliaModeButton.disabled = this.juliaMode === "juliaPicker";
