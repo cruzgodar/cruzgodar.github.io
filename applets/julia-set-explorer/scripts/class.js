@@ -408,6 +408,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			const levelsToZoom = -Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4));
 
+			const animationTime = levelsToZoom > 1
+				? 500
+				: levelsToZoom > 0
+					? 200
+					: 0;
+
 			await animate((t) =>
 			{
 				this.wilson.resizeWorld({
@@ -416,7 +422,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				});
 
 				this.needNewFrame = true;
-			}, 500, "easeInOutQuad");
+			}, animationTime, "easeInOutQuad");
 
 			if (levelsToZoom > 0)
 			{
