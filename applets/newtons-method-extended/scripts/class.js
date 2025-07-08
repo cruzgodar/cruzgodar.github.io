@@ -49,6 +49,9 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			minWorldHeight: 0.00005,
 			maxWorldHeight: 300,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			draggableOptions: {

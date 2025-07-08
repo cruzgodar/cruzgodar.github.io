@@ -760,6 +760,8 @@ body > .WILSON_fullscreen-container .fps-canvas
 {
 	z-index: 1000;
 	opacity: 0;
+	pointer-events: none;
+
 }
 
 .wilson-help-button img

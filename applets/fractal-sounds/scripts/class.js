@@ -49,6 +49,10 @@ export class FractalSounds extends AnimationFrameApplet
 
 			canvasWidth: this.resolution,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+			onReset: () => this.wilson.reset(),
+
 			fullscreenOptions: {
 				onSwitch: this.onSwitchFullscreen.bind(this),
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
@@ -362,6 +366,8 @@ export class FractalSounds extends AnimationFrameApplet
 
 	onDragCanvas({ x, y })
 	{
+		this.wilsonJulia.showResetButton();
+
 		this.moved++;
 
 		if (this.moved >= 10)
@@ -394,6 +400,8 @@ export class FractalSounds extends AnimationFrameApplet
 
 	onWheelCanvas({ x, y })
 	{
+		this.wilsonJulia.showResetButton();
+
 		this.showOrbit(x, y);
 	}
 
@@ -609,9 +617,9 @@ export class FractalSounds extends AnimationFrameApplet
 
 			const containers = document.querySelectorAll(".WILSON_canvas-container");
 
-			containers[0].appendChild(
-				document.querySelector(".WILSON_exit-fullscreen-button")
-			);
+			const buttonContainers = document.querySelectorAll(".WILSON_button-container");
+
+			containers[0].appendChild(buttonContainers[2]);
 		}
 
 		else

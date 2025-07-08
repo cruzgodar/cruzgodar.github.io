@@ -236,6 +236,9 @@ export class GameOfLife extends AnimationFrameApplet
 			minWorldWidth: 0.05,
 			minWorldHeight: 0.05,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			interactionOptions: {
 				useForPanAndZoom: true,
 				onPanAndZoom: () => this.needNewFrame = true,

@@ -29,6 +29,7 @@ export class ThreeApplet extends AnimationFrameApplet
 	upVec = [];
 
 	cameraPos = [0, 0, 0];
+	defaultCameraPos = [0, 0, 0];
 
 	lockedOnOrigin = true;
 	distanceFromOrigin = 1;
@@ -48,6 +49,7 @@ export class ThreeApplet extends AnimationFrameApplet
 
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.cameraPos = cameraPos;
+		this.defaultCameraPos = [...this.cameraPos];
 		this.distanceFromOrigin = magnitude(this.cameraPos);
 
 		this.listenForKeysPressed(
@@ -195,6 +197,8 @@ export class ThreeApplet extends AnimationFrameApplet
 			this.cameraPos[1] += this.movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
 			this.cameraPos[2] += this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
+			this.wilson.showResetButton();
+
 			this.needNewFrame = true;
 		}
 
@@ -209,6 +213,26 @@ export class ThreeApplet extends AnimationFrameApplet
 				this.moveVelocity[i] = 0;
 			}
 		}
+	}
+
+
+
+	onReset()
+	{
+		const duration = 350;
+
+		const oldCameraPos = [...this.cameraPos];
+
+		animate((t) =>
+		{
+			this.cameraPos = [
+				(1 - t) * oldCameraPos[0] + t * this.defaultCameraPos[0],
+				(1 - t) * oldCameraPos[1] + t * this.defaultCameraPos[1],
+				(1 - t) * oldCameraPos[2] + t * this.defaultCameraPos[2]
+			];
+
+			this.needNewFrame = true;
+		}, duration, "easeInOutQuad");
 	}
 
 
@@ -258,6 +282,7 @@ export class ThreeApplet extends AnimationFrameApplet
 					this.wilson.resizeWorld({
 						centerX: dummy.theta,
 						centerY: dummy.phi,
+						showResetButton: false,
 					});
 					
 					this.cameraPos = scaleVector(
@@ -270,16 +295,24 @@ export class ThreeApplet extends AnimationFrameApplet
 			}).finished;
 		}
 
-		this.lockedOnOrigin = value;
-		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+		this.worldSize = value ? 2.5 : 1.5;
 
 		this.wilson.resizeWorld({
 			width: this.worldSize,
 			height: this.worldSize,
-			centerX: this.lockedOnOrigin ? this.theta : 2 * Math.PI - this.theta,
-			centerY: this.lockedOnOrigin ? this.phi : Math.PI - this.phi,
+			centerX: value ? this.theta : 2 * Math.PI - this.theta,
+			centerY: value ? this.phi : Math.PI - this.phi,
 			minY: 0.001 - this.worldSize / 2,
 			maxY: Math.PI - 0.001 + this.worldSize / 2,
+			showResetButton: false,
 		});
+
+		if (this.lockedOnOrigin !== value)
+		{
+			this.wilson.setCurrentStateAsDefault();
+			this.defaultCameraPos = [...this.cameraPos];
+		}
+
+		this.lockedOnOrigin = value;
 	}
 }

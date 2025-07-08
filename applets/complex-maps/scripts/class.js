@@ -54,6 +54,9 @@ export class ComplexMaps extends AnimationFrameApplet
 			minWorldHeight: 0.00002,
 			maxWorldHeight: 100,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			draggableOptions: {

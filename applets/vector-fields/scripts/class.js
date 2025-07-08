@@ -166,6 +166,9 @@ export class VectorFields extends AnimationFrameApplet
 			minWorldHeight: 0.5,
 			maxWorldHeight: 20,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.generateNewField({}),
 
 			interactionOptions: {

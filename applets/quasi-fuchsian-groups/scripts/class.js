@@ -159,6 +159,9 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			worldCenterX: 2,
 			worldCenterY: 0,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			draggableOptions: {
@@ -627,16 +630,23 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 		this.needNewFrame = true;
 	}
 
+	releaseDraggableTimeoutId;
+
 	onReleaseDraggable()
 	{
-		this.wilson.resizeCanvas({
-			width: this.resolutionLarge,
-		});
+		clearTimeout(this.releaseDraggableTimeoutId);
 
-		this.maxDepth = 500;
-		this.maxPixelBrightness = 200;
+		this.releaseDraggableTimeoutId = setTimeout(() =>
+		{
+			this.wilson.resizeCanvas({
+				width: this.resolutionLarge,
+			});
 
-		this.needNewFrame = true;
+			this.maxDepth = 500;
+			this.maxPixelBrightness = 200;
+
+			this.needNewFrame = true;
+		}, 50);
 	}
 
 	onDragDraggable()

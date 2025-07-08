@@ -41,6 +41,9 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 			clampWorldCoordinatesMode: "both",
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			interactionOptions: {

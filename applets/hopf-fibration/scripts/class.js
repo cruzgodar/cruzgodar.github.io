@@ -121,6 +121,10 @@ export class HopfFibration extends ThreeApplet
 			minWorldY: 0.001 - this.worldSize / 2,
 			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
 
+			useResetButton: true,
+			resetButtonIconPath: "/graphics/general-icons/reset.png",
+			onReset: this.onReset.bind(this),
+
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			interactionOptions: {
