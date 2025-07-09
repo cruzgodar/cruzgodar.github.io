@@ -542,8 +542,6 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			});
 
 			this.needNewFrame = true;
-
-			this.needNewFrame = true;
 		}
 	}
 
