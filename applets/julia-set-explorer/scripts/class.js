@@ -3,8 +3,7 @@ import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-const touchBubbleRadius = 0.5;
-const mouseBubbleRadius = 1;
+const bubbleRadius = 1;
 
 export class JuliaSetExplorer extends AnimationFrameApplet
 {
@@ -99,6 +98,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform int numIterations;
 			uniform float brightnessScale;
 			uniform float juliaRadius;
+			uniform float crosshairSize;
 			
 			
 			
@@ -106,10 +106,22 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			{
 				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
 
+				vec2 diffFromC = z - c + vec2(0.75, 0.0);
+				float minWorldSize = min(worldSize.x, worldSize.y);
+
+				vec2 minMaxDistanceToCrosshair = vec2(
+					min(abs(diffFromC.x), abs(diffFromC.y)),
+					max(abs(diffFromC.x), abs(diffFromC.y))
+				) / minWorldSize;
+
+				if (minMaxDistanceToCrosshair.x < 0.002 && minMaxDistanceToCrosshair.y < crosshairSize)
+				{
+					gl_FragColor = vec4(0.75, 0.75, 0.75, 1.0);
+					return;
+				}
+
 				float distanceFromMouse = clamp(
-					length(z - c + vec2(0.75, 0.0))
-						/ max(worldSize.x, worldSize.y)
-						* juliaRadius * 10.0,
+					length(diffFromC) / minWorldSize * juliaRadius * 10.0,
 					0.0,
 					1.0
 				);
@@ -292,6 +304,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 					juliaRadius: 1,
+					crosshairSize: 0.002
 				},
 				julia: {
 					worldCenter: [0, 0],
@@ -334,6 +347,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				callbacks: {
 					mousemove: this.onMousemove.bind(this),
 					mousedown: this.onMousedown.bind(this),
+					touchstart: this.onTouchstart.bind(this),
 					touchmove: this.onTouchmove.bind(this),
 					touchend: this.onTouchend.bind(this),
 				},
@@ -377,10 +391,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.juliaMode = "juliaPicker";
 
 			this.wilson.setUniforms({
-				juliaRadius: currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius,
+				juliaRadius: bubbleRadius,
 			}, "juliaPicker");
 			this.wilsonHidden.setUniforms({
-				juliaRadius: currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius,
+				juliaRadius: bubbleRadius,
 			}, "juliaPicker");
 
 			// Prevent the middle of the mandelbrot set from being distorted.
@@ -424,7 +438,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				});
 
 				this.needNewFrame = true;
-			}, animationTime, "easeInOutQuad");
+			}, animationTime, "easeInOutCubic");
 
 			if (levelsToZoom > 0)
 			{
@@ -446,7 +460,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				});
 
 				this.needNewFrame = true;
-			}, 600, "easeInOutQuad");
+			}, 500, "easeInOutQuad");
 
 			this.juliaMode = "mandelbrot";
 		}
@@ -460,19 +474,19 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.ignoreBrightnessCalculation = true;
 
 			// Animate the Julia set out from the clicked location.
-			await animate((t) =>
+			animate((t) =>
 			{
 				this.wilson.setUniforms({
-					juliaRadius: (1 - t)
-						* (currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius),
+					juliaRadius: (1 - t) * bubbleRadius,
 				});
 				this.wilsonHidden.setUniforms({
-					juliaRadius: (1 - t)
-						* (currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius),
+					juliaRadius: (1 - t) * bubbleRadius,
 				});
 
 				this.needNewFrame = true;
-			}, 600, "easeOutQuint");
+			}, 600, "cubicBezier(0.2, 1, 0.2, 1)");
+
+			await sleep(500);
 
 			this.ignoreBrightnessCalculation = false;
 
@@ -520,6 +534,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		{
 			this.c = [x, y];
 
+			this.wilson.setUniforms({
+				crosshairSize: 0
+			});
+			this.wilsonHidden.setUniforms({
+				crosshairSize: 0
+			});
+
+			this.needNewFrame = true;
+
 			this.needNewFrame = true;
 		}
 	}
@@ -532,13 +555,44 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 	}
 
+	onTouchstart({ x, y, event })
+	{
+		event.preventDefault();
+		
+		if (this.juliaMode === "juliaPicker")
+		{
+			const heightAdjust = Math.min(this.wilson.worldHeight, this.wilson.worldWidth) * 0.15;
+
+			this.c = [x, y + heightAdjust];
+
+			if (currentlyTouchDevice)
+			{
+				animate((t) =>
+				{
+					this.wilson.setUniforms({
+						crosshairSize: t * 0.02
+					});
+					this.wilsonHidden.setUniforms({
+						crosshairSize: t * 0.02
+					});
+
+					this.needNewFrame = true;
+				}, 100, "easeOutQuad");
+			}
+
+			this.needNewFrame = true;
+		}
+	}
+
 	onTouchmove({ x, y, event })
 	{
 		event.preventDefault();
 		
 		if (this.juliaMode === "juliaPicker")
 		{
-			this.c = [x, y];
+			const heightAdjust = Math.min(this.wilson.worldHeight, this.wilson.worldWidth) * 0.15;
+
+			this.c = [x, y + heightAdjust];
 
 			this.needNewFrame = true;
 		}
@@ -549,6 +603,18 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		if (this.juliaMode === "juliaPicker")
 		{
 			this.advanceJuliaMode();
+
+			animate((t) =>
+			{
+				this.wilson.setUniforms({
+					crosshairSize: (1 - t) * 0.02
+				});
+				this.wilsonHidden.setUniforms({
+					crosshairSize: (1 - t) * 0.02
+				});
+
+				this.needNewFrame = true;
+			}, 100, "easeOutQuad");
 		}
 	}
 
@@ -592,7 +658,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	drawFrame()
 	{
 		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
-		this.numIterations = Math.ceil(200 + zoomLevel * 40);
+		this.numIterations = Math.ceil(200 + zoomLevel * 50);
 
 		if (!this.ignoreBrightnessCalculation)
 		{
