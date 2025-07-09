@@ -1,6 +1,10 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
+
+const touchBubbleRadius = 0.5;
+const mouseBubbleRadius = 1;
 
 export class JuliaSetExplorer extends AnimationFrameApplet
 {
@@ -373,16 +377,14 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.juliaMode = "juliaPicker";
 
 			this.wilson.setUniforms({
-				juliaRadius: 1,
+				juliaRadius: currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius,
 			}, "juliaPicker");
 			this.wilsonHidden.setUniforms({
-				juliaRadius: 1,
+				juliaRadius: currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius,
 			}, "juliaPicker");
 
 			// Prevent the middle of the mandelbrot set from being distorted.
 			this.c = [1000, 1000];
-
-			this.ignoreBrightnessCalculation = true;
 		}
 
 
@@ -446,7 +448,6 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				this.needNewFrame = true;
 			}, 600, "easeInOutQuad");
 
-			this.ignoreBrightnessCalculation = false;
 			this.juliaMode = "mandelbrot";
 		}
 
@@ -462,10 +463,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			await animate((t) =>
 			{
 				this.wilson.setUniforms({
-					juliaRadius: 1 - t,
+					juliaRadius: (1 - t)
+						* (currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius),
 				});
 				this.wilsonHidden.setUniforms({
-					juliaRadius: 1 - t,
+					juliaRadius: (1 - t)
+						* (currentlyTouchDevice ? touchBubbleRadius : mouseBubbleRadius),
 				});
 
 				this.needNewFrame = true;
@@ -491,7 +494,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.wilson.useShader(this.juliaMode);
 		this.wilsonHidden.useShader(this.juliaMode);
 
-		this.wilson.useInteractionForPanAndZoom = this.juliaMode !== "juliaPicker";
+		if (this.juliaMode === "juliaPicker" && currentlyTouchDevice)
+		{
+			this.wilson.useInteractionForPanAndZoom = false;
+		}
+
+		else
+		{
+			this.wilson.useInteractionForPanAndZoom = true;
+		}
 
 		if (this.switchJuliaModeButton)
 		{
