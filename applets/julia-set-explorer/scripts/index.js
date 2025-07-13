@@ -1,5 +1,6 @@
 import { JuliaSetExplorer } from "./class.js";
 import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -35,6 +36,22 @@ export default function()
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution
+	});
+
+	const numIterationsSlider = new Slider({
+		element: $("#num-iterations-slider"),
+		name: "Iterations",
+		value: applet.numIterations,
+		min: 100,
+		max: 8000,
+		snapPoints: [500, 1000, 2000],
+		logarithmic: true,
+		integer: true,
+		onInput: () =>
+		{
+			applet.numIterations = numIterationsSlider.value;
+			applet.needNewFrame = true;
+		}
 	});
 
 	function changeResolution()

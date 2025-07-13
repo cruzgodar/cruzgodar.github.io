@@ -22,6 +22,10 @@ again. The function will flip-flop between those two numbers forever, and what's
 	resolution
 ###
 
+### sliders
+	num-iterations
+###
+
 ### buttons
 	switch-julia-mode
 ###

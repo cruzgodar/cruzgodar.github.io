@@ -5,13 +5,280 @@ import { WilsonGPU } from "/scripts/wilson.js";
 
 const bubbleRadius = 1;
 
+function getShaders(forHiddenCanvas = false)
+{
+	const color = forHiddenCanvas ? "vec3(1.0)" : "color";
+
+	const maxIterations = "8001";
+
+	const shaderMandelbrot = /* glsl */`
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform vec2 worldCenter;
+		uniform vec2 worldSize;
+		
+		uniform int numIterations;
+		uniform float brightnessScale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+			
+			vec2 c = z;
+			
+			vec3 color = normalize(
+				vec3(
+					abs(z.x + z.y) / 2.0,
+					abs(z.x) / 2.0,
+					abs(z.y) / 2.0
+				)
+				+ .1 / length(z) * vec3(1.0)
+			);
+			
+			float brightness = exp(-length(z));
+			
+			
+			
+			for (int iteration = 0; iteration < ${maxIterations}; iteration++)
+			{
+				if (iteration == numIterations)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 4.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			// Lets us determine which points are in the Mandelbrot set.
+			gl_FragColor = vec4(brightness / brightnessScale * ${color}, 1.0);
+		}
+	`;
+
+
+
+	const shaderJuliaPicker = /* glsl */`
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform vec2 worldCenter;
+		uniform vec2 worldSize;
+		
+		uniform vec2 c;
+		uniform int numIterations;
+		uniform float brightnessScale;
+		uniform float juliaRadius;
+		uniform float crosshairSize;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+
+			vec2 diffFromC = z - c + vec2(0.75, 0.0);
+			float minWorldSize = min(worldSize.x, worldSize.y);
+
+			vec2 minMaxDistanceToCrosshair = vec2(
+				min(abs(diffFromC.x), abs(diffFromC.y)),
+				max(abs(diffFromC.x), abs(diffFromC.y))
+			) / minWorldSize;
+
+			if (minMaxDistanceToCrosshair.x < 0.002 && minMaxDistanceToCrosshair.y < crosshairSize)
+			{
+				gl_FragColor = vec4(0.75, 0.75, 0.75, 1.0);
+				return;
+			}
+
+			float distanceFromMouse = clamp(
+				length(diffFromC) / minWorldSize * juliaRadius * 10.0,
+				0.0,
+				1.0
+			);
+
+			float t = distanceFromMouse < 0.5
+				? 2.0 * distanceFromMouse * distanceFromMouse 
+				: 1.0 - (-2.0 * distanceFromMouse + 2.0) * (-2.0 * distanceFromMouse + 2.0) / 2.0;
+			
+			// Remove the bias as the bubble expands.
+			vec2 usableC = mix(c - vec2(0.75, 0.0), z, t);
+			
+			vec3 color = normalize(
+				vec3(
+					abs(z.x + z.y) / 2.0,
+					abs(z.x) / 2.0,
+					abs(z.y) / 2.0
+				)
+				+ .1 / length(z) * vec3(1.0)
+			);
+			
+			float brightness = exp(-length(z));
+			
+			
+			
+			bool broken = false;
+			
+			for (int iteration = 0; iteration < ${maxIterations}; iteration++)
+			{
+				if (iteration == numIterations)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					
+					return;
+				}
+				
+				if (length(z) >= 4.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
+				
+				brightness += exp(-length(z));
+			}
+			
+			gl_FragColor = vec4(brightness / brightnessScale * ${color}, 1.0);
+		}
+	`;
+
+	const shaderJulia = /* glsl */`
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform vec2 worldCenter;
+		uniform vec2 worldSize;
+		
+		uniform vec2 c;
+		uniform int numIterations;
+		uniform float brightnessScale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+			
+			vec3 color = normalize(
+				vec3(
+					abs(z.x + z.y) / 2.0,
+					abs(z.x) / 2.0,
+					abs(z.y) / 2.0
+				)
+				+ .1 / length(z) * vec3(1.0)
+			);
+			
+			float brightness = exp(-length(z));
+			
+			
+			
+			for (int iteration = 0; iteration < ${maxIterations}; iteration++)
+			{
+				if (iteration == numIterations)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 4.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightnessScale * ${color}, 1.0);
+		}
+	`;
+
+	const shaderJuliaToMandelbrot = /* glsl */`
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform vec2 worldCenter;
+		uniform vec2 worldSize;
+		
+		uniform vec2 c;
+		uniform int numIterations;
+		uniform float brightnessScale;
+		uniform float juliaProportion;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
+			
+			vec3 color = normalize(
+				vec3(
+					abs(z.x + z.y) / 2.0,
+					abs(z.x) / 2.0,
+					abs(z.y) / 2.0
+				)
+				+ .1 / length(z) * vec3(1.0)
+			);
+			
+			float brightness = exp(-length(z));
+
+			vec2 usableC = mix(z, c, juliaProportion);
+			
+			
+			
+			for (int iteration = 0; iteration < ${maxIterations}; iteration++)
+			{
+				if (iteration == numIterations)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 4.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightnessScale * ${color}, 1.0);
+		}
+	`;
+
+	return {
+		mandelbrot: shaderMandelbrot,
+		juliaPicker: shaderJuliaPicker,
+		julia: shaderJulia,
+		juliaToMandelbrot: shaderJuliaToMandelbrot
+	};
+}
+
 export class JuliaSetExplorer extends AnimationFrameApplet
 {
 	wilsonHidden;
 
 	juliaMode = "mandelbrot";
 
-	numIterations = 100;
+	numIterations = 1000;
 
 	switchJuliaModeButton;
 	ignoreBrightnessCalculation = false;
@@ -29,266 +296,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
-		const shaderMandelbrot = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
-				
-				vec2 c = z;
-				
-				vec3 color = normalize(
-					vec3(
-						abs(z.x + z.y) / 2.0,
-						abs(z.x) / 2.0,
-						abs(z.y) / 2.0
-					)
-					+ .1 / length(z) * vec3(1.0)
-				);
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-
-
-		const shaderJuliaPicker = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform vec2 c;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			uniform float juliaRadius;
-			uniform float crosshairSize;
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
-
-				vec2 diffFromC = z - c + vec2(0.75, 0.0);
-				float minWorldSize = min(worldSize.x, worldSize.y);
-
-				vec2 minMaxDistanceToCrosshair = vec2(
-					min(abs(diffFromC.x), abs(diffFromC.y)),
-					max(abs(diffFromC.x), abs(diffFromC.y))
-				) / minWorldSize;
-
-				if (minMaxDistanceToCrosshair.x < 0.002 && minMaxDistanceToCrosshair.y < crosshairSize)
-				{
-					gl_FragColor = vec4(0.75, 0.75, 0.75, 1.0);
-					return;
-				}
-
-				float distanceFromMouse = clamp(
-					length(diffFromC) / minWorldSize * juliaRadius * 10.0,
-					0.0,
-					1.0
-				);
-
-				float t = distanceFromMouse < 0.5
-					? 2.0 * distanceFromMouse * distanceFromMouse 
-					: 1.0 - (-2.0 * distanceFromMouse + 2.0) * (-2.0 * distanceFromMouse + 2.0) / 2.0;
-				
-				// Remove the bias as the bubble expands.
-				vec2 usableC = mix(c - vec2(0.75, 0.0), z, t);
-				
-				vec3 color = normalize(
-					vec3(
-						abs(z.x + z.y) / 2.0,
-						abs(z.x) / 2.0,
-						abs(z.y) / 2.0
-					)
-					+ .1 / length(z) * vec3(1.0)
-				);
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				bool broken = false;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
-					
-					brightness += exp(-length(z));
-				}
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-		const shaderJulia = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform vec2 c;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
-				
-				vec3 color = normalize(
-					vec3(
-						abs(z.x + z.y) / 2.0,
-						abs(z.x) / 2.0,
-						abs(z.y) / 2.0
-					)
-					+ .1 / length(z) * vec3(1.0)
-				);
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-		const shaderJuliaToMandelbrot = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform vec2 c;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			uniform float juliaProportion;
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter - vec2(0.75, 0.0);
-				
-				vec3 color = normalize(
-					vec3(
-						abs(z.x + z.y) / 2.0,
-						abs(z.x) / 2.0,
-						abs(z.y) / 2.0
-					)
-					+ .1 / length(z) * vec3(1.0)
-				);
-				
-				float brightness = exp(-length(z));
-
-				vec2 usableC = mix(z, c, juliaProportion);
-				
-				
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + usableC;
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
+		
 
 		const options = {
-			shaders: {
-				mandelbrot: shaderMandelbrot,
-				juliaPicker: shaderJuliaPicker,
-				julia: shaderJulia,
-				juliaToMandelbrot: shaderJuliaToMandelbrot,
-			},
+			shaders: getShaders(),
 
 			uniforms: {
 				mandelbrot: {
@@ -375,7 +386,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
+			shaders: getShaders(true)
 		});
+		
+		this.wilsonHidden.createFramebufferTexturePair({
+			id: "draw",
+			textureType: "float",
+		});
+		this.wilsonHidden.useFramebuffer("draw");
+
 		this.wilsonHidden.useShader("mandelbrot");
 
 		this.needNewFrame = true,
@@ -616,13 +635,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 	}
 
-	updateBrightnessScale(zoomLevel)
+	updateBrightnessScale()
 	{
 		this.wilsonHidden.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			numIterations: this.numIterations,
-			brightnessScale: 20 + zoomLevel
+			brightnessScale: 1
 		});
 
 		if (this.juliaMode !== "mandelbrot")
@@ -631,36 +650,32 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 
 		this.wilsonHidden.drawFrame();
-		const pixels = this.wilsonHidden.readPixels();
+		const pixels = this.wilsonHidden.readPixels({
+			format: "float",
+		});
 
 		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
-			brightnesses[i] = pixels[4 * i] + pixels[4 * i + 1] + pixels[4 * i + 2];
+			brightnesses[i] = pixels[4 * i];
 		}
 
 		brightnesses.sort((a, b) => a - b);
 
-		const brightnessScale = Math.max(
-			(
-				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-			) / 25,
-			4
-		);
+		const brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .99)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .95)]
+		) / 2;
 
 		this.pastBrightnessScales.push(brightnessScale);
 	}
 
 	drawFrame()
 	{
-		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
-		this.numIterations = Math.ceil(200 + zoomLevel * 50);
-
 		if (!this.ignoreBrightnessCalculation)
 		{
-			this.updateBrightnessScale(zoomLevel);
+			this.updateBrightnessScale();
 		}
 
 		if (this.pastBrightnessScales.length > 10)
@@ -668,23 +683,20 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.pastBrightnessScales.shift();
 		}
 
-		let averageBrightnessScale = 0;
+		let brightnessScale = 0;
 
 		for (let i = 0; i < this.pastBrightnessScales.length; i++)
 		{
-			averageBrightnessScale += this.pastBrightnessScales[i];
+			brightnessScale += this.pastBrightnessScales[i];
 		}
 
-		averageBrightnessScale = Math.max(
-			averageBrightnessScale / this.pastBrightnessScales.length,
-			.5
-		);
+		brightnessScale /= this.pastBrightnessScales.length;
 
 		this.wilson.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			numIterations: this.numIterations,
-			brightnessScale: averageBrightnessScale
+			brightnessScale
 		});
 
 		if (this.juliaMode !== "mandelbrot")
