@@ -18,7 +18,9 @@ export default function()
 
 	const applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
-		switchJuliaModeButton
+		switchJuliaModeButton,
+		generatingCode: "",
+		worldAdjust: [-0.75, 0],
 	});
 
 	new DownloadHighResButton({
@@ -32,7 +34,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
+		value: 1000,
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution
