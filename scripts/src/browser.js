@@ -1,4 +1,5 @@
-export const browserIsIos = false;
+export const browserIsIos = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 const browserSupportsP3 = matchMedia("(color-gamut: p3)").matches;
 
