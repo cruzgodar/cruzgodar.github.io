@@ -118,7 +118,10 @@ export default function()
 
 	async function run()
 	{
-		await switchJuliaModeButton.loaded;
+		await Promise.all([
+			switchJuliaModeButton.loaded,
+			glslTextarea.loaded,
+		]);
 
 		switchJuliaModeButton.setState({ newState: false });
 		switchJuliaModeButton.disabled = false;

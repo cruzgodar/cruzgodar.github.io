@@ -66,6 +66,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			onResizeCanvas: () => this.needNewFrame = true,
 
+			draggableOptions: {
+				draggables: {
+					draggableArg: [0, 0],
+				},
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
+
 			interactionOptions: {
 				useForPanAndZoom: true,
 				onPanAndZoom: () => this.needNewFrame = true,
@@ -99,6 +108,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
+			draggableOptions: {},
 		});
 		
 		this.wilsonHidden.createFramebufferTexturePair({
@@ -567,7 +577,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			centerY: 0,
 		});
 
-
+		this.wilson.draggables.draggableArg.element.style.display = this.needDraggable
+			? "block"
+			: "none";
 
 		this.wilson.useShader("mandelbrot");
 		this.wilsonHidden.useShader("mandelbrot");
@@ -819,6 +831,17 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				this.needNewFrame = true;
 			}, 100, "easeOutQuad");
 		}
+	}
+
+	onDragDraggable({ x, y })
+	{
+		for (const shader of ["mandelbrot", "juliaPicker", "julia", "juliaToMandelbrot"])
+		{
+			this.wilson.setUniforms({ draggableArg: [x, y] }, shader);
+			this.wilsonHidden.setUniforms({ draggableArg: [x, y] }, shader);
+		}
+
+		this.needNewFrame = true;
 	}
 
 	updateBrightnessScale()
