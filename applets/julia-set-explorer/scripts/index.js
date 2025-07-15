@@ -19,7 +19,7 @@ export default function()
 	const applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
 		switchJuliaModeButton,
-		generatingCode: "",
+		generatingCode: "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c",
 		worldAdjust: [-0.75, 0],
 	});
 

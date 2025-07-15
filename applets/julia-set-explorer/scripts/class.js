@@ -54,10 +54,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			worldCenterX: 0,
 			worldCenterY: 0,
 
-			minWorldX: -2,
-			maxWorldX: 2,
-			minWorldY: -2,
-			maxWorldY: 2,
+			minWorldX: -maxWorldSize / 2,
+			maxWorldX: maxWorldSize / 2,
+			minWorldY: -maxWorldSize / 2,
+			maxWorldY: maxWorldSize / 2,
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
 
@@ -182,7 +182,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					z = ${this.generatingCode};
 
 					r = length(z);
 					
@@ -274,7 +274,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					z = ${this.generatingCode};
 
 					r = length(z);
 					
@@ -333,7 +333,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					z = ${this.generatingCode};
 
 					r = length(z);
 					
@@ -396,7 +396,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					z = ${this.generatingCode};
 
 					r = length(z);
 					
@@ -419,10 +419,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 	async run({
-		generatingCode,
-		worldAdjust = [0, 0],
-		maxWorldSize = 4,
-		bailoutRadius = 4,
+		generatingCode = this.generatingCode,
+		worldAdjust = this.worldAdjust,
+		maxWorldSize = this.maxWorldSize,
+		bailoutRadius = this.bailoutRadius,
 	}) {
 		this.generatingCode = generatingCode;
 		this.worldAdjust = worldAdjust;
@@ -615,8 +615,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			const worldWidth = this.wilson.worldWidth;
 			const worldHeight = this.wilson.worldHeight;
+			const worldCenterX = this.wilson.worldCenterX;
+			const worldCenterY = this.wilson.worldCenterY;
 
-			const levelsToZoom = -Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4));
+			const levelsToZoom = Math.abs(
+				Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4))
+			);
 
 			const animationTime = levelsToZoom > 1
 				? 500
@@ -629,6 +633,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				this.wilson.resizeWorld({
 					width: worldWidth * (1 - t) + 4 * t,
 					height: worldHeight * (1 - t) + 4 * t,
+					centerX: worldCenterX * (1 - t),
+					centerY: worldCenterY * (1 - t),
 				});
 
 				this.needNewFrame = true;

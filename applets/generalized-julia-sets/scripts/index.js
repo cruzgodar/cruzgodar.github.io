@@ -1,7 +1,12 @@
-import { GeneralizedJuliaSets } from "./class.js";
+import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
-import { DownloadHighResButton, GenerateButton, ToggleButton } from "/scripts/components/buttons.js";
+import {
+	DownloadHighResButton,
+	GenerateButton,
+	ToggleButton
+} from "/scripts/components/buttons.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
+import { Slider } from "/scripts/components/sliders.js";
 import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -21,12 +26,12 @@ export default function()
 		onClick1: () => applet.advanceJuliaMode(),
 	});
 
-	applet = new GeneralizedJuliaSets({
+	applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
-		switchJuliaModeButton
+		switchJuliaModeButton,
+		maxWorldSize: 100,
+		bailoutRadius: 10000,
 	});
-
-	applet.loadPromise.then(() => run());
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -46,6 +51,7 @@ export default function()
 		mandelbrot: "cadd(cpow(z, 2.0), c)",
 		variedExponent: "cadd(cpow(z, draggableArg + vec2(3.0, 0.0)), c)",
 		trig: "csin(cmul(z, c))",
+		cornucopia: "ccos(z) + ccos(2.0*c) - cdiv(c,z)",
 		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
 		rationalMap: "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
 		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)",
@@ -60,6 +66,7 @@ export default function()
 			mandelbrot: "Classical Mandelbrot",
 			variedExponent: "Varied Exponent",
 			trig: "Trig Example",
+			cornucopia: "Julia Set Cornucopia",
 			burningShip: "Burning Ship",
 			rationalMap: "Rational Map",
 			mandelbrotDust: "Mandelbrot Dust",
@@ -93,14 +100,31 @@ export default function()
 		onInput: changeResolution
 	});
 
-	function run()
+	const numIterationsSlider = new Slider({
+		element: $("#num-iterations-slider"),
+		name: "Iterations",
+		value: applet.numIterations,
+		min: 100,
+		max: 8000,
+		snapPoints: [500, 1000, 2000],
+		logarithmic: true,
+		integer: true,
+		onInput: () =>
+		{
+			applet.numIterations = numIterationsSlider.value;
+			applet.needNewFrame = true;
+		}
+	});
+
+	async function run()
 	{
+		await switchJuliaModeButton.loaded;
+
 		switchJuliaModeButton.setState({ newState: false });
 		switchJuliaModeButton.disabled = false;
 
 		applet.run({
 			generatingCode: glslTextarea.value,
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 		});
 	}
 
@@ -130,4 +154,6 @@ export default function()
 
 		run();
 	}
+
+	run();
 }

@@ -16,6 +16,10 @@ Much of the code implementing complex functions was contributed by <a href='http
 	resolution
 ###
 
+### sliders
+	num-iterations
+###
+
 ### buttons
 	generate
 	switch-julia-mode
