@@ -22,6 +22,10 @@ again. The function will flip-flop between those two numbers forever, and what's
 	resolution
 ###
 
+### checkboxes
+	show-preview-canvas
+###
+
 ### sliders
 	num-iterations
 ###
@@ -36,7 +40,11 @@ again. The function will flip-flop between those two numbers forever, and what's
 
 <div id="canvas-landscape-middle">
 
-### canvas
+<div style="position: relative; margin-top: 32px">
+	### canvas
+
+	<canvas id="preview-canvas"></canvas>
+</div>
 
 </div>
 

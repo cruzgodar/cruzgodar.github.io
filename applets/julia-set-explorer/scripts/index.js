@@ -1,7 +1,9 @@
 import { JuliaSetExplorer } from "./class.js";
 import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 
@@ -18,6 +20,7 @@ export default function()
 
 	const applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
+		previewCanvas: $("#preview-canvas"),
 		switchJuliaModeButton,
 		generatingCode: "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c",
 		worldAdjust: [-0.75, 0],
@@ -38,6 +41,12 @@ export default function()
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution
+	});
+
+	const showPreviewCanvasCheckbox = new Checkbox({
+		element: $("#show-preview-canvas-checkbox"),
+		name: "Show preview canvas",
+		onInput: onCheckboxInput,
 	});
 
 	const numIterationsSlider = new Slider({
@@ -65,5 +74,33 @@ export default function()
 	function advanceJuliaMode()
 	{
 		applet.advanceJuliaMode();
+	}
+
+	async function onCheckboxInput()
+	{
+		if (showPreviewCanvasCheckbox.checked)
+		{
+			applet.wilsonPreview.canvas.style.display = "block";
+			applet.wilsonPreview.canvas.style.opacity = 0;
+
+			await new Promise(r => requestAnimationFrame(r));
+
+			await changeOpacity({
+				element: applet.wilsonPreview.canvas,
+				opacity: 1,
+				duration: 100,
+			});
+		}
+
+		else
+		{
+			await changeOpacity({
+				element: applet.wilsonPreview.canvas,
+				opacity: 0,
+				duration: 100,
+			});
+
+			applet.wilsonPreview.canvas.style.display = "none";
+		}
 	}
 }

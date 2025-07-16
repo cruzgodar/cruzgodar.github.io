@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { getFloatGlsl, getVectorGlsl, tempShader } from "/scripts/applets/applet.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { animate, sleep } from "/scripts/src/utils.js";
@@ -9,6 +10,7 @@ const bubbleRadius = 1;
 
 export class JuliaSetExplorer extends AnimationFrameApplet
 {
+	wilsonPreview;
 	wilsonHidden;
 
 	generatingCode;
@@ -19,7 +21,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	juliaMode = "mandelbrot";
 
-	numIterations = 1000;
+	numIterations = 500;
 
 	switchJuliaModeButton;
 	ignoreBrightnessCalculation = false;
@@ -33,6 +35,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	constructor({
 		canvas,
+		previewCanvas,
 		switchJuliaModeButton,
 		generatingCode,
 		worldAdjust = [0, 0],
@@ -116,6 +119,28 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			textureType: "float",
 		});
 		this.wilsonHidden.useFramebuffer("draw");
+
+
+
+		const optionsPreview = {
+			shader: tempShader,
+
+			canvasWidth: Math.ceil(this.resolution / 4),
+
+			worldWidth: 3,
+			worldCenterX: -worldAdjust[0],
+			worldCenterY: -worldAdjust[1],
+
+			verbose: window.DEBUG,
+		};
+
+		this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
+
+		this.wilson.canvas.parentElement.appendChild(
+			this.wilsonPreview.canvas
+		);
+
+
 
 		this.run({
 			generatingCode,
@@ -557,6 +582,21 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 
+		this.wilsonPreview.loadShader({
+			id: "julia",
+			shader: shaders.julia,
+			uniforms: {
+				worldCenter: [-worldAdjust[0], -worldAdjust[1]],
+				worldSize: [3, 3],
+				numIterations: this.numIterations,
+				brightnessScale: 10,
+				c: this.c,
+				draggableArg: [0, 0],
+			},
+		});
+
+
+
 		this.wilson.resizeWorld({
 			width: 4,
 			height: 4,
@@ -602,9 +642,20 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.wilsonHidden.setUniforms({
 				juliaRadius: bubbleRadius,
 			}, "juliaPicker");
+			
+			this.wilsonPreview.canvas.style.opacity = 0;
+			this.wilsonPreview.canvas.style.zIndex = 0;
+
+			await new Promise(r => requestAnimationFrame(r));
+
+			changeOpacity({
+				element: this.wilsonPreview.canvas,
+				opacity: 1,
+				duration: 100,
+			});
 
 			// Prevent the middle of the mandelbrot set from being distorted.
-			this.c = [1000, 1000];
+			this.c = [10000, 10000];
 		}
 
 
@@ -686,6 +737,16 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.juliaMode = "julia";
 
 			this.ignoreBrightnessCalculation = true;
+
+			changeOpacity({
+				element: this.wilsonPreview.canvas,
+				opacity: 0,
+				duration: 100,
+			})
+				.then(() =>
+				{
+					this.wilsonPreview.canvas.style.zIndex = -1;
+				});
 
 			// Animate the Julia set out from the clicked location.
 			animate((t) =>
@@ -841,6 +902,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.wilsonHidden.setUniforms({ draggableArg: [x, y] }, shader);
 		}
 
+		this.wilsonPreview.setUniforms({ draggableArg: [x, y] });
+
 		this.needNewFrame = true;
 	}
 
@@ -918,9 +981,20 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.wilson.setUniforms({ c: this.c });
 		}
 
-		else if (this.juliaMode !== "mandelbrot")
+		else if (this.juliaMode === "juliaToMandelbrot")
 		{
 			this.wilson.setUniforms({ juliaC: this.c });
+		}
+
+		else if (this.juliaMode === "juliaPicker")
+		{
+			this.wilson.setUniforms({ juliaC: this.c });
+
+			this.wilsonPreview.setUniforms({
+				c: [this.c[0] + this.worldAdjust[0], this.c[1] + this.worldAdjust[1]],
+			});
+
+			this.wilsonPreview.drawFrame();
 		}
 
 		this.wilson.drawFrame();
