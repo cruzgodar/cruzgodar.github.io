@@ -26,6 +26,8 @@ export default function()
 		worldAdjust: [-0.75, 0],
 	});
 
+	applet.wilsonPreview.canvas.style.display = "none";
+
 	new DownloadHighResButton({
 		element: $("#download-dropdown"),
 		applet,

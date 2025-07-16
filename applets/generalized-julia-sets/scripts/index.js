@@ -5,10 +5,12 @@ import {
 	GenerateButton,
 	ToggleButton
 } from "/scripts/components/buttons.js";
+import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 
@@ -28,10 +30,13 @@ export default function()
 
 	applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
+		previewCanvas: $("#preview-canvas"),
 		switchJuliaModeButton,
 		maxWorldSize: 100,
 		bailoutRadius: 10000,
 	});
+
+	applet.wilsonPreview.canvas.style.display = "none";
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -100,6 +105,12 @@ export default function()
 		onInput: changeResolution
 	});
 
+	const showPreviewCanvasCheckbox = new Checkbox({
+		element: $("#show-preview-canvas-checkbox"),
+		name: "Show preview canvas",
+		onInput: onCheckboxInput,
+	});
+
 	const numIterationsSlider = new Slider({
 		element: $("#num-iterations-slider"),
 		name: "Iterations",
@@ -156,6 +167,34 @@ export default function()
 		}
 
 		run();
+	}
+
+	async function onCheckboxInput()
+	{
+		if (showPreviewCanvasCheckbox.checked)
+		{
+			applet.wilsonPreview.canvas.style.display = "block";
+			applet.wilsonPreview.canvas.style.opacity = 0;
+
+			await new Promise(r => requestAnimationFrame(r));
+
+			await changeOpacity({
+				element: applet.wilsonPreview.canvas,
+				opacity: 1,
+				duration: 100,
+			});
+		}
+
+		else
+		{
+			await changeOpacity({
+				element: applet.wilsonPreview.canvas,
+				opacity: 0,
+				duration: 100,
+			});
+
+			applet.wilsonPreview.canvas.style.display = "none";
+		}
 	}
 
 	run();

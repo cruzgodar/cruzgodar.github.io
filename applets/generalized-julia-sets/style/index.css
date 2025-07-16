@@ -1,13 +1,42 @@
-#output-canvas
-{
-	touch-action: none;
-	user-select: none;
-	-webkit-user-select: none;
-}
-
 #code-input
 {
 	width: 250px;
 	
 	font-family: "Source Code Pro", monospace;
+}
+
+.WILSON_applet-container
+{
+	margin-top: 0 !important;
+}
+
+#preview-canvas
+{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 25%;
+	aspect-ratio: 1;
+	border: 2px solid var(--normal-contrast) !important;
+	border-radius: 0 18px 0 18px;
+	
+	opacity: 0;
+	z-index: -1;
+
+	view-transition-name: preview-canvas;
+}
+
+.WILSON_fullscreen #preview-canvas
+{
+	border-width: 2px 2px 0 0 !important;
+	border-radius: 0 18px 0 0 !important;
+}
+
+@media (min-aspect-ratio: 1/1)
+{
+	.WILSON_fullscreen #preview-canvas
+	{
+		height: 25%;
+		width: unset;
+	}
 }

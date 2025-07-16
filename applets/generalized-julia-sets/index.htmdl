@@ -16,6 +16,10 @@ Much of the code implementing complex functions was contributed by <a href='http
 	resolution
 ###
 
+### checkboxes
+	show-preview-canvas
+###
+
 ### sliders
 	num-iterations
 ###
@@ -31,7 +35,11 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 <div id="canvas-landscape-middle">
 
-### canvas
+<div style="position: relative; margin-top: 32px">
+	### canvas
+
+	<canvas id="preview-canvas"></canvas>
+</div>
 
 </div>
 
