@@ -146,6 +146,9 @@ export default function()
 	{
 		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 		applet.wilson && applet.wilson.resizeCanvas({ width: applet.resolution });
+		applet.wilsonPreview && applet.wilsonPreview.resizeCanvas({
+			width: Math.ceil(applet.resolution / 4)
+		});
 	}
 
 	function onDropdownInput()
