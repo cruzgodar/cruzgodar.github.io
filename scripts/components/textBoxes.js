@@ -126,13 +126,15 @@ export class TextBox extends CappedInputElement
 			? newValue || this.defaultValue
 			: parseFloat(newValue || this.defaultValue);
 
-		if (isNaN(this.value))
-		{
-			this.value = this.defaultValue;
-		}
+		
 
 		if (!this.valueTypeIsString)
 		{
+			if (isNaN(this.value))
+			{
+				this.value = this.defaultValue;
+			}
+			
 			if (this.value >= this.max && !uncapEverything)
 			{
 				this.value = this.max;
