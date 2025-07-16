@@ -459,6 +459,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		maxWorldSize = this.maxWorldSize,
 		bailoutRadius = this.bailoutRadius,
 	}) {
+		this.juliaMode = "mandelbrot";
 		this.generatingCode = generatingCode;
 		this.worldAdjust = worldAdjust;
 		this.maxWorldSize = maxWorldSize;
