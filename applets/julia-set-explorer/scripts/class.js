@@ -647,7 +647,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.wilsonPreview.canvas.style.opacity = 0;
 			this.wilsonPreview.canvas.style.zIndex = 0;
 
-			await new Promise(r => requestAnimationFrame(r));
+			await sleep(50);
 
 			changeOpacity({
 				element: this.wilsonPreview.canvas,
