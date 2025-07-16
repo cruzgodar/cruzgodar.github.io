@@ -6,12 +6,12 @@
 #preview-canvas
 {
 	position: absolute;
-	bottom: 0;
-	left: 0;
+	bottom: 10px;
+	left: 10px;
 	width: 25%;
 	aspect-ratio: 1;
 	border: 2px solid var(--normal-contrast) !important;
-	border-radius: 0 18px 0 18px;
+	border-radius: 8px;
 	
 	opacity: 0;
 	z-index: -1;
@@ -21,8 +21,7 @@
 
 .WILSON_fullscreen #preview-canvas
 {
-	border-width: 2px 2px 0 0 !important;
-	border-radius: 0 18px 0 0 !important;
+	border-radius: 12px !important;
 }
 
 @media (min-aspect-ratio: 1/1)
