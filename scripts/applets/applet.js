@@ -366,7 +366,7 @@ export class Applet
 
 			if (!siteSettings.reduceMotion)
 			{
-				element.style.setProperty("view-transition-name", "wilson-help-button");
+				element.style.setProperty("view-transition-name", `wilson-help-button${Math.random().toString(36).slice(2)}`);
 			}
 		}, 10);
 

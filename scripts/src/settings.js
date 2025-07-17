@@ -412,7 +412,7 @@ export async function toggleReduceMotion()
 	{
 		if (!siteSettings.reduceMotion)
 		{
-			helpButton.style.setProperty("view-transition-name", "wilson-help-button");
+			helpButton.style.setProperty("view-transition-name", `wilson-help-button${Math.random().toString(36).slice(2)}`);
 		}
 		
 		else
