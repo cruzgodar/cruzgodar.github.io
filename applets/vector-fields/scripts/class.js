@@ -169,7 +169,7 @@ export class VectorFields extends AnimationFrameApplet
 			useResetButton: true,
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 
-			onResizeCanvas: () => this.generateNewField({}),
+			onResizeCanvas: () => this.generateNewField({ delayResuing: true }),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -397,14 +397,17 @@ export class VectorFields extends AnimationFrameApplet
 		return glsl;
 	}
 
-
+	resumeTimeout;
 
 	async generateNewField({
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
+		delayResuing = false,
 	}) {
 		await this.loadPromise;
+
+		this.animationPaused = true;
 
 		this.lastGeneratedCanvasWidth = this.wilson.canvasWidth;
 		this.lastGeneratedCanvasHeight = this.wilson.canvasHeight;
@@ -508,7 +511,19 @@ export class VectorFields extends AnimationFrameApplet
 			}
 		}
 
-		this.resume();
+
+
+		clearTimeout(this.resumeTimeout);
+
+		if (!delayResuing)
+		{
+			this.resume();
+		}
+
+		else
+		{
+			this.resumeTimeout = setTimeout(() => this.resume(), 100);
+		}
 	}
 
 
