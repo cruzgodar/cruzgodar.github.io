@@ -1,6 +1,6 @@
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
+import { likelyWindowChromeHeight, pageWidth, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -125,7 +125,7 @@ export function updateBanner(timestamp)
 		contentElement.parentElement.style.marginBottom =
 			`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
 
-		setTimeout(() => onResize(), 16);
+		// setTimeout(() => onResize(), 16);
 	}
 
 	else

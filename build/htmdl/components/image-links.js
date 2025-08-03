@@ -23,13 +23,11 @@ function imageLink(options, url, name, coverPath)
 		const slicedUrl = url.slice(url.indexOf("http"));
 
 		return /* html */`
-			<div class="image-link">
-				<a href="${slicedUrl}" tabindex="-1">
-					<img src="/graphics/general-icons/placeholder.png" data-src="${coverPath}" alt="${name}" tabindex="1"></img>
-				</a>
+			<a href="${slicedUrl}" class="image-link">
+				<img src="/graphics/general-icons/placeholder.png" data-src="${coverPath}" alt="${name}" tabindex="1"></img>
 				
 				<p class="image-link-subtext">${name}</p>
-			</div>
+			</a>
 		`;
 	}
 
@@ -49,13 +47,11 @@ function imageLink(options, url, name, coverPath)
 		const src = `${slicedUrl}/cards/${id}/cover.webp`;
 
 		return /* html */`
-			<div class="image-link">
-				<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" tabindex="-1">
-					<img src="/graphics/general-icons/placeholder.png" data-src="${src}" alt="${name}" tabindex="1"></img>
-				</a>
+			<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" class="image-link">
+				<img src="/graphics/general-icons/placeholder.png" data-src="${src}" alt="${name}" tabindex="1"></img>
 				
 				<p class="image-link-subtext">${name}</p>
-			</div>
+			</a>
 		`;
 	}
 
@@ -65,13 +61,11 @@ function imageLink(options, url, name, coverPath)
 		: `${url}/cover.webp`;
 
 	return /* html */`
-		<div class="image-link">
-			<a href="${url}"${options.includes("t") ? " data-in-new-tab=\"1\"" : ""} tabindex="-1">
-				<img src="/graphics/general-icons/placeholder.png" data-src="${imgSrc}" alt="${name}" tabindex="1"></img>
-			</a>
+		<a href="${url}"${options.includes("t") ? " data-in-new-tab=\"1\"" : ""} class="image-link">
+			<img src="/graphics/general-icons/placeholder.png" data-src="${imgSrc}" alt="${name}" tabindex="1"></img>
 			
 			<p class="image-link-subtext">${name}</p>
-		</div>
+		</a>
 	`;
 }
 

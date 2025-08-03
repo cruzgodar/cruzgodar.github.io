@@ -1,34 +1,34 @@
 import { Button, initNavButtons, initTextButtons } from "../components/buttons.js";
 import { initCarousels } from "../components/carousels.js";
 import {
-    fadeDownIn,
-    fadeIn,
-    fadeLeftIn,
-    fadeRightIn,
-    fadeUpIn,
-    opacityAnimationTime
+	fadeDownIn,
+	fadeIn,
+	fadeLeftIn,
+	fadeRightIn,
+	fadeUpIn,
+	opacityAnimationTime
 } from "./animation.js";
 import {
-    bannerElement,
-    initBanner
+	bannerElement,
+	initBanner
 } from "./banners.js";
 import { initCards } from "./cards.js";
-import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
+import { initFocusEvents, initHoverEvents, initImageLinks } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { listenForWilsonButtons, updateTapClickElements } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
-    $,
-    $$,
-    pageElement,
-    pageUrl,
-    updatePageElement
+	$,
+	$$,
+	pageElement,
+	pageUrl,
+	updatePageElement
 } from "./main.js";
 import { typesetMath } from "./math.js";
 import {
-    navigationTransitionType,
-    redirect,
-    setCurrentlyRedirecting
+	navigationTransitionType,
+	redirect,
+	setCurrentlyRedirecting
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
 import { siteSettings } from "./settings.js";
@@ -65,6 +65,8 @@ export async function loadPage()
 
 	disableLinks();
 
+	initImageLinks();
+
 	initSolutions();
 
 	initHoverEvents();
@@ -84,6 +86,7 @@ export async function loadPage()
 	initCards();
 
 	onResize();
+	setTimeout(onResize, 100);
 
 	updateTapClickElements();
 

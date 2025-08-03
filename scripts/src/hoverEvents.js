@@ -1,11 +1,13 @@
 import { changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
-import { $$ } from "./main.js";
+import { $$, pageUrl } from "./main.js";
 import { prefetchPage } from "./navigation.js";
 import { siteSettings } from "./settings.js";
+import { sitemap } from "./sitemap.js";
+import { animate } from "./utils.js";
 
 const elementSelectors = [
-	["a", 1, () => false],
+	["a:not(.image-link)", 1, () => false],
 	[".carousel-dot", 1, () => false]
 ];
 
@@ -35,16 +37,6 @@ const elementSelectorsWithScale =
 	".checkbox-container": {
 		scale: 1.1,
 		addBounceOnTouch: () => true,
-		preventScaleWithIncreasedContrast: false
-	},
-	".image-link a[data-card-id] img": {
-		scale: 1.035,
-		addBounceOnTouch: () => true,
-		preventScaleWithIncreasedContrast: false
-	},
-	".image-link a:not([data-card-id]) img": {
-		scale: 1.035,
-		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
 	".gallery-image-1-1 img": {
@@ -258,6 +250,62 @@ export function initFocusEvents()
 		element.addEventListener("focus", () =>
 		{
 			element.children[0].focus();
+		});
+	}
+}
+
+
+
+export function initImageLinks()
+{
+	const categoryPagesColors = {
+		"/gallery": "176, 238, 173",
+		"/applets": "255, 180, 203",
+		"/teaching": "255, 216, 150",
+		"/math": "175, 229, 255",
+		"/about": "244, 199, 255",
+		"/home": undefined,
+	};
+
+	// Find which of these pages is the parent of our current page.
+	let page = pageUrl;
+	
+	while (!(page in categoryPagesColors))
+	{
+		page = sitemap[page].parent;
+	}
+
+	const color = categoryPagesColors[page];
+
+	for (const element of $$(".image-link"))
+	{
+		const addBounceOnTouch = element.getAttribute("data-card-id")
+			? () => true
+			: () => false;
+
+		const imgSrcStart = element.querySelector("img")
+			.getAttribute("data-src")
+			.replace("/cover.webp", "");
+
+		const individualColor = color ?? categoryPagesColors[imgSrcStart];
+
+		if (!individualColor)
+		{
+			throw new Error(`Could not find color for ${element}.`);
+		}
+		
+		addHoverEventWithScale({
+			element,
+			scale: 1.035,
+			addBounceOnTouch,
+			preventScaleWithIncreasedContrast: false,
+			callback: (isHovering) =>
+			{
+				animate((t) =>
+				{
+					element.style.backgroundColor = `rgba(${individualColor}, ${isHovering ? t * 0.5 : (1 - t) * 0.5})`;
+				}, 100, "cubicBezier(0, 0, 0.58, 1)");
+			}
 		});
 	}
 }

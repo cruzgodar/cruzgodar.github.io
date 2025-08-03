@@ -2094,8 +2094,8 @@ option
 {
 	display: grid;
 	
-	row-gap: 20px;
-	column-gap: 20px;
+	column-gap: calc(16px + var(--contrast) * 12px);
+	row-gap: calc(8px + var(--contrast) * 4px);
 	grid-template-columns: repeat(6, 1fr);
 	justify-content: center;
 	
@@ -2169,7 +2169,11 @@ option
 {
 	width: 100%;
 	
-	border-radius: 10%;
+	padding: 8px;
+	border-radius: calc((100% - 16px) * 0.08 + 8px);
+	outline: 2px solid var(--contrast-border-color);
+
+	height: fit-content;
 }
 
 .image-link img
@@ -2177,11 +2181,9 @@ option
 	width: 100%;
 	aspect-ratio: 1;
 	
-	border-radius: 10%;
+	border-radius: 8%;
 	
 	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
-
-	outline: 2px solid var(--contrast-border-color);
 
 	user-select: none;
 	-webkit-user-select: none;

@@ -2,7 +2,7 @@ import { disableLinks } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
-    $
+	$
 } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 
