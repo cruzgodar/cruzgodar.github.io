@@ -72,7 +72,8 @@ function imageLink(options, url, name, coverPath)
 export function imageLinks(options, lines)
 {
 	let html = /* html */`
-		<div class="image-links">
+		<div style="display: flex; justify-content: center; width: 100%;">
+			<div class="image-links">
 	`;
 
 	for (const line of lines)
@@ -82,7 +83,7 @@ export function imageLinks(options, lines)
 		html = `${html}${imageLink(options, ...words)}`;
 	}
 
-	html = /* html */`${html}</div>`;
+	html = /* html */`${html}</div></div>`;
 
 	return html;
 }

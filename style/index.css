@@ -2100,11 +2100,13 @@ option
 	row-gap: calc(8px + var(--contrast) * 4px);
 	grid-template-columns: repeat(6, 1fr);
 	justify-content: center;
+	justify-items: center;
 	
-	max-width: var(--page-width);
-	margin: 0 auto;
+	max-width: calc(var(--page-width) - 2 * (8px + var(--contrast) * 4px));
 	
 	margin-top: 48px;
+	/* margin-left: calc(-8px - var(--contrast) * 4px);
+	margin-right: calc(8px + var(--contrast) * 4px); */
 }
 
 @media (max-width: 1043px)

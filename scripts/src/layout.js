@@ -67,7 +67,6 @@ export function onResize()
 	}
 
 	updateImageLinks();
-	requestAnimationFrame(updateImageLinks);
 
 
 
@@ -103,26 +102,28 @@ function updateImageLinks()
 	{
 		const imageLinksElement = imageLinksElements[i];
 
-		const firstImageLinkRect = imageLinksElement.children[0].getBoundingClientRect();
+		const firstImageLinkRect = imageLinksElement.children[0].children[0]
+			.getBoundingClientRect();
 		const lastImageLinkRect = imageLinksElement.children[imageLinksElement.children.length - 1]
+			.children[0]
 			.getBoundingClientRect();
 
 		const onSameRow = firstImageLinkRect.top === lastImageLinkRect.top;
 
 		if (onSameRow)
 		{
-			const missingWidth = $("main").clientWidth - (
-				lastImageLinkRect.right - firstImageLinkRect.left
-			);
+			// const widthDiscrepancy = (window.innerWidth - lastImageLinkRect.right)
+			// 	- firstImageLinkRect.left;
 
-			imageLinksElement.style.marginLeft = `${missingWidth / 2}px`;
-			imageLinksElement.style.marginRight = `-${missingWidth / 2}px`;
+			const width = lastImageLinkRect.right - firstImageLinkRect.left;
+			const mainWidth = $("main").getBoundingClientRect().width;
+
+			imageLinksElement.parentElement.style.marginLeft = `${(mainWidth - width) / 2}px`;
 		}
 
 		else
 		{
-			imageLinksElement.style.removeProperty("margin-left");
-			imageLinksElement.style.removeProperty("margin-right");
+			imageLinksElement.parentElement.style.removeProperty("margin-left");
 		}
 	}
 }
