@@ -87,6 +87,7 @@ export async function loadPage()
 
 	onResize();
 	setTimeout(onResize, 100);
+	setTimeout(onResize, 500);
 
 	updateTapClickElements();
 
