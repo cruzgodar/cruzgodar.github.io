@@ -2096,7 +2096,7 @@ option
 {
 	display: grid;
 	
-	column-gap: calc(16px + var(--contrast) * 12px);
+	column-gap: calc(16px + var(--contrast) * 16px);
 	row-gap: calc(8px + var(--contrast) * 4px);
 	grid-template-columns: repeat(6, 1fr);
 	justify-content: center;
@@ -2107,7 +2107,7 @@ option
 	margin-top: 48px;
 }
 
-@media (max-width: 1063px)
+@media (max-width: 1043px)
 {
 	.image-links
 	{
@@ -2115,17 +2115,15 @@ option
 	}
 }
 
-@media (max-width: 893px)
+@media (max-width: 877px)
 {
 	.image-links
 	{
 		grid-template-columns: repeat(4, 1fr);
-		row-gap: 15px;
-		column-gap: 15px;
 	}
 }
 
-@media (max-width: 708px)
+@media (max-width: 711px)
 {
 	.image-links
 	{
@@ -2133,7 +2131,7 @@ option
 	}
 }
 
-@media (max-width: 543px)
+@media (max-width: 545px)
 {
 	.image-links
 	{
@@ -2141,7 +2139,7 @@ option
 	}
 }
 
-@media (max-width: 350px)
+@media (max-width: 347px)
 {
 	.image-link-subtext
 	{
@@ -2149,7 +2147,7 @@ option
 	}
 }
 
-@media (max-width: 291px)
+@media (max-width: 289px)
 {
 	.image-links
 	{
@@ -2171,7 +2169,7 @@ option
 {
 	width: 100%;
 	
-	padding: 8px;
+	padding: calc(8px + var(--contrast) * 2px);
 	border-radius: calc((100% - 16px) * 0.08 + 8px);
 	outline: 2px solid var(--contrast-border-color);
 
