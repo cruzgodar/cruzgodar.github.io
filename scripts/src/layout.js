@@ -112,13 +112,12 @@ function updateImageLinks()
 
 		if (onSameRow)
 		{
-			// const widthDiscrepancy = (window.innerWidth - lastImageLinkRect.right)
-			// 	- firstImageLinkRect.left;
+			const imageLinksWidth = imageLinksElement.getBoundingClientRect().width;
+			const actualWidth = lastImageLinkRect.right - firstImageLinkRect.left;
 
-			const width = lastImageLinkRect.right - firstImageLinkRect.left;
-			const mainWidth = $("main").getBoundingClientRect().width;
-
-			imageLinksElement.parentElement.style.marginLeft = `${(mainWidth - width) / 2}px`;
+			// const surroundingWidth = imageLinksElement.parentElement.parentElement
+				// .getBoundingClientRect().width;
+			imageLinksElement.parentElement.style.marginLeft = `${(imageLinksWidth - actualWidth) / 2}px`;
 		}
 
 		else
