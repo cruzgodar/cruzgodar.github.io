@@ -115,8 +115,6 @@ function updateImageLinks()
 			const imageLinksWidth = imageLinksElement.getBoundingClientRect().width;
 			const actualWidth = lastImageLinkRect.right - firstImageLinkRect.left;
 
-			// const surroundingWidth = imageLinksElement.parentElement.parentElement
-				// .getBoundingClientRect().width;
 			imageLinksElement.parentElement.style.marginLeft = `${(imageLinksWidth - actualWidth) / 2}px`;
 		}
 

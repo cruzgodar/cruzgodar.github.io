@@ -301,9 +301,19 @@ export function initImageLinks()
 			preventScaleWithIncreasedContrast: false,
 			callback: (isHovering) =>
 			{
+				if (isHovering)
+				{
+					element.children[1].style.color = "rgb(0, 0, 0)";
+				}
+
+				else
+				{
+					element.children[1].style.removeProperty("color");
+				}
+
 				animate((t) =>
 				{
-					element.style.backgroundColor = `rgba(${individualColor}, ${isHovering ? t * 0.5 : (1 - t) * 0.5})`;
+					element.style.backgroundColor = `rgba(${individualColor}, ${isHovering ? t * 1 : (1 - t) * 1})`;
 				}, 100, "cubicBezier(0, 0, 0.58, 1)");
 			}
 		});
