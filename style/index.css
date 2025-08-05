@@ -2172,6 +2172,7 @@ option
 	width: 100%;
 	
 	padding: calc(8px + var(--contrast) * 2px);
+	padding-bottom: calc(10px + var(--contrast) * 2px);
 	border-radius: calc((100% - 16px) * 0.08 + 8px) calc((100% - 16px) * 0.08 + 8px) calc((100% - 16px) * 0.08) calc((100% - 16px) * 0.08);
 	outline: 2px solid var(--contrast-border-color);
 
@@ -2208,7 +2209,7 @@ option
 	width: calc(100% + 10px);
 	margin-left: -5px;
 	
-	transition: color 0.1s ease-out;
+	transition: color 0.125s ease-out;
 	color: var(--normal-contrast);
 	text-align: center;
 	font-size: 100%;

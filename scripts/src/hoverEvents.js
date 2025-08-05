@@ -264,7 +264,17 @@ export function initImageLinks()
 		"/teaching": "255, 216, 150",
 		"/math": "175, 229, 255",
 		"/about": "244, 199, 255",
-		"/home": undefined,
+		"/home": "224, 224, 224",
+	};
+
+	// 60% lightness with boosted (about +10) saturation.
+	const categoryPagesColorsDark = {
+		"/gallery": "81, 162, 84",
+		"/applets": "209, 115, 147",
+		"/teaching": "178, 137, 54",
+		"/math": "78, 155, 187",
+		"/about": "179, 126, 193",
+		"/home": "96, 96, 96",
 	};
 
 	// Find which of these pages is the parent of our current page.
@@ -275,24 +285,11 @@ export function initImageLinks()
 		page = sitemap[page].parent;
 	}
 
-	const color = categoryPagesColors[page];
-
 	for (const element of $$(".image-link"))
 	{
 		const addBounceOnTouch = element.getAttribute("data-card-id")
 			? () => true
 			: () => false;
-
-		const imgSrcStart = element.querySelector("img")
-			.getAttribute("data-src")
-			.replace("/cover.webp", "");
-
-		const individualColor = color ?? categoryPagesColors[imgSrcStart];
-
-		if (!individualColor)
-		{
-			throw new Error(`Could not find color for ${element}.`);
-		}
 		
 		addHoverEventWithScale({
 			element,
@@ -303,7 +300,9 @@ export function initImageLinks()
 			{
 				if (isHovering)
 				{
-					element.children[1].style.color = "rgb(0, 0, 0)";
+					element.children[1].style.color = siteSettings.darkTheme
+						? "rgb(255, 255, 255)"
+						: "rgb(0, 0, 0)";
 				}
 
 				else
@@ -311,10 +310,14 @@ export function initImageLinks()
 					element.children[1].style.removeProperty("color");
 				}
 
+				const color = siteSettings.darkTheme
+					? categoryPagesColorsDark[page]
+					: categoryPagesColors[page];
+
 				animate((t) =>
 				{
-					element.style.backgroundColor = `rgba(${individualColor}, ${isHovering ? t * 1 : (1 - t) * 1})`;
-				}, 100, "cubicBezier(0, 0, 0.58, 1)");
+					element.style.backgroundColor = `rgba(${color}, ${isHovering ? t : (1 - t)})`;
+				}, 125, "easeOutQuad");
 			}
 		});
 	}
