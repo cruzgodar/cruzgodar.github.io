@@ -1,10 +1,8 @@
 import { changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
-import { $$, pageUrl } from "./main.js";
+import { $$ } from "./main.js";
 import { prefetchPage } from "./navigation.js";
 import { siteSettings } from "./settings.js";
-import { sitemap } from "./sitemap.js";
-import { animate } from "./utils.js";
 
 const elementSelectors = [
 	["a:not(.image-link)", 1, () => false],
@@ -17,6 +15,16 @@ const elementSelectorsWithScale =
 	"#logo img": {
 		scale: 1.035,
 		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".image-link:not([data-card-id])": {
+		scale: 1.04,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".image-link[data-card-id]": {
+		scale: 1.04,
+		addBounceOnTouch: () => true,
 		preventScaleWithIncreasedContrast: false
 	},
 	".text-button:not(.dropdown, .nav-button)": {
@@ -250,75 +258,6 @@ export function initFocusEvents()
 		element.addEventListener("focus", () =>
 		{
 			element.children[0].focus();
-		});
-	}
-}
-
-
-
-export function initImageLinks()
-{
-	const categoryPagesColors = {
-		"/gallery": "176, 238, 173",
-		"/applets": "255, 180, 203",
-		"/teaching": "255, 216, 150",
-		"/math": "175, 229, 255",
-		"/about": "244, 199, 255",
-		"/home": "224, 224, 224",
-	};
-
-	// 60% lightness with boosted (about +10) saturation.
-	const categoryPagesColorsDark = {
-		"/gallery": "81, 162, 84",
-		"/applets": "209, 115, 147",
-		"/teaching": "178, 137, 54",
-		"/math": "78, 155, 187",
-		"/about": "179, 126, 193",
-		"/home": "96, 96, 96",
-	};
-
-	// Find which of these pages is the parent of our current page.
-	let page = pageUrl;
-	
-	while (!(page in categoryPagesColors))
-	{
-		page = sitemap[page].parent;
-	}
-
-	for (const element of $$(".image-link"))
-	{
-		const addBounceOnTouch = element.getAttribute("data-card-id")
-			? () => true
-			: () => false;
-		
-		addHoverEventWithScale({
-			element,
-			scale: 1.035,
-			addBounceOnTouch,
-			preventScaleWithIncreasedContrast: false,
-			callback: (isHovering) =>
-			{
-				if (isHovering)
-				{
-					element.children[1].style.color = siteSettings.darkTheme
-						? "rgb(255, 255, 255)"
-						: "rgb(0, 0, 0)";
-				}
-
-				else
-				{
-					element.children[1].style.removeProperty("color");
-				}
-
-				const color = siteSettings.darkTheme
-					? categoryPagesColorsDark[page]
-					: categoryPagesColors[page];
-
-				animate((t) =>
-				{
-					element.style.backgroundColor = `rgba(${color}, ${isHovering ? t : (1 - t)})`;
-				}, 125, "easeOutQuad");
-			}
 		});
 	}
 }

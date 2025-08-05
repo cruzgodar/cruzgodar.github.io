@@ -13,7 +13,7 @@ import {
 	initBanner
 } from "./banners.js";
 import { initCards } from "./cards.js";
-import { initFocusEvents, initHoverEvents, initImageLinks } from "./hoverEvents.js";
+import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { listenForWilsonButtons, updateTapClickElements } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
@@ -64,8 +64,6 @@ export async function loadPage()
 	setLinks();
 
 	disableLinks();
-
-	initImageLinks();
 
 	initSolutions();
 
