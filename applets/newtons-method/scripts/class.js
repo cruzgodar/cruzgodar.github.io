@@ -88,7 +88,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 			uniform vec3 color7;
 			
 			uniform vec2 a;
-			uniform vec2 c;
 			
 			uniform float brightnessScale;
 
@@ -96,7 +95,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 			
 			const float derivativePrecision = ${getFloatGlsl(derivativePrecision)};
 			
-			const float threshhold = .05;
+			const float threshhold = .001;
 			
 			
 			
@@ -119,7 +118,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 			
 			
 			//Returns f(z) for a polynomial f with given roots.
-			vec2 cpoly(vec2 z)
+			vec2 f(vec2 z)
 			{
 				vec2 result = vec2(1.0, 0.0);
 
@@ -169,13 +168,13 @@ export class NewtonsMethod extends AnimationFrameApplet
 			
 			
 			//Approximates f'(z) for a polynomial f with given roots.
-			vec2 cderiv(vec2 z)
+			vec2 fPrime(vec2 z)
 			{
 				return 1.0 / 12.0 * derivativePrecision * (
-					-cpoly(z + vec2(2.0 / derivativePrecision, 0.0))
-					+ 8.0 * cpoly(z + vec2(1.0 / derivativePrecision, 0.0))
-					- 8.0 * cpoly(z - vec2(1.0 / derivativePrecision, 0.0))
-					+ cpoly(z - vec2(2.0 / derivativePrecision, 0.0))
+					-f(z + vec2(2.0 / derivativePrecision, 0.0))
+					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0))
+					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0))
+					+ f(z - vec2(2.0 / derivativePrecision, 0.0))
 				);
 			}
 
@@ -208,12 +207,15 @@ export class NewtonsMethod extends AnimationFrameApplet
 				
 				
 				
-				for (int iteration = 0; iteration < 100; iteration++)
+				for (int iteration = 0; iteration < 200; iteration++)
 				{
-					vec2 temp = mix(
-						cmul(cmul(cpoly(z), cinv(cderiv(z))), a) + c * 0.1,
-						cmul(cmul(cpoly(z), cmul(z - lastZ, cinv(cpoly(z) - cpoly(lastZ)))), a) + c * 0.1,
-						secantProportion
+					vec2 temp = cmul(
+						mix(
+							cmul(f(z), cinv(fPrime(z))),
+							cmul(f(z), cmul(z - lastZ, cinv(f(z) - f(lastZ)))),
+							secantProportion
+						),
+						a + vec2(1.0, 0.0)
 					);
 					
 					lastZ = z;
@@ -340,8 +342,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 				color6: this.colors.root6,
 				color7: this.colors.root7,
 				
-				a: [1, 0],
-				c: [0, 0],
+				a: [0, 0],
 				
 				brightnessScale: 12.75,
 
@@ -369,8 +370,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 			draggableOptions: {
 				draggables: {
-					a: [1, 0],
-					c: [0, 0],
+					a: [0, 0],
 					root0: [0, 0],
 					root1: [0, 0],
 					root2: [0, 0],

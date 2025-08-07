@@ -2,7 +2,7 @@
 
 This applet aims to draw Newton's method fractals for *any* elementary function, not just a polynomial. There are a number of challenges with this, chief among them making a palette for a large and potentially infinite number of roots. There's also the issue of knowing when the algorithm is near a root without knowing where those roots are ahead of time, and making sure that different points that converge to the same root always get the same color, again without knowing what they're converging to. But all these problems turned out to be solvable --- even the palette generation part, which was my first time working with color science. It turned out better than expected!
 
-Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala</a> --- thank you!
+The draggable red parameter multiplies the amount added by Newton's method at each step, and the blue dot adds a constant value to the function itself. Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala</a> --- thank you!
 
 
 

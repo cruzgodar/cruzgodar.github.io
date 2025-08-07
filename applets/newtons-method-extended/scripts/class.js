@@ -18,7 +18,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	aspectRatio = 1;
 
-	numIterations = 100;
+	secantProportion = 0;
 
 	pastBrightnessScales = [];
 
@@ -121,7 +121,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			
 			uniform float brightnessScale;
 			
-			const float threshhold = .01;
+			const float threshhold = .001;
 			
 			
 			
@@ -130,21 +130,21 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			
 			
 			//Returns f(z) for a polynomial f with given roots.
-			vec2 f(vec2 z)
+			vec2 f(vec2 z, vec2 firstZ)
 			{
-				return ${generatingCode};
+				return ${generatingCode} + firstZ;
 			}
 			
 			
 			
 			//Approximates f'(z) for a polynomial f with given roots.
-			vec2 cderiv(vec2 z)
+			vec2 fPrime(vec2 z, vec2 firstZ)
 			{
 				return 1.0 / 12.0 * derivativePrecision * (
-					-f(z + vec2(2.0 / derivativePrecision, 0.0))
-					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0))
-					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0))
-					+ f(z - vec2(2.0 / derivativePrecision, 0.0))
+					-f(z + vec2(2.0 / derivativePrecision, 0.0), firstZ)
+					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0), firstZ)
+					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0), firstZ)
+					+ f(z - vec2(2.0 / derivativePrecision, 0.0), firstZ)
 				);
 			}
 			
@@ -153,6 +153,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			void main(void)
 			{
 				vec2 z = uv * worldSize * 0.5 + worldCenter;
+				vec2 firstZ = c;
 				vec2 lastZ = vec2(0.0, 0.0);
 				vec2 oldZ = vec2(0.0, 0.0);
 				
@@ -162,7 +163,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < 200; iteration++)
 				{
-					vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
+					vec2 temp = cmul(cmul(f(z, firstZ), cinv(fPrime(z, firstZ))), a);
 					
 					oldZ = lastZ;
 					
@@ -208,6 +209,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 		this.a = [1, 0];
 		this.c = [0, 0];
+
+		this.wilson.setDraggables({ a: this.a, c: this.c });
 
 		this.colors = this.generateNewPalette();
 
@@ -271,7 +274,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 		const restrictions = [.275];
 
-		const restrictionWidth = .15;
+		const restrictionWidth = .2;
 
 
 
