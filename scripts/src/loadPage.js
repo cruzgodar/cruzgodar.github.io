@@ -84,6 +84,7 @@ export async function loadPage()
 	initCards();
 
 	onResize();
+	setTimeout(onResize, 100);
 
 	updateTapClickElements();
 
