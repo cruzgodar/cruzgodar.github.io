@@ -83,7 +83,10 @@ export async function loadPage()
 
 	initCards();
 
-	onResize();
+	requestAnimationFrame(() => onResize());
+	setTimeout(onResize, 25);
+	setTimeout(onResize, 50);
+	setTimeout(onResize, 100);
 
 	updateTapClickElements();
 
@@ -98,8 +101,6 @@ export async function loadPage()
 	await loadCustomScripts();
 
 	await fadeInPage();
-
-	requestAnimationFrame(() => onResize());
 
 	setCurrentlyRedirecting(false);
 }

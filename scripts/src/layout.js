@@ -102,6 +102,8 @@ function updateImageLinks()
 	{
 		const imageLinksElement = imageLinksElements[i];
 
+		imageLinksElement.style.removeProperty("grid-template-columns");
+
 		const firstImageLinkRect = imageLinksElement.children[0].children[0]
 			.getBoundingClientRect();
 		const lastImageLinkRect = imageLinksElement.children[imageLinksElement.children.length - 1]
@@ -112,15 +114,12 @@ function updateImageLinks()
 
 		if (onSameRow)
 		{
-			const imageLinksWidth = imageLinksElement.getBoundingClientRect().width;
-			const actualWidth = lastImageLinkRect.right - firstImageLinkRect.left;
-
-			imageLinksElement.parentElement.style.marginLeft = `${(imageLinksWidth - actualWidth) / 2}px`;
+			imageLinksElement.style.gridTemplateColumns = `repeat(${imageLinksElement.children.length}, ${firstImageLinkRect.width}px)`;
 		}
 
 		else
 		{
-			imageLinksElement.parentElement.style.removeProperty("margin-left");
+			imageLinksElement.style.removeProperty("grid-template-columns");
 		}
 	}
 }
