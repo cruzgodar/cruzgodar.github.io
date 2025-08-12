@@ -2171,9 +2171,9 @@ option
 {
 	width: 100%;
 	
-	padding: calc(8px + var(--contrast) * 2px);
-	padding-bottom: calc(10px + var(--contrast) * 2px);
-	border-radius: calc((100% - 16px) * 0.08 + 8px) calc((100% - 16px) * 0.08 + 8px) calc((100% - 16px) * 0.08) calc((100% - 16px) * 0.08);
+	padding: 4px;
+	padding-bottom: 8px;
+	border-radius: calc((100% - 8px) * 0.08 + 4px) calc((100% - 8px) * 0.08 + 4px) calc((100% - 8px) * 0.08) calc((100% - 8px) * 0.08);
 	outline: 2px solid var(--contrast-border-color);
 
 	height: fit-content;
