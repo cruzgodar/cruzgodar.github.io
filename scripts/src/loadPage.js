@@ -84,8 +84,6 @@ export async function loadPage()
 	initCards();
 
 	requestAnimationFrame(() => onResize());
-	setTimeout(onResize, 25);
-	setTimeout(onResize, 100);
 
 	updateTapClickElements();
 
