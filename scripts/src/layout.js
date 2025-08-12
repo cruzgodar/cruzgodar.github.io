@@ -96,29 +96,32 @@ export function initOnResize()
 
 function updateImageLinks()
 {
-	const imageLinksElements = $$(".image-links");
+	const imageLinksWidth = Math.min($("main").getBoundingClientRect().width, 980);
+	const breakpoints = [289, 545, 711, 877, 1043];
+	let numImageLinksPerRow = 1;
+	let index = 0;
 
-	for (let i = 0; i < imageLinksElements.length; i++)
+	while (window.innerWidth > breakpoints[index] && index < breakpoints.length)
 	{
-		const imageLinksElement = imageLinksElements[i];
+		numImageLinksPerRow++;
+		index++;
+	}
 
-		imageLinksElement.style.removeProperty("grid-template-columns");
+	const imageLinkWidth = (imageLinksWidth - 16 * (numImageLinksPerRow - 1)) / numImageLinksPerRow;
 
-		const firstImageLinkRect = imageLinksElement.children[0].children[0]
-			.getBoundingClientRect();
-		const lastImageLinkRect = imageLinksElement.children[imageLinksElement.children.length - 1]
-			.children[0]
-			.getBoundingClientRect();
 
-		const onSameRow = firstImageLinkRect.top === lastImageLinkRect.top;
 
-		requestAnimationFrame(() =>
+	for (const imageLinksElement of $$(".image-links"))
+	{
+		if (imageLinksElement.children.length <= numImageLinksPerRow)
 		{
-			if (onSameRow)
-			{
-				imageLinksElement.style.gridTemplateColumns = `repeat(${imageLinksElement.children.length}, ${firstImageLinkRect.width}px)`;
-			}
-		});
+			imageLinksElement.style.gridTemplateColumns = `repeat(${imageLinksElement.children.length}, ${imageLinkWidth}px)`;
+		}
+
+		else
+		{
+			imageLinksElement.style.removeProperty("grid-template-columns");
+		}
 	}
 }
 
