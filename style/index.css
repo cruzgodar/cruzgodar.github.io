@@ -2090,7 +2090,7 @@ option
 
 
 
-/* The minimum allowable size for an image link is 150x150 px. */
+/* The minimum allowable size for an image link is 150x150 px, and the maximum when we have infinite room is 175x175 px. */
 
 .image-links
 {
@@ -2102,7 +2102,7 @@ option
 	justify-content: center;
 	justify-items: center;
 	
-	max-width: calc(150px * 6 + 16px * 5);
+	max-width: calc(175px * 6 + 16px * 5);
 	
 	margin-top: 32px;
 	/* margin-left: calc(-8px - var(--contrast) * 4px);
