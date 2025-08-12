@@ -151,6 +151,9 @@ home Cruz Godar
 			radians-and-equations Section 6: Radians and Equations
 			non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
 			vectors Section 8: Intro to Vectors
+
+		yale/118 Math 118
+		yale/112 Math 112
 		
 		uo/342 Math 342
 		uo/341 Math 341

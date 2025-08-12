@@ -693,6 +693,8 @@ export const sitemap =
 			"/teaching/notes/linear-algebra",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
+			"/teaching/yale/118",
+			"/teaching/yale/112",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -1720,6 +1722,28 @@ export const sitemap =
 		"title": "Section 8: Intro to Vectors",
 		
 		"parent": "/teaching/notes/trig",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/118":
+	{
+		"title": "Math 118",
+		
+		"parent": "/teaching",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/112":
+	{
+		"title": "Math 112",
+		
+		"parent": "/teaching",
 		
 		"children": [],
 

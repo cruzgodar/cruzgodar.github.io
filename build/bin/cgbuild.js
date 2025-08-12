@@ -28,12 +28,15 @@ const options =
 	pdf: process.argv.slice(2).includes("--pdf"),
 };
 
-const courseNames = {
-	"Math 253": /teaching\/uo\/253\/.+/,
-	"Math 256": /teaching\/uo\/256\/.+/,
-	"Math 341": /teaching\/uo\/341\/.+/,
-	"Math 342": /teaching\/uo\/342\/.+/,
-};
+const courseNames = [
+	[/teaching\/uo\/253\/.+/, "Math 253"],
+	[/teaching\/uo\/256\/.+/, "Math 256"],
+	[/teaching\/uo\/341\/.+/, "Math 341"],
+	[/teaching\/uo\/342\/.+/, "Math 342"],
+
+	[/teaching\/yale\/112\/.+/, "Math 112"],
+	[/teaching\/yale\/118\/.+/, "Math 118"],
+];
 
 let sitemap;
 
@@ -264,7 +267,7 @@ async function prepareTexFromHTML(file)
 {
 	let courseName;
 
-	for (const [name, regex] of Object.entries(courseNames))
+	for (const [regex, name] of courseNames)
 	{
 		if (regex.test(file))
 		{
@@ -275,7 +278,7 @@ async function prepareTexFromHTML(file)
 
 	if (!courseName)
 	{
-		throw new Error("No course name found!");
+		throw new Error(`No course name found! File: ${file}`);
 	}
 
 	const path = file.slice(0, file.lastIndexOf("/"));
