@@ -97,7 +97,7 @@ export function initOnResize()
 function updateImageLinks()
 {
 	const mainWidth = window.innerWidth - (window.innerWidth <= 500 ? 16 : 32);
-	const imageLinksWidth = Math.min(mainWidth, 980);
+	const imageLinksWidth = Math.min(mainWidth, 6 * 175 + 5 * 16);
 	const breakpoints = [289, 545, 711, 877, 1043];
 	let numImageLinksPerRow = 1;
 	let index = 0;

@@ -145,7 +145,7 @@ export async function redirect({
 
 		document.body.firstElementChild.insertAdjacentHTML(
 			"beforebegin",
-			`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
+			`<div class="page"${opacityAnimationTime ? " style=\"opacity: 0\"" : ""}>${text}</div>`
 		);
 
 		setPageUrl(url);
