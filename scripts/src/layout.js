@@ -112,15 +112,13 @@ function updateImageLinks()
 
 		const onSameRow = firstImageLinkRect.top === lastImageLinkRect.top;
 
-		if (onSameRow)
+		requestAnimationFrame(() =>
 		{
-			imageLinksElement.style.gridTemplateColumns = `repeat(${imageLinksElement.children.length}, ${firstImageLinkRect.width}px)`;
-		}
-
-		else
-		{
-			imageLinksElement.style.removeProperty("grid-template-columns");
-		}
+			if (onSameRow)
+			{
+				imageLinksElement.style.gridTemplateColumns = `repeat(${imageLinksElement.children.length}, ${firstImageLinkRect.width}px)`;
+			}
+		});
 	}
 }
 
