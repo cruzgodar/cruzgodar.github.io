@@ -6,11 +6,6 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 ### image-links
 	syllabus -c "Syllabus"
-	exams/1/midterm-1.pdf "Practice Midterm 1"
-	exams/2/midterm-2.pdf "Practice Midterm 2"
-	exams/2-solutions/midterm-2-solutions.pdf "Practice Midterm 2 Solutions"
-	exams/final/final.pdf "Practice Final Exam"
-	exams/final-solutions/final-solutions.pdf "Practice Final Exam Solutions"
 ###
 
 
@@ -19,16 +14,6 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 ### image-links
 	/teaching/notes/calculus/calc-2-review
-	/teaching/notes/calculus/sequences
-	/teaching/notes/calculus/series
-	/teaching/notes/calculus/divergence-and-integral-tests
-	/teaching/notes/calculus/comparison-tests
-	/teaching/notes/calculus/alternating-series
-	/teaching/notes/calculus/ratio-and-root-tests
-	/teaching/notes/calculus/power-series
-	/teaching/notes/calculus/properties-of-power-series
-	/teaching/notes/calculus/taylor-series
-	/teaching/notes/calculus/applications-of-taylor-series
 ###
 
 
@@ -37,37 +22,23 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 ### image-links
 	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
 ###
 
-### card homework-8 -e
-### card homework-7 -e
-### card homework-6 -e
-### card homework-5 -e
-### card homework-4 -e
-### card homework-3 -e
-### card homework-2 -e
 ### card homework-1 -e
 
-### card syllabus "Math 253: Calculus III"
+### card syllabus "Math 1180: Introduction to Functions of Several Variables"
 	
-	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
+	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cruz.godar@yale.edu</a>)
 
-	Class meetings: 10--10:50 MTWF in Straub 251
+	Class meetings: 9--10:15 TR in WTS A60
 	
-	Office hours: M 3--3:50, TR 1--1:50, F 12--12:50 in the Fenton Hall atrium (the middle of the third floor).
+	Office hours: TBD in Kline Tower 727
 	
 	
 	
 	## What materials will I need?
 	
-	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_2_-_WEB.pdf">Calculus Volume 2</a> by Herman and Strang.
+	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf">Calculus Volume 3</a> by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, <a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown's video series</a> is a fantastic expository resource. For a more traditional textbook experience, <a href="https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf">Linear Algebra with Applications</a> by Nicholson is free and will do nicely.
 	
 	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, you can use a scientific calculator, but not a graphing one. The quizzes and exams are written so that necessary computations are doable by hand.
 	
@@ -80,68 +51,74 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	> In-class participation: 5%
 	> Reading quizzes: 5%
 	> In-class quizzes: 10%
-	> Homework: 10%
+	> Homework: 15%
 	> Midterm 1: 20%
-	> Midterm 2: 25%
+	> Midterm 2: 20%
 	> Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
 	
 	
-	## What will classes be like?
+	## What will class meetings be like?
 	
-	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions, theorem statements, and exam and are there so that you've seen the material at least once before lecture.
+	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions and theorem statements, and are there so that you've seen the material at least once before lecture.
 	
-	Many of the examples in the notes have exercises following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper, and then turn those in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	The notes also contain exercises, color-coded blue. We'll do each of these in class as 1-2-4 group work --- you'll first have a few minutes to begin the problem on your own, and then you'll get into pairs for the bulk of the time to compare your approaches and finish the problem together on separate sheets of paper. After that, you'll compare with another pair of students and explain your processes to one another. You'll turn your paper in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
 	
 	
 	
 	## What will the homework be like?
 	
-	The homework is available on this site, and there will be roughly 20 problems due each week. Your grade is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to be graded on correctness for 4 points each.
+	The homework is available on this site, and there will be roughly 20--30 problems due each week, due on Tuesdays (starting in week 2). Your grade is out of 20 points --- 8 points are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to be graded on correctness for 4 points each.
 	
-	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	All of our homework is submitted through Gradescope. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
 
-	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	I also highly recommend studying and working on homework in groups. While the final work you submit must be your own, it's both helpful and great practice to work with others --- part of the reason we have group work is to help build those friendships!
+
+
 
 	## What about generative AI?
 
-	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine the learning process with them. LLMs in their current form fundamentally cannot be guaranteed to produce correct answers, but more importantly, relying on them to complete homework assignments is one of the most effective ways to set yourself up for failure: the homework exists to challenge and prepare you for the in-class assignments, which are worth most of the credit. To that end, I treat using AI tools to complete the homework similarly to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting copied answers from an LLM is a form of academic misconduct.
+	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine your own learning with them. LLMs in their current form fundamentally cannot be guaranteed to produce correct answers, but much more importantly, relying on them to complete homework assignments is one of the most effective ways to set yourself up for failure: the homework exists to challenge and prepare you for the in-class assignments, which are worth most of the credit. To that end, I treat using AI tools to complete the homework similarly to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting either answers copied verbatim from an LLM and/or answers you don't fully understand is a form of academic misconduct.
 	
 	
 	
 	## What should I expect from the quizzes and exams?
 	
-	We have quizzes on Wednesdays during the last 20 minutes of class, (including in week 1). The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies.
+	We have quizzes on Tuesdays during the last 15 minutes of class, starting in week 2. The quizzes are designed to be barometers for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indicator that you may want to adjust your study strategies.
 	
-	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. You can use a handwritten, two-sided, $3 \times 5$ inch index card for notes on the midterms and final. I reserve the right to assign seating for the quizzes and exams.
+	Our midterm exams are on October 7th and November 11th and take up the full 75 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. I reserve the right to assign seating for the quizzes and exams.
 	
-	Our final exam is cumulative and is from 10:15 AM to 12:15 PM on Wednesday, June 11th.
+	Our final exam is cumulative and is at 7 PM on Monday, December 15th.
 	
 	
 	
 	## What are the best things I can do to succeed?
 	
-	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
-	
-	
-	
-	## What is the policy regarding late work, make-ups, and dropped assignments?
-	
-	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
-	
-	
-	
-	## What if I'm registered with the AEC or think I should be?
-	
-	The Accessible Education Center is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with the AEC, please have them send me the accommodations email as soon as possible, ideally in week 1. If you think the AEC could be a benefit to you, please reach out to them! It can take a few weeks before everything goes through, so the sooner the better.
-	
-	
-	
+	In and around the course, the most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Outside of class, you should expect to spend at least 8 hours per week on homework and studying if you're fully comfortable with all of the prerequisites for the class, and more than that if not. Mathematics broadly is a challenging subject, and this course should challenge every student at some point --- so don't panic when that happens! It's just an indication that you may want to devote more time to the course (at least temporarily).
+
+	Beyond the assignments worth credit, the single best thing you can do is **show up to at least one office hour per week**. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's a communal environment where you can focus on homework and get help if any questions do come up, or just talk about anything at all related to the class or math more broadly. I schedule my office hours with the goal of enabling every student to attend at least one, but if none of my scheduled office hours work for you, please feel free to email me to schedule a time to meet outside of them!
+
+	Outside of the course, please take care of your mental, physical and emotional health; it's both far more important than and necessary for your success in this course! Yale offers many resources to support you in these ways --- a good place to start is <a href="https://yalewell.yale.edu">Yale Well</a>.
+
+	Speaking of resources, there are also so many to help you succeed academically! Our course has a peer tutor --- Nathan Mak --- who is a fellow Yale undergraduate and will hold regular tutoring sessions at the following times:
+
+	If these times don't work for you, there is also <a href="https://poorvucenter.yale.edu/learning/help-with-stem/stem-tutoring">drop-in tutoring available at the Poorvu center</a>.
+
+	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please <a href="https://sas.yale.edu/students/accommodations/exams">reach out to them</a>! It can take a little while before everything goes through, so the sooner the better.
+
+
+
 	## What are the skills I can expect to learn from this course?
-	
-	We will learn how to:
+
+	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you will have the opportunity to:
+
+	> - Practice thinking critically about novel situations in the context of the mathematics we learn.
+	> - Apply multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
+	> - Develop metacognitive thinking to evaluate your own learning practices and study strategies.
+
+	Regarding specific mathematical goals, we will learn how to:
 	
 	> - Decide if a given sequence converges or not.
 	> - Express an indicated sum using $\Sigma$ notation in closed form.
@@ -161,6 +138,14 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	> - Use Taylor's Inequality to bound the error of a Taylor approximation.
 	> - Given a differential equation, find the general solution as a power series up through a given degree. Also find particular solutions.
 	> - Answer basic conceptual questions involving convergence of sequences and series, and also give examples of related phenomena.
+
+
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
 	
 	
 	

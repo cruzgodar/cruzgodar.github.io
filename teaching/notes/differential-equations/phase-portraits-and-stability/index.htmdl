@@ -177,7 +177,7 @@ Compared to linear systems, where there's a single critical point at the origin 
 	and
 	
 	$$
-		\lim_{||**x**|| \to 0} \frac{||**G**(**x**)||}{||x||} = 0,
+		\lim_{||**x**|| \to 0} \frac{||**G**(**x**)||}{||**x**||} = 0,
 	$$
 	
 	where $||**x**||$ is the length of $**x**$.
