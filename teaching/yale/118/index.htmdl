@@ -48,13 +48,13 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	> In-class participation: 5%
-	> Reading quizzes: 5%
-	> In-class quizzes: 10%
-	> Homework: 15%
-	> Midterm 1: 20%
-	> Midterm 2: 20%
-	> Final: 25%
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - In-class quizzes: 10%
+	> - Homework: 15%
+	> - Midterm 1: 20%
+	> - Midterm 2: 20%
+	> - Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -91,61 +91,49 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	Our midterm exams are on October 7th and November 11th and take up the full 75 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. I reserve the right to assign seating for the quizzes and exams.
 	
 	Our final exam is cumulative and is at 7 PM on Monday, December 15th.
+
+
+
+	## What does success look like?
 	
-	
-	
-	## What are the best things I can do to succeed?
-	
-	In and around the course, the most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Outside of class, you should expect to spend at least 8 hours per week on homework and studying if you're fully comfortable with all of the prerequisites for the class, and more than that if not. Mathematics broadly is a challenging subject, and this course should challenge every student at some point --- so don't panic when that happens! It's just an indication that you may want to devote more time to the course (at least temporarily).
+	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you'll have the opportunity to practice:
 
-	Beyond the assignments worth credit, the single best thing you can do is **show up to at least one office hour per week**. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's a communal environment where you can focus on homework and get help if any questions do come up, or just talk about anything at all related to the class or math more broadly. I schedule my office hours with the goal of enabling every student to attend at least one, but if none of my scheduled office hours work for you, please feel free to email me to schedule a time to meet outside of them!
-
-	Outside of the course, please take care of your mental, physical and emotional health; it's both far more important than and necessary for your success in this course! Yale offers many resources to support you in these ways --- a good place to start is <a href="https://yalewell.yale.edu">Yale Well</a>.
-
-	Speaking of resources, there are also so many to help you succeed academically! Our course has a peer tutor --- Nathan Mak --- who is a fellow Yale undergraduate and will hold regular tutoring sessions at the following times:
-
-	If these times don't work for you, there is also <a href="https://poorvucenter.yale.edu/learning/help-with-stem/stem-tutoring">drop-in tutoring available at the Poorvu center</a>.
-
-	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please <a href="https://sas.yale.edu/students/accommodations/exams">reach out to them</a>! It can take a little while before everything goes through, so the sooner the better.
-
-
-
-	## What are the skills I can expect to learn from this course?
-
-	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you will have the opportunity to:
-
-	> - Practice thinking critically about novel situations in the context of the mathematics we learn.
-	> - Apply multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
-	> - Develop metacognitive thinking to evaluate your own learning practices and study strategies.
+	> - Thinking critically about novel situations in the context of the mathematics we learn.
+	> - Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
+	> - Developing metacognitive thinking to evaluate your own learning practices and study strategies.
 
 	Regarding specific mathematical goals, we will learn how to:
 	
-	> - Decide if a given sequence converges or not.
-	> - Express an indicated sum using $\Sigma$ notation in closed form.
-	> - Compute partial sums and other finite sums.
-	> - State the precise definition of what it means for a sequence to have a limit.
-	> - State the precise definition of what it means for a series to converge.
-	> - Decide if a given series converges or not, using the Comparison Test, Divergence Test, Root Test, Ratio Test, Integral Test, Limit Comparison Test, Alternating Series Test, or a combination thereof, as appropriate.
-	> - Decide if a given series converges or not using the definition.
-	> - Evaluate the Taylor polynomial for a given function, given a center and a degree, by computing derivatives.
-	> - Compute the Taylor polynomial for a rational function by performing long division.
-	> - Use Taylor polynomials to approximate the values of functions.
-	> - Given an easy sequence that converges to a limit $L$, together with an $\varepsilon$, determine an $N$ such that $|a_n - L| < \varepsilon$ for all $n \geq N$.
-	> - Given an alternating series and an $\varepsilon$, determine how many terms are needed to have the partial sum within $\varepsilon$ of the limit.
-	> - Find the interval of convergence of a given power series.
-	> - Determine if a given series is absolutely convergent.
-	> - Given a function, a center $a$, a degree $d$, and an accuracy level $\varepsilon$, determine an interval about $a$ for which the $d$th Taylor polynomial is within $\varepsilon$ of the function at all points.
-	> - Use Taylor's Inequality to bound the error of a Taylor approximation.
-	> - Given a differential equation, find the general solution as a power series up through a given degree. Also find particular solutions.
-	> - Answer basic conceptual questions involving convergence of sequences and series, and also give examples of related phenomena.
+	> - Represent systems of linear equations as matrices.
+	> - Understand how and when such systems can be solved.
+	> - Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
+	> - Compute and interpret determinants of square matrices.
+	> - Approximate matrix equations by using the method of least squares.
+	> - Understand and interact with representations of 3D space.
+	> - Understand and apply the dot and cross products to vectors in 3D space.
+	> - Plot and interpret functions of multiple variables.
+	> - Evaluate and interpret partial derivatives, including with the multivariable chain rule.
+	> - Optimize functions of multiple variables, including with the method of Lagrange multipliers.
+
+	Success is absolutely not limited to your performance in the course, however. Please take care of your mental, physical and emotional health; it's both far more important than and necessary for your academic success! Yale offers many resources to support you in these ways --- a good place to start is <a href="https://yalewell.yale.edu">Yale Well</a>.
 
 
+	
+	## What are the best things I can do to succeed academically?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Outside of class, you should expect to spend at least 8 hours per week on homework and studying if you're fully comfortable with all of the prerequisites for the class, and more than that if not. Mathematics broadly is a challenging subject, and this course should challenge every student at some point --- so don't panic when that happens! It's just an indication that you may want to devote more time to the course (at least temporarily).
+
+	Beyond the assignments worth credit, the single best thing you can do is **show up to at least one peer tutoring session per week**. Regularly attending them is a great way to make sure you're putting in that time --- even if you don't have any questions, it's a communal environment where you can focus on homework and get help if any questions do come up. I also have regular office hours that are a great resource for more specific help with a problem, or for more broad questions or concerns. I schedule them with the goal of enabling every student to attend at least one, but if none of my scheduled office hours work for you, please feel free to email me to schedule a time to meet outside of them!	
+
+	Our course's peer tutor is Nathan Mak --- a fellow Yale undergraduate who will hold regular tutoring sessions at times to be determined. If these times don't work for you, there is also <a href="https://poorvucenter.yale.edu/learning/help-with-stem/stem-tutoring">drop-in tutoring available at the Poorvu center</a>.
+
+	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please <a href="https://sas.yale.edu/students/accommodations/exams">reach out to them</a>! It can take a little while before everything goes through, so the sooner the better.
 	
 	
 	
 	## What is the policy regarding late work, make-ups, and dropped assignments?
 	
-	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but your lowest quiz will be dropped. A Dean's Excuse is required to make up an exam.
 	
 	
 	
@@ -153,6 +141,6 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	Like most graduate students, I am a <a href="https://investigations.uoregon.edu/employee-responsibilities">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
 	
 ###
