@@ -2235,21 +2235,59 @@ img[src="/about/cover.webp"]
 	
 	border: 2px solid var(--normal-contrast);
 	border-radius: 18px;
-	padding: 2px;
 	
 	margin-top: 32px;
 	margin-bottom: 32px;
 }
 
+.desmos-border.canvas-container
+{
+	border-radius: 18px;
+	padding: 2px;
+}
+
 .desmos-container
 {
-	border-radius: 12px;
+	border-radius: 16px;
 }
 
 .dcg-container
 {
+	border-radius: 16px !important;
+}
+
+
+
+/* Make the desmos buttons concentric */
+.dcg-pillbox-container
+{
+	right: 4px !important;
+	top: 4px !important;
+}
+
+.dcg-btn-flat-gray
+{
 	border-radius: 12px !important;
 }
+
+.dcg-overgraph-icon-container:not(.dcg-bottom-right)
+{
+	top: 4px !important;
+	left: 4px !important;
+}
+
+.dcg-overgraph-icon-container.dcg-bottom-right
+{
+	bottom: 4px !important;
+	right: 4px !important;
+}
+
+.dcg-overgraph-icon
+{
+	border-radius: 12px !important;
+}
+
+
 
 .desmos-border, .desmos-container, .dcg-container
 {
@@ -2319,7 +2357,7 @@ img[src="/about/cover.webp"]
 	width: 100% !important;
 }
 
-.notes-environment *:last-child
+.notes-environment > *:last-child
 {
 	margin-bottom: 0 !important;
 }

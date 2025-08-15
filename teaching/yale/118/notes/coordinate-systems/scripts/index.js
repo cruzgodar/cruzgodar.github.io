@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	desmosBlack3d,
 	desmosBlue,
 	desmosPurple,
 	desmosRed,
@@ -21,12 +22,12 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
+					{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosBlack3d },
 					{ latex: raw`a = 0` },
 					{ latex: raw`b = 2` },
 
-					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+					{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosBlack3d, secret: true },
+					{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosBlack3d, secret: true }
 				]
 			},
 

@@ -8,12 +8,22 @@ export let desmosRed = "#bf2f2f";
 export let desmosGreen = "#2fbf2f";
 export const desmosBlack = "#000000";
 
+// 3d graphs don't invert graph colors in invert mode.
+export const desmosPurple3d = "#772fbf";
+export const desmosBlue3d = "#2f77bf";
+export const desmosRed3d = "#bf2f2f";
+export const desmosGreen3d = "#2fbf2f";
+export let desmosBlack3d = "#333333";
+
+
 function updateDesmosColors()
 {
 	desmosPurple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
 	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
 	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
 	desmosGreen = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
+
+	desmosBlack3d = siteSettings.darkTheme ? "#cccccc" : "#333333";
 }
 
 export let desmosGraphs = {};
@@ -123,6 +133,8 @@ export async function createDesmosGraphs(recreating = false)
 
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 
+		console.log(desmosGraphs[element.id].getState());
+
 		if (window.DEBUG && !recreating)
 		{
 			element.addEventListener("click", (e) =>
@@ -171,20 +183,19 @@ export function getDesmosScreenshot(id, forPdf = false)
 
 	desmosGraphs[id].setExpressions(expressions);
 
-	desmosGraphs[id].asyncScreenshot({
+	const imageData = desmosGraphs[id].screenshot({
 		width: 500,
 		height: 500,
 		targetPixelRatio: 8
-	}, imageData =>
-	{
-		const img = document.createElement("img");
-		img.width = 4000;
-		img.height = 4000;
-		img.style.width = "50vmin";
-		img.style.height = "50vmin";
-		img.src = imageData;
-		document.body.appendChild(img);
 	});
+
+	const img = document.createElement("img");
+	img.width = 4000;
+	img.height = 4000;
+	img.style.width = "50vmin";
+	img.style.height = "50vmin";
+	img.src = imageData;
+	document.body.appendChild(img);
 }
 
 let uid = 0;
