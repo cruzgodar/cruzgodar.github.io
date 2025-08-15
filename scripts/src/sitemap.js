@@ -1736,7 +1736,8 @@ export const sitemap =
 		
 		"children":
 		[
-			"/teaching/yale/118/notes/calc-1-review"
+			"/teaching/yale/118/notes/calc-1-review",
+			"/teaching/yale/118/notes/coordinate-systems"
 		],
 
 		"customScript": true
@@ -1745,6 +1746,17 @@ export const sitemap =
 	"/teaching/yale/118/notes/calc-1-review":
 	{
 		"title": "Section 0: Calculus 1 Review",
+		
+		"parent": "/teaching/yale/118",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/118/notes/coordinate-systems":
+	{
+		"title": "Section 1: Coordinate Systems",
 		
 		"parent": "/teaching/yale/118",
 		

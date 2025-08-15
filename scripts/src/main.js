@@ -1,14 +1,14 @@
-import { cardContainer, showCard } from "./cards.js";
+import { cardContainer, openCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
 import {
-	initDarkTheme,
-	initIncreaseContrast,
-	initReduceMotion,
-	setScroll,
-	siteSettings
+    initDarkTheme,
+    initIncreaseContrast,
+    initReduceMotion,
+    setScroll,
+    siteSettings
 } from "./settings.js";
 import { sleep } from "./utils.js";
 
@@ -319,7 +319,7 @@ async function showAndRestoreScroll()
 	{
 		if (!blockCardPages.includes(pageUrl))
 		{
-			showCard({
+			openCard({
 				id: siteSettings.card,
 				fromElement: pageElement,
 				animationTime: 10

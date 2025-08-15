@@ -154,6 +154,7 @@ home Cruz Godar
 
 		yale/118 Math 118
 			notes/calc-1-review Section 0: Calculus 1 Review
+			notes/coordinate-systems Section 1: Coordinate Systems
 
 		yale/112 Math 112
 		

@@ -13,7 +13,8 @@ export let cardIsOpen = false;
 export let cardIsZoom = false;
 export let cardIsAnimating = false;
 
-const easing = "cubicBezier(.25, 1, .25, 1)";
+const openEasing = "cubicBezier(.2, 1, .25, 1)";
+const closeEasing = "cubicBezier(.25, 1, .3, 1)";
 
 export const cardContainer = document.querySelector("#card-container");
 
@@ -25,13 +26,13 @@ if (closeButton)
 {
 	addHoverEvent({ element: closeButton, addBounceOnTouch: () =>true });
 
-	closeButton.addEventListener("click", () => hideCard());
+	closeButton.addEventListener("click", () => closeCard());
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
 		if (e.key === "Escape" && cardIsOpen)
 		{
-			hideCard();
+			closeCard();
 		}
 	});
 }
@@ -48,7 +49,7 @@ export function initCards()
 		{
 			if (!e.metaKey)
 			{
-				showCard({
+				openCard({
 					id: element.getAttribute("data-card-id"),
 					fromElement: element
 				});
@@ -79,13 +80,13 @@ export function setOnLoadExternalCard(callback)
 
 
 
-export async function showCard({
+export async function openCard({
 	id,
 	animationTime = cardAnimationTime
 }) {
 	if (cardIsOpen)
 	{
-		await hideCard();
+		await closeCard();
 	}
 	
 	if (cardIsAnimating)
@@ -216,7 +217,7 @@ export async function showCard({
 			top: 0,
 			opacity: 1,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
@@ -228,7 +229,7 @@ export async function showCard({
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
@@ -237,21 +238,21 @@ export async function showCard({
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 	]);
 
@@ -266,7 +267,7 @@ export async function showCard({
 	}
 }
 
-export async function hideCard(animationTime = cardAnimationTime)
+export async function closeCard(animationTime = cardAnimationTime)
 {
 	if (cardIsZoom)
 	{
@@ -296,14 +297,14 @@ export async function hideCard(animationTime = cardAnimationTime)
 	}
 
 	const containerOldScroll = cardContainer.scrollTop;
-	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
+	const totalHeightToMove = containerOldScroll + window.innerHeight + 32;
 
 	const hidePromise = siteSettings.reduceMotion
 		? anime({
 			targets: cardContainer,
 			opacity: 0,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished
 		: animate((t) =>
 		{
@@ -313,7 +314,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 			const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
 			cardContainer.style.top = `${remainingHeight}px`;
-		}, animationTime, easing);
+		}, animationTime, closeEasing);
 
 	await Promise.all([
 		anime({
@@ -325,7 +326,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
@@ -334,21 +335,21 @@ export async function hideCard(animationTime = cardAnimationTime)
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		hidePromise
@@ -420,7 +421,7 @@ export async function showZoomCard({
 }) {
 	if (siteSettings.reduceMotion)
 	{
-		return showCard({
+		return openCard({
 			id,
 			animationTime
 		});
@@ -428,7 +429,7 @@ export async function showZoomCard({
 
 	if (cardIsOpen)
 	{
-		await hideCard();
+		await closeCard();
 	}
 	
 	if (cardIsAnimating)
@@ -552,7 +553,7 @@ export async function showZoomCard({
 			translateX: 0,
 			translateY: 0,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
@@ -564,7 +565,7 @@ export async function showZoomCard({
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
@@ -573,21 +574,21 @@ export async function showZoomCard({
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 	]);
 
@@ -601,7 +602,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 {
 	if (siteSettings.reduceMotion)
 	{
-		return hideCard(animationTime);
+		return closeCard(animationTime);
 	}
 
 	if (cardIsAnimating)
@@ -636,7 +637,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
@@ -645,21 +646,21 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
@@ -667,7 +668,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			opacity: 0,
 			scale: siteSettings.reduceMotion ? 1 : .925,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 	]);
 
@@ -699,7 +700,7 @@ function handleClickEvent(e)
 {
 	if (e.target.id === "card-container")
 	{
-		hideCard();
+		closeCard();
 	}
 }
 

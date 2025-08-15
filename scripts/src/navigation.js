@@ -1,43 +1,43 @@
 import { clearCurrentlyLoadedApplets, currentlyLoadedApplets } from "../applets/applet.js";
 import {
-	fadeDownOut,
-	fadeLeftOut,
-	fadeOut,
-	fadeRightOut,
-	fadeUpOut,
-	opacityAnimationTime
+    fadeDownOut,
+    fadeLeftOut,
+    fadeOut,
+    fadeRightOut,
+    fadeUpOut,
+    opacityAnimationTime
 } from "./animation.js";
 import {
-	bannerElement,
-	bannerPages,
-	loadBanner,
-	preloadBanner
+    bannerElement,
+    bannerPages,
+    loadBanner,
+    preloadBanner
 } from "./banners.js";
-import { cardIsOpen, hideCard } from "./cards.js";
+import { cardIsOpen, closeCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
-	clearTemporaryIntervals,
-	clearTemporaryListeners,
-	clearTemporaryParams,
-	clearTemporaryWorkers,
-	pageElement,
-	pageUrl,
-	setPageUrl,
-	temporaryIntervals,
-	temporaryListeners,
-	temporaryParams,
-	temporaryWorkers
+    clearTemporaryIntervals,
+    clearTemporaryListeners,
+    clearTemporaryParams,
+    clearTemporaryWorkers,
+    pageElement,
+    pageUrl,
+    setPageUrl,
+    temporaryIntervals,
+    temporaryListeners,
+    temporaryParams,
+    temporaryWorkers
 } from "./main.js";
 import {
-	forceThemePages,
-	getQueryParams,
-	revertTheme,
-	setForcedTheme,
-	setOnThemeChange,
-	setRevertThemeTo,
-	siteSettings,
-	toggleDarkTheme
+    forceThemePages,
+    getQueryParams,
+    revertTheme,
+    setForcedTheme,
+    setOnThemeChange,
+    setRevertThemeTo,
+    siteSettings,
+    toggleDarkTheme
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 import { asyncFetch, sleep } from "./utils.js";
@@ -118,7 +118,7 @@ export async function redirect({
 			asyncFetch(`${url}/data.html`),
 			preloadBanner(url),
 			fadeOutPage(noFadeOut),
-			cardIsOpen ? hideCard() : Promise.resolve()
+			cardIsOpen ? closeCard() : Promise.resolve()
 		]);
 
 		
