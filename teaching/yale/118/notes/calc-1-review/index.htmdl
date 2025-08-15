@@ -72,7 +72,13 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 ## Derivatives
 
-The **derivative** of a function $f(x)$ is another function that's written $f'(x)$. It's defined as the slope of the tangent line to the graph of $f$ at $x$, and it measures the rate of change of $f$. The classic example is that if $s(t)$ is a function measuring the position of something at time $t$, then $s'(t) = v(t)$ is the velocity at time $t$, and $s''(t) = v'(t) = a(t)$ is the acceleration. Similarly, if $C(x)$ is a function giving the cost to a business to purchase $x$
+The **derivative** of a function $f(x)$ is another function that's written $f'(x)$. It's defined as the slope of the tangent line to the graph of $f$ at $x$, and it measures the rate of change of $f$. The classic example is that if $s(t)$ is a function measuring the position of something at time $t$, then $s'(t) = v(t)$ is the velocity at time $t$, and $s''(t) = v'(t) = a(t)$ is the acceleration. Similarly, if $C(x)$ is a function giving the cost to a business to purchase $x$ items, then $C'(x)$ is the **marginal cost**: the rate at which the cost is changing relative to the number of items purchased. A simpler and only slightly less precise way to think about that is that $C'(x)$ is approximately the cost to purchase the $(x + 1)$st item, since
+
+$$
+	C'(x) = \lim_{h \to 0} \frac{C(x + h) - C(x)}{h} \approx \frac{C(x + 1) - C(x)}{1}.
+$$
+
+More generally, if $f(x)$ is a differentiable function whose input variable $x$ is measured in unit $A$ and whose output is in unit $B$, then $f'(x)$ has units $\frac{B}{A}$ and is approximately equal to $f(x + 1) - f(x)$.
 
 Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the blue point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
 
