@@ -17,7 +17,7 @@ export default function()
 		{
 			vectorField:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -84,7 +84,7 @@ export default function()
 
 			vectorField2:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -142,7 +142,7 @@ export default function()
 
 			vectorField3:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -200,7 +200,7 @@ export default function()
 
 			autonomousSystem:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[

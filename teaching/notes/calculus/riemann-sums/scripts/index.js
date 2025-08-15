@@ -15,7 +15,7 @@ export default function()
 		{
 			testGraph:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			partitions:
 			{
-				bounds: { left: -1, right: 11, bottom: -1, top: 1 },
+				bounds: { xmin: -1, xmax: 11, ymin: -1, ymax: 1 },
 
 				expressions:
 				[
@@ -53,7 +53,7 @@ export default function()
 
 			riemannSum:
 			{
-				bounds: { left: 0, right: 8, bottom: -2.5, top: 4.5 },
+				bounds: { xmin: 0, xmax: 8, ymin: -2.5, ymax: 4.5 },
 
 				expressions:
 				[
@@ -65,7 +65,7 @@ export default function()
 
 			riemannSum2:
 			{
-				bounds: { left: -7, right: 7, bottom: -7, top: 32 },
+				bounds: { xmin: -7, xmax: 7, ymin: -7, ymax: 32 },
 
 				expressions:
 				[

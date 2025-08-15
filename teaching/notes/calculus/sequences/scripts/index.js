@@ -38,7 +38,7 @@ export default function()
 		{
 			taylorSeries:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -56,7 +56,7 @@ export default function()
 
 			epsilonDefinitionOfConvergence:
 			{
-				bounds: { left: -1, right: 13, bottom: -.5, top: 2.5 },
+				bounds: { xmin: -1, xmax: 13, ymin: -.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -77,7 +77,7 @@ export default function()
 
 			cosineSequence:
 			{
-				bounds: { left: -1, right: 6, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1, xmax: 6, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -93,7 +93,7 @@ export default function()
 
 			squeezeTheorem:
 			{
-				bounds: { left: -1, right: 101, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1, xmax: 101, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[

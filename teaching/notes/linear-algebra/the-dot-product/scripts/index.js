@@ -16,7 +16,7 @@ export default function()
 		{
 			vectorSubtraction:
 			{
-				bounds: { left: -4, right: 4, bottom: -3, top: 5 },
+				bounds: { xmin: -4, xmax: 4, ymin: -3, ymax: 5 },
 
 				expressions:
 				[
@@ -28,7 +28,7 @@ export default function()
 
 			gramSchmidt:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

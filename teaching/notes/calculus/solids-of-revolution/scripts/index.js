@@ -17,7 +17,7 @@ export default function()
 		{
 			diskMethodXAxis:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				options:
 				{
@@ -93,7 +93,7 @@ export default function()
 
 			diskMethodXAxis2:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				options:
 				{
@@ -175,7 +175,7 @@ export default function()
 
 			diskMethodYAxis:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				options:
 				{
@@ -257,7 +257,7 @@ export default function()
 
 			diskMethodXAxis3:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				options:
 				{
@@ -339,7 +339,7 @@ export default function()
 
 			diskMethodYAxis2:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				options:
 				{
@@ -421,7 +421,7 @@ export default function()
 
 			shellMethodYAxis:
 			{
-				bounds: { left: -3.5, right: 3.5, bottom: -3.5, top: 3.5 },
+				bounds: { xmin: -3.5, xmax: 3.5, ymin: -3.5, ymax: 3.5 },
 
 				options:
 				{
@@ -503,7 +503,7 @@ export default function()
 
 			shellMethodYAxis2:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				options:
 				{
@@ -585,7 +585,7 @@ export default function()
 
 			diskMethodXAxis4:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				options:
 				{
@@ -667,7 +667,7 @@ export default function()
 
 			shellMethodXAxis:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				options:
 				{
@@ -749,7 +749,7 @@ export default function()
 
 			aDifferentAxis1:
 			{
-				bounds: { left: -1, right: 15, bottom: -1, top: 17 },
+				bounds: { xmin: -1, xmax: 15, ymin: -1, ymax: 17 },
 
 				expressions:
 				[
@@ -767,7 +767,7 @@ export default function()
 
 			aDifferentAxis2:
 			{
-				bounds: { left: -1, right: 15, bottom: -1, top: 17 },
+				bounds: { xmin: -1, xmax: 15, ymin: -1, ymax: 17 },
 
 				expressions:
 				[

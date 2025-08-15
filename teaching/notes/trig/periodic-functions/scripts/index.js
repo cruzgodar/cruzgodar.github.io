@@ -16,7 +16,7 @@ export default function()
 		{
 			periodicFunction:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -40,7 +40,7 @@ export default function()
 
 			periodicFunction2:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -50,7 +50,7 @@ export default function()
 
 			periodicFunction3:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -82,7 +82,7 @@ export default function()
 
 			carEngine:
 			{
-				bounds: { left: -1 / 1200, right: 3 / 1200, bottom: -5, top: 50 },
+				bounds: { xmin: -1 / 1200, xmax: 3 / 1200, ymin: -5, ymax: 50 },
 
 				expressions:
 				[
@@ -94,7 +94,7 @@ export default function()
 
 			wave:
 			{
-				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[

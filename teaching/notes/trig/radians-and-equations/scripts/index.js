@@ -17,7 +17,7 @@ export default function()
 		{
 			radiusWrap:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -46,7 +46,7 @@ export default function()
 
 			arcLengthEtc:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -67,7 +67,7 @@ export default function()
 
 			circleAndLine:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[

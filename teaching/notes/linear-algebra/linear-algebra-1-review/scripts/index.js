@@ -13,7 +13,7 @@ export default function()
 		{
 			testGraph:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[

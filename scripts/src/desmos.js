@@ -32,15 +32,28 @@ export function setGetDesmosData(newGetDesmosData)
 
 
 
+// Each entry in a Desmos data object is of the form
+// {
+// 	expressions: a list of obejcts containing the fields latex
+//  and optionally color, lines, points, hidden, secret, etc.
+//
+// 	bounds: { left, right, bottom, top },
+//
+// 	options: extra options for the Desmos constructor, like
+//  showGrid, showXAxis, etc.
+
+//  use3d: a boolean for whether to use the Desmos.Calculator3D class.
+// }
+
 export async function createDesmosGraphs(recreating = false)
 {
 	if (window.OFFLINE)
 	{
 		return;
 	}
-	
+
 	await loadScript(
-		"https://www.desmos.com/api/v1.11/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
+		"https://www.desmos.com/api/v1.12/calculator.js?apiKey=2ede6b5fa6644332a74225bf2b8addb4"
 	);
 
 	for (const key in desmosGraphs)
@@ -81,21 +94,20 @@ export async function createDesmosGraphs(recreating = false)
 			invertedColors: siteSettings.darkTheme,
 
 			xAxisMinorSubdivisions: 1,
-			yAxisMinorSubdivisions: 1
+			yAxisMinorSubdivisions: 1,
+
+			...(data[element.id].options ?? {})
 		};
 
-		if (data[element.id].options)
-		{
-			for (const key in data[element.id].options)
-			{
-				options[key] = data[element.id].options[key];
-			}
-		}
 
 
-
-		// eslint-disable-next-line no-undef
-		desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
+		const desmosClass = data[element.id].use3d
+			// eslint-disable-next-line no-undef
+			? Desmos.Calculator3D
+			// eslint-disable-next-line no-undef
+			: Desmos.GraphingCalculator;
+		
+		desmosGraphs[element.id] = desmosClass(element, options);
 
 		const bounds = data[element.id].bounds;
 		const rect = element.getBoundingClientRect();

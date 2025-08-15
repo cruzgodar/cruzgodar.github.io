@@ -1,12 +1,12 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
-	getDesmosPoint,
-	getDesmosSlider,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosPurple,
+    desmosRed,
+    getDesmosPoint,
+    getDesmosSlider,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -18,7 +18,7 @@ export default function()
 		{
 			angles:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -38,7 +38,7 @@ export default function()
 
 			rightTriangle:
 			{
-				bounds: { left: -1, right: 5, bottom: -1.5, top: 4.5 },
+				bounds: { xmin: -1, xmax: 5, ymin: -1.5, ymax: 4.5 },
 
 				expressions:
 				[
@@ -52,7 +52,7 @@ export default function()
 
 			pythagoreanTheorem:
 			{
-				bounds: { left: -1, right: 11, bottom: -1, top: 11 },
+				bounds: { xmin: -1, xmax: 11, ymin: -1, ymax: 11 },
 
 				expressions:
 				[
@@ -118,7 +118,7 @@ export default function()
 
 			similarTriangles:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -129,7 +129,7 @@ export default function()
 
 			unitCircle:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[

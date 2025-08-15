@@ -13,7 +13,7 @@ export default function()
 		{
 			relatedRates:
 			{
-				bounds: { left: -10, right: 110, bottom: -10, top: 110 },
+				bounds: { xmin: -10, xmax: 110, ymin: -10, ymax: 110 },
 
 				expressions:
 				[

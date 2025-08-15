@@ -21,7 +21,7 @@ export default function()
 		{
 			areaScaling:
 			{
-				bounds: { left: -1, right: 8, bottom: -1, top: 8 },
+				bounds: { xmin: -1, xmax: 8, ymin: -1, ymax: 8 },
 
 				expressions:
 				[

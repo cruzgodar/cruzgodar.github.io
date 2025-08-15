@@ -15,7 +15,7 @@ export default function()
 		{
 			geometricIntegral:
 			{
-				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
+				bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			geometricIntegral2:
 			{
-				bounds: { left: -1, right: 4, bottom: -2, top: 8 },
+				bounds: { xmin: -1, xmax: 4, ymin: -2, ymax: 8 },
 
 				expressions:
 				[
@@ -50,7 +50,7 @@ export default function()
 
 			integralFromLimitDef:
 			{
-				bounds: { left: -.25, right: 2.25, bottom: -.25, top: 4.25 },
+				bounds: { xmin: -.25, xmax: 2.25, ymin: -.25, ymax: 4.25 },
 
 				expressions:
 				[
@@ -73,7 +73,7 @@ export default function()
 
 			geometricIntegral3:
 			{
-				bounds: { left: -1, right: 7, bottom: -2.5, top: 5.5 },
+				bounds: { xmin: -1, xmax: 7, ymin: -2.5, ymax: 5.5 },
 
 				expressions:
 				[
@@ -90,7 +90,7 @@ export default function()
 
 			signedArea:
 			{
-				bounds: { left: -3, right: 3, bottom: -10, top: 10 },
+				bounds: { xmin: -3, xmax: 3, ymin: -10, ymax: 10 },
 
 				expressions:
 				[

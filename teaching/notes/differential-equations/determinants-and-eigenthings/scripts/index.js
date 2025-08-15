@@ -14,7 +14,7 @@ export default function()
 		{
 			eigenvectors:
 			{
-				bounds: { left: -5, right: 15, bottom: -5, top: 15 },
+				bounds: { xmin: -5, xmax: 15, ymin: -5, ymax: 15 },
 
 				expressions:
 				[

@@ -15,7 +15,7 @@ export default function()
 		{
 			ftcPart1:
 			{
-				bounds: { left: -7, right: 10, bottom: -5, top: 12 },
+				bounds: { xmin: -7, xmax: 10, ymin: -5, ymax: 12 },
 
 				expressions:
 				[
@@ -37,7 +37,7 @@ export default function()
 
 			ftcPart2:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[

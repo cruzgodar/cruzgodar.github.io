@@ -19,7 +19,7 @@ export default function()
 		{
 			vectors:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -77,7 +77,7 @@ export default function()
 
 			vectorAddition:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -180,7 +180,7 @@ export default function()
 
 			vectorArithmeticExercise:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -200,7 +200,7 @@ export default function()
 
 			componentVectors:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -264,7 +264,7 @@ export default function()
 
 			dotProductMotivation:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

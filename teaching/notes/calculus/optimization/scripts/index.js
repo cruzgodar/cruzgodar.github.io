@@ -16,7 +16,7 @@ export default function()
 		{
 			extrema:
 			{
-				bounds: { left: -3.5, right: 3.5, bottom: -3.5, top: 3.5 },
+				bounds: { xmin: -3.5, xmax: 3.5, ymin: -3.5, ymax: 3.5 },
 
 				expressions:
 				[
@@ -31,7 +31,7 @@ export default function()
 
 			saddlePoint:
 			{
-				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
@@ -44,7 +44,7 @@ export default function()
 
 			criticalPoints:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -15, top: 10 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -15, ymax: 10 },
 
 				expressions:
 				[
@@ -56,7 +56,7 @@ export default function()
 
 			concavity:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -73,7 +73,7 @@ export default function()
 
 			firstDerivativeTest:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[

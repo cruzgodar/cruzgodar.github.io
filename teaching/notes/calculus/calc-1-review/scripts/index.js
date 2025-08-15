@@ -15,7 +15,7 @@ export default function()
 		{
 			testGraph:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			limitExample:
 			{
-				bounds: { left: -20, right: 20, bottom: -2, top: 2 },
+				bounds: { xmin: -20, xmax: 20, ymin: -2, ymax: 2 },
 
 				expressions:
 				[
@@ -46,7 +46,7 @@ export default function()
 
 			continuityExample:
 			{
-				bounds: { left: -2, right: 7, bottom: -2, top: 3 },
+				bounds: { xmin: -2, xmax: 7, ymin: -2, ymax: 3 },
 
 				expressions:
 				[
@@ -63,7 +63,7 @@ export default function()
 
 			derivativeExample:
 			{
-				bounds: { left: -2.333, right: 3.667, bottom: -1.667, top: 4.333 },
+				bounds: { xmin: -2.333, xmax: 3.667, ymin: -1.667, ymax: 4.333 },
 
 				expressions:
 				[
@@ -80,7 +80,7 @@ export default function()
 
 			secondDerivativeTest:
 			{
-				bounds: { left: -2.333, right: 3.667, bottom: -1.667, top: 4.333 },
+				bounds: { xmin: -2.333, xmax: 3.667, ymin: -1.667, ymax: 4.333 },
 
 				expressions:
 				[
@@ -99,7 +99,7 @@ export default function()
 
 			secondDerivativeTest2:
 			{
-				bounds: { left: -2, right: 3, bottom: -5, top: 3 },
+				bounds: { xmin: -2, xmax: 3, ymin: -5, ymax: 3 },
 
 				expressions:
 				[

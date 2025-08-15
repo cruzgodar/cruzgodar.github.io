@@ -16,7 +16,7 @@ export default function()
 		{
 			areaBetweenCurves:
 			{
-				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
+				bounds: { xmin: -1, xmax: 2, ymin: -1, ymax: 2 },
 
 				expressions:
 				[
@@ -33,7 +33,7 @@ export default function()
 
 			areaBetweenCurves2:
 			{
-				bounds: { left: -1, right: 4.14, bottom: -2.57, top: 2.57 },
+				bounds: { xmin: -1, xmax: 4.14, ymin: -2.57, ymax: 2.57 },
 
 				expressions:
 				[
@@ -50,7 +50,7 @@ export default function()
 
 			areaBetweenCurves3:
 			{
-				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
+				bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4 },
 
 				expressions:
 				[
@@ -67,7 +67,7 @@ export default function()
 
 			areaBetweenCurves4:
 			{
-				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
+				bounds: { xmin: -1, xmax: 2, ymin: -1, ymax: 2 },
 
 				expressions:
 				[
@@ -84,7 +84,7 @@ export default function()
 
 			areaBetweenCurves5:
 			{
-				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
+				bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4 },
 
 				expressions:
 				[
@@ -101,7 +101,7 @@ export default function()
 
 			areaBetweenCurves6:
 			{
-				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
+				bounds: { xmin: -1, xmax: 2, ymin: -1, ymax: 2 },
 
 				expressions:
 				[

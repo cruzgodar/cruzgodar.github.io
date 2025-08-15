@@ -15,7 +15,7 @@ export default function()
 		{
 			directionField:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -33,7 +33,7 @@ export default function()
 
 			directionField2:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -51,7 +51,7 @@ export default function()
 
 			deSolution:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -71,7 +71,7 @@ export default function()
 
 			directionField3:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -89,7 +89,7 @@ export default function()
 
 			directionField4:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

@@ -15,7 +15,7 @@ export default function()
 		{
 			circle:
 			{
-				bounds: { left: -2, right: 2, bottom: -2, top: 2 },
+				bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2 },
 
 				expressions:
 				[
@@ -50,7 +50,7 @@ export default function()
 
 			sinThing:
 			{
-				bounds: { left: -40, right: 40, bottom: -40, top: 40 },
+				bounds: { xmin: -40, xmax: 40, ymin: -40, ymax: 40 },
 
 				expressions:
 				[

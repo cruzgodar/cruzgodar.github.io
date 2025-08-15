@@ -15,7 +15,7 @@ export default function()
 		{
 			sinAndCos:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			expDerivative:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -.5, top: 4.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -.5, ymax: 4.5 },
 
 				expressions:
 				[

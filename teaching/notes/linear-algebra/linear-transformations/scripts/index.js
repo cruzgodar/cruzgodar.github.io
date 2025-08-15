@@ -17,7 +17,7 @@ export default function()
 		{
 			"1dLinearTransformation":
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -30,7 +30,7 @@ export default function()
 
 			"2dLinearTransformation":
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
