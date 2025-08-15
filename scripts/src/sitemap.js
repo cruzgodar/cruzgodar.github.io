@@ -691,6 +691,7 @@ export const sitemap =
 		[
 			"/teaching/notes/calculus",
 			"/teaching/notes/linear-algebra",
+			"/teaching/notes/multivariable-linear",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
 			"/teaching/yale/118",
@@ -933,7 +934,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/calc-1-review":
 	{
-		"title": "Parts 1 and 2 Review",
+		"title": "Calculus I Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1456,6 +1457,15 @@ export const sitemap =
 		"customScript": true,
 
 		"customStyle": true
+	},
+	
+	"/teaching/notes/multivariable-linear":
+	{
+		"title": "Multivariable Calculus and Linear Algebra",
+		
+		"parent": "/teaching",
+		
+		"children": []
 	},
 	
 	"/teaching/notes/differential-equations":

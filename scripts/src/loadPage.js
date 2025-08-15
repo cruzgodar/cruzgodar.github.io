@@ -359,6 +359,7 @@ function packageSolution(solutionElement, showButton = true)
 
 			solutionElement.style.height = "auto";
 			solutionElement.style.width = "auto";
+			solutionElement.style.removeProperty("z-index");
 			textButtonsElement.remove();
 		}
 	});

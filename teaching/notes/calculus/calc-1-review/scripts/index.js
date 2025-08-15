@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -92,6 +92,21 @@ export default function()
 
 					{ latex: raw`f''(x)`, color: desmosRed },
 					{ latex: raw`(\frac{2}{3}, f(\frac{2}{3}))`, color: desmosRed, secret: true },
+				]
+			},
+
+
+
+			secondDerivativeTest2:
+			{
+				bounds: { left: -2, right: 3, bottom: -5, top: 3 },
+
+				expressions:
+				[
+					{ latex: raw`g(x) = x^3 - 2x^2 + x \left\{ -1 \leq x \leq 2\right\}`, color: desmosPurple, secret: true, hidden: true },
+					{ latex: raw`g(x)`, color: desmosPurple },
+					{ latex: raw`g'(x)`, color: desmosBlue, hidden: true },
+					{ latex: raw`g''(x)`, color: desmosRed, hidden: true },
 				]
 			}
 		};

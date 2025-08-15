@@ -72,7 +72,7 @@ home Cruz Godar
 			related-rates Section 2.10: Related Rates
 			applied-optimization Section 2.11: Applied Optimization
 			newtons-method Section 2.12: Newton's Method
-			calc-1-review Parts 1 and 2 Review
+			calc-1-review Calculus I Review
 
 			riemann-sums Section 3.1: Riemann Sums
 			integrals-intro Section 3.2: Intro to Integrals
@@ -125,6 +125,8 @@ home Cruz Godar
 			the-spectral-theorems Section 18: The Spectral Theorems
 			jordan-normal-form Section 19: Jordan Normal Form
 			singular-value-decompositions Section 20: Singular Value Decompositions
+
+		notes/multivariable-linear Multivariable Calculus and Linear Algebra
 
 		notes/differential-equations Differential Equations
 			calc-review Section 0: Calculus Review
