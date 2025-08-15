@@ -112,8 +112,7 @@ body
 }
 
 .checkbox-row.disabled > .checkbox-container.hover-reduce-motion,
-.text-button.dropdown.expanded.hover-reduce-motion,
-.image-link.hover-reduce-motion
+.text-button.dropdown.expanded.hover-reduce-motion
 {
 	filter: unset;
 }
@@ -235,12 +234,6 @@ img
 	outline: 3px solid color-mix(in srgb, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) calc(var(--theme) * 100%));
 	background: rgb(255, 255, 255);
 	border-radius: 50%;
-}
-
-#logo img:not(:hover):focus
-{
-	transform: scale(1.05);
-	outline: none;
 }
 
 
@@ -1160,8 +1153,6 @@ body > .WILSON_fullscreen-container .fps-canvas
 
 .checkbox-container:not(:hover):focus
 {
-	transform: scale(1.1);
-	
 	outline: none;
 }
 
@@ -2190,12 +2181,6 @@ option
 
 	user-select: none;
 	-webkit-user-select: none;
-}
-
-.image-link img:not(:hover):focus
-{
-	transform: scale(1.05);
-	outline: none;
 }
 
 .one-image-link .image-link

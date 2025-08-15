@@ -723,12 +723,6 @@
 	</url>
 		
 	<url>
-		<loc>https://www.cruzgodar.com/teaching/notes/multivariable-linear</loc>
-		<lastmod>2025-8-15</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
 		<loc>https://www.cruzgodar.com/teaching/notes/differential-equations</loc>
 		<lastmod>2025-8-15</lastmod>
 		<priority>0.5</priority>
@@ -874,6 +868,12 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/yale/118</loc>
+		<lastmod>2025-8-15</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/yale/118/notes/calc-1-review</loc>
 		<lastmod>2025-8-15</lastmod>
 		<priority>0.5</priority>
 	</url>

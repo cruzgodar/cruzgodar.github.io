@@ -13,7 +13,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 ## Interactive Notes
 
 ### image-links
-	/teaching/notes/calculus/calc-1-review
+	notes/calc-1-review
 ###
 
 
@@ -28,7 +28,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 ### card syllabus "Math 1180: Introduction to Functions of Several Variables"
 	
-	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cruz.godar@yale.edu</a>)
+	Instructor: Cruz Godar (<a href="mailto:cruz.godar@yale.edu">cruz.godar@yale.edu</a>)
 
 	Class meetings: 9--10:15 TR in WTS A60
 	
@@ -38,7 +38,7 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	## What materials will I need?
 	
-	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf">Calculus Volume 3</a> by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, <a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown's video series</a> is a fantastic expository resource. For a more traditional textbook experience, <a href="https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf">Linear Algebra with Applications</a> by Nicholson is free and will do nicely.
+	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything a textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf">Calculus Volume 3</a> by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, <a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown's video series</a> is a fantastic expository resource. For a more traditional textbook experience, <a href="https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf">Linear Algebra with Applications</a> by Nicholson is free and will do nicely.
 	
 	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, you can use a scientific calculator, but not a graphing one. The quizzes and exams are written so that necessary computations are doable by hand.
 	

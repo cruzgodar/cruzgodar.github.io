@@ -691,7 +691,6 @@ export const sitemap =
 		[
 			"/teaching/notes/calculus",
 			"/teaching/notes/linear-algebra",
-			"/teaching/notes/multivariable-linear",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
 			"/teaching/yale/118",
@@ -1459,15 +1458,6 @@ export const sitemap =
 		"customStyle": true
 	},
 	
-	"/teaching/notes/multivariable-linear":
-	{
-		"title": "Multivariable Calculus and Linear Algebra",
-		
-		"parent": "/teaching",
-		
-		"children": []
-	},
-	
 	"/teaching/notes/differential-equations":
 	{
 		"title": "Differential Equations",
@@ -1743,6 +1733,20 @@ export const sitemap =
 		"title": "Math 118",
 		
 		"parent": "/teaching",
+		
+		"children":
+		[
+			"/teaching/yale/118/notes/calc-1-review"
+		],
+
+		"customScript": true
+	},
+		
+	"/teaching/yale/118/notes/calc-1-review":
+	{
+		"title": "Section 0: Calculus 1 Review",
+		
+		"parent": "/teaching/yale/118",
 		
 		"children": [],
 
