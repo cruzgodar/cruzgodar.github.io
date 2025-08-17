@@ -63,6 +63,19 @@ export default function()
 					
 				]
 			},
+
+			sphereAndCylinder:
+			{
+				use3d: true,
+
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+				expressions:
+				[
+					{ latex: raw`x^2 + y^2 + z^2 = 1`, color: desmosPurple3d },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlue3d },
+				]
+			}
 		};
 
 		return data;

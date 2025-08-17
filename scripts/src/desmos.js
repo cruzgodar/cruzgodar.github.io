@@ -23,7 +23,7 @@ function updateDesmosColors()
 	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
 	desmosGreen = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
 
-	desmosBlack3d = siteSettings.darkTheme ? "#cccccc" : "#333333";
+	desmosBlack3d = siteSettings.darkTheme ? "#bbbbbb" : "#555555";
 }
 
 export let desmosGraphs = {};
@@ -62,9 +62,7 @@ export async function createDesmosGraphs(recreating = false)
 		return;
 	}
 
-	await loadScript(
-		"https://www.desmos.com/api/v1.12/calculator.js?apiKey=2ede6b5fa6644332a74225bf2b8addb4"
-	);
+	await loadScript("/scripts/desmos.min.js");
 
 	for (const key in desmosGraphs)
 	{
@@ -119,6 +117,8 @@ export async function createDesmosGraphs(recreating = false)
 		
 		desmosGraphs[element.id] = desmosClass(element, options);
 
+		
+
 		const bounds = data[element.id].bounds;
 		const rect = element.getBoundingClientRect();
 		const aspectRatio = rect.width / rect.height;
@@ -130,6 +130,11 @@ export async function createDesmosGraphs(recreating = false)
 		desmosGraphs[element.id].setMathBounds(bounds);
 
 		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
+
+		// Set some more things that currently aren't exposed in the API :(
+		desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
+
+		desmosGraphs[element.id].updateSettings({});
 
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 
@@ -164,28 +169,35 @@ export async function recreateDesmosGraphs()
 
 export function getDesmosScreenshot(id, forPdf = false)
 {
-	console.log(desmosGraphs[id].getState());
+	// Yeesh is this hacky. Hopefully these are exposed in the API in the future!
+	desmosGraphs[id].controller.graphSettings.showPlane3D = false;
+	desmosGraphs[id].controller.graphSettings.showNumbers3D = false;
+	desmosGraphs[id].controller.graphSettings.showAxisLabels3D = false;
+	
 	desmosGraphs[id].updateSettings({
 		showGrid: forPdf,
 		xAxisNumbers: forPdf,
-		yAxisNumbers: forPdf
+		yAxisNumbers: forPdf,
 	});
 
-	const expressions = desmosGraphs[id].getExpressions();
-
-	for (let i = 0; i < expressions.length; i++)
+	if (!desmosGraphs[id].getState().graph.threeDMode)
 	{
-		expressions[i].lineWidth = forPdf ? 5 : 7.5;
-		expressions[i].pointSize = forPdf ? 15 : 27;
-		expressions[i].dragMode = "NONE";
+		const expressions = desmosGraphs[id].getExpressions();
+
+		for (let i = 0; i < expressions.length; i++)
+		{
+			expressions[i].lineWidth = forPdf ? 5 : 7.5;
+			expressions[i].pointSize = forPdf ? 15 : 27;
+			expressions[i].dragMode = "NONE";
+		}
+
+		desmosGraphs[id].setExpressions(expressions);
 	}
 
-	desmosGraphs[id].setExpressions(expressions);
-
 	const imageData = desmosGraphs[id].screenshot({
-		width: 500,
-		height: 500,
-		targetPixelRatio: 8
+		width: 100,
+		height: 100,
+		targetPixelRatio: 16
 	});
 
 	const img = document.createElement("img");

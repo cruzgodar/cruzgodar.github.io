@@ -90,9 +90,17 @@ $$
 		(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
 	$$
 
-	For a cylinder, there are a few different approaches. We could 
+	For the cylinder, there are a few different approaches. We could treat it as the set of points in $\mathbb{R}^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $\mathbb{R}^3$ --- also $x^2 + y^2 = 1$.
+
+	### desmos sphereAndCylinder
 
 ###
+
+
+
+## Intro to Vectors
+
+
 
 
 
