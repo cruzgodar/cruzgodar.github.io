@@ -133,8 +133,6 @@ export async function createDesmosGraphs(recreating = false)
 
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 
-		console.log(desmosGraphs[element.id].getState());
-
 		if (window.DEBUG && !recreating)
 		{
 			element.addEventListener("click", (e) =>
@@ -166,6 +164,7 @@ export async function recreateDesmosGraphs()
 
 export function getDesmosScreenshot(id, forPdf = false)
 {
+	console.log(desmosGraphs[id].getState());
 	desmosGraphs[id].updateSettings({
 		showGrid: forPdf,
 		xAxisNumbers: forPdf,

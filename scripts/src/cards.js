@@ -13,7 +13,7 @@ export let cardIsOpen = false;
 export let cardIsZoom = false;
 export let cardIsAnimating = false;
 
-const openEasing = "cubicBezier(.2, 1, .25, 1)";
+const openEasing = "cubicBezier(.25, 1, .3, 1)";
 const closeEasing = "cubicBezier(.25, 1, .3, 1)";
 
 export const cardContainer = document.querySelector("#card-container");
@@ -180,7 +180,6 @@ export async function openCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
-	document.querySelector("#header-container").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
@@ -191,10 +190,6 @@ export async function openCard({
 
 	// Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
-		? "rgb(24, 24, 24)"
-		: "rgb(255, 255, 255)";
-
-	document.querySelector("#header-container").style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
 
@@ -226,15 +221,6 @@ export async function openCard({
 				document.querySelector("#header"),
 			],
 			filter: "brightness(.5)",
-			scale: backgroundScale,
-			...(siteSettings.increaseContrast && { opacity: 0 }),
-			duration: animationTime,
-			easing: openEasing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
@@ -330,15 +316,6 @@ export async function closeCard(animationTime = cardAnimationTime)
 		}).finished,
 
 		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: 1,
-			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
-			duration: animationTime,
-			easing: closeEasing,
-		}).finished,
-
-		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
@@ -364,7 +341,6 @@ export async function closeCard(animationTime = cardAnimationTime)
 	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
-	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
 
@@ -511,7 +487,6 @@ export async function showZoomCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
-	document.querySelector("#header-container").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
@@ -522,10 +497,6 @@ export async function showZoomCard({
 
 	// Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
-		? "rgb(24, 24, 24)"
-		: "rgb(255, 255, 255)";
-
-	document.querySelector("#header-container").style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
 
@@ -562,15 +533,6 @@ export async function showZoomCard({
 				document.querySelector("#header"),
 			],
 			filter: "brightness(.5)",
-			scale: backgroundScale,
-			...(siteSettings.increaseContrast && { opacity: 0 }),
-			duration: animationTime,
-			easing: openEasing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
@@ -641,15 +603,6 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 		}).finished,
 
 		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: 1,
-			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
-			duration: animationTime,
-			easing: closeEasing,
-		}).finished,
-
-		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
@@ -681,7 +634,6 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
-	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
 

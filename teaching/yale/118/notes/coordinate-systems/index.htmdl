@@ -2,7 +2,97 @@
 
 
 
+Math 118 is in many ways an unusual course: it's a blend of linear algebra and multivariable calculus, two topics that usually aren't combined, and the multivariable calculus portion comes from a topic that usually isn't split in such a manner. It's also a terminal course in the math department, and it's used primarily as preparation for higher-level courses in economics and statistics. All this means that the course is a unique perspective on two somewhat distinct areas of math that share one main thing in common: they concern functions of multiple variables. In the first half of this course, we'll explore how the ideas and techniques of calculus I --- specifically optimization --- apply to functions that take more than a single variable as input. In the second half, we'll apply our experience with higher-dimensional space to cover an introduction to linear algebra, exploring how formalizing and structuring methods to solve systems of linear equations results in a surprisingly rich and fully-featured theory that applies to far more than those systems. But before we get started with either of these, let's take our first section to familiarize ourselves with 3D coordinates, a language common to both linear algebra and multivariable calculus.
 
+We're used to functions of a single variable (which we often just call *functions*) of the form $y = f(x)$. They take in a real number $x$ and output a real number $y$, often according to some rule like $f(x) = x^2$. When we graph functions like these, we plot pairs $(x, y)$, with one $y$-coordinate for every $x$-coordinate we can plug in.
+
+Plenty of real-world functions take in more than one input though --- a fluid has viscosity that is a function of both temperature and pressure, a company producing multiple products that require overlapping resources has profit that is a function of the amounts of each product produced, and maybe most directly, height above sea level is a function of latitude and longitude.
+
+We could define a brand-new notion of a function of two or more variables and proceed to redevelop many of the same results we already know to be true about single-variable functions, but there's a better way, and a good lesson to learn about math more broadly: whenever reasonable, it pays to leverage notions and language that's already established rather than making something new from scratch. To that end, let's think of a function that takes two inputs in a slightly different way: as a function that takes in a *single* pair of real numbers $(x, y)$ and outputs a real number $z$. That way, most of what we already know about single-variable functions will carry over to these new ones.
+
+To distinguish and denote these functions, though, we're in desperate need of notation and language! Let's define some terms so that it's easier to talk about these functions and others.
+
+### def "the real numbers"
+
+	The set of all real numbers (i.e. all decimals, both rational and irrational) is denoted $\mathbb{R}$, and the set of ordered lists of $n$ real numbers is denoted $\mathbb{R}^n$ (read "R-n").
+
+###
+
+For example, the Cartesian plane is the set of all ordered pairs of real numbers, and so we denote it $\mathbb{R}^2$. This is where graphs of single-variable functions live, and it's also the domain of functions of two variables!
+
+### def "domain and codomain"
+
+	Let $f$ be a function that takes inputs from a set $A$ and produces outputs in a set $B$. We say that $A$ is the **domain** of $f$ and that $B$ is the **codomain** of $f$, and we write $f : A \to B$.
+
+###
+
+The codomain of a function is distinct from its **range**, which is the set of all outputs of the function that actually occur. For example, the function $f : \mathbb{R} \to \mathbb{R}$ defined by $f(x) = 2x^4$ has a codomain of $\mathbb{R}$ as it's written (which just means its outputs are real numbers), but it has a range of $[0, \infty)$, since all real number inputs to $f$ produce positive outputs.
+
+Our functions of interest, particularly in the second half of the course, will be functions $f : \mathbb{R}^n \to \mathbb{R}$: they take in a list of $n$ real numbers and produce a single one. While we could write something like $f((x, y)) = x + y$ to indicate that a function $f$ takes in a pair $(x, y)$ in $\mathbb{R}^2$ and sends it to $x + y$, we'll usually omit the awkward double parentheses and just write $f(x, y) = x + y$.
+
+
+
+## Geometry in $\mathbb{R}^3$
+
+Let's start by getting our bearings in $\mathbb{R}^3$ specifically --- while we'll mostly be working in $\mathbb{R}^n$ for general $n$, we'll develop much of our intuition in $\mathbb{R}^3$, since that's the highest space we can reasonably picture (we live in a $3$-dimensional universe, after all), and nearly everything true about $\mathbb{R}^3$ that's of use to us generalizes directly to every $\mathbb{R}^n$.
+
+Let's start getting our bearings in $\mathbb{R}^3$ by taking equations whose graphs we're already familiar with in $\mathbb{R}^2$ and plotting them in 3D. Open the Desmos sidebar in the graph below and check the Extend to 3D checkbox for each equation in turn. You can also <span class="click-tap"><span>click</span><span>tap</span></span> the colored circles next to the equations to hide and show them.
+
+### desmos extendTo3d
+
+The results are similar --- plotting a 2D function in 3D results in an object like a paper sheet, potentially warped a bit due to the function. Fundamentally, this is because plotting a graph of any equation just means drawing all of the points where that equation is true, and any equation of the form $y = f(x)$ doesn't involve $z$, so any point $(x, y)$ where $y = f(x)$ will result in us plotting a whole column of points $(x, y, z)$ for *all* values of $z$.
+
+The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $\mathbb{R}$ when we're using it to graph things!
+
+### exc "graphing a plane"
+
+	Sketch a graph of $y = x^2$ in $\mathbb{R}^3$.
+
+	### solution
+
+	Like the previous graphs, this one looks like the graph of $y = x^2$, but extended vertically parallel to the $z$-axis.
+
+	### desmos extendTo3d2
+
+###
+
+One of the learning objectives for this course is being able to sketch basic 3D graphs, but don't worry if that seems like a daunting task --- I'm not here to be overly picky about perspective and detail!
+
+We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $\mathbb{R}^2$ by using the Pythagorean theorem: it's
+
+$$
+	d((x_1, y_1), (x_2, y_2)) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
+$$
+
+### desmos distance
+
+Once again, instead of trying to reprove something like the Pythagorean theorem in 3D, we're best off just using it verbatim to extend the distance result to $\mathbb{R}^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $\mathbb{R}^2$ applies: the distance is
+
+$$
+	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
+$$
+
+Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting white triangle that we form is a right triangle, and the Pythagorean theorem tells us that its hypotenuse has length
+
+$$
+	d = \sqrt{d^2 + |z_2 - z_1|^2} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}.
+$$
+
+### exc "spheres and cylinders"
+
+	What is an equation for a sphere of radius $1$ centered at the origin (i.e. $(0, 0, 0)$) in $\mathbb{R}^3$? What about a sphere of radius $r$ centered at $(a, b, c)$? How about a vertical cylinder of radius $1$ parallel to the $z$-axis whose center axis contains the origin? Hint: for all of these, start with an equation for the unit circle in $\mathbb{R}^2$.
+
+	### solution
+
+	Just like the unit circle in $\mathbb{R}^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $\mathbb{R}^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
+
+	$$
+		(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
+	$$
+
+	For a cylinder, there are a few different approaches. We could 
+
+###
 
 
 

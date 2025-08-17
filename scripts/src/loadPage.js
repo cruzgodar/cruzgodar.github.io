@@ -145,7 +145,7 @@ async function fadeInPage()
 	if (siteSettings.reduceMotion)
 	{
 		document.querySelector("#header").style.opacity = 1;
-		document.querySelector("#header-container").style.opacity = 1;
+		// document.querySelector("#header-container").style.opacity = 1;
 
 		if (bannerElement)
 		{
@@ -158,7 +158,7 @@ async function fadeInPage()
 	}
 
 	fadeIn({ element: document.querySelector("#header") });
-	document.querySelector("#header-container").style.opacity = 1;
+	// document.querySelector("#header-container").style.opacity = 1;
 
 	setTimeout(() => pageShown = true, 10);
 

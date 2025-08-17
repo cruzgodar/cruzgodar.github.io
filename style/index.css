@@ -1662,37 +1662,28 @@ option
 
 
 
-#header-container
+.header-container
 {
 	position: fixed;
-	top: -50vh;
-	left: -50vw;
-	
-	height: calc(40px + 50vh + env(safe-area-inset-top));
-	width: calc(100% + 100vw);
-	
-	background-color: var(--background);
-	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.15 + var(--theme) * .15));
-	
-	z-index: 105;
-	
-	transform-origin: 50% calc(40px + 100vh);
-	transform: scale(1);
+	top: calc(env(safe-area-inset-top));
+	left: calc(env(safe-area-inset-left));
+	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 
-	outline: 2px solid var(--contrast-border-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-
-
 
 #header
 {
-	position: fixed;
-	top: env(safe-area-inset-top);
-	left: env(safe-area-inset-left);
+	position: relative;
+	background-color: var(--background);
 	
 	height: 40px;
-	
-	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+	width: 100%;
+
+
+	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
 	
 	z-index: 110;
 	
@@ -1707,13 +1698,13 @@ option
 #header-logo
 {
 	position: absolute;
-	top: 5px;
-	left: 5px;
+	top: 4px;
+	left: 4px;
 	
-	padding: 2.5px;
-	border-radius: 5px;
+	padding: 2px;
+	border-radius: 8px;
 	
-	height: calc(100% - 15px);
+	height: calc(100% - 12px);
 	width: fit-content;
 	
 	display: flex;
@@ -1731,7 +1722,8 @@ option
 #header-logo span
 {
 	color: var(--high-contrast);
-	padding-left: 5px;
+	padding-left: 6px;
+	padding-right: 4px;
 }
 
 #header-logo.hover, #header-logo:not(.hover):focus
@@ -1766,19 +1758,19 @@ option
 
 #header-links a
 {
-	padding: 5px;
-	border-radius: 5px;
+	padding: 4px;
+	border-radius: 8px;
 	
-	margin-left: 1.25px;
-	margin-right: 1.25px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	
 	cursor: pointer;
 	
 	transition: none;
 	
-	height: calc(100% - 20px);
+	height: calc(100% - 16px);
 	
 	display: flex;
 	align-items: center;
@@ -1842,14 +1834,14 @@ option
 #header-settings-button
 {
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 4px;
+	right: 4px;
 	padding: 4px;
-	height: calc(100% - 18px);
+	height: calc(100% - 16px);
 
 	aspect-ratio: 1;
 	
-	border-radius: 5px;
+	border-radius: 8px;
 	
 	width: fit-content;
 	
@@ -1931,7 +1923,7 @@ option
 	}
 }
 
-@media (max-width: 550px)
+@media (max-width: 500px)
 {
 	#header-links a span
 	{
@@ -1942,17 +1934,12 @@ option
 	{
 		display: block;
 	}
-
-	#header-logo, #header-links a, #header-settings-button
-	{
-		/* Wrap around the little image link glyphs nicely. */
-		border-radius: 7.5px;
-	}
 	
 	#header-links a
 	{
-		padding: 2.5px;
-		height: calc(100% - 15px);
+		padding: 2px;
+		border-radius: 8px;
+		height: calc(100% - 12px);
 	}
 
 	#accessibility-tooltip
@@ -1974,21 +1961,18 @@ option
 {
 	#header
 	{
-		height: 35px;
-	}
-
-	#header-container
-	{
-		height: calc(35px + 50vh);
-		transform-origin: 50% calc(35px + 100vh);
+		height: 36px;
 	}
 
 	#header-settings-button
 	{
-		top: 4.5px;
-		right: 4.5px;
-		padding: 4.5px;
-		height: calc(100% - 17px);
+		padding: 3px;
+		height: calc(100% - 14px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(44px + env(safe-area-inset-top));
 	}
 }
 
@@ -1996,43 +1980,39 @@ option
 {
 	#header
 	{
-		height: 30px;
+		height: 32px;
 	}
-
-	#header-container
-	{
-		height: calc(30px + 50vh);
-		transform-origin: 50% calc(30px + 100vh);
-	}
-
+	
 	#header-logo
 	{
-		top: 2.5px;
-		left: 2.5px;
-		padding: 2.5px;
+		top: 3px;
+		left: 3px;
+		padding: 2px;
 		
 		height: calc(100% - 10px);
 	}
-
+	
 	#header-links a
 	{
+		/* Gross and not a multiple of 4, but it's the right look. */
+		margin-top: 3px;
+		margin-bottom: 3px;
 		padding: 2.5px;
-		border-radius: 5px;
 		
-		margin-left: 1.25px;
-		margin-right: 1.25px;
-		margin-top: 2.5px;
-		margin-bottom: 2.5px;
-		
-		height: calc(100% - 10px);
+		height: calc(100% - 11px);
 	}
-
+	
 	#header-settings-button
 	{
-		top: 2px;
-		right: 2px;
-		padding: 4.5px;
+		top: 3px;
+		right: 3px;
+		padding: 3.5px;
 		height: calc(100% - 13px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(40px + env(safe-area-inset-top));
 	}
 }
 
@@ -2040,13 +2020,7 @@ option
 {
 	#header
 	{
-		height: 25px;
-	}
-
-	#header-container
-	{
-		height: calc(25px + 50vh);
-		transform-origin: 50% calc(25px + 100vh);
+		height: 28px;
 	}
 
 	#header-logo
@@ -2057,25 +2031,27 @@ option
 		
 		height: calc(100% - 8px);
 	}
-
+	
 	#header-links a
 	{
-		padding: 2px;
-		
-		margin-left: 1px;
-		margin-right: 1px;
 		margin-top: 2px;
 		margin-bottom: 2px;
+		padding: 2.5px;
 		
-		height: calc(100% - 8px);
+		height: calc(100% - 9px);
 	}
-
+	
 	#header-settings-button
 	{
 		top: 2px;
 		right: 2px;
 		padding: 3.5px;
 		height: calc(100% - 11px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(36px + env(safe-area-inset-top));
 	}
 }
 
@@ -2265,7 +2241,7 @@ img[src="/about/cover.webp"]
 	top: 4px !important;
 }
 
-.dcg-btn-flat-gray
+.dcg-btn-flat-gray, .dcg-icon-btn, .dcg-overgraph-icon, .dcg-action-reset, .dcg-action-toggle-edit
 {
 	border-radius: 12px !important;
 }
@@ -2280,11 +2256,6 @@ img[src="/about/cover.webp"]
 {
 	bottom: 4px !important;
 	right: 4px !important;
-}
-
-.dcg-overgraph-icon
-{
-	border-radius: 12px !important;
 }
 
 
@@ -2357,7 +2328,8 @@ img[src="/about/cover.webp"]
 	width: 100% !important;
 }
 
-.notes-environment > *:last-child
+.notes-environment > *:last-child,
+.notes-environment > .solution > *:last-child
 {
 	margin-bottom: 0 !important;
 }
