@@ -4,11 +4,12 @@ import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
 import {
-    initDarkTheme,
-    initIncreaseContrast,
-    initReduceMotion,
-    setScroll,
-    siteSettings
+	initCapsuleHeader,
+	initDarkTheme,
+	initIncreaseContrast,
+	initReduceMotion,
+	setScroll,
+	siteSettings
 } from "./settings.js";
 import { sleep } from "./utils.js";
 
@@ -134,6 +135,7 @@ export async function loadSite(url = pageUrl)
 	await initDarkTheme();
 	initReduceMotion();
 	initIncreaseContrast();
+	initCapsuleHeader();
 	
 	pageElement.classList.add("page");
 

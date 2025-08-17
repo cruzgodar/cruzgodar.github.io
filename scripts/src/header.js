@@ -6,7 +6,7 @@ import {
 	siteSettings,
 	toggleDarkTheme,
 	toggleIncreaseContrast,
-	toggleReduceMotion,
+	toggleReduceMotion
 } from "./settings.js";
 
 export let headerElement;
@@ -15,6 +15,7 @@ let accessibilityTooltipElement;
 export let darkThemeCheckbox;
 export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
+export let capsuleHeaderCheckbox;
 
 let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
@@ -104,6 +105,18 @@ export function addHeader()
 					</label>
 				</div>
 			</div>
+
+			<!-- <div class="checkboxes keep-accessibility-dialog-open">
+				<div class="checkbox-row keep-accessibility-dialog-open">
+					<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">
+						<input type="checkbox" id="capsule-header-checkbox" class="keep-accessibility-dialog-open">
+						<div class="checkbox keep-accessibility-dialog-open"></div>
+					</div>
+					<label for="capsule-header-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
+						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
+					</label>
+				</div>
+			</div> -->
 		</div>
 	`);
 
@@ -218,6 +231,22 @@ export function addHeader()
 			scale: 1.1,
 			addBounceOnTouch: () => true
 		});
+
+
+
+		// capsuleHeaderCheckbox = new Checkbox({
+		// 	element: document.body.querySelector("#capsule-header-checkbox"),
+		// 	name: "Experimental header",
+		// 	checked: siteSettings.capsuleHeader,
+		// 	persistState: false,
+		// 	onInput: () => toggleCapsuleHeader()
+		// });
+
+		// addHoverEventWithScale({
+		// 	element: capsuleHeaderCheckbox.element.parentNode,
+		// 	scale: 1.1,
+		// 	addBounceOnTouch: () => true
+		// });
 
 
 

@@ -14,11 +14,11 @@ To distinguish and denote these functions, though, we're in desperate need of no
 
 ### def "the real numbers"
 
-	The set of all real numbers (i.e. all decimals, both rational and irrational) is denoted $\mathbb{R}$, and the set of ordered lists of $n$ real numbers is denoted $\mathbb{R}^n$ (read "R-n").
+	The set of all real numbers (i.e. all decimals, both rational and irrational) is denoted $#R#$, and the set of ordered lists of $n$ real numbers is denoted $#R#^n$ (read "R-n").
 
 ###
 
-For example, the Cartesian plane is the set of all ordered pairs of real numbers, and so we denote it $\mathbb{R}^2$. This is where graphs of single-variable functions live, and it's also the domain of functions of two variables!
+For example, the Cartesian plane is the set of all ordered pairs of real numbers, and so we denote it $#R#^2$. This is where graphs of single-variable functions live, and it's also the domain of functions of two variables!
 
 ### def "domain and codomain"
 
@@ -26,27 +26,27 @@ For example, the Cartesian plane is the set of all ordered pairs of real numbers
 
 ###
 
-The codomain of a function is distinct from its **range**, which is the set of all outputs of the function that actually occur. For example, the function $f : \mathbb{R} \to \mathbb{R}$ defined by $f(x) = 2x^4$ has a codomain of $\mathbb{R}$ as it's written (which just means its outputs are real numbers), but it has a range of $[0, \infty)$, since all real number inputs to $f$ produce positive outputs.
+The codomain of a function is distinct from its **range**, which is the set of all outputs of the function that actually occur. For example, the function $f : #R# \to #R#$ defined by $f(x) = 2x^4$ has a codomain of $#R#$ as it's written (which just means its outputs are real numbers), but it has a range of $[0, \infty)$, since all real number inputs to $f$ produce positive outputs.
 
-Our functions of interest, particularly in the second half of the course, will be functions $f : \mathbb{R}^n \to \mathbb{R}$: they take in a list of $n$ real numbers and produce a single one. While we could write something like $f((x, y)) = x + y$ to indicate that a function $f$ takes in a pair $(x, y)$ in $\mathbb{R}^2$ and sends it to $x + y$, we'll usually omit the awkward double parentheses and just write $f(x, y) = x + y$.
+Our functions of interest, particularly in the second half of the course, will be functions $f : #R#^n \to #R#$: they take in a list of $n$ real numbers and produce a single one. While we could write something like $f((x, y)) = x + y$ to indicate that a function $f$ takes in a pair $(x, y)$ in $#R#^2$ and sends it to $x + y$, we'll usually omit the awkward double parentheses and just write $f(x, y) = x + y$.
 
 
 
-## Geometry in $\mathbb{R}^3$
+## Geometry in $#R#^3$
 
-Let's start by getting our bearings in $\mathbb{R}^3$ specifically --- while we'll mostly be working in $\mathbb{R}^n$ for general $n$, we'll develop much of our intuition in $\mathbb{R}^3$, since that's the highest space we can reasonably picture (we live in a $3$-dimensional universe, after all), and nearly everything true about $\mathbb{R}^3$ that's of use to us generalizes directly to every $\mathbb{R}^n$.
+Let's start by getting our bearings in $#R#^3$ specifically --- while we'll mostly be working in $#R#^n$ for general $n$, we'll develop much of our intuition in $#R#^3$, since that's the highest space we can reasonably picture (we live in a $3$-dimensional universe, after all), and nearly everything true about $#R#^3$ that's of use to us generalizes directly to every $#R#^n$.
 
-Let's start getting our bearings in $\mathbb{R}^3$ by taking equations whose graphs we're already familiar with in $\mathbb{R}^2$ and plotting them in 3D. Open the Desmos sidebar in the graph below and check the Extend to 3D checkbox for each equation in turn. You can also <span class="click-tap"><span>click</span><span>tap</span></span> the colored circles next to the equations to hide and show them.
+Let's start getting our bearings in $#R#^3$ by taking equations whose graphs we're already familiar with in $#R#^2$ and plotting them in 3D. Open the Desmos sidebar in the graph below and check the Extend to 3D checkbox for each equation in turn. You can also <span class="click-tap"><span>click</span><span>tap</span></span> the colored circles next to the equations to hide and show them.
 
 ### desmos extendTo3d
 
 The results are similar --- plotting a 2D function in 3D results in an object like a paper sheet, potentially warped a bit due to the function. Fundamentally, this is because plotting a graph of any equation just means drawing all of the points where that equation is true, and any equation of the form $y = f(x)$ doesn't involve $z$, so any point $(x, y)$ where $y = f(x)$ will result in us plotting a whole column of points $(x, y, z)$ for *all* values of $z$.
 
-The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $\mathbb{R}$ when we're using it to graph things!
+The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $#R#$ when we're using it to graph things!
 
 ### exc "graphing a plane"
 
-	Sketch a graph of $y = x^2$ in $\mathbb{R}^3$.
+	Sketch a graph of $y = x^2$ in $#R#^3$.
 
 	### solution
 
@@ -58,7 +58,7 @@ The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-
 
 One of the learning objectives for this course is being able to sketch basic 3D graphs, but don't worry if that seems like a daunting task --- I'm not here to be overly picky about perspective and detail!
 
-We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $\mathbb{R}^2$ by using the Pythagorean theorem: it's
+We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean theorem: it's
 
 $$
 	d((x_1, y_1), (x_2, y_2)) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
@@ -66,7 +66,7 @@ $$
 
 ### desmos distance
 
-Once again, instead of trying to reprove something like the Pythagorean theorem in 3D, we're best off just using it verbatim to extend the distance result to $\mathbb{R}^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $\mathbb{R}^2$ applies: the distance is
+Once again, instead of trying to reprove something like the Pythagorean theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
 
 $$
 	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
@@ -80,17 +80,17 @@ $$
 
 ### exc "spheres and cylinders"
 
-	What is an equation for a sphere of radius $1$ centered at the origin (i.e. $(0, 0, 0)$) in $\mathbb{R}^3$? What about a sphere of radius $r$ centered at $(a, b, c)$? How about a vertical cylinder of radius $1$ parallel to the $z$-axis whose center axis contains the origin? Hint: for all of these, start with an equation for the unit circle in $\mathbb{R}^2$.
+	What is an equation for a sphere of radius $1$ centered at the origin (i.e. $(0, 0, 0)$) in $#R#^3$? What about a sphere of radius $r$ centered at $(a, b, c)$? How about a vertical cylinder of radius $1$ parallel to the $z$-axis whose center axis contains the origin? Hint: for all of these, start with an equation for the unit circle in $#R#^2$.
 
 	### solution
 
-	Just like the unit circle in $\mathbb{R}^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $\mathbb{R}^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
+	Just like the unit circle in $#R#^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $#R#^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
 
 	$$
 		(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
 	$$
 
-	For the cylinder, there are a few different approaches. We could treat it as the set of points in $\mathbb{R}^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $\mathbb{R}^3$ --- also $x^2 + y^2 = 1$.
+	For the cylinder, there are a few different approaches. We could treat it as the set of points in $#R#^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $#R#^3$ --- also $x^2 + y^2 = 1$.
 
 	### desmos sphereAndCylinder
 
@@ -100,7 +100,15 @@ $$
 
 ## Intro to Vectors
 
+A natural way to think about points in $#R#^2$ or $#R#^3$ is as locations: a point $p = (a, b, c)$ specifies a specific location in 3D space. But most physical applications of math, particularly physics, often need a closely related concept: that of a *change* in location. Objects that represent a change in location --- called **vectors** --- are similar but in many ways more versatile than points, and we'll have a *lot* to say about them throughout the semester! Let's get started with a definition and some examples.
 
+### def "vector"
+
+	A **vector** is a quantity that represents the difference in location between two points in space; equivalently, it is a quantity with magnitude (the distance between the two points) and direction (the direction of travel from the starting point to the ending point).
+
+###
+
+This definition warrants some further inspection. 
 
 
 

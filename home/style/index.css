@@ -41,6 +41,16 @@ header
 	margin-top: calc(19.6875vmin + 25px + env(safe-area-inset-top));
 }
 
+body.capsule-header #cruz-text
+{
+	margin-top: calc(4.1875vmin + 40px + env(safe-area-inset-top));
+}
+
+body.capsule-header #godar-text
+{
+	margin-top: calc(21.6875vmin + 40px + env(safe-area-inset-top));
+}
+
 @media (max-width: 500px)
 {
 	.name-text
