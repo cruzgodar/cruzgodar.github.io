@@ -23,6 +23,10 @@ export function addHeader()
 {
 	document.body.firstChild.insertAdjacentHTML("beforebegin", /* html */`
 		<div class="header-container">
+			<div id="header-blur"></div>
+		</div>
+		
+		<div class="header-container">
 			<div id="header" style="opacity: 0">
 				<a id="header-logo" href="/home">
 					<img src="/graphics/header-icons/logo.webp" alt="Cruz Godar"></img>

@@ -1669,6 +1669,8 @@ option
 	left: calc(env(safe-area-inset-left));
 	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 
+	z-index: 110;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1684,8 +1686,6 @@ option
 
 
 	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
-	
-	z-index: 110;
 	
 	transform-origin: 50% 50vh;
 
@@ -2054,6 +2054,63 @@ option
 		top: calc(36px + env(safe-area-inset-top));
 	}
 }
+
+
+
+/* Experimental capsule header. */
+/* 
+.header-container
+{
+	position: fixed;
+	top: calc(env(safe-area-inset-top));
+	left: calc(env(safe-area-inset-left));
+	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#header
+{
+	margin: 8px;
+	max-width: var(--text-width);
+	border-radius: 12px;
+}
+
+#header-blur
+{
+	height: 80px;
+	width: calc(100% + 64px);
+	max-width: calc(var(--text-width) + 64px);
+	backdrop-filter: blur(48px);
+	mask-image:
+		linear-gradient(to top,    transparent, black 32px),
+		linear-gradient(to right,  transparent, black 48px),
+		linear-gradient(to left,   transparent, black 48px);
+	mask-composite: intersect;
+}
+
+@media (max-width: 300px)
+{
+	#header
+	{
+		border-radius: 11px;
+	}
+}
+
+@media (max-width: 270px)
+{
+	#header
+	{
+		border-radius: 10px;
+	}
+}
+
+#accessibility-tooltip
+{
+	right: calc(8px + env(safe-area-inset-top) + max((100vw - var(--text-width)) / 2 - 8px, 0px));
+} */
 
 
 
