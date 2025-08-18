@@ -28,20 +28,20 @@
 
 
 
-	--gallery-color: rgb(176, 238, 173);
+	--gallery-color: rgb(185, 241, 182);
 	/* --gallery-color: lch(90% 35 140); */
 
-	--applets-color: rgb(255, 180, 203);
-	/* --applets-color: lch(90% 50 12); */
+	--applets-color: rgb(255, 184, 202);
+	/* --applets-color: lch(90% 60 15); */
 
-	--teaching-color: rgb(255, 216, 150);
+	--teaching-color: rgb(255, 222, 160);
 	/* --teaching-color: lch(90% 35 80); */
 
-	--math-color: rgb(175, 229, 255);
-	/* --math-color: lch(90% 30 255); */
+	--math-color: rgb(181, 228, 255);
+	/* --math-color: lch(90% 50 270); */
 
-	--about-color: rgb(244, 199, 255);
-	/* --about-color: lch(90% 70 300); */
+	--about-color: rgb(223, 202, 255);
+	/* --about-color: lch(90% 100 293); */
 
 
 

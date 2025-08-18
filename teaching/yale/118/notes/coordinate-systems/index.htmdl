@@ -192,7 +192,77 @@ Since vectors are quantities with magnitude and direction, we naturally would wa
 
 ###
 
+Going back to our flight example, the notion of vectors as displacements works nicely if we want to add them together: the displacement from Los Angeles to Seattle *combined* with the displacement from Seattle to New York should equal the displacement from Los Angeles to New York. This is exactly the notion of adding vectors geometrically: we place the vectors so that first one ends where the second one starts, and then draw the sum of the two as the vector that stretches from the start of the first to the end of the second.
 
+### desmos vectorAddition
+
+Here, the sum of the red and blue vectors is the purple one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
+
+Vector addition also plays nicely with components! If $\vec{v} = \left< v_1, v_2, v_3 \right>$ and $\vec{w} = \left< w_1, w_2, w_3 \right>$, then the combination $\vec{v} + \vec{w}$ moves a total of $v_1 + w_1$ in the $x$-direction and so on, meaning
+
+$$
+	\vec{v} + \vec{w} = \left< v_1 + w_1, v_2 + w_2, v_3 + w_3 \right>.
+$$
+
+With the knowledge of how to add vectors, we can also make sense of **scalar multiplication**: how to multiply a vector by a constant number (i.e. a **scalar**, which here means not a vector). For example, any vector $\vec{v}$ should satisfy $\vec{v} + \vec{v} = 2\vec{v}$, where $2\vec{v}$ is an operation we'll need to define. But $\vec{v} + \vec{v}$ is just the result of placing $\vec{v}$ at the end of itself, meaning it's a vector in the same direction as $\vec{v}$, but twice as long. More generally, we can define scalar multiplication as follows:
+
+### def "scalar multiplication of vectors"
+
+	Let $\vec{v}$ be a vector and let $c > 0$ be a real number. Then $c\vec{v}$ is the vector in the same direction as $\vec{v}$, but $c$ times as long --- that is, $\left| \left| c\vec{v} \right| \right| = c \cdot \left| \left| \vec{v} \right| \right|$.
+
+	If $c < 0$, then $c\vec{v}$ is the vector in the **opposite** direction as $\vec{v}$, and $|c|$ times as long. Finally, if $c = 0$, then $c\vec{v} = 0\vec{v} = \vec{0}$. In general, $\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right|$.
+
+###
+
+### exc "finding unit vectors"
+
+	Let $\vec{v}$ be any vector other than the zero vector. What is a formula in terms of $\vec{v}$ for a *unit vector* in the same direction as $\vec{v}$? Why doesn't this work for the zero vector?
+
+	### solution
+
+	The vectors in the same direction as $\vec{v}$ are the vectors $c\vec{v}$, so if we want one that's a unit vector, we need $\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1$, so $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$. Therefore, $c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}$, and the negative version would point in the opposite direction as $\vec{v}$, so we want the positive one. Since the zero vector has zero magnitude, we'd be dividing by zero! This is the algebraic reflection of the zero vector not having a direction.
+
+###
+
+While it might seem like vector multiplication is just a definition away, there are unfortunately unsolvable difficulties with trying to define $\vec{v}\vec{w}$ by multiplying corresponding components. For one, any vector with a zero in any component wouldn't have a multiplicative inverse. We'll look into alternatives that will sort of let us multiply vectors in the next section, but for now, we're going to leave vector multiplication completely undefined.
+
+Let's take a moment to summarize some properties of vector addition and scalar multiplication, and then we'll define some useful terminology.
+
+### prop "properties of vector arithmetic"
+
+	For any vectors $\vec{u}$, $\vec{v}$ and $\vec{w}$,
+
+	1. $\vec{u} + \left( \vec{v} + \vec{w} \right) = \left(  \vec{u} + \vec{v} \right) + \vec{w}$ (i.e. vector addition is associative).
+
+	2. $\vec{v} + \vec{w} = \vec{w} + \vec{v}$ (i.e. vector addition is commutative).
+
+	3. $\vec{v} + \vec{0} = \vec{v}$.
+
+	4. $0\vec{v} = \vec{0}$.
+
+	5. $\vec{v} - \vec{v} = \vec{0}$.
+
+	6. $c\left( \vec{v} + \vec{w} \right) = c\vec{v} + c\vec{w}$ and $(c + d)\vec{v} = c\vec{v} + d\vec{v}$ for any numbers $c$ and $d$ (i.e. scalar multiplication of vectors is distributive).
+
+	7. $\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right|$ for any number $c$.
+
+	8. The only vector $\vec{v}$ with $\left| \left| \vec{v} \right| \right| = 0$ is $\vec{v} = \vec{0}$.
+
+###
+
+When we a vector $\vec{v}$ in $#R#^2$ as $\left< v_1, v_2 \right>$, we can think of it as the sum $\vec{v} = \left< v_1, 0 \right> + \left< 0, v_2 \right>$, or equivalently, $\vec{v} = v_1 \left< 1, 0 \right> + v_2\left< 0, 1 \right>$. That decomposition will prove useful, and we'll give those two vectors names to better handle them.
+
+### def "standard basis vectors"
+
+	In $#R#^2$, we define $\vec{i} = \left< 1, 0 \right>$ and $\vec{j} = \left< 0, 1 \right>$, and in $#R#^3$, $\vec{i} = \left< 1, 0, 0 \right>$, $\vec{j} = \left< 0, 1, 0 \right>$, and $\vec{k} = \left< 0, 0, 1 \right>$.
+
+###
+
+We can see the decomposition in a more geometric way now, as a sequence of many vector additions:
+
+### desmos componentVectors
+
+That's it for our first section! In the next one, we'll discuss ways that we can combine vectors geometrically, via two different types of multiplication.
 
 
 
