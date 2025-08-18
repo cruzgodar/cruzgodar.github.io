@@ -92,6 +92,17 @@ export async function createDesmosGraphs(recreating = false)
 
 	for (const element of $$(".desmos-container"))
 	{
+		let anyNonSecretExpressions = false;
+
+		for (const expression of data[element.id].expressions)
+		{
+			if (!expression.secret)
+			{
+				anyNonSecretExpressions = true;
+				break;
+			}
+		}
+
 		const options = {
 			keypad: false,
 			settingsMenu: false,
@@ -103,6 +114,8 @@ export async function createDesmosGraphs(recreating = false)
 
 			xAxisMinorSubdivisions: 1,
 			yAxisMinorSubdivisions: 1,
+
+			expressions: anyNonSecretExpressions,
 
 			...(data[element.id].options ?? {})
 		};

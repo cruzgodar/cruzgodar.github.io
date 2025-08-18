@@ -84,7 +84,7 @@ Not every function is differentiable --- in order for one to be, it must be cont
 
 ### desmos derivativeExample
 
-Now's a good time to mention that most of the graphs are editable--- for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$! Anything not safe to edit will be hidden, so feel free to poke around with everything you see.
+Now's a good time to mention that most of the graphs are editable--- for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$! Anything not safe to edit will be hidden (and if there's nothing that can be changed, the expression list will be hidden entirely), so feel free to poke around with everything you see.
 
 While the formal definition of a limit is quite intricate and often considered outside the scope of calculus I, the definition of a derivative isn't too bad: it's just the limit of slopes of secant lines.
 

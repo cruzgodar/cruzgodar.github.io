@@ -104,11 +104,95 @@ A natural way to think about points in $#R#^2$ or $#R#^3$ is as locations: a poi
 
 ### def "vector"
 
-	A **vector** is a quantity that represents the difference in location between two points in space; equivalently, it is a quantity with magnitude (the distance between the two points) and direction (the direction of travel from the starting point to the ending point).
+	A **vector** is a quantity that represents a difference in location (which we sometimes call **displacement**) between two points in space; equivalently, it's a quantity with magnitude (the distance between the two points) and direction (the direction of travel from the starting point to the ending point). Notably, only the *difference* in location matters --- the actual start and end points are irrelevant. We typically indicate vectors with a small arrow over a variable name, as in $\vec{v}$.
 
 ###
 
-This definition warrants some further inspection. 
+For example, the displacement $\vec{v}$ from Los Angeles to Seattle is a vector, but that vector doesn't have anything to do with Los Angeles or Seattle specifically. In fact, $\vec{v}$ is *also* equal to the displacement from Seattle to somewhere in the Yukon Territories (when treating those locations as being on a 2D map, at least).
+
+The typical way to represent vectors is with arrows, which indicate both their magnitude and direction. As we just saw, though, the tail of the arrow doesn't affect the value of the vector, so in the below example, dragging the red point never changes the vector; only dragging the blue point does.
+
+### desmos vectors
+
+While vectors are fundamentally different from points, there's definitely a close similarity between them. In that previous graph, every position of the blue point corresponds to a vector, and vice versa. Specifically, the vector can be determined either by a magnitude and direction, or by an amount to move parallel to the $x$-axis, then an amount to move parallel to the $y$-axis (the green dashed lines in the graph). In fact, if we place the red point at the origin, then the blue point's coordinates *tell* us those amounts. This is very often an easier way to work with vectors, especially when we need a more algebraic presentation of them, so let's write down some notation for it.
+
+### def "components of a vector and the zero vector"
+
+	Let $\vec{v}$ be a vector in $#R#^2$. To write $\vec{v}$ in **component notation**, we denote it $\vec{v} = \left< v_1, v_2 \right>$, where $v_1$ and $v_2$ are the real numbers indicating how much $\vec{v}$ moves parallel to the $x$- and $y$-axes, respectively. Similarly, a vector $\vec{w}$ in $#R#^3$ can be written in component notation as $\vec{w} = \left< w_1, w_2, w_3 \right>$, where $w_1$, $w_2$, and $w_3$ are the amounts $\vec{w}$ moves parallel to the $x$-, $y$-, and $z$-axes.
+
+	We also define the **zero vector** to be the vector with zero magnitude, which is unique as long as we know what dimension of space we're working in. In practice, that's clear from context, and so we use the same symbol --- $\vec{0}$ --- to represent it, regardless of the space we're in. In $#R#^2$, $\vec{0} = \left< 0, 0 \right>$, in $#R#^3$, $\vec{0} = \left< 0, 0, 0 \right>$, and so on.
+
+###
+
+Most of our vectors will be in $#R#^2$ and $#R#^3$, but we can just well write $\left< 2 \right>$ for the vector with length $2$ pointing in the positive direction in $#R#$, or $\left< -1, -2, -3, -4 \right>$ for a vector in $#R#^4$ that we can't very well visualize. To avoid our notation becoming clunky and obscuring what we're trying to communicate, we'll stick with $#R#^3$ specifically when presenting most of the results and terminology about vectors, including for this next one.
+
+### def "magnitude of a vector and unit vectors"
+
+	Let $\vec{v} = \left< v_1, v_2, v_3 \right>$ be a vector. The **magnitude** of $\vec{v}$ is
+
+	$$
+		\left| \left| \vec{v} \right| \right| = \sqrt{v_1^2 + v_2^2 + v_3^2}.
+	$$
+
+	In other words, it's the length of $\vec{v}$ when it's drawn as an arrow. A **unit vector** is a vector $\vec{u}$ with $\left| \left| \vec{u} \right| \right| = 1$.
+
+###
+
+Since vectors are quantities with magnitude and direction, we naturally would want notation for the direction of a vector, too. However, no such standard notation exists. While we can just use a standard angle measure counterclockwise from the positive $x$-axis in $#R#^2$, we then need a combination of angles in $#R#^3$, akin to latitude and longitude. To be clear, such a system exists, and this is a solvable problem in any $#R#^n$. However, it ends up not being useful enough to justify its formalization, at least not at the very start of learning about vectors.
+
+### exc "vectors"
+	
+	1. Sketch the vectors $\vec{v} = \left< 1, -2 \right>$ and $\vec{w} = \left< 1, -2, 3 \right>$ and find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+
+	2. What does the set of all unit vectors look like in $#R#^2$? What about in $#R#^3$?
+
+	3. How many unit vectors are there with a first component equal to $\frac{1}{2}$ in $#R#^2$? What about in $#R#^3$?
+
+	### solution
+
+	1. We can draw $\vec{v}$ anywhere in $#R#^2$, as long as it's pointing one unit to the right and $2$ units down --- all of the following vectors are equal to $\vec{v}$!
+
+	### desmos equalVectors
+
+	We can do the same thing with $\vec{w}$, but since 3D graphs get crowded more easily than 2D ones, let's just draw $\vec{w}$ starting at the origin.
+
+	### desmos threeDVector
+
+	The magnitudes are $\left| \left| \vec{v} \right| \right| = \sqrt{1^2 + (-2)^2} = 5$ and $\left| \left| \vec{w} \right| \right| = \sqrt{14}$, and with them both drawn out, we can confirm that that matches our intuition.
+
+	2. The set of all unit vectors in $#R#^2$ is the set of all $\left< v_1, v_2 \right>$ with $\sqrt{v_1^2 + v_2^2} = 1$, so if we draw all the vectors starting from the origin, then it's a circle! Similarly, the set of all unit vectors in $#R#^3$ is a sphere.
+
+	3. If the first component is equal to $\frac{1}{2}$ in $#R#^2$, then we can solve
+
+	$$
+		\sqrt{\left( \frac{1}{2} \right)^2 + v_2^2} &= 1
+
+		\frac{1}{4} + v_2^2 &= 1
+
+		v_2 &= \pm \sqrt{\frac{3}{4}}
+
+		&= \pm \frac{\sqrt{3}}{2}.
+	$$
+
+	Therefore, the only two vectors are $\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\left< \frac{1}{2}, -\frac{\sqrt{3}}{2} \right>$.
+
+	### desmos unitVectors2d
+
+	In $#R#^3$, that same equation results in
+
+	$$
+		\frac{1}{4} + v_2^2 + v_3^2 &= 1
+
+		v_2^2 + v_3^2 &= \frac{3}{4},
+	$$
+
+	which is a little more complicated: it means that the **2D** vector $\left< v_2, v_3 \right>$ has magnitude $\frac{\sqrt{3}}{2}$. If we still center all our vectors at the origin, then these vectors appear as a circle on the unit sphere at $x = \frac{1}{2}$. We can also think of it as the intersection of the plane $x = \frac{1}{2}$ with the unit sphere!
+
+	### desmos unitVectors3d
+
+###
+
+
 
 
 
