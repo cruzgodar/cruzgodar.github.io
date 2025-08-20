@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardContainer, cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
@@ -8,7 +9,6 @@ import {
 } from "./main.js";
 import { getDisplayUrl } from "./navigation.js";
 import { animate } from "./utils.js";
-import anime from "/scripts/anime.js";
 
 export const forceThemePages =
 {
@@ -372,7 +372,7 @@ export async function toggleDarkTheme({
 
 	onThemeChange();
 
-	if (noAnimation)
+	if (noAnimation || !document.startViewTransition)
 	{
 		metaThemeColorElement.setAttribute(
 			"content",
@@ -384,39 +384,52 @@ export async function toggleDarkTheme({
 
 	else
 	{
+		anime({
+			targets: metaThemeColorElement,
+			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
+			duration,
+			easing: "cubicBezier(.25, .1, .25, 1)",
+		}).finished.then(() =>
+		{
+			metaThemeColorElement.setAttribute(
+				"content",
+				siteSettings.darkTheme ? "#181818" : "#ffffff"
+			);
+		});
+		
 		const element = addStyle(`
-			*:not(.page, #banner, .desmos-container)
+			::view-transition-old(root),
+			::view-transition-new(root)
 			{
-				transition: none !important;
+				animation-duration: ${duration}ms;
+				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
 			}
 		`);
 
-		const oldTheme = siteSettings.darkTheme ? 0 : 1;
-		const newTheme = siteSettings.darkTheme ? 1 : 0;
+		document.startViewTransition(() =>
+		{
+			rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+		});
 
-		await Promise.all([
-			anime({
-				targets: metaThemeColorElement,
-				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-				duration,
-				easing: "cubicBezier(.25, .1, .25, 1)",
-			}).finished,
-
-			animate((t) =>
-			{
-				rootElement.style.setProperty("--theme", t * newTheme + (1 - t) * oldTheme);
-			}, duration, "cubicBezier(.25, .1, .25, 1)")
-		]);
-
-		element.remove();
+		setTimeout(() => element.remove(), duration);
 	}
 }
 
 
-
 export async function toggleReduceMotion()
 {
-	siteSettings.reduceMotion = !siteSettings.reduceMotion;
+	if (document.startViewTransition)
+	{
+		document.startViewTransition(() =>
+		{
+			siteSettings.reduceMotion = !siteSettings.reduceMotion;
+		});
+	}
+
+	else
+	{
+		siteSettings.reduceMotion = !siteSettings.reduceMotion;
+	}
 
 	for (const applet of currentlyLoadedApplets)
 	{
@@ -447,13 +460,13 @@ export async function toggleReduceMotion()
 
 export async function toggleIncreaseContrast({
 	noAnimation = false,
-	duration = 150
+	duration = 250
 }) {
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (noAnimation)
+	if (noAnimation || !document.startViewTransition)
 	{
 		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
 	}
@@ -461,24 +474,20 @@ export async function toggleIncreaseContrast({
 	else
 	{
 		const element = addStyle(`
-			*:not(.checkbox)
+			::view-transition-old(root),
+			::view-transition-new(root)
 			{
-				transition: none !important;
+				animation-duration: ${duration}ms;
+				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
 			}
 		`);
 
-		const oldIncreaseContrast = siteSettings.increaseContrast ? 0 : 1;
-		const newIncreaseContrast = siteSettings.increaseContrast ? 1 : 0;
-
-		await animate((t) =>
+		document.startViewTransition(() =>
 		{
-			rootElement.style.setProperty(
-				"--contrast",
-				t * newIncreaseContrast + (1 - t) * oldIncreaseContrast
-			);
-		}, duration, "easeInOutSine");
+			rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+		});
 
-		element.remove();
+		setTimeout(() => element.remove(), duration);
 	}
 }
 
