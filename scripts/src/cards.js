@@ -180,6 +180,7 @@ export async function openCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
+	document.querySelector("#header-background").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
@@ -219,6 +220,7 @@ export async function openCard({
 			targets: [
 				pageElement,
 				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(.5)",
 			scale: backgroundScale,
@@ -306,7 +308,8 @@ export async function closeCard(animationTime = cardAnimationTime)
 		anime({
 			targets: [
 				pageElement,
-				document.querySelector("#header")
+				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(1)",
 			scale: 1,
@@ -487,6 +490,7 @@ export async function showZoomCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
+	document.querySelector("#header-background").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
@@ -531,6 +535,7 @@ export async function showZoomCard({
 			targets: [
 				pageElement,
 				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(.5)",
 			scale: backgroundScale,
@@ -593,7 +598,8 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 		anime({
 			targets: [
 				pageElement,
-				document.querySelector("#header")
+				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(1)",
 			scale: 1,

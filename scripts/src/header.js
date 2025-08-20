@@ -38,6 +38,8 @@ export function addHeader()
 	` : "";
 
 	document.body.firstChild.insertAdjacentHTML("beforebegin", /* html */`
+		<div id="header-background"></div>
+		
 		<div class="header-container">
 			<div id="header-blur"></div>
 		</div>
