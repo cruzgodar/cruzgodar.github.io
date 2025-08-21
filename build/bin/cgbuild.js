@@ -34,8 +34,8 @@ const courseNames = [
 	[/teaching\/uo\/341\/.+/, "Math 341"],
 	[/teaching\/uo\/342\/.+/, "Math 342"],
 
-	[/teaching\/yale\/112\/.+/, "Math 112"],
-	[/teaching\/yale\/118\/.+/, "Math 118"],
+	[/teaching\/yale\/1120\/.+/, "Math 1120"],
+	[/teaching\/yale\/1180\/.+/, "Math 1180"],
 ];
 
 let sitemap;

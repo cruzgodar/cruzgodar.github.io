@@ -184,7 +184,8 @@ export async function openCard({
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
-	document.documentElement.addEventListener("click", handleClickEvent);
+	document.documentElement.addEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.addEventListener("pointerup", handlePointerUpEvent);
 
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
@@ -259,7 +260,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 {
 	if (cardIsZoom)
 	{
-		return hideZoomCard(animationTime);
+		return closeZoomCard(animationTime);
 	}
 
 	if (cardIsAnimating)
@@ -351,7 +352,8 @@ export async function closeCard(animationTime = cardAnimationTime)
 
 	cardContainer.appendChild(closeButton);
 
-	document.documentElement.removeEventListener("click", handleClickEvent);
+	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.removeEventListener("pointerup", handlePointerUpEvent);
 
 	cardIsAnimating = false;
 
@@ -392,7 +394,7 @@ async function getClosedContainerStyle({
 
 
 
-export async function showZoomCard({
+export async function openZoomCard({
 	id,
 	fromElement,
 	toElement,
@@ -494,7 +496,8 @@ export async function showZoomCard({
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
-	document.documentElement.addEventListener("click", handleClickEventZoom);
+	document.documentElement.addEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.addEventListener("pointerup", handlePointerUpEventZoom);
 
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
@@ -565,7 +568,7 @@ export async function showZoomCard({
 	cardIsAnimating = false;
 }
 
-export async function hideZoomCard(animationTime = cardAnimationTime * .75)
+export async function closeZoomCard(animationTime = cardAnimationTime * .75)
 {
 	if (siteSettings.reduceMotion)
 	{
@@ -647,27 +650,39 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 
 	cardContainer.appendChild(closeButton);
 
-	document.documentElement.removeEventListener("click", handleClickEventZoom);
+	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.removeEventListener("pointerup", handlePointerUpEventZoom);
 
 	cardIsAnimating = false;
 }
 
 
 
-function handleClickEvent(e)
+let pointerDownOnCardContainer = false;
+
+function handlePointerDownEvent(e)
 {
-	if (e.target.id === "card-container")
+	pointerDownOnCardContainer = e.target.id === "card-container";
+}
+
+function handlePointerUpEvent(e)
+{
+	if (pointerDownOnCardContainer && e.target.id === "card-container")
 	{
 		closeCard();
 	}
+
+	pointerDownOnCardContainer = false;
 }
 
-function handleClickEventZoom(e)
+function handlePointerUpEventZoom(e)
 {
-	if (e.target.id === "card-container")
+	if (pointerDownOnCardContainer && e.target.id === "card-container")
 	{
-		hideZoomCard();
+		closeZoomCard();
 	}
+
+	pointerDownOnCardContainer = false;
 }
 
 

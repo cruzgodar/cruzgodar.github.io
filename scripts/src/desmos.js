@@ -1,5 +1,5 @@
 import { changeOpacity } from "./animation.js";
-import { $$, loadScript, raw } from "./main.js";
+import { loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 export let desmosPurple = "#772fbf";
@@ -90,7 +90,7 @@ export async function createDesmosGraphs(recreating = false)
 		}
 	}
 
-	for (const element of $$(".desmos-container"))
+	for (const element of document.body.querySelectorAll(".desmos-container"))
 	{
 		let anyNonSecretExpressions = false;
 
@@ -201,7 +201,7 @@ export async function createDesmosGraphs(recreating = false)
 
 export async function recreateDesmosGraphs()
 {
-	const elements = Array.from($$(".desmos-container"));
+	const elements = Array.from(document.body.querySelectorAll(".desmos-container"));
 
 	if (elements)
 	{

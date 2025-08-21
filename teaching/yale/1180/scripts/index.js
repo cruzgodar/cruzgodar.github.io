@@ -1,7 +1,14 @@
 import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
+import {
+	desmosBlue3d,
+	desmosPurple3d,
+	getDesmosSlider,
+	recreateDesmosGraphs,
+	setGetDesmosData
+} from "/scripts/src/desmos.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
-import { pageUrl } from "/scripts/src/main.js";
+import { pageUrl, raw } from "/scripts/src/main.js";
 import { downloadFile } from "/scripts/src/utils.js";
 
 const filenamesPDF = {
@@ -18,7 +25,7 @@ const filenamesPDF = {
 
 const filenamesTex = {
 	"homework-1": "Homework 1.tex",
-	"homework-2": "Homework 2.zip",
+	"homework-2": "Homework 2.tex",
 	"homework-3": "Homework 3.tex",
 	"homework-4": "Homework 4.tex",
 	"homework-5": "Homework 5.tex",
@@ -30,6 +37,44 @@ const filenamesTex = {
 
 export default async function load()
 {
+	setGetDesmosData(() =>
+	{
+		const data =
+		{
+			unitVectorsSpherical:
+			{
+				use3d: true,
+
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: "t = 1",
+						min: 0,
+						max: "2\\pi",
+						secret: false
+					}),
+
+					...getDesmosSlider({
+						expression: "s = 0.5",
+						min: raw`\frac{-\pi}{2}`,
+						max: raw`\frac{\pi}{2}`,
+						secret: false
+					}),
+
+					{ latex: raw`\sin(t)x - \cos(t)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(t)x + \sin(t)y \geq 0\}`, color: desmosBlue3d, secret: true },
+
+					{ latex: raw`\vector((0, 0, 0), (\cos(s)\cos(t), \cos(s)\sin(t), \sin(s)))`, color: desmosPurple3d, secret: true },
+				]
+			},
+		};
+
+		return data;
+	});
+
+
+
 	setOnLoadExternalCard((card, id) =>
 	{
 		const buttons = card.querySelectorAll(".text-button");
@@ -68,5 +113,9 @@ export default async function load()
 				downloadFile(`${pageUrl}/cards/${id}/${filenamesTex[id]}`);
 			}
 		});
+
+
+
+		setTimeout(recreateDesmosGraphs, 600);
 	});
 }

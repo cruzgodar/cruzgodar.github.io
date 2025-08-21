@@ -11,6 +11,12 @@ const preamble = String.raw`\documentclass{article}
 \usepackage[total={6.5in, 9in}, heightrounded]{geometry}
 \usepackage{hyperref}
 
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
 \graphicspath{{graphics/}}
 \setenumerate[0]{label=\alph*)}
 \setlength{\parindent}{0pt}
@@ -45,6 +51,8 @@ export function convertCardToTex({
 			.replaceAll(/<h1.*?>(.*?)<\/h1>/g, "")
 			// Remove buttons.
 			.replaceAll(/<div.*? class="text-buttons">.*?<\/div><\/div>/g, "")
+			// Remove desmos.
+			.replaceAll(/<div.*? class="desmos-border">.*?<\/div><\/div>/g, "")
 			// Images.
 			.replaceAll(/<img.*? data-src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
 			{

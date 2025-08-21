@@ -1,6 +1,6 @@
  
 import { galleryImageData } from "./imageData.js";
-import { showZoomCard } from "/scripts/src/cards.js";
+import { openZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -79,7 +79,7 @@ export default function()
 
 		highResImageElement.onload = () =>
 		{
-			setTimeout(() => showZoomCard({
+			setTimeout(() => openZoomCard({
 				id: "high-res-viewer",
 				fromElement,
 				toElement: highResImageElement

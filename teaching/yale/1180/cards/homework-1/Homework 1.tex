@@ -11,6 +11,12 @@
 \usepackage[total={6.5in, 9in}, heightrounded]{geometry}
 \usepackage{hyperref}
 
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
 \graphicspath{{graphics/}}
 \setenumerate[0]{label=\alph*)}
 \setlength{\parindent}{0pt}
@@ -24,9 +30,9 @@
 
 \begin{document}
 
-\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 118 | Cruz Godar \vspace{4pt} \normalsize
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 1180 | Cruz Godar \vspace{4pt} \normalsize
 
-\textit{Due Monday, September 8th at 11:59 PM}
+\textit{Due Wednesday, September 8th at 11:59 PM}
 
 Complete the following problems and submit them as a pdf to Gradescope. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
 
@@ -44,11 +50,13 @@ In problems 1--4, sketch a graph of the equation in $\mathbb{R}^3$. Check your a
 
 ~\\
 
-5. What is an equation for the set of points in $\mathbb{R}^3$ that are distance $3$ from the point $(2, 3, -1)$?
+5. What is an equation for the set of points in $\mathbb{R}^3$ that are distance $3$ from the point $(2, 3, -1)$? What does this shape of this set look like? Check your answer with \href{https://www.desmos.com/3d}{Desmos 3D}.
+
+6. What is an equation for a cylinder in $\mathbb{R}^3$ parallel to the $y$-axis, with radius $4$, and whose central axis contains the point $(2, 3, 1)$? Check your answer with \href{https://www.desmos.com/3d}{Desmos 3D}.
 
 ~\\
 
-6. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
+7. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
 
 \begin{enumerate}
 
@@ -64,15 +72,33 @@ In problems 1--4, sketch a graph of the equation in $\mathbb{R}^3$. Check your a
 
 ~\\
 
-7. Give an example of a sequence that is monotone increasing that does not converge, and a sequence that is bounded below but does not converge.
+8. The sum of the forces acting on an object is called the \textbf{net force}, and an object is said to be in static equilibrium if the net force acting on it is $\vec{0}$. Suppose the forces $F_1 = \left< 1, 4, -3 \right>$, $F_2 = \left< 0, 0, 5 \right>$, $F_3 = \left< 4, 5, 0 \right>$, and an unknown force $F_4$ are acting on an object that is in static equilibrium. Find $F_4$.
 
-8. If a sequence is not bounded above, can it converge? Explain.
+~\\
 
-9. If a sequence $a_n$ has infinitely many positive terms \textit{and} infinitely many negative terms, can it still converge? If so, are there restrictions on what it can converge to?
+9. For each of the following points $q$, find all $y$-values so that the point $p = (6, y, -8)$ is exactly $5$ units away from $q$, or explain why no such $y$-values exist.
 
-10. Suppose $(a_n)$ is a sequence of rational numbers with $(a_n) \to a$. Is $a$ necessarily a rational number?
+\begin{enumerate}
 
-11. Let $a_n$ be a sequence and let $b_n = \left| a_{n + 1} - a_n \right|$. If $(b_n) \to 0$, does $(a_n)$ have to converge?
+	\item $q = (5, 1, -5)$.
+
+	\item $q = (2, -4, -2)$.
+
+	\item $q = (9, 9, -12)$.
+
+\end{enumerate}
+
+~\\
+
+10. Let's try to find the general form of a unit vector in $\mathbb{R}^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it's sometimes useful to have two parameters we can freely vary instead of three parameters with a restriction.
+
+\begin{enumerate}
+
+	\item Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane. Find a general formula for $\vec{u}$ in terms of its angle $\theta$ counterclockwise from the positive $x$-axis when drawn this way.
+
+	\item If $u_3 \neq 0$, then we can think of $\vec{u}$ as being rotated up from the $xy$-plane, as in the following graph. If we rotate by some angle $\varphi$, what is the formula for $\vec{u}$? Hint: fix $\theta$ and think of the direction of the vector in the $xy$-plane as a single axis so that the problem becomes 2D again.
+
+\end{enumerate}
 
 
 \end{document}
