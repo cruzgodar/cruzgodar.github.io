@@ -137,13 +137,13 @@ export async function redirect({
 			if (siteSettings.darkTheme !== forceThemePages[url])
 			{
 				setRevertThemeTo(siteSettings.darkTheme);
-				await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
+				toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
 			}
 		}
 
 		else if (!forceThemePages[url])
 		{
-			await revertTheme();
+			revertTheme();
 		}
 
 		unloadPage();

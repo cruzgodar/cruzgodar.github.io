@@ -51,11 +51,10 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	> - In-class participation: 5%
 	> - Reading quizzes: 5%
-	> - In-class quizzes: 10%
-	> - Homework: 15%
+	> - Homework: 20%
 	> - Midterm 1: 20%
 	> - Midterm 2: 20%
-	> - Final: 25%
+	> - Final: 30%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 
@@ -87,13 +86,13 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 
 	## What about generative AI?
 
-	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine your own learning with them. LLMs in their current form fundamentally cannot be guaranteed to produce correct answers, but much more importantly, relying on them to complete homework assignments is one of the most effective ways to set yourself up for failure: the homework exists to challenge and prepare you for the in-class assignments, which are worth most of the credit. To that end, I treat using AI tools to complete the homework similarly to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting either answers copied verbatim from an LLM and/or answers you don't fully understand is a form of academic misconduct.
+	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine your own learning with them. The purpose of working on the homework isn't to do a perfect job on every problem, nor is the homework a perfect reflection of the types of questions that appear on exams. Instead, the homework exists to help you build mathematical fluency, both in this course's specific material and in more broad, transferable ways. Learning math is very much like learning a language, and using LLMs to solve homework problems for you, in whole or in part, is very much like using Google Translate to complete a language assignment --- the technology has its uses, but in this particular context, their role as a tool that helps you build fluency is narrow. Some ways in which LLMs *can* help include using them to generate practice problems if you're finished with the homework and looking to study more, or having them explain a topic to get a different perspective if the notes, lectures, and office hours haven't been quite enough.
+	
+	In terms of both grades and learning outcomes, the homework exists to challenge and prepare you for the exams, which are worth most of the credit. I treat using AI tools to complete the homework equivalently to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting answers copied verbatim from an LLM and/or answers inspired by an LLM's output that you don't fully understand is a form of academic misconduct.
 	
 	
 	
-	## What should I expect from the quizzes and exams?
-	
-	We have quizzes on Tuesdays during the last 15 minutes of class, starting in week 3. The quizzes are designed to be barometers for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indicator that you may want to adjust your study strategies.
+	## What should I expect from the exams?
 	
 	Our midterm exams are on October 7th and November 11th and take up the full 75 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. I reserve the right to assign seating for the quizzes and exams.
 	

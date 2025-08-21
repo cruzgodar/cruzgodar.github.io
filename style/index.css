@@ -1974,6 +1974,8 @@ option
 	
 	#header-links a
 	{
+		margin-left: 1px;
+		margin-right: 1px;
 		padding: 2px;
 		border-radius: 8px;
 		height: calc(100% - 12px);
@@ -2045,6 +2047,11 @@ option
 		margin-top: 3px;
 		margin-bottom: 3px;
 		padding: 2.5px;
+		border-radius: 7.5px;
+		
+		/* We want 11 / 2 = 5.5px between each image, and the padding accounts for 5px of that already. */
+		margin-left: 0.25px;
+		margin-right: 0.25px;
 		
 		height: calc(100% - 11px);
 	}
@@ -2089,6 +2096,10 @@ option
 		margin-top: 2px;
 		margin-bottom: 2px;
 		padding: 2.5px;
+
+		/* We want 9 / 2 = 4.5px between each image, and the padding accounts for 5px of that already. */
+		margin-left: -0.25px;
+		margin-right: -0.25px;
 		
 		height: calc(100% - 9px);
 	}
