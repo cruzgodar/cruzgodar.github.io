@@ -800,7 +800,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
 				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
 			),
-			30
+			35
 		);
 
 		this.pastBrightnessScales.push(brightnessScale);

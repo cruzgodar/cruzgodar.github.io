@@ -14,7 +14,7 @@ export default function()
 		{
 			velocityExample:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -27,7 +27,7 @@ export default function()
 
 			secantLines:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -44,7 +44,7 @@ export default function()
 
 			tangentLines:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -59,7 +59,7 @@ export default function()
 
 			tangentLines2:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -74,7 +74,7 @@ export default function()
 
 			limitExample:
 			{
-				bounds: { left: -20, right: 20, bottom: -2, top: 2 },
+				bounds: { xmin: -20, xmax: 20, ymin: -2, ymax: 2 },
 
 				expressions:
 				[
@@ -87,7 +87,7 @@ export default function()
 
 			limitExample2:
 			{
-				bounds: { left: -3, right: 3, bottom: -10, top: 10 },
+				bounds: { xmin: -3, xmax: 3, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -102,7 +102,7 @@ export default function()
 
 			dneLimit:
 			{
-				bounds: { left: -.5, right: .5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -.5, xmax: .5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -114,7 +114,7 @@ export default function()
 
 			dneLimit2:
 			{
-				bounds: { left: -5, right: 5, bottom: -2, top: 2 },
+				bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 2 },
 
 				expressions:
 				[
@@ -129,7 +129,7 @@ export default function()
 
 			infiniteLimit:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -141,7 +141,7 @@ export default function()
 
 			complicatedLimit:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

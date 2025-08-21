@@ -17,7 +17,7 @@ export default function()
 		{
 			tanAsSlope:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				options: { degreeMode: true },
 
@@ -42,7 +42,7 @@ export default function()
 
 			slopedLine:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -52,7 +52,7 @@ export default function()
 
 			tanReferenceTriangle:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 				
 				expressions:
 				[
@@ -68,7 +68,7 @@ export default function()
 
 			tanGraph:
 			{
-				bounds: { left: -10, right: 370, bottom: -3, top: 3 },
+				bounds: { xmin: -10, xmax: 370, ymin: -3, ymax: 3 },
 
 				options: { degreeMode: true },
 	
@@ -83,7 +83,7 @@ export default function()
 
 			tangentLines:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				options: { degreeMode: true },
 
@@ -111,7 +111,7 @@ export default function()
 
 			sinRange:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				options: { degreeMode: true },
 
@@ -124,7 +124,7 @@ export default function()
 
 			arcFunctionsTriangle:
 			{
-				bounds: { left: -1, right: 4, bottom: -1.75, top: 3.25 },
+				bounds: { xmin: -1, xmax: 4, ymin: -1.75, ymax: 3.25 },
 
 				options: { degreeMode: true },
 

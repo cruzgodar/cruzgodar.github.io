@@ -17,7 +17,7 @@ export default function()
 		{
 			testGraph:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[
@@ -34,7 +34,7 @@ export default function()
 
 			functions:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -54,7 +54,7 @@ export default function()
 
 			trigReview:
 			{
-				bounds: { left: -1.25, right: 1.25, bottom: -1.25, top: 1.25 },
+				bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25 },
 
 				expressions:
 				[
@@ -76,7 +76,7 @@ export default function()
 
 			trigGraphs:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[

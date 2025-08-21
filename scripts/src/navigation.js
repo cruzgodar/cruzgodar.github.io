@@ -13,7 +13,7 @@ import {
 	loadBanner,
 	preloadBanner
 } from "./banners.js";
-import { cardIsOpen, hideCard } from "./cards.js";
+import { cardIsOpen, closeCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
@@ -65,7 +65,7 @@ export async function redirect({
 	restoreScroll = false,
 	noFadeOut = false
 }) {
-	if (currentlyRedirecting || url === pageUrl)
+	if (currentlyRedirecting)
 	{
 		return;
 	}
@@ -79,6 +79,11 @@ export async function redirect({
 		|| url.slice(-4) == ".pdf"
 	) {
 		window.open(url, "_blank");
+		return;
+	}
+
+	if (url === pageUrl)
+	{
 		return;
 	}
 
@@ -118,7 +123,7 @@ export async function redirect({
 			asyncFetch(`${url}/data.html`),
 			preloadBanner(url),
 			fadeOutPage(noFadeOut),
-			cardIsOpen ? hideCard() : Promise.resolve()
+			cardIsOpen ? closeCard() : Promise.resolve()
 		]);
 
 		
@@ -132,13 +137,13 @@ export async function redirect({
 			if (siteSettings.darkTheme !== forceThemePages[url])
 			{
 				setRevertThemeTo(siteSettings.darkTheme);
-				await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
+				toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
 			}
 		}
 
 		else if (!forceThemePages[url])
 		{
-			await revertTheme();
+			revertTheme();
 		}
 
 		unloadPage();

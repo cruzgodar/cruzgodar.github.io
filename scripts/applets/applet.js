@@ -1,10 +1,10 @@
 import { convertColor } from "../src/browser.js";
-import { showZoomCard } from "../src/cards.js";
+import { openZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
-	$,
-	$$,
-	addTemporaryListener
+    $,
+    $$,
+    addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
@@ -359,7 +359,7 @@ export class Applet
 				addBounceOnTouch: () => true,
 			});
 
-			element.addEventListener("click", () => showZoomCard({
+			element.addEventListener("click", () => openZoomCard({
 				id: "applet-controls",
 				fromElement: element,
 			}));

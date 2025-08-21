@@ -1,11 +1,11 @@
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGreen,
-	desmosPurple,
-	desmosRed,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGreen,
+    desmosPurple,
+    desmosRed,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -17,7 +17,7 @@ export default function()
 		{
 			newtonsMethod:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

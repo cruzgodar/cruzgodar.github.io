@@ -15,7 +15,7 @@ export default function()
 		{
 			riemannSum:
 			{
-				bounds: { left: 0, right: 8, bottom: -2.5, top: 5.5 },
+				bounds: { xmin: 0, xmax: 8, ymin: -2.5, ymax: 5.5 },
 
 				expressions:
 				[
@@ -38,7 +38,7 @@ export default function()
 
 			riemannSum2:
 			{
-				bounds: { left: -1, right: 9, bottom: -.025, top: .225 },
+				bounds: { xmin: -1, xmax: 9, ymin: -.025, ymax: .225 },
 
 				expressions:
 				[

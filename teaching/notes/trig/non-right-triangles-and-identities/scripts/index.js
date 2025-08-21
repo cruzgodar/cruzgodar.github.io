@@ -18,7 +18,7 @@ export default function()
 		{
 			lawOfCosines:
 			{
-				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
@@ -73,7 +73,7 @@ export default function()
 
 			lawOfSines:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[
@@ -126,7 +126,7 @@ export default function()
 
 			lawOfSines2:
 			{
-				bounds: { left: -1, right: 2, bottom: -0.5, top: 2.5 },
+				bounds: { xmin: -1, xmax: 2, ymin: -0.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -262,7 +262,7 @@ export default function()
 
 			sumFormulas:
 			{
-				bounds: { left: -0.25, right: 1.25, bottom: -0.25, top: 1.25 },
+				bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25 },
 	
 				expressions:
 				[

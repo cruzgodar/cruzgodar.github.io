@@ -38,7 +38,7 @@ export default function()
 		{
 			taylorSeries:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -56,7 +56,7 @@ export default function()
 
 			taylorSeriesComparison:
 			{
-				bounds: { left: -5, right: 15, bottom: -10, top: 10 },
+				bounds: { xmin: -5, xmax: 15, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -76,7 +76,7 @@ export default function()
 
 			problematicTaylorSeries:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[

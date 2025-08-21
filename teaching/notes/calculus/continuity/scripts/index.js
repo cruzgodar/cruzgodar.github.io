@@ -16,7 +16,7 @@ export default function()
 		{
 			continuityExample:
 			{
-				bounds: { left: -6, right: 6, bottom: -6, top: 6 },
+				bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6 },
 
 				expressions:
 				[
@@ -31,7 +31,7 @@ export default function()
 
 			continuityLimit:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[
@@ -43,7 +43,7 @@ export default function()
 
 			ivtExample:
 			{
-				bounds: { left: -1, right: 4, bottom: -1, top: 4 },
+				bounds: { xmin: -1, xmax: 4, ymin: -1, ymax: 4 },
 
 				expressions:
 				[
@@ -59,7 +59,7 @@ export default function()
 
 			ivtExample2:
 			{
-				bounds: { left: -15, right: 15, bottom: -15, top: 15 },
+				bounds: { xmin: -15, xmax: 15, ymin: -15, ymax: 15 },
 
 				expressions:
 				[

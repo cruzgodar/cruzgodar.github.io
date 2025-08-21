@@ -16,7 +16,7 @@ export default function()
 		{
 			displacement:
 			{
-				bounds: { left: -1, right: 4, bottom: -7, top: 8 },
+				bounds: { xmin: -1, xmax: 4, ymin: -7, ymax: 8 },
 
 				expressions:
 				[
@@ -31,7 +31,7 @@ export default function()
 
 			evenAndOddFunctions:
 			{
-				bounds: { left: -5, right: 5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[

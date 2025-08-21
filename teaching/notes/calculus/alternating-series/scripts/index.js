@@ -15,7 +15,7 @@ export default function()
 		{
 			alternatingHarmonicSeries:
 			{
-				bounds: { left: .9, right: 2.1, bottom: -.1, top: 1.1 },
+				bounds: { xmin: .9, xmax: 2.1, ymin: -.1, ymax: 1.1 },
 
 				expressions:
 				[
@@ -54,7 +54,7 @@ export default function()
 
 			alternatingHarmonicSeries2:
 			{
-				bounds: { left: -.25, right: 1.25, bottom: -.75, top: .75 },
+				bounds: { xmin: -.25, xmax: 1.25, ymin: -.75, ymax: .75 },
 
 				expressions:
 				[
@@ -76,7 +76,7 @@ export default function()
 
 			alternatingHarmonicSeries3:
 			{
-				bounds: { left: -.25, right: 1.25, bottom: -.75, top: .75 },
+				bounds: { xmin: -.25, xmax: 1.25, ymin: -.75, ymax: .75 },
 
 				expressions:
 				[

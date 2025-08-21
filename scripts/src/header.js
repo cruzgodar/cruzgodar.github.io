@@ -4,9 +4,10 @@ import { addHoverEvent, addHoverEventWithScale } from "./hoverEvents.js";
 import { redirect } from "./navigation.js";
 import {
 	siteSettings,
+	toggleCapsuleHeader,
 	toggleDarkTheme,
 	toggleIncreaseContrast,
-	toggleReduceMotion,
+	toggleReduceMotion
 } from "./settings.js";
 
 export let headerElement;
@@ -15,50 +16,71 @@ let accessibilityTooltipElement;
 export let darkThemeCheckbox;
 export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
+export let capsuleHeaderCheckbox;
 
 let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
 
 export function addHeader()
 {
-	document.body.firstChild.insertAdjacentHTML("beforebegin", /* html */`
-		<div id="header-container" style="opacity: 0"></div>
-		
-		<div id="header" style="opacity: 0">
-			<a id="header-logo" href="/home">
-				<img src="/graphics/header-icons/logo.webp" alt="Cruz Godar"></img>
-				<span>Cruz Godar</span>
-			</a>
-			
-			<div id="header-links">
-				<a id="header-gallery-link" href="/gallery">
-					<span>Gallery</span>
-					<img src="/graphics/header-icons/gallery.webp"></img>
-				</a>
-				
-				<a id="header-applets-link" href="/applets">
-					<span>Applets</span>
-					<img src="/graphics/header-icons/applets.webp"></img>
-				</a>
-				
-				<a id="header-teaching-link" href="/teaching">
-					<span>Teaching</span>
-					<img src="/graphics/header-icons/teaching.webp"></img>
-				</a>
-				
-				<a id="header-math-link" href="/math">
-					<span>Math</span>
-					<img src="/graphics/header-icons/math.webp"></img>
-				</a>
-				
-				<a id="header-about-link" href="/about">
-					<span>About</span>
-					<img src="/graphics/header-icons/about.webp"></img>
-				</a>
+	const headerCheckboxHtml = window.DEBUG ? /* html */ `
+		<div class="checkboxes keep-accessibility-dialog-open">
+			<div class="checkbox-row keep-accessibility-dialog-open">
+				<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">
+					<input type="checkbox" id="capsule-header-checkbox" class="keep-accessibility-dialog-open">
+					<div class="checkbox keep-accessibility-dialog-open"></div>
+				</div>
+				<label for="capsule-header-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
+					<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
+				</label>
 			</div>
+		</div>
+	` : "";
 
-			<div id="header-settings-button">
-				<input type="image" src="/graphics/header-icons/gear.webp" alt="Settings" class="keep-accessibility-dialog-open">
+	document.body.firstChild.insertAdjacentHTML("beforebegin", /* html */`
+		<div id="header-background"></div>
+		
+		<div class="header-container">
+			<div id="header-blur"></div>
+		</div>
+		
+		<div class="header-container">
+			<div id="header" style="opacity: 0">
+				<a id="header-logo" href="/home">
+					<img src="/graphics/header-icons/logo.webp" alt="Cruz Godar"></img>
+					<span>Cruz Godar</span>
+				</a>
+				
+				<div id="header-links">
+					<a id="header-gallery-link" href="/gallery">
+						<span>Gallery</span>
+						<img src="/graphics/header-icons/gallery.webp"></img>
+					</a>
+					
+					<a id="header-applets-link" href="/applets">
+						<span>Applets</span>
+						<img src="/graphics/header-icons/applets.webp"></img>
+					</a>
+					
+					<a id="header-teaching-link" href="/teaching">
+						<span>Teaching</span>
+						<img src="/graphics/header-icons/teaching.webp"></img>
+					</a>
+					
+					<a id="header-math-link" href="/math">
+						<span>Math</span>
+						<img src="/graphics/header-icons/math.webp"></img>
+					</a>
+					
+					<a id="header-about-link" href="/about">
+						<span>About</span>
+						<img src="/graphics/header-icons/about.webp"></img>
+					</a>
+				</div>
+
+				<div id="header-settings-button">
+					<input type="image" src="/graphics/header-icons/gear.webp" alt="Settings" class="keep-accessibility-dialog-open">
+				</div>
 			</div>
 		</div>
 
@@ -100,6 +122,8 @@ export function addHeader()
 					</label>
 				</div>
 			</div>
+
+			${headerCheckboxHtml}
 		</div>
 	`);
 
@@ -214,6 +238,24 @@ export function addHeader()
 			scale: 1.1,
 			addBounceOnTouch: () => true
 		});
+
+		
+		if (window.DEBUG)
+		{
+			capsuleHeaderCheckbox = new Checkbox({
+				element: document.body.querySelector("#capsule-header-checkbox"),
+				name: "Experimental header",
+				checked: siteSettings.capsuleHeader,
+				persistState: false,
+				onInput: () => toggleCapsuleHeader()
+			});
+
+			addHoverEventWithScale({
+				element: capsuleHeaderCheckbox.element.parentNode,
+				scale: 1.1,
+				addBounceOnTouch: () => true
+			});
+		}
 
 
 

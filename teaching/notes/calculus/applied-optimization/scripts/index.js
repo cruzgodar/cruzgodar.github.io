@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -17,7 +17,7 @@ export default function()
 			{
 				options: { showXAxis: false, showYAxis: false, showGrid: false },
 
-				bounds: { left: -6, right: 6, bottom: -1, top: 11 },
+				bounds: { xmin: -6, xmax: 6, ymin: -1, ymax: 11 },
 
 				expressions:
 				[
@@ -34,7 +34,7 @@ export default function()
 
 			ellipse:
 			{
-				bounds: { left: -4, right: 4, bottom: -4, top: 4 },
+				bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
 
 				expressions:
 				[
@@ -53,7 +53,7 @@ export default function()
 			{
 				options: { showGrid: false },
 
-				bounds: { left: -50, right: 550, bottom: -250, top: 350 },
+				bounds: { xmin: -50, xmax: 550, ymin: -250, ymax: 350 },
 
 				expressions:
 				[

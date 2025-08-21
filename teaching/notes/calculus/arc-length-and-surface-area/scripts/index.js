@@ -16,7 +16,7 @@ export default function()
 		{
 			lineArcLength:
 			{
-				bounds: { left: -2, right: 4, bottom: 0, top: 6 },
+				bounds: { xmin: -2, xmax: 4, ymin: 0, ymax: 6 },
 
 				expressions:
 				[
@@ -33,7 +33,7 @@ export default function()
 
 			arcLengthApproximation:
 			{
-				bounds: { left: -25, right: 25, bottom: -2, top: 2 },
+				bounds: { xmin: -25, xmax: 25, ymin: -2, ymax: 2 },
 
 				expressions:
 				[
@@ -56,7 +56,7 @@ export default function()
 
 			surfaceArea:
 			{
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				options:
 				{

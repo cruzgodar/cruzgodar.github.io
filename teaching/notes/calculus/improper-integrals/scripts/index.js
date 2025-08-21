@@ -13,7 +13,7 @@ export default function()
 		{
 			improperIntegral:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			improperIntegral2:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -51,7 +51,7 @@ export default function()
 
 			improperIntegral3:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -70,7 +70,7 @@ export default function()
 
 			improperIntegral4:
 			{
-				bounds: { left: -4, right: 4, bottom: -4, top: 4 },
+				bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
 
 				expressions:
 				[

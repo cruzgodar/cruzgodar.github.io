@@ -14,7 +14,7 @@ export default function()
 		{
 			secantLines:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -1.5, ymax: 3.5 },
 
 				expressions:
 				[
@@ -32,7 +32,7 @@ export default function()
 
 			tangentLines:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -1.5, ymax: 3.5 },
 
 				expressions:
 				[
@@ -47,7 +47,7 @@ export default function()
 
 			derivativeExample:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -1.5, ymax: 3.5 },
 
 				expressions:
 				[
@@ -60,7 +60,7 @@ export default function()
 
 			derivativeExample2:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -73,7 +73,7 @@ export default function()
 
 			derivativeExample3:
 			{
-				bounds: { left: -1.5, right: 3, bottom: -2, top: 2.5 },
+				bounds: { xmin: -1.5, xmax: 3, ymin: -2, ymax: 2.5 },
 
 				expressions:
 				[
@@ -85,7 +85,7 @@ export default function()
 
 			derivativeExample4:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[

@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardContainer, cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
@@ -8,7 +9,6 @@ import {
 } from "./main.js";
 import { getDisplayUrl } from "./navigation.js";
 import { animate } from "./utils.js";
-import anime from "/scripts/anime.js";
 
 export const forceThemePages =
 {
@@ -60,6 +60,7 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
+	capsuleHeader: params.get("capsuleheader") === "1",
 	scroll: parseInt(params.get("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
@@ -157,6 +158,18 @@ export function getQueryParams()
 
 
 
+	if (siteSettings.capsuleHeader)
+	{
+		params.set("capsuleheader", "1");
+	}
+
+	else
+	{
+		params.delete("capsuleheader");
+	}
+
+
+
 	if (siteSettings.scroll)
 	{
 		params.set("scroll", siteSettings.scroll);
@@ -245,6 +258,16 @@ export function initIncreaseContrast()
 		siteSettings.increaseContrast = false;
 
 		toggleIncreaseContrast({ noAnimation: true });
+	}
+}
+
+export async function initCapsuleHeader()
+{
+	if (siteSettings.capsuleHeader)
+	{
+		siteSettings.capsuleHeader = false;
+
+		toggleCapsuleHeader();
 	}
 }
 
@@ -337,8 +360,6 @@ export async function toggleDarkTheme({
 		return;
 	}
 
-	updateCode(0);
-
 	siteSettings.darkTheme = !siteSettings.darkTheme;
 
 	darkThemeCheckbox && darkThemeCheckbox.setChecked({
@@ -351,7 +372,7 @@ export async function toggleDarkTheme({
 
 	onThemeChange();
 
-	if (noAnimation)
+	if (noAnimation || !document.startViewTransition)
 	{
 		metaThemeColorElement.setAttribute(
 			"content",
@@ -363,41 +384,52 @@ export async function toggleDarkTheme({
 
 	else
 	{
+		anime({
+			targets: metaThemeColorElement,
+			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
+			duration,
+			easing: "cubicBezier(.25, .1, .25, 1)",
+		}).finished.then(() =>
+		{
+			metaThemeColorElement.setAttribute(
+				"content",
+				siteSettings.darkTheme ? "#181818" : "#ffffff"
+			);
+		});
+		
 		const element = addStyle(`
-			*:not(.page, #banner, .desmos-container)
+			::view-transition-old(root),
+			::view-transition-new(root)
 			{
-				transition: none !important;
+				animation-duration: ${duration}ms;
+				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
 			}
 		`);
 
-		const oldTheme = siteSettings.darkTheme ? 0 : 1;
-		const newTheme = siteSettings.darkTheme ? 1 : 0;
+		document.startViewTransition(() =>
+		{
+			rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+		});
 
-		await Promise.all([
-			anime({
-				targets: metaThemeColorElement,
-				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-				duration,
-				easing: "cubicBezier(.25, .1, .25, 1)",
-			}).finished,
-
-			animate((t) =>
-			{
-				rootElement.style.setProperty("--theme", t * newTheme + (1 - t) * oldTheme);
-			}, duration, "cubicBezier(.25, .1, .25, 1)")
-		]);
-
-		element.remove();
+		setTimeout(() => element.remove(), duration);
 	}
 }
 
 
-
 export async function toggleReduceMotion()
 {
-	updateCode(1);
+	if (document.startViewTransition)
+	{
+		document.startViewTransition(() =>
+		{
+			siteSettings.reduceMotion = !siteSettings.reduceMotion;
+		});
+	}
 
-	siteSettings.reduceMotion = !siteSettings.reduceMotion;
+	else
+	{
+		siteSettings.reduceMotion = !siteSettings.reduceMotion;
+	}
 
 	for (const applet of currentlyLoadedApplets)
 	{
@@ -428,15 +460,13 @@ export async function toggleReduceMotion()
 
 export async function toggleIncreaseContrast({
 	noAnimation = false,
-	duration = 150
+	duration = 250
 }) {
-	updateCode(2);
-
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (noAnimation)
+	if (noAnimation || !document.startViewTransition)
 	{
 		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
 	}
@@ -444,25 +474,32 @@ export async function toggleIncreaseContrast({
 	else
 	{
 		const element = addStyle(`
-			*:not(.checkbox)
+			::view-transition-old(root),
+			::view-transition-new(root)
 			{
-				transition: none !important;
+				animation-duration: ${duration}ms;
+				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
 			}
 		`);
 
-		const oldIncreaseContrast = siteSettings.increaseContrast ? 0 : 1;
-		const newIncreaseContrast = siteSettings.increaseContrast ? 1 : 0;
-
-		await animate((t) =>
+		document.startViewTransition(() =>
 		{
-			rootElement.style.setProperty(
-				"--contrast",
-				t * newIncreaseContrast + (1 - t) * oldIncreaseContrast
-			);
-		}, duration, "easeInOutSine");
+			rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+		});
 
-		element.remove();
+		setTimeout(() => element.remove(), duration);
 	}
+}
+
+
+
+export async function toggleCapsuleHeader()
+{
+	siteSettings.capsuleHeader = !siteSettings.capsuleHeader;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	document.body.classList.toggle("capsule-header", siteSettings.capsuleHeader);
 }
 
 
@@ -482,31 +519,6 @@ export async function setScroll()
 
 		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	}, 100);
-}
-
-
-
-let settingsCode = [];
-const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
-
-function updateCode(digit)
-{
-	settingsCode.push(digit);
-	
-	if (settingsCode.length >= streetlightsCode.length)
-	{
-		settingsCode = settingsCode.slice(-streetlightsCode.length);
-
-		if (settingsCode.join("") === streetlightsCode.join(""))
-		{
-			addStyle(`
-				#logo img, #logo-no-link img
-				{
-					background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 14.2857142857%, rgba(185,185,185,1) 14.2857142857%, rgba(185,185,185,1) 28.5714285714%, rgba(255,255,255,1) 28.5714285714%, rgba(255,255,255,1) 42.8571428571%, rgba(184,244,131,1) 42.8571428571%, rgba(184,244,131,1) 57.1428571429%, rgba(255,255,255,1) 57.1428571429%, rgba(255,255,255,1) 71.4285714286%, rgba(185,185,185,1) 71.4285714286%, rgba(185,185,185,1) 85.7142857143%, rgba(0,0,0,1) 85.7142857143%, rgba(0,0,0,1) 100%);
-				}
-			`, false);
-		}
-	}
 }
 
 

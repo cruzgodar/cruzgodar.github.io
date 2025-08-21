@@ -19,7 +19,7 @@ export default function()
 		{
 			testGraph:
 			{
-				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
+				bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
 
 				expressions:
 				[
@@ -34,7 +34,7 @@ export default function()
 
 			powerFunctions:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -48,7 +48,7 @@ export default function()
 
 			negativePowerFunctions:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -61,7 +61,7 @@ export default function()
 
 			fractionalPowerFunctions:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -80,7 +80,7 @@ export default function()
 
 			inverses:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -92,7 +92,7 @@ export default function()
 
 			exponentials:
 			{
-				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
+				bounds: { xmin: -3, xmax: 3, ymin: -1, ymax: 5 },
 
 				expressions:
 				[
@@ -102,7 +102,7 @@ export default function()
 
 			verticalShift:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -124,7 +124,7 @@ export default function()
 
 			verticalStretch:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -146,7 +146,7 @@ export default function()
 
 			combinedTransformations:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -188,7 +188,7 @@ export default function()
 
 			intuitiveHorizontalTransformations:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -210,7 +210,7 @@ export default function()
 			},
 
 			identifyFormulaFromGraph: {
-				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
 				expressions:
 				[

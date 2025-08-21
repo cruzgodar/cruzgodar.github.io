@@ -17,7 +17,7 @@ export default function()
 		{
 			diagonalTriangle:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -34,7 +34,7 @@ export default function()
 
 			referenceTriangle:
 			{
-				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
@@ -52,7 +52,7 @@ export default function()
 
 			upsideDownTriangle:
 			{
-				bounds: { left: -4, right: 4, bottom: -3, top: 5 },
+				bounds: { xmin: -4, xmax: 4, ymin: -3, ymax: 5 },
 
 				expressions:
 				[
@@ -62,7 +62,7 @@ export default function()
 
 			scaledUpReferenceTriangle:
 			{
-				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
@@ -83,7 +83,7 @@ export default function()
 
 			upsideDownTriangle2:
 			{
-				bounds: { left: -4, right: 4, bottom: -3, top: 5 },
+				bounds: { xmin: -4, xmax: 4, ymin: -3, ymax: 5 },
 
 				expressions:
 				[
@@ -93,7 +93,7 @@ export default function()
 
 			referenceTriangle2:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 	
 				expressions:
 				[
@@ -110,7 +110,7 @@ export default function()
 
 			sineAndCosine:
 			{
-				bounds: { left: -10, right: 370, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -10, xmax: 370, ymin: -1.5, ymax: 1.5 },
 
 				options: { degreeMode: true },
 	
@@ -128,7 +128,7 @@ export default function()
 
 			bigAngles:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -154,7 +154,7 @@ export default function()
 
 			sineAndCosineComplete:
 			{
-				bounds: { left: -360 * 1.25, right: 360 * 1.25, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -360 * 1.25, xmax: 360 * 1.25, ymin: -1.5, ymax: 1.5 },
 
 				options: { degreeMode: true },
 	
@@ -167,7 +167,7 @@ export default function()
 
 			sinusoidalFunction:
 			{
-				bounds: { left: -360 * 1.25, right: 360 * 1.25, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -360 * 1.25, xmax: 360 * 1.25, ymin: -2.5, ymax: 2.5 },
 
 				options: { degreeMode: true },
 	

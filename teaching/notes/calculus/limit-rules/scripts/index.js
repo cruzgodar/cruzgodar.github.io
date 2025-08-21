@@ -15,7 +15,7 @@ export default function()
 		{
 			limitExample:
 			{
-				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
@@ -28,7 +28,7 @@ export default function()
 
 			limitExample2:
 			{
-				bounds: { left: 0, right: 8, bottom: -3, top: 5 },
+				bounds: { xmin: 0, xmax: 8, ymin: -3, ymax: 5 },
 
 				expressions:
 				[

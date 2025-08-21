@@ -14,7 +14,7 @@ export default function()
 		{
 			antiderivative:
 			{
-				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
+				bounds: { xmin: -3, xmax: 3, ymin: -1, ymax: 5 },
 
 				expressions:
 				[

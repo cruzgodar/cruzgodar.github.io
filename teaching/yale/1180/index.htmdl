@@ -1,0 +1,152 @@
+Welcome to Math 1180! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
+
+
+
+## General Resources
+
+### image-links
+	syllabus -c "Syllabus"
+###
+
+
+
+## Interactive Notes
+
+### image-links
+	notes/calc-1-review
+	notes/coordinate-systems
+###
+
+
+
+## Homework
+
+### image-links
+	homework-1 -c "Homework 1"
+###
+
+### card homework-1 -e
+
+### card syllabus "Math 1180: Introduction to Functions of Several Variables"
+	
+	Instructor: Cruz Godar (<a href="mailto:cruz.godar@yale.edu">cruz.godar@yale.edu</a>)
+
+	Class meetings: 9--10:15 TR in WTS A60
+	
+	Office hours: TBD in Kline Tower 727
+	
+	
+	
+	## What materials will I need?
+	
+	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything a textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf">Calculus Volume 3</a> by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, <a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown's video series</a> is a fantastic expository resource. For a more traditional textbook experience, <a href="https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf">Linear Algebra with Applications</a> by Nicholson is free and will do nicely.
+	
+	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, you can use a scientific calculator, but not a graphing one. The quizzes and exams are written so that necessary computations are doable by hand.
+	
+	
+	
+	## What will I be graded on?
+	
+	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
+	
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - Homework: 20%
+	> - Midterm 1: 20%
+	> - Midterm 2: 20%
+	> - Final: 30%
+	
+	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
+
+
+
+	## How should I prepare for class?
+	
+	You'll need to read the day's notes on this website *before* coming to class, since there will be reading quizzes on Canvas. These are intended to check that you've read the notes thoroughly, but certainly not that you've mastered it all! They're just there so that class meetings aren't your first time engaging deeply with the material.
+	
+	
+	
+	## What will class meetings be like?
+	
+	We'll spend our class time covering the material from the notes. We may not always have time to cover everything in full detail, so you'll want to use the notes both before and after class as a reference.
+	
+	The notes contain exercises, color-coded blue. We'll do these in class as think-pair-share group work --- you'll first have a few minutes to begin the problem on your own, and then you'll get into pairs for the bulk of the time to compare your approaches and finish the problem together on separate sheets of paper. You'll turn your paper in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	
+	
+	
+	## What will the homework be like?
+	
+	The homework is available on this site and is due weekly on Monday nights (starting in week 3). Your grade is out of 20 points --- 8 points are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to be graded on correctness for 4 points each.
+	
+	All of our homework is submitted through Gradescope. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+
+	I also highly recommend studying and working on homework in groups. While the final work you submit must be your own, it's both helpful and great practice to work with others --- part of the reason we have group work is to help build those friendships!
+
+
+
+	## What about generative AI?
+
+	Modern LLMs (large language models) increasingly have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine your own learning with them. The purpose of working on the homework isn't to do a perfect job on every problem, nor is the homework a perfect reflection of the types of questions that appear on exams. Instead, the homework exists to help you build mathematical fluency, both in this course's specific material and in more broad, transferable ways. Learning math is very much like learning a language, and using LLMs to solve homework problems for you, in whole or in part, is like using Google Translate to complete a language assignment --- the technology has its uses, but in this particular context, its role as a tool that helps you build fluency is narrow. Some ways in which LLMs *can* help include using them to generate practice problems if you're finished with the homework and looking to study more, or having them explain a topic to get a different perspective if the notes, lectures, and office hours haven't been quite enough.
+	
+	In terms of both grades and learning outcomes, the homework exists to challenge and prepare you for the exams, which are worth most of the credit. I treat using AI tools to complete the homework equivalently to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting answers copied verbatim from an LLM and/or answers inspired by an LLM's output that you don't fully understand is a form of academic misconduct.
+	
+	
+	
+	## What should I expect from the exams?
+	
+	Our midterm exams are on October 7th and November 11th and take up the full 75 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. I reserve the right to assign seating for the quizzes and exams.
+	
+	Our final exam is cumulative and is at 7 PM on Monday, December 15th.
+
+
+
+	## What does success look like?
+	
+	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you'll have the opportunity to practice:
+
+	> - Thinking critically about novel situations in the context of the mathematics we learn.
+	> - Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
+	> - Developing metacognitive thinking to evaluate your own learning practices and study strategies.
+
+	Regarding specific mathematical goals, we will learn how to:
+	
+	> - Represent systems of linear equations as matrices.
+	> - Understand how and when such systems can be solved.
+	> - Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
+	> - Compute and interpret determinants of square matrices.
+	> - Approximate matrix equations by using the method of least squares.
+	> - Understand and interact with representations of 3D space.
+	> - Understand and apply the dot and cross products to vectors in 3D space.
+	> - Plot and interpret functions of multiple variables.
+	> - Evaluate and interpret partial derivatives, including with the multivariable chain rule.
+	> - Optimize functions of multiple variables, including with the method of Lagrange multipliers.
+
+	Success is absolutely not limited to your performance in the course, however. Please take care of your mental, physical and emotional health; it's both far more important than and necessary for your academic success! Yale offers many resources to support you in these ways --- a good place to start is <a href="https://yalewell.yale.edu">Yale Well</a>.
+
+
+	
+	## What are the best things I can do to succeed academically?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Outside of class, you should expect to spend at least 8 hours per week on homework and studying if you're fully comfortable with all of the prerequisites for the class, and more than that if not. Mathematics broadly is a challenging subject, and this course should challenge every student at some point --- so don't panic when that happens! It's just an indication that you may want to devote more time to the course (at least temporarily).
+
+	Beyond the assignments worth credit, the single best thing you can do is **show up to at least one peer tutoring session per week**. Regularly attending them is a great way to make sure you're putting in that time --- even if you don't have any questions, it's a communal environment where you can focus on homework and get help if any questions do come up. I also have regular office hours that are a great resource for more specific help with a problem, or for more broad questions or concerns. I schedule them with the goal of enabling every student to attend at least one, but if none of my scheduled office hours work for you, please feel free to email me to schedule a time to meet outside of them!	
+
+	Our course's peer tutor is Nathan Mak, a fellow Yale undergraduate who will hold regular tutoring sessions at times to be determined. If these times don't work for you, there is also <a href="https://poorvucenter.yale.edu/learning/help-with-stem/stem-tutoring">drop-in tutoring available at the Poorvu center</a>.
+
+	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please <a href="https://sas.yale.edu/students/accommodations/exams">reach out to them</a>! It can take a little while before everything goes through, so the sooner the better.
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but your lowest quiz will be dropped. A Dean's Extension is required to make up an exam.
+	
+	
+	
+	## Is there anything else I should know?
+	
+	Like all instructors, I am a <a href="https://oiea.yale.edu/reporting-requirements">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
+	
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
+	
+###

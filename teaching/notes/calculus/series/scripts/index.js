@@ -16,7 +16,7 @@ export default function()
 			{
 				options: { showGrid: false, showXAxis: false, showYAxis: false },
 
-				bounds: { left: -.25, right: 1.25, bottom: -.25, top: 1.25 },
+				bounds: { xmin: -.25, xmax: 1.25, ymin: -.25, ymax: 1.25 },
 
 				expressions:
 				[

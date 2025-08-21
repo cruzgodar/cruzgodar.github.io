@@ -13,7 +13,8 @@ export let cardIsOpen = false;
 export let cardIsZoom = false;
 export let cardIsAnimating = false;
 
-const easing = "cubicBezier(.25, 1, .25, 1)";
+const openEasing = "cubicBezier(.25, 1, .3, 1)";
+const closeEasing = "cubicBezier(.25, 1, .3, 1)";
 
 export const cardContainer = document.querySelector("#card-container");
 
@@ -25,13 +26,13 @@ if (closeButton)
 {
 	addHoverEvent({ element: closeButton, addBounceOnTouch: () =>true });
 
-	closeButton.addEventListener("click", () => hideCard());
+	closeButton.addEventListener("click", () => closeCard());
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
 		if (e.key === "Escape" && cardIsOpen)
 		{
-			hideCard();
+			closeCard();
 		}
 	});
 }
@@ -48,7 +49,7 @@ export function initCards()
 		{
 			if (!e.metaKey)
 			{
-				showCard({
+				openCard({
 					id: element.getAttribute("data-card-id"),
 					fromElement: element
 				});
@@ -79,13 +80,13 @@ export function setOnLoadExternalCard(callback)
 
 
 
-export async function showCard({
+export async function openCard({
 	id,
 	animationTime = cardAnimationTime
 }) {
 	if (cardIsOpen)
 	{
-		await hideCard();
+		await closeCard();
 	}
 	
 	if (cardIsAnimating)
@@ -179,21 +180,18 @@ export async function showCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
-	document.querySelector("#header-container").style.filter = "brightness(1)";
+	document.querySelector("#header-background").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
-	document.documentElement.addEventListener("click", handleClickEvent);
+	document.documentElement.addEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.addEventListener("pointerup", handlePointerUpEvent);
 
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
 
 	// Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
-		? "rgb(24, 24, 24)"
-		: "rgb(255, 255, 255)";
-
-	document.querySelector("#header-container").style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
 
@@ -216,42 +214,34 @@ export async function showCard({
 			top: 0,
 			opacity: 1,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: [
 				pageElement,
 				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(.5)",
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: backgroundScale,
-			...(siteSettings.increaseContrast && { opacity: 0 }),
-			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 	]);
 
@@ -266,11 +256,11 @@ export async function showCard({
 	}
 }
 
-export async function hideCard(animationTime = cardAnimationTime)
+export async function closeCard(animationTime = cardAnimationTime)
 {
 	if (cardIsZoom)
 	{
-		return hideZoomCard(animationTime);
+		return closeZoomCard(animationTime);
 	}
 
 	if (cardIsAnimating)
@@ -296,14 +286,14 @@ export async function hideCard(animationTime = cardAnimationTime)
 	}
 
 	const containerOldScroll = cardContainer.scrollTop;
-	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
+	const totalHeightToMove = containerOldScroll + window.innerHeight + 32;
 
 	const hidePromise = siteSettings.reduceMotion
 		? anime({
 			targets: cardContainer,
 			opacity: 0,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished
 		: animate((t) =>
 		{
@@ -313,42 +303,34 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 			const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
 			cardContainer.style.top = `${remainingHeight}px`;
-		}, animationTime, easing);
+		}, animationTime, closeEasing);
 
 	await Promise.all([
 		anime({
 			targets: [
 				pageElement,
-				document.querySelector("#header")
+				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(1)",
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: 1,
-			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
-			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		hidePromise
@@ -363,7 +345,6 @@ export async function hideCard(animationTime = cardAnimationTime)
 	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
-	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
 
@@ -371,7 +352,8 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 	cardContainer.appendChild(closeButton);
 
-	document.documentElement.removeEventListener("click", handleClickEvent);
+	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.removeEventListener("pointerup", handlePointerUpEvent);
 
 	cardIsAnimating = false;
 
@@ -412,7 +394,7 @@ async function getClosedContainerStyle({
 
 
 
-export async function showZoomCard({
+export async function openZoomCard({
 	id,
 	fromElement,
 	toElement,
@@ -420,7 +402,7 @@ export async function showZoomCard({
 }) {
 	if (siteSettings.reduceMotion)
 	{
-		return showCard({
+		return openCard({
 			id,
 			animationTime
 		});
@@ -428,7 +410,7 @@ export async function showZoomCard({
 
 	if (cardIsOpen)
 	{
-		await hideCard();
+		await closeCard();
 	}
 	
 	if (cardIsAnimating)
@@ -510,21 +492,18 @@ export async function showZoomCard({
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
-	document.querySelector("#header-container").style.filter = "brightness(1)";
+	document.querySelector("#header-background").style.filter = "brightness(1)";
  
 	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
-	document.documentElement.addEventListener("click", handleClickEventZoom);
+	document.documentElement.addEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.addEventListener("pointerup", handlePointerUpEventZoom);
 
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
 
 	// Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
-		? "rgb(24, 24, 24)"
-		: "rgb(255, 255, 255)";
-
-	document.querySelector("#header-container").style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
 
@@ -552,42 +531,34 @@ export async function showZoomCard({
 			translateX: 0,
 			translateY: 0,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: [
 				pageElement,
 				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(.5)",
 			scale: backgroundScale,
 			...(siteSettings.increaseContrast && { opacity: 0 }),
 			duration: animationTime,
-			easing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: backgroundScale,
-			...(siteSettings.increaseContrast && { opacity: 0 }),
-			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: openEasing,
 		}).finished,
 	]);
 
@@ -597,11 +568,11 @@ export async function showZoomCard({
 	cardIsAnimating = false;
 }
 
-export async function hideZoomCard(animationTime = cardAnimationTime * .75)
+export async function closeZoomCard(animationTime = cardAnimationTime * .75)
 {
 	if (siteSettings.reduceMotion)
 	{
-		return hideCard(animationTime);
+		return closeCard(animationTime);
 	}
 
 	if (cardIsAnimating)
@@ -630,36 +601,28 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 		anime({
 			targets: [
 				pageElement,
-				document.querySelector("#header")
+				document.querySelector("#header"),
+				document.querySelector("#header-background"),
 			],
 			filter: "brightness(1)",
 			scale: 1,
 			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
-			easing,
-		}).finished,
-
-		anime({
-			targets: document.querySelector("#header-container"),
-			backgroundColor: color,
-			scale: 1,
-			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
-			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 
 		anime({
@@ -667,7 +630,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			opacity: 0,
 			scale: siteSettings.reduceMotion ? 1 : .925,
 			duration: animationTime,
-			easing,
+			easing: closeEasing,
 		}).finished,
 	]);
 
@@ -680,7 +643,6 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
-	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
 
@@ -688,27 +650,39 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 
 	cardContainer.appendChild(closeButton);
 
-	document.documentElement.removeEventListener("click", handleClickEventZoom);
+	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
+	document.documentElement.removeEventListener("pointerup", handlePointerUpEventZoom);
 
 	cardIsAnimating = false;
 }
 
 
 
-function handleClickEvent(e)
+let pointerDownOnCardContainer = false;
+
+function handlePointerDownEvent(e)
 {
-	if (e.target.id === "card-container")
-	{
-		hideCard();
-	}
+	pointerDownOnCardContainer = e.target.id === "card-container";
 }
 
-function handleClickEventZoom(e)
+function handlePointerUpEvent(e)
 {
-	if (e.target.id === "card-container")
+	if (pointerDownOnCardContainer && e.target.id === "card-container")
 	{
-		hideZoomCard();
+		closeCard();
 	}
+
+	pointerDownOnCardContainer = false;
+}
+
+function handlePointerUpEventZoom(e)
+{
+	if (pointerDownOnCardContainer && e.target.id === "card-container")
+	{
+		closeZoomCard();
+	}
+
+	pointerDownOnCardContainer = false;
 }
 
 

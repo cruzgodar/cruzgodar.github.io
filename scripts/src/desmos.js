@@ -1,5 +1,5 @@
 import { changeOpacity } from "./animation.js";
-import { $$, loadScript, raw } from "./main.js";
+import { loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 export let desmosPurple = "#772fbf";
@@ -8,12 +8,22 @@ export let desmosRed = "#bf2f2f";
 export let desmosGreen = "#2fbf2f";
 export const desmosBlack = "#000000";
 
+// 3d graphs don't invert graph colors in invert mode.
+export const desmosPurple3d = "#772fbf";
+export const desmosBlue3d = "#2f77bf";
+export const desmosRed3d = "#bf2f2f";
+export const desmosGreen3d = "#2fbf2f";
+export let desmosBlack3d = "#333333";
+
+
 function updateDesmosColors()
 {
 	desmosPurple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
 	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
 	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
 	desmosGreen = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
+
+	desmosBlack3d = siteSettings.darkTheme ? "#bbbbbb" : "#555555";
 }
 
 export let desmosGraphs = {};
@@ -32,16 +42,27 @@ export function setGetDesmosData(newGetDesmosData)
 
 
 
+// Each entry in a Desmos data object is of the form
+// {
+// 	expressions: a list of obejcts containing the fields latex
+//  and optionally color, lines, points, hidden, secret, etc.
+//
+// 	bounds: { left, right, bottom, top },
+//
+// 	options: extra options for the Desmos constructor, like
+//  showGrid, showXAxis, etc.
+
+//  use3d: a boolean for whether to use the Desmos.Calculator3D class.
+// }
+
 export async function createDesmosGraphs(recreating = false)
 {
 	if (window.OFFLINE)
 	{
 		return;
 	}
-	
-	await loadScript(
-		"https://www.desmos.com/api/v1.11/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
-	);
+
+	await loadScript("/scripts/desmos.min.js");
 
 	for (const key in desmosGraphs)
 	{
@@ -69,8 +90,19 @@ export async function createDesmosGraphs(recreating = false)
 		}
 	}
 
-	for (const element of $$(".desmos-container"))
+	for (const element of document.body.querySelectorAll(".desmos-container"))
 	{
+		let anyNonSecretExpressions = false;
+
+		for (const expression of data[element.id].expressions)
+		{
+			if (!expression.secret)
+			{
+				anyNonSecretExpressions = true;
+				break;
+			}
+		}
+
 		const options = {
 			keypad: false,
 			settingsMenu: false,
@@ -81,33 +113,74 @@ export async function createDesmosGraphs(recreating = false)
 			invertedColors: siteSettings.darkTheme,
 
 			xAxisMinorSubdivisions: 1,
-			yAxisMinorSubdivisions: 1
+			yAxisMinorSubdivisions: 1,
+
+			expressions: anyNonSecretExpressions,
+
+			...(data[element.id].options ?? {})
 		};
 
-		if (data[element.id].options)
-		{
-			for (const key in data[element.id].options)
-			{
-				options[key] = data[element.id].options[key];
-			}
-		}
 
 
+		const desmosClass = data[element.id].use3d
+			// eslint-disable-next-line no-undef
+			? Desmos.Calculator3D
+			// eslint-disable-next-line no-undef
+			: Desmos.GraphingCalculator;
+		
+		desmosGraphs[element.id] = desmosClass(element, options);
 
-		// eslint-disable-next-line no-undef
-		desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
+		
 
 		const bounds = data[element.id].bounds;
 		const rect = element.getBoundingClientRect();
 		const aspectRatio = rect.width / rect.height;
-		const width = bounds.right - bounds.left;
-		const centerX = (bounds.left + bounds.right) / 2;
-		bounds.left = centerX - width / 2 * aspectRatio;
-		bounds.right = centerX + width / 2 * aspectRatio;
+
+		if (bounds.xmin === undefined && bounds.left !== undefined)
+		{
+			bounds.xmin = bounds.left;
+			delete bounds.left;
+		}
+
+		if (bounds.xmax === undefined && bounds.right !== undefined)
+		{
+			bounds.xmax = bounds.right;
+			delete bounds.right;
+		}
+
+		if (bounds.ymin === undefined && bounds.bottom !== undefined)
+		{
+			bounds.ymin = bounds.bottom;
+			delete bounds.bottom;
+		}
+
+		if (bounds.ymax === undefined && bounds.top !== undefined)
+		{
+			bounds.ymax = bounds.top;
+			delete bounds.top;
+		}
+
+
+
+		if (!data[element.id].use3d)
+		{
+			// Enforce a square aspect ratio.
+			const width = bounds.xmax - bounds.xmin;
+			const centerX = (bounds.xmin + bounds.xmax) / 2;
+			bounds.xmin = centerX - width / 2 * aspectRatio;
+			bounds.xmax = centerX + width / 2 * aspectRatio;
+		}
+
+
 
 		desmosGraphs[element.id].setMathBounds(bounds);
 
 		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
+
+		// Set some more things that currently aren't exposed in the API :(
+		desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
+
+		desmosGraphs[element.id].updateSettings({});
 
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 
@@ -128,7 +201,7 @@ export async function createDesmosGraphs(recreating = false)
 
 export async function recreateDesmosGraphs()
 {
-	const elements = Array.from($$(".desmos-container"));
+	const elements = Array.from(document.body.querySelectorAll(".desmos-container"));
 
 	if (elements)
 	{
@@ -142,37 +215,44 @@ export async function recreateDesmosGraphs()
 
 export function getDesmosScreenshot(id, forPdf = false)
 {
+	// Yeesh is this hacky. Hopefully these are exposed in the API in the future!
+	desmosGraphs[id].controller.graphSettings.showPlane3D = false;
+	desmosGraphs[id].controller.graphSettings.showNumbers3D = false;
+	desmosGraphs[id].controller.graphSettings.showAxisLabels3D = false;
+	
 	desmosGraphs[id].updateSettings({
 		showGrid: forPdf,
 		xAxisNumbers: forPdf,
-		yAxisNumbers: forPdf
+		yAxisNumbers: forPdf,
 	});
 
-	const expressions = desmosGraphs[id].getExpressions();
-
-	for (let i = 0; i < expressions.length; i++)
+	if (!desmosGraphs[id].getState().graph.threeDMode)
 	{
-		expressions[i].lineWidth = forPdf ? 5 : 7.5;
-		expressions[i].pointSize = forPdf ? 15 : 27;
-		expressions[i].dragMode = "NONE";
+		const expressions = desmosGraphs[id].getExpressions();
+
+		for (let i = 0; i < expressions.length; i++)
+		{
+			expressions[i].lineWidth = forPdf ? 5 : 7.5;
+			expressions[i].pointSize = forPdf ? 15 : 27;
+			expressions[i].dragMode = "NONE";
+		}
+
+		desmosGraphs[id].setExpressions(expressions);
 	}
 
-	desmosGraphs[id].setExpressions(expressions);
-
-	desmosGraphs[id].asyncScreenshot({
-		width: 500,
-		height: 500,
-		targetPixelRatio: 8
-	}, imageData =>
-	{
-		const img = document.createElement("img");
-		img.width = 4000;
-		img.height = 4000;
-		img.style.width = "50vmin";
-		img.style.height = "50vmin";
-		img.src = imageData;
-		document.body.appendChild(img);
+	const imageData = desmosGraphs[id].screenshot({
+		width: 100,
+		height: 100,
+		targetPixelRatio: 16
 	});
+
+	const img = document.createElement("img");
+	img.width = 4000;
+	img.height = 4000;
+	img.style.width = "50vmin";
+	img.style.height = "50vmin";
+	img.src = imageData;
+	document.body.appendChild(img);
 }
 
 let uid = 0;

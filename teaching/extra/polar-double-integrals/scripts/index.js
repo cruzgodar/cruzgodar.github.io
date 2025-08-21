@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    getDesmosSlider,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	getDesmosSlider,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -15,7 +15,7 @@ export default function()
 		{
 			polarCoordinates:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -26,7 +26,7 @@ export default function()
 
 			polarSlice:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
@@ -63,7 +63,7 @@ export default function()
 
 			polarIntegrationRegion:
 			{
-				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
 				expressions:
 				[
@@ -76,7 +76,7 @@ export default function()
 
 			polarIntegrationRegion2:
 			{
-				bounds: { left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[

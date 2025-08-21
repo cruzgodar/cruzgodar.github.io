@@ -28,20 +28,20 @@
 
 
 
-	--gallery-color: rgb(176, 238, 173);
+	--gallery-color: rgb(185, 241, 182);
 	/* --gallery-color: lch(90% 35 140); */
 
-	--applets-color: rgb(255, 180, 203);
-	/* --applets-color: lch(90% 50 12); */
+	--applets-color: rgb(255, 184, 202);
+	/* --applets-color: lch(90% 60 15); */
 
-	--teaching-color: rgb(255, 216, 150);
+	--teaching-color: rgb(255, 222, 160);
 	/* --teaching-color: lch(90% 35 80); */
 
-	--math-color: rgb(175, 229, 255);
-	/* --math-color: lch(90% 30 255); */
+	--math-color: rgb(181, 228, 255);
+	/* --math-color: lch(90% 50 270); */
 
-	--about-color: rgb(244, 199, 255);
-	/* --about-color: lch(90% 70 300); */
+	--about-color: rgb(223, 202, 255);
+	/* --about-color: lch(90% 100 293); */
 
 
 
@@ -112,8 +112,7 @@ body
 }
 
 .checkbox-row.disabled > .checkbox-container.hover-reduce-motion,
-.text-button.dropdown.expanded.hover-reduce-motion,
-.image-link.hover-reduce-motion
+.text-button.dropdown.expanded.hover-reduce-motion
 {
 	filter: unset;
 }
@@ -124,6 +123,8 @@ header
 {
 	margin-top: calc(80px + env(safe-area-inset-top));
 	margin-bottom: 32px;
+
+	transition: margin-top 0.3s cubic-bezier(0.3, 1, 0.4, 1);
 }
 
 #banner ~ #content-container header
@@ -235,12 +236,6 @@ img
 	outline: 3px solid color-mix(in srgb, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) calc(var(--theme) * 100%));
 	background: rgb(255, 255, 255);
 	border-radius: 50%;
-}
-
-#logo img:not(:hover):focus
-{
-	transform: scale(1.05);
-	outline: none;
 }
 
 
@@ -1160,8 +1155,6 @@ body > .WILSON_fullscreen-container .fps-canvas
 
 .checkbox-container:not(:hover):focus
 {
-	transform: scale(1.1);
-	
 	outline: none;
 }
 
@@ -1671,44 +1664,68 @@ option
 
 
 
-#header-container
+.header-container
 {
 	position: fixed;
-	top: -50vh;
-	left: -50vw;
-	
-	height: calc(40px + 50vh + env(safe-area-inset-top));
-	width: calc(100% + 100vw);
-	
-	background-color: var(--background);
-	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.15 + var(--theme) * .15));
-	
-	z-index: 105;
-	
-	transform-origin: 50% calc(40px + 100vh);
-	transform: scale(1);
+	top: calc(env(safe-area-inset-top));
+	left: calc(env(safe-area-inset-left));
+	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 
-	outline: 2px solid var(--contrast-border-color);
+	z-index: 110;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-
-
 
 #header
 {
-	position: fixed;
-	top: env(safe-area-inset-top);
-	left: env(safe-area-inset-left);
+	position: relative;
+	background-color: var(--background);
 	
 	height: 40px;
-	
-	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
-	
-	z-index: 110;
+	width: 100%;
 	
 	transform-origin: 50% 50vh;
 
 	user-select: none;
 	-webkit-user-select: none;
+
+	transition: margin .3s cubic-bezier(.3, 1, .4, 1), max-width .3s cubic-bezier(.3, 1, .4, 1), width .3s cubic-bezier(.3, 1, .4, 1), border-radius .3s cubic-bezier(.3, 1, .4, 1), box-shadow .3s cubic-bezier(.3, 1, .4, 1);
+}
+
+#header-background
+{
+	position: fixed;
+	top: -50vh;
+	left: -50vw;
+
+	width: 200vw;
+	height: calc(50vh + 40px);
+
+	background-color: var(--background);
+
+	transform-origin: 50% 100vh;
+
+	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
+
+	transition: opacity .3s cubic-bezier(.3, 1, .4, 1);
+}
+
+#header-blur
+{
+	height: 80px;
+	width: calc(100% + 96px);
+	max-width: calc(var(--text-width) + 96px);
+	backdrop-filter: blur(32px);
+	mask-image:
+		linear-gradient(to top,    transparent, black 32px),
+		linear-gradient(to right,  transparent, black 48px),
+		linear-gradient(to left,   transparent, black 48px);
+	mask-composite: intersect;
+	opacity: 0;
+
+	transition: opacity .3s cubic-bezier(.3, 1, .4, 1);
 }
 
 
@@ -1716,13 +1733,13 @@ option
 #header-logo
 {
 	position: absolute;
-	top: 5px;
-	left: 5px;
+	top: 4px;
+	left: 4px;
 	
-	padding: 2.5px;
-	border-radius: 5px;
+	padding: 2px;
+	border-radius: 8px;
 	
-	height: calc(100% - 15px);
+	height: calc(100% - 12px);
 	width: fit-content;
 	
 	display: flex;
@@ -1740,7 +1757,8 @@ option
 #header-logo span
 {
 	color: var(--high-contrast);
-	padding-left: 5px;
+	padding-left: 6px;
+	padding-right: 4px;
 }
 
 #header-logo.hover, #header-logo:not(.hover):focus
@@ -1775,19 +1793,19 @@ option
 
 #header-links a
 {
-	padding: 5px;
-	border-radius: 5px;
+	padding: 4px;
+	border-radius: 8px;
 	
-	margin-left: 1.25px;
-	margin-right: 1.25px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	
 	cursor: pointer;
 	
 	transition: none;
 	
-	height: calc(100% - 20px);
+	height: calc(100% - 16px);
 	
 	display: flex;
 	align-items: center;
@@ -1851,14 +1869,14 @@ option
 #header-settings-button
 {
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 4px;
+	right: 4px;
 	padding: 4px;
-	height: calc(100% - 18px);
+	height: calc(100% - 16px);
 
 	aspect-ratio: 1;
 	
-	border-radius: 5px;
+	border-radius: 8px;
 	
 	width: fit-content;
 	
@@ -1917,6 +1935,8 @@ option
 
 	user-select: none;
 	-webkit-user-select: none;
+
+	transition: right .3s cubic-bezier(.3, 1, .4, 1), top .3s cubic-bezier(.3, 1, .4, 1);
 }
 
 #accessibility-tooltip .checkbox-row
@@ -1940,7 +1960,7 @@ option
 	}
 }
 
-@media (max-width: 550px)
+@media (max-width: 500px)
 {
 	#header-links a span
 	{
@@ -1951,17 +1971,14 @@ option
 	{
 		display: block;
 	}
-
-	#header-logo, #header-links a, #header-settings-button
-	{
-		/* Wrap around the little image link glyphs nicely. */
-		border-radius: 7.5px;
-	}
 	
 	#header-links a
 	{
-		padding: 2.5px;
-		height: calc(100% - 15px);
+		margin-left: 1px;
+		margin-right: 1px;
+		padding: 2px;
+		border-radius: 8px;
+		height: calc(100% - 12px);
 	}
 
 	#accessibility-tooltip
@@ -1983,21 +2000,23 @@ option
 {
 	#header
 	{
-		height: 35px;
+		height: 36px;
 	}
 
-	#header-container
+	#header-background
 	{
-		height: calc(35px + 50vh);
-		transform-origin: 50% calc(35px + 100vh);
+		height: calc(50vh + 36px);
 	}
 
 	#header-settings-button
 	{
-		top: 4.5px;
-		right: 4.5px;
-		padding: 4.5px;
-		height: calc(100% - 17px);
+		padding: 3px;
+		height: calc(100% - 14px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(44px + env(safe-area-inset-top));
 	}
 }
 
@@ -2005,43 +2024,49 @@ option
 {
 	#header
 	{
-		height: 30px;
+		height: 32px;
 	}
 
-	#header-container
+	#header-background
 	{
-		height: calc(30px + 50vh);
-		transform-origin: 50% calc(30px + 100vh);
+		height: calc(50vh + 32px);
 	}
-
+	
 	#header-logo
 	{
-		top: 2.5px;
-		left: 2.5px;
-		padding: 2.5px;
+		top: 3px;
+		left: 3px;
+		padding: 2px;
 		
 		height: calc(100% - 10px);
 	}
-
+	
 	#header-links a
 	{
+		/* Gross and not a multiple of 4, but it's the right look. */
+		margin-top: 3px;
+		margin-bottom: 3px;
 		padding: 2.5px;
-		border-radius: 5px;
+		border-radius: 7.5px;
 		
-		margin-left: 1.25px;
-		margin-right: 1.25px;
-		margin-top: 2.5px;
-		margin-bottom: 2.5px;
+		/* We want 11 / 2 = 5.5px between each image, and the padding accounts for 5px of that already. */
+		margin-left: 0.25px;
+		margin-right: 0.25px;
 		
-		height: calc(100% - 10px);
+		height: calc(100% - 11px);
 	}
-
+	
 	#header-settings-button
 	{
-		top: 2px;
-		right: 2px;
-		padding: 4.5px;
+		top: 3px;
+		right: 3px;
+		padding: 3.5px;
 		height: calc(100% - 13px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(40px + env(safe-area-inset-top));
 	}
 }
 
@@ -2049,13 +2074,12 @@ option
 {
 	#header
 	{
-		height: 25px;
+		height: 28px;
 	}
 
-	#header-container
+	#header-background
 	{
-		height: calc(25px + 50vh);
-		transform-origin: 50% calc(25px + 100vh);
+		height: calc(50vh + 28px);
 	}
 
 	#header-logo
@@ -2066,25 +2090,89 @@ option
 		
 		height: calc(100% - 8px);
 	}
-
+	
 	#header-links a
 	{
-		padding: 2px;
-		
-		margin-left: 1px;
-		margin-right: 1px;
 		margin-top: 2px;
 		margin-bottom: 2px;
-		
-		height: calc(100% - 8px);
-	}
+		padding: 2.5px;
 
+		/* We want 9 / 2 = 4.5px between each image, and the padding accounts for 5px of that already. */
+		margin-left: -0.25px;
+		margin-right: -0.25px;
+		
+		height: calc(100% - 9px);
+	}
+	
 	#header-settings-button
 	{
 		top: 2px;
 		right: 2px;
 		padding: 3.5px;
 		height: calc(100% - 11px);
+	}
+
+	#accessibility-tooltip
+	{
+		top: calc(36px + env(safe-area-inset-top));
+	}
+}
+
+
+
+/* Experimental capsule header. */
+
+body.capsule-header #header
+{
+	margin: 8px;
+	width: var(--text-width);
+	max-width: 100%;
+	border-radius: 12px;
+
+	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
+}
+
+body.capsule-header #header-blur
+{
+	opacity: 1;
+}
+
+body.capsule-header #header-background
+{
+	opacity: 0;
+}
+
+body.capsule-header #accessibility-tooltip
+{
+	right: calc(8px + env(safe-area-inset-top) + max((100vw - var(--text-width)) / 2 - 8px, 0px));
+}
+
+body.capsule-header header
+{
+	margin-top: calc(96px + env(safe-area-inset-top));
+}
+
+@media (max-width: 500px)
+{
+	body.capsule-header #accessibility-tooltip
+	{
+		top: calc(56px + env(safe-area-inset-top));
+	}
+}
+
+@media (max-width: 300px)
+{
+	body.capsule-header #header
+	{
+		border-radius: 11px;
+	}
+}
+
+@media (max-width: 270px)
+{
+	body.capsule-header #header
+	{
+		border-radius: 10px;
 	}
 }
 
@@ -2192,12 +2280,6 @@ option
 	-webkit-user-select: none;
 }
 
-.image-link img:not(:hover):focus
-{
-	transform: scale(1.05);
-	outline: none;
-}
-
 .one-image-link .image-link
 {
 	margin: 0 auto;
@@ -2250,21 +2332,54 @@ img[src="/about/cover.webp"]
 	
 	border: 2px solid var(--normal-contrast);
 	border-radius: 18px;
-	padding: 2px;
 	
 	margin-top: 32px;
 	margin-bottom: 32px;
 }
 
+.desmos-border.canvas-container
+{
+	border-radius: 18px;
+	padding: 2px;
+}
+
 .desmos-container
 {
-	border-radius: 12px;
+	border-radius: 16px;
 }
 
 .dcg-container
 {
+	border-radius: 16px !important;
+}
+
+
+
+/* Make the desmos buttons concentric */
+.dcg-pillbox-container
+{
+	right: 4px !important;
+	top: 4px !important;
+}
+
+.dcg-btn-flat-gray, .dcg-icon-btn, .dcg-overgraph-icon, .dcg-action-reset, .dcg-action-toggle-edit
+{
 	border-radius: 12px !important;
 }
+
+.dcg-overgraph-icon-container:not(.dcg-bottom-right)
+{
+	top: 4px !important;
+	left: 4px !important;
+}
+
+.dcg-overgraph-icon-container.dcg-bottom-right
+{
+	bottom: 4px !important;
+	right: 4px !important;
+}
+
+
 
 .desmos-border, .desmos-container, .dcg-container
 {
@@ -2334,7 +2449,8 @@ img[src="/about/cover.webp"]
 	width: 100% !important;
 }
 
-.notes-environment *:last-child
+.notes-environment > *:last-child,
+.notes-environment > .solution > *:last-child
 {
 	margin-bottom: 0 !important;
 }

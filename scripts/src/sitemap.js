@@ -693,6 +693,8 @@ export const sitemap =
 			"/teaching/notes/linear-algebra",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
+			"/teaching/yale/1180",
+			"/teaching/yale/1120",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -931,7 +933,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/calc-1-review":
 	{
-		"title": "Parts 1 and 2 Review",
+		"title": "Calculus I Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1720,6 +1722,54 @@ export const sitemap =
 		"title": "Section 8: Intro to Vectors",
 		
 		"parent": "/teaching/notes/trig",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180":
+	{
+		"title": "Math 1180",
+		
+		"parent": "/teaching",
+		
+		"children":
+		[
+			"/teaching/yale/1180/notes/calc-1-review",
+			"/teaching/yale/1180/notes/coordinate-systems"
+		],
+
+		"customScript": true
+	},
+		
+	"/teaching/yale/1180/notes/calc-1-review":
+	{
+		"title": "Section 0: Calculus I Review",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/coordinate-systems":
+	{
+		"title": "Section 1: Coordinate Systems",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1120":
+	{
+		"title": "Math 1120",
+		
+		"parent": "/teaching",
 		
 		"children": [],
 

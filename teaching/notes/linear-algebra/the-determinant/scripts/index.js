@@ -14,7 +14,7 @@ export default function()
 		{
 			determinantScaling:
 			{
-				bounds: { left: -8, right: 8, bottom: -10, top: 6 },
+				bounds: { xmin: -8, xmax: 8, ymin: -10, ymax: 6 },
 
 				expressions:
 				[

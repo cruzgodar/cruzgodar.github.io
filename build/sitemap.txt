@@ -72,7 +72,7 @@ home Cruz Godar
 			related-rates Section 2.10: Related Rates
 			applied-optimization Section 2.11: Applied Optimization
 			newtons-method Section 2.12: Newton's Method
-			calc-1-review Parts 1 and 2 Review
+			calc-1-review Calculus I Review
 
 			riemann-sums Section 3.1: Riemann Sums
 			integrals-intro Section 3.2: Intro to Integrals
@@ -151,6 +151,12 @@ home Cruz Godar
 			radians-and-equations Section 6: Radians and Equations
 			non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
 			vectors Section 8: Intro to Vectors
+
+		yale/1180 Math 1180
+			notes/calc-1-review Section 0: Calculus I Review
+			notes/coordinate-systems Section 1: Coordinate Systems
+
+		yale/1120 Math 1120
 		
 		uo/342 Math 342
 		uo/341 Math 341
