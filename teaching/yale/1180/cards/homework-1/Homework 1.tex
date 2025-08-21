@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 1 | Math 118 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Monday, September 8th at 11:59 PM}
+
+Complete the following problems and submit them as a pdf to Gradescope. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+~\\
+
+In problems 1--4, sketch a graph of the equation in $\mathbb{R}^3$. Check your answers with \href{https://www.desmos.com/3d}{Desmos 3D}.
+
+1. $\displaystyle y = x^3$.
+
+2. $\displaystyle z = 2x + 1$.
+
+3. $\displaystyle y^2 + z^2 = 2$.
+
+4. $\displaystyle x^2 + \left( \frac{y}{2} \right)^2 + \left( \frac{z}{3} \right)^2 = 1$ (hint: think about the graph's intersection with the coordinate planes).
+
+~\\
+
+5. What is an equation for the set of points in $\mathbb{R}^3$ that are distance $3$ from the point $(2, 3, -1)$?
+
+~\\
+
+6. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
+
+\begin{enumerate}
+
+	\item Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+
+	\item Sketch $\vec{v}$ and $\vec{w}$ in $\mathbb{R}^3$.
+
+	\item Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form and sketch them both.
+
+	\item Find unit vectors in the same direction as $\vec{v}$ and $\vec{w}$, respectively.
+
+\end{enumerate}
+
+~\\
+
+7. Give an example of a sequence that is monotone increasing that does not converge, and a sequence that is bounded below but does not converge.
+
+8. If a sequence is not bounded above, can it converge? Explain.
+
+9. If a sequence $a_n$ has infinitely many positive terms \textit{and} infinitely many negative terms, can it still converge? If so, are there restrictions on what it can converge to?
+
+10. Suppose $(a_n)$ is a sequence of rational numbers with $(a_n) \to a$. Is $a$ necessarily a rational number?
+
+11. Let $a_n$ be a sequence and let $b_n = \left| a_{n + 1} - a_n \right|$. If $(b_n) \to 0$, does $(a_n)$ have to converge?
+
+
+\end{document}

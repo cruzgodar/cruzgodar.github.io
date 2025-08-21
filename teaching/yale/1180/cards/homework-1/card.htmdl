@@ -1,0 +1,52 @@
+### card homework-1 "Homework 1"
+	
+	*Due Monday, September 8th at 11:59 PM*
+	
+	Complete the following problems and submit them as a pdf to Gradescope. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+	### buttons
+		download-homework-1-pdf
+		download-homework-1-tex
+	###
+
+	- - -
+	
+	In problems 4#, sketch a graph of the equation in $#R#^3$. Check your answers with <a href="https://www.desmos.com/3d">Desmos 3D</a>.
+
+	#. $$y = x^3$$.
+
+	#. $$z = 2x + 1$$.
+
+	#. $$y^2 + z^2 = 2$$.
+
+	#. $$x^2 + \left( \frac{y}{2} \right)^2 + \left( \frac{z}{3} \right)^2 = 1$$ (hint: think about the graph's intersection with the coordinate planes).	
+
+	- - -
+
+	#. What is an equation for the set of points in $#R#^3$ that are distance $3$ from the point $(2, 3, -1)$?
+
+	- - -
+
+	#. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
+
+	> a) Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+
+	> b) Sketch $\vec{v}$ and $\vec{w}$ in $#R#^3$.
+
+	> c) Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form and sketch them both.
+
+	> d) Find unit vectors in the same direction as $\vec{v}$ and $\vec{w}$, respectively.
+
+	- - -
+
+	#. Give an example of a sequence that is monotone increasing that does not converge, and a sequence that is bounded below but does not converge.
+
+	#. If a sequence is not bounded above, can it converge? Explain.
+
+	#. If a sequence $a_n$ has infinitely many positive terms *and* infinitely many negative terms, can it still converge? If so, are there restrictions on what it can converge to?
+
+	#. Suppose $(a_n)$ is a sequence of rational numbers with $(a_n) \to a$. Is $a$ necessarily a rational number?
+
+	#. Let $a_n$ be a sequence and let $b_n = \left| a_{n + 1} - a_n \right|$. If $(b_n) \to 0$, does $(a_n)$ have to converge?
+
+###

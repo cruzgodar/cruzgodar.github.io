@@ -152,11 +152,11 @@ home Cruz Godar
 			non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
 			vectors Section 8: Intro to Vectors
 
-		yale/118 Math 118
-			notes/calc-1-review Section 0: Calculus 1 Review
+		yale/1180 Math 1180
+			notes/calc-1-review Section 0: Calculus I Review
 			notes/coordinate-systems Section 1: Coordinate Systems
 
-		yale/112 Math 112
+		yale/1120 Math 1120
 		
 		uo/342 Math 342
 		uo/341 Math 341

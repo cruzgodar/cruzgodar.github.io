@@ -42,9 +42,9 @@ Let's start getting our bearings in $#R#^3$ by taking equations whose graphs we'
 
 The results are similar --- plotting a 2D function in 3D results in an object like a paper sheet, potentially warped a bit due to the function. Fundamentally, this is because plotting a graph of any equation just means drawing all of the points where that equation is true, and any equation of the form $y = f(x)$ doesn't involve $z$, so any point $(x, y)$ where $y = f(x)$ will result in us plotting a whole column of points $(x, y, z)$ for *all* values of $z$.
 
-The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $#R#$ when we're using it to graph things!
+The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $#R#$ when we're using it to graph things! Collectively, we call these three planes the **coordinate planes**.
 
-### exc "graphing a plane"
+### exc "graphing in $#R#^3$"
 
 	Sketch a graph of $y = x^2$ in $#R#^3$.
 

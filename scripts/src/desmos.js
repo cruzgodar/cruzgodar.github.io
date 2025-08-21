@@ -135,10 +135,43 @@ export async function createDesmosGraphs(recreating = false)
 		const bounds = data[element.id].bounds;
 		const rect = element.getBoundingClientRect();
 		const aspectRatio = rect.width / rect.height;
-		const width = bounds.right - bounds.left;
-		const centerX = (bounds.left + bounds.right) / 2;
-		bounds.left = centerX - width / 2 * aspectRatio;
-		bounds.right = centerX + width / 2 * aspectRatio;
+
+		if (bounds.xmin === undefined && bounds.left !== undefined)
+		{
+			bounds.xmin = bounds.left;
+			delete bounds.left;
+		}
+
+		if (bounds.xmax === undefined && bounds.right !== undefined)
+		{
+			bounds.xmax = bounds.right;
+			delete bounds.right;
+		}
+
+		if (bounds.ymin === undefined && bounds.bottom !== undefined)
+		{
+			bounds.ymin = bounds.bottom;
+			delete bounds.bottom;
+		}
+
+		if (bounds.ymax === undefined && bounds.top !== undefined)
+		{
+			bounds.ymax = bounds.top;
+			delete bounds.top;
+		}
+
+
+
+		if (!data[element.id].use3d)
+		{
+			// Enforce a square aspect ratio.
+			const width = bounds.xmax - bounds.xmin;
+			const centerX = (bounds.xmin + bounds.xmax) / 2;
+			bounds.xmin = centerX - width / 2 * aspectRatio;
+			bounds.xmax = centerX + width / 2 * aspectRatio;
+		}
+
+
 
 		desmosGraphs[element.id].setMathBounds(bounds);
 

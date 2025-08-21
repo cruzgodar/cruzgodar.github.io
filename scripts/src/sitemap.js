@@ -693,8 +693,8 @@ export const sitemap =
 			"/teaching/notes/linear-algebra",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
-			"/teaching/yale/118",
-			"/teaching/yale/112",
+			"/teaching/yale/1180",
+			"/teaching/yale/1120",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -1728,46 +1728,46 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/118":
+	"/teaching/yale/1180":
 	{
-		"title": "Math 118",
+		"title": "Math 1180",
 		
 		"parent": "/teaching",
 		
 		"children":
 		[
-			"/teaching/yale/118/notes/calc-1-review",
-			"/teaching/yale/118/notes/coordinate-systems"
+			"/teaching/yale/1180/notes/calc-1-review",
+			"/teaching/yale/1180/notes/coordinate-systems"
 		],
 
 		"customScript": true
 	},
 		
-	"/teaching/yale/118/notes/calc-1-review":
+	"/teaching/yale/1180/notes/calc-1-review":
 	{
-		"title": "Section 0: Calculus 1 Review",
+		"title": "Section 0: Calculus I Review",
 		
-		"parent": "/teaching/yale/118",
+		"parent": "/teaching/yale/1180",
 		
 		"children": [],
 
 		"customScript": true
 	},
 	
-	"/teaching/yale/118/notes/coordinate-systems":
+	"/teaching/yale/1180/notes/coordinate-systems":
 	{
 		"title": "Section 1: Coordinate Systems",
 		
-		"parent": "/teaching/yale/118",
+		"parent": "/teaching/yale/1180",
 		
 		"children": [],
 
 		"customScript": true
 	},
 	
-	"/teaching/yale/112":
+	"/teaching/yale/1120":
 	{
-		"title": "Math 112",
+		"title": "Math 1120",
 		
 		"parent": "/teaching",
 		
