@@ -429,6 +429,8 @@ mjx-container
 
 		margin-top: calc(8px + 5vh + env(safe-area-inset-top));
 		margin-bottom: calc(8px + 5vh + env(safe-area-inset-bottom));
+
+		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .3);
 	}
 }
 
