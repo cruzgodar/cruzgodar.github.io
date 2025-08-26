@@ -131,7 +131,7 @@ $$
 
 	a^2 - 2ab + b^2 + c^2 - 2cd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	-2ab + -2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+	-2ab - 2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
 	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
 $$

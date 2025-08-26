@@ -1,0 +1,85 @@
+### nav-buttons
+
+
+
+With an understanding of 3D space and vectors, we can start examining some useful properties and tools to help us make sense of this new space. We'll start with one of the most useful --- it will let us compute the angle between any two vectors efficiently, and we'll be bringing it with us to apply to other topics for the rest of the course.
+
+## The Dot Product
+
+The angle *between* two vectors is a concept that can take a moment to get used to. In $#R#^2$, it's a straightforward notion: two vectors placed so that their tails are at the same point form an angle (two angles, really, but we're interested in the one that's at most $180^\circ$). In $#R#^3$ and higher, it's very similar: any two vectors with their tails at the same point lie in a plane, and when viewed in that plane, there is a well-defined notion of angle between them.
+
+### desmos angleBetweenVectors
+
+To figure out how to compute that angle with the minimum possible notational burden, let's just stick with $#R#^2$ for now. If $\vec{v} = \left< a, b \right>$ and $\vec{w} = \left< c, d \right>$, then $\left| \left| \vec{v} \right| \right| = \sqrt{a^2 + b^2}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{c^2 + d^2}$. We can form a triangle with sides consisting of $\vec{v}$ and $\vec{w}$ and a third side of $\vec{v} - \vec{w}$ (since adding it to $\vec{w}$ should produce $\vec{v}$):
+
+### desmos dotProductMotivation
+
+Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
+
+$$
+	\vec{v} - \vec{w} &= \left( a - c \right)\vec{i} + \left( b - d \right)\vec{j}
+
+	\left| \left| \vec{v} - \vec{w} \right| \right| &= \sqrt{\left( a - c \right)^2 + \left( b - d \right)^2}.
+$$
+
+Let's call the angle between $\vec{v}$ and $\vec{w}$ (i.e. the angle at the black point) $\theta$ --- it's what we're trying to find. We'll now need to use a somewhat obscure piece of tech from trigonometry: the Law of Cosines. It lets us relate the angle in any triangle (not just a right triangle) to the lengths of the three sides. Specifically,
+
+$$
+	\left| \left| \vec{v} - \vec{w} \right| \right|^2 &= \left| \left| \vec{v} \right| \right|^2 + \left| \left| \vec{w} \right| \right|^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	\left( a - c \right)^2 + \left( b - d \right)^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	a^2 - 2ab + b^2 + c^2 - 2cd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	-2ab -2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+
+	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
+$$
+
+That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $c, d$. In fact, we'll want to give it its own name and notation.
+
+### def "the dot product"
+
+	Let $\vec{v} = \left< a, b \right>$ and $\vec{w} = \left< c, d \right>$. The **dot product** of $\vec{v}$ and $\vec{w}$ is $\vec{v} \bullet \vec{w} = ac + bd$. Notably, this is a *scalar*, not a vector.
+
+	The dot product is defined for higher-dimensional vectors, too: if $\vec{v} = \left< a, b, c \right>$ and $\vec{w} = \left< d, e, f \right>$ are vectors in $#R#^3$, then $\vec{v} \bullet \vec{w} = ad + be + cf$. More generally, if $\vec{v} = \left< v_1, v_2, ..., v_n \right>$ and $\vec{w} = \left< w_1, w_2, ..., w_n \right>$ are vectors in $#R#^n$, then $\vec{v} \bullet \vec{w} = v_1w_1 + v_2w_2 + \cdots + v_nw_n$. However, we *only define the dot product between two vectors of the same dimension*. If $\vec{v}$ and $\vec{w}$ live in different dimensional spaces, then $\vec{v} \bullet \vec{w}$ is completely undefined.
+
+###
+
+*Product* is a slightly strange name for this thing, since it isn't a vector despite taking in two vectors, but it does satisfy a lot of multiplication-like properties:
+
+### prop "properties of the dot product"
+
+	For any vectors $\vec{u}$, $\vec{v}$, and $\vec{w}$ of the same dimension,
+
+	1. $\vec{v} \bullet \vec{w} = \vec{w} \bullet \vec{v}$.
+
+	2. $\vec{u} \bullet \left( \vec{v} + \vec{w} \right) = \vec{u} \bullet \vec{v} + \vec{u} \bullet \vec{w}$.
+
+	3. $\vec{v} \bullet \vec{v} = \left| \left| \vec{v} \right| \right|^2$.
+
+	4. If the angle between $\vec{v}$ and $\vec{w}$ is $\theta$, then $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$. The angle between $\vec{v}$ and $\vec{w}$ is $$\theta = \arccos \left( \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|} \right)$$.
+
+###
+
+The dot product measures both the magnitudes of its factors and the angle between them. If $\vec{v}$ and $\vec{w}$ have an angle $\theta$ between them with $0^\circ \leq \theta < 90^\circ$, then $\vec{v} \bullet \vec{w}$ is positive, and if $\theta > 90^\circ$, then $\vec{v} \bullet \vec{w}$ is negative. If $\theta = 90^\circ$, then $\vec{v} \bullet \vec{w} = 0$, and almost the same is true in reverse: if both $\vec{v}$ and $\vec{w}$ are nonzero and $\vec{v} \bullet \vec{w} = 0$, then $\cos(\theta)$ must be zero, since both $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{v} \right| \right|$ are nonzero --- and the only angle $\theta$ between two vectors with $\cos(\theta) = 0$ is $\theta = 90^\circ$. This is an important enough idea that it will warrant its own name.
+
+### def "orthogonality"
+
+	Two vectors $\vec{v}$ and $\vec{w}$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+### exc "the dot product"
+
+	Let $\vec{v} = \left< 1, 5, 4 \right>$ and $\vec{w} = 8\vec{i} - 2\vec{j} - 10\vec{k}$.
+
+	1. Find $\vec{v} \bullet \vec{w}$ and the angle between them.
+
+	2. Find all points $(x, y, z)$ so that the vector $\left< x, y, z \right>$ is orthogonal to $\vec{v}$. What shape is that set of points? How would the shape change if $\vec{v}$ were different?
+
+###
+
+
+
+### nav-buttons

@@ -155,8 +155,7 @@ home Cruz Godar
 		yale/1180 Math 1180
 			notes/calc-1-review Section 0: Calculus I Review
 			notes/coordinate-systems Section 1: Coordinate Systems
-
-		yale/1120 Math 1120
+			notes/dot-and-cross-products Section 2: The Dot and Cross Products
 		
 		uo/342 Math 342
 		uo/341 Math 341

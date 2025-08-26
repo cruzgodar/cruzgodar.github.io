@@ -13,7 +13,7 @@ export const desmosPurple3d = "#772fbf";
 export const desmosBlue3d = "#2f77bf";
 export const desmosRed3d = "#bf2f2f";
 export const desmosGreen3d = "#2fbf2f";
-export let desmosBlack3d = "#333333";
+export const desmosGray3d = "#777777";
 
 
 function updateDesmosColors()
@@ -22,8 +22,6 @@ function updateDesmosColors()
 	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
 	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
 	desmosGreen = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
-
-	desmosBlack3d = siteSettings.darkTheme ? "#bbbbbb" : "#555555";
 }
 
 export let desmosGraphs = {};

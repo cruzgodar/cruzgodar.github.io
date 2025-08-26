@@ -1,9 +1,9 @@
 import {
 	createDesmosGraphs,
 	desmosBlack,
-	desmosBlack3d,
 	desmosBlue,
 	desmosBlue3d,
+	desmosGray3d,
 	desmosGreen,
 	desmosPurple,
 	desmosPurple3d,
@@ -67,7 +67,7 @@ export default function()
 
 					{ latex: raw`(x_2, y_2, z_1)`, color: desmosPurple3d },
 
-					{ latex: raw`(x_1, y_1, z_1), (x_2, y_2, 0), (x_2, y_2, z_2), (x_1, y_1, z_1)`, color: desmosBlack3d, points: false, lines: true, secret: true },
+					{ latex: raw`(x_1, y_1, z_1), (x_2, y_2, 0), (x_2, y_2, z_2), (x_1, y_1, z_1)`, color: desmosGray3d, points: false, lines: true, secret: true },
 					
 				]
 			},
@@ -218,7 +218,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`x^2 + y^2 + z^2 = 1`, color: desmosBlack3d },
+					{ latex: raw`x^2 + y^2 + z^2 = 1`, color: desmosGray3d },
 
 					{ latex: raw`(\frac{1}{2}, \frac{\sqrt{3}}{2}\cos(t), \frac{\sqrt{3}}{2}\sin(t))`, color: desmosPurple3d, parametricDomain: { min: 0, max: 2 * Math.PI } },
 				]
@@ -389,7 +389,7 @@ export default function()
 						color: desmosPurple,
 					}),
 				]
-			},
+			}
 		};
 
 		return data;

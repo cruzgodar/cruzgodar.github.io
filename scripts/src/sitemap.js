@@ -694,7 +694,6 @@ export const sitemap =
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
 			"/teaching/yale/1180",
-			"/teaching/yale/1120",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -1737,7 +1736,8 @@ export const sitemap =
 		"children":
 		[
 			"/teaching/yale/1180/notes/calc-1-review",
-			"/teaching/yale/1180/notes/coordinate-systems"
+			"/teaching/yale/1180/notes/coordinate-systems",
+			"/teaching/yale/1180/notes/dot-and-cross-products"
 		],
 
 		"customScript": true
@@ -1765,11 +1765,11 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1120":
+	"/teaching/yale/1180/notes/dot-and-cross-products":
 	{
-		"title": "Math 1120",
+		"title": "Section 2: The Dot and Cross Products",
 		
-		"parent": "/teaching",
+		"parent": "/teaching/yale/1180",
 		
 		"children": [],
 

@@ -72,7 +72,7 @@ $$
 	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
 $$
 
-Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting white triangle that we form is a right triangle, and the Pythagorean theorem tells us that its hypotenuse has length
+Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean theorem tells us that its hypotenuse has length
 
 $$
 	d = \sqrt{d^2 + |z_2 - z_1|^2} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}.
