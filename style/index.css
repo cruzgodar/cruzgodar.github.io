@@ -1702,6 +1702,8 @@ option
 	top: -50vh;
 	left: -50vw;
 
+	z-index: 110;
+
 	width: 200vw;
 	height: calc(50vh + 40px);
 
