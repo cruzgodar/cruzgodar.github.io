@@ -1,8 +1,8 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -31,7 +31,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(t) = t^2`, color: desmosPurple },
+					{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
 					{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
 					{ latex: raw`b = 1`, sliderBounds: { min: -2, max: 2 } },
 					{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
@@ -48,7 +48,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(t) = t^2`, color: desmosPurple },
+					{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
 					{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
 					{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
 					{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true },

@@ -1,30 +1,46 @@
 ### nav-buttons
 
-Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you're moving, but we don't have the tools to do that yet.
+Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you're moving at any given time, but we don't have the tools to do that quite yet.
 
-If you're moving at a constant rate --- say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
+Say you're moving at a constant rate of $v(t) = 2$ meters per second (written $\frac{m}{s}$). Then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
 
 ### desmos velocityExample
 
-The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that's literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let's see how well this idea works in practice with the function $f(t) = t^2$ --- starting from $t = 0$, we'll divide rise by run, where run is exactly $1$.
+The slope of a line is its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that's literally meters moved per second, which is velocity. That rise over run definition tells us that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let's see how well this idea works in practice with the function $f(t) = 2 - t^2$ --- starting from $t = 0$, we can divide rise by run, where run is exactly $1$.
 
 ### desmos secantLines
 
-If it seems strange to talk about the slope of something that's not a curve, you might find it easier to think about the blue line: if we draw it to pass through the two points we're looking at on the red curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$. Therefore, the slope of that blue line is $\frac{1}{1} = 1$.
+Let's look at that blue line: if we draw it to pass through the two points we're looking at on the purple curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is $-1$, since $f(0) = 2 - 0^2 = 2$ and $f(1) = 2 - 1^2 = 1$. Therefore, the slope of that blue line is $\frac{-1}{1} = -1$. If $f$ is giving the position of an object after $t$ seconds (say, a falling ball), then this line's slope has an important name:
 
-Imagine that $f$ is measuring the distance you've traveled after $t$ seconds. You start off barely moving at all, and only really pick up speed down the line. You definitely don't have velocity $1 \frac{m}{s}$ from the moment you start, or the graph wouldn't have such a slow start from the origin. So what's the problem with the slope we found?
+### def "average velocity"
 
-Fundamentally, your velocity at time $t = 0$ shouldn't have anything to do with your position at $t = 1$. You might speed up or slow down a lot in that intervening second --- maybe you even walk backward! In our case, we sped up a lot, since our position is increasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, we can make the run smaller in our slope calculation: for example, if we take $t = .1$, only a tenth of a second after we start measuring, then there's much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$. Set $b = .1$ in the graph above to see the slope we're measuring.
+	Let $s(t)$ be the position (in one dimension) of an object at time $t$. The **average velocity** of the object between $t = a$ and $t = b$ is
 
-What's the slope now? The rise over run calculation gives us
+	$$
+		\frac{s(b) - s(a)}{b - a}.
+	$$
+
+###
+
+### exc "average velocity"
+
+	1. Suppose you and a friend are running a one-mile race. You start at the same time, but after half a mile your friend stops to catch their breath while you keep running. However, once your friend starts back up again, they run much faster than you, and the two of you end up crossing the finish line at the same time. Who has the higher average velocity in this scenario, or is it impossible to say for sure?
+
+	2. In the previous example, we used the object's position at $t = 0$ and $t = 1$ to estimate its velocity. What should its velocity **at** $t = 0$ be? (Hint: think about the velocity of a ball right at the moment you drop it). Why is our average velocity computation of $-1 \frac{m}{s}$ not equal to the velocity at $t = 0$?
+
+###
+
+Fundamentally, the velocity of that object at time $t = 0$ shouldn't have anything to do with its position at $t = 1$. It might have sped up or slowed down a lot in that intervening second --- maybe it even hit something and bounced higher than it started! In this case, it sped up a lot from falling, since its position is decreasing faster at $t = 1$ than $t = 0$. In order to take a better measurement, of the velocity at $t = 0$, we can make the run smaller in our calculation of average velocity: for example, if we take $t = 0.1$, only a tenth of a second after we start measuring, then there's much less time for changes in position to affect the rise of the line. As a result, we get a better approximation of the actual velocity at $t = 0$. Set $b = 0.1$ in the graph above to see the slope we're measuring.
+
+What's the average velocity now? The rise over run calculation gives us
 
 $$
-	\frac{f(.1) - f(0)}{.1 - 0} = \frac{.1^2}{.1} = .1.
+	\frac{f(0.1) - f(0)}{0.1 - 0} &= \frac{(2 - 0.01) - (2 - 0)}{0.1}
+
+	&= 0.1\,\frac{m}{s}.
 $$
 
 Better! Since our approximations improve as we have a smaller and smaller run, the best approximation --- in fact, the actual velocity we're after --- is the slope of a line with **no** run at all. Let's define a couple terms to make talking about these things easier.
-
-
 
 ### def "secant and tangent lines"
 	
@@ -32,25 +48,19 @@ Better! Since our approximations improve as we have a smaller and smaller run, t
 	
 ###
 
-
-
 So far, we've been dealing with secant lines, but what we want is a tangent line, which appears when both points are at $(0, 0)$.
 
 ### desmos tangentLines
 
-As you might be able to predict, that line is totally flat! So our velocity at time $t = 0$ is zero, because although we pick up speed later, we don't have any right at the start. If this seems strange, think of dropping a ball above the ground: gravity speeds it up over time, but at the exact moment you let go, it has zero velocity.
+As you might have been able to predict, that line is totally flat! So the velocity at time $t = 0$ is zero, because although the object picks up speed later, it doesn't have any right at the start. In the specific context of dropping a ball, while gravity speeds it up over time, it has zero velocity at the exact moment we let go.
 
 It might not seem like it, but we actually just did something profound: we defined the slope of something that's not a line.
 
-
-
 ### def "slope of a curve"
 	
-	Let $f(x)$ be a function. The **slope** of the graph of $f$ at $x = a$ is the slope of the tangent line to the graph of $f$ at $x = a$.
+	Let $f(x)$ be a function. The **slope** of the graph of $f$ at $x = a$, also called the **instantaneous slope** at $x = a$, is the slope of the tangent line to the graph of $f$ at $x = a$. If $s(t)$ is a function that measures position of an object at time $t$, then the instantaneous slope of $s$ at $t$ is called the **instantaneous velocity** of the object at time $t$.
 	
 ###
-
-
 
 That wasn't too bad! We already have a formula for the slope of a secant line, so let's just plug in the same point twice to find the slope of a tangent line. So in the example we've been talking about, that means plugging in $(0, 0)$ for both the left and right points:
 
@@ -58,7 +68,7 @@ $$
 	\frac{f(0) - f(0)}{0 - 0} = \frac{0}{0}.
 $$
 
-And now it all comes grinding to a halt. We can't divide anything by zero --- even dividing zero by itself is a problem. No matter what slope we try to calculate, we'll have this problem, since the rise over run formula will always be $\frac{0}{0}$. So what can we do? That line **has** a slope --- the problem isn't that it's not well-defined or something similar, it's just that we cannot calculate it with methods in math that we've learned so far.
+And now it all comes grinding to a halt. We can't divide anything by zero --- even dividing zero by itself is a problem. No matter what slope we try to calculate, we'll have this issue, since the rise over run formula will always be $\frac{0}{0}$. So what can we do? That line **has** a slope --- the problem isn't that it's not well-defined or something similar, it's just that we cannot calculate it with methods in math that we've learned so far.
 
 It's important that we spell out the problem we're running into clearly. Define 
 
@@ -66,19 +76,17 @@ $$
 	g(h) = \frac{f(h) - f(0)}{h - 0},
 $$
 
-which is just the slope of a secant line passing through the points $(0, f(0))$ and $(h, f(h))$. The function $g$ is undefined at zero, but **there is a clear value it should have.** To illustrate what we mean, let's graph $g(h)$.
-
-### desmos tangentLines2
-
-Since $f(h) = h^2$, we have that
+which is just the slope of a secant line passing through the points $(0, f(0))$ and $(h, f(h))$. The function $g$ is undefined at zero, but **there is a clear value it should have**: since $f(h) = h^2$, we have
 
 $$
 	g(h) = \frac{h^2}{h}.
 $$
 
+### desmos tangentLines2
+
 When $h$ is nonzero, we can cancel an $h$ to get $g(h) = h$. When $h = 0$, $g$ is undefined, so there is a hole in the graph at $h = 0$. But looking at that graph, the values of the graph right around $h = 0$ are very close to $0$, and so there is a sense in which the value that $g(h)$ **should** have at $h = 0$ is $0$.
 
-That sense is nice, but it's far from being a concrete definition, and if we're going to find the slopes of more complicated functions than $f(t) = t^2$, we need to know exactly where we're going. The tool we'll construct for this purpose is called a **limit**, and we'll spend roughly the first two weeks of the course getting used to working with them. Around week 3, we'll return with our knowledge of limits to this tangent line business, and figure out an easier way to find the slope of a curve. For now, let's dive into limits.
+Having that sense is nice, and it's tempting to say that we should just cancel the $h$ no matter what. However, that's not mathematically sound: say we were dealing with the function $s(x) = \frac{\sin(x)}{x}$, which we'll see later in this section. Then $s(0) = \frac{0}{0}$ is undefined, but the value it really ought to have is $1$, not $0$. If we're going to find slopes of more complicated functions than $f(t) = 2 - t^2$ (and unsurprisingly, many functions more complicated than that crop up in nature), then we need to know exactly where we're going. The tool we'll construct for this purpose is called a **limit**, and we'll spend roughly the first two weeks of the course getting used to working with them. Around week 3, we'll return with our knowledge of limits to this tangent line business, and figure out an easier way to find the slope of a curve. For now, let's dive into limits.
 
 
 
