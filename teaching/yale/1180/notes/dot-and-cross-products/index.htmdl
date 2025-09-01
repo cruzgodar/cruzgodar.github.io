@@ -166,6 +166,81 @@ We'll find that the very tool we need is a *different* way to multiply vectors -
 
 ## The Cross Product
 
+From time to time in math, machinery at a high level delivers sudden, broad solutions to lower-level problems like a lightning bolt from the clouds. So it is with the cross product, which originates from <a href="https://en.wikipedia.org/wiki/William_Rowan_Hamilton">William Hamilton's</a> groundbreaking work in <a href="https://en.wikipedia.org/wiki/Quaternion">quaternions</a>, a four-dimensional number system that is analogous to the complex numbers. Quaternions are unreasonably useful considering that we live in only three dimensions, particularly in how they very elegantly express all possible rotations of 3D space. They're relevant to our goals, though, because one of Hamilton's results about multiplying quaternions happens to produce a formula for taking two vectors in $#R#^3$ and producing a new vector orthogonal to them. What this means for us is that we get a clean formula to accomplish what we need, but it won't come along with a particularly generous helping of motivation --- we're the ones being struck by the lightning, not the ones turning the crank on the machine.
+
+### def "the cross product"
+
+	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$. The **cross product** of $\vec{a}$ and $\vec{b}$, written $\vec{a} \times \vec{b}$, is the vector
+
+	$$
+		\vec{a} \times \vec{b} = \left< a_2b_3 - a_3b_2, a_3b_1 - a_1b_3, a_1b_2 - a_2b_1 \right>.
+	$$
+
+###
+
+This is pretty awful! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Later in the term, we'll develop the language to express it in a more natural, concise manner, but for now, we'll have a halfway solution.
+
+Start with the vectors $\left< a_1, a_2, a_3 \right>$ and $\left< b_1, b_2, b_3 \right>$ and write their entries in the following manner: the top row contains the entries of $\vec{a}$ and the bottom row the entries of $\vec{b}$. Both rows start at the **second** entry of the vectors and increase, wrapping from 3 back to 1:
+
+$$
+	\begin{array}{cccc}
+		a_2 & a_3 & a_1 & a_2
+		b_2 & b_3 & b_1 & b_2
+	\end{array}
+$$
+
+There are three ways to take a $2 \times 2$ chunk of this object: the left, middle, and right squares.
+
+$$
+	\begin{array}{cccccccccc}
+		a_2 & a_3 & & & a_3 & a_1 & & & a_1 & a_2
+		b_2 & b_3 & & & b_3 & b_1 & & & b_1 & b_2
+	\end{array}
+$$
+
+Take each of these chunks and find its top-left entry times its bottom-one, minus its top-left times its bottom-right. In one of the many cases where symbols do a better job than words, that means to just do the following:
+
+$$
+	\begin{array}{cc}
+		a & b
+		c & d
+	\end{array}\  \longmapsto \, ad - bc.
+$$
+
+The three results, in order, are the three components of $\vec{a} \times \vec{b}$!
+
+### ex "the cross product"
+
+	Compute $\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right>$.
+
+	Writing out the components, starting from the second and writing it twice, gives us
+
+	$$
+		\begin{array}{cccc}
+			3 & 2 & -2 & 3
+			0 & -1 & 2 & 0
+		\end{array}
+	$$
+
+	Now the blocks. The leftmost one is
+
+	$$
+		\begin{array}{cccc}
+			3 & 2
+			0 & -1
+		\end{array},
+	$$
+
+	and performing our reduction on it turns it into $(3)(-1) - (2)(0) = -3$. Repeating with the other blocks gives us $(2)(2) - (-2)(-1) = 2$ and $(-2)(0) - (3)(2) = -6$, and so
+
+	$$
+		\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right> = \left< -3, 2, -6 \right>.
+	$$
+
+###
+
+
+
 
 
 ### nav-buttons
