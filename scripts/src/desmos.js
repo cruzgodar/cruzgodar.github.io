@@ -215,8 +215,8 @@ export function getDesmosScreenshot(id, forPdf = false)
 {
 	// Yeesh is this hacky. Hopefully these are exposed in the API in the future!
 	desmosGraphs[id].controller.graphSettings.showPlane3D = false;
-	desmosGraphs[id].controller.graphSettings.showNumbers3D = false;
-	desmosGraphs[id].controller.graphSettings.showAxisLabels3D = false;
+	desmosGraphs[id].controller.graphSettings.showNumbers3D = forPdf;
+	desmosGraphs[id].controller.graphSettings.showAxisLabels3D = forPdf;
 	
 	desmosGraphs[id].updateSettings({
 		showGrid: forPdf,
