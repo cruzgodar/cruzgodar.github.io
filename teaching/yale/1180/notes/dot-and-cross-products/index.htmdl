@@ -239,7 +239,23 @@ The three results, in order, are the three components of $\vec{a} \times \vec{b}
 
 ###
 
+It's high time we stated some properties of the cross product! We'll get the chance to justify this on the homework, for now, we can make use of it for some applications.
 
+### thm "the magnitude and direction of the cross product"
+
+	Let $\vec{a}$ and $\vec{b}$ be vectors in $#R#^3$. Then
+
+	1. $\vec{a} \times \vec{b}$ is orthogonal to both $\vec{a}$ and $\vec{b}$.
+
+	2. $\vec{b} \times \vec{a} = - \vec{b} \times \vec{a}$.
+
+	2. If $\vec{a}$ and $\vec{b}$ have angle $\theta$ between them, then $\left| \left| \vec{a} \times \vec{b} \right| \right| = \left| \left| \vec{a} \right| \right| \cdot \left| \left| \vec{b} \right| \right|\sin(\theta)$.
+
+###
+
+This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **right-hand rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
+
+### desmos crossProduct
 
 
 

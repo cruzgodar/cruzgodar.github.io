@@ -252,6 +252,64 @@ export default function()
 
 					{ latex: raw`n \cdot (x - x_0, y - y_0, z - z_0) = 0`, color: desmosGray3d, secret: true },
 				]
+			},
+
+			crossProduct:
+			{
+				use3d: true,
+
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`a_1 = -2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`a_2 = 1`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`a_3 = 2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`b_1 = -3`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`b_2 = -3`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`b_3 = 1`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					{ latex: raw`a = \operatorname{vector}((0, 0, 0), (a_1, a_2, a_3))`, color: desmosBlue3d },
+
+					{ latex: raw`b = \operatorname{vector}((0, 0, 0), (b_1, b_2, b_3))`, color: desmosRed3d },
+
+					{ latex: raw`n = a \times b`, color: desmosPurple3d },
+				]
 			}
 		};
 
