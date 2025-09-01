@@ -4,6 +4,7 @@ import {
 	desmosBlue,
 	desmosBlue3d,
 	desmosGray3d,
+	desmosGreen3d,
 	desmosPurple,
 	desmosPurple3d,
 	desmosRed,
@@ -128,6 +129,128 @@ export default function()
 						to: ["x_0 + x_2", "y_0 + y_2"],
 						color: desmosPurple,
 					}),
+				]
+			},
+
+			orthogonalPlane:
+			{
+				use3d: true,
+
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`a = 1`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`b = 5`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`c = 4`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					{ latex: raw`v = \vector((0, 0, 0), (a, b, c))`, color: desmosPurple3d },
+
+					{ latex: raw`ax+by+cz = 0`, color: desmosGray3d, },
+				]
+			},
+
+			planeFromPoints:
+			{
+				use3d: true,
+
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`x_0 = 1`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`y_0 = 0`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`z_0 = 2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`x_1 = -1`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`y_1 = 3`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`z_1 = 4`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`x_2 = 3`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+					
+					...getDesmosSlider({
+						expression: raw`y_2 = 0`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`z_2 = 1`,
+						min: -5,
+						max: 5,
+						secret: true,
+					}),
+
+					{ latex: raw`(x_0, y_0, z_0), (x_1, y_1, z_1), (x_2, y_2, z_2)`, color: desmosGreen3d },
+
+					{ latex: raw`v = \vector((x_0, y_0, z_0), (x_1, y_1, z_1))`, color: desmosBlue3d, secret: true },
+
+					{ latex: raw`w = \vector((x_0, y_0, z_0), (x_2, y_2, z_2))`, color: desmosRed3d, secret: true },
+
+					{ latex: raw`m = -(x_1 - x_0, y_1 - y_0, z_1 - z_0) \times (x_2 - x_0, y_2 - y_0, z_2 - z_0)`, secret: true, hidden: true },
+
+					{ latex: raw`n = \frac{m}{\left|m\right|}`, secret: true, hidden: true },
+
+					{ latex: raw`\vector((x_0, y_0, z_0), (x_0, y_0, z_0) + n)`, color: desmosPurple3d, secret: true },
+
+					{ latex: raw`n \cdot (x - x_0, y - y_0, z - z_0) = 0`, color: desmosGray3d, secret: true },
 				]
 			}
 		};

@@ -58,7 +58,7 @@ That left side is surprisingly simple! What we've come upon is the idea that $ac
 
 	3. $\vec{v} \bullet \vec{v} = \left| \left| \vec{v} \right| \right|^2$.
 
-	4. If the angle between $\vec{v}$ and $\vec{w}$ is $\theta$, then $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$. The angle between $\vec{v}$ and $\vec{w}$ is $$\theta = \arccos \left( \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|} \right)$$.
+	4. If the angle between $\vec{v}$ and $\vec{w}$ is $\theta$, then $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$.
 
 ###
 
@@ -78,7 +78,93 @@ The dot product measures both the magnitudes of its factors and the angle betwee
 
 	2. Find all points $(x, y, z)$ so that the vector $\left< x, y, z \right>$ is orthogonal to $\vec{v}$. What shape is that set of points? How would the shape change if $\vec{v}$ were different?
 
+	### solution
+
+	1. We can compute the dot product directly from the formula, since both $\vec{v}$ and $\vec{w}$ are in component form (albeit presented slightly differently):
+
+	$$
+		\vec{v} \bullet \vec{w} = (1)(8) + (5)(-2) + (4)(-10) = -42.
+	$$
+
+	To compute the angle $\theta$ between $\vec{v}$ and $\vec{w}$, we know that $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$, and so we need to compute those magnitudes.
+
+	$$
+		\left| \left| \vec{v} \right| \right| &= \sqrt{1^2 + 5^2 + 4^2} = \sqrt{42}
+
+		\left| \left| \vec{w} \right| \right| &= \sqrt{8^2 + (-2)^2 + (-10)^2} = \sqrt{168} = 2\sqrt{42}.
+	$$
+
+	Therefore,
+
+	$$
+		\vec{v} \bullet \vec{w} &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)
+
+		-42 &= \sqrt{42} \left( 2\sqrt{42} \right) \cos(\theta)
+
+		\cos(\theta) &= -\frac{1}{2}.
+	$$
+
+	Let's briefly review how we solve trigonometric equations like this --- $\cos$ is a periodic function, and any solution to $\cos(\theta) = -\frac{1}{2}$ will be one of infinitely many. A tool to get *one* solution to the equation is to use the $\arccos$ function: $\arccos\left( -\frac{1}{2} \right)$ is the angle in $[0, \pi]$ whose cosine is $-\frac{1}{2}$. We can find the others by first finding the angle in $(\pi, 2\pi)$ whose cosine is also $-\frac{1}{2}$, if that exists, and then adding any multiple of $2\pi$ to those two solutions. However, we're in luck for this particular kind of problem! The angle between any two vectors is always between $0^\circ$ and $180^\circ$ --- we always measure a positive angle, and if we tried to bend the vectors past $180^\circ$, then the angle between the two vectors would be the new smaller one that formed on the opposite side. Therefore, the angle between two vectors can *always* be computed from the dot product using $\arccos$ directly, without having to worry about alternative solutions! In our case,
+	
+	$$
+		\theta = \arccos \left( -\frac{1}{2} \right) = \frac{2\pi}{3} = 120^\circ.
+	$$
+
+	2. For this one, we can solve $\left< x, y, z \right> \bullet \left< 1, 5, 4 \right> = 0$, which gives $x + 5y + 4z = 0$. The shape of this object is best determined geometrically: the points orthogonal to $\vec{v}$ is the plane that $\vec{v}$ makes a right angle to:
+
+	### desmos orthogonalPlane
+
 ###
+
+
+
+Continuing with the idea of this exercise, let's relate planes and vectors with some more convenient language.
+
+### def "normal vector"
+
+	Give a plane in $#R#^3$, a **normal vector** to the plane is a vector $\vec{n}$ that is orthogonal to every vector in the plane (i.e. every vector that can be drawn so that both its tip and tail are in the plane).
+
+###
+
+Generally speaking, we'll prefer to graph all planes in this course by finding their normal vectors. This probably seems a little weird at the outset --- after all, we very often present the equation of a line as $y = mx + b$, not $ax + by = c$. Why shouldn't we present planes as $z = ax + by + c$? Well, an advantage of that alternate line presentation is that it can account for lines parallel to the $y$-axis like $x = 3$, whereas insisting that $y$ have a coefficient of $1$ prevents us from doing so. That's only a small collection of lines that we're missing, but the problem is larger in $#R#^3$, where any plane containing a vector parallel to the $z$-axis --- like the $xz$- and $yz$-planes --- wouldn't fall under the formula $z = ax + by + c$.
+
+With this in mind, the equivalent to slope-intercept form of a plane graphed in $#R#^3$ is the equation $ax+by+cz = d$, where not all of $a$, $b$, and $c$ are zero. The normal vector to that plane is $\left< a, b, c \right>$, and $d$ determines the amount that the plane is offset from the origin: as long as $c \neq 0$, we can set $x = y = 0$ and solve $z = \frac{d}{c}$ as the $z$-intercept. Geometrically, why doesn't this work when $c = 0$?
+
+If we instead know the normal vector $\vec{n} = \left< a, b, c \right>$ to a plane and a point $(x_0, y_0, z_0)$ contained in it, we'd ideally like something similar to point-slope form for a line to let us find the equation of the plane. If we let $\vec{r} = \left< x, y, z \right>$, then we know it needs to be of the form $\vec{n} \bullet \vec{r} = d$, but finding $d$ seems like it might be tricky. If $\vec{r_0} = \left< x_0, y_0, z_0 \right>$, though, then $\vec{n} \bullet \vec{r_0} = d$, since that's what it means for $(x_0, y_0, z_0)$ to be contained in the plane. We can then plug that value of $d$ back into the original equation:
+
+$$
+	\vec{n} \bullet \vec{r} &= \vec{n} \bullet \vec{r_0}
+
+	\vec{n} \bullet \left( \vec{r} - \vec{r_0} \right) &= 0.
+$$
+
+This gives us a second way to find the equation of a plane!
+
+### ex "planes"
+
+	Find the equation of a plane with normal vector $\vec{n} = \left< 4, 1, 0 \right>$ passing through the point $(1, 0, 1)$.
+
+	In our formula from before, $\vec{r_0} = \left< 1, 0, 1 \right>$, and so the equation becomes
+
+	$$
+		\left< 4, 1, 0 \right> \bullet \left< x - 1, y, z - 1 \right> &= 0
+
+		4(x - 1) + y &= 0.
+	$$
+
+	If we want, we can also present this as $4x + y = 4$.
+
+###
+
+In the case of graphing lines, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
+
+### desmos planeFromPoints
+
+We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
+
+
+
+## The Cross Product
 
 
 
