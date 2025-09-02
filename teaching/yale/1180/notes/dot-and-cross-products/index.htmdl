@@ -272,5 +272,56 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 ###
 
 
+## Equations of Lines
+
+We'll need one final piece of technology before we dive into calculus in $#R#^3$: we know how to graph planes, but what about lines? We've already seen that equations like $y = mx + b$ produce planes in $#R#^3$, so we'll need something else. In yet another example of reusing objects we've already seen, vectors look a whole lot like line segments! In $#R#^2$, we can think about the line $y - 2 = 4(x - 1)$ as being a line with slope $4$ that passes through $(1, 2)$, but we can also think of it as a line parallel to the vector $\left< 1, 4 \right>$ that passes through $(1, 2)$: that vector just says that whenever we move $1$ in the $x$-direction, we move $4$ in the $y$-direction. Since scaling a vector just makes it longer or shorter but keeps it in the same direction, we can express the line as the set of vectors
+
+$$
+	\left< 1, 2 \right> + t\left< 1, 4 \right>,
+$$
+
+where we're thinking of them as being points --- that is, the line is the set of points $(1 + t, 2 + 4t)$ for all real values $t$. The same approach works in $#R#^3$!
+
+### prop "equation of a line in $#R#^3$"
+
+	Let $\vec{r_0} = \left< x_0, y_0, z_0 \right>$ and let $\vec{v}$ be any vector. The parametric equation of the line passing through $(x_0, y_0, z_0)$ and parallel to $\vec{v}$ is given by $\vec{r}(t) = \vec{r_0} + t\vec{v}$.
+
+###
+
+### exc "lines in $#R#^3$"
+
+	Find the equation of the line passing through the points $(1, 4, 3)$ and $(-1, -1, -1)$. Is the point $(-3, -5, -5)$ on the line?
+
+	### solution
+
+	We can find the direction vector by subtracting one point from the other: $\vec{v} = \left< -2, -5, -4 \right>$. The line is then given by
+
+	$$
+		\vec{r}(t) = \left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right>.
+	$$
+
+	To check if $(-3, -5, -5)$ is on this line, we can solve for the value of $t$ we would need:
+
+	$$
+		\left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right> &= \left< -3, -5, -5 \right>
+
+		\left< 1 - 2t, 4 - 5t, 3 - 4t \right> &= \left< -3, -5, -5 \right>.
+	$$
+
+	That tells us that three equations need to be true at once:
+
+	$$
+		1 - 2t &= -3
+
+		4 - 5t &= -5
+
+		3 - 4t &= -5
+	$$
+
+	The first equation results in $t = 2$, but plugging that into the other two doesn't work: only the third equation is true, not the second. Therefore, we can't solve all three equations at once, and so there is no $t$ that works --- the point is not on the line.
+
+###
+
+
 
 ### nav-buttons
