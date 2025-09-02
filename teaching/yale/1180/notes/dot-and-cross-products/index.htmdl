@@ -257,6 +257,20 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 
 ### desmos crossProduct
 
+### exc "finding the equation of a plane through three points"
+
+	Find the equation of a plane containing the points $p = (3, -6, 1)$, $q = (0, 7, 3)$, and $r = (-1, 0, -2)$.
+
+	### solution
+
+	We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, -7, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -25, -17, 73 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
+
+	$$
+		-25(x - 3) - 17(y - 13) + 73(z - 1) = 0.
+	$$
+
+###
+
 
 
 ### nav-buttons
