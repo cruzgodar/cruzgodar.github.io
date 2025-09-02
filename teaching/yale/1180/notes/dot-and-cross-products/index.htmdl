@@ -122,7 +122,7 @@ Continuing with the idea of this exercise, let's relate planes and vectors with 
 
 ### def "normal vector"
 
-	Give a plane in $#R#^3$, a **normal vector** to the plane is a vector $\vec{n}$ that is orthogonal to every vector in the plane (i.e. every vector that can be drawn so that both its tip and tail are in the plane).
+	Given a plane in $#R#^3$, a **normal vector** to the plane is a vector $\vec{n}$ that is orthogonal to every vector in the plane (i.e. every vector that can be drawn so that both its tip and tail are in the plane).
 
 ###
 
@@ -180,7 +180,7 @@ From time to time in math, machinery at a high level delivers sudden, broad solu
 
 This is pretty awful! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Later in the term, we'll develop the language to express it in a more natural, concise manner, but for now, we'll have a halfway solution.
 
-Start with the vectors $\left< a_1, a_2, a_3 \right>$ and $\left< b_1, b_2, b_3 \right>$ and write their entries in the following manner: the top row contains the entries of $\vec{a}$ and the bottom row the entries of $\vec{b}$. Both rows start at the **second** entry of the vectors and increase, wrapping from 3 back to 1:
+Start with the vectors $\left< a_1, a_2, a_3 \right>$ and $\left< b_1, b_2, b_3 \right>$ and write their entries in the following manner: the top row contains the entries of $\vec{a}$ and the bottom row the entries of $\vec{b}$. Both rows start at the **second** entry of the vectors and increase, wrapping from the last entry back to the first:
 
 $$
 	\begin{array}{cccc}
@@ -247,9 +247,9 @@ It's high time we stated some properties of the cross product! We'll get the cha
 
 	1. $\vec{a} \times \vec{b}$ is orthogonal to both $\vec{a}$ and $\vec{b}$.
 
-	2. $\vec{b} \times \vec{a} = - \vec{b} \times \vec{a}$.
+	2. $\vec{b} \times \vec{a} = - \vec{a} \times \vec{b}$.
 
-	2. If $\vec{a}$ and $\vec{b}$ have angle $\theta$ between them, then $\left| \left| \vec{a} \times \vec{b} \right| \right| = \left| \left| \vec{a} \right| \right| \cdot \left| \left| \vec{b} \right| \right|\sin(\theta)$.
+	3. If $\vec{a}$ and $\vec{b}$ have angle $\theta$ between them, then $\left| \left| \vec{a} \times \vec{b} \right| \right| = \left| \left| \vec{a} \right| \right| \cdot \left| \left| \vec{b} \right| \right|\sin(\theta)$.
 
 ###
 
@@ -263,10 +263,10 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 
 	### solution
 
-	We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, -7, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -25, -17, 73 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
+	We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, 6, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -51, -17, 34 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
 
 	$$
-		-25(x - 3) - 17(y - 13) + 73(z - 1) = 0.
+		-51(x - 3) - 17(y - 13) + 34(z - 1) = 0.
 	$$
 
 ###
