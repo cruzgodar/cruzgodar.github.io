@@ -198,7 +198,7 @@ $$
 	\end{array}
 $$
 
-Take each of these chunks and find its top-left entry times its bottom-one, minus its top-left times its bottom-right. In one of the many cases where symbols do a better job than words, that means to just do the following:
+Take each of these chunks and find its top-left entry times its bottom-right one, minus its top-right times its bottom-left. In one of the many cases where symbols do a better job than words, that means to just do the following:
 
 $$
 	\begin{array}{cc}
