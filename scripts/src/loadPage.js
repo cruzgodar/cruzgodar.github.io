@@ -372,10 +372,15 @@ function initSolutions()
 		e.remove();
 	}
 
+	if (window.DEBUG)
+	{
+		return;
+	}
+
 	const element = $("#show-solutions");
 
 	for (const e of $$(".notes-exc .solution"))
 	{
-		packageSolution(e, element !== null || window.DEBUG);
+		packageSolution(e, element !== null);
 	}
 }

@@ -2417,15 +2417,17 @@ img[src="/about/cover.webp"]
 	margin: 0 auto;
 	flex-wrap: wrap;
 	column-gap: 16px;
-	max-width: min(var(--text-width), 100%);
+	max-width: min(calc(var(--text-width) * 1.5), 100%);
 }
 
 .notes-image
 {
 	max-width: min(var(--text-width), 100%);
-	max-height: 30vh;
+	max-height: 50vh;
 	border-radius: 16px;
 	margin-bottom: 16px;
+
+	box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, .2);
 }
 
 @media (max-width: 500px)

@@ -156,6 +156,7 @@ home Cruz Godar
 			notes/calc-1-review Section 0: Calculus I Review
 			notes/coordinate-systems Section 1: Coordinate Systems
 			notes/dot-and-cross-products Section 2: The Dot and Cross Products
+			notes/functions-of-multiple-variables Section 3: Functions of Multiple Variables
 		
 		uo/342 Math 342
 		uo/341 Math 341
