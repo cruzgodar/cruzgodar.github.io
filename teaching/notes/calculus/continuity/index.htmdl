@@ -12,7 +12,7 @@ We've informally defined $\lim_{x \to a} f(x)$ as being the value we would expec
 
 
 
-The simplest way to describe continuous functions is that they're the ones whose graphs can be drawn in one stroke without lifting your pen from the paper. If a function is not continuous at $x = a$, then there are only a few possibilites for what went wrong:
+The simplest way to describe continuous functions is that they're the ones whose graphs can be drawn in one stroke without lifting your pen from the paper, and more specifically, a function is continuous at $x = a$ if we can draw a section of the graph near $x = a$ (i.e. crossing it from left to right) without lifting our pen. If a function is not continuous at $x = a$, then there are only a few possibilities for what went wrong:
 
 1. $$f(a)$$ is undefined.
 
@@ -36,19 +36,44 @@ The simplest way to describe continuous functions is that they're the ones whose
 
 ### exc "continuity"
 	
-	Define a function $f$ by
+	Is each of the following functions continuous? If not, find a point $x = a$ where it is discontinuous (called a **discontinuity**).
 	
 	$$
 		f(x) = \begin{cases}
 			
-			\frac{\sin(x)}{x}, & x \neq 0
+			\frac{x^2 - 1}{x - 1}, & x \neq 1
 			
-			1, & x = 0
-			
-		\end{cases}.	
+			2, & x = 1
+		\end{cases}
+
 	$$
-	
-	Show that $f$ is continuous.	
+
+	$$
+		g(x) = \begin{cases}
+			\sin\left( \frac{1}{x} \right), & x \neq 0
+			0, & x = 0
+		\end{cases}
+	$$
+
+	$$
+		h(x) = \begin{cases}
+			
+			\sin\left( \frac{x}{|x|} \right), & x \neq 0
+			
+			0, & x = 0
+			
+		\end{cases}
+	$$
+
+	$$
+		k(x) = \begin{cases}
+			
+			\sin\left( \frac{2x}{x - 3} \right), & x \neq 3
+			
+			6, & x = 3
+			
+		\end{cases}
+	$$
 
 ###
 
@@ -147,6 +172,18 @@ The IVT says that the graph of $f$ has complete coverage of all the $y$-values b
 ### desmos ivtExample
 
 Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions satisfying $f(a) = 2$ and $f(b) = 1$. No matter what function we pick, it must pass through all the $y$-values between $2$ and $1$ on its way from $a$ to $b$. It may pass through more, like $h$ does, but it needs to at least cover all the $y$-values in between.
+
+
+
+### exc "the Intermediate Value Theorem"
+
+	1. Is it true that if $f(x)$ passes through every $y$-value between $f(a)$ and $f(b)$ on the interval $[a, b]$, then $f$ is continuous on $[a, b]$? Why or why not?
+
+	2. Let $g(x) = x^3 - x + 1$. How could we show that $g(a)$ must equal $0$ for some value of $a$?
+
+	3. Were you ever $\pi$ feet tall? How can you tell?
+
+###
 
 
 
