@@ -58,7 +58,7 @@ The simplest way to describe continuous functions is that they're the ones whose
 	$$
 		h(x) = \begin{cases}
 			
-			\sin\left( \frac{x}{|x|} \right), & x \neq 0
+			\frac{x}{|x|}, & x \neq 0
 			
 			0, & x = 0
 			
@@ -68,7 +68,7 @@ The simplest way to describe continuous functions is that they're the ones whose
 	$$
 		k(x) = \begin{cases}
 			
-			\sin\left( \frac{2x}{x - 3} \right), & x \neq 3
+			\frac{2x}{x - 3}, & x \neq 3
 			
 			6, & x = 3
 			
