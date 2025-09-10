@@ -157,6 +157,7 @@ home Cruz Godar
 			notes/coordinate-systems Section 1: Coordinate Systems
 			notes/dot-and-cross-products Section 2: The Dot and Cross Products
 			notes/functions-of-multiple-variables Section 3: Functions of Multiple Variables
+			notes/partial-derivatives Section 4: Partial Derivatives
 		
 		uo/342 Math 342
 		uo/341 Math 341

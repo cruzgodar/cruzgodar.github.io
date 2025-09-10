@@ -160,6 +160,13 @@ export async function createDesmosGraphs(recreating = false)
 
 
 
+		if (options.showPlane3D !== undefined)
+		{
+			desmosGraphs[element.id].controller.graphSettings.showPlane3D = options.showPlane3D;
+		}
+
+
+
 		if (!data[element.id].use3d)
 		{
 			// Enforce a square aspect ratio.

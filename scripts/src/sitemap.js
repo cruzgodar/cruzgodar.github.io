@@ -1738,7 +1738,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/calc-1-review",
 			"/teaching/yale/1180/notes/coordinate-systems",
 			"/teaching/yale/1180/notes/dot-and-cross-products",
-			"/teaching/yale/1180/notes/functions-of-multiple-variables"
+			"/teaching/yale/1180/notes/functions-of-multiple-variables",
+			"/teaching/yale/1180/notes/partial-derivatives"
 		],
 
 		"customScript": true
@@ -1780,6 +1781,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/functions-of-multiple-variables":
 	{
 		"title": "Section 3: Functions of Multiple Variables",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/partial-derivatives":
+	{
+		"title": "Section 4: Partial Derivatives",
 		
 		"parent": "/teaching/yale/1180",
 		
