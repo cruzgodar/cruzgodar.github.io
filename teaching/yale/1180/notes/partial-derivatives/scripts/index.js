@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue3d,
 	desmosGray3d,
+	desmosGreen3d,
 	desmosPurple3d,
 	desmosRed3d,
 	getDesmosSlider,
@@ -49,7 +50,7 @@ export default function()
 					{ latex: raw`(a, b, f(a, b))`, color: desmosRed3d },
 					{ latex: raw`(a + h, b, f(a + h, b))`, color: desmosRed3d },
 
-					{ latex: raw`(a, b, f(a, b)) + t(h, 0, f(a + h, b) - f(a, b))`, parametricDomain: { min: -100, max: 100 }, color: desmosBlue3d, secret: true },
+					{ latex: raw`(a, b, f(a, b)) + t(h, 0, f(a + h, b) - f(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosBlue3d, secret: true },
 				]
 			},
 
@@ -63,7 +64,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosGray3d, hidden: true },
+					{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosGreen3d, hidden: true },
 
 					{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },
 					{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },
@@ -83,11 +84,14 @@ export default function()
 
 					{ latex: raw`(a, b, f(a, b))`, color: desmosRed3d },
 
-					{ latex: raw`(a + t, b, f(a + t, b))`, parametricDomain: { min: -100, max: 100 }, color: desmosPurple3d, secret: true },
-					{ latex: raw`(a, b + t, f(a, b + t))`, parametricDomain: { min: -100, max: 100 }, color: desmosPurple3d, secret: true },
+					{ latex: raw`(a + t, b, f(a + t, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple3d, secret: true },
+					{ latex: raw`(a, b + t, f(a, b + t))`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple3d, secret: true },
 
-					{ latex: raw`(a, b, f(a, b)) + t(1, 0, f_x(a, b))`, parametricDomain: { min: -100, max: 100 }, color: desmosBlue3d, secret: true },
-					{ latex: raw`(a, b, f(a, b)) + t(0, 1, f_y(a, b))`, parametricDomain: { min: -100, max: 100 }, color: desmosBlue3d, secret: true },
+					{ latex: raw`(a, b, f(a, b)) + t(1, 0, f_x(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosBlue3d, secret: true },
+					{ latex: raw`(a, b, f(a, b)) + t(0, 1, f_y(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosBlue3d, secret: true },
+
+					{ latex: raw`x = a + 0z`, color: desmosGray3d, hidden: true },
+					{ latex: raw`y = b + 0z`, color: desmosGray3d, hidden: true },
 				]
 			},
 		};

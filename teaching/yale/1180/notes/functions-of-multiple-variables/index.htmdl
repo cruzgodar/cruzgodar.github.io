@@ -1,3 +1,5 @@
+### show-solutions
+
 ### nav-buttons
 
 
@@ -58,7 +60,7 @@ Let's dig into functions of the form $f(x, y)$. Like functions of one variable, 
 
 	That is, $f$ is defined only on the solid disk of radius $2$ centered at the origin.
 
-	What about the range? Square roots only every produce positive numbers, so $f(x, y) \geq 0$. Also, the farther either $x$ or $y$ is away from $0$, the smaller $f$ gets, and so the largest output is $f(0, 0) = 2$. Since we can find an output of every number in between, the range is
+	What about the range? Square roots only ever produce positive numbers, so $f(x, y) \geq 0$. Also, the farther either $x$ or $y$ is away from $0$, the smaller $f$ gets, and so the largest output is $f(0, 0) = 2$. Since we can find an output of every number in between, the range is
 
 	$$
 		[0, 2] = \left\{ x \in #R# \mid 0 \leq x \leq 2 \right\}.
