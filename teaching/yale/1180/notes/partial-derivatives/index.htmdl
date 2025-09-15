@@ -193,9 +193,9 @@ In practice, essentially all of our functions satisfy this condition everywhere 
 
 ## Tangent Planes
 
-Calculus I had a lot to say about derivatives, and rightfully so. As we trace our path through multivariable calculus, developing 3D and higher versions of the same results and eventually even examining entirely new phenomena, we'll do well to ground ourselves in familiar and/or intuitive ideas that stem directly from single-variable ones. With that in mine, let's revisit the tangent lines from the previous section.
+Calculus I had a lot to say about derivatives, and rightfully so. As we trace our path through multivariable calculus, developing 3D and higher versions of the same results and eventually even examining entirely new phenomena, we'll do well to ground ourselves in familiar and/or intuitive ideas that stem directly from single-variable ones. With that in mine, let's revisit tangent lines.
 
-One of the most useful applications of tangent lines in $#R#^2$ was to approximate functions: the tangent line to a function is nearly equal to the function's values near the point we consider, and so if we know a function's value and slope at a point, then we can approximate nearby values. For example, if $g(x) = \sqrt{x}$, then $g'(x) = \frac{1}{2} x^{-1/2}$, so $g'(1) = \frac{1}{2}$. The tangent line at $x = 1$ is then
+One of the most useful applications of tangent lines in $#R#^2$ is to approximate functions: the tangent line to a function is nearly equal to the function's values near the point we consider, and so if we know a function's value and slope at a point, then we can approximate nearby values. For example, if $g(x) = \sqrt{x}$, then $g'(x) = \frac{1}{2} x^{-1/2}$, so $g'(1) = \frac{1}{2}$. The tangent line at $x = 1$ is then
 
 $$
 	l(x) = g(1) + g'(1)(x - 1) = 1 + \frac{1}{2}(x - 1)
@@ -209,7 +209,7 @@ $$
 
 The actual value is about $1.0488$, so this isn't bad!
 
-To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines we talked about in the last section. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $\frac{\partial f}{\partial x}(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
+To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines from partial derivatives that we talked about before. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $\frac{\partial f}{\partial x}(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
 
 $$
 	\vec{l_1}(t) = p + t\left< 1, 0, \frac{\partial f}{\partial x}(a, b) \right>.
@@ -293,11 +293,11 @@ While partial derivatives are only a partial (unsurprisingly) generalization of 
 
 ### def "differentiable function"
 
-	A function $f(x, y)$ is **differentiable** at $(a, b)$ if there is a well-defined tangent plane to $f$ at $(a, b)$.
+	A function $f(x, y)$ is **differentiable** at $(a, b)$ if there is a well-defined tangent plane to $f$ at $(a, b)$: that is, if the function and its partial derivatives $f_x$ and $f_y$ exist at and around $(a, b)$ and are continuous at $(a, b)$.
 
 ###
 
-We'll talk more about a full replacement to the derivative in the next section, but this is a good start, and it tells us that that full replacement should only require the partial derivatives to exist. And it will!
+We'll talk more about a full replacement to the derivative in the next sections, but this is a good start, and it tells us that that full replacement should only require the partial derivatives to exist. And it will!
 
 
 

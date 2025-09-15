@@ -27,10 +27,12 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 ### image-links
 	homework-1 -c "Homework 1"
 	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
 ###
 
 ### card homework-1 -e
 ### card homework-2 -e
+### card homework-3 -e
 
 ### card syllabus "Math 1180: Introduction to Functions of Several Variables"
 	

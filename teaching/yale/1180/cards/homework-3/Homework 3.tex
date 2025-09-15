@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 3 | Math 1180 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Monday, September 22nd at 11:59 PM}
+
+Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+~\\
+
+1. Compute $\frac{\partial}{\partial x} \left[ (2x + y)^3 \right]$ with the limit definition.
+
+~\\
+
+In problems 2--5, do the following.
+
+\begin{enumerate}
+
+	\item Compute $f_x(x, y)$ and $f_y(x, y)$.
+
+	\item Compute $f_x(1, 2)$ and $f_y(3, 4)$ and draw a (2D) sketch of the tangent line whose slope you just computed and the graph to which it is tangent.
+
+	\item Find an equation for the tangent plane at $(1, 1)$ and use it to approximate $f(1.5, 1.5)$.
+
+	\item Compute $f_{xy}(x, y)$.
+
+\end{enumerate}
+
+2. $f(x, y) = \sin\left( \frac{\pi}{2} x \right) + \cos(\pi y)$.
+
+3. $f(x, y) = e^{x\tan(\pi y)}$.
+
+4. $f(x, y) = \ln(xy^2)$.
+
+5. $f(x, y) = \frac{x + 1}{y + 2}$.
+
+~\\
+
+6. Give an example of a function $g(x, y)$ which is not differentiable at $(0, 0)$.
+
+7. Give an example of a function $h(x, y)$ which is not differentiable at $(0, 0)$, but whose partial derivative $\frac{\partial h}{\partial x}$ is defined and continuous everywhere.
+
+~\\
+
+8. In a cubic room, let $T(x, y, z)$ be the temperature at the point $(x, y, z)$, where $x$ and $y$ are the distance from the southwestmost corner of the room in meters and $z$ is the distance up from the floor. What is the physical interpretation of $T_x(1, 1, 0)$? Do you expect $T_z(1, 1, 0)$ to be positive or negative? Explain.
+
+~\\
+
+9. Let $Y(K, L)$ be a function describing the economic output of a factory (i.e. the dollar value of everything it produces in a year), given the value $K$ of all its equipment and the number of person-hours $L$ of labor over the course of a year. The \textbf{Cobb-Douglas} model for this function describes it as $Y(K, L) = aK^bL^c$ for constants $a$, $b$, and $c$. If $a = 100$, $b = 0.25$, and $c = 0.75$, and $K$ and $L$ are measured in thousands, find $Y_K(200, 10)$ and $Y_L(200, 10)$ and interpret both of them. What does this say about the factory?
+
+
+\end{document}
