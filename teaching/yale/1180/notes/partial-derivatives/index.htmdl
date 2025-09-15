@@ -191,4 +191,114 @@ In practice, essentially all of our functions satisfy this condition everywhere 
 
 
 
+## Tangent Planes
+
+Calculus I had a lot to say about derivatives, and rightfully so. As we trace our path through multivariable calculus, developing 3D and higher versions of the same results and eventually even examining entirely new phenomena, we'll do well to ground ourselves in familiar and/or intuitive ideas that stem directly from single-variable ones. With that in mine, let's revisit the tangent lines from the previous section.
+
+One of the most useful applications of tangent lines in $#R#^2$ was to approximate functions: the tangent line to a function is nearly equal to the function's values near the point we consider, and so if we know a function's value and slope at a point, then we can approximate nearby values. For example, if $g(x) = \sqrt{x}$, then $g'(x) = \frac{1}{2} x^{-1/2}$, so $g'(1) = \frac{1}{2}$. The tangent line at $x = 1$ is then
+
+$$
+	l(x) = g(1) + g'(1)(x - 1) = 1 + \frac{1}{2}(x - 1)
+$$
+
+using point-slope form, and so for example,
+
+$$
+	\sqrt{1.1} \approx 1 + \frac{1}{2}(1.1 - 1) = 1.05.
+$$
+
+The actual value is about $1.0488$, so this isn't bad!
+
+To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines we talked about in the last section. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $\frac{\partial f}{\partial x}(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
+
+$$
+	\vec{l_1}(t) = p + t\left< 1, 0, \frac{\partial f}{\partial x}(a, b) \right>.
+$$
+
+Similarly,
+
+$$
+	\vec{l_2}(t) = p + t\left< 0, 1, \frac{\partial f}{\partial y}(a, b) \right>.
+$$
+
+Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, a + \Delta y \right)$ as
+
+$$
+	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + \frac{\partial f}{\partial x}(a, b)\Delta x + \frac{\partial f}{\partial y}(a, b)\Delta y,
+$$
+
+or in a much more notationally harmonious presentation, we can approximate $f$ near $(a, b)$ by the function
+
+$$
+	l(x, y) = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b).
+$$
+
+That's much nicer! It also looks quite a bit like the single-variable formula for a tangent line, and it shares many of its properties. Since $f(a, b)$, $f_x(a, b)$, and $f_y(a, b)$ are all just numbers, this is nothing more than a plane! To refer to it more easily going forward, let's give it a name.
+
+### def "tangent plane"
+
+	Let $f(x, y)$ be a function of two variables whose partial derivatives $f_x$ and $f_y$ exist at $(a, b)$. The **tangent plane** to $f$ at $(a, b)$ is the unique plane that matches the value and both partial derivatives of $f$ at $(a, b)$, given by
+
+	$$
+		z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b).
+	$$
+
+###
+
+### exc "a tangent plane"
+
+	Find the equation of the tangent plane to $f(x, y) = \sqrt{20 - x^2 - 3y^2}$ at $\left( 1, 1 \right)$ and use it to approximate $f(1.5, 0.5)$.
+
+	### solution
+
+	The partial derivatives are
+
+	$$
+		f_x(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-2x)
+
+		f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-3y),
+	$$
+
+	so we have
+
+	$$
+		f(1, 1) &= 4
+
+		f_x(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-2) = -\frac{1}{4}
+
+		f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-3) = -\frac{3}{8}.
+	$$
+
+	The tangent plane is then given by
+
+	$$
+		z = 4 - \frac{1}{4}(x - 1) - \frac{3}{8}(y - 1).
+	$$
+
+	### desmos tangentPlane
+
+	To approximate $f(1.5, 0.5) = \sqrt{17}$, we evaluate
+
+	$$
+		4 - \frac{1}{4}(1.5 - 1) - \frac{3}{8}(0.5 - 1) = 4.0625.
+	$$
+
+	The actual value is about $4.123$, so that's not too far off!
+
+###
+
+
+
+While partial derivatives are only a partial (unsurprisingly) generalization of the notion of derivative to higher dimensions, having an equation for the tangent plane lets us extend the concept of *differentiability*. A function of a single variable is differentiable at a point if its tangent line has a well-defined slope, and we can now say nearly the same thing for a function of multiple variables.
+
+### def "differentiable function"
+
+	A function $f(x, y)$ is **differentiable** at $(a, b)$ if there is a well-defined tangent plane to $f$ at $(a, b)$.
+
+###
+
+We'll talk more about a full replacement to the derivative in the next section, but this is a good start, and it tells us that that full replacement should only require the partial derivatives to exist. And it will!
+
+
+
 ### nav-buttons

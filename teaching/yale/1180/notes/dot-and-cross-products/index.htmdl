@@ -38,7 +38,7 @@ $$
 	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
 $$
 
-That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $c, d$. In fact, we'll want to give it its own name and notation.
+That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $\left< c, d \right>$. In fact, we'll want to give it its own name and notation.
 
 ### def "the dot product"
 

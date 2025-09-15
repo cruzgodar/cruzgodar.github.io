@@ -1739,7 +1739,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/coordinate-systems",
 			"/teaching/yale/1180/notes/dot-and-cross-products",
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
-			"/teaching/yale/1180/notes/partial-derivatives"
+			"/teaching/yale/1180/notes/partial-derivatives",
+			"/teaching/yale/1180/notes/tangent-planes"
 		],
 
 		"customScript": true
@@ -1798,6 +1799,15 @@ export const sitemap =
 		"children": [],
 
 		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/tangent-planes":
+	{
+		"title": "Section 5: Tangent Planes",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/342":

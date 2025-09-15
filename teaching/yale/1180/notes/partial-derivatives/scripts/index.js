@@ -94,6 +94,40 @@ export default function()
 					{ latex: raw`y = b + 0z`, color: desmosGray3d, hidden: true },
 				]
 			},
+
+			tangentPlane:
+			{
+				use3d: true,
+
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+				options: { showPlane3D: false },
+
+				expressions:
+				[
+					{ latex: raw`f(x, y) = \sqrt{20 - x^2 - 3y^2}`, color: desmosPurple3d },
+
+					...getDesmosSlider({
+						expression: "a = 1",
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: "b = 1",
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },
+					{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },
+
+					{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosBlue3d },
+
+					{ latex: raw`(a, b, f(a, b))`, color: desmosRed3d },
+				]
+			},
 		};
 
 		return data;
