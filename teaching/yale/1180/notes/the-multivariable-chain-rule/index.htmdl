@@ -24,7 +24,7 @@ $$
 
 that is, we can track the $x$ and $y$ changes *separately*, and then just add them up. As a result, if we change a variable $t$ that both $x$ and $y$ depend on, then we'd expect $\Delta x$ to be roughly $dx/dt$ and $\Delta y$ to be roughly $dy/dt$. While this is only an intuitive explanation, I think it goes a long way toward accepting the actual theorem statement.
 
-### thm -m "The Multivariable Chain Rule"
+### thm -m "The Multivariable Chain Rule for $\mathbf{z = f(x(t), y(t))}$"
 
 	Let $z = f(x, y)$ be a differentiable function, and let $x = x(t)$ and $y = y(t)$ both be functions of the same variable. Then
 
@@ -71,6 +71,30 @@ That second presentation of the theorem is definitely a little strange, but it's
 This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $\frac{\partial f}{\partial b}$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
 
 ### image -i graphics/tree-1.webp graphics/tree-2.webp
+
+Here, variables are drawn with lines down to their inputs --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $\frac{\partial z}{\partial b}$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
+
+$$
+	\frac{\partial z}{\partial b} = \frac{\partial z}{\partial x} \frac{\partial x}{\partial b} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial b}.
+$$
+
+### exc "the multivariable chain rule"
+
+	A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a, b)$, $y = y(b)$, and $z = z(b, c, s)$. Moreover, $b = b(t, s)$ and $c = c(s)$. Express $\frac{\partial w}{\partial s}$ using the multivariable chain rule.
+
+	### solution
+
+	We end up with a rather nice-looking diagram:
+
+	### image -i graphics/tree-3.webp
+
+	The result is that
+
+	$$
+		\frac{\partial w}{\partial s} = \frac{\partial w}{\partial x} \frac{\partial x}{\partial b}\frac{\partial b}{\partial s} + \frac{\partial w}{\partial y} dy/db \frac{\partial b}{\partial s} + \frac{\partial w}{\partial z} \frac{\partial z}{\partial b}\frac{\partial b}{\partial s} + \frac{\partial w}{\partial z} \frac{\partial z}{\partial c} dc/ds + \frac{\partial w}{\partial z} \frac{\partial z}{\partial s}.
+	$$
+
+###
 
 
 
