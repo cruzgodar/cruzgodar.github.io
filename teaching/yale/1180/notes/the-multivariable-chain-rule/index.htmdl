@@ -68,4 +68,10 @@ That second presentation of the theorem is definitely a little strange, but it's
 
 
 
+This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $\frac{\partial f}{\partial b}$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
+
+### image -i graphics/tree-1.webp graphics/tree-2.webp
+
+
+
 ### nav-buttons
