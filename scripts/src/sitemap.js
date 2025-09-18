@@ -1740,7 +1740,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/dot-and-cross-products",
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
 			"/teaching/yale/1180/notes/partial-derivatives",
-			"/teaching/yale/1180/notes/tangent-planes"
+			"/teaching/yale/1180/notes/the-multivariable-chain-rule"
 		],
 
 		"customScript": true
@@ -1801,13 +1801,15 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/tangent-planes":
+	"/teaching/yale/1180/notes/the-multivariable-chain-rule":
 	{
-		"title": "Section 5: Tangent Planes",
+		"title": "Section 5: The Multivariable Chain Rule",
 		
 		"parent": "/teaching/yale/1180",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/342":

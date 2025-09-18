@@ -892,14 +892,6 @@ body > .WILSON_fullscreen-container .fps-canvas
 	z-index: 5;
 }
 
-
-
-#banner-cover
-{
-	height: 90vh;
-	position: absolute;
-}
-
 #content-container
 {
 	display: flex;

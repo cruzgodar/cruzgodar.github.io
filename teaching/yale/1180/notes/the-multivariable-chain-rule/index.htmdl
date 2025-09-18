@@ -1,0 +1,71 @@
+### nav-buttons
+
+
+
+We already been using the chain rule in multivariable calculus: $\frac{\partial}{\partial x}\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
+
+$$
+	df/dt = df/dx \cdot dx/dt.
+$$
+
+For a function of more than one variable, though, there can be more complicated things that happen. What if $f(x, y)$ is a function of multiple variables and both $x$ and $y$ are functions of $t$? Something like the chain rule ought to apply, but we'll need to dig a bit deeper to find out exactly what.
+
+When we found the equation of the tangent plane
+
+$$
+	z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)
+$$
+
+for a function $f(x, y)$ at $(a, b)$, we effectively said that the approximate change in $z$ when changing $x$ by $\Delta x$ and $y$ by $\Delta y$ is
+
+$$
+	\Delta z \approx f_x(a, b)\Delta x + f_y(a, b)\Delta y;
+$$
+
+that is, we can track the $x$ and $y$ changes *separately*, and then just add them up. As a result, if we change a variable $t$ that both $x$ and $y$ depend on, then we'd expect $\Delta x$ to be roughly $dx/dt$ and $\Delta y$ to be roughly $dy/dt$. While this is only an intuitive explanation, I think it goes a long way toward accepting the actual theorem statement.
+
+### thm -m "The Multivariable Chain Rule"
+
+	Let $z = f(x, y)$ be a differentiable function, and let $x = x(t)$ and $y = y(t)$ both be functions of the same variable. Then
+
+	$$
+		dz/dt = \frac{\partial z}{\partial x} dx/dt + \frac{\partial z}{\partial y} dy/dt.
+	$$
+
+	We can write this in a somewhat more cumbersome fashion as
+
+	$$
+		\frac{\d f(x, y)}{\d t} = \frac{\partial f}{\partial x} dx/dt + \frac{\partial f}{\partial y} dy/dt.
+	$$
+
+###
+
+That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols.
+
+### exc "the multivariable chain rule"
+
+	The pressure $P$ of a gas is related to its temperature and volume by the **ideal gas law**: $PV = kT$, where $k$ is a constant dependent on the quantity of gas. A gas with $k = 4$ is in an expanding container that is heating up. When the container is $10\, \text{cm}^3$ large and at a temperature of $400\,\text{K}$, and expanding at a rate of $3\,\frac{\text{cm}^3}{\text{s}}$ and getting hotter at a rate of $2\,\frac{\text{K}}{\text{s}}$, how fast is the pressure changing?
+
+	### solution
+
+	We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable chain rule. We have $P = 4\frac{T}{V}$, so
+
+	$$
+		dP/dt &= \frac{\partial P}{\partial T} dT/dt + \frac{\partial P}{\partial V} dV/dt
+
+		&= \left( \frac{4}{T} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
+	$$
+
+	And we know all of these, at least at this one moment in time!
+
+	$$
+		dP/dt &= \left( \frac{4}{400} \right) \left( 2 \right) + \left( -4\frac{400}{100} \right) \left( 2 \right)
+
+		&= \frac{1}{50} - 32.
+	$$
+
+###
+
+
+
+### nav-buttons
