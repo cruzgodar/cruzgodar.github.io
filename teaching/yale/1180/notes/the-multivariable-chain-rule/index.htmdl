@@ -2,7 +2,7 @@
 
 
 
-We already been using the chain rule in multivariable calculus: $\frac{\partial}{\partial x}\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
+We've already been using the chain rule in multivariable calculus: $\frac{\partial}{\partial x}\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
 
 $$
 	df/dt = df/dx \cdot dx/dt.
@@ -53,15 +53,15 @@ That second presentation of the theorem is definitely a little strange, but it's
 	$$
 		dP/dt &= \frac{\partial P}{\partial T} dT/dt + \frac{\partial P}{\partial V} dV/dt
 
-		&= \left( \frac{4}{T} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
+		&= \left( \frac{4}{V} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
 	$$
 
 	And we know all of these, at least at this one moment in time!
 
 	$$
-		dP/dt &= \left( \frac{4}{400} \right) \left( 2 \right) + \left( -4\frac{400}{100} \right) \left( 2 \right)
+		dP/dt &= \left( \frac{4}{10} \right) \left( 2 \right) + \left( -4\frac{400}{100} \right) \left( 3 \right)
 
-		&= \frac{1}{50} - 32.
+		&= 0.4 - 48.
 	$$
 
 ###
@@ -72,7 +72,7 @@ This tells us how to handle functions of two variables, where each of those two 
 
 ### image -i graphics/tree-1.webp graphics/tree-2.webp
 
-Here, variables are drawn with lines down to their inputs --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $\frac{\partial z}{\partial b}$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
+Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $\frac{\partial z}{\partial b}$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
 
 $$
 	\frac{\partial z}{\partial b} = \frac{\partial z}{\partial x} \frac{\partial x}{\partial b} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial b}.
@@ -95,7 +95,5 @@ $$
 	$$
 
 ###
-
-
 
 ### nav-buttons
