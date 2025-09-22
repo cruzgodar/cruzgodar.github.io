@@ -1,0 +1,75 @@
+### nav-buttons
+
+
+
+Now that we've discussed partial derivatives and some of their most important properties, let's see if we can return to the problem of finding a complete derivative replacement for functions of multiple variables.
+
+For $z = f(x, y)$, the partial derivatives $\frac{\partial f}{\partial x}(a, b)$ and $\frac{\partial f}{\partial y}(a, b)$ tell us the slopes of the graph of $f$ at $(a, b)$ in the $x$ and $y$ directions; or equivalently, the slopes of the lines given by intersecting the tangent plane to the graph at $(a, b)$ with the planes $y = b$ and $x = a$. But what about if we wanted to move in a different direction than just parallel to one of the axes? Let's return to the limit definition to find out.
+
+The partial derivative $\frac{\partial f}{\partial x}$ is defined by
+
+$$
+	\frac{\partial f}{\partial x}(a, b) = \lim_{h \to 0} \frac{f(a + h, b) - f(a, b)}{h},
+$$
+
+which is the usual slope of a secant line, where we fix the first point at $(a, b, f(a, b))$ and the second at $(a + h, b, f(a + h, b))$ --- that is, in the $x$-direction exclusively and distance $h$ away. To move that point in a direction other than parallel to an axis, we need to change both $x$ and $y$, and to ensure we're still calculating a slope correctly, it needs to be exactly distance $h$ from $(a, b)$ in the $xy$-plane. If we're fixing the distance and only care about direction, we're looking for a point of the form $(a + \cos(\theta), b + \sin(\theta))$ for some angle $\theta$. That point will be distance $1$ from $(a, b)$, and so to find a point that is distance $h$ away, we can modify it to $(a + h\cos(\theta), b + h\sin(\theta))$. With that in mind, let's define our generalization of a partial derivative.
+
+### def "directional derivative of a function of two variables"
+
+	Let $f(x, y)$ be differentiable at $(a, b)$. The **directional derivative** of $f$ at $(a, b)$ in the direction $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$ is
+
+	$$
+		D_\vec{u}f(a, b) = \lim_{h \to 0} \frac{f(a + h\cos(\theta), b + h\sin(\theta)) - f(a, b)}{h}.
+	$$
+
+###
+
+Ideally, everything we develop will also be useful for functions of more than two variables, though, and so defining everything in terms of $\theta$ isn't the best idea when we've already seen on the homework how much more complicated that would become for even a function of three variables. Instead, let's leverage the terminology of unit vectors that we've already developed.
+
+### def "directional derivative"
+
+	Let $\vec{p} \in #R#^n$ be a point, let $\vec{u} \in #R#^n$ be a unit vector, and let $f : #R#^n \to #R#$ be a function of $n$ variables that is differentiable at $\vec{p}$. The **directional derivative** of $f$ at $\vec{p}$ in the direction of $\vec{u}$ is
+
+	$$
+		D_\vec{u}f(\vec{p}) = \lim_{h \to 0} \frac{f(\vec{p} + h\vec{u}) - f(\vec{p})}{h}.
+	$$
+
+###
+
+That's a very dense definition, but the moral is that it's *really no different than a partial derivative*. All a directional derivative does is measure the slope of a tangent line in a specific direction, not necessarily locked to a direction parallel to the $x$- or $y$-axis.
+
+In fact, directional derivatives are related to partial derivatives even more closely than the definition suggests. Let's take a function $f(x, y)$ of two variables, a point $(a, b)$ where it's differentiable, and a unit vector $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$. The tangent plane
+
+$$
+	z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)
+$$
+
+lets us compute not only the slope of the tangent lines parallel to axes, but the slope given by $D_\vec{u}f(a, b)$ too! Specifically, we can take any point in the plane in the direction of $\vec{u}$ to compute the slope of the line passing through that point and $(a, b, f(a, b))$.
+
+### desmos directionalDerivative
+
+If we move distance $1$ from $(a, b)$ in the direction of $\vec{u}$ and stay in the tangent plane, we get the point
+
+$$
+	(a + \cos(\theta), b + sin(\theta), f(a, b) + f_x(a, b)(a + \cos(\theta) - a) + f_y(a, b)(b + \sin(\theta) - b))
+
+	&= (a + \cos(\theta), b + sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
+$$
+
+and so the slope is just $\cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)$, since the run between those two points is $1$. And that is *very* nicely expressible in terms of $\vec{u}$ itself as
+
+$$
+	D_\vec{u}f(a, b) = \left< f_x(a, b), f_y(a, b) \right> \bullet \vec{u}.
+$$
+
+### exc "a directional derivative"
+
+	Let $f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$. Find $D_\vec{u}f(1, 1)$ for $\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\vec{u} = \left< 2, -3 \right>$.
+
+	
+
+###
+
+
+
+### nav-buttons

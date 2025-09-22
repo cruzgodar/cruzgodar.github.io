@@ -159,6 +159,7 @@ home Cruz Godar
 			notes/functions-of-multiple-variables Section 3: Functions of Multiple Variables
 			notes/partial-derivatives Section 4: Partial Derivatives
 			notes/the-multivariable-chain-rule Section 5: The Multivariable Chain Rule
+			notes/the-gradient Section 6: The Gradient
 		
 		uo/342 Math 342
 		uo/341 Math 341
