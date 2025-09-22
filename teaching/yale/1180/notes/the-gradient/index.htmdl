@@ -4,6 +4,10 @@
 
 Now that we've discussed partial derivatives and some of their most important properties, let's see if we can return to the problem of finding a complete derivative replacement for functions of multiple variables.
 
+
+
+## Directional Derivatives
+
 For $z = f(x, y)$, the partial derivatives $\frac{\partial f}{\partial x}(a, b)$ and $\frac{\partial f}{\partial y}(a, b)$ tell us the slopes of the graph of $f$ at $(a, b)$ in the $x$ and $y$ directions; or equivalently, the slopes of the lines given by intersecting the tangent plane to the graph at $(a, b)$ with the planes $y = b$ and $x = a$. But what about if we wanted to move in a different direction than just parallel to one of the axes? Let's return to the limit definition to find out.
 
 The partial derivative $\frac{\partial f}{\partial x}$ is defined by
@@ -51,9 +55,9 @@ lets us compute not only the slope of the tangent lines parallel to axes, but th
 If we move distance $1$ from $(a, b)$ in the direction of $\vec{u}$ and stay in the tangent plane, we get the point
 
 $$
-	(a + \cos(\theta), b + sin(\theta), f(a, b) + f_x(a, b)(a + \cos(\theta) - a) + f_y(a, b)(b + \sin(\theta) - b))
+	(a + \cos(\theta), b + \sin(\theta), f(a, b) + f_x(a, b)(a + \cos(\theta) - a) + f_y(a, b)(b + \sin(\theta) - b))
 
-	&= (a + \cos(\theta), b + sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
+	&= (a + \cos(\theta), b + \sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
 $$
 
 and so the slope is just $\cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)$, since the run between those two points is $1$. And that is *very* nicely expressible in terms of $\vec{u}$ itself as
@@ -64,12 +68,135 @@ $$
 
 ### exc "a directional derivative"
 
-	Let $f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$. Find $D_\vec{u}f(1, 1)$ for $\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\vec{u} = \left< 2, -3 \right>$.
+	Let $f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$. Find $D_\vec{u}f(2, 1)$ for $\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\vec{u} = \left< 2, -3 \right>$.
 
-	
+	### solution
+
+	For both of these, we need to start by finding the partial derivatives. We have
+
+	$$
+		&\frac{\partial f}{\partial x} = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
+
+		&\frac{\partial f}{\partial x}(2, 1) = 2 - \frac{\pi}{2}
+
+		&\frac{\partial f}{\partial y} = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
+
+		&\frac{\partial f}{\partial y}(2, 1) = 2 - \pi.
+	$$
+
+	The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
+
+	$$
+		D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
+	$$
+
+	The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
+
+	$$
+		\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
+
+		&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
+	$$
+
+	Now
+
+	$$
+		D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
+	$$
 
 ###
 
+
+
+## The Gradient
+
+That formula for the directional derivative suggests that for a function $f(x, y)$, the vector $\left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right>$ is particularly important: it contains all the information we need to compute any directional derivative. Let's give it a name, define it more generally, and explore some of its other properties.
+
+### def "gradient"
+
+	Let $f : #R#^n \to #R#$ be a function of $n$ variables $f(x_1, x_2, ..., x_n)$. The **gradient** of $f$, written $\G f$, is
+
+	$$
+		\G f = \left< \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, ..., \frac{\partial f}{\partial x_n} \right>.
+	$$
+
+	For a two-variable function $f(x, y)$, that means $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right>$, and for a three-variable function $f(x, y, z)$, $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z} \right>$.
+
+###
+
+The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$.
+
+### ex "the gradient"
+
+	Let $f(x, y) = x^2 + 3y^4 + e^{x + y}$. Compute $\G f(2, -1)$.
+
+	We first compute $\G f$ by taking both partials:
+
+	$$
+		\G f &= \left< f_x(x, y), f_y(x, y) \right>
+		
+		&= \left< 2x + e^{x + y}, 12y^3 + e^{x + y} \right>.
+	$$
+
+	Now we can plug in $(2, -1)$:
+
+	$$
+		\G f(2, -1) &= \left< 4 + e, -12 + e \right>.
+	$$
+
+###
+
+Let's return to our motivation for the gradient: it lets us very concisely represent the formula for a directional derivative.
+
+### prop "directional derivatives from the gradient"
+
+	Let $f : #R#^n \to #R#$ and let $\vec{u} \in #R#^n$ be a unit vector. Then
+
+	$$
+		D_\vec{u}f = \G f \bullet \vec{u}.
+	$$
+
+###
+
+This is more than just a different way of writing a directional derivative, though: it lets us leverage properties of the dot product. Specifically,
+
+$$
+	D_\vec{u}f &= \G f \bullet \vec{u}
+
+	&= \left| \left| \G f \right| \right| \cdot \left| \left| \vec{u} \right| \right| \cdot \cos(\theta)
+
+	&= \left| \left| \G f \right| \right| \cos(\theta),
+$$
+
+since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_\vec{u}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and similar properties in a proper theorem statement.
+
+### thm "properties of the gradient"
+
+	Let $f : #R#^n \to #R#$ be differentiable at $p \in #R#^n$. Then
+
+	1. $\G f(p)$ points in the direction of the steepest increase from $p$, and the slope in that direction is $\left| \left| \G f(p) \right| \right|$.
+
+	2. In any direction $\vec{u}$ orthogonal to $\G f(p)$, $D_\vec{u}f(p) = 0$.
+
+###
+
+### exc "the gradient"
+
+	Let $f(x, y) = 2\sin(x) + 5\cos(y)$. At $p = \left( \frac{\pi}{2}, \frac{\pi}{2} \right)$, in which direction is the steepest increase? How steep is it? What about the steepest decrease? In what directions could you walk along to stay on the level curve $f(x, y) = 1$?
+
+	### solution
+
+	We can solve all of this with the gradient! We have
+
+	$$
+		\G f &= \left< 2\cos(x), -5\sin(y) \right>
+
+		\G f(p) &= \left< 0, -5 \right>.
+	$$
+
+	Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
+
+###
 
 
 ### nav-buttons

@@ -5,6 +5,9 @@ export function parseLatex(latex)
 		.replaceAll(/(?<!\\)\\pe(?![a-zA-Z])/g, "\\ +\\!\\!=")
 		.replaceAll(/(?<!\\)\\me(?![a-zA-Z])/g, "\\ -\\!\\!=")
 		.replaceAll(/(?<!\\)\\te(?![a-zA-Z])/g, "\\ \\times\\!\\!=")
+		
+		// \G
+		.replaceAll(/(?<!\\)\\G(?![a-zA-Z])/g, "\\nabla\\!")
 
 		// \span, \image, \swap, \Re, \Im, \proj
 		.replaceAll(/(?<!\\)\\(span|image|swap|Re|Im|proj)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
