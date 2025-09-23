@@ -8,15 +8,25 @@ $$
 	df/dt = df/dx \cdot dx/dt.
 $$
 
-For a function of more than one variable, though, there can be more complicated things that happen. What if $f(x, y)$ is a function of multiple variables and both $x$ and $y$ are functions of $t$? Something like the chain rule ought to apply, but we'll need to dig a bit deeper to find out exactly what.
+For a function of more than one variable, though, there can be more complicated things that happen. What if $f(x, y)$ is a function of multiple variables and both $x$ and $y$ are functions of $t$? Something like the chain rule ought to apply, but we'll need to dig a bit deeper to find out exactly what. To get a rough sense of what we're talking about, if $f(x, y) = \sin\left( x^2y \right)$ as before, but $x(t) = t^2$ and $y(t) = 1 - t$, then
 
-When we found the equation of the tangent plane
+$$
+	f(x(t), y(t)) = \sin\left( t^4(1 - t) \right) = \sin\left( t^4 - t^5 \right),
+$$
+
+and so
+
+$$
+	df/dt = \cos\left( t^4 - t^5 \right)\left( 4t^3 - 5t^4 \right).
+$$
+
+It's reasonable to say that that derivative depended on *both* $x$ and $y$, and specifically $dx/dt$ and $dy/dt$. Let's return to the notion of a tangent plane to see how. When we found the equation
 
 $$
 	z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)
 $$
 
-for a function $f(x, y)$ at $(a, b)$, we effectively said that the approximate change in $z$ when changing $x$ by $\Delta x$ and $y$ by $\Delta y$ is
+of the tangent plane to a function $f(x, y)$ at $(a, b)$, we effectively said that the approximate change in $z$ when changing $x$ by $\Delta x$ and $y$ by $\Delta y$ is
 
 $$
 	\Delta z \approx f_x(a, b)\Delta x + f_y(a, b)\Delta y;
@@ -40,7 +50,7 @@ that is, we can track the $x$ and $y$ changes *separately*, and then just add th
 
 ###
 
-That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols.
+That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $\frac{\partial z}{\partial x}$ and $\frac{\partial z}{\partial y}$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
 
 ### exc "the multivariable chain rule"
 
