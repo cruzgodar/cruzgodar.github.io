@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 4 | Math 1180 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Monday, September 29th at 11:59 PM}
+
+Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+~\\
+
+1. Let $f(x, y) = \frac{e^{x - y}}{y}$. Compute $\nabla\! f$ and $D_{\vec{u}}f(3, 1)$, where $\vec{u} = \left< 2, 1 \right>$.
+
+2. Let $g(x, y, z) = x^2 + 2y^2 + \sin(z)$. Compute $\nabla\! g$ and $D_{\vec{u}}g(1, -1, 0)$, where $\vec{u} = \left< 1, 1, 1 \right>$.
+
+~\\
+
+3. Let $f(x, y)$ be a function so that $D_{\left< 1, 1 \right>}f(6, 7) = \sqrt{2} + 1$ and $D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(6, 7) = \frac{\sqrt{6}}{2} + 1$. What is $\nabla\! f (6, 7)$?
+
+~\\
+
+4. Let $f(x, y) = x + y^2 + e^{x^2 + y^2}$. Find the equation for the tangent line to the graph of $f$ at $(2, 3)$ in the direction $\left< -1, -1 \right>$.
+
+~\\
+
+5. Let $f(x, y)$ be a differentiable function, and let $\vec{g}(x, y) \in \mathbb{R}^3$ be the vector whose first two components are $\nabla\! f$ and whose last component is $\left| \left| \nabla\! f \right| \right|$. If the tangent plane to $f$ at $(a, b)$ has normal vector $\vec{n}$, what is $\vec{n} \bullet \vec{g}(a, b)$? Explain.
+
+~\\
+
+6. A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a)$, $y = y(a, b, c)$, and $z = z(x, a, c)$.
+
+\begin{enumerate}
+
+	\item Express $\frac{\partial w}{\partial a}$ using the multivariable chain rule.
+
+	\item If $\frac{\partial w}{\partial y} = 1$, $\frac{\partial w}{\partial z} = 3$, and $\frac{\partial z}{\partial c} = -4$, what is $\frac{\partial y}{\partial c}$?
+
+\end{enumerate}
+
+
+\end{document}

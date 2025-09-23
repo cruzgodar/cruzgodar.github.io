@@ -1,0 +1,38 @@
+### card homework-4 "Homework 4"
+	
+	*Due Monday, September 29th at 11:59 PM*
+	
+	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+	### buttons
+		download-homework-4-pdf
+		download-homework-4-tex
+	###
+
+	- - -
+
+	#. Let $f(x, y) = \frac{e^{x - y}}{y}$. Compute $\G f$ and $D_{\vec{u}}f(3, 1)$, where $\vec{u} = \left< 2, 1 \right>$.
+
+	#. Let $g(x, y, z) = x^2 + 2y^2 + \sin(z)$. Compute $\G g$ and $D_{\vec{u}}g(1, -1, 0)$, where $\vec{u} = \left< 1, 1, 1 \right>$.
+
+	- - -
+
+	#. Let $f(x, y)$ be a function so that $D_{\left< 1, 1 \right>}f(6, 7) = \sqrt{2} + 1$ and $D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(6, 7) = \frac{\sqrt{6}}{2} + 1$. What is $\G f (6, 7)$?
+
+	- - -
+
+	#. Let $f(x, y) = x + y^2 + e^{x^2 + y^2}$. Find the equation for the tangent line to the graph of $f$ at $(2, 3)$ in the direction $\left< -1, -1 \right>$.
+
+	- - -
+
+	#. Let $f(x, y)$ be a differentiable function, and let $\vec{g}(x, y) \in #R#^3$ be the vector whose first two components are $\G f$ and whose last component is $\left| \left| \G f \right| \right|$. If the tangent plane to $f$ at $(a, b)$ has normal vector $\vec{n}$, what is $\vec{n} \bullet \vec{g}(a, b)$? Explain.
+
+	- - -
+
+	#. A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a)$, $y = y(a, b, c)$, and $z = z(x, a, c)$.
+
+	> a) Express $\frac{\partial w}{\partial a}$ using the multivariable chain rule.
+
+	> b) If $\frac{\partial w}{\partial y} = 1$, $\frac{\partial w}{\partial z} = 3$, and $\frac{\partial z}{\partial c} = -4$, what is $\frac{\partial y}{\partial c}$?
+
+###
