@@ -25,7 +25,7 @@
 
 	- - -
 
-	#. Let $f(x, y)$ be a differentiable function, and let $\vec{g}(x, y) \in #R#^3$ be the vector whose first two components are $\G f$ and whose last component is $\left| \left| \G f \right| \right|$. If the tangent plane to $f$ at $(a, b)$ has normal vector $\vec{n}$, what is $\vec{n} \bullet \vec{g}(a, b)$? Explain.
+	#. Let $f(x, y)$ be a function differentiable at $(a, b)$, and let $\vec{g} = \left< 1, 1, f_x(a, b) + f_y(a, b) \right>$. If the tangent plane to $f$ at $(a, b)$ has normal vector $\vec{n}$, what is $\vec{n} \bullet \vec{g}$? Explain.
 
 	- - -
 
