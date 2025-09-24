@@ -33,6 +33,6 @@
 
 	> a) Express $\frac{\partial w}{\partial a}$ using the multivariable chain rule.
 
-	> b) If $\frac{\partial w}{\partial y} = 1$, $\frac{\partial w}{\partial z} = 3$, and $\frac{\partial z}{\partial c} = -4$, what is $\frac{\partial y}{\partial c}$?
+	> b) If $\frac{\partial w}{\partial c} = 2$, $\frac{\partial w}{\partial y} = 1$, $\frac{\partial w}{\partial z} = 3$, and $\frac{\partial z}{\partial c} = -4$, what is $\frac{\partial y}{\partial c}$?
 
 ###
