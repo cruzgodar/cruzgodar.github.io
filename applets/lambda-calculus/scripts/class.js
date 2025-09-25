@@ -1751,8 +1751,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 				{
 					const { text, html } = e.data;
 
+					this.expressionTextarea.setValue(text);
 					this.expressionTextarea.overlayElement.innerHTML = html;
-					// this.expressionTextarea.setValue(text);
+
+					requestAnimationFrame(() =>
+					{
+						this.expressionTextarea.overlayElement.innerHTML = html;
+					});
+
+					setTimeout(() =>
+					{
+						this.expressionTextarea.overlayElement.innerHTML = html;
+					}, 16);
+
+					setTimeout(() =>
+					{
+						this.expressionTextarea.overlayElement.innerHTML = html;
+					}, 33);
 				};
 
 				this.worker.postMessage({
