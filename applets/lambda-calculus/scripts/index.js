@@ -17,7 +17,7 @@ const examples = {
 	addition: "+34",
 	multiplication: "*34",
 	exponentiation: "^34",
-	division: "(λn.((λf.(λx.xx)(λx.f(xx)))(λc.λn.λm.λf.λx.(λd._d(Ffx)(f(cdmfx)))(-nm)))(>n))34",
+	division: "/62",
 	omega: "Yλx.x",
 	recursiveTriangleNumbers: "(Y λf. λn. _(<n) 1 (+ n (f(<n)))) 4",
 	recursiveFactorial: "(Y λf. λn. _(<n) 1 (* n (f(<n)))) 4",
@@ -30,8 +30,6 @@ const examples = {
 
 export default function()
 {
-	const applet = new LambdaCalculus({ canvas: $("#output-canvas") });
-
 	const examplesDropdown = new Dropdown({
 		element: $("#examples-dropdown"),
 		name: "Examples",
@@ -45,6 +43,7 @@ export default function()
 			addition: "Addition",
 			multiplication: "Multiplication",
 			exponentiation: "Exponentiation",
+			division: "Division",
 			omega: "Omega",
 			recursiveTriangleNumbers: "Recursive Triangle Numbers",
 			recursiveFactorial: "Recursive Factorial",
@@ -72,10 +71,11 @@ export default function()
 		onEnter: () => run(true),
 	});
 
+	const applet = new LambdaCalculus({ canvas: $("#output-canvas"), expressionTextarea });
+
 	const expandShorthandsCheckbox = new Checkbox({
 		element: $("#expand-shorthands-checkbox"),
 		name: "Expand shorthands",
-		checked: false,
 		onInput: () =>
 		{
 			if (examplesDropdown.value)
@@ -86,6 +86,11 @@ export default function()
 			run();
 			setTimeout(() => run(), 50);
 		}
+	});
+
+	const updateExpressionDuringReduction = new Checkbox({
+		element: $("#update-expression-during-reduction-checkbox"),
+		name: "Update expression during reduction",
 	});
 
 	new Button({
@@ -152,7 +157,7 @@ export default function()
 
 		// Remove everything except valid tokens
 		expressionTextarea.setValue(
-			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^_\-!,<>'"&=|]/g, "")
+			expressionTextarea.value.replaceAll(/[^a-km-zA-Zλ().0-9+*^_\-!,<>'"&=|/]/g, "")
 				.replaceAll(/\.+/g, match =>
 				{
 					cursorBump += match.length - 1;
@@ -185,6 +190,7 @@ export default function()
 		const [html, text] = await applet.run({
 			expression: expressionTextarea.value,
 			expandShorthands: expandShorthandsCheckbox.checked,
+			updateExpressionDuringReduction: updateExpressionDuringReduction.checked,
 			betaReduce,
 		});
 

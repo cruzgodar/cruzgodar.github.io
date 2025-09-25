@@ -60,6 +60,7 @@ const shorthands = {
 	"+": "(λaλbλfλx(af)(bfx))",
 	"-": "(λmλnn<m)",
 	"*": "(λaλbλfb(af))",
+	"/": "(λn((λf(λxxx)(λxf(xx)))(λcλnλmλfλx(λd_d(Ffx)(f(cdmfx)))(-nm)))(>n))",
 	"^": "(λaλbba)",
 	// "=": "λaλb&(_(-ab))(_(-ba))"
 	"=": "(λaλb(a(λnλfλxn(λgλhh(gf))(λux)(λuu))b(λxF)T)(b(λnλfλxn(λgλhh(gf))(λux)(λuu))a(λxF)T)(F))"
@@ -128,12 +129,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 	reloaded = Promise.resolve();
 	reloadedResolve;
 
+	expressionTextarea;
+
 	nextId = 0;
 	nextUniqueArgument = 0;
 
-	constructor({ canvas })
+	constructor({ canvas, expressionTextarea })
 	{
 		super(canvas);
+
+		this.expressionTextarea = expressionTextarea;
 
 		const options =
 		{
@@ -155,6 +160,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	async run({
 		expression: expressionString,
 		expandShorthands = false,
+		updateExpressionDuringReduction = false,
 		betaReduce = false,
 		maxBetaReductions = Infinity
 	}) {
@@ -193,12 +199,20 @@ export class LambdaCalculus extends AnimationFrameApplet
 			{
 				const expression = this.parseExpression(expressionString, true);
 				this.setupExpression(expression);
-				this.animateIteratedBetaReduction(expression, maxBetaReductions);
+				this.animateIteratedBetaReduction(
+					expression,
+					maxBetaReductions,
+					updateExpressionDuringReduction
+				);
 			}
 
 			else
 			{
-				this.animateIteratedBetaReduction(expression, maxBetaReductions);
+				this.animateIteratedBetaReduction(
+					expression,
+					maxBetaReductions,
+					updateExpressionDuringReduction
+				);
 			}
 		}
 
@@ -897,6 +911,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	expressionToString({
 		expression,
 		addHtml = true,
+		addParentheses = false,
 		useForSelfInterpreter = false,
 	}) {
 		const startText = expression.startText ?? "";
@@ -947,6 +962,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const bodyString = this.expressionToString({
 				expression: expression.body,
 				addHtml,
+				addParentheses,
 				useForSelfInterpreter,
 			});
 
@@ -966,17 +982,61 @@ export class LambdaCalculus extends AnimationFrameApplet
 				: `${startText}${lambdaText}${bodyText}${endText}`;
 		}
 
+
+		
+		if (addParentheses)
+		{
+			const functionStringWithoutHtml = this.expressionToString({
+				expression: expression.function,
+				addHtml: false,
+				addParentheses,
+				useForSelfInterpreter,
+			});
+
+			if (
+				functionStringWithoutHtml.length > 1
+				&& functionStringWithoutHtml[0] !== "("
+			) {
+				expression.function.startText = "(" + (expression.function.startText ?? "");
+				expression.function.endText = (expression.function.endText ?? "") + ")";
+			}
+		}
+
 		const functionString = this.expressionToString({
 			expression: expression.function,
 			addHtml,
+			addParentheses,
 			useForSelfInterpreter,
 		});
+
+
+
+		if (addParentheses)
+		{
+			const inputStringWithoutHtml = this.expressionToString({
+				expression: expression.input,
+				addHtml: false,
+				addParentheses,
+				useForSelfInterpreter,
+			});
+
+			if (
+				inputStringWithoutHtml.length > 1
+				&& inputStringWithoutHtml[0] !== "("
+			) {
+				expression.input.startText = "(" + (expression.input.startText ?? "");
+				expression.input.endText = (expression.input.endText ?? "") + ")";
+			}
+		}
 
 		const inputString = this.expressionToString({
 			expression: expression.input,
 			addHtml,
+			addParentheses,
 			useForSelfInterpreter,
 		});
+
+
 
 		const color = expression.color;
 		const rgb = hsvToRgb(color.h, color.s, color.v * valueFactor);
@@ -1574,8 +1634,11 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
-	async animateIteratedBetaReduction(expression, maxBetaReductions)
-	{
+	async animateIteratedBetaReduction(
+		expression,
+		maxBetaReductions,
+		updateExpressionDuringReduction
+	) {
 		this.animationRunning = true;
 
 		let expressionString = this.expressionToString({
@@ -1672,6 +1735,25 @@ export class LambdaCalculus extends AnimationFrameApplet
 			expression = sortedBetaReductions[0].expression;
 			expressionString = sortedBetaReductions[0].expressionString;
 			collapsedExpressionString = sortedBetaReductions[0].collapsedExpressionString;
+
+			if (this.expressionTextarea && updateExpressionDuringReduction)
+			{
+				const string = this.expressionToString({
+					expression,
+					addHtml: false,
+					addParentheses: true,
+				});
+
+				this.expressionTextarea.setValue(string);
+
+				const html = this.expressionToString({
+					expression,
+					addHtml: true,
+					addParentheses: true,
+				});
+
+				this.expressionTextarea.overlayElement.innerHTML = html;
+			}
 		}
 
 		if (this.needReload)

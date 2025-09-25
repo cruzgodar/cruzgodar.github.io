@@ -15,6 +15,7 @@ I learned about these diagrams from the YouTuber <a href="https://www.youtube.co
 <div id="canvas-landscape-left">
 	### checkboxes
 		expand-shorthands
+		update-expression-during-reduction
 	###
 
 	### textarea expression
