@@ -15,6 +15,7 @@ I learned about these diagrams from the YouTuber <a href="https://www.youtube.co
 <div id="canvas-landscape-left">
 	### checkboxes
 		expand-shorthands
+		update-expression-during-reduction
 	###
 
 	### textarea expression
@@ -70,6 +71,7 @@ I learned about these diagrams from the YouTuber <a href="https://www.youtube.co
 	`*`: the multiplication operator `λa.λb.λf.b(af)`.
 	`^`: the exponentiation operator `λa.λb.ba`.
 	`-`: the subtraction operator `λa.λb.a&lt;b` (returns `0` if `a < b`).
+	`/`: the integer division operator `λn.((λf.(λx.xx)(λx.f(xx)))(λc.λn.λm.λf.λx.(λd._d(Ffx)(f(cdmfx)))(-nm)))(>n)`.
 	`=`: the equality operator `λa.λb.&(_(-ab))(_(-ba))`.
 
 	- - -
