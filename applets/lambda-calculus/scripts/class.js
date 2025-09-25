@@ -1,7 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryInterval } from "/scripts/src/main.js";
+import { browserSupportsP3, browserSupportsRec2020, convertColor } from "/scripts/src/browser.js";
+import { addTemporaryInterval, addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { animate, clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
@@ -134,6 +134,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 	nextId = 0;
 	nextUniqueArgument = 0;
 
+	worker;
+
 	constructor({ canvas, expressionTextarea })
 	{
 		super(canvas);
@@ -195,6 +197,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		if (betaReduce)
 		{
+			this.expressionTextarea.syncOverlay = false;
+
 			if (!expandShorthands)
 			{
 				const expression = this.parseExpression(expressionString, true);
@@ -214,6 +218,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 					updateExpressionDuringReduction
 				);
 			}
+
+			this.expressionTextarea.syncOverlay = true;
 		}
 
 		return [html, text];
@@ -1738,21 +1744,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			if (this.expressionTextarea && updateExpressionDuringReduction)
 			{
-				const string = this.expressionToString({
+				this.worker && this.worker.terminate();
+				this.worker = addTemporaryWorker("/applets/lambda-calculus/scripts/worker.js");
+
+				this.worker.onmessage = e =>
+				{
+					const { text, html } = e.data;
+
+					this.expressionTextarea.overlayElement.innerHTML = html;
+					// this.expressionTextarea.setValue(text);
+				};
+
+				this.worker.postMessage({
 					expression,
-					addHtml: false,
-					addParentheses: true,
+					darkTheme: siteSettings.darkTheme,
+					browserSupportsP3,
+					browserSupportsRec2020
 				});
-
-				this.expressionTextarea.setValue(string);
-
-				const html = this.expressionToString({
-					expression,
-					addHtml: true,
-					addParentheses: true,
-				});
-
-				this.expressionTextarea.overlayElement.innerHTML = html;
 			}
 		}
 

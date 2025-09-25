@@ -199,7 +199,6 @@ export default function()
 
 		setTimeout(() =>
 		{
-			expressionTextarea.setValue(text);
 			expressionTextarea.overlayElement.innerHTML = html;
 		});
 	}

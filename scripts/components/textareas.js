@@ -5,12 +5,14 @@ export class Textarea extends InputElement
 {
 	defaultValue;
 	overlayElement;
+	syncOverlay;
 
 	constructor({
 		element,
 		name,
 		value = "",
 		persistState = true,
+		syncOverlay = true,
 		allowEnter = false,
 		onInput = () => {},
 		onEnter = () => {},
@@ -22,6 +24,7 @@ export class Textarea extends InputElement
 
 		this.value = value;
 		this.persistState = persistState;
+		this.syncOverlay = syncOverlay;
 		this.allowEnter = allowEnter;
 		this.onInput = onInput;
 		this.onEnter = onEnter;
@@ -86,8 +89,11 @@ export class Textarea extends InputElement
 
 	updateOverlayElement()
 	{
-		this.overlayElement.innerHTML = this.value
-			.replaceAll(/</g, "&lt;");
+		if (this.syncOverlay)
+		{
+			this.overlayElement.innerHTML = this.value
+				.replaceAll(/</g, "&lt;");
+		}
 
 		this.element.style.height = "fit-content";
 
