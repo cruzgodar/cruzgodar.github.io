@@ -17,6 +17,7 @@ const examples = {
 	addition: "+34",
 	multiplication: "*34",
 	exponentiation: "^34",
+	division: "(λn.((λf.(λx.xx)(λx.f(xx)))(λc.λn.λm.λf.λx.(λd._d(Ffx)(f(cdmfx)))(-nm)))(>n))34",
 	omega: "Yλx.x",
 	recursiveTriangleNumbers: "(Y λf. λn. _(<n) 1 (+ n (f(<n)))) 4",
 	recursiveFactorial: "(Y λf. λn. _(<n) 1 (* n (f(<n)))) 4",
