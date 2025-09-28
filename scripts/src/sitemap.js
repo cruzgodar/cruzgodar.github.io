@@ -1741,7 +1741,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
 			"/teaching/yale/1180/notes/partial-derivatives",
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
-			"/teaching/yale/1180/notes/the-gradient"
+			"/teaching/yale/1180/notes/the-gradient",
+			"/teaching/yale/1180/notes/optimization"
 		],
 
 		"customScript": true
@@ -1816,6 +1817,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/the-gradient":
 	{
 		"title": "Section 6: The Gradient",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/optimization":
+	{
+		"title": "Section 7: Optimization",
 		
 		"parent": "/teaching/yale/1180",
 		

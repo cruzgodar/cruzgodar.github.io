@@ -1,0 +1,131 @@
+### nav-buttons
+
+
+
+At long last, it's time to talk about optimization. This was our main application of derivatives in Calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$, find every point $x = c$ where $f'(x) = 0$ or $f'(x)$ is undefined (called the **critical points**), which are places where there *might* be an extremum. To classify them, we can use one of two methods.
+
+> - The **first derivative test** has us evaluate $f'(x)$ just to the left and right of $x = c$ --- if it's negative to the left and positive to the right, then there is a local minimum at $x = c$, and if the opposite is true, there is a local maximum. If the derivative has the same sign to both the left and right, then this isn't an extremum at all --- it's a saddle point, like with $y = x^3$ at $x = 0$.
+
+> - The **second derivative test** works by evaluating $f''(x)$ *at* $x = c$, which measures the concavity of $f$. If $f''(c) > 0$, that means the function is concave up at $x = c$, and so $x = c$ is a local minimum, and similarly, if $f''(c) < 0$, then $x = c$ is a local maximum. If $f''(c) = 0$, then the test is inconclusive --- it might be a saddle point, like $f(x) = x^3$ at $x = 0$, or it might be an extremum, like $f(x) = x^4$ at $x = 0$.
+
+With this brief refresher out of the way, let's dig into how this all extends to functions of multiple variables! While our discussion of critical points will work for functions of any number of variables, our later work will focus specifically on functions of two variables --- the theory extends out beyond that, but unfortunately also beyond our class's scope at the same time. I'm happy to talk more about that outside of class at some point, particularly after we've discussed some linear algebra in the second half of the course!
+
+
+
+## Critical Points
+
+We'll begin with critical points, which generalize nicely to more variables --- rather than a flat tangent line, we'll effectively be looking for points with a flat tangent plane.
+
+### def "critical point"
+
+	Let $f : #R#^n \to #R#$ be a function of $n$ variables. A **critical point** of $f$ is a point $p \in #R#^n$ with $\G f(p) = \vec{0}$ or where $\G f(p)$ is undefined.
+
+###
+
+This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+
+### exc "critical points"
+
+	Find the critical points of the following functions.
+
+	1. $f(x, y) = x^3 + y^2 - 2x^2 + xy$.
+
+	2. $g(x, y) = \sqrt{x^2 + y^2}$.
+
+	3. $h(x, y, z) = xyz$.
+
+	### solution
+
+	1. Let's start by finding the gradient. We have
+
+	$$
+		\G f = \left< 3x^2 - 4x + y, 2y + x \right>,
+	$$
+
+	which is zero when both
+
+	$$
+		3x^2 - 4x + y &= 0
+
+		2y + x &= 0.
+	$$
+
+	We can solve for y in the first equation and plug it into the second to get
+
+	$$
+		-6x^2 + 8x + x &= 0
+
+		x(9 - 6x) &= 0
+
+		x &= 0, \quad x &= \frac{3}{2}.
+	$$
+
+	Plugging those back in,
+
+	$$
+		y &= 0, y &= -\frac{3}{4},
+	$$
+
+	and so our two critical points are $(0, 0)$ and $\left( \frac{3}{2}, -\frac{3}{4} \right)$.
+
+	2. This time, the gradient is
+
+	$$
+		\G g = \left< \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2x), \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2y) \right>,
+	$$
+
+	which could only possibly be zero when $(x, y) = (0, 0)$, but it's undefined there anyways. That's our single critical point!
+
+	3. This time, the gradient is a 3-dimensional vector:
+
+	$$
+		\G h = \left< yz, xz, xy \right>.
+	$$
+
+	This is a little more complicated to think through: we need all of those to be zero, but each component only requires one of its factors to be zero. Therefore, we can get away with having $x = y = 0$ but not $z$, or any other combination of two variables. Every point on the axes is therefore a critical point!
+
+###
+
+
+
+With critical points extended to $#R#^n$, the next missing piece is extrema. These work identically to functions of a single variable! For clarity, we'll state the definition in terms of a function of two variables, but it works just as well for any function $f : #R#^n \to #R#$.
+
+### def "extrema"
+
+	Let $f(x, y)$ be a function of two variables that is defined and continuous on an open disk near $(a, b)$ (i.e. nearby the point $(a, b)$). We say $f$ has a **local maximum** at $(a, b)$ if $f(x, y) \leq f(a, b)$ for all $(x, y)$ near $(a, b)$. Similarly, $f$ has a **local minimum** at $(a, b)$ if $f(x, y) \geq f(a, b)$ for all $(x, y)$ near $(a, b)$. We collectively call these **local extrema**.
+
+	We say that $f$ has a **global** or **absolute maximum** at $(a, b)$ if $f(x, y) \leq f(a, b)$ for all $(x, y)$ in the domain of $f$, and similarly, $f$ has a **global** or **absolute minimum** at $(a, b)$ if $f(x, y) \geq f(a, b)$ for all $(x, y)$ in the domain of $f$. We collectively call these **global** or **absolute extrema**.
+
+###
+
+Perhaps unsurprisingly, critical points are potential locations for extrema, just like in single-variable calculus!
+
+### thm "Fermat's Theorem"
+
+	Let $f : #R#^n \to #R#$ be a function of $n$ variables. Then all extrema of $f$ occur at critical points.
+
+###
+
+The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all extrema occur at critical points: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
+
+### desmos saddlePoint
+
+Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much the shape of graphs like these look like saddles.
+
+If we know that $(a, b)$ is a critical point of $f$, how do we determine if it's a local maximum or minimum? Of the two derivatives we mentioned for functions of a single variable, the first derivative test is unfortunately completely broken for functions of multiple variables. It relied on there being only two directions to move from a point at $x = a$: either to the right or left. For a two-variable function, there's now an entire circle of directions we could move in from a critical point $(a, b)$, and so we'd need to verify that the gradient $\G f$ points in a direction more toward $(a, b)$ than away from it for every point in a circle very close to $(a, b)$. It's certainly *possible*, but from that description, it's pretty clear the juice just isn't worth the squeeze. So with that test out, let's turn to the remaining one.
+
+
+
+## The Second Derivative Test
+
+Immediately upon considering how the second derivative test might generalize to a function $f(x, y)$, we're met with other problems: we have *four* second-order partial derivatives of $f$ and no complete second-derivative replacement like we did with the gradient. As it turns out, though, we can solve both problems at once. As a disclaimer, this portion of the section is *exclusively* for functions of two variables, as will probably be clear before long. Like we mentioned, everything we discuss is generalizable to more variables, but we have neither the tools nor time in this class. I'm more than happy to discuss the broad strokes outside of class, though!
+
+Let's now focus in on a function $f(x, y)$ with a critical point at $(a, b)$ and see what we can do. Most discussions of this topic are either completely lacking motivation or extremely technical, but I hope to provide a much more intuitive and mathematically whole explanation. The credit for the broad strokes goes to <a href="https://m.youtube.com/watch?v=Q5Q9oswM2wo">Linda Green</a> --- I'm merely presenting that story here in a more bottom-up manner.
+
+
+The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. While it'd be nice
+
+
+
+
+### nav-buttons
