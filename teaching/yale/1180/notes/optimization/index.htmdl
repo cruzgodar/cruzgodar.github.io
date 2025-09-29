@@ -123,7 +123,7 @@ Immediately upon considering how the second derivative test might generalize to 
 Let's now focus in on a function $f(x, y)$ with a critical point at $(a, b)$ and see what we can do. Most discussions of this topic are either completely lacking motivation or extremely technical, but I hope to provide a much more intuitive and mathematically whole explanation. The credit for the broad strokes goes to <a href="https://m.youtube.com/watch?v=Q5Q9oswM2wo">Linda Green</a> --- I'm merely presenting that story here in a more bottom-up manner.
 
 
-The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. While it'd be nice to hope that we could just check *both* the signs of $f_{xx}(a, b)$ and $f_{yy}(a, b)$ to produce an analogue to the second derivative test, the reality is more complicated: for example, $f(x, y) = x^2 + y^2 - 3xy$ has $f_{xx}(0, 0) = f_{yy}(0, 0) = 2$, making $(0, 0)$ look like a local min, but the concave down part of the graph is in a different direction.
+The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. It'd be nice to hope we could just check *both* the signs of $f_{xx}(a, b)$ and $f_{yy}(a, b)$ to produce an analogue to the second derivative test, but the reality is more complicated: for example, $f(x, y) = x^2 + y^2 - 3xy$ has $f_{xx}(0, 0) = f_{yy}(0, 0) = 2$, making $(0, 0)$ look like a local min, but the concave down part of the graph is just in a different direction.
 
 ### desmos secretSaddle
 
@@ -143,7 +143,7 @@ $$
 	&= c^2f_{xx} + cdf_{yx} + cdf_{xy} + d^2f_{yy}.
 $$
 
-That second gradient is just a vector where we first take the $\frac{\partial}{\partial x}$ of the argument, and then $\frac{\partial}{\partial y}$, both of which split across addition and factor through the scalar multiplication by $c$ and $d$. Now we can use Clairaut's theorem to compactify that expression a bit.
+While the gradient $\G \left( cf_x + df_y \right)$ might be daunting,$cf_x + df_y$ is just a function itself, and so we can take $\frac{\partial}{\partial x}$ and $\frac{\partial}{\partial y}$ of it without issue, as we did above --- they both split across addition and factor through the scalar multiplication by $c$ and $d$. Now we can use Clairaut's theorem to compactify the resulting expression a bit.
 
 $$
 	D_{\vec{u}}D_{\vec{u}} f &= c^2f_{xx} + 2cdf_{xy} + d^2f_{yy}.
@@ -173,7 +173,7 @@ $$
 	C &= f_{yy}(a, b).
 $$
 
-To summarize where we are, we're looking to analyze the sign of this polynomial over all possible values of $c$ and $d$. Thankfully for us, it's not that bad! Let's set $g(c) = Ac^2 + 2Bcd + Cd^2$, which is a quadratic in $c$ (and $d$, but let's just think of it in terms of one variable for now), and so its graph is a parabola. In particular, $g$ is continuous, and so to determine its sign, we can just see when it's zero. The quadratic formula gives us
+To summarize where we are, we're looking to analyze the sign of this polynomial over all possible values of $c$ and $d$. Thankfully for us, it's not that bad! Let's set $g(c) = Ac^2 + 2Bcd + Cd^2$, which is a quadratic in $c$ (and $d$, but let's just think of it in terms of one variable for now), and so its graph is a parabola, so long as $A \neq 0$. Let's assume that for now and put off the $A = 0$ case until later. Since $g$ a polynomial, it's continuous, and so to determine its sign, we can just see when it's zero. The quadratic formula gives us
 
 $$
 	c &= \frac{-2Bd \pm \sqrt{4B^2d^2 - 4ACd^2}}{2A}
@@ -183,11 +183,18 @@ $$
 	&= \frac{-Bd \pm d\sqrt{B^2 - AC}}{A}.
 $$
 
-so long as $A = f_{xx}(a, b) \neq 0$. Now this only gives real-valued solutions for $c$ (i.e. solutions that useful to us) when the expression under the root is nonnegative. If it's negative, then $g(c)$ is never zero, and so it *cannot change sign*. That means every cross-section of the graph of $f(x, y)$ though the point $(a, b)$ is always concave up or down no matter which direction of cross-section we pick.
+Now this only gives real-valued solutions for $c$ (i.e. solutions that useful to us) when the expression under the root is nonnegative. If it's negative, then $g(c)$ is never zero, and so it *cannot change sign*. That means every cross-section of the graph of $f(x, y)$ though the point $(a, b)$ is always concave up or down no matter which direction of cross-section we pick.
 
-Similarly, if that expression under the root is positive, then the graph of $g(c)$ crosses the $c$-axis in two different places, meaning it *must* be sometimes positive and sometimes negative, telling us that $(a, b)$ must be a saddle point. If the expression under the root is zero, then the graph of $g(c)$ touches the $c$-axis but doesn't cross it, and so the test is unfortunately inclusive --- that means there's a cross-section of the graph of $f$ through $(a, b)$ that produces a graph whose second derivative is zero at $(a, b)$, which we can't say anything conclusive about.
+Similarly, if that expression under the root is positive, then the graph of $g(c)$ crosses the $c$-axis in two different places, meaning it *must* be sometimes positive and sometimes negative, telling us that $(a, b)$ must be a saddle point. If the expression under the root is zero, then the graph of $g(c)$ touches the $c$-axis but doesn't cross it, and so the test is unfortunately inconclusive --- that means there's a cross-section of the graph of $f$ through $(a, b)$ that produces a graph whose second derivative is zero at $(a, b)$, which we can't say anything conclusive about.
 
-That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math! It's called a **discriminant**, and the only difference is that it's reversed in sign (i.e. AC - B^2) compared to what we have. There's also the very slight issue of how to tell when a critical point is a local max versus a min once we know that it's one of the two. If that's the case, then all of the cross-section graph have the same concavity (whether positive or negative), so we can just check one, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
+Lastly, let's think through what happens if $A = 0$. As long as $C \neq 0$, we can repeat the same logic but treat $g$ as a function of $d$ to produce an identical result. If $C = 0$ too, then the equation is just
+$$
+	D_{\vec{u}}D_{\vec{u}} f(a, b) &= 2cdf_{xy}(a, b),
+$$
+
+and as long as $B = f_{xy}(a, b)$ is nonzero, there will *always* be values of $c$ and $d$ that make this sometimes positive and sometimes negative (whether $c$ and $d$ have the same or opposite signs). That agrees with our previous result, since $B^2 - AC = B^2$ will always be positive in this case. Finally, if $B = 0$ too, meaning all mixed partials are zero, then $D_{\vec{u}}D_{\vec{u}} f(a, b) = 0$ for any unit vector $\vec{u}$, and so we can't determine anything about concavity --- again, that agrees with the previous result, since $B^2 - AC = 0$.
+
+That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math! It's called a **discriminant**, and the only difference is that it's reversed in sign (i.e. $AC - B^2$) compared to what we have. We also need to distinguish between a local maximum and local minimum once we know that a critical point is one of the two. We can do that by recognizing that in that case, all cross-sectional graphs have the same concavity (either positive or negative), and so we can just check one, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
 
 ### thm -m "The second derivative test for a function of two variables"
 
@@ -199,7 +206,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	If $D(a, b) > 0$ and $f_{xx}(a, b) > 0$ or $f_{yy}(a, b) > 0$, then $f$ has a local minimum at $(a, b)$.
 
-	If $D(a, b) > 0$ and $f_{xx}(a, b) < 0$ or $f_{yy}(a, b) > 0$, then $f$ has a local maximum at $(a, b)$.
+	If $D(a, b) > 0$ and $f_{xx}(a, b) < 0$ or $f_{yy}(a, b) < 0$, then $f$ has a local maximum at $(a, b)$.
 
 	If $D(a, b) < 0$, then $f$ has a saddle point at $(a, b)$.
 
@@ -243,7 +250,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 		D(x, y) &= -12x - 4.
 	$$
 
-	So $D(0, 0) = -4 < 0$ and $D\left( -\frac{2}{3}, -\frac{2}{3} \right) = 4 > 0$, which tells us that $(0, 0)$ is a saddle point and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ is a local min, since $f_{yy}(0, 0) = -2$ is negative. Not bad!
+	So $D(0, 0) = -4 < 0$ and $D\left( -\frac{2}{3}, -\frac{2}{3} \right) = 4 > 0$, which tells us that $(0, 0)$ is a saddle point and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ is a local max, since $f_{yy}\left( -\frac{2}{3}, -\frac{2}{3} \right) = -2$ is negative. Not bad!
 
 	### desmos secondDerivativeTest1
 
@@ -357,6 +364,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 	As an aside, the second derivative test is doing fantastic work for us at $(0, 0)$ in particular: both the $x$ and $y$ cross-sections of the graph are constantly zero there, meaning neither has any concavity to speak of.
 
 ###
+
 
 
 ### nav-buttons
