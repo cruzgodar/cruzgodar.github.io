@@ -123,8 +123,89 @@ Immediately upon considering how the second derivative test might generalize to 
 Let's now focus in on a function $f(x, y)$ with a critical point at $(a, b)$ and see what we can do. Most discussions of this topic are either completely lacking motivation or extremely technical, but I hope to provide a much more intuitive and mathematically whole explanation. The credit for the broad strokes goes to <a href="https://m.youtube.com/watch?v=Q5Q9oswM2wo">Linda Green</a> --- I'm merely presenting that story here in a more bottom-up manner.
 
 
-The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. While it'd be nice
+The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. While it'd be nice to hope that we could just check *both* the signs of $f_{xx}(a, b)$ and $f_{yy}(a, b)$ to produce an analogue to the second derivative test, the reality is more complicated: for example, $f(x, y) = x^2 + y^2 - 3xy$ has $f_{xx}(0, 0) = f_{yy}(0, 0) = 2$, making $(0, 0)$ look like a local min, but the concave down part of the graph is in a different direction.
 
+### desmos secretSaddle
+
+This counterexample gives us a hint, though: we could verify that $(0, 0)$ was a local minimum not if the concavity in just the $x$- and $y$-directions were positive, but if the concavity in *all* directions were positive. Specifically, let's take what we might call a second directional derivative and see what we can determine.
+
+Let $\vec{u} = \left< c, d \right>$ be a unit vector and consider $D_{\vec{u}}D_{\vec{u}} f$. The gradient formula for the directional derivative tells us that
+
+$$
+	D_{\vec{u}}D_{\vec{u}} f &= D_{\vec{u}} \left( \G f \bullet \left< c, d \right> \right)
+
+	&= D_{\vec{u}} \left( cf_x + df_y \right)
+
+	&= \G \left( cf_x + df_y \right) \bullet \left< c, d \right>
+
+	&= \left< cf_{xx} + df_{yx}, cf_{xy} + df_{yy} \right> \bullet \left< c, d \right>
+
+	&= c^2f_{xx} + cdf_{yx} + cdf_{xy} + d^2f_{yy}.
+$$
+
+That second gradient is just a vector where we first take the $\frac{\partial}{\partial x}$ of the argument, and then $\frac{\partial}{\partial y}$, both of which split across addition and factor through the scalar multiplication by $c$ and $d$. Now we can use Clairaut's theorem to compactify that expression a bit.
+
+$$
+	D_{\vec{u}}D_{\vec{u}} f &= c^2f_{xx} + 2cdf_{xy} + d^2f_{yy}.
+$$
+
+We're interested in plugging in the critical point $(a, b)$ and figuring out the sign of the resulting expression: if it's always positive, then we know this is a local minimum. If it's always negative, then we know it's a local maximum. If it's sometimes one and sometimes the other, then it must be a saddle point, and otherwise, the original second derivative test is inconclusive. With that in mind, let's plug in $(a, b)$ and see how to reason about the resulting formula.
+
+We have
+
+$$
+	D_{\vec{u}}D_{\vec{u}} f(a, b) &= c^2f_{xx}(a, b) + 2cdf_{xy}(a, b) + d^2f_{yy}(a, b),
+$$
+
+and to keep it simple, let's write this as
+
+$$
+	Ac^2 + 2Bcd + Cd^2
+$$
+
+for
+
+$$
+	A &= f_{xx}(a, b)
+
+	B &= f_{xy}(a, b)
+
+	C &= f_{yy}(a, b).
+$$
+
+To summarize where we are, we're looking to analyze the sign of this polynomial over all possible values of $c$ and $d$. Thankfully for us, it's not that bad! Let's set $g(c) = Ac^2 + 2Bcd + Cd^2$, which is a quadratic in $c$ (and $d$, but let's just think of it in terms of one variable for now), and so its graph is a parabola. In particular, $g$ is continuous, and so to determine its sign, we can just see when it's zero. The quadratic formula gives us
+
+$$
+	c &= \frac{-2Bd \pm \sqrt{4B^2d^2 - 4ACd^2}}{2A}
+
+	&= \frac{-2Bd \pm 2d\sqrt{B^2 - AC}}{2A}
+
+	&= \frac{-Bd \pm d\sqrt{B^2 - AC}}{A}.
+$$
+
+so long as $A = f_{xx}(a, b) \neq 0$. Now this only gives real-valued solutions for $c$ (i.e. solutions that useful to us) when the expression under the root is nonnegative. If it's negative, then $g(c)$ is never zero, and so it *cannot change sign*. That means every cross-section of the graph of $f(x, y)$ though the point $(a, b)$ is always concave up or down no matter which direction of cross-section we pick.
+
+Similarly, if that expression under the root is positive, then the graph of $g(c)$ crosses the $c$-axis in two different places, meaning it *must* be sometimes positive and sometimes negative, telling us that $(a, b)$ must be a saddle point. If the expression under the root is zero, then the graph of $g(c)$ touches the $c$-axis but doesn't cross it, and so the test is unfortunately inclusive --- that means there's a cross-section of the graph of $f$ through $(a, b)$ that produces a graph whose second derivative is zero at $(a, b)$, which we can't say anything conclusive about.
+
+That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math! It's called a **discriminant**, and the only difference is that it's reversed in sign (i.e. AC - B^2) compared to what we have. There's also the very slight issue of how to tell when a critical point is a local max versus a min once we know that it's one of the two. If that's the case, then all of the cross-section graph have the same concavity (whether positive or negative), so we can just check one, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
+
+### thm -m "The second derivative test for a function of two variables"
+
+	Let $f(x, y)$ be a function of two variables that is continuous and differentiable, and whose first-order partial derivatives $f_x$ and $f_y$ are continuous near a point $(a, b)$ where $\G f = \vec{0}$ (we need the second condition so that we can apply Clairaut's theorem). The **discriminant** of $f$ is
+
+	$$
+		D(x, y) = f_{xx}(x, y)f_{yy}(x, y) - f_{xy}(x, y)^2.
+	$$
+
+	If $D(a, b) > 0$ and $f_{xx}(a, b) > 0$, then $f$ has a local minimum at $(a, b)$.
+
+	If $D(a, b) > 0$ and $f_{xx}(a, b) < 0$, then $f$ has a local maximum at $(a, b)$.
+
+	If $D(a, b) < 0$, then $f$ has a saddle point at $(a, b)$.
+
+	Otherwise, the test is inconclusive.
+
+###
 
 
 
