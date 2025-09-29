@@ -365,6 +365,6 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 ###
 
-
+We've gone a long way toward bringing the second derivative test to $#R#^3$! In the next section, we'll finish the job by generalizing the notion of optimizing a function on a particular interval, and in the one after that, we'll conclude our discussion of multivariable calculus by considering more complicated interactions a function can have with the edge of its domain.
 
 ### nav-buttons

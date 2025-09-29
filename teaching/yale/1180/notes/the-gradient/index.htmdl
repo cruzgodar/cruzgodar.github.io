@@ -57,7 +57,7 @@ If we move distance $1$ from $(a, b)$ in the direction of $\vec{u}$ and stay in 
 $$
 	(a + \cos(\theta), b + \sin(\theta), f(a, b) + f_x(a, b)(a + \cos(\theta) - a) + f_y(a, b)(b + \sin(\theta) - b))
 
-	&= (a + \cos(\theta), b + \sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
+	= (a + \cos(\theta), b + \sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
 $$
 
 and so the slope is just $\cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)$, since the run between those two points is $1$. And that is *very* nicely expressible in terms of $\vec{u}$ itself as
