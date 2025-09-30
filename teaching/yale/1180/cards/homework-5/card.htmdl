@@ -31,4 +31,8 @@
 
 	> c) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a saddle point, but for which the second derivative test is inconclusive.
 
+	- - -
+
+	#. Suppose $(0, 0, 1)$ is a critical point of the function $f(x, y)$. What does the level curve at $z = 1$ look like near $(0, 0)$ if $(0, 0, 1)$ is a local min or max? What if it is a saddle point?
+
 ###
