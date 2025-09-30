@@ -127,7 +127,7 @@ The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph havin
 
 ### desmos secretSaddle
 
-This counterexample gives us a hint, though: we could verify that $(0, 0)$ was a local minimum not if the concavity in just the $x$- and $y$-directions were positive, but if the concavity in *all* directions were positive. Specifically, let's take what we might call a second directional derivative and see what we can determine.
+This counterexample gives us a hint, though: we could verify that $(0, 0)$ was a local minimum not if the concavity in just the $x$- and $y$-directions were positive, but if the concavity in *all* directions were positive. Specifically, let's take what we might call a *second directional derivative* and see what we can determine.
 
 Let $\vec{u} = \left< c, d \right>$ be a unit vector and consider $D_{\vec{u}}D_{\vec{u}} f$. The gradient formula for the directional derivative tells us that
 
@@ -143,7 +143,7 @@ $$
 	&= c^2f_{xx} + cdf_{yx} + cdf_{xy} + d^2f_{yy}.
 $$
 
-While the gradient $\G \left( cf_x + df_y \right)$ might be daunting,$cf_x + df_y$ is just a function itself, and so we can take $\frac{\partial}{\partial x}$ and $\frac{\partial}{\partial y}$ of it without issue, as we did above --- they both split across addition and factor through the scalar multiplication by $c$ and $d$. Now we can use Clairaut's theorem to compactify the resulting expression a bit.
+While the gradient $\G \left( cf_x + df_y \right)$ might be daunting, $cf_x + df_y$ is just a function itself, and so we can take $\frac{\partial}{\partial x}$ and $\frac{\partial}{\partial y}$ of it without issue, as we did above --- they both split across addition and factor through the scalar multiplication by $c$ and $d$. Now we can use Clairaut's theorem to compactify the resulting expression a bit.
 
 $$
 	D_{\vec{u}}D_{\vec{u}} f &= c^2f_{xx} + 2cdf_{xy} + d^2f_{yy}.
@@ -173,7 +173,7 @@ $$
 	C &= f_{yy}(a, b).
 $$
 
-To summarize where we are, we're looking to analyze the sign of this polynomial over all possible values of $c$ and $d$. Thankfully for us, it's not that bad! Let's set $g(c) = Ac^2 + 2Bcd + Cd^2$, which is a quadratic in $c$ (and $d$, but let's just think of it in terms of one variable for now), and so its graph is a parabola, so long as $A \neq 0$. Let's assume that for now and put off the $A = 0$ case until later. Since $g$ a polynomial, it's continuous, and so to determine its sign, we can just see when it's zero. The quadratic formula gives us
+To summarize where we are, we're looking to analyze the sign of this polynomial over all possible values of $c$ and $d$. Thankfully for us, it's not that bad! Let's set $g(c) = Ac^2 + 2Bcd + Cd^2$, which is a quadratic in $c$ (and $d$, but let's just think of it in terms of one variable for now), and so its graph is a parabola, as long as $A \neq 0$. Let's assume that for now and put off the $A = 0$ case until later. Since $g$ a polynomial, it's continuous, and so to determine its sign, we can just see when it's zero. The quadratic formula gives us
 
 $$
 	c &= \frac{-2Bd \pm \sqrt{4B^2d^2 - 4ACd^2}}{2A}
@@ -183,9 +183,9 @@ $$
 	&= \frac{-Bd \pm d\sqrt{B^2 - AC}}{A}.
 $$
 
-Now this only gives real-valued solutions for $c$ (i.e. solutions that useful to us) when the expression under the root is nonnegative. If it's negative, then $g(c)$ is never zero, and so it *cannot change sign*. That means every cross-section of the graph of $f(x, y)$ though the point $(a, b)$ is always concave up or down no matter which direction of cross-section we pick.
+Now this only gives real-valued solutions for $c$ (i.e. solutions that are useful to us) when the expression under the root is nonnegative. If it's negative, then $g(c)$ is never zero, and so it *cannot change sign*. That means every cross-section of the graph of $f(x, y)$ though the point $(a, b)$ always has the same concavity --- either up or down --- no matter which direction of cross-section we pick.
 
-Similarly, if that expression under the root is positive, then the graph of $g(c)$ crosses the $c$-axis in two different places, meaning it *must* be sometimes positive and sometimes negative, telling us that $(a, b)$ must be a saddle point. If the expression under the root is zero, then the graph of $g(c)$ touches the $c$-axis but doesn't cross it, and so the test is unfortunately inconclusive --- that means there's a cross-section of the graph of $f$ through $(a, b)$ that produces a graph whose second derivative is zero at $(a, b)$, which we can't say anything conclusive about.
+Similarly, if the expression $B^2 - AC$ under the root is positive, then the graph of $g(c)$ crosses the $c$-axis in two different places. That means it *must* be sometimes positive and sometimes negative, so $(a, b)$ has to be a saddle point. If $B^2 - AC = 0$, then the graph of $g(c)$ touches the $c$-axis but doesn't cross it, and so the test is unfortunately inconclusive: all of the cross-sectional graphs through $(a, b)$ have the same concavity, except for one, whose second derivative at $(a, b)$ is zero, and our knowledge of single-variable calculus tells us that we can't say anything conclusive about that one.
 
 Lastly, let's think through what happens if $A = 0$. As long as $C \neq 0$, we can repeat the same logic but treat $g$ as a function of $d$ to produce an identical result. If $C = 0$ too, then the equation is just
 $$
