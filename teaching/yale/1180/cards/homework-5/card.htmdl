@@ -1,0 +1,34 @@
+### card homework-5 "Homework 5"
+	
+	*Due Monday, October 6th at 11:59 PM*
+	
+	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+	### buttons
+		download-homework-5-pdf
+		download-homework-5-tex
+	###
+
+	- - -
+
+	In problems 4#, find and classify the critical points of the function $f$ as local minima, local maxima, or saddle points.
+
+	#. $f(x, y) = x^3y + 27x^2 - 27y$.
+
+	#. $f(x, y) = x^2 + y^2 - \frac{1}{xy}$.
+
+	#. $f(x, y) = -x^4 + e^{-y^{2}}$.
+
+	#. $f(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.
+
+	- - -
+
+	#. Give examples of the following functions:
+
+	> a) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local maximum, but for which the second derivative test is inconclusive.
+
+	> b) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local minimum, but for which the second derivative test is inconclusive.
+
+	> c) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a saddle point, but for which the second derivative test is inconclusive.
+
+###
