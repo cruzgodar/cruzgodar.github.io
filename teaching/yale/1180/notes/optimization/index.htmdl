@@ -50,7 +50,7 @@ This is a notationally dense but efficient way to say that critical points are w
 		2y + x &= 0.
 	$$
 
-	We can solve for y in the first equation and plug it into the second to get
+	We can solve for $ in the first equation and plug it into the second to get
 
 	$$
 		-6x^2 + 8x + x &= 0
