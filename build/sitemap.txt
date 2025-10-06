@@ -161,6 +161,7 @@ home Cruz Godar
 			notes/the-multivariable-chain-rule Section 5: The Multivariable Chain Rule
 			notes/the-gradient Section 6: The Gradient
 			notes/optimization Section 7: Optimization
+			notes/extreme-value-theorem Section 8: The Extreme Value Theorem
 		
 		uo/342 Math 342
 		uo/341 Math 341

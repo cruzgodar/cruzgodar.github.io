@@ -1,0 +1,37 @@
+### nav-buttons
+
+
+
+We've almost completely brought the theory of optimization to functions of multiple (mostly two) variables, but there's one aspect we haven't yet discussed: when we optimize a function of one variable $f(x)$ that's defined on a closed interval $[a, b]$, we consider not just its critical points, but also the endpoints $a$ and $b$ of the interval: the function might have local maxima or minima there. In fact, it nearly always does!
+
+### desmos endpoints
+
+Functions like this one are great examples of the **Extreme Value Theorem** for functions of a single variable, which says that a continuous function $f(x)$ on a closed interval always has a global maximum and a global minimum. In the previous graph, defining $f$ on all of $#R#$ or ditching the endpoints by defining it on $(a, b)$ results in a function with no global max or min. The are largely two relevant properties of $[a, b]$ that are not shared by $(a, b)$, $[a, \infty)$, or $(-\infty, \infty)$: first, $[a, b]$ contains the endpoints $a$ and $b$, which is necessary so that $x$ can't approach $a$ or $b$ without reaching it and thereby keep $f$ from having a global extremum. Second, $[a, b]$ doesn't extend infinitely far in either direction, meaning $f$ can't increase or decrease forever and avoid having a global extremum that way.
+
+If we'd like to bring the Extreme Value Theorem and this surrounding discussion to functions $f(x, y)$, then we need to extend the concept of a closed interval to $#R#^2$ by pinning down both of these properties. Let's give it a shot, starting with the simpler of the two: not extending infinitely in any direction.
+
+### def "bounded set"
+
+	Let $B$ be a set of points in $#R#^n$. We say that $B$ is **bounded** if there is some $r$ so that every point $b \in B$ is distance at most $r$ from the origin --- that is, $B$ is contained in some finite-radius ball centered at the origin.
+
+###
+
+This is as good of a definition as any --- it just says no part of $B$ can extend infinitely far away for it to be bounded. The other property is a bit more subtle, and requires a preliminary definition.
+
+### def "boundary of a set"
+
+	Let $A$ be a set of points in $#R#^n$. The **boundary** of $A$ is the set of all points $a \in #R#^n$ (*not necessarily in $A$!*) for which a ball of any radius centered at $a$ contains some points in $A$ and some points not in $A$.
+
+###
+
+While we'll see that this agrees exactly with out intuition, this really demands some examples! Let's take a closer look.
+
+### ex "boundary of a set"
+
+	
+
+###
+
+
+
+### nav-buttons

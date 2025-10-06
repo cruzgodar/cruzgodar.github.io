@@ -1742,7 +1742,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/partial-derivatives",
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
 			"/teaching/yale/1180/notes/the-gradient",
-			"/teaching/yale/1180/notes/optimization"
+			"/teaching/yale/1180/notes/optimization",
+			"/teaching/yale/1180/notes/extreme-value-theorem"
 		],
 
 		"customScript": true
@@ -1828,6 +1829,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/optimization":
 	{
 		"title": "Section 7: Optimization",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/extreme-value-theorem":
+	{
+		"title": "Section 8: The Extreme Value Theorem",
 		
 		"parent": "/teaching/yale/1180",
 		
