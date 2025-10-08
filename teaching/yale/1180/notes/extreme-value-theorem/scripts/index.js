@@ -2,9 +2,12 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosBlue3d,
+	desmosGreen3d,
 	desmosPurple,
 	desmosPurple3d,
 	desmosRed,
+	desmosRed3d,
 	getDesmosPoint,
 	getDesmosSlider,
 	setGetDesmosData
@@ -114,10 +117,35 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = x^3 - y^2 + 2xy \left\{  \right\}`, color: desmosPurple3d },
+					{ latex: raw`f(x, y) = x^3 - y^2 + 2xy \left\{ -1 \leq x \leq 0 \right\}\left\{ -2 \leq y \leq 0 \right\}`, color: desmosPurple3d },
 
-					// { latex: raw`(t, 0, f(t, 0))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
-					// { latex: raw`(0, t, f(0, t))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
+					{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosGreen3d },
+					{ latex: raw`(0, -2, f(0, -2))`, color: desmosBlue3d },
+
+					{ latex: raw`(t, [-2, 0], f(t, [-2, 0]))`, parametricDomain: { min: -1, max: 0 }, color: desmosRed3d, secret: true },
+					{ latex: raw`([-1, 0], t, f([-1, 0], t))`, parametricDomain: { min: -2, max: 0 }, color: desmosRed3d, secret: true },
+				]
+			},
+
+			evt2:
+			{
+				use3d: true,
+
+				options: { showPlane3D: false },
+
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.25 },
+
+				expressions:
+				[
+					{ latex: raw`g(x, y) = -x^2e^{-x^2-y^2}\left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple3d },
+
+					{ latex: raw`([-2, -1, 1, 2], 0, g([-2, -1, 1, 2], 0))`, color: desmosBlue3d },
+
+					{ latex: raw`(2\cos(t), 2\sin(t), g(2\cos(t), 2\sin(t)))`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosRed3d },
+					{ latex: raw`(0, t, g(0, t))`, parametricDomain: { min: -2, max: 2 }, color: desmosGreen3d },
+					{ latex: raw`(0, [-2, 2], g(0, [-2, 2]))`, color: desmosGreen3d },
+
+					{ latex: raw`([-2, -1, 1, 2], 0, g([-2, -1, 1, 2], 0))`, color: desmosBlue3d },
 				]
 			},
 		};
