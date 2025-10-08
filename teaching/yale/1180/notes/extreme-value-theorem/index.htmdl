@@ -28,9 +28,139 @@ While we'll see that this agrees exactly with out intuition, this really demands
 
 ### ex "boundary of a set"
 
-	
+	1. The boundary of the unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 \leq 1 \right\}$ is the unit circle $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 = 1 \right\}$: if we draw a circle of *any* radius around a point on the circle, it contains points in the disk and points not in it. Any other points is either completely inside or outside the set, since a sufficiently small circle will be contained in the set or outside it.
+
+	### desmos boundary1
+
+	2. The boundary of the open unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 < 1 \right\}$ is *also* the unit circle. In just the same way that limits don't depend of a function's value at the point being approached, a point being inside or outside the boundary of a set is unrelated to whether it's in the set itself.
+
+	3. The boundary of an interval $[a, b]$ in $#R#$ is the two-element set $\left\{ a, b \right\}$, as is the boundary of $(a, b)$, $[a, b)$, and $(a, b]$.
+
+	4. The boundary of an half-infinite interval $[a, \infty)$ is just the singleton set $\left\{ a \right\}$: there isn't any point greater than $a$ on the boundary, since the set continues 
 
 ###
+
+Those last two examples hints at where we're going: the Extreme Value Theorem tells us about functions defined on intervals that contain their boundary. We already call them closed intervals, and so that's a great name to give to such sets more broadly.
+
+### def "closed and compact sets"
+
+	A set $C$ in $#R#^n$ is **closed** if it contains its boundary, and a set $K$ in $#R#^n$ is **compact** if it is closed and bounded.
+
+###
+
+The closed unit disk is closed, and the open unit disk is not --- the former contains its boundary while the latter doesn't. Intuitively, a set is closed if there's no way to approach a point not in the set by taking a path through the set. Note that we haven't defined what it means for a general set to be open; nor will we. There is a perfectly fine definition that correctly categorized $(a, b)$ as open, $[a, b]$ as closed, and $[a, b)$ and $(a, b]$ as neither, but it's a bit out of scope. For our purposes, we'll stick to saying $[a, b]$ is closed and the other three types of interval simply aren't closed.
+
+
+
+### exc "compact sets"
+
+	1. Is the square
+	
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 1 \leq x \leq 3 \text{ and } 2 \leq y \leq 4 \right\}
+	$$
+
+	a compact set?
+
+	2. Give an example of a compact set in $#R#$ that is not a closed interval $[a, b]$.
+
+	3. Let $y = f(x)$ be a continuous function whose domain is $[a, b]$ for some $a, b \in #R#$. Is the graph of $f$ --- i.e. the set $\left\{ (x, y) \in #R#^2 \mid y = f(x) \right\}$ guaranteed to be compact?
+
+	### solution
+
+	1. Yes --- its boundary is the hollow square
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid (x = 1 \text{ or } x = 3) \text{ and } (y = 2 \text{ or } y = 4) \right\},
+	$$
+
+	including the corners, and that boundary is fully contained in the set. That tells us it's closed, and it's bounded since it fits inside a disk of radius $5$, for example.
+
+	### desmos boundary2
+
+	2. One way to do this is to combine two closed intervals together, like $[1, 2] \cup [3, 4]$: the boundary is the four points $\left\{ 1, 2, 3, 4 \right\}$, which is contained in the set. As a brief reminder, the union symbol $\cup$ means to take the elements of both sets and combine them.
+
+	3. Yes! Let's start with closed: any point $(c, f(c))$ on the graph of a continuous function has points in the graph nearby for any radius circle we draw --- that's effectively what it means for $\lim_{x \to c} f(x) = f(c)$. There are also guaranteed to be points inside the circle that aren't in the graph for any radius for less interesting reasons --- for example, there are points directly above and below $(c, f(c))$ for which by definition $f(x) \neq y$.
+
+	For boundedness, we can rather delightfully use the Extreme Value Theorem: $f$ must have a global min and max, say $m$ and $M$, on the closed interval $[a, b]$. That means the whole graph of $f$ fits inside the rectangle
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid a \leq x \leq b \text{ and } m \leq y \leq M \right\},
+	$$
+
+	which is bounded by the same logic we used in question 1.
+
+###
+
+With compact sets defined and explored, let's return to the matter at hand and apply them.
+
+### thm "The Extreme Value Theorem"
+
+	Let $f : #R#^n \to #R#$ be a continuous function of $n$ variables defined on a compact set $K$ (i.e. $f: K \to #R#$). Then $f$ must attain a global maximum and minimum on $K$.
+
+###
+
+We apply the EVT the same way that we did in single-variable calculus: first, we optimize a function by finding all of its critical points. Then, if it's defined on a compact set, we also evaluate it at every point in the boundary and compare those values to one another and to the critical points' values. The smallest is the global min, and the largest is the global max.
+
+### ex "optimizing a function"
+
+	Let $f(x, y) = x^3 - y^2 + 2xy$ be defined on the rectangle
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid -1 \leq x \leq 0 \text{ and } -2 \leq y \leq 0 \right\}.
+	$$
+
+	Find the global extrema of $f$.
+
+	We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
+
+	$x = -1$: starting here, we can literally set $x = -1$ in the equation to find $f(-1, y) = -1 - y^2 - 2y$. We're interested in optimizing this function on the interval $[-2, 0]$, and so we can return to the techniques of single-variable calculus. Taking the derivative and setting it equal to zero,
+
+	$$
+		-2y - 2 &= 0
+
+		y &= -1.
+	$$
+
+	The possible points are then $(-1, -2)$, $(-1, -1)$, and $(-1, 0)$. The first and last points there come from the EVT for single-variable functions: we have to include the endpoints of the interval $[0, -2]$ as candidates for global extrema.
+
+	$x = 0$: this works identically, but with a different $x$-value. We have $f(0, y) = -y^2$, whose only critical point is $y = 0$, so we also consider the points $(0, -2)$, and $(0, 0)$.
+
+	$y = -2$: we have $f(x, -2) = x^3 - 4 - 4x$, so taking the derivative,
+
+	$$
+		3x^2 - 4 &= 0
+
+		x &= \pm \sqrt{4}{3}.
+	$$
+
+	We only care about $x \in [-1, 0]$, though, and neither of these $x$-values is in that interval. We add the boundary points $(-1, -2)$ and $(0, -2)$ and move on.
+
+	$y = 0$: finally, $f(x, 0) = x^3$, whose only critical point is at $x = 0$. Adding it and the other boundary point, we have $(-1, 0)$ and $(0, 0)$.
+
+	Let's summarize! All of this work tells us that the global extrema of $f$ on this interval can *only* live at the critical points inside of its domain (i.e. $(0, 0)$ or $\left( -\frac{2}{3}, -\frac{2}{3} \right)$), or at one of the many points we found afterward on the boundary. To actually find the global min and max, all that's left is to compute their $z$-values one at a time.
+
+	$$
+		f(0, 0) &= 0
+
+		f\left( -\frac{2}{3}, -\frac{2}{3} \right) &= \frac{4}{27}
+
+		f(-1, -2) &= -1
+
+		f(-1, -1) &= 0
+
+		f(-1, 0) &= -1
+
+		f(0, -2) &= -4.
+	$$
+
+	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
+
+	### desmos evt
+
+###
+
+
 
 
 

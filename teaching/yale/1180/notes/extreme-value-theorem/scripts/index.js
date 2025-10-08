@@ -1,10 +1,10 @@
 import {
 	createDesmosGraphs,
-	desmosBlue3d,
-	desmosGreen3d,
+	desmosBlack,
+	desmosBlue,
 	desmosPurple,
 	desmosPurple3d,
-	desmosRed3d,
+	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
 	setGetDesmosData
@@ -23,7 +23,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x) = x^3 - x^2 - x + 1 \left\{ a \leq x \leq b\right\}`, color: desmosPurple3d },
+					{ latex: raw`f(x) = x^3 - x^2 - x + 1 \left\{ a \leq x \leq b\right\}`, color: desmosPurple },
 
 					...getDesmosSlider({
 						expression: raw`a = -1.5`,
@@ -55,48 +55,69 @@ export default function()
 				]
 			},
 
-			secretSaddle:
+			boundary1:
 			{
-				use3d: true,
-
-				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -50, zmax: 50 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = x^2 + y^2 - 3xy`, color: desmosPurple3d },
+					{ latex: raw`x^2 + y^2 \leq 1`, color: desmosPurple },
+					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlue },
 
-					{ latex: raw`(t, 0, f(t, 0))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
-					{ latex: raw`(0, t, f(0, t))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
+					...getDesmosSlider({
+						expression: raw`a = -0.5`,
+						min: -1,
+						max: 1,
+						secret: false
+					}),
+
+					...getDesmosSlider({
+						expression: raw`\epsilon = 0.1`,
+						min: 0,
+						max: 0.2,
+						secret: false,
+						hidden: true
+					}),
+
+					{ latex: raw`b = \sqrt{1 - a^2}`, secret: true },
+
+					...getDesmosPoint({
+						point: ["a", "b"],
+						color: desmosRed,
+						dragMode: "NONE",
+						secret: false
+					}),
+
+					{ latex: raw`(x - a)^2 + (y - b)^2 = \epsilon^2`, color: desmosRed, secret: true },
 				]
 			},
 
-			secondDerivativeTest1:
+			boundary2:
 			{
-				use3d: true,
-
-				bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2 },
+				bounds: { xmin: -0.5, xmax: 5.5, ymin: -0.5, ymax: 5.5 },
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = x^3 - y^2 + 2xy`, color: desmosPurple3d },
+					{ latex: raw`1 \leq x \leq 3 \left\{ 2 \leq y \leq 4 \right\}`, color: desmosPurple },
+					{ latex: raw`x = [1, 3] \left\{ 2 \leq y \leq 4 \right\}`, color: desmosBlue },
+					{ latex: raw`y = [2, 4] \left\{ 1 \leq x \leq 3 \right\}`, color: desmosBlue },
 
-					{ latex: raw`(0, 0, f(0, 0))`, color: desmosRed3d },
-
-					{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosGreen3d },
+					{ latex: raw`r = 5`, color: desmosBlack, hidden: true },
 				]
 			},
 
-			secondDerivativeTest2:
+			evt:
 			{
 				use3d: true,
 
-				options: { showPlane3D: false },
-
-				bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -0.3, zmax: 0.3 },
+				bounds: { xmin: -3, xmax: 1, ymin: -3, ymax: 1, zmin: -5, zmax: 1 },
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple3d },
+					{ latex: raw`f(x, y) = x^3 - y^2 + 2xy \left\{  \right\}`, color: desmosPurple3d },
+
+					// { latex: raw`(t, 0, f(t, 0))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
+					// { latex: raw`(0, t, f(0, t))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue3d, secret: true },
 				]
 			},
 		};

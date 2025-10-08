@@ -276,7 +276,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 		x - 2x y^2 &= 0.
 	$$
 
-	This requires a little care. The first equation simplifies to $y\left( 1 - 2x^2 \right) = 0$, so either $y = 0$ *or* $x^2 = \frac{1}{2}$, meaning $x = \pm \frac{1}{\sqrt{2}}$. These are all independent conditions, so rather than pair them up in points $\left( \pm \frac{1}{\sqrt{2}} \right)$, which probably wouldn't satisfy the second equation, we take all three possibilities and plug them *each* into the second equation. We can first simplify it to $x\left( 1 - 2y^2 \right) = 0$, and then plug in our values, resulting in
+	This requires a little care. The first equation simplifies to $y\left( 1 - 2x^2 \right) = 0$, so either $y = 0$ *or* $x^2 = \frac{1}{2}$, meaning $x = \pm \frac{1}{\sqrt{2}}$. These are all independent conditions, so rather than pair them up in points $\left( \pm \frac{1}{\sqrt{2}}, \pm \frac{1}{\sqrt{2}} \right)$, which probably wouldn't satisfy the second equation, we take all three possibilities and plug them *each* into the second equation. We can first simplify it to $x\left( 1 - 2y^2 \right) = 0$, and then plug in our values, resulting in
 
 	$$
 		y = 0: \quad x\left( 1 - 2(0)^2 \right) &= 0
