@@ -4,7 +4,7 @@ import { pageElement } from "./main.js";
 
 export function loadImages()
 {
-	const images = pageElement.querySelectorAll("img[data-src]");
+	const images = pageElement.querySelectorAll("[data-src]");
 
 	for (const image of images)
 	{

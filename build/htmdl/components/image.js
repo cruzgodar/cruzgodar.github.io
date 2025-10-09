@@ -7,7 +7,7 @@ export function image(options, ...urls)
 	const imgString = urls.map(url =>
 	{
 		return /* html */`
-		<div class="notes-image${invertibleString}"></img>
+		<div class="notes-image${invertibleString}">
 			<img src="/graphics/general-icons/placeholder.png" data-src="${parseUrl(url)}"></img>
 		</div>
 		`;

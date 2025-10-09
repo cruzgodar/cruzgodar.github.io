@@ -133,7 +133,7 @@ export default function()
 
 				options: { showPlane3D: false },
 
-				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.25 },
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.15 },
 
 				expressions:
 				[
@@ -144,8 +144,6 @@ export default function()
 					{ latex: raw`(2\cos(t), 2\sin(t), g(2\cos(t), 2\sin(t)))`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosRed3d },
 					{ latex: raw`(0, t, g(0, t))`, parametricDomain: { min: -2, max: 2 }, color: desmosGreen3d },
 					{ latex: raw`(0, [-2, 2], g(0, [-2, 2]))`, color: desmosGreen3d },
-
-					{ latex: raw`([-2, -1, 1, 2], 0, g([-2, -1, 1, 2], 0))`, color: desmosBlue3d },
 				]
 			},
 		};
