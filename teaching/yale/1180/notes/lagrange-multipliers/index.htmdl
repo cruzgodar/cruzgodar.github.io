@@ -16,9 +16,9 @@ To begin to get at such a method, let's think about level curves. The maximum $(
 
 Immediately, we can see that we need to pick a small enough value of $c$ that the level curve $2x + xy + 5y = c$ actually intersects $10x + 5y = 100$; otherwise, there won't be any point in the intersection. But on the other hand, we *want $c$ to be as large as possible*, because crucially, $c$ is the output of $f(x, y)$ --- it's the thing we're trying to maximize. We therefore are looking for a value of $c$ where the level curve just barely touches the line $10x + 5y = 100$, or in other words, where the two are tangent.
 
-Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve tangent to the boundary.
+Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve is tangent to the boundary.
 
-Let's begin by giving it a name: $g(x, y)$. To handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. If that's the case, then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either --- in other words, that we can move in a single direction that's orthogonal to both $\G f$ and $\G g$. That happens when either $\G f$ and $\G g$ are parallel or point in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple b the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
+Let's begin by giving it a name: $g(x, y)$. To handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. If that's the case, then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either --- in other words, that we can move in a single direction that's orthogonal to both $\G f$ and $\G g$. That happens when $\G f$ and $\G g$ are parallel or when they point in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple by the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
 
 Okay, let's see how this applies to our example. Given the profit function that we're trying to maximize $f(x, y)$ and the constraint $g(x, y)$, we set up two equations:
 
@@ -171,7 +171,7 @@ Let's return to an example with a circular boundary like we saw in the previous 
 	$$
 		f\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right) = f\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right) &= \frac{3}{2}
 
-		f\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right) = \left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right) &= \frac{7}{2}.
+		f\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right) = f\left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right) &= \frac{7}{2}.
 	$$
 
 	The end result is that $f$ has minima on this boundary at the first two points and maxima at the second two points.
