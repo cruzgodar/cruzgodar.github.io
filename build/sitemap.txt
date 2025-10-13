@@ -162,6 +162,7 @@ home Cruz Godar
 			notes/the-gradient Section 6: The Gradient
 			notes/optimization Section 7: Optimization
 			notes/extreme-value-theorem Section 8: The Extreme Value Theorem
+			notes/lagrange-multipliers Section 9: Lagrange Multipliers
 		
 		uo/342 Math 342
 		uo/341 Math 341

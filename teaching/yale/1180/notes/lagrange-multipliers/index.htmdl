@@ -1,0 +1,187 @@
+### nav-buttons
+
+
+
+We've made it to the end of multivariable calculus (at least for us), and to the halfway point of our course! The story of optimization of multivariable functions is nearly complete, and it's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to.
+
+When we find the maxima of a function $f(x, y)$ --- for example, if $f(x, y) = 2x + xy + 5y$ that gives the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month --- there is *very* often a relationship between the inputs $x$ and $y$. So often, in fact, that optimization doesn't even make sense to discuss without it in many examples. That includes this one --- we don't really need to take a derivative to see that increasing $x$ and $y$ will always increase $f$, so there aren't local or global maxima when $x \geq 0$ and $y \geq 0$. In this context, though, we'd expect a constraint of the sort $ax + by \leq c$, where $a$ is cost to the store per binocular they stock, $b$ is the cost per birdhouse, and $c$ is the total amount the store has available to spend per month.
+
+With a constraint like that, the problem makes much more sense: maximize $f(x, y)$ *given* $ax + by \leq c$. For this problem, let's say that our constraint is $10x + 5y \leq 100$; we can safely assume in this situation that profit will be maximized when $10x + 5y = 100$, since we could always spend more otherwise (unsurprisingly, that may not always be the best idea for the business, but it does maximize profit in this toy example). But more generally, even if we're working with a more complicated function $f$ for which that's not the case, that's okay --- we can always use the techniques of section 7 to find the maxima and minima within the interior of the domain we're examining, leaving only the boundary to examine.
+
+It's true that we've already covered optimization on the boundary in the previous section, but all too often, that was a downright sinkhole of a subject, particularly when we had to parameterize the boundary as a function of $\theta$ or anything else. The more complicated the boundary is, the more work it would take, and we would do well to find a more general method to handle it that doesn't require parameterization.
+
+To begin to get at such a method, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
+
+### desmos levelCurves
+
+Immediately, we can see that we need to pick a small enough value of $c$ that the level curve $2x + xy + 5y = c$ actually intersects $10x + 5y = 100$; otherwise, there won't be any point in the intersection. But on the other hand, we *want $c$ to be as large as possible*, because crucially, $c$ is the output of $f(x, y)$ --- it's the thing we're trying to maximize. We therefore are looking for a value of $c$ where the level curve just barely touches the line $10x + 5y = 100$, or in other words, where the two are tangent.
+
+Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve tangent to the boundary.
+
+Let's begin by giving it a name: $g(x, y)$. To handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. If that's the case, then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either --- in other words, that we can move in a single direction that's orthogonal to both $\G f$ and $\G g$. That happens when either $\G f$ and $\G g$ are parallel or point in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple b the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
+
+Okay, let's see how this applies to our example. Given the profit function that we're trying to maximize $f(x, y)$ and the constraint $g(x, y)$, we set up two equations:
+
+$$
+	\G f(x, y) &= \lambda \G g(x, y)
+
+	g(x, y) &= 0
+$$
+
+While this might seem like two equations and three unknowns, it's not! Let's expand it out and see why.
+
+$$
+	\left< 2 + y, x + 5 \right> &= \lambda \left< 10, 5 \right>
+
+	10x + 5y - 100 &= 0.
+$$
+
+The two equations are actually three, since in the first one, both the first and second components of the vector must be equal. Therefore,
+
+$$
+	2 + y &= 10\lambda
+
+	x + 5 &= 5\lambda
+
+	10x + 5y - 100 &= 0.
+$$
+
+Plugging into the third equation,
+
+$$
+	10(5\lambda - 5) + 5(10\lambda - 2) - 100 &= 0
+
+	50\lambda - 50 + 50\lambda - 10 - 100 &= 0
+
+	100\lambda &= 160
+
+	\lambda &= \frac{8}{5}.
+$$
+
+Returning to solve for $x$ and $y$,
+
+$$
+	x &= 3
+
+	y &= 14.
+$$
+
+Our maximum is therefore at $(3, 14)$, and the output is $f(3, 14) = 118$. It may be an oversimplified example, but this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
+
+Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
+
+### thm -m "Method: Lagrange Multipliers"
+
+	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
+
+	1. Solve the system of equations
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0.
+	$$
+
+	2. Of all the solutions $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
+
+###
+
+Let's return to an example with a circular boundary like we saw in the previous section to see the improvement.
+
+### exc "Lagrange multipliers"
+
+	Find the maximum and minimum of $f(x, y) = 2x^2 + \sqrt{3}xy + 3y^2$, given $x^2 + y^2 = 1$.
+
+	### solution
+
+	Instead of parameterizing this in terms of an angle $\theta$, let's just use Lagrange multipliers. We have $g(x, y) = x^2 + y^2 - 1$, and so our system of equations is
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+
+		~
+
+		\left< 4x + \sqrt{3}y, \sqrt{3}x + 6y \right> &= \lambda\left< 2x, 2y \right>
+
+		x^2 + y^2 - 1 &= 0
+
+		~
+
+		4x + \sqrt{3}y &= 2\lambda x
+
+		\sqrt{3}x + 6y &= 2\lambda y
+
+		x^2 + y^2 - 1 &= 0.
+	$$
+
+	It's often easiest to just eliminate $\lambda$ from complicated systems like this:
+
+	$$
+		\frac{4x + \sqrt{3}y}{2x} &= \lambda
+
+		\frac{\sqrt{3}x + 6y}{2y} &= \lambda
+
+		\frac{4x + \sqrt{3}y}{2x} &= \frac{\sqrt{3}x + 6y}{2y}
+
+		8xy + 2\sqrt{3}y^2 &= 2\sqrt{3}x^2 + 12xy.
+
+		\sqrt{3}x^2 + 2xy - \sqrt{3}y^2 &= 0.
+
+		x^2 + \frac{2}{\sqrt{3}}xy - y^2 &= 0.
+	$$
+
+	While we actually can factor this, let's just use the quadratic formula --- it's not amazing, but it certainly gets the job done.
+
+	$$
+		x &= \frac{-\frac{2}{\sqrt{3}}y \pm \sqrt{\frac{4}{3}y^2 + 4y^2}}{2}
+
+		&= \frac{-\frac{2}{\sqrt{3}}y \pm \sqrt{\frac{16}{3}y^2}}{2}
+
+		&= \frac{-\frac{2}{\sqrt{3}}y \pm \frac{4}{\sqrt{3}}y}{2}
+
+		&= -\frac{1}{\sqrt{3}}y \pm \frac{2}{\sqrt{3}}y,
+	$$
+
+	so either $x = -\frac{3}{\sqrt{3}}y = -\sqrt{3}y$ or $x = \frac{1}{\sqrt{3}}y$. And now we can plug this back into $x^2 + y^2 = 1$! The first equation gives
+
+	$$
+		\left( -\sqrt{3} y\right)^2 + y^2 &= 1
+
+		3y^2 + y^2 &= 1
+
+		y &= \pm \sqrt{\frac{1}{4}} = \pm \frac{1}{2},
+	$$
+
+	so we get the points $\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right)$ and $\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$. When $x = \frac{1}{\sqrt{3}}y$,
+
+	$$
+		\left( \frac{1}{\sqrt{3}} y\right)^2 + y^2 &= 1
+
+		\frac{1}{3}y^2 + y^2 &= 1
+
+		y &= \pm \sqrt{\frac{3}{4}} = \pm \frac{\sqrt{3}}{2},
+	$$
+
+	which gives us $\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right)$ and $\left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right)$.
+
+	To wrap up the problem, we just need to plug all four of these into the original function:
+
+	$$
+		f\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right) = f\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right) &= \frac{3}{2}
+
+		f\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right) = \left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right) &= \frac{7}{2}.
+	$$
+
+	The end result is that $f$ has minima on this boundary at the first two points and maxima at the second two points.
+
+	### desmos lagrangeExample
+
+###
+
+And this is where our multivariable calculus story ends! From here, we'll pivot to linear algebra, an equally useful but quite different type of math.
+
+
+
+### nav-buttons

@@ -1743,7 +1743,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
 			"/teaching/yale/1180/notes/the-gradient",
 			"/teaching/yale/1180/notes/optimization",
-			"/teaching/yale/1180/notes/extreme-value-theorem"
+			"/teaching/yale/1180/notes/extreme-value-theorem",
+			"/teaching/yale/1180/notes/lagrange-multipliers"
 		],
 
 		"customScript": true
@@ -1840,6 +1841,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/extreme-value-theorem":
 	{
 		"title": "Section 8: The Extreme Value Theorem",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/lagrange-multipliers":
+	{
+		"title": "Section 9: Lagrange Multipliers",
 		
 		"parent": "/teaching/yale/1180",
 		
