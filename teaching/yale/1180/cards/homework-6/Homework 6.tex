@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+\begin{document}
+
+\Large Name: \rule{2in}{0.15mm} \hfill Homework 6 | Math 1180 | Cruz Godar \vspace{4pt} \normalsize
+
+\textit{Due Monday, October 27th at 11:59 PM}
+
+Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+~\\
+
+In problems 1--6, find the boundary of the given set and state whether it is closed, bounded, and/or compact.
+
+1. $A = \left\{ (x, y) \mid \mathbb{R}^2 \mid x \leq y \right\}$.
+
+2. $B = \left\{ (x, y, z) \mid \mathbb{R}^3 \mid x^2 + y^2 < 1 - z^2 \right\}$.
+
+3. $C = \left\{ (x, y) \mid \mathbb{R}^2 \mid y = \sin(x) \text{ and } x \in [0, \pi] \right\}$.
+
+4. $D = \left\{ (x, y) \mid \mathbb{R}^2 \mid y = \sin\left( \frac{1}{x} \right) \text{ and } x \in [-\pi, \pi] \right\}$.
+
+5. $E = \left\{ x \in \mathbb{R} \mid x \text{ is an integer} \right\}$.
+
+6. $F = \left\{ x \in \mathbb{R} \mid x \text{ is a rational number} \right\}$.
+
+~\\
+
+In problems 7--9, give an example of a set $A$ in $\mathbb{R}^2$ with the following properties or briefly explain why it is impossible.
+
+7. $A$ is compact and contains infinitely many points.
+
+8. $A$ is not compact and contains finitely many points.
+
+9. (Bonus --- challenging) $A$ is not closed but is equal to the boundary of another set $B$.
+
+~\\
+
+In problems 10--13, find the global minimum and maximum of the function on the given domain.
+
+10. $f(x, y) = x^2 + y^2 - 4x - 6y$ on $\left\{ (x, y) \in \mathbb{R}^2 \mid 0 \leq x \leq 5 \text{ and } 0 \leq y \leq 7 \right\}$.
+
+11. $g(x, y) = xy - x - y$ on $\left\{ (x, y) \in \mathbb{R}^2 \mid 0 \leq x \leq 3 \text{ and } 0 \leq y \leq x \right\}$.
+
+12. $h(x, y) = x^2 - xy + y^2$ on $\left\{ (x, y) \in \mathbb{R}^2 \mid x^2 + y^2 = 2 \right\}$.
+
+~\\
+
+13. Apply Lagrange multipliers to $f(x, y) = e^{xy}$ on $\left\{ (x, y) \in \mathbb{R}^2 \mid x^3 + y^3 = 16 \right\}$. Why do we only find a single critical point?
+
+~\\
+
+14. Find the points on the ellipse $4x^2 + y^2 = 4$ closest to and farthest from $(1, 0)$. (Hint: optimize the square of the distance rather than the distance itself in order to avoid square roots.)
+
+
+\end{document}
