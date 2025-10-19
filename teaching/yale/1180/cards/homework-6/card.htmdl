@@ -13,13 +13,13 @@
 
 	In problems 6#, find the boundary of the given set and state whether it is closed, bounded, and/or compact.
 
-	#. $A = \left\{ (x, y) \mid #R#^2 \mid x \leq y \right\}$.
+	#. $A = \left\{ (x, y) \in #R#^2 \mid x \leq y \right\}$.
 
-	#. $B = \left\{ (x, y, z) \mid #R#^3 \mid x^2 + y^2 < 1 - z^2 \right\}$.
+	#. $B = \left\{ (x, y, z) \in #R#^3 \mid x^2 + y^2 < 1 - z^2 \right\}$.
 
-	#. $C = \left\{ (x, y) \mid #R#^2 \mid y = \sin(x) \text{ and } x \in [0, \pi] \right\}$.
+	#. $C = \left\{ (x, y) \in #R#^2 \mid y = \sin(x) \text{ and } x \in [-\pi, \pi] \right\}$.
 
-	#. $D = \left\{ (x, y) \mid #R#^2 \mid y = \sin\left( \frac{1}{x} \right) \text{ and } x \in [-\pi, \pi] \right\}$.
+	#. $D = \left\{ (x, y) \in #R#^2 \mid y = \sin\left( \frac{1}{x} \right) \text{ and } x \in [-\pi, \pi] \right\}$.
 
 	#. $E = \left\{ x \in #R# \mid x \text{ is an integer} \right\}$.
 
