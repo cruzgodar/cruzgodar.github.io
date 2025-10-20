@@ -1744,7 +1744,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/the-gradient",
 			"/teaching/yale/1180/notes/optimization",
 			"/teaching/yale/1180/notes/extreme-value-theorem",
-			"/teaching/yale/1180/notes/lagrange-multipliers"
+			"/teaching/yale/1180/notes/lagrange-multipliers",
+			"/teaching/yale/1180/notes/vectors-and-matrices"
 		],
 
 		"customScript": true
@@ -1852,6 +1853,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/lagrange-multipliers":
 	{
 		"title": "Section 9: Lagrange Multipliers",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/vectors-and-matrices":
+	{
+		"title": "Section 10: Vectors and Matrices",
 		
 		"parent": "/teaching/yale/1180",
 		
