@@ -30,9 +30,9 @@ In a real-world senario, you won't usually be given the function to optimize out
 	
 ###
 
-### exc "folding ideas"
+### exc "a cut string"
 	
-	Take a standard $8.5 \times 11$ inch sheet of paper and cut out four identical squares (not rectangles) from each corner. Then fold up each of the four resulting flaps to form a paper box with no top. What is the largest possible volume (in cubic inches) you can get?
+	Take a 10 foot long piece of string and cut it into two pieces. Form one into a square and the other into a circle. What is the largest and smallest total area you can possibly make?
 	
 ###
 
@@ -50,7 +50,7 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 		\frac{x^2}{4} + \frac{y^2}{9} = 1.
 	$$
 	
-	A rectangle is said to be <dfn>inscribed</dfn> in an ellipse if all four of its corners are on the ellipse --- this requires the sides of the rectangle to be parallel to the $x$- and $y$-axes. What is the largest-area rectangle we can inscribe in this ellipse?
+	A rectangle is said to be **inscribed** in an ellipse if all four of its corners are on the ellipse --- this requires the sides of the rectangle to be parallel to the $x$- and $y$-axes. What is the largest-area rectangle we can inscribe in this ellipse?
 	
 	### desmos ellipse
 
@@ -124,11 +124,43 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	
 ###
 
+### exc "a circular lake"
+
+	A lake in the form of a perfect circle has a diameter $2$ miles. You can walk at $2$ miles per hour around the shore of the lake or row a boat across the lake at $1$ mile per hour. If you set off rowing in a straight line from the westmost point on the lake and then walk the rest of the way to the eastmost point once you land, at what angle should you initially row in order to minimize your total time?
+
+	### desmos lake
+
+	Hint: the arc cut out by a path at angle $\theta$ from the westmost point has angle $2\theta$, and the 
+
+###
+
 ### exc "travel times"
 	
 	You're running a race that starts on the bank of a very slow-moving river. The river is 100 feet across, and the finish line is on the other bank of the river, but also 500 feet downstream. You can run at 10 feet per second (a little under a 9 minute mile) while on land, but in the river, you swim at only 4 feet per second. To finish this race as fast as possible, you first run along the bank of the river, and then at some point, you jump in and swim in a straight line to the finish. The river is flowing slowly enough that you can ignore the effects of the current on your swimming speed. What is the fastest you can get to the finish line?
 	
 	### desmos river
+
+	### solution
+
+	Let's begin by finding a function we can optimize. If we jump in after $x$ feet, then we spend $x$ feet at $10$ feet per second, taking $\frac{x}{10}$ seconds. Then the straight line path in the water has length
+	
+	$$
+		\sqrt{(500 - x)^2 + 100^2} = \sqrt{x^2 - 1000x + 260000},
+	$$
+
+	so the time we spend in the water is $\frac{1}{4} \sqrt{x^2 - 1000x + 260000}$. The total time is then
+
+	$$
+		T(x) = \frac{1}{10}x + \frac{1}{4} \sqrt{x^2 - 1000x + 260000},
+	$$
+
+	and so we can optimize this function. We have
+
+	$$
+		T'(x) &= \frac{1}{10} + \frac{1}{8} \left( x^2 - 1000x + 260000 \right)^{-1/2} \left( 2x - 1000 \right),
+	$$
+
+	and while this looks intense, it's not so bad!
 	
 ###
 

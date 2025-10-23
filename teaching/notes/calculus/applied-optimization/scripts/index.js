@@ -49,6 +49,26 @@ export default function()
 
 
 
+			lake:
+			{
+				options: { showGrid: false },
+
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
+
+				expressions:
+				[
+					{ latex: raw`r = 1`, color: desmosBlack, secret: true },
+					{ latex: raw`t = 0.5`, sliderBounds: { min: 0, max: "\\pi" } },
+					{ latex: raw`(-1, 0), (\cos(2t), \sin(2t))`, points: true, lines: true, color: desmosPurple, secret: true },
+					{ latex: raw`r = 1 \left\{ 0 \leq \theta \leq 2t \right\}`, color: desmosPurple, secret: true },
+
+					{ latex: raw`(\cos(2t), \sin(2t)), (1, 0), (-1, 0)`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: "DASHED" },
+					{ latex: raw`(0, 0), (\cos(t), \sin(t))`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: "DASHED" },
+				]
+			},
+
+
+
 			river:
 			{
 				options: { showGrid: false },
