@@ -40,6 +40,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	homework-4 -c "Homework 4"
 	homework-5 -c "Homework 5"
 	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
 ###
 
 ### card homework-1 -e
@@ -48,6 +49,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 ### card homework-4 -e
 ### card homework-5 -e
 ### card homework-6 -e
+### card homework-7 -e
 
 ### card syllabus "Math 1180: Introduction to Functions of Several Variables"
 	
