@@ -175,7 +175,7 @@ With this example guiding us, let's properly define matrices and how they multip
 	Given an $m \times n$ matrix $A$ and an $n \times 1$ vector $\vec{x}$, we can define the product $A\vec{x}$: it's an $m \times 1$ vector, given by
 
 	$$
-		[[ a_{11}, a_{12}, \cdots, a_{1n} ; a_{21}, a_{22}, \cdots, a_{2n} ; \vdots, \vdots, \ddots, \vdots ; a_{m1}, a_{m2}, \cdots, a_{mn} ]] [[ x_1 ; x_2 ; \vdots ; x_n ]] = [[ a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n ; a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n ; \vdots ; a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_m ]]
+		[[ a_{11}, a_{12}, \cdots, a_{1n} ; a_{21}, a_{22}, \cdots, a_{2n} ; \vdots, \vdots, \ddots, \vdots ; a_{m1}, a_{m2}, \cdots, a_{mn} ]] [[ x_1 ; x_2 ; \vdots ; x_n ]] = [[ a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n ; a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n ; \vdots ; a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n ]]
 	$$
 
 	The easiest way to think about this is that we take the $i$th row of $A$ and all of $\vec{x}$, and multiply each pair of entries together. Since the number of columns of $A$ and the number of entries of $\vec{x}$ are the same, there are no entries left over. Then we take all the products, add them up, and write that in the $i$th entry of our new vector. When we've done that with every row of $A$, that new vector is $A\vec{x}$.
@@ -236,7 +236,7 @@ Although this is an intense definition, it's thankfully among the most complicat
 		&= [[ 5 ; 7 ]].
 	$$
 
-	More generally, this matrix leaves any vector it multiplies alone.
+	More generally, this matrix leaves any (2D) vector it multiplies alone.
 
 	2.
 
