@@ -142,7 +142,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 
 ## The Derivatives of the Inverse Trig Functions
 	
-Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions --- they're rational functions. We can find these with the IFT, but the process requires drawing right triangles. If you take Calculus II, you'll need to thoroughly learn this technique, and since it's not all that important to us right now, we're not going to cover it in this class. Instead, let's skip straight to the result.
+Somewhat strangely, the derivatives of the inverse trig functions are not other inverse trig functions! We can find them with the IFT, but the process requires drawing right triangles. If you take Calculus II, you'll need to thoroughly learn this technique, and since it's not all that important to us right now, we're not going to cover it in this class. Instead, let's skip straight to the result.
 
 
 
