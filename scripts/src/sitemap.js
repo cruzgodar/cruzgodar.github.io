@@ -1745,7 +1745,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/optimization",
 			"/teaching/yale/1180/notes/extreme-value-theorem",
 			"/teaching/yale/1180/notes/lagrange-multipliers",
-			"/teaching/yale/1180/notes/vectors-and-matrices"
+			"/teaching/yale/1180/notes/vectors-and-matrices",
+			"/teaching/yale/1180/notes/row-reduction"
 		],
 
 		"customScript": true
@@ -1870,6 +1871,15 @@ export const sitemap =
 		"children": [],
 
 		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/row-reduction":
+	{
+		"title": "Section 11: Row Reduction",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/342":

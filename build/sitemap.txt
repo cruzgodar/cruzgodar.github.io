@@ -164,6 +164,7 @@ home Cruz Godar
 			notes/extreme-value-theorem Section 8: The Extreme Value Theorem
 			notes/lagrange-multipliers Section 9: Lagrange Multipliers
 			notes/vectors-and-matrices Section 10: Vectors and Matrices
+			notes/row-reduction Section 11: Row Reduction
 		
 		uo/342 Math 342
 		uo/341 Math 341

@@ -37,6 +37,8 @@ import { animate, asyncFetch, sleep } from "./utils.js";
 
 export let pageShown = true;
 
+export let siteLoaded = false;
+
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
 export async function loadPage()
@@ -99,6 +101,8 @@ export async function loadPage()
 
 	await fadeInPage();
 
+	siteLoaded = true;
+
 	setCurrentlyRedirecting(false);
 }
 
@@ -157,13 +161,11 @@ async function fadeInPage()
 		return;
 	}
 
-	fadeIn({ element: document.querySelector("#header") });
-	// document.querySelector("#header-container").style.opacity = 1;
-
 	setTimeout(() => pageShown = true, 10);
 
-	if (!opacityAnimationTime)
+	if (!opacityAnimationTime || window.DEBUG && !siteLoaded)
 	{
+		document.querySelector("#header").style.opacity = 1;
 		pageElement.style.opacity = 1;
 
 		if (bannerElement)
@@ -173,6 +175,9 @@ async function fadeInPage()
 
 		return;
 	}
+
+	fadeIn({ element: document.querySelector("#header") });
+	// document.querySelector("#header-container").style.opacity = 1;
 
 	await (() =>
 	{

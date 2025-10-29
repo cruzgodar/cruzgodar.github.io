@@ -130,7 +130,7 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 
 	### desmos lake
 
-	Hint: the arc cut out by a path at angle $\theta$ from the westmost point has angle $2\theta$, and the 
+	Hint: the arc cut out by a path at angle $\theta$ from the westmost point has angle $2\theta$. Also, any triangle with three points on a circle with two of them opposite the center has a right angle at the third point.
 
 ###
 
@@ -142,16 +142,16 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 
 	### solution
 
-	Let's begin by finding a function we can optimize. If we jump in after $x$ feet, then we spend $x$ feet at $10$ feet per second, taking $\frac{x}{10}$ seconds. Then the straight line path in the water has length
+	Let's begin by finding a function we can optimize. If we jump in after $x$ feet, then we spend $x$ feet at $5$ feet per second, taking $\frac{x}{5}$ seconds. Then the straight line path in the water has length
 	
 	$$
-		\sqrt{(500 - x)^2 + 100^2} = \sqrt{x^2 - 1000x + 260000},
+		\sqrt{(480 - x)^2 + 60^2} = \sqrt{x^2 - 960x + 234000},
 	$$
 
-	so the time we spend in the water is $\frac{1}{4} \sqrt{x^2 - 1000x + 260000}$. The total time is then
+	so the time we spend in the water is $\frac{1}{4} \sqrt{x^2 - 960x + 234000}$. The total time is then
 
 	$$
-		T(x) = \frac{1}{10}x + \frac{1}{4} \sqrt{x^2 - 1000x + 260000},
+		T(x) = \frac{1}{5}x + \frac{1}{4} \sqrt{x^2 - 1000x + 260000},
 	$$
 
 	and so we can optimize this function. We have
