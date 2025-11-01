@@ -73,8 +73,10 @@ export default function()
 		onEnter: run
 	});
 
-	function run()
+	async function run()
 	{
+		await glslTextarea.loaded;
+
 		applet.loadPromise.then(() =>
 		{
 			applet.run({
@@ -99,4 +101,6 @@ export default function()
 
 		run();
 	}
+
+	run();
 }

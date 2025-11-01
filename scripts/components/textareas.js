@@ -68,7 +68,7 @@ export class Textarea extends InputElement
 			{
 				setTimeout(() =>
 				{
-					this.setValue(decodeURIComponent(value));
+					this.setValue(decodeURIComponent(value), true);
 					this.loadResolve();
 				}, 10);
 			}
@@ -129,6 +129,7 @@ export class Textarea extends InputElement
 
 	setValue(newValue, callOnInput = false)
 	{
+		console.log(newValue, callOnInput);
 		this.value = newValue;
 		this.element.value = this.value;
 		this.updateOverlayElement();
