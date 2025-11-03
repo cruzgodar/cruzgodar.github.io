@@ -129,7 +129,6 @@ export class Textarea extends InputElement
 
 	setValue(newValue, callOnInput = false)
 	{
-		console.log(newValue, callOnInput);
 		this.value = newValue;
 		this.element.value = this.value;
 		this.updateOverlayElement();

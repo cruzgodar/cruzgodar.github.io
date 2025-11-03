@@ -1885,7 +1885,7 @@ export const sitemap =
 	
 	"/teaching/yale/1180/notes/bases":
 	{
-		"title": "Section 12: Bases",
+		"title": "Section 12: Linear Independence and Bases",
 		
 		"parent": "/teaching/yale/1180",
 		
