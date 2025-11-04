@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -58,6 +58,20 @@ export default function()
 				expressions:
 				[
 					{ latex: raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: desmosPurple },
+					{ latex: raw`a = 1`, sliderBounds: { min: 0, max: 8 } },
+					{ latex: raw`b = 7`, sliderBounds: { min: 0, max: 8 } },
+					{ latex: raw`n = 6`, sliderBounds: { min: 2, max: 100, step: 1 } },
+					
+					{ latex: raw`\sum_{i = 1}^n s f(L[i])` },
+					{ latex: raw`\sum_{i = 1}^n s f(R[i])` },
+					
+					{ latex: raw`s = \frac{b - a}{n}`, secret: true },
+					{ latex: raw`X = [a, a + s, ..., b]`, secret: true },
+					{ latex: raw`L = [a, a + s, ..., b - s]`, secret: true },
+					{ latex: raw`R = [a + s, a + 2s, ..., b]`, secret: true },
+					{ latex: raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosRed, secret: true },
+					{ latex: raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true },
+					{ latex: raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true }
 				]
 			},
 
