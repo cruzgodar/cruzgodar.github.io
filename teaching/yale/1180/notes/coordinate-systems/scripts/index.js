@@ -333,7 +333,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`A = [ 0, ..., \floor(\abs(a))\sign(a) ]` },
+					{ latex: raw`A = [ 0, ..., \floor(\abs(a))\sign(a) ]`, secret: true },
 					...getDesmosSlider({
 						expression: raw`a = 3`,
 						min: -5,
@@ -341,7 +341,7 @@ export default function()
 						secret: false,
 					}),
 
-					{ latex: raw`B = [ 0, ..., \floor(\abs(b))\sign(b) ]` },
+					{ latex: raw`B = [ 0, ..., \floor(\abs(b))\sign(b) ]`, secret: true },
 					
 					...getDesmosSlider({
 						expression: raw`b = 2`,
@@ -361,14 +361,14 @@ export default function()
 						from: [`A[${i + 1}]`, "0"],
 						to: [`A[${i + 2}]`, "0"],
 						color: desmosRed,
-						secret: false
+						secret: true
 					})).flat()),
 
 					...(Array(5).fill().map((_, i) => getDesmosVector({
 						from: ["a", `B[${i + 1}]`],
 						to: ["a", `B[${i + 2}]`],
 						color: desmosBlue,
-						secret: false
+						secret: true
 					})).flat()),
 
 					...getDesmosVector({

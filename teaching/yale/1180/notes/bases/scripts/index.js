@@ -1,13 +1,15 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    getDesmosPoint,
-    getDesmosSlider,
-    getDesmosVector,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	getDesmosPoint,
+	getDesmosSlider,
+	getDesmosVector,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -15,55 +17,73 @@ export default function()
 	{
 		const data =
 		{
-			planeVectors:
+			coordinateSystems:
 			{
 				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 				expressions:
 				[
-					...getDesmosSlider({ expression: "a = 1" }),
-					...getDesmosSlider({ expression: "b = 2" }),
-					...getDesmosPoint({ point: ["a", "b"], color: desmosPurple }),
-					...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosPurple }),
-				]
-			},
+					{ latex: raw`a = -\frac{1}{3}c + \frac{2}{3}d`, secret: true },
+					{ latex: raw`b = \frac{1}{3}c + \frac{1}{3}d`, secret: true },
 
-			vectorAddition:
-			{
-				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+					{ latex: raw`A = [ 0, ..., \floor(\abs(a))\sign(a) ]`, secret: true },
 
-				expressions:
-				[
-					...getDesmosSlider({ expression: "a = 2" }),
-					...getDesmosSlider({ expression: "b = 1" }),
-					...getDesmosSlider({ expression: "c = 2" }),
-					...getDesmosSlider({ expression: "d = -2" }),
+					...getDesmosSlider({
+						expression: raw`c = 3`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
 
-					...getDesmosPoint({ point: ["a", "b"], color: desmosRed }),
-					...getDesmosPoint({ point: ["c", "d"], color: desmosBlue }),
-
-					...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosRed }),
-					...getDesmosVector({ from: [0, 0], to: ["c", "d"], color: desmosBlue }),
+					{ latex: raw`B = [ 0, ..., \floor(\abs(b))\sign(b) ]`, secret: true },
 					
+					...getDesmosSlider({
+						expression: raw`d = 2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosPoint({
+						point: ["c", "d"],
+						color: desmosBlack,
+						dragMode: "XY",
+						secret: false,
+					}),
+
+					...(Array(5).fill().map((_, i) => getDesmosVector({
+						from: [`-A[${i + 1}]`, `A[${i + 1}]`],
+						to: [`-A[${i + 2}]`, `A[${i + 2}]`],
+						color: desmosRed,
+						secret: true
+					})).flat()),
+
+					...(Array(5).fill().map((_, i) => getDesmosVector({
+						from: [`-a + 2B[${i + 1}]`, `a + B[${i + 1}]`],
+						to: [`-a + 2B[${i + 2}]`, `a + B[${i + 2}]`],
+						color: desmosBlue,
+						secret: true
+					})).flat()),
+
 					...getDesmosVector({
-						from: ["a", "b"],
-						to: ["a + c", "b + d"],
-						color: desmosBlue
+						from: [raw`-\floor(\abs(a))\sign(a)`, raw`\floor(\abs(a))\sign(a)`],
+						to: [raw`-(a + 0.00001\sign(a))`, raw`(a + 0.00001\sign(a))`],
+						color: desmosRed,
 					}),
 
 					...getDesmosVector({
-						from: ["c", "d"],
-						to: ["a + c", "b + d"],
-						color: desmosRed
+						from: [raw`-a + 2\floor(\abs(b))\sign(b)`, raw`a + \floor(\abs(b))\sign(b)`],
+						to: [raw`-a + 2(b + 0.00001\sign(b))`, raw`a + (b + 0.00001\sign(b))`],
+						color: desmosBlue,
 					}),
 
 					...getDesmosVector({
-						from: [0, 0],
-						to: ["a + c", "b + d"],
-						color: desmosPurple
+						from: ["0", "0"],
+						to: ["c", "d"],
+						color: desmosPurple,
 					}),
 				]
-			},
+			}
 		};
 
 		return data;
