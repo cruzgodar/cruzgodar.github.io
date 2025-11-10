@@ -1,3 +1,5 @@
+### show-solutions
+
 ### nav-buttons
 
 
@@ -64,7 +66,7 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 
 	### solution
 
-	Almost, but not quite! Every row has a leading $1$ or is all zero, but the third row's leading $1$ isn't alone in its column. By adding $-2$ times the third row to the second, we could fix this problem!
+	It's almost in RREF, but not quite! Every row has a leading $1$ or is all zero, but the third row's leading $1$ isn't alone in its column. By adding $-2$ times the third row to the second, we could fix this problem!
 
 ###
 
