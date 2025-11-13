@@ -1130,7 +1130,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	height: 24px;
 	
 	border: 2px solid var(--normal-contrast);
-	border-radius: 6px;
+	border-radius: 8px;
 	padding: 2px;
 }
 
@@ -1175,7 +1175,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	width: 100%;
 	height: 100%;
 	
-	border-radius: 2px;
+	border-radius: 4px;
 	
 	background: var(--normal-contrast);
 	opacity: 0;
