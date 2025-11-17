@@ -4,17 +4,11 @@
 	
 	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
 
-	On this homework, please do row reduction by hand. However, please do check your answers with technology for all of the problems! I recommend <a href="https://www.wolframalpha.com/">Wolfram Alpha</a> for this purpose, where you can ask questions of the form "Row reduce {{1, 2, 3}, {4, 5, 6}}" to row reduce the matrix
-
-	$$
-		[[ 1, 2, 3 ; 4, 5, 6 ]].
-	$$
-
-	Whatever you choose to use, please use something deterministic; at the time of writing, LLMs are notoriously bad at not dropping numbers and signs with this much arithmetic.
+	At this point, please feel free to do row reduction with technology --- note that you should still be doing the setup and all the rest of the problem on your own.
 
 	### buttons
-		download-homework-8-pdf
-		download-homework-8-tex
+		download-homework-9-pdf
+		download-homework-9-tex
 	###
 
 	- - -
@@ -50,5 +44,22 @@
 	> b) Draw a vector that is linearly dependent with $\vec{v}$, but linearly independent with $\vec{w}$.
 
 	> c) Draw a vector that is linearly dependent with both $\vec{v}$ and $\vec{w}$, but not with either of them alone.
+
+
+	- - -
+
+	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : #R# \to #R#$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
+
+
+
+	- - -
+
+	In problems 3#, find the matrix for the linear transformation $T$ and use it to evaluate $T(\vec{v})$.
+
+	#. $T\left( [[ 1 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 3 ; 4 ]]$, $T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 3 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ; 2 ]]$.
+
+	#. $T\left( [[ 1 ; 1 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 1 ; -1 ]] \right) = [[ -1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ]]$.
+
+	#. $T\left( [[ 0 ; 1 ]] \right) = 2$, $T\left( [[ 1 ; 3 ]] \right) = 7$, and $\vec{v} = [[ 2 ; 1 ]]$.
 
 ###
