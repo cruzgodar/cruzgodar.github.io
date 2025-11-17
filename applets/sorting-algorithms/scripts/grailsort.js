@@ -56,17 +56,44 @@ export class GrailSort {
 		}
 	}
 
+	toAbsoluteIndex(index, length)
+	{
+		return index < 0 ? Math.max(index + length, 0) : Math.min(index, length);
+	}
+
+	* copyWithin(array, target, start, end)
+	{
+		const len = array.length;
+		let to = this.toAbsoluteIndex(target, len);
+		let from = this.toAbsoluteIndex(start, len);
+		let count = Math.min((end === undefined ? len : this.toAbsoluteIndex(end, len)) - from, len - to);
+		let inc = 1;
+		if (from < to && to < from + count)
+		{
+			inc = -1;
+			from += count - 1;
+			to += count - 1;
+		}
+		while (count-- > 0)
+		{
+			if (from in array)
+			{
+				array[to] = array[from];
+				if (this.writeToPosition(to)) {yield;}
+			}
+			to += inc;
+			from += inc;
+		}
+		return array;
+	}
+
 	// Object src, int srcPos, Object dest, int destPos, int length
 	// Custom method for copying parts of the array either:
 	//      within itself to a different destination, or
 	//      to another array
 	* arraycopy(srcArray, srcPos, destArray, destPos, copyLen) {
 		if (srcArray === destArray) {
-			for (let i = destPos; i < destPos + copyLen; i++) {
-				if (this.writeToPosition(i)) {yield;}
-			}
-
-			srcArray.copyWithin(destPos, srcPos, srcPos + copyLen);
+			this.copyWithin(srcArray, destPos, srcPos, srcPos + copyLen);
 		} else {
 			// FIXED INCORRECT MEMBER NAME BUG 'srcArray.copyLen': should be -> srcArray.length
 			if (srcPos === 0 && copyLen === srcArray.length) {
@@ -113,7 +140,7 @@ export class GrailSort {
 		}
 	}
 
-	grailBinarySearchLeft(array, start, length, target) {
+	* grailBinarySearchLeft(array, start, length, target) {
 		let left  = 0;
 		let right = length;
 		while(left < right) {
@@ -128,7 +155,7 @@ export class GrailSort {
 		return left;
 	}
 	// Credit to Anonymous0726 for debugging
-	grailBinarySearchRight(array, start, length, target) {
+	* grailBinarySearchRight(array, start, length, target) {
 		let left  = 0;
 		let right = length;
 		while(left < right) {
@@ -145,7 +172,7 @@ export class GrailSort {
 	}
     
 	// cost: 2 * length + idealKeys^2 / 2
-	grailCollectKeys(array, start, length, idealKeys) {
+	* grailCollectKeys(array, start, length, idealKeys) {
 		let keysFound  = 1; // by itself, the first item in the array is our first unique key
 		let firstKey   = 0; // the first item in the array is at the first position in the array
 		let currentKey = 1; // the index used for finding potentially unique items ("keys") in the array
@@ -154,7 +181,7 @@ export class GrailSort {
             
 			// Find the location in the key-buffer where our current key can be inserted in sorted order.
 			// If the key at insertPos is equal to currentKey, then currentKey isn't unique and we move on.
-			const insertPos = this.grailBinarySearchLeft(array, start + firstKey, keysFound, array[start + currentKey]);
+			const insertPos = yield* this.grailBinarySearchLeft(array, start + firstKey, keysFound, array[start + currentKey]);
             
 			// The second part of this conditional does the equal check we were just talking about; however,
 			// if currentKey is larger than everything in the key-buffer (meaning insertPos == keysFound),
@@ -164,13 +191,13 @@ export class GrailSort {
                 
 				// First, rotate the key-buffer over to currentKey's immediate left...
 				// (this helps save a TON of swaps/writes!!!)
-				this.grailRotate(array, start + firstKey, keysFound, currentKey - (firstKey + keysFound));
+				yield* this.grailRotate(array, start + firstKey, keysFound, currentKey - (firstKey + keysFound));
                 
 				// Update the new position of firstKey...
 				firstKey = currentKey - keysFound;
                 
 				// Then, "insertion sort" currentKey to its spot in the key-buffer!
-				this.grailRotate(array, start + firstKey + insertPos, keysFound - insertPos, 1);
+				yield* this.grailRotate(array, start + firstKey + insertPos, keysFound - insertPos, 1);
                 
 				// One step closer to idealKeys.
 				keysFound++;
@@ -181,7 +208,7 @@ export class GrailSort {
         
 		// Bring however many keys we found back to the beginning of our array,
 		// and return the number of keys collected.
-		this.grailRotate(array, start, firstKey, keysFound);
+		yield* this.grailRotate(array, start, firstKey, keysFound);
 		return keysFound;
 	}
     

@@ -1747,7 +1747,8 @@ export const sitemap =
 			"/teaching/yale/1180/notes/lagrange-multipliers",
 			"/teaching/yale/1180/notes/vectors-and-matrices",
 			"/teaching/yale/1180/notes/row-reduction",
-			"/teaching/yale/1180/notes/bases"
+			"/teaching/yale/1180/notes/bases",
+			"/teaching/yale/1180/notes/linear-transformations"
 		],
 
 		"customScript": true
@@ -1886,6 +1887,17 @@ export const sitemap =
 	"/teaching/yale/1180/notes/bases":
 	{
 		"title": "Section 12: Linear Independence and Bases",
+		
+		"parent": "/teaching/yale/1180",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/yale/1180/notes/linear-transformations":
+	{
+		"title": "Section 13: Linear Transformations",
 		
 		"parent": "/teaching/yale/1180",
 		

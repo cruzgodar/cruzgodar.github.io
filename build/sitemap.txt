@@ -166,6 +166,7 @@ home Cruz Godar
 			notes/vectors-and-matrices Section 10: Vectors and Matrices
 			notes/row-reduction Section 11: Row Reduction
 			notes/bases Section 12: Linear Independence and Bases
+			notes/linear-transformations Section 13: Linear Transformations
 		
 		uo/342 Math 342
 		uo/341 Math 341
