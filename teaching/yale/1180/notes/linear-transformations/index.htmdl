@@ -268,18 +268,18 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 	$$
 		[[ 2, 3, 1 ; 3, 4, -2 ; 5, 7, -1 ]] &
 
-		[[ 2, 3, 1 ; 6, 8, -4 ; 10, 14, -2 ]] & \qquad \begin{array}{l} \vec{r_2} \te 2 \\ \vec{r_3} \te 2 \end{array}
+		[[ 2, 3, 1 ; 6, 8, -4 ; 10, 14, -2 ]] & \qquad :: \vec{r_2} \to 2\vec{r_2} ; \vec{r_2} \to 2\vec{r_2} ::
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, -1, -7 ]] & \qquad \begin{array}{l} \vec{r_2} \me 3\vec{r_1} \\ \vec{r_3} \me 5 \vec{r_1} \end{array}
+		[[ 2, 3, 1 ; 0, -1, -7 ; 0, -1, -7 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 5 \vec{r_1} ::
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_3} \me \vec{r_2}
+		[[ 2, 3, 1 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
 
-		[[ 2, 0, 20 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_1} \pe 3\vec{r_2}
+		[[ 2, 0, 20 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_1} \to \vec{r_1} + 3\vec{r_2}
 
-		[[ 1, 0, 10 ; 0, 1, 7 ; 0, 0, 0 ]] & \qquad \begin{array}{l} \vec{r_1} \te \frac{1}{2} \\ \vec{r_2} \te -1 \end{array}
+		[[ 1, 0, 10 ; 0, 1, 7 ; 0, 0, 0 ]] & \qquad :: \vec{r_1} \to \frac{1}{2}\vec{r_1} ; \vec{r_2} \to -\vec{r_2} ::
 	$$
 
-	In the end, we have two linearly independent vectors, so $A$ has only two independent columns. Since not all the columns were independent, $T$ isn't one-to-one, and since there weren't at least three linearly independent columns, $T$ isn't onto. That sentence certainly seems a bit redundant when we write it out, and we'll have more to say on the subject momentarily.
+	In the end, we have two linearly independent rows, so $A$ has only two independent columns. Since not all the columns were independent, $T$ isn't one-to-one, and since there weren't at least three linearly independent columns, $T$ isn't onto. That sentence certainly seems a bit redundant when we write it out, and we'll have more to say on the subject momentarily.
 
 ###
 
