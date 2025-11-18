@@ -240,7 +240,7 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 	in this basis.
 	
-	While this is nominally a new kind of task, it just comes down to more row reduction: we know that there is the correct number of vectors for a basis (three) and so we can just check linear independence. As a small extra, let's row reduce these by rows instead of columns: that's perfectly find to do for showing linear independence, and for interesting reasons that we'll have a chance to explore on the homework.
+	While this is nominally a new kind of task, it just comes down to more row reduction: we know that there is the correct number of vectors for a basis (three) and so we can just check linear independence. As a small extra, let's row reduce these by rows instead of columns: that's perfectly fine to do for showing linear independence, and for interesting reasons that we'll have a chance to explore on the homework.
 	
 	$$
 		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
@@ -271,10 +271,10 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 		[[ 1, 0, 2 | 1 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 6\vec{r_3}
 
-		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -3 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_3}.
+		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_3}.
 	$$
 
-	In total, our linear combination is $\vec{v} = 3\vec{v_1} - 5\vec{v_2} - 3\vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(3, -5, -3)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
+	In total, our linear combination is $\vec{v} = 3\vec{v_1} - 5\vec{v_2} - \vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(3, -5, -1)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
 
 ###
 
