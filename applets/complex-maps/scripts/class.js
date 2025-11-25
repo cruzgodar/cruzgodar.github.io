@@ -2,7 +2,7 @@ import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class ComplexMaps extends AnimationFrameApplet
 {
@@ -89,7 +89,7 @@ export class ComplexMaps extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.draggables.draggableArg.element.style.display = "none";
 

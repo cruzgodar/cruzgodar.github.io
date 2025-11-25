@@ -5,7 +5,7 @@ import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGL } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
 {
@@ -65,7 +65,7 @@ export class FractalSounds extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
+		this.wilsonJulia = new WilsonGL(canvas, optionsJulia);
 
 
 
@@ -80,7 +80,7 @@ export class FractalSounds extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, optionsHidden);
 
 
 

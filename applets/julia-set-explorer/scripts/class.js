@@ -4,7 +4,7 @@ import { changeOpacity } from "/scripts/src/animation.js";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const bubbleRadius = 1;
 
@@ -102,13 +102,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		
 
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
 			draggableOptions: {},
@@ -134,7 +134,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
+		this.wilsonPreview = new WilsonGL(previewCanvas, optionsPreview);
 
 		this.wilson.canvas.parentElement.appendChild(
 			this.wilsonPreview.canvas

@@ -1,7 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class LyapunovFractals extends AnimationFrameApplet
 {
@@ -63,7 +63,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		const optionsHidden =
 		{
@@ -74,7 +74,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, optionsHidden);
 
 		this.resume();
 	}

@@ -4,7 +4,7 @@ import { ThreeApplet } from "/scripts/applets/threeApplet.js";
 import { animate } from "/scripts/src/utils.js";
 import { STLExporter } from "/scripts/stlExporter.js";
 import * as THREE from "/scripts/three.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 
 const fiberThicknessScaleFactor = 1;
@@ -143,7 +143,7 @@ export class HopfFibration extends ThreeApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.initThree();
 

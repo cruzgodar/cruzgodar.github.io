@@ -1,6 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class AbelianSandpiles extends AnimationFrameApplet
 {
@@ -237,7 +237,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGL(hiddenCanvas, optionsUpdate);
 
 		const options = {
 			shader: shaderDraw,
@@ -261,7 +261,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		this.canvas.style.imageRendering = "pixelated";
 	}
 

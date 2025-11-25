@@ -2,7 +2,7 @@ import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
 {
@@ -82,8 +82,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilson = new WilsonGL(canvas, options);
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			draggableOptions: {},
 			canvasWidth: this.resolutionHidden,

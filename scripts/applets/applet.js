@@ -2,12 +2,12 @@ import { convertColor } from "../src/browser.js";
 import { openZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
-    $,
-    $$,
-    addTemporaryListener
+	$,
+	$$,
+	addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
-import { WilsonCPU, WilsonGPU } from "../wilson.js";
+import { WilsonCPU, WilsonGL } from "../wilson.js";
 
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
@@ -320,7 +320,7 @@ export class Applet
 
 			this.wilsons = Object.values(this).filter(field =>
 			{
-				return field instanceof WilsonCPU || field instanceof WilsonGPU;
+				return field instanceof WilsonCPU || field instanceof WilsonGL;
 			});
 
 			if (this.wilsons.length !== 0)
@@ -737,6 +737,16 @@ export function getFloatGlsl(float)
 	return /* glsl */`float(${float})`;
 }
 
+export function getFloatWgsl(float)
+{
+	if (typeof float === "string" || float !== Math.floor(float))
+	{
+		return float;
+	}
+
+	return /* wgsl */`f32(${float})`;
+}
+
 export function getVectorGlsl(vector)
 {
 	if (vector.length === 2)
@@ -752,6 +762,27 @@ export function getVectorGlsl(vector)
 	if (vector.length === 4)
 	{
 		return /* glsl */`vec4(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
+	}
+
+	console.error("Invalid vector length!");
+	return "";
+}
+
+export function getVectorWgsl(vector)
+{
+	if (vector.length === 2)
+	{
+		return /* wgsl */`vec2<f32>(${vector[0]}, ${vector[1]})`;
+	}
+
+	if (vector.length === 3)
+	{
+		return /* wgsl */`vec3<f32>(${vector[0]}, ${vector[1]}, ${vector[2]})`;
+	}
+
+	if (vector.length === 4)
+	{
+		return /* wgsl */`vec4<f32>(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
 	}
 
 	console.error("Invalid vector length!");
@@ -780,6 +811,39 @@ export function getMatrixGlsl(matrix)
 	if (matrix.length === 4)
 	{
 		return /* glsl */`mat4(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]}, ${matrix[3][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]}, ${matrix[3][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}, ${matrix[3][2]},
+			${matrix[0][3]}, ${matrix[1][3]}, ${matrix[2][3]}, ${matrix[3][3]}
+		)`;
+	}
+
+	console.error("Invalid matrix shape!");
+	return "";
+}
+
+export function getMatrixWgsl(matrix)
+{
+	if (matrix.length === 2)
+	{
+		return /* wgsl */`mat2x2<f32>(
+			${matrix[0][0]}, ${matrix[1][0]},
+			${matrix[0][1]}, ${matrix[1][1]}
+		)`;
+	}
+
+	if (matrix.length === 3)
+	{
+		return /* wgsl */`mat3x3<f32>(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}
+		)`;
+	}
+
+	if (matrix.length === 4)
+	{
+		return /* wgsl */`mat4x4<f32>(
 			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]}, ${matrix[3][0]},
 			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]}, ${matrix[3][1]},
 			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}, ${matrix[3][2]},

@@ -4,7 +4,7 @@ import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { $ } from "/scripts/src/main.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 
 
@@ -170,7 +170,7 @@ export class ThurstonGeometries extends Applet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 
 

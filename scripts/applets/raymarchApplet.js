@@ -1,9 +1,9 @@
 import anime from "../anime.js";
 import { animate, sleep } from "../src/utils.js";
-import { WilsonGPU } from "../wilson.js";
+import { WilsonGL } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
-	tempShader
+    tempShader
 } from "./applet.js";
 import { createShader } from "./createShader.js";
 
@@ -284,7 +284,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			verbose: window.DEBUG
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.loadShader({
 			id: "draw",

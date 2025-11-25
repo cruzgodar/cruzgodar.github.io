@@ -1,4 +1,4 @@
-import { getFloatGlsl, hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
+import { getFloatWgsl, hsvToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -14,18 +14,29 @@ export class NewtonsMethod extends AnimationFrameApplet
 	rootBInput;
 	colorSetterElement;
 
-	colors = {
-		root0: [216 / 255, 1 / 255, 42 / 255],
-		root1: [255 / 255, 139 / 255,56 / 255],
-		root2: [249 / 255, 239 / 255, 20 / 255],
-		root3: [27 / 255, 181 / 255, 61 / 255],
-		root4: [0 / 255, 86 / 255, 195 / 255],
-		root5: [154 / 255, 82 / 255, 164 / 255],
-		root6: [32 / 255, 32 / 255, 32 / 255],
-		root7: [155 / 255, 92 / 255, 15 / 255],
-	};
+	roots = [
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+		[0, 0],
+	];
 
-	lastActiveRoot = "root0";
+	colors = [
+		[216 / 255, 1 / 255, 42 / 255],
+		[255 / 255, 139 / 255,56 / 255],
+		[249 / 255, 239 / 255, 20 / 255],
+		[27 / 255, 181 / 255, 61 / 255],
+		[0 / 255, 86 / 255, 195 / 255],
+		[154 / 255, 82 / 255, 164 / 255],
+		[32 / 255, 32 / 255, 32 / 255],
+		[155 / 255, 92 / 255, 15 / 255],
+	];
+
+	lastActiveRoot = "0";
 
 	numRoots = 3;
 
@@ -57,263 +68,111 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		this.randomizeColors(false);
 
-
-
-		const shader = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform vec2 worldCenter;
-			uniform vec2 worldSize;
-			
-			uniform int numRoots;
-			
-			uniform vec2 root0;
-			uniform vec2 root1;
-			uniform vec2 root2;
-			uniform vec2 root3;
-			uniform vec2 root4;
-			uniform vec2 root5;
-			uniform vec2 root6;
-			uniform vec2 root7;
-			
-			uniform vec3 color0;
-			uniform vec3 color1;
-			uniform vec3 color2;
-			uniform vec3 color3;
-			uniform vec3 color4;
-			uniform vec3 color5;
-			uniform vec3 color6;
-			uniform vec3 color7;
-			
-			uniform vec2 a;
-			
-			uniform float brightnessScale;
-
-			uniform float secantProportion;
-			
-			const float derivativePrecision = ${getFloatGlsl(derivativePrecision)};
-			
-			const float threshhold = .001;
-			
-			
-			
-			//Returns z1 * z2.
-			vec2 cmul(vec2 z1, vec2 z2)
+		const shader = /* wgsl */`
+			struct Uniforms
 			{
-				return vec2(z1.x * z2.x - z1.y * z2.y, z1.x * z2.y + z1.y * z2.x);
+				worldCenter: vec2<f32>,
+				worldSize: vec2<f32>,
+				numRoots: u32,
+				roots: array<vec2<f32>, 8>,
+				colors: array<vec3<f32>, 8>,
+				a: vec2<f32>,
+				brightnessScale: f32,
+				secantProportion: f32,
 			}
 			
+			@group(0) @binding(0) var<uniform> uniforms: Uniforms;
+			@group(0) @binding(1) var outputTex: texture_storage_2d<rgba16float, write>;
+
+			const derivativePrecision: f32 = ${getFloatWgsl(derivativePrecision)};
+			const threshold: f32 = 0.001;
 			
-			
-			//Returns 1/z.
-			vec2 cinv(vec2 z)
+			@compute @workgroup_size(8, 8)
+			fn main(@builtin(global_invocation_id) globalId: vec3<u32>)
 			{
-				float magnitude = z.x*z.x + z.y*z.y;
+				let dimensions = textureDimensions(outputTex);
+				let coords = vec2<u32>(globalId.xy);
 				
-				return vec2(z.x / magnitude, -z.y / magnitude);
-			}
-			
-			
-			
-			//Returns f(z) for a polynomial f with given roots.
-			vec2 f(vec2 z)
-			{
-				vec2 result = vec2(1.0, 0.0);
-
-				if (numRoots >= 1)
+				if (coords.x >= dimensions.x || coords.y >= dimensions.y)
 				{
-					result = cmul(result, z - root0);
+					return;
 				}
-
-				if (numRoots >= 2)
-				{
-					result = cmul(result, z - root1);
-				}
-
-				if (numRoots >= 3)
-				{
-					result = cmul(result, z - root2);
-				}
-
-				if (numRoots >= 4)
-				{
-					result = cmul(result, z - root3);
-				}
-
-				if (numRoots >= 5)
-				{
-					result = cmul(result, z - root4);
-				}
-
-				if (numRoots >= 6)
-				{
-					result = cmul(result, z - root5);
-				}
-
-				if (numRoots >= 7)
-				{
-					result = cmul(result, z - root6);
-				}
-
-				if (numRoots >= 8)
-				{
-					result = cmul(result, z - root7);
-				}
-
-				return result;
-			}
-			
-			
-			
-			//Approximates f'(z) for a polynomial f with given roots.
-			vec2 fPrime(vec2 z)
-			{
-				return 1.0 / 12.0 * derivativePrecision * (
-					-f(z + vec2(2.0 / derivativePrecision, 0.0))
-					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0))
-					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0))
-					+ f(z - vec2(2.0 / derivativePrecision, 0.0))
-				);
-			}
-
-
-
-			void computeColor(
-				vec2 lastZ,
-				vec2 root,
-				vec3 color,
-				float d0,
-				int iteration
-			) {
-				float d1 = length(lastZ - root);
 				
-				float brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
-				
-				float brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
-				
-				gl_FragColor = vec4(color * brightness, 1.0);
-			}
-			
-			
-			
-			void main(void)
-			{
-				vec2 z = uv * worldSize * 0.5 + worldCenter;
-				vec2 lastZ = vec2(0.0, 0.0);
-				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-				
-				
-				
-				for (int iteration = 0; iteration < 200; iteration++)
+				// Convert pixel coordinates to complex plane [-2, 2]
+				let uv = vec2<f32>(coords) / vec2<f32>(dimensions);
+				var z = (uv - 0.5) * uniforms.worldSize + uniforms.worldCenter; // Map [0, 1] to [-2, 2]
+
+				var lastZ = vec2<f32>(0.0, 0.0);
+
+				for (var i = 0u; i < 200u; i++)
 				{
-					vec2 temp = cmul(
+					let temp: vec2<f32> = cmul(
 						mix(
 							cmul(f(z), cinv(fPrime(z))),
 							cmul(f(z), cmul(z - lastZ, cinv(f(z) - f(lastZ)))),
 							secantProportion
 						),
-						a + vec2(1.0, 0.0)
+						a + vec2<f32>(1.0, 0.0)
 					);
-					
+
 					lastZ = z;
-					
 					z -= temp;
 
-					if (numRoots >= 1)
+					for (var j = 0u; j < numRoots; j++)
 					{
-						float d0 = length(z - root0);
+						let d0 = length(z - lastZ);
 
 						if (d0 < threshhold)
 						{
-							computeColor(lastZ, root0, color0, d0, iteration);
-							return;
-						}
-					}
+							let d1 = length(lastZ - root);
+			
+							let brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
+							
+							let brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
 
-					if (numRoots >= 2)
-					{
-						float d0 = length(z - root1);
+							textureStore(outputTex, coords, vec4<f32>(color * brightness, 1.0));
 
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root1, color1, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 3)
-					{
-						float d0 = length(z - root2);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root2, color2, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 4)
-					{
-						float d0 = length(z - root3);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root3, color3, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 5)
-					{
-						float d0 = length(z - root4);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root4, color4, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 6)
-					{
-						float d0 = length(z - root5);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root5, color5, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 7)
-					{
-						float d0 = length(z - root6);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root6, color6, d0, iteration);
-							return;
-						}
-					}
-
-					if (numRoots >= 8)
-					{
-						float d0 = length(z - root7);
-
-						if (d0 < threshhold)
-						{
-							computeColor(lastZ, root7, color7, d0, iteration);
 							return;
 						}
 					}
 				}
+
+				textureStore(outputTex, coords, vec4<f32>(0.0, 0.0, 0.0, 1.0));
+			}
+
+			fn cmul(z1: vec2<f32>, z2: vec2<f32>) -> vec2<f32>
+			{
+				return vec2<f32>(z1.x * z2.x - z1.y * z2.y, z1.x * z2.y + z1.y * z2.x);
+			}
+
+			fn cinv(z: vec2<f32>) -> vec2<f32>
+			{
+				let magnitude = z.x*z.x + z.y*z.y;
+				return vec2<f32>(z.x / magnitude, -z.y / magnitude);
+			}
+
+			fn f(z: vec2<f32>) -> vec2<f32>
+			{
+				var result = vec2<f32>(1.0, 0.0);
+
+				for (var i = 0u; i < uniforms.numRoots; i++)
+				{
+					result = cmul(result, z - uniforms.roots[i]);
+				}
+			}
+
+			fn fPrime(z: vec2<f32>) -> vec2<f32>
+			{
+				return 1.0 / 12.0 * derivativePrecision * (
+					-f(z + vec2<f32>(2.0 / derivativePrecision, 0.0))
+					+ 8.0 * f(z + vec2<f32>(1.0 / derivativePrecision, 0.0))
+					- 8.0 * f(z - vec2<f32>(1.0 / derivativePrecision, 0.0))
+					+ f(z - vec2<f32>(2.0 / derivativePrecision, 0.0))
+				);
 			}
 		`;
 
-
+		
 
 		const options = {
 			shader,
@@ -324,23 +183,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 				
 				numRoots: this.numRoots,
 				
-				root0: [0, 0],
-				root1: [0, 0],
-				root2: [0, 0],
-				root3: [0, 0],
-				root4: [0, 0],
-				root5: [0, 0],
-				root6: [0, 0],
-				root7: [0, 0],
-				
-				color0: this.colors.root0,
-				color1: this.colors.root1,
-				color2: this.colors.root2,
-				color3: this.colors.root3,
-				color4: this.colors.root4,
-				color5: this.colors.root5,
-				color6: this.colors.root6,
-				color7: this.colors.root7,
+				roots: this.roots,
+				colors: this.colors,
 				
 				a: [0, 0],
 				
@@ -371,14 +215,14 @@ export class NewtonsMethod extends AnimationFrameApplet
 			draggableOptions: {
 				draggables: {
 					a: [0, 0],
-					root0: [0, 0],
-					root1: [0, 0],
-					root2: [0, 0],
-					root3: [0, 0],
-					root4: [0, 0],
-					root5: [0, 0],
-					root6: [0, 0],
-					root7: [0, 0],
+					0: [0, 0],
+					1: [0, 0],
+					2: [0, 0],
+					3: [0, 0],
+					4: [0, 0],
+					5: [0, 0],
+					6: [0, 0],
+					7: [0, 0],
 				},
 				callbacks: {
 					drag: this.onDragDraggable.bind(this),
@@ -407,7 +251,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		for (let i = 3; i < 8; i++)
 		{
-			this.wilson.draggables[`root${i}`].element.style.display = "none";
+			this.wilson.draggables[i].element.style.display = "none";
 		}
 
 		this.spreadRoots({ doAnimation: false });
@@ -416,7 +260,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		{
 			setTimeout(() =>
 			{
-				const color = this.colors.root0;
+				const color = this.colors[0];
 
 				this.colorSetterElement.firstElementChild.value = rgbToHex(
 					color[0] * 255,
@@ -469,17 +313,19 @@ export class NewtonsMethod extends AnimationFrameApplet
 		const magnitude = Math.sqrt(x * x + y * y);
 		const farAway = [ x / magnitude * 150, y / magnitude * 150 ];
 
-		this.wilson.setDraggables({ [`root${this.numRoots}`]: farAway });
+		this.wilson.setDraggables({ [this.numRoots]: farAway });
 
-		this.wilson.draggables[`root${this.numRoots}`].element.style.opacity = 0;
-		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "block";
+		this.wilson.draggables[this.numRoots].element.style.opacity = 0;
+		this.wilson.draggables[this.numRoots].element.style.display = "block";
+
+		this.roots[this.numRoots] = [...this.wilson.draggables[this.numRoots].location];
 
 		this.wilson.setUniforms({
-			[`root${this.numRoots}`]: this.wilson.draggables[`root${this.numRoots}`].location
+			roots: this.roots
 		});
 
 		this.wilsonHidden.setUniforms({
-			[`root${this.numRoots}`]: this.wilson.draggables[`root${this.numRoots}`].location
+			roots: this.roots
 		});
 
 		this.numRoots++;
@@ -494,7 +340,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		
 		this.moveRoots({
 			newRoots: {
-				[`root${this.numRoots - 1}`]: [x, y]
+				[this.numRoots - 1]: [x, y]
 			},
 			easing: "cubicBezier(0, 1, 0.5, 1)",
 			duration: 1000
@@ -505,12 +351,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 			});
 
 		changeOpacity({
-			element: this.wilson.draggables[`root${this.numRoots - 1}`].element,
+			element: this.wilson.draggables[this.numRoots - 1].element,
 			opacity: 1,
 			duration: 1000
 		});
 
-		this.onReleaseDraggable({ id: `root${this.numRoots - 1}` });
+		this.onReleaseDraggable({ id: `${this.numRoots - 1}` });
 
 		this.needNewFrame = true;
 	}
@@ -526,28 +372,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		this.numRoots--;
 
-		this.onReleaseDraggable({ id: `root${this.numRoots - 1}` });
+		this.onReleaseDraggable({ id: `${this.numRoots}` });
 
-		const [x, y] = this.wilson.draggables[`root${this.numRoots}`].location;
+		const [x, y] = this.wilson.draggables[this.numRoots].location;
 
 		const magnitude = Math.sqrt(x * x + y * y);
 		const farAway = [ x / magnitude * 1000, y / magnitude * 1000 ];
 
 		changeOpacity({
-			element: this.wilson.draggables[`root${this.numRoots}`].element,
+			element: this.wilson.draggables[this.numRoots].element,
 			opacity: 0,
 			duration: 1000
 		});
 
 		await this.moveRoots({
 			newRoots: {
-				[`root${this.numRoots}`]: farAway
+				[this.numRoots]: farAway
 			},
 			easing: "cubicBezier(1, 0, 1, 0.5)",
 			duration: 1000
 		});
 
-		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "none";
+		this.wilson.draggables[this.numRoots].element.style.display = "none";
 
 		this.wilson.setUniforms({
 			numRoots: this.numRoots
@@ -572,7 +418,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		{
 			const mag = 1 + randomize * .75 * Math.random();
 
-			newRoots[`root${i}`] = [
+			newRoots[i] = [
 				mag * Math.cos(2 * Math.PI * i / this.numRoots),
 				mag * Math.sin(2 * Math.PI * i / this.numRoots)
 			];
@@ -608,9 +454,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 				this.wilson.setDraggables({ [id]: location });
 
-				this.wilson.setUniforms({ [id]: location });
-				this.wilsonHidden.setUniforms({ [id]: location });
+				this.roots[id] = location;
 			}
+
+			this.wilson.setUniforms({ roots: this.roots });
+			this.wilsonHidden.setUniforms({ roots: this.roots });
 
 			this.needNewFrame = true;
 		}, doAnimation ? duration : 0, easing);
@@ -622,8 +470,21 @@ export class NewtonsMethod extends AnimationFrameApplet
 	{
 		this.wilson.setDraggables({ [this.lastActiveRoot]: [x, y] });
 
-		this.wilson.setUniforms({ [this.lastActiveRoot]: [x, y] });
-		this.wilsonHidden.setUniforms({ [this.lastActiveRoot]: [x, y] });
+		if (this.lastActiveRoot === "a")
+		{
+			this.a = [x, y];
+
+			this.wilson.setUniforms({ a: this.a });
+			this.wilsonHidden.setUniforms({ a: this.a });
+		}
+
+		else
+		{
+			this.roots[this.lastActiveRoot] = [x, y];
+
+			this.wilson.setUniforms({ roots: this.roots });
+			this.wilsonHidden.setUniforms({ roots: this.roots });
+		}
 
 		this.needNewFrame = true;
 	}
@@ -650,9 +511,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 			b: this.colors[root][2]
 		};
 
-		const index = root.slice(4);
-		const uniformName = `color${index}`;
-
 		anime({
 			targets: result,
 			r,
@@ -667,11 +525,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 				this.colors[root][2] = result.b;
 
 				this.wilson.setUniforms({
-					[uniformName]: this.colors[root]
+					colors: this.colors
 				});
 
 				this.wilsonHidden.setUniforms({
-					[uniformName]: this.colors[root]
+					colors: this.colors
 				});
 
 				this.needNewFrame = true;
@@ -683,11 +541,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 				this.colors[root][2] = b;
 
 				this.wilson.setUniforms({
-					[uniformName]: this.colors[root]
+					colors: this.colors
 				});
 
 				this.wilsonHidden.setUniforms({
-					[uniformName]: this.colors[root]
+					colors: this.colors
 				});
 
 				this.needNewFrame = true;
@@ -697,7 +555,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	randomizeColors(animate = true)
 	{
-		for (const root in this.colors)
+		for (let i = 0; i < this.numRoots; i++)
 		{
 			const color = hsvToRgb(
 				(Math.random() * 0.55 + 0.525) % 1,
@@ -707,7 +565,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 			this.setColor({
 				rgb: color,
-				root,
+				root: i,
 				animate
 			});
 		}
@@ -715,13 +573,21 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	onDragDraggable({ id, x, y })
 	{
-		this.wilson.setUniforms({
-			[id]: [x, y]
-		});
+		if (id === "a")
+		{
+			this.a = [x, y];
 
-		this.wilsonHidden.setUniforms({
-			[id]: [x, y]
-		});
+			this.wilson.setUniforms({ a: this.a });
+			this.wilsonHidden.setUniforms({ a: this.a });
+		}
+
+		else
+		{
+			this.roots[id] = [x, y];
+
+			this.wilson.setUniforms({ roots: this.roots });
+			this.wilsonHidden.setUniforms({ roots: this.roots });
+		}
 
 		this.needNewFrame = true;
 	}
