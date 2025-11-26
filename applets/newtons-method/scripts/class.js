@@ -71,12 +71,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 		const shader = /* wgsl */`
 			struct Uniforms
 			{
-				worldCenter: vec2<f32>,
-				worldSize: vec2<f32>,
+				worldCenter: vec2f,
+				worldSize: vec2f,
 				numRoots: u32,
-				roots: array<vec2<f32>, 8>,
-				colors: array<vec3<f32>, 8>,
-				a: vec2<f32>,
+				roots: array<vec4f, 8>,
+				colors: array<vec3f, 8>,
+				a: vec2f,
 				brightnessScale: f32,
 				secantProportion: f32,
 			}
@@ -88,10 +88,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 			const threshold: f32 = 0.001;
 			
 			@compute @workgroup_size(8, 8)
-			fn main(@builtin(global_invocation_id) globalId: vec3<u32>)
+			fn main(@builtin(global_invocation_id) globalId: vec3u)
 			{
 				let dimensions = textureDimensions(outputTex);
-				let coords = vec2<u32>(globalId.xy);
+				let coords = vec2u(globalId.xy);
 				
 				if (coords.x >= dimensions.x || coords.y >= dimensions.y)
 				{
@@ -99,75 +99,77 @@ export class NewtonsMethod extends AnimationFrameApplet
 				}
 				
 				// Convert pixel coordinates to complex plane [-2, 2]
-				let uv = vec2<f32>(coords) / vec2<f32>(dimensions);
+				let uv = vec2f(coords) / vec2f(dimensions);
 				var z = (uv - 0.5) * uniforms.worldSize + uniforms.worldCenter; // Map [0, 1] to [-2, 2]
 
-				var lastZ = vec2<f32>(0.0, 0.0);
+				var lastZ = vec2f(0.0, 0.0);
 
 				for (var i = 0u; i < 200u; i++)
 				{
-					let temp: vec2<f32> = cmul(
+					let temp = cmul(
 						mix(
 							cmul(f(z), cinv(fPrime(z))),
 							cmul(f(z), cmul(z - lastZ, cinv(f(z) - f(lastZ)))),
-							secantProportion
+							uniforms.secantProportion
 						),
-						a + vec2<f32>(1.0, 0.0)
+						uniforms.a + vec2f(1.0, 0.0)
 					);
 
 					lastZ = z;
 					z -= temp;
 
-					for (var j = 0u; j < numRoots; j++)
+					for (var j = 0u; j < uniforms.numRoots; j++)
 					{
 						let d0 = length(z - lastZ);
 
-						if (d0 < threshhold)
+						if (d0 < threshold)
 						{
-							let d1 = length(lastZ - root);
+							let d1 = length(lastZ - uniforms.roots[j].xy);
 			
-							let brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
+							let brightnessAdjust = (log(threshold) - log(d0)) / (log(d1) - log(d0));
 							
-							let brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
+							let brightness = 1 - (f32(i) - brightnessAdjust) / uniforms.brightnessScale;
 
-							textureStore(outputTex, coords, vec4<f32>(color * brightness, 1.0));
+							textureStore(outputTex, coords, vec4f(uniforms.colors[j] * brightness, 1.0));
 
 							return;
 						}
 					}
 				}
 
-				textureStore(outputTex, coords, vec4<f32>(0.0, 0.0, 0.0, 1.0));
+				textureStore(outputTex, coords, vec4f(0.0, 0.0, 0.0, 1.0));
 			}
 
-			fn cmul(z1: vec2<f32>, z2: vec2<f32>) -> vec2<f32>
+			fn cmul(z1: vec2f, z2: vec2f) -> vec2f
 			{
-				return vec2<f32>(z1.x * z2.x - z1.y * z2.y, z1.x * z2.y + z1.y * z2.x);
+				return vec2f(z1.x * z2.x - z1.y * z2.y, z1.x * z2.y + z1.y * z2.x);
 			}
 
-			fn cinv(z: vec2<f32>) -> vec2<f32>
+			fn cinv(z: vec2f) -> vec2f
 			{
 				let magnitude = z.x*z.x + z.y*z.y;
-				return vec2<f32>(z.x / magnitude, -z.y / magnitude);
+				return vec2f(z.x / magnitude, -z.y / magnitude);
 			}
 
-			fn f(z: vec2<f32>) -> vec2<f32>
+			fn f(z: vec2f) -> vec2f
 			{
-				var result = vec2<f32>(1.0, 0.0);
+				var result = vec2f(1.0, 0.0);
 
 				for (var i = 0u; i < uniforms.numRoots; i++)
 				{
-					result = cmul(result, z - uniforms.roots[i]);
+					result = cmul(result, z - uniforms.roots[i].xy);
 				}
+
+				return result;
 			}
 
-			fn fPrime(z: vec2<f32>) -> vec2<f32>
+			fn fPrime(z: vec2f) -> vec2f
 			{
 				return 1.0 / 12.0 * derivativePrecision * (
-					-f(z + vec2<f32>(2.0 / derivativePrecision, 0.0))
-					+ 8.0 * f(z + vec2<f32>(1.0 / derivativePrecision, 0.0))
-					- 8.0 * f(z - vec2<f32>(1.0 / derivativePrecision, 0.0))
-					+ f(z - vec2<f32>(2.0 / derivativePrecision, 0.0))
+					-f(z + vec2f(2.0 / derivativePrecision, 0.0))
+					+ 8.0 * f(z + vec2f(1.0 / derivativePrecision, 0.0))
+					- 8.0 * f(z - vec2f(1.0 / derivativePrecision, 0.0))
+					+ f(z - vec2f(2.0 / derivativePrecision, 0.0))
 				);
 			}
 		`;
@@ -644,28 +646,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-		const pixelData = this.wilsonHidden.readPixels();
+		// const pixelData = this.wilsonHidden.readPixels();
 
-		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		// const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
-		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		{
-			brightnesses[i] = Math.max(
-				Math.max(
-					pixelData[4 * i],
-					pixelData[4 * i + 1]
-				),
-				pixelData[4 * i + 2]
-			);
-		}
+		// for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
+		// {
+		// 	brightnesses[i] = Math.max(
+		// 		Math.max(
+		// 			pixelData[4 * i],
+		// 			pixelData[4 * i + 1]
+		// 		),
+		// 		pixelData[4 * i + 2]
+		// 	);
+		// }
 
-		brightnesses.sort((a, b) => a - b);
+		// brightnesses.sort((a, b) => a - b);
 
 		let brightnessScale = Math.min(
-			7000 / (
-				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-			),
+			// 7000 / (
+			// 	brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			// 	+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			// ),
 			35
 		);
 
