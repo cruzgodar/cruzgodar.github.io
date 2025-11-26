@@ -64,7 +64,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		this.rootBInput = rootBInput;
 		this.colorSetterElement = colorSetterElement;
 
-		const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas(false);
 
 		this.randomizeColors(false);
 
@@ -74,7 +74,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 				worldCenter: vec2f,
 				worldSize: vec2f,
 				numRoots: u32,
-				roots: array<vec4f, 8>,
+				roots: array<vec3f, 8>, // Can't use vec2f in arrays
 				colors: array<vec3f, 8>,
 				a: vec2f,
 				brightnessScale: f32,
@@ -84,8 +84,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 			@group(0) @binding(0) var<uniform> uniforms: Uniforms;
 			@group(0) @binding(1) var outputTex: texture_storage_2d<rgba16float, write>;
 
-			const derivativePrecision: f32 = ${getFloatWgsl(derivativePrecision)};
-			const threshold: f32 = 0.001;
+			const derivativePrecision = ${getFloatWgsl(derivativePrecision)};
+			const threshold = 0.001;
 			
 			@compute @workgroup_size(8, 8)
 			fn main(@builtin(global_invocation_id) globalId: vec3u)
@@ -99,7 +99,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 				}
 				
 				// Convert pixel coordinates to complex plane [-2, 2]
-				let uv = vec2f(coords) / vec2f(dimensions);
+				let uv = (vec2f(coords) + vec2f(0.5)) / vec2f(dimensions);
 				var z = (uv - 0.5) * uniforms.worldSize + uniforms.worldCenter; // Map [0, 1] to [-2, 2]
 
 				var lastZ = vec2f(0.0, 0.0);
@@ -120,7 +120,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 					for (var j = 0u; j < uniforms.numRoots; j++)
 					{
-						let d0 = length(z - lastZ);
+						let d0 = length(z - uniforms.roots[j].xy);
 
 						if (d0 < threshold)
 						{
@@ -147,7 +147,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 			fn cinv(z: vec2f) -> vec2f
 			{
-				let magnitude = z.x*z.x + z.y*z.y;
+				let magnitude = z.x * z.x + z.y * z.y;
 				return vec2f(z.x / magnitude, -z.y / magnitude);
 			}
 
@@ -633,7 +633,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	
 
-	drawFrame()
+	async drawFrame()
 	{
 		this.updateRootSetterValues();
 
@@ -642,32 +642,33 @@ export class NewtonsMethod extends AnimationFrameApplet
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY]
 		});
 
+
 		this.wilsonHidden.drawFrame();
+		const pixelData = await this.wilsonHidden.readPixels();
 
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
+		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
+		{
+			brightnesses[i] = Math.max(
+				Math.max(
+					pixelData[4 * i],
+					pixelData[4 * i + 1]
+				),
+				pixelData[4 * i + 2]
+			);
+		}
 
-		// const pixelData = this.wilsonHidden.readPixels();
+		brightnesses.sort((a, b) => a - b);
 
-		// const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
-
-		// for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		// {
-		// 	brightnesses[i] = Math.max(
-		// 		Math.max(
-		// 			pixelData[4 * i],
-		// 			pixelData[4 * i + 1]
-		// 		),
-		// 		pixelData[4 * i + 2]
-		// 	);
-		// }
-
-		// brightnesses.sort((a, b) => a - b);
+		console.log(brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]);
 
 		let brightnessScale = Math.min(
-			// 7000 / (
-			// 	brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			// 	+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-			// ),
+			2 / (
+				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			),
 			35
 		);
 

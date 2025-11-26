@@ -4,7 +4,8 @@ import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
 	$$,
-	addTemporaryListener
+	addTemporaryListener,
+	pageElement
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 import { WilsonCPU, WilsonGL } from "../wilson.js";
@@ -248,9 +249,6 @@ export class Applet
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
-		hiddenCanvas.style.width = "10px";
-		hiddenCanvas.style.height = `${10 / aspectRatio}px`;
-
 		if (!this.hiddenCanvasContainer)
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
@@ -263,7 +261,21 @@ export class Applet
 			document.body.appendChild(this.hiddenCanvasContainer);
 		}
 
-		this.hiddenCanvasContainer.appendChild(hiddenCanvas);
+		if (hidden)
+		{
+			hiddenCanvas.style.width = "10px";
+			hiddenCanvas.style.height = `${10 / aspectRatio}px`;
+			
+			this.hiddenCanvasContainer.appendChild(hiddenCanvas);
+		}
+
+		else
+		{
+			hiddenCanvas.style.width = "300px";
+			hiddenCanvas.style.height = `${300 / aspectRatio}px`;
+
+			pageElement.appendChild(hiddenCanvas);
+		}
 
 		return hiddenCanvas;
 	}
