@@ -299,6 +299,20 @@ Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1
 	$$
 
 	in this basis.
+
+	### solution
+
+	We can actually do both in one step! By arranging $\vec{v_1}$ and $\vec{v_2}$ as columns, augmenting with $\vec{v}$, and row reducing, we can show that the left side row reduces to the identity matrix and get the coefficients to express $\vec{v}$ in this basis at the same time.
+
+	$$
+		[[ 1, 0 | 3 ; 2, -1 | 8 ]] &
+
+		[[ 1, 0 | 3 ; 0, -1 | 2 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
+
+		[[ 1, 0 | 3 ; 0, 1 | -2 ]] & \qquad \vec{r_2} \to -\vec{r_2}
+	$$
+
+	We therefore have that $\left\{ \vec{v_1}, \vec{v_2} \right\}$ is a basis, and that $\vec{v} = 3\vec{v_1} - 2\vec{v_2}$.
 	
 ###
 
