@@ -21,6 +21,7 @@ const filenamesPDF = {
 	"homework-7": "Homework 7.pdf",
 	"homework-8": "Homework 8.pdf",
 	"homework-9": "Homework 9.pdf",
+	"homework-10": "Homework 10.pdf",
 };
 
 const filenamesTex = {
@@ -33,6 +34,7 @@ const filenamesTex = {
 	"homework-7": "Homework 7.tex",
 	"homework-8": "Homework 8.tex",
 	"homework-9": "Homework 9.tex",
+	"homework-10": "Homework 10.tex",
 };
 
 export default async function load()

@@ -96,7 +96,7 @@ export function parseText(text)
 		html = html.replaceAll(/<([^<>]*?)'([^<>]*?)>/g, (match, $1, $2) => `<${$1}[SINGLEQUOTE]${$2}>`);
 	}
 
-
+	
 
 	// Add leading tabs and bullet points.
 	let numTabs = 0;
@@ -151,5 +151,5 @@ export function parseText(text)
 		.replaceAll(/\[ASTERISK\]/g, "*")
 		.replaceAll(/\[BACKTICK\]/g, "`")
 		.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1}">$${$1}$${$2}</span>`);
+		.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>([^\s<]*)/g, (match, $1, $2) => `<span class="tex-holder inline-math" data-source-tex="${$1}">$${$1}$${$2}</span>`);
 }
