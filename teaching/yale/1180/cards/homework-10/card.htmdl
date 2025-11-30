@@ -1,6 +1,6 @@
 ### card homework-10 "Homework 10"
 	
-	*Due Sunday, November 7th at 11:59 PM*
+	*Due Sunday, December 7th at 11:59 PM*
 	
 	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
 
@@ -76,7 +76,7 @@
 
 	#. We can use the multiplicativity of the determinant to show some nice facts about the determinants of inverse matrices.
 
-	> a) What is $\det I$?
+	> a) The identity matrix $I$ has the same determinant no matter what size it is. What is $\det I$?
 
 	> b) Let $A$ be an invertible matrix. Using part a), find $\det A^{-1}$ in terms of $\det A$.
 
