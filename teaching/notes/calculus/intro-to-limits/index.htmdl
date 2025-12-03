@@ -48,7 +48,7 @@ Better! Since our approximations improve as we have a smaller and smaller run, t
 	
 ###
 
-So far, we've been dealing with secant lines, but what we want is a tangent line, which appears when both points are at $(0, 0)$.
+So far, we've been dealing with secant lines, but what we want is a tangent line, which appears when both points are at $(0, 2)$.
 
 ### desmos tangentLines
 
