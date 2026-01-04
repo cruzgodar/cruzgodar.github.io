@@ -2,15 +2,13 @@
 
 
 
-Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+Our final topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ (so the domain and codomain are equal), we have the possibility of the matrix (and therefore transformation) being invertible. But there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
 
 ### def "linear operator"
 
-	A **linear operator** is a linear transformation whose domain and codomain are equal.
+	A **linear operator** is a linear transformation whose domain and codomain are equal --- that is, it's an operator whose matrix is square.
 
 ###
-
-Part of the difficulty in introducing the upcoming concept is that it's very well-motivated and completely unmotivated at the same time. Although it connects to a wide array of other topics in linear algebra and beyond, we're encountering it relatively early on in our progression through the subject, and so there's no great way to derive it from anything we've seen so far. As we'll quickly come to realize, though, it's closely connected with understanding linear operators. First, we'll get one technical definition out of the way.
 
 ### def "matrix minor"
 
@@ -42,7 +40,7 @@ With minors defined, we can finally get to the definition we've (possibly) been 
 
 ### def "determinant"
 
-	Let $A$ be an $n \times n$ matrix. The **determinant** of $A$, written $\det A$, is a single number that we compute recursively. If $n = 1$, then $\det A$ is just its single entry --- e.g. $\det [5] = 5$. For $n > 1$, choose any row or column of $A$ and call it $\vec{v}$, and find the minors of $A$ for every entry in $\vec{v}$, denoting them $A_1, A_2, ..., A_n$. Then find the determinant of each $A_i$ and add up the quantities $\vec{v}_i \det A_i$ with alternating signs given by the checkerboard-like matrix
+	Let $A$ be an $n \times n$ matrix. The **determinant** of $A$, written $\det A$, is a single number that we compute recursively. If $n = 1$, then $\det A$ is just its single entry --- e.g. $\det [[5]] = 5$. For $n > 1$, choose any row or column of $A$ and call it $\vec{v}$, and find the minors of $A$ for every entry in $\vec{v}$, denoting them $A_1, A_2, ..., A_n$. Then find the determinant of each $A_i$ and add up the quantities $\vec{v}_i \det A_i$ with alternating signs given by the checkerboard-like matrix
 
 	$$
 		[[ +, -, +, -, \cdots ; -, +, -, +, \cdots ; +, -, +, -, \cdots ; -, +, -, +, \cdots ; \vdots, \vdots, \vdots, \vdots, \ddots ]].
@@ -82,6 +80,18 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	2. An implicit assertion in the definition of the determinant is that its value is the same no matter which row or column we expand about. For the generic $2 \times 2$ matrix $[[ a, b ; c, d ]]$, expand about both rows and both columns and show that the result is always $ad - bc$.
 
+	### solution
+
+	1. There are many ways to go about this, but in general, it's easiest to pick rows or columns with as many zeros as possible. If we choose row 2, for instance, then
+
+	$$
+		\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]] &= -4\det [[ 2, 3 ; 9, 0 ]] -6\det [[ 1, 2 ; 7, 9 ]]
+
+		&= -4(2\cdot0 - 3\cdot9) -6\det (1\cdot9-2\cdot7)
+
+		&= 108 + 30 = 138
+	$$
+
 ###
 
 In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
@@ -92,7 +102,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 	### solution
 
-	The second row has the most zeros, so let's expand about that, ignoring zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
+	The second row has the most zeros, so let's expand about that, ignoring the zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
 
 	$$
 		4\det [[ 1, 7, 2 ; 3, 2, 0 ; 1, 3, 4 ]] -5\det [[ 1, 4, 2 ; 3, 1, 0 ; 1, 2, 4 ]],
@@ -115,6 +125,20 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 ### exc "the determinant"
 
 	Compute $$\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$$.
+
+	### solution
+
+	We can begin by expanding about the first column, then the second, and then the third:
+
+	$$
+		\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]] &= 1\det [[ 4, 2, -1 ; 0, 9, 9 ; 0, 0, -3 ]]
+
+		&= 4\det [[ 9, 9 ; 0, -3 ]]
+
+		&= 4(-27)
+
+		&= -108.
+	$$
 
 ###
 
@@ -293,20 +317,32 @@ This result definitely needs some examples to explain it, so let's start there.
 	Let $S : #R#^3 \to #R#^3$ be defined by
 
 	$$
-		S\left( [[ x ; y ; z ]] \right) = [[ 2x + y ; x + y + z ; y + 3z ]].
+		S\left( [[ x ; y ; z ]] \right) = [[ 2x + y ; x + 3y + z ; 2x + y + 3z ]].
 	$$
 
 	The unit cube in $#R#^3$ is the set of points $(x, y, z)$ with $0 \leq x \leq 1$, $0 \leq y \leq 1$, and $0 \leq z \leq 1$, and is defined by its three bounding vectors
 
 	$$
-		[[ 1 ; 0 ; 0 ]], [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]].
+		[[ 1 ; 0 ; 0 ]], \quad [[ 0 ; 1 ; 0 ]], \quad [[ 0 ; 0 ; 1 ]].
 	$$
 
 	Find the image of the unit cube under $S$ by finding the images of those three vectors and sketch a picture of it, and then find its volume.
 
-###
+	### solution
 
-With the determinant understood, we've covered every fundamental of matrix algebra, with only a few exceptions that are the next term's core subjects. But we're far from done --- while we began our discussion of matrices as arising from linear systems, there are many, *many* more situations in which they appear, and we'll begin exploring those in the next section.
+	The images of these three vectors are the columns of the matrix for $S$:
+
+	$$
+		[[ 2 ; 1 ; 2 ]], \quad [[ 1 ; 3 ; 1 ]], \quad [[ 0 ; 1 ; 3 ]].
+	$$
+
+	Drawing these as a shape in $#R#^3$ looks like a 3D parallelogram (the proper term is **parallelepiped**).
+
+	### desmos parallelepiped
+
+	Since the determinant of the matrix for $S$ is $6$ and the volume of the original cube was $1$, this new volume is $6 \cdot 1 = 6$.
+
+###
 
 
 

@@ -2,9 +2,7 @@
 
 
 
-A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different.
-
-Let's start with some light notation. When we have a function $f$, its **domain** is the set of inputs it takes, and its **codomain** is a set containing the type of outputs it can give. Compared to the **image** or **range** of a function, which is the set consisting exclusively of outputs that actually occur, the codomain is simply the general type of output. For example, $f(x) = x^2$ can have a domain and codomain of $#R#$, since it takes in and outputs real numbers, but its image is $[0, \infty)$ (the set of nonnegative real numbers), since no real number squares to be negative. To make this less verbose, we write $f : #R# \to #R#$ to indicate the domain and codomain, and if we specifically want to specify the image, we can write $f : #R# \twoheadrightarrow [0, \infty)$.
+A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different. Here, those objects are vectors in $#R#^n$, and the maps will be quite similar to matrices.
 
 As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : #R#^n \to #R#^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in #R#^n$,
 
@@ -110,6 +108,46 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	Find $S \left( [[ 1 ; 2 ; 3 ]] \right)$.
 
+	### solution
+
+	We can first find
+
+	$$
+		S \left( [[ 0 ; 0 ; 1 ]] \right) = S \left( [[ 0 ; 0 ; 1 ]] \right) = [[ 3 ; 1 ]].
+	$$
+
+	Then
+
+	$$
+		S \left( [[ 1 ; 0 ; 0 ]] \right) &= S \left( [[ 1 ; 0 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+
+		&= [[ 1 ; 1 ]] - [[ 3 ; 1 ]]
+
+		&= [[ -2 ; 0 ]]
+
+		~
+
+		S \left( [[ 0 ; 1 ; 0 ]] \right) &= S \left( [[ 0 ; 1 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+
+		&= [[ 3 ; 1 ]] - [[ 3 ; 1 ]]
+
+		&= [[ 0 ; 0 ]].
+	$$
+
+	The matrix for $S$ is then
+
+	$$
+		[[ -2, 0, 3 ; 0, 0, 1 ]],
+	$$
+
+	so
+
+	$$
+		 S\left( [[ 1 ; 2 ; 3 ]] \right) &= [[ -2, 0, 3 ; 0, 0, 1 ]] [[ 1 ; 2 ; 3 ]]
+
+		 &= [[ 7 ; 3 ]]
+	$$
+
 ###
 
 In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
@@ -172,9 +210,35 @@ And so we get to the fundamental result of the section: **linear transformations
 
 	Find the matrix $B$ for $S$, and then verify that the matrix for the composition $S \circ T$ is $BA$.
 
-###
+	### solution
 
-We'll have much, much more to say about linear transformations over the next few sections. The correspondence between linear transformations and matrices will help us understand both quite a bit more, and the work we've done to understand inverse matrices, linear independence, and linear combinations will play a vital role.
+	The matrix is given by evaluating $S$ on the standard basis vectors, or equivalently by reading off the coefficients of each variable to find every row:
+
+	$$
+		B = [[ 1, 0, 1 ; 3, -2, 0 ]].
+	$$
+
+	Now the product of matrices is
+
+	$$
+		BA &= [[ 1, 0, 1 ; 3, -2, 0 ]][[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]]
+
+		&= [[ 1, 3, 2 ; 2, 7, 0 ]].
+	$$
+
+	On the other hand, the composition of transformations is
+
+	$$
+		S\left( T\left( [[ a ; b ; b ]] \right) \right) &= S\left( [[ 2a + 3b ; b + 2a ; 2c - a ]] \right)
+
+		&= [[ (2a + 3b) + (2c - a) ; 3(2a + 3b) - 2(b + 2a) ]]
+
+		&= [[ a + 3b + 2c ; 2a + 7b ]],
+	$$
+
+	whose matrix is exactly $BA$! This is another visceral demonstration of what we mean when we say that matrix multiplication *is* function composition.
+
+###
 
 
 

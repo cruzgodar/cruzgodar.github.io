@@ -40,7 +40,7 @@ So: what operations can we do that preserve the equation structure? Since each r
 
 ### def "reduced row echelon form"
 	
-	A matrix $A$ is in **reduced row echelon form** if every row is either all zero or contains a $1$ as its first nonzero entry, and every column with one of those leading $1$s has $0$s for all its other entries.
+	A matrix $A$ is in **reduced row echelon form** if every row is either all zero or contains a $1$ as its first nonzero entry (called a **leading $1$**), and every column with one of those leading $1$s has $0$s for all its other entries.
 	
 ###
 
@@ -57,10 +57,14 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 	Define a matrix $A$ by
 
 	$$
-		A = [[ 0, 1, 0, 1, 0 ; 0, 0, 1, 2, 2 ; 0, 0, 0, 0, 1 ]].
+		A = [[ 0, 1, 0, 1, 0 ; 0, 0, 1, 2, 2 ; 0, 0, 0, 0, 1 ; 0, 0, 0, 0, 0 ]].
 	$$
 
-	Is $A$ in reduced row echelon form? Why or why not?
+	Why isn't $A$ in reduced row echelon form? What is an elementary row operation we could do to make it be?
+
+	### solution
+
+	It's almost in RREF, but not quite! Every row has a leading $1$ or is all zero, but the third row's leading $1$ isn't alone in its column. By adding $-2$ times the third row to the second, we could fix this problem!
 
 ###
 
@@ -76,7 +80,7 @@ A matrix in reduced row echelon form is effectively as good as we can get --- on
 
 This is a method best explained with examples, so let's dive right in.
 
-### ex "row-reduction"
+### ex "row reduction"
 	
 	Solve the system of equations
 	
@@ -96,7 +100,7 @@ This is a method best explained with examples, so let's dive right in.
 		[[ 4, -1, 3 | -1 ; 1, 2, 0 | 20 ; -6, 0, 1 | -12 ]].
 	$$
 	
-	And now we'll get reducing! For ease of language, we'll call the rows $\vec{r_1}$, $\vec{r_2}$, and $\vec{r_3}$ --- as we move the rows around, what they refer to will change. Let's start with $\vec{r_2}$, since it already has a $1$ in the first position, and move it to the top by swapping it with $\vec{r_1}$:
+	And now we'll get reducing! For ease of language, we'll call the rows $\vec{r_1}$, $\vec{r_2}$, and $\vec{r_3}$ --- as we move the rows around, **what they refer to will change**. Let's start with $\vec{r_2}$, since it already has a $1$ in the first position, and move it to the top by swapping it with $\vec{r_1}$:
 	
 	$$
 		[[ 1, 2, 0 | 20 ; 4, -1, 3 | -1 ; -6, 0, 1 | -12 ]].
@@ -120,7 +124,7 @@ This is a method best explained with examples, so let's dive right in.
 		[[ 1, 2, 0 | 20 ; 0, 3, -1 | 27 ; 0, 0, 5 | 0 ]].
 	$$
 	
-	That's the first half of row-reduction done! For the second half, we start with $\vec{r_3}$. Let's first divide by $5$:
+	That's the first half of row reduction done! For the second half, we start with $\vec{r_3}$. Let's first divide by $5$:
 	
 	$$
 		[[ 1, 2, 0 | 20 ; 0, 3, -1 | 27 ; 0, 0, 1 | 0 ]].
@@ -159,16 +163,16 @@ This is a method best explained with examples, so let's dive right in.
 To streamline the process while still explaining what we're doing at each step, it's helpful to have a notation for elementary row operations. These vary quite a bit, but I'm personally fond of the following:
 
 $$
-	\swap \vec{r_i}, \vec{r_j}
+	\vec{r_i} \leftrightarrow \vec{r_j}
 	
-	\vec{r_i} \te c
+	\vec{r_i} \to c\vec{r_i}
 	
-	\vec{r_i} \pe c\vec{r_j}
+	\vec{r_i} \to \vec{r_i} + c\vec{r_j}
 $$
 
-These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a constant $c$, and adding $c$ times row $j$ to row $i$, respectively. Let's work through another example with this notation.
+These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a constant $c$, and adding $c$ times row $j$ to row $i$, respectively. Let's work through an exercise and practice using this notation
 
-### ex "row-reduction"
+### exc "row reduction"
 	
 	Solve the system of equations
 	
@@ -187,22 +191,22 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 	$$
 		[[ 1, 4, 0, -14 | -11 ; 2, 5, 1, 14 | -15 ; 0, 1, -5, 28 | 7 ]] & 
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \vec{r_2} \me 2\vec{r_1}
+		[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \swap \vec{r_2}, \vec{r_3}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \vec{r_2} \leftrightarrow \vec{r_3}
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \vec{r_3} \pe 3\vec{r_2}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_3} \te -\frac{1}{14}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_3} \to -\frac{1}{14}\vec{r_3}
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_2} \pe 5\vec{r_3}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_2} \to \vec{r_2} + 5\vec{r_3}
 		
-		[[ 1, 0, 0, 54 | 1 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_1} \me 4\vec{r_2}
+		[[ 1, 0, 0, 54 | 1 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_1} \to \vec{r_1} - 4\vec{r_2}
 	$$
 	
-	The matrix is now fully reduced, even though there are still a bunch of ugly-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of this later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
+	The matrix is now fully reduced, even though there are still a bunch of messy-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of a matrix failing to have a solution later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
 	
-	On the other hand, a matrix like this with more columns than rows means there are extra unknowns, and in general, we can only solve for as many unknowns as there are equations. A great side effect of matrix reduction is that it's made the extra step of writing the general solution in terms of a parameter a whole lot easier. If we set $t = x_4$, then our equations are
+	On the other hand, a matrix like this, with more columns than rows, means there are extra unknowns --- and in general, we can only solve for as many unknowns as there are equations. A great side effect of matrix reduction is that it's made the extra step of writing the general solution in terms of a parameter a whole lot easier. If we set $t = x_4$, then our equations are
 	
 	$$
 		x_1 + 54t &= 1
@@ -226,35 +230,15 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 	
 ###
 
-### exc "row-reduction"
-	
-	Solve the system
-	
-	$$
-		x_1 + x_2 - 4x_3 &= 6
-		
-		x_1 + 5x_2 &= 2
-		
-		-2x_1 + 2x_2 + 12x_3 & = -16.
-	$$
-	
-###
-
 
 
 ## Inverse Matrices
 
-With the tool of row-reduction, we're ready to talk about inverse matrices. First of all, if there's going to be a matrix $A^{-1}$ so that the products $AA^{-1} = I$ and $A^{-1}A = I$ both make sense, then we need $A$ to have the same number of rows and columns. So let's start with a square matrix $A$ and try to invert it. The magic here comes from augmenting $A$ not with a single column vector, but with an entire identity matrix.
+With the tool of row reduction, we're ready to talk about inverse matrices. First of all, if there's going to be a matrix $A^{-1}$ so that the products $AA^{-1} = I$ and $A^{-1}A = I$ both make sense, then we need $A$ to have the same number of rows and columns. So let's start with a square matrix $A$ and try to invert it. The magic here comes from augmenting $A$ not with a single column vector, but with an entire identity matrix. On the homework, you'll dig into why this process works, but we'll just focus on the method for now.
 
 ### thm "matrix inversion"
 	
-	Let $A$ be an $n \times n$ matrix and augment it with the identity matrix: $[[ A | I ]]$. Then row-reduce $A$. If it can be reduced to the identity matrix, then the result will be $[[ I | A^{-1} ]]$ --- in other words, applying the same elementary row operations to $I$ will transform it into $A^{-1}$. If $A$ cannot be row-reduced to $I$ (because at least one row becomes entirely zero), then $A$ cannot be inverted.
-	
-###
-
-### pf
-	
-	It's worth saying a bit about why this process works. All three types of elementary row operations can actually be expressed as matrix multiplication. If we define $S_{i, j}$ as the $n \times n$ matrix that is $I$ but with rows $i$ and $j$ swapped, then it's not too hard to verify that for any $n \times n$ matrix $A$, $S_{i, j}A$ is equal to $A$, but with rows $i$ and $j$ swapped. Similarly, there are matrices for multiplying a row by a constant and adding a multiple of one row to another. So if $A$ is row-reducible to $I$, then there's a long sequence of matrices we can multiply $A$ by in order to get to $I$ --- collecting them all up, that's exactly what it means to be $A^{-1}$. On the other side of the augmented matrix, we're multiplying by all the same matrices, but now we *start* with $I$, so what results is just $A^{-1}$.
+	Let $A$ be an $n \times n$ matrix and augment it with the identity matrix: $[[ A | I ]]$. Then row reduce $A$. If it can be reduced to the identity matrix, then the result will be $[[ I | A^{-1} ]]$ --- in other words, applying the same elementary row operations to $I$ will transform it into $A^{-1}$. If $A$ cannot be row reduced to $I$ (because at least one row becomes entirely zero), then $A$ cannot be inverted.
 	
 ###
 
@@ -280,32 +264,32 @@ With the tool of row-reduction, we're ready to talk about inverse matrices. Firs
 		[[ 1, 2, -3 ; -2, 0, 2 ; 1, 1, 4 ]] \vec{x} = [[ -6 ; -4 ; 4 ]].
 	$$
 	
-	Calling the matrix $A$ and the right-hand vector $\vec{b}$, we have $A\vec{x} = \vec{b}$. While we could solve this by row-reducing $[[ A | \vec{b} ]]$, we'll instead invert $A$ and then multiply both sides by it.
+	Calling the matrix $A$ and the right-hand vector $\vec{b}$, we have $A\vec{x} = \vec{b}$. While we could solve this by row reducing $[[ A | \vec{b} ]]$, we'll instead invert $A$ and then multiply both sides by it.
 	
 	$$
 		[[ 1, 2, -3 | 1, 0, 0 ; -2, 0, 2 | 0, 1, 0 ; 1, 1, 4 | 0, 0, 1 ]] &
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 1, 1, 4 | 0, 0, 1 ]] & \qquad \vec{r_2} \pe 2\vec{r_1}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 1, 1, 4 | 0, 0, 1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 2\vec{r_1}
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 0, -1, 7 | -1, 0, 1 ]] & \qquad \vec{r_3} \me \vec{r_1}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 0, -1, 7 | -1, 0, 1 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_1}
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, -1, 7 | -1, 0, 1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \swap \vec{r_2}, \vec{r_3}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, -1, 7 | -1, 0, 1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \vec{r_2} \leftrightarrow \vec{r_3}
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \vec{r_2} \te -1
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_3} \me 4\vec{r_2}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_3} \to \vec{r_3} - 4\vec{r_2}
 	$$
 	
 	At this point, we could divide $\vec{r_3}$ through by $24$, but then we're going to be swamped in fractions. We have to get a $1$ where that $24$ is --- but only eventually. For now, we can make the process a whole lot easier by multiplying every *other* row by $24$:
 	
 	$$
-		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, -168 | 24, 0, -24 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \begin{array}{l} \vec{r_1} \te 24 \\ \vec{r_2} \te 24 \end{array}
+		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, -168 | 24, 0, -24 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad :: \vec{r_1} \to 24\vec{r_1} ; \vec{r_2} \to 24\vec{r_2} ::
 		
-		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_2} \pe 7\vec{r_3}
+		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_2} \to \vec{r_2} + 7\vec{r_3}
 		
-		[[ 24, 48, 0 | 18, 3, 12 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_1} \pe 3\vec{r_3}
+		[[ 24, 48, 0 | 18, 3, 12 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_1} \to \vec{r_1} + 3\vec{r_3}
 		
-		[[ 24, 0, 0 | -2, -11, 4 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_1} \me 2\vec{r_2}
+		[[ 24, 0, 0 | -2, -11, 4 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_2}
 	$$
 	
 	We're almost done! If we divide through every row by $24$, then the right side will contain $A^{-1}$, so we can write it as the right matrix times $\frac{1}{24}$.
@@ -343,6 +327,40 @@ With the tool of row-reduction, we're ready to talk about inverse matrices. Firs
 	$$
 	
 	represent it as a matrix equation and then find the inverse matrix in order to express $x$ and $y$ in terms of $a$ and $b$.
+
+	### solution
+
+	The matrix form of this equation is
+
+	$$
+		[[ 1, 2 ; -2, 3 ]] [[ x ; y ]] = [[ a ; b ]]
+	$$
+
+	so we can invert the left matrix:
+
+	$$
+		[[ 1, 2 | 1, 0 ; -2, 3 | 0, 1 ]] &
+		
+		[[ 1, 2 | 1, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 2\vec{r_1}
+		
+		[[ 7, 14 | 7, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to 7\vec{r_1}
+		
+		[[ 7, 0 | 3, -2 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_2}
+	$$
+
+	Dividing both rows by $7$ yields
+
+	$$
+		\frac{1}{7} [[ 3, -2 ; 2, 1 ]],
+	$$
+
+	and multiplying both sides of the original matrix equation by this tells us
+
+	$$
+		[[ x ; y ]] &= \frac{1}{7} [[ 3, -2 ; 2, 1 ]] [[ a ; b ]]
+
+		&= [[ \frac{3}{7}a - \frac{2}{7}b ; \frac{2}{7}a + \frac{1}{7}b ]].
+	$$
 	
 ###
 

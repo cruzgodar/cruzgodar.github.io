@@ -4,7 +4,7 @@
 
 The first six sections of the course are almost completely self-contained. We understand vectors as collections of numbers or points in $#R#^n$, and matrices as functions between them, with one particular use being to take a vector of variables to the left sides of a system of linear equations. Nearly every property of square matrices is related to the determinant in one way or another --- in fact, almost any two subjects we've discussed this far are related. Linear algebra is a tight-knit subject.
 
-But if all it were good for was solving systems of linear equations, linear algebra would be little more than a massive time sink into a topic we already understood decently well. Thankfully, that couldn't be much further from the truth. In this section, we'll begin pulling back and exploring the many, many other uses the subject has, and to do that, we need to talk about more than just $#R#^n$.
+But if all it were good for were solving systems of linear equations, then linear algebra would be little more than a massive time sink into a topic we already understood decently well. Thankfully, that couldn't be much further from the truth. In this section, we'll begin pulling back and exploring the many, many other uses the subject has, and to do that, we need to talk about more than just $#R#^n$.
 
 ### def "vector space"
 
