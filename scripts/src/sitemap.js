@@ -756,7 +756,9 @@ export const sitemap =
 			"/teaching/notes/calculus/power-series",
 			"/teaching/notes/calculus/properties-of-power-series",
 			"/teaching/notes/calculus/taylor-series",
-			"/teaching/notes/calculus/applications-of-taylor-series"
+			"/teaching/notes/calculus/applications-of-taylor-series",
+			"/teaching/notes/calculus/coordinate-systems",
+			"/teaching/notes/calculus/dot-and-cross-products"
 		]
 	},
 		
@@ -1214,6 +1216,28 @@ export const sitemap =
 		"parent": "/teaching/notes/calculus",
 		
 		"children": []
+	},
+	
+	"/teaching/notes/calculus/coordinate-systems":
+	{
+		"title": "Section 5.1: Coordinate Systems",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/dot-and-cross-products":
+	{
+		"title": "Section 5.2: Dot and Cross Products",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/notes/linear-algebra":
