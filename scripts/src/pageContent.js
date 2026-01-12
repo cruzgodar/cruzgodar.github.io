@@ -1,10 +1,10 @@
 import anime from "../anime.js";
 import { cardAnimationTime } from "./animation.js";
+import { convertHtmlToTex } from "./convertHtmlToTex.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { $, $$, pageElement, pageUrl } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { downloadString } from "./utils.js";
-import { convertHtmlToTex } from "/build/bin/latex.js";
 
 const contentsSelector = ".notes-title, .section-text, .heading-text";
 

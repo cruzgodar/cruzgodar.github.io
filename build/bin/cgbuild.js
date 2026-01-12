@@ -6,7 +6,7 @@ import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
 import buildHTMLFile from "../htmdl/build.js";
-import { convertHtmlToTex } from "./latex.js";
+import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

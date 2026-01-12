@@ -5,7 +5,7 @@ export function convertHtmlToTex({
 	title,
 	partnerField = false,
 	margin = 1,
-	pageNumbers = true,
+		pageNumbers = true,
 }) {
 	const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
