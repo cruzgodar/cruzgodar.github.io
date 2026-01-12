@@ -6,7 +6,7 @@ import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
 import buildHTMLFile from "../htmdl/build.js";
-import { convertCardToTex } from "./latex.js";
+import { convertHtmlToTex } from "./latex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -283,7 +283,7 @@ async function prepareTexFromHTML(file)
 
 	const path = file.slice(0, file.lastIndexOf("/"));
 
-	const result = await convertCardToTex({
+	const result = await convertHtmlToTex({
 		html: await read(file),
 		course: courseName,
 		pageUrl: `/${path}`

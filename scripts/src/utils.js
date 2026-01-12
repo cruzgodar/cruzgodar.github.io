@@ -20,6 +20,19 @@ export function downloadFile(filename)
 	link.remove();
 }
 
+export function downloadString(text, filename)
+{
+	const blob = new Blob([text], { type: "text/plain" });
+	const url = URL.createObjectURL(blob);
+	
+	const anchor = document.createElement("a");
+	anchor.href = url;
+	anchor.download = filename;
+	anchor.click();
+	
+	URL.revokeObjectURL(url);
+}
+
 export async function asyncFetch(url)
 {
 	return new Promise((resolve, reject) =>

@@ -14,7 +14,7 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 	
 	2. $$\ln^3(x)$$.
 	
-	3. $$(x + 1)\sin(x + 1)$$.
+	3. $$(x + 7)e^{x+7}$$.
 
 	### solution
 	
@@ -25,6 +25,18 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 	2. Remember from the last section that this is the same thing as $(\ln(x))^3$. Then $g(x) = \ln(x)$ and $f(x) = x^3$.
 	
 	3. This is a little harder. The thing happening right next to $x$ is $x + 1$, so $g(x) = x + 1$. Crunching $x + 1$ down to $x$, we get $f(x) = x\sin(x)$.
+	
+###
+
+### exc "compositions"
+	
+	You've finally saved up enough to buy a model train track, but unfortunately you forgot to buy any pieces of track that curve side-to-side, so your entire track is one long, straight segment with some hills. Let $h(x)$ be the height of the track $x$ feet horizontally from the start (i.e. $x$ feet measured flat along the ground). Let $p(t)$ be the horizontal position of the model train $t$ seconds after you let it go.
+
+	1. Write a sentence describing what $h'(x)$ and $p'(t)$ represent.
+
+	2. What does $h(p(t))$ represent? What about $p(h(x))$? Are both of these quantities meaningful?
+
+	3. What does the quantity $d/dt \left[ h(p(t)) \right]$ represent? Is it meaningful?
 	
 ###
 
@@ -88,11 +100,11 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 	
 	Find the derivative of each of the following functions.
 	
-	1. $$e^{\frac{1}{x}}$$.
+	1. $$f(x) = e^{\frac{1}{x}}$$.
 	
-	2. $$\frac{t^2}{\ln(t + 2)}$$.
+	2. $$h(t) = \frac{t^2}{\ln(t + 2)}$$.
 	
-	3. $$\csc(e^y)$$.
+	3. $$y(x) = \ln\left( x^3 \right)$$. (There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
 	
 ###
 

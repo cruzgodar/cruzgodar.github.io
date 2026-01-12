@@ -419,6 +419,8 @@ export class HopfFibration extends ThreeApplet
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+
+		URL.revokeObjectURL(link.href);
 	}
 
 	createAllFibers()
@@ -570,6 +572,8 @@ export class HopfFibration extends ThreeApplet
 				link.click();
 
 				link.remove();
+
+				URL.revokeObjectURL(link.href);
 			});
 		}
 	}

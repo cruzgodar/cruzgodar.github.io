@@ -1,4 +1,13 @@
-const preamble = String.raw`\documentclass{article}
+export function convertHtmlToTex({
+	html,
+	course,
+	pageUrl,
+	title,
+	partnerField = false,
+	margin = 1,
+	pageNumbers = true,
+}) {
+	const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -8,7 +17,7 @@ const preamble = String.raw`\documentclass{article}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{graphicx}
-\usepackage[total={6.5in, 9in}, heightrounded]{geometry}
+\usepackage[total={${8.5 - 2 * margin}in, ${11 - 2 * margin}in}, heightrounded]{geometry}
 \usepackage{hyperref}
 
 \hypersetup
@@ -28,25 +37,25 @@ const preamble = String.raw`\documentclass{article}
 
 \newcommand{\s}[1]{{\color{violet} #1}}
 
-\begin{document}
+${pageNumbers ? "" : "\\pagenumbering{gobble}"}
 
-\Large Name: \rule{2in}{0.15mm} \hfill `;
-
-export function convertCardToTex({
-	html,
-	course,
-	pageUrl
-}) {
-	const title = html.match(/<h1.*?>(.*?)<\/h1>/)?.[1];
+\begin{document}`;
+	
+	title ??= html.match(/<h1.*?>(.*?)<\/h1>/)?.[1];
 
 	const imageUrls = [];
 
+	const nameTex = partnerField
+		? `\\\\Partner: \\rule{1.85in}{0.15mm}`
+		: ""
+
 	const tex = preamble
-		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
+		// eslint-disable-next-line max-len
+		+ `\\Large Name: \\rule{2in}{0.15mm} \\hfill ${title} | ${course} | Cruz Godar \\vspace{4pt} ${nameTex} \\normalsize\n\n`
 		+ html
 			// Remove the wrapping card divs.
-			.replaceAll(/^<div.*?>/g, "")
-			.replaceAll(/<\/div>$/g, "")
+			.replaceAll(/<div.*?>/g, "")
+			.replaceAll(/<\/div>/g, "")
 			// Remove the heading.
 			.replaceAll(/<h1.*?>(.*?)<\/h1>/g, "")
 			// Remove buttons.
@@ -95,7 +104,12 @@ export function convertCardToTex({
 			.replaceAll(/&#x2019;/g, "'")
 			.replaceAll(/&#x201C;/g, "\"")
 			.replaceAll(/&#x201D;/g, "\"")
+			.replaceAll(/‘/g, "'")
+			.replaceAll(/’/g, "'")
+			.replaceAll(/“/g, "\"")
+			.replaceAll(/”/g, "\"")
 			.replaceAll(/&lt;/g, "<")
+			.replaceAll(/&gt;/g, ">")
 			.replaceAll(/([^\\])%/g, (match, $1) => `${$1}\\%`)
 			.replaceAll(/\s\s&/g, " &")
 			.replaceAll(/&ndash;/g, "--")
@@ -103,6 +117,8 @@ export function convertCardToTex({
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
 			.replaceAll(/\[NEWLINE\]/g, "\n")
 			.replaceAll(/\[TAB\]/g, "\t")
+			.replaceAll(/\[VSPACE\]/g, "\\vspace{4in}")
+			.replaceAll(/\[PAGEBREAK\]/g, "\\pagebreak")
 			.replaceAll(/(\n[0-9]+\.)/g, (match, $1) => `\n${$1}`)
 			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
 			.replaceAll(/<span.*?><\/span>[a-z]\)/g, "\t\\item")

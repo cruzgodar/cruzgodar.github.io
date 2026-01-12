@@ -294,7 +294,8 @@ It might seem pretty strange that we're outputting a vector from this function! 
 
 ### desmos vectorValuedLine
 
-Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the green vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
+Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the green vectors are outputs of $\vec{r}(a)$ for different values of $t = a$. github
+
 
 ### exc "lines in $#R#^3$"
 

@@ -1,8 +1,10 @@
 import anime from "../anime.js";
 import { cardAnimationTime } from "./animation.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
-import { $, $$, pageElement } from "./main.js";
+import { $, $$, pageElement, pageUrl } from "./main.js";
 import { siteSettings } from "./settings.js";
+import { downloadString } from "./utils.js";
+import { convertHtmlToTex } from "/build/bin/latex.js";
 
 const contentsSelector = ".notes-title, .section-text, .heading-text";
 
@@ -22,6 +24,17 @@ export function initPageContents()
 	}
 
 	prepareContents();
+
+	if (window.DEBUG)
+	{
+		navButtonsElement.insertAdjacentHTML("afterend", /* html */`
+			<div class="text-buttons nav-buttons contents-button-container" style="grid-template-columns: repeat(auto-fit, 88px);">
+				<div class="focus-on-child" tabindex="1">
+					<button class="text-button linked-text-button" type="button" tabindex="-1">Download Worksheet</button>
+				</div>
+			</div>
+		`);
+	}
 
 	navButtonsElement.insertAdjacentHTML("afterend", /* html */`
 		<div class="text-buttons nav-buttons contents-button-container" style="grid-template-columns: repeat(auto-fit, 88px);">
@@ -44,6 +57,22 @@ export function initPageContents()
 		});
 
 		contentButtonElement.addEventListener("click", showContents);
+
+		if (window.DEBUG)
+		{
+			const downloadTexButtonElement = navButtonsElement
+				.nextElementSibling
+				.nextElementSibling
+				.firstElementChild;
+
+			addHoverEventWithScale({
+				element: downloadTexButtonElement,
+				scale: 1.075,
+				addBounceOnTouch: () => true
+			});
+
+			downloadTexButtonElement.addEventListener("click", downloadWorksheet);
+		}
 	});
 }
 
@@ -189,4 +218,55 @@ function handleClickEvent(e)
 	}
 
 	hideContents();
+}
+
+
+
+async function downloadWorksheet()
+{
+	const html = await fetch(`${pageUrl}/data.html`).then(r => r.text());
+
+	// Get just the exercises.
+
+	const parser = new DOMParser();
+	const doc = parser.parseFromString(html, "text/html");
+	
+	const elements = doc.querySelectorAll("div.notes-exc.notes-environment");
+	
+	const exerciseHtml = Array.from(elements).map(el =>
+	{
+		const innerHTML = el.innerHTML;
+		const solutionIndex = innerHTML.indexOf("<div class=\"solution\">");
+
+		return solutionIndex === -1 ? innerHTML : innerHTML.slice(0, solutionIndex);
+	}).join("");
+
+	let index = 0;
+
+	const replacedTitles = exerciseHtml
+		.replaceAll(
+			/<div class="notes-exc-title notes-title">.*?<\/div>/g, () =>
+			{
+				index++;
+				const beforeExercise = index % 2 === 0
+					? "[VSPACE]\n"
+					: index !== 1
+						? "[PAGEBREAK]\n"
+						: "";
+				
+				return `${beforeExercise}<strong>Exercise ${index}</strong>: `;
+			}
+		);
+
+	const result = convertHtmlToTex({
+		html: replacedTitles,
+		course: "COURSE NAME",
+		pageUrl,
+		title: "Worksheet NUMBER",
+		partnerField: true,
+		margin: 0.75,
+		pageNumbers: false
+	});
+
+	downloadString(result[0], "Worksheet.tex");
 }
