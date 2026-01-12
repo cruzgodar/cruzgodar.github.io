@@ -293,7 +293,7 @@ In practice, it's often a little cumbersome to find a matrix with respect to a d
 
 	### solution
 	
-	The matrix $A$ for $T$ with respect to the standard basis is given by evaluating $T$ on each of the vectors in the standard basis for $V = M_{2 \times 2}(#R#)$ and writing them as coordinate vectors in the standard basis for $W$ (i.e. $\{1, x\}). We have
+	The matrix $A$ for $T$ with respect to the standard basis is given by evaluating $T$ on each of the vectors in the standard basis for $V = M_{2 \times 2}(#R#)$ and writing them as coordinate vectors in the standard basis for $W$ (i.e. $\{1, x\}$). We have
 	
 	$$
 		T\left( [[ 1, 0 ; 0, 0 ]] \right) = 1,

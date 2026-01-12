@@ -1,51 +1,45 @@
 #!/usr/bin/env bun
 
 import { spawnSync } from "child_process";
+import { watch } from "fs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
+let debounceTimer = null;
+let lastRun = 0;
 
+function runBuild()
+{
+	const now = Date.now();
+	
+	if (now - lastRun < 3000)
+	{
+		return;
+	}
+	
+	lastRun = now;
+	console.clear();
+	spawnSync("bun", [root + "build/bin/cgbuild.js"], { stdio: "inherit" });
+}
+
+function debouncedBuild()
+{
+	clearTimeout(debounceTimer);
+	debounceTimer = setTimeout(runBuild, 300);
+}
 
 function listenToChanges()
 {
-	const proc1 = spawnSync("find", [
+	watch(
 		root,
-		"-name",
-		"*.htmdl",
-	]);
-
-	const proc2 = spawnSync("find", [
-		root,
-		"-name",
-		"*.js",
-	]);
-
-	const proc3 = spawnSync("find", [
-		root,
-		"-name",
-		"*.js",
-	]);
-
-	const proc4 = spawnSync("find", [
-		root,
-		"-name",
-		"*.css",
-	]);
-
-	const files = (
-		proc1.stdout.toString()
-		+ "\n" + proc2.stdout.toString()
-		+ "\n" + proc3.stdout.toString()
-		+ "\n" + proc4.stdout.toString()
-	)
-		.split("\n")
-		.filter(file => isValidFile(file))
-		.join("\n");
-
-	spawnSync(
-		"entr",
-		["-c", "bun", root + "build/bin/cgbuild.js"],
-		{ input: files, stdio: "inherit" }
+		{ recursive: true },
+		(eventType, filename) =>
+		{
+			if (filename && isValidFile(filename))
+			{
+				debouncedBuild();
+			}
+		}
 	);
 }
 
@@ -62,20 +56,12 @@ function isValidFile(file)
 
 	if (index <= 0)
 	{
-		return;
+		return false;
 	}
 
 	const extension = end.slice(index + 1);
 
-	if (
-		extension === "htmdl"
-		|| extension === "js"
-		|| extension === "css"
-	) {
-		return true;
-	}
-
-	return false;
+	return extension === "htmdl" || extension === "js" || extension === "css";
 }
 
 listenToChanges();

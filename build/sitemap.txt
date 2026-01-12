@@ -104,7 +104,7 @@ home Cruz Godar
 			applications-of-taylor-series Section 4.10: Applications of Taylor Series
 
 			coordinate-systems Section 5.1: Coordinate Systems
-			dot-and-cross-products Section 5.2: Dot and Cross Products
+			dot-and-cross-products Section 5.2: The Dot and Cross Products
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

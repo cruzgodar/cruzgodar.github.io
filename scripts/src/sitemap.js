@@ -1231,7 +1231,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/dot-and-cross-products":
 	{
-		"title": "Section 5.2: Dot and Cross Products",
+		"title": "Section 5.2: The Dot and Cross Products",
 		
 		"parent": "/teaching/notes/calculus",
 		
