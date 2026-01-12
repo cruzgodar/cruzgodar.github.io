@@ -175,7 +175,7 @@ From time to time in math, machinery at a high level delivers sudden, broad solu
 	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$. The **cross product** of $\vec{a}$ and $\vec{b}$, written $\vec{a} \times \vec{b}$, is the vector
 
 	$$
-		\vec{a} \times \vec{b} = \left< a_2b_3 - a_3b_2, a_3b_1 - a_1b_3, a_1b_2 - a_2b_1 \right>.
+		\vec{a} \times \vec{b} = \left< a_2b_3 - a_3b_2,\ \ a_3b_1 - a_1b_3,\ \ a_1b_2 - a_2b_1 \right>.
 	$$
 
 ###
