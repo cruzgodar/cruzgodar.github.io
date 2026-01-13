@@ -260,9 +260,9 @@ async function downloadWorksheet()
 
 	const result = convertHtmlToTex({
 		html: replacedTitles,
-		course: "COURSE NAME",
+		course: "Math ###",
 		pageUrl,
-		title: "Worksheet NUMBER",
+		title: "Worksheet ###",
 		partnerField: true,
 		margin: 0.75,
 		pageNumbers: false
