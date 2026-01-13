@@ -256,7 +256,7 @@ async function downloadWorksheet()
 				
 				return `${beforeExercise}<strong>Exercise ${index}</strong>: `;
 			}
-		); 
+		);
 
 	const result = convertHtmlToTex({
 		html: replacedTitles,
