@@ -2,17 +2,37 @@
 
 It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the chain rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
 
-Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we'll have to identify them in order to use it, so let's take some time to work on that.
+Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we'll have to identify them in order to use it! Let's review just a bit about that.
 
-
+Sometimes, functions can only tell part of a story that we're trying to understand. Say $F(a)$ is a function that outputs the number of foxes in a certain acre $a$ of forest, and $D(f)$ is a function that tells us the number of fox dens given a certain number of foxes $f$ in an area. By plugging the output of $F$ into $D$, we get a function $D(F(a))$ that directly tells us the number of fox dens in an acre of forest directly. Writing it in this way is sometimes a little awkward, though, since we can't refer to the function on its own without also writing the input $a$. To that end, we define the **composition** of $D$ with $F$ as a function $D \circ F$, where $(D \circ F)(a) = D(F(a))$.
 
 ### ex "compositions"
+
+	With $f(x) = 2x + 1$ and $g(x) = x^2$,
+
+	$$
+		(f \circ g)(x) = f(g(x)) = 2x^2 + 1
+	$$
+
+	and
+
+	$$
+		(g \circ f)(x) = g(f(x)) = (2x + 1)^2.
+	$$
+
+	Notice that $f \circ g$ and $g \circ f$ aren't equal!
+
+###
+
+
+
+### exc "compositions"
 	
-	The following functions can be written in the form $f(g(x))$. Write down $f(x)$ and $g(x)$ for each.
+	The following functions can be written in the form $(f \circ g)(x)$, where both $f$ and $g$ are not the identity function $f(x) = x$. Write down $f(x)$ and $g(x)$ for each. There's more than one right answer!
 	
-	1. $$\cos(x^5)$$.
+	1. $$2^{5x}$$.
 	
-	2. $$\ln^3(x)$$.
+	2. $$\ln^3(x)$$. (Note: this is another way of writing $\left( \ln(x) \right)^3$.)
 	
 	3. $$(x + 7)e^{x+7}$$.
 
@@ -20,15 +40,15 @@ Through the sum, difference, product, and quotient rules, we know how to differe
 	
 	Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
 	
-	1. Here, the fifth power is the closest thing to $x$, so $g(x) = x^5$. What's happening to $x^5$ is a cosine, so $f(x) = \cos(x)$. It might be easier to see what $f$ should be by starting with $\cos(x^5)$ and replacing $x^5$ with $x$.
+	1. Here, the multiplication by $5$ is the closest thing to $x$, so $g(x) = 5x$. What's happening to $5x$ is an exponentiation by $2$, so $f(x) = 2^x$. It might be easier to see what $f$ should be by starting with $2^{5x}$ and replacing $5x$ with $x$.
 	
-	2. Remember from the last section that this is the same thing as $(\ln(x))^3$. Then $g(x) = \ln(x)$ and $f(x) = x^3$.
+	2. Here, $g(x) = \ln(x)$ and $f(x) = x^3$.
 	
-	3. This is a little harder. The thing happening right next to $x$ is $x + 1$, so $g(x) = x + 1$. Crunching $x + 1$ down to $x$, we get $f(x) = x\sin(x)$.
+	3. This is a little harder. The thing happening right next to $x$ is $x + 7$, so $g(x) = x + 7$. Crunching $x + 7$ down to $x$, we get $f(x) = xe^x$.
 	
 ###
 
-### exc "compositions"
+### exc "compositions in practice"
 	
 	You've finally saved up enough to buy a model train track, but unfortunately you forgot to buy any pieces of track that curve side-to-side, so your entire track is one long, straight segment with some hills. Let $h(x)$ be the height of the track $x$ feet horizontally from the start (i.e. $x$ feet measured flat along the ground). Let $p(t)$ be the horizontal position of the model train $t$ seconds after you let it go.
 
@@ -60,51 +80,67 @@ The chain rule will tell us how to differentiate compositions, but we'll need to
 
 Okay, let's walk through that one. To differentiate a composition, first identify the inner and outer functions. Then differentiate each, plug undifferentiated $g$ into $f'$, and multiply the two together.
 
+### ex "the chain rule"
 
+	Find the derivatives of the following functions.
 
-### ex "compositions"
-	
-	Find the derivative of each of the following functions.
-	
-	1. $$\cos(x^5)$$.
-	
-	2. $$\ln^3(x)$$.
-	
-	3. $$(x + 1)\sin(x + 1)$$.
+	1. $$e^{\frac{1}{x}}$$.
 
-	### solution
-	
-	Once again, we'll take these one at a time.
-	
-	1. Here, $f(x) = \cos(x)$ and $g(x) = x^5$. We have $f'(x) = -\sin(x)$ and $g'(x) = 5x^4$, so $f'(g(x)) = -\sin(x^5)$. Therefore, the total derivative is
-	
+	2. $$\left( x^2 + 1 \right) \ln\left( x^2 + 1 \right)$$.
+
+	1. Let's start by identifying the composition. Since the $\frac{1}{x}$ is inside the exponential, we have $g(x) = \frac{1}{x}$ and $f(x) = e^x$. Then $g'(x) = -\frac{1}{x^2}$ and $f'(x) = e^x$, so
+
 	$$
-		-\sin(x^5) \cdot 5x^4.
+		d/dx \left[ e^{\frac{1}{x}} \right] &= f'(g(x))g'(x)
+
+		&= e^{\frac{1}{x}} \left( -\frac{1}{x^2} \right).
 	$$
-	
-	2. This time, $f(x) = x^3$ and $g(x) = \ln(x)$. Then $f'(x) = 3x^2$ and $g'(x) = \frac{1}{x}$, so
-	
+
+	2. Let's look at a slightly different way to think about the chain rule that some students find more pleasant. By rewriting the inside function $g(x)$ as a variable $u$, we can write the chain rule as
+
 	$$
-		f'(g(x))g'(x) = 3\ln^2(x) \cdot \frac{1}{2}.
+		d/dx[f(u)] = f'(u)u'(x).
 	$$
-	
-	3. We have $f(x) = x\sin(x)$ and $g(x) = x + 1$. By the product rule, $f'(x) = \sin(x) - x\cos(x)$, and $g'(x) = 1$. Therefore, we have
-	
+
+	That's a little gross, but by rewriting it in Leibniz notation (where derivatives are written like fractions), we have
+
 	$$
-		d/dx[(x + 1)\sin(x + 1)] = \sin(x+1) - (x+1)\cos(x+1).
+		df/dx = df/du \cdot du/dx.
 	$$
-	
+
+	That's surprisingly nice! To use this idea in practice, we start by explicitly setting $u$ equal to the inside function and replacing all of the copies of $x$ with $u$. Here, the "inside" function is $u = g(x) = x^2 + 1$, so we have
+
+	$$
+		f(u) = u \ln(u).
+	$$
+
+	Now we can write down the chain rule, and the advantage is that we can handle $f(u)$ like a normal function.
+
+	$$
+		df/dx &= df/du \cdot du/dx
+
+		&= \left( \ln(u) + 1 \right) \left( 2x \right)
+	$$
+
+	by the product rule. Then we can finally substitute back for $x$:
+
+	$$
+		df/dx \left( \ln\left( x^2 + 1 \right) + 1 \right) \left( 2x \right).
+	$$
+
 ###
 
-### exc "compositions"
+### exc "the chain rule"
 	
 	Find the derivative of each of the following functions.
 	
-	1. $$f(x) = e^{\frac{1}{x}}$$.
+	1. $$2^{5x}$$.
 	
-	2. $$h(t) = \frac{t^2}{\ln(t + 2)}$$.
+	2. $$\ln^3(x)$$.
+
+	3. $$\ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
 	
-	3. $$y(x) = \ln\left( x^3 \right)$$. (There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
+	4. $$\frac{t^2}{e^{t + 2}}$$
 	
 ###
 
@@ -140,37 +176,11 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 	
 ###
 
-### exc "a composition of four functions"
+### exc "a composition of three functions"
 	
-	Find the derivative of $$\sec^3\left(e^{x^2}\right)$$.
+	Find the derivative of $$2^{\ln\left( x^2 + 1 \right)}$$.
 	
 ###
-
-
-
-Let's mention another way the chain rule is often stated. The derivative $d/dx[y]$ is often written as $dy/dx$. Although they both mean derivative, $d/dx$ is a verb and $dy/dx$ is a noun.
-
-The advantage of writing things in this way is that the chain rule becomes quite simple to write down. I'm not partial to this notation for reasons that will shortly become clear, but it is undeniably slick.
-
-Let $y = f(g(x))$ and define a new variable $u = g(x)$. Then $y = f(u)$, so
-
-$$
-	dy/du = f'(u) = f'(g(x)).
-$$
-
-Similarly, $du/dx = g'(x)$. Finally,
-
-$$
-	dy/dx = d/dx[f(g(x))].	
-$$
-
-In total, the chain rule says
-
-$$
-	dy/dx = dy/du \cdot du/dx.
-$$
-
-We get a somewhat bizarre-looking equation that seems to imply that we can cancel the $\d u$. While this isn't completely inaccurate, it's best not to get too used to thinking this way from the start --- it makes it easier to make mistakes.
 
 
 
