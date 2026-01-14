@@ -46,9 +46,14 @@ export default function()
 				expressions:
 				[
 					{ latex: raw`(\cos(t), \sin(t), \frac{2}{3}t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
-					{ latex: raw`b = 35`, },
-					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, },
-					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, },
+					...getDesmosSlider({
+						expression: raw`b = 35`,
+						min: 0,
+						max: 35,
+						secret: false,
+					}),
+					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, lineWidth: 2, secret: true },
+					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, lineWidth: 2, secret: true },
 					...getDesmosSlider({
 						expression: raw`s = 1`,
 						min: 0,
@@ -62,7 +67,7 @@ export default function()
 					...getDesmosSlider({
 						expression: raw`n = 2`,
 						min: 2,
-						max: 40,
+						max: 35,
 						secret: false,
 					}),
 
