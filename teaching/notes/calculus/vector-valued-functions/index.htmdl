@@ -92,6 +92,22 @@ Since differentiation of a vector-valued function boils down to just differentia
 
 ###
 
+In just the same way that derivatives of vector-valued functions are given by differentiating the components because limits split nicely into those components, we can integrate vector-valued functions component-wise too! Specifically,
+
+$$
+	\int \vec{r}(t)\,\d t = \left< \int x(t)\,\d t, \int y(t)\,\d t, \int z(t)\,\d t \right> + \vec{c}
+$$
+
+for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very much, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
+
+
+
+## Arc Length
+
+We can use our newfound ability to differentiate position vectors to compute the length of curves! Let's look at a particular curve to get a sense of what's happening.
+
+### desmos arcLength
+
 
 
 
