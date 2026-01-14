@@ -45,10 +45,10 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`b = 35`, secret: true, },
-					{ latex: raw`(\cos(t), \sin(t), \frac{2}{3}t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: 100 } },
-					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, secret: true, },
-					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, secret: true, },
+					{ latex: raw`(\cos(t), \sin(t), \frac{2}{3}t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
+					{ latex: raw`b = 35`, },
+					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, },
+					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, },
 					...getDesmosSlider({
 						expression: raw`s = 1`,
 						min: 0,
@@ -57,7 +57,7 @@ export default function()
 					}),
 
 					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2})`, points: true, color: desmosRed3d, hidden: true, },
-					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2}) + t(-\sin(A), \cos(A), A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, },
+					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2}) + t(-\sin(A), \cos(A), A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, lineWidth: 2 },
 
 					...getDesmosSlider({
 						expression: raw`n = 2`,

@@ -34,11 +34,11 @@ export default function()
 					{ latex: raw`w = (2, 3, 1)`, hidden: true },
 					{ latex: raw`\vector((0, 0, 0), v)`, color: desmosRed3d, secret: true },
 					{ latex: raw`\vector((0, 0, 0), w)`, color: desmosBlue3d, secret: true },
-					{ latex: raw`n = v \times w`, color: desmosPurple3d, secret: true },
+					{ latex: raw`n = v \times w`, color: desmosPurple3d, secret: true, hidden: true },
 					{ latex: raw`n \cdot (x, y, z) = 0`, color: desmosGray3d, secret: true },
 					{ latex: raw`a = \arccos(\frac{v \cdot w}{\left|v\right|\left|w\right|})`, secret: true },
 					{ latex: raw`u = \frac{v}{\left|v\right|}`, secret: true, hidden: true },
-					{ latex: raw`u_2 = n \times u`, secret: true },
+					{ latex: raw`u_2 = n \times u`, secret: true, hidden: true },
 					{ latex: raw`\cos(at)u + \sin(at)\frac{u_2}{\left|u_2\right|}`, color: desmosPurple3d, parametricDomain: { min: 0, max: 1 }, secret: true },
 				]
 			},

@@ -31,11 +31,11 @@ $$
 
 	\left( a - c \right)^2 + \left( b - d \right)^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	a^2 - 2ab + b^2 + c^2 - 2cd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+	a^2 - 2ac + c^2 + b^2 - 2bd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	-2ab -2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+	-2ac -2bd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
+	ac + bd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
 $$
 
 That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $\left< c, d \right>$. In fact, we'll want to give it its own name and notation.
