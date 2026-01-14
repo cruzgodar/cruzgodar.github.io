@@ -58,7 +58,7 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	1. Let $\vec{p}(t)$ be your position in three-dimensional space. What is your current value of $\vec{p}'(t)$?
 
-	2. Let $\vec{r}(t) = \left< 2\cos(t), \sin(t), t^2 \right>$. Find $\vec{r}'(t)$.
+	2. Let $\vec{r}(t) = \left< 2\cos(t), \sin(t), t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
 
 	3. One again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
 
@@ -74,7 +74,7 @@ We can use the fact that the derivative vector is tangent to the curve to find a
 		T(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}(t) \right| \right|},
 	$$
 
-	which is defined as long as $r'(t) = \vec{0}$.
+	which is defined so long as $r'(t) = \vec{0}$.
 
 ###
 
@@ -104,9 +104,61 @@ for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content
 
 ## Arc Length
 
-We can use our newfound ability to differentiate position vectors to compute the length of curves! Let's look at a particular curve to get a sense of what's happening.
+We can use our newfound ability to differentiate position vectors to compute the length of curves! Let's look at a particular curve $\vec{r}(t)$ to get a sense of what's happening.
 
 ### desmos arcLength
+
+Here, we can see the position vector in blue and the derivative vector in red. By turning on the points in the Desmos sidebar and increasing $a$, we can see a successive approximation of arc length. At each red point, we take a tangent line to the graph, scaled down so that the total amount the parameter moves across those lines remains constant. For a given number of lines $n$, a line segment tangent to the point $p$ has a tangent line of $\vec{l}(t) = \vec{r}(p) + t\vec{r}'(p)$. If we're trying to compute the arc length of $\vec{r}(t)$ between $t = a$ and $t = b$, then each of these line segments allows $t$ to move a total of $\frac{b - a}{n}$, the resulting length of the line segment is given by the distance formula, measuring the length of the vector from the start of the line segment to the end. The denominators of $2n$ are due to the line segment being centered at $\vec{r}(p)$: $t$ can only move half of the total amount in each direction.
+
+$$
+	\left| \left| \left( \vec{r}(p) + \frac{b - a}{2n}\vec{r}'(p) \right) - \left( \vec{r}(p) - \frac{b - a}{2n}\vec{r}'(p) \right) \right| \right| &= \left| \left| \frac{b - a}{n}\vec{r}'(p) \right| \right|
+
+	&= \frac{b - a}{n} \left| \left| \vec{r}'(p) \right| \right|.
+$$
+
+In order to find the total approximation of arc length, we need to add these up as $t$ ranges from $a$ to $b$. Let's skip the heavy notation for that sum and acknowledge that it's exactly a Riemann sum! Its limit as the number of segments increases without bound, which is what we're after anyway, is then given by an integral. We've found the following result:
+
+### thm "arc length"
+
+	Let $\vec{r}(t)$ be a differentiable vector-valued function with continuous derivatives. The arc length of the graph of $\vec{r}(t)$ between $t = a$ and $t = b$ is
+
+	$$
+		\int_a^b \left| \left| \vec{r}'(t) \right| \right|\,\d t.
+	$$
+
+###
+
+### exc "arc length"
+
+	Find the arc length of the function graphed above --- $\vec{r}(t) = \left< \cos(t), \sin(t), t^{3/2} \right>$ --- between $t = 0$ and $t = 20$.
+
+	### solution
+
+	The derivative is
+
+	$$
+		\vec{r}'(t) = \left< -\sin(t), \cos(t), \frac{3}{2}t^{1/2} \right>,
+	$$
+
+	and its magnitude is
+
+	$$
+		\left| \left| \vec{r}'(t) \right| \right| &= \sqrt{\sin^2(t) + \cos^2(t) + \frac{9}{4}t}
+
+		&= \sqrt{1 + \frac{9}{4}t}.
+	$$
+
+	Integrating that, we can do a $u$-sub with $u = 1 + \frac{9}{4}t$ and $\d u = \frac{9}{4}\,\d t$ to find
+
+	$$
+		\int_0^{20} \sqrt{1 + \frac{9}{4}t}\,\d t &= \int_0^{20} \frac{4}{9}\sqrt{u}\,\d u
+
+		&= \left. \left[ \frac{4}{9}\frac{2}{3} u^{3/2} \right] \right|_0^{20}
+
+		&= \left. \left[ \frac{4}{9}\frac{2}{3} \left( 1 + \frac{9}{4}t \right)^{3/2} \right] \right|_0^{20}
+	$$
+
+###
 
 
 

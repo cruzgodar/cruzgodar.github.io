@@ -55,15 +55,18 @@ export default function()
 						secret: false,
 					}),
 					...getDesmosSlider({
-						expression: raw`a = 1`,
+						expression: raw`n = 2`,
 						min: 1,
 						max: 40,
 						secret: false,
 					}),
 
+					{ latex: raw`a = n - 1`, secret: true, },
+
 					{ latex: raw`A = [0, \frac{20}{a}, ..., 20]`, secret: true, },
 
-					{ latex: raw`(\cos(A), \sin(A), A^{3/2})`, points: true, lines: true, color: desmosRed3d, hidden: true, },
+					{ latex: raw`(\cos(A), \sin(A), A^{3/2})`, points: true, color: desmosRed3d, hidden: true, },
+					{ latex: raw`(\cos(A), \sin(A), A^{3/2}) + t(-\sin(A), \cos(A), \frac{3}{2}A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{10}{a}`, max: raw`\frac{10}{a}` }, hidden: true, },
 				]
 			},
 		};
