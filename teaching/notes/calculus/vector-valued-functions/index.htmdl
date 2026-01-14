@@ -100,7 +100,7 @@ $$
 
 for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very often, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
 
-If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant.
+If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant. Let's say collect a bit of what we know about these functions: if $\vec{p}(t)$ gives the position of an object over time, then $\vec{p}'(t) = \vec{v}(t)$ is its velocity, which is tangent to the graph of $\vec{p}(t)$, and $\left| \left| \vec{v}(t) \right| \right|$ is the magnitude of the velocity, also called **speed**. The second derivative $\vec{p}''(t)$ is the acceleration $\vec{a}(t)$ --- also a vector. We can integrate the velocity and acceleration functions to recover the position and velocity ones, respectively, up to a constant.
 
 
 
