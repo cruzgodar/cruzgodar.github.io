@@ -758,7 +758,8 @@ export const sitemap =
 			"/teaching/notes/calculus/taylor-series",
 			"/teaching/notes/calculus/applications-of-taylor-series",
 			"/teaching/notes/calculus/coordinate-systems",
-			"/teaching/notes/calculus/dot-and-cross-products"
+			"/teaching/notes/calculus/dot-and-cross-products",
+			"/teaching/notes/calculus/vector-valued-functions"
 		]
 	},
 		
@@ -1232,6 +1233,17 @@ export const sitemap =
 	"/teaching/notes/calculus/dot-and-cross-products":
 	{
 		"title": "Section 5.2: The Dot and Cross Products",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/vector-valued-functions":
+	{
+		"title": "Section 5.3: Vector-Valued Functions",
 		
 		"parent": "/teaching/notes/calculus",
 		

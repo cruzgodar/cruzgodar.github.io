@@ -180,68 +180,51 @@ From time to time in math, machinery at a high level delivers sudden, broad solu
 
 ###
 
-This is pretty awful! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Later in the term, we'll develop the language to express it in a more natural, concise manner, but for now, we'll have a halfway solution.
+This is pretty rough! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Although it will require us to learn other names and symbols, they'll be useful to know in their own right in the long run.
 
-Start with the vectors $\left< a_1, a_2, a_3 \right>$ and $\left< b_1, b_2, b_3 \right>$ and write their entries in the following manner: the top row contains the entries of $\vec{a}$ and the bottom row the entries of $\vec{b}$. Both rows start at the **second** entry of the vectors and increase, wrapping from the last entry back to the first:
-
-$$
-	\begin{array}{cccc}
-		a_2 & a_3 & a_1 & a_2
-		b_2 & b_3 & b_1 & b_2
-	\end{array}
-$$
-
-There are three ways to take a $2 \times 2$ chunk of this object: the left, middle, and right squares.
+We define a **$**2 \times 2**$ matrix** as a square $2 \times 2$ grid of numbers $$[[ a, b ; c, d ]]$$, and similarly for a $3 \times 3$ matrix. The **determinant** of a $2 \times 2$ matrix is
 
 $$
-	\begin{array}{cccccccccc}
-		a_2 & a_3 & & & a_3 & a_1 & & & a_1 & a_2
-		b_2 & b_3 & & & b_3 & b_1 & & & b_1 & b_2
-	\end{array}
+	\det [[ a, b ; c, d ]] = ad - bc,
 $$
 
-Take each of these chunks and find its top-left entry times its bottom-right one, minus its top-right times its bottom-left. In one of the many cases where symbols do a better job than words, that means to just do the following:
+and for a $3 \times 3$ matrix, we define its determinant in the following way. Take the first row (we can actually choose any row or column, but we'll see momentarily that we'll always want the first row), and say its entries are $a$, $b$, and $c$. For each of those three, cross off the row and column it lives in (the row will always be the first row), and then take the determinant of the $2 \times 2$ matrix that's left. Let's call those $2 \times 2$ determinants $\det A$, $\det B$, and $\det C$; then the determinant of the $3 \times 3$ matrix is
 
 $$
-	\begin{array}{cc}
-		a & b
-		c & d
-	\end{array}\  \longmapsto \, ad - bc.
+	a\det A - b\det B + c\det C.
 $$
 
-The three results, in order, are the three components of $\vec{a} \times \vec{b}$!
+Why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, we have the following fantastically compact result about their cross product!
+
+### thm -m "Method: computing the cross product"
+
+	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$ be vectors in $#R#^3$. Then
+
+	$$
+		\vec{a} \times \vec{b} = \det [[ \vec{i}, \vec{j}, \vec{k} ; a_1, a_2, a_3 ; b_1, b_2, b_3 ]].
+	$$
+
+###
 
 ### ex "the cross product"
 
 	Compute $\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right>$.
 
-	Writing out the components, starting from the second and writing it twice, gives us
+	Writing out the components out into a matrix gives us
 
 	$$
-		\begin{array}{cccc}
-			3 & 2 & -2 & 3
-			0 & -1 & 2 & 0
-		\end{array}
-	$$
+		\vec{a} \times \vec{b} &= \det [[ \vec{i}, \vec{j}, \vec{k} ; -2, 3, 2 ; 2, 0, -1 ]]
 
-	Now the blocks. The leftmost one is
+		&= \vec{i} \det [[ 3, 2 ; 0, -1 ]] - \vec{j} \det [[ -2, 2 ; 2, -1 ]] + \vec{k} \det [[ -2, 3 ; 2, 0 ]]
 
-	$$
-		\begin{array}{cccc}
-			3 & 2
-			0 & -1
-		\end{array},
-	$$
+		&= \left( -3 - 0 \right)\vec{i} - \left( 2 - 4 \right)\vec{j} + \left( 0 - 6 \right)\vec{k}
 
-	and performing our reduction on it turns it into $(3)(-1) - (2)(0) = -3$. Repeating with the other blocks gives us $(2)(2) - (-2)(-1) = 2$ and $(-2)(0) - (3)(2) = -6$, and so
-
-	$$
-		\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right> = \left< -3, 2, -6 \right>.
+		&= \left< -3, 2, -6 \right>.
 	$$
 
 ###
 
-It's high time we stated some properties of the cross product! We'll get the chance to justify this on the homework, for now, we can make use of it for some applications.
+It's high time we stated some properties of the cross product! We'll get the chance to justify these on the homework, for now, we can make use of them for some applications.
 
 ### thm "the magnitude and direction of the cross product"
 
@@ -294,7 +277,7 @@ It might seem pretty strange that we're outputting a vector from this function! 
 
 ### desmos vectorValuedLine
 
-Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the green vectors are outputs of $\vec{r}(a)$ for different values of $t = a$. github
+Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the green vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
 
 
 ### exc "lines in $#R#^3$"
