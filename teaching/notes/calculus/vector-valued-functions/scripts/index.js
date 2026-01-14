@@ -41,32 +41,34 @@ export default function()
 			{
 				use3d: true,
 
-				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 100 },
+				bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 150 },
 
 				expressions:
 				[
-					{ latex: raw`(\cos(t), \sin(t), t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: 100 } },
-					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), s^{3/2}))`, color: desmosBlue3d, secret: true, },
-					{ latex: raw`\vector((\cos(s), \sin(s), s^{3/2}), (\cos(s), \sin(s), s^{3/2}) + (-\sin(s), \cos(s), \frac{3}{2}s^{1/2}))`, color: desmosRed3d, secret: true, },
+					{ latex: raw`b = 35`, secret: true, },
+					{ latex: raw`(\cos(t), \sin(t), \frac{2}{3}t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: 100 } },
+					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, secret: true, },
+					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, secret: true, },
 					...getDesmosSlider({
 						expression: raw`s = 1`,
 						min: 0,
-						max: 20,
+						max: "b",
 						secret: false,
 					}),
+
+					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2})`, points: true, color: desmosRed3d, hidden: true, },
+					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2}) + t(-\sin(A), \cos(A), A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, },
+
 					...getDesmosSlider({
 						expression: raw`n = 2`,
-						min: 1,
+						min: 2,
 						max: 40,
 						secret: false,
 					}),
 
 					{ latex: raw`a = n - 1`, secret: true, },
 
-					{ latex: raw`A = [0, \frac{20}{a}, ..., 20]`, secret: true, },
-
-					{ latex: raw`(\cos(A), \sin(A), A^{3/2})`, points: true, color: desmosRed3d, hidden: true, },
-					{ latex: raw`(\cos(A), \sin(A), A^{3/2}) + t(-\sin(A), \cos(A), \frac{3}{2}A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{10}{a}`, max: raw`\frac{10}{a}` }, hidden: true, },
+					{ latex: raw`A = [0, \frac{b}{a}, ..., b]`, secret: true, },
 				]
 			},
 		};

@@ -98,7 +98,9 @@ $$
 	\int \vec{r}(t)\,\d t = \left< \int x(t)\,\d t, \int y(t)\,\d t, \int z(t)\,\d t \right> + \vec{c}
 $$
 
-for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very much, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
+for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very often, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
+
+If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant.
 
 
 
@@ -130,32 +132,38 @@ In order to find the total approximation of arc length, we need to add these up 
 
 ### exc "arc length"
 
-	Find the arc length of the function graphed above --- $\vec{r}(t) = \left< \cos(t), \sin(t), t^{3/2} \right>$ --- between $t = 0$ and $t = 20$.
+	Find the arc length of the function graphed above --- $\vec{r}(t) = \left< \cos(t), \sin(t), \frac{2}{3}t^{3/2} \right>$ --- between $t = 0$ and $t = 35$.
 
 	### solution
 
 	The derivative is
 
 	$$
-		\vec{r}'(t) = \left< -\sin(t), \cos(t), \frac{3}{2}t^{1/2} \right>,
+		\vec{r}'(t) = \left< -\sin(t), \cos(t), t^{1/2} \right>,
 	$$
 
 	and its magnitude is
 
 	$$
-		\left| \left| \vec{r}'(t) \right| \right| &= \sqrt{\sin^2(t) + \cos^2(t) + \frac{9}{4}t}
+		\left| \left| \vec{r}'(t) \right| \right| &= \sqrt{\sin^2(t) + \cos^2(t) + t}
 
-		&= \sqrt{1 + \frac{9}{4}t}.
+		&= \sqrt{1 + t}.
 	$$
 
-	Integrating that, we can do a $u$-sub with $u = 1 + \frac{9}{4}t$ and $\d u = \frac{9}{4}\,\d t$ to find
+	Integrating that, we can do a $u$-sub with $u = 1 + t$ and $\d u = \d t$ to find
 
 	$$
-		\int_0^{20} \sqrt{1 + \frac{9}{4}t}\,\d t &= \int_0^{20} \frac{4}{9}\sqrt{u}\,\d u
+		\int_0^{35} \sqrt{1 + t}\,\d t &= \int_0^{35} \sqrt{u}\,\d u
 
-		&= \left. \left[ \frac{4}{9}\frac{2}{3} u^{3/2} \right] \right|_0^{20}
+		&= \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{35}
 
-		&= \left. \left[ \frac{4}{9}\frac{2}{3} \left( 1 + \frac{9}{4}t \right)^{3/2} \right] \right|_0^{20}
+		&= \left. \left[ \frac{2}{3} \left( 1 + t \right)^{3/2} \right] \right|_0^{35}
+
+		&= \frac{2}{3} \left( 36 \right)^{3/2} - \frac{2}{3} \left( 1 \right)^{3/2}
+
+		&= \frac{2}{3} \left( 216 - 1 \right)
+
+		&= \frac{430}{3}.
 	$$
 
 ###

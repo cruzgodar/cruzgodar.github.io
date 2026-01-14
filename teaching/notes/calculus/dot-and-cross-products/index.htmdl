@@ -158,15 +158,53 @@ This gives us a second way to find the equation of a plane!
 
 ###
 
-In the case of graphing lines, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
+Sometimes, we might find ourselves interested in the (minimum) distance from a point to a particular plane. If we know that plane's normal vector, then that minimum distance is given by traveling from the point to the plane in the direction of the normal vector --- moving perpendicularly to the plane is the fastest way to reach it.
 
-### desmos planeFromPoints
+### desmos distanceToPlane
 
-We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
+Here, the green vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the green point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
+
+### prop "projections"
+
+	Let $\vec{v}$ and $\vec{w}$ be two vectors. Then $\vec{v} = c \cdot \vec{w} + \vec{x}$ for some $c$ and some vector $\vec{x}$ orthogonal to $\vec{w}$. We call $c\vec{w}$ the **projection** of $\vec{v}$ onto $\vec{w}$, and it has a formula of
+
+	$$
+		\proj_{\vec{w}}(\vec{v}) = \frac{\vec{v} \bullet \vec{w}}{\vec{w} \bullet \vec{w}} \vec{w} = \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{w} \right| \right|^2} \vec{w}.
+	$$
+
+###
+
+Let's work through this example to find the distance we're interested in.
+
+### ex "distance from a point to a plane"
+
+	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
+
+	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the blue one above) is
+
+	$$
+		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
+	$$
+
+	which we want to project onto the normal vector $\vec{n}$, resulting in
+
+	$$
+		\vec{v} = \proj_{\vec{n}}(\vec{w}) = \left< \frac{7}{10}, 0, \frac{21}{10} \right>.
+	$$
+
+	We can tell that that's parallel to $\vec{n}$ since the third entry is $3$ times the first and the second component is zero, and its magnitude is $\frac{7}{\sqrt{10}}$, giving us the distance we're looking for.
+
+###
 
 
 
 ## The Cross Product
+
+When we graphing lines, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
+
+### desmos planeFromPoints
+
+We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
 
 From time to time in math, machinery at a high level delivers sudden, broad solutions to lower-level problems like a lightning bolt from the clouds. So it is with the cross product, which originates from <a href="https://en.wikipedia.org/wiki/William_Rowan_Hamilton">William Hamilton's</a> groundbreaking work in <a href="https://en.wikipedia.org/wiki/Quaternion">quaternions</a>, a four-dimensional number system that is analogous to the complex numbers. Quaternions are unreasonably useful considering that we live in only three dimensions, particularly in how they very elegantly express all possible rotations of 3D space. They're relevant to our goals, though, because one of Hamilton's results about multiplying quaternions happens to produce a formula for taking two vectors in $#R#^3$ and producing a new vector orthogonal to them. What this means for us is that we get a clean formula to accomplish what we need, but it won't come along with a particularly generous helping of motivation --- we're the ones being struck by the lightning, not the ones turning the crank on the machine.
 
@@ -255,6 +293,17 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 	$$
 
 ###
+
+One additional use of the cross product is a seemingly strange interaction with the dot product. Given three vectors $\vec{a}$, $\vec{b}$, and $\vec{c}$, the so-called **scalar triple product** $\vec{a} \bullet (\vec{b} \times \vec{c})$ is actually a nicer object than we might first expect. If $\vec{b} \times \vec{c} = x \vec{i} + y \vec{j} + z \vec{k}$, then the dot product with $\vec{a} = \left< a_1, a_2, a_3 \right>$ is given by replacing $\vec{i}$ with $a_1$, $\vec{j}$ with $a_2$, and $\vec{k}$ with $a_3$. And we can just do that replacement in the computation of the cross product, resulting in
+
+$$
+	\vec{a} \bullet (\vec{b} \times \vec{c}) = \det [[ a_1, a_2, a_3 ; b_1, b_2, b_3 ; c_1, c_2, c_3 ]].
+$$
+
+A convenient result from linear algebra (a field which is *very* roughly the study of matrices like this) tells us that this determinant's absolute value is the volume of the parallelepiped formed from $\vec{a}$, $\vec{b}$, and $\vec{c}$ --- that's an object like a parallelogram, but in three dimensions instead of two.
+
+### desmos parallelepiped
+
 
 
 ## Equations of Lines

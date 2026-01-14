@@ -167,6 +167,28 @@ export default function()
 				]
 			},
 
+			distanceToPlane:
+			{
+				use3d: true,
+
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+				expressions:
+				[
+					{ latex: raw`x + 3z = 4`, color: desmosGray3d },
+
+					{ latex: raw`p = (2, -1, 3)`, color: desmosGreen3d },
+
+					{ latex: raw`n = \vector((0, 0, \frac{4}{3}), (0, 0, \frac{4}{3}) + (1, 0, 3))`, color: desmosGreen3d },
+
+					{ latex: raw`\vector((1, 1, 1), p)`, color: desmosPurple3d },
+
+					{ latex: raw`\vector(p - (\frac{7}{10}, 0, \frac{21}{10}), p)`, color: desmosRed3d },
+
+					{ latex: raw`\vector((1, 1, 1), p - (\frac{7}{10}, 0, \frac{21}{10}))`, color: desmosBlue3d },
+				]
+			},
+
 			planeFromPoints:
 			{
 				use3d: true,
@@ -309,6 +331,38 @@ export default function()
 					{ latex: raw`b = \operatorname{vector}((0, 0, 0), (b_1, b_2, b_3))`, color: desmosRed3d },
 
 					{ latex: raw`n = a \times b`, color: desmosPurple3d },
+				]
+			},
+
+			parallelepiped:
+			{
+				bounds: { xmin: -1, xmax: 6, ymin: -1, ymax: 6, zmin: -1, zmax: 6 },
+
+				use3d: true,
+
+				expressions:
+				[
+					{ latex: raw`a = (2, 1, 2)`, hidden: true },
+					{ latex: raw`b = (1, 3, 1)`, hidden: true },
+					{ latex: raw`c = (0, 1, 3)`, hidden: true },
+
+					{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosPurple3d },
+					{ latex: raw`\triangle(a, b, a + b)`, color: desmosPurple3d },
+
+					{ latex: raw`\triangle((0, 0, 0), c, b)`, color: desmosBlue3d },
+					{ latex: raw`\triangle(c, b, c + b)`, color: desmosBlue3d },
+
+					{ latex: raw`\triangle((0, 0, 0), a, c)`, color: desmosRed3d },
+					{ latex: raw`\triangle(a, c, a + c)`, color: desmosRed3d },
+
+					{ latex: raw`\triangle(a + b, a, a + c)`, color: desmosBlue3d },
+					{ latex: raw`\triangle(a + b, a + b + c, a + c)`, color: desmosBlue3d },
+
+					{ latex: raw`\triangle(b + a, b, b + c)`, color: desmosRed3d },
+					{ latex: raw`\triangle(b + a, b + a + c, b + c)`, color: desmosRed3d },
+
+					{ latex: raw`\triangle(c + a, c, c + b)`, color: desmosPurple3d },
+					{ latex: raw`\triangle(c + a, c + b + a, c + b)`, color: desmosPurple3d },
 				]
 			},
 
