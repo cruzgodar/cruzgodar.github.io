@@ -4,6 +4,94 @@
 
 
 
+After getting our bearings in 3D space and graphing objects like lines, planes, and spheres, let's start dipping our toes into graphing more complicated functions. We've already seen that the difference in dimension between lines and planes in $#R#^3$ corresponds to a stark difference in how their equations are presented: planes are given by an equation, like $z = x + y$, while lines typically need to be parameterized as functions of the form $\vec{l}(t)$, taking in a single parameter $t$ and outputting a position vector in $#R#^3$. The former is effectively a function that takes in two variables and outputs one --- $z = f(x, y)$ --- while the latter is a function that takes in one variable and outputs three. We'll focus on that second case, called **vector-valued functions**, for now. Later, we'll return to explore the former, called **functions of multiple variables**. Finally, the ending of the course will focus on functions that both take in and output more than one variable.
+
+A general vector-valued function in $#R#^3$ is of the form $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$; we call $x(t)$, $y(t)$, and $z(t)$ its **component functions**. Just like with lines in $#R#^3$, a vector-valued function traces out a path in $#R#^3$ that we can think of as following the tip of a moving position vector.
+
+### exc "the shape of a vector-valued function"
+	
+	What shape is the graph of $\vec{r}(t) = \left< \cos(t), \sin(t), 1 \right>$? What about $\vec{s}(t) = \left< \cos(t), \sin(t), t \right>$?
+
+	### solution
+
+	The former is the unit circle in the plane $z = 1$. The latter is essentially the same, but it is continually moving up through $z$-planes. The result is a helix!
+
+	### desmos helix
+
+###
+
+The components of vector-valued functions are largely independent from one another, and so limits of them are mercifully simple. If $x(t)$, $y(t)$, and $z(t)$ are approaching values $x_0$, $y_0$, and $z_0$ respectively as $t \to a$, then $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$ is approaching $\left< x_0, y_0, z_0 \right>$. That is,
+
+### prop "limits of vector-valued functions"
+
+	Let $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$. Then
+
+	$$
+		\lim_{t \to a} \vec{r}(t) = \left< \lim_{t \to a} x(t), \lim_{t \to a} y(t), \lim_{t \to a} z(t) \right>,
+	$$
+
+	assuming those limits exist. Consequently, $\vec{r}(t)$ is continuous at a value of $t$ if and only if its component functions are continuous there.
+
+###
+
+As in calculus 1, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, its derivative is defined to be
+
+$$
+	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r(t)}}{h}
+
+	&= \lim_{h \to 0} \frac{\left< x(t + h),\ y(t + h),\ z(t + h) \right> - \left< x(t),\ y(t),\ z(t) \right>}{h}
+
+	&= \lim_{h \to 0} \frac{\left< x(t + h) - x(t),\ y(t + h) - y(t),\ z(t + h) - z(t) \right>}{h}
+
+	&= \lim_{h \to 0} \left< \frac{x(t + h) - x(t)}{h},\ \frac{y(t + h) - y(t)}{h},\ \frac{z(t + h) - z(t)}{h} \right>
+
+	&= \left< \lim_{h \to 0} \frac{x(t + h) - x(t)}{h},\ \lim_{h \to 0} \frac{y(t + h) - y(t)}{h},\ \lim_{h \to 0} \frac{z(t + h) - z(t)}{h} \right>
+
+	&= \left< x'(t), y'(t), z'(t) \right>,
+$$
+
+assuming those exist.
+
+What a ride! We used just about every property of vectors and vector-valued functions we've established so far, and the result is wonderfully simple.
+
+### exc "the derivative of a vector-valued function"
+
+	1. Let $\vec{p}(t)$ be your position in three-dimensional space. What is your current value of $\vec{p}'(t)$?
+
+	2. Let $\vec{r}(t) = \left< 2\cos(t), \sin(t), t^2 \right>$. Find $\vec{r}'(t)$.
+
+	3. One again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
+
+###
+
+We can use the fact that the derivative vector is tangent to the curve to find a formula for a tangent line, but a slight annoyance with the derivative is that its magnitude can vary substantially. To address that problem and make many future formulas more convenient, we define a magnitude-normalized version:
+
+### def "unit tangent vector"
+
+	Let $\vec{r}(t)$ be a differentiable vector-valued function. The **unit tangent vector** to the graph of $\vec{r}(t)$ is
+
+	$$
+		T(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}(t) \right| \right|},
+	$$
+
+	which is defined as long as $r'(t) = \vec{0}$.
+
+###
+
+Since differentiation of a vector-valued function boils down to just differentiating the component functions, we don't have many new derivative rules to write down. What we do have, though, is a few ways in which the derivative acts on operations we can perform on vectors. They'll likely look familiar!
+
+### prop "vector-valued derivative rules"
+
+	For any vector-valued functions $\vec{r}(t)$ and $\vec{s}(t)$,
+
+	$$
+		d/dt \left[ \vec{r}(t) \bullet \vec{s}(t) \right] &= \vec{r}'(t) \bullet \vec{s}(t) + \vec{r}(t) \bullet \vec{s}'(t)
+
+		d/dt \left[ \vec{r}(t) \times \vec{s}(t) \right] &= \vec{r}'(t) \times \vec{s}(t) + \vec{r}(t) \times \vec{s}'(t)
+	$$
+
+###
+
 
 
 
