@@ -132,17 +132,25 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 
 ### exc "the chain rule"
 	
-	Find the derivative of each of the following functions.
+	1. Find the derivative of $$f(x) = \ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
 	
-	1. $$2^{5x}$$.
-	
-	2. $$\ln^3(x)$$.
+	2. Let $$g(x) = \ln^3(x) = \left( \ln(x) \right)^3$$. Find $g'(x)$.
 
-	3. $$\ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
+	3. Find the equation of the tangent line to $$h(x) = 2^{5x}$$ at $x = 0$, and use it to approximate $h(-0.1)$.
 	
-	4. $$\frac{t^2}{e^{t + 2}}$$
+	4. Let $$k(t) = te^{t^2+1}$$. Does $k(t)$ have any critical points?
 	
 ###
+
+If we like, we can use the chain rule to writing the derivatives of patterns of functions. For example,
+
+$$
+	d/dx \left[ (...)^n \right] &= n(...)^{n-1} \cdot d/dx\left[ (...) \right]
+
+	d/dx \left[ e^{(...)} \right] &= e^{(...)} \cdot d/dx\left[ (...) \right]
+
+	d/dx \left[ \ln(...) \right] &= \frac{1}{(...)} \cdot d/dx\left[ (...) \right]
+$$
 
 
 
@@ -152,7 +160,7 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 
 ### ex "a composition of three functions"
 	
-	Find the derivative of $$\sin(\cos(\tan(x)))$$.
+	Find the derivative of $$\sqrt{e^{x^2+2} + 1}$$.
 
 	### solution
 	
@@ -176,9 +184,37 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 	
 ###
 
+### ex "a composition of three functions"
+	
+	Find the derivative of $$\sqrt{e^{x^3+2} + 1}$$.
+
+	### solution
+	
+	This time, the outermost function is $\sqrt{x}$, and its derivative is $\frac{1}{2}x^{-1/2}$, so we can start by removing that outer layer:
+	
+	$$
+		d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2} d/dx \left[ e^{x^3+2} + 1 \right].
+	$$
+	
+	Now we can handle that inner function. The constant $1$ differentiates to zero, but the exponential is another chain rule derivative.
+	
+	$$
+		d/dx \left[ e^{x^3+2} + 1 \right] &= e^{x^3+2} d/dx \left[ x^3 + 2 \right]
+
+		&= e^{x^3+2} \left( 3x^2 \right).
+	$$
+
+	When we put it all together, we find
+	
+	$$
+		d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2}\left( e^{x^3+2} \right) \left( 3x^2 \right).
+	$$
+	
+###
+
 ### exc "a composition of three functions"
 	
-	Find the derivative of $$2^{\ln\left( x^2 + 1 \right)}$$.
+	Find the derivative of $$2^{\ln\left( x^2 + x \right)}$$.
 	
 ###
 
