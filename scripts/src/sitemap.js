@@ -759,7 +759,8 @@ export const sitemap =
 			"/teaching/notes/calculus/applications-of-taylor-series",
 			"/teaching/notes/calculus/coordinate-systems",
 			"/teaching/notes/calculus/dot-and-cross-products",
-			"/teaching/notes/calculus/vector-valued-functions"
+			"/teaching/notes/calculus/vector-valued-functions",
+			"/teaching/notes/calculus/functions-of-multiple-variables"
 		]
 	},
 		
@@ -1244,6 +1245,17 @@ export const sitemap =
 	"/teaching/notes/calculus/vector-valued-functions":
 	{
 		"title": "Section 5.3: Vector-Valued Functions",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/functions-of-multiple-variables":
+	{
+		"title": "Section 5.4: Functions of Multiple Variables",
 		
 		"parent": "/teaching/notes/calculus",
 		
