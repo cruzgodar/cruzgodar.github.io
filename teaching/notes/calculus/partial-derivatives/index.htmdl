@@ -183,7 +183,7 @@ The result is a major hint to a property about partial derivatives!
 
 ###
 
-In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's theorem as a given. It will set us up well for our future work with derivatives!
+In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's theorem as a given. It'll set us up well for our future work with derivatives!
 
 
 

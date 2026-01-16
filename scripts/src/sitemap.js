@@ -761,7 +761,8 @@ export const sitemap =
 			"/teaching/notes/calculus/dot-and-cross-products",
 			"/teaching/notes/calculus/vector-valued-functions",
 			"/teaching/notes/calculus/functions-of-multiple-variables",
-			"/teaching/notes/calculus/partial-derivatives"
+			"/teaching/notes/calculus/partial-derivatives",
+			"/teaching/notes/calculus/the-multivariable-chain-rule"
 		]
 	},
 		
@@ -1268,6 +1269,17 @@ export const sitemap =
 	"/teaching/notes/calculus/partial-derivatives":
 	{
 		"title": "Section 5.5: Partial Derivatives",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/the-multivariable-chain-rule":
+	{
+		"title": "Section 5.6: The Multivariable Chain Rule",
 		
 		"parent": "/teaching/notes/calculus",
 		
