@@ -20,6 +20,48 @@ A general vector-valued function in $#R#^3$ is of the form $\vec{r}(t) = \left< 
 
 ###
 
+One place vector-valued functions arise is in the intersection of two surfaces --- two different two-dimensional surfaces typically intersect in a one-dimensional curve.
+
+### ex "parameterizing a surface intersection"
+
+	Find a vector-valued function $\vec{r}(t)$ for the intersection between $x^2 + y^2 + z^2 = 9$ and $z = x + 4$.
+
+	This is a plane cutting a sphere at an oblique angle, which produces a circle.
+
+	### desmos slicedSphere
+
+	As if we were solving for an intersection of two curves in $#R#^2$, we can start by plugging one of the formulas into the other. We have
+
+	$$
+		x^2 + y^2 + (x + 4)^2 &= 9
+
+		2x^2 + 8x + 16 + y^2 &= 9
+
+		x^2 + 4x + 8 + \frac{1}{2}y^2 &= \frac{9}{2}
+
+		x^2 + 4x + 4 + \frac{1}{2}y^2 &= \frac{1}{2}
+
+		\left( x + 2 \right)^2 + \frac{1}{2}y^2 &= \frac{1}{2}
+
+		2\left( x + 2 \right)^2 + y^2 &= 1
+
+		\left( \sqrt{2}(x + 2) \right)^2 + y^2 &= 1
+	$$
+
+	The result is the equation of an ellipse in $#R#^2$, which we can parameterize as
+
+	$$
+		\left( -2 + \frac{1}{\sqrt{2}} \cos(t), \sin(t) \right).
+	$$
+
+	This is effectively the shadow that the red circle casts on the $xy$-plane. To lift it up to where it lives in $#R#^3$, we just need to put back in the $z$-coordinate, which is $x + 4$:
+
+	$$
+		\vec{r}(t) = \left< -2 + \frac{1}{\sqrt{2}} \cos(t), \sin(t), 2 + \frac{1}{\sqrt{2}} \cos(t) \right>.
+	$$
+
+###
+
 The components of vector-valued functions are largely independent from one another, and so limits of them are mercifully simple. If $x(t)$, $y(t)$, and $z(t)$ are approaching values $x_0$, $y_0$, and $z_0$ respectively as $t \to a$, then $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$ is approaching $\left< x_0, y_0, z_0 \right>$. That is,
 
 ### prop "limits of vector-valued functions"
@@ -118,7 +160,7 @@ $$
 	&= \frac{b - a}{n} \left| \left| \vec{r}'(p) \right| \right|.
 $$
 
-In order to find the total approximation of arc length, we need to add these up as $t$ ranges from $a$ to $b$. Let's skip the heavy notation for that sum and acknowledge that it's exactly a Riemann sum! Its limit as the number of segments increases without bound, which is what we're after anyway, is then given by an integral. We've found the following result:
+For a small number of segments, our approximation is pretty poor, like a too-stringy green bean, but it approaches the graph of the function itself as the number of segments increases. In order to find the total approximation of arc length, we need to add all the segments up as $t$ ranges from $a$ to $b$. Let's skip the heavy notation for that sum and acknowledge that it's exactly a Riemann sum! Its limit as the number of segments increases without bound, which is what we're after anyway, is then given by an integral. We've found the following result:
 
 ### thm "arc length"
 

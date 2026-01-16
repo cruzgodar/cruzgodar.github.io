@@ -37,6 +37,20 @@ export default function()
 				]
 			},
 
+			slicedSphere:
+			{
+				use3d: true,
+
+				bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4 },
+
+				expressions:
+				[
+					{ latex: raw`x^2 + y^2 + z^2 = 9`, color: desmosPurple3d },
+					{ latex: raw`z = x + 4`, color: desmosBlue3d },
+					{ latex: raw`x^2 + y^2 + z^2 = 9 \left\{ z = x + 4 \right\}`, color: desmosRed3d },
+				]
+			},
+
 			arcLength:
 			{
 				use3d: true,
