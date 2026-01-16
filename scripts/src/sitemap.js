@@ -760,7 +760,8 @@ export const sitemap =
 			"/teaching/notes/calculus/coordinate-systems",
 			"/teaching/notes/calculus/dot-and-cross-products",
 			"/teaching/notes/calculus/vector-valued-functions",
-			"/teaching/notes/calculus/functions-of-multiple-variables"
+			"/teaching/notes/calculus/functions-of-multiple-variables",
+			"/teaching/notes/calculus/partial-derivatives"
 		]
 	},
 		
@@ -1256,6 +1257,17 @@ export const sitemap =
 	"/teaching/notes/calculus/functions-of-multiple-variables":
 	{
 		"title": "Section 5.4: Functions of Multiple Variables",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/partial-derivatives":
+	{
+		"title": "Section 5.5: Partial Derivatives",
 		
 		"parent": "/teaching/notes/calculus",
 		

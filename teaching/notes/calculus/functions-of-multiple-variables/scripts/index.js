@@ -98,19 +98,20 @@ export default function()
 				]
 			},
 
-			levelCurves2:
+			levelSurfaces:
 			{
-				bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+				use3d: true,
+
+				bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2 },
 
 				expressions:
 				[
-					{ latex: raw`x^2 - y^2 = c`, color: desmosBlue, secret: true },
+					{ latex: raw`x^2+y^4+z^6 = c`, color: desmosPurple3d, secret: true },
 
 					...getDesmosSlider({
-						expression: raw`c = 0`,
-						min: -4,
+						expression: raw`c = 1`,
+						min: 0.01,
 						max: 4,
-						step: 1,
 						secret: false,
 					}),
 				]

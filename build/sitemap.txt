@@ -107,6 +107,7 @@ home Cruz Godar
 			dot-and-cross-products Section 5.2: The Dot and Cross Products
 			vector-valued-functions Section 5.3: Vector-Valued Functions
 			functions-of-multiple-variables Section 5.4: Functions of Multiple Variables
+			partial-derivatives Section 5.5: Partial Derivatives
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

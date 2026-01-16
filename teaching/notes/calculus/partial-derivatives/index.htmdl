@@ -1,0 +1,300 @@
+### show-solutions
+
+### nav-buttons
+
+
+
+
+We're now ready at last to return to the world of calculus! The major topics in Calculus I were limits, derivatives, and optimization, and over the next handful of sections, we'll be exploring all of those --- just not quite in that order.
+
+When we say that the limit of a single-variable function $\lim_{x \to a} f(x)$ exists, we mean that two other simpler limits exist and are equal: $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$. That is to say, there are *only two ways to approach $x = a$* --- from the left and from the right. If we have a function $g(x, y)$ of two variables, then there are so many ways to approach any point in the domain. We could approach $(0, 0)$ along the line $x = 0$ or $y = 0$, but also along the line $y = x$, or the curve $y = x^2$. We can begin to get the sense that a limit involving multiple variables will need to be a substantially more robust concept than the one we're used to.
+
+Rather than dig into all that complexity quite yet, though, let's see what we can do with the two simplest paths we mentioned there: approaching a point along a line parallel to the $x$-axis and a line parallel to the $y$-axis.
+
+For a function of a single variable, the limit definition of the derivative came from the slope of a secant line passing through the points with $x$-coordinates $x$ and $x + h$:
+
+$$
+	d/dx \left[ f(x) \right] = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}.
+$$
+
+Like we mentioned earlier, if we're trying to extend that notion to a function of two variables, there are far more than two points in $#R#^2$ that are distance $h$ away from a given point $(x, y)$. However, if we insist on looking for points distance $h$ away that move only in either the $x$ or $y$ direction, then those lie on a line, and we can use them to find slopes of secant lines like we're used to.
+
+### desmos secantLines
+
+Taking a limit by sliding one point toward the other is like a derivative, but computed by only considering one of the coordinates, so we'll give it a fairly appropriate name:
+
+### def "partial derivative"
+
+	Let $f(x, y)$ be a function. The **partial derivative** of $f$ with respect to $x$ is
+
+	$$
+		\frac{\partial}{\partial x} [f(x, y)] = \frac{\partial f}{\partial x}(x, y) = f_x(x, y) = \lim_{h \to 0} \frac{f(x + h, y) - f(x, y)}{h}
+	$$
+
+	if the limit exists. Similarly, the **partial derivative** of $f$ with respect to $y$ is
+
+	$$
+		\frac{\partial}{\partial y} [f(x, y)] = \frac{\partial f}{\partial y}(x, y) = f_y(x, y) = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}
+	$$
+
+	if that limit exists. We read the $\partial$ symbol as "partial".
+
+###
+
+A partial derivative does what it says on the tin: it computes a derivative of a multivariable function by converting it into a function of a single variable. Revisiting our wireframes from last time, a partial derivative computes the slope of a tangent line to a point on a graph by taking slices of it parallel to the $x$- and $y$-axes.
+
+### desmos partialDerivativeWireframes
+
+### ex "a partial derivative"
+
+	Compute $$\frac{\partial}{\partial y} \left[ x + y^2 + xy \right]$$ using the limit definition.
+
+	Much like derivatives of a single variable, the limit definition for partial derivatives isn't a great long-term solution. We directly compute
+
+	$$
+		\frac{\partial}{\partial y} \left[ x + y^2 + xy \right] &= \lim_{h \to 0} \frac{x + (y + h)^2 + x(y + h) - (x + y^2 + xy)}{h}
+
+		&= \lim_{h \to 0} \frac{x + y^2 + 2yh + h^2 + xy + xh - x - y^2 - xy}{h}
+
+		&= \lim_{h \to 0} \frac{2yh + h^2 + xh}{h}
+
+		&= \lim_{h \to 0} \left( 2y + h + x \right)
+
+		&= 2y + x.
+	$$
+
+###
+
+While partial derivatives can seem complicated on the surface, I bet you're already more comfortable with them than you might think! We already deal with functions of multiple variables in Calculus I, just not with that terminology. When we say that $d/dx \left[ cx^2 \right] = 2cx$ for any constant $c$, we can just as well think of that function as being $f(x, c) = cx^2$ instead of $f(x) = x^2$. With that interpretation, we can compute partial derivatives *exactly* as we would compute ordinary derivatives, remembering to treat all other variables as constants. Returning to that example,
+
+$$
+	\frac{\partial}{\partial y} \left[ x + y^2 + xy \right] &= \frac{\partial}{\partial y} \left[ x \right] + \frac{\partial}{\partial y} \left[ y^2 \right] + \frac{\partial}{\partial y} \left[ xy \right]
+
+	&= 0 + 2y + x.
+$$
+
+In fact, this is so accurate to the way that partial derivatives operate that the $\partial$ symbol doesn't actually mean anything different from the $\text{d}$ symbol: it's just there to remind us that the function we're differentiating has more than one input. In programming, symbols and structure that are equivalent to something more long-winded are called *syntactic sugar*; this is more like syntactic sawdust.
+
+### exc "partial derivatives"
+
+	Find the following partial derivatives:
+
+	1. $\frac{\partial}{\partial x}\left[ \sin(x^2 + y) \right]$
+
+	2. $\frac{\partial f}{\partial y}$ for $f(x, y) = e^{2x}\tan(y)$.
+
+	3. $g_z(2, 4, 7)$ for $g(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.
+
+	4. Let $C(m, l)$ be the daily operating cost to a factory in dollars when it uses $m$ pounds of materials and $l$ hours of labor. What does it mean for $C_m(100, 24) = 200$?
+
+	### solution
+
+	1. We treat $y$ as if it's a constant, so
+	
+	$$
+		\frac{\partial}{\partial x}\left[ \sin(x^2 + y) \right] &= \cos(x^2 + y) \frac{\partial}{\partial x} \left[ x^2 + y \right]
+
+		&= \cos(x^2 + y) (2x).
+	$$
+
+	2. While this might seem like a product rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
+
+	$$
+		\frac{\partial}{\partial y}\left[ e^{2x}\tan(y) \right] &= e^{2x} \frac{\partial}{\partial y}\left[ \tan(y) \right]
+
+		&= e^{2x} \sec^2(y).
+	$$
+
+	3. We first need to compute 
+
+	$$
+		\frac{\partial}{\partial z}\left[ \sqrt{x^2 + y^2 + z^2} \right] = \frac{1}{2} \left( x^2 + y^2 + z^2 \right)^{-1/2} (2z),
+	$$
+
+	and then we can set $(x, y, z) = (2, 4, 7)$ to find
+
+	$$
+		g_z(2, 4, 7) &= \frac{1}{2} \left( 2^2 + 4^2 + 7^2 \right)^{-1/2} (14)
+
+		&= \frac{7}{\sqrt{69}}.
+	$$
+
+	4. This partial derivative is telling us the slope of the graph along the $m$-axis when $l$ is held constant --- so given that the factory is currently using 100 pounds of material and 24 hours of labor (perhaps 3 full-time workers) per day, the additional cost per extra pound of material used per day is *approximately* \$200. It's only approximate, since the actual cost per additional pound of material is the slope of a *secant* line through the points $(100, 24, C(100, 24))$ and $(101, 24, C(101, 24))$, which this only approximates (but probably pretty well!).
+
+###
+
+
+
+## Higher-Order Partial Derivatives
+
+Just like with regular derivatives, we can take higher order partial derivatives. Operations like $\frac{\partial^2 f}{\partial x^2}(a, b)$ aren't particularly complicated if we're already comfortable with partials in the first place: that one computes the concavity of the graph of $f$ at the point $(a, b)$ when the graph is intersected with the plane $x = a$. We can also write that as $f_{xx}(a, b)$, just like we'd add extra primes to a single-variable function --- but wait! What about mixing partial derivatives, like $f_{xy}(a, b)$?
+
+First of all, let's clear up notation. When we write $f_{xy}$, we mean $\left( f_x \right)_y$: we differentiate from the inside out, thinking of the subscripts as building up from left to right. In comparison, when we use the $\partial$ notation, we'd write the same function as
+
+$$
+	\left( f_x \right)_y = \frac{\partial}{\partial y} \left[ \frac{\partial}{\partial x} \left[ f(x, y) \right] \right],
+$$
+
+thinking of the derivatives as stacking up from right to left (in both notations, they stack up from near $f$ to far from it). To simplify this $\partial$ notation in a similar way to $\frac{\partial^2}{\partial x^2}$, we also write it as
+
+$$
+	f_{xy} = \frac{\partial^2}{\partial y\, \partial x} \left[ f(x, y) \right] = \frac{\partial^2 f}{\partial y\, \partial x}.
+$$
+
+We call $f_{xy}$ and $f_{yx}$ **mixed partials**. We'll investigate a bit of their geometric interpretation on the homework, but for now, let's just get our bearings computing them.
+
+### exc "mixed partials"
+
+	Compute the mixed partial derivatives of $$f(x, y) = \frac{1}{x}\sin\left( xy^2 \right)$$.
+
+	### solution 
+
+	The first-order partials are
+
+	$$
+		f_x(x, y) &= -x^{-2} \sin\left( xy^2 \right) + x^{-1}\cos\left( xy^2 \right)\left( y^2 \right)
+
+		f_y(x, y) &= x^{-1}\cos\left( xy^2 \right)(2xy)
+
+			&= 2y\cos\left( xy^2 \right),
+	$$
+
+	and so
+
+	$$
+		f_{xy}(x, y) &= -x^{-2} \cos\left( xy^2 \right)(2xy) + x^{-1}\left( -\sin\left( xy^2 \right)\left( 2xy \right)\left( y^2 \right) + \cos\left( xy^2 \right)\left( 2y \right) \right)
+
+			&= -2x^{-1}y \cos\left( xy^2 \right) -2y^3\sin\left( xy^2 \right) + 2x^{-1}y\cos\left( xy^2 \right)
+
+			&= -2y^3\sin\left( xy^2 \right)
+
+		f_{yx}(x, y) &= -2y\sin\left( xy^2 \right)\left( y^2 \right)
+
+			&= -2y^3\sin\left( xy^2 \right).
+	$$
+
+###
+
+The result is a major hint to a property about partial derivatives!
+
+### thm "Clairaut's Theorem"
+
+	Let $f(x, y)$ be a function that is defined at a point $(a, b)$ and around it in some neighborhood $U$ (if you like, think of $U$ as an open disk centered at $(a, b)$). If $f_{xy}$ and $f_{yx}$ are defined and continuous on $U$, then $f_{xy}(a, b) = f_{yx}(a, b)$.
+
+###
+
+In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's theorem as a given. It will set us up well for our future work with derivatives!
+
+
+
+## Tangent Planes
+
+Calculus I had a lot to say about derivatives, and rightfully so. As we trace our path through multivariable calculus, developing 3D and higher versions of the same results and eventually even examining entirely new phenomena, we'll do well to ground ourselves in familiar and/or intuitive ideas that stem directly from single-variable ones. With that in mine, let's revisit tangent lines.
+
+One of the most useful applications of tangent lines in $#R#^2$ is to approximate functions: the tangent line to a function is nearly equal to the function's values near the point we consider, and so if we know a function's value and slope at a point, then we can approximate nearby values. For example, if $g(x) = \sqrt{x}$, then $g'(x) = \frac{1}{2} x^{-1/2}$, so $g'(1) = \frac{1}{2}$. The tangent line at $x = 1$ is then
+
+$$
+	l(x) = g(1) + g'(1)(x - 1) = 1 + \frac{1}{2}(x - 1)
+$$
+
+using point-slope form, and so for example,
+
+$$
+	\sqrt{1.1} \approx 1 + \frac{1}{2}(1.1 - 1) = 1.05.
+$$
+
+The actual value is about $1.0488$, so this isn't bad!
+
+To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines from partial derivatives that we talked about before. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $\frac{\partial f}{\partial x}(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
+
+$$
+	\vec{l_1}(t) = p + t\left< 1, 0, \frac{\partial f}{\partial x}(a, b) \right>.
+$$
+
+Similarly,
+
+$$
+	\vec{l_2}(t) = p + t\left< 0, 1, \frac{\partial f}{\partial y}(a, b) \right>.
+$$
+
+Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, a + \Delta y \right)$ as
+
+$$
+	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + \frac{\partial f}{\partial x}(a, b)\Delta x + \frac{\partial f}{\partial y}(a, b)\Delta y,
+$$
+
+or in a much more notationally harmonious presentation, we can approximate $f$ near $(a, b)$ by the function
+
+$$
+	l(x, y) = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b).
+$$
+
+That's much nicer! It also looks quite a bit like the single-variable formula for a tangent line, and it shares many of its properties. Since $f(a, b)$, $f_x(a, b)$, and $f_y(a, b)$ are all just numbers, this is nothing more than a plane! To refer to it more easily going forward, let's give it a name.
+
+### def "tangent plane"
+
+	Let $f(x, y)$ be a function of two variables whose partial derivatives $f_x$ and $f_y$ exist at $(a, b)$. The **tangent plane** to $f$ at $(a, b)$ is the unique plane that matches the value and both partial derivatives of $f$ at $(a, b)$, given by
+
+	$$
+		z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b).
+	$$
+
+###
+
+### exc "a tangent plane"
+
+	Find the equation of the tangent plane to $f(x, y) = \sqrt{20 - x^2 - 3y^2}$ at $\left( 1, 1 \right)$ and use it to approximate $f(1.5, 0.5)$.
+
+	### solution
+
+	The partial derivatives are
+
+	$$
+		f_x(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-2x)
+
+		f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-3y),
+	$$
+
+	so we have
+
+	$$
+		f(1, 1) &= 4
+
+		f_x(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-2) = -\frac{1}{4}
+
+		f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-3) = -\frac{3}{8}.
+	$$
+
+	The tangent plane is then given by
+
+	$$
+		z = 4 - \frac{1}{4}(x - 1) - \frac{3}{8}(y - 1).
+	$$
+
+	### desmos tangentPlane
+
+	To approximate $f(1.5, 0.5) = \sqrt{17}$, we evaluate
+
+	$$
+		4 - \frac{1}{4}(1.5 - 1) - \frac{3}{8}(0.5 - 1) = 4.0625.
+	$$
+
+	The actual value is about $4.123$, so that's not too far off!
+
+###
+
+
+
+While partial derivatives are only a partial (unsurprisingly) generalization of the notion of derivative to higher dimensions, having an equation for the tangent plane lets us extend the concept of *differentiability*. A function of a single variable is differentiable at a point if its tangent line has a well-defined slope, and we can now say nearly the same thing for a function of multiple variables.
+
+### def "differentiable function"
+
+	A function $f(x, y)$ is **differentiable** at $(a, b)$ if there is a well-defined tangent plane to $f$ at $(a, b)$: that is, if the function and its partial derivatives $f_x$ and $f_y$ exist at and around $(a, b)$ and are continuous at $(a, b)$.
+
+###
+
+We'll talk more about a full replacement to the derivative in the next sections, but this is a good start, and it tells us that that full replacement should only require the partial derivatives to exist. And it will!
+
+
+
+### nav-buttons
