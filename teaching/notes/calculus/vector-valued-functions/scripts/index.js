@@ -59,29 +59,39 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`(\cos(t), \sin(t), \frac{2}{3}t^{3/2})`, color: desmosPurple3d, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
+					{ latex: raw`X(t) = \cos(t)`, hidden: true },
+					{ latex: raw`Y(t) = \sin(t)`, hidden: true },
+					{ latex: raw`Z(t) = \frac{2}{3}t^{3/2}`, hidden: true },
+					{ latex: raw`l(t) = (X(t), Y(t), Z(t))`, color: desmosPurple3d, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
+					{ latex: raw`l(t)`, color: desmosPurple3d, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
 					...getDesmosSlider({
 						expression: raw`b = 35`,
 						min: 0,
 						max: 35,
 						secret: false,
 					}),
-					{ latex: raw`\vector((0, 0, 0), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}))`, color: desmosBlue3d, lineWidth: 2, secret: true },
-					{ latex: raw`\vector((\cos(s), \sin(s), \frac{2}{3}s^{3/2}), (\cos(s), \sin(s), \frac{2}{3}s^{3/2}) + (-\sin(s), \cos(s), s^{1/2}))`, color: desmosRed3d, lineWidth: 2, secret: true },
+
+					{ latex: raw`\vector((0, 0, 0), l(s))`, color: desmosBlue3d, lineWidth: 2, secret: true },
+
 					...getDesmosSlider({
 						expression: raw`s = 1`,
 						min: 0,
 						max: "b",
 						secret: false,
 					}),
+					
+					{ latex: raw`d(t) = (X'(t), Y'(t), Z'(t))` },
 
-					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2})`, points: true, color: desmosRed3d, hidden: true, },
-					{ latex: raw`(\cos(A), \sin(A), \frac{2}{3}A^{3/2}) + t(-\sin(A), \cos(A), A^{1/2})`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, lineWidth: 2 },
+					{ latex: raw`\vector(l(s), l(s) + d(s))`, color: desmosRed3d, lineWidth: 2, secret: true },
+
+					{ latex: raw`l(A)`, points: true, color: desmosRed3d, hidden: true, },
+					
+					{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), Z(A) + tZ'(A))`, color: desmosRed3d, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, lineWidth: 2 },
 
 					...getDesmosSlider({
 						expression: raw`n = 2`,
 						min: 2,
-						max: 35,
+						max: "b",
 						secret: false,
 					}),
 

@@ -764,7 +764,8 @@ export const sitemap =
 			"/teaching/notes/calculus/partial-derivatives",
 			"/teaching/notes/calculus/the-multivariable-chain-rule",
 			"/teaching/notes/calculus/the-gradient",
-			"/teaching/notes/calculus/multivariable-optimization"
+			"/teaching/notes/calculus/multivariable-optimization",
+			"/teaching/notes/calculus/lagrange-multipliers"
 		]
 	},
 		
@@ -1304,6 +1305,17 @@ export const sitemap =
 	"/teaching/notes/calculus/multivariable-optimization":
 	{
 		"title": "Section 5.8: Multivariable Optimization",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/lagrange-multipliers":
+	{
+		"title": "Section 5.9: Lagrange Multipliers",
 		
 		"parent": "/teaching/notes/calculus",
 		
