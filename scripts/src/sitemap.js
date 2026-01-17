@@ -762,7 +762,8 @@ export const sitemap =
 			"/teaching/notes/calculus/vector-valued-functions",
 			"/teaching/notes/calculus/functions-of-multiple-variables",
 			"/teaching/notes/calculus/partial-derivatives",
-			"/teaching/notes/calculus/the-multivariable-chain-rule"
+			"/teaching/notes/calculus/the-multivariable-chain-rule",
+			"/teaching/notes/calculus/the-gradient"
 		]
 	},
 		
@@ -1280,6 +1281,17 @@ export const sitemap =
 	"/teaching/notes/calculus/the-multivariable-chain-rule":
 	{
 		"title": "Section 5.6: The Multivariable Chain Rule",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/the-gradient":
+	{
+		"title": "Section 5.7: The Gradient",
 		
 		"parent": "/teaching/notes/calculus",
 		
