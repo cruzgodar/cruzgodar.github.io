@@ -84,6 +84,17 @@ export default function()
 		eigenvectorAxesApplet.run({
 			generatingCode: "(dot(draggableArg, vec2(x,y)), dot(draggableArg2, vec2(x,y)))",
 			zoomLevel: -.75
+		}).then(() =>
+		{
+			eigenvectorAxesApplet.wilson.setDraggables({
+				draggableArg: [1, 1],
+				draggableArg2: [-1, 1],
+			});
+
+			eigenvectorAxesApplet.wilsonUpdate.setUniforms({
+				draggableArg: [1, 1],
+				draggableArg2: [-1, 1],
+			});
 		});
 		eigenvectorAxesApplet.pauseWhenOffscreen();
 	});
