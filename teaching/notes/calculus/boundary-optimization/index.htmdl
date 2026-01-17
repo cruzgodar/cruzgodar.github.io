@@ -1,0 +1,347 @@
+### show-solutions
+
+### nav-buttons
+
+
+
+We've almost completely brought the theory of optimization to functions of multiple (mostly two) variables, but there's one aspect we haven't yet discussed: when we optimize a function of one variable $f(x)$ that's defined on a closed interval $[a, b]$, we consider not just its critical points, but also the endpoints $a$ and $b$ of the interval: the function might have local maxima or minima there. In fact, it nearly always does!
+
+### desmos endpoints
+
+Functions like this one are great examples of the **Extreme Value Theorem** for functions of a single variable, which says that a continuous function $f(x)$ on a closed interval always has a global maximum and a global minimum. In the previous graph, defining $f$ on all of $#R#$ or ditching the endpoints by defining it on $(a, b)$ results in a function with no global max or min. There are largely two relevant properties of $[a, b]$ that are not shared by $(a, b)$, $[a, \infty)$, or $(-\infty, \infty)$: first, $[a, b]$ contains the endpoints $a$ and $b$, which is necessary so that $x$ can't approach $a$ or $b$ without reaching it and thereby keep $f$ from having a global extremum. Second, $[a, b]$ doesn't extend infinitely far in either direction, meaning $f$ can't increase or decrease forever and avoid having a global extremum that way.
+
+If we'd like to bring the Extreme Value Theorem and this surrounding discussion to functions $f(x, y)$, then we need to extend the concept of a closed interval to $#R#^2$ by pinning down both of these properties. Let's give it a shot, starting with the simpler of the two: not extending infinitely in any direction.
+
+### def "bounded set"
+
+	Let $B$ be a set of points in $#R#^n$. We say that $B$ is **bounded** if there is some $r$ so that every point $b \in B$ is distance at most $r$ from the origin --- that is, $B$ is contained in some finite-radius ball centered at the origin.
+
+###
+
+This is as good of a definition as any --- it just says no part of $B$ can extend infinitely far away for it to be bounded. The other property is a bit more subtle, and requires a preliminary definition.
+
+### def "boundary of a set"
+
+	Let $A$ be a set of points in $#R#^n$. The **boundary** of $A$ is the set of all points $a \in #R#^n$ (*not necessarily in $A$!*) for which a ball of any radius centered at $a$ contains some points in $A$ and some points not in $A$.
+
+###
+
+While we'll see that this agrees exactly with our intuition, this really demands some examples! Let's take a closer look.
+
+### ex "boundary of a set"
+
+	1. The boundary of the unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 \leq 1 \right\}$ is the unit circle $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 = 1 \right\}$: if we draw a circle of *any* radius around a point on the circle, it contains points in the disk and points not in it. Any other point is either completely inside or outside the set, since a sufficiently small circle will be contained in the set or outside it.
+
+	### desmos boundary1
+
+	2. The boundary of the open unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 < 1 \right\}$ is *also* the unit circle. In just the same way that limits don't depend of a function's value at the point being approached, a point being inside or outside the boundary of a set is unrelated to whether it's in the set itself.
+
+	3. The boundary of an interval $[a, b]$ in $#R#$ is the two-element set $\left\{ a, b \right\}$, as is the boundary of $(a, b)$, $[a, b)$, and $(a, b]$.
+
+	4. The boundary of a half-infinite interval $[a, \infty)$ is just the singleton set $\left\{ a \right\}$: there isn't any point greater than $a$ on the boundary, since the set continues out forever to the right.
+
+###
+
+Those last two examples hints at where we're going: the Extreme Value Theorem tells us about functions defined on intervals that contain their boundary. We already call them closed intervals, and so that's a great name to give to such sets more broadly.
+
+### def "closed and compact sets"
+
+	A set $C$ in $#R#^n$ is **closed** if it contains its boundary, and a set $K$ in $#R#^n$ is **compact** if it is closed and bounded.
+
+###
+
+The closed unit disk is closed, and the open unit disk is not --- the former contains its boundary while the latter doesn't. Intuitively, a set is closed if there's no way to approach a point not in the set by taking a path through the set. Note that we haven't defined what it means for a general set to be open; nor will we. There is a perfectly fine definition that correctly categorized $(a, b)$ as open, $[a, b]$ as closed, and $[a, b)$ and $(a, b]$ as neither, but it's a bit out of scope. For our purposes, we'll stick to saying $[a, b]$ is closed and the other three types of interval simply aren't closed.
+
+
+
+### exc "compact sets"
+
+	1. Is the square
+	
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 1 \leq x \leq 3 \text{ and } 2 \leq y \leq 4 \right\}
+	$$
+
+	a compact set?
+
+	2. Give an example of a compact set in $#R#$ that is not a closed interval $[a, b]$.
+
+	3. Let $y = f(x)$ be a continuous function whose domain is $[a, b]$ for some $a, b \in #R#$. Is the graph of $f$ --- i.e. the set $\left\{ (x, y) \in #R#^2 \mid y = f(x) \right\}$ guaranteed to be compact?
+
+	### solution
+
+	1. Yes --- its boundary is the hollow square
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid (x = 1 \text{ or } x = 3) \text{ and } 2 \leq y \leq 4 \text{, or } 1 \leq x \leq 3 \text{ and } (y = 2 \text{ or } y = 4) \right\},
+	$$
+
+	including the corners, and that boundary is fully contained in the set. That tells us it's closed, and it's bounded since it fits inside a disk of radius $5$, for example.
+
+	### desmos boundary2
+
+	2. One way to do this is to combine two closed intervals together, like $[1, 2] \cup [3, 4]$: the boundary is the four points $\left\{ 1, 2, 3, 4 \right\}$, which is contained in the set. As a brief reminder, the union symbol $\cup$ means to take the elements of both sets and combine them.
+
+	3. Yes! Let's start with closed: any point $(c, f(c))$ on the graph of a continuous function has points in the graph nearby for any radius circle we draw --- that's effectively what it means for $\lim_{x \to c} f(x) = f(c)$. There are also guaranteed to be points inside the circle that aren't in the graph for any radius for less interesting reasons --- for example, there are points directly above and below $(c, f(c))$ for which by definition $f(x) \neq y$.
+
+	For boundedness, we can rather delightfully use the Extreme Value Theorem: $f$ must have a global min and max, say $m$ and $M$, on the closed interval $[a, b]$. That means the whole graph of $f$ fits inside the rectangle
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid a \leq x \leq b \text{ and } m \leq y \leq M \right\},
+	$$
+
+	which is bounded by the same logic we used in question 1.
+
+###
+
+With compact sets defined and explored, let's return to the matter at hand and apply them.
+
+### thm "The Extreme Value Theorem"
+
+	Let $f : #R#^n \to #R#$ be a continuous function of $n$ variables defined on a compact set $K$ (i.e. $f: K \to #R#$). Then $f$ must attain a global maximum and minimum on $K$.
+
+###
+
+We apply the EVT the same way that we did in single-variable calculus: first, we optimize a function by finding all of its critical points. Then, if it's defined on a compact set, we also evaluate it at every point in the boundary and compare those values to one another and to the critical points' values. The smallest is the global min, and the largest is the global max.
+
+### exc "optimizing a function"
+
+	Let $f(x, y) = x^3 - y^2 + 2xy$ be defined on the rectangle
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid -1 \leq x \leq 0 \text{ and } -2 \leq y \leq 0 \right\}.
+	$$
+
+	Find the global extrema of $f$.
+
+	### solution
+
+	We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
+
+	$x = -1$: starting here, we can literally set $x = -1$ in the equation to find $f(-1, y) = -1 - y^2 - 2y$. We're interested in optimizing this function on the interval $[-2, 0]$, and so we can return to the techniques of single-variable calculus. Taking the derivative and setting it equal to zero,
+
+	$$
+		-2y - 2 &= 0
+
+		y &= -1.
+	$$
+
+	The possible points are then $(-1, -2)$, $(-1, -1)$, and $(-1, 0)$. The first and last points there come from the EVT for single-variable functions: we have to include the endpoints of the interval $[0, -2]$ as candidates for global extrema.
+
+	$x = 0$: this works identically, but with a different $x$-value. We have $f(0, y) = -y^2$, whose only critical point is $y = 0$, so we also consider the points $(0, -2)$, and $(0, 0)$.
+
+	$y = -2$: we have $f(x, -2) = x^3 - 4 - 4x$, so taking the derivative,
+
+	$$
+		3x^2 - 4 &= 0
+
+		x &= \pm \sqrt{\frac{4}{3}}.
+	$$
+
+	We only care about $x \in [-1, 0]$, though, and neither of these $x$-values is in that interval. We add the boundary points $(-1, -2)$ and $(0, -2)$ and move on.
+
+	$y = 0$: finally, $f(x, 0) = x^3$, whose only critical point is at $x = 0$. Adding it and the other boundary point, we have $(-1, 0)$ and $(0, 0)$.
+
+	Let's summarize! All of this work tells us that the global extrema of $f$ on this interval can *only* live at the critical points inside of its domain (i.e. $(0, 0)$ or $\left( -\frac{2}{3}, -\frac{2}{3} \right)$), or at one of the many points we found afterward on the boundary. To actually find the global min and max, all that's left is to compute their $z$-values one at a time.
+
+	$$
+		f(0, 0) &= 0
+
+		f\left( -\frac{2}{3}, -\frac{2}{3} \right) &= \frac{4}{27}
+
+		f(-1, -2) &= -1
+
+		f(-1, -1) &= 0
+
+		f(-1, 0) &= -1
+
+		f(0, -2) &= -4.
+	$$
+
+	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
+
+	### desmos evt
+
+###
+
+Let's look at a more complicated scenario, in which the boundary is a circle instead of a rectangle.
+
+### ex "optimizing a function"
+
+	Let $g(x, y) = -x^2e^{-x^2-y^2}$ be defined on the disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 \leq 4 \right\}$. Find the local extrema of $g$.
+
+	We'll begin as always by solving $\G g = \vec{0}$, which results in
+
+	$$
+		\G g = \left< -2xe^{-x^2-y^2} + 2x^3e^{-x^2-y^2}, 2x^2ye^{-x^2-y^2} \right> = \left< 0, 0 \right>.
+	$$
+
+	Since the exponentials are never zero, we can rewrite this as
+
+	$$
+		-2x + 2x^3 &= 0
+
+		2x^2y &= 0.
+	$$
+
+	The top equation factors as $x\left( x^2 - 1 \right) = 0$, and so $x = -1$, $x = 0$, or $x = 1$. The bottom equation tells us that either $x = 0$ or $y = 0$. To parse that out carefully, if $x = 0$, then there are no restrictions on $y$, so the entire $y$-axis consists of critical points. If $x \neq 0$, then $y$ must be zero, so the only other points are $(-1, 0)$ and $(1, 0)$.
+
+	Okay, onto the discriminant. We have
+
+	$$
+		g_{xx} &= \frac{\partial}{\partial x}\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
+
+			&= -2xe^{-x^2-y^2} \left( -2x + 2x^3 \right) + e^{-x^2-y^2}\left( -2 + 6x^2 \right)
+
+			&= e^{-x^2-y^2} \left( -4x^4 + 10x^2 - 2 \right)
+
+		~
+
+		g_{xy} &= \frac{\partial}{\partial y}\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
+
+			&= -2y e^{-x^2-y^2} \left( -2x + 2x^3 \right)
+
+		~
+
+		g_{yy} &= \frac{\partial}{\partial y}\left[ 2x^2ye^{-x^2-y^2} \right]
+
+			&= 2x^2e^{-x^2-y^2} - 4x^2y^2e^{-x^2-y^2}.
+
+		~
+
+		D(x, y) &= e^{-x^2-y^2}\left( \left( -4x^4 + 10x^2 - 2 \right)\left( 2x^2 - 4x^2y^2 \right) \right) - \left( -2y \left( -2x + 2x^3 \right) \right)^2
+
+		&= e^{-x^2-y^2} \left( -4 x^2 + 20 x^4 - 8 x^6 - 8 x^2 y^2 - 8 x^4 y^2 \right).
+	$$
+
+	At $(\pm 1, 0)$, $D(\pm 1, 0) = 8e^{-1}$, so both of those points are local minima. When $x = 0$ and $y$ is left to vary, we have $D(0, y) = 0$, and so the test is inconclusive at all of those points. However, we can investigate the original function a bit more to figure out what's going on there: $g(x, y) \leq 0$ for all $(x, y) \in #R#^2$, since $x^2$ and $e^{-x^2-y^2}$ are always positive. And since $g(0, y) = 0$, all of those points are local maxima.
+
+	All that's left is the boundary! When $x^2 + y^2 = 4$, the exponential factor of $g$ becomes $e^{-4}$, which is much easier for us to work with. We could leave it as $x^2e^{-4}$, but this is actually a great opportunity to demonstrate a more general technique: since we're on a circle of radius $2$ centered at the origin, we can parameterize $x$ and $y$ as $x = 2\cos(\theta)$ and $y = 2\sin(\theta)$. That turns the optimization on the boundary into a single-variable optimization problem of the sort we're used to. There aren't any endpoints this time, just the function $h(\theta) = -\left( 2\cos(\theta) \right)^2 e^{-4}$ to optimize. We have
+
+	$$
+		h'(\theta) &= -8e^{-4}\cos(\theta)\sin(\theta),
+	$$
+
+	which is zero when $\cos(\theta) = 0$ or $\sin(\theta) = 0$. That's the four cardinal directions of the unit circle, and evaluating at those points,
+
+	$$
+		h(0) = h\left( \pi \right) &= -4e^{-4}
+
+		h\left( \frac{\pi}{2} \right) = h\left( \frac{3\pi}{2} \right) &= 0.
+	$$
+
+	In total, we have a lot of local extrema: local maxes along $x = 0$ (including on the boundary of the domain), and local mins at $(\pm 1, 0)$ and $(\pm 2, 0)$ (the two extra boundary points we just found).
+
+	### desmos evt2
+
+###
+
+To close, let's take a look at a more applied example.
+
+### exc "applied boundary optimization"
+
+	You've been tasked with building a rectangular beaver transport box with a volume of $27\,\text{ft}^3$. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$10$ per square foot, while the other two sides and base will be made out of wood, costing $\$5$ per square foot. Since the box needs to fit the beaver inside it and fit within the truck that will be carrying it, must be between 2 and 8 feet in both horizontal dimensions. Find the dimensions of the box that minimize the cost to build it. Is the result a good idea to build?
+
+	### solution
+
+	If the box is $x \times y \times z$ feet, where $z$ is the vertical direction, then the volume is $xyz = 27$, and the surface area is
+
+	$$
+		xy + 2xz + 2yz,
+	$$
+
+	since we're not including the lid. To account for the cost, let's say that the area counted by $yz$ is what costs $\$10$ per square foot, so that the cost is
+
+	$$
+		5xy + 10xz + 20yz &= 5xy + 10x\left( \frac{27}{xy} \right) + 20y\left( \frac{27}{xy} \right)
+
+		&= 5xy + \frac{270}{y} + \frac{540}{x}.
+	$$
+
+	Let's call that function $C(x, y)$. To optimize it, we'll start as usual by finding its gradient.
+
+	$$
+		\G C &= \left< 5y - 540x^{-2}, 5x - 270y^{-2} \right> = \vec{0}
+		
+		&\ \ \begin{cases} 5y = 540x^{-2} \\ 5x = 270y^{-2} \end{cases}
+
+		&\ \ \begin{cases} y = 108x^{-2} \\ x = 54y^{-2} \end{cases}
+
+		y &= 108\left( 54y^{-2} \right)^{-2}
+
+		y &= \frac{2}{54} y^4
+
+		27y &= y^4
+
+		y^4 - 27y &= 0
+
+		y(y^3 - 27) &= 0,
+	$$
+
+	so either $y = 0$ (which is not so good for box-making), or $y = 3$. In that second case, $x = 54\left( 3^{-2} \right) = 6$. So $(6, 3)$ is our single critical point, and $C(6, 3) = 270$, but we're trying to optimize the function on the rectangle with both $x$ and $y$ in $[2, 8]$, so we also need to consider the boundary.
+
+	$$
+		C(2, y) &= 10y + \frac{270}{y} + 270
+
+		d/dy \left[ C(2, y) \right] &= 10 -270 y^{-2} = 0
+
+		y &= \pm 3\sqrt{3}.
+
+		~
+
+		C(8, y) &= 40y + \frac{270}{y} + \frac{135}{2}
+
+		d/dy \left[ C(2, y) \right] &= 40 -270 y^{-2} = 0
+
+		y &= \pm \frac{3\sqrt{3}}{2}.
+
+		~
+
+		C(x, 2) &= 10x + 135 + \frac{540}{x}
+
+		d/dx \left[ C(x, 2) \right] &= 10 - 540 x^{-2} = 0
+
+		x &= \pm 3\sqrt{6}.
+
+		~
+
+		C(x, 8) &= 40x + \frac{135}{4} + \frac{540}{x}
+
+		d/dx \left[ C(x, 8) \right] &= 40 - 540 x^{-2} = 0
+
+		x &= \pm \frac{3\sqrt{6}}{2}.
+	$$
+
+	All of the positive versions of these points are in the domain, and so we evaluate the function at all of them, including at the endpoints of the edges (i.e. the corners of the rectangle).
+
+	$$
+		C(2, 2) &= 425
+
+		C\left( 2, 3\sqrt{3} \right) &\approx 373.92
+
+		C(2, 8) &= 383.75
+
+		C\left( \frac{3\sqrt{6}}{2}, 8 \right) &\approx 327.69
+
+		C\left( 6, 3 \right) &= 270
+
+		C\left( 3\sqrt{6}, 2 \right) &\approx 281.97
+
+		C\left( 8, 2 \right) &= 282.5
+
+		C\left( 8, \frac{3\sqrt{3}}{2} \right) &\approx 275.35
+
+		C\left( 8, 8 \right) &= 421.25.
+	$$
+
+	The critical point in the middle ended up being the most cost-effective option, but it might not be a great idea! The height of the box is only $\frac{27}{3 \cdot 6} = 1.5$ feet, and even though beavers can't jump, they can probably find a way over that.
+
+###
+
+
+
+We're nearly done with multivariable optimization! In the next section, we'll develop a much better way to handle boundary optimization where the boundary is given by a single equation, *without* having to parameterize it --- a profoundly applicable topic.
+
+
+
+### nav-buttons

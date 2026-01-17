@@ -765,6 +765,7 @@ export const sitemap =
 			"/teaching/notes/calculus/the-multivariable-chain-rule",
 			"/teaching/notes/calculus/the-gradient",
 			"/teaching/notes/calculus/multivariable-optimization",
+			"/teaching/notes/calculus/boundary-optimization",
 			"/teaching/notes/calculus/lagrange-multipliers"
 		]
 	},
@@ -1313,9 +1314,20 @@ export const sitemap =
 		"customScript": true
 	},
 	
+	"/teaching/notes/calculus/boundary-optimization":
+	{
+		"title": "Section 5.9: Boundary Optimization",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/teaching/notes/calculus/lagrange-multipliers":
 	{
-		"title": "Section 5.9: Lagrange Multipliers",
+		"title": "Section 5.10: Lagrange Multipliers",
 		
 		"parent": "/teaching/notes/calculus",
 		
