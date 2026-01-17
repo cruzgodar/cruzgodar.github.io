@@ -763,7 +763,8 @@ export const sitemap =
 			"/teaching/notes/calculus/functions-of-multiple-variables",
 			"/teaching/notes/calculus/partial-derivatives",
 			"/teaching/notes/calculus/the-multivariable-chain-rule",
-			"/teaching/notes/calculus/the-gradient"
+			"/teaching/notes/calculus/the-gradient",
+			"/teaching/notes/calculus/multivariable-optimization"
 		]
 	},
 		
@@ -1292,6 +1293,17 @@ export const sitemap =
 	"/teaching/notes/calculus/the-gradient":
 	{
 		"title": "Section 5.7: The Gradient",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/multivariable-optimization":
+	{
+		"title": "Section 5.8: Multivariable Optimization",
 		
 		"parent": "/teaching/notes/calculus",
 		

@@ -110,6 +110,7 @@ home Cruz Godar
 			partial-derivatives Section 5.5: Partial Derivatives
 			the-multivariable-chain-rule Section 5.6: The Multivariable Chain Rule
 			the-gradient Section 5.7: The Gradient
+			multivariable-optimization Section 5.8: Multivariable Optimization
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

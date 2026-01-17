@@ -179,6 +179,7 @@ export class VectorFields extends AnimationFrameApplet
 			draggableOptions: {
 				draggables: {
 					draggableArg: [0, 0],
+					draggableArg2: [0, 0],
 				},
 				callbacks: {
 					drag: this.onDragDraggable.bind(this),
@@ -200,6 +201,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.wilson = new WilsonGPU(canvas, options);
 
 		this.wilson.draggables.draggableArg.element.style.display = "none";
+		this.wilson.draggables.draggableArg2.element.style.display = "none";
 
 		this.loadPromise = loadGlsl();
 	}
@@ -225,6 +227,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.particleDilation = particleDilation;
 
 		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+		const needDraggable2 = generatingCode.indexOf("draggableArg2") !== -1;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
@@ -242,6 +245,7 @@ export class VectorFields extends AnimationFrameApplet
 			uniform float dt;
 			
 			uniform vec2 draggableArg;
+			uniform vec2 draggableArg2;
 			
 			
 			
@@ -283,6 +287,7 @@ export class VectorFields extends AnimationFrameApplet
 			uniforms: {
 				dt: this.dt,
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+				...(needDraggable2 ? { draggableArg2: [0, 0] } : {}),
 			}
 		});
 
@@ -341,6 +346,8 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson.draggables.draggableArg.element.style.display =
 			needDraggable ? "block" : "none";
+		this.wilson.draggables.draggableArg2.element.style.display =
+			needDraggable2 ? "block" : "none";
 
 		this.wilson.resizeWorld({
 			width: worldWidth,
@@ -777,10 +784,10 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-	onDragDraggable({ x, y })
+	onDragDraggable({ id, x, y })
 	{
 		this.wilsonUpdate.setUniforms({
-			draggableArg: [x, y]
+			[id]: [x, y]
 		});
 
 		this.needTemporaryDim = true;
