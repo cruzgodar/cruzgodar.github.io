@@ -4,7 +4,7 @@
 
 
 
-We've made it to the end of multivariable calculus (at least for us), and to the halfway point of our course! The story of optimization of multivariable functions is nearly complete, and it's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to.
+We're nearly done with multivariable optimization! It's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to.
 
 When we find the maxima of a function $f(x, y)$ --- for example, if $f(x, y) = 2x + xy + 5y$ that gives the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month --- there is *very* often a relationship between the inputs $x$ and $y$. So often, in fact, that optimization doesn't even make sense to discuss without it in many examples. That includes this one --- we don't really need to take a derivative to see that increasing $x$ and $y$ will always increase $f$, so there aren't local or global maxima when $x \geq 0$ and $y \geq 0$. In this context, though, we'd expect a constraint of the sort $ax + by \leq c$, where $a$ is cost to the store per binocular they stock, $b$ is the cost per birdhouse, and $c$ is the total amount the store has available to spend per month.
 
@@ -181,8 +181,6 @@ Let's return to an example with a circular boundary like we saw in the previous 
 	### desmos lagrangeExample
 
 ###
-
-And this is where our multivariable calculus story ends! From here, we'll pivot to linear algebra, an equally useful but quite different type of math.
 
 
 
