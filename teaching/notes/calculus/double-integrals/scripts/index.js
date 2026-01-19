@@ -169,28 +169,28 @@ export default function()
 					}),
 
 					// bounding rectangle
-					{ latex: raw`(t, [c, d], 0)`, color: desmosGray3d, parametricDomain: { min: "a", max: "b" }, },
-					{ latex: raw`([a, b], t, 0)`, color: desmosGray3d, parametricDomain: { min: "c", max: "d" }, },
+					{ latex: raw`(t, [c, d], 0)`, color: desmosGray3d, parametricDomain: { min: "a", max: "b" }, secret: true },
+					{ latex: raw`([a, b], t, 0)`, color: desmosGray3d, parametricDomain: { min: "c", max: "d" }, secret: true },
 
-					{ latex: raw`s_x = \frac{b - a}{m}`, secret: false },
-					{ latex: raw`s_y = \frac{d - c}{n}`, secret: false },
+					{ latex: raw`s_x = \frac{b - a}{m}`, secret: true },
+					{ latex: raw`s_y = \frac{d - c}{n}`, secret: true },
 
-					{ latex: raw`X = [a, a + s_x, ..., b]`, secret: false },
-					{ latex: raw`Y = [c, c + s_y, ..., d]`, secret: false },
+					{ latex: raw`X = [a, a + s_x, ..., b]`, secret: true },
+					{ latex: raw`Y = [c, c + s_y, ..., d]`, secret: true },
 
-					{ latex: raw`L_x = [a, a + s_x, ..., b - s_x]`, secret: false },
-					{ latex: raw`R_x = [a + s_x, a + 2s_x, ..., b]`, secret: false },
-					{ latex: raw`L_y = [c, c + s_y, ..., d - s_y]`, secret: false },
-					{ latex: raw`R_y = [c + s_y, c + 2s_y, ..., d]`, secret: false },
+					{ latex: raw`L_x = [a, a + s_x, ..., b - s_x]`, secret: true },
+					{ latex: raw`R_x = [a + s_x, a + 2s_x, ..., b]`, secret: true },
+					{ latex: raw`L_y = [c, c + s_y, ..., d - s_y]`, secret: true },
+					{ latex: raw`R_y = [c + s_y, c + 2s_y, ..., d]`, secret: true },
 
-					{ latex: raw`M_x = [a + \frac{s_x}{2}, a + \frac{3s_x}{2}, ..., b - \frac{s_x}{2}]`, secret: false },
-					{ latex: raw`M_y = [c + \frac{s_y}{2}, c + \frac{3s_y}{2}, ..., d - \frac{s_y}{2}]`, secret: false },
+					{ latex: raw`M_x = [a + \frac{s_x}{2}, a + \frac{3s_x}{2}, ..., b - \frac{s_x}{2}]`, secret: true },
+					{ latex: raw`M_y = [c + \frac{s_y}{2}, c + \frac{3s_y}{2}, ..., d - \frac{s_y}{2}]`, secret: true },
 
 					// construct a 1D array of length m*n that contains all the points in M_x x M_y
 
-					{ latex: raw`L = [0, 1, ... mn - 1]`, secret: false },
-					{ latex: raw`I = \floor(\frac{L}{n}) + 1`, secret: false },
-					{ latex: raw`J = \mod(L, n) + 1`, secret: false },
+					{ latex: raw`L = [0, 1, ... mn - 1]`, secret: true },
+					{ latex: raw`I = \floor(\frac{L}{n}) + 1`, secret: true },
+					{ latex: raw`J = \mod(L, n) + 1`, secret: true },
 
 					{ latex: raw`0 \leq z \leq f(M_x[I], M_y[J]) \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosRed3d, secret: true },
 					{ latex: raw`f(M_x[I], M_y[J]) \leq z \leq 0 \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosBlue3d, secret: true },

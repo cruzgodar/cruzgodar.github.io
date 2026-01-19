@@ -58,6 +58,35 @@ Sometimes, we'll rewrite $\Delta y \Delta x$ as $\Delta A$ to indicate that it's
 
 ###
 
+If you've had the experience of calculating a definite integral directly from the sum, then you probably aren't eager to repeat it. Directly taking the limit of a Riemann sum is a particularly difficult process that requires rewriting the sum itself to be a closed-form expression (that is, without a summation symbol at all), and we'd do well to avoid that path. Instead, this is a great application of a mathematical principle that isn't often explicitly taught: whenever possible, examine new ideas through the lens of theory that you're already familiar with. In our case, we can phrase this new double integral in the language of single integrals that we understand, so long as we can find a meaningful way to relate $f(x, y)$ to single-variable functions.
+
+But that's exactly what we've been doing with partial derivatives! If we hold $x$ constant at $x_0$ and let $y$ vary, then $f(x_0, y)$ is a single-variable function, and its integral $\int_c^d (x_0, y)\,\d y$ is something we're familiar with. The presence of $\d y$ means those limits of integration apply to $y$, and the total area measured is the area under of the cross-section of the graph of $z = f(x, y)$ with the plane $x = x_0$. To use these areas to find the total volume, we can *form a Riemann sum out of these areas*: multiply each by a small $\Delta x$ and add them all up, then limit $\Delta x \to 0$. The result is a formula to calculate a double integral by taking two successive single integrals: effectively slicing the graph first in one direction and computing the areas of each slice, then adding those areas up by slicing in the other direction.
+
+### thm "computing a double integral on a rectangle"
+
+	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a function. Then
+
+	$$
+		\iint_R f(x, y)\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\,\d x.
+	$$
+
+	We typically write this without the parentheses, and since we can just as well slice in the $x$-direction first and then the $y$-direction,
+
+	$$
+		\iint_R f(x, y)\,\d A &= \int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x = \int_c^d \!\!\! \int_a^b f(x, y)\,\d x\,\d y.
+	$$
+
+###
+
+We evaluate nested integrals like these from the inside out; without any further theory, let's get to example to see how this all works.
+
+### ex "multiple integrals"
+
+	Find the area under the graph of $f(x, y) = x^2 + xy + y$
+	When slicing up the $y$-axes first (which we'll refer to as *integrating $\d y\,\d x$*, like an adjective), the inside integral will result in 
+
+###
+
 
 
 ### nav-buttons
