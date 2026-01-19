@@ -20,6 +20,44 @@ While we typically remember the fundamental theorem as a computational tool like
 
 Given a function $z = f(x, y)$, we can begin the same story of computing a Riemann sum, but for it to make sense in this context, it will need to measure volume under a surface instead of area under a curve.
 
+Right away, we're faced with a challenge that wasn't present in single-variable Riemann sums: what *shape* is the region under which we're finding the volume of $f$? Before, declaring that we wanted to slice up the interval $[a, b]$ into $n$ equally sized pieces was enough to completely determine what those pieces looked like, but the same can't be said for a general region $R$ in $#R#^2$. Let's delay our handling of a completely general region $R$, then, and focus on the simplest type of region to begin with: a rectangle $[a, b] \times [c, d]$. That product of sets is called a **Cartesian product**, and it is defined in a fairly sensible way:
+
+### def "Cartesian product"
+
+	Let $A$ and $B$ be sets in $#R#$. The **Cartesian product** of $A$ and $B$ is
+
+	$$
+		A \times B = \left\{ (x, y) \in #R#^2 \mid x \in A \text{ and } y \in B \right\}.
+	$$
+
+###
+
+The Cartesian product of two intervals, then, is a rectangle.
+
+### desmos cartesianProductRectangle
+
+Given a rectangle $R = [a, b] \times [c, d]$, we can now slice $[a, b]$ into $m$ subintervals of width $\Delta x = \frac{b - a}{m}$ each, and $[c, d]$ into $n$ subintervals of width $\Delta y = \frac{d - c}{n}$ each. Picking a point $\left( x_{ij}^*, y_{ij}^* \right)$ in each subrectangle, a Riemann sum to approximate the volume under the graph of $f$ is
+
+$$
+	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \Delta x.
+$$
+
+### desmos riemannSum3d
+
+Sometimes, we'll rewrite $\Delta y \Delta x$ as $\Delta A$ to indicate that it's an area and reduce the need to specify the variables $x$ and $y$, although as we'll see momentarily, we'll often want to keep them specified too. Regardless, we define the limit of this Riemann sum to be the definite integral we expect.
+
+### def "double integral"
+
+	Let $R$ be a rectangle in $#R#^2$. The **double integral** of a function $f(x, y)$ over $R$ is
+
+	$$
+		\iint_R f(x, y)\,\d A &= \iint_R f(x, y)\,\d x\,\d y
+
+		&= \lim_{:: m \to \infty ; \,n \to \infty ::}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \Delta x.
+	$$
+
+###
+
 
 
 ### nav-buttons
