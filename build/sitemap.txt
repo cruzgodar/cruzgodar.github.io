@@ -113,6 +113,7 @@ home Cruz Godar
 			multivariable-optimization Section 5.8: Multivariable Optimization
 			boundary-optimization Section 5.9: Boundary Optimization
 			lagrange-multipliers Section 5.10: Lagrange Multipliers
+			double-integrals Section 5.11: Double Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

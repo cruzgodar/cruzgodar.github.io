@@ -69,9 +69,14 @@ export default function()
 					{ latex: raw`X = [a, a + s, ..., b]`, secret: true },
 					{ latex: raw`L = [a, a + s, ..., b - s]`, secret: true },
 					{ latex: raw`R = [a + s, a + 2s, ..., b]`, secret: true },
+
 					{ latex: raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosRed, secret: true },
 					{ latex: raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true },
-					{ latex: raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true }
+					{ latex: raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true },
+
+					{ latex: raw`f(L) \leq y \leq 0 \{ L \leq x \leq R \}`, color: desmosBlue, secret: true },
+					{ latex: raw`x = L \{ f(L) \leq y \leq 0 \}`, color: desmosBlue, secret: true },
+					{ latex: raw`x = R \{ f(L) \leq y \leq 0 \}`, color: desmosBlue, secret: true }
 				]
 			},
 

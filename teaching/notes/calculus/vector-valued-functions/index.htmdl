@@ -79,7 +79,7 @@ The components of vector-valued functions are largely independent from one anoth
 As in calculus 1, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, its derivative is defined to be
 
 $$
-	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r(t)}}{h}
+	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r}(t)}{h}
 
 	&= \lim_{h \to 0} \frac{\left< x(t + h),\ y(t + h),\ z(t + h) \right> - \left< x(t),\ y(t),\ z(t) \right>}{h}
 
@@ -102,7 +102,7 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	2. Let $\vec{r}(t) = \left< 2\cos(t), \sin(t), t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
 
-	3. One again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
+	3. Once again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
 
 ###
 
@@ -113,14 +113,14 @@ We can use the fact that the derivative vector is tangent to the curve to find a
 	Let $\vec{r}(t)$ be a differentiable vector-valued function. The **unit tangent vector** to the graph of $\vec{r}(t)$ is
 
 	$$
-		T(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}(t) \right| \right|},
+		T(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|},
 	$$
 
-	which is defined so long as $r'(t) = \vec{0}$.
+	which is defined so long as $\vec{r}'(t) \neq \vec{0}$.
 
 ###
 
-Since differentiation of a vector-valued function boils down to just differentiating the component functions, we don't have many new derivative rules to write down. What we do have, though, is a few ways in which the derivative acts on operations we can perform on vectors. They'll likely look familiar!
+Since differentiation of a vector-valued function boils down to just differentiating the component functions, we don't have many new derivative rules to write down. What we do have, though, are a few ways in which the derivative acts on operations we can perform on vectors. They'll likely look familiar!
 
 ### prop "vector-valued derivative rules"
 
@@ -140,9 +140,9 @@ $$
 	\int \vec{r}(t)\,\d t = \left< \int x(t)\,\d t, \int y(t)\,\d t, \int z(t)\,\d t \right> + \vec{c}
 $$
 
-for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a content *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very often, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
+for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a constant *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very often, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
 
-If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant. Let's say collect a bit of what we know about these functions: if $\vec{p}(t)$ gives the position of an object over time, then $\vec{p}'(t) = \vec{v}(t)$ is its velocity, which is tangent to the graph of $\vec{p}(t)$, and $\left| \left| \vec{v}(t) \right| \right|$ is the magnitude of the velocity, also called **speed**. The second derivative $\vec{p}''(t)$ is the acceleration $\vec{a}(t)$ --- also a vector. We can integrate the velocity and acceleration functions to recover the position and velocity ones, respectively, up to a constant.
+If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant. Let's collect a bit of what we know about these functions: if $\vec{p}(t)$ gives the position of an object over time, then $\vec{p}'(t) = \vec{v}(t)$ is its velocity, which is tangent to the graph of $\vec{p}(t)$, and $\left| \left| \vec{v}(t) \right| \right|$ is the magnitude of the velocity, also called **speed**. The second derivative $\vec{p}''(t)$ is the acceleration $\vec{a}(t)$ --- also a vector. We can integrate the velocity and acceleration functions to recover the position and velocity ones, respectively, up to a constant.
 
 
 

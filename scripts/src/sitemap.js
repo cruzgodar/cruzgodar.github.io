@@ -766,7 +766,8 @@ export const sitemap =
 			"/teaching/notes/calculus/the-gradient",
 			"/teaching/notes/calculus/multivariable-optimization",
 			"/teaching/notes/calculus/boundary-optimization",
-			"/teaching/notes/calculus/lagrange-multipliers"
+			"/teaching/notes/calculus/lagrange-multipliers",
+			"/teaching/notes/calculus/double-integrals"
 		]
 	},
 		
@@ -1328,6 +1329,17 @@ export const sitemap =
 	"/teaching/notes/calculus/lagrange-multipliers":
 	{
 		"title": "Section 5.10: Lagrange Multipliers",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/double-integrals":
+	{
+		"title": "Section 5.11: Double Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		
