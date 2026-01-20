@@ -30,7 +30,7 @@ export function initPageContents()
 		navButtonsElement.insertAdjacentHTML("afterend", /* html */`
 			<div class="text-buttons nav-buttons contents-button-container" style="grid-template-columns: repeat(auto-fit, 88px);">
 				<div class="focus-on-child" tabindex="1">
-					<button class="text-button linked-text-button" type="button" tabindex="-1">Download Worksheet</button>
+					<button class="text-button linked-text-button" type="button" tabindex="-1">Worksheet</button>
 				</div>
 			</div>
 		`);

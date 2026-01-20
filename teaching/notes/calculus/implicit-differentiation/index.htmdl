@@ -1,5 +1,137 @@
 ### nav-buttons
 
+When we discussed the chain rule, we found the derivative of $\ln\left( x^3 \right)$ in two different ways: by the chain rule, since we knew the derivative of both $\ln(x)$ and $x^3$, and also by using a log rule to bring the exponent of $3$ down in front to form $3\ln(x)$. Let's take just a moment to review that rule and others, starting with just what a log is in the first place.
+
+When we write $2^3 = 8$, we're writing a relationship between three numbers. With the way the $3$ is physically written above and to the right of the $2$, we can write them on two points of a triangle, with the 8 on the third point.
+
+$$
+	\begin{array}{ccc}
+		& 3 &
+		& &
+		2 & & 8
+	\end{array}
+$$
+
+Written this way, we can see an equivalent relationship to $2^3 = 8$: that is, $\sqrt[3]{8} = 2$. The way we draw the numbers even lines up with the position of the $3$ and $8$ in the triangle!
+
+Given the two numbers on the left or right side of the triangle, then, we can find the remaining number. But what about if we're given the bottom two numbers and asked to find the top? Rather than $\sqrt[3]{8}$, which finds the number that when cubed is equal to $8$, we're asking for the *exponent* on $2$ that produces $8$. This exponent-finding operation is a log, and we write $\log_2(8) = 3$. Delightfully, the $2$ and $8$ are even (mostly) written horizontally from one another, just like in the triangle. This triangle idea comes directly from the unmatched <a href="https://www.youtube.com/watch?v=sULa9Lc4pck">3Blue1Brown</a>, and I highly encourage you to watch the full video if you're interested!
+
+Returning to $\ln\left( x^3 \right)$, the **natural log** $\ln$ is the function $\log_e$ whose base is $e$, so $\ln\left( x^3 \right)$ finds the exponent we raise $e$ to in order to get $x^3$. If $\ln(x) = a$, then $e^a = x$, and so $\left( e^a \right)^3 = e^{3a} = x^3$. In other words, $\ln\left( x^3 \right) = 3a = 3\ln(x)$. In general, the exponent rules we already know translate into very similar log rules:
+
+$$
+	\log_b(xy) &= \log_b(x) + \log_b(y)
+
+	\log_b\left( \frac{x}{y} \right) &= \log_b(x) - \log_b(y)
+
+	\log_b{x^c} &= c\log_b(x)
+$$
+
+### exc "logarithm rules"
+
+	1. Find $\log_4(16)$, $\log_{16}(4)$, $\ln(1)$, and $\log_2\left( \frac{1}{8} \right)$.
+
+	2. Rewrite $\ln\left( x^5(x+3)^{-2} \right)$ using log rules so that the inside of the logarithms are as simple as possible.
+
+###
+
+Let's now focus in on the $\ln\left( x^3 \right)$ example. The chain rule was certainly helpful to find the derivative, but we had to know the derivative of $x^3$ to find it. What if the function inside the log was more complicated, like $x^x$? Neither the power rule nor the derivative rule helps to find its derivative, since it doesn't have a constant base or a constant exponent. For that reason, the chain rule is out, but we can *still use log rules*. Specifically,
+
+$$
+	d/dx \left[ \ln\left( x^x \right) \right] &= d/dx \left[ x\ln\left( x \right) \right]
+
+	&= \ln(x) + x\left( \frac{1}{x} \right)
+
+	&= \ln(x) + 1
+$$
+
+Interesting! The magic of this idea, though, comes from *also* considering the chain rule, even though it looks like a dead end.
+
+$$
+	d/dx \left[ \ln\left( x^x \right) \right] &= \frac{1}{x^x} d/dx \left[ x^x \right].
+$$
+
+Even though we can't proceed any further like this, we now have two different expressions for $d/dx \left[ \ln\left( x^x \right) \right]$, and by setting them equal, we can solve the the derivative we don't know.
+
+$$
+	\frac{1}{x^x} d/dx \left[ x^x \right] &= \ln(x) + 1
+
+	d/dx \left[ x^x \right] &= x^x \ln(x) + x^x.
+$$
+
+That worked like magic! This technique applies to functions of the form $y = f(x)^{g(x)}$ more broadly: by taking $\ln$ of it and then taking the derivative in two different ways, we can solve for its derivative indirectly. Let's introduce a more general, structured way to solve for the derivative that will carry into the next topic.
+
+### thm -m "Method: Logarithmic Differentiation"
+
+	To differentiate a function of the form $y = f(x)^{g(x)}$, we follow these steps:
+
+	1. Take $\ln$ of both sides and use log rules to bring down the exponent:
+
+	$$
+		\ln(y) = \ln\left( f(x)^{g(x)} \right) = g(x) \ln(f(x)).
+	$$
+
+	2. Differentiate both sides with respect to $x$. Be careful on the left side, though! Since $y$ is an entire function of $x$, we have to use the chain rule. The right side will be a product rule, and also a chain rule with the log, and it will vary enough problem-to-problem that we won't solve it symbolically here.
+
+	$$
+		d/dx \left[ \ln(y) \right] &= d/dx \left[ g(x) \ln(f(x)) \right]
+
+		\frac{1}{y} \cdot dy/dx &= d/dx \left[ g(x) \ln(f(x)) \right].
+	$$
+
+	Now $dy/dx$ is what we're trying to solve for! Since $y = f(x)^{g(x)}$, it's the derivative we set out to find in the first place.
+
+	3. So we multiply both sides by $y$, and then substitute back for $x$.
+
+	$$
+		dy/dx = f(x)^{g(x)} \cdot d/dx \left[ g(x) \ln(f(x)) \right].
+	$$
+
+###
+
+This method of using $y$ to represent a function of $x$ symbolically probably seems a little strange! It'll get much more comfortable soon, and logarithmic differentiation is a great place to practice getting used to it before we bring it to other more general contexts.
+
+### exc "logarithmic differentiation"
+	
+	1. Find $$d/dt\left[ {\ln(t)}^{\ln(t)} \right]$$.
+
+	2. Let $f(y) = (y)^{(e^y)}$. Find $f'(y)$.
+	
+###
+
+Logarithmic differentiation also lets us finally handle the derivative of $x^n$, where $n$ is not just a rational number, but *any real number*. And thankfully, it's exactly what we'd like it to be, and we can even very briefly prove it!
+
+### thm "the derivative of $x^n$ for any real $n$"
+	
+	Let $n$ be a real number. Then $$d/dx[x^n] = nx^{n-1}$$.
+	
+###
+
+### pf
+	
+	With $y = x^n$, write
+	
+	$$
+		\ln(y) = \ln(x^n) = n\ln(x).
+	$$
+	
+	Then
+	
+	$$
+		\frac{1}{y} \cdot dy/dx = \frac{n}{x},
+	$$
+	
+	so
+	
+	$$
+		dy/dx = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
+	$$	
+	
+###
+
+
+
+## Implicit Functions
+
 Typically, and for nearly all of this course so far, we define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the corresponding $y$-values directly.
 
 It's possible to write down relationships between variables $x$ and $y$ without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a circle: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. It's not possible to solve for $y$ explicitly here, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function --- effectively, its graph is formed by gluing together the graphs of two other functions.
@@ -129,83 +261,6 @@ Let's approach one more complicated example before moving on.
 	$$
 
 	There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
-	
-###
-
-
-
-## Logarithmic Differentiation
-
-Implicit differentiation lets us unlock an extra differentiation technique: sometimes, functions that are difficult to differentiate become much easier when we take a log on both sides. Specifically, functions involving complicated exponents will turn into multiplication, so we can use the product rule. If we have a function of the form $y = (f(x))^{g(x)}$, we'll start by rewriting it as
-
-$$
-	\ln(y) = \ln((f(x))^{g(x)}) = g(x)\ln(f(x)),
-$$
-
-and then differentiate implicitly.
-
-
-### ex "logarithmic differentiation"
-	
-	Find $$d/dx[x^x]$$.
-
-	### solution
-	
-	Since $x$ is in both the base and the exponent, we can't use either the derivative rules for $x^b$ or $b^x$. Instead, we can write
-	
-	$$
-		\ln(y) = \ln(x^x) = x\ln(x),
-	$$
-	
-	and then differentiate implicitly to find
-	
-	$$
-		\frac{1}{y} \cdot dy/dx &= \ln(x) + x \cdot \frac{1}{x}
-		
-		dy/dx &= y(\ln(x) + 1)
-		
-		dy/dx &= x^x(\ln(x) + 1).
-	$$
-	
-###
-
-### exc "logarithmic differentiation"
-	
-	Find $$d/dx\left[\sin(x)^{(e^x)}\right]$$.
-	
-###
-
-
-
-At long last, we can handle the derivative of $x^n$, where $n$ is not just a rational number, but **any real number**. Thankfully, it's exactly what we'd like it to be.
-
-
-
-### thm "the derivative of $x^n$ for any real $n$"
-	
-	Let $n$ be a real number. Then $$d/dx[x^n] = nx^{n-1}$$.
-	
-###
-
-### pf
-	
-	With $y = x^n$, write
-	
-	$$
-		\ln(y) = \ln(x^n) = n\ln(x).
-	$$
-	
-	Then
-	
-	$$
-		\frac{1}{y} \cdot dy/dx = \frac{n}{x},
-	$$
-	
-	so
-	
-	$$
-		dy/dx = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
-	$$	
 	
 ###
 
