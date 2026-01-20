@@ -59,5 +59,16 @@
 			"patternStart": "\\[glsl",
 			"patternEnd": "\\|\\]"
 		}
-	}
+	},
+	"liveServer.settings.ignoreFiles": [
+
+		".vscode/**",
+		"**/*.scss",
+		"**/*.sass",
+		"**/*.ts",
+		"**/*.htmdl",
+		"**/index.js",
+		"**/class.js",
+		"**/worker.js",
+	]
 }

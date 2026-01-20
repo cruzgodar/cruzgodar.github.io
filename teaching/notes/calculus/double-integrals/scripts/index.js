@@ -4,6 +4,7 @@ import {
 	desmosBlue,
 	desmosBlue3d,
 	desmosGray3d,
+	desmosGreen3d,
 	desmosPurple,
 	desmosPurple3d,
 	desmosRed,
@@ -121,11 +122,12 @@ export default function()
 
 				options: {
 					translucentSurfaces: true,
+					showPlane3D: false,
 				},
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = \sin(x) + \cos(y) + \frac{(x + y)^3}{100}`, color: desmosPurple3d, fillOpacity: 0.5 },
+					{ latex: raw`f(x, y) = \sin(x) + \cos(y) + \frac{(x + y)^3}{100}`, color: desmosPurple3d },
 
 					...getDesmosSlider({
 						expression: raw`m = 3`,
@@ -194,6 +196,60 @@ export default function()
 
 					{ latex: raw`0 \leq z \leq f(M_x[I], M_y[J]) \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosRed3d, secret: true },
 					{ latex: raw`f(M_x[I], M_y[J]) \leq z \leq 0 \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosBlue3d, secret: true },
+				]
+			},
+
+			areaCrosssections:
+			{
+				use3d: true,
+				
+				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -3, zmax: 10 },
+
+				options: {
+					translucentSurfaces: true,
+					showPlane3D: false,
+				},
+
+				expressions:
+				[
+					{ latex: raw`f(x, y) = x^2 + xy + xy^2 - 1 \left\{ a \leq x \leq b \right\} \left\{ c \leq y \leq d \right\}`, color: desmosPurple3d },
+
+					...getDesmosSlider({
+						expression: raw`a = -2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`b = 2`,
+						min: "a",
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`c = -1`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`d = 1`,
+						min: "c",
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`x_0 = 1`,
+						min: -2,
+						max: 2,
+						secret: false,
+					}),
+
+					{ latex: raw`0 \leq z \leq f(x, y) \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosRed3d },
+					{ latex: raw`f(x, y) \leq z \leq 0 \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosBlue3d },
+					{ latex: raw`( t, -2, \int_c^d f(t, y) dy )`, color: desmosGray3d, parametricDomain: { min: "a", max: "b" } },
+					{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosGreen3d, secret: true },
 				]
 			}
 		};

@@ -18,7 +18,7 @@ $$
 
 While we typically remember the fundamental theorem as a computational tool like this, its statement as a theoretical result is equally important: it tells us that the antiderivative $F$ not only sees the entire area under the graph of $f$ on any interval $[a, b]$, but that it is able to encode that area in two points' worth of data: $F(a)$ and $F(b)$. We'll have many opportunities over the rest of the semester to return to this notation of antiderivatives encoding information like this in a smaller set than the one they're measuring, but we'll just need the familiar version of the FTC for now.
 
-Given a function $z = f(x, y)$, we can begin the same story of computing a Riemann sum, but for it to make sense in this context, it will need to measure volume under a surface instead of area under a curve.
+Given a continuous function $z = f(x, y)$, we can begin the same story of computing a Riemann sum, but for it to make sense in this context, it will need to measure volume under a surface instead of area under a curve.
 
 Right away, we're faced with a challenge that wasn't present in single-variable Riemann sums: what *shape* is the region under which we're finding the volume of $f$? Before, declaring that we wanted to slice up the interval $[a, b]$ into $n$ equally sized pieces was enough to completely determine what those pieces looked like, but the same can't be said for a general region $R$ in $#R#^2$. Let's delay our handling of a completely general region $R$, then, and focus on the simplest type of region to begin with: a rectangle $[a, b] \times [c, d]$. That product of sets is called a **Cartesian product**, and it is defined in a fairly sensible way:
 
@@ -53,7 +53,7 @@ Sometimes, we'll rewrite $\Delta y \Delta x$ as $\Delta A$ to indicate that it's
 	$$
 		\iint_R f(x, y)\,\d A &= \iint_R f(x, y)\,\d x\,\d y
 
-		&= \lim_{:: m \to \infty ; \,n \to \infty ::}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \Delta x.
+		&= \lim_{:: m \to \infty ; \,n \to \infty ::}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y\, \Delta x.
 	$$
 
 ###
@@ -62,9 +62,9 @@ If you've had the experience of calculating a definite integral directly from th
 
 But that's exactly what we've been doing with partial derivatives! If we hold $x$ constant at $x_0$ and let $y$ vary, then $f(x_0, y)$ is a single-variable function, and its integral $\int_c^d (x_0, y)\,\d y$ is something we're familiar with. The presence of $\d y$ means those limits of integration apply to $y$, and the total area measured is the area under of the cross-section of the graph of $z = f(x, y)$ with the plane $x = x_0$. To use these areas to find the total volume, we can *form a Riemann sum out of these areas*: multiply each by a small $\Delta x$ and add them all up, then limit $\Delta x \to 0$. The result is a formula to calculate a double integral by taking two successive single integrals: effectively slicing the graph first in one direction and computing the areas of each slice, then adding those areas up by slicing in the other direction.
 
-### thm "computing a double integral on a rectangle"
+### thm "Fubini's Theorem"
 
-	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a function. Then
+	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a continuous function. Then
 
 	$$
 		\iint_R f(x, y)\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\,\d x.
@@ -76,16 +76,71 @@ But that's exactly what we've been doing with partial derivatives! If we hold $x
 		\iint_R f(x, y)\,\d A &= \int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x = \int_c^d \!\!\! \int_a^b f(x, y)\,\d x\,\d y.
 	$$
 
+	More generally, Fubini's theorem tells us that we can slice a region $R$ in either the $x$- or $y$-direction first in order to integrate it, so long as the function is continuous.
+
 ###
 
-We evaluate nested integrals like these from the inside out; without any further theory, let's get to example to see how this all works.
+We evaluate nested integrals like these from the inside out; without any further theory, let's get to an example to see how this all works.
 
 ### ex "multiple integrals"
 
-	Find the area under the graph of $f(x, y) = x^2 + xy + y$
-	When slicing up the $y$-axes first (which we'll refer to as *integrating $\d y\,\d x$*, like an adjective), the inside integral will result in 
+	Find the area under the graph of $f(x, y) = x^2 + xy + xy^2 - 1$ on the rectangle $R = [-2, 2] \times [-1, 1]$.
+
+	Let's find this area by slicing up the $y$-axis first, which we'll refer to as *integrating $\d y\,\d x$*, like an adjective. We have
+
+	$$
+		\iint_R f(x, y)\,\d y\,\d x &= \int_{-2}^2 \int_{-1}^1 (x^2 + xy + xy^2 - 1)\,\d y\,\d x
+
+		&= \int_{-2}^2 \left. \left[ x^2y + \frac{1}{2}xy^2 + \frac{1}{3}xy^3 - y \right] \right|_{-1}^1\,\d x
+
+		&= \int_{-2}^2 \left( \left( x^2 + \frac{1}{2}x + \frac{1}{3}x - 1 \right) - \left( -x^2 + \frac{1}{2}x - \frac{1}{3}x + 1 \right) \right)\,\d x
+
+		&= \int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\,\d x
+	$$
+
+	That inside function is a function of only $x$ and not $y$, as it well should be! It's the area of the cross-section of the graph in the $y$-direction at a certain $x$-value.
+
+	### desmos areaCrosssections
+
+	Graphed in purple here is $f(x, y)$, and the red and blue area below is the $\d y$ integral that we just computed. Changing $x_0$ changes where the slice is taken, and the gray graph nearby plots the area of each slice a function of $x$ --- and sure enough, it's a parabola, as our computation so far suggested. To finish our the problem, we just need to integrate $\d x$ as we're used to already.
+
+	$$
+		\int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\,\d x &= \left. \left[ \frac{2}{3}x^3 + \frac{1}{3}x^2 - 2x \right] \right|_{-2}^2
+
+		&= \frac{8}{3}.
+	$$
 
 ###
+
+A sometimes-omitted point in calculus II is the **average value** of a function $f(x)$. We compute the average of a list of numbers by adding them all up and dividing by the number of numbers, and when we do the same thing for a function, "adding them all up" gets replaced with integration. Here, we can define the average value of a function over a region.
+
+### def "average value"
+
+	The **average value** of an integrable function $f(x, y)$ on a region $R$ is
+
+	$$
+		\frac{1}{|R|}\iint_R f(x, y)\,\d A,
+	$$
+
+	where $|R|$ is the area of $R$.
+
+###
+
+### exc "multiple integrals"
+	
+	Let $$f(x, y) = y\sin(\pi xy) + 3x^2 - \frac{x}{y}$$ be defined on $R = [-1, 0] \times [1, 2]$.
+
+	1. Would you rather find the average value of $f$ on $R$ by integrating $\d x\,\d y$ or $\d y\,\d x$?
+
+	2. With your chosen method from part 1, find the average value.
+
+###
+
+
+
+## Non-Rectangular Regions
+
+
 
 
 
