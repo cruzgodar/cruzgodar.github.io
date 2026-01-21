@@ -28,9 +28,9 @@ $$
 
 ### exc "logarithm rules"
 
-	1. Find $\log_4(16)$, $\log_{16}(4)$, $\ln(1)$, and $\log_2\left( \frac{1}{8} \right)$.
+	1. Find $$\log_4(16)$$, $$\log_{16}(4)$$, $$\ln(1)$$, and $$\log_2\left( \frac{1}{8} \right)$$.
 
-	2. Rewrite $\ln\left( x^5(x+3)^{-2} \right)$ using log rules so that the inside of the logarithms are as simple as possible.
+	2. Rewrite $$\ln\left( x^5(x+3)^{-2} \right)$$ using log rules so that the inside of the logarithms are as simple as possible.
 
 ###
 
@@ -94,7 +94,7 @@ This method of using $y$ to represent a function of $x$ symbolically probably se
 	
 	1. Find $$d/dt\left[ {\ln(t)}^{\ln(t)} \right]$$.
 
-	2. Let $f(y) = (y)^{(e^y)}$. Find $f'(y)$.
+	2. Let $$f(y) = (y)^{(e^y)}$$. Find $f'(y)$.
 	
 ###
 
