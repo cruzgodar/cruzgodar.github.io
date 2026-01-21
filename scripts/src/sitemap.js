@@ -729,7 +729,7 @@ export const sitemap =
 			"/teaching/notes/calculus/related-rates",
 			"/teaching/notes/calculus/applied-optimization",
 			"/teaching/notes/calculus/newtons-method",
-			"/teaching/notes/calculus/calc-1-review",
+			"/teaching/notes/calculus/parts-1-and-2-review",
 			"/teaching/notes/calculus/riemann-sums",
 			"/teaching/notes/calculus/integrals-intro",
 			"/teaching/notes/calculus/antiderivatives",
@@ -746,7 +746,7 @@ export const sitemap =
 			"/teaching/notes/calculus/partial-fractions",
 			"/teaching/notes/calculus/improper-integrals",
 			"/teaching/notes/calculus/intro-to-des",
-			"/teaching/notes/calculus/calc-2-review",
+			"/teaching/notes/calculus/part-3-review",
 			"/teaching/notes/calculus/sequences",
 			"/teaching/notes/calculus/series",
 			"/teaching/notes/calculus/divergence-and-integral-tests",
@@ -941,9 +941,9 @@ export const sitemap =
 		"customStyle": true
 	},
 	
-	"/teaching/notes/calculus/calc-1-review":
+	"/teaching/notes/calculus/parts-1-and-2-review":
 	{
-		"title": "Calculus I Review",
+		"title": "Parts 1 and 2 Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1116,7 +1116,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/calc-2-review":
+	"/teaching/notes/calculus/part-3-review":
 	{
 		"title": "Part 3 Review",
 		

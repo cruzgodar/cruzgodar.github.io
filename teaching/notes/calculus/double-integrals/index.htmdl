@@ -140,7 +140,39 @@ A sometimes-omitted point in calculus II is the **average value** of a function 
 
 ## Non-Rectangular Regions
 
+How about integrals over regions that aren't rectangles? This is often a topic that gets introduced after rectangles as something related, just different and more complicated. I'm much more fond of an intuitive explanation that builds on what we already know about rectangles, though, and simply extends them in one of the only ways we can.
 
+When we evaluate the double integral
+
+$$
+	\int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x
+$$
+
+of $f(x, y)$ on $R = [a, b] \times [c, d]$, we're taking slices of $f$ parallel to the $y$-axis and finding their area, then adding up those slices' area to find the volume. We've seen the complex 3D picture of those slices and their area, but let's just focus on the rectangle itself, as if we're looking down on $R$ from above.
+
+### desmos regions2d
+
+We're lightly shading the whole rectangle here, but the areas of focus are the colored line segments. When we change $x_0$, we're moving the purple slice --- it represents a single cross-sectional area under the graph of $f$. The inner integral (the $\d y$ one) computes that area in terms of $x$, and then the outer $\d x$ integral adds those area up to find the volume.
+
+As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in Calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the blue lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the blue lines left and right, but we can't change the fact that they're straight.
+
+On the other hand, the red lines are only lines because every integral we take $\d y$ has *exactly the same bounds*. We take a different integral for every different value of $x$, but every one runs from $y = c$ to $y = d$. And here's the one degree of freedom available to us: we can't change the fact that we're integrating a cross-section of the graph between two $y$-values, but we can pick different $y$-values depending on the $x$-value.
+
+Picking different $y$-values depending on the $x$-value is a very long-winded way of saying we can make the limits of integration functions of $x$, say $c(x)$ and $d(x)$, to form the double integral
+
+$$
+	\int_a^b \!\!\! \int_{c(x)}^{d(x)} f(x, y)\,\d y\,\d x.
+$$
+
+Try setting $c(x) = -1 + \sin(x)$ and $d(x) = 1 + \frac{1}{2}x^2$ in the previous graph to see this in action.
+
+It's a little limiting that this only lets us modify a rectangular region by making the top and bottom edges wobbly, but exactly the same idea works if we slice the other way, making the double integral
+
+$$
+	\int_c^d \!\!\! \int_{a(x)}^{b(x)} f(x, y)\,\d x\,\d y.
+$$
+
+In practice, we'll want to choose between the two different orders of integration to pick the computationally simpler.
 
 
 

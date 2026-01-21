@@ -8,7 +8,7 @@ A general vector-valued function in $#R#^3$ is of the form $\vec{r}(t) = \left< 
 
 ### exc "the shape of a vector-valued function"
 	
-	What shape is the graph of $\vec{r}(t) = \left< \cos(t), \sin(t), 1 \right>$? What about $\vec{s}(t) = \left< \cos(t), \sin(t), t \right>$?
+	What shape is the graph of $\vec{r}(t) = \left< \cos(t), \sin(t), 1 \right>$? What about $\vec{s}(t) = \left< \cos(t), \sin(t), t \right>$? You're welcome to sketch a picture, but explaining briefly in words what the shapes are is enough.
 
 	### solution
 

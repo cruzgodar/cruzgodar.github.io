@@ -248,8 +248,59 @@ export default function()
 
 					{ latex: raw`0 \leq z \leq f(x, y) \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosRed3d },
 					{ latex: raw`f(x, y) \leq z \leq 0 \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosBlue3d },
+
+					// Red and blue regions bottom boundary
+					{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosRed3d, parametricDomain: { min: "c", max: "d" }, secret: true },
+					{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosBlue3d, parametricDomain: { min: "c", max: "d" }, secret: true },
+
+					// Red and blue regions side boundary
+					{ latex: raw`(x_0, c, t)`, color: desmosRed3d, parametricDomain: { min: "0", max: "f(x_0, c)" }, secret: true },
+					{ latex: raw`(x_0, c, t)`, color: desmosBlue3d, parametricDomain: { min: "f(x_0, c)", max: "0" }, secret: true },
+
+					{ latex: raw`(x_0, d, t)`, color: desmosRed3d, parametricDomain: { min: "0", max: "f(x_0, d)" }, secret: true },
+					{ latex: raw`(x_0, d, t)`, color: desmosBlue3d, parametricDomain: { min: "f(x_0, d)", max: "0" }, secret: true },
+
+					{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosRed3d, parametricDomain: { min: "c", max: "d" }, secret: true },
+					{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosBlue3d, parametricDomain: { min: "c", max: "d" }, secret: true },
+
 					{ latex: raw`( t, -2, \int_c^d f(t, y) dy )`, color: desmosGray3d, parametricDomain: { min: "a", max: "b" } },
 					{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosOrange3d, secret: true },
+				]
+			},
+
+			regions2d:
+			{
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`a = -2`,
+						min: -5,
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`b = 2`,
+						min: "a",
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`x_0 = 1`,
+						min: -2,
+						max: 2,
+						secret: false,
+					}),
+
+					{ latex: raw`c(x) = -1`, hidden: true },
+					{ latex: raw`d(x) = 1`, hidden: true },
+
+					{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+					{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+					{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+					{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
 				]
 			}
 		};
