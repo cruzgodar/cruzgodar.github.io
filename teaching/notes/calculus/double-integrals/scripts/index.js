@@ -4,7 +4,7 @@ import {
 	desmosBlue,
 	desmosBlue3d,
 	desmosGray3d,
-	desmosGreen3d,
+	desmosOrange3d,
 	desmosPurple,
 	desmosPurple3d,
 	desmosRed,
@@ -249,7 +249,7 @@ export default function()
 					{ latex: raw`0 \leq z \leq f(x, y) \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosRed3d },
 					{ latex: raw`f(x, y) \leq z \leq 0 \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosBlue3d },
 					{ latex: raw`( t, -2, \int_c^d f(t, y) dy )`, color: desmosGray3d, parametricDomain: { min: "a", max: "b" } },
-					{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosGreen3d, secret: true },
+					{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosOrange3d, secret: true },
 				]
 			}
 		};

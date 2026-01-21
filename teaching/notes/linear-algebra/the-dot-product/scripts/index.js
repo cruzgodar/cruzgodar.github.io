@@ -1,7 +1,7 @@
 import {
     createDesmosGraphs,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     getDesmosVector,
@@ -44,12 +44,12 @@ export default function()
 					...getDesmosVector({
 						from: ["\\frac{-21}{13}", "\\frac{-14}{13}"],
 						to: [-3, 1],
-						color: desmosGreen
+						color: desmosOrange
 					}),
 					...getDesmosVector({
 						from: [0, 0],
 						to: ["-3 - \\frac{-21}{13}", "1 - \\frac{-14}{13}"],
-						color: desmosGreen
+						color: desmosOrange
 					}),
 				]
 			},

@@ -1,18 +1,18 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosBlue3d,
-	desmosGray3d,
-	desmosGreen,
-	desmosPurple,
-	desmosPurple3d,
-	desmosRed,
-	desmosRed3d,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosBlue3d,
+    desmosGray3d,
+    desmosOrange,
+    desmosPurple,
+    desmosPurple3d,
+    desmosRed,
+    desmosRed3d,
+    getDesmosPoint,
+    getDesmosSlider,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -139,8 +139,8 @@ export default function()
 						color: desmosPurple,
 					}),
 
-					{ latex: raw`(x_0, y_0), (x_0 + x_1, y_0)`, color: desmosGreen, points: false, lines: true, lineStyle: "DASHED" },
-					{ latex: raw`(x_0 + x_1, y_0), (x_0 + x_1, y_0 + y_1)`, color: desmosGreen, points: false, lines: true, lineStyle: "DASHED" },
+					{ latex: raw`(x_0, y_0), (x_0 + x_1, y_0)`, color: desmosOrange, points: false, lines: true, lineStyle: "DASHED" },
+					{ latex: raw`(x_0 + x_1, y_0), (x_0 + x_1, y_0 + y_1)`, color: desmosOrange, points: false, lines: true, lineStyle: "DASHED" },
 				]
 			},
 

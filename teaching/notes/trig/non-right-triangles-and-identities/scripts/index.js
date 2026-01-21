@@ -2,7 +2,7 @@ import {
     createDesmosGraphs,
     desmosBlack,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     getDesmosSlider,
@@ -288,7 +288,7 @@ export default function()
 
 					{ latex: raw`\polygon((\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)), (\cos(\alpha)\cos(\beta), \sin(\alpha + \beta)), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (\cos(\alpha)\cos(\beta), \sin(\alpha)\cos(\beta)))`, color: desmosRed, lines: true, fill: true, fillOpacity: 0.25, secret: true },
 
-					{ latex: raw`(0, 0), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (\cos(\alpha + \beta), 0), (0, 0)`, color: desmosGreen, points: false, lines: true, secret: true },
+					{ latex: raw`(0, 0), (\cos(\alpha + \beta), \sin(\alpha + \beta)), (\cos(\alpha + \beta), 0), (0, 0)`, color: desmosOrange, points: false, lines: true, secret: true },
 
 					{ latex: raw`(0.2\cos(0.5\alpha), 0.2\sin(0.5\alpha))`, color: desmosPurple, label: "α", showLabel: true, hidden: true, secret: true },
 					{ latex: raw`(0.2\cos(0.5\beta + \alpha), 0.2\sin(0.5\beta + \alpha))`, color: desmosBlue, label: "β", showLabel: true, hidden: true, secret: true },

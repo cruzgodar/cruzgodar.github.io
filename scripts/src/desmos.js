@@ -5,14 +5,14 @@ import { siteSettings } from "./settings.js";
 export let desmosPurple = "#772fbf";
 export let desmosBlue = "#2f77bf";
 export let desmosRed = "#bf2f2f";
-export let desmosGreen = "#2fbf2f";
+export let desmosOrange = "#bf772f";
 export const desmosBlack = "#000000";
 
 // 3d graphs don't invert graph colors in invert mode.
 export const desmosPurple3d = "#772fbf";
 export const desmosBlue3d = "#2f77bf";
 export const desmosRed3d = "#bf2f2f";
-export const desmosGreen3d = "#2fbf5f";
+export const desmosOrange3d = "#bf772f";
 export const desmosGray3d = "#777777";
 
 
@@ -21,7 +21,7 @@ function updateDesmosColors()
 	desmosPurple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
 	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
 	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
-	desmosGreen = siteSettings.darkTheme ? "#ff40c0" : "#2fbf5f";
+	desmosOrange = siteSettings.darkTheme ? "#3f9fff" : "#bf772f";
 }
 
 export let desmosGraphs = {};

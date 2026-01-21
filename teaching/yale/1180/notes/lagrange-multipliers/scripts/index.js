@@ -1,13 +1,13 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosBlue3d,
-	desmosGreen3d,
-	desmosPurple,
-	desmosPurple3d,
-	desmosRed3d,
-	getDesmosSlider,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosBlue3d,
+    desmosOrange3d,
+    desmosPurple,
+    desmosPurple3d,
+    desmosRed3d,
+    getDesmosSlider,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -50,7 +50,7 @@ export default function()
 
 					{ latex: raw`2x^2+\sqrt{3}xy+3y^2\left\{ x^2 + y^2 = 1\right\}`, color: desmosBlue3d },
 
-					{ latex: raw`(\frac{1}{2}, \frac{\sqrt{3}}{2}, f(\frac{1}{2}, \frac{\sqrt{3}}{2}) ), (-\frac{1}{2}, -\frac{\sqrt{3}}{2}, f(-\frac{1}{2}, -\frac{\sqrt{3}}{2}) )`, color: desmosGreen3d },
+					{ latex: raw`(\frac{1}{2}, \frac{\sqrt{3}}{2}, f(\frac{1}{2}, \frac{\sqrt{3}}{2}) ), (-\frac{1}{2}, -\frac{\sqrt{3}}{2}, f(-\frac{1}{2}, -\frac{\sqrt{3}}{2}) )`, color: desmosOrange3d },
 
 					{ latex: raw`(-\frac{\sqrt{3}}{2}, \frac{1}{2}, f(-\frac{\sqrt{3}}{2}, \frac{1}{2}) ), (\frac{\sqrt{3}}{2}, -\frac{1}{2}, f(\frac{\sqrt{3}}{2}, -\frac{1}{2}) )`, color: desmosRed3d },
 				]

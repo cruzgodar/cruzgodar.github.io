@@ -1,18 +1,18 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosBlue3d,
-	desmosGray3d,
-	desmosGreen3d,
-	desmosPurple,
-	desmosPurple3d,
-	desmosRed,
-	desmosRed3d,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosBlue3d,
+    desmosGray3d,
+    desmosOrange3d,
+    desmosPurple,
+    desmosPurple3d,
+    desmosRed,
+    desmosRed3d,
+    getDesmosPoint,
+    getDesmosSlider,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -238,7 +238,7 @@ export default function()
 						secret: true,
 					}),
 
-					{ latex: raw`(x_0, y_0, z_0), (x_1, y_1, z_1), (x_2, y_2, z_2)`, color: desmosGreen3d },
+					{ latex: raw`(x_0, y_0, z_0), (x_1, y_1, z_1), (x_2, y_2, z_2)`, color: desmosOrange3d },
 
 					{ latex: raw`v = \vector((x_0, y_0, z_0), (x_1, y_1, z_1))`, color: desmosBlue3d, secret: true },
 

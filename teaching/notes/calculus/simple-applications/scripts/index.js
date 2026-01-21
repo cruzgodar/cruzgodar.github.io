@@ -1,7 +1,7 @@
 import {
     createDesmosGraphs,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     setGetDesmosData
@@ -23,7 +23,7 @@ export default function()
 					{ latex: raw`v(t) = 3t - 5 \left\{0 \leq t \leq 3\right\}`, color: desmosPurple },
 					{ latex: raw`s(t) = \int_0^t v(x) dx`, color: desmosBlue },
 					{ latex: raw`v_{pos}(t) = \left|v(t)\right|`, color: desmosRed },
-					{ latex: raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: desmosGreen }
+					{ latex: raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: desmosOrange }
 				]
 			},
 

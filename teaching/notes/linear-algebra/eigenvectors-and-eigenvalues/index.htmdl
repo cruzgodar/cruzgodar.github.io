@@ -185,7 +185,7 @@ $$
 	A = [[ 4, -2 ; 1, 1 ]]
 $$
 
-has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and green ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
+has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and orange ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
 
 ### desmos areaScaling
 

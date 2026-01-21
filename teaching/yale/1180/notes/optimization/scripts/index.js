@@ -1,10 +1,10 @@
 import {
-	createDesmosGraphs,
-	desmosBlue3d,
-	desmosGreen3d,
-	desmosPurple3d,
-	desmosRed3d,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue3d,
+    desmosOrange3d,
+    desmosPurple3d,
+    desmosRed3d,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -53,7 +53,7 @@ export default function()
 
 					{ latex: raw`(0, 0, f(0, 0))`, color: desmosRed3d },
 
-					{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosGreen3d },
+					{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosOrange3d },
 				]
 			},
 

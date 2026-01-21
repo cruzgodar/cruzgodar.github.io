@@ -211,15 +211,15 @@ In addition to these new functions, there are a number of relationships between 
 
 	### desmos sumFormulas
 
-	Labeling every angle and side length in this diagram would make it nearly unreadable, so let's discuss it one bit at a time. The purple triangle has an angle of $\alpha$ at the origin and the blue triangle has an angle of $\beta$. The green triangle then has an angle of $\alpha + \beta$ at the origin, and its hypotenuse has length $1$, so the right and bottom legs of the green triangle have lengths $\sin(\alpha + \beta)$ and $\cos(\alpha + \beta)$, respectively. Since the blue triangle *also* has hypotenuse $1$, its rightmost leg has length $\sin(\beta)$ and its bottommost one has length $\cos(\beta)$. On the other hand, the purple triangle's hypotenuse is the blue triangle's bottom leg, and so it has length $\cos(\beta)$. Therefore, the purple triangle's right and bottom legs have lengths $\cos(\beta)\sin(\alpha)$ and $\cos(\beta)\cos(\alpha)$.
+	Labeling every angle and side length in this diagram would make it nearly unreadable, so let's discuss it one bit at a time. The purple triangle has an angle of $\alpha$ at the origin and the blue triangle has an angle of $\beta$. The orange triangle then has an angle of $\alpha + \beta$ at the origin, and its hypotenuse has length $1$, so the right and bottom legs of the orange triangle have lengths $\sin(\alpha + \beta)$ and $\cos(\alpha + \beta)$, respectively. Since the blue triangle *also* has hypotenuse $1$, its rightmost leg has length $\sin(\beta)$ and its bottommost one has length $\cos(\beta)$. On the other hand, the purple triangle's hypotenuse is the blue triangle's bottom leg, and so it has length $\cos(\beta)$. Therefore, the purple triangle's right and bottom legs have lengths $\cos(\beta)\sin(\alpha)$ and $\cos(\beta)\cos(\alpha)$.
 
-	Now the red triangle has a bottom angle *also* equal to $\alpha$: the top angle of the purple triangle is $\frac{\pi}{2} - \alpha$, and together with the right angle of the blue triangle and the bottom angle of the red one, it sums to $\pi$. Just like with the purple triangle, the red one has a hypotenuse of $\sin(\beta)$, so the top leg of the red triangle has length $\sin(\beta)\sin(\alpha)$ and the right leg has length $\sin(\beta)\cos(\alpha)$. Putting it all together, the right leg of the green triangle is the sum of the right legs of the purple and red triangles, so
+	Now the red triangle has a bottom angle *also* equal to $\alpha$: the top angle of the purple triangle is $\frac{\pi}{2} - \alpha$, and together with the right angle of the blue triangle and the bottom angle of the red one, it sums to $\pi$. Just like with the purple triangle, the red one has a hypotenuse of $\sin(\beta)$, so the top leg of the red triangle has length $\sin(\beta)\sin(\alpha)$ and the right leg has length $\sin(\beta)\cos(\alpha)$. Putting it all together, the right leg of the orange triangle is the sum of the right legs of the purple and red triangles, so
 
 	$$
 		\sin(\alpha + \beta) &= \sin(\alpha)\cos(\beta) + \cos(\alpha)\sin(\beta).
 	$$
 
-	Similarly, the bottom leg of the green triangle is the bottom leg of the purple one minus the top leg of the red one, so
+	Similarly, the bottom leg of the orange triangle is the bottom leg of the purple one minus the top leg of the red one, so
 
 	$$
 		\cos(\alpha + \beta) &= \cos(\alpha)\cos(\beta) - \sin(\alpha)\sin(\beta).

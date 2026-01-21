@@ -1,12 +1,12 @@
 import {
-	createDesmosGraphs,
-	desmosBlue3d,
-	desmosGray3d,
-	desmosGreen3d,
-	desmosPurple3d,
-	desmosRed3d,
-	getDesmosSlider,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue3d,
+    desmosGray3d,
+    desmosOrange3d,
+    desmosPurple3d,
+    desmosRed3d,
+    getDesmosSlider,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -64,7 +64,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosGreen3d, hidden: true },
+					{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosOrange3d, hidden: true },
 
 					{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },
 					{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosPurple3d, hidden: true, secret: true },

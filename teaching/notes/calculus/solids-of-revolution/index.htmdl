@@ -318,7 +318,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 	
 	### desmos aDifferentAxis1
 	
-	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in green the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
+	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in orange the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
 	
 	$$
 		\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\,\d y.
@@ -330,7 +330,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 	
 	### desmos aDifferentAxis2
 	
-	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the green one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
+	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the orange one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
 	
 	$$
 		2\pi(6 - x)(x^2),

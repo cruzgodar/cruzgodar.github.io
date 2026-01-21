@@ -390,7 +390,7 @@ $$
 	\frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1} &= -\frac{7}{13}[[ 3 ; 2 ]],
 $$
 
-which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in red. The final vector $\vec{y_2}$ is in green, drawn both as the geometric subtraction between the blue and red vectors, and again from the origin to highlight how it's orthogonal to the purple vector $\vec{x_1} = \vec{y_1}$. Notice how the red vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
+which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in red. The final vector $\vec{y_2}$ is in orange, drawn both as the geometric subtraction between the blue and red vectors, and again from the origin to highlight how it's orthogonal to the purple vector $\vec{x_1} = \vec{y_1}$. Notice how the red vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
 
 ### ex "the Gram-Schmidt process"
 

@@ -160,7 +160,7 @@ Sometimes, we might find ourselves interested in the (minimum) distance from a p
 
 ### desmos distanceToPlane
 
-Here, the green vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the green point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
+Here, the orange vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the orange point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
 
 ### prop "projections"
 
@@ -324,7 +324,7 @@ It might seem pretty strange that we're outputting a vector from this function! 
 
 ### desmos vectorValuedLine
 
-Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the green vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
+Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
 
 
 ### exc "lines in $#R#^3$"

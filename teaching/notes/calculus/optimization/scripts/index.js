@@ -1,7 +1,7 @@
 import {
     createDesmosGraphs,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     setGetDesmosData
@@ -62,7 +62,7 @@ export default function()
 				[
 					{ latex: raw`f(x) = x^5 - 3x^3 + x`, color: desmosPurple, hidden: true, secret: true },
 					{ latex: raw`f(x)`, color: desmosPurple },
-					{ latex: raw`f''(x)`, color: desmosGreen, hidden: true },
+					{ latex: raw`f''(x)`, color: desmosOrange, hidden: true },
 
 					{ latex: raw`y \geq f(x) \{-.949 \leq x \leq 0, .949 \leq x\}`, color: desmosRed, secret: true },
 					{ latex: raw`y \leq f(x) \{x \leq -.949, 0 \leq x \leq .949\}`, color: desmosBlue, secret: true },

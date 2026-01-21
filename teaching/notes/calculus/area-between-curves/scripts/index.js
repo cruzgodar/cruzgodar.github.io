@@ -1,7 +1,7 @@
 import {
     createDesmosGraphs,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     setGetDesmosData
@@ -55,7 +55,7 @@ export default function()
 				expressions:
 				[
 					{ latex: raw`f(x) = 1`, color: desmosRed },
-					{ latex: raw`g(x) = 3 - x`, color: desmosGreen },
+					{ latex: raw`g(x) = 3 - x`, color: desmosOrange },
 					{ latex: raw`h(x) = x^2 + 1`, color: desmosBlue },
 
 					{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple },
@@ -73,7 +73,7 @@ export default function()
 				[
 					{ latex: raw`f(x) = 1 - x`, color: desmosRed },
 					{ latex: raw`g(x) = x^2`, color: desmosBlue },
-					{ latex: raw`h(x) = \sqrt{x}`, color: desmosGreen },
+					{ latex: raw`h(x) = \sqrt{x}`, color: desmosOrange },
 
 					{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple },
 					{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple }
@@ -89,7 +89,7 @@ export default function()
 				expressions:
 				[
 					{ latex: raw`f(x) = 1`, color: desmosRed },
-					{ latex: raw`g(x) = 3 - x`, color: desmosGreen },
+					{ latex: raw`g(x) = 3 - x`, color: desmosOrange },
 					{ latex: raw`h(x) = x^2 + 1`, color: desmosBlue },
 
 					{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple },
@@ -107,7 +107,7 @@ export default function()
 				[
 					{ latex: raw`f(x) = 1 - x`, color: desmosRed },
 					{ latex: raw`g(x) = x^2`, color: desmosBlue },
-					{ latex: raw`h(x) = \sqrt{x}`, color: desmosGreen },
+					{ latex: raw`h(x) = \sqrt{x}`, color: desmosOrange },
 
 					{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple },
 					{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple }

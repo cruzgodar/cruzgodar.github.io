@@ -5,7 +5,7 @@ import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
     createDesmosGraphs,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     getDesmosVector,
@@ -31,8 +31,8 @@ export default function()
 					...getDesmosVector({ from: [2, 1], to: [3, 2], color: desmosPurple }),
 
 					...getDesmosVector({ from: [0, 0], to: [3, 3], color: desmosRed }),
-					...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosGreen }),
-					...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosGreen }),
+					...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosOrange }),
+					...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosOrange }),
 					...getDesmosVector({ from: [4, 2], to: [7, 5], color: desmosRed }),
 				]
 			},

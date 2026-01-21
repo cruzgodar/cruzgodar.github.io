@@ -2,7 +2,7 @@ import {
     createDesmosGraphs,
     desmosBlack,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     getDesmosSlider,
     setGetDesmosData
@@ -101,7 +101,7 @@ export default function()
 
 					{ latex: raw`(\cos(a), \sin(a))`, color: desmosPurple, points: true, secret: false },
 
-					{ latex: raw`(\sign(\cos(a)), \sign(\cos(a))\tan(a)), (\sign(\cos(a)), 0)`, color: desmosGreen, points: false, lines: true, secret: true },
+					{ latex: raw`(\sign(\cos(a)), \sign(\cos(a))\tan(a)), (\sign(\cos(a)), 0)`, color: desmosOrange, points: false, lines: true, secret: true },
 
 					{ latex: raw`(0, 0), (\sign(\cos(a)), \sign(\cos(a))\tan(a))`, color: desmosPurple, points: true, lines: true, secret: true },
 

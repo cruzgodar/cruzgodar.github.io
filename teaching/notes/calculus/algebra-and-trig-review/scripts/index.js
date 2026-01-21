@@ -2,7 +2,7 @@ import {
     createDesmosGraphs,
     desmosBlack,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     setGetDesmosData
@@ -82,10 +82,10 @@ export default function()
 				[
 					{ latex: raw`\sin(x)`, color: desmosRed },
 					{ latex: raw`\cos(x)`, color: desmosBlue },
-					{ latex: raw`\tan(x)`, color: desmosGreen, hidden: true },
+					{ latex: raw`\tan(x)`, color: desmosOrange, hidden: true },
 					{ latex: raw`\csc(x)`, color: desmosBlue, hidden: true },
 					{ latex: raw`\sec(x)`, color: desmosRed, hidden: true },
-					{ latex: raw`\cot(x)`, color: desmosGreen, hidden: true },
+					{ latex: raw`\cot(x)`, color: desmosOrange, hidden: true },
 				]
 			}
 		};

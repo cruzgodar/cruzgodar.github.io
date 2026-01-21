@@ -2,7 +2,7 @@ import {
     createDesmosGraphs,
     desmosBlack,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     getDesmosPoint,
@@ -41,7 +41,7 @@ export default function()
 					{ latex: raw`f(x) = x`, color: desmosPurple },
 					{ latex: raw`f(x) = x^2`, color: desmosBlue },
 					{ latex: raw`f(x) = x^3`, color: desmosRed },
-					{ latex: raw`f(x) = x^a`, color: desmosGreen },
+					{ latex: raw`f(x) = x^a`, color: desmosOrange },
 					{ latex: raw`a = 4`, sliderBounds: { min: 4, max: 10, step: 1 } },
 				]
 			},
@@ -224,7 +224,7 @@ export default function()
 					{ latex: raw`h(x)`, color: desmosRed, hidden: true },
 
 					{ latex: raw`l(x) = -2\ln(-\frac{1}{2}(x + 1)) + 1`, secret: true, hidden: true },
-					{ latex: raw`l(x)`, color: desmosGreen, hidden: true },
+					{ latex: raw`l(x)`, color: desmosOrange, hidden: true },
 				]
 			}
 		};

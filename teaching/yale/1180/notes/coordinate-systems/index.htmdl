@@ -116,7 +116,7 @@ The typical way to represent vectors is with arrows, which indicate both their m
 
 ### desmos vectors
 
-While vectors are fundamentally different from points, there's definitely a close similarity between them. In that previous graph, every position of the blue point corresponds to a vector, and vice versa. Specifically, the vector can be determined either by a magnitude and direction, or by an amount to move parallel to the $x$-axis, then an amount to move parallel to the $y$-axis (the green dashed lines in the graph). In fact, if we place the red point at the origin, then the blue point's coordinates *tell* us those amounts. This is very often an easier way to work with vectors, especially when we need a more algebraic presentation of them, so let's write down some notation for it.
+While vectors are fundamentally different from points, there's definitely a close similarity between them. In that previous graph, every position of the blue point corresponds to a vector, and vice versa. Specifically, the vector can be determined either by a magnitude and direction, or by an amount to move parallel to the $x$-axis, then an amount to move parallel to the $y$-axis (the orange dashed lines in the graph). In fact, if we place the red point at the origin, then the blue point's coordinates *tell* us those amounts. This is very often an easier way to work with vectors, especially when we need a more algebraic presentation of them, so let's write down some notation for it.
 
 ### def "components of a vector and the zero vector"
 

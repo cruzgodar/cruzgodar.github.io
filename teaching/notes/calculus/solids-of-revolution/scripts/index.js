@@ -2,7 +2,7 @@ import {
     createDesmosGraphs,
     desmosBlack,
     desmosBlue,
-    desmosGreen,
+    desmosOrange,
     desmosPurple,
     desmosRed,
     setGetDesmosData
@@ -756,7 +756,7 @@ export default function()
 					{ latex: raw`y = x^2\{0 \leq x \leq 4\}`, color: desmosPurple, secret: true },
 					{ latex: raw`y = 0\{0 \leq x \leq 4\}`, color: desmosPurple, secret: true },
 					{ latex: raw`x = 4\{0 \leq y \leq 16\}`, color: desmosPurple, secret: true },
-					{ latex: raw`x = 6`, color: desmosGreen, secret: true },
+					{ latex: raw`x = 6`, color: desmosOrange, secret: true },
 
 					{ latex: raw`y_0 = 8`, sliderBounds: { min: 0, max: 16 } },
 					{ latex: raw`y = y_0\{\sqrt{y} \leq x \leq 4\}`, color: desmosRed, secret: true },
@@ -774,7 +774,7 @@ export default function()
 					{ latex: raw`y = x^2\{0 \leq x \leq 4\}`, color: desmosPurple, secret: true },
 					{ latex: raw`y = 0\{0 \leq x \leq 4\}`, color: desmosPurple, secret: true },
 					{ latex: raw`x = 4\{0 \leq y \leq 16\}`, color: desmosPurple, secret: true },
-					{ latex: raw`x = 6`, color: desmosGreen, secret: true },
+					{ latex: raw`x = 6`, color: desmosOrange, secret: true },
 
 					{ latex: raw`x_0 = 2`, sliderBounds: { min: 0, max: 4 } },
 					{ latex: raw`x = x_0\{0 \leq y \leq x^2\}`, color: desmosRed, secret: true },
