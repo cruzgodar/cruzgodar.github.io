@@ -212,6 +212,24 @@ $$
 
 And so the slope of the tangent line at $\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right)$, the top point in the original graph, is $-\frac{1/2}{\sqrt{3}/2} = -\frac{1}{\sqrt{3}}$.
 
+### exc "an ellipse"
+	
+	Consider the implicit equation $x^2 - xy + y^2 = 3$.
+
+	1. Find $$dy/dx$$ in terms of $x$ and $y$.
+
+	2. Show that $(-1, 1)$ is on the graph, and then gind an equation for the tangent line to the graph at $(-1, 1)$.
+
+	3. Find all the points on the graph with a horizontal tangent line.
+
+	4. Find all the points on the graph with a vertical tangent line.
+
+	### solution
+
+	### desmos ellipse
+	
+###
+
 ### exc "braids"
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
@@ -232,7 +250,7 @@ Let's approach one more complicated example before moving on.
 
 ### ex "implicit differentiation"
 	
-	Given the implicit function $x\sin(y) = y$, find $dy/dx$.
+	Given the implicit equation $x\sin(y) = y$, find $dy/dx$.
 	
 	### desmos sinThing
 
@@ -261,6 +279,22 @@ Let's approach one more complicated example before moving on.
 	$$
 
 	There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
+	
+###
+
+### exc "a more complicated implicit function"
+	
+	Consider the implicit equation $$\ln\left( x^2 + y^2 \right) + 2^x - y^3 = 0$$.
+
+	1. Find $$dy/dx$$ in terms of $x$ and $y$.
+
+	2. Find $$dx/dy$$ in terms of $x$ and $y$.
+
+	3. (Bonus) The function $dy/dx$ only makes sense as a derivative when we plug in values of $x$ and $y$ on the curve. Is there a way to make sense of plugging in values that aren't on the curve? (Hint: how could we change the right side of the equation without changing $dy/dx$?)
+
+	### solution
+
+	### desmos implicitLogEquation
 	
 ###
 

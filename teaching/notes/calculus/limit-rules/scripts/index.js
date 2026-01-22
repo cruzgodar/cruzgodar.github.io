@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -41,10 +41,10 @@ export default function()
 			squeezeTheorem:
 			{
 				bounds: {
-					left: -25 * Math.PI / 2,
-					right: 25 * Math.PI / 2,
-					bottom: -25 * Math.PI / 2,
-					top: 25 * Math.PI / 2
+					xmin: -25 * Math.PI / 2,
+					xmax: 25 * Math.PI / 2,
+					ymin: -25 * Math.PI / 2,
+					ymax: 25 * Math.PI / 2
 				},
 
 				expressions:

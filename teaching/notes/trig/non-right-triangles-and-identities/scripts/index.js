@@ -1,12 +1,12 @@
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosOrange,
-    desmosPurple,
-    desmosRed,
-    getDesmosSlider,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosOrange,
+	desmosPurple,
+	desmosRed,
+	getDesmosSlider,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -174,10 +174,10 @@ export default function()
 			lawOfSines3:
 			{
 				bounds: {
-					left: -0.25,
-					right: Math.sqrt(3) + 0.25,
-					bottom: -(Math.sqrt(3) / 2 + 0.25) + 0.5,
-					top: (Math.sqrt(3) / 2 + 0.25) + 0.5
+					xmin: -0.25,
+					xmax: Math.sqrt(3) + 0.25,
+					ymin: -(Math.sqrt(3) / 2 + 0.25) + 0.5,
+					ymax: (Math.sqrt(3) / 2 + 0.25) + 0.5
 				},
 
 				expressions:
@@ -229,10 +229,10 @@ export default function()
 			cotangent:
 			{
 				bounds: {
-					left: - 0.5 * Math.PI - 0.5,
-					right: 1.5 * Math.PI + 0.5,
-					bottom: - Math.PI - 0.5,
-					top: Math.PI + 0.5
+					xmin: - 0.5 * Math.PI - 0.5,
+					xmax: 1.5 * Math.PI + 0.5,
+					ymin: - Math.PI - 0.5,
+					ymax: Math.PI + 0.5
 				},
 	
 				expressions:
@@ -244,10 +244,10 @@ export default function()
 			cosecant:
 			{
 				bounds: {
-					left: -Math.PI - 0.5,
-					right: 3 * Math.PI + 0.5,
-					bottom: - 2 * Math.PI - 0.5,
-					top: 2 * Math.PI + 0.5
+					xmin: -Math.PI - 0.5,
+					xmax: 3 * Math.PI + 0.5,
+					ymin: - 2 * Math.PI - 0.5,
+					ymax: 2 * Math.PI + 0.5
 				},
 	
 				expressions:

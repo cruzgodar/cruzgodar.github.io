@@ -169,10 +169,32 @@ Try setting $c(x) = -1 + \sin(x)$ and $d(x) = 1 + \frac{1}{2}x^2$ in the previou
 It's a little limiting that this only lets us modify a rectangular region by making the top and bottom edges wobbly, but exactly the same idea works if we slice the other way, making the double integral
 
 $$
-	\int_c^d \!\!\! \int_{a(x)}^{b(x)} f(x, y)\,\d x\,\d y.
+	\int_c^d \!\!\! \int_{a(y)}^{b(y)} f(x, y)\,\d x\,\d y.
 $$
 
-In practice, we'll want to choose between the two different orders of integration to pick the computationally simpler.
+In practice, we'll often choose between the two different orders of integration and pick the computationally simpler one. When approaching problems like these, it can be invaluable to sketch a complete picture of the 2D region you're integrating over and and draw the vertical or horizontal lines indicating the slices made by the inner integral --- parallel to the $y$ axis if it's taken $\d y$ and to the $x$-axis if it's taken $\d x$.
+
+### exc "a double integral over a general region"
+
+	Find the signed volume under the graph of $z = xy$ on the region bounded by $x = -\frac{\pi}{2}$, $x = \frac{\pi}{2}$, $y = \sin(x) + 1$, and $y = -x^2$.
+
+###
+
+Sometimes, we'll want to or need to change the order of integration ourselves!
+
+### ex "changing the order of integration"
+
+	Let $R$ be the region bounded by $y^4 = x + 4$ and $y^2 = -\frac{x}{3}$. Find the integral
+
+	$$
+		\iint_R \left( x + y^2 \right)\,\d A.
+	$$
+
+	Let's begin by sketching the region. These look like pretty strange curves, but if we isolate $x$ (since it's the easier of the two variables to get on its own), then we can identify them as $x = y^4 - 4$ and $x = -3y^2$, both of which are familiar functions if we swap $x$ and $y$. We can plot these functions, then, by flipping the graphs we know across the line $y = x$.
+
+	### desmos regions2d2
+
+###
 
 
 
