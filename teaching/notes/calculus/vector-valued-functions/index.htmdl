@@ -142,6 +142,30 @@ for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a constan
 
 If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant. Let's collect a bit of what we know about these functions: if $\vec{p}(t)$ gives the position of an object over time, then $\vec{p}'(t) = \vec{v}(t)$ is its velocity, which is tangent to the graph of $\vec{p}(t)$, and $\left| \left| \vec{v}(t) \right| \right|$ is the magnitude of the velocity, also called **speed**. The second derivative $\vec{p}''(t)$ is the acceleration $\vec{a}(t)$ --- also a vector. We can integrate the velocity and acceleration functions to recover the position and velocity ones, respectively, up to a constant.
 
+### exc "integrating a vector-valued function"
+
+	A satellite orbiting the Earth isn't doing so well. Its acceleration $t$ days after we begin measuring is given by
+
+	$$
+		\vec{a}(t) = \left< \frac{6}{(1 + t)^4}, \frac{2}{(1 + t)^3}, \frac{2}{(1 + t)^3} \right>
+	$$
+
+	in hundred thousand miles per day per day. When we begin measuring, the velocity of the satellite is
+
+	$$
+		\left< -2, -1, -1 \right>
+	$$
+
+	in hundred thousand miles per day, and the position is
+
+	$$
+		\left< 1, 1, 1 \right>
+	$$
+
+	in hundred thousand miles. At some point, the satellite will burn up harmlessly in the earth's atmosphere. Find the position $\vec{r}(t)$ of the position of the satellite after $t$ days.
+
+###
+
 
 
 ## Arc Length
