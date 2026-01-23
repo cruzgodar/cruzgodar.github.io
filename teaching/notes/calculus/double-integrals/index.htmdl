@@ -194,6 +194,28 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 	### desmos regions2d2
 
+	As it currently stands, this is a little bit of a mess. The region bounded by the two functions is the egg-shaped region in the center, and we need to figure out how to slice it in order to integrate over it.
+
+	Let's be clear: we absolutely have a choice in the matter! We could integrate $\d y\,\d x$ or $\d x\,\d y$, but in many cases, one will be much more convenient than the other. If we integrated $\d y\,\d x$, then we'd be slicing this region *vertically*: the outside $\d x$ integral would select a specific $x$-value, and then the inside $\d y$ integral would find that slice's area over an interval of $y$-values. Integrating in this way would have some issues, though. While it's somewhat clear from the graph that $x$ would have to range across the interval $[-4, 0]$, the bounds on the inside $\d y$ integral depend on the functions --- **of $\mathbf{x}$** --- that bound that vertical slice.
+
+	Now, those aren't very nice bounds. For one, they switch partway through, seemingly at $x = -3$, and so we'd have no choice but to split up the integral into two. Also, the bounds themselves are gross: solving for $y$ gives
+
+	$$
+		y &= \pm \sqrt[4]{x+4}
+
+		y &= \pm \sqrt{-\frac{x}{3}},
+	$$
+
+	and the positive and negative versions of those form the bounds, resulting in the integral
+
+	$$
+		\int_{-4}^{-3} \int_{-\sqrt[4]{x+4}}^{\sqrt[4]{x+4}} \left( x + y^2 \right)\,\d y\,\d x + \int_{-3}^{0} \int_{-\sqrt{-x/3}}^{\sqrt{-x/3}} \left( x + y^2 \right)\,\d y\,\d x.
+	$$
+
+	Those bounds end up directly inside the outer integral, so we'd have to integrate them $\d x$, something we're probably not very excited to do.
+
+	In contrast to all of this, integrating $\d x\,\d y$ is a broadly pleasant time. First, the functions are simpler to integrate when $x$ is a function of $y$ than the other way around: $y^4 - 4$ is much nicer than $\sqrt[4]{x+4}$. Second, the 
+
 ###
 
 

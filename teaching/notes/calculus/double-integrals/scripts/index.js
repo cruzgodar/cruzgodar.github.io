@@ -241,8 +241,8 @@ export default function()
 
 					...getDesmosSlider({
 						expression: raw`x_0 = 1`,
-						min: -2,
-						max: 2,
+						min: "a",
+						max: "b",
 						secret: false,
 					}),
 
@@ -270,7 +270,7 @@ export default function()
 
 			regions2d:
 			{
-				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
@@ -289,8 +289,8 @@ export default function()
 
 					...getDesmosSlider({
 						expression: raw`x_0 = 1`,
-						min: -2,
-						max: 2,
+						min: "a",
+						max: "b",
 						secret: false,
 					}),
 
@@ -298,45 +298,57 @@ export default function()
 					{ latex: raw`d(x) = 1`, hidden: true },
 
 					{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+					{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+
 					{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+					{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+
 					{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+
 					{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+					{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
 				]
 			},
 
 			regions2d2:
 			{
-				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+				bounds: { xmin: -5, xmax: 1, ymin: -3, ymax: 3 },
 
 				expressions:
 				[
 					...getDesmosSlider({
-						expression: raw`a = -2`,
+						expression: raw`c = -5`,
 						min: -5,
 						max: 5,
 						secret: false,
 					}),
 					...getDesmosSlider({
-						expression: raw`b = 2`,
-						min: "a",
+						expression: raw`d = 5`,
+						min: "c",
 						max: 5,
 						secret: false,
 					}),
 
 					...getDesmosSlider({
-						expression: raw`x_0 = 1`,
-						min: -2,
-						max: 2,
+						expression: raw`y_0 = 0.5`,
+						min: "c",
+						max: "d",
 						secret: false,
 					}),
 
-					{ latex: raw`c(x) = -1`, hidden: true },
-					{ latex: raw`d(x) = 1`, hidden: true },
+					{ latex: raw`a(y) = y^4 - 4`, hidden: true },
+					{ latex: raw`b(y) = -3y^2`, hidden: true },
 
-					{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-					{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
-					{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
-					{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+					{ latex: raw`a(y) < x < b(y) \left\{ -1 < y < 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+					{ latex: raw`b(y) < x < a(y) \left\{ -1 < y < 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+
+					{ latex: raw`y = [c, d] \left\{ a([c, d]) \leq x \leq b([c, d]) \right\}`, color: desmosBlue, secret: true },
+					{ latex: raw`y = [c, d] \left\{ b([c, d]) \leq x \leq a([c, d]) \right\}`, color: desmosBlue, secret: true },
+
+					{ latex: raw`x = [a(y), b(y)] \left\{ c \leq y \leq d \right\}`, color: desmosRed, secret: true },
+
+					{ latex: raw`y = y_0 \left\{ a(y_0) \leq x \leq b(y_0) \right\}`, color: desmosPurple, secret: true },
+					{ latex: raw`y = y_0 \left\{ b(y_0) \leq x \leq a(y_0) \right\}`, color: desmosPurple, secret: true },
 				]
 			}
 		};

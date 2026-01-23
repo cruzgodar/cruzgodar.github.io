@@ -150,19 +150,7 @@ If we're given a vector-valued function that is already a derivative, though, li
 		\vec{a}(t) = \left< \frac{6}{(1 + t)^4}, \frac{2}{(1 + t)^3}, \frac{2}{(1 + t)^3} \right>
 	$$
 
-	in hundred thousand miles per day per day. When we begin measuring, the velocity of the satellite is
-
-	$$
-		\left< -2, -1, -1 \right>
-	$$
-
-	in hundred thousand miles per day, and the position is
-
-	$$
-		\left< 1, 1, 1 \right>
-	$$
-
-	in hundred thousand miles. At some point, the satellite will burn up harmlessly in the earth's atmosphere. Find the position $\vec{r}(t)$ of the position of the satellite after $t$ days.
+	in hundred thousand miles per day per day. When we begin measuring, the velocity of the satellite is $\left< -2, -1, -1 \right>$ in hundred thousand miles per day, and the position is $\left< 1, 1, 1 \right>$ in hundred thousand miles. At some point, the satellite will burn up harmlessly in the earth's atmosphere. Find the position $\vec{r}(t)$ of the position of the satellite after $t$ days.
 
 ###
 

@@ -78,6 +78,8 @@ export async function createDesmosGraphs(recreating = false)
 
 	for (const key in data)
 	{
+		const replaceLineWidth = !data[key].use3d;
+
 		for (const expression of data[key].expressions)
 		{
 			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
@@ -85,6 +87,11 @@ export async function createDesmosGraphs(recreating = false)
 
 			expression.latex = expression.latex.replace(/\[/g, raw`\left[`);
 			expression.latex = expression.latex.replace(/\]/g, raw`\right]`);
+
+			if (replaceLineWidth)
+			{
+				expression.lineWidth ??= 3.5;
+			}
 		}
 	}
 
