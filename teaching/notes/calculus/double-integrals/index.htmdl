@@ -230,7 +230,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 		y &= \pm 1
 	$$
 
-	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, sue to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the blue horizontal lines?
+	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, due to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the blue horizontal lines?
 
 	Well, they're there, but when we take our bounds to be the points of intersection, they conveniently have length zero. Set $c = -1$ and $d = 1$ in the Desmos graph to see!
 
@@ -275,6 +275,10 @@ The formula for $\theta$ is just slightly awkward to write in a form where $\the
 Our primary use for polar coordinates, though, is to draw regions with them and slice them up so that we can integrate functions on those regions. Just like with Cartesian coordinates, we'll start with rectangles.
 
 ### desmos polarRectangle
+
+Here, we can see a so-called **polar rectangle** --- and before you object to the name, have a look at all four of its angles --- and a slice taken by holding $\theta$ fixed and varying $r$. Increase $m$ and $n$ to see the result of slicing up the region into many tiny polar rectangles. But here we need to pause, because there's a problem that we didn't have to deal with when we were slicing up Cartesian rectangles: those little chunks don't have constant area! We can see that changing $\theta$ leaves the area constant, but the farther we are away from the origin, the larger the area of each little rectangle, even though each one has the same total change in $r$ and $\theta$.
+
+While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those red circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its red side length times its blue side length. The blue side length is just $\Delta r$, but the red side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the red side length 
 
 
 

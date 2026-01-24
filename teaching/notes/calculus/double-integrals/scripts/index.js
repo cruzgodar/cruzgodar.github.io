@@ -395,17 +395,17 @@ export default function()
 				expressions:
 				[
 					...getDesmosSlider({
-						expression: raw`m = 3`,
+						expression: raw`m = 1`,
 						min: 1,
-						max: 15,
+						max: 10,
 						step: 1,
 						secret: false,
 					}),
 
 					...getDesmosSlider({
-						expression: raw`n = 4`,
+						expression: raw`n = 1`,
 						min: 1,
-						max: 15,
+						max: 10,
 						step: 1,
 						secret: false,
 					}),
@@ -450,11 +450,11 @@ export default function()
 
 					{ latex: raw`\sqrt{x^2+y^2} = [c, d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
 
-					{ latex: raw`\theta_0 = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+					{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
 
 					{ latex: raw`[a, a + \frac{b - a}{m}, ..., b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
 
-					{ latex: raw`\sqrt{x^2+y^2} = [c, + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+					{ latex: raw`\sqrt{x^2+y^2} = [c, c + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
 				]
 			}
 		};
