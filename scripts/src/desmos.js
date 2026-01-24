@@ -2,26 +2,30 @@ import { changeOpacity } from "./animation.js";
 import { loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
-export let desmosPurple = "#772fbf";
-export let desmosBlue = "#2f77bf";
-export let desmosRed = "#bf2f2f";
-export let desmosOrange = "#bf772f";
+
+// These are hsv with varying hue, 75% saturation, and 80% value.
+export let desmosPurple = "#7f32cc";
+export let desmosBlue = "#327fcc";
+export let desmosRed = "#cc3232";
+export let desmosOrange = "#cc7f32";
 export const desmosBlack = "#000000";
 
 // 3d graphs don't invert graph colors in invert mode.
-export const desmosPurple3d = "#772fbf";
-export const desmosBlue3d = "#2f77bf";
-export const desmosRed3d = "#bf2f2f";
-export const desmosOrange3d = "#bf772f";
+export const desmosPurple3d = "#7f32cc";
+export const desmosBlue3d = "#327fcc";
+export const desmosRed3d = "#cc3232";
+export const desmosOrange3d = "#cc7f32";
 export const desmosGray3d = "#777777";
 
 
 function updateDesmosColors()
 {
-	desmosPurple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
-	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
-	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
-	desmosOrange = siteSettings.darkTheme ? "#3f9fff" : "#bf772f";
+	// In dark mode, we invert the hude (since desmos will invert it back)
+	// and use 100% saturation.
+	desmosPurple = siteSettings.darkTheme ? "#66cc00" : "#7f32cc";
+	desmosBlue = siteSettings.darkTheme ? "#cc6600" : "#327fcc";
+	desmosRed = siteSettings.darkTheme ? "#00cccc" : "#cc3232";
+	desmosOrange = siteSettings.darkTheme ? "#0066cc" : "#cc7f32";
 }
 
 export let desmosGraphs = {};
@@ -88,6 +92,9 @@ export async function createDesmosGraphs(recreating = false)
 			expression.latex = expression.latex.replace(/\[/g, raw`\left[`);
 			expression.latex = expression.latex.replace(/\]/g, raw`\right]`);
 
+			expression.latex = expression.latex.replace(/[^\\left]\\\{/g, raw`\left\{`);
+			expression.latex = expression.latex.replace(/[^\\right]\\\}/g, raw`\right\}`);
+
 			if (replaceLineWidth)
 			{
 				expression.lineWidth ??= 3.5;
@@ -121,6 +128,20 @@ export async function createDesmosGraphs(recreating = false)
 			yAxisMinorSubdivisions: 1,
 
 			expressions: anyNonSecretExpressions,
+
+			colors: data[element.id].use3d ? {
+				PURPLE: desmosPurple3d,
+				BLUE: desmosBlue3d,
+				RED: desmosRed3d,
+				ORANGE: desmosOrange3d,
+				BLACK: desmosBlack,
+			} : {
+				PURPLE: desmosPurple,
+				BLUE: desmosBlue,
+				RED: desmosRed,
+				ORANGE: desmosOrange,
+				BLACK: desmosBlack,
+			},
 
 			...(data[element.id].options ?? {})
 		};

@@ -205,7 +205,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 		y &= \pm \sqrt{-\frac{x}{3}},
 	$$
-	
+
 	and the positive and negative versions of those form the bounds, resulting in the integral
 
 	$$
@@ -249,6 +249,32 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 	$$
 
 ###
+
+
+
+## Polar Regions
+
+There's one more way we slice up a region $R$ in order to make integrating over it an easier task: rather than integrating either $\d y\,\d x$ or $\d x\,\d y$, we can use different variables entirely; specifically, polar coordinates.
+
+As a brief refresher, when we label a point $(x, y)$ in the plane, we mean that to reach it, we move $x$ units horizontally from the origin, and then $y$ units vertically, which results in labeling every point uniquely. That system is called **Cartesian** coordinates, but we could just as well label points with any number of different ordered pairs that give instructions on how to reach them. The most common system other than Cartesian is called **polar coordinates**, and works by labeling points $(r, \theta)$, where $r$ is the point's distance from the origin and $\theta$ is its angle in radians counterclockwise from the positive $x$-axis.
+
+### desmos polarCoordinates
+
+The graph paper alone probably does more work than the movable point here!
+
+To convert between Cartesian and polar coordinates, we can use trigonometry:
+
+$$
+	x &= r \cos(\theta) &\qquad r &= \sqrt{x^2 + y^2}
+
+	y &= r \sin(\theta) &\qquad \tan(\theta) &= \frac{y}{x}
+$$
+
+The formula for $\theta$ is just slightly awkward to write in a form where $\theta$ is completely isolated, since the $\arctan$ function will only output values in $\left( -\frac{\pi}{2}, \frac{\pi}{2} \right)$, but in any case where we need to find $\theta$ from $x$ and $y$, it will do with only a very light addition of contextual understanding.
+
+Our primary use for polar coordinates, though, is to draw regions with them and slice them up so that we can integrate functions on those regions. Just like with Cartesian coordinates, we'll start with rectangles.
+
+### desmos polarRectangle
 
 
 

@@ -350,6 +350,112 @@ export default function()
 					{ latex: raw`y = y_0 \left\{ a(y_0) \leq x \leq b(y_0) \right\}`, color: desmosPurple, secret: true },
 					{ latex: raw`y = y_0 \left\{ b(y_0) \leq x \leq a(y_0) \right\}`, color: desmosPurple, secret: true },
 				]
+			},
+
+			polarCoordinates:
+			{
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+				options: {
+					polarMode: true,
+				},
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`r_0 = 2`,
+						min: 0,
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`\theta_0 = 1`,
+						min: 0,
+						max: "2\\pi",
+						secret: false,
+					}),
+
+					{ latex: raw`(0, 0), (r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosBlue, points: false, lines: true, secret:true },
+
+					{ latex: raw`r = 0.25 \{ 0 \leq \theta \leq \theta_0 \}`, color: desmosBlue, secret: true },
+
+					{ latex: raw`(r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosPurple, dragMode: "NONE" },
+				]
+			},
+
+			polarRectangle:
+			{
+				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+				options: {
+					polarMode: true,
+				},
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`m = 3`,
+						min: 1,
+						max: 15,
+						step: 1,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`n = 4`,
+						min: 1,
+						max: 15,
+						step: 1,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`a = 1`,
+						min: 0,
+						max: "2\\pi",
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`b = 2.5`,
+						min: "a",
+						max: "2\\pi",
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`c = 1`,
+						min: 0,
+						max: 5,
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`d = 3`,
+						min: "c",
+						max: 5,
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`\theta_0 = 1.5`,
+						min: "a",
+						max: "b",
+						secret: false,
+					}),
+
+					{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
+
+					{ latex: raw`\sqrt{x^2 + y^2} < d \{ a \leq T(x, y) \leq b \} \{ c < \sqrt{x^2 + y^2} \}`, color: desmosBlack, fillOpacity: 0.15, secret: true },
+
+					{ latex: raw`[a, b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+
+					{ latex: raw`\sqrt{x^2+y^2} = [c, d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+
+					{ latex: raw`\theta_0 = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+
+					{ latex: raw`[a, a + \frac{b - a}{m}, ..., b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+
+					{ latex: raw`\sqrt{x^2+y^2} = [c, + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				]
 			}
 		};
 
