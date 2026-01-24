@@ -196,7 +196,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 	As it currently stands, this is a little bit of a mess. The region bounded by the two functions is the egg-shaped region in the center, and we need to figure out how to slice it in order to integrate over it.
 
-	Let's be clear: we absolutely have a choice in the matter! We could integrate $\d y\,\d x$ or $\d x\,\d y$, but in many cases, one will be much more convenient than the other. If we integrated $\d y\,\d x$, then we'd be slicing this region *vertically*: the outside $\d x$ integral would select a specific $x$-value, and then the inside $\d y$ integral would find that slice's area over an interval of $y$-values. Integrating in this way would have some issues, though. While it's somewhat clear from the graph that $x$ would have to range across the interval $[-4, 0]$, the bounds on the inside $\d y$ integral depend on the functions --- **of $\mathbf{x}$** --- that bound that vertical slice.
+	Let's be clear: we absolutely have a choice in the matter! We could integrate $\d y\,\d x$ or $\d x\,\d y$, and both will get us to the correct answer, but in many cases, one will be much more convenient than the other. If we integrated $\d y\,\d x$, then we'd be slicing this region *vertically*: the outside $\d x$ integral would select a specific $x$-value, and then the inside $\d y$ integral would find that slice's area over an interval of $y$-values. Integrating in this way would have some issues, though. While it's somewhat clear from the graph that $x$ would have to range across the interval $[-4, 0]$, the bounds on the inside $\d y$ integral depend on the functions --- **of $\mathbf{x}$** --- that bound that vertical slice.
 
 	Now, those aren't very nice bounds. For one, they switch partway through, seemingly at $x = -3$, and so we'd have no choice but to split up the integral into two. Also, the bounds themselves are gross: solving for $y$ gives
 
@@ -205,7 +205,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 		y &= \pm \sqrt{-\frac{x}{3}},
 	$$
-
+	
 	and the positive and negative versions of those form the bounds, resulting in the integral
 
 	$$
@@ -214,7 +214,39 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 	Those bounds end up directly inside the outer integral, so we'd have to integrate them $\d x$, something we're probably not very excited to do.
 
-	In contrast to all of this, integrating $\d x\,\d y$ is a broadly pleasant time. First, the functions are simpler to integrate when $x$ is a function of $y$ than the other way around: $y^4 - 4$ is much nicer than $\sqrt[4]{x+4}$. Second, the 
+	In contrast to all of this, integrating $\d x\,\d y$ is a broadly pleasant time. First, the functions are simpler to integrate when $x$ is a function of $y$ than the other way around: $y^4 - 4$ is much nicer than $\sqrt[4]{x+4}$. Second, the region can be handled in a single integral, so we can do a little less computation. In general, the first of these criteria will take priority over the second, since having bounds that are expressed in a gross manner can result in an integral that is impossible to compute. Some regions just can't be integrated in a particular direction at all if we can't isolate that variable!
+
+	With all of this discussion behind us, let's now actually discuss how to take this integral $\d x\,\d y$. First of all, we were able to read off the intersection points from the graph, but we really ought to find those ourselves, in case the graph was imprecise and to practice not having a graph around. We set the two curves equal to find
+
+	$$
+		y^4 + 4 &= -3y^2
+
+		\left( y^2 \right)^2 + 3y^2 + 4 &= 0
+
+		\left( y^2 + 4 \right) \left( y^2 - 1 \right) &= 0
+
+		y^2 = -4 \qquad y^2 &= 1
+
+		y &= \pm 1
+	$$
+
+	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, sue to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the blue horizontal lines?
+
+	Well, they're there, but when we take our bounds to be the points of intersection, they conveniently have length zero. Set $c = -1$ and $d = 1$ in the Desmos graph to see!
+
+	Our integral is now
+
+	$$
+		\int_{-1}^1 \int_{y^4 - 4}^{-3y^2} \left( x + y^2 \right)\,\d x\,\d y &= \int_{-1}^1 \left. \left[ \frac{1}{2}x^2 + xy^2 \right] \right|_{y^4 - 4}^{-3y^2} \,\d y
+
+		&= \int_{-1}^1 \left( \frac{1}{2}\left( -3y^2 \right)^2 + \left( -3y^2 \right)y^2 - \frac{1}{2}\left( y^4 - 4 \right)^2 - \left( y^4 - 4 \right)y^2 \right)\,\d y
+
+		&= \int_{-1}^1 \left( -8 + 4 y^2 + \frac{11}{2} y^4 - y^6 - \frac{1}{8}y^8 \right)\,\d y
+
+		&= \left. \left[ -8 y + \frac{4}{3} y^3 + \frac{11}{10}y^5 - \frac{1}{7}y^7 - \frac{1}{72}y^9 \right] \right|_{-1}^1
+
+		&= -\frac{14423}{1260}.
+	$$
 
 ###
 
