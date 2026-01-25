@@ -92,8 +92,8 @@ export async function createDesmosGraphs(recreating = false)
 			expression.latex = expression.latex.replace(/\[/g, raw`\left[`);
 			expression.latex = expression.latex.replace(/\]/g, raw`\right]`);
 
-			expression.latex = expression.latex.replace(/[^\\left]\\\{/g, raw`\left\{`);
-			expression.latex = expression.latex.replace(/[^\\right]\\\}/g, raw`\right\}`);
+			expression.latex = expression.latex.replace(/([^\\left])\\\{/g, (match, $1) => raw`${$1}\left\{`);
+			expression.latex = expression.latex.replace(/([^\\right])\\\}/g, (match, $1) => raw`${$1}\right\}`);
 
 			if (replaceLineWidth)
 			{

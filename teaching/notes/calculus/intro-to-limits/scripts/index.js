@@ -145,7 +145,7 @@ export default function()
 
 				expressions:
 				[
-					{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: true, hidden: true },
+					{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: false, hidden: true },
 					{ latex: raw`f(x)`, color: desmosPurple },
 					{ latex: raw`(-3, -1)`, color: desmosPurple, secret: true },
 					{ latex: raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: "OPEN", secret: true },

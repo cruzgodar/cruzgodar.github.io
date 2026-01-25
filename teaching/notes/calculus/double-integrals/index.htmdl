@@ -256,7 +256,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 There's one more way we slice up a region $R$ in order to make integrating over it an easier task: rather than integrating either $\d y\,\d x$ or $\d x\,\d y$, we can use different variables entirely; specifically, polar coordinates.
 
-As a brief refresher, when we label a point $(x, y)$ in the plane, we mean that to reach it, we move $x$ units horizontally from the origin, and then $y$ units vertically, which results in labeling every point uniquely. That system is called **Cartesian** coordinates, but we could just as well label points with any number of different ordered pairs that give instructions on how to reach them. The most common system other than Cartesian is called **polar coordinates**, and works by labeling points $(r, \theta)$, where $r$ is the point's distance from the origin and $\theta$ is its angle in radians counterclockwise from the positive $x$-axis.
+As a brief refresher, when we label a point $(x, y)$ in the plane, we mean that to reach it, we move $x$ units horizontally from the origin, and then $y$ units vertically, which results in labeling every point uniquely. That system is called **Cartesian** coordinates, but we could just as well as label points with any number of different ordered pairs that give instructions on how to reach them. The most common system other than Cartesian is called **polar coordinates**, and works by labeling points $(r, \theta)$, where $r$ is the point's distance from the origin and $\theta$ is its angle in radians counterclockwise from the positive $x$-axis.
 
 ### desmos polarCoordinates
 
@@ -278,7 +278,21 @@ Our primary use for polar coordinates, though, is to draw regions with them and 
 
 Here, we can see a so-called **polar rectangle** --- and before you object to the name, have a look at all four of its angles --- and a slice taken by holding $\theta$ fixed and varying $r$. Increase $m$ and $n$ to see the result of slicing up the region into many tiny polar rectangles. But here we need to pause, because there's a problem that we didn't have to deal with when we were slicing up Cartesian rectangles: those little chunks don't have constant area! We can see that changing $\theta$ leaves the area constant, but the farther we are away from the origin, the larger the area of each little rectangle, even though each one has the same total change in $r$ and $\theta$.
 
-While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those red circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its red side length times its blue side length. The blue side length is just $\Delta r$, but the red side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the red side length 
+While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those red circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its red side length times its blue side length. The blue side length is just $\Delta r$, but the red side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the red side length is $r_0\Delta \theta$, and so the entire rectangle's area is *approximately* $r_0 \Delta r \Delta \theta$. That approximation gets better and better as $\Delta \theta \to 0$, though, and so to integrate a function of $r$ and $\theta$ over a polar region $R$, we find the following result:
+
+### thm "double integrals in polar coordinates"
+ 
+ 	Let $f(r, \theta)$ be a function of the polar coordinates $r$ and $\theta$ for $#R#^2$, and let $R$ be the polar rectangle with $a \leq \theta \leq b$ and $c \leq r \leq d$. Then
+
+	$$
+		\iint_R f(r, \theta)\,\d A = \int_a^b \!\!\! \int_c^d f(r, \theta)\,r\,\d r\,\d \theta.
+	$$
+
+###
+
+That factor of $r$ definitely looks out of place --- as if we're modifying the function $f$ that we're integrating --- but it really belongs with the $\d r\,\d \theta$. In fact, it's something of a crime that we have to write it $r\,\d r\,\d \theta$ and not $\d r\,(r\,\d \theta)$, which more closely represents how the area is actually computed. But we need the $r$ to be inside the $\d r$ integral, since it's changing over the course of that integral.
+
+In general, we'll prefer using polar coordinates whenever the regions we're integrating over are polar rectangles or something similar.
 
 
 
