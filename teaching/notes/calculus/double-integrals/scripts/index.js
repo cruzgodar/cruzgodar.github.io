@@ -456,6 +456,48 @@ export default function()
 
 					{ latex: raw`\sqrt{x^2+y^2} = [c, c + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
 				]
+			},
+
+			polarRegion:
+			{
+				bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2 },
+
+				options: {
+					polarMode: true,
+				},
+
+				expressions:
+				[
+					...getDesmosSlider({
+						expression: raw`a = 0`,
+						min: 0,
+						max: "2\\pi",
+						secret: false,
+					}),
+					...getDesmosSlider({
+						expression: raw`b = 1.57`,
+						min: "a",
+						max: "\\frac{\\pi}{2}",
+						secret: false,
+					}),
+
+					...getDesmosSlider({
+						expression: raw`\theta_0 = 0.5`,
+						min: "a",
+						max: "b",
+						secret: false,
+					}),
+
+					{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
+
+					{ latex: raw`\sqrt{x^2 + y^2} < 2\sin(2T(x, y)) \{ a \leq T(x, y) \leq b \} \{ 1 < \sqrt{x^2 + y^2} \}`, color: desmosBlack, fillOpacity: 0.15, secret: true },
+
+					{ latex: raw`[a, b] = T(x, y) \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+
+					{ latex: raw`\sqrt{x^2+y^2} = [1, 2\sin(2T(x, y))] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+
+					{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				]
 			}
 		};
 
