@@ -152,13 +152,15 @@ Here we can really see what the level curves are doing --- although the closenes
 
 ### exc "level curves and traces"
 
-	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of graph with the planes $x = 0$ and $y = 0$. (Intersections with constant-$x$ and -$y$ planes are called **traces**.) Use this information to sketch a rough 3D graph.
+	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of graph with the planes $x = 0$ and $y = 0$. Use this information to sketch a rough 3D graph.
 
 	### solution
 
 	### desmos hyperboloid
 
 ###
+
+As a note, these intersections with constant-$x$ and -$y$ planes are called **traces**. The information they provide is just as useful for sketching surfaces in $#R#^3$, but we don't often draw a collection of them together like we do for level curves --- that's because if $z = f(x, y)$ is a function, then plotting $f(x, y) = c$ produces a curve that generally doesn't cross other nearby level curves, but traces can and do intersect each other often, so a plot of a number of them together isn't so useful.
 
 Level curves are a useful tool for visualizing a surface in $#R#^3$, but they aren't strictly necessary if we have access to nice 3D graphing. If we extend the notion to a function of three variables, though, convenience is replaced with necessity, because we can't visualize the graph of $w = f(x, y, z)$ in $#R#^4$ at all! The best we can do is take intersections with the space $w = c$ and plot the resulting surfaces in $#R#^3$. We call these **level surfaces**, fittingly enough, and they can be useful to understand the structure of a function of three variables. It's important to remember that they aren't actually the graph of that function, though. The graph of a function $f(x, y, z)$ is as far removed from its level surfaces as the graph of $g(x, y)$ is from its level curves.
 
