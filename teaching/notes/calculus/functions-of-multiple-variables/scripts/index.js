@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosBlue3d,
+	desmosOrange3d,
 	desmosPurple,
 	desmosPurple3d,
 	desmosRed3d,
@@ -95,6 +96,25 @@ export default function()
 					{ latex: raw`c = [ 0, 1, ..., 10 ]`, },
 
 					{ latex: raw`(0, 0, 0)`, color: desmosBlue3d, secret: true },
+				]
+			},
+
+			hyperboloid:
+			{
+				use3d: true,
+
+				bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+				expressions:
+				[
+					{ latex: raw`x^2 + y^2 - z^2 = 1`, color: desmosPurple3d },
+
+					{ latex: raw`x^2 + y^2 - c^2 = 1 \left\{ z = c \right\}`, color: desmosBlue3d },
+					
+					{ latex: raw`0^2 + y^2 - z^2 = 1 \left\{ x = 0 \right\}`, color: desmosRed3d },
+					{ latex: raw`x^2 + 0^2 - z^2 = 1 \left\{ y = 0 \right\}`, color: desmosOrange3d },
+
+					{ latex: raw`c = [ -2, -1, ..., 2 ]`, },
 				]
 			},
 

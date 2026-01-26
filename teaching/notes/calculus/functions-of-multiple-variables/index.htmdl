@@ -150,6 +150,16 @@ Let's take a look at the function $z = x^2 + y^2$. To find its level curves, we 
 
 Here we can really see what the level curves are doing --- although the closeness of the outer circles might make it seem like the height is leveling off, it's actually indicating that that's as steep as it gets. The 3D view lets us check that this is correct --- try <span class="click-tap"><span>clicking</span><span>tapping</span></span> the 2D graph paper icon in the top right --- but it's valuable to be able to intuit facts about a graph from the level curves alone. For example, we can see that the graph is circular when sliced in this manner, and that it's steepest far away from the origin.
 
+### exc "level curves and traces"
+
+	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of graph with the planes $x = 0$ and $y = 0$. (Intersections with constant-$x$ and -$y$ planes are called **traces**.) Use this information to sketch a rough 3D graph.
+
+	### solution
+
+	### desmos hyperboloid
+
+###
+
 Level curves are a useful tool for visualizing a surface in $#R#^3$, but they aren't strictly necessary if we have access to nice 3D graphing. If we extend the notion to a function of three variables, though, convenience is replaced with necessity, because we can't visualize the graph of $w = f(x, y, z)$ in $#R#^4$ at all! The best we can do is take intersections with the space $w = c$ and plot the resulting surfaces in $#R#^3$. We call these **level surfaces**, fittingly enough, and they can be useful to understand the structure of a function of three variables. It's important to remember that they aren't actually the graph of that function, though. The graph of a function $f(x, y, z)$ is as far removed from its level surfaces as the graph of $g(x, y)$ is from its level curves.
 
 ### ex "level surfaces"
