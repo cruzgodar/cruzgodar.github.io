@@ -693,7 +693,9 @@ export const sitemap =
 			"/teaching/notes/linear-algebra",
 			"/teaching/notes/differential-equations",
 			"/teaching/notes/trig",
+			"/teaching/yale/1200",
 			"/teaching/yale/1180",
+			"/teaching/yale/1110",
 			"/teaching/uo/342",
 			"/teaching/uo/341",
 			"/teaching/uo/256",
@@ -767,7 +769,8 @@ export const sitemap =
 			"/teaching/notes/calculus/multivariable-optimization",
 			"/teaching/notes/calculus/boundary-optimization",
 			"/teaching/notes/calculus/lagrange-multipliers",
-			"/teaching/notes/calculus/double-integrals"
+			"/teaching/notes/calculus/double-integrals",
+			"/teaching/notes/calculus/vector-fields"
 		]
 	},
 		
@@ -1348,6 +1351,17 @@ export const sitemap =
 		"customScript": true
 	},
 	
+	"/teaching/notes/calculus/vector-fields":
+	{
+		"title": "Section 6.1: Vector Fields",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/teaching/notes/linear-algebra":
 	{
 		"title": "Linear Algebra",
@@ -1859,6 +1873,15 @@ export const sitemap =
 		"customScript": true
 	},
 	
+	"/teaching/yale/1200":
+	{
+		"title": "Math 1200",
+		
+		"parent": "/teaching",
+		
+		"children": []
+	},
+	
 	"/teaching/yale/1180":
 	{
 		"title": "Math 1180",
@@ -2048,6 +2071,15 @@ export const sitemap =
 		"children": [],
 
 		"customScript": true
+	},
+	
+	"/teaching/yale/1110":
+	{
+		"title": "Math 1110",
+		
+		"parent": "/teaching",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/342":

@@ -663,6 +663,12 @@
 	</url>
 		
 	<url>
+		<loc>https://www.cruzgodar.com/teaching/notes/calculus/vector-fields</loc>
+		<lastmod>2026-1-27</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
 		<loc>https://www.cruzgodar.com/teaching/notes/linear-algebra</loc>
 		<lastmod>2026-1-27</lastmod>
 		<priority>0.5</priority>
@@ -933,6 +939,12 @@
 	</url>
 		
 	<url>
+		<loc>https://www.cruzgodar.com/teaching/yale/1200</loc>
+		<lastmod>2026-1-27</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
 		<loc>https://www.cruzgodar.com/teaching/yale/1180</loc>
 		<lastmod>2026-1-27</lastmod>
 		<priority>0.5</priority>
@@ -1024,6 +1036,12 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/yale/1180/notes/the-determinant</loc>
+		<lastmod>2026-1-27</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/yale/1110</loc>
 		<lastmod>2026-1-27</lastmod>
 		<priority>0.5</priority>
 	</url>

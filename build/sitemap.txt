@@ -114,6 +114,8 @@ home Cruz Godar
 			boundary-optimization Section 5.9: Boundary Optimization
 			lagrange-multipliers Section 5.10: Lagrange Multipliers
 			double-integrals Section 5.11: Double Integrals
+
+			vector-fields Section 6.1: Vector Fields
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices
@@ -163,6 +165,8 @@ home Cruz Godar
 			radians-and-equations Section 6: Radians and Equations
 			non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
 			vectors Section 8: Intro to Vectors
+		
+		yale/1200 Math 1200
 
 		yale/1180 Math 1180
 			notes/calc-1-review Section 0: Calculus I Review
@@ -180,6 +184,8 @@ home Cruz Godar
 			notes/bases Section 12: Linear Independence and Bases
 			notes/linear-transformations Section 13: Linear Transformations
 			notes/the-determinant Section 14: The Determinant
+
+		yale/1110 Math 1110
 		
 		uo/342 Math 342
 		uo/341 Math 341

@@ -66,6 +66,7 @@ teaching/notes/calculus/multivariable-optimization
 teaching/notes/calculus/boundary-optimization
 teaching/notes/calculus/lagrange-multipliers
 teaching/notes/calculus/double-integrals
+teaching/notes/calculus/vector-fields
 
 teaching/notes/differential-equations/calc-review
 teaching/notes/differential-equations/intro-to-des
@@ -112,6 +113,8 @@ teaching/notes/trig/radians-and-equations
 teaching/notes/trig/non-right-triangles-and-identities
 teaching/notes/trig/vectors
 
+teaching/yale/1200
+
 teaching/yale/1180/notes/calc-1-review
 teaching/yale/1180/notes/coordinate-systems
 teaching/yale/1180/notes/dot-and-cross-products
@@ -127,6 +130,8 @@ teaching/yale/1180/notes/row-reduction
 teaching/yale/1180/notes/bases
 teaching/yale/1180/notes/linear-transformations
 teaching/yale/1180/notes/the-determinant
+
+teaching/yale/1110
 
 teaching/uo/*
 
