@@ -124,7 +124,7 @@ This map of Cone Peak in the Big Sur wilderness in California conveys the incred
 
 	1. Using the topo map, what do you think the area around the blue river looks like near the summit? What about the area around the river near the bottom of the map?
 
-	2. Pick any point on the map. Which direction do you need to travel so that your path is as steep as possible? How do you know?
+	2. Pick any point on the map. In which direction do you need to travel to make your path as steep as possible? How do you know?
 
 	### solution
 
@@ -152,7 +152,7 @@ Here we can really see what the level curves are doing --- although the closenes
 
 ### exc "level curves and traces"
 
-	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of graph with the planes $x = 0$ and $y = 0$. Use this information to sketch a rough 3D graph.
+	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of the graph with the planes $x = 0$ and $y = 0$. Use this information to sketch a rough 3D graph.
 
 	### solution
 
