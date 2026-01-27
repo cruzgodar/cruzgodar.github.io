@@ -116,7 +116,7 @@ Let's close with one more example that recalls a bit about implicit differentiat
 		2xy + x\sin(z) + \cos(yz) = 1.
 	$$
 
-	Find $\frac{\partial z}{\partial x}$.
+	Find $$\frac{\partial z}{\partial x}$$.
 
 	As with a single-variable function, we can differentiate the entire equation with respect to $x$, treating $z$ as a function of $x$ and $y$ appropriately.
 

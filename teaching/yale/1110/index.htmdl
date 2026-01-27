@@ -3,15 +3,7 @@ Welcome to Math 1110! While the majority of our resources are on the umbrella an
 ## Interactive Notes
 
 ### image-links
-	notes/coordinate-systems
-	notes/dot-and-cross-products
-	notes/vector-valued-functions
-	notes/functions-of-multiple-variables
-	notes/partial-derivatives
-	notes/the-multivariable-chain-rule
-	notes/the-gradient
-	notes/multivariable-optimization
-	notes/boundary-optimization
-	notes/lagrange-multipliers
-	notes/double-integrals
+	/teaching/notes/calculus/the-chain-rule
+	/teaching/notes/calculus/implicit-differentiation
+	/teaching/notes/calculus/related-rates
 ###

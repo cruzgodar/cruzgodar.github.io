@@ -3,15 +3,15 @@ Welcome to Math 1200! While the majority of our resources are on the umbrella an
 ## Interactive Notes
 
 ### image-links
-	notes/coordinate-systems
-	notes/dot-and-cross-products
-	notes/vector-valued-functions
-	notes/functions-of-multiple-variables
-	notes/partial-derivatives
-	notes/the-multivariable-chain-rule
-	notes/the-gradient
-	notes/multivariable-optimization
-	notes/boundary-optimization
-	notes/lagrange-multipliers
-	notes/double-integrals
+	/teaching/notes/calculus/coordinate-systems
+	/teaching/notes/calculus/dot-and-cross-products
+	/teaching/notes/calculus/vector-valued-functions
+	/teaching/notes/calculus/functions-of-multiple-variables
+	/teaching/notes/calculus/partial-derivatives
+	/teaching/notes/calculus/the-multivariable-chain-rule
+	/teaching/notes/calculus/the-gradient
+	/teaching/notes/calculus/multivariable-optimization
+	/teaching/notes/calculus/boundary-optimization
+	/teaching/notes/calculus/lagrange-multipliers
+	/teaching/notes/calculus/double-integrals
 ###
