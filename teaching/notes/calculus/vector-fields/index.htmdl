@@ -2,6 +2,8 @@
 
 
 
+We began part 5 by expanding geometry and calculus to functions that mapped $#R# \to #R#^n$: that is, functions that took in a single number and outputted multiple. In the second half of part 5, we looked instead to function with a single output variable and multiple inputs: functions that mapped $#R#^n \to #R#$. While both required us to venture out of the assumptions that single-variable calculus makes implicitly and explicitly, both halves were reminiscent of single-variable calculus in their own way. In this final part, though, we'll be exploring functions that both take in *and* give out multiple numbers --- functions $#R#^m \to #R#^n$ --- and we'll find that this is a new and rather alien world. We'll see symbols we recognize and make use of calculus techniques we understand, and at times we'll crest hills and make remarkable connections that recontextualize things we learned long ago, but much of this journey will be into properly unexplored territory for us.
+
 
 
 
