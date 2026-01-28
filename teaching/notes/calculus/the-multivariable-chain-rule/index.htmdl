@@ -132,4 +132,39 @@ Let's close with one more example that recalls a bit about implicit differentiat
 
 ###
 
+### exc "implicit differentiation"
+
+	Let $z$ be defined implicitly as a function of $x$ and $y$ by
+
+	$$
+		x^y + \tan(x + y + z) = y.
+	$$
+
+	Find $$\frac{\partial z}{\partial y}$$ and $$\frac{\partial x}{\partial z}$$.
+
+	### solution
+
+	We have
+
+	$$
+		\frac{\partial}{\partial y}\left[ x^y + \tan(x + y + z) \right] &= \frac{\partial}{\partial y}\left[ y \right]
+
+		x^y\ln(y) + \sec^2(x + y + z)\left( 1 + \frac{\partial z}{\partial y} \right) &= 1
+
+		\frac{\partial z}{\partial y} &= \frac{1 - x^y\ln(y)}{\sec^2(x + y + z)} - 1.
+
+	$$
+
+	The next one is more subtle. We need to treat $x$, not $z$, as an implicit function of $y$ and $z$, so have
+		
+	$$
+		\frac{\partial}{\partial z}\left[ x^y + \tan(x + y + z) \right] &= \frac{\partial}{\partial z}\left[ y \right]
+
+		yx^{y - 1}\frac{\partial x}{\partial z} + \sec^2(x + y + z)\left( \frac{\partial x}{\partial z} + 1 \right) &= 0
+
+		\frac{\partial x}{\partial z} &= -\frac{\sec^2(x + y + z)}{yx^{y - 1} + \sec^2(x + y + z)}.
+	$$
+
+###
+
 ### nav-buttons

@@ -2159,9 +2159,7 @@ export const sitemap =
 		
 		"parent": "/teaching",
 		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/math":
