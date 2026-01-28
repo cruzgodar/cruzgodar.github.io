@@ -72,26 +72,7 @@ async function buildSite()
 
 	const files = proc.stdout.toString().split("\n");
 
-	const directories = Array.from(new Set(
-		files.map(file => {
-			if (file.indexOf("/") === -1)
-			{
-				return "";
-			}
-
-			return file.slice(0, file.lastIndexOf("/"));
-		})
-	));
-
-	const expandedFiles = directories.map(directory =>
-		spawnSync("ls", [
-			"-p",
-		], {
-			cwd: root + directory
-		}).stdout.toString().split("\n").map(file => `${directory}/${file}`)
-	).flat();
-
-	await parseModifiedFiles(expandedFiles);
+	await parseModifiedFiles(files);
 	
 	await buildXmlSitemap();
 
