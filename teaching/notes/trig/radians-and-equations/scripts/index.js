@@ -1,11 +1,10 @@
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    getDesmosSlider,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosPurple,
+	getDesmosSlider,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -24,21 +23,21 @@ export default function()
 					{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 
 					{ latex: raw`a = [0, 1, 2, 3, 4, 5, 6]`, color: desmosPurple, points: true, secret: false },
-					{ latex: raw`(0, 0), (\cos(0), \sin(0))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(1), \sin(1))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(2), \sin(2))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(3), \sin(3))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(4), \sin(4))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(5), \sin(5))`, color: desmosPurple, points: false, lines: true, secret: true },
-					{ latex: raw`(0, 0), (\cos(6), \sin(6))`, color: desmosPurple, points: false, lines: true, secret: true },
+					{ latex: raw`1.05(\cos(0), \sin(0))`, color: desmosPurple, hidden: true, secret: true, label: "0", showLabel: true },
+					{ latex: raw`1.05(\cos(1), \sin(1))`, color: desmosPurple, hidden: true, secret: true, label: "1", showLabel: true },
+					{ latex: raw`1.05(\cos(2), \sin(2))`, color: desmosPurple, hidden: true, secret: true, label: "2", showLabel: true },
+					{ latex: raw`1.05(\cos(3), \sin(3))`, color: desmosPurple, hidden: true, secret: true, label: "3", showLabel: true },
+					{ latex: raw`1.05(\cos(4), \sin(4))`, color: desmosPurple, hidden: true, secret: true, label: "4", showLabel: true },
+					{ latex: raw`1.05(\cos(5), \sin(5))`, color: desmosPurple, hidden: true, secret: true, label: "5", showLabel: true },
+					{ latex: raw`1.05(\cos(6), \sin(6))`, color: desmosPurple, hidden: true, secret: true, label: "6", showLabel: true },
 
-					{ latex: raw`r \leq 1 \left\{ 0 \leq \theta \leq 1 \right\}`, color: desmosPurple,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 1 \leq \theta \leq 2 \right\}`, color: desmosBlue,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 2 \leq \theta \leq 3 \right\}`, color: desmosPurple,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 3 \leq \theta \leq 4 \right\}`, color: desmosBlue,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 4 \leq \theta \leq 5 \right\}`, color: desmosPurple,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 5 \leq \theta \leq 6 \right\}`, color: desmosBlue,  secret: true },
-					{ latex: raw`r \leq 1 \left\{ 6 \leq \theta \leq 2\pi \right\}`, color: desmosRed,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 0 \leq \theta \leq 1 \right\}`, color: desmosPurple,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 1 \leq \theta \leq 2 \right\}`, color: desmosBlue,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 2 \leq \theta \leq 3 \right\}`, color: desmosPurple,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 3 \leq \theta \leq 4 \right\}`, color: desmosBlue,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 4 \leq \theta \leq 5 \right\}`, color: desmosPurple,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 5 \leq \theta \leq 6 \right\}`, color: desmosBlue,  secret: true },
+					// { latex: raw`r \leq 1 \left\{ 6 \leq \theta \leq 2\pi \right\}`, color: desmosRed,  secret: true },
 
 					{ latex: raw`(\cos(a), \sin(a))`, color: desmosPurple, points: true, secret: false },
 				]

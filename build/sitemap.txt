@@ -158,13 +158,12 @@ home Cruz Godar
 
 		notes/trig Trigonometry
 			transformations Section 1: Transformations
-			periodic-functions Section 2: Periodic Functions
-			the-unit-circle Section 3: The Unit Circle
-			sine-and-cosine Section 4: Sine and Cosine
-			tangent-and-inverses Section 5: The Tangent Function and Inverses
-			radians-and-equations Section 6: Radians and Equations
-			non-right-triangles-and-identities Section 7: Non-Right Triangles and Identities
-			vectors Section 8: Intro to Vectors
+			the-unit-circle Section 2: The Unit Circle
+			sine-and-cosine Section 3: Sine and Cosine
+			tangent-and-inverses Section 4: The Tangent Function and Inverses
+			radians-and-equations Section 5: Radians and Equations
+			non-right-triangles-and-identities Section 6: Non-Right Triangles and Identities
+			vectors Section 7: Intro to Vectors
 		
 		yale/1200 Math 1200
 

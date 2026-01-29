@@ -1775,7 +1775,6 @@ export const sitemap =
 		"children":
 		[
 			"/teaching/notes/trig/transformations",
-			"/teaching/notes/trig/periodic-functions",
 			"/teaching/notes/trig/the-unit-circle",
 			"/teaching/notes/trig/sine-and-cosine",
 			"/teaching/notes/trig/tangent-and-inverses",
@@ -1796,20 +1795,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/trig/periodic-functions":
-	{
-		"title": "Section 2: Periodic Functions",
-		
-		"parent": "/teaching/notes/trig",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
 	"/teaching/notes/trig/the-unit-circle":
 	{
-		"title": "Section 3: The Unit Circle",
+		"title": "Section 2: The Unit Circle",
 		
 		"parent": "/teaching/notes/trig",
 		
@@ -1820,7 +1808,7 @@ export const sitemap =
 	
 	"/teaching/notes/trig/sine-and-cosine":
 	{
-		"title": "Section 4: Sine and Cosine",
+		"title": "Section 3: Sine and Cosine",
 		
 		"parent": "/teaching/notes/trig",
 		
@@ -1831,7 +1819,7 @@ export const sitemap =
 	
 	"/teaching/notes/trig/tangent-and-inverses":
 	{
-		"title": "Section 5: The Tangent Function and Inverses",
+		"title": "Section 4: The Tangent Function and Inverses",
 		
 		"parent": "/teaching/notes/trig",
 		
@@ -1842,7 +1830,7 @@ export const sitemap =
 	
 	"/teaching/notes/trig/radians-and-equations":
 	{
-		"title": "Section 6: Radians and Equations",
+		"title": "Section 5: Radians and Equations",
 		
 		"parent": "/teaching/notes/trig",
 		
@@ -1853,7 +1841,7 @@ export const sitemap =
 	
 	"/teaching/notes/trig/non-right-triangles-and-identities":
 	{
-		"title": "Section 7: Non-Right Triangles and Identities",
+		"title": "Section 6: Non-Right Triangles and Identities",
 		
 		"parent": "/teaching/notes/trig",
 		
@@ -1864,7 +1852,7 @@ export const sitemap =
 	
 	"/teaching/notes/trig/vectors":
 	{
-		"title": "Section 8: Intro to Vectors",
+		"title": "Section 7: Intro to Vectors",
 		
 		"parent": "/teaching/notes/trig",
 		
