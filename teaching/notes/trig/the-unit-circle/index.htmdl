@@ -162,9 +162,9 @@ We'll have much, much more to say about the unit circle in the next section, but
 
 ### exc "the unit circle"
 
-	1. Is $(1, 1)$ on the unit circle? What about $\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$?
+	1. Is $(1, 1)$ on the unit circle? What about $$\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$$?
 
-	2. How many points on the unit circle have $y$-coordinate $\frac{1}{5}$? How about $y$-coordinate $-1$, or $1.5$?
+	2. How many points on the unit circle have $y$-coordinate $$\frac{1}{5}$$? How about $y$-coordinate $-1$? $1.5$?
 
 	3. For each point on the unit circle you found in the previous question, find its $x$-coordinate.
 
@@ -186,7 +186,7 @@ That's a lot to digest! Let's begin by focusing on how points' angles are measur
 
 	2. What are $\cos(0^\circ)$ and $\sin(0^\circ)$? What about $\cos(90^\circ)$, $\cos(180^\circ)$, and $\sin(270^\circ)$?
 
-	3. Suppose a point on the unit circle with angle $\theta$ has $\sin(\theta) = \frac{\sqrt{24}}{5}$. What could $\cos(\theta)$ be?
+	3. Suppose a point on the unit circle with angle $\theta$ has $$\sin(\theta) = \frac{\sqrt{24}}{5}$$. What could $\cos(\theta)$ be?
 
 ###
 
