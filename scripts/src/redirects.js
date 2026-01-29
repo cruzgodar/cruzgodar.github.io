@@ -6,6 +6,7 @@ export const redirects = {
 	// Renamed teaching pages post-extraction
 	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/parts-1-and-2-review",
 	"/teaching/notes/calculus/calc-2-review": "/teaching/notes/calculus/part-3-review",
+	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/the-unit-circle",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
