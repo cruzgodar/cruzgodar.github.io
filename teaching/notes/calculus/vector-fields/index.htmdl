@@ -2,11 +2,19 @@
 
 
 
-We began part 5 by expanding geometry and calculus to functions that mapped $#R# \to #R#^n$: that is, functions that took in a single number and outputted multiple. In the second half of part 5, we looked instead to functions with a single output variable and multiple inputs: those that mapped $#R#^n \to #R#$. While both required us to venture out of the assumptions that single-variable calculus makes implicitly and explicitly, both halves were reminiscent of it in their own way. In this final part, though, we'll be exploring functions that both take in *and* give out multiple numbers --- functions $#R#^m \to #R#^n$ --- and we'll find that this is a new and rather alien world. We'll see symbols we recognize and make use of calculus techniques we understand, and at times we'll crest hills and make remarkable connections that recontextualize things we learned long ago, but much of this journey will be into properly unexplored territory for us.
+We began part 5 by expanding geometry and calculus to functions that mapped $#R# \to #R#^n$: that is, functions that took in a single number and outputted multiple. In the second half of part 5, we looked instead to functions with a single output variable and multiple inputs: those that mapped $#R#^n \to #R#$. While both required us to venture out of the assumptions that single-variable calculus made both implicitly and explicitly, both halves were reminiscent of it in their own way. In this final part, though, we'll be exploring functions that both take in *and* give out multiple numbers --- functions $#R#^m \to #R#^n$ --- and we'll find that this is a new and rather alien world. We'll see symbols we recognize and make use of calculus techniques we understand, and at times we'll crest hills and make remarkable connections that recontextualize things we learned long ago, but much of this journey will be into properly unexplored territory for us.
 
+Even the simplest example of a function $\vec{F} : #R#^m \to #R#^n$ for $m = n = 2$ eludes traditional visualization: we can't plot 4 orthogonal axes of input and output, so we'll have to understand functions like this in a different way. However, we can leverage our terminology and understanding in part 5 to consider them as *vector-valued functions of multiple variables*.
 
+Let's begin by focusing on the function $\vec{F} : #R#^2 \to #R#^2$ given by
 
+$$
+	\vec{F}(x, y) = \left< x + 3y, 4x + 2y \right>.
+$$
 
+It takes in a point $(x, y)$ and outputs a 2D vector, and we can plot that relationship by selecting some points in $#R#^2$ and drawing the vector $\vec{F}(x, y)$ at each point $(x, y)$:
+
+### desmos vectorField
 
 
 
