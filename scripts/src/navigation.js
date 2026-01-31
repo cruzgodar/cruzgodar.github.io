@@ -435,10 +435,17 @@ function unloadPage()
 
 	const string = searchParams.toString();
 
+	let displayUrl = pageUrl.replace(/\/home/, "/");
+
+	if (displayUrl[displayUrl.length - 1] === "/")
+	{
+		displayUrl = displayUrl.slice(0, -1);
+	}
+
 	window.history.replaceState(
 		{ url: pageUrl },
 		"",
-		pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+		displayUrl + (string ? `?${string}` : "")
 	);
 
 	clearTemporaryParams();
