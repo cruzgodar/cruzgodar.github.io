@@ -222,7 +222,8 @@ export async function loadSite(url = pageUrl)
 		await redirect({
 			url,
 			noStatePush: true,
-			noFadeOut: true
+			noFadeOut: true,
+			noFadeIn: true
 		});
 
 		showAndRestoreScroll();

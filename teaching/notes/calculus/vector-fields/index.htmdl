@@ -12,7 +12,7 @@ $$
 	\vec{F}(x, y) = \left< x + 3y, 4x + 2y \right>.
 $$
 
-It takes in a point $(x, y)$ and outputs a 2D vector, and we can plot that relationship by selecting some points in $#R#^2$ and drawing the vector $\vec{F}(x, y)$ at each point $(x, y)$:
+It takes in a point $(x, y)$ and outputs a 2D vector, and we can plot that relationship by selecting some points in $#R#^2$ and drawing the vector $\vec{F}(x, y)$ at each point $(x, y)$: 
 
 ### desmos vectorField
 

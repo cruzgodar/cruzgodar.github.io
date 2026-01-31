@@ -303,6 +303,8 @@ export function initTextButtons()
 		callback: equalizeTextButtons
 	});
 
+	equalizeTextButtons();
+
 	setTimeout(equalizeTextButtons, 50);
 	setTimeout(equalizeTextButtons, 500);
 }

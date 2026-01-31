@@ -63,7 +63,8 @@ export async function redirect({
 	inNewTab = false,
 	noStatePush = false,
 	restoreScroll = false,
-	noFadeOut = false
+	noFadeOut = false,
+	noFadeIn = false,
 }) {
 	if (currentlyRedirecting)
 	{
@@ -157,7 +158,7 @@ export async function redirect({
 
 		urlsFetched.push(url);
 
-		loadPage();
+		loadPage(noFadeIn);
 	}
 
 

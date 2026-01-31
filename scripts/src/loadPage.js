@@ -41,7 +41,7 @@ export let siteLoaded = false;
 
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
-export async function loadPage()
+export async function loadPage(noFadeIn = false)
 {
 	pageShown = false;
 
@@ -99,7 +99,7 @@ export async function loadPage()
 
 	await loadCustomScripts();
 
-	await fadeInPage();
+	await fadeInPage(noFadeIn);
 
 	siteLoaded = true;
 
@@ -144,7 +144,7 @@ async function loadCustomScripts()
 	module.default();
 }
 
-async function fadeInPage()
+async function fadeInPage(noAnimation = false)
 {
 	if (siteSettings.reduceMotion)
 	{
@@ -163,7 +163,7 @@ async function fadeInPage()
 
 	setTimeout(() => pageShown = true, 10);
 
-	if (!opacityAnimationTime || window.DEBUG && !siteLoaded)
+	if (!opacityAnimationTime || window.DEBUG && !siteLoaded || noAnimation)
 	{
 		document.querySelector("#header").style.opacity = 1;
 		pageElement.style.opacity = 1;
