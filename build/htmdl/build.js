@@ -459,21 +459,6 @@ function getIndexHTML(pageTitle)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<style>
-		html, body
-		{
-			background: rgb(24, 24, 24);
-		}
-
-		@media (prefers-color-scheme: light)
-		{
-			html, body
-			{
-				background: rgb(255, 255, 255);
-			}
-		}
-	</style>
-	
 	<title>${pageTitle}</title>
 
 	<meta property="og:title" content="${pageTitle}"/>
