@@ -24,6 +24,14 @@ Wind is famously not so easy to see, though. The way we typically do see wind is
 
 ### canvas vectorField
 
+This is an applet I made to visualize vector fields in exactly this way. A particle's color is based on its current direction (i.e. the angle of the vector field there), and its saturation is based on its velocity, so slow particles are paler. While drawing vector fields as grids of vectors is important for studying them precisely, I find these visualizations to be incredible useful for getting a general impression of a field. We'll also lean heavily on this interpretation in a few sections! I highly suggest visualizing vector fields like this whenever working with them; you can plot any fields you like with the applet itself.
+
+### image-links
+
+	/applets/vector-fields
+
+###
+
 
 
 ### nav-buttons
