@@ -141,8 +141,6 @@ export function addHeader()
 
 			const href = link.getAttribute("href");
 
-			link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
-
 			link.addEventListener("click", e =>
 			{
 				e.preventDefault();
