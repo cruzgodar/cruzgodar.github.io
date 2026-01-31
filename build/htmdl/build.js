@@ -554,7 +554,7 @@ function getIndexHTML(pageTitle)
 		{
 			tex:
 			{
-				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+				inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]]
 			}
 		};
 	</script>
