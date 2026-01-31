@@ -14,7 +14,7 @@ export default function()
 		{
 			vectorField:
 			{
-				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
+				bounds: { xmin: -8, xmax: 8, ymin: -8, ymax: 8 },
 				
 				expressions:
 				[

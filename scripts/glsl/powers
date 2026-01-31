@@ -4,11 +4,11 @@
 #function cpow cpow_positive_int
 #requires round
 vec2 cpow_positive_int(vec2 z, int k) {
-    vec2 result = vec2(1.0, 0.0);
-    vec2 base = z;
-    int exp = k;
-    // computes z^k using a binary tree
-    for (int i = 0; i < 7; i++){ 
+	vec2 result = vec2(1.0, 0.0);
+	vec2 base = z;
+	int exp = k;
+	// computes z^k using a binary tree
+	for (int i = 0; i < 7; i++){ 
 	 	if(exp > 0) {
 			if ((exp/2)*2 != exp) {
 				result = cmul(result, base);
@@ -16,8 +16,8 @@ vec2 cpow_positive_int(vec2 z, int k) {
 			base = cmul(base, base);
 			exp /= 2;
 		}
-    }
-    return result;
+	}
+	return result;
 }
 
 
@@ -43,19 +43,19 @@ vec2 cpow(vec2 z, vec2 w)
 
 vec2 cpow(vec2 z, float w) {
 	// Handle small integer powers with exact multiplication
-    if ((abs(w - round(w)) < 1e-10) && abs(w)<33.0) { // w is essentially an integer, |w|<=32
-        int k = int(round(w));
-        
-        // Handle negative integer powers
-        if (k < 0) {
-            vec2 result = cpow_positive_int(z, -k);
-            // Return 1/result
-            float denom = result.x * result.x + result.y * result.y;
-            return vec2(result.x / denom, -result.y / denom);
-        }
-        
-        // Handle positive integer powers
-        return cpow_positive_int(z, k);
+	if ((abs(w - round(w)) < 1e-10) && abs(w)<33.0) { // w is essentially an integer, |w|<=32
+		int k = int(round(w));
+		
+		// Handle negative integer powers
+		if (k < 0) {
+			vec2 result = cpow_positive_int(z, -k);
+			// Return 1/result
+			float denom = result.x * result.x + result.y * result.y;
+			return vec2(result.x / denom, -result.y / denom);
+		}
+		
+		// Handle positive integer powers
+		return cpow_positive_int(z, k);
 	}
 	
 	float arg = carg(z);

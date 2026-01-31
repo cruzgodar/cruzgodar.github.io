@@ -2,9 +2,9 @@ import { convertColor } from "../src/browser.js";
 import { openZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
-    $,
-    $$,
-    addTemporaryListener
+	$,
+	$$,
+	addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";

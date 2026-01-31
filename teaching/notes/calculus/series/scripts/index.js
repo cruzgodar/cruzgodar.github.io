@@ -1,8 +1,8 @@
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 

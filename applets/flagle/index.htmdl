@@ -34,15 +34,15 @@ Guess the secret flag in six tries or fewer! Every flag you guess is overlapped 
 
 	<div id="loading-overlay">
 		<div id="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+		</div>
 	</div>
 
 	<div style="position: absolute; top: 0; left: 0">

@@ -299,7 +299,7 @@ export function getGlslBundle(codeString)
 
 		if (depth !== 0)
 		{
-			debugMessage += "\n                     " + "   ".repeat(depth) + `↳ ${filename}`;
+			debugMessage += "\n					 " + "   ".repeat(depth) + `↳ ${filename}`;
 		}
 
 		for (const dependency of glslFiles[filename].dependencies)

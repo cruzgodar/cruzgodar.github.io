@@ -15,10 +15,10 @@ async function reset({ slide, duration })
 	const app =
 	[
 		[Infinity, Infinity, Infinity, 9, 5],
-		[Infinity, Infinity, 5,        4, 1],
-		[6,        4,        4,        3, 0],
-		[6,        3,        2,        1, 0],
-		[4,        1,        1,        0, 0],
+		[Infinity, Infinity, 5,		4, 1],
+		[6,		4,		4,		3, 0],
+		[6,		3,		2,		1, 0],
+		[4,		1,		1,		0, 0],
 	];
 
 	applet.animationTime = 0;

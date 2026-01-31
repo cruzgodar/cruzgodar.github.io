@@ -1,16 +1,16 @@
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosBlue3d,
-    desmosOrange3d,
-    desmosPurple,
-    desmosPurple3d,
-    desmosRed,
-    desmosRed3d,
-    getDesmosPoint,
-    getDesmosSlider,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosBlue3d,
+	desmosOrange3d,
+	desmosPurple,
+	desmosPurple3d,
+	desmosRed,
+	desmosRed3d,
+	getDesmosPoint,
+	getDesmosSlider,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 

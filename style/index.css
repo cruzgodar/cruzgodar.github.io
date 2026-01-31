@@ -1713,7 +1713,7 @@ option
 	max-width: calc(var(--text-width) + 96px);
 	backdrop-filter: blur(32px);
 	mask-image:
-		linear-gradient(to top,    transparent, black 32px),
+		linear-gradient(to top,	transparent, black 32px),
 		linear-gradient(to right,  transparent, black 48px),
 		linear-gradient(to left,   transparent, black 48px);
 	mask-composite: intersect;

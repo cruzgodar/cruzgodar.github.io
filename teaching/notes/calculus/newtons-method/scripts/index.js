@@ -1,11 +1,11 @@
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosOrange,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosOrange,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 

@@ -8,12 +8,12 @@ float round(float x) {
 // Matrix multiplication for 2x2 matrices (stored as vec4: [a,b,c,d])
 #function mat_mul
 vec4 mat_mul(vec4 m1, vec4 m2) {
-    return vec4(
-        m1.x * m2.x + m1.y * m2.z,  // a
-        m1.x * m2.y + m1.y * m2.w,  // b
-        m1.z * m2.x + m1.w * m2.z,  // c
-        m1.z * m2.y + m1.w * m2.w   // d
-    );
+	return vec4(
+		m1.x * m2.x + m1.y * m2.z,  // a
+		m1.x * m2.y + m1.y * m2.w,  // b
+		m1.z * m2.x + m1.w * m2.z,  // c
+		m1.z * m2.y + m1.w * m2.w   // d
+	);
 }
 #endfunction
 
@@ -21,9 +21,9 @@ vec4 mat_mul(vec4 m1, vec4 m2) {
 #function apply_transform
 // Apply matrix transformation: (az + b) / (cz + d)
 vec2 apply_transform(vec4 matrix, vec2 z) {
-    vec2 numerator = vec2(matrix.x * z.x + matrix.y, matrix.x * z.y);
-    vec2 denominator = vec2(matrix.z * z.x + matrix.w, matrix.z * z.y);
-    return cdiv(numerator, denominator);
+	vec2 numerator = vec2(matrix.x * z.x + matrix.y, matrix.x * z.y);
+	vec2 denominator = vec2(matrix.z * z.x + matrix.w, matrix.z * z.y);
+	return cdiv(numerator, denominator);
 }
 #endfunction
 
@@ -33,38 +33,38 @@ vec2 apply_transform(vec4 matrix, vec2 z) {
 // Returns vec3(p, q, error) where p/q approximates x
 #function rational_approx
 vec3 rational_approx(float x, int max_denom) {
-    if (abs(x) < 1e-10) return vec3(0.0, 1.0, 0.0);
-    
-    // Handle negative numbers
-    float sign_x = sign(x);
-    x = abs(x);
-    
-    // Initialize convergents
-    float h0 = 1.0, h1 = 0.0;
-    float k0 = 0.0, k1 = 1.0;
-    
-    float remainder = x;
-    
-    for (int i = 0; i < 20; i++) { // Limit iterations to prevent infinite loops
-        if (remainder < 1e-10) break;
-        
-        float a = floor(remainder);
-        
-        // Update convergents
-        float h2 = a * h1 + h0;
-        float k2 = a * k1 + k0;
-        
-        // Check if denominator exceeds limit
-        if (k2 > float(max_denom)) break;
-        
-        h0 = h1; h1 = h2;
-        k0 = k1; k1 = k2;
-        
-        // Update remainder for continued fraction
-        remainder = 1.0 / (remainder - a);
-    }
-    
-    return vec3(sign_x * h1, k1, abs(x - sign_x * h1 / k1));
+	if (abs(x) < 1e-10) return vec3(0.0, 1.0, 0.0);
+	
+	// Handle negative numbers
+	float sign_x = sign(x);
+	x = abs(x);
+	
+	// Initialize convergents
+	float h0 = 1.0, h1 = 0.0;
+	float k0 = 0.0, k1 = 1.0;
+	
+	float remainder = x;
+	
+	for (int i = 0; i < 20; i++) { // Limit iterations to prevent infinite loops
+		if (remainder < 1e-10) break;
+		
+		float a = floor(remainder);
+		
+		// Update convergents
+		float h2 = a * h1 + h0;
+		float k2 = a * k1 + k0;
+		
+		// Check if denominator exceeds limit
+		if (k2 > float(max_denom)) break;
+		
+		h0 = h1; h1 = h2;
+		k0 = k1; k1 = k2;
+		
+		// Update remainder for continued fraction
+		remainder = 1.0 / (remainder - a);
+	}
+	
+	return vec3(sign_x * h1, k1, abs(x - sign_x * h1 / k1));
 }
 #endfunction
 
@@ -73,75 +73,75 @@ vec3 rational_approx(float x, int max_denom) {
 #function reduce_to_fundamental_domain
 #requires mat_mul rational_approx round
 vec4 reduce_to_fundamental_domain(vec2 z, out vec2 matrix_cd) {
-    const float EPS = 1e-8;
-    const int MAX_ITER = 20;
-    
-    vec4 matrix = vec4(1.0, 0.0, 0.0, 1.0); // Identity matrix [a,b,c,d]
-    
-    // If imaginary part is very small, use direct rational approximation
-    if (z.y < 1e-6) {
-        vec3 approx = rational_approx(z.x, 1000);
-        float p = approx.x;
-        float q = approx.y;
-        
-        // Build transformation matrix to move p/q to fundamental domain
-        if (abs(p/q) > 0.5) {
-            float n = round(p/q);
-            matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
-            z.x -= n;
-        }
-        
-        matrix_cd = matrix.zw;
-        return vec4(z, matrix.xy);
-    }
-    
-    // Standard continued fraction algorithm
-    for (int iter = 0; iter < MAX_ITER; iter++) {
-        // Translation step
-        float re_z = z.x;
-        if (abs(re_z) > 0.5 + EPS) {
-            float n = round(re_z);
-            z=vec2(z.x - n,z.y);
-            matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
-        }
-        
-        // Check if we're in fundamental domain
-        float abs_z = cabs(z);
-        if (abs_z >= 1.0 - EPS && abs(z.x) <= 0.5 + EPS) {
-            break;
-        }
-        
-        // Inversion step: z -> -1/z
-        if (abs_z > EPS) {
-            z = -cinv(z);
-            matrix = mat_mul(vec4(0.0, -1.0, 1.0, 0.0),matrix);
-        } else {
-            break; // Avoid division by zero
-        }
-    }
-    
-    matrix_cd = matrix.zw;
-    return vec4(z, matrix.xy);
+	const float EPS = 1e-8;
+	const int MAX_ITER = 20;
+	
+	vec4 matrix = vec4(1.0, 0.0, 0.0, 1.0); // Identity matrix [a,b,c,d]
+	
+	// If imaginary part is very small, use direct rational approximation
+	if (z.y < 1e-6) {
+		vec3 approx = rational_approx(z.x, 1000);
+		float p = approx.x;
+		float q = approx.y;
+		
+		// Build transformation matrix to move p/q to fundamental domain
+		if (abs(p/q) > 0.5) {
+			float n = round(p/q);
+			matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
+			z.x -= n;
+		}
+		
+		matrix_cd = matrix.zw;
+		return vec4(z, matrix.xy);
+	}
+	
+	// Standard continued fraction algorithm
+	for (int iter = 0; iter < MAX_ITER; iter++) {
+		// Translation step
+		float re_z = z.x;
+		if (abs(re_z) > 0.5 + EPS) {
+			float n = round(re_z);
+			z=vec2(z.x - n,z.y);
+			matrix = mat_mul(vec4(1.0, -n, 0.0, 1.0),matrix);
+		}
+		
+		// Check if we're in fundamental domain
+		float abs_z = cabs(z);
+		if (abs_z >= 1.0 - EPS && abs(z.x) <= 0.5 + EPS) {
+			break;
+		}
+		
+		// Inversion step: z -> -1/z
+		if (abs_z > EPS) {
+			z = -cinv(z);
+			matrix = mat_mul(vec4(0.0, -1.0, 1.0, 0.0),matrix);
+		} else {
+			break; // Avoid division by zero
+		}
+	}
+	
+	matrix_cd = matrix.zw;
+	return vec4(z, matrix.xy);
 }
 #endfunction
 
 // // Helper function to check if point is in fundamental domain
 // bool in_fundamental_domain(vec2 z) {
-//     return cabs(z) >= 1.0 - 1e-6 && abs(z.x) <= 0.5 + 1e-6;
+//	 return cabs(z) >= 1.0 - 1e-6 && abs(z.x) <= 0.5 + 1e-6;
 // }
 
 // // Example usage function
 // vec2 example_usage(vec2 input_z) {
-//     vec2 matrix_cd;
-//     vec4 result = reduce_to_fundamental_domain(input_z, matrix_cd);
-    
-//     vec2 reduced_point = result.xy;
-//     vec4 full_matrix = vec4(result.zw, matrix_cd);
-    
-//     // Verify the transformation
-//     vec2 verification = apply_transform(full_matrix, input_z);
-    
-//     return reduced_point;
+//	 vec2 matrix_cd;
+//	 vec4 result = reduce_to_fundamental_domain(input_z, matrix_cd);
+	
+//	 vec2 reduced_point = result.xy;
+//	 vec4 full_matrix = vec4(result.zw, matrix_cd);
+	
+//	 // Verify the transformation
+//	 vec2 verification = apply_transform(full_matrix, input_z);
+	
+//	 return reduced_point;
 // }
 // #endfunction
 
@@ -231,12 +231,12 @@ vec2 eisenstein4(vec2 z) {
 	}
 
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
 	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-4.0);
 	z = result.xy;
 	// E_k(z) = (cz+d)^-k*E(gamma(z))
 	
-    
+	
 
 	vec2 q = cexp(PI * vec2(-z.y,z.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-z.y,z.x));
@@ -287,7 +287,7 @@ vec2 eisenstein6(vec2 z)
 	}
 
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
 	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-6.0);
 	z = result.xy;
 	// E_k(z) = (cz+d)^-k*E(gamma(z))
@@ -347,7 +347,7 @@ vec2 eisenstein(float k, vec2 z) {
 	}
 
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
 	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-k);
 	z = result.xy;
 	// E_k(z) = (cz+d)^-k*E(gamma(z))
@@ -390,7 +390,7 @@ vec2 eisenstein(float k, vec2 z) {
 		} else if (k == 24.0) {
 			return cmul(automorphyFactor,1.0/236364091.0 * (49679091.0 * cpow(e4,6.0) + 176400000.0*cmul(cpow(e4,3.0),cpow(e6,2.0)) + 10285000.0*cpow(e6,4.0)));
 		}
-        // todo: k > 24??
+		// todo: k > 24??
 	}
 	return ZERO;
 }
@@ -410,7 +410,7 @@ vec2 delta(vec2 z) {
 	}
 
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(z, matrix_cd);
 	vec2 automorphyFactor = cpow(matrix_cd.x*z+matrix_cd.y*ONE,-12.0);
 	z = result.xy;
 	// D(z) = (cz+d)^-12*D(gamma(z))
@@ -541,7 +541,7 @@ vec2 wp(vec2 z, vec2 t) {
 
 	// p(z,t) = (ct+d)^-2 * p(z/(ct+d),(at+b)/(ct+d))
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
 	float c = matrix_cd.x;
 	float d = matrix_cd.y;
 	vec2 automorphyFactor = cpow(c*t+d*ONE,-2.0);
@@ -646,7 +646,7 @@ vec2 wpprime(vec2 z, vec2 t) {
 
 	// p'(z,t) = (ct+d)^-3 * p'(z/(ct+d),(at+b)/(ct+d))
 	vec2 matrix_cd;
-    vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
+	vec4 result = reduce_to_fundamental_domain(t, matrix_cd);
 	float c = matrix_cd.x;
 	float d = matrix_cd.y;
 	vec2 automorphyFactor = cpow(c*t+d*ONE,-3.0);

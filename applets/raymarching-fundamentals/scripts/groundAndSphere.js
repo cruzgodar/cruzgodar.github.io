@@ -198,7 +198,7 @@ export class GroundAndSphere extends RaymarchApplet
 					// Use Sebastian Aaltonen's improvement to Inigo Quilez's soft shadow algorithm.
 					float distanceToScene = distanceEstimator(pos);
 					float y = distanceToScene * distanceToScene / (2.0 * lastDistanceToScene);
-        			float d = sqrt(distanceToScene * distanceToScene - y * y);
+					float d = sqrt(distanceToScene * distanceToScene - y * y);
 
 					softShadowFactor = min(
 						softShadowFactor,

@@ -1,8 +1,8 @@
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 

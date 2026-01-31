@@ -1,12 +1,12 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    getDesmosPoint,
-    getDesmosSlider,
-    getDesmosVector,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	getDesmosPoint,
+	getDesmosSlider,
+	getDesmosVector,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 
 export default function()

@@ -27,17 +27,17 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, vec2 z) {
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
 	vec2 summer = ONE;
-    float term = 1.0;
-    vec2 zn = ONE;
-    for (int n = 0; n < F21_BOUND; n++) {
-        term *= a+float(n);
-        term *= b+float(n);
-        term /= c+float(n);
-        term /= float(n+1);
-        zn = cmul(z,zn);
-        summer += term*zn;
-    }
-    return summer;
+	float term = 1.0;
+	vec2 zn = ONE;
+	for (int n = 0; n < F21_BOUND; n++) {
+		term *= a+float(n);
+		term *= b+float(n);
+		term /= c+float(n);
+		term /= float(n+1);
+		zn = cmul(z,zn);
+		summer += term*zn;
+	}
+	return summer;
 }
 
 // float version
@@ -65,17 +65,17 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, float z) {
 		// can add some goofy quadratic ones for 2f1(1/3,2/3,3/2,z) if the mood strikes you
 
 	float summer = 1.0;
-    float term = 1.0;
-    float zn = 1.0;
-    for (int n = 0; n < F21_BOUND; n++) {
-        term *= a+float(n);
-        term *= b+float(n);
-        term /= c+float(n);
-        term /= float(n+1);
-        zn *= z;
-        summer += term*zn;
-    }
-    return vec2(summer,0.0);
+	float term = 1.0;
+	float zn = 1.0;
+	for (int n = 0; n < F21_BOUND; n++) {
+		term *= a+float(n);
+		term *= b+float(n);
+		term /= c+float(n);
+		term /= float(n+1);
+		zn *= z;
+		summer += term*zn;
+	}
+	return vec2(summer,0.0);
 }
 
 // Returns 2F1(a,b,c,z) a la https://en.wikipedia.org/wiki/Hypergeometric_function
@@ -84,24 +84,24 @@ vec2 hypergeometric2f1_helper(float a, float b, float c, float z) {
 vec2 hypergeometric2f1(float a, float b, float c, vec2 z) {
 	
 	if (cmag2(z) <= 1.0) {
-        return hypergeometric2f1_helper(a,b,c,z);
-    } else {
-    	vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,cinv(z)));
-    	summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,cinv(z)));
-    	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
-    }
+		return hypergeometric2f1_helper(a,b,c,z);
+	} else {
+		vec2 summer = cmul(cpow(-z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,cinv(z)));
+		summer -= cmul(cpow(-z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,cinv(z)));
+		return gamma(c)*PI*ccsc(PI*(b-a))*summer;
+	}
 }
 
 // float version
 vec2 hypergeometric2f1(float a, float b, float c, float z) {
 	if (z*z <= 1.0) {
-        return hypergeometric2f1_helper(a,b,c,z);
-    } else {
-    	vec2 Z = vec2(z,0.0);
-    	vec2 summer = cmul(cpow(-Z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
-    	summer -= cmul(cpow(-Z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
-    	return gamma(c)*PI*ccsc(PI*(b-a))*summer;
-    }
+		return hypergeometric2f1_helper(a,b,c,z);
+	} else {
+		vec2 Z = vec2(z,0.0);
+		vec2 summer = cmul(cpow(-Z,-a)/(gamma(b)*(gamma(c-a))*gamma(a-b+1.0)),hypergeometric2f1_helper(a,a-c+1.0,a-b+1.0,1.0/z));
+		summer -= cmul(cpow(-Z,-b)/(gamma(a)*(gamma(c-b))*gamma(b-a+1.0)),hypergeometric2f1_helper(b,b-c+1.0,b-a+1.0,1.0/z));
+		return gamma(c)*PI*ccsc(PI*(b-a))*summer;
+	}
 }
 
 // because I hate typing long function names
@@ -140,7 +140,7 @@ vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, ve
 		summer += term*vec_term;
 		
 	}
-    return summer;
+	return summer;
 }
 
 // Check (49) and (82) from
@@ -168,7 +168,7 @@ vec2 hypergeometricf2_helper(float a, float b1, float b2, float c1, float c2, fl
 		summer += term*vec_term;
 		
 	}
-    return summer;
+	return summer;
 }
 vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, vec2 x, vec2 y) {
 	if (cabs(x)+cabs(y) < 1.0) {
@@ -412,7 +412,7 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, vec2 x, vec2 
 		
 	}
 	
-    return summer;
+	return summer;
 }
 
 // float version
@@ -443,7 +443,7 @@ vec2 hypergeometricf1_helper(float a, float b1, float b2, float c, float x, floa
 		summer += term*vec_term;
 		
 	}
-    return summer;
+	return summer;
 }
 
 // Appell series F1 as defined in https://en.wikipedia.org/wiki/Appell_series
