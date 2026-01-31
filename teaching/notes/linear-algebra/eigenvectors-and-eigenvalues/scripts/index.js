@@ -1,15 +1,15 @@
 import { BarnsleyFern } from "/applets/barnsley-fern/scripts/class.js";
 import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
-import { VectorFields } from "/applets/vector-fields/scripts/class.js";
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosOrange,
+    desmosPurple,
+    desmosRed,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -67,7 +67,7 @@ export default function()
 
 	const vectorFieldCanvas = $("#vector-field-canvas");
 
-	const vectorFieldApplet = new VectorFields({ canvas: vectorFieldCanvas });
+	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
 
 	vectorFieldApplet.run({
 		generatingCode: "(x - y, x + y)",

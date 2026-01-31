@@ -16,6 +16,14 @@ It takes in a point $(x, y)$ and outputs a 2D vector, and we can plot that relat
 
 ### desmos vectorField
 
+We call this object, and by extension $\vec{F}$ itself, a **vector field**. We're drawing the vectors $\vec{F}(x, y)$ starting at their positions $(x, y)$ out of necessity, since if we tried to put them all at the origin it would be an unreadable mess. But we don't need to let that get in the way of our understanding! This is just an opportunity to learn a useful lesson about math and science more broadly: when a new situation is confusing, lean into perspectives on it that you understand. Here, there's one context in particular where we've been drawing vectors at positions not at the origin: derivatives of vector valued functions, and those that measure position in particular. Then the derivative is a velocity vector, and those naturally live *at* the position of the object whose velocity they're measuring.
+
+With this in mind, then, we can try to interpret this vector field as a collection of velocities. There's not just one curve of possible positions, though! An object could be *anywhere* in the field and still have a velocity assigned to it. A direct physical analogue is wind speed! In a flat open area, the wind velocity can vary between every possible position.
+
+Wind is famously not so easy to see, though. The way we typically do see wind is by its effects on other things that are easily moved by it, like leaves. Following that analogy, let's try visualizing a vector field as if it's giving us wind speed: we'll scatter a few thousand tiny particles in a 2D area and give them a velocity based on the vector field at their current position (so the velocity of each particle is constantly changing as it moves).
+
+### canvas vectorField
+
 
 
 ### nav-buttons

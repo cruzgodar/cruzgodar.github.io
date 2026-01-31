@@ -11,7 +11,7 @@ import {
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class VectorFields extends AnimationFrameApplet
+export class VectorField extends AnimationFrameApplet
 {
 	loadPromise;
 

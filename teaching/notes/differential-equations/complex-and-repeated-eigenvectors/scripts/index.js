@@ -1,8 +1,8 @@
-import { VectorFields } from "/applets/vector-fields/scripts/class.js";
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosPurple,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosPurple,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -53,7 +53,7 @@ export default function()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorFields({ canvas: outputCanvas });
+	const applet = new VectorField({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{

@@ -110,10 +110,8 @@ export function splitCommandLine(line)
 	return [words, options];
 }
 
-function decodeHTMDL({
-	html,
-	fileParentFolder,
-}) {
+function decodeHTMDL(html)
+{
 	const usesBanner = html.indexOf("### banner") !== -1;
 
 	let inEnvironment = false;
@@ -581,10 +579,7 @@ export default async function buildHTMLFile(file, fileParentFolder, sitemapArgum
 
 	sitemap = sitemapArgument;
 
-	const [html, indexHtml] = decodeHTMDL({
-		html: "\n" + file,
-		fileParentFolder
-	});
+	const [html, indexHtml] = decodeHTMDL("\n" + file);
 
 	write(`${fileParentFolder}/data.html`, html);
 

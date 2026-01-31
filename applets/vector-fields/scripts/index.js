@@ -1,5 +1,5 @@
 import { parseNaturalGlsl } from "../../../scripts/applets/applet.js";
-import { VectorFields } from "./class.js";
+import { VectorField } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
@@ -11,7 +11,7 @@ import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
-	const applet = new VectorFields({ canvas: $("#output-canvas") });
+	const applet = new VectorField({ canvas: $("#output-canvas") });
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),

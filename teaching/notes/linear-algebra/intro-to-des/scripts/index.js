@@ -1,9 +1,9 @@
-import { VectorFields } from "/applets/vector-fields/scripts/class.js";
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -58,7 +58,7 @@ export default function()
 
 	const vectorFieldCanvas = $("#vector-field-canvas");
 
-	const vectorFieldApplet = new VectorFields({ canvas: vectorFieldCanvas });
+	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
 
 	vectorFieldApplet.loadPromise.then(() =>
 	{
@@ -73,7 +73,7 @@ export default function()
 
 	const eigenvectorAxesCanvas = $("#eigenvector-axes-canvas");
 
-	const eigenvectorAxesApplet = new VectorFields({
+	const eigenvectorAxesApplet = new VectorField({
 		canvas: eigenvectorAxesCanvas,
 		draggable1Location: [-1, -1],
 		draggable2Location: [1, 0]
