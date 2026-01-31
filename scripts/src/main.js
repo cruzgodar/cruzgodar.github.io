@@ -223,7 +223,7 @@ export async function loadSite(url = pageUrl)
 			url,
 			noStatePush: true,
 			noFadeOut: true,
-			noFadeIn: true
+			noFadeIn: window.DEBUG
 		});
 
 		showAndRestoreScroll();
