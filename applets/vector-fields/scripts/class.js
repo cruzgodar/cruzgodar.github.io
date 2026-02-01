@@ -55,7 +55,7 @@ export class VectorField extends AnimationFrameApplet
 	averageTimeElapsed;
 	frame = 0;
 
-	drawFrameCallback = () => {};
+	onDrawFrame;
 	
 
 
@@ -64,10 +64,14 @@ export class VectorField extends AnimationFrameApplet
 		// draggables = {},
 		loopEdges = false,
 		transparency = false,
+		useFullscreenButton = true,
+		onDrawFrame = () => {},
+		onReset = () => {},
 	}) {
 		super(canvas);
 
 		this.loopEdges = loopEdges;
+		this.onDrawFrame = onDrawFrame;
 
 		this.panZoomDimCanvas = this.createHiddenCanvas();
 		this.updateCanvas = this.createHiddenCanvas();
@@ -169,6 +173,7 @@ export class VectorField extends AnimationFrameApplet
 
 			useResetButton: true,
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
+			onReset,
 
 			onResizeCanvas: () => this.generateNewField({ delayResuing: true }),
 
@@ -191,7 +196,7 @@ export class VectorField extends AnimationFrameApplet
 				fillScreen: true,
 				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
-				useFullscreenButton: true,
+				useFullscreenButton,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
@@ -628,7 +633,7 @@ export class VectorField extends AnimationFrameApplet
 
 		this.drawField(timeElapsed);
 
-		this.drawFrameCallback();
+		this.onDrawFrame();
 
 		this.needNewFrame = true;
 	}

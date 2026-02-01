@@ -120,9 +120,17 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 	<div id="conservativeVectorField2" class="desmos-container"></div>
 
 	<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
-		<canvas id="conservativeVectorField2-canvas" style="width: 100%; height: 100%; border-radius: 16px"></canvas>
+		<canvas id="conservativeVectorField2-canvas" style="width: 100%; height: 100%; border-radius: 16px; opacity: 0.95"></canvas>
 	</div>
 </div>
+
+### exc "conservative vector fields"
+
+	1. Why does the field flow faster across lines spaced more closely together?
+
+	2. Going back to $\vec{H} = \left< -y, x \right>$, does the 
+
+###
 
 
 

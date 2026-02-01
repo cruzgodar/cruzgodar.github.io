@@ -11,44 +11,44 @@ export const desmosBlack = "_desmosBlack";
 export const desmosGray = "_desmosGray";
 
 const functionsForColors = {
-	[desmosPurple]: (is3d) =>
+	[desmosPurple]: (is3d, alwaysDark) =>
 	{
 		if (is3d)
 		{
 			return "#7f32cc";
 		}
 		
-		return siteSettings.darkTheme ? "#66cc00" : "#7f32cc";
+		return siteSettings.darkTheme || alwaysDark ? "#66cc00" : "#7f32cc";
 	},
 
-	[desmosBlue]: (is3d) =>
+	[desmosBlue]: (is3d, alwaysDark) =>
 	{
 		if (is3d)
 		{
 			return "#327fcc";
 		}
 		
-		return siteSettings.darkTheme ? "#cc6600" : "#327fcc";
+		return siteSettings.darkTheme || alwaysDark ? "#cc6600" : "#327fcc";
 	},
 
-	[desmosRed]: (is3d) =>
+	[desmosRed]: (is3d, alwaysDark) =>
 	{
 		if (is3d)
 		{
 			return "#cc3232";
 		}
 		
-		return siteSettings.darkTheme ? "#00cccc" : "#cc3232";
+		return siteSettings.darkTheme || alwaysDark ? "#00cccc" : "#cc3232";
 	},
 
-	[desmosOrange]: (is3d) =>
+	[desmosOrange]: (is3d, alwaysDark) =>
 	{
 		if (is3d)
 		{
 			return "#cc7f32";
 		}
 		
-		return siteSettings.darkTheme ? "#0066cc" : "#cc7f32";
+		return siteSettings.darkTheme || alwaysDark ? "#0066cc" : "#cc7f32";
 	},
 
 	[desmosBlack]: (is3d) =>
@@ -74,9 +74,12 @@ const functionsForColors = {
 
 export let desmosGraphs = {};
 
+export let desmosGraphsDefaultState = {};
+
 export function clearDesmosGraphs()
 {
 	desmosGraphs = {};
+	desmosGraphsDefaultState = {};
 }
 
 
@@ -110,6 +113,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		{
 			desmosGraphs[key].destroy();
 			delete desmosGraphs[key];
+			delete desmosGraphsDefaultState[key];
 		}
 	}
 
@@ -125,7 +129,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		{
 			if (expression.color)
 			{
-				expression.color = functionsForColors[expression.color](is3d);
+				expression.color = functionsForColors[expression.color](
+					is3d,
+					data[key].alwaysDark
+				);
 			}
 
 			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
@@ -164,7 +171,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			showResetButtonOnGraphpaper: true,
 			border: false,
 			expressionsCollapsed: true,
-			invertedColors: siteSettings.darkTheme,
+			invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
 
 			xAxisMinorSubdivisions: 1,
 			yAxisMinorSubdivisions: 1,
@@ -172,14 +179,32 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			expressions: anyNonSecretExpressions,
 
 			colors: {
-				PURPLE: functionsForColors[desmosPurple](data[element.id].use3d),
-				BLUE: functionsForColors[desmosBlue](data[element.id].use3d),
-				RED: functionsForColors[desmosRed](data[element.id].use3d),
-				ORANGE: functionsForColors[desmosOrange](data[element.id].use3d),
+				PURPLE: functionsForColors[desmosPurple](
+					data[element.id].use3d,
+					data[element.id].alwaysDark
+				),
+				BLUE: functionsForColors[desmosBlue](
+					data[element.id].use3d,
+					data[element.id].alwaysDark
+				),
+				RED: functionsForColors[desmosRed](
+					data[element.id].use3d,
+					data[element.id].alwaysDark
+				),
+				ORANGE: functionsForColors[desmosOrange](
+					data[element.id].use3d,
+					data[element.id].alwaysDark
+				),
 				...(
 					data[element.id].use3d
-						? { BLACK: functionsForColors[desmosGray](data[element.id].use3d) }
-						: { BLACK: functionsForColors[desmosBlack](data[element.id].use3d) }
+						? { BLACK: functionsForColors[desmosGray](
+							data[element.id].use3d,
+							data[element.id].alwaysDark
+						) }
+						: { BLACK: functionsForColors[desmosBlack](
+							data[element.id].use3d,
+							data[element.id].alwaysDark
+						) }
 				)
 			},
 
@@ -255,7 +280,9 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		desmosGraphs[element.id].updateSettings({});
 
-		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
+		desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
+
+		desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
 
 		if (window.DEBUG && !recreating)
 		{

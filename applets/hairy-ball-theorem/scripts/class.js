@@ -61,17 +61,16 @@ export class HairyBall extends RaymarchApplet
 		this.vectorFieldApplet = new VectorField({
 			canvas: hiddenCanvas,
 			loopEdges: true,
+			onDrawFrame: () =>
+			{
+				this.wilson.setTexture({
+					id: "draw",
+					data: this.vectorFieldApplet.wilson.readPixels()
+				});
+
+				this.needNewFrame = true;
+			}
 		});
-
-		this.vectorFieldApplet.drawFrameCallback = () =>
-		{
-			this.wilson.setTexture({
-				id: "draw",
-				data: this.vectorFieldApplet.wilson.readPixels()
-			});
-
-			this.needNewFrame = true;
-		};
 		
 		this.runVectorField(vectorFieldGeneratingCode);
 

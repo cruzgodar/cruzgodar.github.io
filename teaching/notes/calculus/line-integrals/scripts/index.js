@@ -1,6 +1,9 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
+	desmosBlack,
+	desmosGraphs,
+	desmosGraphsDefaultState,
 	desmosGray,
 	desmosPurple,
 	getDesmosSlider
@@ -120,12 +123,16 @@ export default function()
 
 		conservativeVectorField2:
 		{
+			alwaysDark: true,
+			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			options: { showResetButtonOnGraphpaper: false },
 			
 			expressions:
 			[
-				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true },
-				{ latex: raw`c = [-5, -4, ..., 5]`, hidden: true, secret: true },
+				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true, color: desmosBlack },
+				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 			]
 		},
 	});
@@ -181,15 +188,42 @@ export default function()
 
 	const vectorFieldCanvas4 = $("#conservativeVectorField2-canvas");
 
-	const applet4 = new VectorField({ canvas: vectorFieldCanvas4, transparency: true });
+	const applet4 = new VectorField({
+		canvas: vectorFieldCanvas4,
+		transparency: true,
+		useFullscreenButton: false,
+		onDrawFrame: onDrawFrame4,
+		onReset: onReset4
+	});
+
+	applet4.allowFullscreenWithKeyboard = false;
 
 	applet4.loadPromise.then(() =>
 	{
 		applet4.run({
-			generatingCode: "(x, -y)",
-			dt: .002,
-			worldWidth: 3
+			resolution: 500,
+			maxParticles: 3000,
+			generatingCode: "(x * 0.35, -y * 0.35)",
+			dt: .006,
+			worldWidth: 6
 		});
 		applet4.pauseWhenOffscreen();
 	});
+
+	function onDrawFrame4()
+	{
+		desmosGraphs.conservativeVectorField2.setMathBounds({
+			xmin: applet4.wilson.worldCenterX - applet4.wilson.worldWidth / 2,
+			xmax: applet4.wilson.worldCenterX + applet4.wilson.worldWidth / 2,
+			ymin: applet4.wilson.worldCenterY - applet4.wilson.worldHeight / 2,
+			ymax: applet4.wilson.worldCenterY + applet4.wilson.worldHeight / 2,
+		});
+	}
+
+	function onReset4()
+	{
+		desmosGraphs.conservativeVectorField2.setState(
+			desmosGraphsDefaultState.conservativeVectorField2
+		);
+	}
 }
