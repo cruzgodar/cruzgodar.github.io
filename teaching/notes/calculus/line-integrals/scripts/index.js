@@ -62,9 +62,9 @@ export default function()
 				
 				expressions:
 				[
-					{ latex: raw`f_1(x, y) = x + 3y`, hidden: true },
-					{ latex: raw`f_2(x, y) = 4x + 2y`, hidden: true },
-					{ latex: raw`f_3(x, y) = x^2 + y^2`, hidden: true },
+					{ latex: raw`f_1(x, y, z) = x + 3y`, hidden: true },
+					{ latex: raw`f_2(x, y, z) = y^2 + z`, hidden: true },
+					{ latex: raw`f_3(x, y, z) = x + z^2`, hidden: true },
 
 					...getDesmosSlider({
 						expression: "n = 2",
@@ -75,14 +75,14 @@ export default function()
 					}),
 
 					...getDesmosSlider({
-						expression: "s = 1",
+						expression: "s = 1.5",
 						min: 0.5,
 						max: 2,
 						secret: false
 					}),
 
 					{ latex: raw`A = [(a, b, c) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
-					{ latex: raw`B = [(f_1(a, b), f_2(a, b), f_3(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+					{ latex: raw`B = [(f_1(a, b, c), f_2(a, b, c), f_3(a, b, c)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 					{ latex: raw`\vector(A, A + \frac{s}{25}B)`, color: desmosPurple3d, secret: true },
 				]
 			}

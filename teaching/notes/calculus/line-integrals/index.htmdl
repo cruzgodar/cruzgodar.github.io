@@ -82,7 +82,27 @@ $$
 	g = \int x\,\partial x.
 $$
 
-But what's that partial 
+But what's that partial symbol doing in the integral? We haven't had the need to undo partial differentiation up to this point, but just like partial derivatives themselves, this notion of **partial integration** will fit our intuition well.
+
+A typical integral $\int f(x)\,\d x$ solves for an antiderivative $F$ of $f$, but it does so up to a constant $c$. That's because starting with any antiderivative $F$ and adding $c$ produces another antiderivative of $f$, since
+
+$$
+	d/dx\left[ F(x) + c \right] = f(x) + d/dx[c] = f(x).
+$$
+
+In effect, constants aren't seen by integrals, since derivatives zero them out. When we move to partial integrals, though, the integral loses even more precision. Evaluating the integral $\int f(x, y)\,\partial x$, means finding a function $F(x, y)$ whose partial derivative $\frac{\partial}{\partial x}\left[ F(x, y) \right] = f(x, y)$, and that partial derivative zeros out not just constants, but any term containing only $y$. To account for the integral's inability to see entire functions of $y$ alone, we add on not just a constant $c$, but an entire function $c(y)$. The same is true in reverse for the integral $\partial y$, and since we're usually considering both at once, we'll typically subscript the $c$ function. Finally returning to our example,
+
+$$
+	g &= \int x\,\partial x = \frac{x^2}{2} + c_1(y)
+
+	g &= \int -y\,\partial y = -\frac{y^2}{2} + c_2(x).
+$$
+
+To form a single expression of $g$, we need to do the work the integrals cannot and combine these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one.
+
+So $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}$. What does that tell us? Well, we have multiple avenues for visualizing this. First, the gradient points in the direction of steepest increase, with its magnitude being that steepness, so we can plot the 2D vector field $\vec{G}$ lifted up onto the surface $g(x, y)$, and the flow is always from the lowest areas to the highest.
+
+### desmos conservativeField1
 
 
 ### nav-buttons
