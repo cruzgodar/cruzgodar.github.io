@@ -69,5 +69,6 @@
 		"**/index.js",
 		"**/class.js",
 		"**/worker.js",
-	]
+    ],
+    "liveServer.settings.wait": 100
 }

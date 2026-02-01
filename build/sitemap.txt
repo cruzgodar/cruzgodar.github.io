@@ -115,7 +115,7 @@ home Cruz Godar
 			lagrange-multipliers Section 5.10: Lagrange Multipliers
 			double-integrals Section 5.11: Double Integrals
 
-			vector-fields Section 6.1: Vector Fields
+			line-integrals Section 6.1: Line Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

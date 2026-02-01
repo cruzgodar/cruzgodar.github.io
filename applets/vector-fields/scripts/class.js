@@ -355,6 +355,8 @@ export class VectorField extends AnimationFrameApplet
 			centerY: worldCenterY
 		});
 
+		this.wilson.setCurrentStateAsDefault();
+
 		this.generateNewField({
 			maxParticles,
 			dt,
