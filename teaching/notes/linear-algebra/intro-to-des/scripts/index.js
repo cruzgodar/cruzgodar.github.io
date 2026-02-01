@@ -1,4 +1,5 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -47,46 +48,47 @@ export default function()
 
 
 
-	const vectorFieldCanvas = $("#vector-field-canvas");
-
-	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
-
-	vectorFieldApplet.loadPromise.then(() =>
+	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
 	{
-		vectorFieldApplet.run({
-			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
-			zoomLevel: 1
-		});
-		vectorFieldApplet.pauseWhenOffscreen();
-	});
+		const applet = new VectorField({ canvas });
 
-	
-
-	const eigenvectorAxesCanvas = $("#eigenvector-axes-canvas");
-
-	const eigenvectorAxesApplet = new VectorField({
-		canvas: eigenvectorAxesCanvas,
-		draggable1Location: [-1, -1],
-		draggable2Location: [1, 0]
-	});
-
-	eigenvectorAxesApplet.loadPromise.then(() =>
-	{
-		eigenvectorAxesApplet.run({
-			generatingCode: "(dot(draggableArg, vec2(x,y)), dot(draggableArg2, vec2(x,y)))",
-			zoomLevel: -.75
-		}).then(() =>
+		applet.loadPromise.then(() =>
 		{
-			eigenvectorAxesApplet.wilson.setDraggables({
-				draggableArg: [1, 1],
-				draggableArg2: [-1, 1],
-			});
-
-			eigenvectorAxesApplet.wilsonUpdate.setUniforms({
-				draggableArg: [1, 1],
-				draggableArg2: [-1, 1],
+			applet.run({
+				generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
 			});
 		});
-		eigenvectorAxesApplet.pauseWhenOffscreen();
+
+		return applet;
+	});
+
+
+
+	createEmphemeralApplet($("#eigenvector-axes-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({
+			canvas
+		});
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(dot(draggableArg, vec2(x,y)), dot(draggableArg2, vec2(x,y)))",
+				worldWidth: 3
+			}).then(() =>
+			{
+				applet.wilson.setDraggables({
+					draggableArg: [0.5, 0.5],
+					draggableArg2: [-0.5, 0.5],
+				});
+
+				applet.wilsonUpdate.setUniforms({
+					draggableArg: [0.5, 0.5],
+					draggableArg2: [-0.5, 0.5],
+				});
+			});
+		});
+
+		return applet;
 	});
 }

@@ -42,13 +42,7 @@ export default function()
 		},
 	});
 
-
-
-	const outputCanvas = $("#newtons-method-canvas");
-
-	const applet = new NewtonsMethod({
-		canvas: outputCanvas,
+	new NewtonsMethod({
+		canvas: $("#newtons-method-canvas"),
 	});
-
-	applet.pauseWhenOffscreen();
 }

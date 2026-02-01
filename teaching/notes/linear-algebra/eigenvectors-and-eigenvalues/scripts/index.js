@@ -2,6 +2,7 @@ import { BarnsleyFern } from "/applets/barnsley-fern/scripts/class.js";
 import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -56,13 +57,18 @@ export default function()
 
 
 
-	const vectorFieldCanvas = $("#vector-field-canvas");
+	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({ canvas });
 
-	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(x - y, x + y)",
+				worldWidth: 2
+			});
+		});
 
-	vectorFieldApplet.run({
-		generatingCode: "(x - y, x + y)",
-		worldWidth: 2
+		return applet;
 	});
-	vectorFieldApplet.pauseWhenOffscreen();
 }

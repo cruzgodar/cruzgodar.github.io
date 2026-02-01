@@ -1,4 +1,5 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
@@ -230,50 +231,56 @@ export default function()
 	});
 
 
-
-	const outputCanvas = $("#vector-field-canvas");
-
-	const applet = new VectorField({ canvas: outputCanvas });
-
-	applet.loadPromise.then(() =>
+	
+	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
 	{
-		applet.run({
-			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
-			dt: .002,
-			worldWidth: 3
+		const applet = new VectorField({ canvas });
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
+				dt: .002,
+				worldWidth: 3
+			});
 		});
-		applet.pauseWhenOffscreen();
+
+		return applet;
 	});
 
 
 
-	const outputCanvas2 = $("#autonomous-system-canvas");
-
-	const applet2 = new VectorField({ canvas: outputCanvas2 });
-
-	applet2.loadPromise.then(() =>
+	createEmphemeralApplet($("#autonomous-system-canvas"), (canvas) =>
 	{
-		applet2.run({
-			generatingCode: "(y*y, 1.0 - x*x)",
-			dt: .002,
-			worldWidth: 4
+		const applet = new VectorField({ canvas });
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(y*y, 1.0 - x*x)",
+				dt: .002,
+				worldWidth: 4
+			});
 		});
-		applet2.pauseWhenOffscreen();
+
+		return applet;
 	});
 
 
 
-	const outputCanvas3 = $("#pendulum-canvas");
-
-	const applet3 = new VectorField({ canvas: outputCanvas3 });
-
-	applet3.loadPromise.then(() =>
+	createEmphemeralApplet($("#pendulum-canvas"), (canvas) =>
 	{
-		applet3.run({
-			generatingCode: "(y, -.5*y - sin(x))",
-			dt: .002,
-			worldWidth: 12
+		const applet = new VectorField({ canvas });
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(y, -.5*y - sin(x))",
+				dt: .002,
+				worldWidth: 12
+			});
 		});
-		applet3.pauseWhenOffscreen();
+
+		return applet;
 	});
 }

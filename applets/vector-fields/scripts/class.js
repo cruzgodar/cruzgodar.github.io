@@ -545,6 +545,11 @@ export class VectorField extends AnimationFrameApplet
 
 	drawFrame(timeElapsed)
 	{
+		if (this.destroyed)
+		{
+			return;
+		}
+		
 		this.wilsonUpdate.setUniforms({
 			dt: this.dt * timeElapsed / 6.944
 		});

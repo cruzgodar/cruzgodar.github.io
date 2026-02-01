@@ -181,8 +181,6 @@ export default function()
 	{
 		const applet = new VectorField({ canvas });
 
-		applet.allowFullscreenWithKeyboard = false;
-
 		applet.loadPromise.then(() =>
 		{
 			applet.run({
@@ -199,8 +197,6 @@ export default function()
 	createEmphemeralApplet($("#vectorField2-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
-
-		applet.allowFullscreenWithKeyboard = false;
 
 		applet.loadPromise.then(() =>
 		{
@@ -219,8 +215,6 @@ export default function()
 	createEmphemeralApplet($("#vectorField3-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
-
-		applet.allowFullscreenWithKeyboard = false;
 
 		applet.loadPromise.then(() =>
 		{

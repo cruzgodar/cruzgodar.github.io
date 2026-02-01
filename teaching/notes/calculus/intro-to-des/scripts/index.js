@@ -1,4 +1,5 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -102,14 +103,18 @@ export default function()
 
 
 
-	const outputCanvas = $("#vector-field-canvas");
+	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({ canvas });
 
-	const applet = new VectorField({ canvas: outputCanvas });
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(1.0, sin(y) / (x*x + 1.0))",
+				worldWidth: 8
+			});
+		});
 
-	applet.run({
-		generatingCode: "(1.0, sin(y) / (x*x + 1.0))",
-		worldWidth: 8
+		return applet;
 	});
-
-	applet.pauseWhenOffscreen();
 }

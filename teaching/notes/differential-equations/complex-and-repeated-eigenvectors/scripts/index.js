@@ -1,4 +1,5 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosPurple
@@ -42,15 +43,18 @@ export default function()
 
 
 
-	const outputCanvas = $("#vector-field-canvas");
-
-	const applet = new VectorField({ canvas: outputCanvas });
-
-	applet.loadPromise.then(() =>
+	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
 	{
-		applet.run({
-			generatingCode: "(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))",
+		const applet = new VectorField({ canvas });
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))",
+				worldWidth: 5
+			});
 		});
-		applet.pauseWhenOffscreen();
+
+		return applet;
 	});
 }
