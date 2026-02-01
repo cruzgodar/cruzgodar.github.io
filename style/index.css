@@ -2374,28 +2374,30 @@ img[src="/about/cover.webp"]
 
 
 
-.desmos-border, .desmos-container, .dcg-container
+:is(.desmos-border, .desmos-container, .dcg-container)
 {
-	width: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(60vh - 48px)) !important;
+	--w-offset: 8px;
+	--h-offset: 48px;
+	width: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset)), calc(60vh - var(--h-offset))) !important;
 }
 
-.desmos-border:not(.canvas-container), .desmos-container:not(.canvas-container), .dcg-container:not(.canvas-container)
+.notes-environment :is(.desmos-border, .desmos-container, .dcg-container)
 {
-	width: min(calc(var(--text-width) - 8px), calc(90vw - 8px)) !important;
-
-	height: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(60vh - 48px)) !important;
+	--w-offset: 20px;
+	--h-offset: 60px;
 }
 
-.notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
+:is(.desmos-border, .desmos-container, .dcg-container):not(.canvas-container)
 {
-	width: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(60vh - 60px)) !important;
+	width: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset))) !important;
+	height: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset)), calc(60vh - var(--h-offset))) !important;
 }
 
-.notes-environment .desmos-border:not(.canvas-container), .notes-environment .desmos-container:not(.canvas-container), .notes-environment .dcg-container:not(.canvas-container)
+/* Forces square aspect ratio that's still constrained  */
+.desmos-border.no-stretch, .desmos-border.no-stretch :is(.desmos-container, .dcg-container)
 {
-	width: min(calc(var(--text-width) - 20px), calc(90vw - 20px)) !important;
-
-	height: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(60vh - 60px)) !important;
+	width: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset)), calc(60vh - var(--h-offset))) !important;
+	height: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset)), calc(60vh - var(--h-offset))) !important;
 }
 
 

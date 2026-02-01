@@ -63,6 +63,7 @@ export class VectorField extends AnimationFrameApplet
 		canvas,
 		// draggables = {},
 		loopEdges = false,
+		transparency = false,
 	}) {
 		super(canvas);
 
@@ -110,13 +111,13 @@ export class VectorField extends AnimationFrameApplet
 						(v.x - dimAmount) * temporaryDimFactor,
 						v.y,
 						v.z,
-						1.0
+						${transparency ? "(v.x - dimAmount) * temporaryDimFactor" : "1.0"}
 					);
 					
 					return;
 				}
 				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 			}
 		`;
 
@@ -314,11 +315,11 @@ export class VectorField extends AnimationFrameApplet
 				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 			}
 
-			vec3 getPixel(vec2 uv)
+			vec4 getPixel(vec2 uv)
 			{
-				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
+				vec4 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0);
 
-				return hsvToRgb(vec3(v.y, v.z, v.x / maxBrightness));
+				return vec4(hsvToRgb(vec3(v.y, v.z, v.x / maxBrightness)), v.w);
 			}
 			
 			void main(void)
@@ -389,7 +390,7 @@ export class VectorField extends AnimationFrameApplet
 
 				numDistances++;
 				glsl += /* glsl */`
-					vec3 distance${numDistances} = ${getFloatGlsl(dimFactor)} * getPixel(
+					vec4 distance${numDistances} = ${getFloatGlsl(dimFactor)} * getPixel(
 						uv + vec2(
 							${getFloatGlsl(i)} * stepSize.x,
 							${getFloatGlsl(j)} * stepSize.y
@@ -400,7 +401,7 @@ export class VectorField extends AnimationFrameApplet
 		}
 
 		glsl += /* glsl */`
-			gl_FragColor = vec4(${getMaxGlslString("distance", numDistances)}, 1.0);
+			gl_FragColor = ${getMaxGlslString("distance", numDistances)};
 		`;
 
 		return glsl;

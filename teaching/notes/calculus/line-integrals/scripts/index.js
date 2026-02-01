@@ -1,6 +1,7 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
+	desmosGray,
 	desmosPurple,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -80,7 +81,53 @@ export default function()
 				{ latex: raw`B = [(f_1(a, b, c), f_2(a, b, c), f_3(a, b, c)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`\vector(A, A + \frac{s}{25}B)`, color: desmosPurple, secret: true },
 			]
-		}
+		},
+
+		conservativeVectorField1:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+			
+			expressions:
+			[
+				{ latex: raw`g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}`, color: desmosGray },
+				{ latex: raw`g_x(x, y) = \frac{d}{dx}(g(x, y))`, hidden: true },
+				{ latex: raw`g_y(x, y) = \frac{d}{dy}(g(x, y))`, hidden: true },
+
+				...getDesmosSlider({
+					expression: "n = 2",
+					min: 1,
+					max: 5,
+					step: 1,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "s = 1",
+					min: 0.5,
+					max: 2,
+					secret: false
+				}),
+
+				{ latex: raw`A = [(a, b, g(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`B = [(g_x(a, b), g_y(a, b), g_x(a, b)^2 + g_y(a, b)^2) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`\vector(A, A + \frac{s}{10}B)`, color: desmosPurple, secret: true },
+			]
+		},
+
+		conservativeVectorField2:
+		{
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+			
+			expressions:
+			[
+				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true },
+				{ latex: raw`c = [-5, -4, ..., 5]`, hidden: true, secret: true },
+			]
+		},
 	});
 
 
@@ -128,5 +175,21 @@ export default function()
 			worldWidth: 3
 		});
 		applet3.pauseWhenOffscreen();
+	});
+
+
+
+	const vectorFieldCanvas4 = $("#conservativeVectorField2-canvas");
+
+	const applet4 = new VectorField({ canvas: vectorFieldCanvas4, transparency: true });
+
+	applet4.loadPromise.then(() =>
+	{
+		applet4.run({
+			generatingCode: "(x, -y)",
+			dt: .002,
+			worldWidth: 3
+		});
+		applet4.pauseWhenOffscreen();
 	});
 }
