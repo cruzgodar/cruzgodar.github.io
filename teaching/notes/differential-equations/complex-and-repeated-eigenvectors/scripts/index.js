@@ -2,7 +2,8 @@ import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
-	desmosPurple
+	desmosPurple,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -11,32 +12,41 @@ export default function()
 	createDesmosGraphs({
 		vectorField:
 		{
-			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
-
+			bounds: { xmin: -8, xmax: 8, ymin: -8, ymax: 8 },
+						
 			expressions:
 			[
-				{ latex: raw`f(x_1, x_2) = [ x_1 + x_2, -2x_1 + 3x_2 ]` },
+				{ latex: raw`f_1(x, y) = x + y`, hidden: true },
+				{ latex: raw`f_2(x, y) = -2x + 3y`, hidden: true },
 
-				{ latex: raw`F(x_1, x_2) = \frac{1}{2.5} f(x_1, x_2)`, secret: true },
+				...getDesmosSlider({
+					expression: "n = 12",
+					min: 1,
+					max: 20,
+					step: 1,
+					secret: false
+				}),
 
-				{ latex: raw`z = -2.86`, secret: true },
-				{ latex: raw`k = .33`, secret: true },
+				...getDesmosSlider({
+					expression: "s = 1",
+					min: 0.5,
+					max: 2,
+					secret: false
+				}),
 
-				{ latex: raw`A(t) = \floor(t) - 10\floor(\frac{t}{10})`, hidden: true, secret: true },
-				{ latex: raw`B(t) = \floor(\frac{t}{10})`, hidden: true, secret: true },
-				{ latex: raw`M(x, y) = \frac{1}{\sqrt{(F(x, y)[1])^2 + (F(x, y)[2])^2}}`, hidden: true, secret: true },
-				{ latex: raw`R_1(x, y) = M(x, y)(F(x, y)[1]\cos(z) - F(x, y)[2]\sin(z))`, hidden: true, secret: true },
-				{ latex: raw`L_1(x, y) = M(x, y)(F(x, y)[1]\cos(z) + F(x, y)[2]\sin(z))`, hidden: true, secret: true },
-				{ latex: raw`R_2(x, y) = M(x, y)(F(x, y)[1]\sin(z) + F(x, y)[2]\cos(z))`, hidden: true, secret: true },
-				{ latex: raw`L_2(x, y) = M(x, y)(-F(x, y)[1]\sin(z) + F(x, y)[2]\cos(z))`, hidden: true, secret: true },
+				{ latex: raw`A = [(a, b) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`B = [(f_1(a, b), f_2(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`A + \frac{ts}{25}B`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
 
-				{ latex: raw`(A(t) - 10 + .1(t - \floor(t))F(A(t) - 10, B(t))[1], B(t) + .1(t - \floor(t))F(A(t) - 10, B(t))[2])`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1(t - \floor(t))F(A(t), B(t))[1], B(t) + .1(t - \floor(t))F(A(t), B(t))[2])`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`S = [\arctan(f_2(a, b), f_1(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`M = [\left|(f_2(a, b), f_1(a, b))\right| \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
+				{ latex: raw`L = \frac{M}{50}`, hidden: true, secret: true },
 
-				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))R_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))R_2(A(t) - 10, B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))R_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))R_2(A(t), B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))L_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))L_2(A(t) - 10, B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))L_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))L_2(A(t), B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`T_1 = -(.35\cos(S + 0.5), .35\sin(S + 0.5))`, hidden: true, secret: true },
+				{ latex: raw`T_2 = -(.35\cos(S - 0.5), .35\sin(S - 0.5))`, hidden: true, secret: true },
+				
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_1)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_2)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 	});
