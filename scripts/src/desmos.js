@@ -364,10 +364,11 @@ export function getDesmosPoint({
 	dragMode = "XY",
 	// "POINT", "OPEN", "CROSS"
 	style = "POINT",
-	secret = true
+	secret = true,
+	size = 9
 }) {
 	return [
-		{ latex: raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret },
+		{ latex: raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret, pointSize: size },
 	];
 }
 
@@ -388,7 +389,8 @@ export function getDesmosVector({
 	to,   // ["c", "d"]
 	color,
 	secret = true,
-	lineStyle = "SOLID"
+	lineStyle = "SOLID",
+	arrowSize = "0.35"
 }) {
 	uid++;
 
@@ -396,14 +398,14 @@ export function getDesmosVector({
 		{ latex: raw`((${from[0]}), (${from[1]})), ((${to[0]}), (${to[1]}))`, color, lines: true, points: false, secret, lineStyle },
 		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - (${from[1]}), ${to[0]} - (${from[0]}))`, secret },
 		{
-			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - .35\cos(s_{${uid}} + .5), (${to[1]}) - .35\sin(s_{${uid}} + .5))`,
+			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - ${arrowSize}\cos(s_{${uid}} + .5), (${to[1]}) - ${arrowSize}\sin(s_{${uid}} + .5))`,
 			color,
 			lines: true,
 			points: false,
 			secret
 		},
 		{
-			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - .35\cos(s_{${uid}} - .5), (${to[1]}) - .35\sin(s_{${uid}} - .5))`,
+			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - ${arrowSize}\cos(s_{${uid}} - .5), (${to[1]}) - ${arrowSize}\sin(s_{${uid}} - .5))`,
 			color,
 			lines: true,
 			points: false,

@@ -126,9 +126,37 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 ### exc "conservative vector fields"
 
-	1. Why does the field flow faster across lines spaced more closely together?
+	1. In the previous vector field, why is the flow faster across lines spaced more closely together?
 
-	2. Going back to $\vec{H} = \left< -y, x \right>$, does the 
+	2. Going back to $\vec{H} = \left< -y, x \right>$, how could you draw white lines through the field so that the flow was always orthogonal to them? Interpreting these as level curves of a function, so you think the field is conservative?
+
+	3. Integrate the field and check for yourself!
+
+	### solution
+
+	1. Since the closely-spaced lines are where the function is steepest, that's very literally where the magnitude of the field is largest!
+
+	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But this doesn't set well with me: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct.
+
+	3. We have
+	
+	$$
+		h(x, y) &= \int -y\,\partial x = -xy + c_1(y)
+
+		h(x, y) &= \int x\,\partial y = xy + c_2(x).
+	$$
+
+	There are no pure-$x$ or -$y$ terms, so we can remove the $c_1$ and $c_2$, but the disagreement on the mixed term isn't great. One of these wants $h(x, y) = -xy$ and one wants $h(x, y) = xy$, and there just isn't any reconciling the two. We can draw these curves on a graph and see that the field is very much not crossing orthogonally.
+
+	<div class="desmos-border no-stretch" style="position: relative">
+		<div id="conservativeVectorField3" class="desmos-container"></div>
+
+		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
+			<canvas id="conservativeVectorField3-canvas" style="width: 100%; height: 100%; border-radius: 16px; opacity: 0.95"></canvas>
+		</div>
+	</div>
+
+	There is an interesting subtlety worth noting here. Each partial integral produced a function satisfying one of the derivative conditions but not the other, so at each crossing, one of the two components of the field will match the gradient. For example, with $h(x, y) = xy$, the level curve $c = 1$ is the curve $y = \frac{1}{x}$. At the point $(1, 1)$, the gradient is $\left< 1, 1 \right>$, drawn as the upper-right vector, and we can see that although the flow doesn't follow that vector, the $y$-component still matches. That's true for any half-correct potential function we produce in this way, but what's unusual about this one is how the other candidate for a potential function that we produced was $h(x, y) = -xy$, whose level curves coincide with the other possible value of $h$. The $c = -1$ level curve of $h(x, y) = -xy$ is once again $y = \frac{1}{x}$, but this time, the gradient is $\left< -1, -1 \right>$ (the other white vector). Sure enough, the $x$-component of the field matches there, but not $y$.
 
 ###
 

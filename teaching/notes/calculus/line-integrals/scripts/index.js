@@ -6,7 +6,9 @@ import {
 	desmosGraphsDefaultState,
 	desmosGray,
 	desmosPurple,
-	getDesmosSlider
+	getDesmosPoint,
+	getDesmosSlider,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -135,6 +137,42 @@ export default function()
 				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 			]
 		},
+
+		conservativeVectorField3:
+		{
+			alwaysDark: true,
+			
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			options: { showResetButtonOnGraphpaper: false },
+			
+			expressions:
+			[
+				{ latex: raw`xy = c`, secret: true, color: desmosBlack },
+				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
+
+				...getDesmosPoint({
+					point: ["1", "1"],
+					color: desmosBlack,
+					dragMode: "NONE",
+					size: 12,
+				}),
+
+				...getDesmosVector({
+					from: ["1", "1"],
+					to: ["1.35", "1.35"],
+					color: desmosBlack,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["1", "1"],
+					to: ["0.65", "0.65"],
+					color: desmosBlack,
+					arrowSize: "0.1",
+				}),
+			]
+		},
 	});
 
 
@@ -224,6 +262,49 @@ export default function()
 	{
 		desmosGraphs.conservativeVectorField2.setState(
 			desmosGraphsDefaultState.conservativeVectorField2
+		);
+	}
+
+
+
+	const vectorFieldCanvas5 = $("#conservativeVectorField3-canvas");
+
+	const applet5 = new VectorField({
+		canvas: vectorFieldCanvas5,
+		transparency: true,
+		useFullscreenButton: false,
+		onDrawFrame: onDrawFrame5,
+		onReset: onReset5
+	});
+
+	applet5.allowFullscreenWithKeyboard = false;
+
+	applet5.loadPromise.then(() =>
+	{
+		applet5.run({
+			resolution: 500,
+			maxParticles: 3000,
+			generatingCode: "(-y * 0.35, x * 0.35)",
+			dt: .006,
+			worldWidth: 6
+		});
+		applet5.pauseWhenOffscreen();
+	});
+
+	function onDrawFrame5()
+	{
+		desmosGraphs.conservativeVectorField3.setMathBounds({
+			xmin: applet5.wilson.worldCenterX - applet5.wilson.worldWidth / 2,
+			xmax: applet5.wilson.worldCenterX + applet5.wilson.worldWidth / 2,
+			ymin: applet5.wilson.worldCenterY - applet5.wilson.worldHeight / 2,
+			ymax: applet5.wilson.worldCenterY + applet5.wilson.worldHeight / 2,
+		});
+	}
+
+	function onReset5()
+	{
+		desmosGraphs.conservativeVectorField3.setState(
+			desmosGraphsDefaultState.conservativeVectorField3
 		);
 	}
 }
