@@ -79,13 +79,6 @@ export function clearDesmosGraphs()
 	desmosGraphs = {};
 }
 
-let desmosData = {};
-
-export function setDesmosData(newGetDesmosData)
-{
-	desmosData = newGetDesmosData;
-}
-
 
 
 // Each entry in a Desmos data object is of the form
@@ -95,12 +88,14 @@ export function setDesmosData(newGetDesmosData)
 //
 // 	bounds: { left, right, bottom, top },
 //
-// 	options: extra options for the Desmos constructor, lik
-
+// 	options: extra options for the Desmos constructor
+//
 //  use3d: a boolean for whether to use the Desmos.Calculator3D class.
 // }
 
-export async function createDesmosGraphs(recreating = false)
+let desmosData = {};
+
+export async function createDesmosGraphs(desmosDataInitializer = desmosData, recreating = false)
 {
 	if (window.OFFLINE)
 	{
@@ -114,8 +109,11 @@ export async function createDesmosGraphs(recreating = false)
 		if (desmosGraphs[key]?.destroy)
 		{
 			desmosGraphs[key].destroy();
+			delete desmosGraphs[key];
 		}
 	}
+
+	desmosData = desmosDataInitializer;
 
 	const data = structuredClone(desmosData);
 
@@ -282,7 +280,7 @@ export async function recreateDesmosGraphs()
 	{
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
 
-		await createDesmosGraphs(true);
+		await createDesmosGraphs(desmosData);
 
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}

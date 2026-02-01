@@ -1,14 +1,13 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		antiderivative:
 		{
 			bounds: { xmin: -3, xmax: 3, ymin: -1, ymax: 5 },
@@ -21,6 +20,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

@@ -1,14 +1,13 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		eigenvectors:
 		{
 			bounds: { xmin: -5, xmax: 15, ymin: -5, ymax: 15 },
@@ -37,6 +36,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

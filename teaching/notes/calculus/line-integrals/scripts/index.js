@@ -2,14 +2,13 @@ import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
 	desmosPurple,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		vectorField:
 		{
 			bounds: { xmin: -8, xmax: 8, ymin: -8, ymax: 8 },
@@ -83,8 +82,6 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 
 
 

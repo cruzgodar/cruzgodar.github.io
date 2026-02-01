@@ -4,14 +4,13 @@ import {
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		levelCurves:
 		{
 			bounds: { xmin: -5, xmax: 25, ymin: -5, ymax: 25 },
@@ -51,6 +50,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

@@ -4,14 +4,13 @@ import {
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		intersectingRegion:
 		{
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
@@ -132,6 +131,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

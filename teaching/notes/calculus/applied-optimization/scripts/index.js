@@ -2,14 +2,13 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		walledGarden:
 		{
 			options: { showXAxis: false, showYAxis: false, showGrid: false },
@@ -81,6 +80,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

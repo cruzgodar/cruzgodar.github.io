@@ -1,11 +1,11 @@
 import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import {
+	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
 	getDesmosSlider,
-	recreateDesmosGraphs,
-	setDesmosData
+	recreateDesmosGraphs
 } from "/scripts/src/desmos.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { pageUrl, raw } from "/scripts/src/main.js";
@@ -39,7 +39,7 @@ const filenamesTex = {
 
 export default async function load()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		unitVectorsSpherical:
 		{
 			use3d: true,

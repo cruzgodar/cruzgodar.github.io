@@ -5,14 +5,13 @@ import {
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		lawOfCosines:
 		{
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
@@ -294,6 +293,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

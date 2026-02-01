@@ -1,14 +1,13 @@
 import {
 	createDesmosGraphs,
 	desmosBlack,
-	desmosBlue,
-	setDesmosData
+	desmosBlue
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		geometricSeries:
 		{
 			options: { showGrid: false, showXAxis: false, showYAxis: false },
@@ -32,6 +31,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

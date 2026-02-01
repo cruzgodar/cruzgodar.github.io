@@ -2,8 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -32,7 +31,7 @@ export default function()
 		derivatives.push(getDerivativeString(i));
 	}
 
-	setDesmosData({
+	createDesmosGraphs({
 		taylorSeries:
 		{
 			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
@@ -105,6 +104,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

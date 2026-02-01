@@ -3,14 +3,13 @@ import {
 	desmosBlue,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		circle:
 		{
 			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2 },
@@ -90,6 +89,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

@@ -2,14 +2,13 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		ftcPart1:
 		{
 			bounds: { xmin: -7, xmax: 10, ymin: -5, ymax: 12 },
@@ -56,6 +55,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

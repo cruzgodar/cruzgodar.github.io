@@ -1,13 +1,12 @@
 import {
 	createDesmosGraphs,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		relatedRates:
 		{
 			bounds: { xmin: -5, xmax: 45, ymin: -10, ymax: 40 },
@@ -19,6 +18,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

@@ -3,14 +3,13 @@ import {
 	desmosBlue,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		directionalDerivative:
 		{
 			use3d: true,
@@ -75,6 +74,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

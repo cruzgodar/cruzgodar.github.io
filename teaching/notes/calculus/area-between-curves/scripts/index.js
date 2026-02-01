@@ -3,14 +3,13 @@ import {
 	desmosBlue,
 	desmosOrange,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		areaBetweenCurves:
 		{
 			bounds: { xmin: -1, xmax: 2, ymin: -1, ymax: 2 },
@@ -111,6 +110,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

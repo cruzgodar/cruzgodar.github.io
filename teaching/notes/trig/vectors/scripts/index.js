@@ -6,14 +6,13 @@ import {
 	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		vectors:
 		{
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
@@ -348,6 +347,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

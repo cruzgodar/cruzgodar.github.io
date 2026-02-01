@@ -7,14 +7,13 @@ import {
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
-	getDesmosSlider,
-	setDesmosData
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		riemannSum:
 		{
 			bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6 },
@@ -494,6 +493,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

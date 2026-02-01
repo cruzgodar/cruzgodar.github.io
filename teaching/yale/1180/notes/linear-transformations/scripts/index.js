@@ -5,13 +5,12 @@ import {
 	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		"1dLinearTransformation":
 		{
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
@@ -66,6 +65,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

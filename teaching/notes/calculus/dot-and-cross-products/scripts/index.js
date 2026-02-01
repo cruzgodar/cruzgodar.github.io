@@ -8,14 +8,13 @@ import {
 	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		angleBetweenVectors:
 		{
 			use3d: true,
@@ -381,6 +380,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

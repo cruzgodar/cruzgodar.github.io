@@ -4,13 +4,12 @@ import {
 	desmosPurple,
 	getDesmosPoint,
 	getDesmosSlider,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		rotationMatrix:
 		{
 			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
@@ -33,6 +32,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

@@ -3,14 +3,13 @@ import {
 	desmosBlue,
 	desmosOrange,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		saddlePoint:
 		{
 			use3d: true,
@@ -68,6 +67,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

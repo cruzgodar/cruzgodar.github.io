@@ -3,14 +3,13 @@ import {
 	desmosBlack,
 	desmosBlue,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		lineArcLength:
 		{
 			bounds: { xmin: -2, xmax: 4, ymin: 0, ymax: 6 },
@@ -131,6 +130,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

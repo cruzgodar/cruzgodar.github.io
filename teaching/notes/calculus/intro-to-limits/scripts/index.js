@@ -1,14 +1,13 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		velocityExample:
 		{
 			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
@@ -149,6 +148,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

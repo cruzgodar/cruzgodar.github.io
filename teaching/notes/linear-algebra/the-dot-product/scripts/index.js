@@ -4,13 +4,12 @@ import {
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		vectorSubtraction:
 		{
 			bounds: { xmin: -4, xmax: 4, ymin: -3, ymax: 5 },
@@ -51,6 +50,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

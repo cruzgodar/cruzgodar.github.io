@@ -4,14 +4,13 @@ import {
 	desmosBlue,
 	desmosOrange,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		testGraph:
 		{
 			bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
@@ -86,6 +85,4 @@ export default function()
 			]
 		}
 	});
-
-	createDesmosGraphs();
 }

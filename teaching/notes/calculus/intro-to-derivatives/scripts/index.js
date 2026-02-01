@@ -1,14 +1,13 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
-	desmosPurple,
-	setDesmosData
+	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		secantLines:
 		{
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -1.5, ymax: 3.5 },
@@ -90,6 +89,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

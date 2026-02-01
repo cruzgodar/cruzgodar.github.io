@@ -2,14 +2,13 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
-	desmosRed,
-	setDesmosData
+	desmosRed
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		alternatingHarmonicSeries:
 		{
 			bounds: { xmin: .9, xmax: 2.1, ymin: -.1, ymax: 1.1 },
@@ -91,6 +90,4 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 }

@@ -8,14 +8,13 @@ import {
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
-	getDesmosVector,
-	setDesmosData
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()
 {
-	setDesmosData({
+	createDesmosGraphs({
 		areaScaling:
 		{
 			bounds: { xmin: -1, xmax: 8, ymin: -1, ymax: 8 },
@@ -34,8 +33,6 @@ export default function()
 			]
 		},
 	});
-
-	createDesmosGraphs();
 
 
 	const h3GeometryCanvas = $("#h3-geometry-canvas");
