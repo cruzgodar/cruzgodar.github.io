@@ -254,7 +254,7 @@ export default function()
 
 		function onDrawFrame()
 		{
-			desmosGraphs.conservativeVectorField3.setMathBounds({
+			desmosGraphs.conservativeVectorField2.setMathBounds({
 				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
 				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
 				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
