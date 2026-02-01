@@ -220,7 +220,7 @@ export class VectorField extends AnimationFrameApplet
 		maxParticles = 6000,
 		dt = .00375,
 		lifetime = 150,
-		worldWidth = 2 * Math.PI,
+		worldWidth = 6,
 		worldCenterX = 0,
 		worldCenterY = 0,
 		particleDilation = undefined,

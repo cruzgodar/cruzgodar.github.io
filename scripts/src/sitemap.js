@@ -770,7 +770,7 @@ export const sitemap =
 			"/teaching/notes/calculus/boundary-optimization",
 			"/teaching/notes/calculus/lagrange-multipliers",
 			"/teaching/notes/calculus/double-integrals",
-			"/teaching/notes/calculus/line-integrals"
+			"/teaching/notes/calculus/vector-fields"
 		]
 	},
 		
@@ -1351,9 +1351,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/line-integrals":
+	"/teaching/notes/calculus/vector-fields":
 	{
-		"title": "Section 6.1: Line Integrals",
+		"title": "Section 6.1: Vector Fields",
 		
 		"parent": "/teaching/notes/calculus",
 		
