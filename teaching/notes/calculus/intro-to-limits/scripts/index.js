@@ -2,158 +2,152 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosPurple,
-	setGetDesmosData
+	setDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setGetDesmosData(() =>
-	{
-		const data =
+	setDesmosData({
+		velocityExample:
 		{
-			velocityExample:
-			{
-				bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
+			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
 
-				expressions:
-				[
-					{ latex: raw`s(t) = 2t`, color: desmosPurple },
-					{ latex: raw`v(t) = 2`, color: desmosBlue },
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`s(t) = 2t`, color: desmosPurple },
+				{ latex: raw`v(t) = 2`, color: desmosBlue },
+			]
+		},
 
 
 
-			secantLines:
-			{
-				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
+		secantLines:
+		{
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
-				expressions:
-				[
-					{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
-					{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
-					{ latex: raw`b = 1`, sliderBounds: { min: -2, max: 2 } },
-					{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
-					{ latex: raw`(b, f(b))`, color: desmosBlue, secret: true },
-					{ latex: raw`y - f(a) = \frac{f(b) - f(a)}{b - a}(x - a)`, color: desmosBlue, secret: true },
-				]
-			},
-
-
-
-			tangentLines:
-			{
-				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
-
-				expressions:
-				[
-					{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
-					{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
-					{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
-					{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true },
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
+				{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
+				{ latex: raw`b = 1`, sliderBounds: { min: -2, max: 2 } },
+				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
+				{ latex: raw`(b, f(b))`, color: desmosBlue, secret: true },
+				{ latex: raw`y - f(a) = \frac{f(b) - f(a)}{b - a}(x - a)`, color: desmosBlue, secret: true },
+			]
+		},
 
 
 
-			tangentLines2:
-			{
-				bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
+		tangentLines:
+		{
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
-				expressions:
-				[
-					{ latex: raw`f(t) = t^2`, color: desmosPurple, hidden: true },
-					{ latex: raw`g(h) = \frac{f(h) - f(0)}{h - 0}`, color: desmosBlue },
-
-					{ latex: raw`(0, f'(0))`, color: desmosBlue, pointStyle: "OPEN", secret: true },
-				]
-			},
-
-
-
-			limitExample:
-			{
-				bounds: { xmin: -20, xmax: 20, ymin: -2, ymax: 2 },
-
-				expressions:
-				[
-					{ latex: raw`f(x) = \frac{\sin(x)}{x}`, color: desmosPurple },
-					{ latex: raw`(0, 1)`, color: desmosPurple, pointStyle: "OPEN" },
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`f(t) = 2 - t^2`, color: desmosPurple },
+				{ latex: raw`a = 0`, sliderBounds: { min: -2, max: 2 } },
+				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
+				{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true },
+			]
+		},
 
 
 
-			limitExample2:
-			{
-				bounds: { xmin: -3, xmax: 3, ymin: -10, ymax: 10 },
+		tangentLines2:
+		{
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
-				expressions:
-				[
-					{ latex: raw`g(x) = x^3 - x`, color: desmosPurple, secret: true, hidden: true },
-					{ latex: raw`g(x)`, color: desmosPurple },
-					{ latex: raw`(1, 0)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
-					{ latex: raw`(1, 2)`, color: desmosPurple, secret: true },
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`f(t) = t^2`, color: desmosPurple, hidden: true },
+				{ latex: raw`g(h) = \frac{f(h) - f(0)}{h - 0}`, color: desmosBlue },
 
-
-
-			dneLimit:
-			{
-				bounds: { xmin: -.5, xmax: .5, ymin: -1.5, ymax: 1.5 },
-
-				expressions:
-				[
-					{ latex: raw`f(x) = \sin(\frac{1}{x})`, color: desmosPurple }
-				]
-			},
+				{ latex: raw`(0, f'(0))`, color: desmosBlue, pointStyle: "OPEN", secret: true },
+			]
+		},
 
 
 
-			dneLimit2:
-			{
-				bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 2 },
+		limitExample:
+		{
+			bounds: { xmin: -20, xmax: 20, ymin: -2, ymax: 2 },
 
-				expressions:
-				[
-					{ latex: raw`f(x) = \frac{\left|x - 2\right|}{x - 2}`, color: desmosPurple, secret: true, hidden: true },
-					{ latex: raw`f(x)`, color: desmosPurple },
-					{ latex: raw`(2, -1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
-					{ latex: raw`(2, 1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`f(x) = \frac{\sin(x)}{x}`, color: desmosPurple },
+				{ latex: raw`(0, 1)`, color: desmosPurple, pointStyle: "OPEN" },
+			]
+		},
 
 
 
-			infiniteLimit:
-			{
-				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+		limitExample2:
+		{
+			bounds: { xmin: -3, xmax: 3, ymin: -10, ymax: 10 },
 
-				expressions:
-				[
-					{ latex: raw`f(x) = \frac{1}{x^2}`, color: desmosPurple }
-				]
-			},
+			expressions:
+			[
+				{ latex: raw`g(x) = x^3 - x`, color: desmosPurple, secret: true, hidden: true },
+				{ latex: raw`g(x)`, color: desmosPurple },
+				{ latex: raw`(1, 0)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(1, 2)`, color: desmosPurple, secret: true },
+			]
+		},
 
 
 
-			complicatedLimit:
-			{
-				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+		dneLimit:
+		{
+			bounds: { xmin: -.5, xmax: .5, ymin: -1.5, ymax: 1.5 },
 
-				expressions:
-				[
-					{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: false, hidden: true },
-					{ latex: raw`f(x)`, color: desmosPurple },
-					{ latex: raw`(-3, -1)`, color: desmosPurple, secret: true },
-					{ latex: raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
-				]
-			},
-		};
+			expressions:
+			[
+				{ latex: raw`f(x) = \sin(\frac{1}{x})`, color: desmosPurple }
+			]
+		},
 
-		return data;
+
+
+		dneLimit2:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 2 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \frac{\left|x - 2\right|}{x - 2}`, color: desmosPurple, secret: true, hidden: true },
+				{ latex: raw`f(x)`, color: desmosPurple },
+				{ latex: raw`(2, -1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(2, 1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+			]
+		},
+
+
+
+		infiniteLimit:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \frac{1}{x^2}`, color: desmosPurple }
+			]
+		},
+
+
+
+		complicatedLimit:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: false, hidden: true },
+				{ latex: raw`f(x)`, color: desmosPurple },
+				{ latex: raw`(-3, -1)`, color: desmosPurple, secret: true },
+				{ latex: raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+			]
+		},
 	});
 
 	createDesmosGraphs();

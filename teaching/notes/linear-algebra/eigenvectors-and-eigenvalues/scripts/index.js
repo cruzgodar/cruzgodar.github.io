@@ -3,42 +3,36 @@ import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.j
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosOrange,
-    desmosPurple,
-    desmosRed,
-    getDesmosVector,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosOrange,
+	desmosPurple,
+	desmosRed,
+	getDesmosVector,
+	setDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()
 {
-	setGetDesmosData(() =>
-	{
-		const data =
+	setDesmosData({
+		areaScaling:
 		{
-			areaScaling:
-			{
-				bounds: { xmin: -1, xmax: 8, ymin: -1, ymax: 8 },
+			bounds: { xmin: -1, xmax: 8, ymin: -1, ymax: 8 },
 
-				expressions:
-				[
-					...getDesmosVector({ from: [0, 0], to: [1, 1], color: desmosPurple }),
-					...getDesmosVector({ from: [0, 0], to: [2, 1], color: desmosBlue }),
-					...getDesmosVector({ from: [1, 1], to: [3, 2], color: desmosBlue }),
-					...getDesmosVector({ from: [2, 1], to: [3, 2], color: desmosPurple }),
+			expressions:
+			[
+				...getDesmosVector({ from: [0, 0], to: [1, 1], color: desmosPurple }),
+				...getDesmosVector({ from: [0, 0], to: [2, 1], color: desmosBlue }),
+				...getDesmosVector({ from: [1, 1], to: [3, 2], color: desmosBlue }),
+				...getDesmosVector({ from: [2, 1], to: [3, 2], color: desmosPurple }),
 
-					...getDesmosVector({ from: [0, 0], to: [3, 3], color: desmosRed }),
-					...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosOrange }),
-					...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosOrange }),
-					...getDesmosVector({ from: [4, 2], to: [7, 5], color: desmosRed }),
-				]
-			},
-		};
-
-		return data;
+				...getDesmosVector({ from: [0, 0], to: [3, 3], color: desmosRed }),
+				...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosOrange }),
+				...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosOrange }),
+				...getDesmosVector({ from: [4, 2], to: [7, 5], color: desmosRed }),
+			]
+		},
 	});
 
 	createDesmosGraphs();

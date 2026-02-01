@@ -3,30 +3,74 @@ import { loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 
-// These are hsv with varying hue, 75% saturation, and 80% value.
-export let desmosPurple = "#7f32cc";
-export let desmosBlue = "#327fcc";
-export let desmosRed = "#cc3232";
-export let desmosOrange = "#cc7f32";
-export const desmosBlack = "#000000";
+export const desmosPurple = "_desmosPurple";
+export const desmosBlue = "_desmosBlue";
+export const desmosRed = "_desmosRed";
+export const desmosOrange = "_desmosOrange";
+export const desmosBlack = "_desmosBlack";
+export const desmosGray = "_desmosGray";
 
-// 3d graphs don't invert graph colors in invert mode.
-export const desmosPurple3d = "#7f32cc";
-export const desmosBlue3d = "#327fcc";
-export const desmosRed3d = "#cc3232";
-export const desmosOrange3d = "#cc7f32";
-export const desmosGray3d = "#777777";
+const functionsForColors = {
+	[desmosPurple]: (is3d) =>
+	{
+		if (is3d)
+		{
+			return "#7f32cc";
+		}
+		
+		return siteSettings.darkTheme ? "#66cc00" : "#7f32cc";
+	},
 
+	[desmosBlue]: (is3d) =>
+	{
+		if (is3d)
+		{
+			return "#327fcc";
+		}
+		
+		return siteSettings.darkTheme ? "#cc6600" : "#327fcc";
+	},
 
-function updateDesmosColors()
-{
-	// In dark mode, we invert the hude (since desmos will invert it back)
-	// and use 100% saturation.
-	desmosPurple = siteSettings.darkTheme ? "#66cc00" : "#7f32cc";
-	desmosBlue = siteSettings.darkTheme ? "#cc6600" : "#327fcc";
-	desmosRed = siteSettings.darkTheme ? "#00cccc" : "#cc3232";
-	desmosOrange = siteSettings.darkTheme ? "#0066cc" : "#cc7f32";
-}
+	[desmosRed]: (is3d) =>
+	{
+		if (is3d)
+		{
+			return "#cc3232";
+		}
+		
+		return siteSettings.darkTheme ? "#00cccc" : "#cc3232";
+	},
+
+	[desmosOrange]: (is3d) =>
+	{
+		if (is3d)
+		{
+			return "#cc7f32";
+		}
+		
+		return siteSettings.darkTheme ? "#0066cc" : "#cc7f32";
+	},
+
+	[desmosBlack]: (is3d) =>
+	{
+		if (is3d)
+		{
+			throw new Error("desmosBlack is not a valid color for 3d graphs");
+		}
+		
+		return "#000000";
+	},
+
+	[desmosGray]: (is3d) =>
+	{
+		if (is3d)
+		{
+			return "#777777";
+		}
+		
+		throw new Error("desmosGray is not a valid color for 2d graphs");
+	}
+};
 
 export let desmosGraphs = {};
 
@@ -35,11 +79,11 @@ export function clearDesmosGraphs()
 	desmosGraphs = {};
 }
 
-let getDesmosData = () => { return {}; };
+let desmosData = {};
 
-export function setGetDesmosData(newGetDesmosData)
+export function setDesmosData(newGetDesmosData)
 {
-	getDesmosData = newGetDesmosData;
+	desmosData = newGetDesmosData;
 }
 
 
@@ -51,8 +95,7 @@ export function setGetDesmosData(newGetDesmosData)
 //
 // 	bounds: { left, right, bottom, top },
 //
-// 	options: extra options for the Desmos constructor, like
-//  showGrid, showXAxis, etc.
+// 	options: extra options for the Desmos constructor, lik
 
 //  use3d: a boolean for whether to use the Desmos.Calculator3D class.
 // }
@@ -74,18 +117,19 @@ export async function createDesmosGraphs(recreating = false)
 		}
 	}
 
-	desmosGraphs = {};
-
-	updateDesmosColors();
-
-	const data = getDesmosData();
+	const data = structuredClone(desmosData);
 
 	for (const key in data)
 	{
-		const replaceLineWidth = !data[key].use3d;
+		const is3d = data[key].use3d;
 
 		for (const expression of data[key].expressions)
 		{
+			if (expression.color)
+			{
+				expression.color = functionsForColors[expression.color](is3d);
+			}
+
 			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
 			expression.latex = expression.latex.replace(/\)/g, raw`\right)`);
 
@@ -95,7 +139,7 @@ export async function createDesmosGraphs(recreating = false)
 			expression.latex = expression.latex.replace(/([^\\left])\\\{/g, (match, $1) => raw`${$1}\left\{`);
 			expression.latex = expression.latex.replace(/([^\\right])\\\}/g, (match, $1) => raw`${$1}\right\}`);
 
-			if (replaceLineWidth)
+			if (!is3d)
 			{
 				expression.lineWidth ??= 3.5;
 			}
@@ -129,18 +173,16 @@ export async function createDesmosGraphs(recreating = false)
 
 			expressions: anyNonSecretExpressions,
 
-			colors: data[element.id].use3d ? {
-				PURPLE: desmosPurple3d,
-				BLUE: desmosBlue3d,
-				RED: desmosRed3d,
-				ORANGE: desmosOrange3d,
-				BLACK: desmosBlack,
-			} : {
-				PURPLE: desmosPurple,
-				BLUE: desmosBlue,
-				RED: desmosRed,
-				ORANGE: desmosOrange,
-				BLACK: desmosBlack,
+			colors: {
+				PURPLE: functionsForColors[desmosPurple](data[element.id].use3d),
+				BLUE: functionsForColors[desmosBlue](data[element.id].use3d),
+				RED: functionsForColors[desmosRed](data[element.id].use3d),
+				ORANGE: functionsForColors[desmosOrange](data[element.id].use3d),
+				...(
+					data[element.id].use3d
+						? { BLACK: functionsForColors[desmosGray](data[element.id].use3d) }
+						: { BLACK: functionsForColors[desmosBlack](data[element.id].use3d) }
+				)
 			},
 
 			...(data[element.id].options ?? {})

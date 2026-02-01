@@ -1,29 +1,23 @@
 import {
 	createDesmosGraphs,
 	desmosPurple,
-	setGetDesmosData
+	setDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setGetDesmosData(() =>
-	{
-		const data =
+	setDesmosData({
+		relatedRates:
 		{
-			relatedRates:
-			{
-				bounds: { xmin: -5, xmax: 45, ymin: -10, ymax: 40 },
+			bounds: { xmin: -5, xmax: 45, ymin: -10, ymax: 40 },
 
-				expressions:
-				[
-					{ latex: raw`(0, 0), (10t, 30), (10t, 0), (0, 0)`, color: desmosPurple, lines: true },
-					{ latex: raw`t = 4` },
-				]
-			},
-		};
-
-		return data;
+			expressions:
+			[
+				{ latex: raw`(0, 0), (10t, 30), (10t, 0), (0, 0)`, color: desmosPurple, lines: true },
+				{ latex: raw`t = 4` },
+			]
+		},
 	});
 
 	createDesmosGraphs();

@@ -3,60 +3,54 @@ import {
 	desmosBlue,
 	desmosPurple,
 	desmosRed,
-	setGetDesmosData
+	setDesmosData
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
-	setGetDesmosData(() =>
-	{
-		const data =
+	setDesmosData({
+		limitExample:
 		{
-			limitExample:
-			{
-				bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
-				expressions:
-				[
-					{ latex: raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
-					{ latex: raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
-				]
+			expressions:
+			[
+				{ latex: raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
+				{ latex: raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
+			]
+		},
+
+
+
+		limitExample2:
+		{
+			bounds: { xmin: 0, xmax: 8, ymin: -3, ymax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`f(t) = \sqrt{t - 2}`, color: desmosPurple },
+			]
+		},
+
+
+
+		squeezeTheorem:
+		{
+			bounds: {
+				xmin: -25 * Math.PI / 2,
+				xmax: 25 * Math.PI / 2,
+				ymin: -25 * Math.PI / 2,
+				ymax: 25 * Math.PI / 2
 			},
 
-
-
-			limitExample2:
-			{
-				bounds: { xmin: 0, xmax: 8, ymin: -3, ymax: 5 },
-
-				expressions:
-				[
-					{ latex: raw`f(t) = \sqrt{t - 2}`, color: desmosPurple },
-				]
-			},
-
-
-
-			squeezeTheorem:
-			{
-				bounds: {
-					xmin: -25 * Math.PI / 2,
-					xmax: 25 * Math.PI / 2,
-					ymin: -25 * Math.PI / 2,
-					ymax: 25 * Math.PI / 2
-				},
-
-				expressions:
-				[
-					{ latex: raw`f(x) = -\left|x\right|`, color: desmosBlue },
-					{ latex: raw`g(x) = x\sin(x)`, color: desmosPurple },
-					{ latex: raw`h(x) = \left|x\right|`, color: desmosRed },
-				]
-			},
-		};
-
-		return data;
+			expressions:
+			[
+				{ latex: raw`f(x) = -\left|x\right|`, color: desmosBlue },
+				{ latex: raw`g(x) = x\sin(x)`, color: desmosPurple },
+				{ latex: raw`h(x) = \left|x\right|`, color: desmosRed },
+			]
+		},
 	});
 
 	createDesmosGraphs();
