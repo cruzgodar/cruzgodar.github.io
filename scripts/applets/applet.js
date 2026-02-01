@@ -37,6 +37,7 @@ export function clearCurrentlyLoadedApplets()
 
 export class Applet
 {
+	destroyed = false;
 	canvas;
 	wilson;
 	wilsonForFullscreen;
@@ -83,6 +84,13 @@ export class Applet
 
 	destroy()
 	{
+		if (this.destroyed)
+		{
+			return;
+		}
+		
+		this.destroyed = true;
+
 		this.animationPaused = true;
 
 		for (const worker of this.workers)
@@ -612,6 +620,49 @@ export class Applet
 
 		canvas.remove();
 	}
+}
+
+
+
+// Creates an applet with the given function (which should return an applet),
+// destroys it when the user scrolls away from it, and recreates it when they
+// scroll back into it. For WebGL contexts, this requires the canvas to be
+// replaced with a new one, so the create method needs to take a canvas as input.
+export function createEmphemeralApplet(canvas, create)
+{
+	let applet;
+
+	const onScroll = () =>
+	{
+		const rect = canvas.getBoundingClientRect();
+		const top = rect.top;
+		const height = rect.height;
+
+		if (top >= -height && top < window.innerHeight)
+		{
+			if (!applet || applet?.destroyed)
+			{
+				applet = create(canvas);
+			}
+		}
+
+		else
+		{
+			if (applet && !applet.destroyed)
+			{
+				canvas = applet.wilson.replaceCanvas();
+				applet.destroy();
+			}
+		}
+	};
+
+	addTemporaryListener({
+		object: window,
+		event: "scroll",
+		callback: onScroll
+	});
+
+	onScroll();
 }
 
 

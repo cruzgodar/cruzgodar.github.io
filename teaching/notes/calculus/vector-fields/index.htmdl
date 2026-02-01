@@ -124,7 +124,7 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 	1. In the previous vector field, why is the flow faster across lines spaced more closely together?
 
-	2. Going back to $\vec{H} = \left< -y, x \right>$, how could you draw white lines through the field so that the flow was always orthogonal to them? Interpreting these as level curves of a function, so you think the field is conservative?
+	2. Going back to $\vec{H} = \left< -y, x \right>$, how could you draw white lines through the field so that the flow was always orthogonal to them? Interpreting these as level curves of a function, do you think the field is conservative?
 
 	3. Integrate the field and check for yourself!
 

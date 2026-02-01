@@ -1,9 +1,9 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosGraphs,
-	desmosGraphsDefaultState,
 	desmosGray,
 	desmosPurple,
 	getDesmosPoint,
@@ -177,134 +177,134 @@ export default function()
 
 
 
-	const vectorFieldCanvas = $("#vectorField-canvas");
-
-	const applet = new VectorField({ canvas: vectorFieldCanvas });
-
-	applet.loadPromise.then(() =>
+	createEmphemeralApplet($("#vectorField-canvas"), (canvas) =>
 	{
-		applet.run({
-			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
-			worldWidth: 5
+		const applet = new VectorField({ canvas });
+
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
+				worldWidth: 5
+			});
 		});
-		applet.pauseWhenOffscreen();
+
+		return applet;
 	});
 
 
 
-	const vectorFieldCanvas2 = $("#vectorField2-canvas");
-
-	const applet2 = new VectorField({ canvas: vectorFieldCanvas2 });
-
-	applet2.loadPromise.then(() =>
+	createEmphemeralApplet($("#vectorField2-canvas"), (canvas) =>
 	{
-		applet2.run({
-			generatingCode: "(x, -y)",
-			dt: .002,
-			worldWidth: 3
+		const applet = new VectorField({ canvas });
+
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(x, -y)",
+				dt: .002,
+				worldWidth: 3
+			});
 		});
-		applet2.pauseWhenOffscreen();
+
+		return applet;
 	});
 
 
 
-	const vectorFieldCanvas3 = $("#vectorField3-canvas");
-
-	const applet3 = new VectorField({ canvas: vectorFieldCanvas3 });
-
-	applet3.loadPromise.then(() =>
+	createEmphemeralApplet($("#vectorField3-canvas"), (canvas) =>
 	{
-		applet3.run({
-			generatingCode: "(-y, x)",
-			dt: .002,
-			worldWidth: 3
+		const applet = new VectorField({ canvas });
+
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(-y, x)",
+				dt: .002,
+				worldWidth: 3
+			});
 		});
-		applet3.pauseWhenOffscreen();
+
+		return applet;
 	});
 
 
 
-	const vectorFieldCanvas4 = $("#conservativeVectorField2-canvas");
-
-	const applet4 = new VectorField({
-		canvas: vectorFieldCanvas4,
-		transparency: true,
-		useFullscreenButton: false,
-		onDrawFrame: onDrawFrame4,
-		onReset: onReset4
-	});
-
-	applet4.allowFullscreenWithKeyboard = false;
-
-	applet4.loadPromise.then(() =>
+	createEmphemeralApplet($("#conservativeVectorField2-canvas"), (canvas) =>
 	{
-		applet4.run({
-			resolution: 500,
-			maxParticles: 3000,
-			generatingCode: "(x * 0.35, -y * 0.35)",
-			dt: .006,
-			worldWidth: 6
+		const applet = new VectorField({
+			canvas,
+			transparency: true,
+			useFullscreenButton: false,
+			onDrawFrame,
 		});
-		applet4.pauseWhenOffscreen();
-	});
 
-	function onDrawFrame4()
-	{
-		desmosGraphs.conservativeVectorField2.setMathBounds({
-			xmin: applet4.wilson.worldCenterX - applet4.wilson.worldWidth / 2,
-			xmax: applet4.wilson.worldCenterX + applet4.wilson.worldWidth / 2,
-			ymin: applet4.wilson.worldCenterY - applet4.wilson.worldHeight / 2,
-			ymax: applet4.wilson.worldCenterY + applet4.wilson.worldHeight / 2,
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				resolution: 500,
+				maxParticles: 3000,
+				generatingCode: "(x * 0.35, -y * 0.35)",
+				dt: .006,
+				worldWidth: 6
+			});
 		});
-	}
 
-	function onReset4()
-	{
-		desmosGraphs.conservativeVectorField2.setState(
-			desmosGraphsDefaultState.conservativeVectorField2
-		);
-	}
+		function onDrawFrame()
+		{
+			desmosGraphs.conservativeVectorField3.setMathBounds({
+				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
+				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
+				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
+				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			});
+		}
 
-
-
-	const vectorFieldCanvas5 = $("#conservativeVectorField3-canvas");
-
-	const applet5 = new VectorField({
-		canvas: vectorFieldCanvas5,
-		transparency: true,
-		useFullscreenButton: false,
-		onDrawFrame: onDrawFrame5,
-		onReset: onReset5
+		return applet;
 	});
+	
 
-	applet5.allowFullscreenWithKeyboard = false;
 
-	applet5.loadPromise.then(() =>
+	createEmphemeralApplet($("#conservativeVectorField3-canvas"), (canvas) =>
 	{
-		applet5.run({
-			resolution: 500,
-			maxParticles: 3000,
-			generatingCode: "(-y * 0.35, x * 0.35)",
-			dt: .006,
-			worldWidth: 6
+		const applet = new VectorField({
+			canvas,
+			transparency: true,
+			useFullscreenButton: false,
+			onDrawFrame,
 		});
-		applet5.pauseWhenOffscreen();
+
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				resolution: 500,
+				maxParticles: 3000,
+				generatingCode: "(-y * 0.35, x * 0.35)",
+				dt: .006,
+				worldWidth: 6
+			});
+		});
+
+		function onDrawFrame()
+		{
+			desmosGraphs.conservativeVectorField3.setMathBounds({
+				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
+				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
+				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
+				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			});
+		}
+
+		return applet;
 	});
-
-	function onDrawFrame5()
-	{
-		desmosGraphs.conservativeVectorField3.setMathBounds({
-			xmin: applet5.wilson.worldCenterX - applet5.wilson.worldWidth / 2,
-			xmax: applet5.wilson.worldCenterX + applet5.wilson.worldWidth / 2,
-			ymin: applet5.wilson.worldCenterY - applet5.wilson.worldHeight / 2,
-			ymax: applet5.wilson.worldCenterY + applet5.wilson.worldHeight / 2,
-		});
-	}
-
-	function onReset5()
-	{
-		desmosGraphs.conservativeVectorField3.setState(
-			desmosGraphsDefaultState.conservativeVectorField3
-		);
-	}
 }
