@@ -52,7 +52,7 @@ function isValidFile(file)
 
 	const lastSlashIndex = file.lastIndexOf("/") + 1;
 	const end = file.slice(lastSlashIndex);
-	const index = end.indexOf(".");
+	const index = end.lastIndexOf(".");
 
 	if (index <= 0)
 	{

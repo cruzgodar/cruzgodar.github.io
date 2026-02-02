@@ -3,7 +3,8 @@ import {
 	desmosBlue,
 	desmosOrange,
 	desmosPurple,
-	desmosRed
+	desmosRed,
+	getDesmosPoint
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -66,20 +67,26 @@ export default function()
 				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple },
 			]
 		},
-
+	
 		bestFitLine:
 		{
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
 
 			expressions:
 			[
-				{
-					type: "table",
-					columms: [
-						{ latex: raw`x_i`, color: desmosPurple, values: [1, 2, 4] },
-						{ latex: raw`y_i`, color: desmosPurple, values: [0, 3, 3] },
-					]
-				},
+				{ latex: raw`X = [1, 2, p]` },
+				{ latex: raw`Y = [0, 3, q]` },
+				...getDesmosPoint({
+					point: ["p", "q"],
+					color: desmosRed,
+					dragMode: "XY",
+					size: 12
+				}),
+				{ latex: raw`p = 4`, secret: true },
+				{ latex: raw`q = 3`, secret: true },
+				{ latex: raw`I = [1, 2, ..., \length(X) - 1]`, secret: true },
+				{ latex: raw`(X[I], Y[I])`, color: desmosPurple, pointSize: 12, secret: true },
+				{ latex: raw`Y \sim mX + b`, color: desmosBlue },
 			]
 		}
 	});

@@ -399,15 +399,19 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 
 	and $E_{mm} > 0$.
 
-	Visually, the line does a good job of approximating these points! Drag the points around to see how the best-fit line changes.
+	Visually, the line does a good job of approximating these points! Drag the red point around to see how the best-fit line changes.
 
 	### desmos bestFitLine
 
 	This process works for any number of points, and we can even do it symbolically for a set of points $\left\{ (x_i, y_i) \in #R#^2 \mid 1 \leq i \leq n \right\}$. If $\overline{x}$ and $\overline{y}$ are the averages of the $x_i$ and $y_i$, then
 
 	$$
-		m &= \frac{\sum_{i = 1}^n (x_i - \overline{x})(y_i - \overline{y})}{}
+		m &= \frac{\sum_{i = 1}^n \left( x_i - \overline{x} \right)\left( y_i - \overline{y} \right)}{\sum_{i = 1}^n \left( x_i - \overline{x}\right)^2}
+
+		b &= \overline{y} - m\overline{x}.
 	$$
+
+	If you're in any STEM field besides math, you'll encounter best-fit lines like this with remarkable frequency! The process of producing them is called **linear regression**, and it's a core tool of data science and statistics.
 
 ###
 
