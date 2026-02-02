@@ -118,6 +118,8 @@ function decodeHTMDL(html)
 
 	let inDebugEnvironment = false;
 
+	let firstParagraphText;
+
 	html = html
 		.replaceAll(/\r/g, "")
 		.replaceAll(/ {4}/g, "\t")
@@ -385,6 +387,8 @@ function decodeHTMDL(html)
 		// Regular text!
 		else
 		{
+			firstParagraphText ??= lines[i];
+
 			const content = parseText(lines[i]);
 
 			if (content.match(/^#\./))
@@ -441,19 +445,51 @@ function decodeHTMDL(html)
 
 
 
-	const indexHtml = getIndexHTML(pageTitle);
+	const indexHtml = getIndexHTML(pageTitle, firstParagraphText);
 
 	return [html, indexHtml];
 }
 
 
 
-function getIndexHTML(pageTitle)
+function getIndexHTML(pageTitle, firstParagraphText)
 {
 	if (!pageTitle)
 	{
 		pageTitle = "Cruz Godar";
 	}
+
+	firstParagraphText ??= "Teacher, developer, mathematical illustrator.";
+
+	// strip all tags from the text.
+	firstParagraphText = firstParagraphText.replaceAll(/<[^>]*>/g, "");
+
+	// strip dollar signs and asterisks
+	firstParagraphText = firstParagraphText.replaceAll(/[$*]/g, "");
+
+	// replace \times with x.
+	firstParagraphText = firstParagraphText.replaceAll(/\\times/g, "x");
+
+	// replace --- with em dashes.
+	firstParagraphText = firstParagraphText.replaceAll(/---/g, "—");
+	firstParagraphText = firstParagraphText.replaceAll(/--/g, "–");
+
+	const length = firstParagraphText.length;
+
+	if (length >= 137)
+	{
+		// Find the last space before the 137th character.
+		let lastSpace = firstParagraphText.lastIndexOf(" ", 137);
+
+		if (lastSpace === -1)
+		{
+			lastSpace = 137;
+		}
+
+		firstParagraphText = firstParagraphText.slice(0, lastSpace) + "...";
+	}
+
+
 	
 	return /* html */`
 <!DOCTYPE html>
@@ -469,7 +505,7 @@ function getIndexHTML(pageTitle)
 
 	<meta property="og:image" content="https://cruzgodar.com${parentFolder}/cover.webp"/>
 
-	<meta property="og:description" content="Teacher, developer, mathematical illustrator.">
+	<meta property="og:description" content="${firstParagraphText}">
 
 	<meta property="og:locale" content="en_US"/>
 
@@ -477,7 +513,7 @@ function getIndexHTML(pageTitle)
 
 	<meta name="keywords" content="cruz,godar,cruzgodar,math,teaching,blog,notes,applet">
 	<meta name="author" content="Cruz Godar">
-	<meta name="description" content="Teacher, developer, mathematical illustrator.">
+	<meta name="description" content="${firstParagraphText}">
 
 	<meta charset="utf-8"/>
 

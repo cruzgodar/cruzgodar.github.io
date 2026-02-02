@@ -24,7 +24,7 @@ Unfortunately, wind is famously not so easy to see. The way we typically *do* se
 
 ### canvas vectorField
 
-This is an applet I made to visualize vector fields in exactly this way. A particle's color is based on its current direction (i.e. the angle of the vector field there), and its saturation is based on its velocity, so slow particles are paler. While drawing vector fields as grids of vectors is important for studying them precisely, I find these visualizations to be incredible useful for getting a general impression of a field. We'll also lean heavily on this interpretation in a few sections! I highly suggest visualizing vector fields like this whenever working with them; you can plot any fields you like with the applet itself.
+This applet visualizes vector fields in exactly this way. A particle's color is based on its current direction (i.e. the angle of the vector field there), and its saturation is based on its velocity, so slow particles are paler. While drawing vector fields as grids of vectors is important for studying them precisely, I find these visualizations to be incredibly useful for getting a general impression of a field. We'll also lean heavily on this interpretation in later sections! I highly suggest visualizing vector fields like this whenever working with them; you can plot any fields you like with the applet itself.
 
 ### image-links
 
@@ -94,7 +94,7 @@ $$
 	g &= \int -y\,\partial y = -\frac{y^2}{2} + c_2(x).
 $$
 
-To form a single expression of $g$, we need to do the work the integrals cannot and combine these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one.
+To form a single expression of $g$, we need to do the work that the integrals cannot by combining these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one.
 
 So $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}$. What does that tell us? Well, we have multiple avenues for visualizing this. First, the gradient points in the direction of steepest increase, with its magnitude being that steepness, so we can plot the 2D vector field $\vec{G}$ lifted up onto the surface $g(x, y)$, and the flow is always from the lowest areas to the highest.
 
@@ -132,7 +132,7 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 	1. Since the closely-spaced lines are where the function is steepest, that's very literally where the magnitude of the field is largest!
 
-	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But this doesn't set well with me: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct.
+	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But this doesn't sit well with me: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct.
 
 	3. We have
 	

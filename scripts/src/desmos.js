@@ -135,6 +135,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				);
 			}
 
+			if (!expression.latex)
+			{
+				continue;
+			}
+
 			expression.latex = expression.latex.replace(/\(/g, raw`\left(`);
 			expression.latex = expression.latex.replace(/\)/g, raw`\right)`);
 

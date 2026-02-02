@@ -66,5 +66,21 @@ export default function()
 				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple },
 			]
 		},
+
+		bestFitLine:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+			expressions:
+			[
+				{
+					type: "table",
+					columms: [
+						{ latex: raw`x_i`, color: desmosPurple, values: [1, 2, 4] },
+						{ latex: raw`y_i`, color: desmosPurple, values: [0, 3, 3] },
+					]
+				},
+			]
+		}
 	});
 }
