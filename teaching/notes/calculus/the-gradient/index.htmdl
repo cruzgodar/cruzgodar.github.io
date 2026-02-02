@@ -23,7 +23,7 @@ which is the usual slope of a secant line, where we fix the first point at $(a, 
 	Let $f(x, y)$ be differentiable at $(a, b)$. The **directional derivative** of $f$ at $(a, b)$ in the direction $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$ is
 
 	$$
-		D_\vec{u}f(a, b) = \lim_{h \to 0} \frac{f(a + h\cos(\theta), b + h\sin(\theta)) - f(a, b)}{h}.
+		D_{\vec{u}}f(a, b) = \lim_{h \to 0} \frac{f(a + h\cos(\theta), b + h\sin(\theta)) - f(a, b)}{h}.
 	$$
 
 ###
@@ -35,7 +35,7 @@ Ideally, everything we develop will also be useful for functions of more than tw
 	Let $\vec{p} \in #R#^n$ be a point, let $\vec{u} \in #R#^n$ be a unit vector, and let $f : #R#^n \to #R#$ be a function of $n$ variables that is differentiable at $\vec{p}$. The **directional derivative** of $f$ at $\vec{p}$ in the direction of $\vec{u}$ is
 
 	$$
-		D_\vec{u}f(\vec{p}) = \lim_{h \to 0} \frac{f(\vec{p} + h\vec{u}) - f(\vec{p})}{h}.
+		D_{\vec{u}}f(\vec{p}) = \lim_{h \to 0} \frac{f(\vec{p} + h\vec{u}) - f(\vec{p})}{h}.
 	$$
 
 ###
@@ -77,14 +77,14 @@ $$
 making the slope $f_x(a, b) \cdot \cos(\theta) + f_y(a, b) \cdot \sin(\theta)$. However, that slope is by definition the directional derivative $D_{\vec{u}}f(a, b)$! It's also *very* nicely expressible in terms of $\vec{u}$ itself as
 
 $$
-	D_\vec{u}f(a, b) = \left< f_x(a, b), f_y(a, b) \right> \bullet \vec{u}.
+	D_{\vec{u}}f(a, b) = \left< f_x(a, b), f_y(a, b) \right> \bullet \vec{u}.
 $$
 
 In functionally every case, this is how we'll prefer to compute directional derivatives, since it only requires taking two partial derivatives (which we can do without the limit definition) and a dot product.
 
 ### exc "a directional derivative"
 
-	Let $f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$. Find $D_\vec{u}f(2, 1)$ for $\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\vec{u} = \left< 2, -3 \right>$.
+	Let $$f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$$. Find $D_{\vec{u}}f(2, 1)$ for $$\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$$ and $\vec{u} = \left< 2, -3 \right>$.
 
 	### solution
 
@@ -171,7 +171,7 @@ Let's return to our motivation for the gradient: it lets us very concisely repre
 	Let $f : #R#^n \to #R#$ and let $\vec{u} \in #R#^n$ be a unit vector. Then
 
 	$$
-		D_\vec{u}f = \G f \bullet \vec{u}.
+		D_{\vec{u}}f = \G f \bullet \vec{u}.
 	$$
 
 	Note that this formula only works if $\vec{u}$ is a unit vector! If we want to compute the directional derivative in the direction of a vector whose magnitude isn't $1$, then we need to normalize it first.
@@ -181,14 +181,14 @@ Let's return to our motivation for the gradient: it lets us very concisely repre
 This proposition is actually more than just a different way of writing a directional derivative: it lets us leverage properties of the dot product. Specifically,
 
 $$
-	D_\vec{u}f &= \G f \bullet \vec{u}
+	D_{\vec{u}}f &= \G f \bullet \vec{u}
 
 	&= \left| \left| \G f \right| \right| \cdot \left| \left| \vec{u} \right| \right| \cdot \cos(\theta)
 
 	&= \left| \left| \G f \right| \right| \cos(\theta),
 $$
 
-since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_\vec{u}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and a related property in a proper theorem statement.
+since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_{\vec{u}}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and a related property in a proper theorem statement.
 
 ### thm "properties of the gradient"
 
@@ -196,7 +196,7 @@ since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and
 
 	1. $\G f(p)$ points in the direction of the steepest increase from $p$, and the slope in that direction is $\left| \left| \G f(p) \right| \right|$.
 
-	2. In any direction $\vec{u}$ orthogonal to $\G f(p)$, $D_\vec{u}f(p) = 0$.
+	2. In any direction $\vec{u}$ orthogonal to $\G f(p)$, $D_{\vec{u}}f(p) = 0$.
 
 ###
 
