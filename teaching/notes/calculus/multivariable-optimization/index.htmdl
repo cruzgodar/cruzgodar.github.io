@@ -106,7 +106,7 @@ Perhaps unsurprisingly, critical points are potential locations for extrema, jus
 
 ###
 
-The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all extrema occur at critical points: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
+The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all critical points are extrema: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
 
 ### desmos saddlePoint
 

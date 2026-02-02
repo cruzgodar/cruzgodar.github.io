@@ -1,6 +1,8 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosGray,
+	desmosOrange,
 	desmosPurple,
 	desmosRed,
 	getDesmosSlider
@@ -22,8 +24,8 @@ export default function()
 			[
 				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosPurple, hidden: false },
 
-				{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosPurple, hidden: true, secret: true },
-				{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosPurple, hidden: true, secret: true },
+				{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, hidden: true, secret: true },
+				{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, hidden: true, secret: true },
 
 				...getDesmosSlider({
 					expression: "a = -0.4",
@@ -48,11 +50,13 @@ export default function()
 				{ latex: raw`(a, b, f(a, b))`, color: desmosRed },
 
 				// eslint-disable-next-line max-len
-				// { latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple, secret: true },
+				{ latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -3, max: 3 }, color: desmosOrange },
 
-				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosRed },
+				{ latex: raw`-\cos(s)(y - b) + \sin(s)(x - a) + 0z = 0`, color: desmosGray },
 
-				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosBlue },
+				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -3, max: 3 }, color: desmosRed, hidden: true },
+
+				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosBlue, hidden: true },
 			]
 		},
 

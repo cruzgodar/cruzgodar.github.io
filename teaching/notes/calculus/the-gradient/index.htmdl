@@ -16,7 +16,7 @@ $$
 	\frac{\partial f}{\partial x}(a, b) = \lim_{h \to 0} \frac{f(a + h, b) - f(a, b)}{h},
 $$
 
-which is the usual slope of a secant line, where we fix the first point at $(a, b, f(a, b))$ and the second at $(a + h, b, f(a + h, b))$ --- that is, in the $x$-direction exclusively and distance $h$ away. To move that point in a direction other than parallel to an axis, we need to change both $x$ and $y$, and to ensure we're still calculating a slope correctly, it needs to be exactly distance $h$ from $(a, b)$ in the $xy$-plane. If we're fixing the distance and only care about direction, we're looking for a point of the form $(a + \cos(\theta), b + \sin(\theta))$ for some angle $\theta$. That point will be distance $1$ from $(a, b)$, and so to find a point that is distance $h$ away, we can modify it to $(a + h\cos(\theta), b + h\sin(\theta))$. With that in mind, let's define our generalization of a partial derivative.
+which is the usual slope of a secant line, where we fix the first point at $(a, b, f(a, b))$ and the second at $(a + h, b, f(a + h, b))$ --- that is, distance $h$ away in the $xy$-plane, where that distance is entirely in the $x$-direction. To move that point in a direction other than parallel to the $x$- or $y$-axis, we need to change *both* $x$ and $y$, and to ensure we're still calculating a slope correctly, the new point needs to be exactly distance $h$ from $(a, b)$ in the $xy$-plane. Focusing only on direction for a moment, we're looking for a point of the form $(a + \cos(\theta), b + \sin(\theta))$ for some angle $\theta$. That point would be distance $1$ from $(a, b)$, and so to find a point that's distance $h$ away, we can modify it to $(a + h\cos(\theta), b + h\sin(\theta))$. With that in mind, let's define our generalization of a partial derivative.
 
 ### def "directional derivative of a function of two variables"
 
@@ -42,29 +42,45 @@ Ideally, everything we develop will also be useful for functions of more than tw
 
 That's a very dense definition, but the moral is that it's *really no different than a partial derivative*. All a directional derivative does is measure the slope of a tangent line in a specific direction, not necessarily locked to a direction parallel to the $x$- or $y$-axis.
 
-In fact, directional derivatives are related to partial derivatives even more closely than the definition suggests. Let's take a function $f(x, y)$ of two variables, a point $(a, b)$ where it's differentiable, and a unit vector $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$. The tangent plane
-
-$$
-	z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)
-$$
-
-lets us compute not only the slope of the tangent lines parallel to axes, but the slope given by $D_\vec{u}f(a, b)$ too! Specifically, we can take any point in the plane in the direction of $\vec{u}$ to compute the slope of the line passing through that point and $(a, b, f(a, b))$.
+In fact, directional derivatives are related to partial derivatives even more closely than the definition might suggest. Let's take a function $f(x, y)$ of two variables, a point $(a, b)$ where it's differentiable, and a unit vector $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$.
 
 ### desmos directionalDerivative
 
-If we move distance $1$ from $(a, b)$ in the direction of $\vec{u}$ and stay in the tangent plane, we get the point
+Take some time to interact with this graph. The red point lives on the purple surface $z = f(x, y)$, and by changing $s$, we change the direction of the gray plane that intersects it. The result is the orange cross-sectional graph, and just like with partial derivatives, we can find its tangent line (the first hidden equation at the bottom of the list --- <span class="click-tap"><span>click</span><span>tap</span></span> the empty circle to show it. The slope of that line is the directional derivative $D_{\vec{u}}f(a, b)$, where $\vec{u}$ points in the direction of the tangent plane (that is, $D_{\vec{u}}f(a, b)$ is positive if the tangent line slopes upward in the direction of $\vec{u}$ and negative if it slopes downward).
+
+Since the orange curve is the graph of $z = f(x, y)$, if we parameterize the path that just $x$ and $y$ take along it, we can solve for $z$. Luckily, that $xy$-path is just a straight line from $(a, b)$ in the direction of $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$, so we have the line 
 
 $$
-	(a + \cos(\theta), b + \sin(\theta), f(a, b) + f_x(a, b)(a + \cos(\theta) - a) + f_y(a, b)(b + \sin(\theta) - b))
-
-	= (a + \cos(\theta), b + \sin(\theta), f(a, b) + \cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)),
+	\left< a, b \right> + t\left< \cos(\theta), \sin(\theta) \right> = \left< a + t\cos(\theta),\quad b + t\sin(\theta) \right>,
 $$
 
-and so the slope is just $\cos(\theta)f_x(a, b) + \sin(\theta)f_y(a, b)$, since the run between those two points is $1$. And that is *very* nicely expressible in terms of $\vec{u}$ itself as
+and therefore the orange curve $\vec{r}(t)$ given by
+
+$$
+	\vec{r}(t) = \left< a + t\cos(\theta),\quad b + t\sin(\theta),\quad f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right>.
+$$
+
+That may not look too nice, but we can do this! We're interested in the tangent line to this curve at $(a, b)$, and the direction vector for that line is $\vec{r}'(0)$ (since $\vec{r}(0) = \left< a, b, f(a, b) \right>$). The derivatives of the first two components are $\cos(\theta)$ and $\sin(\theta)$, but the third is more tricky: it requires taking the derivative of a variable inside both arguments of a function. But we just figured out how to do this in the previous section --- the multivariable chain rule! We have
+
+$$
+	\left. d/dt \left[ f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right] \right|_{t = 0} &= f_x(a, b) \left. d/dt \left[ a + t\cos(\theta) \right]\right|_{t = 0} + f_y(a, b) \left. d/dt \left[ b + t\sin(\theta) \right]\right|_{t = 0}
+
+	&= f_x(a, b) \cdot \cos(\theta) + f_y(a, b) \cdot \sin(\theta).
+$$
+
+The slope of this line is its rise over its run --- that is, the change in $z$ divided by the total change in the $xy$-plane. Here, that $xy$-change is
+
+$$
+	\left| \left| \left< \cos(\theta), \sin(\theta) \right> \right| \right| = 1,
+$$
+
+making the slope $f_x(a, b) \cdot \cos(\theta) + f_y(a, b) \cdot \sin(\theta)$. However, that slope is by definition the directional derivative $D_{\vec{u}}f(a, b)$! It's also *very* nicely expressible in terms of $\vec{u}$ itself as
 
 $$
 	D_\vec{u}f(a, b) = \left< f_x(a, b), f_y(a, b) \right> \bullet \vec{u}.
 $$
+
+In functionally every case, this is how we'll prefer to compute directional derivatives, since it only requires taking two partial derivatives (which we can do without the limit definition) and a dot product.
 
 ### exc "a directional derivative"
 
@@ -122,9 +138,11 @@ That formula for the directional derivative suggests that for a function $f(x, y
 
 	For a two-variable function $f(x, y)$, that means $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right>$, and for a three-variable function $f(x, y, z)$, $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z} \right>$.
 
+	The symbol $\nabla$ is pronounced **nabla** --- as a derivative, it's somewhat fitting that it's so similar to the delta symbol $\Delta$ that indicates a change in a variable. The name nabla comes from the Greek word for harp, which are often $\nabla$-shaped; in practice, though, it's often frustratingly read as "del", particularly when applied to a variable: $\G f$ is frequently pronounced "del f".
+
 ###
 
-The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$.
+The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$. We'll have a *lot* more to say about that in part 6, but it's just a useful fact to note for now.
 
 ### ex "the gradient"
 
@@ -156,9 +174,11 @@ Let's return to our motivation for the gradient: it lets us very concisely repre
 		D_\vec{u}f = \G f \bullet \vec{u}.
 	$$
 
+	Note that this formula only works if $\vec{u}$ is a unit vector! If we want to compute the directional derivative in the direction of a vector whose magnitude isn't $1$, then we need to normalize it first.
+
 ###
 
-This is more than just a different way of writing a directional derivative, though: it lets us leverage properties of the dot product. Specifically,
+This proposition is actually more than just a different way of writing a directional derivative: it lets us leverage properties of the dot product. Specifically,
 
 $$
 	D_\vec{u}f &= \G f \bullet \vec{u}
@@ -168,7 +188,7 @@ $$
 	&= \left| \left| \G f \right| \right| \cos(\theta),
 $$
 
-since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_\vec{u}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and similar properties in a proper theorem statement.
+since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_\vec{u}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and a related property in a proper theorem statement.
 
 ### thm "properties of the gradient"
 
@@ -182,7 +202,7 @@ since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and
 
 ### exc "the gradient"
 
-	Let $f(x, y) = 2\sin(x) + 5\cos(y)$. At $p = \left( \frac{\pi}{2}, \frac{\pi}{2} \right)$, in which direction is the steepest increase? How steep is it? What about the steepest decrease? In what directions could you walk along to stay on the level curve $f(x, y) = 1$?
+	Let $f(x, y) = 2\sin(x) + 5\cos(y)$. At $$p = \left( \frac{\pi}{2}, \frac{\pi}{2} \right)$$, in which direction is the steepest increase? How steep is it? What about the steepest decrease? In what directions could you walk along to stay on the level curve $f(x, y) = 1$?
 
 	### solution
 
@@ -221,7 +241,7 @@ We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is o
 	The gradient is then
 
 	$$
-		\G w &= \left< 12x + 4zx^3 + y^5, 8y + 5xy^4, 6z^5 + x^4 \right>
+		\G w &= \left< 12x + 4zx^3 + y^5, \quad 8y + 5xy^4, \quad 6z^5 + x^4 \right>
 
 		\G w(1, 1, 1) &= \left< 17, 13, 7 \right>.
 	$$

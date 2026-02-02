@@ -770,7 +770,8 @@ export const sitemap =
 			"/teaching/notes/calculus/boundary-optimization",
 			"/teaching/notes/calculus/lagrange-multipliers",
 			"/teaching/notes/calculus/double-integrals",
-			"/teaching/notes/calculus/vector-fields"
+			"/teaching/notes/calculus/vector-fields",
+			"/teaching/notes/calculus/path-integrals"
 		]
 	},
 		
@@ -1354,6 +1355,17 @@ export const sitemap =
 	"/teaching/notes/calculus/vector-fields":
 	{
 		"title": "Section 6.1: Vector Fields",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/path-integrals":
+	{
+		"title": "Section 6.2: Path Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		
