@@ -18,7 +18,7 @@ export default function()
 
 			bounds: { xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1 },
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			expressions:
 			[

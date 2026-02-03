@@ -2,7 +2,29 @@
 
 
 
+We began discussing directional derivatives in part 5 out of a desire to understand derivatives more completely --- partial derivatives were very literally a partial extension of the notion of a derivative to functions of multiple variables, and while directional derivatives didn't immediately seem like the solution that would fill in the gaps, deriving a formula for them led us to the gradient, which ended up being a very important part of our journey.
 
+We'll see much of that story play out with integrals. Returning to the world of double integrals for a moment, the inner integral in
+
+$$
+	\int_a^b\!\!\!\int_c^d f(x, y)\,\d x\,\d y
+$$
+
+was able to find the area under the graph of a cross-section of $z = f(x, y)$; specifically, the cross-section with $y$ held fixed and $x$ ranging from $c$ to $d$. But what if we wanted to find a different area, like that of a cross-section in a different direction?
+
+### desmos pathIntegral
+
+Having seen so many of the storylines of calculus at this point, we can reason through how this one might work: just like with directional derivatives, the fact that both $x$ and $y$ are changing at once as we move along this curve means we can't get away with directly using single-variable calculus techniques like we could with partial derivatives or multiple integrals. Instead, we'll need to parameterize the curve in the $xy$-plane along which this travels in terms of a single parameter $t$ (like we did with directional derivatives), and then likely use a Riemann sum to slice up the curve into small changes in $t$ (like we did with arc length).
+
+But hold on a minute! That blueprint that we just laid out would work for a lot more than just lines. We could parameterize *any* path in the $xy$-plane and then integrate over it! It's this idea that will really take off; let's look at one path in particular and then go find a formula.
+
+### desmos pathIntegral2
+
+I highly recommend turning this graph around, then hiding the gray surface in the expressions list! The total area we're measuring is complicated, but expressing it in terms of a Riemann sum is absolutely within reach.
+
+Let $z = f(x, y)$ be a function, and let $\vec{r}(t)$ be a parameterized path in the $xy$-plane for $t = a$ to $t = b$. We cut the domain $[a, b]$ for $\vec{r}$ into $n$ subintervals that each cover $\Delta t$, and then we want to approximate the sum by rectangles.
+
+### desmos pathIntegralRectangles
 
 
 

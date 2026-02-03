@@ -1,47 +1,173 @@
 import {
 	createDesmosGraphs,
-	desmosBlack,
-	getDesmosPoint,
-	getDesmosVector
+	desmosBlue,
+	desmosGray,
+	desmosPurple,
+	desmosRed,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
 	createDesmosGraphs({
-		conservativeVectorField3:
+		pathIntegral:
 		{
-			alwaysDark: true,
-			
-			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+			use3d: true,
 
-			options: { showResetButtonOnGraphpaper: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
 			
 			expressions:
 			[
-				{ latex: raw`xy = c`, secret: true, color: desmosBlack },
-				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
+				{ latex: raw`f(x, y) = \sin(-x) + \cos(y) + \frac{(-x + y)^3}{100} - 0.49`, color: desmosGray, hidden: false },
+				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
+				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
-				...getDesmosPoint({
-					point: ["1", "1"],
-					color: desmosBlack,
-					dragMode: "NONE",
-					size: 12,
+				{ latex: raw`s(t) = (-2 + t, -2 + 1.5t)`, parametricDomain: { min: "a", max: "b" } },
+
+				...getDesmosSlider({
+					expression: "a = 0",
+					min: 0,
+					max: "2\\pi",
+					secret: false,
+				}),
+				...getDesmosSlider({
+					expression: "b = 3",
+					min: "a",
+					max: "2\\pi",
+					secret: false,
 				}),
 
-				...getDesmosVector({
-					from: ["1", "1"],
-					to: ["1.35", "1.35"],
-					color: desmosBlack,
-					arrowSize: "0.1",
+				// We use these to not draw the side boundaries if they overlap.
+				{ latex: raw`c = a \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+
+				// Fills
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+
+				// Top
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Bottom
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Side boundaries
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+			]
+		},
+
+		pathIntegral2:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+			
+			expressions:
+			[
+				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosGray, hidden: false },
+				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
+				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
+
+				{ latex: raw`s(t) = (t, -\cos(\pi t) + t - \frac{1}{2})`, hidden: true },
+
+				...getDesmosSlider({
+					expression: "a = -1",
+					min: -5,
+					max: "2\\pi",
+					secret: false,
+				}),
+				...getDesmosSlider({
+					expression: "b = 2",
+					min: "a",
+					max: "5",
+					secret: false,
 				}),
 
-				...getDesmosVector({
-					from: ["1", "1"],
-					to: ["0.65", "0.65"],
-					color: desmosBlack,
-					arrowSize: "0.1",
+				// We use these to not draw the side boundaries if they overlap.
+				{ latex: raw`c = a \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+
+				// Fills
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+
+				// Top
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Bottom
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Side boundaries
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+			]
+		},
+
+		pathIntegralRectangles:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+			
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: raw`n = 12`,
+					min: 1,
+					max: 60,
+					secret: false,
 				}),
+
+				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosGray, hidden: true },
+				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
+				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
+
+				{ latex: raw`X(t) = t`, hidden: true },
+				{ latex: raw`Y(t) = -\cos(\pi t) + t - \frac{1}{2}`, hidden: true },
+				{ latex: raw`s(t) = (X(t), Y(t))`, hidden: true },
+
+				...getDesmosSlider({
+					expression: "a = -1",
+					min: -5,
+					max: "2\\pi",
+					secret: false,
+				}),
+				...getDesmosSlider({
+					expression: "b = 2",
+					min: "a",
+					max: "5",
+					secret: false,
+				}),
+
+				{ latex: raw`A = [a, a + \frac{b - a}{n}, ..., b]`, secret: true, },
+
+				// We use these to not draw the side boundaries if they overlap.
+				{ latex: raw`c = a \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+
+				// Fills
+				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_1(X(A), Y(A)))`, color: desmosRed, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+
+				// Top
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Bottom
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
 			]
 		},
 	});
