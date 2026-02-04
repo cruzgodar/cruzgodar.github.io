@@ -337,7 +337,7 @@ export function getDesmosScreenshot(id, forPdf = false)
 
 		for (let i = 0; i < expressions.length; i++)
 		{
-			expressions[i].lineWidth = forPdf ? 2.5 : 15;
+			expressions[i].lineWidth = forPdf ? 5 : 30;
 			expressions[i].pointSize = forPdf ? 10 : 50;
 			expressions[i].dragMode = "NONE";
 		}
@@ -346,14 +346,14 @@ export function getDesmosScreenshot(id, forPdf = false)
 	}
 
 	const imageData = desmosGraphs[id].screenshot({
-		width: 400,
-		height: 400,
-		targetPixelRatio: 8
+		width: 800,
+		height: 800,
+		targetPixelRatio: 4
 	});
 
 	const img = document.createElement("img");
-	img.width = 4000;
-	img.height = 4000;
+	img.width = 3600;
+	img.height = 3600;
 	img.style.width = "50vmin";
 	img.style.height = "50vmin";
 	img.src = imageData;

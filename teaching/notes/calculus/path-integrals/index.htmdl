@@ -22,9 +22,43 @@ But hold on a minute! That blueprint that we just laid out would work for a lot 
 
 I highly recommend turning this graph around, then hiding the gray surface in the expressions list! The total area we're measuring is complicated, but expressing it in terms of a Riemann sum is absolutely within reach.
 
-Let $z = f(x, y)$ be a function, and let $\vec{r}(t)$ be a parameterized path in the $xy$-plane for $t = a$ to $t = b$. We cut the domain $[a, b]$ for $\vec{r}$ into $n$ subintervals that each cover $\Delta t$, and then we want to approximate the sum by rectangles.
+Let $z = f(x, y)$ be a function, and let $\vec{r}(t)$ be a parameterized path in the $xy$-plane from $t = a$ to $t = b$. We cut the domain $[a, b]$ for $\vec{r}$ into $n$ subintervals that each cover $\Delta t$, and then we want to approximate the sum by rectangles.
 
 ### desmos pathIntegralRectangles
+
+This is quite the Riemann sum to take, but we've already seen all the tools we'll need to understand it. For a particular rectangle centered at $t = t_0$, its height is given by the value of $f(x, y)$ at that point, and $x$ and $y$ are given by $\vec{r}(t_0)$; the height is therefore $f(\vec{r}(t_0))$. The base of the rectangle is slightly harder: it seems like it ought to be $\Delta t$, but that can't quite be the whole story, since $\vec{r}(t)$ could cover any amount of distance as $t$ changes by $\Delta t$. To handle this carefully, we'll need to approximate $\vec{r}(t)$ by line segments, and we've done this before --- when we derived the integral for arc length! A line segment approximating $\vec{r}(t)$ near $t = t_0$ is given by $\vec{l}(t) = \vec{r}\left( t_0 \right) + \vec{r}'(t_0)t$; we're interested in evaluating this for an interval of $t$-values whose width is $\Delta t$, so the total length of the line is $\left| \left| \vec{r}'(t_0) \right| \right| \Delta t$. That becomes our rectangle's base, and so its area is
+
+$$
+	f(\vec{r}(t_0))\left| \left| \vec{r}'(t_0) \right| \right| \Delta t.
+$$
+
+In the limit, a sum of these areas becomes an integral, which we'll want to give its own name.
+
+### def "path integral"
+
+	Let $z = f(x, y)$ be a function, and let $C$ be a curve in the $xy$-plane parameterized by $\vec{r}(t)$ from $t = a$ to $t = b$. The **path integral** of $f$ along $C$ is
+
+	$$
+		\int_C f(x, y)\,\d s = \int_a^b f(\vec{r}(t))\left| \left| \vec{r}'(t) \right| \right|\,\d t.
+	$$
+
+###
+
+The $s$ in the abstract integral on the left is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a path integral, and so we tend to engage with the version on the right as if it is the definition of a path integral, rather than the Riemann sum version.
+
+Path integrals are often called **line integrals** in much of the literature on calculus. That's a pretty unfortunate name, since we're often integrating along paths that are very much nonlinear! We'll stick with the slightly less common but more descriptive name *path integral* in these notes.
+
+### exc "path integrals"
+
+	1. Let $L$ be the line segment from $(0, 0)$ to $(3, 4)$. Find $$\int_L xy\,\d s$$.
+
+	2. Let's parameterize $L$ in a strange way: $\vec{r}(t) = \left< 3t^2, 4t^2 \right>$ for $0 \leq t \leq 1$. Thinking about the geometry of a path integral, do you expect to get the same result for $$\int_L xy\,\d s$$ with this parameterization? Once you have a prediction, compute the integral and see if you were correct.
+
+	3. Let $C$ be the unit circle. Without computing it, what should the integral $$\int_C 1\,\d s$$ be?
+
+###
+
+
 
 
 

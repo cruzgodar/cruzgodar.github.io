@@ -56,7 +56,6 @@ Single-line environments:
 > - `### nav-buttons`: a set of navigation buttons for the current page.
 > - `### raymarch-controls`: a predefined applet controls card for raymarch applets.
 > - `### solution`: indicates that the content after it in the current example or exercise is a solution.
-> - `### show-solutions &lt;id>`: indicates that exercise solutions on the current notes page should be visisble in non-debug mode.
 > - `### textarea &lt;id>`: a textarea with the given id.
 
 Multi-line environments:

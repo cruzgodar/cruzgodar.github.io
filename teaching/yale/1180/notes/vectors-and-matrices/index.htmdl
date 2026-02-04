@@ -1,5 +1,3 @@
-### show-solutions
-
 ### nav-buttons
 
 It's hard to overstate just how pervasive linear algebra is in science. It underpins nearly every math course that comes after it in one way or another, and it's so important in other STEM fields that when they talk about math, they often just mean linear algebra. With such an impressive resume, it might be surprising to hear that the subject is no more than a formalized, organized way to solve systems of linear equations --- at least, that's how it gets started. As we'll quickly see, formalizing that process will result in an unreasonably useful set of tools and definitions with applications far beyond what it was designed for.

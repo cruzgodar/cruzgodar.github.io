@@ -18,7 +18,6 @@ import { loadImages } from "./images.js";
 import { listenForWilsonButtons, updateTapClickElements } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
-	$,
 	$$,
 	pageElement,
 	pageUrl,
@@ -384,10 +383,8 @@ function initSolutions()
 		return;
 	}
 
-	const element = $("#show-solutions");
-
 	for (const e of $$(".notes-exc .solution"))
 	{
-		packageSolution(e, element !== null);
+		packageSolution(e, true);
 	}
 }
