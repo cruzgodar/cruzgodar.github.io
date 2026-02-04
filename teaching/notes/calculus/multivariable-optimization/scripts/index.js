@@ -15,7 +15,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: { showPlane3D: false },
 
 			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -0.3, zmax: 0.3 },
 

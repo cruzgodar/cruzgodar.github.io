@@ -267,7 +267,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 	This one is fairly in-depth. The gradient is
 
 	$$
-		\G g = \left< ye^{-x^2 - y^2} + xye^{-x^2-y^2}(-2x), xe^{-x^2 - y^2} + xye^{-x^2-y^2}(-2y) \right>,
+		\G g = \left< ye^{-x^2 - y^2} + xye^{-x^2-y^2}(-2x), \quad xe^{-x^2 - y^2} + xye^{-x^2-y^2}(-2y) \right>,
 	$$
 
 	and if $\G g = \vec{0}$, then we can thankfully divide by the exponential factor, since it's never zero, leaving us with

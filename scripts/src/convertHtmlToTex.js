@@ -51,7 +51,7 @@ ${pageNumbers ? "" : "\\pagenumbering{gobble}"}
 
 	const tex = preamble
 		// eslint-disable-next-line max-len
-		+ `\\Large Name: \\rule{2in}{0.15mm} \\hfill ${title} | ${course} | Cruz Godar \\vspace{4pt} ${nameTex} \\normalsize\n\n`
+		+ `\\Large Name: \\rule{2in}{0.15mm} \\hfill ${title} | ${course} | Cruz Godar \\vspace{4pt} ${nameTex} \\large\n\n`
 		+ html
 			// Remove the wrapping card divs.
 			.replaceAll(/<div.*?>/g, "")
