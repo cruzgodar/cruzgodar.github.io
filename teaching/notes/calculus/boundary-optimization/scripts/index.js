@@ -106,6 +106,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { translucentSurfaces: true },
+
 			bounds: { xmin: -3, xmax: 1, ymin: -3, ymax: 1, zmin: -5, zmax: 1 },
 
 			expressions:
@@ -124,7 +126,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.15 },
 

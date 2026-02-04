@@ -19,6 +19,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
@@ -329,9 +331,11 @@ export default function()
 
 		parallelepiped:
 		{
+			use3d: true,
+
 			bounds: { xmin: -1, xmax: 6, ymin: -1, ymax: 6, zmin: -1, zmax: 6 },
 
-			use3d: true,
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			expressions:
 			[

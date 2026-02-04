@@ -27,6 +27,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { translucentSurfaces: true },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
@@ -44,6 +46,8 @@ export default function()
 		wireframe2:
 		{
 			use3d: true,
+
+			options: { translucentSurfaces: true },
 
 			bounds: { xmin: -2, xmax: 15, ymin: -2, ymax: 15, zmin: -20, zmax: 40 },
 
@@ -79,6 +83,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -3.5, xmax: 3.5, ymin: -3.5, ymax: 3.5, zmin: -2, zmax: 12 },
 
 			expressions:
@@ -96,6 +102,8 @@ export default function()
 		hyperboloid:
 		{
 			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
 
@@ -115,6 +123,8 @@ export default function()
 		levelSurfaces:
 		{
 			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2 },
 

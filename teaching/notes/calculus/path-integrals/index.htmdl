@@ -36,7 +36,7 @@ In the limit, a sum of these areas becomes an integral, which we'll want to give
 
 ### def "path integral"
 
-	Let $z = f(x, y)$ be a function, and let $C$ be a curve in the $xy$-plane parameterized by $\vec{r}(t)$ from $t = a$ to $t = b$. The **path integral** of $f$ along $C$ is
+	Let $z = f(x, y)$ be a function, and let $C$ be a smooth curve in the $xy$-plane --- that is, there is a parameterization by $\vec{r}(t)$ from $t = a$ to $t = b$ that is differentiable, where $\vec{r}'(t)$ is continuous and never zero. The **path integral** of $f$ along $C$ is
 
 	$$
 		\int_C f(x, y)\,\d s = \int_a^b f(\vec{r}(t))\left| \left| \vec{r}'(t) \right| \right|\,\d t.
@@ -58,7 +58,27 @@ Path integrals are often called **line integrals** in much of the literature on 
 
 ###
 
+We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. First, though, let's state a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
 
+### prop "the additivity of path integrals"
+
+	Let $C_1$ and $C_2$ be two smooth curves in $#R#^2$, such that $C_1$ ends where $C_2$ begins. If $C$ is the curve that combines them, following $C_1$ and then $C_2$, then for any continuous function $f(x, y)$,
+
+	$$
+		\int_C f(x, y)\,\d s = \int_{C_1} f(x, y)\,\d s + \int_{C_2} f(x, y)\,\d s.
+	$$
+
+	Strictly speaking, this is a *definition* of the integral $\int_C f(x, y)\,\d s$, since $C$ may not be smooth at the joining point of $C_1$ and $C_2$. In practice, though, this result means we can integrate functions along curves comprised of smooth parts (called **piecewise smooth**) by splitting them up into path integrals along each part.
+
+	### desmos piecewiseSmoothCurve
+
+###
+
+### ex "a path integral in $#R#^3$"
+
+	Let $C$ be the curve from $(1, 1, 0)$ to $(0, 1, 1)$ in $#R#^3$ given by 
+
+###
 
 
 

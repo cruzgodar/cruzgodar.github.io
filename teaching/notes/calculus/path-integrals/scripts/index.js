@@ -117,7 +117,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
 			
@@ -180,6 +180,60 @@ export default function()
 				// Rectangle right sides
 				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_1(X(A), Y(A)))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
 				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+			]
+		},
+
+		piecewiseSmoothCurve:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+			
+			expressions:
+			[
+				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 + 2y^2) - \frac{5}{4}`, color: desmosGray, hidden: true },
+				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
+				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
+
+				{ latex: raw`s_x(t) = \left\{ 0 \leq t \leq \frac{1}{2}: 0, \frac{1}{2} t \leq 1: 2\cos(3\pi (t - \frac{1}{2})) \right\}`, hidden: true },
+				{ latex: raw`s_y(t) = \left\{ 0 \leq t \leq \frac{1}{2}: -4t, \frac{1}{2} t \leq 1: 2\sin(3\pi (t - \frac{1}{2})) \right\}`, hidden: true },
+
+				{ latex: raw`s(t) = (s_x(t), s_y(t))`, hidden: true },
+
+				...getDesmosSlider({
+					expression: "a = 0",
+					min: -5,
+					max: "2\\pi",
+					secret: true,
+				}),
+				...getDesmosSlider({
+					expression: "b = 1",
+					min: "a",
+					max: "5",
+					secret: true,
+				}),
+
+				// We use these to not draw the side boundaries if they overlap.
+				{ latex: raw`c = a \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
+
+				// Fills
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+
+				// Top
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Bottom
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+
+				// Side boundaries
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 	});

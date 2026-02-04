@@ -15,6 +15,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -25, zmax: 25 },
 
 			expressions:
@@ -26,6 +28,8 @@ export default function()
 		secretSaddle:
 		{
 			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -50, zmax: 50 },
 
@@ -41,6 +45,8 @@ export default function()
 		secondDerivativeTest1:
 		{
 			use3d: true,
+
+			options: { translucentSurfaces: true },
 
 			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2 },
 

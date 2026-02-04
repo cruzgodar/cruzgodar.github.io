@@ -36,6 +36,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.5, zmax: 4 },
 
 			expressions:

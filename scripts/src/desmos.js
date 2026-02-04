@@ -318,7 +318,7 @@ export async function recreateDesmosGraphs()
 	}
 }
 
-export function getDesmosScreenshot(id, forPdf = false)
+export async function getDesmosScreenshot(id, forPdf = false)
 {
 	// Yeesh is this hacky. Hopefully these are exposed in the API in the future!
 	desmosGraphs[id].controller.graphSettings.showPlane3D = false;
@@ -331,7 +331,9 @@ export function getDesmosScreenshot(id, forPdf = false)
 		yAxisNumbers: forPdf,
 	});
 
-	if (!desmosGraphs[id].getState().graph.threeDMode)
+	const is3d = desmosGraphs[id].getState().graph.threeDMode;
+
+	if (!is3d)
 	{
 		const expressions = desmosGraphs[id].getExpressions();
 
@@ -345,11 +347,21 @@ export function getDesmosScreenshot(id, forPdf = false)
 		desmosGraphs[id].setExpressions(expressions);
 	}
 
-	const imageData = desmosGraphs[id].screenshot({
-		width: 800,
-		height: 800,
-		targetPixelRatio: 4
-	});
+	const imageData = is3d
+		? desmosGraphs[id].screenshot({
+			width: 800,
+			height: 800,
+			targetPixelRatio: 4,
+		})
+		: await new Promise(resolve =>
+		{
+			desmosGraphs[id].asyncScreenshot({
+				width: 800,
+				height: 800,
+				targetPixelRatio: 4,
+				showLabels: forPdf
+			}, resolve);
+		});
 
 	const img = document.createElement("img");
 	img.width = 3600;
