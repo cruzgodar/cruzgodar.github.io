@@ -8,12 +8,12 @@ Now that we've discussed partial derivatives and some of their most important pr
 
 ## Directional Derivatives
 
-For $z = f(x, y)$, the partial derivatives $\frac{\partial f}{\partial x}(a, b)$ and $\frac{\partial f}{\partial y}(a, b)$ tell us the slopes of the graph of $f$ at $(a, b)$ in the $x$ and $y$ directions; or equivalently, the slopes of the lines given by intersecting the tangent plane to the graph at $(a, b)$ with the planes $y = b$ and $x = a$. But what about if we wanted to move in a different direction than just parallel to one of the axes? Let's return to the limit definition to find out.
+For $z = f(x, y)$, the partial derivatives $pf/px(a, b)$ and $pf/py(a, b)$ tell us the slopes of the graph of $f$ at $(a, b)$ in the $x$ and $y$ directions; or equivalently, the slopes of the lines given by intersecting the tangent plane to the graph at $(a, b)$ with the planes $y = b$ and $x = a$. But what about if we wanted to move in a different direction than just parallel to one of the axes? Let's return to the limit definition to find out.
 
-The partial derivative $\frac{\partial f}{\partial x}$ is defined by
+The partial derivative $pf/px$ is defined by
 
 $$
-	\frac{\partial f}{\partial x}(a, b) = \lim_{h \to 0} \frac{f(a + h, b) - f(a, b)}{h},
+	pf/px(a, b) = \lim_{h \to 0} \frac{f(a + h, b) - f(a, b)}{h},
 $$
 
 which is the usual slope of a secant line, where we fix the first point at $(a, b, f(a, b))$ and the second at $(a + h, b, f(a + h, b))$ --- that is, distance $h$ away in the $xy$-plane, where that distance is entirely in the $x$-direction. To move that point in a direction other than parallel to the $x$- or $y$-axis, we need to change *both* $x$ and $y$, and to ensure we're still calculating a slope correctly, the new point needs to be exactly distance $h$ from $(a, b)$ in the $xy$-plane. Focusing only on direction for a moment, we're looking for a point of the form $(a + \cos(\theta), b + \sin(\theta))$ for some angle $\theta$. That point would be distance $1$ from $(a, b)$, and so to find a point that's distance $h$ away, we can modify it to $(a + h\cos(\theta), b + h\sin(\theta))$. With that in mind, let's define our generalization of a partial derivative.
@@ -91,13 +91,13 @@ In functionally every case, this is how we'll prefer to compute directional deri
 	For both of these, we need to start by finding the partial derivatives. We have
 
 	$$
-		&\frac{\partial f}{\partial x} = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
+		&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
 
-		&\frac{\partial f}{\partial x}(2, 1) = 2 - \frac{\pi}{2}
+		&pf/px(2, 1) = 2 - \frac{\pi}{2}
 
-		&\frac{\partial f}{\partial y} = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
+		&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
 
-		&\frac{\partial f}{\partial y}(2, 1) = 2 - \pi.
+		&pf/py(2, 1) = 2 - \pi.
 	$$
 
 	The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
@@ -126,17 +126,17 @@ In functionally every case, this is how we'll prefer to compute directional deri
 
 ## The Gradient
 
-That formula for the directional derivative suggests that for a function $f(x, y)$, the vector $\left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right>$ is particularly important: it contains all the information we need to compute any directional derivative. Let's give it a name, define it more generally, and explore some of its other properties.
+That formula for the directional derivative suggests that for a function $f(x, y)$, the vector $\left< pf/px, pf/py \right>$ is particularly important: it contains all the information we need to compute any directional derivative. Let's give it a name, define it more generally, and explore some of its other properties.
 
 ### def "gradient"
 
 	Let $f : #R#^n \to #R#$ be a function of $n$ variables $f(x_1, x_2, ..., x_n)$. The **gradient** of $f$, written $\G f$, is
 
 	$$
-		\G f = \left< \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, ..., \frac{\partial f}{\partial x_n} \right>.
+		\G f = \left< pf/px_1, pf/px_2, ..., pf/px_n \right>.
 	$$
 
-	For a two-variable function $f(x, y)$, that means $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right>$, and for a three-variable function $f(x, y, z)$, $\G f = \left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z} \right>$.
+	For a two-variable function $f(x, y)$, that means $\G f = \left< pf/px, pf/py \right>$, and for a three-variable function $f(x, y, z)$, $\G f = \left< pf/px, pf/py, pf/pz \right>$.
 
 	The symbol $\nabla$ is pronounced **nabla** --- as a derivative, it's somewhat fitting that it's so similar to the delta symbol $\Delta$ that indicates a change in a variable. The name nabla comes from the Greek word for harp, which are often $\nabla$-shaped; in practice, though, it's often frustratingly read as "del", particularly when applied to a variable: $\G f$ is frequently pronounced "del f".
 
@@ -250,14 +250,14 @@ We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is o
 
 ###
 
-While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, -1 \right>$. The tangent plane would then be
+While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< pf/px, pf/py, -1 \right>$. The tangent plane would then be
 
 $$
-	\frac{\partial f}{\partial x}(x - a) + \frac{\partial f}{\partial y}(y - b) - 1(z - f(a, b)) &= 0
+	pf/px(x - a) + pf/py(y - b) - 1(z - f(a, b)) &= 0
 
-	\frac{\partial f}{\partial x}(x - a) + \frac{\partial f}{\partial y}(y - b) - z + f(a, b) &= 0
+	pf/px(x - a) + pf/py(y - b) - z + f(a, b) &= 0
 
-	f(a, b) + \frac{\partial f}{\partial x}(x - a) + \frac{\partial f}{\partial y}(y - b) &= z,
+	f(a, b) + pf/px(x - a) + pf/py(y - b) &= z,
 $$
 
 and so all is well.

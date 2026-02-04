@@ -31,13 +31,22 @@ export function parseLatex(latex)
 		.replaceAll(/::(.+?)::/g, (match, $1) => `\\begin{array}{l}${$1.replaceAll(/;/g, "\\\\")}\\end{array}`)
 
 		// Leibniz derivatives:  d/dx, dy/dx, d\theta/dx, etc.
-		.replaceAll(/d([a-zA-Z]?)\/d([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\text{d}${$1}}{\\text{d}${$2}}`)
-		.replaceAll(/d(\\[a-zA-Z]+?)\/d([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\text{d}${$1}}{\\text{d}${$2}}`)
-		.replaceAll(/d([a-zA-Z]?)\/d(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\text{d}${$1}}{\\text{d}${$2}}`)
-		.replaceAll(/d(\\[a-zA-Z]+?)\/d(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\text{d}${$1}}{\\text{d}${$2}}`)
+		.replaceAll(/d([a-zA-Z]?)\/d([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\mathrm{d}${$1}}{\\mathrm{d}${$2}}`)
+		.replaceAll(/d(\\[a-zA-Z]+?)\/d([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\mathrm{d}${$1}}{\\mathrm{d}${$2}}`)
+		.replaceAll(/d([a-zA-Z]?)\/d(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\mathrm{d}${$1}}{\\mathrm{d}${$2}}`)
+		.replaceAll(/d(\\[a-zA-Z]+?)\/d(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\mathrm{d}${$1}}{\\mathrm{d}${$2}}`)
 
 		// Manual d derivatives: \d
-		.replaceAll(/(?<!\\)\\d(?![a-zA-Z])/g, "\\text{d}")
+		.replaceAll(/(?<!\\)\\d(?![a-zA-Z])/g, "\\mathrm{d}")
+
+		// Partial derivatives:  p/px, py/px, p\theta/px, etc.
+		.replaceAll(/p([a-zA-Z]?)\/p([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\partial ${$1}}{\\partial ${$2}}`)
+		.replaceAll(/p(\\[a-zA-Z]+?)\/p([a-zA-Z]?)/g, (match, $1, $2) => `\\frac{\\partial ${$1}}{\\partial ${$2}}`)
+		.replaceAll(/p([a-zA-Z]?)\/p(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\partial ${$1}}{\\partial ${$2}}`)
+		.replaceAll(/p(\\[a-zA-Z]+?)\/p(\\[a-zA-Z]+?)/g, (match, $1, $2) => `\\frac{\\partial ${$1}}{\\partial ${$2}}`)
+
+		// Manual partial derivatives: \p
+		.replaceAll(/(?<!\\)\\p(?![a-zA-Z])/g, "\\partial")
 
 		// Bold: **A**
 		.replaceAll(/\*\*(.+?)\*\*/g, (match, $1) => `\\mathbf{${$1}}`)

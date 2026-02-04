@@ -58,7 +58,9 @@ Path integrals are often called **line integrals** in much of the literature on 
 
 ###
 
-We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. First, though, let's state a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
+We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. In general, if we're adding something up a changing quantity over the course of a curve in 2D or 3D space, path integrals are the first tool we reach for. For example, the integral of a density function along a thin wire gives the total mass of the wire.
+
+Let's now formalize a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
 
 ### prop "the additivity of path integrals"
 
@@ -110,13 +112,49 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 		&= 2 + \frac{\pi}{2}.
 	$$
 
-	To integrate along $D$, we have to split it up with the previous proposition, since there would be a sharp corner in the graph at $(0, 1, 0)$ otherwise. Let's parameterize the two line segments as
+	To integrate along $D$, we have to split it up with the previous proposition, since there would be a sharp corner in the graph at $(0, 1, 0)$ otherwise. Let's call the two line segments $C_1$ and $C_2$ and parameterize them as
 	
 	$$
-		\vec{r_1}(t) = \left<  \right>	
+		\vec{r_1}(t) &= \left< 1, 1, 0 \right> + \left< -1, 0, 0 \right>t = \left< 1 - t, 1, 0 \right>
+
+		\vec{r_2}(t) &= \left< 0, 1, 0 \right> + \left< 0, 0, 1 \right>t = \left< 0, 1, t \right>,
 	$$
 
+	where $0 \leq t \leq 1$ for both. Then
+
+	$$
+		\left| \left| \vec{r_1}'(t) \right| \right| &= \left| \left| \left< -1, 0, 0 \right> \right| \right| = 1
+
+		\left| \left| \vec{r_2}'(t) \right| \right| &= \left| \left| \left< 0, 0, 1 \right> \right| \right| = 1,
+	$$
+
+	and so our integral is
+
+	$$
+		\int_C \left( x + y + z \right)\,\d s &= \int_{C_1} \left( x + y + z \right)\,\d s + \int_{C_2} \left( x + y + z \right)\,\d s
+
+		&= \int_0^1 \left( (1 - t) + 1 + 0 \right) \cdot 1\,\d t + \int_0^1 \left( 0 + 1 + t \right) \cdot 1\,\d t
+
+		&= \left. \left[ 2t - \frac{t^2}{2} \right] \right|_0^1 + \left. \left[ t + \frac{t^2}{2} \right] \right|_0^1
+
+		&= 2 - \frac{1}{2} + 1 + \frac{1}{2}
+
+		&= 3.
+	$$
+
+	But wait --- that's a different answer than we got by integrating along the circle! We're running into a nuance of path integrals that we haven't had to deal with in integration before; let's take a closer look.
+
 ###
+
+This example showed that path integrals are *path-dependent*: integrating the same function along two curves, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
+
+We're going to have a lot more to say about path-dependence later in this section, but for right now, I want to provide a little bit of intuition that path integrals can't be path-independent in general. If we integrate the constant function $1$, then the path integral $\int_C 1\,\d s$ is equal to the arc length of $C$ for any piecewise-smooth curve $C$; different curves connecting two given points will typically have different lengths, like in the previous example, and so those path integrals will necessarily be different.
+
+
+
+## Path Integrals Through Vector Fields
+
+
 
 
 

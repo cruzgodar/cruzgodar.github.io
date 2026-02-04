@@ -31,8 +31,8 @@
 
 	#. A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a)$, $y = y(a, b, c)$, and $z = z(x, a, c)$.
 
-	> a) Express $\frac{\partial w}{\partial a}$ using the multivariable chain rule.
+	> a) Express $pw/pa$ using the multivariable chain rule.
 
-	> b) If $\frac{\partial w}{\partial c} = 2$, $\frac{\partial w}{\partial y} = 1$, $\frac{\partial w}{\partial z} = 3$, and $\frac{\partial z}{\partial c} = -4$, what is $\frac{\partial y}{\partial c}$?
+	> b) If $pw/pc = 2$, $pw/py = 1$, $pw/pz = 3$, and $pz/pc = -4$, what is $py/pc$?
 
 ###

@@ -1,0 +1,226 @@
+[
+	// cmd-alt-v inserts \vec{}
+	{ "keys": ["super+alt+v"], "command": "insert_snippet", "args": {"contents": "\\vec{$0}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+v"], "command": "insert_snippet", "args": {"contents": "\\vec{${0:$SELECTION}}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	//cmd-alt-9 inserts \left(  \right)
+	{ "keys": ["super+alt+9"], "command": "insert_snippet", "args": {"contents": "\\left( $0 \\right)"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+9"], "command": "insert_snippet", "args": {"contents": "\\left( ${0:$SELECTION} \\right)"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	//cmd-alt-[ inserts \left[  \right]
+	{ "keys": ["super+alt+["], "command": "insert_snippet", "args": {"contents": "\\left[ $0 \\right]"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+["], "command": "insert_snippet", "args": {"contents": "\\left[ ${0:$SELECTION} \\right]"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	//cmd-alt-shift-[ inserts \left\{  \right\}
+	{ "keys": ["super+alt+shift+["], "command": "insert_snippet", "args": {"contents": "\\left\\\\{ $0 \\right\\\\}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+shift+["], "command": "insert_snippet", "args": {"contents": "\\left\\\\{ ${0:$SELECTION} \\right\\\\}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	//cmd-alt-shift-\ inserts \left|  \right|
+	{ "keys": ["super+alt+shift+\\"], "command": "insert_snippet", "args": {"contents": "\\left| $0 \\right|"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+shift+\\"], "command": "insert_snippet", "args": {"contents": "\\left| ${0:$SELECTION} \\right|"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	//cmd-alt-shift-, inserts \left<  \right>
+	{ "keys": ["super+alt+shift+,"], "command": "insert_snippet", "args": {"contents": "\\left< $0 \\right>"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+shift+,"], "command": "insert_snippet", "args": {"contents": "\\left< ${0:$SELECTION} \\right>"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+
+
+	// Pair dollar signs
+	{ "keys": ["$"], "command": "insert_snippet", "args": {"contents": "\\$$0\\$"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["$"], "command": "insert_snippet", "args": {"contents": "\\$${0:$SELECTION}\\$"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+	{ "keys": ["$"], "command": "move", "args": {"by": "characters", "forward": true}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+			{ "key": "following_text", "operator": "regex_contains", "operand": "^\\$", "match_all": true }
+		]
+	},
+
+
+
+	// Bold
+	{ "keys": ["super+b"], "command": "insert_snippet", "args": {"contents": "**$0**"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+b"], "command": "insert_snippet", "args": {"contents": "**${0:$SELECTION}**"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	// Bold in Latex
+	{ "keys": ["super+alt+b"], "command": "insert_snippet", "args": {"contents": "\\textbf{$0}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+b"], "command": "insert_snippet", "args": {"contents": "\\textbf{${0:$SELECTION}}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true },
+		]
+	},
+
+
+
+	// Italic
+	{ "keys": ["super+i"], "command": "insert_snippet", "args": {"contents": "*$0*"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+i"], "command": "insert_snippet", "args": {"contents": "*${0:$SELECTION}*"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	// Italic in latex
+	{ "keys": ["super+alt+i"], "command": "insert_snippet", "args": {"contents": "\\textit{$0}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+i"], "command": "insert_snippet", "args": {"contents": "\\textit{${0:$SELECTION}}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true },
+		]
+	},
+
+
+
+
+	// cmd+alt+3 inserts a multiline environment.
+	{ "keys": ["super+alt+3"], "command": "insert_snippet", "args": {"contents": "### $0\n\n\t\n\n###"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+3"], "command": "insert_snippet", "args": {"contents": "### ${0:$SELECTION}\n\n\t\n\n###"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+
+
+	// cmd+alt+shift-4 inserts an equation environment.
+	{ "keys": ["super+alt+4"], "command": "insert_snippet", "args": {"contents": "\\$\\$\n\t$0\n\\$\\$"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+4"], "command": "insert_snippet", "args": {"contents": "\\$\\$\n\t${0:$SELECTION}\n\\$\\$"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	// cmd+alt+a inserts an align environment.
+	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{align*}\n\t$0\n\\end{align*}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+		]
+	},
+	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{align*}\n\t${0:$SELECTION}\n\\end{align*}"}, "context":
+		[
+			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+		]
+	},
+
+	{ "keys": ["ctrl+alt+left"], "command": "unbound" },
+	{ "keys": ["ctrl+alt+right"], "command": "unbound" },
+	{ "keys": ["ctrl+alt+up"], "command": "unbound" },
+	{ "keys": ["ctrl+alt+down"], "command": "unbound" },
+
+	{ "keys": ["tab"], "command": "indent" },
+	{ "keys": ["shift+tab"], "command": "unindent" },
+
+	{ "keys": ["super+n"], "command": "new_window" },
+	{ "keys": ["super+w"], "command": "close_window" },
+]

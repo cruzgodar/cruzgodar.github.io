@@ -176,7 +176,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	
 ###
 
-### exc "$\text{TREE}(3)$"
+### exc "$\operatorname{TREE}(3)$"
 	
 	The life cycle of trees in a forest can be divided into three sections: when they're alive, when they've died, and when they've then decomposed into soil. Suppose $m_1(t)$, $m_2(t)$, and $m_3(t)$ give the mass of living trees, fallen trees, and soil from fallen trees in century $t$, respectively, and that they satisfy the following system of DEs:
 	

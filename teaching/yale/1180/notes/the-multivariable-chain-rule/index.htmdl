@@ -2,7 +2,7 @@
 
 
 
-We've already been using the chain rule in multivariable calculus: $\frac{\partial}{\partial x}\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
+We've already been using the chain rule in multivariable calculus: $p/px\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
 
 $$
 	df/dt = df/dx \cdot dx/dt.
@@ -39,18 +39,18 @@ that is, we can track the $x$ and $y$ changes *separately*, and then just add th
 	Let $z = f(x, y)$ be a differentiable function, and let $x = x(t)$ and $y = y(t)$ both be functions of the same variable. Then
 
 	$$
-		dz/dt = \frac{\partial z}{\partial x} dx/dt + \frac{\partial z}{\partial y} dy/dt.
+		dz/dt = pz/px dx/dt + pz/py dy/dt.
 	$$
 
 	We can write this in a somewhat more cumbersome fashion as
 
 	$$
-		\frac{\d f(x, y)}{\d t} = \frac{\partial f}{\partial x} dx/dt + \frac{\partial f}{\partial y} dy/dt.
+		\frac{\d f(x, y)}{\d t} = pf/px dx/dt + pf/py dy/dt.
 	$$
 
 ###
 
-That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $\frac{\partial z}{\partial x}$ and $\frac{\partial z}{\partial y}$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
+That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $pz/px$ and $pz/py$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
 
 ### exc "the multivariable chain rule"
 
@@ -61,7 +61,7 @@ That second presentation of the theorem is definitely a little strange, but it's
 	We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable chain rule. We have $P = 4\frac{T}{V}$, so
 
 	$$
-		dP/dt &= \frac{\partial P}{\partial T} dT/dt + \frac{\partial P}{\partial V} dV/dt
+		dP/dt &= pP/pT dT/dt + pP/pV dV/dt
 
 		&= \left( \frac{4}{V} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
 	$$
@@ -78,19 +78,19 @@ That second presentation of the theorem is definitely a little strange, but it's
 
 
 
-This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $\frac{\partial f}{\partial b}$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
+This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $pf/pb$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
 
 ### image -i graphics/tree-1.webp graphics/tree-2.webp
 
-Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $\frac{\partial z}{\partial b}$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
+Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $pz/pb$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
 
 $$
-	\frac{\partial z}{\partial b} = \frac{\partial z}{\partial x} \frac{\partial x}{\partial b} + \frac{\partial z}{\partial y} \frac{\partial y}{\partial b}.
+	pz/pb = pz/px px/pb + pz/py py/pb.
 $$
 
 ### exc "the multivariable chain rule"
 
-	A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a, b)$, $y = y(b)$, and $z = z(b, c, s)$. Moreover, $b = b(t, s)$ and $c = c(s)$. Express $\frac{\partial w}{\partial s}$ using the multivariable chain rule.
+	A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a, b)$, $y = y(b)$, and $z = z(b, c, s)$. Moreover, $b = b(t, s)$ and $c = c(s)$. Express $pw/ps$ using the multivariable chain rule.
 
 	### solution
 
@@ -101,7 +101,7 @@ $$
 	The result is that
 
 	$$
-		\frac{\partial w}{\partial s} = \frac{\partial w}{\partial x} \frac{\partial x}{\partial b}\frac{\partial b}{\partial s} + \frac{\partial w}{\partial y} dy/db \frac{\partial b}{\partial s} + \frac{\partial w}{\partial z} \frac{\partial z}{\partial b}\frac{\partial b}{\partial s} + \frac{\partial w}{\partial z} \frac{\partial z}{\partial c} dc/ds + \frac{\partial w}{\partial z} \frac{\partial z}{\partial s}.
+		pw/ps = pw/px px/pbpb/ps + pw/py dy/db pb/ps + pw/pz pz/pbpb/ps + pw/pz pz/pc dc/ds + pw/pz pz/ps.
 	$$
 
 ###

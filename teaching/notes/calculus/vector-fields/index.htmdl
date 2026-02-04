@@ -67,9 +67,9 @@ Let's return to the fields in the previous exercise. We made an offhand comment 
 Let's take a closer look at our field $\vec{G} = \left< x, -y \right>$. We'll develop more heuristics to tell whether a field is conservative soon, but we can get a start now by writing down the facts we would need to know about a potential function $g(x, y)$ for it:
 
 $$
-	\frac{\partial g}{\partial x} &= x
+	pg/px &= x
 
-	\frac{\partial g}{\partial y} &= -y
+	pg/py &= -y
 $$
 
 To solve those for a formula for $g$, we need to undo the differentiation --- that's what integration is for! For the first one, we have
@@ -86,7 +86,7 @@ $$
 	d/dx\left[ F(x) + c \right] = f(x) + d/dx[c] = f(x).
 $$
 
-In effect, constants aren't seen by integrals, since derivatives zero them out. When we move to partial integrals, though, the integral loses even more precision. Evaluating the integral $\int f(x, y)\,\partial x$, means finding a function $F(x, y)$ whose partial derivative $\frac{\partial}{\partial x}\left[ F(x, y) \right] = f(x, y)$, and that partial derivative zeros out not just constants, but any term containing only $y$. To account for the integral's inability to see entire functions of $y$ alone, we add on not just a constant $c$, but an entire function $c(y)$. The same is true in reverse for the integral $\partial y$, and since we're usually considering both at once, we'll typically subscript the $c$ function. Finally returning to our example,
+In effect, constants aren't seen by integrals, since derivatives zero them out. When we move to partial integrals, though, the integral loses even more precision. Evaluating the integral $\int f(x, y)\,\partial x$, means finding a function $F(x, y)$ whose partial derivative $p/px\left[ F(x, y) \right] = f(x, y)$, and that partial derivative zeros out not just constants, but any term containing only $y$. To account for the integral's inability to see entire functions of $y$ alone, we add on not just a constant $c$, but an entire function $c(y)$. The same is true in reverse for the integral $\partial y$, and since we're usually considering both at once, we'll typically subscript the $c$ function. Finally returning to our example,
 
 $$
 	g &= \int x\,\partial x = \frac{x^2}{2} + c_1(y)

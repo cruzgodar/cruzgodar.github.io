@@ -36,7 +36,7 @@ When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solvi
 
 ### thm "existence and uniqueness of solutions for first-order nonlinear equations"
 	
-	For a continuous function $f(t, y)$ with a continuous partial derivative $$\frac{\partial f}{\partial y}$$, the DE
+	For a continuous function $f(t, y)$ with a continuous partial derivative $$pf/py$$, the DE
 	
 	$$
 		y' &= f(t, y)
@@ -59,10 +59,10 @@ $$
 for some fixed constant $c$. Then the derivative $dg/dx = 2cx$ tells us how fast $g(x)$ is changing relative to $x$. What if we wanted to know how fast $g$ was changing relative to $c$? We first need to formally make $c$ an input variable to $g$, which means it's now a function of two variables: $g(x, c) = cx^2$, and to remind us that we're only taking a *partial* derivative (since we're only looking at one variable at a time), we curl the $d$ symbols in the derivative a little:
 
 $$
-	\frac{\partial g}{\partial c} = x^2,
+	pg/pc = x^2,
 $$
 
-read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ is a constant, and now it's reversed: $g$ is just a linear function of $c$. So despite the unusual notation and name, $\frac{\partial f}{\partial y}$ just means the derivative of $f$ with $t$ treated as a constant.
+read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ is a constant, and now it's reversed: $g$ is just a linear function of $c$. So despite the unusual notation and name, $pf/py$ just means the derivative of $f$ with $t$ treated as a constant.
 
 
 
@@ -74,7 +74,7 @@ read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ i
 		h(x, y) = 2\log\left(\sin^2(x) + y\right).
 	$$
 	
-	Find $$\frac{\partial h}{\partial x}$$ and $$\frac{\partial h}{\partial y}$$.
+	Find $$ph/px$$ and $$ph/py$$.
 	
 ###
 
@@ -99,7 +99,7 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the quotient rule, we have
 	
 	$$
-		\frac{\partial y'}{\partial y} &= \frac{\frac{\partial}{\partial y} \left[ xe^y - y \right]\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\frac{\partial}{\partial y}\left[\sin(xy) + 2\right]}{\left(\sin(xy) + 2\right)^2}
+		\frac{\p y'}{\p y} &= \frac{p/py \left[ xe^y - y \right]\left(\sin(xy) + 2\right) - \left( xe^y - y \right)p/py\left[\sin(xy) + 2\right]}{\left(\sin(xy) + 2\right)^2}
 		
 		&= \frac{\left( xe^y - 1 \right)\left(\sin(xy) + 2\right) - \left( xe^y - y \right)\left(\cos(xy)\cdot x\right)}{\left(\sin(xy) + 2\right)^2}.
 	$$
@@ -121,7 +121,7 @@ Our final solving method for first-order DEs looks quite a lot like integrating 
 	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentiable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
 	
 	$$
-		\frac{d f(x, y)}{dt} = \frac{\partial f}{\partial x} dx/dt + \frac{\partial f}{\partial y} dy/dt.
+		\frac{d f(x, y)}{dt} = pf/px dx/dt + pf/py dy/dt.
 	$$
 	
 ###
@@ -153,9 +153,9 @@ which is just the chain rule from calculus I.
 	Let's find all four pieces on the right side of the equation:
 	
 	$$
-		\frac{\partial f}{\partial x} &= 2xy\cos\left(x^2y\right)
+		pf/px &= 2xy\cos\left(x^2y\right)
 		
-		\frac{\partial f}{\partial y} &= x^2\cos\left(x^2y\right)
+		pf/py &= x^2\cos\left(x^2y\right)
 		
 		dx/dt &= 2.
 		
@@ -215,15 +215,15 @@ Equipped with the multivariable chain rule, we're ready to dive into our first e
 	This is a very, very strange step to take, but the idea will start to take shape when we look at the partial derivatives of $\psi$:
 	
 	$$
-		\frac{\partial \psi}{\partial t} &= 2t + y^2
+		p\psi/pt &= 2t + y^2
 		
-		\frac{\partial \psi}{\partial y} &= 2ty
+		p\psi/py &= 2ty
 	$$
 	
 	Those partial derivatives look a lot like components of our DE! Specifically, we can rewrite it as
 	
 	$$
-		\frac{\partial \psi}{\partial t} + \frac{\partial \psi}{\partial y} dy/dt = 0.
+		p\psi/pt + p\psi/py dy/dt = 0.
 	$$
 	
 	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $dt/dt$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
@@ -269,9 +269,9 @@ $$
 For this to be exact, we need to find a function $\psi(t, y)$ so that
 
 $$
-	\frac{\partial \psi}{\partial t} &= f(t, y)
+	p\psi/pt &= f(t, y)
 	
-	\frac{\partial \psi}{\partial y} &= g(t, y).
+	p\psi/py &= g(t, y).
 $$
 
 In the interest of time (and because it's covered in much more depth in calculus IV), let's cut to the chase:
@@ -280,18 +280,18 @@ In the interest of time (and because it's covered in much more depth in calculus
 
 ### thm "the existence of $\psi$"
 	
-	Let $f(t, y)$ and $g(t, y)$ be continuous and differentiable. If $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ exist and are continuous, and if
+	Let $f(t, y)$ and $g(t, y)$ be continuous and differentiable. If $pf/py$ and $pg/pt$ exist and are continuous, and if
 
 	$$
-		\frac{\partial f}{\partial y} = \frac{\partial g}{\partial t}.
+		pf/py = pg/pt.
 	$$
 	
 	then there is a function $\psi(t, y)$ with
 	
 	$$
-		\frac{\partial \psi}{\partial t} &= f(t, y)
+		p\psi/pt &= f(t, y)
 		
-		\frac{\partial \psi}{\partial y} &= g(t, y).
+		p\psi/py &= g(t, y).
 	$$
 	
 ###
@@ -306,7 +306,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	
 	To solve the DE $f(t, y) + g(t, y)y' = 0$ with exactness:
 	
-	1. Make sure the DE is actually exact by find $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ and ensuring they're equal. If they're not, this method won't work.
+	1. Make sure the DE is actually exact by find $pf/py$ and $pg/pt$ and ensuring they're equal. If they're not, this method won't work.
 	
 	2. Find $\int f(t, y)\,\d t$ and $\int g(t, y)\,\d y$. They should agree with one another on expressions involving both $t$ and $y$ but differ on expressions involving just one.
 	
@@ -347,14 +347,14 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	so we first need to take some partial derivatives.
 	
 	$$
-		\frac{\partial f}{\partial y} &= \cos(xy) - y\sin(xy) \cdot x - 2e^{2x + y}
+		pf/py &= \cos(xy) - y\sin(xy) \cdot x - 2e^{2x + y}
 		
-		\frac{\partial g}{\partial x} &= \cos(xy) - x\sin(xy) \cdot y - e^{2x + y} \cdot 2.
+		pg/px &= \cos(xy) - x\sin(xy) \cdot y - e^{2x + y} \cdot 2.
 	$$
 	
 	It's a little magical watching these come together --- they're exactly the same, but through substantially different processes. Now that we know the DE is exact, we can find $\psi$. Knowing both of its partial derivatives is enough to solve for it up to a constant --- let's see how.
 	
-	First of all, $\frac{\partial \psi}{\partial x} = f(x, y)$, so we should integrate that $dx$. Just like partial derivatives, this just means treating $y$ as a constant.
+	First of all, $p\psi/px = f(x, y)$, so we should integrate that $dx$. Just like partial derivatives, this just means treating $y$ as a constant.
 	
 	$$
 		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\,\d x

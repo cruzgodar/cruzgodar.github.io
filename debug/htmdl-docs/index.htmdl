@@ -34,7 +34,7 @@ Within math environments, the following rules are used:
 
 > - Expressions like `:: a = 1 ; b = 1234 ::` are left aligned blocks: $\ :: a = 1 ; b = 1234 ::$
 
-> - One-or-two variable Leibniz derivatives like `d/dx`, `dy/dx`, `d\theta/dx` convert to $d/dx$, $dy/dx$, and $d\theta/dx$. `\d` not immediately followed by a letter (i.e. not a letter) is converted to an operator $\text{d}$.
+> - One-or-two variable Leibniz derivatives like `d/dx`, `dy/dx`, `d\theta/dx` convert to $d/dx$, $dy/dx$, and $d\theta/dx$. `\d` not immediately followed by a letter (i.e. not a letter) is converted to an operator $\mathrm{d}$. Similarly, `p/px`, `py/px`, `p\theta/px` convert to $\partial/\partial x$, $\partial y/\partial x$, and $\partial\theta/\partial x$. `\p` not immediately followed by a letter (i.e. not a letter) is converted to an operator $\partial$.
 
 > - `**A**` is converted to bold $**A**$, and `#A#` is converted to blackboard bold $#A#$.
 

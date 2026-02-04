@@ -187,7 +187,7 @@ Let's look at a more complicated scenario, in which the boundary is a circle ins
 	Okay, onto the discriminant. We have
 
 	$$
-		g_{xx} &= \frac{\partial}{\partial x}\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
+		g_{xx} &= p/px\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
 
 			&= -2xe^{-x^2-y^2} \left( -2x + 2x^3 \right) + e^{-x^2-y^2}\left( -2 + 6x^2 \right)
 
@@ -195,13 +195,13 @@ Let's look at a more complicated scenario, in which the boundary is a circle ins
 
 		~
 
-		g_{xy} &= \frac{\partial}{\partial y}\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
+		g_{xy} &= p/py\left[ e^{-x^2-y^2} \left( -2x + 2x^3 \right) \right]
 
 			&= -2y e^{-x^2-y^2} \left( -2x + 2x^3 \right)
 
 		~
 
-		g_{yy} &= \frac{\partial}{\partial y}\left[ 2x^2ye^{-x^2-y^2} \right]
+		g_{yy} &= p/py\left[ 2x^2ye^{-x^2-y^2} \right]
 
 			&= 2x^2e^{-x^2-y^2} - 4x^2y^2e^{-x^2-y^2}.
 

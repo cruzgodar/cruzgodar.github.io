@@ -203,7 +203,7 @@ This definition is fine, but we'll barely use it --- for us, the most important 
 	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $**A**$ given by
 	
 	$$
-		**A** = **J**(x_0, y_0) = [[ \frac{\partial f}{\partial x}(x_0, y_0), \frac{\partial f}{\partial y}(x_0, y_0) ; \frac{\partial g}{\partial x}(x_0, y_0), \frac{\partial g}{\partial y}(x_0, y_0) ]],
+		**A** = **J**(x_0, y_0) = [[ pf/px(x_0, y_0), pf/py(x_0, y_0) ; pg/px(x_0, y_0), pg/py(x_0, y_0) ]],
 	$$
 	
 	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $**J**(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
@@ -237,7 +237,7 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	To get started, let's find the Jacobian in general:
 	
 	$$
-		**J** &= [[ \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} ; \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} ]]
+		**J** &= [[ pf/px, pf/py ; pg/px, pg/py ]]
 		
 		&= [[ 0, 1 ; -\cos(x), -\frac{1}{2} ]].
 	$$

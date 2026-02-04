@@ -26,13 +26,13 @@ Taking a limit by sliding one point toward the other is like a derivative, but c
 	Let $f(x, y)$ be a function. The **partial derivative** of $f$ with respect to $x$ is
 
 	$$
-		\frac{\partial}{\partial x} [f(x, y)] = \frac{\partial f}{\partial x}(x, y) = f_x(x, y) = \lim_{h \to 0} \frac{f(x + h, y) - f(x, y)}{h}
+		p/px [f(x, y)] = pf/px(x, y) = f_x(x, y) = \lim_{h \to 0} \frac{f(x + h, y) - f(x, y)}{h}
 	$$
 
 	if the limit exists. Similarly, the **partial derivative** of $f$ with respect to $y$ is
 
 	$$
-		\frac{\partial}{\partial y} [f(x, y)] = \frac{\partial f}{\partial y}(x, y) = f_y(x, y) = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}
+		p/py [f(x, y)] = pf/py(x, y) = f_y(x, y) = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}
 	$$
 
 	if that limit exists. We read the $\partial$ symbol as "partial".
@@ -45,12 +45,12 @@ A partial derivative does what it says on the tin: it computes a derivative of a
 
 ### ex "a partial derivative"
 
-	Compute $$\frac{\partial}{\partial y} \left[ x + y^2 + xy \right]$$ using the limit definition.
+	Compute $$p/py \left[ x + y^2 + xy \right]$$ using the limit definition.
 
 	Much like derivatives of a single variable, the limit definition for partial derivatives isn't a great long-term solution. We directly compute
 
 	$$
-		\frac{\partial}{\partial y} \left[ x + y^2 + xy \right] &= \lim_{h \to 0} \frac{x + (y + h)^2 + x(y + h) - (x + y^2 + xy)}{h}
+		p/py \left[ x + y^2 + xy \right] &= \lim_{h \to 0} \frac{x + (y + h)^2 + x(y + h) - (x + y^2 + xy)}{h}
 
 		&= \lim_{h \to 0} \frac{x + y^2 + 2yh + h^2 + xy + xh - x - y^2 - xy}{h}
 
@@ -66,20 +66,20 @@ A partial derivative does what it says on the tin: it computes a derivative of a
 While partial derivatives can seem complicated on the surface, I bet you're already more comfortable with them than you might think! We already deal with functions of multiple variables in Calculus I, just not with that terminology. When we say that $d/dx \left[ cx^2 \right] = 2cx$ for any constant $c$, we can just as well think of that function as being $f(x, c) = cx^2$ instead of $f(x) = x^2$. With that interpretation, we can compute partial derivatives *exactly* as we would compute ordinary derivatives, remembering to treat all other variables as constants. Returning to that example,
 
 $$
-	\frac{\partial}{\partial y} \left[ x + y^2 + xy \right] &= \frac{\partial}{\partial y} \left[ x \right] + \frac{\partial}{\partial y} \left[ y^2 \right] + \frac{\partial}{\partial y} \left[ xy \right]
+	p/py \left[ x + y^2 + xy \right] &= p/py \left[ x \right] + p/py \left[ y^2 \right] + p/py \left[ xy \right]
 
 	&= 0 + 2y + x.
 $$
 
-In fact, this is so accurate to the way that partial derivatives operate that the $\partial$ symbol doesn't actually mean anything different from the $\text{d}$ symbol: it's just there to remind us that the function we're differentiating has more than one input. In programming, symbols and structure that are equivalent to something more long-winded are called *syntactic sugar*; this is more like syntactic sawdust.
+In fact, this is so accurate to the way that partial derivatives operate that the $\p$ symbol doesn't actually mean anything different from the $\d$ symbol: it's just there to remind us that the function we're differentiating has more than one input. In programming, symbols and structure that are equivalent to something more long-winded are called *syntactic sugar*; this is more like syntactic sawdust.
 
 ### exc "partial derivatives"
 
 	Find the following partial derivatives:
 
-	1. $\frac{\partial}{\partial x}\left[ \sin(x^2 + y) \right]$
+	1. $p/px\left[ \sin(x^2 + y) \right]$
 
-	2. $\frac{\partial f}{\partial y}$ for $f(x, y) = e^{2x}\tan(y)$.
+	2. $pf/py$ for $f(x, y) = e^{2x}\tan(y)$.
 
 	3. $g_z(2, 4, 7)$ for $g(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.
 
@@ -90,7 +90,7 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 	1. We treat $y$ as if it's a constant, so
 	
 	$$
-		\frac{\partial}{\partial x}\left[ \sin(x^2 + y) \right] &= \cos(x^2 + y) \frac{\partial}{\partial x} \left[ x^2 + y \right]
+		p/px\left[ \sin(x^2 + y) \right] &= \cos(x^2 + y) p/px \left[ x^2 + y \right]
 
 		&= \cos(x^2 + y) (2x).
 	$$
@@ -98,7 +98,7 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 	2. While this might seem like a product rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
 
 	$$
-		\frac{\partial}{\partial y}\left[ e^{2x}\tan(y) \right] &= e^{2x} \frac{\partial}{\partial y}\left[ \tan(y) \right]
+		p/py\left[ e^{2x}\tan(y) \right] &= e^{2x} p/py\left[ \tan(y) \right]
 
 		&= e^{2x} \sec^2(y).
 	$$
@@ -106,7 +106,7 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 	3. We first need to compute 
 
 	$$
-		\frac{\partial}{\partial z}\left[ \sqrt{x^2 + y^2 + z^2} \right] = \frac{1}{2} \left( x^2 + y^2 + z^2 \right)^{-1/2} (2z),
+		p/pz\left[ \sqrt{x^2 + y^2 + z^2} \right] = \frac{1}{2} \left( x^2 + y^2 + z^2 \right)^{-1/2} (2z),
 	$$
 
 	and then we can set $(x, y, z) = (2, 4, 7)$ to find
@@ -125,18 +125,18 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 
 ## Higher-Order Partial Derivatives
 
-Just like with regular derivatives, we can take higher order partial derivatives. Operations like $\frac{\partial^2 f}{\partial x^2}(a, b)$ aren't particularly complicated if we're already comfortable with partials in the first place: that one computes the concavity of the graph of $f$ at the point $(a, b)$ when the graph is intersected with the plane $x = a$. We can also write that as $f_{xx}(a, b)$, just like we'd add extra primes to a single-variable function --- but wait! What about mixing partial derivatives, like $f_{xy}(a, b)$?
+Just like with regular derivatives, we can take higher order partial derivatives. Operations like $\frac{\p^2 f}{\p x^2}(a, b)$ aren't particularly complicated if we're already comfortable with partials in the first place: that one computes the concavity of the graph of $f$ at the point $(a, b)$ when the graph is intersected with the plane $x = a$. We can also write that as $f_{xx}(a, b)$, just like we'd add extra primes to a single-variable function --- but wait! What about mixing partial derivatives, like $f_{xy}(a, b)$?
 
 First of all, let's clear up notation. When we write $f_{xy}$, we mean $\left( f_x \right)_y$: we differentiate from the inside out, thinking of the subscripts as building up from left to right. In comparison, when we use the $\partial$ notation, we'd write the same function as
 
 $$
-	\left( f_x \right)_y = \frac{\partial}{\partial y} \left[ \frac{\partial}{\partial x} \left[ f(x, y) \right] \right],
+	\left( f_x \right)_y = p/py \left[ p/px \left[ f(x, y) \right] \right],
 $$
 
-thinking of the derivatives as stacking up from right to left (in both notations, they stack up from near $f$ to far from it). To simplify this $\partial$ notation in a similar way to $\frac{\partial^2}{\partial x^2}$, we also write it as
+thinking of the derivatives as stacking up from right to left (in both notations, they stack up from near $f$ to far from it). To simplify this $\partial$ notation in a similar way to $\frac{\p^2}{\p x^2}$, we also write it as
 
 $$
-	f_{xy} = \frac{\partial^2}{\partial y\, \partial x} \left[ f(x, y) \right] = \frac{\partial^2 f}{\partial y\, \partial x}.
+	f_{xy} = \frac{\p^2}{\p y\,\p x} \left[ f(x, y) \right] = \frac{\p^2 f}{\p y\,\p x}.
 $$
 
 We call $f_{xy}$ and $f_{yx}$ **mixed partials**. We'll investigate a bit of their geometric interpretation on the homework, but for now, let's just get our bearings computing them.
@@ -203,22 +203,22 @@ $$
 
 The actual value is about $1.0488$, so this isn't bad!
 
-To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines from partial derivatives that we talked about before. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $\frac{\partial f}{\partial x}(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
+To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines from partial derivatives that we talked about before. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $pf/px(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
 
 $$
-	\vec{l_1}(t) = p + t\left< 1, 0, \frac{\partial f}{\partial x}(a, b) \right>.
+	\vec{l_1}(t) = p + t\left< 1, 0, pf/px(a, b) \right>.
 $$
 
 Similarly,
 
 $$
-	\vec{l_2}(t) = p + t\left< 0, 1, \frac{\partial f}{\partial y}(a, b) \right>.
+	\vec{l_2}(t) = p + t\left< 0, 1, pf/py(a, b) \right>.
 $$
 
 Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, a + \Delta y \right)$ as
 
 $$
-	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + \frac{\partial f}{\partial x}(a, b)\Delta x + \frac{\partial f}{\partial y}(a, b)\Delta y,
+	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + pf/px(a, b)\Delta x + pf/py(a, b)\Delta y,
 $$
 
 or in a much more notationally harmonious presentation, we can approximate $f$ near $(a, b)$ by the function

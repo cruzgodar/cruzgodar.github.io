@@ -14,11 +14,11 @@
 	
 	In problems 3#, find the indicated derivative.
 	
-	#. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
+	#. $$p/pt \left[ 2ty + \sin(t) \right].$$
 	
-	#. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
+	#. $$p/py \left[ \sin(xy^x) \right].$$
 	
-	#. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
+	#. $$p/px \left[ \sin(xy^x) \right].$$
 	
 
 
