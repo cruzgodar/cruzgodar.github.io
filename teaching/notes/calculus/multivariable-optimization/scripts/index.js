@@ -11,6 +11,24 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
+		criticalPoints:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -0.3, zmax: 0.3 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple },
+
+				{ latex: raw`X = [\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0, -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}]`, secret: true },
+				{ latex: raw`Y = [\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0, \frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}]`, secret: true },
+				{ latex: raw`(X, Y, f(X, Y))`, color: desmosBlue },
+			]
+		},
+
 		saddlePoint:
 		{
 			use3d: true,

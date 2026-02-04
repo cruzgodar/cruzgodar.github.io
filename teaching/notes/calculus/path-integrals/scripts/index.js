@@ -236,5 +236,20 @@ export default function()
 				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
+
+		pathDependence:
+		{
+			use3d: true,
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -0.5, ymax: 2.5, zmin: -0.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`(1, 1, 0), (0, 1, 1)`, color: desmosPurple },
+
+				{ latex: raw`(\cos(t), 1, \sin(t))`, color: desmosBlue, points: false, lines: true, secret: true, parametricDomain: { min: 0, max: "\\pi/2" } },
+				{ latex: raw`(1, 1, 0), (0, 1, 0), (0, 1, 1)`, color: desmosRed, points: false, lines: true, secret: true },
+			]
+		}
 	});
 }

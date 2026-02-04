@@ -342,6 +342,8 @@ function packageSolution(solutionElement, showButton = true)
 			solutionElement.style.height = "auto";
 			solutionElement.style.width =
 				solutionElement.parentElement.getBoundingClientRect().width - 12 + "px";
+			solutionElement.style.top = 0;
+			solutionElement.style.left = 0;
 
 			await sleep(10);
 

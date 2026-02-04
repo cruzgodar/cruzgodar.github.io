@@ -70,13 +70,51 @@ We can also take path integrals of functions of three or more variables, just wi
 
 	Strictly speaking, this is a *definition* of the integral $\int_C f(x, y)\,\d s$, since $C$ may not be smooth at the joining point of $C_1$ and $C_2$. In practice, though, this result means we can integrate functions along curves comprised of smooth parts (called **piecewise smooth**) by splitting them up into path integrals along each part.
 
-	### desmos piecewiseSmoothCurve
-
 ###
+
+### desmos piecewiseSmoothCurve
+
+Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quarters circle of radius $2$ that extends clockwise from $(0, -2)$.
 
 ### ex "a path integral in $#R#^3$"
 
-	Let $C$ be the curve from $(1, 1, 0)$ to $(0, 1, 1)$ in $#R#^3$ given by 
+	Let $C$ be the curve from $(1, 1, 0)$ to $(0, 1, 1)$ in $#R#^3$ given by a quarter circle parallel to the $xz$-plane, and let $D$ be the curve from $(1, 1, 0)$ to $(0, 1, 1)$ given by two line segments that meet at $(0, 1, 0)$, as shown.
+
+	### desmos pathDependence
+
+	Find $\int_C \left( x + y + z \right)\,\d s$ and $\int_D \left( x + y + z \right)\,\d s$.
+
+	We'll begin by parameterizing both curves. $C$ is given by a circle, so we'd expect a cosine and sine to be present in there somewhere. Since we start from a point with $x = 1$, we can use cosine for the $x$-coordinate and sine for the $z$-coordinate, resulting in
+
+	$$
+		\vec{r}(t) = \left< \cos(t), 1, \sin(t) \right>
+	$$
+
+	for $0 \leq t \leq \frac{\pi}{2}$. Then
+
+	$$
+		\left| \left| \vec{r}'(t)' \right| \right| &= \left| \left| \left< \cos(t), 1, \sin(t) \right> \right| \right|
+
+		&= \sqrt{\cos^2(t) + 0 + \sin^2(t)}
+
+		&= 1,
+	$$
+
+	so our path integral becomes
+
+	$$
+		\int_C \left( x + y + z \right)\,\d s &= \int_0^{\pi / 2} \left( \cos(t) + 1 + \sin(t) \right) \cdot 1\,\d t
+
+		&= \left. \left[ \sin(t) + t - \cos(t) \right] \right|_0^{\pi / 2}
+
+		&= 2 + \frac{\pi}{2}.
+	$$
+
+	To integrate along $D$, we have to split it up with the previous proposition, since there would be a sharp corner in the graph at $(0, 1, 0)$ otherwise. Let's parameterize the two line segments as
+	
+	$$
+		\vec{r_1}(t) = \left<  \right>	
+	$$
 
 ###
 

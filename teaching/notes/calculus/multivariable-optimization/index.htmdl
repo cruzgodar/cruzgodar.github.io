@@ -2,7 +2,7 @@
 
 
 
-At long last, it's time to talk about optimization. This was our main application of derivatives in calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$, find every point $x = c$ where $f'(x) = 0$ or $f'(x)$ is undefined (called the **critical points**), which are places where there *might* be an extremum. To classify them, we can use one of two methods.
+At long last, it's time to talk about optimization. This was our main application of derivatives in calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$ and find every point $x = c$ where $f'(c) = 0$ or $f'(c)$ is undefined, called the **critical points**. They're the places where there *might* be an extremum, and to classify them, we can use one of two methods.
 
 > - The **first derivative test** has us evaluate $f'(x)$ just to the left and right of $x = c$ --- if it's negative to the left and positive to the right, then there is a local minimum at $x = c$, and if the opposite is true, there is a local maximum. If the derivative has the same sign to both the left and right, then this isn't an extremum at all --- it's a saddle point, like with $y = x^3$ at $x = 0$.
 
@@ -22,7 +22,11 @@ We'll begin with critical points, which generalize nicely to more variables --- 
 
 ###
 
-This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives (and therefore all directional derivatives) are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+
+### desmos criticalPoints
+
+This function has five critical points; two are local maxima, two are local minima, and one (at $(0, 0)$) is neither.
 
 ### exc "critical points"
 
@@ -110,7 +114,7 @@ The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn'
 
 ### desmos saddlePoint
 
-Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much the shape of graphs like these look like saddles.
+Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like with $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much graphs like these resemble saddles.
 
 If we know that $(a, b)$ is a critical point of $f$, how do we determine if it's a local maximum or minimum? Of the two derivatives we mentioned for functions of a single variable, the first derivative test is unfortunately completely broken for functions of multiple variables. It relied on there being only two directions to move from a point at $x = a$: either to the right or left. For a two-variable function, there's now an entire circle of directions we could move in from a critical point $(a, b)$, and so we'd need to verify that the gradient $\G f$ points in a direction more toward $(a, b)$ than away from it for every point in a circle very close to $(a, b)$. It's certainly *possible*, but from that description, it's pretty clear the juice just isn't worth the squeeze. So with that test out, let's turn to the remaining one.
 
