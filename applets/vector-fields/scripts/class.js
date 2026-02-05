@@ -748,7 +748,15 @@ export class VectorField extends AnimationFrameApplet
 					) {
 						const newIndex = row * this.wilson.canvasWidth + col;
 
-						this.panZoomDimTexture[4 * newIndex] = this.lifetime;
+						// This makes the particles fade in when they first appear over the course
+						// of 30 frames.
+						this.panZoomDimTexture[4 * newIndex] = Math.min(
+							Math.abs(
+								this.particles[index][2] - this.lifetime
+							) * this.lifetime / 30,
+							this.lifetime
+						);
+						
 						this.panZoomDimTexture[4 * newIndex + 1] = floats[4 * index + 2] * 255;
 
 						this.panZoomDimTexture[4 * newIndex + 2] = floats[4 * index + 3] * 255;

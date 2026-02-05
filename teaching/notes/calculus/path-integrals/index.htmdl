@@ -58,9 +58,7 @@ Path integrals are often called **line integrals** in much of the literature on 
 
 ###
 
-We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. In general, if we're adding something up a changing quantity over the course of a curve in 2D or 3D space, path integrals are the first tool we reach for. For example, the integral of a density function along a thin wire gives the total mass of the wire.
-
-Let's now formalize a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
+We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. Before that, though, let's formalize a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
 
 ### prop "the additivity of path integrals"
 
@@ -154,6 +152,9 @@ We're going to have a lot more to say about path-dependence later in this sectio
 
 ## Path Integrals Through Vector Fields
 
+Single-variable integrals apply to much, much more than just finding areas under curves: whenever we want to add up a quantity that changes over time, distance, or with respect to any other variable, they're the first tool we reach for. In the same way, if we're adding up a changing quantity over the course of a curve in 2D or 3D space, path integrals will be our starting point. For example, the integral of a density function along a thin wire gives the total mass of the wire.
+
+In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of Let's look at a slightly different example, though: how could we find the total work done on a moving object by an external force (say, wind)? As we discussed long ago in part 3, work is force times distance, but we can be more precise now that we have the language of vectors. Work is the amount of energy something imparts on an object over the course of the object moving between two points --- if the wind pushes an object in a straight line, and the force of that wind is constant, then the work done by the wind is that force times the distance the object moved. However, if 
 
 
 
