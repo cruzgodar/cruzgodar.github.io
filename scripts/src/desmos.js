@@ -10,42 +10,66 @@ export const desmosOrange = "_desmosOrange";
 export const desmosBlack = "_desmosBlack";
 export const desmosGray = "_desmosGray";
 
+// Light mode: 75% S, 80% V
+// Dark mode: 100% S, 80% V
+// Dark mode high contrast: 100% S, 50% V (when inverted results in 50% S, 100% V)
+
 const functionsForColors = {
-	[desmosPurple]: (is3d, alwaysDark) =>
+	[desmosPurple]: (is3d, alwaysDark, highContrast) =>
 	{
 		if (is3d)
 		{
-			return "#7f32cc";
+			return siteSettings.increaseContrast || highContrast ? "#7f00ff" : "#7f32cc";
+		}
+
+		if (siteSettings.increaseContrast || highContrast)
+		{
+			return siteSettings.darkTheme || alwaysDark ? "#3f7f00" : "#7f32cc";
 		}
 		
 		return siteSettings.darkTheme || alwaysDark ? "#66cc00" : "#7f32cc";
 	},
 
-	[desmosBlue]: (is3d, alwaysDark) =>
+	[desmosBlue]: (is3d, alwaysDark, highContrast) =>
 	{
 		if (is3d)
 		{
-			return "#327fcc";
+			return siteSettings.increaseContrast || highContrast ? "#007fff" : "#327fcc";
+		}
+
+		if (siteSettings.increaseContrast || highContrast)
+		{
+			return siteSettings.darkTheme || alwaysDark ? "#7f3f00" : "#327fcc";
 		}
 		
 		return siteSettings.darkTheme || alwaysDark ? "#cc6600" : "#327fcc";
 	},
 
-	[desmosRed]: (is3d, alwaysDark) =>
+	[desmosRed]: (is3d, alwaysDark, highContrast) =>
 	{
 		if (is3d)
 		{
-			return "#cc3232";
+			return siteSettings.increaseContrast || highContrast ? "#ff0000" : "#cc3232";
+		}
+
+		if (siteSettings.increaseContrast || highContrast)
+		{
+			return siteSettings.darkTheme || alwaysDark ? "#007f7f" : "#cc3232";
 		}
 		
 		return siteSettings.darkTheme || alwaysDark ? "#00cccc" : "#cc3232";
 	},
 
-	[desmosOrange]: (is3d, alwaysDark) =>
+	[desmosOrange]: (is3d, alwaysDark, highContrast) =>
 	{
 		if (is3d)
 		{
-			return "#cc7f32";
+			return siteSettings.increaseContrast || highContrast ? "#ff7f00" : "#cc7f32";
+		}
+
+		if (siteSettings.increaseContrast || highContrast)
+		{
+			return siteSettings.darkTheme || alwaysDark ? "#003f7f" : "#cc7f32";
 		}
 		
 		return siteSettings.darkTheme || alwaysDark ? "#0066cc" : "#cc7f32";
@@ -131,7 +155,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			{
 				expression.color = functionsForColors[expression.color](
 					is3d,
-					data[key].alwaysDark
+					data[key].alwaysDark,
+					data[key].highContrast
 				);
 			}
 
@@ -186,29 +211,31 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			colors: {
 				PURPLE: functionsForColors[desmosPurple](
 					data[element.id].use3d,
-					data[element.id].alwaysDark
+					data[element.id].alwaysDark,
+					data[element.id].highContrast
 				),
 				BLUE: functionsForColors[desmosBlue](
 					data[element.id].use3d,
-					data[element.id].alwaysDark
+					data[element.id].alwaysDark,
+					data[element.id].highContrast
 				),
 				RED: functionsForColors[desmosRed](
 					data[element.id].use3d,
-					data[element.id].alwaysDark
+					data[element.id].alwaysDark,
+					data[element.id].highContrast
 				),
 				ORANGE: functionsForColors[desmosOrange](
 					data[element.id].use3d,
-					data[element.id].alwaysDark
+					data[element.id].alwaysDark,
+					data[element.id].highContrast
 				),
 				...(
 					data[element.id].use3d
 						? { BLACK: functionsForColors[desmosGray](
 							data[element.id].use3d,
-							data[element.id].alwaysDark
 						) }
 						: { BLACK: functionsForColors[desmosBlack](
 							data[element.id].use3d,
-							data[element.id].alwaysDark
 						) }
 				)
 			},
@@ -408,26 +435,29 @@ export function getDesmosVector({
 	color,
 	secret = true,
 	lineStyle = "SOLID",
-	arrowSize = "0.35"
+	arrowSize = "0.35",
+	lineWidth
 }) {
 	uid++;
 
 	return [
-		{ latex: raw`((${from[0]}), (${from[1]})), ((${to[0]}), (${to[1]}))`, color, lines: true, points: false, secret, lineStyle },
-		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - (${from[1]}), ${to[0]} - (${from[0]}))`, secret },
+		{ latex: raw`((${from[0]}), (${from[1]})), ((${to[0]}), (${to[1]}))`, color, lines: true, points: false, secret, lineStyle, lineWidth },
+		{ latex: raw`s_{${uid}} = \arctan(${to[1]} - (${from[1]}), ${to[0]} - (${from[0]}))`, secret, lineWidth },
 		{
 			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - ${arrowSize}\cos(s_{${uid}} + .5), (${to[1]}) - ${arrowSize}\sin(s_{${uid}} + .5))`,
 			color,
 			lines: true,
 			points: false,
-			secret
+			secret,
+			lineWidth
 		},
 		{
 			latex: raw`((${to[0]}), (${to[1]})), ((${to[0]}) - ${arrowSize}\cos(s_{${uid}} - .5), (${to[1]}) - ${arrowSize}\sin(s_{${uid}} - .5))`,
 			color,
 			lines: true,
 			points: false,
-			secret
+			secret,
+			lineWidth
 		}
 	];
 }

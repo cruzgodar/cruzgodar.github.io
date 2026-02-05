@@ -262,19 +262,23 @@ export default function()
 		swimmingInCurrent:
 		{
 			alwaysDark: true,
+			highContrast: true,
 			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
-			options: { showResetButtonOnGraphpaper: false },
+			options: {
+				showResetButtonOnGraphpaper: false,
+				expressions: false,
+			},
 			
 			expressions:
 			[
-				{ latex: raw`(1, -2), (1, 2)`, color: desmosBlack, points: false, lines: true },
+				{ latex: raw`(1, -2), (1, 2)`, color: desmosBlack, points: false, lines: true, lineWidth: 5 },
 
 				...getDesmosPoint({
 					point: ["1", "b"],
-					color: desmosBlack,
-					dragMode: "NONE",
+					color: desmosPurple,
+					dragMode: "Y",
 					size: 12,
 				}),
 
@@ -283,14 +287,14 @@ export default function()
 					min: -2,
 					max: 2,
 					secret: false,
-					playing: true
 				}),
 
 				...getDesmosVector({
 					from: ["1", "b"],
 					to: ["1 - \\frac{b}{2}", "b - \\frac{1}{2}"],
-					color: desmosBlack,
+					color: desmosPurple,
 					arrowSize: "0.1",
+					lineWidth: 5
 				}),
 			]
 		},
@@ -298,59 +302,44 @@ export default function()
 
 	
 
-	const getSwimmingInCurrentApplet =createEmphemeralApplet(
-		$("#swimmingInCurrent-canvas"),
-		(canvas) =>
-		{
-			const applet = new VectorField({
-				canvas,
-				transparency: true,
-				useFullscreenButton: false,
-				useResetButton: false,
-			});
-
-			applet.allowFullscreenWithKeyboard = false;
-
-			applet.loadPromise.then(() =>
-			{
-				applet.run({
-					resolution: 500,
-					maxParticles: 3000,
-					generatingCode: "(-y * 0.5, -x * 0.5)",
-					dt: .006,
-					worldWidth: 6
-				});
-			});
-
-			// function onDrawFrame()
-			// {
-			// 	desmosGraphs.swimmingInCurrent.setMathBounds({
-			// 		xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
-			// 		xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
-			// 		ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
-			// 		ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
-			// 	});
-			// }
-
-			return applet;
-		});
-
-	function updateSwimmingInCurrentAppletBounds()
+	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
 	{
-		const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
-
-		console.log(bounds);
-
-		const applet = getSwimmingInCurrentApplet();
-		
-		applet.wilson.resizeWorld({
-			minX: bounds.xmin,
-			maxX: bounds.xmax,
-			minY: bounds.ymin,
-			maxY: bounds.ymax,
+		const applet = new VectorField({
+			canvas,
+			useFullscreenButton: false,
+			useResetButton: false,
+			transparency: true,
+			onDrawFrame
 		});
-	}
 
-	$("#swimmingInCurrent").addEventListener("mousemove", updateSwimmingInCurrentAppletBounds);
-	$("#swimmingInCurrent").addEventListener("scroll", updateSwimmingInCurrentAppletBounds);
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				resolution: 500,
+				maxParticles: 5000,
+				generatingCode: "(-y * 0.5, -x * 0.5)",
+				dt: .003,
+				worldWidth: 6,
+				hue: 0.6,
+				brightness: 0.8,
+				darkenWhenSlow: true,
+			});
+		});
+
+		function onDrawFrame()
+		{
+			const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+
+			applet.wilson.resizeWorld({
+				minX: bounds.xmin,
+				maxX: bounds.xmax,
+				minY: bounds.ymin,
+				maxY: bounds.ymax,
+			});
+		}
+
+		return applet;
+	});
 }

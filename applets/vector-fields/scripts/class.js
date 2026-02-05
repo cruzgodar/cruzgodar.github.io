@@ -224,6 +224,10 @@ export class VectorField extends AnimationFrameApplet
 		worldWidth = 6,
 		worldCenterX = 0,
 		worldCenterY = 0,
+		hue = undefined,
+		saturation = 1,
+		brightness = 1,
+		darkenWhenSlow = false,
 		particleDilation = undefined,
 		appendGlsl = ""
 	}) {
@@ -298,7 +302,13 @@ export class VectorField extends AnimationFrameApplet
 			}
 		});
 
-		
+		const hueGlsl = hue !== undefined
+			? getFloatGlsl(hue)
+			: "v.y";
+
+		const valueGlsl = darkenWhenSlow
+			? `${getFloatGlsl(brightness)} * v.x * max(v.z, 0.4) / maxBrightness`
+			: `${getFloatGlsl(brightness)} * v.x / maxBrightness`;
 
 		const samplingGlsl = this.getSamplingGlsl();
 
@@ -325,7 +335,14 @@ export class VectorField extends AnimationFrameApplet
 			{
 				vec4 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0);
 
-				return vec4(hsvToRgb(vec3(v.y, v.z, v.x / maxBrightness)), v.w);
+				return vec4(
+					hsvToRgb(vec3(
+						${hueGlsl},
+						${getFloatGlsl(saturation)} * v.z,
+						${valueGlsl}
+					)),
+					v.w
+				);
 			}
 			
 			void main(void)
