@@ -218,7 +218,7 @@ export class VectorField extends AnimationFrameApplet
 	async run({
 		generatingCode,
 		resolution = 750,
-		maxParticles = 6000,
+		maxParticles = 8000,
 		dt = .00375,
 		lifetime = 150,
 		worldWidth = 6,
@@ -648,11 +648,23 @@ export class VectorField extends AnimationFrameApplet
 
 	createParticle(index)
 	{
+		const x = Math.random() < 0.2
+			? Math.random() < 0.5
+				? .999
+				: .001
+			: Math.random();
+
+		const y = Math.random() < 0.2
+			? Math.random() < 0.5
+				? .999
+				: .001
+			: Math.random();
+
 		this.particles[index][0] = this.wilson.worldCenterX
-			+ this.wilson.worldWidth * (Math.random() - .5);
+			+ this.wilson.worldWidth * (x - 0.5);
 
 		this.particles[index][1] = this.wilson.worldCenterY
-			+ this.wilson.worldHeight * (Math.random() - .5);
+			+ this.wilson.worldHeight * (y - 0.5);
 
 		this.particles[index][2] = Math.round(this.lifetime * (Math.random() * .5 + .75));
 
@@ -750,11 +762,11 @@ export class VectorField extends AnimationFrameApplet
 						const newIndex = row * this.wilson.canvasWidth + col;
 
 						// This makes the particles fade in when they first appear over the course
-						// of 30 frames.
+						// of 20 frames.
 						this.panZoomDimTexture[4 * newIndex] = Math.min(
 							Math.abs(
 								this.particles[index][2] - this.lifetime
-							) * this.lifetime / 30,
+							) * this.lifetime / 20,
 							this.lifetime
 						);
 						

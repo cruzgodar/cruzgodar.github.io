@@ -25,7 +25,7 @@ export default function()
 	const maxParticlesInput = new TextBox({
 		element: $("#max-particles-input"),
 		name: "Particles",
-		value: 6000,
+		value: 8000,
 		minValue: 1000,
 		maxValue: 20000,
 		onInput: run
