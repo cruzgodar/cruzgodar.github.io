@@ -1,19 +1,15 @@
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
-	desmosGraphs,
 	desmosGray,
 	desmosPurple,
 	desmosRed,
-	getDesmosBounds,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
 } from "/scripts/src/desmos.js";
-import { $, raw } from "/scripts/src/main.js";
+import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -266,32 +262,49 @@ export default function()
 			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 
-			options: {
-				showResetButtonOnGraphpaper: false,
-				expressions: false,
-			},
+			// options: { expressions: false },
 			
 			expressions:
 			[
-				{ latex: raw`(1, -2), (1, 2)`, color: desmosBlack, points: false, lines: true, lineWidth: 5 },
+				{ latex: raw`l(t) = (1, -2) + t(0, 4)` },
+				{ latex: raw`l(t)`, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineWidth: 5 },
+
+				{ latex: raw`f(x, y) = (-y, -x)` },
+				
+				// Number of colors
+				{ latex: raw`n = 200` },
+				{ latex: raw`I = [0, 1, ..., n - 1]` },
+
+				{ latex: raw`T(t) = \frac{l'(t)}{\left| l'(t) \right|}`, hidden: true },
+				{ latex: raw`D(t) = f(l(t).x, l(t).y) \cdot T(t)`, hidden: true },
+				// Use arctan like a sigmoid to fit D into (0, 1).
+				{ latex: raw`c(t) = \frac{1}{2\pi} \arctan(D(t)) + 0.5`, hidden: false },
+				{ latex: raw`C(t) = \hsv(120c(t), 1, 1)`, hidden: false },
+
+				{ latex: raw`a = 0` },
+				{ latex: raw`b = 1` },
+				{ latex: raw`s = \frac{b - a}{n}` },
+
+				{ latex: raw`l(t) \{  \}`, },
+
 
 				...getDesmosPoint({
-					point: ["1", "b"],
+					point: ["1", "y_0"],
 					color: desmosPurple,
 					dragMode: "Y",
 					size: 12,
 				}),
 
 				...getDesmosSlider({
-					expression: "b = 1",
+					expression: "y_0 = 1",
 					min: -2,
 					max: 2,
 					secret: false,
 				}),
 
 				...getDesmosVector({
-					from: ["1", "b"],
-					to: ["1 - \\frac{b}{2}", "b - \\frac{1}{2}"],
+					from: ["1", "y_0"],
+					to: ["1 - \\frac{y_0}{2}", "y_0 - \\frac{1}{2}"],
 					color: desmosPurple,
 					arrowSize: "0.1",
 					lineWidth: 5
@@ -302,44 +315,45 @@ export default function()
 
 	
 
-	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
-	{
-		const applet = new VectorField({
-			canvas,
-			useFullscreenButton: false,
-			useResetButton: false,
-			transparency: true,
-			onDrawFrame
-		});
+	// createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+	// {
+	// 	const applet = new VectorField({
+	// 		canvas,
+	// 		useFullscreenButton: false,
+	// 		useResetButton: false,
+	// 		transparency: true,
+	// 		onDrawFrame
+	// 	});
 
-		applet.allowFullscreenWithKeyboard = false;
+	// 	applet.allowFullscreenWithKeyboard = false;
+	// 	applet.allowResetWithKeyboard = false;
 
-		applet.loadPromise.then(() =>
-		{
-			applet.run({
-				resolution: 500,
-				maxParticles: 5000,
-				generatingCode: "(-y * 0.5, -x * 0.5)",
-				dt: .003,
-				worldWidth: 6,
-				hue: 0.6,
-				brightness: 0.8,
-				darkenWhenSlow: true,
-			});
-		});
+	// 	applet.loadPromise.then(() =>
+	// 	{
+	// 		applet.run({
+	// 			resolution: 500,
+	// 			maxParticles: 5000,
+	// 			generatingCode: "(-y * 0.5, -x * 0.5)",
+	// 			dt: .003,
+	// 			worldWidth: 6,
+	// 			hue: 0.6,
+	// 			brightness: 0.8,
+	// 			darkenWhenSlow: true,
+	// 		});
+	// 	});
 
-		function onDrawFrame()
-		{
-			const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+	// 	function onDrawFrame()
+	// 	{
+	// 		const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
 
-			applet.wilson.resizeWorld({
-				minX: bounds.xmin,
-				maxX: bounds.xmax,
-				minY: bounds.ymin,
-				maxY: bounds.ymax,
-			});
-		}
+	// 		applet.wilson.resizeWorld({
+	// 			width: bounds.xmax - bounds.xmin,
+	// 			height: bounds.ymax - bounds.ymin,
+	// 			centerX: (bounds.xmin + bounds.xmax) / 2,
+	// 			centerY: (bounds.ymin + bounds.ymax) / 2,
+	// 		});
+	// 	}
 
-		return applet;
-	});
+	// 	return applet;
+	// });
 }

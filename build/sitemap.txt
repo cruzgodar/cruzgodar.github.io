@@ -86,7 +86,7 @@ home Cruz Godar
 			arc-length-and-surface-area Section 3.10: Arc Length and Surface Area
 			physical-applications Section 3.11: Physical Applications
 			integration-by-parts Section 3.12: Integration by Parts
-			trig-sub Section 3.13: Trig Sub
+			trig-sub Section 3.13: Trig Substitution
 			partial-fractions Section 3.14: Partial Fractions
 			improper-integrals Section 3.15: Improper Integrals
 			intro-to-des Section 3.16: Intro to Differential Equations

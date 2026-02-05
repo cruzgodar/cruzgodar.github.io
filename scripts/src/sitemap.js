@@ -1082,7 +1082,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/trig-sub":
 	{
-		"title": "Section 3.13: Trig Sub",
+		"title": "Section 3.13: Trig Substitution",
 		
 		"parent": "/teaching/notes/calculus",
 		
