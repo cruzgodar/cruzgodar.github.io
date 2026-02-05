@@ -65,6 +65,7 @@ export class VectorField extends AnimationFrameApplet
 		loopEdges = false,
 		transparency = false,
 		useFullscreenButton = true,
+		useResetButton = true,
 		onDrawFrame = () => {},
 		onReset = () => {},
 	}) {
@@ -171,7 +172,7 @@ export class VectorField extends AnimationFrameApplet
 			minWorldHeight: 0.5,
 			maxWorldHeight: 20,
 
-			useResetButton: true,
+			useResetButton,
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset,
 

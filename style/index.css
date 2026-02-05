@@ -2346,6 +2346,19 @@ img[src="/about/cover.webp"]
 	border-radius: 16px !important;
 }
 
+.desmos-container.melded .dcg-container
+{
+	background: transparent !important;
+}
+
+/* These look absolutely vile when the background is transparent,
+to the point that I think it's better for their brand rep
+to hide them in that case. */
+.desmos-container.melded .dcg-graphpaper-branding
+{
+	display: none !important;
+}
+
 
 
 /* Make the desmos buttons concentric */

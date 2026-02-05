@@ -431,3 +431,15 @@ export function getDesmosVector({
 		}
 	];
 }
+
+export function getDesmosBounds(desmosGraph)
+{
+	const bounds = desmosGraph.graphpaperBounds.mathCoordinates;
+
+	return {
+		xmin: bounds.xmin,
+		xmax: bounds.xmax,
+		ymin: bounds.ymin,
+		ymax: bounds.ymax,
+	};
+}

@@ -628,6 +628,7 @@ export class Applet
 // destroys it when the user scrolls away from it, and recreates it when they
 // scroll back into it. For WebGL contexts, this requires the canvas to be
 // replaced with a new one, so the create method needs to take a canvas as input.
+// Returns a function to get the applet.
 export function createEmphemeralApplet(canvas, create)
 {
 	let applet;
@@ -663,6 +664,8 @@ export function createEmphemeralApplet(canvas, create)
 	});
 
 	onScroll();
+
+	return () => applet;
 }
 
 

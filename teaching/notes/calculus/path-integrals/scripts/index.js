@@ -8,6 +8,7 @@ import {
 	desmosGray,
 	desmosPurple,
 	desmosRed,
+	getDesmosBounds,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -295,40 +296,61 @@ export default function()
 		},
 	});
 
+	
 
+	const getSwimmingInCurrentApplet =createEmphemeralApplet(
+		$("#swimmingInCurrent-canvas"),
+		(canvas) =>
+		{
+			const applet = new VectorField({
+				canvas,
+				transparency: true,
+				useFullscreenButton: false,
+				useResetButton: false,
+			});
 
-	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+			applet.allowFullscreenWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 3000,
+					generatingCode: "(-y * 0.5, -x * 0.5)",
+					dt: .006,
+					worldWidth: 6
+				});
+			});
+
+			// function onDrawFrame()
+			// {
+			// 	desmosGraphs.swimmingInCurrent.setMathBounds({
+			// 		xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
+			// 		xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
+			// 		ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
+			// 		ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			// 	});
+			// }
+
+			return applet;
+		});
+
+	function updateSwimmingInCurrentAppletBounds()
 	{
-		const applet = new VectorField({
-			canvas,
-			transparency: true,
-			useFullscreenButton: false,
-			onDrawFrame,
+		const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+
+		console.log(bounds);
+
+		const applet = getSwimmingInCurrentApplet();
+		
+		applet.wilson.resizeWorld({
+			minX: bounds.xmin,
+			maxX: bounds.xmax,
+			minY: bounds.ymin,
+			maxY: bounds.ymax,
 		});
+	}
 
-		applet.allowFullscreenWithKeyboard = false;
-
-		applet.loadPromise.then(() =>
-		{
-			applet.run({
-				resolution: 500,
-				maxParticles: 3000,
-				generatingCode: "(-y * 0.5, -x * 0.5)",
-				dt: .006,
-				worldWidth: 6
-			});
-		});
-
-		function onDrawFrame()
-		{
-			desmosGraphs.swimmingInCurrent.setMathBounds({
-				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
-				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
-				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
-				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
-			});
-		}
-
-		return applet;
-	});
+	$("#swimmingInCurrent").addEventListener("mousemove", updateSwimmingInCurrentAppletBounds);
+	$("#swimmingInCurrent").addEventListener("scroll", updateSwimmingInCurrentAppletBounds);
 }
