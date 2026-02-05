@@ -394,10 +394,11 @@ export function getDesmosSlider({
 	min,
 	max,
 	step,
+	playing = false,
 	secret = true
 }) {
 	return [
-		{ latex: raw`${expression}`, sliderBounds: { min, max, step }, secret },
+		{ latex: raw`${expression}`, sliderBounds: { min, max, step }, playing, secret },
 	];
 }
 

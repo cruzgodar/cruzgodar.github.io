@@ -1,12 +1,18 @@
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
+	desmosBlack,
 	desmosBlue,
+	desmosGraphs,
 	desmosGray,
 	desmosPurple,
 	desmosRed,
-	getDesmosSlider
+	getDesmosPoint,
+	getDesmosSlider,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
-import { raw } from "/scripts/src/main.js";
+import { $, raw } from "/scripts/src/main.js";
 
 export default function()
 {
@@ -250,6 +256,79 @@ export default function()
 				{ latex: raw`(\cos(t), 1, \sin(t))`, color: desmosBlue, points: false, lines: true, secret: true, parametricDomain: { min: 0, max: "\\pi/2" } },
 				{ latex: raw`(1, 1, 0), (0, 1, 0), (0, 1, 1)`, color: desmosRed, points: false, lines: true, secret: true },
 			]
+		},
+
+		swimmingInCurrent:
+		{
+			alwaysDark: true,
+			
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			options: { showResetButtonOnGraphpaper: false },
+			
+			expressions:
+			[
+				{ latex: raw`(1, -2), (1, 2)`, color: desmosBlack, points: false, lines: true },
+
+				...getDesmosPoint({
+					point: ["1", "b"],
+					color: desmosBlack,
+					dragMode: "NONE",
+					size: 12,
+				}),
+
+				...getDesmosSlider({
+					expression: "b = 1",
+					min: -2,
+					max: 2,
+					secret: false,
+					playing: true
+				}),
+
+				...getDesmosVector({
+					from: ["1", "b"],
+					to: ["1 - \\frac{b}{2}", "b - \\frac{1}{2}"],
+					color: desmosBlack,
+					arrowSize: "0.1",
+				}),
+			]
+		},
+	});
+
+
+
+	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({
+			canvas,
+			transparency: true,
+			useFullscreenButton: false,
+			onDrawFrame,
+		});
+
+		applet.allowFullscreenWithKeyboard = false;
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				resolution: 500,
+				maxParticles: 3000,
+				generatingCode: "(-y * 0.5, -x * 0.5)",
+				dt: .006,
+				worldWidth: 6
+			});
+		});
+
+		function onDrawFrame()
+		{
+			desmosGraphs.swimmingInCurrent.setMathBounds({
+				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
+				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
+				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
+				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			});
 		}
+
+		return applet;
 	});
 }

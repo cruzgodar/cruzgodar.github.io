@@ -13,6 +13,7 @@ import { galleryBlock } from "./components/galleryBlock.js";
 import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
+import { meldedDesmos } from "./components/melded-desmos.js";
 import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
 import { raymarchControls } from "./components/raymarchControls.js";
 import { sliders } from "./components/sliders.js";
@@ -42,6 +43,7 @@ const singleLineComponents = [
 	"dropdown",
 	"file-upload",
 	"image",
+	"melded-desmos",
 	"nav-buttons",
 	"raymarch-controls",
 	"solution",
@@ -62,6 +64,7 @@ const components = {
 	"gallery-block": galleryBlock,
 	"image": image,
 	"image-links": imageLinks,
+	"melded-desmos": meldedDesmos,
 	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
 	"raymarch-controls": raymarchControls,

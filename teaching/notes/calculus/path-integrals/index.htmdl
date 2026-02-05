@@ -154,7 +154,11 @@ We're going to have a lot more to say about path-dependence later in this sectio
 
 Single-variable integrals apply to much, much more than just finding areas under curves: whenever we want to add up a quantity that changes over time, distance, or with respect to any other variable, they're the first tool we reach for. In the same way, if we're adding up a changing quantity over the course of a curve in 2D or 3D space, path integrals will be our starting point. For example, the integral of a density function along a thin wire gives the total mass of the wire.
 
-In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of Let's look at a slightly different example, though: how could we find the total work done on a moving object by an external force (say, wind)? As we discussed long ago in part 3, work is force times distance, but we can be more precise now that we have the language of vectors. Work is the amount of energy something imparts on an object over the course of the object moving between two points --- if the wind pushes an object in a straight line, and the force of that wind is constant, then the work done by the wind is that force times the distance the object moved. However, if 
+In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of changing quantity: one external to the path. That might seem like a just a slight twist on what we've already seen, but when we start pulling on this thread, it'll prove to be a larger part of the whole picture than it first appeared.
+
+Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\left< -y, -x \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $(1, -1)$ to $(1, 1)$ in a straight line, how much does the current help or hinder our progress?
+
+### melded-desmos swimmingInCurrent
 
 
 
