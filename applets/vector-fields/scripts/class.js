@@ -307,7 +307,7 @@ export class VectorField extends AnimationFrameApplet
 			: "v.y";
 
 		const valueGlsl = darkenWhenSlow
-			? `${getFloatGlsl(brightness)} * v.x * max(v.z, 0.4) / maxBrightness`
+			? `${getFloatGlsl(brightness)} * v.x * max(v.z, 0.5) / maxBrightness`
 			: `${getFloatGlsl(brightness)} * v.x / maxBrightness`;
 
 		const samplingGlsl = this.getSamplingGlsl();

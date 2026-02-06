@@ -156,7 +156,7 @@ Single-variable integrals apply to much, much more than just finding areas under
 
 In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of changing quantity: one external to the path. That might seem like a just a slight twist on what we've already seen, but when we start pulling on this thread, it'll prove to be a larger part of the whole picture than it first appeared.
 
-Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\left< -y, -x \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $(1, -1)$ to $(1, 1)$ in a straight line, how much does the current help or hinder our progress?
+Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\left< -y, -x \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, -\sqrt{3} \right)$ in a straight line, how much does the current help or hinder our progress?
 
 ### melded-desmos swimmingInCurrent
 

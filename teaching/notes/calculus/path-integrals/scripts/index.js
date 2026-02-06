@@ -1,19 +1,31 @@
-import { hsvToRgb, rgbToHex } from "/scripts/applets/applet.js";
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosGraphs,
 	desmosGray,
 	desmosPurple,
 	desmosRed,
 	getColoredParametricCurve,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector
+	getDesmosBounds,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
-import { raw } from "/scripts/src/main.js";
+import { $, raw } from "/scripts/src/main.js";
 
 export default function()
 {
+	// This is unfortunately inverted along with all the other colors,
+	// so we have to account for that.
+	function colorFunction(c)
+	{
+		return hsvToHex(
+			(270 + (120 - 270) * 0.5 * (Math.sign(c) + 1) + 180) / 360,
+			1,
+			0.4 * Math.abs(c),
+		);
+	}
+
 	createDesmosGraphs({
 		pathIntegral:
 		{
@@ -258,64 +270,38 @@ export default function()
 
 		swimmingInCurrent:
 		{
-			alwaysDark: false,
+			alwaysDark: true,
 			highContrast: true,
 			
-			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
 
-			// options: { expressions: false },
+			options: { expressions: false },
 			
 			expressions:
 			[
-				{ latex: raw`l(t) = (1, -2) + t(0, 4)` },
+				{ latex: raw`l_1(t) = (1, -\sqrt{3}) + t(0, 2\sqrt{3})` },
+				{ latex: raw`l_2(t) = (2\sin(t), 2\cos(t))` },
 
 				{ latex: raw`f(x, y) = (-y, -x)` },
 
 				...getColoredParametricCurve({
 					fieldFunction: (x, y) => [-y, -x],
-					pathFunction: (t) => [1, -2 + 4 * t],
-					pathFunctionDesmos: raw`l(t)`,
+					pathFunction: (t) => [1, -Math.sqrt(3) + 2 * Math.sqrt(3) * t],
+					pathFunctionDesmos: raw`l_1(t)`,
 					minT: 0,
 					maxT: 1,
 					numSlices: 100,
-					// This is unfortunately inverted along with all the other colors,
-					// so we have to account for that. This maps -1 to 75% saturation,
-					// 100% value blue (post-inversion), 1 to the same but red, and 0
-					// to gray.
-					colorFunction: (c) =>
-					{
-						console.log(c);
-						const rgb = hsvToRgb(
-							(210 / 2 - 210 / 2 * Math.sign(c)) / 360,
-							1 * Math.pow(Math.abs(c), 1 / 4),
-							1 + 0.0 * Math.pow(Math.abs(c), 1 / 4),
-						);
-
-						return rgbToHex(0, 255, 255);
-					}
+					colorFunction
 				}),
 
-
-				...getDesmosPoint({
-					point: ["1", "y_0"],
-					color: desmosPurple,
-					dragMode: "Y",
-					size: 12,
-				}),
-
-				...getDesmosSlider({
-					expression: "y_0 = 1",
-					min: -2,
-					max: 2,
-					secret: false,
-				}),
-
-				...getDesmosVector({
-					from: ["1", "y_0"],
-					to: ["1 - \\frac{y_0}{2}", "y_0 - \\frac{1}{2}"],
-					color: desmosPurple,
-					arrowSize: "0.1",
-					lineWidth: 5
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [-y, -x],
+					pathFunction: (t) => [2 * Math.sin(t), 2 * Math.cos(t)],
+					pathFunctionDesmos: raw`l_2(t)`,
+					minT: 5 * Math.PI / 6,
+					maxT: 13 * Math.PI / 6,
+					numSlices: 100,
+					colorFunction
 				}),
 			]
 		},
@@ -323,45 +309,45 @@ export default function()
 
 	
 
-	// createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
-	// {
-	// 	const applet = new VectorField({
-	// 		canvas,
-	// 		useFullscreenButton: false,
-	// 		useResetButton: false,
-	// 		transparency: true,
-	// 		onDrawFrame
-	// 	});
+	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({
+			canvas,
+			useFullscreenButton: false,
+			useResetButton: false,
+			transparency: true,
+			onDrawFrame
+		});
 
-	// 	applet.allowFullscreenWithKeyboard = false;
-	// 	applet.allowResetWithKeyboard = false;
+		applet.allowFullscreenWithKeyboard = false;
+		applet.allowResetWithKeyboard = false;
 
-	// 	applet.loadPromise.then(() =>
-	// 	{
-	// 		applet.run({
-	// 			resolution: 500,
-	// 			maxParticles: 5000,
-	// 			generatingCode: "(-y * 0.5, -x * 0.5)",
-	// 			dt: .003,
-	// 			worldWidth: 6,
-	// 			hue: 0.6,
-	// 			brightness: 0.8,
-	// 			darkenWhenSlow: true,
-	// 		});
-	// 	});
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				resolution: 500,
+				maxParticles: 5000,
+				generatingCode: "(-y * 0.5, -x * 0.5)",
+				dt: .003,
+				worldWidth: 6,
+				hue: 0.6,
+				brightness: 0.85,
+				darkenWhenSlow: true,
+			});
+		});
 
-	// 	function onDrawFrame()
-	// 	{
-	// 		const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+		function onDrawFrame()
+		{
+			const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
 
-	// 		applet.wilson.resizeWorld({
-	// 			width: bounds.xmax - bounds.xmin,
-	// 			height: bounds.ymax - bounds.ymin,
-	// 			centerX: (bounds.xmin + bounds.xmax) / 2,
-	// 			centerY: (bounds.ymin + bounds.ymax) / 2,
-	// 		});
-	// 	}
+			applet.wilson.resizeWorld({
+				width: bounds.xmax - bounds.xmin,
+				height: bounds.ymax - bounds.ymin,
+				centerX: (bounds.xmin + bounds.xmax) / 2,
+				centerY: (bounds.ymin + bounds.ymax) / 2,
+			});
+		}
 
-	// 	return applet;
-	// });
+		return applet;
+	});
 }

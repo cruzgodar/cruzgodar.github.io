@@ -512,18 +512,26 @@ export function getColoredParametricCurve({
 
 		const fieldHere = fieldFunction(pathFunctionHere[0], pathFunctionHere[1]);
 
-		const dotProduct = fieldHere[0] * unitTangent[0] + fieldHere[1] * unitTangent[1];
+		const magnitudeFieldHere = Math.sqrt(
+			fieldHere[0] * fieldHere[0] + fieldHere[1] * fieldHere[1]
+		);
 
-		const normalizedDotProduct = Math.atan(dotProduct) / Math.PI;
+		const normalizedFieldHere = [
+			fieldHere[0] / magnitudeFieldHere,
+			fieldHere[1] / magnitudeFieldHere
+		];
 
-		const color = colorFunction((i / numSlices - 0.5) * 2);
+		const dotProduct = normalizedFieldHere[0] * unitTangent[0]
+			+ normalizedFieldHere[1] * unitTangent[1];
 
-		console.log(color);
+		const color = colorFunction(dotProduct);
 
 		return {
 			latex: pathFunctionDesmos,
 			parametricDomain: { min: t, max: t + step },
-			color: "#00ffff"
+			color,
+			lineWidth: 5,
+			secret: true
 		};
 	});
 }
