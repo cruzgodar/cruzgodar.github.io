@@ -100,10 +100,14 @@ export let desmosGraphs = {};
 
 export let desmosGraphsDefaultState = {};
 
+// A promise for every graph
+export let desmosGraphsLoaded = {};
+
 export function clearDesmosGraphs()
 {
 	desmosGraphs = {};
 	desmosGraphsDefaultState = {};
+	desmosGraphsLoaded = {};
 }
 
 
@@ -144,8 +148,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		return;
 	}
 
-	await loadScript("/scripts/desmos.min.js");
-
 	for (const key in desmosGraphs)
 	{
 		if (desmosGraphs[key]?.destroy)
@@ -153,14 +155,18 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			desmosGraphs[key].destroy();
 			delete desmosGraphs[key];
 			delete desmosGraphsDefaultState[key];
+			delete desmosGraphsLoaded[key];
 		}
 	}
 
 	desmosData = desmosDataInitializer;
 	desmosGraphsConstructorData = {};
 	desmosGraphConstructionStack = [];
+	desmosGraphConstructionCooldown = Promise.resolve();
 
 	const data = structuredClone(desmosData);
+
+	
 
 	for (const key in data)
 	{
@@ -268,6 +274,9 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			// eslint-disable-next-line no-undef
 			: Desmos.GraphingCalculator;
 
+		let resolve;
+		desmosGraphsLoaded[element.id] = new Promise(r => resolve = r);
+
 		// We'll call this once the graph is onscreen.
 		const constructor = () =>
 		{
@@ -346,6 +355,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					}
 				});
 			}
+
+			resolve();
 		};
 
 		desmosGraphsConstructorData[element.id] = {
@@ -356,6 +367,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	}
 
 
+
+	await loadScript("/scripts/desmos.min.js");
 
 	addTemporaryListener({
 		object: window,

@@ -4,6 +4,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosGraphs,
+	desmosGraphsLoaded,
 	desmosGray,
 	desmosPurple,
 	desmosRed,
@@ -322,51 +323,52 @@ export default function()
 
 	
 
-	createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+	desmosGraphsLoaded.swimmingInCurrent.then(() =>
 	{
-		const applet = new VectorField({
-			canvas,
-			useFullscreenButton: false,
-			useResetButton: false,
-			transparency: true,
-			onDrawFrame,
-			minWorldWidth: 0.01,
-			maxWorldWidth: 100,
-			minWorldHeight: 0.01,
-			maxWorldHeight: 100,
-		});
-
-		applet.allowFullscreenWithKeyboard = false;
-		applet.allowResetWithKeyboard = false;
-
-		applet.loadPromise.then(() =>
+		createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
 		{
-			applet.run({
-				resolution: 500,
-				maxParticles: 4000,
-				generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
-				dt: .003,
-				worldWidth: 5,
-				hue: 0.6,
-				brightness: 0.85,
-				darkenWhenSlow: true,
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
 			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
+					dt: .003,
+					worldWidth: 5,
+					hue: 0.6,
+					brightness: 0.85,
+					darkenWhenSlow: true,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
 		});
-
-		function onDrawFrame()
-		{
-			const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
-
-			console.log((bounds.xmin + bounds.xmax) / 2, (bounds.ymin + bounds.ymax) / 2);
-
-			applet.wilson.resizeWorld({
-				width: bounds.xmax - bounds.xmin,
-				height: bounds.ymax - bounds.ymin,
-				centerX: (bounds.xmin + bounds.xmax) / 2,
-				centerY: (bounds.ymin + bounds.ymax) / 2,
-			});
-		}
-
-		return applet;
 	});
 }

@@ -4,6 +4,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosGraphs,
+	desmosGraphsLoaded,
 	desmosGray,
 	desmosPurple,
 	getDesmosBounds,
@@ -226,94 +227,98 @@ export default function()
 	});
 
 
-
-	createEmphemeralApplet($("#conservativeVectorField2-canvas"), (canvas) =>
+	desmosGraphsLoaded.conservativeVectorField2.then(() =>
 	{
-		const applet = new VectorField({
-			canvas,
-			useFullscreenButton: false,
-			useResetButton: false,
-			transparency: true,
-			onDrawFrame,
-			minWorldWidth: 0.01,
-			maxWorldWidth: 100,
-			minWorldHeight: 0.01,
-			maxWorldHeight: 100,
-		});
-
-		applet.allowFullscreenWithKeyboard = false;
-		applet.allowResetWithKeyboard = false;
-
-		applet.loadPromise.then(() =>
+		createEmphemeralApplet($("#conservativeVectorField2-canvas"), (canvas) =>
 		{
-			applet.run({
-				resolution: 500,
-				maxParticles: 4000,
-				generatingCode: "(x * 0.35, -y * 0.35)",
-				dt: .005,
-				worldWidth: 6,
-				brightness: 0.9,
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
 			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					generatingCode: "(x * 0.35, -y * 0.35)",
+					dt: .005,
+					worldWidth: 6,
+					brightness: 0.9,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField2);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
 		});
-
-		function onDrawFrame()
-		{
-			const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField2);
-
-			applet.wilson.resizeWorld({
-				width: bounds.xmax - bounds.xmin,
-				height: bounds.ymax - bounds.ymin,
-				centerX: (bounds.xmin + bounds.xmax) / 2,
-				centerY: (bounds.ymin + bounds.ymax) / 2,
-			});
-		}
-
-		return applet;
 	});
 	
 
-
-	createEmphemeralApplet($("#conservativeVectorField3-canvas"), (canvas) =>
+	desmosGraphsLoaded.conservativeVectorField3.then(() =>
 	{
-		const applet = new VectorField({
-			canvas,
-			useFullscreenButton: false,
-			useResetButton: false,
-			transparency: true,
-			onDrawFrame,
-			minWorldWidth: 0.01,
-			maxWorldWidth: 100,
-			minWorldHeight: 0.01,
-			maxWorldHeight: 100,
-		});
-
-		applet.allowFullscreenWithKeyboard = false;
-		applet.allowResetWithKeyboard = false;
-
-		applet.loadPromise.then(() =>
+		createEmphemeralApplet($("#conservativeVectorField3-canvas"), (canvas) =>
 		{
-			applet.run({
-				resolution: 500,
-				maxParticles: 4000,
-				generatingCode: "(-y * 0.35, x * 0.35)",
-				dt: .005,
-				worldWidth: 6,
-				brightness: 0.9,
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
 			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					generatingCode: "(-y * 0.35, x * 0.35)",
+					dt: .005,
+					worldWidth: 6,
+					brightness: 0.9,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField3);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
 		});
-
-		function onDrawFrame()
-		{
-			const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField3);
-
-			applet.wilson.resizeWorld({
-				width: bounds.xmax - bounds.xmin,
-				height: bounds.ymax - bounds.ymin,
-				centerX: (bounds.xmin + bounds.xmax) / 2,
-				centerY: (bounds.ymin + bounds.ymax) / 2,
-			});
-		}
-
-		return applet;
 	});
 }
