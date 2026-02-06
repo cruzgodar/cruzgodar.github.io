@@ -156,9 +156,13 @@ Single-variable integrals apply to much, much more than just finding areas under
 
 In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of changing quantity: one external to the path. That might seem like a just a slight twist on what we've already seen, but when we start pulling on this thread, it'll prove to be a larger part of the whole picture than it first appeared.
 
-Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\left< -y, -x \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, -\sqrt{3} \right)$ in a straight line, how much does the current help or hinder our progress?
+Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\vec{F}(x, y) = \left< -y, -x + y \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, -\sqrt{3} \right)$ in a straight line, how much does the current help or hinder our **forward** progress?
 
 ### melded-desmos swimmingInCurrent
+
+The path we're traveling along is the straight line from the blue point to the red point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impeded our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
+
+
 
 
 

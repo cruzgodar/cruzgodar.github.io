@@ -9,6 +9,7 @@ import {
 	desmosRed,
 	getColoredParametricCurve,
 	getDesmosBounds,
+	getDesmosPoint,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
@@ -282,10 +283,8 @@ export default function()
 				{ latex: raw`l_1(t) = (1, -\sqrt{3}) + t(0, 2\sqrt{3})` },
 				{ latex: raw`l_2(t) = (2\sin(t), 2\cos(t))` },
 
-				{ latex: raw`f(x, y) = (-y, -x)` },
-
 				...getColoredParametricCurve({
-					fieldFunction: (x, y) => [-y, -x],
+					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [1, -Math.sqrt(3) + 2 * Math.sqrt(3) * t],
 					pathFunctionDesmos: raw`l_1(t)`,
 					minT: 0,
@@ -295,13 +294,27 @@ export default function()
 				}),
 
 				...getColoredParametricCurve({
-					fieldFunction: (x, y) => [-y, -x],
+					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [2 * Math.sin(t), 2 * Math.cos(t)],
 					pathFunctionDesmos: raw`l_2(t)`,
 					minT: 5 * Math.PI / 6,
 					maxT: 13 * Math.PI / 6,
 					numSlices: 100,
 					colorFunction
+				}),
+
+				...getDesmosPoint({
+					point: ["1", "-\\sqrt{3}"],
+					color: desmosBlue,
+					dragMode: "NONE",
+					size: 15,
+				}),
+
+				...getDesmosPoint({
+					point: ["1", "\\sqrt{3}"],
+					color: desmosRed,
+					dragMode: "NONE",
+					size: 15,
 				}),
 			]
 		},
@@ -331,7 +344,7 @@ export default function()
 			applet.run({
 				resolution: 500,
 				maxParticles: 4000,
-				generatingCode: "(-y * 0.5, -x * 0.5)",
+				generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
 				dt: .003,
 				worldWidth: 5,
 				hue: 0.6,
