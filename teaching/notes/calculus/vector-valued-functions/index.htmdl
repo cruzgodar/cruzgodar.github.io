@@ -111,7 +111,7 @@ We can use the fact that the derivative vector is tangent to the curve to find a
 	Let $\vec{r}(t)$ be a differentiable vector-valued function. The **unit tangent vector** to the graph of $\vec{r}(t)$ is
 
 	$$
-		T(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|},
+		\vec{T}(t) = \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|},
 	$$
 
 	which is defined so long as $\vec{r}'(t) \neq \vec{0}$.

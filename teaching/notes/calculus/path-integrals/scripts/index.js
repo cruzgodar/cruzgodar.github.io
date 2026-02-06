@@ -282,7 +282,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`l_1(t) = (1, -\sqrt{3}) + t(0, 2\sqrt{3})` },
-				{ latex: raw`l_2(t) = (2\sin(t), 2\cos(t))` },
+				{ latex: raw`l_2(t) = (2\cos(-t), 2\sin(-t))` },
 
 				...getColoredParametricCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
@@ -296,10 +296,10 @@ export default function()
 
 				...getColoredParametricCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
-					pathFunction: (t) => [2 * Math.sin(t), 2 * Math.cos(t)],
+					pathFunction: (t) => [2 * Math.cos(-t), 2 * Math.sin(-t)],
 					pathFunctionDesmos: raw`l_2(t)`,
-					minT: 5 * Math.PI / 6,
-					maxT: 13 * Math.PI / 6,
+					minT: Math.PI / 3,
+					maxT: 5 * Math.PI / 3,
 					numSlices: 100,
 					colorFunction
 				}),

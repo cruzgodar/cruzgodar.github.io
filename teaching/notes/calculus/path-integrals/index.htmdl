@@ -160,9 +160,41 @@ Let's say two river currents meet each other head-on, making the current flow ou
 
 ### melded-desmos swimmingInCurrent
 
-The path we're traveling along is the straight line from the blue point to the red point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impeded our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
+The path we're traveling along is the straight line from the blue point to the red point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impedes our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
 
+Let's parameterize the line $L$ by
 
+$$
+	\vec{r}(t) &= \left< 1, -\sqrt{3} \right> + \left< 0, 2\sqrt{3} \right>t
+
+	&= \left< 1, -\sqrt{3} + 2\sqrt{3}t \right>, \quad 0 \leq t \leq 1
+	
+	~
+
+	\vec{r}'(t) &= \left< 0, 2\sqrt{3} \right>
+
+	\left| \left| \vec{r}'(t) \right| \right| &= 2\sqrt{3}.
+$$
+
+Then our integral is
+
+$$
+	\int_L (-x + y)\,\d s &= \int_0^1 \left( -1 -\sqrt{3} + 2\sqrt{3}t \right) \cdot 2\sqrt{3}\,\d t
+
+	&= \left. \left[ -2\sqrt{3}t - 6t + 6t^2 \right] \right|_0^1
+
+	&= -2\sqrt{3}.
+$$
+
+It's reasonable that the result is negative --- since the current was working against us nearly the entire time, that $y$-component was negative for most of the integral. On the graph, this is indicated by the color of the path: purple where the current is hindering our swimming, green where it's helping, and white where it's orthogonal and we're considering it to have no effect.
+
+This example was good to ease ourselves into the notion of integrating through a vector field, but things become a little more complicated when we don't take so simple of a path. Let's now consider swimming along the other path in the picture: the circular arc $C$. How can we compute the amount the current is helping us --- that is, the amount it is flowing in our direction --- at a given point along the curve? Well, it matters what "our direction" is, and that's a changing quantity. The direction in which we're traveling in while on a curve $\vec{r}(t)$ is given by $\vec{r}'(t)$, and so we want to find the component of $\vec{F}(x, y)$, where $x$ and $y$ are given by $\vec{r}(t)$, in the direction of $\vec{r}'(t)$. That's a projection, and so we could compute
+
+$$
+	\proj_{\vec{r}'(t)} \vec{F}(\vec{r}(t)) = \frac{\vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|^2}\vec{r}'(t).
+$$
+
+However, let's take a moment to simplify things instead of diving headfirst into that mess of a computation. First of all, projections are greatly simplified when the vector on which we're projecting is normalized (i.e a unit vector), so we would do well to normalize $\vec{r}'(t)$ before projecting. Moreover, we already have a name for the normalized derivative $\frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|}$: it's the **unit tangent vector** $\vec{T}(t)$.
 
 
 

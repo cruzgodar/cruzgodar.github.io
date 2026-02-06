@@ -9,6 +9,9 @@ export function parseLatex(latex)
 		// \G
 		.replaceAll(/(?<!\\)\\G(?![a-zA-Z])/g, "\\nabla\\!")
 
+		// \vec{...}' (the prime is hard to read normally, so we add a small space)
+		.replaceAll(/(\\vec\{.+?\})'/g, (match, $1) => `${$1}\\hspace{0.1em}'`)
+
 		// \span, \image, \swap, \Re, \Im, \proj
 		.replaceAll(/(?<!\\)\\(span|image|swap|Re|Im|proj)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
 
