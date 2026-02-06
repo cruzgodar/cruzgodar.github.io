@@ -319,6 +319,56 @@ export default function()
 				}),
 			]
 		},
+
+		pathIntegralThroughVectorField:
+		{
+			alwaysDark: true,
+			highContrast: true,
+			
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			options: { expressions: false },
+			
+			expressions:
+			[
+				{ latex: raw`l_1(t) = (-1, -1) + t(3, 3)` },
+				{ latex: raw`l_2(t) = (t, t^2 - 2)` },
+
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [x * x, x - 2 * y],
+					pathFunction: (t) => [-1 + 3 * t, -1 + 3 * t],
+					pathFunctionDesmos: raw`l_1(t)`,
+					minT: 0,
+					maxT: 1,
+					numSlices: 100,
+					colorFunction
+				}),
+
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [x * x, x - 2 * y],
+					pathFunction: (t) => [t, t * t - 2],
+					pathFunctionDesmos: raw`l_2(t)`,
+					minT: -1,
+					maxT: 2,
+					numSlices: 100,
+					colorFunction
+				}),
+
+				...getDesmosPoint({
+					point: ["-1", "-1"],
+					color: desmosBlue,
+					dragMode: "NONE",
+					size: 15,
+				}),
+
+				...getDesmosPoint({
+					point: ["2", "2"],
+					color: desmosRed,
+					dragMode: "NONE",
+					size: 15,
+				}),
+			]
+		}
 	});
 
 	
@@ -351,6 +401,7 @@ export default function()
 					dt: .003,
 					worldWidth: 5,
 					hue: 0.6,
+					saturation: 0.85,
 					brightness: 0.85,
 					darkenWhenSlow: true,
 				});
@@ -359,6 +410,57 @@ export default function()
 			function onDrawFrame()
 			{
 				const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
+		});
+	});
+
+	desmosGraphsLoaded.pathIntegralThroughVectorField.then(() =>
+	{
+		createEmphemeralApplet($("#pathIntegralThroughVectorField-canvas"), (canvas) =>
+		{
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
+			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					lifetime: 175,
+					generatingCode: "(x * x * 0.5, (x - 2.0 * y) * 0.5)",
+					dt: .002,
+					worldWidth: 6,
+					hue: 0.6,
+					saturation: 0.85,
+					brightness: 0.85,
+					darkenWhenSlow: true,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.pathIntegralThroughVectorField);
 
 				applet.wilson.resizeWorld({
 					width: bounds.xmax - bounds.xmin,

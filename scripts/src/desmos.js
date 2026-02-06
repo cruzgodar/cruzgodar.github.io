@@ -1,6 +1,7 @@
 import { changeOpacity } from "./animation.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
+import { clamp } from "./utils.js";
 
 
 export const desmosPurple = "_desmosPurple";
@@ -613,17 +614,11 @@ export function getColoredParametricCurve({
 
 		const fieldHere = fieldFunction(pathFunctionHere[0], pathFunctionHere[1]);
 
-		const magnitudeFieldHere = Math.sqrt(
-			fieldHere[0] * fieldHere[0] + fieldHere[1] * fieldHere[1]
-		);
-
-		const normalizedFieldHere = [
-			fieldHere[0] / magnitudeFieldHere,
-			fieldHere[1] / magnitudeFieldHere
-		];
-
-		const dotProduct = normalizedFieldHere[0] * unitTangent[0]
-			+ normalizedFieldHere[1] * unitTangent[1];
+		const dotProduct = clamp(
+			fieldHere[0] * unitTangent[0] + fieldHere[1] * unitTangent[1],
+			-2,
+			2
+		) / 2;
 
 		const color = colorFunction(dotProduct);
 

@@ -273,8 +273,86 @@ Be careful not to write $-\sin^2(-t) + \cos^2(-t) = 1$! That's only true when th
 $$
 	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\,\d t
 
-	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\,\d t
+	&= \left. \left[ -2\sin(-2t) - \cos(-2t) \right] \right|_{\pi / 3}^{5 \pi / 3}
+
+	&= \left( -2\sin\left( -\frac{10 \pi}{3} \right) - \cos\left( -\frac{10 \pi}{3} \right) \right) - \left( -2\sin\left( -\frac{2 \pi}{3} \right) - \cos\left( -\frac{2 \pi}{3} \right) \right)
+
+	&= \left( -2\left( \frac{\sqrt{3}}{2} \right) - \left( -\frac{1}{2} \right) \right) - \left( -2\left( -\frac{\sqrt{3}}{2} \right) - \left( -\frac{1}{2} \right) \right)
+
+	&= -2\sqrt{3}
 $$
+
+That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, path integrals through vector fields are just regular path integrals of a particular dot product, and we just discussed how path integrals aren't path-dependent. The only thing that's specific to a path integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
+
+### exc "path integrals through a vector field"
+
+	Let $$\vec{F} = \left< x^2, x - 2y \right>$$.
+
+	1. Let $L$ be the straight-line path from $(-1, -1)$ to $(2, 2)$. Find $$\int_L \vec{F} \bullet \vec{T}\,\d s$$.
+
+	2. Let $P$ be the path from $(-1, -1)$ to $(2, 2)$ that travels along the parabola $y = x^2 - 2$, as shown. Do you expect Find $$\int_P \vec{F} \bullet \vec{T}\,\d s$$ to be the same as your answer to question 1?
+
+	3. Evaluate the integral in question 2 and find out.
+
+	### melded-desmos pathIntegralThroughVectorField
+
+	### solution
+
+	Let's work through both of them and find out! We can parameterize the straight-line path $L$ as
+
+	$$
+		\vec{l}(t) &= \left< -1 + 3t, -1 + 3t \right>, \quad 0 \leq t \leq 1
+
+		\vec{l}'(t) &= \left< 3, 3 \right>,
+	$$
+
+	so the path integral is
+
+	$$
+		\int_L \vec{F} \bullet \vec{T}\,\d s &= \int_L \vec{F} \bullet \d\vec{l}
+
+		&= \int_0^1 \vec{F}(\vec{l}(t)) \bullet \vec{l}'(t)\,\d t
+
+		&= \int_0^1 \left< \left( -1 + 3t \right)^2, -1 + 3t - 2\left( -1 + 3t \right) \right> \bullet \left< 3, 3 \right>\,\d t
+
+		&= \int_0^1 \left< 1 - 6t + 9t^2, 1 - 3t \right> \bullet \left< 3, 3 \right>\,\d t
+
+		&= \int_0^1 \left( 6 - 27t + 27t^2 \right)\,\d t
+
+		&= \left. \left[ 6t - \frac{27}{2}t^2 + 9t^3 \right] \right|_0^1
+
+		&= \frac{3}{2}.
+	$$
+
+	There are many ways to parameterize this parabola, but one of the simplest is
+
+	$$
+		\vec{p}(t) &= \left< t, t^2 - 2 \right>, \quad -1 \leq t \leq 2
+
+		\vec{p}'(t) &= \left< 1, 2t \right>,
+	$$
+
+	making the path integral
+
+	$$
+		\int_L \vec{F} \bullet \d\vec{p} &= \int_{-1}^2 \vec{F}(\vec{p}(t)) \bullet \vec{p}'(t)\,\d t
+
+		&= \int_{-1}^2 \left< t^2, t - 2\left( t^2 - 2 \right) \right> \bullet \left< 1, 2t \right>\,\d t
+
+		&= \int_{-1}^2 \left< t^2, t - 2t^2 + 4 \right> \bullet \left< 1, 2t \right>\,\d t
+
+		&= \int_{-1}^2 \left( t^2 + 2t^2 - 4t^3 + 8t \right)\,\d t
+
+		&= \int_{-1}^2 \left( 3t^2 - 4t^3 + 8t \right)\,\d t
+
+		&= \left. \left[ t^3 - t^4 + 4t^2 \right] \right|_{-1}^2
+
+		&= 6.
+	$$
+
+	Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
+
+###
 
 
 ### nav-buttons
