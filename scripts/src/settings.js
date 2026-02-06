@@ -504,21 +504,11 @@ export async function toggleCapsuleHeader()
 
 
 
-let setScrollTimeout = undefined;
-
 export async function setScroll()
 {
-	if (setScrollTimeout !== undefined)
-	{
-		clearTimeout(setScrollTimeout);
-	}
+	siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
 
-	setScrollTimeout = setTimeout(() =>
-	{
-		siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
-
-		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
-	}, 100);
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 }
 
 

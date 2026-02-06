@@ -190,20 +190,10 @@ export async function loadSite(url = pageUrl)
 		});
 	});
 
-	
-
-	if (window.DEBUG)
-	{
-		window.addEventListener("scroll", () => setScroll());
-		window.addEventListener("resize", () => setScroll());
-	}
-
-	else
+	if (!window.DEBUG)
 	{
 		addStyle(".DEBUG {display: none;}", false);
 	}
-
-
 
 	addHeader();
 
@@ -227,6 +217,12 @@ export async function loadSite(url = pageUrl)
 		});
 
 		showAndRestoreScroll();
+
+		if (window.DEBUG)
+		{
+			setScroll();
+			setInterval(setScroll, 1000);
+		}
 	}
 }
 

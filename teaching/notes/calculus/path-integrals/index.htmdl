@@ -194,9 +194,79 @@ $$
 	\proj_{\vec{r}'(t)} \vec{F}(\vec{r}(t)) = \frac{\vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|^2}\vec{r}'(t).
 $$
 
-However, let's take a moment to simplify things instead of diving headfirst into that mess of a computation. First of all, projections are greatly simplified when the vector on which we're projecting is normalized (i.e a unit vector), so we would do well to normalize $\vec{r}'(t)$ before projecting. Moreover, we already have a name for the normalized derivative $\frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|}$: it's the **unit tangent vector** $\vec{T}(t)$.
+However, let's take a moment to simplify things instead of diving headfirst into that mess of a computation. First of all, projections are greatly simplified when the vector on which we're projecting is normalized (i.e a unit vector), so we would do well to normalize $\vec{r}'(t)$ before projecting. Moreover, we already have a name for the normalized derivative $\frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|}$: it's the **unit tangent vector** $\vec{T}(t)$. Since it has magnitude $1$, the projection then becomes
 
+$$
+	\proj_{\vec{T}(t)} \vec{F}(\vec{r}(t)) &= \frac{\vec{F}(\vec{r}(t)) \bullet \vec{T}(t)}{\left| \left| \vec{T}(t) \right| \right|^2} \vec{T}(t)
 
+	&= \left( \vec{F}(\vec{r}(t)) \bullet \vec{T}(t) \right) \vec{T}(t).
+$$
+
+Now we're interested not in this entire vector, but specifically its (signed) magnitude, also called the **scalar projection**: the length of the component of $\vec{F}(\vec{r}(t))$ that points in the direction of $\vec{T}(t)$, with a minus sign if it points in the opposite direction. Since $\vec{T}(t)$ is a unit vector, that's conveniently just $\vec{F}(\vec{r}(t)) \bullet \vec{T}(t)$, and so that's the quantity we'll integrate along the curve. To write it as a path integral pre-parameterization, we can suppress the inputs to $\vec{F}$ and $\vec{T}$ and just write
+
+$$
+	\int_C \vec{F} \bullet \vec{T}\,\d s.
+$$
+
+In practice, though, we don't usually need to compute the unit tangent vector itself. That's because the $\d s$ expands to $\left| \left| \vec{r}'(t) \right| \right|\,\d t$, which cancels with $\vec{T}(t)$: if the curve $C$ is parameterized by $\vec{r}(t)$ for $a \leq t \leq b$, then
+
+$$
+	\int_C \vec{F} \bullet \vec{T}\,\d s &= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \vec{T}(t) \right) \left| \left| \vec{r}'(t) \right| \right|\,\d t
+
+	&= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|} \right) \left| \left| \vec{r}'(t) \right| \right|\,\d t
+
+	&= \int_a^b \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
+$$
+
+In fact, this suggests an even more compact and descriptive way to write a path integral through a vector field: just like we write $\d u = u'(x)\,\d x$ when doing $u$-substitution, we can write $\d\vec{r} = \vec{r}'(t)\,\d t$, making the path integral representable (again, pre-parameterization) as
+
+$$
+	\int_C \vec{F} \bullet \d\vec{r}.
+$$
+
+That was a *lot* of theory and symbol-pushing, so let's pause and summarize what we've discovered so far before applying it to our running example with the circular path through the river. As is often the case, we've motivated everything in $#R#^2$, but it will work just as well in higher dimensions.
+
+### def "path integral through a vector fields"
+
+	Let $\vec{F}$ be a vector field and let $C$ be a piecewise-smooth curve. The **path integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the path integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
+
+	$$
+		1.\ \int_C \vec{F} \bullet \vec{T}\,\d s
+	$$
+
+	expresses it as an integral with respect to arc length of the scalar projection of $\vec{F}$ onto the unit tangent vector $\vec{T}$ of $C$, without needing to specify a parameterization $\vec{r}(t)$. It's the farthest from an actual formula to compute the integral, but it displays most clearly what's actually being integrated.
+
+	$$
+		2.\ \int_C \vec{F} \bullet \d \vec{r}
+	$$
+
+	expresses the same concept, but indicates that with the choice of a parameterization $\vec{r}$ of $C$, the expression $\vec{T}\,\d s$ can be simplified. It's more theoretically opaque, since $\d\vec{r}$ isn't as intuitive of an expression, but it reminds us how to actually compute these path integrals; namely,
+
+	$$
+		3.\ \int_a^b \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
+	$$
+
+	presents an integral that we can actually compute. It's noisier than the previous form, but it's where we'll start when we're attempting to compute one of these path integrals.
+
+###
+
+With all that written out, let's now return to our swimming example. As a reminder, $\vec{F}(x, y) = \left< -y, -x + y \right>$, and we're swimming along a circular arc. That arc has radius $2$ and travels clockwise, so a good start for the parameterization is
+
+$$
+	\vec{r}(t) &= \left< 2\cos(-t), 2\sin(-t) \right>
+
+	\vec{r}'(t) &= \left< 2\sin(-t), -2\cos(-t) \right>.
+$$
+
+The starting point of $\left( 1, -\sqrt{3} \right)$ has an angle of $\arctan\left( \frac{-\sqrt{3}}{1} \right) = -\frac{\pi}{3}$, so we'll start our parameterization at $t = \frac{\pi}{3}$ (since our formula already includes a minus sign). Similarly, we'll end at $t = \frac{5\pi}{3}$. Now our integral becomes
+
+$$
+	\int_C \vec{F} \bullet \d\vec{r} &= \int_{\pi / 3}^{5 \pi / 3} \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
+
+	&= \int_{\pi / 3}^{5 \pi / 3} \left< -2\sin(-t), -2\cos(-t) + 2\sin(-t) \right> \bullet \left< 2\sin(-t), -2\cos(-t) \right>\,\d t
+
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( -4\sin^2(-t) + 4\cos^2(-t) - 4\sin(-t)\cos(-t) \right)\,\d t
+$$
 
 
 ### nav-buttons
