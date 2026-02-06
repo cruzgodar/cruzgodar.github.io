@@ -1,10 +1,11 @@
+import { hsvToRgb, rgbToHex } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
-	desmosBlack,
 	desmosBlue,
 	desmosGray,
 	desmosPurple,
 	desmosRed,
+	getColoredParametricCurve,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -257,7 +258,7 @@ export default function()
 
 		swimmingInCurrent:
 		{
-			alwaysDark: true,
+			alwaysDark: false,
 			highContrast: true,
 			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
@@ -267,25 +268,32 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`l(t) = (1, -2) + t(0, 4)` },
-				{ latex: raw`l(t)`, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineWidth: 5 },
 
 				{ latex: raw`f(x, y) = (-y, -x)` },
-				
-				// Number of colors
-				{ latex: raw`n = 200` },
-				{ latex: raw`I = [0, 1, ..., n - 1]` },
 
-				{ latex: raw`T(t) = \frac{l'(t)}{\left| l'(t) \right|}`, hidden: true },
-				{ latex: raw`D(t) = f(l(t).x, l(t).y) \cdot T(t)`, hidden: true },
-				// Use arctan like a sigmoid to fit D into (0, 1).
-				{ latex: raw`c(t) = \frac{1}{2\pi} \arctan(D(t)) + 0.5`, hidden: false },
-				{ latex: raw`C(t) = \hsv(120c(t), 1, 1)`, hidden: false },
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [-y, -x],
+					pathFunction: (t) => [1, -2 + 4 * t],
+					pathFunctionDesmos: raw`l(t)`,
+					minT: 0,
+					maxT: 1,
+					numSlices: 100,
+					// This is unfortunately inverted along with all the other colors,
+					// so we have to account for that. This maps -1 to 75% saturation,
+					// 100% value blue (post-inversion), 1 to the same but red, and 0
+					// to gray.
+					colorFunction: (c) =>
+					{
+						console.log(c);
+						const rgb = hsvToRgb(
+							(210 / 2 - 210 / 2 * Math.sign(c)) / 360,
+							1 * Math.pow(Math.abs(c), 1 / 4),
+							1 + 0.0 * Math.pow(Math.abs(c), 1 / 4),
+						);
 
-				{ latex: raw`a = 0` },
-				{ latex: raw`b = 1` },
-				{ latex: raw`s = \frac{b - a}{n}` },
-
-				{ latex: raw`l(t) \{  \}`, },
+						return rgbToHex(0, 255, 255);
+					}
+				}),
 
 
 				...getDesmosPoint({

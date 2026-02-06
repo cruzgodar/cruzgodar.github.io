@@ -151,7 +151,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		for (const expression of data[key].expressions)
 		{
-			if (expression.color)
+			if (expression.color && functionsForColors[expression.color])
 			{
 				expression.color = functionsForColors[expression.color](
 					is3d,
@@ -360,6 +360,8 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
 
+	console.log(desmosGraphs[id].getExpressions());
+
 	if (!is3d)
 	{
 		const expressions = desmosGraphs[id].getExpressions();
@@ -472,4 +474,56 @@ export function getDesmosBounds(desmosGraph)
 		ymin: bounds.ymin,
 		ymax: bounds.ymax,
 	};
+}
+
+export function getColoredParametricCurve({
+	// a function mapping x and y to a 2D vector
+	fieldFunction,
+	// a function mapping t to (x, y)
+	pathFunction,
+	// the Desmos equivalent as a function of t
+	pathFunctionDesmos,
+	minT,
+	maxT,
+	numSlices,
+	// a function mapping the dot product,
+	// normalized to (-1, 1), to a hex string.
+	colorFunction,
+}) {
+	return Array.from({ length: numSlices }, (_, i) =>
+	{
+		const step = (maxT - minT) / numSlices;
+		const t = minT + i * step;
+
+		const pathFunctionHere = pathFunction(t);
+		const pathFunctionNext = pathFunction(t + step);
+
+		const rPrime = [
+			(pathFunctionNext[0] - pathFunctionHere[0]) / step,
+			(pathFunctionNext[1] - pathFunctionHere[1]) / step
+		];
+
+		const magnitudeRPrime = Math.sqrt(rPrime[0] * rPrime[0] + rPrime[1] * rPrime[1]);
+
+		const unitTangent = [
+			rPrime[0] / magnitudeRPrime,
+			rPrime[1] / magnitudeRPrime
+		];
+
+		const fieldHere = fieldFunction(pathFunctionHere[0], pathFunctionHere[1]);
+
+		const dotProduct = fieldHere[0] * unitTangent[0] + fieldHere[1] * unitTangent[1];
+
+		const normalizedDotProduct = Math.atan(dotProduct) / Math.PI;
+
+		const color = colorFunction((i / numSlices - 0.5) * 2);
+
+		console.log(color);
+
+		return {
+			latex: pathFunctionDesmos,
+			parametricDomain: { min: t, max: t + step },
+			color: "#00ffff"
+		};
+	});
 }

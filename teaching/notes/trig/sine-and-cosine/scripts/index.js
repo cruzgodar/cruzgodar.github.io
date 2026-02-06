@@ -53,6 +53,10 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`(-3, 0), (3\cos(\frac{2\pi}{3}), 3\sin(\frac{2\pi}{3})), (3, 0), (-3, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+
+				{ latex: raw`(-2.5, 0.3)`, color: desmosBlack, points: false, hidden: true, showLabel: true, label: "θ", labelSize: "2", secret: true },
+
+				{ latex: raw`(1.8, 0.35)`, color: desmosBlack, points: false, hidden: true, showLabel: true, label: "φ", labelSize: "2", secret: true },
 			]
 		},
 

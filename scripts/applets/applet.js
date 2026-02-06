@@ -860,8 +860,6 @@ export function doubleToDf(d)
 	return [df[0], df[1]];
 }
 
-
-
 export function hexToRgb(hex)
 {
 	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -879,9 +877,16 @@ function componentToHex(c)
 	return hex.length == 1 ? "0" + hex : hex;
 }
 
+// All three parameters are in [0, 255].
 export function rgbToHex(r, g, b)
 {
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+// All three parameters are in [0, 1].
+export function hsvToHex(h, s, v)
+{
+	return rgbToHex(...hsvToRgb(h, s, v));
 }
 
 // Turns expressions like 2(3x^2+1) into something equivalent
