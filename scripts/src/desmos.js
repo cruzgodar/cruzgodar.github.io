@@ -1,5 +1,5 @@
 import { changeOpacity } from "./animation.js";
-import { loadScript, raw } from "./main.js";
+import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 
@@ -108,6 +108,21 @@ export function clearDesmosGraphs()
 
 
 
+// This whole system loads in desmos graphs only when they're about to be visible,
+// since trying to load multiple 3D graphs at once on iOS crashes the page. The stack
+// system means that scrolling quickly causes the latest-request graph to be constructed
+// first. 2D graphs aren't throttled, just 3D ones.
+
+// Each entry is an object { element, constructor, is3d }
+let desmosGraphsConstructorData = {};
+
+let desmosGraphConstructionStack = [];
+
+const desmosGraphConstructionCooldownTime = 750;
+let desmosGraphConstructionCooldown = Promise.resolve();
+
+
+
 // Each entry in a Desmos data object is of the form
 // {
 // 	expressions: a list of obejcts containing the fields latex
@@ -142,6 +157,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	}
 
 	desmosData = desmosDataInitializer;
+	desmosGraphsConstructorData = {};
+	desmosGraphConstructionStack = [];
 
 	const data = structuredClone(desmosData);
 
@@ -250,87 +267,158 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			? Desmos.Calculator3D
 			// eslint-disable-next-line no-undef
 			: Desmos.GraphingCalculator;
-		
-		desmosGraphs[element.id] = desmosClass(element, options);
 
-		
-
-		const bounds = data[element.id].bounds;
-		const rect = element.getBoundingClientRect();
-		const aspectRatio = rect.width / rect.height;
-
-		if (bounds.xmin === undefined && bounds.left !== undefined)
+		// We'll call this once the graph is onscreen.
+		const constructor = () =>
 		{
-			bounds.xmin = bounds.left;
-			delete bounds.left;
-		}
+			desmosGraphs[element.id] = desmosClass(element, options);
 
-		if (bounds.xmax === undefined && bounds.right !== undefined)
-		{
-			bounds.xmax = bounds.right;
-			delete bounds.right;
-		}
+			
 
-		if (bounds.ymin === undefined && bounds.bottom !== undefined)
-		{
-			bounds.ymin = bounds.bottom;
-			delete bounds.bottom;
-		}
+			const bounds = data[element.id].bounds;
+			const rect = element.getBoundingClientRect();
+			const aspectRatio = rect.width / rect.height;
 
-		if (bounds.ymax === undefined && bounds.top !== undefined)
-		{
-			bounds.ymax = bounds.top;
-			delete bounds.top;
-		}
-
-
-
-		if (options.showPlane3D !== undefined)
-		{
-			desmosGraphs[element.id].controller.graphSettings.showPlane3D = options.showPlane3D;
-		}
-
-
-
-		if (!data[element.id].use3d)
-		{
-			// Enforce a square aspect ratio.
-			const width = bounds.xmax - bounds.xmin;
-			const centerX = (bounds.xmin + bounds.xmax) / 2;
-			bounds.xmin = centerX - width / 2 * aspectRatio;
-			bounds.xmax = centerX + width / 2 * aspectRatio;
-		}
-
-
-
-		desmosGraphs[element.id].setMathBounds(bounds);
-
-		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
-
-		// Set some more things that currently aren't exposed in the API :(
-		desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
-
-		desmosGraphs[element.id].updateSettings({});
-
-		desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
-
-		desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
-
-		if (window.DEBUG && !recreating)
-		{
-			element.addEventListener("click", (e) =>
+			if (bounds.xmin === undefined && bounds.left !== undefined)
 			{
-				if (e.metaKey)
+				bounds.xmin = bounds.left;
+				delete bounds.left;
+			}
+
+			if (bounds.xmax === undefined && bounds.right !== undefined)
+			{
+				bounds.xmax = bounds.right;
+				delete bounds.right;
+			}
+
+			if (bounds.ymin === undefined && bounds.bottom !== undefined)
+			{
+				bounds.ymin = bounds.bottom;
+				delete bounds.bottom;
+			}
+
+			if (bounds.ymax === undefined && bounds.top !== undefined)
+			{
+				bounds.ymax = bounds.top;
+				delete bounds.top;
+			}
+
+
+
+			if (options.showPlane3D !== undefined)
+			{
+				desmosGraphs[element.id].controller.graphSettings.showPlane3D = options.showPlane3D;
+			}
+
+
+
+			if (!data[element.id].use3d)
+			{
+				// Enforce a square aspect ratio.
+				const width = bounds.xmax - bounds.xmin;
+				const centerX = (bounds.xmin + bounds.xmax) / 2;
+				bounds.xmin = centerX - width / 2 * aspectRatio;
+				bounds.xmax = centerX + width / 2 * aspectRatio;
+			}
+
+
+
+			desmosGraphs[element.id].setMathBounds(bounds);
+
+			desmosGraphs[element.id].setExpressions(data[element.id].expressions);
+
+			// Set some more things that currently aren't exposed in the API :(
+			desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
+
+			desmosGraphs[element.id].updateSettings({});
+
+			desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
+
+			desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
+
+			if (window.DEBUG && !recreating)
+			{
+				element.addEventListener("click", (e) =>
 				{
-					getDesmosScreenshot(element.id, e.altKey);
-				}
-			});
+					if (e.metaKey)
+					{
+						getDesmosScreenshot(element.id, e.altKey);
+					}
+				});
+			}
+		};
+
+		desmosGraphsConstructorData[element.id] = {
+			element,
+			constructor,
+			is3d: data[element.id].use3d
+		};
+	}
+
+
+
+	addTemporaryListener({
+		object: window,
+		event: "scroll",
+		callback: onScroll
+	});
+
+	onScroll();
+}
+
+function onScroll()
+{
+	for (const [id, data] of Object.entries(desmosGraphsConstructorData))
+	{
+		const rect = data.element.getBoundingClientRect();
+		const top = rect.top;
+		const height = rect.height;
+	
+		// Construct graphs when they're within a screen height of being visible.
+		const isOnscreen = top >= -height - window.innerHeight
+			&& top < window.innerHeight * 2;
+
+		if (isOnscreen)
+		{
+			desmosGraphConstructionStack.push(data);
+
+			if (desmosGraphConstructionStack.length === 1)
+			{
+				handleDesmosGraphConstructionStack();
+			}
+
+			delete desmosGraphsConstructorData[id];
 		}
 	}
 }
 
-// Animates out and back in all the Desmos graphs. Used when switching themes.
+async function handleDesmosGraphConstructionStack()
+{
+	if (!desmosGraphConstructionStack.length)
+	{
+		return;
+	}
 
+	await desmosGraphConstructionCooldown;
+
+	const data = desmosGraphConstructionStack.pop();
+
+	data.constructor();
+
+	if (data.is3d)
+	{
+		desmosGraphConstructionCooldown = new Promise(resolve =>
+		{
+			setTimeout(resolve, desmosGraphConstructionCooldownTime);
+		});
+	}
+
+	handleDesmosGraphConstructionStack();
+}
+
+
+
+// Animates out and back in all the Desmos graphs. Used when switching themes.
 export async function recreateDesmosGraphs()
 {
 	const elements = Array.from(document.body.querySelectorAll(".desmos-container"));
@@ -339,7 +427,7 @@ export async function recreateDesmosGraphs()
 	{
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
 
-		await createDesmosGraphs(desmosData);
+		await createDesmosGraphs(desmosData, true);
 
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}

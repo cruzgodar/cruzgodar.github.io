@@ -20,7 +20,7 @@ But hold on a minute! That blueprint that we just laid out would work for a lot 
 
 ### desmos pathIntegral2
 
-I highly recommend turning this graph around, then hiding the gray surface in the expressions list! The total area we're measuring is complicated, but expressing it in terms of a Riemann sum is absolutely within reach.
+I highly recommend looking at this graph from multiple angles, then hiding the gray surface in the expressions list! The total area we're measuring is complicated, but expressing it in terms of a Riemann sum is absolutely within reach.
 
 Let $z = f(x, y)$ be a function, and let $\vec{r}(t)$ be a parameterized path in the $xy$-plane from $t = a$ to $t = b$. We cut the domain $[a, b]$ for $\vec{r}$ into $n$ subintervals that each cover $\Delta t$, and then we want to approximate the sum by rectangles.
 
