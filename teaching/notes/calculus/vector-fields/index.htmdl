@@ -112,13 +112,7 @@ So $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}$. What does that tell us? Well, we h
 
 The other defining characteristic of the gradient is that it's orthogonal to level curves. Drawing a few for this function, we can see that the flow is always orthogonal to the level curves!
 
-<div class="desmos-border no-stretch" style="position: relative">
-	<div id="conservativeVectorField2" class="desmos-container"></div>
-
-	<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
-		<canvas id="conservativeVectorField2-canvas" style="width: 100%; height: 100%; border-radius: 16px; opacity: 0.95"></canvas>
-	</div>
-</div>
+### melded-desmos conservativeVectorField2
 
 ### exc "conservative vector fields"
 
@@ -144,13 +138,7 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 	There are no pure-$x$ or -$y$ terms, so we can remove the $c_1$ and $c_2$, but the disagreement on the mixed term isn't great. One of these wants $h(x, y) = -xy$ and one wants $h(x, y) = xy$, and there just isn't any reconciling the two. We can draw these curves on a graph and see that the field is very much not crossing orthogonally.
 
-	<div class="desmos-border no-stretch" style="position: relative">
-		<div id="conservativeVectorField3" class="desmos-container"></div>
-
-		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
-			<canvas id="conservativeVectorField3-canvas" style="width: 100%; height: 100%; border-radius: 16px; opacity: 0.95"></canvas>
-		</div>
-	</div>
+	### melded-desmos conservativeVectorField3
 
 	There is an interesting subtlety worth noting here. Each partial integral produced a function satisfying one of the derivative conditions but not the other, so at each crossing, one of the two components of the field will match the gradient. For example, with $h(x, y) = xy$, the level curve $c = 1$ is the curve $y = \frac{1}{x}$. At the point $(1, 1)$, the gradient is $\left< 1, 1 \right>$, drawn as the upper-right vector, and we can see that although the flow doesn't follow that vector, the $y$-component still matches. That's true for any half-correct potential function we produce in this way, but what's unusual about this one is how the other candidate for a potential function that we produced was $h(x, y) = -xy$, whose level curves coincide with the other possible value of $h$. The $c = -1$ level curve of $h(x, y) = -xy$ is once again $y = \frac{1}{x}$, but this time, the gradient is $\left< -1, -1 \right>$ (the other white vector). Sure enough, the $x$-component of the field matches there, but not $y$.
 

@@ -316,7 +316,11 @@ export default function()
 			useFullscreenButton: false,
 			useResetButton: false,
 			transparency: true,
-			onDrawFrame
+			onDrawFrame,
+			minWorldWidth: 0.01,
+			maxWorldWidth: 100,
+			minWorldHeight: 0.01,
+			maxWorldHeight: 100,
 		});
 
 		applet.allowFullscreenWithKeyboard = false;
@@ -326,10 +330,10 @@ export default function()
 		{
 			applet.run({
 				resolution: 500,
-				maxParticles: 5000,
+				maxParticles: 4000,
 				generatingCode: "(-y * 0.5, -x * 0.5)",
 				dt: .003,
-				worldWidth: 6,
+				worldWidth: 5,
 				hue: 0.6,
 				brightness: 0.85,
 				darkenWhenSlow: true,
@@ -339,6 +343,8 @@ export default function()
 		function onDrawFrame()
 		{
 			const bounds = getDesmosBounds(desmosGraphs.swimmingInCurrent);
+
+			console.log((bounds.xmin + bounds.xmax) / 2, (bounds.ymin + bounds.ymax) / 2);
 
 			applet.wilson.resizeWorld({
 				width: bounds.xmax - bounds.xmin,

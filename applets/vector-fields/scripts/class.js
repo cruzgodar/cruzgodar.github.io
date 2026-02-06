@@ -68,6 +68,10 @@ export class VectorField extends AnimationFrameApplet
 		useResetButton = true,
 		onDrawFrame = () => {},
 		onReset = () => {},
+		minWorldWidth = 0.5,
+		maxWorldWidth = 20,
+		minWorldHeight = 0.5,
+		maxWorldHeight = 20,
 	}) {
 		super(canvas);
 
@@ -167,10 +171,10 @@ export class VectorField extends AnimationFrameApplet
 
 			worldWidth: 2 * Math.PI,
 
-			minWorldWidth: 0.5,
-			maxWorldWidth: 20,
-			minWorldHeight: 0.5,
-			maxWorldHeight: 20,
+			minWorldWidth,
+			maxWorldWidth,
+			minWorldHeight,
+			maxWorldHeight,
 
 			useResetButton,
 			resetButtonIconPath: "/graphics/general-icons/reset.png",

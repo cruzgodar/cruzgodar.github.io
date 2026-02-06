@@ -6,6 +6,7 @@ import {
 	desmosGraphs,
 	desmosGray,
 	desmosPurple,
+	getDesmosBounds,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -128,12 +129,10 @@ export default function()
 			alwaysDark: true,
 			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
-
-			options: { showResetButtonOnGraphpaper: false },
 			
 			expressions:
 			[
-				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true, color: desmosBlack },
+				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true, color: desmosBlack, lineWidth: 5 },
 				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 			]
 		},
@@ -143,12 +142,10 @@ export default function()
 			alwaysDark: true,
 			
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
-
-			options: { showResetButtonOnGraphpaper: false },
 			
 			expressions:
 			[
-				{ latex: raw`xy = c`, secret: true, color: desmosBlack },
+				{ latex: raw`xy = c`, secret: true, color: desmosBlack, lineWidth: 5 },
 				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 
 				...getDesmosPoint({
@@ -234,31 +231,40 @@ export default function()
 	{
 		const applet = new VectorField({
 			canvas,
-			transparency: true,
 			useFullscreenButton: false,
+			useResetButton: false,
+			transparency: true,
 			onDrawFrame,
+			minWorldWidth: 0.01,
+			maxWorldWidth: 100,
+			minWorldHeight: 0.01,
+			maxWorldHeight: 100,
 		});
 
 		applet.allowFullscreenWithKeyboard = false;
+		applet.allowResetWithKeyboard = false;
 
 		applet.loadPromise.then(() =>
 		{
 			applet.run({
 				resolution: 500,
-				maxParticles: 3000,
+				maxParticles: 4000,
 				generatingCode: "(x * 0.35, -y * 0.35)",
-				dt: .006,
-				worldWidth: 6
+				dt: .005,
+				worldWidth: 6,
+				brightness: 0.9,
 			});
 		});
 
 		function onDrawFrame()
 		{
-			desmosGraphs.conservativeVectorField2.setMathBounds({
-				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
-				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
-				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
-				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField2);
+
+			applet.wilson.resizeWorld({
+				width: bounds.xmax - bounds.xmin,
+				height: bounds.ymax - bounds.ymin,
+				centerX: (bounds.xmin + bounds.xmax) / 2,
+				centerY: (bounds.ymin + bounds.ymax) / 2,
 			});
 		}
 
@@ -271,31 +277,40 @@ export default function()
 	{
 		const applet = new VectorField({
 			canvas,
-			transparency: true,
 			useFullscreenButton: false,
+			useResetButton: false,
+			transparency: true,
 			onDrawFrame,
+			minWorldWidth: 0.01,
+			maxWorldWidth: 100,
+			minWorldHeight: 0.01,
+			maxWorldHeight: 100,
 		});
 
 		applet.allowFullscreenWithKeyboard = false;
+		applet.allowResetWithKeyboard = false;
 
 		applet.loadPromise.then(() =>
 		{
 			applet.run({
 				resolution: 500,
-				maxParticles: 3000,
+				maxParticles: 4000,
 				generatingCode: "(-y * 0.35, x * 0.35)",
-				dt: .006,
-				worldWidth: 6
+				dt: .005,
+				worldWidth: 6,
+				brightness: 0.9,
 			});
 		});
 
 		function onDrawFrame()
 		{
-			desmosGraphs.conservativeVectorField3.setMathBounds({
-				xmin: applet.wilson.worldCenterX - applet.wilson.worldWidth / 2,
-				xmax: applet.wilson.worldCenterX + applet.wilson.worldWidth / 2,
-				ymin: applet.wilson.worldCenterY - applet.wilson.worldHeight / 2,
-				ymax: applet.wilson.worldCenterY + applet.wilson.worldHeight / 2,
+			const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField3);
+
+			applet.wilson.resizeWorld({
+				width: bounds.xmax - bounds.xmin,
+				height: bounds.ymax - bounds.ymin,
+				centerX: (bounds.xmin + bounds.xmax) / 2,
+				centerY: (bounds.ymin + bounds.ymax) / 2,
 			});
 		}
 
