@@ -168,7 +168,7 @@ export function getQueryParams()
 		params.delete("capsuleheader");
 	}
 
-
+	
 
 	if (siteSettings.scroll)
 	{

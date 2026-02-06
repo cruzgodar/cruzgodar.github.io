@@ -216,7 +216,7 @@ export async function loadSite(url = pageUrl)
 			noFadeIn: window.DEBUG
 		});
 
-		showAndRestoreScroll();
+		await showAndRestoreScroll();
 
 		if (window.DEBUG)
 		{
@@ -309,28 +309,23 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 
 async function showAndRestoreScroll()
 {
-	const scroll = siteSettings.scroll;
-	siteSettings.scroll = undefined;
-
 	await sleep(10);
 	
 	if (siteSettings.card)
 	{
 		if (!blockCardPages.includes(pageUrl))
 		{
-			openCard({
+			await openCard({
 				id: siteSettings.card,
 				fromElement: pageElement,
 				animationTime: 10
-			}).then(() =>
-			{
-				cardContainer.scrollTo(0, scroll);
-
-				setTimeout(() =>
-				{
-					cardContainer.scrollTo(0, scroll);
-				}, 100);
 			});
+
+			cardContainer.scrollTo(0, siteSettings.scroll);
+
+			await sleep(100);
+
+			cardContainer.scrollTo(0, siteSettings.scroll);
 		}
 
 		else
@@ -341,7 +336,10 @@ async function showAndRestoreScroll()
 
 	else
 	{
-		window.scrollTo(0, scroll);
-		setTimeout(() => window.scrollTo(0, scroll), 100);
+		window.scrollTo(0, siteSettings.scroll);
+
+		await sleep(100);
+
+		window.scrollTo(0, siteSettings.scroll);
 	}
 }

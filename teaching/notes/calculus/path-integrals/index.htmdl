@@ -265,7 +265,15 @@ $$
 
 	&= \int_{\pi / 3}^{5 \pi / 3} \left< -2\sin(-t), -2\cos(-t) + 2\sin(-t) \right> \bullet \left< 2\sin(-t), -2\cos(-t) \right>\,\d t
 
-	&= \int_{\pi / 3}^{5 \pi / 3} \left( -4\sin^2(-t) + 4\cos^2(-t) - 4\sin(-t)\cos(-t) \right)\,\d t
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( -4\sin^2(-t) + 4\cos^2(-t) - 4\sin(-t)\cos(-t) \right)\,\d t.
+$$
+
+Be careful not to write $-\sin^2(-t) + \cos^2(-t) = 1$! That's only true when the sine and cosine terms have the same sign. Instead, we can use a trig identity that equates that with $\cos(-2t)$, and a similar one for the remaining term in the integral.
+
+$$
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\,\d t
+
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\,\d t
 $$
 
 
