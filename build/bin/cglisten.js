@@ -61,7 +61,21 @@ function isValidFile(file)
 
 	const extension = end.slice(index + 1);
 
-	return extension === "htmdl" || extension === "js" || extension === "css";
+	if (extension !== "htmdl" && extension !== "js" && extension !== "css")
+	{
+		return false;
+	}
+
+	// Exclude build output files so that cgbuild writing .min.js/.min.css
+	// doesn't trigger another build cycle.
+	const filename = end.slice(0, index);
+
+	if (filename.endsWith(".min"))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 listenToChanges();

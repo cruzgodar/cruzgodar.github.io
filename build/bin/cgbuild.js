@@ -40,6 +40,70 @@ const courseNames = [
 
 let sitemap;
 
+// After a non-clean build, find output files (.min.js, .min.css, .html)
+// that are modified according to git but whose source files are not.
+// This handles the case where a source file is modified, built, and then
+// reverted --- the output would be left stale without this cleanup.
+function restoreStaleOutputFiles()
+{
+	// Get all currently modified tracked files.
+	const proc = spawnSync("git", [
+		"-C",
+		root,
+		"ls-files",
+		"--modified"
+	]);
+
+	const modifiedFiles = new Set(
+		proc.stdout.toString().split("\n").filter(f => f)
+	);
+
+	for (const file of modifiedFiles)
+	{
+		const isOutput =
+			file.endsWith(".min.js")
+			|| file.endsWith(".min.mjs")
+			|| file.endsWith(".min.css")
+			|| (file.endsWith(".html") && (file.endsWith("/index.html") || file.endsWith("/data.html")));
+
+		if (!isOutput)
+		{
+			continue;
+		}
+
+		// Determine the source file for this output.
+		let sourceFile;
+
+		if (file.endsWith(".min.js") || file.endsWith(".min.mjs"))
+		{
+			sourceFile = file.replace(/\.min\.(m*js)$/, ".$1");
+		}
+		else if (file.endsWith(".min.css"))
+		{
+			sourceFile = file.replace(/\.min\.css$/, ".css");
+		}
+		else if (file.endsWith("/index.html") || file.endsWith("/data.html"))
+		{
+			const dir = file.slice(0, file.lastIndexOf("/"));
+			sourceFile = dir + "/index.htmdl";
+		}
+
+		// If the source file is NOT modified, the output is stale --- restore it.
+		if (sourceFile && !modifiedFiles.has(sourceFile))
+		{
+			console.log(`Restoring ${file}`);
+
+			spawnSync("git", [
+				"-C",
+				root,
+				"checkout",
+				"--",
+				file
+			]);
+		}
+	}
+}
+
 
 
 async function buildSite()
@@ -73,7 +137,12 @@ async function buildSite()
 	const files = proc.stdout.toString().split("\n");
 
 	await parseModifiedFiles(files);
-	
+
+	if (!options.clean)
+	{
+		restoreStaleOutputFiles();
+	}
+
 	await buildXmlSitemap();
 
 	process.exit(0);
