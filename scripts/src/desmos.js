@@ -125,7 +125,7 @@ let desmosGraphsConstructorData = {};
 
 let desmosGraphConstructionStack = [];
 
-const desmosGraphConstructionCooldownTime = 750;
+const desmosGraphConstructionCooldownTime = 1000;
 let desmosGraphConstructionCooldown = Promise.resolve();
 
 
