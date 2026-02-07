@@ -125,7 +125,7 @@ let desmosGraphsConstructorData = {};
 
 let desmosGraphConstructionStack = [];
 
-const desmosGraphConstructionCooldownTime = 1000;
+const desmosGraphConstructionCooldownTime = 750;
 let desmosGraphConstructionCooldown = Promise.resolve();
 
 
@@ -303,7 +303,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		{
 			desmosGraphs[element.id] = desmosClass(element, options);
 
-			
+			console.log("Desmos graph created");
 
 			const bounds = data[element.id].bounds;
 			const rect = element.getBoundingClientRect();
@@ -437,13 +437,10 @@ async function handleDesmosGraphConstructionStack()
 
 	data.constructor();
 
-	if (data.is3d)
+	desmosGraphConstructionCooldown = new Promise(resolve =>
 	{
-		desmosGraphConstructionCooldown = new Promise(resolve =>
-		{
-			setTimeout(resolve, desmosGraphConstructionCooldownTime);
-		});
-	}
+		setTimeout(resolve, desmosGraphConstructionCooldownTime);
+	});
 
 	handleDesmosGraphConstructionStack();
 }
