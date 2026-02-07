@@ -103,12 +103,14 @@ export let desmosGraphsDefaultState = {};
 
 // A promise for every graph
 export let desmosGraphsLoaded = {};
+let desmosGraphResolves = {};
 
 export function clearDesmosGraphs()
 {
 	desmosGraphs = {};
 	desmosGraphsDefaultState = {};
 	desmosGraphsLoaded = {};
+	desmosGraphResolves = {};
 }
 
 
@@ -157,6 +159,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			delete desmosGraphs[key];
 			delete desmosGraphsDefaultState[key];
 			delete desmosGraphsLoaded[key];
+			delete desmosGraphResolves[key];
 		}
 	}
 
@@ -205,7 +208,27 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		}
 	}
 
-	for (const element of document.body.querySelectorAll(".desmos-container"))
+
+
+	const desmosContainers = document.body.querySelectorAll(".desmos-container");
+	
+	// We have to set these up before awaiting something, since synchronous
+	// code might await these.
+	for (const element of desmosContainers)
+	{
+		desmosGraphsLoaded[element.id] = new Promise(resolve =>
+		{
+			desmosGraphResolves[element.id] = resolve;
+		});
+	}
+
+
+
+	await loadScript("/scripts/desmos.min.js");
+
+
+
+	for (const element of desmosContainers)
 	{
 		let anyNonSecretExpressions = false;
 
@@ -274,9 +297,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			? Desmos.Calculator3D
 			// eslint-disable-next-line no-undef
 			: Desmos.GraphingCalculator;
-
-		let resolve;
-		desmosGraphsLoaded[element.id] = new Promise(r => resolve = r);
 
 		// We'll call this once the graph is onscreen.
 		const constructor = () =>
@@ -357,7 +377,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				});
 			}
 
-			resolve();
+			desmosGraphResolves[element.id]();
 		};
 
 		desmosGraphsConstructorData[element.id] = {
@@ -368,8 +388,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	}
 
 
-
-	await loadScript("/scripts/desmos.min.js");
 
 	addTemporaryListener({
 		object: window,

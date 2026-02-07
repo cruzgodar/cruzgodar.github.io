@@ -144,7 +144,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 
 ###
 
-This example showed that path integrals are *path-dependent*: integrating the same function along two curves, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
+This example showed that path integrals are, generally speaking, *path-dependent*: integrating the same function along two curves, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
 
 We're going to have a lot more to say about path-dependence later in this section, but for right now, I want to provide a little bit of intuition that path integrals can't be path-independent in general. If we integrate the constant function $1$, then the path integral $\int_C 1\,\d s$ is equal to the arc length of $C$ for any piecewise-smooth curve $C$; different curves connecting two given points will typically have different lengths, like in the previous example, and so those path integrals will necessarily be different.
 
@@ -353,6 +353,90 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 	Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
 
 ###
+
+
+
+## The Fundamental Theorem of Path Integrals
+
+Let's properly dig into path-independence. Why do some path integrals, but not all, seem to depend only on their endpoints, rather than the path between them? In single-variable calculus, the fundamental theorem of calculus resulted in something similar to path independence by expressing the entire integral $\int_a^b f(x)\,\d x$ in terms of an antiderivative $F$ of $f$ at the endpoints of $[a, b]$; if we could do the same thing for a certain kind of path integral, we'd have not only path independence, but a formula that we could use to skip their computation entirely.
+
+The only thing in the fundamental theorem of calculus that we haven't considered for path integrals is the presence of an antiderivative. An equivalent way to phrase the single-variable FTC is
+
+$$
+	\int_a^b f'(x)\,\d x = f(b) - f(a)
+$$
+
+for any differentiable function $f$ with a continuous derivative. This phrasing is normally just to get around needing to define $F$ separately, but it also points us in a particular direction: What if we consider only path integrals of derivatives? The issue is that there isn't really a derivative-like operator for a function; the closest thing we have is the gradient, which outputs a vector field. But we just spent the last subsection talking about how to take path integrals through vector fields! Let's see what we can do.
+
+Given a differentiable function $f(x, y)$ so that $\G f$ is continuous, let's consider
+
+$$
+	\int_C \G f \bullet \vec{T}\,\d s &= \int_C \G f \bullet \d\vec{r},
+$$
+
+where $C$ is a piecewise-smooth curve parameterized by $\vec{r}(t)$ for $a \leq t \leq b$. This expands as usual to
+
+$$
+	\int_C \G f \bullet \d\vec{r} &= \int_a^b \G f\left( \vec{r}(t) \right) \bullet \vec{r}'(t)\,\d t.
+$$
+
+We're getting pretty symbol-dense, and we need to expand that gradient, which threatens to make things worse, so let's pause and focus only on the inside of the integral. Let's also write $\vec{r}(t) = \left< x(t), y(t) \right>$ to make those functions more explicit. Now the expression in the integral is
+
+$$
+	\G f\left( \vec{r}(t) \right) \bullet \vec{r}'(t) &= \G f( x(t), y(t) ) \bullet \left< x'(t), y'(t) \right>
+
+	&= \left< f_x( x(t), y(t) ), \  f_y( x(t), y(t) ) \right>\ \bullet\ \left< x'(t), y'(t) \right>
+
+	&= f_x( x(t), y(t) )\, x'(t) + f_y( x(t), y(t) )\, y'(t)
+
+	&= pf/px dx/dt + pf/py dy/dt.
+$$
+
+Back once again, it's our friend the multivariable chain rule! This is the result of differentiating a composition of two functions: here, it says that
+
+$$
+	d/dt \left[ f\left( \vec{r}(t) \right) \right] = pf/px dx/dt + pf/py dy/dt,
+$$
+
+which means
+
+$$
+	d/dt \left[ f\left( \vec{r}(t) \right) \right] = \G f\left( \vec{r}(t) \right) \bullet \vec{r}'(t).
+$$
+
+As a remark, even if this didn't help us with our current problem (and it absolutely does), this is a *lovely* presentation of the multivariable chain rule. The single-variable chain rule
+
+$$
+	d/dt \left[ f(r(t)) \right] = f'(r(t)) \cdot r'(t)
+$$
+
+has gracefully adapted to higher dimensions by substituting a gradient for the outer derivative and a dot product for the multiplication, and it's elegance like this that leads many mathematicians to declare that their subject is discovered, not invented.
+
+We currently need that elegance as means to a very utilitarian end, though. The whole expression we were considering lived inside an integral, and putting it back, we find
+
+$$
+	\int_C \G f \bullet \d\vec{r} &= \int_a^b d/dt \left[ f\left( \vec{r}(t) \right) \right]\,\d t
+
+	&= \left. \left[ f\left( \vec{r}(t) \right) \right] \right|_a^b
+
+	&= f\left( \vec{r}(b) \right) - f\left( \vec{r}(a) \right).
+$$
+
+But $\vec{r}(a)$ and $\vec{r}(b)$ are the endpoints of $C$, and so we have just the result we were hoping for! Let's collect our results together with a proper theorem statement.
+
+### thm "The Fundamental Theorem of Path Integrals"
+
+	Let $\vec{F}$ be a continuous conservative vector field --- that is, $\vec{F} = \G f$ for some function $f$. Let $C$ be a piecewise-smooth curve from the point $p$ to the point $q$. Then
+
+	$$
+		\int_C \vec{F} \bullet \vec{T}\,\d s &= f(q) - f(p).
+	$$
+
+###
+
+This is more commonly called the Fundamental Theorem of Line Integrals or the Gradient Theorem, but we'll stick with our more descriptive nomenclature.
+
+
 
 
 ### nav-buttons
