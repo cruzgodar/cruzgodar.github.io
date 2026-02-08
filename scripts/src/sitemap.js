@@ -1343,7 +1343,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/double-integrals":
 	{
-		"title": "Section 5.11: Double Integrals",
+		"title": "Section 6.1: Double Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1354,7 +1354,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/vector-fields":
 	{
-		"title": "Section 6.1: Vector Fields",
+		"title": "Section 6.2: Vector Fields",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1365,7 +1365,7 @@ export const sitemap =
 	
 	"/teaching/notes/calculus/path-integrals":
 	{
-		"title": "Section 6.2: Path Integrals",
+		"title": "Section 6.3: Path Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		

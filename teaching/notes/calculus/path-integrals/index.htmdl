@@ -464,5 +464,23 @@ for any closed curve $C$, so long as $\vec{F}$ is conservative.
 
 ###
 
+Let's close by stating two additional facts about conservative vector fields. We know that their path integrals are path-independent, and that that implies any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
+
+### thm "path-independence and conservativity"
+
+	Let $\vec{F}$ be any vector field defined on an open and connected region $U$.
+
+	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all path integrals of $\vec{F}$ are path-independent.
+
+	2. If $U$ is simply-connected and all path integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
+
+###
+
+Remember from the last section that $U$ being simply-connected means there are no holes inside of $U$. While we won't often have a need for this theorem, it is surprisingly nice that the conservativity of a vector field is nearly completely equivalent to it integrating to zero along closed loops.
+
+That was a behemoth of a section! In the next one, we'll take our newfound tool of path integrals and establish a fundamental link between them and the double integrals of the previous section.
+
+
+
 
 ### nav-buttons

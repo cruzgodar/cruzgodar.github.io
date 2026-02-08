@@ -368,10 +368,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				});
 			}
 
-			// This is an extremely nasty way to ensure that the graph is actually loaded
-			// before resolving
-			desmosGraphs[element.id].screenshot({ width: 1, height: 1 });
-
 			desmosGraphResolves[element.id]();
 		};
 
@@ -457,6 +453,7 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 		for (let i = 0; i < expressions.length; i++)
 		{
+			// Set lineWidth to 15 for cover images
 			expressions[i].lineWidth = forPdf ? 5 : 30;
 			expressions[i].pointSize = forPdf ? 10 : 50;
 			expressions[i].dragMode = "NONE";

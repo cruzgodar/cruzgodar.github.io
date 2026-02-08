@@ -372,6 +372,9 @@ export default function()
 
 		nastyPath:
 		{
+			alwaysDark: true,
+			highContrast: true,
+
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 			
 			expressions:
@@ -422,7 +425,7 @@ export default function()
 			{
 				applet.run({
 					resolution: 500,
-					maxParticles: 4000,
+					maxParticles: 5000,
 					generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
 					dt: .002,
 					worldWidth: 5,
@@ -474,7 +477,7 @@ export default function()
 			{
 				applet.run({
 					resolution: 500,
-					maxParticles: 4000,
+					maxParticles: 5000,
 					lifetime: 175,
 					generatingCode: "(x * x * 0.5, (x - 2.0 * y) * 0.5)",
 					dt: .0015,
@@ -527,8 +530,7 @@ export default function()
 			{
 				applet.run({
 					resolution: 500,
-					maxParticles: 4000,
-					lifetime: 175,
+					maxParticles: 5000,
 					// eslint-disable-next-line max-len
 					generatingCode: "(-2.0 * cos(x) * (sin(sin(x) + sin(y))), -2.0 * cos(y) * (sin(sin(x) + sin(y))))",
 					dt: .00125,

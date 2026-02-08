@@ -310,6 +310,10 @@ export class VectorField extends AnimationFrameApplet
 			? getFloatGlsl(hue)
 			: "v.y";
 
+		const saturationGlsl = darkenWhenSlow
+			? getFloatGlsl(saturation)
+			: "v.z";
+
 		const valueGlsl = darkenWhenSlow
 			? `${getFloatGlsl(brightness)} * v.x * max(v.z, 0.5) / maxBrightness`
 			: `${getFloatGlsl(brightness)} * v.x / maxBrightness`;
@@ -342,7 +346,7 @@ export class VectorField extends AnimationFrameApplet
 				return vec4(
 					hsvToRgb(vec3(
 						${hueGlsl},
-						${getFloatGlsl(saturation)} * v.z,
+						${saturationGlsl},
 						${valueGlsl}
 					)),
 					v.w

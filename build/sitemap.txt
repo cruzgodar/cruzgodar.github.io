@@ -113,10 +113,10 @@ home Cruz Godar
 			multivariable-optimization Section 5.8: Multivariable Optimization
 			boundary-optimization Section 5.9: Boundary Optimization
 			lagrange-multipliers Section 5.10: Lagrange Multipliers
-			double-integrals Section 5.11: Double Integrals
-
-			vector-fields Section 6.1: Vector Fields
-			path-integrals Section 6.2: Path Integrals
+			
+			double-integrals Section 6.1: Double Integrals
+			vector-fields Section 6.2: Vector Fields
+			path-integrals Section 6.3: Path Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices
