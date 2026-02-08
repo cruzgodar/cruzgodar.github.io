@@ -234,7 +234,7 @@ That was a *lot* of theory and symbol-pushing, so let's pause and summarize what
 		1.\ \int_C \vec{F} \bullet \vec{T}\,\d s
 	$$
 
-	expresses it as an integral with respect to arc length of the scalar projection of $\vec{F}$ onto the unit tangent vector $\vec{T}$ of $C$, without needing to specify a parameterization $\vec{r}(t)$. It's the farthest from an actual formula to compute the integral, but it displays most clearly what's actually being integrated.
+	expresses it as an integral with respect to arc length of the scalar projection of $\vec{F}$ onto the unit tangent vector $\vec{T}$ of $C$, which is a quantity independent of parameterization, meaning we don't need to specify one. It's the farthest from an actual formula to compute the integral, but it displays most clearly what's actually being integrated.
 
 	$$
 		2.\ \int_C \vec{F} \bullet \d \vec{r}
@@ -442,15 +442,27 @@ $$
 	\oint_C f(x, y) \,\d s.
 $$
 
-Just like the use of the $\p$ symbol to indicate a partial derivative instead of $\d$, the $\oint$ symbol means exactly the same thing as $\int$, and only looks a little different to help remind us what we're doing. I'll use the $\oint$ symbol in an effort to provide a little bit more context, but it's entirely optional.
-
-We can concisely write our latest result as
+Just like the use of the $\p$ symbol instead of $\d$ indicates a partial derivative but doesn't actually change the differentiation process, the $\oint$ symbol means exactly the same thing as $\int$, and only looks a little different to help remind us what we're doing. I'll use the $\oint$ symbol in an effort to provide a little bit more context, but it's entirely optional. Here, we can concisely write our latest result as
 
 $$
 	\oint_C \vec{F} \bullet \d\vec{r} = 0
 $$
 
-for any closed curve $C$, so long as $\vec{F}$ is conservative; this is in fact equivalent to path 
+for any closed curve $C$, so long as $\vec{F}$ is conservative.
+
+### exc "the Fundamental Theorem of Path Integrals"
+
+	Let $\vec{F}$ be the vector field
+
+	$$
+		\vec{F}(x, y) = \left< -2\cos(x) (\sin(\sin(x) + \sin(y))),\ -2\cos(y) (\sin(\sin(x) + \sin(y))) \right>.
+	$$
+
+	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left( 2\cos(3 \pi t), 2\sin(4 \pi t) \right)$ for $0 \leq t \leq 3$.
+
+	### melded-desmos nastyPath
+
+###
 
 
 ### nav-buttons

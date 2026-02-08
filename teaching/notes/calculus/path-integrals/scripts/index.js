@@ -368,6 +368,32 @@ export default function()
 					size: 15,
 				}),
 			]
+		},
+
+		nastyPath:
+		{
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+			
+			expressions:
+			[
+				{ latex: raw`l(t) = (2\cos(3 \pi t), 2\sin(4 \pi t))` },
+
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [
+						-2 * Math.cos(x) * (Math.sin(Math.sin(x) + Math.sin(y))),
+						-2 * Math.cos(y) * (Math.sin(Math.sin(x) + Math.sin(y)))
+					],
+					pathFunction: (t) => [
+						2 * Math.cos(3 * Math.PI * t),
+						2 * Math.sin(4 * Math.PI * t)
+					],
+					pathFunctionDesmos: raw`l(t)`,
+					minT: 0,
+					maxT: 2,
+					numSlices: 400,
+					colorFunction
+				}),
+			]
 		}
 	});
 
@@ -398,7 +424,7 @@ export default function()
 					resolution: 500,
 					maxParticles: 4000,
 					generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
-					dt: .003,
+					dt: .002,
 					worldWidth: 5,
 					hue: 0.6,
 					saturation: 0.85,
@@ -422,6 +448,8 @@ export default function()
 			return applet;
 		});
 	});
+
+
 
 	desmosGraphsLoaded.pathIntegralThroughVectorField.then(() =>
 	{
@@ -449,11 +477,11 @@ export default function()
 					maxParticles: 4000,
 					lifetime: 175,
 					generatingCode: "(x * x * 0.5, (x - 2.0 * y) * 0.5)",
-					dt: .002,
+					dt: .0015,
 					worldWidth: 6,
 					hue: 0.6,
-					saturation: 0.85,
-					brightness: 0.85,
+					saturation: 0.8,
+					brightness: 0.65,
 					darkenWhenSlow: true,
 				});
 			});
@@ -461,6 +489,60 @@ export default function()
 			function onDrawFrame()
 			{
 				const bounds = getDesmosBounds(desmosGraphs.pathIntegralThroughVectorField);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
+		});
+	});
+
+
+
+	desmosGraphsLoaded.nastyPath.then(() =>
+	{
+		createEmphemeralApplet($("#nastyPath-canvas"), (canvas) =>
+		{
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
+			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					lifetime: 175,
+					// eslint-disable-next-line max-len
+					generatingCode: "(-2.0 * cos(x) * (sin(sin(x) + sin(y))), -2.0 * cos(y) * (sin(sin(x) + sin(y))))",
+					dt: .00125,
+					worldWidth: 6,
+					hue: 0.6,
+					saturation: 0.8,
+					brightness: 0.8,
+					darkenWhenSlow: true,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.nastyPath);
 
 				applet.wilson.resizeWorld({
 					width: bounds.xmax - bounds.xmin,
