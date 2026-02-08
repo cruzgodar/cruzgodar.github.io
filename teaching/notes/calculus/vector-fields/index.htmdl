@@ -144,6 +144,52 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 ###
 
+While we were able to take a vector field $\vec{F}(x, y)$ and determine whether it was conservative by evaluating partial integrals of each component, it's reasonable to want a better heuristic for determining whether a field is conservative without going to all the trouble of integrating it. If we knew the field $\vec{F}(x, y)$ was conservative, then $F = \G f$ for some function $f(x, y)$, and so
+
+$$
+	\vec{F}(x, y) = \left< pf/px, pf/py \right>.
+$$
+
+If we can think of a fact about the components of $F$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's theorem, so long as the potential function $f$ isn't too poorly behaved:
+
+$$
+	p/py\left[ pf/px \right] = p/px\left[ pf/py \right].
+$$
+
+Miraculously, this is indeed a sufficient condition, as long as we add the necessary hypotheses for Clairaut's theorem and also prevent the region we consider from possibly harboring problematic areas in hidden points.
+
+### thm "conservativity of 2D vector fields"
+
+	Let $\vec{F}(x, y) = \left< a(x, y),\ b(x, y) \right>$. If $a$ and $b$ are differentiable with continuous partial derivatives, and
+
+	$$
+		pa/py = pb/px
+	$$
+
+	everywhere in an open and connected set $U$ with no holes (the technical term is **simply-connected**), then $\vec{F}$ is conservative. If $pa/py \neq pb/px$, then $\vec{F}$ cannot be conservative, regardless of the region $U$.
+
+###
+
+Just like with Clairaut's theorem, vector fields that satisfy the partial derivative equivalence but fail at the region are strange enough that we tend to recognize something might be up with them from the outset. For completeness, though, let's briefly state what those properties about the set $U$ mean:
+
+> - Open: around every point in $U$, we can draw a circle of a small radius that's still entirely contained within $U$ (intuitively, there are no hard boundaries).
+
+> - Connected: for any two points in $U$, we can draw a path from one point to the other that never leaves $U$ (intuitively, $U$ is a single object, not split into multiple disparate pieces).
+
+> - Simply-connected: any closed loop in $U$ can be contracted down to a point while staying in $U$ the entire time (intuitively, there aren't any holes or even any missing points inside of $U$.)
+
+In particular, one region that satisfies all three of these conditions is $#R#^2$ itself! Therefore, if we're trying to show that a 2D vector field is conservative and it's defined for all of $#R#^2$, then we can just check the previous theorem without worrying about the shape of the domain.
+
+### exc "the conservativity of 2D vector fields"
+
+	Determine if the following vector fields are conservative and find a potential function for each one that is.
+
+	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
+
+	2. $\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>$. 
+
+###
+
 
 
 ### nav-buttons
