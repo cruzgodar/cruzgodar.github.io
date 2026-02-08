@@ -93,9 +93,9 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 	for $0 \leq t \leq \frac{\pi}{2}$. Then
 
 	$$
-		\left| \left| \vec{r}'(t)' \right| \right| &= \left| \left| \left< \cos(t), 1, \sin(t) \right> \right| \right|
+		\left| \left| \vec{r}'(t) \right| \right| &= \left| \left| \left< -\sin(t), 0, \cos(t) \right> \right| \right|
 
-		&= \sqrt{\cos^2(t) + 0 + \sin^2(t)}
+		&= \sqrt{\sin^2(t) + 0 + \cos^2(t)}
 
 		&= 1,
 	$$
@@ -156,7 +156,7 @@ Single-variable integrals apply to much, much more than just finding areas under
 
 In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of changing quantity: one external to the path. That might seem like a just a slight twist on what we've already seen, but when we start pulling on this thread, it'll prove to be a larger part of the whole picture than it first appeared.
 
-Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\vec{F}(x, y) = \left< -y, -x + y \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, -\sqrt{3} \right)$ in a straight line, how much does the current help or hinder our **forward** progress?
+Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\vec{F}(x, y) = \left< -y, -x + y \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, \sqrt{3} \right)$ in a straight line, how much does the current help or hinder our **forward** progress?
 
 ### melded-desmos swimmingInCurrent
 
@@ -282,7 +282,7 @@ $$
 	&= -2\sqrt{3}
 $$
 
-That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, path integrals through vector fields are just regular path integrals of a particular dot product, and we just discussed how path integrals aren't path-dependent. The only thing that's specific to a path integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
+That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, path integrals through vector fields are just regular path integrals of a particular dot product, and we just discussed how path integrals are path-dependent. The only thing that's specific to a path integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
 
 ### exc "path integrals through a vector field"
 
@@ -290,7 +290,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 	1. Let $L$ be the straight-line path from $(-1, -1)$ to $(2, 2)$. Find $$\int_L \vec{F} \bullet \vec{T}\,\d s$$.
 
-	2. Let $P$ be the path from $(-1, -1)$ to $(2, 2)$ that travels along the parabola $y = x^2 - 2$, as shown. Do you expect Find $$\int_P \vec{F} \bullet \vec{T}\,\d s$$ to be the same as your answer to question 1?
+	2. Let $P$ be the path from $(-1, -1)$ to $(2, 2)$ that travels along the parabola $y = x^2 - 2$, as shown. Do you expect $$\int_P \vec{F} \bullet \vec{T}\,\d s$$ to be the same as your answer to question 1?
 
 	3. Evaluate the integral in question 2 and find out.
 
@@ -455,16 +455,82 @@ for any closed curve $C$, so long as $\vec{F}$ is conservative.
 	Let $\vec{F}$ be the vector field
 
 	$$
-		\vec{F}(x, y) = \left< -2\cos(x) (\sin(\sin(x) + \sin(y))),\ -2\cos(y) (\sin(\sin(x) + \sin(y))) \right>.
+		\vec{F}(x, y) = \left< -2\cos(x)\, \sin(\sin(x) + \sin(y)),\ -2\cos(y)\, \sin(\sin(x) + \sin(y)) \right>.
 	$$
 
-	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left( 2\cos(3 \pi t), 2\sin(4 \pi t) \right)$ for $0 \leq t \leq 3$.
+	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left< 2\cos(3 \pi t), 2\sin(4 \pi t) \right>$ for $0 \leq t \leq 3$.
 
 	### melded-desmos nastyPath
 
+	### solution
+
+	Let's first show that this field is conservative. We have
+
+	$$
+		p/py \left[ -2\cos(x)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(x)\, \cos(\sin(x) + \sin(y))\, \cos(y)
+
+		p/px \left[ -2\cos(y)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(y)\, \cos(\sin(x) + \sin(y))\, \cos(x),
+	$$
+
+	which are the same. We could also have gleaned this fact from noticing that both components of the field are the same, only with $x$ and $y$ swapped; since we're taking partial derivatives of each with respect to a different variable, they have to be the same.
+
+	Now we can construct a potential function. We have
+
+	$$
+		\int -2\cos(x)\, \sin(\sin(x) + \sin(y))\, \p x &= \int -2\sin(u + \sin(y))\, \p u,
+	$$
+
+	where $u = \sin(x)$ and $\d u = \cos(x)\,\d x$. Then
+
+	$$
+		\int -2\sin(u + \sin(y))\, \p u &= 2\cos(u + \sin(y)) + c_1(y)
+
+		&= 2\cos(\sin(x) + \sin(y)) + c_1(y).
+	$$
+
+	That same observation about the variables of the components being swapped lets us skip integrating the second component and just swap the variables after integrating:
+
+	$$
+		\int -2\cos(y)\, \sin(\sin(x) + \sin(y))\, \p y &= 2\cos(\sin(x) + \sin(y)) + c_2(x).
+	$$
+
+	In total, neither $c_1(y)$ and $c_2(x)$ contain any variables, and so our potential function is
+
+	$$
+		f(x, y) = 2\cos(\sin(x) + \sin(y)) + c.
+	$$
+
+	Since we're about to evaluate this function at two different points and subtract one from the other, we can take $c = 0$ as always. Now those two points in question are the endpoints of this path --- it might look like a closed loop, but when we plug in $t = 0$ and $t = 3$, we find
+
+	$$
+		\vec{r}(0) &= \left< 2\cos(0), 2\sin(0) \right>
+
+		&= \left< 2, 0 \right>
+
+		\vec{r}(3) &= \left< 2\cos(9 \pi), 2\sin(12 \pi) \right>
+
+		&= \left< -2, 0 \right>,
+	$$
+
+	so the curve has traced over itself at some point (it turns out it makes a full loop at $t = 2$, so it's traced over an additional half of its graph). In total,
+
+	$$
+		\int_C \vec{F} \bullet \d\vec{r} &= f(-2, 0) - f(2, 0)
+
+		&= 2\cos(\sin(-2) + \sin(0)) - 2\cos(\sin(2) + \sin(0))
+
+		&= 2\cos(-\sin(2)) - 2\cos(\sin(2))
+
+		&= 2\cos(\sin(2)) - 2\cos(\sin(2))
+
+		&= 0,
+	$$
+
+	since $\sin$ is an odd function and $\cos$ is even. Even though this path wasn't closed, both it and the were symmetric enough to result in an integral of zero anyway!
+
 ###
 
-Let's close by stating two additional facts about conservative vector fields. We know that their path integrals are path-independent, and that that implies any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
+Let's close by stating two additional facts about conservative vector fields. We know that their path integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
 
 ### thm "path-independence and conservativity"
 

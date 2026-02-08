@@ -89,14 +89,14 @@ $$
 In effect, constants aren't seen by integrals, since derivatives zero them out. When we move to partial integrals, though, the integral loses even more precision. Evaluating the integral $\int f(x, y)\,\partial x$, means finding a function $F(x, y)$ whose partial derivative $p/px\left[ F(x, y) \right] = f(x, y)$, and that partial derivative zeros out not just constants, but any term containing only $y$. To account for the integral's inability to see entire functions of $y$ alone, we add on not just a constant $c$, but an entire function $c(y)$. The same is true in reverse for the integral $\partial y$, and since we're usually considering both at once, we'll typically subscript the $c$ function. Finally returning to our example,
 
 $$
-	g &= \int x\,\partial x = \frac{x^2}{2} + c_1(y)
+	g &= \int x\,\p x = \frac{x^2}{2} + c_1(y)
 
-	g &= \int -y\,\partial y = -\frac{y^2}{2} + c_2(x).
+	g &= \int -y\,\p y = -\frac{y^2}{2} + c_2(x).
 $$
 
-To form a single expression of $g$, we need to do the work that the integrals cannot by combining these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one.
+To form a single expression of $g$, we need to do the work that the integrals cannot by combining these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one. In total, $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2} + c$ for any constant $c$. Don't forget that final $+c$; since *neither* the $\p x$ nor the $\p y$ integral can see constants, we have to add it back in the end.
 
-So $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}$. What does that tell us? Well, we have multiple avenues for visualizing this. First, the gradient points in the direction of steepest increase, with its magnitude being that steepness, so we can plot the 2D vector field $\vec{G}$ lifted up onto the surface $g(x, y)$, and the flow is always from the lowest areas to the highest.
+We have multiple avenues for visualizing this function $g$. First, the gradient points in the direction of steepest increase, with its magnitude being that steepness, so we can plot the 2D vector field $\vec{G}$ lifted up onto the surface $g(x, y)$, and the flow is always from the lowest areas to the highest. For convenience, we'll just take $c = 0$ in this plot, but any other value would just shift the graph vertically, and the field would still apply.
 
 ### desmos conservativeVectorField1
 
@@ -110,7 +110,7 @@ So $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}$. What does that tell us? Well, we h
 
 ###
 
-The other defining characteristic of the gradient is that it's orthogonal to level curves. Drawing a few for this function, we can see that the flow is always orthogonal to the level curves!
+The other defining characteristic of the gradient is that it's orthogonal to level curves. Drawing a few for this function $g$ (again with $c = 0$), we can see that the flow is always orthogonal to the level curves! And once again, changing $c$ would just offset the level curves without changing the property of orthogonality to the field.
 
 ### melded-desmos conservativeVectorField2
 
@@ -144,13 +144,13 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 ###
 
-While we were able to take a vector field $\vec{F}(x, y)$ and determine whether it was conservative by evaluating partial integrals of each component, it's reasonable to want a better heuristic for determining whether a field is conservative without going to all the trouble of integrating it. If we knew the field $\vec{F}(x, y)$ was conservative, then $F = \G f$ for some function $f(x, y)$, and so
+While we were able to take a vector field $\vec{F}(x, y)$ and determine whether it was conservative by evaluating partial integrals of each component, it's reasonable to want a better method for determining whether a field is conservative without going to all the trouble of integrating it. If we knew the field $\vec{F}(x, y)$ was conservative, then $\vec{F} = \G f$ for some function $f(x, y)$, and so
 
 $$
 	\vec{F}(x, y) = \left< pf/px, pf/py \right>.
 $$
 
-If we can think of a fact about the components of $F$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's theorem, so long as the potential function $f$ isn't too poorly behaved:
+If we can think of a fact about the components of $\vec{F}$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's theorem, so long as the potential function $f$ isn't too poorly behaved:
 
 $$
 	p/py\left[ pf/px \right] = p/px\left[ pf/py \right].
@@ -186,7 +186,59 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 
 	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
 
-	2. $\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>$. 
+	2. $\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>$.
+
+	### solution
+
+	1. Differentiating,
+
+	$$
+		p/py \left[ 3x^2 - 2xy \right] &= -2x
+
+		p/px \left[ -x^3 + 2y^2 \right] &= -3x^2.
+	$$
+
+	Those aren't the same, and so the field is not conservative.
+
+	2. This time,
+
+	$$
+		p/py \left[ y^2 \cos\left( xy^2 \right) \right] &= 2y\cos\left( xy^2 \right) - y^2\sin\cos\left( xy^2 \right)(2xy)
+
+		&= 2y\cos\left( xy^2 \right) - 2xy^3\sin\cos\left( xy^2 \right)
+
+		p/px \left[ 1 + 2xy\cos(xy^2) \right] &= 2y\cos(xy^2) - 2xy\sin(xy^2)\left( y^2 \right)
+
+		&= 2y\cos\left( xy^2 \right) - 2xy^3\sin\cos\left( xy^2 \right).
+	$$
+
+	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
+
+	$$
+		\int y^2 \cos\left( xy^2 \right)\,\p x &= y^2\sin\left( xy^2 \right) + c_1(y)
+
+		\int \left( 1 + 2xy\cos\left( xy^2 \right) \right)\,\p y &= y + \int 2xy\cos\left( xy^2 \right)\,\p y
+
+		&= y + \int x\cos(xu)\,\p u, \quad \text{ where } u = y^2 \text{ and } \d u = 2y\,\d y.
+	$$
+
+	If we're being maximally pedantic, then since the integral contains $\p y$ and not $\d y$, we should be evaluating $pu/py$ in a $u$-sub, meaning we ought to treat $u$ as a function of two variables $x$ and $y$.  The outcome is exactly the same if we think of it as a function of a single variable, though, and there's little sense in adding $x$ into the definition of $u$, since the integral treats it as a constant. Continuing,
+
+	$$
+		y + \int x\cos(xu)\,\p u &= y + \sin(xu) + c_2(x)
+
+		&= y + \sin(xu) + c_2(x)
+
+		&= y + \sin\left( xy^2 \right) + c_2(x).
+	$$
+
+	Merging these two accounts of the potential function $g$ together, we find
+
+	$$
+		g(x, y) = \sin\left( xy^2 \right) + y + c.
+	$$
+
+	Remember that final $+c$! Since we were only asked to find a single potential function, it's fine to just take $c = 0$, but it's healthy to remember that it's there in general.
 
 ###
 
