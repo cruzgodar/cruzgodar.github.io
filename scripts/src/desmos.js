@@ -385,7 +385,13 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		desmosGraphsConstructorData[element.id] = {
 			element,
 			constructor,
-			is3d: data[element.id].use3d
+			destructor: () =>
+			{
+				findAndCall(desmosGraphs[element.id], "forceContextLoss");
+				desmosGraphs[element.id].destroy();
+			},
+			is3d: data[element.id].use3d,
+			isConstructed: false,
 		};
 	}
 
@@ -405,7 +411,7 @@ function onScroll()
 	// Reversing is important here: assuming the desmos data is given from top to bottom,
 	// this will push the top element in view onto the stack last, so it will be constructed
 	// first.
-	for (const [id, data] of Object.entries(desmosGraphsConstructorData).reverse())
+	for (const data of Object.values(desmosGraphsConstructorData).reverse())
 	{
 		const rect = data.element.getBoundingClientRect();
 		const top = rect.top;
@@ -415,39 +421,12 @@ function onScroll()
 		const isOnscreen = top >= -height - window.innerHeight
 			&& top < window.innerHeight * 2;
 
-		if (isOnscreen)
+		if (isOnscreen && !data.isConstructed)
 		{
-			desmosGraphConstructionStack.push(data);
-
-			if (desmosGraphConstructionStack.length === 1)
-			{
-				handleDesmosGraphConstructionStack();
-			}
-
-			delete desmosGraphsConstructorData[id];
+			data.constructor();
+			data.isConstructed = true;
 		}
 	}
-}
-
-async function handleDesmosGraphConstructionStack()
-{
-	if (!desmosGraphConstructionStack.length)
-	{
-		return;
-	}
-
-	await desmosGraphConstructionCooldown;
-
-	const data = desmosGraphConstructionStack.pop();
-
-	data.constructor();
-
-	desmosGraphConstructionCooldown = new Promise(resolve =>
-	{
-		setTimeout(resolve, desmosGraphConstructionCooldownTime);
-	});
-
-	handleDesmosGraphConstructionStack();
 }
 
 
@@ -482,7 +461,7 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
 
-	console.log(desmosGraphs[id].getExpressions());
+	console.log(desmosGraphs[id]);
 
 	if (!is3d)
 	{
@@ -650,4 +629,48 @@ export function getColoredParametricCurve({
 			secret: true
 		};
 	});
+}
+
+
+function findAndCall(obj, search, path = "", visited = new Set())
+{
+	if (!obj || typeof obj !== "object" || visited.has(obj))
+	{
+		return;
+	}
+
+	visited.add(obj);
+
+	for (const key of Object.keys(obj))
+	{
+		const fullPath = path ? `${path}.${key}` : key;
+		if (key.toLowerCase().includes(search.toLowerCase()) && typeof obj[key] === "function")
+		{
+			console.log(`Calling ${fullPath}`);
+			try
+			{
+				obj[key]();
+			}
+			catch (e)
+			{
+				console.log(`  Error: ${e.message}`);
+			}
+			return true;
+		}
+
+		try
+		{
+			const val = obj[key];
+			if (val && typeof val === "object")
+			{
+				if (findAndCall(val, search, fullPath, visited))
+				{
+					return true;
+				}
+			}
+		}
+		// eslint-disable-next-line no-empty
+		catch (e) { }
+	}
+	return false;
 }

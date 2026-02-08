@@ -2,6 +2,8 @@
 
 
 
+*Note: this page currently doesn't work so well on mobile browsers due to the sheer number of Desmos 3D graphs! I'm working on fixing this, but it's going to take quite a lot of work --- for now, please use a non-mobile browser to view this page.*
+
 At long last, it's time to talk about optimization. This was our main application of derivatives in calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$ and find every point $x = c$ where $f'(c) = 0$ or $f'(c)$ is undefined, called the **critical points**. They're the places where there *might* be an extremum, and to classify them, we can use one of two methods.
 
 > - The **first derivative test** has us evaluate $f'(x)$ just to the left and right of $x = c$ --- if it's negative to the left and positive to the right, then there is a local minimum at $x = c$, and if the opposite is true, there is a local maximum. If the derivative has the same sign to both the left and right, then this isn't an extremum at all --- it's a saddle point, like with $y = x^3$ at $x = 0$.

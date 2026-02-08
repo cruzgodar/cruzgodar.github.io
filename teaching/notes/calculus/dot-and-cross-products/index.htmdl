@@ -2,6 +2,8 @@
 
 
 
+*Note: this page currently doesn't work so well on mobile browsers due to the sheer number of Desmos 3D graphs! I'm working on fixing this, but it's going to take quite a lot of work --- for now, please use a non-mobile browser to view this page.*
+
 With an understanding of 3D space and vectors, we can start examining some useful properties and tools to help us make sense of this new space. We'll start with one of the most useful --- it will let us compute the angle between any two vectors efficiently, and we'll be bringing it with us to apply to other topics for the rest of the course.
 
 ## The Dot Product

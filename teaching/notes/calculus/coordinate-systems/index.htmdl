@@ -2,6 +2,8 @@
 
 
 
+*Note: this page currently doesn't work so well on mobile browsers due to the sheer number of Desmos 3D graphs! I'm working on fixing this, but it's going to take quite a lot of work --- for now, please use a non-mobile browser to view this page.*
+
 On to multivariable calculus! We'll begin by exploring how the ideas and techniques of calculus I and II  apply to functions that take more than a single variable as input. But before we get started with that, let's take our first section to familiarize ourselves with 3D coordinates, a language we'll have frequent use for.
 
 We're used to functions of a single variable (which we often just call *functions*) of the form $y = f(x)$. They take in a real number $x$ and output a real number $y$, often according to some rule like $f(x) = x^2$. When we graph functions like these, we plot pairs $(x, y)$, with one $y$-coordinate for every $x$-coordinate we can plug in.

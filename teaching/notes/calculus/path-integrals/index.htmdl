@@ -1,6 +1,6 @@
 ### nav-buttons
 
-
+*Note: this page currently doesn't work so well on mobile browsers due to the sheer number of Desmos 3D graphs! I'm working on fixing this, but it's going to take quite a lot of work --- for now, please use a non-mobile browser to view this page.*
 
 We began discussing directional derivatives in part 5 out of a desire to understand derivatives more completely --- partial derivatives were very literally a partial extension of the notion of a derivative to functions of multiple variables, and while directional derivatives didn't immediately seem like the solution that would fill in the gaps, deriving a formula for them led us to the gradient, which ended up being a very important part of our journey.
 

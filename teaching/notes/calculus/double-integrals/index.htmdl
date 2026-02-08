@@ -2,6 +2,8 @@
 
 
 
+*Note: this page currently doesn't work so well on mobile browsers due to the sheer number of Desmos 3D graphs! I'm working on fixing this, but it's going to take quite a lot of work --- for now, please use a non-mobile browser to view this page.*
+
 We've reached the halfway point of the course! As we follow the trajectory of single-variable calculus and move from derivatives to integrals, let's first look back at how we developed integrals of single-variable functions.
 
 ### desmos riemannSum
