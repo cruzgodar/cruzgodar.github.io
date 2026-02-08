@@ -123,11 +123,6 @@ export function clearDesmosGraphs()
 // Each entry is an object { element, constructor, is3d }
 let desmosGraphsConstructorData = {};
 
-let desmosGraphConstructionStack = [];
-
-const desmosGraphConstructionCooldownTime = 1000;
-let desmosGraphConstructionCooldown = Promise.resolve();
-
 
 
 // Each entry in a Desmos data object is of the form
@@ -165,8 +160,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 	desmosData = desmosDataInitializer;
 	desmosGraphsConstructorData = {};
-	desmosGraphConstructionStack = [];
-	desmosGraphConstructionCooldown = Promise.resolve();
 
 	const data = structuredClone(desmosData);
 
@@ -385,11 +378,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		desmosGraphsConstructorData[element.id] = {
 			element,
 			constructor,
-			destructor: () =>
-			{
-				findAndCall(desmosGraphs[element.id], "forceContextLoss");
-				desmosGraphs[element.id].destroy();
-			},
 			is3d: data[element.id].use3d,
 			isConstructed: false,
 		};
@@ -629,48 +617,4 @@ export function getColoredParametricCurve({
 			secret: true
 		};
 	});
-}
-
-
-function findAndCall(obj, search, path = "", visited = new Set())
-{
-	if (!obj || typeof obj !== "object" || visited.has(obj))
-	{
-		return;
-	}
-
-	visited.add(obj);
-
-	for (const key of Object.keys(obj))
-	{
-		const fullPath = path ? `${path}.${key}` : key;
-		if (key.toLowerCase().includes(search.toLowerCase()) && typeof obj[key] === "function")
-		{
-			console.log(`Calling ${fullPath}`);
-			try
-			{
-				obj[key]();
-			}
-			catch (e)
-			{
-				console.log(`  Error: ${e.message}`);
-			}
-			return true;
-		}
-
-		try
-		{
-			const val = obj[key];
-			if (val && typeof val === "object")
-			{
-				if (findAndCall(val, search, fullPath, visited))
-				{
-					return true;
-				}
-			}
-		}
-		// eslint-disable-next-line no-empty
-		catch (e) { }
-	}
-	return false;
 }
