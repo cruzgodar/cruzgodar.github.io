@@ -303,8 +303,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		{
 			desmosGraphs[element.id] = desmosClass(element, options);
 
-			console.log("Desmos graph created");
-
 			const bounds = data[element.id].bounds;
 			const rect = element.getBoundingClientRect();
 			const aspectRatio = rect.width / rect.height;
@@ -377,6 +375,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				});
 			}
 
+			// This is an extremely nasty way to ensure that the graph is actually loaded
+			// before resolving
+			desmosGraphs[element.id].screenshot({ width: 1, height: 1 });
+
 			desmosGraphResolves[element.id]();
 		};
 
@@ -400,7 +402,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 function onScroll()
 {
-	for (const [id, data] of Object.entries(desmosGraphsConstructorData))
+	// Reversing is important here: assuming the desmos data is given from top to bottom,
+	// this will push the top element in view onto the stack last, so it will be constructed
+	// first.
+	for (const [id, data] of Object.entries(desmosGraphsConstructorData).reverse())
 	{
 		const rect = data.element.getBoundingClientRect();
 		const top = rect.top;
