@@ -46,11 +46,7 @@ In the limit, a sum of these areas becomes an integral, which we'll want to give
 
 The $s$ in the abstract integral on the left is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
 
-### as "curve integrals, line integrals, and path integrals"
-	
-	Curve integrals are often called **line integrals** in much of the literature on calculus. That's a pretty unfortunate name, since we're often integrating along paths that are very much nonlinear! We'll stick with the slightly less common but more descriptive name *curve integral* in these notes. While I'd prefer to use the term *path integral*, that's unfortunately already taken for a concept in advanced physics --- not an integral along paths, but an integral *of* them, in the sense of parameterizing a space of all possible paths and adding up some of them.
-
-###
+	Curve integrals are often called **line integrals** in much of the literature on calculus. That's a pretty unfortunate name, since we're often integrating along paths that are very much nonlinear! We'll stick with the slightly less common but more descriptive name *curve integral* in these notes.
 
 ### exc "curve integrals"
 

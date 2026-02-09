@@ -771,7 +771,8 @@ export const sitemap =
 			"/teaching/notes/calculus/lagrange-multipliers",
 			"/teaching/notes/calculus/double-integrals",
 			"/teaching/notes/calculus/vector-fields",
-			"/teaching/notes/calculus/curve-integrals"
+			"/teaching/notes/calculus/curve-integrals",
+			"/teaching/notes/calculus/greens-theorem"
 		]
 	},
 		
@@ -1366,6 +1367,17 @@ export const sitemap =
 	"/teaching/notes/calculus/curve-integrals":
 	{
 		"title": "Section 6.3: Curve Integrals",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/greens-theorem":
+	{
+		"title": "Section 6.4: Green's Theorem",
 		
 		"parent": "/teaching/notes/calculus",
 		
