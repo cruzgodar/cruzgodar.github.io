@@ -48,47 +48,25 @@ Those last two examples hints at where we're going: the Extreme Value Theorem te
 
 ###
 
-The closed unit disk is closed, and the open unit disk is not --- the former contains its boundary while the latter doesn't. Intuitively, a set is closed if there's no way to approach a point not in the set by taking a path through the set. Note that we haven't defined what it means for a general set to be open; nor will we. There is a perfectly fine definition that correctly categorized $(a, b)$ as open, $[a, b]$ as closed, and $[a, b)$ and $(a, b]$ as neither, but it's a bit out of scope. For our purposes, we'll stick to saying $[a, b]$ is closed and the other three types of interval simply aren't closed.
+The closed unit disk is closed, and the open unit disk is not --- the former contains its boundary while the latter doesn't. Intuitively, a set is closed if there's no way to approach a point not in the set by taking a path through the set. Note that we haven't defined what it means for a general set to be open; nor will we. There is a perfectly fine definition that correctly categorizes $(a, b)$ as open, $[a, b]$ as closed, and $[a, b)$ and $(a, b]$ as neither, but it's slightly out of our scope. For our purposes, we'll stick to saying $[a, b]$ is closed and the other three types of interval simply aren't closed.
 
 
 
 ### exc "compact sets"
 
-	1. Is the square
-	
-	$$
-		\left\{ (x, y) \in #R#^2 \mid 1 \leq x \leq 3 \text{ and } 2 \leq y \leq 4 \right\}
-	$$
-
-	a compact set?
-
-	2. Give an example of a compact set in $#R#$ that is not a closed interval $[a, b]$.
-
-	3. Let $y = f(x)$ be a continuous function whose domain is $[a, b]$ for some $a, b \in #R#$. Is the graph of $f$ --- i.e. the set $\left\{ (x, y) \in #R#^2 \mid y = f(x) \right\}$ guaranteed to be compact?
-
-	### solution
-
-	1. Yes --- its boundary is the hollow square
+	Consider the following four sets in $#R#^2$.
 
 	$$
-		\left\{ (x, y) \in #R#^2 \mid (x = 1 \text{ or } x = 3) \text{ and } 2 \leq y \leq 4 \text{, or } 1 \leq x \leq 3 \text{ and } (y = 2 \text{ or } y = 4) \right\},
+		A &= \left\{ (x, y) \in #R#^2 \mid 1 \leq x \leq 3 \text{ and } 2 < y < 4 \right\}
+
+		B &= \left\{ (x, y) \in #R#^2 \mid x^2 + y^2 > 1 \right\}
+
+		C &= \left\{ (x(t), y(t)) \in #R#^2 \mid 0 \leq t \leq 1 \right\}, \text{ where $x$ and $y$ are continuous}
+
+		D &= #R#^2.
 	$$
 
-	including the corners, and that boundary is fully contained in the set. That tells us it's closed, and it's bounded since it fits inside a disk of radius $5$, for example.
-
-	### desmos boundary2
-
-	2. One way to do this is to combine two closed intervals together, like $[1, 2] \cup [3, 4]$: the boundary is the four points $\left\{ 1, 2, 3, 4 \right\}$, which is contained in the set. As a brief reminder, the union symbol $\cup$ means to take the elements of both sets and combine them.
-
-	3. Yes! Let's start with closed: any point $(c, f(c))$ on the graph of a continuous function has points in the graph nearby for any radius circle we draw --- that's effectively what it means for $\lim_{x \to c} f(x) = f(c)$. There are also guaranteed to be points inside the circle that aren't in the graph for any radius for less interesting reasons --- for example, there are points directly above and below $(c, f(c))$ for which by definition $f(x) \neq y$.
-
-	For boundedness, we can rather delightfully use the Extreme Value Theorem: $f$ must have a global min and max, say $m$ and $M$, on the closed interval $[a, b]$. That means the whole graph of $f$ fits inside the rectangle
-
-	$$
-		\left\{ (x, y) \in #R#^2 \mid a \leq x \leq b \text{ and } m \leq y \leq M \right\},
-	$$
-
-	which is bounded by the same logic we used in question 1.
+	Determine whether $A$, $B$, $C$, and $D$ are closed and whether they are bounded. Are any of them compact?
 
 ###
 
@@ -102,7 +80,7 @@ With compact sets defined and explored, let's return to the matter at hand and a
 
 We apply the EVT the same way that we did in single-variable calculus: first, we optimize a function by finding all of its critical points. Then, if it's defined on a compact set, we also evaluate it at every point in the boundary and compare those values to one another and to the critical points' values. The smallest is the global min, and the largest is the global max.
 
-### exc "optimizing a function"
+### ex "optimizing a function"
 
 	Let $f(x, y) = x^3 - y^2 + 2xy$ be defined on the rectangle
 
@@ -159,6 +137,16 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
 
 	### desmos evt
+
+###
+
+### exc "optimizing a function"
+
+	Find the global maximum and minimum of the function $f(x, y) = \frac{xy}{2} - x - y$ on the region
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 2 \text{ and } 0 \leq y \leq 2x \right\}.
+	$$
 
 ###
 
@@ -234,9 +222,9 @@ Let's look at a more complicated scenario, in which the boundary is a circle ins
 
 ###
 
-To close, let's take a look at a more applied example.
+Let's turn to a a more applied example next.
 
-### exc "applied boundary optimization"
+### ex "applied boundary optimization"
 
 	You've been tasked with building a rectangular beaver transport box with a volume of $27\,\text{ft}^3$. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$10$ per square foot, while the other two sides and base will be made out of wood, costing $\$5$ per square foot. Since the box needs to fit the beaver inside it and fit within the truck that will be carrying it, must be between 2 and 8 feet in both horizontal dimensions. Find the dimensions of the box that minimize the cost to build it. Is the result a good idea to build?
 
@@ -333,6 +321,48 @@ To close, let's take a look at a more applied example.
 	$$
 
 	The critical point in the middle ended up being the most cost-effective option, but it might not be a great idea! The height of the box is only $\frac{27}{3 \cdot 6} = 1.5$ feet, and even though beavers can't jump, they can probably find a way over that.
+
+###
+
+Sometimes, a region we're integrating will have boundary that's more complicated --- rather than being composed of lines or curves that we can relatively easily use to substitute into the function we want to optimize, it might be a more complicated curve like a circle or ellipse. Let's take a look at how to handle a problem like this.
+
+### exc "parameterizing a boundary"
+
+	Find the absolute minimum and maximum of the function $f(x, y) = 2x - 2y$ on the solid circle $x^2 + y^2 \leq 4$.
+
+	### solution
+
+	Starting with the critical points, we have
+
+	$$
+		\G f = \left< 2, -2 \right> = \vec{0},
+	$$
+
+	so there are none (which makes some sense; this is a plane, and those don't have any critical points unless they're flat). The boundary of our set is given by the equation $x^2 + 4y^2 = 1$, and while we could solve for one variable and plug it into the equation to get a function of one variable, that would result two separate functions to consider because of the $\pm$ that would appear on the square root. Instead, we can turn this into a function of one variable in a different way: parameterizing the boundary. It's given by
+
+	$$
+		\vec{r}(t) = \left< 2\cos(t), 2\sin(t) \right>, \quad \leq t \leq 2\pi,
+	$$
+
+	and so we can optimize the function by plugging these values in for $x$ and $y$ and solving for critical points in $t$:
+
+	$$
+		f\left( \vec{r}(t) \right) &= 2(2\cos(t)) - 2(2\sin(t))
+
+		&= 4\cos(t) - 4\sin(t)
+
+		d/dt \left[ 4\cos(t) - 4\sin(t) \right] &= -4\sin(t) - 4\cos(t) = 0
+
+		\sin(t) &= -\cos(t)
+
+		\tan(t) &= -1
+
+		t &= \frac{3\pi}{4} \text{ or } t = \frac{7\pi}{4},
+	$$
+
+	meaning the critical points of our function on the boundary lie at $\vec{r}\left( \frac{3\pi}{4} \right) = \left( -\sqrt{2}, \sqrt{2} \right)$ and $\vec{r}\left( \frac{7\pi}{4} \right) = \left( \sqrt{2}, -\sqrt{2} \right)$. Checking their values, the first is a minimum and a second one a maximum.
+
+	### desmos tiltedCircle
 
 ###
 

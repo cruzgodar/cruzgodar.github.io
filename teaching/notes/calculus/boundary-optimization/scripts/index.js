@@ -122,6 +122,20 @@ export default function()
 			]
 		},
 
+		triangularRegion:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, },
+
+			bounds: { xmin: -0.5, xmax: 2.5, ymin: -0.5, ymax: 4.5, zmin: -3, zmax: 0.5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = \frac{xy}{2} - x - y \{0 \leq x \leq 2\}\{ 0 \leq y \leq 2x \}`, color: desmosPurple },
+			]
+		},
+
 		evt2:
 		{
 			use3d: true,
@@ -141,5 +155,22 @@ export default function()
 				{ latex: raw`(0, [-2, 2], g(0, [-2, 2]))`, color: desmosOrange },
 			]
 		},
+
+		tiltedCircle:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, },
+
+			bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = 2x - 2y\{ x^2 + y^2 \leq 4 \}`, color: desmosPurple },
+				{ latex: raw`z = 2x - 2y\{ x^2 + y^2 = 4 \}`, color: desmosBlue },
+
+				{ latex: raw`(\sqrt{2}, -\sqrt{2}, 4\sqrt{2}), (-\sqrt{2}, \sqrt{2}, -4\sqrt{2})`, color: desmosRed },
+			]
+		}
 	});
 }
