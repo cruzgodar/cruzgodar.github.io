@@ -29,7 +29,7 @@ export default function()
 	}
 
 	createDesmosGraphs({
-		pathIntegral:
+		curveIntegral:
 		{
 			use3d: true,
 
@@ -80,7 +80,7 @@ export default function()
 			]
 		},
 
-		pathIntegral2:
+		curveIntegral2:
 		{
 			use3d: true,
 
@@ -131,7 +131,7 @@ export default function()
 			]
 		},
 
-		pathIntegralRectangles:
+		curveIntegralRectangles:
 		{
 			use3d: true,
 
@@ -320,7 +320,7 @@ export default function()
 			]
 		},
 
-		pathIntegralThroughVectorField:
+		curveIntegralThroughVectorField:
 		{
 			alwaysDark: true,
 			highContrast: true,
@@ -454,9 +454,9 @@ export default function()
 
 
 
-	desmosGraphsLoaded.pathIntegralThroughVectorField.then(() =>
+	desmosGraphsLoaded.curveIntegralThroughVectorField.then(() =>
 	{
-		createEmphemeralApplet($("#pathIntegralThroughVectorField-canvas"), (canvas) =>
+		createEmphemeralApplet($("#curveIntegralThroughVectorField-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,
@@ -491,7 +491,7 @@ export default function()
 
 			function onDrawFrame()
 			{
-				const bounds = getDesmosBounds(desmosGraphs.pathIntegralThroughVectorField);
+				const bounds = getDesmosBounds(desmosGraphs.curveIntegralThroughVectorField);
 
 				applet.wilson.resizeWorld({
 					width: bounds.xmax - bounds.xmin,

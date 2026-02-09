@@ -771,7 +771,7 @@ export const sitemap =
 			"/teaching/notes/calculus/lagrange-multipliers",
 			"/teaching/notes/calculus/double-integrals",
 			"/teaching/notes/calculus/vector-fields",
-			"/teaching/notes/calculus/path-integrals"
+			"/teaching/notes/calculus/curve-integrals"
 		]
 	},
 		
@@ -1363,9 +1363,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/path-integrals":
+	"/teaching/notes/calculus/curve-integrals":
 	{
-		"title": "Section 6.3: Path Integrals",
+		"title": "Section 6.3: Curve Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		

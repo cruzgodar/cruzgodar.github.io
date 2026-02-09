@@ -116,7 +116,7 @@ home Cruz Godar
 			
 			double-integrals Section 6.1: Double Integrals
 			vector-fields Section 6.2: Vector Fields
-			path-integrals Section 6.3: Path Integrals
+			curve-integrals Section 6.3: Curve Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

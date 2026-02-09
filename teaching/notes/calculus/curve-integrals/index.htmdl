@@ -12,19 +12,19 @@ $$
 
 was able to find the area under the graph of a cross-section of $z = f(x, y)$; specifically, the cross-section with $y$ held fixed and $x$ ranging from $c$ to $d$. But what if we wanted to find a different area, like that of a cross-section in a different direction?
 
-### desmos pathIntegral
+### desmos curveIntegral
 
 Having seen so many of the storylines of calculus at this point, we can reason through how this one might work: just like with directional derivatives, the fact that both $x$ and $y$ are changing at once as we move along this curve means we can't get away with directly using single-variable calculus techniques like we could with partial derivatives or multiple integrals. Instead, we'll need to parameterize the curve in the $xy$-plane along which this travels in terms of a single parameter $t$ (like we did with directional derivatives), and then likely use a Riemann sum to slice up the curve into small changes in $t$ (like we did with arc length).
 
 But hold on a minute! That blueprint that we just laid out would work for a lot more than just lines. We could parameterize *any* path in the $xy$-plane and then integrate over it! It's this idea that will really take off; let's look at one path in particular and then go find a formula.
 
-### desmos pathIntegral2
+### desmos curveIntegral2
 
 I highly recommend looking at this graph from multiple angles, then hiding the gray surface in the expressions list! The total area we're measuring is complicated, but expressing it in terms of a Riemann sum is absolutely within reach.
 
 Let $z = f(x, y)$ be a function, and let $\vec{r}(t)$ be a parameterized path in the $xy$-plane from $t = a$ to $t = b$. We cut the domain $[a, b]$ for $\vec{r}$ into $n$ subintervals that each cover $\Delta t$, and then we want to approximate the sum by rectangles.
 
-### desmos pathIntegralRectangles
+### desmos curveIntegralRectangles
 
 This is quite the Riemann sum to take, but we've already seen all the tools we'll need to understand it. For a particular rectangle centered at $t = t_0$, its height is given by the value of $f(x, y)$ at that point, and $x$ and $y$ are given by $\vec{r}(t_0)$; the height is therefore $f(\vec{r}(t_0))$. The base of the rectangle is slightly harder: it seems like it ought to be $\Delta t$, but that can't quite be the whole story, since $\vec{r}(t)$ could cover any amount of distance as $t$ changes by $\Delta t$. To handle this carefully, we'll need to approximate $\vec{r}(t)$ by line segments, and we've done this before --- when we derived the integral for arc length! A line segment approximating $\vec{r}(t)$ near $t = t_0$ is given by $\vec{l}(t) = \vec{r}\left( t_0 \right) + \vec{r}'(t_0)t$; we're interested in evaluating this for an interval of $t$-values whose width is $\Delta t$, so the total length of the line is $\left| \left| \vec{r}'(t_0) \right| \right| \Delta t$. That becomes our rectangle's base, and so its area is
 
@@ -34,9 +34,9 @@ $$
 
 In the limit, a sum of these areas becomes an integral, which we'll want to give its own name.
 
-### def "path integral"
+### def "curve integral"
 
-	Let $z = f(x, y)$ be a function, and let $C$ be a smooth curve in the $xy$-plane --- that is, there is a parameterization by $\vec{r}(t)$ from $t = a$ to $t = b$ that is differentiable, where $\vec{r}'(t)$ is continuous and never zero. The **path integral** of $f$ along $C$ is
+	Let $z = f(x, y)$ be a function, and let $C$ be a smooth curve in the $xy$-plane --- that is, there is a parameterization by $\vec{r}(t)$ from $t = a$ to $t = b$ that is differentiable, where $\vec{r}'(t)$ is continuous and never zero. The **curve integral** of $f$ along $C$ is
 
 	$$
 		\int_C f(x, y)\,\d s = \int_a^b f(\vec{r}(t))\left| \left| \vec{r}'(t) \right| \right|\,\d t.
@@ -44,23 +44,23 @@ In the limit, a sum of these areas becomes an integral, which we'll want to give
 
 ###
 
-The $s$ in the abstract integral on the left is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a path integral, and so we tend to engage with the version on the right as if it is the definition of a path integral, rather than the Riemann sum version.
+The $s$ in the abstract integral on the left is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
 
-Path integrals are often called **line integrals** in much of the literature on calculus. That's a pretty unfortunate name, since we're often integrating along paths that are very much nonlinear! We'll stick with the slightly less common but more descriptive name *path integral* in these notes.
+	Curve integrals are often called **line integrals** in much of the literature on calculus. That's a pretty unfortunate name, since we're often integrating along paths that are very much nonlinear! We'll stick with the slightly less common but more descriptive name *curve integral* in these notes.
 
-### exc "path integrals"
+### exc "curve integrals"
 
 	1. Let $L$ be the line segment from $(0, 0)$ to $(3, 4)$. Find $$\int_L xy\,\d s$$.
 
-	2. Let's parameterize $L$ in a strange way: $\vec{r}(t) = \left< 3t^2, 4t^2 \right>$ for $0 \leq t \leq 1$. Thinking about the geometry of a path integral, do you expect to get the same result for $$\int_L xy\,\d s$$ with this parameterization? Once you have a prediction, compute the integral and see if you were correct.
+	2. Let's parameterize $L$ in a strange way: $\vec{r}(t) = \left< 3t^2, 4t^2 \right>$ for $0 \leq t \leq 1$. Thinking about the geometry of a curve integral, do you expect to get the same result for $$\int_L xy\,\d s$$ with this parameterization? Once you have a prediction, compute the integral and see if you were correct.
 
 	3. Let $C$ be the unit circle. Without computing it, what should the integral $$\int_C 1\,\d s$$ be?
 
 ###
 
-We can also take path integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. Before that, though, let's formalize a nice property of path integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
+We can also take curve integrals of functions of three or more variables, just without as nice of a visual to accompany them, and we'll see the details of that in the next example. Before that, though, let's formalize a nice property of curve integrals that we can deduce from their geometry: we can chop up a curve into smaller portions in order to integrate along it more easily.
 
-### prop "the additivity of path integrals"
+### prop "the additivity of curve integrals"
 
 	Let $C_1$ and $C_2$ be two smooth curves in $#R#^2$, such that $C_1$ ends where $C_2$ begins. If $C$ is the curve that combines them, following $C_1$ and then $C_2$, then for any continuous function $f(x, y)$,
 
@@ -70,13 +70,13 @@ We can also take path integrals of functions of three or more variables, just wi
 
 ###
 
-Strictly speaking, this result is a *definition* of the integral $\int_C f(x, y)\,\d s$, since $C$ may not be smooth at the joining point of $C_1$ and $C_2$. In practice, though, this result means we can integrate functions along curves comprised of smooth parts (called **piecewise smooth**) by splitting them up into path integrals along each part. To avoid constantly referring to the term *piecewise-smooth*, we'll define a **path** to be a piecewise-smooth curve.
+Strictly speaking, this result is a *definition* of the integral $\int_C f(x, y)\,\d s$, since $C$ may not be smooth at the joining point of $C_1$ and $C_2$. In practice, though, this result means we can integrate functions along curves comprised of smooth parts (called **piecewise smooth**) by splitting them up into curve integrals along each part. To avoid constantly referring to the term *piecewise-smooth*, we'll define a **path** to be a piecewise-smooth curve.
 
 ### desmos piecewiseSmoothCurve
 
 Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quarters circle of radius $2$ that extends clockwise from $(0, -2)$.
 
-### ex "a path integral in $#R#^3$"
+### ex "a curve integral in $#R#^3$"
 
 	Let $C$ be the path from $(1, 1, 0)$ to $(0, 1, 1)$ in $#R#^3$ given by a quarter circle parallel to the $xz$-plane, and let $D$ be the path from $(1, 1, 0)$ to $(0, 1, 1)$ given by two line segments that meet at $(0, 1, 0)$, as shown.
 
@@ -100,7 +100,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 		&= 1,
 	$$
 
-	so our path integral becomes
+	so our curve integral becomes
 
 	$$
 		\int_C \left( x + y + z \right)\,\d s &= \int_0^{\pi / 2} \left( \cos(t) + 1 + \sin(t) \right) \cdot 1\,\d t
@@ -140,19 +140,19 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 		&= 3.
 	$$
 
-	But wait --- that's a different answer than we got by integrating along the circle! We're running into a nuance of path integrals that we haven't had to deal with in integration before; let's take a closer look.
+	But wait --- that's a different answer than we got by integrating along the circle! We're running into a nuance of curve integrals that we haven't had to deal with in integration before; let's take a closer look.
 
 ###
 
-This example showed that path integrals are, generally speaking, *path-dependent*: integrating the same function along two paths, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
+This example showed that curve integrals are, generally speaking, *path-dependent*: integrating the same function along two paths, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
 
-We're going to have a lot more to say about path-dependence later in this section, but for right now, I want to provide a little bit of intuition that path integrals can't be path-independent in general. If we integrate the constant function $1$, then the path integral $\int_C 1\,\d s$ is equal to the arc length of $C$ for any path $C$; different paths connecting two given points will typically have different lengths, like in the previous example, and so those path integrals will necessarily be different.
+We're going to have a lot more to say about path-dependence later in this section, but for right now, I want to provide a little bit of intuition that curve integrals can't be path-independent in general. If we integrate the constant function $1$, then the curve integral $\int_C 1\,\d s$ is equal to the arc length of $C$ for any path $C$; different paths connecting two given points will typically have different lengths, like in the previous example, and so those curve integrals will necessarily be different.
 
 
 
-## Path Integrals Through Vector Fields
+## Curve Integrals Through Vector Fields
 
-Single-variable integrals apply to much, much more than just finding areas under curves: whenever we want to add up a quantity that changes over time, distance, or with respect to any other variable, they're the first tool we reach for. In the same way, if we're adding up a changing quantity over the course of a path in 2D or 3D space, path integrals will be our starting point. For example, the integral of a density function along a thin wire gives the total mass of the wire.
+Single-variable integrals apply to much, much more than just finding areas under curves: whenever we want to add up a quantity that changes over time, distance, or with respect to any other variable, they're the first tool we reach for. In the same way, if we're adding up a changing quantity over the course of a path in 2D or 3D space, curve integrals will be our starting point. For example, the integral of a density function along a thin wire gives the total mass of the wire.
 
 In applications like this, there's a quantity intrinsic to the object (like density) that's changing along its length, but we can also explore a different type of changing quantity: one external to the path. That might seem like a just a slight twist on what we've already seen, but when we start pulling on this thread, it'll prove to be a larger part of the whole picture than it first appeared.
 
@@ -202,7 +202,7 @@ $$
 	&= \left( \vec{F}(\vec{r}(t)) \bullet \vec{T}(t) \right) \vec{T}(t).
 $$
 
-Now we're interested not in this entire vector, but specifically its (signed) magnitude, also called the **scalar projection**: the length of the component of $\vec{F}(\vec{r}(t))$ that points in the direction of $\vec{T}(t)$, with a minus sign if it points in the opposite direction. Since $\vec{T}(t)$ is a unit vector, that's conveniently just $\vec{F}(\vec{r}(t)) \bullet \vec{T}(t)$, and so that's the quantity we'll integrate along the path. To write it as a path integral pre-parameterization, we can suppress the inputs to $\vec{F}$ and $\vec{T}$ and just write
+Now we're interested not in this entire vector, but specifically its (signed) magnitude, also called the **scalar projection**: the length of the component of $\vec{F}(\vec{r}(t))$ that points in the direction of $\vec{T}(t)$, with a minus sign if it points in the opposite direction. Since $\vec{T}(t)$ is a unit vector, that's conveniently just $\vec{F}(\vec{r}(t)) \bullet \vec{T}(t)$, and so that's the quantity we'll integrate along the path. To write it as a curve integral pre-parameterization, we can suppress the inputs to $\vec{F}$ and $\vec{T}$ and just write
 
 $$
 	\int_C \vec{F} \bullet \vec{T}\,\d s.
@@ -218,7 +218,7 @@ $$
 	&= \int_a^b \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
 $$
 
-In fact, this suggests an even more compact and descriptive way to write a path integral through a vector field: just like we write $\d u = u'(x)\,\d x$ when doing $u$-substitution, we can write $\d\vec{r} = \vec{r}'(t)\,\d t$, making the path integral representable (again, pre-parameterization) as
+In fact, this suggests an even more compact and descriptive way to write a curve integral through a vector field: just like we write $\d u = u'(x)\,\d x$ when doing $u$-substitution, we can write $\d\vec{r} = \vec{r}'(t)\,\d t$, making the curve integral representable (again, pre-parameterization) as
 
 $$
 	\int_C \vec{F} \bullet \d\vec{r}.
@@ -226,9 +226,9 @@ $$
 
 That was a *lot* of theory and symbol-pushing, so let's pause and summarize what we've discovered so far before applying it to our running example with the circular path through the river. As is often the case, we've motivated everything in $#R#^2$, but it will work just as well in higher dimensions.
 
-### def "path integral through a vector fields"
+### def "curve integral through a vector fields"
 
-	Let $\vec{F}$ be a vector field and let $C$ be a path. The **path integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the path integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
+	Let $\vec{F}$ be a vector field and let $C$ be a path. The **curve integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
 
 	$$
 		1.\ \int_C \vec{F} \bullet \vec{T}\,\d s
@@ -240,13 +240,13 @@ That was a *lot* of theory and symbol-pushing, so let's pause and summarize what
 		2.\ \int_C \vec{F} \bullet \d \vec{r}
 	$$
 
-	expresses the same concept, but indicates that with the choice of a parameterization $\vec{r}$ of $C$, the expression $\vec{T}\,\d s$ can be simplified. It's more theoretically opaque, since $\d\vec{r}$ isn't as intuitive of an expression, but it reminds us how to actually compute these path integrals; namely,
+	expresses the same concept, but indicates that with the choice of a parameterization $\vec{r}$ of $C$, the expression $\vec{T}\,\d s$ can be simplified. It's more theoretically opaque, since $\d\vec{r}$ isn't as intuitive of an expression, but it reminds us how to actually compute these curve integrals; namely,
 
 	$$
 		3.\ \int_a^b \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
 	$$
 
-	presents an integral that we can actually compute. It's noisier than the previous form, but it's where we'll start when we're attempting to compute one of these path integrals.
+	presents an integral that we can actually compute. It's noisier than the previous form, but it's where we'll start when we're attempting to compute one of these curve integrals.
 
 ###
 
@@ -282,9 +282,9 @@ $$
 	&= -2\sqrt{3}
 $$
 
-That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, path integrals through vector fields are just regular path integrals of a particular dot product, and we just discussed how path integrals are path-dependent. The only thing that's specific to a path integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
+That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, curve integrals through vector fields are just regular curve integrals of a particular dot product, and we just discussed how curve integrals are path-dependent. The only thing that's specific to a curve integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
 
-### exc "path integrals through a vector field"
+### exc "curve integrals through a vector field"
 
 	Let $$\vec{F} = \left< x^2, x - 2y \right>$$.
 
@@ -294,7 +294,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 	3. Evaluate the integral in question 2 and find out.
 
-	### melded-desmos pathIntegralThroughVectorField
+	### melded-desmos curveIntegralThroughVectorField
 
 	### solution
 
@@ -306,7 +306,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 		\vec{l}'(t) &= \left< 3, 3 \right>,
 	$$
 
-	so the path integral is
+	so the curve integral is
 
 	$$
 		\int_L \vec{F} \bullet \vec{T}\,\d s &= \int_L \vec{F} \bullet \d\vec{l}
@@ -332,7 +332,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 		\vec{p}'(t) &= \left< 1, 2t \right>,
 	$$
 
-	making the path integral
+	making the curve integral
 
 	$$
 		\int_L \vec{F} \bullet \d\vec{p} &= \int_{-1}^2 \vec{F}(\vec{p}(t)) \bullet \vec{p}'(t)\,\d t
@@ -356,17 +356,17 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 
 
-## The Fundamental Theorem of Path Integrals
+## The Fundamental Theorem of Curve Integrals
 
-Let's properly dig into path-independence. Why do some path integrals, but not all, seem to depend only on their endpoints, rather than the path between them? In single-variable calculus, the fundamental theorem of calculus resulted in something similar to path independence by expressing the entire integral $\int_a^b f(x)\,\d x$ in terms of an antiderivative $F$ of $f$ at the endpoints of $[a, b]$; if we could do the same thing for a certain kind of path integral, we'd have not only path independence, but a formula that we could use to skip their computation entirely.
+Let's properly dig into path-independence. Why do some curve integrals, but not all, seem to depend only on their endpoints, rather than the path between them? In single-variable calculus, the fundamental theorem of calculus resulted in something similar to path independence by expressing the entire integral $\int_a^b f(x)\,\d x$ in terms of an antiderivative $F$ of $f$ at the endpoints of $[a, b]$; if we could do the same thing for a certain kind of curve integral, we'd have not only path independence, but a formula that we could use to skip their computation entirely.
 
-The only thing in the fundamental theorem of calculus that we haven't considered for path integrals is the presence of an antiderivative. An equivalent way to phrase the single-variable FTC is
+The only thing in the fundamental theorem of calculus that we haven't considered for curve integrals is the presence of an antiderivative. An equivalent way to phrase the single-variable FTC is
 
 $$
 	\int_a^b f'(x)\,\d x = f(b) - f(a)
 $$
 
-for any differentiable function $f$ with a continuous derivative. This phrasing is normally just to get around needing to define $F$ separately, but it also points us in a particular direction: What if we consider only path integrals of derivatives? The issue is that there isn't really a derivative-like operator for a function; the closest thing we have is the gradient, which outputs a vector field. But we just spent the last subsection talking about how to take path integrals through vector fields! Let's see what we can do.
+for any differentiable function $f$ with a continuous derivative. This phrasing is normally just to get around needing to define $F$ separately, but it also points us in a particular direction: What if we consider only curve integrals of derivatives? The issue is that there isn't really a derivative-like operator for a function; the closest thing we have is the gradient, which outputs a vector field. But we just spent the last subsection talking about how to take curve integrals through vector fields! Let's see what we can do.
 
 Given a differentiable function $f(x, y)$ so that $\G f$ is continuous, let's consider
 
@@ -424,7 +424,7 @@ $$
 
 But $\vec{r}(a)$ and $\vec{r}(b)$ are the endpoints of $C$, and so we have just the result we were hoping for! Let's collect our results together with a proper theorem statement.
 
-### thm "The Fundamental Theorem of Path Integrals"
+### thm "The Fundamental Theorem of Curve Integrals"
 
 	Let $\vec{F}$ be a continuous conservative vector field --- that is, $\vec{F} = \G f$ for some function $f$ --- and let $C$ be a path from the point $p$ to the point $q$. Then
 
@@ -436,7 +436,7 @@ But $\vec{r}(a)$ and $\vec{r}(b)$ are the endpoints of $C$, and so we have just 
 
 This is more commonly called the Fundamental Theorem of Line Integrals or the Gradient Theorem, but we'll stick with our more descriptive nomenclature.
 
-We can immediately get so much from this theorem! First of all, we finally have the result that path integrals of conservative vector fields are path-independent, since they only depend on the values of the potential function (the function $f$ in the theorem statement) at the endpoints of the path. Also, if we integrate a conservative vector field along any closed loop (a path that ends where it begins), we get zero, since $p = q$. Path integrals along closed loops come up quite a bit, especially in physics, and occasionally are indicated with a circle drawn in the integral symbol, as in
+We can immediately get so much from this theorem! First of all, we finally have the result that curve integrals of conservative vector fields are path-independent, since they only depend on the values of the potential function (the function $f$ in the theorem statement) at the endpoints of the path. Also, if we integrate a conservative vector field along any closed loop (a path that ends where it begins), we get zero, since $p = q$. Curve integrals along closed loops come up quite a bit, especially in physics, and occasionally are indicated with a circle drawn in the integral symbol, as in
 
 $$
 	\oint_C f(x, y) \,\d s.
@@ -450,7 +450,7 @@ $$
 
 for any closed curve $C$, so long as $\vec{F}$ is conservative.
 
-### exc "the Fundamental Theorem of Path Integrals"
+### exc "the Fundamental Theorem of Curve Integrals"
 
 	Let $\vec{F}$ be the vector field
 
@@ -530,21 +530,21 @@ for any closed curve $C$, so long as $\vec{F}$ is conservative.
 
 ###
 
-Let's close by stating two additional facts about conservative vector fields. We know that their path integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
+Let's close by stating two additional facts about conservative vector fields. We know that their curve integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
 
 ### thm "path-independence and conservativity"
 
 	Let $\vec{F}$ be any vector field defined on an open and connected region $U$.
 
-	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all path integrals of $\vec{F}$ are path-independent.
+	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all curve integrals of $\vec{F}$ are path-independent.
 
-	2. If $U$ is simply-connected and all path integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
+	2. If $U$ is simply-connected and all curve integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
 
 ###
 
 Remember from the last section that $U$ being simply-connected means there are no holes inside of $U$. While we won't often have a need for this theorem, it is surprisingly nice that the conservativity of a vector field is nearly completely equivalent to it integrating to zero along closed loops.
 
-That was a behemoth of a section! In the next one, we'll take our newfound tool of path integrals and establish a fundamental link between them and the double integrals of the previous section.
+That was a behemoth of a section! In the next one, we'll take our newfound tool of curve integrals and establish a fundamental link between them and the double integrals of the previous section.
 
 
 
