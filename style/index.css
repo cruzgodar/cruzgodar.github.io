@@ -47,6 +47,7 @@
 
 	--page-width: 1150px;
 	--text-width: 800px;
+	--header-height: 40px;
 
 	--dark-outline-color-partial: color-mix(in srgb, rgba(0, 0, 0, 0), var(--normal-contrast) calc(var(--theme) * 100%));
 	--dark-outline-color: color-mix(in srgb, var(--dark-outline-color-partial), var(--high-contrast) calc(var(--contrast) * 100%));
@@ -525,7 +526,8 @@ mjx-container
 {
 	position: fixed;
 	right: 0;
-	top: calc((100vh - 128px) / 2);
+	/* Vertically centered, accounting for the header. */
+	top: calc((100vh - 128px - var(--header-height)) / 2 + var(--header-height));
 	width: 8px;
 	padding-right: 8px;
 	padding-left: 32px;
@@ -547,6 +549,8 @@ mjx-container
 		padding-left: 24px;
 		padding-top: 36px;
 		padding-bottom: 36px;
+
+		top: calc((100vh - 96px - var(--header-height)) / 2 + var(--header-height));
 	}
 }
 
@@ -560,6 +564,8 @@ mjx-container
 		padding-left: 16px;
 		padding-top: 24px;
 		padding-bottom: 24px;
+
+		top: calc((100vh - 64px - var(--header-height)) / 2 + var(--header-height));
 	}
 }
 
@@ -1673,7 +1679,7 @@ option
 	position: relative;
 	background-color: var(--background);
 	
-	height: 40px;
+	height: var(--header-height);
 	width: 100%;
 	
 	transform-origin: 50% 50vh;
@@ -1695,7 +1701,7 @@ option
 	z-index: 110;
 
 	width: 200vw;
-	height: calc(50vh + 40px);
+	height: calc(50vh + var(--header-height));
 
 	background-color: var(--background);
 
@@ -1991,14 +1997,9 @@ option
 
 @media (max-width: 350px)
 {
-	#header
+	:root
 	{
-		height: 36px;
-	}
-
-	#header-background
-	{
-		height: calc(50vh + 36px);
+		--header-height: 36px;
 	}
 
 	#header-settings-button
@@ -2015,14 +2016,9 @@ option
 
 @media (max-width: 300px)
 {
-	#header
+	:root
 	{
-		height: 32px;
-	}
-
-	#header-background
-	{
-		height: calc(50vh + 32px);
+		--header-height: 32px;
 	}
 	
 	#header-logo
@@ -2065,14 +2061,9 @@ option
 
 @media (max-width: 270px)
 {
-	#header
+	:root
 	{
-		height: 28px;
-	}
-
-	#header-background
-	{
-		height: calc(50vh + 28px);
+		--header-height: 28px;
 	}
 
 	#header-logo
