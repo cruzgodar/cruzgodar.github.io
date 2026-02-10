@@ -110,18 +110,61 @@ let desmosGraphResolves = {};
 // This whole system loads in desmos graphs only when they're about to be visible,
 // since trying to load multiple 3D graphs at once on iOS crashes the page. 2D graphs
 // are constructed as they approach the viewport and stay loaded. 3D graphs are pooled:
-// at most 2 can be active at once. When a 3rd is needed, the most-distant active 3D
-// graph's calculator is reparented into the new element and reconfigured.
+// at most max3dPoolSize Calculator3D instances are ever created for the entire site session.
+// They live in a persistent off-screen container on document.body that survives page
+// navigations. When a 3D graph needs to be shown, a calculator's DOM children are
+// reparented from the pool into the page's .desmos-container, then reconfigured.
 
 // Each entry is an object { element, constructor, is3d, isConstructed }
 let desmosGraphsConstructorData = {};
 
-// Track which 3D graph IDs currently have an active calculator instance (at most 2).
+// Maximum number of Calculator3D instances in the persistent pool.
+const max3dPoolSize = 3;
+
+// Track which 3D graph IDs currently have an active calculator instance.
 let active3dGraphIds = [];
 
 // Store the per-graph configuration needed to reconstruct/swap a 3D graph.
 // Keyed by element ID, populated during createDesmosGraphs.
 let desmosGraphConfigs = {};
+
+// The persistent 3D pool: up to max3dPoolSize Calculator3D instances that survive page navigations.
+// Each entry is { calculator, poolElement } where poolElement is the div inside
+// the off-screen container that houses the calculator when idle.
+const persistent3dPool = [];
+let persistent3dPoolContainer = null;
+
+function ensurePoolContainer()
+{
+	if (persistent3dPoolContainer)
+	{
+		return;
+	}
+
+	persistent3dPoolContainer = document.createElement("div");
+	persistent3dPoolContainer.id = "desmos-3d-pool";
+	persistent3dPoolContainer.style.position = "fixed";
+	persistent3dPoolContainer.style.left = "-9999px";
+	persistent3dPoolContainer.style.top = "-9999px";
+	persistent3dPoolContainer.style.width = "500px";
+	persistent3dPoolContainer.style.height = "500px";
+	persistent3dPoolContainer.style.pointerEvents = "none";
+	document.body.appendChild(persistent3dPoolContainer);
+}
+
+function createPoolSlot()
+{
+	const el = document.createElement("div");
+	el.style.width = "100%";
+	el.style.height = "100%";
+	persistent3dPoolContainer.appendChild(el);
+	return el;
+}
+
+function getPoolEntryForCalculator(calculator)
+{
+	return persistent3dPool.find(entry => entry.calculator === calculator);
+}
 
 
 
@@ -133,6 +176,39 @@ export function clearDesmosGraphs()
 	desmosGraphResolves = {};
 	active3dGraphIds = [];
 	desmosGraphConfigs = {};
+	desmosGraphsConstructorData = {};
+}
+
+// Moves any active 3D calculators back to their off-screen pool slots.
+// Called during page unload and at the start of createDesmosGraphs().
+export function returnPersistent3dGraphsToPool()
+{
+	for (const activeId of active3dGraphIds)
+	{
+		const calculator = desmosGraphs[activeId];
+		const poolEntry = getPoolEntryForCalculator(calculator);
+
+		if (poolEntry)
+		{
+			// Move the pool slot element back to the off-screen container.
+			persistent3dPoolContainer.appendChild(poolEntry.poolElement);
+
+			// Clear expressions to free memory while idle.
+			const existingExpressions = calculator.getExpressions();
+
+			if (existingExpressions.length > 0)
+			{
+				calculator.removeExpressions(existingExpressions);
+			}
+		}
+
+		delete desmosGraphs[activeId];
+		delete desmosGraphsDefaultState[activeId];
+		delete desmosGraphsLoaded[activeId];
+		delete desmosGraphResolves[activeId];
+	}
+
+	active3dGraphIds = [];
 }
 
 
@@ -158,6 +234,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		return;
 	}
 
+	// Return any active 3D calculators to the persistent pool (don't destroy them).
+	returnPersistent3dGraphsToPool();
+
+	// Destroy remaining (2D only) graphs.
 	for (const key in desmosGraphs)
 	{
 		if (desmosGraphs[key]?.destroy)
@@ -255,7 +335,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			showResetButtonOnGraphpaper: true,
 			border: false,
 			expressionsCollapsed: true,
-			invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
 
 			xAxisMinorSubdivisions: 1,
 			yAxisMinorSubdivisions: 1,
@@ -346,22 +425,125 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		};
 
 		// We'll call this once the graph is onscreen.
-		const constructor = () =>
-		{
-			desmosGraphs[element.id] = desmosClass(element, options);
-			console.log("constructed");
-
-
-
-			if (options.showPlane3D !== undefined)
+		// 2D graphs are constructed directly. 3D graphs use the persistent pool.
+		const constructor = data[element.id].use3d
+			? () =>
 			{
-				desmosGraphs[element.id].controller.graphSettings.showPlane3D = options.showPlane3D;
+				let calculator;
+				let poolEntry;
+
+				if (persistent3dPool.length < max3dPoolSize)
+				{
+					// First-time construction: create a real Calculator3D
+					// in an off-screen pool slot.
+					ensurePoolContainer();
+					const poolElement = createPoolSlot();
+					calculator = desmosClass(poolElement, options);
+
+					if (window.DEBUG)
+					{
+						console.log("Constructing Desmos 3D instance");
+					}
+
+					poolEntry = { calculator, poolElement };
+					persistent3dPool.push(poolEntry);
+				}
+				else
+				{
+					// Reuse an idle calculator from the pool (one whose pool slot
+					// is still in the off-screen container, not in a page element).
+					poolEntry = persistent3dPool.find(entry =>
+						entry.poolElement.parentElement === persistent3dPoolContainer
+					);
+
+					if (!poolEntry)
+					{
+						// All calculators are in-page; this case is handled
+						// by onScroll's swap logic instead.
+						return;
+					}
+
+					calculator = poolEntry.calculator;
+				}
+
+				// Move the pool slot element itself into the page container.
+				// Desmos internally tracks this element for size detection,
+				// so moving it (rather than its children) lets the auto-resize
+				// observer pick up the new container's dimensions.
+				element.appendChild(poolEntry.poolElement);
+
+				// Clear any leftover expressions from a previous use.
+				const existingExpressions = calculator.getExpressions();
+
+				if (existingExpressions.length > 0)
+				{
+					calculator.removeExpressions(existingExpressions);
+				}
+
+				// Configure the calculator for this graph's data.
+				calculator.setMathBounds(bounds);
+				calculator.setExpressions(data[element.id].expressions);
+
+				if (options.showPlane3D !== undefined)
+				{
+					calculator.controller.graphSettings.showPlane3D = options.showPlane3D;
+				}
+				else
+				{
+					calculator.controller.graphSettings.showPlane3D = true;
+				}
+
+				calculator.controller.graphSettings.showBox3D = false;
+
+				calculator.updateSettings({
+					expressions: anyNonSecretExpressions,
+					translucentSurfaces: options.translucentSurfaces ?? false,
+				});
+
+				calculator.controller.dispatch({
+					type: "set-inverted-colors",
+					value: siteSettings.darkTheme || data[element.id].alwaysDark,
+				});
+
+				desmosGraphs[element.id] = calculator;
+
+				desmosGraphsDefaultState[element.id] = calculator.getState();
+				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
+
+				// Store the clean default state in the config so swap3dGraph()
+				// can fully reset the calculator (including camera and spin).
+				desmosGraphConfigs[element.id].defaultState = desmosGraphsDefaultState[element.id];
+
+				active3dGraphIds.push(element.id);
+
+				if (window.DEBUG && !element.dataset.hasScreenshotHandler)
+				{
+					element.addEventListener("click", (e) =>
+					{
+						if (e.metaKey)
+						{
+							getDesmosScreenshot(element.id, e.altKey);
+						}
+					});
+					element.dataset.hasScreenshotHandler = "true";
+				}
+
+				desmosGraphResolves[element.id]();
 			}
-
-
-
-			if (!data[element.id].use3d)
+			: () =>
 			{
+				desmosGraphs[element.id] = desmosClass(element, options);
+
+
+
+				if (options.showPlane3D !== undefined)
+				{
+					desmosGraphs[element.id].controller.graphSettings.showPlane3D =
+						options.showPlane3D;
+				}
+
+
+
 				// Enforce a square aspect ratio.
 				const rect = element.getBoundingClientRect();
 				const aspectRatio = rect.width / rect.height;
@@ -369,41 +551,37 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				const centerX = (bounds.xmin + bounds.xmax) / 2;
 				bounds.xmin = centerX - width / 2 * aspectRatio;
 				bounds.xmax = centerX + width / 2 * aspectRatio;
-			}
 
 
 
-			desmosGraphs[element.id].setMathBounds(bounds);
+				desmosGraphs[element.id].setMathBounds(bounds);
 
-			desmosGraphs[element.id].setExpressions(data[element.id].expressions);
+				desmosGraphs[element.id].setExpressions(data[element.id].expressions);
 
-			// Set some more things that currently aren't exposed in the API :(
-			desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
+				// Set some more things that currently aren't exposed in the API :(
+				desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
 
-			desmosGraphs[element.id].updateSettings({});
-
-			desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
-
-			desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
-
-			if (data[element.id].use3d)
-			{
-				active3dGraphIds.push(element.id);
-			}
-
-			if (window.DEBUG && !recreating)
-			{
-				element.addEventListener("click", (e) =>
-				{
-					if (e.metaKey)
-					{
-						getDesmosScreenshot(element.id, e.altKey);
-					}
+				desmosGraphs[element.id].updateSettings({
+					invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
 				});
-			}
 
-			desmosGraphResolves[element.id]();
-		};
+				desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
+
+				desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
+
+				if (window.DEBUG && !recreating)
+				{
+					element.addEventListener("click", (e) =>
+					{
+						if (e.metaKey)
+						{
+							getDesmosScreenshot(element.id, e.altKey);
+						}
+					});
+				}
+
+				desmosGraphResolves[element.id]();
+			};
 
 		desmosGraphsConstructorData[element.id] = {
 			element,
@@ -447,26 +625,34 @@ function getDistanceFromViewport(element)
 function swap3dGraph(oldId, newId)
 {
 	const calculator = desmosGraphs[oldId];
-	const oldElement = desmosGraphConfigs[oldId].element;
 	const newElement = desmosGraphConfigs[newId].element;
 	const newConfig = desmosGraphConfigs[newId];
 
-	// Move all of the calculator's DOM content to the new container.
-	while (oldElement.firstChild)
+	// Move the pool slot element from the old container to the new one.
+	const poolEntry = getPoolEntryForCalculator(calculator);
+	newElement.appendChild(poolEntry.poolElement);
+
+	if (newConfig.defaultState)
 	{
-		newElement.appendChild(oldElement.firstChild);
+		// This graph was previously constructed, so we have a clean default
+		// state that includes expressions, bounds, and a zeroed-out camera.
+		// setState() fully resets everything in one call.
+		calculator.setState(newConfig.defaultState);
 	}
-
-	// Clear existing expressions and load the new graph's data.
-	const existingExpressions = calculator.getExpressions();
-
-	if (existingExpressions.length > 0)
+	else
 	{
-		calculator.removeExpressions(existingExpressions);
-	}
+		// This graph was never constructed (it's beyond the first two).
+		// Set it up from the raw config data.
+		const existingExpressions = calculator.getExpressions();
 
-	calculator.setMathBounds(newConfig.bounds);
-	calculator.setExpressions(newConfig.expressions);
+		if (existingExpressions.length > 0)
+		{
+			calculator.removeExpressions(existingExpressions);
+		}
+
+		calculator.setMathBounds(newConfig.bounds);
+		calculator.setExpressions(newConfig.expressions);
+	}
 
 	// Apply 3D-specific controller settings.
 	if (newConfig.options.showPlane3D !== undefined)
@@ -482,12 +668,34 @@ function swap3dGraph(oldId, newId)
 
 	calculator.updateSettings({
 		expressions: newConfig.anyNonSecretExpressions,
-		invertedColors: siteSettings.darkTheme || newConfig.alwaysDark,
+		translucentSurfaces: newConfig.options.translucentSurfaces ?? false,
 	});
 
-	// Capture the new default state.
-	desmosGraphsDefaultState[newId] = calculator.getState();
-	calculator.setDefaultState(desmosGraphsDefaultState[newId]);
+	calculator.controller.dispatch({
+		type: "set-inverted-colors",
+		value: siteSettings.darkTheme || newConfig.alwaysDark,
+	});
+
+	// Capture and store the clean default state (for graphs that were
+	// never constructed, this is the first time we have one).
+	if (!newConfig.defaultState)
+	{
+		const state = calculator.getState();
+
+		// Zero out any lingering rotation/spin from the previous graph
+		// so the default state has a clean camera.
+		state.graph.worldRotation3D = [];
+		state.graph.axis3D = [0, 0, 1];
+		state.graph.speed3D = 0;
+
+		newConfig.defaultState = state;
+
+		// Apply the cleaned state so the calculator actually stops spinning.
+		calculator.setState(newConfig.defaultState);
+	}
+
+	desmosGraphsDefaultState[newId] = newConfig.defaultState;
+	calculator.setDefaultState(newConfig.defaultState);
 
 	// Update bookkeeping: move the calculator reference.
 	desmosGraphs[newId] = calculator;
@@ -502,6 +710,19 @@ function swap3dGraph(oldId, newId)
 	const index = active3dGraphIds.indexOf(oldId);
 	active3dGraphIds[index] = newId;
 
+	// Register screenshot click handler if not already present.
+	if (window.DEBUG && !newElement.dataset.hasScreenshotHandler)
+	{
+		newElement.addEventListener("click", (e) =>
+		{
+			if (e.metaKey)
+			{
+				getDesmosScreenshot(newId, e.altKey);
+			}
+		});
+		newElement.dataset.hasScreenshotHandler = "true";
+	}
+
 	// Resolve the new graph's loaded promise.
 	desmosGraphResolves[newId]?.();
 
@@ -515,7 +736,7 @@ function swap3dGraph(oldId, newId)
 
 function onScroll()
 {
-	for (const data of Object.values(desmosGraphsConstructorData).reverse())
+	for (const data of Object.values(desmosGraphsConstructorData))
 	{
 		const rect = data.element.getBoundingClientRect();
 		const top = rect.top;
@@ -539,7 +760,7 @@ function onScroll()
 		}
 
 		// 3D graph needs loading.
-		if (active3dGraphIds.length < 2)
+		if (active3dGraphIds.length < max3dPoolSize)
 		{
 			// Pool has room: construct normally.
 			data.constructor();
@@ -549,6 +770,7 @@ function onScroll()
 
 		// Pool is full: find the most distant active 3D graph to swap out.
 		const newId = data.element.id;
+		const newDistance = getDistanceFromViewport(data.element);
 
 		let maxDistance = -1;
 		let victimId = null;
@@ -564,10 +786,19 @@ function onScroll()
 			}
 		}
 
-		// Only swap if the victim is off-screen (distance > 0).
-		if (victimId !== null && maxDistance > 0)
+		// Only swap if the victim is off-screen (distance > 0)
+		// and the new graph is actually closer to the viewport.
+		if (victimId !== null && maxDistance > 0 && newDistance < maxDistance)
 		{
 			swap3dGraph(victimId, newId);
+
+			if (window.DEBUG)
+			{
+				console.log(`Swapped Desmos 3D instace ${victimId} in to fill ${newId}`);
+			}
+
+			// Only one swap per scroll event to prevent oscillation.
+			break;
 		}
 	}
 }
@@ -625,7 +856,7 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		? desmosGraphs[id].screenshot({
 			width: 800,
 			height: 800,
-			targetPixelRatio: 4,
+			targetPixelRatio: 2,
 		})
 		: await new Promise(resolve =>
 		{

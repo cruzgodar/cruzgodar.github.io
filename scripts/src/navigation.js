@@ -14,7 +14,7 @@ import {
 	preloadBanner
 } from "./banners.js";
 import { cardIsOpen, closeCard } from "./cards.js";
-import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
+import { clearDesmosGraphs, desmosGraphs, returnPersistent3dGraphsToPool } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
 	clearTemporaryIntervals,
@@ -417,9 +417,16 @@ function unloadPage()
 
 
 
+	// Return 3D calculators to the persistent pool (don't destroy them).
+	returnPersistent3dGraphsToPool();
+
+	// Destroy remaining (2D only) graphs.
 	for (const key in desmosGraphs)
 	{
-		desmosGraphs[key].destroy();
+		if (desmosGraphs[key]?.destroy)
+		{
+			desmosGraphs[key].destroy();
+		}
 	}
 
 	clearDesmosGraphs();
