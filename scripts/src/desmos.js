@@ -439,7 +439,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					ensurePoolContainer();
 					const poolElement = createPoolSlot();
 					calculator = desmosClass(poolElement, options);
-					console.log("constructing 3d graph");
+
+					if (window.DEBUG)
+					{
+						console.log("Constructing Desmos 3D instance");
+					}
+
 					poolEntry = { calculator, poolElement };
 					persistent3dPool.push(poolEntry);
 				}
@@ -772,7 +777,11 @@ function onScroll()
 		if (victimId !== null && maxDistance > 0 && newDistance < maxDistance)
 		{
 			swap3dGraph(victimId, newId);
-			console.log("swapped", victimId, newId);
+
+			if (window.DEBUG)
+			{
+				console.log(`Swapped Desmos 3D instace ${victimId} in to fill ${newId}`);
+			}
 
 			// Only one swap per scroll event to prevent oscillation.
 			break;
