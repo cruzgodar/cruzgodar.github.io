@@ -105,23 +105,35 @@ export let desmosGraphsDefaultState = {};
 export let desmosGraphsLoaded = {};
 let desmosGraphResolves = {};
 
+
+
+// This whole system loads in desmos graphs only when they're about to be visible,
+// since trying to load multiple 3D graphs at once on iOS crashes the page. 2D graphs
+// are constructed as they approach the viewport and stay loaded. 3D graphs are pooled:
+// at most 2 can be active at once. When a 3rd is needed, the most-distant active 3D
+// graph's calculator is reparented into the new element and reconfigured.
+
+// Each entry is an object { element, constructor, is3d, isConstructed }
+let desmosGraphsConstructorData = {};
+
+// Track which 3D graph IDs currently have an active calculator instance (at most 2).
+let active3dGraphIds = [];
+
+// Store the per-graph configuration needed to reconstruct/swap a 3D graph.
+// Keyed by element ID, populated during createDesmosGraphs.
+let desmosGraphConfigs = {};
+
+
+
 export function clearDesmosGraphs()
 {
 	desmosGraphs = {};
 	desmosGraphsDefaultState = {};
 	desmosGraphsLoaded = {};
 	desmosGraphResolves = {};
+	active3dGraphIds = [];
+	desmosGraphConfigs = {};
 }
-
-
-
-// This whole system loads in desmos graphs only when they're about to be visible,
-// since trying to load multiple 3D graphs at once on iOS crashes the page. The stack
-// system means that scrolling quickly causes the latest-request graph to be constructed
-// first. 2D graphs aren't throttled, just 3D ones.
-
-// Each entry is an object { element, constructor, is3d }
-let desmosGraphsConstructorData = {};
 
 
 
@@ -160,6 +172,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 	desmosData = desmosDataInitializer;
 	desmosGraphsConstructorData = {};
+	active3dGraphIds = [];
+	desmosGraphConfigs = {};
 
 	const data = structuredClone(desmosData);
 
@@ -291,38 +305,51 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			// eslint-disable-next-line no-undef
 			: Desmos.GraphingCalculator;
 
+		// Normalize bounds property names up front so they're ready
+		// for both initial construction and 3D graph swaps.
+		const bounds = data[element.id].bounds;
+
+		if (bounds.xmin === undefined && bounds.left !== undefined)
+		{
+			bounds.xmin = bounds.left;
+			delete bounds.left;
+		}
+
+		if (bounds.xmax === undefined && bounds.right !== undefined)
+		{
+			bounds.xmax = bounds.right;
+			delete bounds.right;
+		}
+
+		if (bounds.ymin === undefined && bounds.bottom !== undefined)
+		{
+			bounds.ymin = bounds.bottom;
+			delete bounds.bottom;
+		}
+
+		if (bounds.ymax === undefined && bounds.top !== undefined)
+		{
+			bounds.ymax = bounds.top;
+			delete bounds.top;
+		}
+
+		// Store configuration for potential 3D graph swapping.
+		desmosGraphConfigs[element.id] = {
+			element,
+			options,
+			bounds,
+			expressions: data[element.id].expressions,
+			is3d: data[element.id].use3d,
+			alwaysDark: data[element.id].alwaysDark,
+			desmosClass,
+			anyNonSecretExpressions,
+		};
+
 		// We'll call this once the graph is onscreen.
 		const constructor = () =>
 		{
 			desmosGraphs[element.id] = desmosClass(element, options);
-
-			const bounds = data[element.id].bounds;
-			const rect = element.getBoundingClientRect();
-			const aspectRatio = rect.width / rect.height;
-
-			if (bounds.xmin === undefined && bounds.left !== undefined)
-			{
-				bounds.xmin = bounds.left;
-				delete bounds.left;
-			}
-
-			if (bounds.xmax === undefined && bounds.right !== undefined)
-			{
-				bounds.xmax = bounds.right;
-				delete bounds.right;
-			}
-
-			if (bounds.ymin === undefined && bounds.bottom !== undefined)
-			{
-				bounds.ymin = bounds.bottom;
-				delete bounds.bottom;
-			}
-
-			if (bounds.ymax === undefined && bounds.top !== undefined)
-			{
-				bounds.ymax = bounds.top;
-				delete bounds.top;
-			}
+			console.log("constructed");
 
 
 
@@ -336,6 +363,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			if (!data[element.id].use3d)
 			{
 				// Enforce a square aspect ratio.
+				const rect = element.getBoundingClientRect();
+				const aspectRatio = rect.width / rect.height;
 				const width = bounds.xmax - bounds.xmin;
 				const centerX = (bounds.xmin + bounds.xmax) / 2;
 				bounds.xmin = centerX - width / 2 * aspectRatio;
@@ -356,6 +385,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
 
 			desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
+
+			if (data[element.id].use3d)
+			{
+				active3dGraphIds.push(element.id);
+			}
 
 			if (window.DEBUG && !recreating)
 			{
@@ -390,25 +424,150 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	onScroll();
 }
 
+function getDistanceFromViewport(element)
+{
+	const rect = element.getBoundingClientRect();
+
+	// If the element overlaps the viewport, distance is 0.
+	if (rect.bottom >= 0 && rect.top <= window.innerHeight)
+	{
+		return 0;
+	}
+
+	// Above the viewport.
+	if (rect.bottom < 0)
+	{
+		return -rect.bottom;
+	}
+
+	// Below the viewport.
+	return rect.top - window.innerHeight;
+}
+
+function swap3dGraph(oldId, newId)
+{
+	const calculator = desmosGraphs[oldId];
+	const oldElement = desmosGraphConfigs[oldId].element;
+	const newElement = desmosGraphConfigs[newId].element;
+	const newConfig = desmosGraphConfigs[newId];
+
+	// Move all of the calculator's DOM content to the new container.
+	while (oldElement.firstChild)
+	{
+		newElement.appendChild(oldElement.firstChild);
+	}
+
+	// Clear existing expressions and load the new graph's data.
+	const existingExpressions = calculator.getExpressions();
+
+	if (existingExpressions.length > 0)
+	{
+		calculator.removeExpressions(existingExpressions);
+	}
+
+	calculator.setMathBounds(newConfig.bounds);
+	calculator.setExpressions(newConfig.expressions);
+
+	// Apply 3D-specific controller settings.
+	if (newConfig.options.showPlane3D !== undefined)
+	{
+		calculator.controller.graphSettings.showPlane3D = newConfig.options.showPlane3D;
+	}
+	else
+	{
+		calculator.controller.graphSettings.showPlane3D = true;
+	}
+
+	calculator.controller.graphSettings.showBox3D = false;
+
+	calculator.updateSettings({
+		expressions: newConfig.anyNonSecretExpressions,
+		invertedColors: siteSettings.darkTheme || newConfig.alwaysDark,
+	});
+
+	// Capture the new default state.
+	desmosGraphsDefaultState[newId] = calculator.getState();
+	calculator.setDefaultState(desmosGraphsDefaultState[newId]);
+
+	// Update bookkeeping: move the calculator reference.
+	desmosGraphs[newId] = calculator;
+	delete desmosGraphs[oldId];
+	delete desmosGraphsDefaultState[oldId];
+
+	// Mark old graph as not constructed, new graph as constructed.
+	desmosGraphsConstructorData[oldId].isConstructed = false;
+	desmosGraphsConstructorData[newId].isConstructed = true;
+
+	// Update active 3D graph tracking.
+	const index = active3dGraphIds.indexOf(oldId);
+	active3dGraphIds[index] = newId;
+
+	// Resolve the new graph's loaded promise.
+	desmosGraphResolves[newId]?.();
+
+	// Recreate the old graph's promise so it can resolve again
+	// when the graph is swapped back in.
+	desmosGraphsLoaded[oldId] = new Promise(resolve =>
+	{
+		desmosGraphResolves[oldId] = resolve;
+	});
+}
+
 function onScroll()
 {
-	// Reversing is important here: assuming the desmos data is given from top to bottom,
-	// this will push the top element in view onto the stack last, so it will be constructed
-	// first.
 	for (const data of Object.values(desmosGraphsConstructorData).reverse())
 	{
 		const rect = data.element.getBoundingClientRect();
 		const top = rect.top;
 		const height = rect.height;
-	
+
 		// Construct graphs when they're within a screen height of being visible.
-		const isOnscreen = top >= -height - window.innerHeight
+		const isNearViewport = top >= -height - window.innerHeight
 			&& top < window.innerHeight * 2;
 
-		if (isOnscreen && !data.isConstructed)
+		if (!isNearViewport || data.isConstructed)
 		{
+			continue;
+		}
+
+		if (!data.is3d)
+		{
+			// 2D graphs: construct and keep loaded.
 			data.constructor();
 			data.isConstructed = true;
+			continue;
+		}
+
+		// 3D graph needs loading.
+		if (active3dGraphIds.length < 2)
+		{
+			// Pool has room: construct normally.
+			data.constructor();
+			data.isConstructed = true;
+			continue;
+		}
+
+		// Pool is full: find the most distant active 3D graph to swap out.
+		const newId = data.element.id;
+
+		let maxDistance = -1;
+		let victimId = null;
+
+		for (const activeId of active3dGraphIds)
+		{
+			const dist = getDistanceFromViewport(desmosGraphConfigs[activeId].element);
+
+			if (dist > maxDistance)
+			{
+				maxDistance = dist;
+				victimId = activeId;
+			}
+		}
+
+		// Only swap if the victim is off-screen (distance > 0).
+		if (victimId !== null && maxDistance > 0)
+		{
+			swap3dGraph(victimId, newId);
 		}
 	}
 }
