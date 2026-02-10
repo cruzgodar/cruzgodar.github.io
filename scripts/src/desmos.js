@@ -492,8 +492,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				calculator.updateSettings({
 					expressions: anyNonSecretExpressions,
-					invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
 					translucentSurfaces: options.translucentSurfaces ?? false,
+				});
+
+				calculator.controller.dispatch({
+					type: "set-inverted-colors",
+					value: siteSettings.darkTheme || data[element.id].alwaysDark,
 				});
 
 				desmosGraphs[element.id] = calculator;
@@ -528,7 +532,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				if (options.showPlane3D !== undefined)
 				{
-					desmosGraphs[element.id].controller.graphSettings.showPlane3D = options.showPlane3D;
+					desmosGraphs[element.id].controller.graphSettings.showPlane3D =
+						options.showPlane3D;
 				}
 
 
@@ -614,7 +619,6 @@ function getDistanceFromViewport(element)
 function swap3dGraph(oldId, newId)
 {
 	const calculator = desmosGraphs[oldId];
-	const oldElement = desmosGraphConfigs[oldId].element;
 	const newElement = desmosGraphConfigs[newId].element;
 	const newConfig = desmosGraphConfigs[newId];
 
@@ -658,8 +662,12 @@ function swap3dGraph(oldId, newId)
 
 	calculator.updateSettings({
 		expressions: newConfig.anyNonSecretExpressions,
-		invertedColors: siteSettings.darkTheme || newConfig.alwaysDark,
 		translucentSurfaces: newConfig.options.translucentSurfaces ?? false,
+	});
+
+	calculator.controller.dispatch({
+		type: "set-inverted-colors",
+		value: siteSettings.darkTheme || newConfig.alwaysDark,
 	});
 
 	// Capture and store the clean default state (for graphs that were
