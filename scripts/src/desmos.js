@@ -489,12 +489,17 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				calculator.updateSettings({
 					expressions: anyNonSecretExpressions,
+					translucentSurfaces: options.translucentSurfaces ?? false,
 				});
 
 				desmosGraphs[element.id] = calculator;
 
 				desmosGraphsDefaultState[element.id] = calculator.getState();
 				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
+
+				// Store the clean default state in the config so swap3dGraph()
+				// can fully reset the calculator (including camera and spin).
+				desmosGraphConfigs[element.id].defaultState = desmosGraphsDefaultState[element.id];
 
 				active3dGraphIds.push(element.id);
 
@@ -625,16 +630,27 @@ function swap3dGraph(oldId, newId)
 	const poolEntry = getPoolEntryForCalculator(calculator);
 	newElement.appendChild(poolEntry.poolElement);
 
-	// Clear existing expressions and load the new graph's data.
-	const existingExpressions = calculator.getExpressions();
-
-	if (existingExpressions.length > 0)
+	if (newConfig.defaultState)
 	{
-		calculator.removeExpressions(existingExpressions);
+		// This graph was previously constructed, so we have a clean default
+		// state that includes expressions, bounds, and a zeroed-out camera.
+		// setState() fully resets everything in one call.
+		calculator.setState(newConfig.defaultState);
 	}
+	else
+	{
+		// This graph was never constructed (it's beyond the first two).
+		// Set it up from the raw config data.
+		const existingExpressions = calculator.getExpressions();
 
-	calculator.setMathBounds(newConfig.bounds);
-	calculator.setExpressions(newConfig.expressions);
+		if (existingExpressions.length > 0)
+		{
+			calculator.removeExpressions(existingExpressions);
+		}
+
+		calculator.setMathBounds(newConfig.bounds);
+		calculator.setExpressions(newConfig.expressions);
+	}
 
 	// Apply 3D-specific controller settings.
 	if (newConfig.options.showPlane3D !== undefined)
@@ -650,6 +666,7 @@ function swap3dGraph(oldId, newId)
 
 	calculator.updateSettings({
 		expressions: newConfig.anyNonSecretExpressions,
+		translucentSurfaces: newConfig.options.translucentSurfaces ?? false,
 	});
 
 	// Apply CSS invert for dark mode.
@@ -659,9 +676,26 @@ function swap3dGraph(oldId, newId)
 			? "invert(1)" : "";
 	}
 
-	// Capture the new default state.
-	desmosGraphsDefaultState[newId] = calculator.getState();
-	calculator.setDefaultState(desmosGraphsDefaultState[newId]);
+	// Capture and store the clean default state (for graphs that were
+	// never constructed, this is the first time we have one).
+	if (!newConfig.defaultState)
+	{
+		const state = calculator.getState();
+
+		// Zero out any lingering rotation/spin from the previous graph
+		// so the default state has a clean camera.
+		state.graph.worldRotation3D = [];
+		state.graph.axis3D = [0, 0, 1];
+		state.graph.speed3D = 0;
+
+		newConfig.defaultState = state;
+
+		// Apply the cleaned state so the calculator actually stops spinning.
+		calculator.setState(newConfig.defaultState);
+	}
+
+	desmosGraphsDefaultState[newId] = newConfig.defaultState;
+	calculator.setDefaultState(newConfig.defaultState);
 
 	// Update bookkeeping: move the calculator reference.
 	desmosGraphs[newId] = calculator;
