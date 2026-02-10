@@ -110,7 +110,7 @@ let desmosGraphResolves = {};
 // This whole system loads in desmos graphs only when they're about to be visible,
 // since trying to load multiple 3D graphs at once on iOS crashes the page. 2D graphs
 // are constructed as they approach the viewport and stay loaded. 3D graphs are pooled:
-// at most 2 Calculator3D instances are ever created for the entire site session.
+// at most max3dPoolSize Calculator3D instances are ever created for the entire site session.
 // They live in a persistent off-screen container on document.body that survives page
 // navigations. When a 3D graph needs to be shown, a calculator's DOM children are
 // reparented from the pool into the page's .desmos-container, then reconfigured.
@@ -118,14 +118,17 @@ let desmosGraphResolves = {};
 // Each entry is an object { element, constructor, is3d, isConstructed }
 let desmosGraphsConstructorData = {};
 
-// Track which 3D graph IDs currently have an active calculator instance (at most 2).
+// Maximum number of Calculator3D instances in the persistent pool.
+const max3dPoolSize = 3;
+
+// Track which 3D graph IDs currently have an active calculator instance.
 let active3dGraphIds = [];
 
 // Store the per-graph configuration needed to reconstruct/swap a 3D graph.
 // Keyed by element ID, populated during createDesmosGraphs.
 let desmosGraphConfigs = {};
 
-// The persistent 3D pool: up to 2 Calculator3D instances that survive page navigations.
+// The persistent 3D pool: up to max3dPoolSize Calculator3D instances that survive page navigations.
 // Each entry is { calculator, poolElement } where poolElement is the div inside
 // the off-screen container that houses the calculator when idle.
 const persistent3dPool = [];
@@ -429,7 +432,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				let calculator;
 				let poolEntry;
 
-				if (persistent3dPool.length < 2)
+				if (persistent3dPool.length < max3dPoolSize)
 				{
 					// First-time construction: create a real Calculator3D
 					// in an off-screen pool slot.
@@ -489,6 +492,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				calculator.updateSettings({
 					expressions: anyNonSecretExpressions,
+					invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
 					translucentSurfaces: options.translucentSurfaces ?? false,
 				});
 
@@ -515,13 +519,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				}
 
 				desmosGraphResolves[element.id]();
-
-				// Apply CSS invert for dark mode.
-				for (const child of element.children)
-				{
-					child.style.filter = (siteSettings.darkTheme || data[element.id].alwaysDark)
-						? "invert(1)" : "";
-				}
 			}
 			: () =>
 			{
@@ -553,7 +550,9 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				// Set some more things that currently aren't exposed in the API :(
 				desmosGraphs[element.id].controller.graphSettings.showBox3D = false;
 
-				desmosGraphs[element.id].updateSettings({});
+				desmosGraphs[element.id].updateSettings({
+					invertedColors: siteSettings.darkTheme || data[element.id].alwaysDark,
+				});
 
 				desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
 
@@ -571,13 +570,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				}
 
 				desmosGraphResolves[element.id]();
-
-				// Apply CSS invert for dark mode.
-				for (const child of element.children)
-				{
-					child.style.filter = (siteSettings.darkTheme || data[element.id].alwaysDark)
-						? "invert(1)" : "";
-				}
 			};
 
 		desmosGraphsConstructorData[element.id] = {
@@ -666,15 +658,9 @@ function swap3dGraph(oldId, newId)
 
 	calculator.updateSettings({
 		expressions: newConfig.anyNonSecretExpressions,
+		invertedColors: siteSettings.darkTheme || newConfig.alwaysDark,
 		translucentSurfaces: newConfig.options.translucentSurfaces ?? false,
 	});
-
-	// Apply CSS invert for dark mode.
-	for (const child of newElement.children)
-	{
-		child.style.filter = (siteSettings.darkTheme || newConfig.alwaysDark)
-			? "invert(1)" : "";
-	}
 
 	// Capture and store the clean default state (for graphs that were
 	// never constructed, this is the first time we have one).
@@ -747,7 +733,7 @@ function onScroll()
 		}
 
 		// 3D graph needs loading.
-		if (active3dGraphIds.length < 2)
+		if (active3dGraphIds.length < max3dPoolSize)
 		{
 			// Pool has room: construct normally.
 			data.constructor();
