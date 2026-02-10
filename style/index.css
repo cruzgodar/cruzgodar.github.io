@@ -2104,64 +2104,6 @@ option
 
 
 
-/* Experimental capsule header. */
-
-body.capsule-header #header
-{
-	margin: 8px;
-	width: var(--text-width);
-	max-width: 100%;
-	border-radius: 12px;
-
-	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
-}
-
-body.capsule-header #header-blur
-{
-	opacity: 1;
-}
-
-body.capsule-header #header-background
-{
-	opacity: 0;
-}
-
-body.capsule-header #accessibility-tooltip
-{
-	right: calc(8px + env(safe-area-inset-top) + max((100vw - var(--text-width)) / 2 - 8px, 0px));
-}
-
-body.capsule-header header
-{
-	margin-top: calc(96px + env(safe-area-inset-top));
-}
-
-@media (max-width: 500px)
-{
-	body.capsule-header #accessibility-tooltip
-	{
-		top: calc(56px + env(safe-area-inset-top));
-	}
-}
-
-@media (max-width: 300px)
-{
-	body.capsule-header #header
-	{
-		border-radius: 11px;
-	}
-}
-
-@media (max-width: 270px)
-{
-	body.capsule-header #header
-	{
-		border-radius: 10px;
-	}
-}
-
-
-
 /* The minimum allowable size for an image link is 150x150 px, and the maximum when we have infinite room is 175x175 px. */
 
 .image-links

@@ -60,7 +60,6 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
-	capsuleHeader: params.get("capsuleheader") === "1",
 	scroll: parseInt(params.get("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
@@ -156,18 +155,6 @@ export function getQueryParams()
 		params.delete("increasecontrast");
 	}
 
-
-
-	if (siteSettings.capsuleHeader)
-	{
-		params.set("capsuleheader", "1");
-	}
-
-	else
-	{
-		params.delete("capsuleheader");
-	}
-
 	
 
 	if (siteSettings.scroll)
@@ -258,16 +245,6 @@ export function initIncreaseContrast()
 		siteSettings.increaseContrast = false;
 
 		toggleIncreaseContrast({ noAnimation: true });
-	}
-}
-
-export async function initCapsuleHeader()
-{
-	if (siteSettings.capsuleHeader)
-	{
-		siteSettings.capsuleHeader = false;
-
-		toggleCapsuleHeader();
 	}
 }
 
@@ -489,17 +466,6 @@ export async function toggleIncreaseContrast({
 
 		setTimeout(() => element.remove(), duration);
 	}
-}
-
-
-
-export async function toggleCapsuleHeader()
-{
-	siteSettings.capsuleHeader = !siteSettings.capsuleHeader;
-
-	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
-
-	document.body.classList.toggle("capsule-header", siteSettings.capsuleHeader);
 }
 
 
