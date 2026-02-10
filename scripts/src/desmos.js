@@ -516,7 +516,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				active3dGraphIds.push(element.id);
 
-				if (window.DEBUG && !recreating)
+				if (window.DEBUG && !element.dataset.hasScreenshotHandler)
 				{
 					element.addEventListener("click", (e) =>
 					{
@@ -525,6 +525,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 							getDesmosScreenshot(element.id, e.altKey);
 						}
 					});
+					element.dataset.hasScreenshotHandler = "true";
 				}
 
 				desmosGraphResolves[element.id]();
@@ -709,6 +710,19 @@ function swap3dGraph(oldId, newId)
 	const index = active3dGraphIds.indexOf(oldId);
 	active3dGraphIds[index] = newId;
 
+	// Register screenshot click handler if not already present.
+	if (window.DEBUG && !newElement.dataset.hasScreenshotHandler)
+	{
+		newElement.addEventListener("click", (e) =>
+		{
+			if (e.metaKey)
+			{
+				getDesmosScreenshot(newId, e.altKey);
+			}
+		});
+		newElement.dataset.hasScreenshotHandler = "true";
+	}
+
 	// Resolve the new graph's loaded promise.
 	desmosGraphResolves[newId]?.();
 
@@ -842,7 +856,7 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		? desmosGraphs[id].screenshot({
 			width: 800,
 			height: 800,
-			targetPixelRatio: 4,
+			targetPixelRatio: 2,
 		})
 		: await new Promise(resolve =>
 		{
