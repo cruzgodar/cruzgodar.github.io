@@ -128,7 +128,7 @@ Since we're defining everything in terms of the dot product, let's do that here 
 
 ###
 
-We can immediately start getting applications of orthogonality: notably, the Pythagorean theorem can be stated in the language of linear algebra.
+We can immediately start getting applications of orthogonality: notably, the Pythagorean Theorem can be stated in the language of linear algebra.
 
 ### thm "The Pythagorean Theorem"
 
@@ -136,7 +136,7 @@ We can immediately start getting applications of orthogonality: notably, the Pyt
 
 ###
 
-### exc "the Pythagorean theorem"
+### exc "the Pythagorean Theorem"
 
 	Show that this theorem holds. Start by assuming $\vec{v}$ and $\vec{w}$ are orthogonal and show $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$. Then assume that $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$ and show that $\vec{v}$ and $\vec{w}$ must be orthogonal.
 

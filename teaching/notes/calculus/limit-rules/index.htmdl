@@ -256,9 +256,9 @@ What about infinite limits? They can be a little trickier to calculate.
 
 
 
-## The Squeeze theorem
+## The Squeeze Theorem
 
-The squeeze theorem is a little complicated to state, but it's a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
+The Squeeze Theorem is a little complicated to state, but it's a straightforward idea: if you can fit (squeeze) a function between two simpler ones that converge to each other, the limit of the squeezed function only has one place to go.
 
 
 
@@ -286,7 +286,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 
 
 
-### ex "the Squeeze theorem"
+### ex "the Squeeze Theorem"
 	
 	Find $$\lim_{x \to 0} x \sin(x)$$.
 
@@ -308,7 +308,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 		\lim_{x \to 0} x\sin(x) = 0
 	$$
 	
-	too. In general, you won't be asked to come up with squeeze theorem bounds on timed exams or quizzes, but on homework, it's fair game. Try to find functions that meet at the point you're limiting to and that bound the complicated function from above and below.
+	too. In general, you won't be asked to come up with Squeeze Theorem bounds on timed exams or quizzes, but on homework, it's fair game. Try to find functions that meet at the point you're limiting to and that bound the complicated function from above and below.
 	
 ###
 

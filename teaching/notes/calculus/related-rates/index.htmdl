@@ -57,7 +57,7 @@ The technology behind related rates is just implicit differentiation, but it can
 	
 	It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 30, so we'll fix the bird's $y$-coordinate at 30. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
 	
-	So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
+	So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean Theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
 	
 	$$
 		s = \sqrt{x^2 + 30^2}.

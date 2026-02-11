@@ -58,7 +58,7 @@ The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-
 
 One of the learning objectives for this course is being able to sketch basic 3D graphs, but don't worry if that seems like a daunting task --- I'm not here to be overly picky about perspective and detail!
 
-We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean theorem: it's
+We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean Theorem: it's
 
 $$
 	d((x_1, y_1), (x_2, y_2)) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
@@ -66,13 +66,13 @@ $$
 
 ### desmos distance
 
-Once again, instead of trying to reprove something like the Pythagorean theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
+Once again, instead of trying to reprove something like the Pythagorean Theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
 
 $$
 	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
 $$
 
-Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean theorem tells us that its hypotenuse has length
+Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean Theorem tells us that its hypotenuse has length
 
 $$
 	d = \sqrt{d^2 + |z_2 - z_1|^2} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}.

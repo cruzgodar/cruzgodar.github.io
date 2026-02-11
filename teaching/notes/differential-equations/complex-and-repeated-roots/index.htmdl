@@ -149,7 +149,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 		&= 2e^{-2t}.
 	$$
 	
-	Here we're using the trig identity that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any angle $\theta$, which is just the Pythagorean theorem applied to a triangle in the unit circle. Since $2e^{-2t}$ is nonzero for all $t$, the Wronskian is never zero, which means we have the general solution.
+	Here we're using the trig identity that $\sin^2(\theta) + \cos^2(\theta) = 1$ for any angle $\theta$, which is just the Pythagorean Theorem applied to a triangle in the unit circle. Since $2e^{-2t}$ is nonzero for all $t$, the Wronskian is never zero, which means we have the general solution.
 	
 	For the initial condition, we have
 	

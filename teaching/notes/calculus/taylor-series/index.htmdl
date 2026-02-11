@@ -256,7 +256,7 @@ $$
 	R_N(x) = f(x) - \sum_{n = 0}^N \frac{f^{(n)}(a)}{n!} (x - a)^n.
 $$
 
-In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that's true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value theorem --- let's state that now to remind ourselves how it works.
+In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} R_N(x) = 0$, and to know when that's true, we have to find a formula for $R_N(x)$. Figuring that formula out takes some effort, but the result will be simple enough in the end. A critical part will be the use of the Mean Value Theorem --- let's state that now to remind ourselves how it works.
 
 
 
@@ -308,7 +308,7 @@ $$
 
 In this sense, $g$ is measuring how well a Taylor series centered at $t$ approximates $f$, except we staple on the remainder from a Taylor series centered at $a$ no matter what $t$ is.
 
-By the Mean Value theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let's differentiate and find out. Remember, we're differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
+By the Mean Value Theorem, there must be a point $c$ in between $x$ and $a$ where $g'(c) = 0$. So what is $g'(c)$? Let's differentiate and find out. Remember, we're differentiating with respect to $t$, not $x$, so terms with just $x$ are treated as constants.
 
 $$
 	g'(t) &= d/dt \left[ f(x) - \left( f(t) + \sum_{n = 1}^N \left( \frac{f^{(n)}(t)}{n!} (x - t)^n \right) + R_N(x) \frac{(x - t)^{N + 1}}{(x - a)^{N + 1}} \right) \right]
@@ -500,7 +500,7 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 
 
 
-There's one final question before our basic theory of Taylor series is complete: we can find a Taylor series for a function, and we can determine the interval of convergence of that Taylor series, *and* we can bound the remainder of the series. But how can we determine if or when the Taylor series actually converges to $f$? This is where Taylor's theorem really shines: since $R_N(x)$ is the difference between the $N$th Taylor polynomial and $f$, a Taylor series converges to $f$ exactly when $\lim_{N \to \infty} R_N(X) = 0$. Once we've bounded the remainder, we can take the limit and figure out when it's zero.
+There's one final question before our basic theory of Taylor series is complete: we can find a Taylor series for a function, and we can determine the interval of convergence of that Taylor series, *and* we can bound the remainder of the series. But how can we determine if or when the Taylor series actually converges to $f$? This is where Taylor's Theorem really shines: since $R_N(x)$ is the difference between the $N$th Taylor polynomial and $f$, a Taylor series converges to $f$ exactly when $\lim_{N \to \infty} R_N(X) = 0$. Once we've bounded the remainder, we can take the limit and figure out when it's zero.
 
 
 

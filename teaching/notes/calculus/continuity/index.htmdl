@@ -189,7 +189,7 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 
 
 
-### ex "the Intermediate Value theorem"
+### ex "the Intermediate Value Theorem"
 	
 	Show that $f(x) = x - \cos(x)$ has at least one zero.
 

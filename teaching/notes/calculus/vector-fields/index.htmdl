@@ -150,13 +150,13 @@ $$
 	\vec{F}(x, y) = \left< pf/px, pf/py \right>.
 $$
 
-If we can think of a fact about the components of $\vec{F}$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's theorem, so long as the potential function $f$ isn't too poorly behaved:
+If we can think of a fact about the components of $\vec{F}$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's Theorem, so long as the potential function $f$ isn't too poorly behaved:
 
 $$
 	p/py\left[ pf/px \right] = p/px\left[ pf/py \right].
 $$
 
-Miraculously, this is indeed a sufficient condition, as long as we add the necessary hypotheses for Clairaut's theorem and also prevent the region we consider from possibly harboring problematic areas in hidden points.
+Miraculously, this is indeed a sufficient condition, as long as we add the necessary hypotheses for Clairaut's Theorem and also prevent the region we consider from possibly harboring problematic areas in hidden points.
 
 ### thm "conservativity of 2D vector fields"
 
@@ -170,7 +170,7 @@ Miraculously, this is indeed a sufficient condition, as long as we add the neces
 
 ###
 
-Just like with Clairaut's theorem, vector fields that satisfy the partial derivative equivalence but fail at the region are strange enough that we tend to recognize something might be up with them from the outset. For completeness, though, let's briefly state what those properties about the set $U$ mean:
+Just like with Clairaut's Theorem, vector fields that satisfy the partial derivative equivalence but fail at the region are strange enough that we tend to recognize something might be up with them from the outset. For completeness, though, let's briefly state what those properties about the set $U$ mean:
 
 > - Open: around every point in $U$, we can draw a circle of a small radius that's still entirely contained within $U$ (intuitively, there are no hard boundaries).
 

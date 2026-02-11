@@ -58,7 +58,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 
 	### image graphics/triangle-1.png
 	
-	In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let's call the third side $b$ for now. We're trying to find $\cos(\theta)$ in terms of $x$ --- since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
+	In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let's call the third side $b$ for now. We're trying to find $\cos(\theta)$ in terms of $x$ --- since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean Theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
 	
 	$$
 		\frac{9}{2} \theta + \frac{9}{2} \sin(\theta) \cos(\theta) + C = \frac{9}{2} \sin^{-1}\left( \frac{x}{3} \right) + \left(\frac{9}{2}\right) \left(\frac{x}{3}\right) \left(\frac{1}{3}\sqrt{9 - x^2}\right) + C.
@@ -188,7 +188,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 
 	### image graphics/triangle-2.png
 	
-	This time, we have an opposite side of $t$ and an adjacent side of $2$. If we call the hypotenuse $c$, then the Pythagorean theorem tells us that $c = \sqrt{t^2 + 2^2}$, so
+	This time, we have an opposite side of $t$ and an adjacent side of $2$. If we call the hypotenuse $c$, then the Pythagorean Theorem tells us that $c = \sqrt{t^2 + 2^2}$, so
 	
 	$$
 		\sec(\theta) = \frac{c}{2} = \frac{1}{2}\sqrt{t^2 + 4}.

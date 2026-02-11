@@ -33,7 +33,7 @@
 
 	- - -
 
-	In problems 3#, find bases for $V$, $\ker T$ and $\image T$, and verify that the fundamental theorem of linear algebra correctly relates the three.
+	In problems 3#, find bases for $V$, $\ker T$ and $\image T$, and verify that the Fundamental Theorem of Linear Algebra correctly relates the three.
 
 	#. $T : V \to #R#$, where $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, is defined by $T(a + bx + cx^2 + dx^3) = d - c$.
 

@@ -142,7 +142,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 		|f^{(5)}(x)| \leq \left| \frac{\frac{105}{32}}{\left( \frac{1}{2} \right)^{9/2}} \right| \approx 74.246.
 	$$
 	
-	By Taylor's theorem, the maximum error is then
+	By Taylor's Theorem, the maximum error is then
 	
 	$$
 		\frac{74.246}{5!} \left|\left(-\frac{1}{2}\right) - 0\right|^5 \approx .0193.
@@ -332,7 +332,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right).
 	$$
 	
-	We can't use Taylor's theorem to bound the error, since we don't know a closed form of the function that generates this series. However, in a happy coincidence, this is an alternating series with decreasing terms, so we can actually use the alternating series test! The remainder $R_N$ is bounded by
+	We can't use Taylor's Theorem to bound the error, since we don't know a closed form of the function that generates this series. However, in a happy coincidence, this is an alternating series with decreasing terms, so we can actually use the alternating series test! The remainder $R_N$ is bounded by
 	
 	$$
 		|R_N| \leq \left| \frac{1}{(N + 1)!} \cdot \frac{1}{2(N + 1) + 1} \right|,

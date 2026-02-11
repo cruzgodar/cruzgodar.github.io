@@ -148,7 +148,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 
 ###
 
-This example showed that curve integrals are, generally speaking, *path-dependent*: integrating the same function along two paths, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the fundamental theorem of calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
+This example showed that curve integrals are, generally speaking, *path-dependent*: integrating the same function along two paths, even if they have the same endpoints, can have different results. That's bizarre from the perspective of single-variable integrals: the entire statement of the Fundamental Theorem of Calculus is that the integral of a continuous function $f(x)$ on an interval $[a, b]$ depends only on the behavior of its antiderivative at the boundary points $a$ and $b$, not on how we got there. But then again, there was only one way to get there: in a straight line along the $x$-axis from $x = a$ to $x = b$. Comparing against the other type of integrals we've explored --- double integrals --- those always had the path picked for us as well, since both the inner and outer integrals were really just single-variable integrals out of their natural habitat.
 
 We're going to have a lot more to say about path-dependence later in this section, but for right now, I want to provide a little bit of intuition that curve integrals can't be path-independent in general. If we integrate the constant function $1$, then the curve integral $\int_C 1\,\d s$ is equal to the arc length of $C$ for any path $C$; different paths connecting two given points will typically have different lengths, like in the previous example, and so those curve integrals will necessarily be different.
 
@@ -362,9 +362,9 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 ## The Fundamental Theorem of Curve Integrals
 
-Let's properly dig into path-independence. Why do some curve integrals, but not all, seem to depend only on their endpoints, rather than the path between them? In single-variable calculus, the fundamental theorem of calculus resulted in something similar to path independence by expressing the entire integral $\int_a^b f(x)\,\d x$ in terms of an antiderivative $F$ of $f$ at the endpoints of $[a, b]$; if we could do the same thing for a certain kind of curve integral, we'd have not only path independence, but a formula that we could use to skip their computation entirely.
+Let's properly dig into path-independence. Why do some curve integrals, but not all, seem to depend only on their endpoints, rather than the path between them? In single-variable calculus, the Fundamental Theorem of Calculus resulted in something similar to path independence by expressing the entire integral $\int_a^b f(x)\,\d x$ in terms of an antiderivative $F$ of $f$ at the endpoints of $[a, b]$; if we could do the same thing for a certain kind of curve integral, we'd have not only path independence, but a formula that we could use to skip their computation entirely.
 
-The only thing in the fundamental theorem of calculus that we haven't considered for curve integrals is the presence of an antiderivative. An equivalent way to phrase the single-variable FTC is
+The only thing in the Fundamental Theorem of Calculus that we haven't considered for curve integrals is the presence of an antiderivative. An equivalent way to phrase the single-variable FTC is
 
 $$
 	\int_a^b f'(x)\,\d x = f(b) - f(a)

@@ -10,13 +10,13 @@ Given a function $f(x)$ on an interval $[a, b]$, we formed a **Riemann sum** $\s
 
 The **definite integral** $\int_a^b f(x)\,\d x$ is the limit of a Riemann sum as the number of subintervals increases without bound, assuming that limit is the same for all choices of $x_i^*$ (that's what it means for a function to be integrable, in fact). All continuous functions are integrable, and so we frequently restricted our attention to them.
 
-The fundamental theorem of calculus was how we typically computed integrals. It relates the area measured by a definite integral $\int_a^b f(x)\,\d x$ to an antiderivative $F$ of $f$, and specifically the behavior of $F$ at the endpoints of the interval:
+The Fundamental Theorem of Calculus was how we typically computed integrals. It relates the area measured by a definite integral $\int_a^b f(x)\,\d x$ to an antiderivative $F$ of $f$, and specifically the behavior of $F$ at the endpoints of the interval:
 
 $$
 	\int_a^b f(x)\,\d x &= F(b) - F(a).
 $$
 
-While we typically remember the fundamental theorem as a computational tool like this, its statement as a theoretical result is equally important: it tells us that the antiderivative $F$ not only sees the entire area under the graph of $f$ on any interval $[a, b]$, but that it is able to encode that area in two points' worth of data: $F(a)$ and $F(b)$. We'll have many opportunities over the rest of the semester to return to this notion of antiderivatives encoding information like this in a smaller set than the one they're measuring, but we'll just need the familiar version of the FTC for now.
+While we typically remember the Fundamental Theorem as a computational tool like this, its statement as a theoretical result is equally important: it tells us that the antiderivative $F$ not only sees the entire area under the graph of $f$ on any interval $[a, b]$, but that it is able to encode that area in two points' worth of data: $F(a)$ and $F(b)$. We'll have many opportunities over the rest of the semester to return to this notion of antiderivatives encoding information like this in a smaller set than the one they're measuring, but we'll just need the familiar version of the FTC for now.
 
 Given a continuous function $z = f(x, y)$, we can begin the same story of computing a Riemann sum, but for it to make sense in this context, it will need to measure volume under a surface instead of area under a curve.
 
@@ -76,7 +76,7 @@ But that's exactly what we've been doing with partial derivatives! If we hold $x
 		\iint_R f(x, y)\,\d A &= \int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x = \int_c^d \!\!\! \int_a^b f(x, y)\,\d x\,\d y.
 	$$
 
-	More generally, Fubini's theorem tells us that we can slice a region $R$ in either the $x$- or $y$-direction first in order to integrate it, so long as the function is continuous.
+	More generally, Fubini's Theorem tells us that we can slice a region $R$ in either the $x$- or $y$-direction first in order to integrate it, so long as the function is continuous.
 
 ###
 

@@ -2,7 +2,7 @@
 
 
 
-Now that we've defined the sine and cosine functions, we can start getting our bearings and learning more about them. While we know values of $\sin(\theta)$ and $\cos(\theta)$ when $\theta$ is a multiple of $90^\circ$, that's not very much information. If we want to sketch a graph of either of the two, for example, we'll need to know more points. We'll start with a straightforward use of the Pythagorean theorem stated in terms of sine and cosine that will help us with this goal. Since we can think of $\sin(\theta)$ and $\cos(\theta)$ as the lengths of sides in a right triangle whose hypotenuse is the radius of a unit circle (i.e. has length $1$), the Pythagorean theorem tells us that
+Now that we've defined the sine and cosine functions, we can start getting our bearings and learning more about them. While we know values of $\sin(\theta)$ and $\cos(\theta)$ when $\theta$ is a multiple of $90^\circ$, that's not very much information. If we want to sketch a graph of either of the two, for example, we'll need to know more points. We'll start with a straightforward use of the Pythagorean Theorem stated in terms of sine and cosine that will help us with this goal. Since we can think of $\sin(\theta)$ and $\cos(\theta)$ as the lengths of sides in a right triangle whose hypotenuse is the radius of a unit circle (i.e. has length $1$), the Pythagorean Theorem tells us that
 
 ### prop "the Pythagorean identity"
 

@@ -32,7 +32,7 @@ $$
 	\sqrt{\Delta x^2 + \Delta y^2}
 $$
 
-by the Pythagorean theorem, and factoring out the $\Delta x^2$ results in
+by the Pythagorean Theorem, and factoring out the $\Delta x^2$ results in
 
 $$
 	\sqrt{1 + \left( \frac{\Delta y}{\Delta x} \right)^2} \cdot \Delta x.

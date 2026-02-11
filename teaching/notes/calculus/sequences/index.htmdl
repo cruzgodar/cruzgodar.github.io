@@ -449,7 +449,7 @@ Many of the rules of limits for functions also apply to sequences, so we can oft
 
 
 
-Just like with functions, there's a Squeeze theorem for sequences. While the function version is often overlooked, though, the sequence version is substantially more important, and we'll have plenty of opportunities to apply it.
+Just like with functions, there's a Squeeze Theorem for sequences. While the function version is often overlooked, though, the sequence version is substantially more important, and we'll have plenty of opportunities to apply it.
 
 
 
@@ -461,7 +461,7 @@ Just like with functions, there's a Squeeze theorem for sequences. While the fun
 
 
 
-### ex "the Squeeze theorem"
+### ex "the Squeeze Theorem"
 	
 	Find $\lim \left( \frac{\cos(n)}{n} \right)$.
 
@@ -473,7 +473,7 @@ Just like with functions, there's a Squeeze theorem for sequences. While the fun
 		-\frac{1}{n} \leq \frac{\cos(n)}{n} \leq \frac{1}{n}.
 	$$
 	
-	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
+	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze Theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
 	
 	### desmos squeezeTheorem
 	
@@ -481,9 +481,9 @@ Just like with functions, there's a Squeeze theorem for sequences. While the fun
 
 
 
-### exc "the Squeeze theorem"
+### exc "the Squeeze Theorem"
 	
-	We already understand the behavior of the sequence $(r^n)$ when $r \geq 0$: it converges to zero for $0 \leq r < 1$, to one for $r = 1$, and it diverges for $r > 1$. Use the Squeeze theorem to classify the behavior of $(r^n)$ for negative $r$.
+	We already understand the behavior of the sequence $(r^n)$ when $r \geq 0$: it converges to zero for $0 \leq r < 1$, to one for $r = 1$, and it diverges for $r > 1$. Use the Squeeze Theorem to classify the behavior of $(r^n)$ for negative $r$.
 
 	### solution
 
@@ -537,7 +537,7 @@ If a sequence is monotone increasing and bounded above, then its behavior is ver
 
 
 
-### exc "the Monotone Convergence theorem"
+### exc "the Monotone Convergence Theorem"
 	
 	Let $(a_n)$ be a sequence defined recursively by $a_1 = 2$ and
 	

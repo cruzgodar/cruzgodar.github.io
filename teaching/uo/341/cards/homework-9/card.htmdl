@@ -33,7 +33,7 @@
 
 	> d) Let $T$ be the linear transformation corresponding to the matrix $A$. Write down the domain and codomain for $T$.
 
-	> e) Find a basis for $\ker T$ and use it to find a basis for $\image T$ using the fundamental theorem of linear algebra.
+	> e) Find a basis for $\ker T$ and use it to find a basis for $\image T$ using the Fundamental Theorem of Linear Algebra.
 
 	> f) Determine if $T$ is one-to-one, onto, both, or neither. If it's both one-to-one and onto, find a formula for $T^{-1}$.
 
@@ -96,7 +96,7 @@
 	
 	> c) If $T$ is a linear transformation, find the matrix for $T$ with respect to the standard bases for $V$ and $W$.
 	
-	> d) If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\image T$ using the fundamental theorem of linear algebra. Then extend the basis for $\image T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
+	> d) If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\image T$ using the Fundamental Theorem of Linear Algebra. Then extend the basis for $\image T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
 	
 	#. $V = #R#^4$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of vectors $[[ x ; y ; z ; w ]] \in #R#^4$ such that $x + 2y = w$, and $T : V \to W$ is defined by
 	

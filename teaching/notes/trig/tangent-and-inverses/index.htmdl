@@ -126,7 +126,7 @@ Since the trig functions also output ratios in right triangles, the arc function
 	$$
 		\arccos\left( \frac{2}{4} \right) = \arccos\left( \frac{1}{2} \right) = 60^\circ.
 	$$
-	Alternatively, the Pythagorean theorem tells us that the remaining side has length $\sqrt{4^2 - 2^2} = \sqrt{12}$, and so the remaining angle is
+	Alternatively, the Pythagorean Theorem tells us that the remaining side has length $\sqrt{4^2 - 2^2} = \sqrt{12}$, and so the remaining angle is
 	$$
 		\arcsin\left( \frac{\sqrt{12}}{4} \right) = \arcsin\left( \frac{\sqrt{3}}{2} \right) = 60^\circ.
 	$$
