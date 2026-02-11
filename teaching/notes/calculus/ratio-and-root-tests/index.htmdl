@@ -54,7 +54,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 	### solution
 	
-	As usual, we'll start with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there's no equivalent function we know of on the real numbers that we can differentiate in order to apply L'H&#244;pital's rule --- we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
+	As usual, we'll start with the divergence test. As $n \to \infty$, the behavior of $\frac{e^n}{n!}$ is a little complicated. Which grows faster: an exponential, or a factorial? Since the factorial function is defined only on positive integers, there's no equivalent function we know of on the real numbers that we can differentiate in order to apply L'H&#244;pital's Rule --- we just have to reason this one out. Both $e^n$ and $n!$ are products of $n$ numbers: we have
 	
 	$$
 		\frac{e^n}{n!} = \frac{e \cdot e \cdots e \cdot e}{n \cdot (n-1) \cdots 2 \cdot 1}.

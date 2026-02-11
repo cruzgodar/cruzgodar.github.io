@@ -1,8 +1,8 @@
 ### nav-buttons
 
-It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the chain rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
+It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the Chain Rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
 
-Through the sum, difference, product, and quotient rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The chain rule will let us differentiate compositions, but we'll have to identify them in order to use it! Let's review just a bit about that.
+Through the sum, difference, product, and Quotient Rules, we know how to differentiate functions made by combining other differentiable functions via addition, subtraction, multiplication, and division. Unlike numbers, where those are the only four basic methods of combination, functions have one more: composition. The Chain Rule will let us differentiate compositions, but we'll have to identify them in order to use it! Let's review just a bit about that.
 
 Sometimes, functions can only tell part of a story that we're trying to understand. Say $F(a)$ is a function that outputs the number of foxes in a certain acre $a$ of forest, and $D(f)$ is a function that tells us the number of fox dens given a certain number of foxes $f$ in an area. By plugging the output of $F$ into $D$, we get a function $D(F(a))$ that directly tells us the number of fox dens in an acre of forest directly. Writing it in this way is sometimes a little awkward, though, since we can't refer to the function on its own without also writing the input $a$. To that end, we define the **composition** of $D$ with $F$ as a function $D \circ F$, where $(D \circ F)(a) = D(F(a))$.
 
@@ -62,7 +62,7 @@ Sometimes, functions can only tell part of a story that we're trying to understa
 
 
 
-The chain rule will tell us how to differentiate compositions, but we'll need to identify each separate part in this way in order to use it.
+The Chain Rule will tell us how to differentiate compositions, but we'll need to identify each separate part in this way in order to use it.
 
 
 
@@ -80,7 +80,7 @@ The chain rule will tell us how to differentiate compositions, but we'll need to
 
 Okay, let's walk through that one. To differentiate a composition, first identify the inner and outer functions. Then differentiate each, plug undifferentiated $g$ into $f'$, and multiply the two together.
 
-### ex "the chain rule"
+### ex "the Chain Rule"
 
 	Find the derivatives of the following functions.
 
@@ -96,7 +96,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 		&= e^{\frac{1}{x}} \left( -\frac{1}{x^2} \right).
 	$$
 
-	2. Let's look at a slightly different way to think about the chain rule that some students find more pleasant. By rewriting the inside function $g(x)$ as a variable $u$, we can write the chain rule as
+	2. Let's look at a slightly different way to think about the Chain Rule that some students find more pleasant. By rewriting the inside function $g(x)$ as a variable $u$, we can write the Chain Rule as
 
 	$$
 		d/dx[f(u)] = f'(u)u'(x).
@@ -114,7 +114,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 		f(u) = u \ln(u).
 	$$
 
-	Now we can write down the chain rule, and the advantage is that we can handle $f(u)$ like a normal function.
+	Now we can write down the Chain Rule, and the advantage is that we can handle $f(u)$ like a normal function.
 
 	$$
 		df/dx &= df/du \cdot du/dx
@@ -122,7 +122,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 		&= \left( \ln(u) + 1 \right) \left( 2x \right)
 	$$
 
-	by the product rule. Then we can finally substitute back for $x$:
+	by the Product Rule. Then we can finally substitute back for $x$:
 
 	$$
 		df/dx \left( \ln\left( x^2 + 1 \right) + 1 \right) \left( 2x \right).
@@ -130,9 +130,9 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 
 ###
 
-### exc "the chain rule"
+### exc "the Chain Rule"
 	
-	1. Find the derivative of $$f(x) = \ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the chain rule --- see if you can find them both!)
+	1. Find the derivative of $$f(x) = \ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the Chain Rule --- see if you can find them both!)
 	
 	2. Let $$g(x) = \ln^3(x) = \left( \ln(x) \right)^3$$. Find $g'(x)$.
 
@@ -142,7 +142,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 	
 ###
 
-If we like, we can use the chain rule to writing the derivatives of patterns of functions. For example,
+If we like, we can use the Chain Rule to writing the derivatives of patterns of functions. For example,
 
 $$
 	d/dx \left[ (...)^n \right] &= n(...)^{n-1} \cdot d/dx\left[ (...) \right]
@@ -154,7 +154,7 @@ $$
 
 
 
-Just like we can use the chain rule with the product and quotient rules, we can also use it with... the chain rule. This boils down to compositions of more than two functions, like $\sin(\cos(\tan(x)))$. In general, it's easiest to peel off functions from the outside in. Let's see how this works.
+Just like we can use the Chain Rule with the product and Quotient Rules, we can also use it with... the Chain Rule. This boils down to compositions of more than two functions, like $\sin(\cos(\tan(x)))$. In general, it's easiest to peel off functions from the outside in. Let's see how this works.
 
 
 
@@ -164,7 +164,7 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 
 	### solution
 	
-	Okay, so what does the chain rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
+	Okay, so what does the Chain Rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
 	
 	$$
 		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) d/dx[\cos(\tan(x))].
@@ -196,7 +196,7 @@ Just like we can use the chain rule with the product and quotient rules, we can 
 		d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2} d/dx \left[ e^{x^3+2} + 1 \right].
 	$$
 	
-	Now we can handle that inner function. The constant $1$ differentiates to zero, but the exponential is another chain rule derivative.
+	Now we can handle that inner function. The constant $1$ differentiates to zero, but the exponential is another Chain Rule derivative.
 	
 	$$
 		d/dx \left[ e^{x^3+2} + 1 \right] &= e^{x^3+2} d/dx \left[ x^3 + 2 \right]

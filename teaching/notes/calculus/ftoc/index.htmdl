@@ -66,7 +66,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 		F(x) = \int_2^x \frac{1}{t^3 + t}\,\d t.
 	$$
 	
-	Now we can rewrite the question as finding $d/dx F(\sin(x))$. And we know how to handle this: it's a chain rule problem! We have
+	Now we can rewrite the question as finding $d/dx F(\sin(x))$. And we know how to handle this: it's a Chain Rule problem! We have
 	
 	$$
 		d/dx F(\sin(x)) &= F'(\sin(x))\cos(x)
@@ -86,7 +86,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 	### solution
 	
-	The roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,\d x$. We're trying to find $d/dt [F(\sqrt{t})]$, which by the chain rule is
+	The roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,\d x$. We're trying to find $d/dt [F(\sqrt{t})]$, which by the Chain Rule is
 	
 	$$
 		F'(\sqrt{t}) \cdot \frac{1}{2\sqrt{t}} &= \left. \left[ \sin(x) \right] \right|_{\sqrt{t}} \cdot \frac{1}{2\sqrt{t}}
@@ -110,7 +110,7 @@ Now for the more memorable part of the Fundamental Theorem. We need part I to te
 
 
 
-The vertical bar just means plug in the top and bottom numbers and subtract the two. You've probably seen something like this from calculus I, except without a top number.
+The vertical bar just means plug in the top and bottom numbers and subtract the two. You've probably seen something like this from Calculus I, except without a top number.
 
 
 

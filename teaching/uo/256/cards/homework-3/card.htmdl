@@ -24,7 +24,7 @@
 
 	- - -
 
-	#. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
+	#. Using the multivariable Chain Rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
 	
 
 

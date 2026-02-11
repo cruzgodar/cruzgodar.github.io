@@ -60,7 +60,7 @@ $$
 	\vec{r}(t) = \left< a + t\cos(\theta),\quad b + t\sin(\theta),\quad f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right>.
 $$
 
-That may not look too nice, but we can do this! We're interested in the tangent line to this curve at $(a, b)$, and the direction vector for that line is $\vec{r}'(0)$ (since $\vec{r}(0) = \left< a, b, f(a, b) \right>$). The derivatives of the first two components are $\cos(\theta)$ and $\sin(\theta)$, but the third is more tricky: it requires taking the derivative of a variable inside both arguments of a function. But we just figured out how to do this in the previous section --- the multivariable chain rule! We have
+That may not look too nice, but we can do this! We're interested in the tangent line to this curve at $(a, b)$, and the direction vector for that line is $\vec{r}'(0)$ (since $\vec{r}(0) = \left< a, b, f(a, b) \right>$). The derivatives of the first two components are $\cos(\theta)$ and $\sin(\theta)$, but the third is more tricky: it requires taking the derivative of a variable inside both arguments of a function. But we just figured out how to do this in the previous section --- the multivariable Chain Rule! We have
 
 $$
 	\left. d/dt \left[ f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right] \right|_{t = 0} &= f_x(a, b) \left. d/dt \left[ a + t\cos(\theta) \right]\right|_{t = 0} + f_y(a, b) \left. d/dt \left[ b + t\sin(\theta) \right]\right|_{t = 0}

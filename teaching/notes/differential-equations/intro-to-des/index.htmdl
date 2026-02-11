@@ -2,7 +2,7 @@
 
 
 
-You may have already seen differential equations in calculus II, but even if you have, it's probably been a while. Let's start from the beginning, and properly define the things we'll be devoting so much time to.
+You may have already seen differential equations in Calculus II, but even if you have, it's probably been a while. Let's start from the beginning, and properly define the things we'll be devoting so much time to.
 
 
 
@@ -26,7 +26,7 @@ $$
 	&= ty(t).
 $$
 
-It shouldn't be too surprising that we have the free parameter $c$ in our solution: when we specify a function in terms of its first derivative, finding it usually involves integrating, and integrating means writing $+C$ at some point. Here, our value of $c$ isn't being added to the function --- it's being multiplied. We'll see why momentarily, but it's a good heads-up that things won't be quite as simple as integrals in calculus II.
+It shouldn't be too surprising that we have the free parameter $c$ in our solution: when we specify a function in terms of its first derivative, finding it usually involves integrating, and integrating means writing $+C$ at some point. Here, our value of $c$ isn't being added to the function --- it's being multiplied. We'll see why momentarily, but it's a good heads-up that things won't be quite as simple as integrals in Calculus II.
 
 
 
@@ -36,7 +36,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 
 	### solution
 	
-	We know from calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
+	We know from Calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of Calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
 	
 	$$
 		h(t) &= \int -10t\,\d t

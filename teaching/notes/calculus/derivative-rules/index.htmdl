@@ -20,7 +20,7 @@ This is a good start! Just like we did with limits, let's set our sights on poly
 
 
 
-### thm "the power rule"
+### thm "the Power Rule"
 	
 	Let $f(x) = x^n$, where $n$ is a positive integer. Then $f'(x) = nx^{n-1}$.
 	
@@ -56,7 +56,7 @@ Next, let's get the rest of the glue we need to get to polynomials --- specifica
 
 
 
-### thm "the sum, difference, and constant multiple rules"
+### thm "the Sum, Difference, and Constant Multiple Rules"
 	
 	Let $f$ and $g$ be differentiable functions and $c$ a constant number.
 	
@@ -74,7 +74,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 
 
-### ex "the sum, difference, and constant multiple rules"
+### ex "the Sum, Difference, and Constant Multiple Rules"
 	
 	Find $$\frac{\d ^2}{\d x^2}[2x^2 - x]$$.
 
@@ -110,7 +110,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	
 ###
 
-### exc "the sum, difference, and constant multiple rules"
+### exc "the Sum, Difference, and Constant Multiple Rules"
 	
 	Find $$\frac{\d ^2}{\d t^2}[t^2 - 5t + 2]$$.
 	
@@ -124,7 +124,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 
 
-### thm "the product rule"
+### thm "the Product Rule"
 	
 	Let $f$ and $g$ be differentiable functions. Then
 	
@@ -136,7 +136,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 
 
-### ex "the product rule"
+### ex "the Product Rule"
 	
 	Let $P(t)$ be a function that gives the population of a town, $t$ years after we start measuring. Given that
 	
@@ -148,7 +148,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 	### solution
 	
-	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and product rules, we have
+	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and Product Rules, we have
 	
 	$$
 		P'(t) &= d/dt[ 3000(3t^2 + 1)(t + 2) ]
@@ -164,11 +164,11 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 		&= 3000 \left( 9t^2 + 12t + 1 \right).
 	$$
 	
-	While we could also have foiled out the initial expression, this is a nice demonstration of the product rule.
+	While we could also have foiled out the initial expression, this is a nice demonstration of the Product Rule.
 	
 ###
 
-### exc "the product rule"
+### exc "the Product Rule"
 	
 	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $$d/dx[f(x)g(x)]$$.
 	
@@ -180,7 +180,7 @@ Our last topic for this section is a rule that lets us differentiate one functio
 
 
 
-### thm "the quotient rule"
+### thm "the Quotient Rule"
 	
 	Let $f$ and $g$ be differentiable functions. Then
 	
@@ -194,11 +194,11 @@ Our last topic for this section is a rule that lets us differentiate one functio
 
 
 
-I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes along with the quotient rule: "Low D high minus high D low, square the bottom and away we go". Here, high and low (and also bottom) refer to the numerator and denominator of the ratio we're differentiating, and D just stands for derivative.
+I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes along with the Quotient Rule: "Low D high minus high D low, square the bottom and away we go". Here, high and low (and also bottom) refer to the numerator and denominator of the ratio we're differentiating, and D just stands for derivative.
 
 
 
-### ex "the quotient rule"
+### ex "the Quotient Rule"
 	
 	Find $$d/dx \left[\frac{2x^2}{1 - x}\right]$$.
 
@@ -216,14 +216,14 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 	
 ###
 
-### exc "the quotient rule"
+### exc "the Quotient Rule"
 	
 	Find $$d/dx \left[\frac{1 - x}{2x^2}\right]$$.
 	
 ###
 
 
-The quotient rule has one immediate application: we can find the derivative of $x^n$ for negative integers $n$. If $n$ is a negative integer, then $-n$ is a positive integer, and $x^n = \frac{1}{x^{-n}}$. That may seem like a strange way to write it, but now we can apply the quotient rule:
+The Quotient Rule has one immediate application: we can find the derivative of $x^n$ for negative integers $n$. If $n$ is a negative integer, then $-n$ is a positive integer, and $x^n = \frac{1}{x^{-n}}$. That may seem like a strange way to write it, but now we can apply the Quotient Rule:
 
 $$
 	d/dx \left[\frac{1}{x^{-n}}\right] &= \frac{0(x^{-n}) - 1(-nx^{-n - 1})}{(x^{-n})^2}

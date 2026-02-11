@@ -32,7 +32,7 @@ Solutions to the system are curves that follow the field at every point, like th
 
 This time, a solution is just the path that one specific particle takes over its lifetime.
 
-Let's see if we can solve these systems in general. If $A$ is a $1 \times 1$ matrix (i.e. a number), then the "system" is of the form $x' = ax$, and the general solution is $x = ce^{at}$ for any constant $c$ (we can derive this by the technique of separation of variables from calculus II). Inspired by this, let's guess that a solution to a generic system $\vec{x}' = A\vec{x}$ is of the form $ce^{\lambda t}\vec{v}$ for some fixed number $\lambda$, an arbitrary constant $c$, and a vector $\vec{v}$. If that's the case, then we have
+Let's see if we can solve these systems in general. If $A$ is a $1 \times 1$ matrix (i.e. a number), then the "system" is of the form $x' = ax$, and the general solution is $x = ce^{at}$ for any constant $c$ (we can derive this by the technique of separation of variables from Calculus II). Inspired by this, let's guess that a solution to a generic system $\vec{x}' = A\vec{x}$ is of the form $ce^{\lambda t}\vec{v}$ for some fixed number $\lambda$, an arbitrary constant $c$, and a vector $\vec{v}$. If that's the case, then we have
 
 $$
 	\vec{x}' &= A\vec{x}

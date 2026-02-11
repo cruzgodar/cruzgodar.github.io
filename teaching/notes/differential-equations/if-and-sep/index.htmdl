@@ -36,7 +36,7 @@ At first glance, our first solving method can seem like some sort of black magic
 		\mu(t)y'(t) + \mu'(t)y(t) = t\mu(t).
 	$$
 	
-	It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the product rule! Specifically, we can rewrite it as
+	It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the Product Rule! Specifically, we can rewrite it as
 	
 	$$
 		d/dt \left[ \mu(t)y(t) \right] = t\mu(t),
@@ -86,7 +86,7 @@ At first glance, our first solving method can seem like some sort of black magic
 
 
 
-This was a really slick way to solve the problem, but it couldn't be less general. If this is going to help us solve more DEs than this specific one, we need to know exactly how to find the particular value of $\mu(t)$ that makes the left side of the equation collapse with the product rule. First of all, we need $y$ and $y'$ to be separate for the product rule to work, and there can't be any higher derivatives. That's exactly what it means to be a first-order linear DE, and the general form of one of those is
+This was a really slick way to solve the problem, but it couldn't be less general. If this is going to help us solve more DEs than this specific one, we need to know exactly how to find the particular value of $\mu(t)$ that makes the left side of the equation collapse with the Product Rule. First of all, we need $y$ and $y'$ to be separate for the Product Rule to work, and there can't be any higher derivatives. That's exactly what it means to be a first-order linear DE, and the general form of one of those is
 
 $$
 	y' + p(t)y = q(t).
@@ -98,7 +98,7 @@ $$
 	\mu(t)y' + \mu(t)p(t)y = \mu(t)q(t).
 $$
 
-For the left side to collapse with the product rule, we need the coefficient of $y$ to be equal to $\mu'(t)$: specifically,
+For the left side to collapse with the Product Rule, we need the coefficient of $y$ to be equal to $\mu'(t)$: specifically,
 
 $$
 	\mu'(t) &= \mu(t)p(t)
@@ -149,7 +149,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	2. Set $\mu(t) = \exp \left( \int p(t)\,\d t \right)$ and evaluate the integral to find $\mu$. Since any value of $C$ works, just pick a convenient one (usually $C = 0$).
 	
-	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the product rule, resulting in $d/dt [\mu(t) y] = \mu(t)q(t)$.
+	3. Multiply both sides of the DE by $\mu(t)$. The left side should now collapse from the Product Rule, resulting in $d/dt [\mu(t) y] = \mu(t)q(t)$.
 	
 	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's part of the solution.
 	
@@ -468,7 +468,7 @@ Not so bad! Let's work through another example.
 
 With a few solving techniques in the toolbelt, we're ready to look at applications of first-order DEs. There are dozens upon hundreds of these --- any situation where it's easier to find a formula for the rate of change of a quantity than a formula for the quantity itself is a candidate --- but we'll stick to one of the classics for now.
 
-Unlike the tank problems from calculus II that involve finding the work done by pumping all of the liquid out of a tank, our tank problems will see the volume remain constant. What we're concerned with instead is the analyzing the mixing of two substances and determining the concentration over time. Let's get straight into an example.
+Unlike the tank problems from Calculus II that involve finding the work done by pumping all of the liquid out of a tank, our tank problems will see the volume remain constant. What we're concerned with instead is the analyzing the mixing of two substances and determining the concentration over time. Let's get straight into an example.
 
 
 

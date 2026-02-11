@@ -2,13 +2,13 @@
 
 
 
-We've already been using the chain rule in multivariable calculus: $p/px\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
+We've already been using the Chain Rule in multivariable calculus: $p/px\left[ \sin\left( x^2y \right) \right] = \cos\left( x^2y \right)(2xy)$ is a direct application of it. In symbols, if $x(t)$ is a function of $t$ and $f(x)$ is a single-variable function of $x$, then we can write
 
 $$
 	df/dt = df/dx \cdot dx/dt.
 $$
 
-For a function of more than one variable, though, there can be more complicated things that happen. What if $f(x, y)$ is a function of multiple variables and both $x$ and $y$ are functions of $t$? Something like the chain rule ought to apply, but we'll need to dig a bit deeper to find out exactly what. To get a rough sense of what we're talking about, if $f(x, y) = \sin\left( x^2y \right)$ as before, but $x(t) = t^2$ and $y(t) = 1 - t$, then
+For a function of more than one variable, though, there can be more complicated things that happen. What if $f(x, y)$ is a function of multiple variables and both $x$ and $y$ are functions of $t$? Something like the Chain Rule ought to apply, but we'll need to dig a bit deeper to find out exactly what. To get a rough sense of what we're talking about, if $f(x, y) = \sin\left( x^2y \right)$ as before, but $x(t) = t^2$ and $y(t) = 1 - t$, then
 
 $$
 	f(x(t), y(t)) = \sin\left( t^4(1 - t) \right) = \sin\left( t^4 - t^5 \right),
@@ -52,13 +52,13 @@ that is, we can track the $x$ and $y$ changes *separately*, and then just add th
 
 That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $pz/px$ and $pz/py$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
 
-### exc "the multivariable chain rule"
+### exc "the multivariable Chain Rule"
 
 	The pressure $P$ of a gas is related to its temperature and volume by the **ideal gas law**: $PV = kT$, where $k$ is a constant dependent on the quantity of gas. A gas with $k = 4$ is in an expanding container that is heating up. When the container is $10\, \text{cm}^3$ large and at a temperature of $400\,\text{K}$, and expanding at a rate of $3\,\frac{\text{cm}^3}{\text{s}}$ and getting hotter at a rate of $2\,\frac{\text{K}}{\text{s}}$, how fast is the pressure changing?
 
 	### solution
 
-	We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable chain rule. We have $P = 4\frac{T}{V}$, so
+	We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable Chain Rule. We have $P = 4\frac{T}{V}$, so
 
 	$$
 		dP/dt &= pP/pT dT/dt + pP/pV dV/dt
@@ -82,15 +82,15 @@ This tells us how to handle functions of two variables, where each of those two 
 
 ### image -i graphics/tree-1.webp graphics/tree-2.webp
 
-Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable chain rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $pz/pb$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
+Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable Chain Rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $pz/pb$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
 
 $$
 	pz/pb = pz/px px/pb + pz/py py/pb.
 $$
 
-### exc "the multivariable chain rule"
+### exc "the multivariable Chain Rule"
 
-	A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a, b)$, $y = y(b)$, and $z = z(b, c, s)$. Moreover, $b = b(t, s)$ and $c = c(s)$. Express $pw/ps$ using the multivariable chain rule.
+	A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a, b)$, $y = y(b)$, and $z = z(b, c, s)$. Moreover, $b = b(t, s)$ and $c = c(s)$. Express $pw/ps$ using the multivariable Chain Rule.
 
 	### solution
 

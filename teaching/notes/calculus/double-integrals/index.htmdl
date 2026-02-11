@@ -112,7 +112,7 @@ We evaluate nested integrals like these from the inside out; without any further
 
 ###
 
-A notion in calculus II that is occasionally omitted is the **average value** of a function $f(x)$. We compute the average of a list of numbers by adding them all up and dividing by the number of numbers, and when we do the same thing for a function, "adding them all up" gets replaced with integration. Here, we can define the average value of a function over a region.
+A notion in Calculus II that is occasionally omitted is the **average value** of a function $f(x)$. We compute the average of a list of numbers by adding them all up and dividing by the number of numbers, and when we do the same thing for a function, "adding them all up" gets replaced with integration. Here, we can define the average value of a function over a region.
 
 ### def "average value"
 
@@ -154,7 +154,7 @@ of $f(x, y)$ on $R = [a, b] \times [c, d]$, we're taking slices of $f$ parallel 
 
 We're lightly shading the whole rectangle here, but the areas of focus are the colored line segments. When we change $x_0$, we're moving the purple slice --- it represents a single cross-sectional area under the graph of $f$. The inner integral (the $\d y$ one) computes that area in terms of $x$, and then the outer $\d x$ integral adds those areas up to find the volume.
 
-As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the blue lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the blue lines left and right, but we can't change the fact that they're straight.
+As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in Calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the blue lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the blue lines left and right, but we can't change the fact that they're straight.
 
 On the other hand, the red lines are only lines because every integral we take $\d y$ has *exactly the same bounds*. We take a different integral for every different value of $x$, but every one runs from $y = c$ to $y = d$. And here's the one degree of freedom available to us: we can't change the fact that we're integrating a cross-section of the graph between two $y$-values, but we can pick different $y$-values depending on the $x$-value.
 
@@ -366,7 +366,7 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 		&= \int_{\pi/12}^{5\pi/12} 2\sin(2\theta)\cos(\theta)\,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta)\,\d\theta.
 	$$
 
-	We can apply a trig formula often used in calculus II to split up the $\sin(2\theta)$ so it's more like the rest of the integral:
+	We can apply a trig formula often used in Calculus II to split up the $\sin(2\theta)$ so it's more like the rest of the integral:
 
 	$$
 		&= \int_{\pi/12}^{5\pi/12} 2\left( 2\sin(\theta)\cos(\theta) \right)\cos(\theta)\,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta) \,\d\theta

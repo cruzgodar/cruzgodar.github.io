@@ -50,7 +50,7 @@ When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solvi
 
 
 
-We're now faced with the question of what a partial derivative is --- it's a topic from calculus IV, so you may have seen it already, but it's thankfully not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $g$ as
+We're now faced with the question of what a partial derivative is --- it's a topic from Calculus IV, so you may have seen it already, but it's thankfully not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $g$ as
 
 $$
 	g(x) = cx^2
@@ -96,7 +96,7 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 
 	### solution
 	
-	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the quotient rule, we have
+	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the Quotient Rule, we have
 	
 	$$
 		\frac{\p y'}{\p y} &= \frac{p/py \left[ xe^y - y \right]\left(\sin(xy) + 2\right) - \left( xe^y - y \right)p/py\left[\sin(xy) + 2\right]}{\left(\sin(xy) + 2\right)^2}
@@ -112,11 +112,11 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 
 ## Exact Differential Equations
 
-Our final solving method for first-order DEs looks quite a lot like integrating factors. Instead of collapsing the left side of the equation with the product rule, though, we'll be using the *chain* rule. As with all of our methods, we'll open with an example before writing down the particular steps, but first, we need a brief result from calculus IV.
+Our final solving method for first-order DEs looks quite a lot like integrating factors. Instead of collapsing the left side of the equation with the Product Rule, though, we'll be using the *chain* rule. As with all of our methods, we'll open with an example before writing down the particular steps, but first, we need a brief result from Calculus IV.
 
 
 
-### thm "the multivariable chain rule"
+### thm "the multivariable Chain Rule"
 	
 	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentiable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
 	
@@ -134,17 +134,17 @@ $$
 	(f(x, y))(t) = f(x(t), y(t)).
 $$
 
-It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the chain rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
+It also only takes in $t$, so it's a function of one variable --- hence the use of $d$ and not $\partial$ on the left side of the equation. The right side is just the Chain Rule applied to both the input variables of $f$ --- when $f$ is a function of just $x$, it says
 
 $$
 	\frac{d f(x)}{dt} = df/dx dx/dt,
 $$
 
-which is just the chain rule from calculus I.
+which is just the Chain Rule from Calculus I.
 
 
 
-### ex "the multivariable chain rule"
+### ex "the multivariable Chain Rule"
 	
 	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
 	
@@ -182,15 +182,15 @@ which is just the chain rule from calculus I.
 	
 ###
 
-### exc "the multivariable chain rule"
+### exc "the multivariable Chain Rule"
 	
-	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $$\frac{d g(x, y)}{dt}$$ with the multivariable chain rule.
+	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $$\frac{d g(x, y)}{dt}$$ with the multivariable Chain Rule.
 	
 ###
 
 
 
-Equipped with the multivariable chain rule, we're ready to dive into our first example of the new solving method.
+Equipped with the multivariable Chain Rule, we're ready to dive into our first example of the new solving method.
 
 
 
@@ -226,7 +226,7 @@ Equipped with the multivariable chain rule, we're ready to dive into our first e
 		p\psi/pt + p\psi/py dy/dt = 0.
 	$$
 	
-	Written this way, it's hard not to see the similarity to the multivariable chain rule. In fact, all we're missing is a factor of the form $dt/dt$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
+	Written this way, it's hard not to see the similarity to the multivariable Chain Rule. In fact, all we're missing is a factor of the form $dt/dt$ on the first term, but that's just $1$ (or equivalently, only the second variable of $f$ is a function of $t$ in the first place). Therefore, the entire left side of the equation collapses:
 	
 	$$
 		\frac{d \psi(t, y)}{dt} &= 0
@@ -274,7 +274,7 @@ $$
 	p\psi/py &= g(t, y).
 $$
 
-In the interest of time (and because it's covered in much more depth in calculus IV), let's cut to the chase:
+In the interest of time (and because it's covered in much more depth in Calculus IV), let's cut to the chase:
 
 
 
@@ -384,7 +384,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 		\frac{d \psi(x, y)}{dx} = 0
 	$$
 	
-	from the multivariable chain rule, and so the general solution is
+	from the multivariable Chain Rule, and so the general solution is
 	
 	$$
 		\psi(x, y) = \sin(xy) - e^{2x + y} + \tan(x) + y^2 = c.

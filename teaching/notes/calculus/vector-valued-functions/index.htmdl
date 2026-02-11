@@ -74,7 +74,7 @@ The components of vector-valued functions are largely independent from one anoth
 
 ###
 
-As in calculus 1, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, its derivative is defined to be
+As in Calculus I, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, its derivative is defined to be
 
 $$
 	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r}(t)}{h}

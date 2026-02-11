@@ -474,7 +474,7 @@ Now that we understand how basic algebraic operations work with power series, th
 
 	### solution
 	
-	In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the chain rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
+	In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the Chain Rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
 	
 	$$
 		f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.

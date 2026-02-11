@@ -95,7 +95,7 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 		&= \cos(x^2 + y) (2x).
 	$$
 
-	2. While this might seem like a product rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
+	2. While this might seem like a Product Rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
 
 	$$
 		p/py\left[ e^{2x}\tan(y) \right] &= e^{2x} p/py\left[ \tan(y) \right]

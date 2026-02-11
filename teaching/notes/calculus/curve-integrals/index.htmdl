@@ -396,7 +396,7 @@ $$
 	&= pf/px dx/dt + pf/py dy/dt.
 $$
 
-Back once again, it's our friend the multivariable chain rule! This is the result of differentiating a composition of two functions: here, it says that
+Back once again, it's our friend the multivariable Chain Rule! This is the result of differentiating a composition of two functions: here, it says that
 
 $$
 	d/dt \left[ f\left( \vec{r}(t) \right) \right] = pf/px dx/dt + pf/py dy/dt,
@@ -408,7 +408,7 @@ $$
 	d/dt \left[ f\left( \vec{r}(t) \right) \right] = \G f\left( \vec{r}(t) \right) \bullet \vec{r}'(t).
 $$
 
-As a remark, even if this didn't help us with our current problem (and it absolutely does), this is a *lovely* presentation of the multivariable chain rule. The single-variable chain rule
+As a remark, even if this didn't help us with our current problem (and it absolutely does), this is a *lovely* presentation of the multivariable Chain Rule. The single-variable Chain Rule
 
 $$
 	d/dt \left[ f(r(t)) \right] = f'(r(t)) \cdot r'(t)

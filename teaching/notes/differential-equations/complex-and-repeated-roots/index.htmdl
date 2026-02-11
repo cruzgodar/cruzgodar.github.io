@@ -375,7 +375,7 @@ As a final example, we'll look at applying reduction of order to a more complica
 		y'' - \frac{1}{t} + \frac{1}{t^2}y = 0
 	$$
 	
-	so that there is no coefficient on $y''$, then our previous work lets us skip the extended product rule applications and jump straight to
+	so that there is no coefficient on $y''$, then our previous work lets us skip the extended Product Rule applications and jump straight to
 	
 	$$
 		y_1(t)v'' + (2y_1'(t) + p(t)y_1(t))v' = 0.

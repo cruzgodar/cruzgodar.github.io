@@ -66,7 +66,7 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	
 	on the interval $[0, 2]$.
 	
-	As always, we start by differentiating. Through a product and chain rule, we have
+	As always, we start by differentiating. Through a Product and Chain Rule, we have
 	
 	$$
 		A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}

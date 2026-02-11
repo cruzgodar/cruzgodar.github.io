@@ -1,12 +1,12 @@
 ### nav-buttons
 
-At the moment, the only reasonable way we can calculate definite integrals is with the Fundamental Theorem of Calculus, which requires taking an antiderivative. In calculus I, there were some derivatives we had to memorize, like $d/dx[\sin(x)] = \cos(x)$, and a few rules like the product and chain rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
+At the moment, the only reasonable way we can calculate definite integrals is with the Fundamental Theorem of Calculus, which requires taking an antiderivative. In Calculus I, there were some derivatives we had to memorize, like $d/dx[\sin(x)] = \cos(x)$, and a few rules like the product and Chain Rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
 
 $$
 	\int \cos(x)\,\d x = \sin(x) + C.
 $$
 
-What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we'll start with the simplest and arguably the most useful: the opposite of the chain rule.
+What we have yet to develop are the rules analogous to the ones for derivatives. In this section, we'll start with the simplest and arguably the most useful: the opposite of the Chain Rule.
 
 
 
@@ -28,7 +28,7 @@ What we have yet to develop are the rules analogous to the ones for derivatives.
 
 
 
-This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is present as a factor in the integral.
+This really is just the Chain Rule backward: since $F' = f$, we have $d/dx[F(g(x))] = f(g(x))g'(x)$. In practice, $u$-sub lets us integrate a composition, as long as the derivative of the inside function is present as a factor in the integral.
 
 
 
@@ -62,7 +62,7 @@ This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x
 
 	### solution
 	
-	Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the chain rule, and so the integral becomes
+	Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the Chain Rule, and so the integral becomes
 	
 	$$
 		\int u^3\,\d u &= \frac{u^4}{4} + C
@@ -74,7 +74,7 @@ This really is just the chain rule backward: since $F' = f$, we have $d/dx[F(g(x
 
 
 
-While the chain rule works for all compositions, $u$-sub works only in the particular situations where the derivative of the inside function is present on the outside. Unfortunately, if this isn't the case, there's usually not a way to get around it.
+While the Chain Rule works for all compositions, $u$-sub works only in the particular situations where the derivative of the inside function is present on the outside. Unfortunately, if this isn't the case, there's usually not a way to get around it.
 
 
 

@@ -58,7 +58,7 @@ There are two important things to note here: first, the divergence test says not
 
 ## The Integral Test
 
-There's a good chance you'd already seen a $\Sigma$ symbol before this course: Riemann sums are usually introduced in calculus II in order to define integration. By now, though, we have a robust theory of integration --- one that doesn't require resorting to Riemann sums every time we need to take an integral. We can therefore turn things around, using integrals to tell us about the convergence of sums.
+There's a good chance you'd already seen a $\Sigma$ symbol before this course: Riemann sums are usually introduced in Calculus II in order to define integration. By now, though, we have a robust theory of integration --- one that doesn't require resorting to Riemann sums every time we need to take an integral. We can therefore turn things around, using integrals to tell us about the convergence of sums.
 
 As a brief refresher, Riemann sums are an approximation of the area under a curve. Given a function $f$ on an interval $[a, b]$, we choose a width $\Delta x$ and divide $[a, b]$ into segments of size $\Delta x$ each. Every one of those subintervals then forms the base of a rectangle whose height is determined by the value of $f$ at some point in the subinterval.
 
@@ -78,7 +78,7 @@ We know from last section that this series diverges --- it's not exactly equal t
 
 Our goal is to find a function whose integral is approximated by a Riemann sum of $\sum_{n = 1}^\infty \frac{1}{n + 4}$. As we mentioned, if we take $\Delta x = 1$, then the terms in a Riemann sum are exactly function values, so we can just take $f(x) = \frac{1}{x + 4}$.
 
-You may remember from calculus II that a Riemann sum is allowed to sample its function value from anywhere in the intervals. Two particular kinds of Riemann sums are called **left** and **right Riemann sums**, named for the way they choose the point to sample: either the left or the right endpoint of each interval.
+You may remember from Calculus II that a Riemann sum is allowed to sample its function value from anywhere in the intervals. Two particular kinds of Riemann sums are called **left** and **right Riemann sums**, named for the way they choose the point to sample: either the left or the right endpoint of each interval.
 
 ### desmos riemannSum2
 

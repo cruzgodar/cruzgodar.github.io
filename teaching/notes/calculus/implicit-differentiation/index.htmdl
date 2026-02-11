@@ -1,6 +1,6 @@
 ### nav-buttons
 
-When we discussed the chain rule, we found the derivative of $\ln\left( x^3 \right)$ in two different ways: by the chain rule, since we knew the derivative of both $\ln(x)$ and $x^3$, and also by using a log rule to bring the exponent of $3$ down in front to form $3\ln(x)$. Let's take just a moment to review that rule and others, starting with just what a log is in the first place.
+When we discussed the Chain Rule, we found the derivative of $\ln\left( x^3 \right)$ in two different ways: by the Chain Rule, since we knew the derivative of both $\ln(x)$ and $x^3$, and also by using a log rule to bring the exponent of $3$ down in front to form $3\ln(x)$. Let's take just a moment to review that rule and others, starting with just what a log is in the first place.
 
 When we write $2^3 = 8$, we're writing a relationship between three numbers. With the way the $3$ is physically written above and to the right of the $2$, we can write them on two points of a triangle, with the 8 on the third point.
 
@@ -34,7 +34,7 @@ $$
 
 ###
 
-Let's now focus in on the $\ln\left( x^3 \right)$ example. The chain rule was certainly helpful to find the derivative, but we had to know the derivative of $x^3$ to find it. What if the function inside the log was more complicated, like $x^x$? Neither the power rule nor the derivative rule helps to find its derivative, since it doesn't have a constant base or a constant exponent. For that reason, the chain rule is out, but we can *still use log rules*. Specifically,
+Let's now focus in on the $\ln\left( x^3 \right)$ example. The Chain Rule was certainly helpful to find the derivative, but we had to know the derivative of $x^3$ to find it. What if the function inside the log was more complicated, like $x^x$? Neither the Power Rule nor the formula for the derivative of an exponential function helps to find its derivative, since it doesn't have a constant base or a constant exponent. For that reason, the Chain Rule is out, but we can *still use log rules*. Specifically,
 
 $$
 	d/dx \left[ \ln\left( x^x \right) \right] &= d/dx \left[ x\ln\left( x \right) \right]
@@ -44,7 +44,7 @@ $$
 	&= \ln(x) + 1
 $$
 
-Interesting! The magic of this idea, though, comes from *also* considering the chain rule, even though it looks like a dead end.
+Interesting! The magic of this idea, though, comes from *also* considering the Chain Rule, even though it looks like a dead end.
 
 $$
 	d/dx \left[ \ln\left( x^x \right) \right] &= \frac{1}{x^x} d/dx \left[ x^x \right].
@@ -70,7 +70,7 @@ That worked like magic! This technique applies to functions of the form $y = f(x
 		\ln(y) = \ln\left( f(x)^{g(x)} \right) = g(x) \ln(f(x)).
 	$$
 
-	2. Differentiate both sides with respect to $x$. Be careful on the left side, though! Since $y$ is an entire function of $x$, we have to use the chain rule. The right side will be a product rule, and also a chain rule with the log, and it will vary enough problem-to-problem that we won't solve it symbolically here.
+	2. Differentiate both sides with respect to $x$. Be careful on the left side, though! Since $y$ is an entire function of $x$, we have to use the Chain Rule. The right side will be a Product Rule, and also a Chain Rule with the log, and it will vary enough problem-to-problem that we won't solve it symbolically here.
 
 	$$
 		d/dx \left[ \ln(y) \right] &= d/dx \left[ g(x) \ln(f(x)) \right]
@@ -146,7 +146,7 @@ We can still talk about slopes of tangent lines, though --- all we need for thos
 
 ###
 
-Implicit differentiation can take a second to get used to, because it usually involves heavy use of the chain rule in situations where it might not seem to apply at first glance.
+Implicit differentiation can take a second to get used to, because it usually involves heavy use of the Chain Rule in situations where it might not seem to apply at first glance.
 
 Let's use $x^2 + y^2 = 1$ as our introductory example. Like we saw in the previous graph, there can be multiple $y$-values for a given $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $dy/dx$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$ isn't a function of $x$, there is a famous result (that's infamously complicated to prove) called the *Implicit Function Theorem* that can help us quite a bit here.
 
@@ -158,7 +158,7 @@ Let's use $x^2 + y^2 = 1$ as our introductory example. Like we saw in the previo
 
 As a concrete example, if $(a, b)$ is a point on the graph of $x^2 + y^2 = 1$ with $b > 0$, then $y = \sqrt{1 - x^2}$ is an explicitly-defined and differentiable function that agrees with $x^2 + y^2 = 1$ on a (possibly very tiny) region containing $(a, b)$. If $b = 0$, any neighborhood of $(a, b)$ will fail the vertical line test, and so no such explicit function exists --- while the Implicit Function Theorem doesn't guarantee that we can't find an explicit defined function if the derivative isn't defined like this, it's nice to see exactly how things could go wrong. Implicit equations for which the Implicit Function Theorem applies are often called **implicit functions** --- that can be a slightly confusing moniker, since they often aren't functions globally, but the meaning of the term is that they are equal to functions locally.
 
-With a fixed point $(a, b)$ and the explicit function $f(x)$ in hand, we can replace every instance of $y$ with $f(x)$ in the equation. Continuing with our circle example, that looks like $x^2 + f(x)^2 = 1$. And at this point, even if we don't have a formula for $f$, we can differentiate both sides of the equation with respect to $x$ by using the chain rule! We have
+With a fixed point $(a, b)$ and the explicit function $f(x)$ in hand, we can replace every instance of $y$ with $f(x)$ in the equation. Continuing with our circle example, that looks like $x^2 + f(x)^2 = 1$. And at this point, even if we don't have a formula for $f$, we can differentiate both sides of the equation with respect to $x$ by using the Chain Rule! We have
 
 $$
 	x^2 + f(x)^2 &= 1
@@ -188,7 +188,7 @@ One of the most striking results of this example is that we differentiated an im
 	
 	To find the derivative $dy/dx$ of a function defined implicitly in terms of $x$ and $y$:
 	
-	1. Take $d/dx$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the chain rule: we rewrite $d/dx[y]$ as $dy/dx$, so for example, $d/dx[\tan(y)] = \sec^2(y) \cdot dy/dx$.
+	1. Take $d/dx$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the Chain Rule: we rewrite $d/dx[y]$ as $dy/dx$, so for example, $d/dx[\tan(y)] = \sec^2(y) \cdot dy/dx$.
 	
 	2. Move all the terms containing $dy/dx$ to one side of the equation and all the other terms to the other side.
 	
@@ -256,7 +256,7 @@ Let's approach one more complicated example before moving on.
 
 	### solution
 	
-	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the product rule, and then the chain rule (since we're differentiating implicitly). We have
+	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the Product Rule, and then the Chain Rule (since we're differentiating implicitly). We have
 	
 	$$
 		x\sin(xy) &= y

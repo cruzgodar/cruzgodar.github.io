@@ -274,7 +274,7 @@ It's high time we stated some properties of the cross product! We'll get the cha
 
 ###
 
-This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **right-hand rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
+This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **Right-Hand Rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
 
 ### desmos crossProduct
 

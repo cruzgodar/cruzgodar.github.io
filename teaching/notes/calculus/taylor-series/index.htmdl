@@ -444,7 +444,7 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 	
 	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(1.5)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
 	
-	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this --- what's the calculus I name for this process?
+	2. With the Taylor series for $f(x) = x^2 + 4x + 4$ centered at $x = 2$, approximate $f(0)$ with a Taylor polynomial of degree $1$ and determine the maximum error. Draw a picture of this --- what's the Calculus I name for this process?
 	
 	3. With the Maclaurin series for $e^x$, approximate $e$ to 4 decimal places.
 	

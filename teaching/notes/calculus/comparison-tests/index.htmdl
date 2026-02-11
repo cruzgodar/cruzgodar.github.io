@@ -234,7 +234,7 @@ If we're asked to determine if a given series converges, we'll try the divergenc
 		&= 1
 	$$
 	
-	by L'H&#244;pital's rule. The series therefore have the same behavior, so $\sum_{n = 1}^\infty \frac{2}{\sqrt{n} + 10}$ diverges.
+	by L'H&#244;pital's Rule. The series therefore have the same behavior, so $\sum_{n = 1}^\infty \frac{2}{\sqrt{n} + 10}$ diverges.
 	
 	3. Multiplying out the denominator, these terms look like $\frac{k^2}{k^2} = 1$ in the limit. That's a clue that this series probably fails the divergence test, and so we don't even need to compare against anything. Properly taking the limit of the terms gives us
 	

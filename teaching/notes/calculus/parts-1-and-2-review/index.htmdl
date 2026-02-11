@@ -14,7 +14,7 @@ If anything doesn't appear correctly, update your browser and then reach out if 
 
 ## Limits
 
-Let's begin by briefly reviewing the two most important topics from calculus I: limits and derivatives. We'll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ "should" have, regardless of the value $f(a)$ actually has, if it's even defined at all. We take a limit by sliding $x$ closer and closer to $a$, from both the right and the left, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there's a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
+Let's begin by briefly reviewing the two most important topics from Calculus I: limits and derivatives. We'll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ "should" have, regardless of the value $f(a)$ actually has, if it's even defined at all. We take a limit by sliding $x$ closer and closer to $a$, from both the right and the left, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there's a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
 
 ### desmos limitExample
 
@@ -86,7 +86,7 @@ Not every function is differentiable --- in order for one to be, it must be cont
 
 Now's a good time to mention that most of the graphs are editable--- for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$! Anything not safe to edit will be hidden, so feel free to poke around with everything you see.
 
-While the formal definition of a limit is quite intricate and often considered outside the scope of calculus I, the definition of a derivative isn't too bad: it's just the limit of slopes of secant lines.
+While the formal definition of a limit is quite intricate and often considered outside the scope of Calculus I, the definition of a derivative isn't too bad: it's just the limit of slopes of secant lines.
 
 
 
@@ -116,19 +116,19 @@ While the formal definition of a limit is quite intricate and often considered o
 		d/dx [f(x) + g(x)] = f'(x) + g'(x)
 	$$
 	
-	3. The product rule:
+	3. The Product Rule:
 	
 	$$
 		d/dx [f(x)g(x)] = f'(x)g(x) + f(x)g'(x).
 	$$
 	
-	4. The quotient rule:
+	4. The Quotient Rule:
 	
 	$$
 		d/dx \left[ \frac{f(x)}{g(x)} \right] = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}
 	$$
 	
-	5. The chain rule:
+	5. The Chain Rule:
 	
 	$$
 		d/dx [f(g(x))] = f'(g(x))g'(x).
@@ -138,11 +138,11 @@ While the formal definition of a limit is quite intricate and often considered o
 
 
 
-The chain rule is a common stumbling point, so let's take a moment to work through an example.
+The Chain Rule is a common stumbling point, so let's take a moment to work through an example.
 
 
 
-### ex "the chain rule"
+### ex "the Chain Rule"
 	
 	Find $$d/dx [\sin(x^3)]$$.
 
@@ -158,13 +158,13 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 	
 ###
 
-### exc "the chain rule"
+### exc "the Chain Rule"
 	
 	Find $$d/dx \left[ \tan(x) \ln(\cos(x^2)) \right]$$.
 
 	### solution
 
-	This is a longer product and chain rule problem: first of all, this is a product of two functions, so we'll start with the product rule. Differentiating $\ln(\cos(x^2))$ requires a lot of use of the chain rule, since it's a nested composition of functions.
+	This is a longer product and Chain Rule problem: first of all, this is a product of two functions, so we'll start with the Product Rule. Differentiating $\ln(\cos(x^2))$ requires a lot of use of the Chain Rule, since it's a nested composition of functions.
 
 	$$
 		d/dx \left[ \tan(x) \ln(\cos(x^2)) \right] &= d/dx \left[ \tan(x) \right] \ln(\cos(x^2)) + \tan(x) d/dx \left[ \ln(\cos(x^2)) \right]
@@ -186,7 +186,7 @@ Some notational quirks to remember: $d/dx$ means derivative with respect to $x$,
 	
 	$$d/dx [0] = 0$$
 	
-	$$d/dx [x^p] = px^{p - 1}, p \neq 0$$ (the power rule)
+	$$d/dx [x^p] = px^{p - 1}, p \neq 0$$ (the Power Rule)
 	
 	$$d/dx [\sin(x)] = \cos(x)$$
 	
@@ -251,7 +251,7 @@ You can <span class="click-tap"><span>click</span><span>tap</span></span> the co
 
 ###
 
-This is just about everything we'll need from calculus I! The last bit is **L'H&#x00F4;pital's rule**, which lets us calculate difficult limits with derivatives.
+This is just about everything we'll need from Calculus I! The last bit is **L'H&#x00F4;pital's rule**, which lets us calculate difficult limits with derivatives.
 
 
 
@@ -269,7 +269,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
 	$$
 	
-	This is **only** allowed when the limit is originally in one of these indeterminate forms. As an important note, we differentiate the top and bottom of the fraction separately --- although it's a quotient, the quotient rule isn't present here.
+	This is **only** allowed when the limit is originally in one of these indeterminate forms. As an important note, we differentiate the top and bottom of the fraction separately --- although it's a quotient, the Quotient Rule isn't present here.
 	
 ###
 
@@ -315,7 +315,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 
 
 
-That's it! If some or most of this feels unfamiliar, I have a full set of calculus I notes that I highly recommend you take a look at.
+That's it! If some or most of this feels unfamiliar, I have a full set of Calculus I notes that I highly recommend you take a look at.
 
 
 ### image-links

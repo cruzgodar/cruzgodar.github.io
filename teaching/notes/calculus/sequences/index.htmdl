@@ -2,7 +2,7 @@
 
 When learning math, it's nice to have an idea of the big picture whenever we can. The definitions and theorems and examples can feel a little like slogging through tall grass, and without a clear picture of where we're going and why, it can all seem a little pointless. To that end, let's start by running down what we'll be building in this course.
 
-Throughout all of calculus I and II, the easiest type of functions to work with were polynomials. Limits, derivatives, and integrals are all easy enough when the function we're operating on is a polynomial, since all three split across addition, so we can evaluate them one term at a time. And every term of a polynomial is a continuous function, so limits are as easy as plugging in the number we're limiting to, and derivatives and integrals just use the power rule.
+Throughout all of Calculus I and II, the easiest type of functions to work with were polynomials. Limits, derivatives, and integrals are all easy enough when the function we're operating on is a polynomial, since all three split across addition, so we can evaluate them one term at a time. And every term of a polynomial is a continuous function, so limits are as easy as plugging in the number we're limiting to, and derivatives and integrals just use the Power Rule.
 
 Of course, it goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there's no way to write any of them as a sum of monomials. But we're not as far off as you might think! Let's take a closer look at $\sin(x)$.
 
@@ -286,7 +286,7 @@ $$\left(1 + \left(-\frac{1}{2}\right)^n \right) = \left(\frac{1}{2}, \frac{5}{4}
 
 $$(1, -1, 1, -1, 1, ...)$$ does not converge.
 
-There's a decent chance that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and calculus I already has enough concepts that are difficult to digest. Now, though, we need to know the formal definition of the limit of a sequence, and calculus III is high-level enough that it's reasonable to introduce. First, though, let's look at the informal definition, which is a good way to think of limits of sequences in practice.
+There's a decent chance that when you first learned about limits, you were never given a precise definition. This is for good reason: limits are usually fairly easy to find by inspection, as in the previous three examples; the actual definition is somewhat finicky and precise; and Calculus I already has enough concepts that are difficult to digest. Now, though, we need to know the formal definition of the limit of a sequence, and Calculus III is high-level enough that it's reasonable to introduce. First, though, let's look at the informal definition, which is a good way to think of limits of sequences in practice.
 
 
 
@@ -438,7 +438,7 @@ Many of the rules of limits for functions also apply to sequences, so we can oft
 	
 	2. This sequence is matched by the function $1 - \frac{1}{x}$. As $x \to \infty$, $\frac{1}{x} \to 0$, so $1 - \frac{1}{x} \to 1$. Since this function converges to $1$, so much the sequence.
 	
-	3. We can use the same strategy as the previous question, but this time we need to apply L'H&#244;pital's rule. Handling the inside of the $\sin$ function first, we have
+	3. We can use the same strategy as the previous question, but this time we need to apply L'H&#244;pital's Rule. Handling the inside of the $\sin$ function first, we have
 	
 	$$
 		\lim_{x \to \infty} \frac{x}{2^x} = \lim_{x \to \infty} \frac{1}{2^x \ln(2)} = 0,

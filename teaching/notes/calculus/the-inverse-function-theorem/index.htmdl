@@ -1,6 +1,6 @@
 ### nav-buttons
 
-With the chain rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions --- rather than putting two functions together, it starts from a single function. What we're talking about here is function inversion, and it's often a point of confusion in algebra, just like composition. So, just like composition, let's review.
+With the Chain Rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions --- rather than putting two functions together, it starts from a single function. What we're talking about here is function inversion, and it's often a point of confusion in algebra, just like composition. So, just like composition, let's review.
 
 
 
@@ -124,7 +124,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 		&= \frac{1}{b} x^{\frac{1}{b} - 1}.
 	$$
 	
-	Now we can use the chain rule to find the derivative of $x^{a/b}$.
+	Now we can use the Chain Rule to find the derivative of $x^{a/b}$.
 	
 	$$
 		d/dx\left[(x^{1/b})^a\right] &= a(x^{1/b})^{a-1} \cdot \frac{1}{b} x^{\frac{1}{b} - 1}

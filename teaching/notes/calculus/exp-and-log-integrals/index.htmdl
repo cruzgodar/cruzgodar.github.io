@@ -120,7 +120,7 @@ but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$
 
 	### solution
 	
-	The product rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
+	The Product Rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
 	
 ###
 

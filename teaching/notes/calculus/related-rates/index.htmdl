@@ -46,7 +46,7 @@ When two related quantities, like side length and area, are both changing over t
 
 ###
 
-The technology behind related rates is just implicit differentiation, but it can look a little different than what we're used to. Typically, the implicit differentiation we need will have more than one variable that depends on the one we're differentiating with respect to. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the previous example, though, $A$, $C$, and $r$ all depend on $t$, and so they all effectively become chain rule problems.
+The technology behind related rates is just implicit differentiation, but it can look a little different than what we're used to. Typically, the implicit differentiation we need will have more than one variable that depends on the one we're differentiating with respect to. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the previous example, though, $A$, $C$, and $r$ all depend on $t$, and so they all effectively become Chain Rule problems.
 
 
 ### exc "related rates"

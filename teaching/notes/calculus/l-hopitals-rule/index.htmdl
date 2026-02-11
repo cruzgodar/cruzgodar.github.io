@@ -26,7 +26,7 @@ First, let's talk about type 1. This will be the simplest type for us to handle,
 
 
 
-### thm "L'H&#244;pital's rule"
+### thm "L'H&#244;pital's Rule"
 	
 	Suppose $$\lim_{x \to a} \frac{f(x)}{g(x)}$$ is of the form $$\frac{0}{0}$$ or $$\frac{\infty}{\infty}$$. Then
 	
@@ -38,11 +38,11 @@ First, let's talk about type 1. This will be the simplest type for us to handle,
 
 
 
-In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, differentiate the top and bottom and try again. Two very important things to note: first of all, you can only do this if the limit is of one of those two forms --- although it'd be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we're **not** using the quotient rule here: the top and bottom of the fraction get differentiated separately.
+In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, differentiate the top and bottom and try again. Two very important things to note: first of all, you can only do this if the limit is of one of those two forms --- although it'd be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we're **not** using the Quotient Rule here: the top and bottom of the fraction get differentiated separately.
 
 
 
-### ex "L'H&#244;pital's rule"
+### ex "L'H&#244;pital's Rule"
 	
 	Evaluate $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
 
@@ -54,7 +54,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 		\lim_{x \to 0} \frac{\sin(x)}{x} = \frac{\sin(0)}{0} = \frac{0}{0}.
 	$$
 	
-	That means we can use L'H&#244;pital's rule to try evaluating a different limit and see if we have more success.
+	That means we can use L'H&#244;pital's Rule to try evaluating a different limit and see if we have more success.
 	
 	$$
 		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{d/dx[\sin(x)]}{d/dx[x]}
@@ -72,7 +72,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 	
 ###
 
-### exc "L'H&#244;pital's rule"
+### exc "L'H&#244;pital's Rule"
 	
 	Evaluate $$\lim_{x \to \infty} \frac{x^3 + 3x^2 + x}{\ln(x)}$$. 
 	
@@ -80,7 +80,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 
 
 
-In order to apply L'H&#244;pital's rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let's start wth type 2 and work our way down.
+In order to apply L'H&#244;pital's Rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let's start wth type 2 and work our way down.
 
 If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
 
@@ -94,11 +94,11 @@ $$
 	\lim_{x \to a} \frac{g(x)}{1/f(x)},
 $$
 
-which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pital's rule will apply.
+which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pital's Rule will apply.
 
 
 
-### ex "L'H&#244;pital's rule in the case $0 \cdot \infty$"
+### ex "L'H&#244;pital's Rule in the case $0 \cdot \infty$"
 	
 	Evaluate $$\lim_{x \to 2^+} (2x - 4)\ln(2x - 4)$$.
 
@@ -110,13 +110,13 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 		\lim_{x \to 2^+} (2x - 4)\ln(2x - 4) = \frac{2x - 4}{\frac{1}{\ln(2x-4)}}.
 	$$
 	
-	We need to differentiate the top and bottom here. The derivative of $2x - 4$ is just $2$, but $\frac{1}{\ln(2x-4)}$ is a quotient rule problem (or a chain rule one, depending on how you approach it). We have
+	We need to differentiate the top and bottom here. The derivative of $2x - 4$ is just $2$, but $\frac{1}{\ln(2x-4)}$ is a Quotient Rule problem (or a Chain Rule one, depending on how you approach it). We have
 	
 	$$
 		d/dx \left[ \frac{1}{\ln(2x-4)} \right] = \frac{-\frac{2}{2x - 4}}{\ln^2(2x - 4)},
 	$$
 	
-	which is looking significantly more complicated. We'll probably have to run L'H&#244;pital's rule one more time at the very least, and there's no guarantee it will get simpler. Instead, let's go back and try the other route.
+	which is looking significantly more complicated. We'll probably have to run L'H&#244;pital's Rule one more time at the very least, and there's no guarantee it will get simpler. Instead, let's go back and try the other route.
 	
 	$$
 		\lim_{x \to 2^+} (2x - 4)\ln(2x - 4) = \frac{\ln(2x-4)}{\frac{1}{2x - 4}}.
@@ -152,11 +152,11 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 
 
 
-We handle the $\infty - \infty$ case similarly: we first force both terms to be fractions, then combine them with common denominators in order to apply L'H&#244;pital's rule.
+We handle the $\infty - \infty$ case similarly: we first force both terms to be fractions, then combine them with common denominators in order to apply L'H&#244;pital's Rule.
 
 
 
-### exc "L'H&#244;pital's rule in the case $\infty - \infty$"
+### exc "L'H&#244;pital's Rule in the case $\infty - \infty$"
 	
 	Evaluate $$\lim_{x \to 0} \left( \frac{1}{\sin(x)} - \frac{1}{x} \right)$$.
 	
@@ -164,11 +164,11 @@ We handle the $\infty - \infty$ case similarly: we first force both terms to be 
 
 
 
-The final type of indeterminate form involves exponents. To handle these, we follow a process reminiscent of logarithmic differentiation: for $\lim_{x \to a} f(x)^{g(x)}$, we set $y = f(x)^{g(x)}$, take the natural log of both sides to get $\ln(y) = g(x) \ln(f(x))$, and then evaluate the limit on the right, possibly with L'H&#244;pital's rule. Since $\ln$ is continuous, $\lim_{x \to a} \ln(y) = \ln(\lim_{x \to a} y)$, so once we've found the limit on the right side, all we need to do is raise $e$ to that power to find the original limit we were looking for.
+The final type of indeterminate form involves exponents. To handle these, we follow a process reminiscent of logarithmic differentiation: for $\lim_{x \to a} f(x)^{g(x)}$, we set $y = f(x)^{g(x)}$, take the natural log of both sides to get $\ln(y) = g(x) \ln(f(x))$, and then evaluate the limit on the right, possibly with L'H&#244;pital's Rule. Since $\ln$ is continuous, $\lim_{x \to a} \ln(y) = \ln(\lim_{x \to a} y)$, so once we've found the limit on the right side, all we need to do is raise $e$ to that power to find the original limit we were looking for.
 
 
 
-### ex "L'H&#244;pital's rule in the case $1^\infty$"
+### ex "L'H&#244;pital's Rule in the case $1^\infty$"
 	
 	Evaluate $$\lim_{x \to \infty} (1 + e^{-x})^{x}$$.
 
@@ -188,7 +188,7 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 		&= \lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}}.
 	$$
 	
-	Unfortunately, we're not quite done yet. While the denominator limits to $1$, the numerator is another case of $0 \cdot \infty$, since $x^2 \to \infty$ and $e^{-x} \to 0$. The easiest way to rewrite this as something that L'H&#244;pital's rule can handle is to move the $e^{-x}$ to the denominator to make it have a positive exponent:
+	Unfortunately, we're not quite done yet. While the denominator limits to $1$, the numerator is another case of $0 \cdot \infty$, since $x^2 \to \infty$ and $e^{-x} \to 0$. The easiest way to rewrite this as something that L'H&#244;pital's Rule can handle is to move the $e^{-x}$ to the denominator to make it have a positive exponent:
 	
 	$$
 		\lim_{x \to \infty} x^2e^{-x} = \lim_{x \to \infty} \frac{x^2}{e^x}.
@@ -200,7 +200,7 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 		\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2x}{e^x}.
 	$$
 	
-	Still $\frac{\infty}{\infty}$, so let's use L'H&#244;pital's rule again.
+	Still $\frac{\infty}{\infty}$, so let's use L'H&#244;pital's Rule again.
 	
 	$$
 		\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2}{e^x}.
@@ -226,7 +226,7 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 	
 ###
 
-### exc "L'H&#244;pital's rule in the case $0^0$"
+### exc "L'H&#244;pital's Rule in the case $0^0$"
 	
 	Evaluate $$\lim_{x \to 0} x^x$$.
 	
