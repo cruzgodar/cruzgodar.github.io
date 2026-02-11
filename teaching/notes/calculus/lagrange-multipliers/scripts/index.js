@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosGray,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -11,9 +12,50 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
+		astroid:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, },
+
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.25, zmax: 0.25 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = xy\{ x^{2/3} + y^{2/3} \leq 1 \}`, color: desmosGray },
+				{ latex: raw`z = xy\{ x^{2/3} + y^{2/3} = 1 \}`, color: desmosPurple, lineWidth: 1.5 },
+
+				{ latex: raw`(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)`, color: desmosOrange, pointSize: 3.5 },
+				{ latex: raw`((\frac{\sqrt{2}}{2})^3, (\frac{\sqrt{2}}{2})^3, \frac{1}{8}), ((-\frac{\sqrt{2}}{2})^3, (-\frac{\sqrt{2}}{2})^3, \frac{1}{8})`, color: desmosRed, pointSize: 3.5 },
+				{ latex: raw`((-\frac{\sqrt{2}}{2})^3, (\frac{\sqrt{2}}{2})^3, -\frac{1}{8}), ((\frac{\sqrt{2}}{2})^3, (-\frac{\sqrt{2}}{2})^3, -\frac{1}{8})`, color: desmosBlue, pointSize: 3.5 },
+			]
+		},
+
+
+
+		tiltedCircle:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, },
+
+			bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = 2x - 2y\{ x^2 + y^2 \leq 4 \}`, color: desmosGray },
+				{ latex: raw`z = 2x - 2y\{ x^2 + y^2 = 4 \}`, color: desmosPurple, lineWidth: 1.5 },
+
+				{ latex: raw`(\sqrt{2}, -\sqrt{2}, 4\sqrt{2})`, color: desmosRed, pointSize: 3.5 },
+				{ latex: raw`(-\sqrt{2}, \sqrt{2}, -4\sqrt{2})`, color: desmosBlue, pointSize: 3.5 },
+			]
+		},
+
+
+
 		levelCurves:
 		{
-			bounds: { xmin: -5, xmax: 25, ymin: -5, ymax: 25 },
+			bounds: { xmin: -5, xmax: 15, ymin: -5, ymax: 25 },
 
 			expressions:
 			[

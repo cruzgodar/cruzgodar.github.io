@@ -4,6 +4,8 @@
 
 This section is an interesting one --- in many multivariable calculus courses, it becomes something of a transitional fossil, since results we develop in later sections will supersede this one. However, I'd like to make the case that Green's Theorem not only stands on its own as a useful theorem, but is also one of the most conceptually valuable results we'll see in calculus: it's the least complex version of a series of results we'll develop over the remaining sections, but that gives it the distinction of being as simple as possible to learn and remember while still containing nearly all of the conceptual nuance we'll see in the future sections' theorems.
 
+
+
 ## Green's Theorem
 
 We spent the last section discussing how curve integrals of a conservative vector field (dotted with the unit tangent vector of the curve) satisfy a theorem that is functionally the Fundamental Theorem of Calculus

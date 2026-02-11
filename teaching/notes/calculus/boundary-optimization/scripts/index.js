@@ -135,42 +135,5 @@ export default function()
 				{ latex: raw`f(x, y) = \frac{xy}{2} - x - y \{0 \leq x \leq 2\}\{ 0 \leq y \leq 2x \}`, color: desmosPurple },
 			]
 		},
-
-		evt2:
-		{
-			use3d: true,
-
-			options: { showPlane3D: false, translucentSurfaces: true },
-
-			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.15 },
-
-			expressions:
-			[
-				{ latex: raw`g(x, y) = -x^2e^{-x^2-y^2}\left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosPurple },
-
-				{ latex: raw`([-2, -1, 1, 2], 0, g([-2, -1, 1, 2], 0))`, color: desmosBlue },
-
-				{ latex: raw`(2\cos(t), 2\sin(t), g(2\cos(t), 2\sin(t)))`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosRed },
-				{ latex: raw`(0, t, g(0, t))`, parametricDomain: { min: -2, max: 2 }, color: desmosOrange },
-				{ latex: raw`(0, [-2, 2], g(0, [-2, 2]))`, color: desmosOrange },
-			]
-		},
-
-		tiltedCircle:
-		{
-			use3d: true,
-
-			options: { showPlane3D: false, },
-
-			bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6 },
-
-			expressions:
-			[
-				{ latex: raw`f(x, y) = 2x - 2y\{ x^2 + y^2 \leq 4 \}`, color: desmosPurple },
-				{ latex: raw`z = 2x - 2y\{ x^2 + y^2 = 4 \}`, color: desmosBlue },
-
-				{ latex: raw`(\sqrt{2}, -\sqrt{2}, 4\sqrt{2}), (-\sqrt{2}, \sqrt{2}, -4\sqrt{2})`, color: desmosRed },
-			]
-		}
 	});
 }

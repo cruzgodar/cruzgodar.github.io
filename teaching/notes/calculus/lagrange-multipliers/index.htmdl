@@ -2,15 +2,125 @@
 
 
 
-We're nearly done with multivariable optimization! It's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to.
+We're nearly done with multivariable optimization! It's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to. We'll open with a twist on the boundary optimization we learned in the last section before developing a new method that will largely supersede it.
 
-When we find the maxima of a function $f(x, y)$ --- for example, if $f(x, y) = 2x + xy + 5y$ that gives the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month --- there is *very* often a relationship between the inputs $x$ and $y$. So often, in fact, that optimization doesn't even make sense to discuss without it in many examples. That includes this one --- we don't really need to take a derivative to see that increasing $x$ and $y$ will always increase $f$, so there aren't local or global maxima when $x \geq 0$ and $y \geq 0$. In this context, though, we'd expect a constraint of the sort $ax + by \leq c$, where $a$ is cost to the store per binocular they stock, $b$ is the cost per birdhouse, and $c$ is the total amount the store has available to spend per month.
+We'd often like to optimize a function $f(x, y)$ over a region whose boundary is composed not just of explicit functions like lines. We handled those in the previous section by plugging each function into $f$ to construct various functions of one variable, then optimizing each of those with the techniques of Calculus I. But if the boundary is a more complicated curve like a circle or ellipse --- or worse, an implicit equation of $x$ and $y$ where neither variable can be isolated at all --- then we have a more difficult task ahead. Let's take a look at how to handle a problem like this.
 
-With a constraint like that, the problem makes much more sense: maximize $f(x, y)$ *given* $ax + by \leq c$. For this problem, let's say that our constraint is $10x + 5y \leq 100$; we can safely assume in this situation that profit will be maximized when $10x + 5y = 100$, since we could always spend more otherwise (unsurprisingly, that may not always be the best idea for the business, but it does maximize profit in this toy example). But more generally, even if we're working with a more complicated function $f$ for which that's not the case, that's okay --- we can always use the techniques of section 7 to find the maxima and minima within the interior of the domain we're examining, leaving only the boundary to examine.
+### ex "a complicated boundary"
 
-It's true that we've already covered optimization on the boundary in the previous section, but all too often, that was a downright sinkhole of a subject, particularly when we had to parameterize the boundary as a function of $\theta$ or anything else. The more complicated the boundary is, the more work it would take, and we would do well to find a more general method to handle it that doesn't require parameterization.
+	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} \leq 1 \right\}$. Find the absolute maximum and minimum of $f$.
 
-To begin to get at such a method, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
+	That's a strange domain! We'll start by setting $\G f = \left< y, x \right> = \vec{0}$, which tells us the only critical point of this function is at $(0, 0)$. That's inside the region, so we do want to consider it; while the second derivative test is unfortunately inconclusive at this point, all we're trying to do is find the global maximum and minimum, and so we can just record that $f(0, 0) = 0$ and move on.
+
+	Now we can focus entirely on the boundary of the region, which is given by $x^{2/3} + y^{2/3} = 1$. It's not so easy to isolate one variable in terms of another, but we can still write the boundary in terms of a single variable by parameterizing it. That equation looks a lot like a circle: if we can write $x$ and $y$ as functions of $t$ so that $x^{2/3} = \cos^2(t)$ and $y^{2/3} = \sin^2(t)$, then we'll have defined our region. Solving, we wind up with
+
+	$$
+		x(t) &= \cos^3(t)
+
+		y(t) &= \sin^3(t),
+	$$
+
+	where $0 \leq t \leq 2\pi$.
+
+	Now we're trying to optimize the function
+
+	$$
+		f(x(t), y(t)) &= \cos^3(t)\sin^3(t)
+
+		&= \left( \cos(t)\sin(t) \right)^3.
+	$$
+	
+	Written that way, we have a shot at recognizing the interior as $\frac{1}{2}\sin(2t)$, making the whole expression
+
+	$$
+		f(x(t), y(t)) &= \frac{1}{8}\sin^3(2t).
+	$$
+
+	To optimize that function, we set $df/dt = 0$ as usual:
+
+	$$
+		d/dt\left[ \frac{1}{8}\sin^3(2t) \right] &= 0
+
+		\frac{3}{8}\sin^2(2t)\cos(2t)(2) &= 0
+
+		\sin^2(2t)\cos(2t) &= 0
+
+		\sin(2t) = 0 \text{ or } \cos(2t) &= 0.
+	$$
+
+	That's a complicated way of saying that $2t$ is an integer multiple of $\frac{\pi}{2}$, which is when one of the coordinates on the unit circle is zero. Solving for $t$, we find $t = \frac{k\pi}{4}$ for any integer $k$. Since $0 \leq t \leq 2\pi$, the result is the four coordinate points $(\pm 1, 0)$ and $(0, \pm 1)$ (when $t$ is a multiple of $\frac{pi}{2}$), along with the additional four points
+
+	$$
+		\left( \left( \pm \frac{\sqrt{2}}{2} \right)^3, \left( \pm \frac{\sqrt{2}}{2} \right)^3 \right).
+	$$
+
+	Now we can check each of these eight to find the largest and smallest values of $f(x, y)$. Immediately, we can determine that the four points with a coordinate of zero will make $f(x, y) = xy = 0$. Each of the remaining points will have an absolute value of
+	
+	$$
+		\left( \frac{\sqrt{2}}{2} \right)^3 \left( \frac{\sqrt{2}}{2} \right)^3 &= \frac{1}{8},
+	$$
+
+	with $f(x, y) = \frac{1}{8}$ when the $x$- and $y$-coordinates have the same sign, and $f(x, y) = -\frac{1}{8}$ when they have opposite signs. In total, the points
+
+	$$
+		\left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right), \left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right)
+	$$
+
+	are tied for the global maximum, and
+
+	$$
+		\left( \left( -\frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right), \left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( -\frac{\sqrt{2}}{2} \right)^3 \right)
+	$$
+
+	are tied for the global minimum.
+
+	### desmos astroid
+
+###
+
+### exc "parameterizing a boundary"
+
+	Find the absolute minimum and maximum of the function $f(x, y) = 2x - 2y$ on the solid circle $x^2 + y^2 \leq 4$ by parameterizing the boundary.
+
+	### solution
+
+	Starting with the critical points, we have
+
+	$$
+		\G f = \left< 2, -2 \right> = \vec{0},
+	$$
+
+	so there are none (which makes some sense; this is a plane, and those don't have any critical points unless they're flat). The boundary of our set is given by the equation $x^2 + 4y^2 = 1$, and while we could solve for one variable and plug it into the equation to get a function of one variable, that would result two separate functions to consider because of the $\pm$ that would appear on the square root. Instead, we can turn this into a function of one variable in a different way: parameterizing the boundary. It's given by
+
+	$$
+		\vec{r}(t) = \left< 2\cos(t), 2\sin(t) \right>, \quad \leq t \leq 2\pi,
+	$$
+
+	and so we can optimize the function by plugging these values in for $x$ and $y$ and solving for critical points in $t$:
+
+	$$
+		f\left( \vec{r}(t) \right) &= 2(2\cos(t)) - 2(2\sin(t))
+
+		&= 4\cos(t) - 4\sin(t)
+
+		d/dt \left[ 4\cos(t) - 4\sin(t) \right] &= -4\sin(t) - 4\cos(t) = 0
+
+		\sin(t) &= -\cos(t)
+
+		\tan(t) &= -1
+
+		t &= \frac{3\pi}{4} \text{ or } t = \frac{7\pi}{4},
+	$$
+
+	meaning the critical points of our function on the boundary lie at $\vec{r}\left( \frac{3\pi}{4} \right) = \left( -\sqrt{2}, \sqrt{2} \right)$ and $\vec{r}\left( \frac{7\pi}{4} \right) = \left( \sqrt{2}, -\sqrt{2} \right)$. Checking their values, the first is a minimum and a second one a maximum.
+
+	### desmos tiltedCircle
+
+###
+
+While boundary parameterization was certainly doable in these examples, we'd really like a better approach --- it's not hard to imagine the complexity of a boundary spiraling well beyond our ability to parameterize it, and even these examples weren't all that easy. With this goal in mind, let's take a step back and approach the challenge of boundary parameterization from a different, slightly more applied perspective.
+
+We opened the last section by thinking about a function $f(x, y) = 2x + xy + 5y$ giving the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month, subject to the constraint $10x + 5y \leq 100$. To get at a different method of optimization that doesn't require boundary parameterization, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
 
 ### desmos levelCurves
 
@@ -18,9 +128,9 @@ Immediately, we can see that we need to pick a small enough value of $c$ that th
 
 Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve is tangent to the boundary.
 
-Let's begin by giving it a name: $g(x, y)$. To handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. If that's the case, then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either --- in other words, that we can move in a single direction that's orthogonal to both $\G f$ and $\G g$. That happens when $\G f$ and $\G g$ are parallel or when they point in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple by the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
+Let's begin by giving the function defining the constraint a name: $g(x, y)$. And to handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. Then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either the graph of $f(x, y)$ or $g(x, y)$ --- in other words, that there's a single direction orthogonal to both $\G f$ and $\G g$. That happens when $\G f$ and $\G g$ point in the same direction or in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple by the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
 
-Okay, let's see how this applies to our example. Given the profit function that we're trying to maximize $f(x, y)$ and the constraint $g(x, y)$, we set up two equations:
+Let's see how this applies to our example. Given the profit function $f(x, y)$ that we're trying to maximize and the constraint $g(x, y)$, we set up two equations:
 
 $$
 	\G f(x, y) &= \lambda \G g(x, y)
@@ -66,11 +176,11 @@ $$
 	y &= 14.
 $$
 
-Our maximum is therefore at $(3, 14)$, and the output is $f(3, 14) = 118$. It may be an oversimplified example, but this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
+Our maximum is therefore at $(3, 14)$, and the output is $f(3, 14) = 118$. Although it's an oversimplified example, this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
 
 Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
 
-### thm -m "Method: Lagrange Multipliers"
+### thm -m "Method: Lagrange multipliers"
 
 	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
 
