@@ -196,15 +196,15 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 ###
 
-Let's return to an example with a circular boundary like we saw in the previous section to see the improvement.
+Let's now return to the astroid example to see the improvement.
 
 ### exc "Lagrange multipliers"
 
-	Find the maximum and minimum of $f(x, y) = 2x^2 + \sqrt{3}xy + 3y^2$, given $x^2 + y^2 = 1$.
+	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} = 1 \right\}$ (i.e. just on the boundary this time). Find the absolute maximum and minimum of $f$.
 
 	### solution
 
-	Instead of parameterizing this in terms of an angle $\theta$, let's just use Lagrange multipliers. We have $g(x, y) = x^2 + y^2 - 1$, and so our system of equations is
+	Instead of parameterizing the boundary in terms of $t$, let's use Lagrange multipliers. We have $f(x, y) = xy$ and $g(x, y) = x^{2/3} + y^{2/3} - 1$, and so our system of equations is
 
 	$$
 		\G f(x, y) &= \lambda \G g(x, y)
@@ -213,33 +213,29 @@ Let's return to an example with a circular boundary like we saw in the previous 
 
 		~
 
-		\left< 4x + \sqrt{3}y, \sqrt{3}x + 6y \right> &= \lambda\left< 2x, 2y \right>
+		\left< y, x \right> &= \lambda\left< \frac{2}{3}x^{-1/3}, \frac{2}{3}y^{-1/3} \right>
 
-		x^2 + y^2 - 1 &= 0
+		x^{2/3} + y^{2/3} - 1 &= 0
 
 		~
 
-		4x + \sqrt{3}y &= 2\lambda x
+		y &= \frac{2}{3}\lambda x^{-1/3}
 
-		\sqrt{3}x + 6y &= 2\lambda y
+		x &= \frac{2}{3}\lambda y^{-1/3}
 
-		x^2 + y^2 - 1 &= 0.
+		x^{2/3} + y^{2/3} - 1 &= 0.
 	$$
 
 	It's often easiest to just eliminate $\lambda$ from complicated systems like this:
 
 	$$
-		\frac{4x + \sqrt{3}y}{2x} &= \lambda
+		\frac{3}{2} y x^{1/3} &= \lambda
 
-		\frac{\sqrt{3}x + 6y}{2y} &= \lambda
+		\frac{3}{2} x y^{1/3} &= \lambda
 
-		\frac{4x + \sqrt{3}y}{2x} &= \frac{\sqrt{3}x + 6y}{2y}
+		\frac{3}{2} y x^{1/3} &= \frac{3}{2} x y^{1/3}
 
-		8xy + 2\sqrt{3}y^2 &= 2\sqrt{3}x^2 + 12xy.
-
-		\sqrt{3}x^2 + 2xy - \sqrt{3}y^2 &= 0.
-
-		x^2 + \frac{2}{\sqrt{3}}xy - y^2 &= 0.
+		x^{2/3} &= y^{2/3}
 	$$
 
 	While we actually can factor this, let's just use the quadratic formula --- it's not amazing, but it certainly gets the job done.
