@@ -10,7 +10,7 @@ We'd often like to optimize a function $f(x, y)$ over a region whose boundary is
 
 	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} \leq 1 \right\}$. Find the absolute maximum and minimum of $f$.
 
-	That's a strange domain! We'll start by setting $\G f = \left< y, x \right> = \vec{0}$, which tells us the only critical point of this function is at $(0, 0)$. That's inside the region, so we do want to consider it; while the second derivative test is unfortunately inconclusive at this point, all we're trying to do is find the global maximum and minimum, and so we can just record that $f(0, 0) = 0$ and move on.
+	That's a strange domain! We'll start by setting $\G f = \left< y, x \right> = \vec{0}$, which tells us the only critical point of this function is at $(0, 0)$. That's inside the region, so we do want to consider it; the discriminant here is $D(0, 0) = -1$, so the second derivative test tells us it's a saddle point.
 
 	Now we can focus entirely on the boundary of the region, which is given by $x^{2/3} + y^{2/3} = 1$. It's not so easy to isolate one variable in terms of another, but we can still write the boundary in terms of a single variable by parameterizing it. That equation looks a lot like a circle: if we can write $x$ and $y$ as functions of $t$ so that $x^{2/3} = \cos^2(t)$ and $y^{2/3} = \sin^2(t)$, then we'll have defined our region. Solving, we wind up with
 
@@ -48,7 +48,7 @@ We'd often like to optimize a function $f(x, y)$ over a region whose boundary is
 		\sin(2t) = 0 \text{ or } \cos(2t) &= 0.
 	$$
 
-	That's a complicated way of saying that $2t$ is an integer multiple of $\frac{\pi}{2}$, which is when one of the coordinates on the unit circle is zero. Solving for $t$, we find $t = \frac{k\pi}{4}$ for any integer $k$. Since $0 \leq t \leq 2\pi$, the result is the four coordinate points $(\pm 1, 0)$ and $(0, \pm 1)$ (when $t$ is a multiple of $\frac{pi}{2}$), along with the additional four points
+	That's a complicated way of saying that $2t$ is an integer multiple of $\frac{\pi}{2}$, which is when one of the coordinates on the unit circle is zero. Solving for $t$, we find $t = \frac{k\pi}{4}$ for any integer $k$. Since $0 \leq t \leq 2\pi$, the result is the four coordinate points $(\pm 1, 0)$ and $(0, \pm 1)$ (when $t$ is a multiple of $\frac{\pi}{2}$), along with the additional four points
 
 	$$
 		\left( \left( \pm \frac{\sqrt{2}}{2} \right)^3, \left( \pm \frac{\sqrt{2}}{2} \right)^3 \right).
@@ -60,7 +60,7 @@ We'd often like to optimize a function $f(x, y)$ over a region whose boundary is
 		\left( \frac{\sqrt{2}}{2} \right)^3 \left( \frac{\sqrt{2}}{2} \right)^3 &= \frac{1}{8},
 	$$
 
-	with $f(x, y) = \frac{1}{8}$ when the $x$- and $y$-coordinates have the same sign, and $f(x, y) = -\frac{1}{8}$ when they have opposite signs. In total, the points
+	with $f(x, y) = +\frac{1}{8}$ when the $x$- and $y$-coordinates have the same sign, and $f(x, y) = -\frac{1}{8}$ when they have opposite signs. In total, the points
 
 	$$
 		\left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right), \left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right)
@@ -90,10 +90,10 @@ We'd often like to optimize a function $f(x, y)$ over a region whose boundary is
 		\G f = \left< 2, -2 \right> = \vec{0},
 	$$
 
-	so there are none (which makes some sense; this is a plane, and those don't have any critical points unless they're flat). The boundary of our set is given by the equation $x^2 + 4y^2 = 1$, and while we could solve for one variable and plug it into the equation to get a function of one variable, that would result two separate functions to consider because of the $\pm$ that would appear on the square root. Instead, we can turn this into a function of one variable in a different way: parameterizing the boundary. It's given by
+	so there are none (which makes some sense; this is a plane, and those don't have any critical points unless they're flat). The boundary of our set is given by the equation $x^2 + y^2 = 4$, and while we could solve for one variable and plug it into the equation to get a function of one variable, that would result in two separate functions to consider because of the $\pm$ that would appear on the square root. Instead, let's parameterize the boundary like in the previous example. It's given by
 
 	$$
-		\vec{r}(t) = \left< 2\cos(t), 2\sin(t) \right>, \quad \leq t \leq 2\pi,
+		\vec{r}(t) = \left< 2\cos(t), 2\sin(t) \right>, \quad 0 \leq t \leq 2\pi,
 	$$
 
 	and so we can optimize the function by plugging these values in for $x$ and $y$ and solving for critical points in $t$:
@@ -156,27 +156,39 @@ $$
 	10x + 5y - 100 &= 0.
 $$
 
-Plugging into the third equation,
+It's generally a good strategy to eliminate $\lambda$ from these equations; here, we have
 
 $$
-	10(5\lambda - 5) + 5(10\lambda - 2) - 100 &= 0
+	\lambda &= \frac{2 + y}{10}
 
-	50\lambda - 50 + 50\lambda - 10 - 100 &= 0
+	\lambda &= \frac{x + 5}{5}
 
-	100\lambda &= 160
+	\frac{2 + y}{10} &= \frac{x + 5}{5}
 
-	\lambda &= \frac{8}{5}.
+	(2 + y)(5) &= (x + 5)(10)
+
+	10 + 5y &= 10x + 50
+
+	2 + y &= 2x + 10
+
+	y &= 2x + 8.
 $$
 
-Returning to solve for $x$ and $y$,
+Plugging this back into the constraint equation,
 
 $$
+	10x + 5(2x + 8) - 100 &= 0
+
+	20x &= 60
+
 	x &= 3
 
-	y &= 14.
+	y &= 2(3) + 8
+
+	&= 14.
 $$
 
-Our maximum is therefore at $(3, 14)$, and the output is $f(3, 14) = 118$. Although it's an oversimplified example, this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
+We only found one critical point! Normally, we'd expect at least two, since there should be an absolute minimum and maximum on any compact domain. However, the set on which we're optimizing this function is a line, which isn't compact since it's not bounded! The Extreme Value Theorem therefore doesn't apply. Determining whether this one point is a maximum, minimum, or saddle point can be a little delicate --- checking nearby points on the line $g(x, y) = 0$ tells us that their $z$-values are less than $118$, though, so this is in fact a maximum. Although it's an oversimplified example, this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
 
 Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
 
@@ -189,10 +201,12 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 	$$
 		\G f(x, y) &= \lambda \G g(x, y)
 
-		g(x, y) &= 0.
+		g(x, y) &= 0
 	$$
 
-	2. Of all the solutions $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
+	to find potential critical points $(x, y)$. Also consider the points where $\G g(x, y)$ is undefined.
+
+	2. Of all the points $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
 
 ###
 
@@ -226,7 +240,7 @@ Let's now return to the astroid example to see the improvement.
 		x^{2/3} + y^{2/3} - 1 &= 0.
 	$$
 
-	It's often easiest to just eliminate $\lambda$ from complicated systems like this:
+	Eliminating $\lambda$,
 
 	$$
 		\frac{3}{2} y x^{1/3} &= \lambda
@@ -238,51 +252,103 @@ Let's now return to the astroid example to see the improvement.
 		x^{2/3} &= y^{2/3}
 	$$
 
-	While we actually can factor this, let's just use the quadratic formula --- it's not amazing, but it certainly gets the job done.
+	While can can very well solve this completely for $x$ or $y$, we can also just plug it back into the constraint equation $g(x, y) = 0$:
 
 	$$
-		x &= \frac{-\frac{2}{\sqrt{3}}y \pm \sqrt{\frac{4}{3}y^2 + 4y^2}}{2}
+		x^{2/3} + y^{2/3} - 1 &= 0
 
-		&= \frac{-\frac{2}{\sqrt{3}}y \pm \sqrt{\frac{16}{3}y^2}}{2}
+		x^{2/3} + x^{2/3} - 1 &= 0
 
-		&= \frac{-\frac{2}{\sqrt{3}}y \pm \frac{4}{\sqrt{3}}y}{2}
+		2x^{2/3} &= 1
 
-		&= -\frac{1}{\sqrt{3}}y \pm \frac{2}{\sqrt{3}}y,
+		x^{2/3} &= \frac{1}{2}
+
+		x^2 &= \frac{1}{8}
+
+		x &= \pm \sqrt{\frac{1}{8}}
+
+		&= \pm \left( \frac{\sqrt{2}}{2} \right)^3,
 	$$
 
-	so either $x = -\frac{3}{\sqrt{3}}y = -\sqrt{3}y$ or $x = \frac{1}{\sqrt{3}}y$. And now we can plug this back into $x^2 + y^2 = 1$! The first equation gives
+	as before. Solving for $y$, we can cube both sides of $x^{2/3} = y^{2/3}$ to get $x^2 = y^2$, so $y = \pm \left( \frac{\sqrt{2}}{2} \right)^3$ for both $x$-values. Notably, we missed the points $(\pm 1, 0)$ and $(0, \pm 1)$ --- those are the points where $\G g(x, y)$ is undefined, so we also need to consider them. Once we've added those in, though, we've successfully recovered the same points that we saw in the example earlier in this section! From here, the same logic applies --- we plug them all in and find the largest and smallest.
+
+###
+
+### exc "Lagrange multipliers"
+
+	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$2$ per square foot, while the other two sides and base will be made out of wood, costing $\$1$ per square foot. You have a budget of $\$24$ --- how large of a box can you build?
+
+	### solution
+
+	With $f(x, y, z) = xyz$ and
 
 	$$
-		\left( -\sqrt{3} y\right)^2 + y^2 &= 1
-
-		3y^2 + y^2 &= 1
-
-		y &= \pm \sqrt{\frac{1}{4}} = \pm \frac{1}{2},
+		g(x, y, z) = xy + 4yz + 2xz - 24 = 0
 	$$
 
-	so we get the points $\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right)$ and $\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$. When $x = \frac{1}{\sqrt{3}}y$,
+	(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
 
 	$$
-		\left( \frac{1}{\sqrt{3}} y\right)^2 + y^2 &= 1
+		\G f &= \lambda G g
 
-		\frac{1}{3}y^2 + y^2 &= 1
+		\left< yz, xz, xy \right> &= \lambda \left< y + 2z, x + 4z, 4y + 2x \right>
 
-		y &= \pm \sqrt{\frac{3}{4}} = \pm \frac{\sqrt{3}}{2},
+		~
+
+		yz &= \lambda(y + 2z)
+
+		xz &= \lambda(x + 4z)
+
+		xy &= \lambda(4y + 2x).
 	$$
 
-	which gives us $\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right)$ and $\left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right)$.
-
-	To wrap up the problem, we just need to plug all four of these into the original function:
+	We can eliminate $\lambda$ from the first two equations:
 
 	$$
-		f\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right) = f\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right) &= \frac{3}{2}
+		\frac{yz}{y + 2z} &= \frac{xz}{x + 4z}
 
-		f\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right) = f\left( -\frac{1}{2}, -\frac{\sqrt{3}}{2} \right) &= \frac{7}{2}.
+		yz(x + 4z) &= xz(y + 2z)
+
+		xyz + 4yz^2 &= xyz + 2xz^2
+
+		2y &= x.
 	$$
 
-	The end result is that $f$ has minima on this boundary at the first two points and maxima at the second two points.
+	Now eliminating $\lambda$ from the first and third equations,
 
-	### desmos lagrangeExample
+	$$
+		\frac{yz}{y + 2z} &= \frac{xy}{4y + 2x}
+
+		yz(4y + 2x) &= xy(y + 2z)
+
+		4y^2z + 2xyz &= xy^2 + 2xyz
+
+		4y^2z &= xy^2
+
+		4y^2z &= (2y)y^2
+
+		2y^2z &= y^3
+
+		y^3 - 2y^2z &= 0
+
+		y^2(y - 2z) &= 0,
+	$$
+
+	so either $y = 0$, which isn't so good for box-building, or $y = 2z$, meaning $x = 4z$. Now in the constraint equation,
+
+	$$
+		xy + 4yz + 2xz &= 24
+
+		(4z)(2z) + 4(2z)z + 2(4z)z &= 24
+
+		8z^2 + 8z^2 + 8z^2 &= 24
+
+		z^2 &= 1
+
+		z &= \pm 1.
+	$$
+
+	We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
 
 ###
 

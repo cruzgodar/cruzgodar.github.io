@@ -144,113 +144,11 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 ### exc "optimizing a function"
 
-	Find the global maximum and minimum of the function $f(x, y) = \frac{xy}{2} - x - y$ on the region
+	Find the global maximum and minimum of the function $f(x, y) = xy - x - y$ on the region
 
 	$$
 		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 2 \text{ and } 0 \leq y \leq 2x \right\}.
 	$$
-
-###
-
-Let's turn to a somewhat more applied example next.
-
-### ex "applied boundary optimization"
-
-	You've been tasked with building a rectangular beaver transport box with a volume of $27\,\text{ft}^3$. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$10$ per square foot, while the other two sides and base will be made out of wood, costing $\$5$ per square foot. Since the box needs to fit the beaver inside it and fit within the truck that will be carrying it, must be between 2 and 8 feet in both horizontal dimensions. Find the dimensions of the box that minimize the cost to build it. Is the result a good idea to build?
-
-	### solution
-
-	If the box is $x \times y \times z$ feet, where $z$ is the vertical direction, then the volume is $xyz = 27$, and the surface area is
-
-	$$
-		xy + 2xz + 2yz,
-	$$
-
-	since we're not including the lid. To account for the cost, let's say that the area counted by $yz$ is what costs $\$10$ per square foot, so that the cost is
-
-	$$
-		5xy + 10xz + 20yz &= 5xy + 10x\left( \frac{27}{xy} \right) + 20y\left( \frac{27}{xy} \right)
-
-		&= 5xy + \frac{270}{y} + \frac{540}{x}.
-	$$
-
-	Let's call that function $C(x, y)$. To optimize it, we'll start as usual by finding its gradient.
-
-	$$
-		\G C &= \left< 5y - 540x^{-2}, 5x - 270y^{-2} \right> = \vec{0}
-		
-		&\ \ \begin{cases} 5y = 540x^{-2} \\ 5x = 270y^{-2} \end{cases}
-
-		&\ \ \begin{cases} y = 108x^{-2} \\ x = 54y^{-2} \end{cases}
-
-		y &= 108\left( 54y^{-2} \right)^{-2}
-
-		y &= \frac{2}{54} y^4
-
-		27y &= y^4
-
-		y^4 - 27y &= 0
-
-		y(y^3 - 27) &= 0,
-	$$
-
-	so either $y = 0$ (which is not so good for box-making), or $y = 3$. In that second case, $x = 54\left( 3^{-2} \right) = 6$. So $(6, 3)$ is our single critical point, and $C(6, 3) = 270$, but we're trying to optimize the function on the rectangle with both $x$ and $y$ in $[2, 8]$, so we also need to consider the boundary.
-
-	$$
-		C(2, y) &= 10y + \frac{270}{y} + 270
-
-		d/dy \left[ C(2, y) \right] &= 10 -270 y^{-2} = 0
-
-		y &= \pm 3\sqrt{3}.
-
-		~
-
-		C(8, y) &= 40y + \frac{270}{y} + \frac{135}{2}
-
-		d/dy \left[ C(2, y) \right] &= 40 -270 y^{-2} = 0
-
-		y &= \pm \frac{3\sqrt{3}}{2}.
-
-		~
-
-		C(x, 2) &= 10x + 135 + \frac{540}{x}
-
-		d/dx \left[ C(x, 2) \right] &= 10 - 540 x^{-2} = 0
-
-		x &= \pm 3\sqrt{6}.
-
-		~
-
-		C(x, 8) &= 40x + \frac{135}{4} + \frac{540}{x}
-
-		d/dx \left[ C(x, 8) \right] &= 40 - 540 x^{-2} = 0
-
-		x &= \pm \frac{3\sqrt{6}}{2}.
-	$$
-
-	All of the positive versions of these points are in the domain, and so we evaluate the function at all of them, including at the endpoints of the edges (i.e. the corners of the rectangle).
-
-	$$
-		C(2, 2) &= 425
-
-		C\left( 2, 3\sqrt{3} \right) &\approx 373.92
-
-		C(2, 8) &= 383.75
-
-		C\left( \frac{3\sqrt{6}}{2}, 8 \right) &\approx 327.69
-
-		C\left( 6, 3 \right) &= 270
-
-		C\left( 3\sqrt{6}, 2 \right) &\approx 281.97
-
-		C\left( 8, 2 \right) &= 282.5
-
-		C\left( 8, \frac{3\sqrt{3}}{2} \right) &\approx 275.35
-
-		C\left( 8, 8 \right) &= 421.25.
-	$$
-
-	The critical point in the middle ended up being the most cost-effective option, but it might not be a great idea! The height of the box is only $\frac{27}{3 \cdot 6} = 1.5$ feet, and even though beavers can't jump, they can probably find a way over that.
 
 ###
 

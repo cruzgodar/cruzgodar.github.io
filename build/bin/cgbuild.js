@@ -64,7 +64,10 @@ function restoreStaleOutputFiles()
 			file.endsWith(".min.js")
 			|| file.endsWith(".min.mjs")
 			|| file.endsWith(".min.css")
-			|| (file.endsWith(".html") && (file.endsWith("/index.html") || file.endsWith("/data.html")));
+			|| (
+				file.endsWith(".html")
+				&& (file.endsWith("/index.html") || file.endsWith("/data.html"))
+			);
 
 		if (!isOutput)
 		{
