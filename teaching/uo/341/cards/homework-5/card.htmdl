@@ -27,7 +27,7 @@
 
 	- - -
 
-	#. For each of the matrices $A$--$E$ in problems 1--5, classify it as invertible or noninvertible based on its determinant.
+	#. For each of the matrices $A$--$E$ in problems 1--5, classify it as invertible or noninvertible based on its determinant. 
 
 	#. Let $A$ be the matrix from problem 1. Sketch a picture of the unit square in $#R#^2$ and its image under the linear operator corresponding to $A$. Verify that the area of that image is $|\det A|$ times the area of the unit square (i.e. $1$).
 

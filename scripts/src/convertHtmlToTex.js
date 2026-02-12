@@ -5,7 +5,8 @@ export function convertHtmlToTex({
 	title,
 	partnerField = false,
 	margin = 1,
-		pageNumbers = true,
+	pageNumbers = true,
+	largeText = false
 }) {
 	const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
@@ -49,19 +50,23 @@ ${pageNumbers ? "" : "\\pagenumbering{gobble}"}
 		? `\\\\Partner: \\rule{1.85in}{0.15mm}`
 		: ""
 
+	const textSizeTex = largeText
+		? "\\large"
+		: "\\normalsize";
+
 	const tex = preamble
 		// eslint-disable-next-line max-len
-		+ `\\Large Name: \\rule{2in}{0.15mm} \\hfill ${title} | ${course} | Cruz Godar \\vspace{4pt} ${nameTex} \\large\n\n`
+		+ `\\Large Name: \\rule{2in}{0.15mm} \\hfill ${title} | ${course} | Cruz Godar \\vspace{4pt} ${nameTex} ${textSizeTex}\n\n`
 		+ html
-			// Remove the wrapping card divs.
-			.replaceAll(/<div.*?>/g, "")
-			.replaceAll(/<\/div>/g, "")
 			// Remove the heading.
 			.replaceAll(/<h1.*?>(.*?)<\/h1>/g, "")
 			// Remove buttons.
-			.replaceAll(/<div.*? class="text-buttons">.*?<\/div><\/div>/g, "")
+			.replaceAll(/<div class="text-buttons">.*?<\/div><\/div>/g, "")
 			// Remove desmos.
-			.replaceAll(/<div.*? class="desmos-border">.*?<\/div><\/div>/g, "")
+			.replaceAll(/<div class="desmos-border">.*?<\/div><\/div>/g, "")
+			// Remove the wrapping card divs.
+			.replaceAll(/<div.*?>/g, "")
+			.replaceAll(/<\/div>/g, "")
 			// Images.
 			.replaceAll(/<img.*? data-src="(.+?)".*?>(<\/img>)?/g, (match, $1) =>
 			{
