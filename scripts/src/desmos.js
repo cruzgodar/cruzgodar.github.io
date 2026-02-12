@@ -844,8 +844,8 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		for (let i = 0; i < expressions.length; i++)
 		{
 			// Set lineWidth to 15 for cover images
-			expressions[i].lineWidth = forPdf ? 5 : 30;
-			expressions[i].pointSize = forPdf ? 10 : 50;
+			expressions[i].lineWidth = forPdf ? 5 : 15;
+			expressions[i].pointSize = forPdf ? 10 : 25;
 			expressions[i].dragMode = "NONE";
 		}
 

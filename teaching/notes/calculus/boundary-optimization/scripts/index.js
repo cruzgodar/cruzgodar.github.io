@@ -53,7 +53,7 @@ export default function()
 
 		boundary1:
 		{
-			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25 },
 
 			expressions:
 			[
