@@ -196,7 +196,7 @@ Computing a determinant using the recursive definition is a task that balloons i
 		&= -3060.
 	$$
 
-	So the determinant of the original $3 \times 3$ is $\frac{1}{4}(-3060) = -765$, and finally, the determinant of the $4 \times 4$ is $-2(-765) = 1530$.
+	So the determinant of the original $3 \times 3$ is $\frac{1}{3}(-3060) = -1020$, and finally, the determinant of the $4 \times 4$ is $-2(-1020) = 2040$.
 
 ###
 
