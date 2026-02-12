@@ -265,7 +265,8 @@ async function downloadWorksheet()
 		title: "Worksheet ###",
 		partnerField: true,
 		margin: 0.75,
-		pageNumbers: false
+		pageNumbers: false,
+		largeText: true,
 	});
 
 	downloadString(result[0], "Worksheet.tex");

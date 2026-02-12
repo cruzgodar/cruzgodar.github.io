@@ -189,9 +189,17 @@ In addition to these new functions, there are a number of relationships between 
 		\cos\left( \frac{\theta}{2} \right) &= \pm \sqrt{\frac{1 + \cos(\theta)}{2}}
 	$$
 
-	The $\pm$ indicates that both a positive and negative version are possible, but only one is true in practice for any given angle. To figure out which, we just determine which quadrant we're in, just like with reference angles.
+	The $\pm$ indicates that both a positive and negative version are possible, but only one is true in practice for any given angle. To figure out which, we have to determine which quadrant we're in, just like with reference angles.
 
-	4. The sum and difference formulas:
+	4. The power-reducing formulas:
+
+	$$
+		\sin^2(\theta) &= \frac{1 - \cos(2\theta)}{2}
+
+		\cos^2(\theta) &= \frac{1 + \cos(2\theta)}{2}
+	$$
+
+	5. The sum and difference formulas:
 
 	$$
 		\sin(\alpha + \beta) &= \sin(\alpha)\cos(\beta) + \cos(\alpha)\sin(\beta)
@@ -229,11 +237,19 @@ In addition to these new functions, there are a number of relationships between 
 
 ###
 
-### exc "the half-angle identities"
+### ex "trig identities"
 
-	1. Use the half-angle identities to compute the exact values of $\sin\left( \frac{\pi}{8} \right)$, $\cos\left( \frac{\pi}{12} \right)$, and $\tan\left( \frac{5\pi}{12} \right)$.
+	Solve
 
-	2. Find the exact values of $\sin\left( 75^\circ \right)$, $\sec\left( 37.5^\circ \right)$, and $\cot\left( 165^\circ \right)$.
+###
+
+### exc "trig identities"
+
+	1. Use the half-angle identities to compute the exact values of $\sin\left( \frac{\pi}{8} \right)$, $\sec\left( \frac{\pi}{12} \right)$, and $\tan\left( \frac{5\pi}{12} \right)$.
+
+	2. Solve $\sin^2(x) + \cos(2x) = 0$ for $x$ with $0 \leq x \leq 2\pi$.
+
+	3. Find all solutions $t$ to $3(1 - \sin(t)) = 2\cos^2(t)$.
 
 ###
 
