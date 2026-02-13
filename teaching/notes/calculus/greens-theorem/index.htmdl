@@ -10,17 +10,17 @@ This section is an interesting one --- in many multivariable calculus courses, i
 
 We spent the last section discussing how curve integrals of a conservative vector field (dotted with the unit tangent vector of the curve) satisfy a theorem that is functionally the Fundamental Theorem of Calculus, but adapted to the world of multivariable calculus like many results have been before them. If there's one important lesson we can learn from that theorem, it's that while vector fields might seem like auxiliary objects that happen to be compatible with the language of curve integrals, they're in fact a core part of the story.
 
-Let's return to the world of double integrals for a moment. When we integrate some function $g(x, y)$ over the region $R$ bounded by $y = \sqrt{x}$, $y = 0$, and $x = 1$, then the double integral
+Let's return to the world of double integrals for a moment. When we integrate some function $h(x, y)$ over the region $R$ bounded by $y = \sqrt{x}$, $y = 0$, and $x = 1$, then the double integral
 
 $$
-	\iint_D h(x, y)\,\d A = \int_0^1 \int_0^{\sqrt{x}} g(x, y)\,\d y\,\d x
+	\iint_R h(x, y)\,\d A = \int_0^1 \int_0^{\sqrt{x}} h(x, y)\,\d y\,\d x
 $$
 
 is slicing the region vertically, with each slice measuring the area of a cross-section parallel to the $y$-axis.
 
 ### desmos slicingAndBoundaries
 
-Let's focus on how we actually compute that integral: by finding an antiderivative of $g(x, y)$ with respect to $y$. To avoid needing to introduce extra notation for the antiderivative of $g$, let's just suppose $g = pf/py = f_y$ for some function $f(x, y)$. If that's the case, then $f$ is the antiderivative we're looking for, and
+Let's focus on how we actually compute that integral: by finding an antiderivative of $h(x, y)$ with respect to $y$. To avoid needing to introduce extra notation for the antiderivative of $h$, let's just suppose $h = pf/py = f_y$ for some function $f(x, y)$. If that's the case, then $f$ is the antiderivative we're looking for, and
 
 $$
 	\int_0^1 \int_0^{\sqrt{x}} f_y(x, y)\,\d y\,\d x &= \int_0^1 \left( f\left( x, \sqrt{x} \right) - f\left( x, 0 \right) \right) \,\d x
@@ -73,10 +73,78 @@ We can see that this worked algebraically, but why? The geometric explanation is
 Now we can return to the bottom integral: even though the $y$-value is always zero, so it doesn't take any extra work to express it as a curve integral, we can write it in terms of a vector field regardless in order to help this work generalize. If we label the side of the region $R$ given by $y = \sqrt{x}$ as $C_1$ and the side given by $y = 0$ as $C_2$, then we have
 
 $$
-	\iint_D f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} - \int_{C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
+	\iint_R f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} - \int_{C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
 $$
 
-We're definitely onto something here, but that right side is a little clunky. Since $C_1$ and $C_2$ touch, it'd be nice to join them up and write it as one long path. Unfortunately, they're oriented the wrong way: they both begin at $(0, 0)$, and we'd need one to begin at $(0, 0)$ and the other to end there 
+We're definitely onto something here, but that right side is a little clunky. Since $C_1$ and $C_2$ touch, it'd be nice to join them up and write it as one long path. Unfortunately, they're oriented the wrong way: they both begin at $(0, 0)$, and so to join them into one, we'll have to reverse the orientation of one. Let's pick $C_2$, since its integral already has a minus sign. Since reversing the path of a curve integral through a vector field negates the integral, we have
+
+$$
+	\iint_R f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} + \int_{-C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
+$$
+
+We'll join those two into a single path momentarily, but it would be particularly nice if we could also include the vertical side on the right --- then we could talk about a single curve integral that covered the entire boundary of $R$. Let's call that side $C_3$; what happens if we integrate $\vec{F} = \left< f(x, y), 0 \right>$ over it? This time, a parameterization $\vec{s}(t)$ of $C_3$ has $x$ constant, so $\vec{s}'(t)$ has an $x$-component of zero. That zeros out the dot product in the integral, and so the entire integral is zero! We can therefore freely add it to our sum (parameterized top to bottom, so that it agrees with our current paths).
+
+$$
+	\iint_R f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+		&+ \int_{-C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+		&+ \int_{C_3} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
+$$
+
+### desmos negativeBoundaryCurve
+
+At long last, we can add all of those curve integrals by writing the boundary of $R$ as a single path. Let's give that some proper notation, and then condense our results.
+
+### def "positive orientation"
+
+	Let $C$ be a non-intersecting, closed, oriented loop in $#R#^2$. We say that $C$ has **positive orientation** if it is oriented counterclockwise, and **negative orientation** if not.
+
+###
+
+### def "oriented boundary"
+
+	Let $R$ be a region in $#R#^2$. The **boundary** of $R$ is the curve $\p R$ with a positive orientation.
+
+###
+
+The use of the partial symbol for boundary is a little dubious, but it comes from a part of math upstream from us that has good reason for it. It also won't conflict with any of our current notation, and so we might as well go with it. With this notation, we have
+
+$$
+	\iint_R f_y(x, y)\,\d A &= \int_{-\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+
+	&= -\int_{\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+$$
+
+since the way we oriented $C_1$, $C_2$, and $C_3$ was *clockwise* when they were all stitched together. 
+
+We're almost ready for a proper theorem statement, but first we need to step all the way back to the original double integral. We chose to integrate it $\d y\,\d x$, but choosing the other order instead would have lead to nearly same result, so long as the integrand was a partial derivative $g_x(x, y)$ of some function $g$ instead of $f_y(x, y)$. The only difference is the order of the curves, and it's actually a rather large difference. When we integrated $\d y\,\d x$, both the top and bottom boundary curves were oriented left-to-right, and the integral along the bottom one was subtracted from the top. We reversed the bottom curve to make all the terms positive, which resulted in a clockwise path. When we integrate $\d x\,\d y$, the left and right boundary paths are both oriented bottom to top, and the left integral is subtracted from the right; when we reverse the orientation of the left path to make all the terms positive, the resulting path is *counterclockwise*.
+
+### desmos positiveBoundaryCurve
+
+The resulting statement looks similar, but the roles of $x$ and $y$ are switched, and we've crucially lost the minus sign on the outside since the loop has positive orientation.
+
+$$
+	\iint_R g_x(x, y)\,\d A &= \int_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}
+
+	&= \int_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}.
+$$
+
+*Finally*, we can put this together. To begin, there are no conditions on the final vector fields in the curve integral aside from one component being zero, and so we can add them together to merge our two results. We'll also move the negative sign from the clockwise curve integral to the double integral so that the vector field doesn't have anything affecting it.
+
+$$
+	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\,\d A = \int_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
+$$
+
+While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$, the magic of the theorem we're about to state is that it's true for a much larger class of regions than just this special kind!
+
+### thm "Green's Theorem"
+
+	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g \right>$ be a vector field, where $f$ and $g$ have continuous partial derivatives on and around $R$. Then
+
+	$$
+		\int_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
+	$$
+
+###
 
 
 
