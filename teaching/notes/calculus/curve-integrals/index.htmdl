@@ -44,7 +44,9 @@ In the limit, a sum of these areas becomes an integral, which we'll want to give
 
 ###
 
-The $s$ in the abstract integral on the left is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
+Note that the curve in this definition doesn't need to be oriented. If $C$ is a curve from point $p$ to point $q$ that is parameterized by $\vec{r}(t)$, then reversing the parameterization of $C$ so it runs from $q$ to $p$ negates $\vec{r}'(t)$, but since the integral only deals with $\left| \left| \vec{r}'(t) \right| \right|$, it's unaffected.
+
+The $s$ in the abstract integral on the left in this definition is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
 
 ### as "curve integrals, line integrals, and path integrals"
 	
@@ -232,7 +234,7 @@ That was a *lot* of theory and symbol-pushing, so let's pause and summarize what
 
 ### def "curve integral through a vector fields"
 
-	Let $\vec{F}$ be a vector field and let $C$ be a path. The **curve integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
+	Let $\vec{F}$ be a vector field and let $C$ be an oriented path. The **curve integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
 
 	$$
 		1.\ \int_C \vec{F} \bullet \vec{T}\,\d s
@@ -357,6 +359,20 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 	Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
 
 ###
+
+Before we move on to address the question of path-independence, let's address one important fact about curve integrals through vector fields. The formula
+
+$$
+	\int_C \vec{F} \bullet \d\vec{r} = \int_C \vec{F} \bullet \vec{r}'(t) \d t
+$$
+
+tells us something important about this integral that wasn't true for curve integrals of regular functions of multiple variables: since we're no longer taking the magnitude of $\vec{r}'(t)$, reversing the parameterization of $C$ negates $\vec{r}'(t)$ and therefore $\int_C \vec{F} \bullet \d\vec{r}$. This is why we added the note that $C$ had to be an **oriented** path in the definition of curve integrals through vector fields. To help with notation, if $C$ is any oriented path, then we define $-C$ as a path given by reversing the orientation of $C$. With that definition,
+
+$$
+	\int_{-C} \vec{F} \bullet \d\vec{r} = -\int_C \vec{F} \bullet \d\vec{r}
+$$
+
+for any oriented path $C$.
 
 
 

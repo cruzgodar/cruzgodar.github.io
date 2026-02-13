@@ -215,22 +215,22 @@ export default function()
 				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
 				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
-				{ latex: raw`s_x(t) = \left\{ 0 \leq t \leq \frac{1}{2}: 0, \frac{1}{2} t \leq 1: 2\cos(3\pi (t - \frac{1}{2})) \right\}`, hidden: true },
-				{ latex: raw`s_y(t) = \left\{ 0 \leq t \leq \frac{1}{2}: -4t, \frac{1}{2} t \leq 1: 2\sin(3\pi (t - \frac{1}{2})) \right\}`, hidden: true },
+				{ latex: raw`s_x(t) = \left\{ 0 \leq t \leq \frac{1}{2}: 0, \frac{1}{2} t \leq 1: 2\cos(3\pi (-t+1)) \right\}`, hidden: true, secret: true },
+				{ latex: raw`s_y(t) = \left\{ 0 \leq t \leq \frac{1}{2}: -4t, \frac{1}{2} t \leq 1: 2\sin(3\pi (-t+1)) \right\}`, hidden: true, secret: true },
 
-				{ latex: raw`s(t) = (s_x(t), s_y(t))`, hidden: true },
+				{ latex: raw`s(t) = (s_x(t), s_y(t))`, hidden: true, secret: true },
 
 				...getDesmosSlider({
 					expression: "a = 0",
 					min: -5,
 					max: "2\\pi",
-					secret: true,
+					secret: false,
 				}),
 				...getDesmosSlider({
 					expression: "b = 1",
 					min: "a",
 					max: "5",
-					secret: true,
+					secret: false,
 				}),
 
 				// We use these to not draw the side boundaries if they overlap.
@@ -249,9 +249,12 @@ export default function()
 				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
 				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
 
+				// Places to draw the side boundaries
+				{ latex: raw`I = [0, \frac{1}{2}, 1]`, secret: true },
+
 				// Side boundaries
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(I).x, s(I).y, tf_1(s(I).x, s(I).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(I).x, s(I).y, tf_2(s(I).x, s(I).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -374,6 +377,8 @@ export default function()
 		{
 			alwaysDark: true,
 			highContrast: true,
+
+			options: { expressions: false },
 
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
 			

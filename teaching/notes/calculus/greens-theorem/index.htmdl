@@ -10,20 +10,73 @@ This section is an interesting one --- in many multivariable calculus courses, i
 
 We spent the last section discussing how curve integrals of a conservative vector field (dotted with the unit tangent vector of the curve) satisfy a theorem that is functionally the Fundamental Theorem of Calculus, but adapted to the world of multivariable calculus like many results have been before them. If there's one important lesson we can learn from that theorem, it's that while vector fields might seem like auxiliary objects that happen to be compatible with the language of curve integrals, they're in fact a core part of the story.
 
-Let's return to the world of double integrals for a moment. When we integrate some function $h(x, y)$ over the unit disk $D$ given by $x^2 + y^2 \leq 1$, then the double integral
+Let's return to the world of double integrals for a moment. When we integrate some function $g(x, y)$ over the region $R$ bounded by $y = \sqrt{x}$, $y = 0$, and $x = 1$, then the double integral
 
 $$
-	\iint_D h(x, y)\,\d A = \int_{-1}^1 \int_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}} h(x, y)\,\d y\,\d x
+	\iint_D h(x, y)\,\d A = \int_0^1 \int_0^{\sqrt{x}} g(x, y)\,\d y\,\d x
 $$
 
-is slicing the region vertically, with each slice measuring the area of a cross-section parallel to the $y$-axis. Let's focus on how we actually compute that integral, though: by finding an antiderivative of $h(x, y)$ with respect to $y$. To avoid needing to introduce new antiderivative notation, let's just suppose $h = pf/py = f_y$ for some function $f(x, y)$. If that's the case, then $f$ is the antiderivative we're looking for, and
+is slicing the region vertically, with each slice measuring the area of a cross-section parallel to the $y$-axis.
+
+### desmos slicingAndBoundaries
+
+Let's focus on how we actually compute that integral: by finding an antiderivative of $g(x, y)$ with respect to $y$. To avoid needing to introduce extra notation for the antiderivative of $g$, let's just suppose $g = pf/py = f_y$ for some function $f(x, y)$. If that's the case, then $f$ is the antiderivative we're looking for, and
 
 $$
-	\int_{-1}^1 \int_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}} f_y(x, y) \,\d y\,\d x &= \int_{-1}^1 f\left( x, \sqrt{1 - x^2} \right) - f\left( x, -\sqrt{1 - x^2} \right) \,\d x
+	\int_0^1 \int_0^{\sqrt{x}} f_y(x, y)\,\d y\,\d x &= \int_0^1 \left( f\left( x, \sqrt{x} \right) - f\left( x, 0 \right) \right) \,\d x
 
-	&= \int_{-1}^1 f\left( x, \sqrt{1 - x^2} \right) \,\d x - \int_{-1}^1 f\left( x, -\sqrt{1 - x^2} \right) \,\d x.
+	&= \int_0^1 f\left( x, \sqrt{x} \right) \,\d x - \int_0^1 f\left( x, 0 \right) \,\d x.
 $$
 
+In section 6.1, we only considered the inner integral as a single object measuring the area of a cross-section, but here we're treating the inner integral as a difference of two functions in its own right. And now that we have the technology of curve integrals, both of those integrals above certainly look familiar! Each is a curve integral, but post-parameterization. Let's swap out $x$ for $t$ to make it a bit more clear, and let's also just focus on the first integral for now:
+
+$$
+	\int_0^1 f\left( t, \sqrt{t} \right) \,\d t.
+$$
+
+This looks very nearly like a curve integral of $f$ over the path $C$ given by $\vec{r}(t) = \left< t, \sqrt{t} \right>$, but there's an unfortunate issue --- the curve integral would have an extra factor of $\left| \left| \vec{r}'(t) \right| \right|$ when we parameterize:
+
+$$
+	\int_C f\,\d s = \int_0^1 f\left( \vec{r}(t) \right) \left| \left| \vec{r}'(t) \right| \right|\, \d t.
+$$
+
+That factor is more than a minor annoyance --- it's fundamentally changing the integral. Here, the derivative is equal to
+
+$$
+	\vec{r}'(t) &= \left< 1, \frac{1}{2}t^{-1/2} \right>,
+$$
+
+and depending on the function bounding the region, that second component could be arbitrarily bad. And yet by writing it out like this, we can see the faintest outline of a loophole. The first component will *always* be $1$ regardless of the upper bound on the region, since we're parameterizing the graph of a function. When it's packaged up along with the second component into $\left| \left| \vec{r}'(t) \right| \right|$, all of the complexity is back, but if we can work just with $\vec{r}'(t)$ and somehow only interface with its first component, we'll be able to completely sidestep the potentially nasty second component and recover the actual integral we're trying for.
+
+The first of these two goals can be accomplished by switching to the other type of curve integral we developed in the last section: one of a vector field instead of a function of two variables. The integral
+
+$$
+	\int_C \vec{F} \bullet \d \vec{r} = \int_0^1 \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\, \d t
+$$
+
+deals with the two components of $\vec{r}'(t)$ separately, and so if we integrate a field $\vec{F}$ whose second component is zero, then we can ignore the $y$-component of $\vec{r}'(t)$.
+
+What about the first component? Our goal was for this integral to equal $\int_0^1 f\left( t, \sqrt{t} \right) \,\d t$, and if we make the first component of $\vec{F}$ equal to $f(x, y)$, we get just that:
+
+$$
+	\int_C \vec{F} \bullet \d \vec{r} &= \int_C \left< f(x, y), 0 \right> \bullet \d \vec{r}
+
+	&= \int_0^1 \left< f(\vec{r}(t)), 0 \right> \bullet \vec{r}'(t)\,\d t
+
+	&= \int_0^1 \left< f(t, \sqrt{t}), 0 \right> \bullet \left< 1, \frac{1}{2}t^{-1/2} \right>\,\d t
+
+	&= \int_0^1 f(t, \sqrt{t}) \cdot 1 \,\d t.
+$$
+
+We can see that this worked algebraically, but why? The geometric explanation is that by placing $f(x, y)$ as the $x$-component of a vector field instead of integrating it directly, we removed out the issue of the bases of the rectangles in the curve integral's Riemann sum growing and shrinking based on arc length. With this parameterization, they only do that in the $y$-direction, and so all of that variability is affecting the zero component of $\vec{F}$.
+
+Now we can return to the bottom integral: even though the $y$-value is always zero, so it doesn't take any extra work to express it as a curve integral, we can write it in terms of a vector field regardless in order to help this work generalize. If we label the side of the region $R$ given by $y = \sqrt{x}$ as $C_1$ and the side given by $y = 0$ as $C_2$, then we have
+
+$$
+	\iint_D f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} - \int_{C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
+$$
+
+We're definitely onto something here, but that right side is a little clunky. Since $C_1$ and $C_2$ touch, it'd be nice to join them up and write it as one long path. Unfortunately, they're oriented the wrong way: they both begin at $(0, 0)$, and we'd need one to begin at $(0, 0)$ and the other to end there 
 
 
 
