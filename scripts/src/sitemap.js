@@ -1404,7 +1404,7 @@ export const sitemap =
 			"/teaching/notes/linear-algebra/bases-and-dimension",
 			"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra",
 			"/teaching/notes/linear-algebra/intro-to-markov-chains",
-			"/teaching/notes/linear-algebra/parts-1-and-2-review",
+			"/teaching/notes/linear-algebra/linear-algebra-1-review",
 			"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
 			"/teaching/notes/linear-algebra/diagonalization",
 			"/teaching/notes/linear-algebra/intro-to-des",
@@ -1419,7 +1419,7 @@ export const sitemap =
 		
 	"/teaching/notes/linear-algebra/vectors-and-matrices":
 	{
-		"title": "Section 1.1: Intro to Vectors and Matrices",
+		"title": "Section 1: Vectors and Matrices",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1430,7 +1430,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/row-reduction":
 	{
-		"title": "Section 1.2: Row Reduction",
+		"title": "Section 2: Row Reduction",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1439,7 +1439,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/vector-arithmetic":
 	{
-		"title": "Section 1.3: Vector Arithmetic",
+		"title": "Section 3: Vector Arithmetic",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1450,7 +1450,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/linear-transformations":
 	{
-		"title": "Section 1.4: Linear Transformations",
+		"title": "Section 4: Linear Transformations",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1461,7 +1461,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/properties-of-transformations":
 	{
-		"title": "Section 1.5: Properties of Transformations",
+		"title": "Section 5: Properties of Transformations",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1470,7 +1470,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/the-determinant":
 	{
-		"title": "Section 1.6: The Determinant",
+		"title": "Section 6: The Determinant",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1481,7 +1481,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/vector-spaces":
 	{
-		"title": "Section 2.1: Intro to Vector Spaces",
+		"title": "Section 7: Vector Spaces",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1490,7 +1490,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/bases-and-dimension":
 	{
-		"title": "Section 2.2: Bases and Dimension",
+		"title": "Section 8: Bases and Dimension",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1501,7 +1501,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra":
 	{
-		"title": "Section 2.4: The Fundamental Theorem of Linear Algebra",
+		"title": "Section 9: The Fundamental Theorem of Linear Algebra",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1512,7 +1512,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/intro-to-markov-chains":
 	{
-		"title": "Section 2.4: Intro to Markov Chains",
+		"title": "Section 10: Intro to Markov Chains",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1521,9 +1521,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/linear-algebra/parts-1-and-2-review":
+	"/teaching/notes/linear-algebra/linear-algebra-1-review":
 	{
-		"title": "Parts 1 and 2 Review",
+		"title": "Section 11: Linear Algebra I Review",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1534,7 +1534,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues":
 	{
-		"title": "Section 3.1: Intro to Eigenvectors and Eigenvalues",
+		"title": "Section 12: Eigenvectors and Eigenvalues",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1547,7 +1547,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/diagonalization":
 	{
-		"title": "Section 3.2: Diagonalization",
+		"title": "Section 13: Diagonalization",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1558,7 +1558,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/intro-to-des":
 	{
-		"title": "Section 3.3: Intro to Differential Equations",
+		"title": "Section 14: Intro to Differential Equations",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1569,7 +1569,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/the-dot-product":
 	{
-		"title": "Section 4.1: The Dot Product",
+		"title": "Section 15: The Dot Product",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1580,7 +1580,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/least-squares":
 	{
-		"title": "Section 4.2: Least-Squares Approximations",
+		"title": "Section 16: Least-Squares Approximations",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1589,7 +1589,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/inner-product-spaces":
 	{
-		"title": "Section 4.3: Intro to Inner Product Spaces",
+		"title": "Section 17: Inner Product Spaces",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1598,7 +1598,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/the-spectral-theorems":
 	{
-		"title": "Section 4.4: The Spectral Theorems",
+		"title": "Section 18: The Spectral Theorems",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1607,7 +1607,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/jordan-normal-form":
 	{
-		"title": "Section 4.5: Jordan Normal Form",
+		"title": "Section 19: Jordan Normal Form",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
@@ -1616,7 +1616,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/singular-value-decompositions":
 	{
-		"title": "Section 4.6: Singular Value Decompositions",
+		"title": "Section 20: Singular Value Decompositions",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		

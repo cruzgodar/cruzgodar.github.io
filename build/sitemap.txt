@@ -120,29 +120,27 @@ home Cruz Godar
 			greens-theorem Section 6.4: Green's Theorem
 		
 		notes/linear-algebra Linear Algebra
-			vectors-and-matrices Section 1.1: Intro to Vectors and Matrices
-			row-reduction Section 1.2: Row Reduction
-			vector-arithmetic Section 1.3: Vector Arithmetic
-			linear-transformations Section 1.4: Linear Transformations
-			properties-of-transformations Section 1.5: Properties of Transformations
-			the-determinant Section 1.6: The Determinant
+			vectors-and-matrices Section 1: Vectors and Matrices
+			row-reduction Section 2: Row Reduction
+			vector-arithmetic Section 3: Vector Arithmetic
+			linear-transformations Section 4: Linear Transformations
+			properties-of-transformations Section 5: Properties of Transformations
+			the-determinant Section 6: The Determinant
+			vector-spaces Section 7: Vector Spaces
+			bases-and-dimension Section 8: Bases and Dimension
+			the-fundamental-theorem-of-linear-algebra Section 9: The Fundamental Theorem of Linear Algebra
+			intro-to-markov-chains Section 10: Intro to Markov Chains
 
-			vector-spaces Section 2.1: Intro to Vector Spaces
-			bases-and-dimension Section 2.2: Bases and Dimension
-			the-fundamental-theorem-of-linear-algebra Section 2.4: The Fundamental Theorem of Linear Algebra
-			intro-to-markov-chains Section 2.4: Intro to Markov Chains
-			parts-1-and-2-review Parts 1 and 2 Review
-
-			eigenvectors-and-eigenvalues Section 3.1: Intro to Eigenvectors and Eigenvalues
-			diagonalization Section 3.2: Diagonalization
-			intro-to-des Section 3.3: Intro to Differential Equations
-
-			the-dot-product Section 4.1: The Dot Product
-			least-squares Section 4.2: Least-Squares Approximations
-			inner-product-spaces Section 4.3: Intro to Inner Product Spaces
-			the-spectral-theorems Section 4.4: The Spectral Theorems
-			jordan-normal-form Section 4.5: Jordan Normal Form
-			singular-value-decompositions Section 4.6: Singular Value Decompositions
+			linear-algebra-1-review Section 11: Linear Algebra I Review
+			eigenvectors-and-eigenvalues Section 12: Eigenvectors and Eigenvalues
+			diagonalization Section 13: Diagonalization
+			intro-to-des Section 14: Intro to Differential Equations
+			the-dot-product Section 15: The Dot Product
+			least-squares Section 16: Least-Squares Approximations
+			inner-product-spaces Section 17: Inner Product Spaces
+			the-spectral-theorems Section 18: The Spectral Theorems
+			jordan-normal-form Section 19: Jordan Normal Form
+			singular-value-decompositions Section 20: Singular Value Decompositions
 
 		notes/differential-equations Differential Equations
 			calc-review Calculus Review
