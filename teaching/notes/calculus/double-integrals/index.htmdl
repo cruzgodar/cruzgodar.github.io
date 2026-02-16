@@ -128,11 +128,31 @@ A notion in Calculus II that is occasionally omitted is the **average value** of
 
 ### exc "multiple integrals"
 	
-	Let $$f(x, y) = y\sin(\pi xy) + 3x^2 - \frac{x}{y}$$ be defined on $R = [-1, 0] \times [1, 2]$.
+	Let $$f(x, y) = y\sin(\pi xy) + 3x^2$$ be defined on $R = [-1, 0] \times [1, 2]$.
 
 	1. Would you rather find the average value of $f$ on $R$ by integrating $\d x\,\d y$ or $\d y\,\d x$?
 
 	2. With your chosen method from part 1, find the average value.
+
+	### solution
+
+	While neither one of these looks completely appealing, integrating $\d x$ first seems like the better option --- doing $\d y$ first would require integration by parts. Since the area of $R$ is $1$, the average value is just the integral itself:
+
+	$$
+		& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\,\d x\,\d y
+
+		&= \int_1^2 \left. \left[ -y\cos(\pi xy) \frac{1}{\pi y} + x^3 \right] \right|_{-1}^0\,\d y
+
+		&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\,\d y
+
+		&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\,\d y
+
+		&= \left. \left[ -\frac{1}{\pi}y + \frac{1}{\pi^2}\sin(\pi y) + y \right] \right|_1^2
+
+		&= -\frac{2}{\pi} + \frac{1}{\pi^2}\sin(2\pi) + 2 + \frac{1}{\pi} - \frac{1}{\pi^2}\sin(\pi) - 1
+
+		&= 1 - \frac{1}{\pi}.
+	$$
 
 ###
 
@@ -176,7 +196,29 @@ In practice, we'll often choose between the two different orders of integration 
 
 ### exc "a double integral over a general region"
 
-	Find the signed volume under the graph of $z = xy$ on the region bounded by $x = -\frac{\pi}{2}$, $x = \frac{\pi}{2}$, $y = \sin(x) + 1$, and $y = -x^2$.
+	Find the signed volume under the graph of $$z = \cos(x)$$ on the region bounded by $$x = -\frac{\pi}{3}$$, $$x = \frac{\pi}{3}$$, $y = \sin(x) + 1$, and $y = -\sec(x)$.
+
+	### solution
+
+	Let's begin as usual by sketching the region.
+
+	### desmos regions2dExc
+
+	While we *could* try to set this integral up $\d x\,\d y$, that is an abominable prospect. Drawing horizontal lines shows us that we'd need four regions total since the bounds change so much: two for the two halves below the $x$-axis, one for the top region (bounded by $x = \arcsin(y - 1)$ and $x = \frac{\pi}{2}$), and one more for the middle segment. Those functions --- particularly the $\arcsin$ --- are bad enough that that integral is probably not even solvable! Let's try $\d y\,\d x$ instead.
+
+	This time, the top and bottom bounds are given by $\sin(x) + 1$ and $-x^2$, and the left and right bounds by $x = -\frac{\pi}{2}$ and $x = \frac{\pi}{2}$. In total, the volume is
+
+	$$
+		\int_{-\pi / 3}^{\pi / 3} \int_{-\sec(x)}^{\sin(x) + 1} \cos(x)\,\d y\,\d x &= \int_{-\pi / 3}^{\pi / 3} \left. \left[ y\cos(x) \right] \right|_{-\sec(x)}^{\sin(x) + 1}\,\d x
+
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\,\d x
+
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\,\d x
+
+		&= \left. \left[ -\frac{1}{4}\cos(2x) + \sin(x) + x \right] \right|_{-\pi / 3}^{\pi / 3}
+
+		&= \sqrt{3} + \frac{2\pi}{3}.
+	$$
 
 ###
 
@@ -184,7 +226,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 ### ex "changing the order of integration"
 
-	Let $R$ be the region bounded by $y^4 = x + 4$ and $y^2 = -\frac{x}{3}$. Find the integral
+	Let $R$ be the region bounded by $y^4 = x + 4$ and $$y^2 = -\frac{x}{3}$$. Find the integral
 
 	$$
 		\iint_R \left( x + y^2 \right)\,\d A.

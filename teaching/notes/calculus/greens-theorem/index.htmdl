@@ -134,7 +134,7 @@ $$
 	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\,\d A = \int_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
 $$
 
-While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$, the magic of the theorem we're about to state is that it's true for a much larger class of regions than just this special kind!
+While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$ --- the magic of the theorem we're about to state is that it's true for a much larger class of regions!
 
 ### thm "Green's Theorem"
 
@@ -145,6 +145,32 @@ While all of our logic relied on the region $R$ being the type of region we coul
 	$$
 
 ###
+
+While we certainly didn't introduce them in such a manner, the Fundamental Theorems of both Calculus and Curve Integrals were closer to Green's Theorem than they might seem at first: both equated a function evaluated on the boundary of a set (either an interval $[a, b]$ or a path in space) to the integral of its derivative over the set. In the Fundamental Theorem of Calculus, the relationship between the function and its derivative was straightforward enough: even if the theory of differentiation took a long time to develop, a function and its derivative were both functions of one variable, and every continuous function had an antiderivative. In the Fundamental Theorem of Curve Integrals, that relationship became more distant: the derivative of a function of multiple variables is its gradient, which is a vector field, and not every function of multiple variables even has an antiderivative.
+
+Green's Theorem abstracts the situation further. There's still a relationship between a function on the boundary of a set and the integral of its derivative over the set, but since the boundary is an entire set itself, "evaluating the function on the boundary" means taking an integral. In that respect, we can think of Green's Theorem as being the third member of a family of theorems that increase the number of integrals present by one by taking a derivative; that is, treating the expression $f(b) - f(a)$ in the formula
+
+$$
+	f(b) - f(a) = \int_a^b f'(x)\,\d x
+$$
+
+as evaluating $f$ on the set $\p [a, b] = \left\{ a, b \right\}$, where the number of integrals has been increased from zero on the left to one on the right.
+
+We'll have more to say about the rather strange object $g_x - f_y$ in Green's Theorem a little later on, but right now, we're overdue for some examples.
+
+### ex "Green's theorem	
+
+
+
+
+
+"
+
+	
+
+###
+
+
 
 
 

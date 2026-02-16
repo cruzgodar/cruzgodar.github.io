@@ -303,6 +303,48 @@ export default function()
 			]
 		},
 
+		regions2dExc:
+		{
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: raw`a = -\frac{\pi}{3}`,
+					min: -5,
+					max: 5,
+					secret: false,
+				}),
+				...getDesmosSlider({
+					expression: raw`b = \frac{\pi}{3}`,
+					min: "a",
+					max: 5,
+					secret: false,
+				}),
+
+				...getDesmosSlider({
+					expression: raw`x_0 = 0.5`,
+					min: "a",
+					max: "b",
+					secret: false,
+				}),
+
+				{ latex: raw`c(x) = -\sec(x)`, hidden: true },
+				{ latex: raw`d(x) = \sin(x) + 1`, hidden: true },
+
+				{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+
+				{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+
+				{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+
+				{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+			]
+		},
+
 		regions2d2:
 		{
 			bounds: { xmin: -5, xmax: 1, ymin: -3, ymax: 3 },
