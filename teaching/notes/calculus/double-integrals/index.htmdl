@@ -292,6 +292,16 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 ###
 
+### exc "changing the order of integration"
+
+	1. Write $$\int_{-1}^2 \int_{x^3}^{8 - (x - 2)^2} f(x, y)\,\d y\,\d x$$ as an integral $\d x\,\d y$.
+
+	2. Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two integrals: one $\d y\,\d x$ and one $\d x\,\d y$.
+
+	### desmos nastyRegion
+
+###
+
 At this point, we can write down a few useful properties of double integrals --- nothing here is too groundbreaking, but it's good to get our bearings a little.
 
 ### prop "properties of double integrals"

@@ -387,6 +387,27 @@ export default function()
 			]
 		},
 
+		nastyRegion:
+		{
+			bounds: { xmin: -1, xmax: 5, ymin: -0.5, ymax: 2.5 },
+
+			options: { xAxisNumbers: false, yAxisNumbers: false, expressions: false },
+
+			expressions:
+			[
+				{ latex: raw`\frac{x^2}{8} \leq y \leq \tan(\frac{\pi}{8} x) \left\{ 0 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`\frac{x^2}{8} \leq y \leq \frac{x}{2} \left\{ 2 \leq x \leq 4 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+
+				{ latex: raw`\frac{x^2}{8}`, color: desmosPurple, lineOpacity: 0.5 },
+				{ latex: raw`\tan(\frac{\pi}{8} x)`, color: desmosBlue, lineOpacity: 0.5 },
+				{ latex: raw`\frac{x}{2}`, color: desmosRed, lineOpacity: 0.5 },
+
+				{ latex: raw`\frac{x^2}{8} \left\{ 0 \leq x \leq 4 \right\}`, color: desmosPurple, },
+				{ latex: raw`\tan(\frac{\pi}{8} x) \left\{ 0 \leq x \leq 2 \right\}`, color: desmosBlue, },
+				{ latex: raw`\frac{x}{2} \left\{ 2 \leq x \leq 4 \right\}`, color: desmosRed, },
+			]
+		},
+
 		polarCoordinates:
 		{
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
