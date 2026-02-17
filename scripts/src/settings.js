@@ -60,6 +60,7 @@ export const siteSettings =
 	darkTheme,
 	reduceMotion,
 	increaseContrast,
+	distinguishColors: params.get("distinguishcolors") === "1",
 	scroll: parseInt(params.get("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
@@ -155,6 +156,18 @@ export function getQueryParams()
 		params.delete("increasecontrast");
 	}
 
+
+
+	if (siteSettings.distinguishColors)
+	{
+		params.set("distinguishcolors", "1");
+	}
+
+	else
+	{
+		params.delete("distinguishcolors");
+	}
+
 	
 
 	if (siteSettings.scroll)
@@ -245,6 +258,16 @@ export function initIncreaseContrast()
 		siteSettings.increaseContrast = false;
 
 		toggleIncreaseContrast({ noAnimation: true });
+	}
+}
+
+export function initDistinguishColors()
+{
+	if (siteSettings.distinguishColors)
+	{
+		siteSettings.distinguishColors = false;
+
+		toggleDistinguishColors({ noAnimation: true });
 	}
 }
 
@@ -465,6 +488,21 @@ export async function toggleIncreaseContrast({
 		});
 
 		setTimeout(() => element.remove(), duration);
+	}
+}
+
+
+
+export async function toggleDistinguishColors({
+	noAnimation = false,
+}) {
+	siteSettings.distinguishColors = !siteSettings.distinguishColors;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	if (!noAnimation)
+	{
+		recreateDesmosGraphs();
 	}
 }
 

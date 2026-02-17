@@ -5,6 +5,7 @@ import { redirect } from "./navigation.js";
 import {
 	siteSettings,
 	toggleDarkTheme,
+	toggleDistinguishColors,
 	toggleIncreaseContrast,
 	toggleReduceMotion
 } from "./settings.js";
@@ -15,6 +16,7 @@ let accessibilityTooltipElement;
 export let darkThemeCheckbox;
 export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
+export let distinguishColorsCheckbox;
 
 let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
@@ -98,6 +100,18 @@ export function addHeader()
 						<div class="checkbox keep-accessibility-dialog-open"></div>
 					</div>
 					<label for="increase-contrast-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
+						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
+					</label>
+				</div>
+			</div>
+
+			<div class="checkboxes keep-accessibility-dialog-open">
+				<div class="checkbox-row keep-accessibility-dialog-open">
+					<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">
+						<input type="checkbox" id="distinguish-colors-checkbox" class="keep-accessibility-dialog-open">
+						<div class="checkbox keep-accessibility-dialog-open"></div>
+					</div>
+					<label for="distinguish-colors-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
 						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
 					</label>
 				</div>
@@ -211,6 +225,22 @@ export function addHeader()
 
 		addHoverEventWithScale({
 			element: increaseContrastCheckbox.element.parentNode,
+			scale: 1.1,
+			addBounceOnTouch: () => true
+		});
+
+
+
+		distinguishColorsCheckbox = new Checkbox({
+			element: document.body.querySelector("#distinguish-colors-checkbox"),
+			name: "Distinguish colors",
+			checked: siteSettings.distinguishColors,
+			persistState: false,
+			onInput: () => toggleDistinguishColors({})
+		});
+
+		addHoverEventWithScale({
+			element: distinguishColorsCheckbox.element.parentNode,
 			scale: 1.1,
 			addBounceOnTouch: () => true
 		});

@@ -21,12 +21,25 @@ const desmosColorStrings = [
 	desmosGray
 ];
 
-const desmosHues = {
-	[desmosPurple]: 270,
-	[desmosBlue]: 210,
-	[desmosRed]: 0,
-	[desmosOrange]: 30,
-};
+function getDesmosHue(color)
+{
+	if (color === desmosPurple)
+	{
+		return 270;
+	}
+
+	if (color === desmosBlue)
+	{
+		return siteSettings.distinguishColors ? 180 : 210;
+	}
+
+	if (color === desmosRed)
+	{
+		return siteSettings.distinguishColors ? 350 : 0;
+	}
+
+	return siteSettings.distinguishColors ? 45 : 30;
+}
 
 function getDesmosColor(color, is3d, alwaysDark, highContrast)
 {
@@ -53,7 +66,7 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 	const isDark = alwaysDark || siteSettings.darkTheme;
 	const invert = !is3d && isDark;
 
-	const hue = desmosHues[color] / 360;
+	const hue = getDesmosHue(color) / 360;
 	
 	const saturation = isDark
 		? highContrast

@@ -22,7 +22,7 @@ and now both those limits are derivatives at zero! The former is the slope of $\
 
 ### desmos unitCircleDerivatives
 
-Now we can go on to find the derivatives of the other five trig functions! Repeating the same process with $\cos$ instead of $\sin$ results in $d/dx \left[ \cos(x) \right] = -\sin(x)$
+Now we can go on to find the derivatives of the other five trig functions! Repeating the same process with $\cos$ instead of $\sin$ results in $d/dx \left[ \cos(x) \right] = -\sin(x)$, and we can fill in the rest with a lot of quotient rule applications.
 
 
 
@@ -42,9 +42,13 @@ Now we can go on to find the derivatives of the other five trig functions! Repea
 	
 ###
 
-
-
 The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish from $\sec(x^2)$.
+
+### exc "derivatives of trig functions"
+	
+	Show that $$d/dx [\tan(x)] = \sec^2(x)$$ and $$d/dx [\sec(x)] = \sec(x)\tan(x)$$ with the quotient rule.
+	
+###
 
 
 
