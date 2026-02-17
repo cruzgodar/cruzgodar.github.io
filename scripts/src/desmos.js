@@ -21,10 +21,6 @@ const desmosColorStrings = [
 	desmosGray
 ];
 
-// Light mode: 75% S, 80% V
-// Dark mode: 100% S, 80% V
-// Dark mode high contrast: 100% S, 50% V (when inverted results in 50% S, 100% V)
-
 const desmosHues = {
 	[desmosPurple]: 270,
 	[desmosBlue]: 210,
@@ -32,7 +28,7 @@ const desmosHues = {
 	[desmosOrange]: 30,
 };
 
-function getDesmosColor(color, is3d, alwaysDark, alwaysHighContrast)
+function getDesmosColor(color, is3d, alwaysDark, highContrast)
 {
 	if (color === desmosBlack)
 	{
@@ -54,14 +50,22 @@ function getDesmosColor(color, is3d, alwaysDark, alwaysHighContrast)
 		throw new Error("desmosGray is not a valid color for 2d graphs");
 	}
 
-	const darkTheme = alwaysDark || siteSettings.darkTheme;
-	const highContrast = alwaysHighContrast || siteSettings.increaseContrast;
+	const isDark = alwaysDark || siteSettings.darkTheme;
+	const invert = !is3d && isDark;
 
-	const hue = (darkTheme && !is3d) ? desmosHues[color] + 180 : desmosHues[color];
-	const saturation = (darkTheme && highContrast) ? 1 : 0.75;
-	const value = (darkTheme && highContrast) ? 0.5 : 0.8;
+	const hue = desmosHues[color] / 360;
+	
+	const saturation = isDark
+		? highContrast
+			? 0.5
+			: 0.8
+		: 0.75;
 
-	return hsvToHex(hue / 360, saturation, value);
+	const value = (!is3d && isDark) ? 1 : 0.8;
+
+	return invert
+		? hsvToHex(hue + 0.5, value, saturation)
+		: hsvToHex(hue, saturation, value);
 }
 
 export let desmosGraphs = {};
