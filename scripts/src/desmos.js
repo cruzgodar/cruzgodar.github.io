@@ -58,7 +58,7 @@ function getDesmosColor(color, is3d, alwaysDark, alwaysHighContrast)
 	const highContrast = alwaysHighContrast || siteSettings.increaseContrast;
 
 	const hue = (darkTheme && !is3d) ? desmosHues[color] + 180 : desmosHues[color];
-	const saturation = darkTheme ? 1 : 0.75;
+	const saturation = (darkTheme && highContrast) ? 1 : 0.75;
 	const value = (darkTheme && highContrast) ? 0.5 : 0.8;
 
 	return hsvToHex(hue / 360, saturation, value);
