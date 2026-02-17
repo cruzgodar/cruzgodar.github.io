@@ -1,3 +1,4 @@
+import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
@@ -11,72 +12,29 @@ export const desmosOrange = "_desmosOrange";
 export const desmosBlack = "_desmosBlack";
 export const desmosGray = "_desmosGray";
 
+const desmosColorStrings = [
+	desmosPurple,
+	desmosBlue,
+	desmosRed,
+	desmosOrange,
+	desmosBlack,
+	desmosGray
+];
+
 // Light mode: 75% S, 80% V
 // Dark mode: 100% S, 80% V
 // Dark mode high contrast: 100% S, 50% V (when inverted results in 50% S, 100% V)
 
-const functionsForColors = {
-	[desmosPurple]: (is3d, alwaysDark, highContrast) =>
-	{
-		if (is3d)
-		{
-			return siteSettings.increaseContrast || highContrast ? "#7f00ff" : "#7f32cc";
-		}
+const desmosHues = {
+	[desmosPurple]: 270,
+	[desmosBlue]: 210,
+	[desmosRed]: 0,
+	[desmosOrange]: 30,
+};
 
-		if (siteSettings.increaseContrast || highContrast)
-		{
-			return siteSettings.darkTheme || alwaysDark ? "#3f7f00" : "#7f32cc";
-		}
-		
-		return siteSettings.darkTheme || alwaysDark ? "#66cc00" : "#7f32cc";
-	},
-
-	[desmosBlue]: (is3d, alwaysDark, highContrast) =>
-	{
-		if (is3d)
-		{
-			return siteSettings.increaseContrast || highContrast ? "#007fff" : "#327fcc";
-		}
-
-		if (siteSettings.increaseContrast || highContrast)
-		{
-			return siteSettings.darkTheme || alwaysDark ? "#7f3f00" : "#327fcc";
-		}
-		
-		return siteSettings.darkTheme || alwaysDark ? "#cc6600" : "#327fcc";
-	},
-
-	[desmosRed]: (is3d, alwaysDark, highContrast) =>
-	{
-		if (is3d)
-		{
-			return siteSettings.increaseContrast || highContrast ? "#ff0000" : "#cc3232";
-		}
-
-		if (siteSettings.increaseContrast || highContrast)
-		{
-			return siteSettings.darkTheme || alwaysDark ? "#007f7f" : "#cc3232";
-		}
-		
-		return siteSettings.darkTheme || alwaysDark ? "#00cccc" : "#cc3232";
-	},
-
-	[desmosOrange]: (is3d, alwaysDark, highContrast) =>
-	{
-		if (is3d)
-		{
-			return siteSettings.increaseContrast || highContrast ? "#ff7f00" : "#cc7f32";
-		}
-
-		if (siteSettings.increaseContrast || highContrast)
-		{
-			return siteSettings.darkTheme || alwaysDark ? "#003f7f" : "#cc7f32";
-		}
-		
-		return siteSettings.darkTheme || alwaysDark ? "#0066cc" : "#cc7f32";
-	},
-
-	[desmosBlack]: (is3d) =>
+function getDesmosColor(color, is3d, alwaysDark, alwaysHighContrast)
+{
+	if (color === desmosBlack)
 	{
 		if (is3d)
 		{
@@ -84,9 +42,9 @@ const functionsForColors = {
 		}
 		
 		return "#000000";
-	},
+	}
 
-	[desmosGray]: (is3d) =>
+	if (color === desmosGray)
 	{
 		if (is3d)
 		{
@@ -95,7 +53,16 @@ const functionsForColors = {
 		
 		throw new Error("desmosGray is not a valid color for 2d graphs");
 	}
-};
+
+	const darkTheme = alwaysDark || siteSettings.darkTheme;
+	const highContrast = alwaysHighContrast || siteSettings.increaseContrast;
+
+	const hue = (darkTheme && !is3d) ? desmosHues[color] + 180 : desmosHues[color];
+	const saturation = darkTheme ? 1 : 0.75;
+	const value = (darkTheme && highContrast) ? 0.5 : 0.8;
+
+	return hsvToHex(hue / 360, saturation, value);
+}
 
 export let desmosGraphs = {};
 
@@ -265,9 +232,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		for (const expression of data[key].expressions)
 		{
-			if (expression.color && functionsForColors[expression.color])
+			if (expression.color && desmosColorStrings.includes(expression.color))
 			{
-				expression.color = functionsForColors[expression.color](
+				expression.color = getDesmosColor(
+					expression.color,
 					is3d,
 					data[key].alwaysDark,
 					data[key].highContrast
@@ -342,34 +310,34 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			expressions: anyNonSecretExpressions,
 
 			colors: {
-				PURPLE: functionsForColors[desmosPurple](
+				PURPLE: getDesmosColor(
+					desmosPurple,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
-				BLUE: functionsForColors[desmosBlue](
+				BLUE: getDesmosColor(
+					desmosBlue,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
-				RED: functionsForColors[desmosRed](
+				RED: getDesmosColor(
+					desmosRed,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
-				ORANGE: functionsForColors[desmosOrange](
+				ORANGE: getDesmosColor(
+					desmosOrange,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
 				...(
 					data[element.id].use3d
-						? { BLACK: functionsForColors[desmosGray](
-							data[element.id].use3d,
-						) }
-						: { BLACK: functionsForColors[desmosBlack](
-							data[element.id].use3d,
-						) }
+						? { BLACK: getDesmosColor(desmosGray, data[element.id].use3d) }
+						: { BLACK: getDesmosColor(desmosBlack, data[element.id].use3d) }
 				)
 			},
 

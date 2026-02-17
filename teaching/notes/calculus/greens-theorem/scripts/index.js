@@ -102,5 +102,15 @@ export default function()
 				}),
 			]
 		},
+
+		cycloid:
+		{
+			bounds: { xmin: -1, xmax: 2, ymin: -0.5, ymax: 2.5 },
+			
+			expressions:
+			[
+				{ latex: raw`(t - \sin(2\pi t), 1 - \cos(2\pi t))`, color: desmosPurple },
+			]
+		}
 	});
 }

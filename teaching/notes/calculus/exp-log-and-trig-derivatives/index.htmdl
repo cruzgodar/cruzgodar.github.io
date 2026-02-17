@@ -1,8 +1,28 @@
 ### nav-buttons
 
-So far, we've defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There's two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos(x^5)$ or $(\cos(x))^5$.
+So far, we've defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There's two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos\left( x^5 \right)$ or $(\cos(x))^5$.
 
-Let's start with the first of those two --- we'll save compositions for the next section. The first thing to cover is what the derivatives of trig functions look like. There are six of them, and all the derivatives are combinations of others.
+Let's save compositions for the next section and focus on derivatives of common functions for now, staring with the trig functions. The derivative of $\sin(x)$ is a little bit tricky to evaluate with the limit definition, but we can certainly do it! We have
+
+$$
+	d/dx \left[ \sin(x) \right] = \lim_{h \to 0} \frac{\sin(x + h) - \sin(x)}{h},
+$$
+
+which looks intractable until we focus in on the $\sin(x + h)$ term. While it might have been a while since you last saw it, the addition formula for $\sin$ can tell us that $\sin(x + h) = \sin(x)\cos(h) + \cos(x)\sin(h)$, so
+
+$$
+	d/dx \left[ \sin(x) \right] &= \lim_{h \to 0} \frac{\sin(x)\cos(h) + \cos(x)\sin(h) - \sin(x)}{h}
+
+	&= \lim_{h \to 0} \frac{\sin(x)\cos(h) - \sin(x)}{h} + \lim_{h \to 0} \frac{\cos(x)\sin(h)}{h}
+
+	&= \sin(x) \left( \lim_{h \to 0} \frac{\cos(h) - 1}{h} \right) + \cos(x) \left( \lim_{h \to 0} \frac{\sin(h)}{h} \right),
+$$
+
+and now both those limits are derivatives at zero! The former is the slope of $\cos(x)$ at $x = 0$, and the latter is the slope of $\sin(x)$ at $x = 0$. To understand both, we can return to the unit circle: these are the rates of change of the $x$- and $y$-coordinates when increasing from an angle of $0$ radians. At that point, the tangent line to the circle is vertical, so the rate of change of the $x$-coordinate is zero. That means all change in the angle is affecting the $y$-coordinate, and since the radian measure of an angle is its arc length in the unit circle, the rate of change of the $y$-coordinate is equal to the change in angle --- in other words, its derivative is $1$.
+
+### desmos unitCircleDerivatives
+
+Now we can go on to find the derivatives of the other five trig functions! Repeating the same process with $\cos$ instead of $\sin$ results in $d/dx \left[ \cos(x) \right] = -\sin(x)$
 
 
 

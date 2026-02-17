@@ -156,13 +156,49 @@ $$
 
 as evaluating $f$ on the set $\p [a, b] = \left\{ a, b \right\}$, where the number of integrals has been increased from zero on the left to one on the right.
 
-We'll have more to say about the rather strange object $g_x - f_y$ in Green's Theorem a little later on, but right now, we're overdue for some examples.
+We'll have more to say about the rather strange object $g_x - f_y$ in Green's Theorem a little later on, but right now, we're overdue for some practice.
 
-### ex "Green's theorem"
+### exc "Green's theorem"
 
-	Evaluate $$
+	Evaluate the integral
+
+	$$
+		\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r},
+	$$
+
+	where $T$ is the triangle with vertices $(0, 0)$, $(1, 0)$, and $(0, 1)$, oriented clockwise.
 
 ###
+
+While Green's Theorem primarily simplifies curve integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a curve integral, and those are very occasionally easier to solve. One particular rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $g(x, y) = x$ and $f(x, y) = 0$, or $g = 0$ and $f = -y$, or any other combination $g = ax$ and $f = by$ with $a - b = 1$.
+
+### prop "area as a curve integral"
+
+	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $|R|$ be the area of $R$. Then
+
+	$$
+		|R| = \oint_{\p R} \left< x, 0 \right> \bullet \d\vec{r} = \oint_{\p R} \left< 0, -y \right> \bullet \d\vec{r} = \oint_{\p R} \left< ax, by \right> \bullet \d\vec{r}
+	$$
+
+	for any $a, b$ with $a - b = 1$.
+
+###
+
+Let's use this to find the area of something that would have previously proven impossible.
+
+### ex "area as a curve integral"
+
+	Find the area of the cycloid between the $x$-axis and the curve $\left< t - \sin(2 \pi t), 1 - \cos(2 \pi t) \right>$ for $0 \leq t \leq 1$.
+
+	### desmos cycloid
+
+	We can't even set this up
+
+###
+
+
+
+
 
 
 

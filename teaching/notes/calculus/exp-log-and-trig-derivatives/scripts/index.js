@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	desmosBlack,
 	desmosBlue,
 	desmosPurple,
 	desmosRed
@@ -9,6 +10,21 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
+		unitCircleDerivatives:
+		{
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
+				{ latex: raw`s = 0` },
+				{ latex: raw`(\cos(s), \sin(s))`, color: desmosPurple, dragMode: "XY" },
+				{ latex: raw`y = \sin(s) - \cot(s)(x - \cos(s))`, color: desmosRed, secret: true },
+				{ latex: raw`x = \cos(s) \{s = 0\}`, color: desmosRed, secret: true },
+				{ latex: raw`x = \cos(s) \{s = \pi\}`, color: desmosRed, secret: true }
+			]
+		},
+
 		sinAndCos:
 		{
 			bounds: { xmin: -10, xmax: 10, ymin: -10, ymax: 10 },
