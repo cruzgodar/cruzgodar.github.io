@@ -1944,6 +1944,12 @@ option
 	width: 100%;
 }
 
+#accessibility-tooltip .checkbox-row > label
+{
+	width: 131px;
+	max-width: calc(100% - 42px);
+}
+
 #accessibility-tooltip .checkboxes
 {
 	margin-top: 16px;

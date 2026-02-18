@@ -1,5 +1,6 @@
 import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
+import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { clamp } from "./utils.js";
@@ -161,6 +162,8 @@ export function clearDesmosGraphs()
 	active3dGraphIds = [];
 	desmosGraphConfigs = {};
 	desmosGraphsConstructorData = {};
+
+	distinguishColorsCheckboxContainer.style.display = "none";
 }
 
 // Moves any active 3D calculators back to their off-screen pool slots.
@@ -238,6 +241,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	desmosGraphsConstructorData = {};
 	active3dGraphIds = [];
 	desmosGraphConfigs = {};
+
+	distinguishColorsCheckboxContainer.style.display = "block";
 
 	const data = structuredClone(desmosData);
 

@@ -18,6 +18,8 @@ export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
 export let distinguishColorsCheckbox;
 
+export let distinguishColorsCheckboxContainer;
+
 let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
 
@@ -233,7 +235,7 @@ export function addHeader()
 
 		distinguishColorsCheckbox = new Checkbox({
 			element: document.body.querySelector("#distinguish-colors-checkbox"),
-			name: "Distinguish colors",
+			name: "Distinguish graph colors",
 			checked: siteSettings.distinguishColors,
 			persistState: false,
 			onInput: () => toggleDistinguishColors({})
@@ -244,6 +246,9 @@ export function addHeader()
 			scale: 1.1,
 			addBounceOnTouch: () => true
 		});
+
+		distinguishColorsCheckboxContainer = distinguishColorsCheckbox
+			.element.parentNode.parentNode.parentNode;
 
 
 

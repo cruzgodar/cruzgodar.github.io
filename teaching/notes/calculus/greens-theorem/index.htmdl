@@ -94,15 +94,25 @@ $$
 
 At long last, we can add all of those curve integrals by writing the boundary of $R$ as a single path. Let's give that some proper notation, and then condense our results.
 
-### def "positive orientation"
+### def "positive oriented boundary"
 
-	Let $C$ be a non-intersecting, closed, oriented loop in $#R#^2$. We say that $C$ has **positive orientation** if it is oriented counterclockwise, and **negative orientation** if not.
+	Let $R$ be a region in $#R#^2$. The **oriented boundary** of $R$ is the curve $\p R$, oriented so that walking along it keeps $R$ on the left, which we call the **positive orientation**. The negatively oriented boundary is $-\p R$, which is oriented in the opposite direction.
 
 ###
 
-### def "oriented boundary"
+### exc "positive oriented boundary"
 
-	Let $R$ be a region in $#R#^2$. The **boundary** of $R$ is the curve $\p R$ with a positive orientation.
+	1. Draw any region in $#R#^2$ and sketch its oriented boundary. Is the positive orientation clockwise or counterclockwise?
+
+	2. Do you think that direction will always be the case for any region?
+
+	3. Draw the region
+
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 1 \leq x^2 + y^2 \leq 4 \right\}
+	$$
+
+	and its positive oriented boundary. Were you right?
 
 ###
 
@@ -116,7 +126,7 @@ $$
 
 since the way we oriented $C_1$, $C_2$, and $C_3$ was *clockwise* when they were all stitched together. 
 
-We're almost ready for a proper theorem statement, but first we need to step all the way back to the original double integral. We chose to integrate it $\d y\,\d x$, but choosing the other order instead would have lead to nearly same result, so long as the integrand was a partial derivative $g_x(x, y)$ of some function $g$ instead of $f_y(x, y)$. The only difference is the order of the curves, and it's actually a rather large difference. When we integrated $\d y\,\d x$, both the top and bottom boundary curves were oriented left-to-right, and the integral along the bottom one was subtracted from the top. We reversed the bottom curve to make all the terms positive, which resulted in a clockwise path. When we integrate $\d x\,\d y$, the left and right boundary paths are both oriented bottom to top, and the left integral is subtracted from the right; when we reverse the orientation of the left path to make all the terms positive, the resulting path is *counterclockwise*.
+We're almost ready for a proper theorem statement, but first we need to step all the way back to the original double integral. We chose to integrate it $\d y\,\d x$, but choosing the other order instead would have lead to nearly same result, so long as the integrand was a partial derivative $g_x(x, y)$ of some function $g$ instead of $f_y(x, y)$. The only difference is the order of the curves, and it's actually a rather large difference. When we integrated $\d y\,\d x$, both the top and bottom boundary curves were oriented left-to-right, and the integral along the bottom one was subtracted from the top. We reversed the bottom curve to make all the terms positive, which resulted in a negative orientation boundary. When we integrate $\d x\,\d y$, the left and right boundary paths are both oriented bottom to top, and the left integral is subtracted from the right; when we reverse the orientation of the left path to make all the terms positive, the resulting boundary has *positive* orientation.
 
 ### desmos positiveBoundaryCurve
 
@@ -194,7 +204,7 @@ Let's use this to find the area of something that would have previously proven i
 
 	It's not even clear how to set this up as an iterated integral, let alone evaluate it! Instead, let's use Green's Theorem to compute the area, since the boundary is already parameterized for us.
 
-	We need to do a little bit of work to set up the integral: first, we can see from the graph or by plugging in $t = 0$ and $t = 1$ that this cycloid isn't a closed curve, so we'll need to walk back along the $x$-axis once we're done. Second, the parameterization we're given is clockwise. Green's Theorem refers only to a positive-orientation boundary, and so we need to make some sort of adjustment. While we could modify the parameterization itself to run counterclockwise, let's instead just compute the entire thing clockwise and then negate our answer. If $C$ is the cycloid and $L$ is the line from $(1, 0)$ to $(0, 0)$, parameterized by $\vec{l}(t) = \left< 1 - t, 0 \right>$ for $0 \leq t \leq 1$, then we can compute
+	We need to do a little bit of work to set up the integral: first, we can see from the graph or by plugging in $t = 0$ and $t = 1$ that this cycloid isn't a closed curve, so we'll need to walk back along the $x$-axis once we're done. Second, the parameterization we're given is clockwise, and so is a negative-orientation boundary for the region whose area we're hoping to compute. Green's Theorem refers only to a positive-orientation boundary, and so we need to make some sort of adjustment. While we could modify the parameterization itself to run counterclockwise, let's instead just compute the entire thing clockwise and then negate our answer. If $C$ is the cycloid and $L$ is the line from $(1, 0)$ to $(0, 0)$, parameterized by $\vec{l}(t) = \left< 1 - t, 0 \right>$ for $0 \leq t \leq 1$, then we can compute
 
 	$$
 		\int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}.
@@ -226,13 +236,31 @@ Let's use this to find the area of something that would have previously proven i
 		&= -\pi - 1.
 	$$
 
-	Negating this, the area is $\pi + 1$, which is pretty reasonable!
+	Negating this, the area is $\pi + 1$, which looks pretty reasonable!
 
 ###
 
+### exc "Green's Theorem"
+
+	1. Compute the area of the ellipse $$\frac{x^2}{9} + \frac{y^2}{4} = 1$$.
+
+	2. Evaluate the curve integral
+
+	$$
+		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r},
+	$$
+
+	where $C$ is the circle of radius $2$ centered at the origin.
+
+###
+
+Let's reflect on Green's Theorem just a bit now that we've gotten our bearings with it. First of all, we *just* talked about another theorem involving curve integrals in the previous section, and so we should clarify how the two theorems interact. And... they effectively don't! The Fundamental Theorem of Curve Integrals only applies to conservative vector fields (in both $#R#^2$ and $#R#^3$), and Green's Theorem applies to any vector field in $#R#^2$ that's integrated along a closed path. The overlap between these two theorems is conservative fields in $#R#^2$, which are those of the form $\left< f, g \right>$ with $g_x = f_y$. But that means the double integral in Green's Theorem is integrating $g_x - f_y = 0$! In other words, Green's Theorem just gives us a second way to verify that the integral of a conservative vector field around a closed loop in $#R#^2$ is zero, and so these theorems have effectively no meaningful interaction.
 
 
 
+## Circulation and Flux
+
+Before we can dig into the integrand $$g_x - f_y$$ in Green's Theorem, we need to explore the theorem itself more. There's 
 
 
 
