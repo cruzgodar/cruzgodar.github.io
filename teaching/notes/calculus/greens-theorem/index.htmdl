@@ -170,17 +170,17 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 
 ###
 
-While Green's Theorem primarily simplifies curve integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a curve integral, and those are very occasionally easier to solve. One particular rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $g(x, y) = x$ and $f(x, y) = 0$, or $g = 0$ and $f = -y$, or any other combination $g = ax$ and $f = by$ with $a - b = 1$.
+While Green's Theorem primarily simplifies curve integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a curve integral, and those are very occasionally easier to solve. One particular rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $f(x, y) = 0$ and $g(x, y) = x$, or $f = -y$ and $g = 0$, or any other combination $f = ay$ and $g = bx$ with $b - a = 1$.
 
 ### prop "area as a curve integral"
 
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $|R|$ be the area of $R$. Then
 
 	$$
-		|R| = \oint_{\p R} \left< x, 0 \right> \bullet \d\vec{r} = \oint_{\p R} \left< 0, -y \right> \bullet \d\vec{r} = \oint_{\p R} \left< ax, by \right> \bullet \d\vec{r}
+		|R| = \oint_{\p R} \left< 0, x \right> \bullet \d\vec{r} = \oint_{\p R} \left< -y, 0 \right> \bullet \d\vec{r} = \oint_{\p R} \left< ay, bx \right> \bullet \d\vec{r}
 	$$
 
-	for any $a, b$ with $a - b = 1$.
+	for any $a$ and $b$ with $b - a = 1$.
 
 ###
 
@@ -188,11 +188,45 @@ Let's use this to find the area of something that would have previously proven i
 
 ### ex "area as a curve integral"
 
-	Find the area of the cycloid between the $x$-axis and the curve $\left< t - \sin(2 \pi t), 1 - \cos(2 \pi t) \right>$ for $0 \leq t \leq 1$.
+	Find the area of the cycloid between the $x$-axis and the curve $\vec{r}(t) = \left< t - \sin(2 \pi t),\ 1 - \cos(2 \pi t) \right>$ for $0 \leq t \leq 1$.
 
 	### desmos cycloid
 
-	We can't even set this up
+	It's not even clear how to set this up as an iterated integral, let alone evaluate it! Instead, let's use Green's Theorem to compute the area, since the boundary is already parameterized for us.
+
+	We need to do a little bit of work to set up the integral: first, we can see from the graph or by plugging in $t = 0$ and $t = 1$ that this cycloid isn't a closed curve, so we'll need to walk back along the $x$-axis once we're done. Second, the parameterization we're given is clockwise. Green's Theorem refers only to a positive-orientation boundary, and so we need to make some sort of adjustment. While we could modify the parameterization itself to run counterclockwise, let's instead just compute the entire thing clockwise and then negate our answer. If $C$ is the cycloid and $L$ is the line from $(1, 0)$ to $(0, 0)$, parameterized by $\vec{l}(t) = \left< 1 - t, 0 \right>$ for $0 \leq t \leq 1$, then we can compute
+
+	$$
+		\int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}.
+	$$
+
+	While using the integral of $\left< x, 0 \right>$ would work just as well, using this field will cancel out the more complicated first component of $\vec{r}'(t)$, so it might make things slightly easier. We have
+
+	$$
+		\vec{r}'(t) &= \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>
+
+		\vec{l}'(t) &= \left< -1, 0 \right>,
+	$$
+
+	so
+
+	$$
+		& \quad \int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}
+
+		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t), 0 \right) \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
+
+		&= \int_0^1 -\left( 1 - \cos(2\pi t) \right)\left( 1 - 2\pi\cos(2 \pi t) \right)\, \d t + 0
+
+		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - 2\pi\cos^2(2\pi t) \right)\, \d t
+
+		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - \pi - \pi\cos(4\pi t) \right)\, \d t
+
+		&= \left. \left[ -t + \frac{1 + 2\pi}{2\pi}\sin(2 \pi t) - \pi t - \frac{1}{4}\cos(4\pi t) \right] \right|_0^1
+
+		&= -\pi - 1.
+	$$
+
+	Negating this, the area is $\pi + 1$, which is pretty reasonable!
 
 ###
 
