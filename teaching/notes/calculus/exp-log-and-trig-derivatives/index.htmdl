@@ -22,9 +22,23 @@ and now both those limits are derivatives at zero! The former is the slope of $\
 
 ### desmos unitCircleDerivatives
 
-Now we can go on to find the derivatives of the other five trig functions! Repeating the same process with $\cos$ instead of $\sin$ results in $d/dx \left[ \cos(x) \right] = -\sin(x)$, and we can fill in the rest with a lot of quotient rule applications.
+With just this one derivative, we can go on to find the derivatives of the other five trig functions! First, we can find the derivative of $\cos$ with a slightly subtle approach involving the addition formula for $\cos$: we can write $\cos(x) = \sin\left( x + \frac{\pi}{2} \right)$ to express it in terms of a derivative we already know. While we haven't yet discussed how to differentiate a composition of functions like this, we can once again use the addition formula for $\sin$ to get around the issue:
 
+$$
+	d/dx \left[ \cos(x) \right] &= d/dx \left[ \sin\left( x + \frac{\pi}{2} \right) \right]
 
+	&= d/dx \left[ \sin\left( x \right)\cos\left( \frac{\pi}{2} \right) + \cos\left( x \right)\sin\left( \frac{\pi}{2} \right) \right]
+
+	&= \cos\left( x \right)\cos\left( \frac{\pi}{2} \right) - \sin\left( x \right)\sin\left( \frac{\pi}{2} \right)
+
+	&= \cos\left( x \right)\cos\left( \frac{\pi}{2} \right) - \sin\left( x \right)\sin\left( \frac{\pi}{2} \right)
+
+	&= \cos\left( x + \frac{\pi}{2} \right)
+
+	&= -\sin(x).
+$$
+
+We'll develop a much better approach to composed functions in the next section! The farther we can get from the limit definition of the derivative and obscure trig identities, the better. Thankfully, now that we have derivatives of both $\sin$ and $\cos$, we can fill in the rest of the trig functions with only the quotient rule.
 
 ### thm "derivatives of trig functions"
 	
@@ -44,14 +58,6 @@ Now we can go on to find the derivatives of the other five trig functions! Repea
 
 The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish from $\sec(x^2)$.
 
-### exc "derivatives of trig functions"
-	
-	Show that $$d/dx [\tan(x)] = \sec^2(x)$$ and $$d/dx [\sec(x)] = \sec(x)\tan(x)$$ with the quotient rule.
-	
-###
-
-
-
 ### ex "derivatives of trig functions"
 	
 	Find $$d/dx[x^2\cos(x)]$$.
@@ -68,13 +74,13 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 
 ### exc "derivatives of trig functions"
 	
-	Find $$d/dx\left[9x + \frac{\sec(x)}{x}\right]$$.
+	1. Show that $$d/dx [\tan(x)] = \sec^2(x)$$ and $$d/dx [\sec(x)] = \sec(x)\tan(x)$$ with the quotient rule.
+
+	2. Find $$d/dx\left[9x + \frac{\csc(x)}{x}\right]$$.
 	
 ###
 
-
-
-Let's take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It's a fundamental fact of waves that their slopes are given by other wave functions.
+While we've seen it from the limit definition, I think there's still room to believe the fact that $d/dx\left[ \sin(x) \right] = \cos(x)$ intuitively. At any point on the two graphs, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It's a fundamental fact of waves that their slopes are given by other wave functions.
 
 ### desmos sinAndCos
 
