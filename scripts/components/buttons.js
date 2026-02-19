@@ -433,4 +433,6 @@ export function initNavButtons()
 		navButtons[0].style.marginTop = "0";
 		navButtons[0].style.marginBottom = "32px";
 	}
+
+	requestAnimationFrame(equalizeTextButtons);
 }

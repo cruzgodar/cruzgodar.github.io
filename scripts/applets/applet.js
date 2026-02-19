@@ -1,6 +1,7 @@
 import { convertColor } from "../src/browser.js";
 import { openZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
+import { equalizeAppletColumns } from "../src/layout.js";
 import {
 	$,
 	$$,
@@ -83,6 +84,8 @@ export class Applet
 		this.setReduceMotionOnWilsons();
 
 		currentlyLoadedApplets.push(this);
+
+		requestAnimationFrame(equalizeAppletColumns);
 	}
 
 	destroy()

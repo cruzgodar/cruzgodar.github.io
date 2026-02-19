@@ -16,7 +16,7 @@ import { initCards } from "./cards.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { listenForWilsonButtons, updateTapClickElements } from "./interaction.js";
-import { equalizeAppletColumns, onResize } from "./layout.js";
+import { onResize } from "./layout.js";
 import {
 	$$,
 	pageElement,
@@ -91,8 +91,6 @@ export async function loadPage(noFadeIn = false)
 	listenForWilsonButtons();
 
 	setTimeout(initFocusEvents, 50);
-	setTimeout(equalizeAppletColumns, 50);
-	setTimeout(equalizeAppletColumns, 100);
 
 	window.scrollTo(0, 0);
 

@@ -179,7 +179,7 @@ export default function()
 			element.style.display = "none";
 		}
 
-		setTimeout(() => equalizeAppletColumns(), 0);
+		requestAnimationFrame(equalizeAppletColumns);
 
 		demoCanvasContainer.style.display = "none";
 
