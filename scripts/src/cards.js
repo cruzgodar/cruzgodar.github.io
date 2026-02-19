@@ -57,10 +57,7 @@ export function initCards()
 		});
 	}
 
-	if (window.DEBUG)
-	{
-		cardContainer.addEventListener("scroll", () => setScroll());
-	}
+	cardContainer.addEventListener("scroll", () => setScroll());
 }
 
 
@@ -250,10 +247,7 @@ export async function openCard({
 	cardContainer.scrollTo(0, 0);
 	cardIsAnimating = false;
 
-	if (window.DEBUG)
-	{
-		setScroll();
-	}
+	setScroll();
 }
 
 export async function closeCard(animationTime = cardAnimationTime)
@@ -357,10 +351,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 
 	cardIsAnimating = false;
 
-	if (window.DEBUG)
-	{
-		setScroll();
-	}
+	setScroll();
 }
 
 

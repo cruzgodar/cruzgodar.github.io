@@ -216,11 +216,14 @@ export async function loadSite(url = pageUrl)
 
 		await showAndRestoreScroll();
 
-		if (window.DEBUG)
+		let scrollTimeout;
+		window.addEventListener("scroll", () =>
 		{
-			setScroll();
-			setInterval(setScroll, 1000);
-		}
+			clearTimeout(scrollTimeout);
+			scrollTimeout = setTimeout(setScroll, 100);
+		});
+
+		window.addEventListener("beforeunload", setScroll);
 	}
 }
 
@@ -308,22 +311,30 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 async function showAndRestoreScroll()
 {
 	await sleep(10);
-	
+
 	if (siteSettings.card)
 	{
 		if (!blockCardPages.includes(pageUrl))
 		{
+			const targetScroll = siteSettings.scroll;
+
 			await openCard({
 				id: siteSettings.card,
 				fromElement: pageElement,
 				animationTime: 10
 			});
 
-			cardContainer.scrollTo(0, siteSettings.scroll);
+			for (let i = 0; i < 20; i++)
+			{
+				cardContainer.scrollTo(0, targetScroll);
 
-			await sleep(100);
+				if (targetScroll === 0 || cardContainer.scrollTop >= targetScroll - 1)
+				{
+					break;
+				}
 
-			cardContainer.scrollTo(0, siteSettings.scroll);
+				await sleep(50);
+			}
 		}
 
 		else
@@ -334,10 +345,20 @@ async function showAndRestoreScroll()
 
 	else
 	{
-		window.scrollTo(0, siteSettings.scroll);
+		const targetScroll = siteSettings.scroll;
 
-		await sleep(100);
+		// Retry scroll restoration until the page is tall enough
+		// or we've waited long enough.
+		for (let i = 0; i < 20; i++)
+		{
+			window.scrollTo(0, targetScroll);
 
-		window.scrollTo(0, siteSettings.scroll);
+			if (targetScroll === 0 || window.scrollY >= targetScroll - 1)
+			{
+				break;
+			}
+
+			await sleep(50);
+		}
 	}
 }

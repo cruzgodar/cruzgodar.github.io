@@ -61,7 +61,7 @@ export const siteSettings =
 	reduceMotion,
 	increaseContrast,
 	distinguishColors: params.get("distinguishcolors") === "1",
-	scroll: parseInt(params.get("scroll") ?? 0),
+	scroll: parseInt(sessionStorage.getItem("scroll") ?? 0),
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 };
@@ -170,15 +170,7 @@ export function getQueryParams()
 
 	
 
-	if (siteSettings.scroll)
-	{
-		params.set("scroll", siteSettings.scroll);
-	}
-
-	else
-	{
-		params.delete("scroll");
-	}
+	params.delete("scroll");
 
 
 
@@ -508,11 +500,11 @@ export async function toggleDistinguishColors({
 
 
 
-export async function setScroll()
+export function setScroll()
 {
 	siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
 
-	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+	sessionStorage.setItem("scroll", siteSettings.scroll);
 }
 
 
