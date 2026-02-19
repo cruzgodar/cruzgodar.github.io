@@ -11,6 +11,8 @@ import {
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
+const edgeChange = 0.175;
+
 export class VectorField extends AnimationFrameApplet
 {
 	loadPromise;
@@ -673,16 +675,16 @@ export class VectorField extends AnimationFrameApplet
 
 	createParticle(index)
 	{
-		const x = Math.random() < 0.2
+		const x = Math.random() < edgeChange
 			? Math.random() < 0.5
-				? .999
-				: .001
+				? Math.random() * 0.005 + 0.995
+				: Math.random() * 0.005
 			: Math.random();
 
-		const y = Math.random() < 0.2
+		const y = Math.random() < edgeChange
 			? Math.random() < 0.5
-				? .999
-				: .001
+				? Math.random() * 0.005 + 0.995
+				: Math.random() * 0.005
 			: Math.random();
 
 		this.particles[index][0] = this.wilson.worldCenterX

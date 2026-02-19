@@ -242,8 +242,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	active3dGraphIds = [];
 	desmosGraphConfigs = {};
 
-	distinguishColorsCheckboxContainer.style.display = "block";
-
 	const data = structuredClone(desmosData);
 
 	
@@ -297,6 +295,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		{
 			desmosGraphResolves[element.id] = resolve;
 		});
+	}
+
+	if (desmosContainers.length > 0)
+	{
+		distinguishColorsCheckboxContainer.style.display = "block";
 	}
 
 
@@ -949,6 +952,7 @@ export function getColoredParametricCurve({
 	pathFunction,
 	// the Desmos equivalent as a function of t
 	pathFunctionDesmos,
+	useUnitNormal = false,
 	minT,
 	maxT,
 	numSlices,
@@ -971,15 +975,19 @@ export function getColoredParametricCurve({
 
 		const magnitudeRPrime = Math.sqrt(rPrime[0] * rPrime[0] + rPrime[1] * rPrime[1]);
 
-		const unitTangent = [
-			rPrime[0] / magnitudeRPrime,
-			rPrime[1] / magnitudeRPrime
-		];
+		const unitVector = useUnitNormal
+			? [
+				rPrime[1] / magnitudeRPrime,
+				-rPrime[0] / magnitudeRPrime
+			] : [
+				rPrime[0] / magnitudeRPrime,
+				rPrime[1] / magnitudeRPrime
+			];
 
 		const fieldHere = fieldFunction(pathFunctionHere[0], pathFunctionHere[1]);
 
 		const dotProduct = clamp(
-			fieldHere[0] * unitTangent[0] + fieldHere[1] * unitTangent[1],
+			fieldHere[0] * unitVector[0] + fieldHere[1] * unitVector[1],
 			-2,
 			2
 		) / 2;

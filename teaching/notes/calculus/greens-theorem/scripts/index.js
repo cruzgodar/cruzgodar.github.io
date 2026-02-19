@@ -1,16 +1,33 @@
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { createEmphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosGraphs,
+	desmosGraphsLoaded,
 	desmosPurple,
 	desmosRed,
+	getColoredParametricCurve,
+	getDesmosBounds,
 	getDesmosSlider,
 	getDesmosVector
 } from "/scripts/src/desmos.js";
-import { raw } from "/scripts/src/main.js";
+import { $, raw } from "/scripts/src/main.js";
 
 export default function()
 {
+	// This is unfortunately inverted along with all the other colors,
+	// so we have to account for that.
+	function colorFunction(c)
+	{
+		return hsvToHex(
+			(270 + (120 - 270) * 0.5 * (Math.sign(c) + 1) + 180) / 360,
+			1,
+			0.4 * Math.abs(c),
+		);
+	}
+	
 	createDesmosGraphs({
 		slicingAndBoundaries:
 		{
@@ -111,6 +128,96 @@ export default function()
 			[
 				{ latex: raw`(t - \sin(2\pi t), 1 - \cos(2\pi t))`, color: desmosPurple },
 			]
-		}
+		},
+
+		flux:
+		{
+			alwaysDark: true,
+			highContrast: true,
+			
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			options: { expressions: false },
+			
+			expressions:
+			[
+				{ latex: raw`l_1(t) = (2\cos(t), 2\sin(t))` },
+				{ latex: raw`l_2(t) = (-\sqrt{3}, -1) + t(2\sqrt{3}, 0)` },
+
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [-y, -x + y],
+					pathFunction: (t) => [2 * Math.cos(t), 2 * Math.sin(t)],
+					pathFunctionDesmos: raw`l_1(t)`,
+					useUnitNormal: true,
+					minT: -Math.PI / 6,
+					maxT: 7 * Math.PI / 6,
+					numSlices: 100,
+					colorFunction
+				}),
+
+				...getColoredParametricCurve({
+					fieldFunction: (x, y) => [-y, -x + y],
+					pathFunction: (t) => [-Math.sqrt(3) + 2 * Math.sqrt(3) * t, -1],
+					pathFunctionDesmos: raw`l_2(t)`,
+					useUnitNormal: true,
+					minT: 0,
+					maxT: 1,
+					numSlices: 100,
+					colorFunction
+				}),
+			]
+		},
+	});
+
+
+
+	desmosGraphsLoaded.flux.then(() =>
+	{
+		createEmphemeralApplet($("#flux-canvas"), (canvas) =>
+		{
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
+			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 5000,
+					generatingCode: "(-y * 0.5, (-x + y) * 0.5)",
+					dt: .002,
+					worldWidth: 5,
+					hue: 0.6,
+					saturation: 0.85,
+					brightness: 0.85,
+					darkenWhenSlow: true,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.flux);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
+		});
 	});
 }
