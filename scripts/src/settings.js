@@ -118,8 +118,6 @@ export function getQueryParams()
 		}
 	}
 
-
-
 	if (siteSettings.reduceMotion && !matchMedia("(prefers-reduced-motion: reduce)").matches)
 	{
 		params.set("reducemotion", "1");
@@ -412,12 +410,16 @@ export async function toggleReduceMotion()
 		document.startViewTransition(() =>
 		{
 			siteSettings.reduceMotion = !siteSettings.reduceMotion;
+
+			history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 		});
 	}
 
 	else
 	{
 		siteSettings.reduceMotion = !siteSettings.reduceMotion;
+
+		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	}
 
 	for (const applet of currentlyLoadedApplets)
@@ -441,8 +443,6 @@ export async function toggleReduceMotion()
 			helpButton.style.removeProperty("view-transition-name");
 		}
 	}
-
-	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 }
 
 
@@ -516,7 +516,7 @@ function handleEasterEgg()
 
 	clearTimeout(timeoutId);
 
-	timeoutId = setTimeout(() => themeToggles = 0, 300);
+	timeoutId = setTimeout(() => themeToggles = 0, 1000);
 	
 	if (themeToggles >= 8 && !shownEasterEgg)
 	{
