@@ -1913,7 +1913,7 @@ option
 	top: calc(56px + env(safe-area-inset-top));
 	right: max(16px, env(safe-area-inset-right));
 	
-	border-radius: 20px;
+	border-radius: 24px;
 	
 	background-color: var(--background);
 
