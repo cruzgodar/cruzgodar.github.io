@@ -1,5 +1,7 @@
-export const browserIsIos = /iPad|iPhone|iPod/.test(navigator.userAgent)
-	|| (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+export const browserIsIos = /iPhone|iPod|iPad/.test(navigator.userAgent)
+	|| (navigator.maxTouchPoints > 1
+		&& "ontouchend" in document
+		&& matchMedia("(hover: none)").matches);
 
 export const browserSupportsP3 = matchMedia("(color-gamut: p3)").matches;
 

@@ -14,10 +14,8 @@ let lastMousemoveEvent = 0;
 
 export function initInteractionListeners()
 {
-	const boundFunction = handleTouchEvent.bind(this);
-
-	document.documentElement.addEventListener("touchstart", boundFunction, false);
-	document.documentElement.addEventListener("touchmove", boundFunction, false);
+	document.documentElement.addEventListener("touchstart", handleTouchEvent, false);
+	document.documentElement.addEventListener("touchmove", handleTouchEvent, false);
 
 	document.documentElement.addEventListener("mousemove", () =>
 	{
