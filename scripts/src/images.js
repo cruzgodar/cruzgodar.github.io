@@ -22,6 +22,8 @@ export function loadImages()
 				duration: pageShown ? 250 : 0,
 				easing: "easeInOutQuad"
 			});
+
+			imageLoadElement.remove();
 		};
 
 		setTimeout(() => imageLoadElement.src = image.getAttribute("data-src"), 0);

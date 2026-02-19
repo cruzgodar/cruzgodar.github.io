@@ -49,7 +49,7 @@ export function changeOpacity({
 			}, duration);
 
 			element.setAttribute("data-opacity-timeout-id", timeoutId);
-		}, 10);
+		}, 0);
 	});
 }
 
@@ -81,7 +81,7 @@ export function changeScale({
 			}, duration);
 
 			element.setAttribute("data-scale-timeout-id", timeoutId);
-		}, 10);
+		}, 0);
 	});
 }
 
@@ -113,7 +113,7 @@ export function fadeLeft({
 			}, duration);
 
 			element.setAttribute("data-fade-left-timeout-id", timeoutId);
-		}, 10);
+		}, 0);
 	});
 }
 
@@ -155,8 +155,8 @@ export function fadeUpIn({
 				}, duration);
 
 				element.setAttribute("data-fade-up-in-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -200,8 +200,8 @@ export function fadeUpOut({
 				}, duration);
 
 				element.setAttribute("data-fade-up-out-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -242,8 +242,8 @@ export function fadeDownIn({
 				}, duration);
 
 				element.setAttribute("data-fade-down-in-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -287,8 +287,8 @@ export function fadeDownOut({
 				}, duration);
 
 				element.setAttribute("data-fade-down-out-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -328,8 +328,8 @@ export function fadeLeftIn({
 				}, duration);
 
 				element.setAttribute("data-fade-left-in-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -371,8 +371,8 @@ export function fadeLeftOut({
 				}, duration);
 
 				element.setAttribute("data-fade-left-out-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -412,8 +412,8 @@ export function fadeRightIn({
 				}, duration);
 
 				element.setAttribute("data-fade-right-in-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -455,8 +455,8 @@ export function fadeRightOut({
 				}, duration);
 
 				element.setAttribute("data-fade-right-out-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -493,8 +493,8 @@ export function fadeIn({
 				}, duration);
 
 				element.setAttribute("data-fade-in-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }
 
@@ -534,7 +534,7 @@ export function fadeOut({
 				}, duration);
 
 				element.setAttribute("data-fade-out-timeout-id", timeoutId);
-			}, 10);
-		}, 10);
+			}, 0);
+		}, 0);
 	});
 }

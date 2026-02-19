@@ -395,8 +395,6 @@ export class Dropdown extends InputElement
 		{
 			const element = this.optionContainerElement.querySelector(`[data-option-name="${newValue}"]`);
 
-			// Using || rather than ?? handles both the case where we click the background
-			// and clicking the title option.
 			this.selectedItem = parseInt(
 				element.getAttribute("data-option-index") ?? this.selectedItem
 			);

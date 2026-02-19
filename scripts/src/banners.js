@@ -45,8 +45,6 @@ export function updateBanner(timestamp)
 	) {
 		lastBannerChangeTimestamp = timestamp;
 
-		requestAnimationFrame(updateBanner);
-
 		return;
 	}
 
@@ -251,6 +249,8 @@ export async function loadBanner({
 
 		setTimeout(() => imageLoadElement.src = bannerFilepath + bannerFilename, 0);
 	});
+
+	requestAnimationFrame(updateBanner);
 }
 
 
