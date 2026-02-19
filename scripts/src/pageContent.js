@@ -209,7 +209,7 @@ function handleClickEvent(e)
 	let element = e.target;
 	while (element !== pageElement)
 	{
-		if (element === contentsElement)
+		if (!element || element === contentsElement)
 		{
 			return;
 		}

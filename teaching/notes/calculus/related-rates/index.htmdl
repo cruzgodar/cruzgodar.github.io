@@ -157,8 +157,18 @@ The technology behind related rates is just implicit differentiation, but it can
 		&= \frac{4}{3}.
 	$$
 
-	Therefore, the surface area is increasing at a rate of $\frac{4}{3}\,\frac{\text{in}^2}{\text{s}}$.
+	Therefore, the surface area is increasing at a rate of $$\frac{4}{3}\,\frac{\text{in}^2}{\text{s}}$$.
 	
+###
+
+Related rates can also handle relationships between very different types of quantities, like distances and angles!
+
+### exc "related rates and angles"
+
+	A bird is flying at a height of $10\sqrt{3}$ feet above the ground at 5 feet per second horizontally. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that moment. As you watch it fly away from you, you're looking up from the ground at angle $\theta$, which decreases over time as the bird gets closer to the horizon. When $s = 20$, how fast is $\theta$ decreasing?
+
+	Bonus: do you think $$\frac{\d^2\theta}{\d t}$$ at this moment in time is positive, negative, or zero? Why?
+
 ###
 
 

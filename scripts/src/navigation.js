@@ -138,7 +138,7 @@ export async function redirect({
 			if (siteSettings.darkTheme !== forceThemePages[url])
 			{
 				setRevertThemeTo(siteSettings.darkTheme);
-				toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
+				await toggleDarkTheme({ force: true, noAnimation: siteSettings.reduceMotion });
 			}
 		}
 
