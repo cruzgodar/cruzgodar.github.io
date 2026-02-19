@@ -1,5 +1,6 @@
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
@@ -313,22 +314,10 @@ export class Slider extends CappedInputElement
 	{
 		if (this.persistState)
 		{
-			const searchParams = new URLSearchParams(window.location.search);
-
-			if (this.value !== undefined)
-			{
-				searchParams.set(
-					this.element.id,
-					encodeURIComponent(this.value)
-				);
-			}
-
-			const string = searchParams.toString();
-
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				getDisplayUrl({ [this.element.id]: this.value })
 			);
 		}
 	}

@@ -92,7 +92,7 @@ export function setForcedTheme(newForcedTheme)
 
 
 
-export function getQueryParams()
+export function getQueryParams(additionalQueryParams = {})
 {
 	const params = new URLSearchParams(window.location.search);
 
@@ -209,6 +209,19 @@ export function getQueryParams()
 	else
 	{
 		params.delete("debug");
+	}
+
+
+
+	for (const key in additionalQueryParams)
+	{
+		if (additionalQueryParams[key] === undefined)
+		{
+			params.delete(key);
+			continue;
+		}
+		
+		params.set(key, additionalQueryParams[key]);
 	}
 	
 	return params.toString();

@@ -1,4 +1,5 @@
 import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { siteSettings } from "../src/settings.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
@@ -154,22 +155,10 @@ export class TextBox extends CappedInputElement
 
 		if (this.persistState)
 		{
-			const searchParams = new URLSearchParams(window.location.search);
-
-			if (this.value !== undefined)
-			{
-				searchParams.set(
-					this.element.id,
-					encodeURIComponent(this.value)
-				);
-			}
-
-			const string = searchParams.toString();
-
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				getDisplayUrl({ [this.element.id]: this.value })
 			);
 		}
 

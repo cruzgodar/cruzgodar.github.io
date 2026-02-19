@@ -53,7 +53,7 @@ let lastPageScroll = 0;
 
 export let navigationTransitionType = 0;
 
-const urlsFetched = [];
+const urlsFetched = new Set();
 
 
 
@@ -156,7 +156,7 @@ export async function redirect({
 
 		setPageUrl(url);
 
-		urlsFetched.push(url);
+		urlsFetched.add(url);
 
 		loadPage(noFadeIn);
 	}
@@ -262,9 +262,9 @@ function getTransitionType(url)
 
 
 
-export function getDisplayUrl(additionalQueryParams)
+export function getDisplayUrl(additionalQueryParams = {})
 {
-	const queryParams = getQueryParams() + (additionalQueryParams ? `&${additionalQueryParams}` : "");
+	const queryParams = getQueryParams(additionalQueryParams);
 
 	let displayUrl = pageUrl.replace(/\/home/, "/");
 	
@@ -484,12 +484,12 @@ export async function prefetchPage(url)
 {
 	url = url.replace(/^https*:\/\/.+?(\/.+)$/, (match, $1) => $1);
 
-	if (urlsFetched.includes(url))
+	if (urlsFetched.has(url))
 	{
 		return;
 	}
 
-	urlsFetched.push(url);
+	urlsFetched.add(url);
 
 	const urlsToFetch = [`${url}/data.html`];
 
@@ -510,5 +510,9 @@ export async function prefetchPage(url)
 		urlsToFetch.push(`${url}/style/index.min.css`);
 	}
 
-	await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+	const promise = Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+
+	promise.catch(() => urlsFetched.delete(url));
+
+	await promise;
 }

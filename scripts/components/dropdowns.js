@@ -3,6 +3,7 @@ import { opacityAnimationTime } from "../src/animation.js";
 import { headerElement } from "../src/header.js";
 import { addHoverEvent } from "../src/hoverEvents.js";
 import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { siteSettings } from "../src/settings.js";
 import { InputElement } from "./inputElement.js";
 
@@ -437,29 +438,15 @@ export class Dropdown extends InputElement
 
 		if (this.persistState)
 		{
-			const searchParams = new URLSearchParams(window.location.search);
-
-			if (this.selectedItem !== 0)
-			{
-				searchParams.set(
-					this.element.id,
-					encodeURIComponent(
-						this.optionElements[this.selectedItem].getAttribute("data-option-name")
-					)
-				);
-			}
-
-			else
-			{
-				searchParams.delete(this.element.id);
-			}
-
-			const string = searchParams.toString();
+			const additionalQueryParams = this.selectedItem !== 0
+				? { [this.element.id]: this.optionElements[this.selectedItem]
+					.getAttribute("data-option-name") }
+				: {};
 
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				getDisplayUrl(additionalQueryParams)
 			);
 		}
 		

@@ -1,4 +1,5 @@
 import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { InputElement } from "./inputElement.js";
 
 export class Textarea extends InputElement
@@ -135,22 +136,10 @@ export class Textarea extends InputElement
 
 		if (this.persistState)
 		{
-			const searchParams = new URLSearchParams(window.location.search);
-
-			if (this.value)
-			{
-				searchParams.set(
-					this.element.id,
-					encodeURIComponent(this.value)
-				);
-			}
-
-			const string = searchParams.toString();
-
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				getDisplayUrl({ [this.element.id]: this.value })
 			);
 		}
 

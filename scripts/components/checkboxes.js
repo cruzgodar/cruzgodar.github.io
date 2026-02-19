@@ -1,5 +1,6 @@
 import { changeOpacity } from "../src/animation.js";
 import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { InputElement } from "./inputElement.js";
 
 export class Checkbox extends InputElement
@@ -120,19 +121,10 @@ export class Checkbox extends InputElement
 
 		if (this.persistState)
 		{
-			const searchParams = new URLSearchParams(window.location.search);
-			
-			searchParams.set(
-				this.element.id,
-				this.checked ? "1" : "0"
-			);
-
-			const string = searchParams.toString();
-
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
-				pageUrl.replace(/\/home/, "") + "/" + (string ? `?${string}` : "")
+				getDisplayUrl({ [this.element.id]: this.checked ? "1" : "0" })
 			);
 		}
 	}
