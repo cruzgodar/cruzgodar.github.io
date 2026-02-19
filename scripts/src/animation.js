@@ -38,7 +38,7 @@ export function changeOpacity({
 
 		element.style.transition = `opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.opacity = opacity;
 
@@ -49,7 +49,7 @@ export function changeOpacity({
 			}, duration);
 
 			element.setAttribute("data-opacity-timeout-id", timeoutId);
-		}, 0);
+		});
 	});
 }
 
@@ -70,7 +70,7 @@ export function changeScale({
 
 		element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.transform = `scale(${scale})`;
 
@@ -81,7 +81,7 @@ export function changeScale({
 			}, duration);
 
 			element.setAttribute("data-scale-timeout-id", timeoutId);
-		}, 0);
+		});
 	});
 }
 
@@ -101,7 +101,7 @@ export function fadeLeft({
 
 		element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.transform = "translateX(0px)";
 			element.style.opacity = 1;
@@ -113,7 +113,7 @@ export function fadeLeft({
 			}, duration);
 
 			element.setAttribute("data-fade-left-timeout-id", timeoutId);
-		}, 0);
+		});
 	});
 }
 
@@ -133,7 +133,7 @@ export function fadeUpIn({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
 			element.style.marginBottom = 0;
@@ -143,7 +143,7 @@ export function fadeUpIn({
 
 			element.style.transition = `margin-top ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginTop = 0;
 				element.style.opacity = opacity;
@@ -155,8 +155,8 @@ export function fadeUpIn({
 				}, duration);
 
 				element.setAttribute("data-fade-up-in-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -176,7 +176,7 @@ export function fadeUpOut({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginBottom = "20vmin";
 
@@ -184,7 +184,7 @@ export function fadeUpOut({
 
 			element.style.transition = `margin-top ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginTop = `-${navigationAnimationDistanceVertical}px`;
 
@@ -200,8 +200,8 @@ export function fadeUpOut({
 				}, duration);
 
 				element.setAttribute("data-fade-up-out-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -221,7 +221,7 @@ export function fadeDownIn({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginTop = `${-navigationAnimationDistanceVertical}px`;
 			element.style.marginBottom = 0;
@@ -230,7 +230,7 @@ export function fadeDownIn({
 
 			element.style.transition = `margin-top ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginTop = 0;
 				element.style.opacity = opacity;
@@ -242,8 +242,8 @@ export function fadeDownIn({
 				}, duration);
 
 				element.setAttribute("data-fade-down-in-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -263,7 +263,7 @@ export function fadeDownOut({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginBottom = "20vmin";
 
@@ -271,7 +271,7 @@ export function fadeDownOut({
 
 			element.style.transition = `margin-top ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
 
@@ -287,8 +287,8 @@ export function fadeDownOut({
 				}, duration);
 
 				element.setAttribute("data-fade-down-out-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -308,7 +308,7 @@ export function fadeLeftIn({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginLeft = `${navigationAnimationDistanceHorizontal}px`;
 
@@ -316,7 +316,7 @@ export function fadeLeftIn({
 
 			element.style.transition = `margin-left ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginLeft = 0;
 				element.style.opacity = opacity;
@@ -328,8 +328,8 @@ export function fadeLeftIn({
 				}, duration);
 
 				element.setAttribute("data-fade-left-in-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -349,13 +349,13 @@ export function fadeLeftOut({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			void(element.offsetHeight);
 
 			element.style.transition = `margin-left ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginLeft = `${-navigationAnimationDistanceHorizontal}px`;
 
@@ -371,8 +371,8 @@ export function fadeLeftOut({
 				}, duration);
 
 				element.setAttribute("data-fade-left-out-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -392,7 +392,7 @@ export function fadeRightIn({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			element.style.marginLeft = `${-navigationAnimationDistanceHorizontal}px`;
 
@@ -400,7 +400,7 @@ export function fadeRightIn({
 
 			element.style.transition = `margin-left ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginLeft = 0;
 				element.style.opacity = opacity;
@@ -412,8 +412,8 @@ export function fadeRightIn({
 				}, duration);
 
 				element.setAttribute("data-fade-right-in-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -433,13 +433,13 @@ export function fadeRightOut({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			void(element.offsetHeight);
 
 			element.style.transition = `margin-left ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0), opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.marginLeft = `${navigationAnimationDistanceHorizontal}px`;
 
@@ -455,8 +455,8 @@ export function fadeRightOut({
 				}, duration);
 
 				element.setAttribute("data-fade-right-out-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -476,13 +476,13 @@ export function fadeIn({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			void(element.offsetHeight);
 
 			element.style.transition = `opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				element.style.opacity = opacity;
 
@@ -493,8 +493,8 @@ export function fadeIn({
 				}, duration);
 
 				element.setAttribute("data-fade-in-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
 
@@ -514,13 +514,13 @@ export function fadeOut({
 
 		element.style.transition = "";
 
-		setTimeout(() =>
+		requestAnimationFrame(() =>
 		{
 			void(element.offsetHeight);
 
 			element.style.transition = `opacity ${duration}ms cubic-bezier(.1, 0.0, .2, 0.0)`;
 
-			setTimeout(() =>
+			requestAnimationFrame(() =>
 			{
 				if (!noOpacityChange)
 				{
@@ -534,7 +534,7 @@ export function fadeOut({
 				}, duration);
 
 				element.setAttribute("data-fade-out-timeout-id", timeoutId);
-			}, 0);
-		}, 0);
+			});
+		});
 	});
 }
