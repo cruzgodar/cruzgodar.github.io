@@ -122,6 +122,7 @@ export class Applet
 
 		for (const wilson of this.wilsons)
 		{
+			wilson.replaceCanvas();
 			wilson.destroy();
 		}
 
@@ -778,13 +779,24 @@ export function getMaxGlslString(varName, numVars)
 
 export function getColorGlslString(varName, minVarName, colors)
 {
-	let colorGlsl = "";
+	const colorStrings = colors.map(c =>
+		`vec3(${c[0] / 255}, ${c[1] / 255}, ${c[2] / 255})`
+	);
 
-	for (let i = 0; i < colors.length; i++)
+	// Start with the first color as the base.
+	let colorGlsl = `vec3 color = ${colorStrings[0]};\n`;
+
+	// For each subsequent color, overwrite when its distance matches the min.
+	// step(a, b) returns 1.0 when b >= a, so the product of two step calls
+	// is 1.0 exactly when |varName - minVarName| < epsilon, avoiding float ==.
+	for (let i = 1; i < colors.length; i++)
 	{
-		colorGlsl += `if (${minVarName} == ${varName}${i + 1}) { return vec3(${colors[i][0] / 255}, ${colors[i][1] / 255}, ${colors[i][2] / 255}); }
-		`;
+		colorGlsl += `color = mix(color, ${colorStrings[i]}, `
+			+ `step(${varName}${i + 1}, ${minVarName} + .0001) `
+			+ `* step(${minVarName} - .0001, ${varName}${i + 1}));\n`;
 	}
+
+	colorGlsl += "return color;\n";
 
 	return colorGlsl;
 }

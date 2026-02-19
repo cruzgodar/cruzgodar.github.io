@@ -65,29 +65,31 @@ export class S3Axes extends S3Geometry
 	getColorGlsl = /* glsl */`
 		${axesDistances}
 
-		if (minDistance == distance1)
-		{
-			return vec3(
-				1.0,
-				.5 + .25 * (.5 * (sin(20.0 * pos.x) + 1.0)),
-				.5 + .25 * (.5 * (cos(20.0 * pos.x) + 1.0))
-			);
-		}
+		float match1 = step(distance1, minDistance + .0001) * step(minDistance - .0001, distance1);
+		float match2 = step(distance2, minDistance + .0001) * step(minDistance - .0001, distance2);
 
-		if (minDistance == distance2)
-		{
-			return vec3(
-				.5 + .25 * (.5 * (sin(20.0 * pos.y) + 1.0)),
-				1.0,
-				.5 + .25 * (.5 * (cos(20.0 * pos.y) + 1.0))
-			);
-		}
+		vec3 color1 = vec3(
+			1.0,
+			.5 + .25 * (.5 * (sin(20.0 * pos.x) + 1.0)),
+			.5 + .25 * (.5 * (cos(20.0 * pos.x) + 1.0))
+		);
 
-		return vec3(
+		vec3 color2 = vec3(
+			.5 + .25 * (.5 * (sin(20.0 * pos.y) + 1.0)),
+			1.0,
+			.5 + .25 * (.5 * (cos(20.0 * pos.y) + 1.0))
+		);
+
+		vec3 color3 = vec3(
 			.5 + .25 * (.5 * (sin(20.0 * pos.z) + 1.0)),
 			.5 + .25 * (.5 * (cos(20.0 * pos.z) + 1.0)),
 			1.0
 		);
+
+		vec3 color = color3;
+		color = mix(color, color2, match2);
+		color = mix(color, color1, match1);
+		return color;
 	`;
 
 	lightGlsl = /* glsl */`
@@ -189,137 +191,101 @@ export class S3Rooms extends S3Geometry
 		float roomVariation = .075;
 		float sphereVariation = .25;
 
-		if (minDistance == roomDistance1)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
-			);
-		}
+		float matchRoom1 = step(roomDistance1, minDistance + .0001) * step(minDistance - .0001, roomDistance1);
+		float matchRoom2 = step(roomDistance2, minDistance + .0001) * step(minDistance - .0001, roomDistance2);
+		float matchRoom3 = step(roomDistance3, minDistance + .0001) * step(minDistance - .0001, roomDistance3);
+		float matchRoom4 = step(roomDistance4, minDistance + .0001) * step(minDistance - .0001, roomDistance4);
+		float matchRoom5 = step(roomDistance5, minDistance + .0001) * step(minDistance - .0001, roomDistance5);
+		float matchRoom6 = step(roomDistance6, minDistance + .0001) * step(minDistance - .0001, roomDistance6);
+		float matchRoom7 = step(roomDistance7, minDistance + .0001) * step(minDistance - .0001, roomDistance7);
+		float matchRoom8 = step(roomDistance8, minDistance + .0001) * step(minDistance - .0001, roomDistance8);
 
-		if (minDistance == roomDistance2)
-		{
-			return vec3(
-				.5 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
-			);
-		}
+		float matchSphere1 = step(sphereDistance1, minDistance + .0001) * step(minDistance - .0001, sphereDistance1);
+		float matchSphere2 = step(sphereDistance2, minDistance + .0001) * step(minDistance - .0001, sphereDistance2);
+		float matchSphere3 = step(sphereDistance3, minDistance + .0001) * step(minDistance - .0001, sphereDistance3);
+		float matchSphere4 = step(sphereDistance4, minDistance + .0001) * step(minDistance - .0001, sphereDistance4);
+		float matchSphere5 = step(sphereDistance5, minDistance + .0001) * step(minDistance - .0001, sphereDistance5);
+		float matchSphere6 = step(sphereDistance6, minDistance + .0001) * step(minDistance - .0001, sphereDistance6);
 
-		if (minDistance == roomDistance3)
-		{
-			return vec3(
-				.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
-			);
-		}
+		float banding = getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 
-		if (minDistance == roomDistance4)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.5 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
-			);
-		}
-
-		if (minDistance == roomDistance5)
-		{
-			return vec3(
-				.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
-			);
-		}
-
-		if (minDistance == roomDistance6)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
-			);
-		}
-
-		if (minDistance == roomDistance7)
-		{
-			return vec3(
-				.5 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
-			);
-		}
-
-		if (minDistance == roomDistance8)
-		{
-			return vec3(
-				.65 + .35 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
-				.65 + .35 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
-				.65 + .35 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
-			);
-		}
-
-		if (minDistance == sphereDistance1)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		if (minDistance == sphereDistance2)
-		{
-			return vec3(
-				.5 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		if (minDistance == sphereDistance3)
-		{
-			return vec3(
-				.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		if (minDistance == sphereDistance4)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
-				.5 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.z) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		if (minDistance == sphereDistance5)
-		{
-			return vec3(
-				.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		if (minDistance == sphereDistance6)
-		{
-			return vec3(
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
-			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
-		}
-
-		return vec3(
+		vec3 color = vec3(
 			.5 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
 			.5 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
 			.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 29.0) + 1.0))
-		) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
+		) * banding;
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
+		) * banding, matchSphere6);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
+		) * banding, matchSphere5);
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+			.5 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.z) * 29.0) + 1.0))
+		) * banding, matchSphere4);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
+		) * banding, matchSphere3);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
+		) * banding, matchSphere2);
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
+		) * banding, matchSphere1);
+		color = mix(color, vec3(
+			.65 + .35 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
+		), matchRoom8);
+		color = mix(color, vec3(
+			.5 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
+		), matchRoom7);
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
+		), matchRoom6);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
+		), matchRoom5);
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.5 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
+		), matchRoom4);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
+		), matchRoom3);
+		color = mix(color, vec3(
+			.5 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
+		), matchRoom2);
+		color = mix(color, vec3(
+			.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
+		), matchRoom1);
+
+		return color;
 	`;
 
 	lightGlsl = /* glsl */`

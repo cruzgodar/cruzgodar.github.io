@@ -17,7 +17,6 @@ import Lapsa from "/scripts/lapsa.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
-const outputCanvas = document.body.querySelector("#output-canvas");
 
 export let uniformLoop = [];
 export function addUniformLoop(newUniformLoop)
@@ -38,13 +37,13 @@ export async function initializeApplet({
 		opacity: 0,
 		duration: duration / 2
 	});
-
+	
 	applet?.destroy && applet.destroy();
 
 	slide.appendChild(canvasBundle);
 
 	applet = new Class({
-		canvas: outputCanvas,
+		canvas: document.body.querySelector("#output-canvas"),
 		...parameters
 	});
 

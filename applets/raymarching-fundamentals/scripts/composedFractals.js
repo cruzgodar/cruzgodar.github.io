@@ -157,47 +157,28 @@ export class ComposedFractals extends RaymarchApplet
 				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
 
 				${includeSphere ? /* glsl */`
-					if (sphereWeight > 0.0)
-					{
 						color += sphereWeight * getColorRoomSphere(pos);
-					}
 				` : ""}
 
 				${includeExtrudedCube ? /* glsl */`
-					if (extrudedCubeWeight > 0.0)
-					{
 						color += extrudedCubeWeight * getColorExtrudedCube(rotatedPos);
-					}
 				` : ""}
 
 				${includeMengerSponge ? /* glsl */`
-					if (mengerSpongeWeight > 0.0)
-					{
-						color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);
-					}
+						color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);					
 				` : ""}
 
 				${includeKIFS ? /* glsl */`
-					if (kIFSWeight > 0.0)
-					{
 						color += kIFSWeight * getColorKIFS(rotatedPos);
-					}
 				` : ""}
 
 				${includeMandelbulb ? /* glsl */`
-					if (mandelbulbWeight > 0.0)
-					{
 						color += mandelbulbWeight * getColorMandelbulb(rotatedPos);
-					}
 				` : ""}
-
 				${includeQJulia ? /* glsl */`
-					if (qJuliaWeight > 0.0)
-					{
 						color += qJuliaWeight * getColorQJulia(rotatedPos);
-					}
 				` : ""}
-
+				
 				return color;
 			}
 		`;
@@ -215,17 +196,14 @@ export class ComposedFractals extends RaymarchApplet
 
 			float minDistance = min(distanceGround, distanceObject);
 
-			if (minDistance == distanceGround)
-			{
-				vec2 co = floor(pos.xy * 50.0);
-				return vec3(0.5, 0.5, 0.5)
-					* (1.0 + .2 * (rand(co) - .5));
-			}
+			float groundMatch = step(distanceGround, minDistance + .0001)
+				* step(minDistance - .0001, distanceGround);
 
-			if (minDistance == distanceObject)
-			{
-				return getColorObject(pos);
-			}
+			vec2 co = floor(pos.xy * 50.0);
+			vec3 groundColor = vec3(0.5, 0.5, 0.5)
+				* (1.0 + .2 * (rand(co) - .5));
+
+			return mix(getColorObject(pos), groundColor, groundMatch);
 		`;
 
 		const getReflectivityGlsl = /* glsl */`
@@ -234,15 +212,10 @@ export class ComposedFractals extends RaymarchApplet
 
 			float minDistance = min(distanceGround, distanceObject);
 
-			if (minDistance == distanceGround)
-			{
-				return .05;
-			}
+			float groundMatch = step(distanceGround, minDistance + .0001)
+				* step(minDistance - .0001, distanceGround);
 
-			if (minDistance == distanceObject)
-			{
-				return 0.15;
-			}
+			return mix(0.15, .05, groundMatch);
 		`;
 
 		const uniformsGlsl = /* glsl */`

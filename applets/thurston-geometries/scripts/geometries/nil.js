@@ -553,29 +553,31 @@ export class NilAxes extends NilGeometry
 	getColorGlsl = /* glsl */`
 		${axesDistances}
 
-		if (minDistance == distance1)
-		{
-			return vec3(
-				1.0,
-				.5 + .25 * (.5 * (sin(10.0 * pos.x) + 1.0)),
-				.5 + .25 * (.5 * (cos(10.0 * pos.x) + 1.0))
-			);
-		}
+		float match1 = step(distance1, minDistance + .0001) * step(minDistance - .0001, distance1);
+		float match2 = step(distance2, minDistance + .0001) * step(minDistance - .0001, distance2);
 
-		if (minDistance == distance2)
-		{
-			return vec3(
-				.5 + .25 * (.5 * (sin(10.0 * pos.y) + 1.0)),
-				1.0,
-				.5 + .25 * (.5 * (cos(10.0 * pos.y) + 1.0))
-			);
-		}
+		vec3 color1 = vec3(
+			1.0,
+			.5 + .25 * (.5 * (sin(10.0 * pos.x) + 1.0)),
+			.5 + .25 * (.5 * (cos(10.0 * pos.x) + 1.0))
+		);
 
-		return vec3(
+		vec3 color2 = vec3(
+			.5 + .25 * (.5 * (sin(10.0 * pos.y) + 1.0)),
+			1.0,
+			.5 + .25 * (.5 * (cos(10.0 * pos.y) + 1.0))
+		);
+
+		vec3 color3 = vec3(
 			.5 + .25 * (.5 * (sin(10.0 * pos.z) + 1.0)),
 			.5 + .25 * (.5 * (cos(10.0 * pos.z) + 1.0)),
 			1.0
 		);
+
+		vec3 color = color3;
+		color = mix(color, color2, match2);
+		color = mix(color, color1, match1);
+		return color;
 	`;
 
 	lightGlsl = /* glsl */`
