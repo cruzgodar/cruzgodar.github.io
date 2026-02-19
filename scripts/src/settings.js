@@ -263,7 +263,7 @@ export function initDistinguishColors()
 	}
 }
 
-export async function initDarkTheme()
+export async function initDarkTheme(url)
 {
 	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) =>
 	{
@@ -278,22 +278,19 @@ export async function initDarkTheme()
 		}
 	});
 
-	if (forceThemePages[pageUrl] !== undefined)
+	if (url in forceThemePages)
 	{
-		if (forceThemePages[pageUrl])
-		{
-			setForcedTheme(true);
-			setRevertThemeTo(siteSettings.darkTheme);
-			siteSettings.darkTheme = !forceThemePages[pageUrl];
-			await toggleDarkTheme({ noAnimation: true, force: true });
-		}
-
-		else if (!forceThemePages[pageUrl])
-		{
-			revertTheme();
-		}
+		setForcedTheme(true);
+		setRevertThemeTo(siteSettings.darkTheme);
+		siteSettings.darkTheme = !forceThemePages[url];
+		await toggleDarkTheme({ noAnimation: true, force: true });
 
 		return;
+	}
+
+	else
+	{
+		revertTheme();
 	}
 
 	if (siteSettings.darkTheme)

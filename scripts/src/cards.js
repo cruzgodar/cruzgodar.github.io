@@ -51,7 +51,6 @@ export function initCards()
 			{
 				openCard({
 					id: element.getAttribute("data-card-id"),
-					fromElement: element
 				});
 			}
 		});

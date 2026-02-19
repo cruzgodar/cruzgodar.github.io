@@ -131,9 +131,9 @@ export async function redirect({
 
 		loadBanner({ url });
 
-		if (forceThemePages[url])
+		if (url in forceThemePages)
 		{
-			setForcedTheme(true);
+			setForcedTheme(forceThemePages[url]);
 
 			if (siteSettings.darkTheme !== forceThemePages[url])
 			{
@@ -142,7 +142,7 @@ export async function redirect({
 			}
 		}
 
-		else if (!forceThemePages[url])
+		else
 		{
 			revertTheme();
 		}

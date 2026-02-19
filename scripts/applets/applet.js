@@ -4,6 +4,7 @@ import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
 	$$,
+	addTemporaryInterval,
 	addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
@@ -66,13 +67,15 @@ export class Applet
 
 		if ($("#applet-controls-card") && !this.addHelpButton())
 		{
-			const refreshId = setInterval(() =>
+			const refreshId = addTemporaryInterval(() =>
 			{
 				if (this.addHelpButton())
 				{
 					clearInterval(refreshId);
 				}
 			}, 50);
+
+			addTemporaryInterval(refreshId);
 		}
 
 		this.addHoverEventOnWilsonButtons();
@@ -339,6 +342,8 @@ export class Applet
 				{
 					wilson.reduceMotion = siteSettings.reduceMotion;
 				}
+
+				addTemporaryInterval(refreshId);
 			}
 		}, 50);
 	}
