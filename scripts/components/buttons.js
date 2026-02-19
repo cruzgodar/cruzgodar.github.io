@@ -39,7 +39,7 @@ export class Button extends InputElement
 			}
 		});
 
-		equalizeTextButtons();
+		requestAnimationFrame(equalizeTextButtons);
 	}
 }
 
@@ -302,11 +302,6 @@ export function initTextButtons()
 		event: "resize",
 		callback: equalizeTextButtons
 	});
-
-	equalizeTextButtons();
-
-	setTimeout(equalizeTextButtons, 50);
-	setTimeout(equalizeTextButtons, 500);
 }
 
 // Makes linked text buttons have the same width and height.

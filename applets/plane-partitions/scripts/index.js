@@ -319,11 +319,8 @@ export default function()
 			canvasLandscapeLeftElement.appendChild(element);
 		}
 
-		equalizeTextButtons();
-		setTimeout(equalizeTextButtons, 10);
-
-		equalizeAppletColumns();
-		setTimeout(equalizeAppletColumns, 10);
+		requestAnimationFrame(equalizeTextButtons);
+		requestAnimationFrame(equalizeAppletColumns);
 
 		if (visibleSection === "editArray")
 		{
