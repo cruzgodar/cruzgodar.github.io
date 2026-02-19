@@ -1946,7 +1946,6 @@ option
 
 #accessibility-tooltip .checkbox-row > label
 {
-	width: 131px;
 	max-width: calc(100% - 42px);
 }
 

@@ -387,24 +387,38 @@ export default function()
 			]
 		},
 
-		nastyRegion:
+		swappingOrder:
 		{
-			bounds: { xmin: -1, xmax: 5, ymin: -0.5, ymax: 2.5 },
-
-			options: { xAxisNumbers: false, yAxisNumbers: false, expressions: false },
+			bounds: { xmin: -2, xmax: 3, ymin: -3, ymax: 10 },
 
 			expressions:
 			[
-				{ latex: raw`\frac{x^2}{8} \leq y \leq \tan(\frac{\pi}{8} x) \left\{ 0 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-				{ latex: raw`\frac{x^2}{8} \leq y \leq \frac{x}{2} \left\{ 2 \leq x \leq 4 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`x^3 \leq y \leq 8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
 
-				{ latex: raw`\frac{x^2}{8}`, color: desmosPurple, lineOpacity: 0.5 },
-				{ latex: raw`\tan(\frac{\pi}{8} x)`, color: desmosBlue, lineOpacity: 0.5 },
-				{ latex: raw`\frac{x}{2}`, color: desmosRed, lineOpacity: 0.5 },
+				{ latex: raw`x^3`, color: desmosBlue, lineOpacity: 0.5 },
+				{ latex: raw`8 - (x - 2)^2`, color: desmosRed, lineOpacity: 0.5 },
 
-				{ latex: raw`\frac{x^2}{8} \left\{ 0 \leq x \leq 4 \right\}`, color: desmosPurple, },
-				{ latex: raw`\tan(\frac{\pi}{8} x) \left\{ 0 \leq x \leq 2 \right\}`, color: desmosBlue, },
-				{ latex: raw`\frac{x}{2} \left\{ 2 \leq x \leq 4 \right\}`, color: desmosRed, },
+				{ latex: raw`x^3 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosBlue, },
+				{ latex: raw`8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosRed, },
+			]
+		},
+
+		nastyRegion:
+		{
+			bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`\frac{x^2}{2} \leq y \leq \tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`\frac{x^2}{2} \leq y \leq x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+
+				{ latex: raw`\frac{x^2}{2}`, color: desmosPurple, lineOpacity: 0.5 },
+				{ latex: raw`\tan(\frac{\pi}{4} x)`, color: desmosBlue, lineOpacity: 0.5 },
+				{ latex: raw`x`, color: desmosRed, lineOpacity: 0.5 },
+
+				{ latex: raw`\frac{x^2}{2} \left\{ 0 \leq x \leq 2 \right\}`, color: desmosPurple, },
+				{ latex: raw`\tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosBlue, },
+				{ latex: raw`x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosRed, },
 			]
 		},
 
@@ -553,6 +567,70 @@ export default function()
 				{ latex: raw`\sqrt{x^2+y^2} = [1, 2\sin(2T(x, y))] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
 
 				{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+			]
+		},
+
+		polarIntegral1:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+
+			options: {
+				polarMode: true,
+			},
+
+			expressions:
+			[
+				{ latex: raw`a = \frac{\pi}{3}`, hidden: true, secret: true },
+				{ latex: raw`b = \frac{7\pi}{6}`, hidden: true, secret: true },
+
+				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
+
+				{ latex: raw`\sqrt{x^2 + y^2} < 3 \{ \frac{\pi}{3} \leq T(x, y) \leq \frac{7\pi}{6} \} \{ 2 < \sqrt{x^2 + y^2} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+
+				{ latex: raw`[a, b] = T(x, y) \left\{ 2 \leq \sqrt{x^2+y^2} \leq 3 \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+
+				{ latex: raw`\sqrt{x^2+y^2} = [2, 3] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+			]
+		},
+
+		polarIntegral2:
+		{
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25 },
+
+			options: {
+				polarMode: true,
+			},
+
+			expressions:
+			[
+				{ latex: raw`a = \frac{\pi}{3}`, hidden: true, secret: true },
+				{ latex: raw`b = \frac{7\pi}{6}`, hidden: true, secret: true },
+
+				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
+
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosRed, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ 0 \leq T(x, y) \leq 2\pi \}`, color: desmosBlue, fillOpacity: 0.15, secret: true },
+
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \frac{\pi}{4} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ \frac{\pi}{4} \leq T(x, y) \leq \frac{\pi}{2} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+			]
+		},
+
+		polarIntegral3:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+
+			options: {
+				polarMode: true,
+			},
+
+			expressions:
+			[
+				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
+
+				{ latex: raw`T(x, y) \leq \sqrt{x^2 + y^2} \{ 0 \leq T(x, y) \leq \pi \} \{ \sqrt{x^2 + y^2} \leq \pi \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} = \pi \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosPurple, secret: true },
+				{ latex: raw`y = 0 \{ 0 \leq x \leq \pi \}`, color: desmosPurple, secret: true },
 			]
 		}
 	});

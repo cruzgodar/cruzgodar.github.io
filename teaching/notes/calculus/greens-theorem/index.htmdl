@@ -260,7 +260,7 @@ Let's reflect on Green's Theorem just a bit now that we've gotten our bearings w
 
 ## Circulation and Flux
 
-Before we can dig into the integrand $$g_x - f_y$$ in Green's Theorem, we need to explore the theorem itself more. There's 
+Before we can dig into the integrand $g_x - f_y$ in Green's Theorem, we need to explore the theorem itself more: the story won't be complete without an alternate perspective on it. When we introduced curve integrals of vector fields in the previous section, we expressed them in the language of curve integrals of functions of multiple variables (by taking a dot product) rather than develop something entirely new. The Fundamental Theorem of Curve Integrals and Green's Theorem proved that approach to be a good one, and the unit tangent vector in particular to be a good choice of vector to dot with.
 
 
 

@@ -294,12 +294,56 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 ### exc "changing the order of integration"
 
-	1. Write $$\int_{-1}^2 \int_{x^3}^{8 - (x - 2)^2} f(x, y)\,\d y\,\d x$$ as an integral $\d x\,\d y$.
+	1. The curves $y = x^3$ and $y = 8 - (x - 2)^2$ intersect at $(-1, -1)$ and $(2, 8)$. Write
 
-	2. Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two integrals: one $\d y\,\d x$ and one $\d x\,\d y$.
+	$$
+		\int_{-1}^2 \int_{x^3}^{8 - (x - 2)^2} f(x, y)\,\d y\,\d x
+	$$
+
+	as an integral $\d x\,\d y$.
+
+	### solution
+
+	Let's begin by sketching the region --- that's generally a good way to approach any problem involving double integrals.
+
+	### desmos swappingOrder
+
+	To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the red function to the blue one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
+
+	$$
+		x &= \sqrt[3]{y}
+
+		(x - 2)^2 &= 8 - y
+
+		x &= 2 \pm \sqrt{8 - y}.
+	$$
+
+	We want the negative version, since this graph is extending out toward negative $x$-values. In total, our new integral is
+
+	$$
+		\int_{-1}^8 \int_{\sqrt[3]{y}}^{2 - \sqrt{8 - y}} f(x, y)\,\d x\,\d y
+	$$
+###
+
+### exc "changing the order of integration"
+
+	Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two iterated integrals: one $\d y\,\d x$ and one $\d x\,\d y$.
 
 	### desmos nastyRegion
 
+	### solution
+
+	Similarly to the previous exercise, we can start with the intersection points. We have $(0, 0)$, $(1, 1)$, and $(2, 2)$; $y = \frac{x^2}{2}$ is always the bottom function, but the top function switches at $x = 1$, and so in total we have
+
+	$$
+		\int_0^1 \int_{x^2 / 2}^{\tan\left( \frac{\pi}{4} x \right)} xy\,\d y\,\d x + \int_1^2 \int_{x^2 / 2}^{x} xy\,\d y\,\d x.
+	$$
+
+	To express the same volume as an integral $\d x\,\d y$, we need to express all the bounds as $x$ given by a function of $y$. The only one of those that poses some extra difficulty is $y = \frac{x^2}{2}$: when we solve for $x$, we get $x = \pm\sqrt{2y}$, and we want the positive branch since $x$ is positive (and more importantly, becoming larger over time). Now we have
+
+	$$
+		\int_0^1 \int_{(4/\pi)\arctan(y)}^{\sqrt{2y}} xy\,\d y\,\d x + \int_1^2 \int_y^{\sqrt{2y}} xy\,\d y\,\d x.
+	$$
 ###
 
 At this point, we can write down a few useful properties of double integrals --- nothing here is too groundbreaking, but it's good to get our bearings a little.
@@ -428,7 +472,7 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 		&= -4\int_{\pi/12}^{5\pi/12} u^2 \,\d u - \int_{\pi/12}^{5\pi/12} \cos(\theta) \,\d\theta,
 	$$
 
-	where $u = \cos(\theta)$ and $\d u = -\sin(\theta)\d\theta$. Continuing,
+	where $u = \cos(\theta)$ and $\d u = -\sin(\theta)\,\d\theta$. Continuing,
 		
 	$$
 		&= -4\left. \left[ \frac{u^3}{3} \right] \right|_{\pi/12}^{5\pi/12} - \left. \left[ \sin(\theta) \right] \right|_{\pi/12}^{5\pi/12}
@@ -442,13 +486,65 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 
 ### exc "setting up double integrals in polar coordinates"
 
-	Set up each of the following as polar integrals and sketch the regions over which you're integrating, but don't evaluate the integrals.
+	Set up each of the following as polar integrals and sketch the regions over which you're integrating. Simplify the integrands if possible, but don't evaluate the integrals.
 
 	1. The signed volume under the graph of $g(x, y) = x^3y + xy^3$ on the region with $$\frac{\pi}{3} \leq \theta \leq \frac{7\pi}{6}$$ and $2 \leq r \leq 3$.
 
-	2. The area of the region bounded by $r = \sin(\theta)$ and $r = \cos(\theta)$. (Hint: to sketch this region, try first multiplying both sides of each equation by $r$.)
+	2. The area of the region bounded by $r = \sin(\theta)$ and $r = \cos(\theta)$.
 
 	3. The integral $\iint_R h(x, y)\,\d A$, where $h(x, y) = \frac{x^2 - y^2}{x^2 + y^2}$ and $R$ is the region in quadrants I and II bounded by $r = \theta$ and $r = \pi$.
+
+	### solution
+
+	1. This region is a polar rectangle:
+	
+	### desmos polarIntegral1
+
+	We can directly translate those bounds into integral limits, but the function itself takes a bit more work. By factoring out an $xy$, we find
+
+	$$
+		(xy)\left( x^2 + y^2 \right) &= r\cos(\theta)\,r\sin(\theta)r^2
+
+		&= r^4\cos(\theta)\sin(\theta)
+		
+		&= \frac{1}{2}r^4\sin(2\theta).
+	$$
+
+	The integral is then
+
+	$$
+		\int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^4\sin(2\theta)\,r\,\d r\,\d \theta = \int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^5\sin(2\theta)\,\d r\,\d \theta.
+	$$
+
+	2. This time around, the region is an intersection of two circles.
+
+	### desmos polarIntegral2
+
+	They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the red circle $r = \sin(\theta)$ as an upper limit until then, followed by the blue circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
+
+	$$
+		\int_{0}^{\pi/4} \int_0^{\sin(\theta)} r\,\d r\,\d \theta + \int_{\pi/4}^{\pi/2} \int_0^{\cos(\theta)} r\,\d r\,\d \theta.
+	$$
+
+	3. This region is a little bizarre!
+
+	### desmos polarIntegral3
+
+	For each angle $\theta$, we want to integrate from $r = \theta$ to $r = \pi$, and $\theta$ should be between $0$ and $\pi$. As far as the integrand goes, we have
+
+	$$
+		\frac{x^2 - y^2}{x^2 + y^2} &= \frac{r^2\cos^2(\theta) - r^2\sin^2(\theta)}{r^2}
+
+		&= \cos^2(\theta) - \sin^2(\theta)
+
+		&= \cos(2\theta),
+	$$
+
+	so the entire integral is
+
+	$$
+		\int_0^{\pi} \int_\theta^\pi \cos(2\theta)\,r\,\d r\,\d \theta
+	$$
 
 ###
 
