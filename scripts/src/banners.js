@@ -206,6 +206,7 @@ export async function loadBanner({
 	// Only do banner things if the banner things are in the standard places.
 	if (!(bannerPages.includes(url)))
 	{
+		bannerElement = null;
 		return;
 	}
 

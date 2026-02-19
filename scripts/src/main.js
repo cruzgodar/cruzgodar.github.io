@@ -85,18 +85,18 @@ export function clearTemporaryIntervals()
 
 export let temporaryWorkers = {};
 
-export function addTemporaryWorker(src, id = src)
+export function addTemporaryWorker(src)
 {
-	if (temporaryWorkers[id]?.terminate)
+	if (temporaryWorkers[src]?.terminate)
 	{
-		temporaryWorkers[id].terminate();
+		temporaryWorkers[src].terminate();
 	}
 
 	const replacedSrc = window.DEBUG ? src : src.replace(".js", ".min.js");
 
 	const worker = new Worker(replacedSrc);
 
-	temporaryWorkers[id] = worker;
+	temporaryWorkers[src] = worker;
 
 	return worker;
 }

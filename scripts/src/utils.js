@@ -43,10 +43,15 @@ export async function asyncFetch(url)
 
 		fetcher.onmessage = (e) =>
 		{
+			fetcher.terminate();
 			resolve(e.data[0]);
 		};
 
-		fetcher.onerror = reject;
+		fetcher.onerror = () =>
+		{
+			fetcher.terminate();
+			reject();
+		};
 	});
 }
 

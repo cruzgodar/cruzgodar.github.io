@@ -3,7 +3,6 @@ import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "../s
 import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
-const trackWidth = 170;
 const thumbWidth = 24;
 
 export class Slider extends CappedInputElement
@@ -247,7 +246,8 @@ export class Slider extends CappedInputElement
 				? Array.from({ length: this.max - this.min + 1 }, (_, i) => this.min + i)
 				: [];
 
-		const usableWidth = trackWidth - (thumbWidth + 5);
+		const trackRect = this.trackElement.getBoundingClientRect();
+		const usableWidth = trackRect.width - (thumbWidth + 5);
 
 		for (const tick of ticks)
 		{
@@ -407,7 +407,8 @@ export class Slider extends CappedInputElement
 
 		void(this.trackElement.offsetWidth);
 
-		const maxX = trackWidth - thumbWidth - 2.5 * 2;
+		const trackRect = this.trackElement.getBoundingClientRect();
+		const maxX = trackRect.width - thumbWidth - 2.5 * 2;
 		this.element.style.left = `${clampedSliderProportion * maxX}px`;
 
 		this.displayValue = this.integer
