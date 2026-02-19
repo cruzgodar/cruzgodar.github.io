@@ -183,18 +183,17 @@ export function addHoverEventWithScale({
 	{
 		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
 		{
-			if (element.tagName === "SELECT")
-			{
-				element = element.previousElementSibling;
-			}
+			const usableElement = element.tagName === "SELECT"
+				? element.previousElementSibling
+				: element;
 
-			element.classList.add("hover");
+			usableElement.classList.add("hover");
 
 			callback(true);
 
 			if (siteSettings.reduceMotion)
 			{
-				element.classList.add("hover-reduce-motion");
+				usableElement.classList.add("hover-reduce-motion");
 
 				return;
 			}
@@ -204,26 +203,27 @@ export function addHoverEventWithScale({
 				return;
 			}
 
-			changeScale({ element, scale });
+			changeScale({ element: usableElement, scale });
 		}
 	});
 
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
+		if (currentlyTouchDevice || element.classList.contains("no-hover"))
 		{
-			if (element.tagName === "SELECT")
-			{
-				element = element.previousElementSibling;
-			}
-
-			element.classList.remove("hover");
-			element.classList.remove("hover-reduce-motion");
-
-			callback(false);
-
-			changeScale({ element, scale: 1 });
+			return;
 		}
+
+		const usableElement = element.tagName === "SELECT"
+			? element.previousElementSibling
+			: element;
+
+		usableElement.classList.remove("hover");
+		usableElement.classList.remove("hover-reduce-motion");
+
+		callback(false);
+
+		changeScale({ element: usableElement, scale: 1 });
 	});
 
 	element.addEventListener("touchstart", async () =>

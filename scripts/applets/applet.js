@@ -345,10 +345,10 @@ export class Applet
 				{
 					wilson.reduceMotion = siteSettings.reduceMotion;
 				}
-
-				addTemporaryInterval(refreshId);
 			}
-		}, 50);
+		}, 100);
+
+		addTemporaryInterval(refreshId);
 	}
 
 	addHelpButton()

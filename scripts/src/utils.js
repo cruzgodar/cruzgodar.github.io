@@ -35,24 +35,9 @@ export function downloadString(text, filename)
 
 export async function asyncFetch(url)
 {
-	return new Promise((resolve, reject) =>
-	{
-		const fetcher = new Worker("/scripts/src/asyncFetcher.js");
-
-		fetcher.postMessage([url]);
-
-		fetcher.onmessage = (e) =>
-		{
-			fetcher.terminate();
-			resolve(e.data[0]);
-		};
-
-		fetcher.onerror = () =>
-		{
-			fetcher.terminate();
-			reject();
-		};
-	});
+	const response = await fetch(url);
+	const text = await response.text();
+	return text;
 }
 
 export async function animate(
