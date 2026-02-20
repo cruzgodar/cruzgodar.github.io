@@ -268,6 +268,10 @@ It's not the only choice we could make, though. Our motivating question in the p
 
 ### melded-desmos flux
 
+To head some concerns off at the pass, this is a fully 2D picture; our goal is to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector *orthogonal* to the curve.
+
+We'll define such a vector in just a moment, but there's another subtlety. For the curve integrals of vector fields we're already seen to work out properly, we needed
+
 
 
 ### nav-buttons

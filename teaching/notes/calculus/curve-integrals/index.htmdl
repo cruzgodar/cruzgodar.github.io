@@ -156,7 +156,7 @@ We're going to have a lot more to say about path-dependence later in this sectio
 
 
 
-## Curve Integrals Through Vector Fields
+## Circulation
 
 Single-variable integrals apply to much, much more than just finding areas under curves: whenever we want to add up a quantity that changes over time, distance, or with respect to any other variable, they're the first tool we reach for. In the same way, if we're adding up a changing quantity over the course of a path in 2D or 3D space, curve integrals will be our starting point. For example, the integral of a density function along a thin wire gives the total mass of the wire.
 
@@ -230,17 +230,17 @@ $$
 	\int_C \vec{F} \bullet \d\vec{r}.
 $$
 
-That was a *lot* of theory and symbol-pushing, so let's pause and summarize what we've discovered so far before applying it to our running example with the circular path through the river. As is often the case, we've motivated everything in $#R#^2$, but it will work just as well in higher dimensions.
+That was a *lot* of theory and symbol-pushing, so let's pause and summarize what we've discovered so far (and also give it a proper name) before applying it to our running example with the circular path through the river. As is often the case, we've motivated everything in $#R#^2$, but it will work just as well in higher dimensions.
 
-### def "curve integral through a vector fields"
+### def "circulation"
 
-	Let $\vec{F}$ be a vector field and let $C$ be an oriented path. The **curve integral of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ parallel to $C$, and is written in three different ways:
+	Let $\vec{F}$ be a vector field and let $C$ be an oriented path. The **circulation of $\mathbf{\vec{F}}$ along $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ parallel to $C$, and can be written in three different ways:
 
 	$$
 		1.\ \int_C \vec{F} \bullet \vec{T}\,\d s
 	$$
 
-	expresses it as an integral with respect to arc length of the scalar projection of $\vec{F}$ onto the unit tangent vector $\vec{T}$ of $C$, which is a quantity independent of parameterization, meaning we don't need to specify one. It's the farthest from an actual formula to compute the integral, but it displays most clearly what's actually being integrated.
+	expresses the circulation as an integral with respect to arc length of the scalar projection of $\vec{F}$ onto the unit tangent vector $\vec{T}$ of $C$, which is a quantity independent of parameterization, meaning we don't need to specify one. It's the farthest from an actual formula to compute the integral, but it displays most clearly what's actually being integrated.
 
 	$$
 		2.\ \int_C \vec{F} \bullet \d \vec{r}
@@ -256,7 +256,7 @@ That was a *lot* of theory and symbol-pushing, so let's pause and summarize what
 
 ###
 
-With all that written out, let's now return to our swimming example. As a reminder, $\vec{F}(x, y) = \left< -y, -x + y \right>$, and we're swimming along a circular arc. That arc has radius $2$ and travels clockwise, so a good start for the parameterization is
+With all that written out, let's now return to our swimming example to compute the circulation of the field along the path. As a reminder, $\vec{F}(x, y) = \left< -y, -x + y \right>$, and we're swimming along a circular arc. That arc has radius $2$ and travels clockwise, so a good start for the parameterization is
 
 $$
 	\vec{r}(t) &= \left< 2\cos(-t), 2\sin(-t) \right>
@@ -288,9 +288,9 @@ $$
 	&= -2\sqrt{3}
 $$
 
-That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, curve integrals through vector fields are just regular curve integrals of a particular dot product, and we just discussed how curve integrals are path-dependent. The only thing that's specific to a curve integral through a vector field is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
+That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, circulation integrals are just regular curve integrals of a particular dot product, and we just discussed how curve integrals are path-dependent. The only thing that's specific to a circulation integral is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
 
-### exc "curve integrals through a vector field"
+### exc "circulation"
 
 	Let $$\vec{F} = \left< x^2, x - 2y \right>$$.
 
