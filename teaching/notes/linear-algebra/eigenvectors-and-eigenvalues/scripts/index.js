@@ -2,14 +2,14 @@ import { BarnsleyFern } from "/applets/barnsley-fern/scripts/class.js";
 import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet } from "/scripts/applets/applet.js";
+import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
-	getDesmosVector
+    createDesmosGraphs,
+    desmosBlue,
+    desmosOrange,
+    desmosPurple,
+    desmosRed,
+    getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -57,7 +57,7 @@ export default function()
 
 
 
-	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
+	createEphemeralApplet($("#vector-field-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 

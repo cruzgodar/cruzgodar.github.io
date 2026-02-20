@@ -1,17 +1,17 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
+import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGraphs,
-	desmosGraphsLoaded,
-	desmosGray,
-	desmosPurple,
-	desmosRed,
-	getColoredParametricCurve,
-	getDesmosBounds,
-	getDesmosPoint,
-	getDesmosSlider
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGraphs,
+    desmosGraphsLoaded,
+    desmosGray,
+    desmosPurple,
+    desmosRed,
+    getColoredParametricCurve,
+    getDesmosBounds,
+    getDesmosPoint,
+    getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -409,7 +409,7 @@ export default function()
 
 	desmosGraphsLoaded.swimmingInCurrent.then(() =>
 	{
-		createEmphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
+		createEphemeralApplet($("#swimmingInCurrent-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,
@@ -461,7 +461,7 @@ export default function()
 
 	desmosGraphsLoaded.curveIntegralThroughVectorField.then(() =>
 	{
-		createEmphemeralApplet($("#curveIntegralThroughVectorField-canvas"), (canvas) =>
+		createEphemeralApplet($("#curveIntegralThroughVectorField-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,
@@ -514,7 +514,7 @@ export default function()
 
 	desmosGraphsLoaded.nastyPath.then(() =>
 	{
-		createEmphemeralApplet($("#nastyPath-canvas"), (canvas) =>
+		createEphemeralApplet($("#nastyPath-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,

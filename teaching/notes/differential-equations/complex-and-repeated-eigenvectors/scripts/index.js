@@ -1,9 +1,9 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet } from "/scripts/applets/applet.js";
+import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosPurple,
-	getDesmosSlider
+    createDesmosGraphs,
+    desmosPurple,
+    getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -53,7 +53,7 @@ export default function()
 
 
 
-	createEmphemeralApplet($("#vector-field-canvas"), (canvas) =>
+	createEphemeralApplet($("#vector-field-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 

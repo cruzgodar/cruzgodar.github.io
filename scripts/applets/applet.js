@@ -637,7 +637,7 @@ export class Applet
 // scroll back into it. For WebGL contexts, this requires the canvas to be
 // replaced with a new one, so the create method needs to take a canvas as input.
 // Returns a function to get the applet.
-export function createEmphemeralApplet(canvas, create)
+export function createEphemeralApplet(canvas, create)
 {
 	let applet;
 

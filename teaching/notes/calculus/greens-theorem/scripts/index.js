@@ -1,17 +1,17 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
+import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosGraphs,
-	desmosGraphsLoaded,
-	desmosPurple,
-	desmosRed,
-	getColoredParametricCurve,
-	getDesmosBounds,
-	getDesmosSlider,
-	getDesmosVector
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosGraphs,
+    desmosGraphsLoaded,
+    desmosPurple,
+    desmosRed,
+    getColoredParametricCurve,
+    getDesmosBounds,
+    getDesmosSlider,
+    getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -173,7 +173,7 @@ export default function()
 
 	desmosGraphsLoaded.flux.then(() =>
 	{
-		createEmphemeralApplet($("#flux-canvas"), (canvas) =>
+		createEphemeralApplet($("#flux-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,

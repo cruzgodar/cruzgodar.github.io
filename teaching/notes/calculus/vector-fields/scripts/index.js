@@ -1,16 +1,16 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
-import { createEmphemeralApplet } from "/scripts/applets/applet.js";
+import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosGraphs,
-	desmosGraphsLoaded,
-	desmosGray,
-	desmosPurple,
-	getDesmosBounds,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector
+    createDesmosGraphs,
+    desmosBlack,
+    desmosGraphs,
+    desmosGraphsLoaded,
+    desmosGray,
+    desmosPurple,
+    getDesmosBounds,
+    getDesmosPoint,
+    getDesmosSlider,
+    getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -175,7 +175,7 @@ export default function()
 
 
 
-	createEmphemeralApplet($("#vectorField-canvas"), (canvas) =>
+	createEphemeralApplet($("#vectorField-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 
@@ -192,7 +192,7 @@ export default function()
 
 
 
-	createEmphemeralApplet($("#vectorField2-canvas"), (canvas) =>
+	createEphemeralApplet($("#vectorField2-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 
@@ -210,7 +210,7 @@ export default function()
 
 
 
-	createEmphemeralApplet($("#vectorField3-canvas"), (canvas) =>
+	createEphemeralApplet($("#vectorField3-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 
@@ -229,7 +229,7 @@ export default function()
 
 	desmosGraphsLoaded.conservativeVectorField2.then(() =>
 	{
-		createEmphemeralApplet($("#conservativeVectorField2-canvas"), (canvas) =>
+		createEphemeralApplet($("#conservativeVectorField2-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,
@@ -277,7 +277,7 @@ export default function()
 
 	desmosGraphsLoaded.conservativeVectorField3.then(() =>
 	{
-		createEmphemeralApplet($("#conservativeVectorField3-canvas"), (canvas) =>
+		createEphemeralApplet($("#conservativeVectorField3-canvas"), (canvas) =>
 		{
 			const applet = new VectorField({
 				canvas,

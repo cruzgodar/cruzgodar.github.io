@@ -144,7 +144,7 @@ export class Slider extends CappedInputElement
 		{
 			this.onGrabThumb();
 
-			this.dragOffset = e.clientX - this.element.getBoundingClientRect().left - 2.5 / 2;
+			this.dragOffset = e.clientX - this.element.getBoundingClientRect().left;
 		});
 
 		addTemporaryListener({
