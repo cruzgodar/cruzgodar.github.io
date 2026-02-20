@@ -294,9 +294,9 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 	Let $$\vec{F} = \left< x^2, x - 2y \right>$$.
 
-	1. Let $L$ be the straight-line path from $(-1, -1)$ to $(2, 2)$. Find $$\int_L \vec{F} \bullet \vec{T}\,\d s$$.
+	1. Let $L$ be the straight-line path from $(-1, -1)$ to $(2, 2)$. Find the circulation $$\int_L \vec{F} \bullet \vec{T}\,\d s$$.
 
-	2. Let $P$ be the path from $(-1, -1)$ to $(2, 2)$ that travels along the parabola $y = x^2 - 2$, as shown. Do you expect $$\int_P \vec{F} \bullet \vec{T}\,\d s$$ to be the same as your answer to question 1?
+	2. Let $P$ be the path from $(-1, -1)$ to $(2, 2)$ that travels along the parabola $y = x^2 - 2$, as shown. Do you expect the circulation of $\vec{F}$ along $P$ to be the same as your answer to question 1?
 
 	3. Evaluate the integral in question 2 and find out.
 
@@ -360,13 +360,13 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 ###
 
-Before we move on to address the question of path-independence, let's address one important fact about curve integrals through vector fields. The formula
+Before we move on to address the question of path-independence, let's address one important fact about circulation. The formula
 
 $$
 	\int_C \vec{F} \bullet \d\vec{r} = \int_C \vec{F} \bullet \vec{r}'(t) \d t
 $$
 
-tells us something important about this integral that wasn't true for curve integrals of regular functions of multiple variables: since we're no longer taking the magnitude of $\vec{r}'(t)$, reversing the parameterization of $C$ negates $\vec{r}'(t)$ and therefore $\int_C \vec{F} \bullet \d\vec{r}$. This is why we added the note that $C$ had to be an **oriented** path in the definition of curve integrals through vector fields. To help with notation, if $C$ is any oriented path, then we define $-C$ as a path given by reversing the orientation of $C$. With that definition,
+tells us something important about this integral that wasn't true for curve integrals of regular functions of multiple variables: since we're no longer taking the magnitude of $\vec{r}'(t)$, reversing the parameterization of $C$ negates $\vec{r}'(t)$ and therefore $\int_C \vec{F} \bullet \d\vec{r}$. This is why we added the note that $C$ had to be an **oriented** path in the definition of circulation. To help with notation, if $C$ is any oriented path, then we define $-C$ as a path given by reversing the orientation of $C$. With that definition,
 
 $$
 	\int_{-C} \vec{F} \bullet \d\vec{r} = -\int_C \vec{F} \bullet \d\vec{r}
@@ -386,7 +386,7 @@ $$
 	\int_a^b f'(x)\,\d x = f(b) - f(a)
 $$
 
-for any differentiable function $f$ with a continuous derivative. This phrasing is normally just to get around needing to define $F$ separately, but it also points us in a particular direction: What if we consider only curve integrals of derivatives? The issue is that there isn't really a derivative-like operator for a function; the closest thing we have is the gradient, which outputs a vector field. But we just spent the last subsection talking about how to take curve integrals through vector fields! Let's see what we can do.
+for any differentiable function $f$ with a continuous derivative. This phrasing is normally just to get around needing to define $F$ separately, but it also points us in a particular direction: what if we consider only curve integrals of derivatives? The issue is that there isn't really a derivative-like operator for a function; the closest thing we have is the gradient, which outputs a vector field. But we just spent the last subsection talking about how to take curve integrals through vector fields! Let's see what we can do.
 
 Given a differentiable function $f(x, y)$ so that $\G f$ is continuous, let's consider
 
@@ -456,13 +456,13 @@ But $\vec{r}(a)$ and $\vec{r}(b)$ are the endpoints of $C$, and so we have just 
 
 This is more commonly called the Fundamental Theorem of Line Integrals or the Gradient Theorem, but we'll stick with our more descriptive nomenclature.
 
-We can immediately get so much from this theorem! First of all, we finally have the result that curve integrals of conservative vector fields are path-independent, since they only depend on the values of the potential function (the function $f$ in the theorem statement) at the endpoints of the path. Also, if we integrate a conservative vector field along any closed loop (a path that ends where it begins), we get zero, since $p = q$. Curve integrals along closed loops come up quite a bit, especially in physics, and occasionally are indicated with a circle drawn in the integral symbol, as in
+We can immediately get so much from this theorem! First of all, we finally have the result that circulation integrals of conservative vector fields are path-independent, since they only depend on the values of the potential function (the function $f$ in the theorem statement) at the endpoints of the path. Also, if we take a circulation integral of a conservative vector field along any closed loop (a path that ends where it begins), we get zero, since $p = q$. Curve integrals along closed loops come up quite a bit, especially in physics, and they're occasionally indicated with a circle drawn in the integral symbol, as in
 
 $$
 	\oint_C f(x, y) \,\d s.
 $$
 
-Just like the use of the $\p$ symbol instead of $\d$ indicates a partial derivative but doesn't actually change the differentiation process, the $\oint$ symbol means exactly the same thing as $\int$, and only looks a little different to help remind us what we're doing. I'll use the $\oint$ symbol in an effort to provide a little bit more context, but it's entirely optional. Here, we can concisely write our latest result as
+Just like the use of the $\p$ symbol instead of $\d$ indicates a partial derivative but doesn't actually change the differentiation process, the $\oint$ symbol means exactly the same thing as $\int$, and only looks a little different to help remind us what we're doing. I'll use the $\oint$ symbol when it applies in an effort to provide a little bit more context, but it's entirely optional. Here, we can concisely write our latest result as
 
 $$
 	\oint_C \vec{F} \bullet \d\vec{r} = 0
@@ -550,15 +550,15 @@ for any closed curve $C$, so long as $\vec{F}$ is conservative.
 
 ###
 
-Let's close by stating two additional facts about conservative vector fields. We know that their curve integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
+Let's close by stating two additional facts about conservative vector fields. We know that their circulation integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
 
 ### thm "path-independence and conservativity"
 
 	Let $\vec{F}$ be any vector field defined on an open and connected region $U$.
 
-	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all curve integrals of $\vec{F}$ are path-independent.
+	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all circulation integrals of $\vec{F}$ are path-independent.
 
-	2. If $U$ is simply-connected and all curve integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
+	2. If $U$ is simply-connected and all circulation integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
 
 ###
 

@@ -602,7 +602,7 @@ export default async function buildHTMLFile(file, fileParentFolder, sitemapArgum
 
 	const [html, indexHtml] = decodeHTMDL("\n" + file);
 
-	write(`${fileParentFolder}/data.html`, html);
+	await write(`${fileParentFolder}/data.html`, html);
 
-	write(`${fileParentFolder}/index.html`, indexHtml);
+	await write(`${fileParentFolder}/index.html`, indexHtml);
 }

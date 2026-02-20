@@ -32,5 +32,5 @@ export async function buildXmlSitemap()
 
 	xmlSitemap += "\n</urlset>";
 
-	write("/sitemap.xml", xmlSitemap);
+	await write("/sitemap.xml", xmlSitemap);
 }

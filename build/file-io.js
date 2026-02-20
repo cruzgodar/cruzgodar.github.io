@@ -42,12 +42,17 @@ export function write(filepath, content)
 {
 	const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
 
-	fs.writeFile(fullPath, content, err =>
+	return new Promise(resolve =>
 	{
-		if (err)
+		fs.writeFile(fullPath, content, err =>
 		{
-			console.error(err);
-		}
+			if (err)
+			{
+				console.error(err);
+			}
+
+			resolve();
+		});
 	});
 }
 

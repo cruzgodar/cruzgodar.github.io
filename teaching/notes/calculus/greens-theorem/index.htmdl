@@ -8,7 +8,7 @@ This section is an interesting one --- in many multivariable calculus courses, i
 
 ## Green's Theorem
 
-We spent the last section discussing how curve integrals of a conservative vector field (dotted with the unit tangent vector of the curve) satisfy a theorem that is functionally the Fundamental Theorem of Calculus, but adapted to the world of multivariable calculus like many results have been before them. If there's one important lesson we can learn from that theorem, it's that while vector fields might seem like auxiliary objects that happen to be compatible with the language of curve integrals, they're in fact a core part of the story.
+We spent the last section discussing how circulation integrals of a conservative vector field satisfy a theorem that is functionally the Fundamental Theorem of Calculus, but adapted to the world of multivariable calculus like many results have been before them. If there's one important lesson we can learn from that theorem, it's that while vector fields might seem like auxiliary objects that happen to be compatible with the language of curve integrals, they're in fact a core part of the story.
 
 Let's return to the world of double integrals for a moment. When we integrate some function $h(x, y)$ over the region $R$ bounded by $y = \sqrt{x}$, $y = 0$, and $x = 1$, then the double integral
 
@@ -48,7 +48,7 @@ $$
 
 and depending on the function bounding the region, that second component could be arbitrarily bad. And yet by writing it out like this, we can see the faintest outline of a loophole. The first component will *always* be $1$ regardless of the upper bound on the region, since we're parameterizing the graph of a function. When it's packaged up along with the second component into $\left| \left| \vec{r}'(t) \right| \right|$, all of the complexity is back, but if we can work just with $\vec{r}'(t)$ and somehow only interface with its first component, we'll be able to completely sidestep the potentially nasty second component and recover the actual integral we're trying for.
 
-The first of these two goals can be accomplished by switching to the other type of curve integral we developed in the last section: one of a vector field instead of a function of two variables. The integral
+The first of these two goals can be accomplished by switching to the other type of curve integral we developed in the last section: a circulation integral. Specifically,
 
 $$
 	\int_C \vec{F} \bullet \d \vec{r} = \int_0^1 \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\, \d t
@@ -76,7 +76,7 @@ $$
 	\iint_R f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} - \int_{C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
 $$
 
-We're definitely onto something here, but that right side is a little clunky. Since $C_1$ and $C_2$ touch, it'd be nice to join them up and write it as one long path. Unfortunately, they're oriented the wrong way: they both begin at $(0, 0)$, and so to join them into one, we'll have to reverse the orientation of one. Let's pick $C_2$, since its integral already has a minus sign. Since reversing the path of a curve integral through a vector field negates the integral, we have
+We're definitely onto something here, but that right side is a little clunky. Since $C_1$ and $C_2$ touch, it'd be nice to join them up and write it as one long path. Unfortunately, they're oriented the wrong way: they both begin at $(0, 0)$, and so to join them into one, we'll have to reverse the orientation of one. Let's pick $C_2$, since its integral already has a minus sign. Since reversing the path of a circulation integral negates its value, we have
 
 $$
 	\iint_R f_y(x, y)\,\d A &= \int_{C_1} \left< f(x, y), 0 \right> \bullet \d \vec{r} + \int_{-C_2} \left< f(x, y), 0 \right> \bullet \d \vec{r}.
@@ -180,7 +180,7 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 
 ###
 
-While Green's Theorem primarily simplifies curve integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a curve integral, and those are very occasionally easier to solve. One particular rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $f(x, y) = 0$ and $g(x, y) = x$, or $f = -y$ and $g = 0$, or any other combination $f = ay$ and $g = bx$ with $b - a = 1$.
+While Green's Theorem primarily simplifies circulation integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a circulation integral, and those are very occasionally easier to solve. One rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $f(x, y) = 0$ and $g(x, y) = x$, or $f = -y$ and $g = 0$, or any other combination $f = ay$ and $g = bx$ with $b - a = 1$.
 
 ### prop "area as a curve integral"
 
@@ -196,7 +196,7 @@ While Green's Theorem primarily simplifies curve integrals into double integrals
 
 Let's use this to find the area of something that would have previously proven impossible.
 
-### ex "area as a curve integral"
+### ex "area as a circulation integral"
 
 	Find the area of the cycloid between the $x$-axis and the curve $\vec{r}(t) = \left< t - \sin(2 \pi t),\ 1 - \cos(2 \pi t) \right>$ for $0 \leq t \leq 1$.
 
@@ -244,7 +244,7 @@ Let's use this to find the area of something that would have previously proven i
 
 	1. Compute the area of the ellipse $$\frac{x^2}{9} + \frac{y^2}{4} = 1$$.
 
-	2. Evaluate the curve integral
+	2. Evaluate the circulation integral
 
 	$$
 		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r},
@@ -258,19 +258,51 @@ Let's reflect on Green's Theorem just a bit now that we've gotten our bearings w
 
 
 
-## Circulation and Flux
+## Flux
 
 Before we can dig into the integrand $g_x - f_y$ in Green's Theorem, we need to explore the theorem itself more: our story won't be complete without an alternate perspective on it.
 
-When we introduced curve integrals of vector fields in the previous section, we expressed them in the language of curve integrals of functions of multiple variables (by taking a dot product) rather than develop something entirely new. The Fundamental Theorem of Curve Integrals and Green's Theorem proved that approach to be a good one: the two types of curve integrals are intrinsically linked. Those results also showed that the unit tangent vector $\vec{T}$ in particular was a good choice of vector to dot with in order to make the translation back to a function of multiple variables.
+When we introduced circulation integrals in the previous section, we chose to express them in the language of curve integrals of functions of multiple variables (by taking a dot product) rather than develop something entirely new for vector fields. The Fundamental Theorem of Curve Integrals and Green's Theorem proved that approach to be a good one: the two types of curve integrals are intrinsically linked. Those results also showed that the unit tangent vector $\vec{T}$ in particular was a good choice of vector to dot with in order to make the translation back to a function of multiple variables.
 
-It's not the only choice we could make, though. Our motivating question in the previous section was asking how much a river current helped or hindered a swim, but let's ask a different question: how much water flows through a net suspended in the river per second?
+It's not the only choice we could make, though. Our motivating question in the previous section was asking how much a river current helped or hindered a swim, which led us to the notion of circulation, but let's ask a different question: how much water flows through a net suspended in the river per second?
 
 ### melded-desmos flux
 
-To head some concerns off at the pass, this is a fully 2D picture; our goal is to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector *orthogonal* to the curve.
+To head some concerns off at the pass, this is a fully 2D picture; our goal is just to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector that's *orthogonal* to the curve.
 
-We'll define such a vector in just a moment, but there's another subtlety. For the curve integrals of vector fields we're already seen to work out properly, we needed
+An appropriate name would be a **unit normal vector**, and we'll make a definition with that name in just a moment, but there's another subtlety to think through. For a circulation integral $\int_C \vec{F} \bullet \vec{T}\,\d s$ to work properly, the path $C$ had to be oriented. Reversing the orientation of $C$ reversed its unit tangent vector $\vec{T}$ at each point, negating the entire integral; intuitively, swimming backward along a path means the amount the current helps or hinders your swim is exactly reversed.
+
+In the same sense, any unit vector we choose that's orthogonal to the curve will only be one of two possible vectors, and unlike the unit tangent vector, which always points in the direction the curve is oriented, there isn't so natural a choice for whether a straight vertical line segment parameterized from bottom to top should have unit normal vectors pointing to the left or the right. Regardless of which we pick, one direction of field flow across the curve will be counted as positive and the other negative (since the dot product with the field will be negative).
+
+We can make a more informed choice for the direction of a unit normal vector by talking about oriented boundaries. For a closed loop $C$, we'll define *positive* field flow to be crossing from inside to outside, and negative flow to be from outside to inside. Since an oriented boundary $\p R$ always keeps the region $R$ on the left, our unit normal vector will always point to the right, away from the region. This choice is consistent for *any* oriented path, not just boundaries of regions, which is a very nice side effect. With the goal in mind, let's make some definitions!
+
+### def "unit normal vector"
+
+	Let $C$ be an oriented curve in $#R#^2$ parameterized by $\vec{r}(t)$. The **unit normal vector** to $C$ at $t = t_0$ is the unit vector $\vec{n}$ that is orthogonal to $C$ and points to its right, relative to the orientation of $C$. If $\vec{r}(t) = \left< x(t), y(t) \right>$, then a formula for $\vec{n}$ is
+
+	$$
+		\vec{n}(t) = \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y(t), -x(t) \right>.
+	$$
+
+	In other words, $\vec{n}(t)$ is the unit tangent vector $\vec{T}(t)$, but rotated $90^\circ$ clockwise.
+
+###
+
+Arguably more important than this definition is this caveat that comes after: **this definition only works in $#R#^2$!** A random curve in $#R#^3$ has a well-defined unit tangent vector, but not a unit normal vector: there are many directions orthogonal to any given curve! If we want an object in $#R#^3$ with a single well-defined normal vector, we'll want a *surface*, not a curve, and that's an idea we'll return to multiple times.
+
+### def "flux"
+
+	Let $\vec{F}$ be a vector field and let $C$ be an oriented path. The **flux of $\mathbf{\vec{F}}$ through $\mathbf{C}$** is the curve integral along $C$ of the component of $\vec{F}$ orthogonal to $C$, written
+
+	$$
+		\int_C \vec{F} \bullet \vec{n}\,\d s.
+	$$
+
+###
+
+So far, we've focused entirely on circulation integrals, but flux integrals have a very similar story we could tell. That story would be stuck in $#R#^2$, though (at least for now), and the analogue of the Fundamental Theorem of Curve Integrals isn't quite as nice. For both those reasons, we've avoided talking about flux integrals so far, and this particular type of flux integral won't play a large role in the remainder of the course. However, with only a small modification, we can get Green's Theorem to talk about flux integrals! Let's see how.
+
+
 
 
 

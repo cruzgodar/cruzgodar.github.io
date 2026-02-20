@@ -344,7 +344,7 @@ async function prepareTexFromHTML(file)
 	});
 
 	// Write a standard tex file.
-	write(
+	await write(
 		`${path}/${result[1]}.tex`,
 		result[0]
 	);

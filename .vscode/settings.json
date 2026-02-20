@@ -68,6 +68,14 @@
 		"**/index.js",
 		"**/class.js",
 		"**/worker.js",
+		"**/data.html",
+		"**/index.html",
+		"**/sitemap.xml",
+		"**/*.tex",
+		"**/*.aux",
+		"**/*.log",
+		"**/*.out",
+		"**/*.zip"
     ],
-    "liveServer.settings.wait": 100
+    "liveServer.settings.wait": 1000
 }
