@@ -299,7 +299,7 @@ function packageSolution(solutionElement, showButton = true)
 		solutionElement.appendChild(solutionElement.nextElementSibling);
 	}
 
-	solutionElement.style.position = "fixed";
+	solutionElement.style.position = "absolute";
 	// This prevents canvases in the solutions from thinking
 	// they're onscreen.
 	solutionElement.style.top = "1000vh";

@@ -6,8 +6,11 @@ import { sleep } from "../src/utils.js";
 const dotSize = 8;
 const expandedDotWidth = 128;
 
+const carousels = new Set();
+
 class Carousel
 {
+	destroyed = false;
 	element;
 	children;
 	dots;
@@ -86,12 +89,24 @@ class Carousel
 		onScroll();
 
 
+		
+		carousels.add(this);
 
 		this.advance(0);
 	}
 
+	destroy()
+	{
+		this.destroyed = true;
+	}
+
 	async advance(newActiveChild = (this.activeChild + 1) % this.children.length)
 	{
+		if (this.destroyed)
+		{
+			return;
+		}
+
 		if (this.currentFillAnimation)
 		{
 			this.currentFillAnimation.pause();
@@ -224,5 +239,13 @@ export function initCarousels()
 	for (const element of $$(".carousel"))
 	{
 		new Carousel(element);
+	}
+}
+
+export function destroyCarousels()
+{
+	for (const carousel of carousels)
+	{
+		carousel.destroy();
 	}
 }

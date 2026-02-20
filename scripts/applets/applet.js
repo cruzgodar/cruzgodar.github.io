@@ -122,7 +122,6 @@ export class Applet
 
 		for (const wilson of this.wilsons)
 		{
-			wilson.replaceCanvas();
 			wilson.destroy();
 		}
 

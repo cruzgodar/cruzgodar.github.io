@@ -38,6 +38,7 @@ export async function initializeApplet({
 		duration: duration / 2
 	});
 	
+	applet?.wilson?.replaceCanvas && applet.wilson.replaceCanvas();
 	applet?.destroy && applet.destroy();
 
 	slide.appendChild(canvasBundle);
