@@ -90,8 +90,17 @@ export async function redirect({
 		return;
 	}
 
+	const additionalQueryParams = {};
+
 	if (url.indexOf("?") !== -1)
 	{
+		const searchParams = new URLSearchParams(url.slice(url.indexOf("?")));
+
+		for (const [key, value] of searchParams)
+		{
+			additionalQueryParams[key] = value;
+		}
+
 		url = url.slice(0, url.indexOf("?"));
 	}
 
@@ -170,12 +179,12 @@ export async function redirect({
 	// Record the page change in the url bar and in the browser history.
 	if (noStatePush)
 	{
-		history.replaceState({ url }, document.title, getDisplayUrl() || "/");
+		history.replaceState({ url }, document.title, getDisplayUrl(additionalQueryParams) || "/");
 	}
 
 	else
 	{
-		history.pushState({ url }, document.title, getDisplayUrl() || "/");
+		history.pushState({ url }, document.title, getDisplayUrl(additionalQueryParams) || "/");
 	}
 
 
