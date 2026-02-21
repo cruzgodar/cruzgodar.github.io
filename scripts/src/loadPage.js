@@ -62,7 +62,7 @@ export async function loadPage(noFadeIn = false)
 
 	await loadCustomStyle();
 
-	setLinks();
+	setLinks(pageElement);
 
 	disableLinks();
 
@@ -242,9 +242,9 @@ async function fadeInPage(noAnimation = false)
 
 
 
-function setLinks()
+export function setLinks(element)
 {
-	for (const link of $$("a:not([data-card-id])"))
+	for (const link of element.querySelectorAll("a:not([data-card-id])"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -257,17 +257,13 @@ function setLinks()
 				return;
 			}
 
-			const inNewTab = !(
-				href.slice(0, 5) !== "https"
-				&& href.slice(0, 4) !== "data"
-				&& link.getAttribute("data-in-new-tab") != 1
-			);
+			const inNewTab = e.metaKey || link.getAttribute("data-in-new-tab") === "1";
 			
-			redirect({ url: href, inNewTab: inNewTab || e.metaKey });
+			redirect({ url: href, inNewTab });
 		});
 	}
 
-	for (const link of $$("a[data-card-id]"))
+	for (const link of element.querySelectorAll("a[data-card-id]"))
 	{
 		link.addEventListener("click", (e) =>
 		{

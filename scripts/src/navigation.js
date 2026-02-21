@@ -77,6 +77,7 @@ export async function redirect({
 	if (
 		inNewTab
 		|| url.indexOf("http") !== -1
+		|| url.slice(0, 4) === "data"
 		|| url.indexOf("mailto:") !== -1
 		|| url.slice(-4) == ".pdf"
 	) {
