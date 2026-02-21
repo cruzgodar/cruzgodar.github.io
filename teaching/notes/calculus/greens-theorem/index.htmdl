@@ -146,7 +146,7 @@ $$
 
 While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$ --- the magic of the theorem we're about to state is that it's true for a much larger class of regions!
 
-### thm "Green's Theorem"
+<div class="notes-thm notes-environment"><div class="notes-def-title notes-title">Green’s Theorem</div>
 
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g \right>$ be a vector field, where $f$ and $g$ have continuous partial derivatives on and around $R$. Then
 
@@ -154,7 +154,7 @@ While all of our logic relied on the region $R$ being the type of region we coul
 		\int_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
 	$$
 
-###
+</div>
 
 While we certainly didn't introduce them in such a manner, the Fundamental Theorems of both Calculus and Curve Integrals were closer to Green's Theorem than they might seem at first: both equated a function evaluated on the boundary of a set (either an interval $[a, b]$ or a path in space) to the integral of its derivative over the set. In the Fundamental Theorem of Calculus, the relationship between the function and its derivative was straightforward enough: even if the theory of differentiation took a long time to develop, a function and its derivative were both functions of one variable, and every continuous function had an antiderivative. In the Fundamental Theorem of Curve Integrals, that relationship became more distant: the derivative of a function of multiple variables is its gradient, which is a vector field, and not every function of multiple variables even has an antiderivative.
 
@@ -281,14 +281,14 @@ We can make a more informed choice for the direction of a unit normal vector by 
 	Let $C$ be an oriented curve in $#R#^2$ parameterized by $\vec{r}(t)$. The **unit normal vector** to $C$ at $t = t_0$ is the unit vector $\vec{n}$ that is orthogonal to $C$ and points to its right, relative to the orientation of $C$. If $\vec{r}(t) = \left< x(t), y(t) \right>$, then a formula for $\vec{n}$ is
 
 	$$
-		\vec{n}(t) = \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y(t), -x(t) \right>.
+		\vec{n}(t) = \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y'(t), -x('t) \right>.
 	$$
 
 	In other words, $\vec{n}(t)$ is the unit tangent vector $\vec{T}(t)$, but rotated $90^\circ$ clockwise.
 
 ###
 
-Arguably more important than this definition is this caveat that comes after: **this definition only works in $#R#^2$!** A random curve in $#R#^3$ has a well-defined unit tangent vector, but not a unit normal vector: there are many directions orthogonal to any given curve! If we want an object in $#R#^3$ with a single well-defined normal vector, we'll want a *surface*, not a curve, and that's an idea we'll return to multiple times.
+Arguably more important than this definition is this caveat that comes after: **this definition only works in $#R#^2$!** A curve in $#R#^3$ has a well-defined unit tangent vector, but not a unit normal vector: there are many directions orthogonal to any given curve! If we want an object in $#R#^3$ with a single well-defined normal vector, we'll want a *surface*, not a curve, and that's an idea we'll return to multiple times.
 
 ### def "flux"
 
@@ -300,7 +300,27 @@ Arguably more important than this definition is this caveat that comes after: **
 
 ###
 
-So far, we've focused entirely on circulation integrals, but flux integrals have a very similar story we could tell. That story would be stuck in $#R#^2$, though (at least for now), and the analogue of the Fundamental Theorem of Curve Integrals isn't quite as nice. For both those reasons, we've avoided talking about flux integrals so far, and this particular type of flux integral won't play a large role in the remainder of the course. However, with only a small modification, we can get Green's Theorem to talk about flux integrals! Let's see how.
+So far, we've focused entirely on circulation integrals, but flux integrals have a very similar story we could tell. That story would be stuck in $#R#^2$, though (at least for now), and the analogue of the Fundamental Theorem of Curve Integrals isn't quite as nice. For both those reasons, we've avoided talking about flux integrals so far. We also won't dwell on computing them directly from the definition, since there's nothing conceptually new about them compared to circulation integrals. What would be new, though, is getting Green's Theorem to talk about flux integrals! We can accomplish this with a slight modification to the result we already have; let's see how.
+
+If $R$ is a region with boundary $\p R$, then Green's Theorem currently tells us that
+
+$$
+	\int_{\p R} \vec{F} \bullet \vec{T}\, \d s = \iint_R \left( g_x - f_y \right)\,\d A,
+$$
+
+where $\vec{F} = \left< f, g \right>$, so if we want to learn more about
+
+$$
+	\int_{\p R} \vec{F} \bullet \vec{n}\, \d s,
+$$
+
+then we can write a slightly different field $\vec{G}$ so that $\vec{F} \bullet \vec{n} = \vec{G} \bullet \vec{T}$. Specifically,  Now if $\p R$ is parameterized by $\vec{r}(t)$, then
+
+$$
+	\vec{T}(t) &= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< x'(t), y'(t) \right>
+
+	\vec{n}(t) &= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y'(t), -x'(t) \right>,
+$$
 
 
 
