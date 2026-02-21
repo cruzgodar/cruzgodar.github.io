@@ -248,6 +248,8 @@ function setLinks()
 	{
 		link.addEventListener("click", (e) =>
 		{
+			e.preventDefault();
+
 			const href = link.getAttribute("href");
 
 			if (!href)
@@ -271,13 +273,15 @@ function setLinks()
 		{
 			if (e.metaKey)
 			{
+				e.preventDefault();
+
 				const href = link.getAttribute("href");
 
 				if (!href)
 				{
 					return;
 				}
-				
+
 				redirect({ url: href, inNewTab: true });
 			}
 		});

@@ -68,7 +68,7 @@ export class Applet
 
 		if ($("#applet-controls-card") && !this.addHelpButton())
 		{
-			const refreshId = addTemporaryInterval(() =>
+			const refreshId = setInterval(() =>
 			{
 				if (this.addHelpButton())
 				{
