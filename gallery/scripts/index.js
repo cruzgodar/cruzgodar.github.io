@@ -106,9 +106,9 @@ export default function()
 		);
 	}
 
-	appletLinkElement.addEventListener("click", () =>
+	appletLinkElement.addEventListener("click", (e) =>
 	{
-		redirect({ url: galleryImageData[currentId].appletLink });
+		redirect({ url: galleryImageData[currentId].appletLink, inNewTab: e.metaKey });
 	});
 
 	fullResLinkElement.addEventListener("click", () =>

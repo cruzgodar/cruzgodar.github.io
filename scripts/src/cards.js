@@ -2,7 +2,6 @@ import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
-import { setLinks } from "./loadPage.js";
 import { $$, pageElement, pageUrl } from "./main.js";
 import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
@@ -130,8 +129,6 @@ export async function openCard({
 
 	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
-
-	setLinks(currentCard);
 
 	cardContainer.scroll(0, 0);
 
@@ -439,8 +436,6 @@ export async function openZoomCard({
 
 	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
-
-	setLinks(currentCard);
 
 	cardContainer.scroll(0, 0);
 

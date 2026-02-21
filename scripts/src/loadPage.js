@@ -242,9 +242,9 @@ async function fadeInPage(noAnimation = false)
 
 
 
-export function setLinks(element)
+function setLinks()
 {
-	for (const link of element.querySelectorAll("a:not([data-card-id])"))
+	for (const link of $$("a:not([data-card-id])"))
 	{
 		link.addEventListener("click", (e) =>
 		{
@@ -258,12 +258,12 @@ export function setLinks(element)
 			}
 
 			const inNewTab = e.metaKey || link.getAttribute("data-in-new-tab") === "1";
-			
+
 			redirect({ url: href, inNewTab });
 		});
 	}
 
-	for (const link of element.querySelectorAll("a[data-card-id]"))
+	for (const link of $$("a[data-card-id]"))
 	{
 		link.addEventListener("click", (e) =>
 		{
