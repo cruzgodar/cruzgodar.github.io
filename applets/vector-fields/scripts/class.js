@@ -11,7 +11,7 @@ import {
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-const edgeChange = 0.175;
+const edgeChange = 0.2;
 
 export class VectorField extends AnimationFrameApplet
 {
