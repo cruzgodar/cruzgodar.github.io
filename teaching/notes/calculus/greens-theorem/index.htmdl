@@ -268,7 +268,7 @@ It's not the only choice we could make, though. Our motivating question in the p
 
 ### melded-desmos flux
 
-To head some concerns off at the pass, this is a fully 2D picture; our goal is just to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector that's *orthogonal* to the curve.
+To head some concerns off at the pass, this is a fully 2D picture and situation; our goal is just to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector that's *orthogonal* to the curve.
 
 An appropriate name would be a **unit normal vector**, and we'll make a definition with that name in just a moment, but there's another subtlety to think through. For a circulation integral $\int_C \vec{F} \bullet \vec{T}\,\d s$ to work properly, the path $C$ had to be oriented. Reversing the orientation of $C$ reversed its unit tangent vector $\vec{T}$ at each point, negating the entire integral; intuitively, swimming backward along a path means the amount the current helps or hinders your swim is exactly reversed.
 
@@ -302,19 +302,7 @@ Arguably more important than this definition is this caveat that comes after: **
 
 So far, we've focused entirely on circulation integrals, but flux integrals have a very similar story we could tell. That story would be stuck in $#R#^2$, though (at least for now), and the analogue of the Fundamental Theorem of Curve Integrals isn't quite as nice. For both those reasons, we've avoided talking about flux integrals so far. We also won't dwell on computing them directly from the definition, since there's nothing conceptually new about them compared to circulation integrals. What would be new, though, is getting Green's Theorem to talk about flux integrals! We can accomplish this with a slight modification to the result we already have; let's see how.
 
-If $R$ is a region with boundary $\p R$, then Green's Theorem currently tells us that
-
-$$
-	\int_{\p R} \vec{F} \bullet \vec{T}\, \d s = \iint_R \left( g_x - f_y \right)\,\d A,
-$$
-
-where $\vec{F} = \left< f, g \right>$, so if we want to learn more about
-
-$$
-	\int_{\p R} \vec{F} \bullet \vec{n}\, \d s,
-$$
-
-then we can write a slightly different field $\vec{G}$ so that $\vec{F} \bullet \vec{n} = \vec{G} \bullet \vec{T}$. Specifically,  Now if $\p R$ is parameterized by $\vec{r}(t)$, then
+If $R$ is a region with boundary $\p R$ parameterized by $\vec{r}(t) = \left< x(t), y(t) \right>$, then
 
 $$
 	\vec{T}(t) &= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< x'(t), y'(t) \right>
@@ -322,7 +310,85 @@ $$
 	\vec{n}(t) &= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y'(t), -x'(t) \right>,
 $$
 
+which are very similar. If $\vec{F} = \left< f, g \right>$ is a vector field, then we can use that similarity to write $\vec{F} \bullet \vec{n}$ in terms of a dot product with $\vec{T}$ instead, which Green's Theorem will apply to. Specifically,
 
+$$
+	\vec{F} \bullet \vec{n}(t) &= \left< f, g \right> \bullet \vec{n}(t)
+
+	&= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left( f \cdot y'(t) - g \cdot x'(t) \right)
+
+	&= \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left( (- g) \cdot x'(t) + f \cdot y'(t) \right)
+
+	&= \left< -g, f \right> \bullet \vec{T}(t).
+$$
+
+Applying Green's theorem to the field $\left< -g, f \right>$,
+
+$$
+	\int_{\p R} \vec{F} \bullet \vec{n}\, \d s &= \int_{\p R} \left< -g, f \right> \bullet \vec{T}\, \d s
+
+	&= \iint_R \left( f_x - (-g_y) \right)\,\d A
+
+	&= \iint_R \left( f_x + g_y \right)\,\d A.
+$$
+
+We'll call this the **flux form of Green's Theorem** and the previous version the **circulation form**; we'll state them together as a single theorem together toward the end of this section. For the moment, though, let's look at an example.
+
+### exc "the flux form of Green's Theorem"
+
+	Compute the flux integral
+
+	$$
+		\oint_C \vec{F} \bullet \vec{n}\,\d s,
+	$$
+
+	where $C$ is the unit circle and $\vec{F}(x, y) = \left< x^2, y^2 \right>$.
+
+###
+
+
+
+## Curl and Divergence
+
+Now that we've seen both forms of Green's Theorem, let's dig into those integrands: what are these quantities $g_x - f_y$ and $f_x + g_y$ that we're integrating over the regions? If the analogy to the Fundamental Theorem of Calculus is to be believed, those are *both* supposed to be acting like derivatives of $\vec{F} = \left< f, g \right>$. It's maybe not so surprising that there are two different derivatives, though --- $\vec{F}$ consists of two different functions, after all.
+
+We can understand these quantities at a point $(a, b)$ by taking a very small disc $D$ around that point. If the field $\vec{F} = \left< f, g \right>$ is made of differentiable functions $f$ and $g$ (which it has to be to talk about both of these quantities in the first place), then $\vec{F}(x, y) \approx \vec{F}(a, b)$ on a small enough disk $D$, and so we have the approximation
+
+$$
+	\int_{\p D} \vec{F} \bullet \vec{T} \,\d s &= \int_D \left( g_x - f_y \right)\,\d A
+
+	&\approx |D|\left( g_x(a, b) - f_y(a, b) \right),
+$$
+
+where $|D|$ is the area of $D$. As $|D| \to 0$, the approximation gets better and better, and we wind up with the result that the function $g_x(x, y) - f_y(x, y)$ **measures the infinitesimal circulation of the field at $(x, y)$**. In just the same way, $f_x(x, y) + g_y(x, y)$ measures the infinitesimal flux of the field at $(x, y)$. Both of these quantities really are derivatives, then: they both measure rates of change, only one measures rotational motion and the other outward motion.
+
+We're now going to define these properly and give them names, but in keeping with where we're headed for the rest of the course, we'll do so for a field $\vec{F} = \left< f, g, h \right>$ in $#R#^3$. It's perhaps unsurprising that the infinitesimal flux generalizes to $f_x + g_y + h_z$, but the minus sign in the infinitesimal circulation makes it trickier. The issue is that  field in $#R#^3$ can effectively rotate in three independent directions: about the $x$-axis, the $y$-axis, or the $z-axis$; there are three ways to orient one of those tiny disks $D$ to capture circulation near a point, with no single orientation able to get all of the information. The rotation $g_x - f_y$ we've captured so far is actually still correct for the rotation about the $z$-axis in $#R#^3$, but we're missing the other two completely. It's for this reason that in $#R#^3$, this object will become a vector, with each component giving the rotation about that axis.
+
+### def "curl and divergence"
+
+	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field $\Gtimes F$ that gives the infinitesimal circulation of $\vec{F}$ at a point about each axis:
+
+	$$
+		\Gtimes F &= \left< h_y - g_z, f_z - h_x, g_x - f_y \right>.
+	$$
+
+	The notation involving the gradient is strikingly accurate --- if we imagine the gradient itself as being a vector of operators $\nabla = \left< p/px, p/py, p/pz \right>$ and allow multiplication like $p/px \cdot h$ to indicate taking a partial derivative, then
+
+	$$
+		\Gtimes F &= \left< p/px, p/py, p/pz \right> \times \left< f, g, h \right>.
+	$$
+
+	The **divergence** of $\vec{F}$ is a function of three variables $\Gbullet F$ that gives the infinitesimal flux of $\vec{F}$ out of a point:
+
+	$$
+		\Gbullet F &= f_x + g_y + h_z
+
+		&= \left< p/px, p/py, p/pz \right> \bullet \left< f, g, h \right>.
+	$$
+
+###
+
+It can be somewhat overwhelming to hold the notions of circulation, flux, curl, and divergence in our heads at once. To disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure outward-flowing motion. Most importantly, though, circulation and flux are only defined relative to paths (at least in $#R#^2$) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color a field itself by its curl and divergence.
 
 
 

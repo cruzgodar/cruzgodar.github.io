@@ -9,6 +9,10 @@ export function parseLatex(latex)
 		// \G
 		.replaceAll(/(?<!\\)\\G(?![a-zA-Z])/g, "\\nabla\\!")
 
+		// \GTimes, \GBullet
+		.replaceAll(/(?<!\\)\\Gtimes(?![a-zA-Z])/g, "\\nabla\\!\\times\\!")
+		.replaceAll(/(?<!\\)\\Gbullet(?![a-zA-Z])/g, "\\nabla\\!\\bullet\\!")
+
 		// \vec{...}' (the prime is hard to read normally, so we add a small space)
 		.replaceAll(/(\\vec\{.+?\})'/g, (match, $1) => `${$1}\\hspace{0.1em}'`)
 
