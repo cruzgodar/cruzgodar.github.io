@@ -60,11 +60,11 @@ Let's return to the fields in the previous exercise. We made an offhand comment 
 
 ### def "conservative vector field"
 
-	A vector field $\vec{F} : #R#^2 \to #R#^2$ is called **conservative** if $\vec{F} = \G f$ for some function $f : #R#^2 \to #R#$, called a **potential function** for $\vec{F}$. We define conservative vector fields similarly for $#R#^3$ and higher. Not all vector fields are conservative!
+	A continuous vector field $\vec{F} : #R#^2 \to #R#^2$ is called **conservative** if $\vec{F} = \G f$ for some function $f : #R#^2 \to #R#$, called a **potential function** for $\vec{F}$. We define conservative vector fields similarly for $#R#^3$ and higher. Not all vector fields are conservative!
 
 ###
 
-Let's take a closer look at our field $\vec{G} = \left< x, -y \right>$. We'll develop more heuristics to tell whether a field is conservative soon, but we can get a start now by writing down the facts we would need to know about a potential function $g(x, y)$ for it:
+Later, we'll talk very briefly about how to extend the notion of conservativity to fields that aren't continuous and defined on all of $#R#^2$, but it will take a little bit of care. For now, let's take a closer look at our field $\vec{G} = \left< x, -y \right>$. We'll develop more heuristics to tell whether a field is conservative soon, but we can get a start now by writing down the facts we would need to know about a potential function $g(x, y)$ for it:
 
 $$
 	pg/px &= x
