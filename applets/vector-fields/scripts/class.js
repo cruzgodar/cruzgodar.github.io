@@ -19,6 +19,7 @@ export class VectorField extends AnimationFrameApplet
 	static velocity = 0;
 	static divergence = 1;
 	static curl = 2;
+	static monochrome = 3;
 
 	loadPromise;
 
@@ -257,9 +258,11 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		const fragColorGlsl =
-			colorBy === VectorField.velocity
-				? /* glsl */`
+		const fragColorGlsl = (() =>
+		{
+			if (colorBy === VectorField.velocity)
+			{
+				return /* glsl */`
 					float hue = (atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI};
 					float saturation = 1.0 - exp(-(d.x * d.x + d.y * d.y));
 
@@ -269,36 +272,54 @@ export class VectorField extends AnimationFrameApplet
 						hue,
 						saturation
 					);
-				`
-				: colorBy === VectorField.divergence
-					? /* glsl */`
-						vec2 ppx = fPrimeX(sample.x, sample.y);
-						vec2 ppy = fPrimeY(sample.x, sample.y);
+				`;
+			}
 
-						float hue = ${120 / 360} + (${270 / 360} - ${120 / 360}) * 0.5 * (1.0 + sign(ppx.x + ppy.y));
-						float saturation = 2.0 / (1.0 + exp(-abs(ppx.x + ppy.y) * 0.75)) - 1.0;
+			if (colorBy === VectorField.divergence)
+			{
+				return /* glsl */`
+					vec2 ppx = fPrimeX(sample.x, sample.y);
+					vec2 ppy = fPrimeY(sample.x, sample.y);
 
-						gl_FragColor = vec4(
-							dt * d.x + sample.x,
-							dt * d.y + sample.y,
-							hue,
-							pow(saturation, 1.25)
-						);
-					`
-					: /* glsl */`
-						vec2 ppx = fPrimeX(sample.x, sample.y);
-						vec2 ppy = fPrimeY(sample.x, sample.y);
+					float hue = ${270 / 360} + (${120 / 360} - ${270 / 360}) * 0.5 * (1.0 + sign(ppx.x + ppy.y));
+					float saturation = 2.0 / (1.0 + exp(-abs(ppx.x + ppy.y) * 0.75)) - 1.0;
 
-						float hue = ${120 / 360} + (${270 / 360} - ${120 / 360}) * 0.5 * (1.0 + sign(ppy.x - ppx.y));
-						float saturation = 2.0 / (1.0 + exp(-abs(ppy.x - ppx.y) * 0.75)) - 1.0;
+					gl_FragColor = vec4(
+						dt * d.x + sample.x,
+						dt * d.y + sample.y,
+						hue,
+						pow(saturation, 1.25)
+					);
+				`;
+			}
 
-						gl_FragColor = vec4(
-							dt * d.x + sample.x,
-							dt * d.y + sample.y,
-							hue,
-							pow(saturation, 1.25)
-						);
-					`;
+			if (colorBy === VectorField.curl)
+			{
+				return /* glsl */`
+					vec2 ppx = fPrimeX(sample.x, sample.y);
+					vec2 ppy = fPrimeY(sample.x, sample.y);
+
+					float hue = ${120 / 360} + (${270 / 360} - ${120 / 360}) * 0.5 * (1.0 + sign(ppy.x - ppx.y));
+					float saturation = 2.0 / (1.0 + exp(-abs(ppy.x - ppx.y) * 0.75)) - 1.0;
+
+					gl_FragColor = vec4(
+						dt * d.x + sample.x,
+						dt * d.y + sample.y,
+						hue,
+						pow(saturation, 1.25)
+					);
+				`;
+			}
+
+			return /* glsl */`
+				gl_FragColor = vec4(
+					dt * d.x + sample.x,
+					dt * d.y + sample.y,
+					0.0,
+					0.0
+				);
+			`;
+		})();
 
 
 

@@ -1,5 +1,6 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
+import { Dropdown } from "/scripts/components/dropdowns.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
@@ -221,21 +222,42 @@ export default function()
 		});
 	});
 
+	
 
+	let runDivergenceCurlApplet = () => {};
 
-	createEphemeralApplet($("#curl-canvas"), (canvas) =>
+	const divergenceCurlDropdown = new Dropdown({
+		element: $("#divergence-curl-dropdown"),
+		name: "Color by",
+		options: {
+			curl: "Curl",
+			divergence: "Divergence",
+		},
+		persistState: false,
+		onInput: () => runDivergenceCurlApplet(VectorField[divergenceCurlDropdown.value]),
+	});
+
+	createEphemeralApplet($("#divergence-curl-canvas"), (canvas) =>
 	{
 		const applet = new VectorField({ canvas });
 
-		applet.loadPromise.then(() =>
+		runDivergenceCurlApplet = (colorBy) =>
 		{
-			applet.run({
-				generatingCode: "(sin(x) + sin(y), sin(y) - sin(x))",
-				dt: .0045,
-				worldWidth: 12,
-				colorBy: VectorField.curl,
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					generatingCode: "(sin(x) + sin(y), sin(y) - sin(x))",
+					worldWidth: 12,
+					colorBy,
+				});
 			});
-		});
+		};
+
+		runDivergenceCurlApplet(
+			divergenceCurlDropdown.value
+				? VectorField[divergenceCurlDropdown.value]
+				: VectorField.monochrome
+		);
 
 		return applet;
 	});
