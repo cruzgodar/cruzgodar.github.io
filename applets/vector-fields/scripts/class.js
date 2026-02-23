@@ -260,11 +260,14 @@ export class VectorField extends AnimationFrameApplet
 		const fragColorGlsl =
 			colorBy === VectorField.velocity
 				? /* glsl */`
+					float hue = (atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI};
+					float saturation = 1.0 - exp(-(d.x * d.x + d.y * d.y));
+
 					gl_FragColor = vec4(
 						dt * d.x + sample.x,
 						dt * d.y + sample.y,
-						(atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI},
-						1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y))
+						hue,
+						saturation
 					);
 				`
 				: colorBy === VectorField.divergence
@@ -272,22 +275,28 @@ export class VectorField extends AnimationFrameApplet
 						vec2 ppx = fPrimeX(sample.x, sample.y);
 						vec2 ppy = fPrimeY(sample.x, sample.y);
 
+						float hue = ${120 / 360} + (${270 / 360} - ${120 / 360}) * 0.5 * (1.0 + sign(ppx.x + ppy.y));
+						float saturation = 2.0 / (1.0 + exp(-abs(ppx.x + ppy.y) * 0.75)) - 1.0;
+
 						gl_FragColor = vec4(
 							dt * d.x + sample.x,
 							dt * d.y + sample.y,
-							${150 / 360} + (${270 / 360} - ${150 / 360}) * 0.5 * (1.0 + sign(ppx.x + ppy.y)),
-							2.0 / (1.0 + exp(-abs(ppx.x + ppy.y) * 0.4)) - 1.0
+							hue,
+							pow(saturation, 1.25)
 						);
 					`
 					: /* glsl */`
 						vec2 ppx = fPrimeX(sample.x, sample.y);
 						vec2 ppy = fPrimeY(sample.x, sample.y);
 
+						float hue = ${120 / 360} + (${270 / 360} - ${120 / 360}) * 0.5 * (1.0 + sign(ppy.x - ppx.y));
+						float saturation = 2.0 / (1.0 + exp(-abs(ppy.x - ppx.y) * 0.75)) - 1.0;
+
 						gl_FragColor = vec4(
 							dt * d.x + sample.x,
 							dt * d.y + sample.y,
-							${150 / 360} + (${270 / 360} - ${150 / 360}) * 0.5 * (1.0 + sign(ppy.x - ppx.y)),
-							2.0 / (1.0 + exp(-abs(ppy.x - ppx.y) * 0.4)) - 1.0
+							hue,
+							pow(saturation, 1.25)
 						);
 					`;
 

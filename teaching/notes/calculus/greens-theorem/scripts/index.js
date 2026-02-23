@@ -230,7 +230,7 @@ export default function()
 		applet.loadPromise.then(() =>
 		{
 			applet.run({
-				generatingCode: "(sin(y), sin(x))",
+				generatingCode: "(sin(x) + sin(y), sin(y) - sin(x))",
 				dt: .0045,
 				worldWidth: 12,
 				colorBy: VectorField.curl,
