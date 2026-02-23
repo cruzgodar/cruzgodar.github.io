@@ -12,9 +12,14 @@ import { sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const edgeChange = 0.2;
+const derivativePrecision = 50;
 
 export class VectorField extends AnimationFrameApplet
 {
+	static velocity = 0;
+	static divergence = 1;
+	static curl = 2;
+
 	loadPromise;
 
 	resolution = 500;
@@ -230,6 +235,7 @@ export class VectorField extends AnimationFrameApplet
 		worldWidth = 6,
 		worldCenterX = 0,
 		worldCenterY = 0,
+		colorBy = VectorField.divergence,
 		hue = undefined,
 		saturation = 1,
 		brightness = 1,
@@ -248,6 +254,42 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
+
+
+
+		const fragColorGlsl =
+			colorBy === VectorField.velocity
+				? /* glsl */`
+					gl_FragColor = vec4(
+						dt * d.x + sample.x,
+						dt * d.y + sample.y,
+						(atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI},
+						1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y))
+					);
+				`
+				: colorBy === VectorField.divergence
+					? /* glsl */`
+						vec2 ppx = fPrimeX(sample.x, sample.y);
+						vec2 ppy = fPrimeY(sample.x, sample.y);
+
+						gl_FragColor = vec4(
+							dt * d.x + sample.x,
+							dt * d.y + sample.y,
+							${150 / 360} + (${270 / 360} - ${150 / 360}) * 0.5 * (1.0 + sign(ppx.x + ppy.y)),
+							2.0 / (1.0 + exp(-abs(ppx.x + ppy.y) * 0.4)) - 1.0
+						);
+					`
+					: /* glsl */`
+						vec2 ppx = fPrimeX(sample.x, sample.y);
+						vec2 ppy = fPrimeY(sample.x, sample.y);
+
+						gl_FragColor = vec4(
+							dt * d.x + sample.x,
+							dt * d.y + sample.y,
+							${150 / 360} + (${270 / 360} - ${150 / 360}) * 0.5 * (1.0 + sign(ppy.x - ppx.y)),
+							2.0 / (1.0 + exp(-abs(ppy.x - ppx.y) * 0.4)) - 1.0
+						);
+					`;
 
 
 
@@ -275,6 +317,26 @@ export class VectorField extends AnimationFrameApplet
 
 				return vec2${generatingCode};
 			}
+
+			vec2 fPrimeX(float x, float y)
+			{
+				return 1.0 / 12.0 * ${getFloatGlsl(derivativePrecision)} * (
+					-f(x + 2.0 * ${getFloatGlsl(1 / derivativePrecision)}, y)
+					+ 8.0 * f(x + 1.0 * ${getFloatGlsl(1 / derivativePrecision)}, y)
+					- 8.0 * f(x - 1.0 * ${getFloatGlsl(1 / derivativePrecision)}, y)
+					+ f(x - 2.0 * ${getFloatGlsl(1 / derivativePrecision)}, y)
+				);
+			}
+
+			vec2 fPrimeY(float x, float y)
+			{
+				return 1.0 / 12.0 * ${getFloatGlsl(derivativePrecision)} * (
+					-f(x, y + 2.0 * ${getFloatGlsl(1 / derivativePrecision)})
+					+ 8.0 * f(x, y + 1.0 * ${getFloatGlsl(1 / derivativePrecision)})
+					- 8.0 * f(x, y - 1.0 * ${getFloatGlsl(1 / derivativePrecision)})
+					+ f(x, y - 2.0 * ${getFloatGlsl(1 / derivativePrecision)})
+				);
+			}
 			
 			
 			
@@ -289,12 +351,7 @@ export class VectorField extends AnimationFrameApplet
 				
 				vec2 d = f(sample.x, sample.y);
 
-				gl_FragColor = vec4(
-					dt * d.x + sample.x,
-					dt * d.y + sample.y,
-					(atan(d.y, d.x) + ${Math.PI}) / ${2 * Math.PI},
-					1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y))
-				);
+				${fragColorGlsl}
 			}
 		`;
 

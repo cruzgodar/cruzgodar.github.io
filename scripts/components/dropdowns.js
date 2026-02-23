@@ -438,10 +438,12 @@ export class Dropdown extends InputElement
 
 		if (this.persistState)
 		{
-			const additionalQueryParams = this.selectedItem !== 0
-				? { [this.element.id]: this.optionElements[this.selectedItem]
-					.getAttribute("data-option-name") }
-				: {};
+			const additionalQueryParams = {
+				[this.element.id]: this.selectedItem !== 0
+					? this.optionElements[this.selectedItem]
+						.getAttribute("data-option-name")
+					: undefined
+			};
 
 			window.history.replaceState(
 				{ url: pageUrl },

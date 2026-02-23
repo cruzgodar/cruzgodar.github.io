@@ -1,17 +1,17 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosGraphs,
-    desmosGraphsLoaded,
-    desmosPurple,
-    desmosRed,
-    getColoredParametricCurve,
-    getDesmosBounds,
-    getDesmosSlider,
-    getDesmosVector
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosGraphs,
+	desmosGraphsLoaded,
+	desmosPurple,
+	desmosRed,
+	getColoredParametricCurve,
+	getDesmosBounds,
+	getDesmosSlider,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -219,5 +219,24 @@ export default function()
 
 			return applet;
 		});
+	});
+
+
+
+	createEphemeralApplet($("#curl-canvas"), (canvas) =>
+	{
+		const applet = new VectorField({ canvas });
+
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: "(sin(y), sin(x))",
+				dt: .0045,
+				worldWidth: 12,
+				colorBy: VectorField.curl,
+			});
+		});
+
+		return applet;
 	});
 }

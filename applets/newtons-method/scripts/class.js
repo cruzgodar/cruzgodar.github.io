@@ -93,8 +93,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 			uniform float secantProportion;
 			
-			const float derivativePrecision = ${getFloatGlsl(derivativePrecision)};
-			
 			const float threshhold = .001;
 			
 			
@@ -170,11 +168,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 fPrime(vec2 z)
 			{
-				return 1.0 / 12.0 * derivativePrecision * (
-					-f(z + vec2(2.0 / derivativePrecision, 0.0))
-					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0))
-					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0))
-					+ f(z - vec2(2.0 / derivativePrecision, 0.0))
+				return 1.0 / 12.0 * ${getFloatGlsl(derivativePrecision)} * (
+					-f(z + vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0))
+					+ 8.0 * f(z + vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0))
+					- 8.0 * f(z - vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0))
+					+ f(z - vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0))
 				);
 			}
 

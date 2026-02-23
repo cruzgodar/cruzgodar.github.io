@@ -388,7 +388,11 @@ We're now going to define these properly and give them names, but in keeping wit
 
 ###
 
-It can be somewhat overwhelming to hold the notions of circulation, flux, curl, and divergence in our heads at once. To disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure outward-flowing motion. Most importantly, though, circulation and flux are only defined relative to paths (at least in $#R#^2$) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color a field itself by its curl and divergence.
+It can be somewhat overwhelming to hold the notions of circulation, flux, curl, and divergence in our heads at once. To disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure outward-flowing motion. Most importantly, though, circulation and flux are only defined relative to paths (at least in $#R#^2$) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
+
+### canvas curl
+
+This vector field is colored by (the $z$-component of) its curl, and 
 
 
 

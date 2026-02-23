@@ -1,8 +1,10 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
+import { getFloatGlsl, hsvToRgb, tempShader } from "/scripts/applets/applet.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
+
+const derivativePrecision = 20;
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
 {
@@ -108,8 +110,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			uniform vec2 worldCenter;
 			uniform vec2 worldSize;
 			
-			const float derivativePrecision = 20.0;
-			
 			uniform vec3 color0;
 			uniform vec3 color1;
 			uniform vec3 color2;
@@ -140,11 +140,11 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 fPrime(vec2 z, vec2 firstZ)
 			{
-				return 1.0 / 12.0 * derivativePrecision * (
-					-f(z + vec2(2.0 / derivativePrecision, 0.0), firstZ)
-					+ 8.0 * f(z + vec2(1.0 / derivativePrecision, 0.0), firstZ)
-					- 8.0 * f(z - vec2(1.0 / derivativePrecision, 0.0), firstZ)
-					+ f(z - vec2(2.0 / derivativePrecision, 0.0), firstZ)
+				return 1.0 / 12.0 * ${getFloatGlsl(derivativePrecision)} * (
+					-f(z + vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+					+ 8.0 * f(z + vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+					- 8.0 * f(z - vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+					+ f(z - vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
 				);
 			}
 			
