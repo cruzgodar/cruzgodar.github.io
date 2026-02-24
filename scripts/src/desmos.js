@@ -162,8 +162,11 @@ export function clearDesmosGraphs()
 	active3dGraphIds = [];
 	desmosGraphConfigs = {};
 	desmosGraphsConstructorData = {};
-
-	distinguishColorsCheckboxContainer.style.display = "none";
+	
+	if (distinguishColorsCheckboxContainer)
+	{
+		distinguishColorsCheckboxContainer.style.display = "none";
+	}
 }
 
 // Moves any active 3D calculators back to their off-screen pool slots.
@@ -297,7 +300,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		});
 	}
 
-	if (desmosContainers.length > 0)
+	if (desmosContainers.length > 0 && distinguishColorsCheckboxContainer)
 	{
 		distinguishColorsCheckboxContainer.style.display = "block";
 	}
