@@ -236,7 +236,7 @@ export class VectorField extends AnimationFrameApplet
 		worldWidth = 6,
 		worldCenterX = 0,
 		worldCenterY = 0,
-		colorBy = VectorField.curl,
+		colorBy = VectorField.velocity,
 		hue = undefined,
 		saturation = 1,
 		brightness = 1,
