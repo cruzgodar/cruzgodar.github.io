@@ -126,7 +126,7 @@ $$
 
 since the way we oriented $C_1$, $C_2$, and $C_3$ was *clockwise* when they were all stitched together. 
 
-We're almost ready for a proper theorem statement, but first we need to step all the way back to the original double integral. We chose to integrate it $\d y\,\d x$, but choosing the other order instead would have lead to nearly same result, so long as the integrand was a partial derivative $g_x(x, y)$ of some function $g$ instead of $f_y(x, y)$. The only difference is the order of the curves, and it's actually a rather large difference. When we integrated $\d y\,\d x$, both the top and bottom boundary curves were oriented left-to-right, and the integral along the bottom one was subtracted from the top. We reversed the bottom curve to make all the terms positive, which resulted in a negative orientation boundary. When we integrate $\d x\,\d y$, the left and right boundary paths are both oriented bottom to top, and the left integral is subtracted from the right; when we reverse the orientation of the left path to make all the terms positive, the resulting boundary has *positive* orientation.
+We're almost ready for a proper theorem statement, but first we need to step all the way back to the original double integral. We chose to integrate it $\d y\,\d x$, but choosing the other order instead would have led to nearly the same result, so long as the integrand was a partial derivative $g_x(x, y)$ of some function $g$ instead of $f_y(x, y)$. The only difference is the order of the curves, and it's actually a rather large difference. When we integrated $\d y\,\d x$, both the top and bottom boundary curves were oriented left-to-right, and the integral along the bottom one was subtracted from the top. We reversed the bottom curve to make all the terms positive, which resulted in a negative orientation boundary. When we integrate $\d x\,\d y$, the left and right boundary paths are both oriented bottom to top, and the left integral is subtracted from the right; when we reverse the orientation of the left path to make all the terms positive, the resulting boundary has *positive* orientation.
 
 ### desmos positiveBoundaryCurve
 
@@ -223,7 +223,7 @@ Let's use this to find the area of something that would have previously proven i
 	$$
 		& \quad \int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}
 
-		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t), 0 \right) \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
+		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t) \right), 0 \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
 
 		&= \int_0^1 -\left( 1 - \cos(2\pi t) \right)\left( 1 - 2\pi\cos(2 \pi t) \right)\, \d t + 0
 
@@ -262,7 +262,7 @@ Let's reflect on Green's Theorem just a bit now that we've gotten our bearings w
 
 Before we can dig into the integrand $g_x - f_y$ in Green's Theorem, we need to explore the theorem itself more: our story won't be complete without an alternate perspective on it.
 
-When we introduced circulation integrals in the previous section, we chose to express them in the language of curve integrals of functions of multiple variables (by taking a dot product) rather than develop something entirely new for vector fields. The Fundamental Theorem of Curve Integrals and Green's Theorem proved that approach to be a good one: the two types of curve integrals are intrinsically linked. Those results also showed that the unit tangent vector $\vec{T}$ in particular was a good choice of vector to dot with in order to make the translation back to a function of multiple variables.
+When we introduced circulation integrals in the previous section, we chose to express them in the language of curve integrals of functions of multiple variables (by taking a dot product) rather than developing something entirely new for vector fields. The Fundamental Theorem of Curve Integrals and Green's Theorem proved that approach to be a good one: the two types of curve integrals are intrinsically linked. Those results also showed that the unit tangent vector $\vec{T}$ in particular was a good choice of vector to dot with in order to make the translation back to a function of multiple variables.
 
 It's not the only choice we could make, though. Our motivating question in the previous section was asking how much a river current helped or hindered a swim, which led us to the notion of circulation, but let's ask a different question: how much water flows through a net suspended in the river per second?
 
@@ -281,7 +281,7 @@ We can make a more informed choice for the direction of a unit normal vector by 
 	Let $C$ be an oriented curve in $#R#^2$ parameterized by $\vec{r}(t)$. The **unit normal vector** to $C$ at $t = t_0$ is the unit vector $\vec{n}$ that is orthogonal to $C$ and points to its right, relative to the orientation of $C$. If $\vec{r}(t) = \left< x(t), y(t) \right>$, then a formula for $\vec{n}$ is
 
 	$$
-		\vec{n}(t) = \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y'(t), -x('t) \right>.
+		\vec{n}(t) = \frac{1}{\left| \left| \vec{r}'(t) \right| \right|} \left< y'(t), -x'(t) \right>.
 	$$
 
 	In other words, $\vec{n}(t)$ is the unit tangent vector $\vec{T}(t)$, but rotated $90^\circ$ clockwise.
@@ -332,7 +332,7 @@ $$
 	&= \iint_R \left( f_x + g_y \right)\,\d A.
 $$
 
-We'll call this the **flux form of Green's Theorem** and the previous version the **circulation form**; we'll state them together as a single theorem together toward the end of this section. For the moment, though, let's look at an example.
+We'll call this the **flux form of Green's Theorem** and the previous version the **circulation form**; we'll state them together as a single theorem toward the end of this section. For the moment, though, let's look at an example.
 
 ### exc "the flux form of Green's Theorem"
 
@@ -362,7 +362,7 @@ $$
 
 where $|D|$ is the area of $D$. As $|D| \to 0$, the approximation gets better and better, and we wind up with the result that the function $g_x(x, y) - f_y(x, y)$ **measures the infinitesimal circulation of the field at $(x, y)$**. In just the same way, $f_x(x, y) + g_y(x, y)$ measures the infinitesimal flux of the field at $(x, y)$. Both of these quantities really are derivatives, then: they both measure rates of change, but one only measures rotational motion and the other outward motion.
 
-We're now going to define these properly and give them names, but in keeping with where we're headed for the rest of the course, we'll do so for a field $\vec{F} = \left< f, g, h \right>$ in $#R#^3$. It's perhaps unsurprising that the infinitesimal flux generalizes to $f_x + g_y + h_z$, but the minus sign in the infinitesimal circulation makes it trickier. The issue is that  field in $#R#^3$ can effectively rotate in three independent directions: about the $x$-axis, the $y$-axis, or the $z-axis$; there are three ways to orient one of those tiny disks $D$ to capture circulation near a point, with no single orientation able to get all of the information. The rotation $g_x - f_y$ we've captured so far is actually still correct for the rotation about the $z$-axis in $#R#^3$, but we're missing the other two completely. It's for this reason that in $#R#^3$, this object will become a vector, with each component giving the rotation about that axis.
+We're now going to define these properly and give them names, but in keeping with where we're headed for the rest of the course, we'll do so for a field $\vec{F} = \left< f, g, h \right>$ in $#R#^3$. It's perhaps unsurprising that the infinitesimal flux generalizes to $f_x + g_y + h_z$, but the minus sign in the infinitesimal circulation makes it trickier. The issue is that  field in $#R#^3$ can effectively rotate in three independent directions: about the $x$-axis, the $y$-axis, or the $z$-axis; there are three ways to orient one of those tiny disks $D$ to capture circulation near a point, with no single orientation able to get all of the information. The rotation $g_x - f_y$ we've captured so far is actually still correct for the rotation about the $z$-axis in $#R#^3$, but we're missing the other two completely. It's for this reason that in $#R#^3$, this object will become a vector, with each component giving the rotation about that axis.
 
 ### def "curl and divergence"
 
@@ -414,7 +414,7 @@ That second part was suggestive of something more general: in $#R#^2$, conservat
 
 ###
 
-The proof is just three applications of Clairaut's theorem to show that each two-term component of the cross product cancels out, and there isn't very much to gained from writing it all out. We can see a nice similarity to the fact that crossing a vector with itself gives zero, though, since the operator $\G\times\nabla$ is in some sense crossing a vector of *operators* with itself, and it's reasonable that would result in the zero operator. A very similar result involves the divergence and curl together:
+The proof is just three applications of Clairaut's theorem to show that each two-term component of the cross product cancels out, and there isn't very much to be gained from writing it all out. We can see a nice similarity to the fact that crossing a vector with itself gives zero, though, since the operator $\G\times\nabla$ is in some sense crossing a vector of *operators* with itself, and it's reasonable that would result in the zero operator. A very similar result involves the divergence and curl together:
 
 ### prop "the divergence of a curl vector is zero"
 
@@ -422,9 +422,9 @@ The proof is just three applications of Clairaut's theorem to show that each two
 
 ###
 
-We'll again omit the proof but draw a parallel to the fact that $\vec{a} \bullet \left( \vec{a} \times \vec{b} \right) = 0$ for any vectors $\vec{a}$ and $\vec{b}$.
+We'll again omit the proof, but draw a parallel to the very similar fact that $\vec{a} \bullet \left( \vec{a} \times \vec{b} \right) = 0$ for any vectors $\vec{a}$ and $\vec{b}$.
 
-One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data the rotation of the field about each axis in the three components of $\Gbullet \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if you have a tiny flat wheel that can spin while fixed in place, it will spin fastest in the field $\vec{F}$ in $#R#^3$ when its axis is parallel to $\Gbullet \vec{F}$.
+One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data the rotation of the field about each axis in the three components of $\Gtimes \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if we place a tiny flat wheel in the field that can spin while fixed in place, it will spin fastest in the field $\vec{F}$ in $#R#^3$ when its axis is parallel to $\Gtimes \vec{F}$.
 
 With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in terms of these rather fancy new terms.
 
