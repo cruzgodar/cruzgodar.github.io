@@ -1,10 +1,14 @@
 ### nav-buttons
 
-It's time to take a brief detour from furthering our understanding of derivatives to return to limits --- some of them that were annoying to calculate before have very easy solutions with a single rule in terms of derivatives.
+After building a wide-ranging understanding of derivatives, let's take a brief detour to return to the world of limits; some of them that were difficult to calculate before have very easy solutions with a single rule in terms of derivatives.
 
-Let's recap a little. Since most common functions are continuous where they are defined, $\lim_{x \to a} f(x)$ is very often just $f(a)$. The main times when this is not the case are the following: first, $f$ is a piecewise-defined function that changes definition at $a$, so we need to deal with both the one-sided limits. A second possibility is that $f(a)$ involves division by zero, in which case the limit is typically $\infty$ or $-\infty$. Finally, $f(a)$ is in some kind of form like $\frac{0}{0}$, which usually means that the limit is actually a number that we can find by simplifying the expression somehow. Unfortunately, that simplification is often annoying or difficult or both, and any improvement on this would be great. This third case is what we'll be tackling, and the first thing to do is to give names to the kind of forms like $\frac{0}{0}$.
+To briefly review, most common functions are continuous where they are defined, meaning $\lim_{x \to a} f(x)$ is very often just $f(a)$. The main times when this is not the case are the following:
 
+1. If $f$ is a piecewise-defined function that changes definition at $a$, then we need to deal with both the one-sided limits, and the two-sided limit doesn't exist unless both of those exist and are equal.
 
+2. Evaluating $f(a)$ results in something of the form $\frac{c}{0}$ for a nonzero number $c$, in which case $\lim_{x \to a} f(x)$ is typically $\infty$ or $-\infty$.
+
+3. The formula for $f$ is in some kind of form like $\frac{0}{0}$ at $a$, which is a lot more ambiguous. Sometimes, the limit will be $\pm \infty$, but other times, it will just be a finite number. We can often find that number by simplifying the expression somehow, but that simplification is often annoying or difficult or both, and any improvement to be had on this would be great. It's this third case that we'll be exploring in this section, and the first thing to do is to give names to the kind of forms like $\frac{0}{0}$.
 
 ### def "indeterminate form"
 	
@@ -20,9 +24,25 @@ Let's recap a little. Since most common functions are continuous where they are 
 	
 ###
 
+For example, $$\lim_{x \to 1} \frac{x - 1}{x^2 - 3x + 2}$$ is in indeterminate form, since we can't plug in $x = 1$ without getting $\frac{0}{0}$. We could use some of the methods we learned in part 1 to rewrite it as
 
+$$
+	\lim_{x \to 1} \frac{x - 1}{x^2 - 3x + 2} &= \lim_{x \to 1} \frac{x - 1}{(x - 1)(x - 2)}
 
-First, let's talk about type 1. This will be the simplest type for us to handle, and thankfully, the rule is simple to write down.
+	&= \lim_{x \to 1} \frac{1}{x - 2}
+
+	&= -1.
+$$
+
+As a reminder, we can perform that cancellation since even though the two functions aren't equal, their limits are. The function $\frac{1}{x - 2}$ is equal to $\frac{x - 1}{x^2 - 3x + 2}$ everywhere except for at $x = 1$, and changing only one value of a function doesn't change any of its limits.
+
+Unfortunately, this method of factoring and canceling runs dry before too long. The limit
+
+$$
+	\lim_{x \to 1} \frac{-\sin(\pi x)}{\ln(x)}
+$$
+
+still has the form $\frac{0}{0}$, for example, but we're unlikely to find a way to simplify it. Instead, let's write down a much generalizable result.
 
 
 
@@ -31,58 +51,62 @@ First, let's talk about type 1. This will be the simplest type for us to handle,
 	Suppose $$\lim_{x \to a} \frac{f(x)}{g(x)}$$ is of the form $$\frac{0}{0}$$ or $$\frac{\infty}{\infty}$$. Then
 	
 	$$
-		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}.
+		\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}
 	$$
+
+	if the second limit exists.
 	
 ###
 
-
-
-In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, differentiate the top and bottom and try again. Two very important things to note: first of all, you can only do this if the limit is of one of those two forms --- although it'd be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we're **not** using the Quotient Rule here: the top and bottom of the fraction get differentiated separately.
-
-
+In other words, if we get $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limit, we can differentiate the top and bottom and try again. Two very important things to note: first of all, we can only do this if the limit is of one of those two forms --- while it'd be nice to be able to differentiate the top and bottom of any limit, it only works for these. Secondly, we're **not** using the Quotient Rule here: the top and bottom of the fraction get differentiated separately.
 
 ### ex "L'H&#244;pital's Rule"
 	
-	Evaluate $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
+	Evaluate $$\lim_{x \to 1} \frac{-\sin(\pi x)}{\ln(x)}$$.
 
 	### solution
 	
-	You might recall that this one gave us some trouble back in the first few sections. Since both $x$ and $\sin(x)$ are continuous functions, we have that
-	
+	We've already seen that this has the form $\frac{0}{0}$, so we can apply L'H&#244;pital's Rule:
+
 	$$
-		\lim_{x \to 0} \frac{\sin(x)}{x} = \frac{\sin(0)}{0} = \frac{0}{0}.
-	$$
-	
-	That means we can use L'H&#244;pital's Rule to try evaluating a different limit and see if we have more success.
-	
-	$$
-		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{d/dx[\sin(x)]}{d/dx[x]}
+		\lim_{x \to 1} \frac{-\sin(\pi x)}{\ln(x)} &= \lim_{x \to 1} \frac{d/dx\left[ -\sin(\pi x) \right]}{d/dx\left[ \ln(x) \right]}
 		
-		&= \lim_{x \to 0} \frac{\cos(x)}{1}
-		
-		&= \lim_{x \to 0} \cos(x)
-		
-		&= \cos(0)
-		
-		&= 1.
+		&= \lim_{x \to 1} \frac{-\cos(\pi x)\cdot \pi}{1/x}
+
+		&= \lim_{x \to 1} \left( -\pi x \cos(\pi x) \right)
+
+		&= -\pi \cos(\pi)
+
+		&= \pi.
 	$$
 	
 	Much easier than this process used to be!
 	
 ###
 
+To say just a bit about why this process works (at least in the $\frac{0}{0}$ case), let's look at those two functions near $x = 1$.
+
+### desmos relativeSlopes
+
+Both functions are approaching zero, but since they're differentiable, they're well approximated by tangent lines. That is, near $x = 1$, $-\sin(\pi x) \approx \pi (x - 1)$ and $\ln(x) \approx (x - 1)$. Their ratio is then approximately $\frac{\pi (x - 1)}{x - 1} = \pi$, but that approximation notably only works because there is no constant term from a nonzero $y$-value in the tangent line formula --- that's why L'H&#244;pital's Rule doesn't apply in other forms.
+
 ### exc "L'H&#244;pital's Rule"
 	
-	Evaluate $$\lim_{x \to \infty} \frac{x^3 + 3x^2 + x}{\ln(x)}$$. 
+	Find the following limits.
+
+	1. $$\lim_{x \to \pi} \frac{\tan(x)}{x - \pi}$$.
+
+	2. $$\lim_{x \to \infty} \frac{x^2}{e^{-x}}$$. 
+
+	3. $$\lim_{x \to 0} \frac{\arcsin(x)}{\sin(x)}$$. 
 	
 ###
 
 
 
-In order to apply L'H&#244;pital's Rule to the other indeterminate forms, we just need to get them in one of the two forms the rule applies to. Let's start wth type 2 and work our way down.
+What about the other indeterminate forms? Unfortunately, L'H&#244;pital's Rule doesn't apply to them directly; instead, we'll need to rewrite them into either the form $\frac{0}{0}$ or $\frac{\infty}{\infty}$ or to the other indeterminate forms. Let's start with the form $0 \cdot \infty$ and work our way down.
 
-If $\lim_{x \to a} (f(x)g(x)) = 0 \cdot \infty$ since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
+If $\lim_{x \to a} f(x) \cdot g(x) = 0 \cdot \infty$, since $f(x) \to 0$ and $g(x) \to \infty$, then we have two options. First, since $\frac{1}{g(x)} \to 0$, we can rewrite the limit as
 
 $$
 	\lim_{x \to a} \frac{f(x)}{1/g(x)},
@@ -94,15 +118,13 @@ $$
 	\lim_{x \to a} \frac{g(x)}{1/f(x)},
 $$
 
-which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pital's Rule will apply.
+which is in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pital's Rule will apply.
 
 
 
 ### ex "L'H&#244;pital's Rule in the case $0 \cdot \infty$"
 	
 	Evaluate $$\lim_{x \to 2^+} (2x - 4)\ln(2x - 4)$$.
-
-	### solution
 	
 	We have $2x - 4 \to 0$ and $\ln(2x - 4) \to -\infty$, so this limit is of the form $0 \cdot \infty$. We can either move $2x - 4$ or $\ln(2x - 4)$ into the denominator --- let's try the natural log and see how it goes.
 	
@@ -150,21 +172,60 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 	
 ###
 
+We handle the $\infty - \infty$ case similarly: we first rewrite both terms to be fractions, then combine them with common denominators in order to apply L'H&#244;pital's Rule.
 
+### exc "L'H&#244;pital's Rule for $0 \cdot \infty$ and $\infty - \infty$"
 
-We handle the $\infty - \infty$ case similarly: we first force both terms to be fractions, then combine them with common denominators in order to apply L'H&#244;pital's Rule.
+	1. Evaluate $$\lim_{x \to 0} \left( \frac{1}{x^2} - \frac{\cos(2x)}{x^2}  \right)$$.
 
-
-
-### exc "L'H&#244;pital's Rule in the case $\infty - \infty$"
-	
-	Evaluate $$\lim_{x \to 0} \left( \frac{1}{\sin(x)} - \frac{1}{x} \right)$$.
+	2. Find $$\lim_{x \to 0} \left( \ln(x)\tan(x) \right)$$.
 	
 ###
 
 
 
 The final type of indeterminate form involves exponents. To handle these, we follow a process reminiscent of logarithmic differentiation: for $\lim_{x \to a} f(x)^{g(x)}$, we set $y = f(x)^{g(x)}$, take the natural log of both sides to get $\ln(y) = g(x) \ln(f(x))$, and then evaluate the limit on the right, possibly with L'H&#244;pital's Rule. Since $\ln$ is continuous, $\lim_{x \to a} \ln(y) = \ln(\lim_{x \to a} y)$, so once we've found the limit on the right side, all we need to do is raise $e$ to that power to find the original limit we were looking for.
+
+### ex "L'H&#244;pital's Rule in the case $1^\infty$"
+	
+	Evaluate $$\lim_{x \to \infty} \left( 1 + \frac{1}{x} \right)^x$$.
+
+	Since this is of the form $1^\infty$, we can write it as
+
+	$$
+		y &= \left( 1 + \frac{1}{x} \right)^x
+
+		\ln(y) &= \ln\left( \left( 1 + \frac{1}{x} \right)^x \right)
+
+		\ln(y) &= x \ln \left( 1 + \frac{1}{x} \right)
+
+		\lim_{x \to \infty} \ln(y) &= \lim_{x \to \infty} \left( x \ln \left( 1 + \frac{1}{x} \right) \right)
+
+		\lim_{x \to \infty} \ln(y) &= \lim_{x \to \infty} \frac{\ln \left( 1 + \frac{1}{x} \right)}{1/x},
+	$$
+
+	since that right-hand limit was in the form $0 \cdot \infty$. Now
+
+	$$
+		\lim_{x \to \infty} \ln(y) &= \lim_{x \to \infty} \frac{\ln \left( 1 + \frac{1}{x} \right)}{1/x}
+
+		\lim_{x \to \infty} \ln(y) &= \lim_{x \to \infty} \frac{\frac{1}{1 + 1/x}\left( -\frac{1}{x^2} \right) }{-\frac{1}{x^2}}
+
+		\lim_{x \to \infty} \ln(y) &= \lim_{x \to \infty} \frac{1}{1 + \frac{1}{x}}
+
+		\lim_{x \to \infty} \ln(y) &= 1.
+	$$
+
+	Since $\ln$ is a continuous function, we can rewrite the left side by moving the limit inside the $\ln$:
+
+	$$
+		\ln\left( \lim_{x \to \infty} y \right) &= 1.
+
+		\lim_{x \to \infty} y &= e^1
+
+		\lim_{x \to \infty} \left( 1 + \frac{1}{x} \right)^x &= e.
+	$$
+###
 
 
 
@@ -228,7 +289,9 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 
 ### exc "L'H&#244;pital's Rule in the case $0^0$"
 	
-	Evaluate $$\lim_{x \to 0} x^x$$.
+	1. Evaluate $$\lim_{x \to 0} x^x$$.
+
+	2. Find $$\lim_{x \to \infty} x^{1 / x}$$.
 	
 ###
 

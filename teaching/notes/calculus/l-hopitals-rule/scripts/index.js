@@ -1,0 +1,32 @@
+import {
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	getDesmosPoint
+} from "/scripts/src/desmos.js";
+import { raw } from "/scripts/src/main.js";
+
+export default function()
+{
+	createDesmosGraphs({
+		relativeSlopes:
+		{
+			bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`-\sin(\pi x)`, color: desmosBlue },
+				{ latex: raw`\ln(x)`, color: desmosRed },
+
+				{ latex: raw`\frac{-\sin(\pi x)}{\ln(x)}`, color: desmosPurple },
+				...getDesmosPoint({
+					point: ["1", "\\pi"],
+					color: desmosPurple,
+					style: "OPEN",
+					dragMode: "NONE",
+				}),
+			]
+		},
+	});
+}

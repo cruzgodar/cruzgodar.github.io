@@ -908,7 +908,9 @@ export const sitemap =
 		
 		"parent": "/teaching/notes/calculus",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/notes/calculus/related-rates":
