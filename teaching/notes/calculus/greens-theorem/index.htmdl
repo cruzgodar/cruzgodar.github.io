@@ -325,7 +325,7 @@ $$
 Applying Green's theorem to the field $\left< -g, f \right>$,
 
 $$
-	\int_{\p R} \vec{F} \bullet \vec{n}\, \d s &= \int_{\p R} \left< -g, f \right> \bullet \vec{T}\, \d s
+	\oint_{\p R} \vec{F} \bullet \vec{n}\, \d s &= \oint_{\p R} \left< -g, f \right> \bullet \vec{T}\, \d s
 
 	&= \iint_R \left( f_x - (-g_y) \right)\,\d A
 
@@ -355,12 +355,12 @@ Now that we've seen both forms of Green's Theorem, let's dig into those integran
 We can understand these quantities at a point $(a, b)$ by taking a very small disc $D$ around that point. If the field $\vec{F} = \left< f, g \right>$ is made of differentiable functions $f$ and $g$ (which it has to be to talk about both of these quantities in the first place), then $\vec{F}(x, y) \approx \vec{F}(a, b)$ on a small enough disk $D$, and so we have the approximation
 
 $$
-	\int_{\p D} \vec{F} \bullet \vec{T} \,\d s &= \int_D \left( g_x - f_y \right)\,\d A
+	\oint_{\p D} \vec{F} \bullet \vec{T} \,\d s &= \iint_D \left( g_x - f_y \right)\,\d A
 
 	&\approx |D|\left( g_x(a, b) - f_y(a, b) \right),
 $$
 
-where $|D|$ is the area of $D$. As $|D| \to 0$, the approximation gets better and better, and we wind up with the result that the function $g_x(x, y) - f_y(x, y)$ **measures the infinitesimal circulation of the field at $(x, y)$**. In just the same way, $f_x(x, y) + g_y(x, y)$ measures the infinitesimal flux of the field at $(x, y)$. Both of these quantities really are derivatives, then: they both measure rates of change, only one measures rotational motion and the other outward motion.
+where $|D|$ is the area of $D$. As $|D| \to 0$, the approximation gets better and better, and we wind up with the result that the function $g_x(x, y) - f_y(x, y)$ **measures the infinitesimal circulation of the field at $(x, y)$**. In just the same way, $f_x(x, y) + g_y(x, y)$ measures the infinitesimal flux of the field at $(x, y)$. Both of these quantities really are derivatives, then: they both measure rates of change, but one only measures rotational motion and the other outward motion.
 
 We're now going to define these properly and give them names, but in keeping with where we're headed for the rest of the course, we'll do so for a field $\vec{F} = \left< f, g, h \right>$ in $#R#^3$. It's perhaps unsurprising that the infinitesimal flux generalizes to $f_x + g_y + h_z$, but the minus sign in the infinitesimal circulation makes it trickier. The issue is that  field in $#R#^3$ can effectively rotate in three independent directions: about the $x$-axis, the $y$-axis, or the $z-axis$; there are three ways to orient one of those tiny disks $D$ to capture circulation near a point, with no single orientation able to get all of the information. The rotation $g_x - f_y$ we've captured so far is actually still correct for the rotation about the $z$-axis in $#R#^3$, but we're missing the other two completely. It's for this reason that in $#R#^3$, this object will become a vector, with each component giving the rotation about that axis.
 
@@ -388,13 +388,63 @@ We're now going to define these properly and give them names, but in keeping wit
 
 ###
 
-It can be somewhat overwhelming to hold the notions of circulation, flux, curl, and divergence in our heads at once. To disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure outward-flowing motion. Most importantly, though, circulation and flux are only defined relative to paths (at least in $#R#^2$) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
+Curl and divergence are also sometimes written in the more mundane style $\operatorname{curl} \vec{F}$ and $\operatorname{div} \vec{F}$, but we'll stick with the $\nabla$ expressions. It can be a little overwhelming to keep the notions of circulation, flux, curl, and divergence distinct; to disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure expanding motion. Most importantly, though, circulation and flux are only defined relative to paths (or surfaces, as we'll see later) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
 
 ### dropdown divergence-curl
 
 ### canvas divergence-curl
 
-This vector field is colored by (the $z$-component of) its curl; just like with 
+Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and purple negative ones.
+
+### exc "curl and divergence"
+
+	1. Let $\vec{F}(x, y, z) = \left< 2x^2 + y, z - \sin(y), z \right>$. Compute $\Gbullet \vec{F}$.
+
+	2. Let $f(x, y, z) = 3xy + 2y\sin(z) + z^2$. Find $\Gtimes \G f$. Does this match with our previous understanding of gradients and curl?
+
+	3. Is it possible for a non-constant vector field $\vec{G}$ in $#R#^2$ to have $\Gtimes \vec{G} = \vec{0}$ but $\G \bullet \vec{G} \neq 0$? What about vice versa? Give an example of each or explain why they're impossible.
+
+###
+
+That second part was suggestive of something more general: in $#R#^2$, conservative vector fields have the form $\vec{F} = \left< f, g \right>$ where $f_y = g_x$, or in other words $g_x - f_y = 0$. That's now only one component of three of the curl of a field in $#R#^3$, but the generalization we would hope holds absolutely does!
+
+### prop "conservative vector fields in $#R#^3$"
+
+	Let $\vec{F} = \G f$ be a conservative vector field in $#R#^3$, where $f$ has continuous second-order partial derivatives (so that Clairaut's theorem applies). Then $\Gtimes \vec{F} = \vec{0}$.
+
+###
+
+The proof is just three applications of Clairaut's theorem to show that each two-term component of the cross product cancels out, and there isn't very much to gained from writing it all out. We can see a nice similarity to the fact that crossing a vector with itself gives zero, though, since the operator $\G\times\nabla$ is in some sense crossing a vector of *operators* with itself, and it's reasonable that would result in the zero operator. A very similar result involves the divergence and curl together:
+
+### prop "the divergence of a curl vector is zero"
+
+	Let $\vec{F} = \left< f, g, h \right>$ be a vector field, where $f$, $g$, and $h$ all have continuous second-order partial derivatives. Then $\Gbullet\left( \Gtimes \vec{F} \right) = 0$.
+
+###
+
+We'll again omit the proof but draw a parallel to the fact that $\vec{a} \bullet \left( \vec{a} \times \vec{b} \right) = 0$ for any vectors $\vec{a}$ and $\vec{b}$.
+
+One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data the rotation of the field about each axis in the three components of $\Gbullet \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if you have a tiny flat wheel that can spin while fixed in place, it will spin fastest in the field $\vec{F}$ in $#R#^3$ when its axis is parallel to $\Gbullet \vec{F}$.
+
+With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in terms of these rather fancy new terms.
+
+### thm "The vector forms of Green's Theorem"
+
+	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g, 0 \right>$ be a vector field restricted to $#R#^2$ whose component functions have continuous partial derivatives on and around $R$. Then
+
+	$$
+		\int_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R (\Gtimes \vec{F}) \bullet \vec{k} \,\d A
+
+		\int_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \Gbullet \vec{F} \,\d A.
+	$$
+
+###
+
+The dot product with $\vec{k}$ in the circulation form of Green's Theorem is just a clean way of writing the third component. This entire statement isn't typically how we think of Green's theorem, but it's the perfect capstone to this section, because it sets the stage for the final four that follow it.
+
+Our goal for the remainder of multivariable calculus is to bring Green's Theorem to $#R#^3$, and now that we've defined curl and divergence, we can see the outline of what that will look like. The curve integral part of the circulation form of Green's Theorem will move to $#R#^3$ just fine --- we've already been taking integrals along curves in $#R#^3$ with no issue. However, those curves supposed to be the boundary of something in 3D space, and that no longer needs to be a flat region like it did in $#R#^2$. Instead, it could be an arbitrary surface, and so we'll need to develop a theory of integrating over surfaces. That will come in the next section, and the Green's Theorem analogue in the one after that.
+
+The flux form of Green's Theorem is slightly more complicated. Like we alluded to earlier, there is no such thing as a single normal vector to a curve in $#R#^3$; that property is held instead by surfaces (for example, planes have normal vectors in $#R#^3$, but lines do not). The flux integral in Green's Theorem will therefore need to be replaced by a surface integral. Moreover, that surface is supposed to be the boundary of something, which will have to be an entire solid region of $#R#^3$. Since there's no extra dimension for it to curve into like with surface integrals, objects like these will be flat in a sense, and we'll be able to handle them with a direct analogue of double integrals by just integrating one more time. We'll spend one section developing these so-called triple integrals, and then one final section returning to our final analogue of Green's Theorem, rounding out our journey through calculus in $#R#^3$.
 
 
 
