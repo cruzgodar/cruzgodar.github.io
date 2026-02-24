@@ -2,7 +2,7 @@
 
 
 
-This section is an interesting one --- in many multivariable calculus courses, it becomes something of a transitional fossil, since results we develop in later sections will supersede this one. However, I'd like to make the case that Green's Theorem not only stands on its own as a useful theorem, but is also one of the most conceptually valuable results we'll see in calculus: it's the least complex version of a series of results we'll develop over the remaining sections, and that gives it the distinction of being as simple as possible to learn and remember while still containing nearly all of the conceptual nuance we'll see in the future sections' theorems.
+This section is an interesting one --- in many multivariable calculus courses, it becomes something of a transitional fossil, since results we develop in later sections will supersede this one. However, I'd like to make the case that Green's Theorem not only stands on its own as a useful theorem, but is also one of the most conceptually valuable results we'll see in calculus. It's the simplest version of a series of three results we'll develop over the remaining sections, and that gives it the distinction of being as straightforward as possible to learn and remember while still containing nearly all of the conceptual nuance we'll see in the future sections' theorems.
 
 
 
@@ -28,7 +28,7 @@ $$
 	&= \int_0^1 f\left( x, \sqrt{x} \right) \,\d x - \int_0^1 f\left( x, 0 \right) \,\d x.
 $$
 
-In section 6.1, we only considered the inner integral as a single object measuring the area of a cross-section, but here we're treating the inner integral as a difference of two functions in its own right. And now that we have the technology of curve integrals, both of those integrals above certainly look familiar! Each is a curve integral, but post-parameterization. Let's swap out $x$ for $t$ to make it a bit more clear, and let's also just focus on the first integral for now:
+In section 6.1, we only considered the inner integral as a single object measuring the area of a cross-section, but here we're treating the inner integral as a difference of two functions in its own right. And now that we have the technology of curve integrals, both of those integrals above certainly look familiar! Each is a curve integral, but post-parameterization. Let's swap out $x$ for $t$ to make it a bit more clear, and let's also focus only on the first integral for now:
 
 $$
 	\int_0^1 f\left( t, \sqrt{t} \right) \,\d t.
@@ -68,7 +68,7 @@ $$
 	&= \int_0^1 f(t, \sqrt{t}) \cdot 1 \,\d t.
 $$
 
-We can see that this worked algebraically, but why? The geometric explanation is that by placing $f(x, y)$ as the $x$-component of a vector field instead of integrating it directly, we removed out the issue of the bases of the rectangles in the curve integral's Riemann sum growing and shrinking based on arc length. With this parameterization, they only do that in the $y$-direction, and so all of that variability is affecting the zero component of $\vec{F}$.
+We can see that this worked algebraically, but why? The geometric explanation is that by placing $f(x, y)$ as the $x$-component of a vector field instead of integrating it directly, we removed the issue of the bases of the rectangles in the curve integral's Riemann sum growing and shrinking based on arc length. With this parameterization, they only do that in the $y$-direction, and so all of that variability is affecting the zero component of $\vec{F}$.
 
 Now we can return to the bottom integral: even though the $y$-value is always zero, so it doesn't take any extra work to express it as a curve integral, we can write it in terms of a vector field regardless in order to help this work generalize. If we label the side of the region $R$ given by $y = \sqrt{x}$ as $C_1$ and the side given by $y = 0$ as $C_2$, then we have
 
@@ -116,7 +116,7 @@ At long last, we can add all of those curve integrals by writing the boundary of
 
 ###
 
-The use of the partial symbol for boundary is a little dubious, but it comes from a part of math upstream from us that has good reason for it. It also won't conflict with any of our current notation, and so we might as well go with it. With this notation, we have
+The use of the partial symbol for boundary is potentially a little confusing, but it comes from a part of math upstream from us that has good reason for it. It also won't conflict with any of our current notation, and so we'll go along with it. With this notation, we have
 
 $$
 	\iint_R f_y(x, y)\,\d A &= \int_{-\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
@@ -366,7 +366,7 @@ We're now going to define these properly and give them names, but in keeping wit
 
 ### def "curl and divergence"
 
-	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field $\Gtimes F$ that gives the infinitesimal circulation of $\vec{F}$ at a point about each axis:
+	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field $\Gtimes F$ that gives the infinitesimal circulation of $\vec{F}$ at a point, measured about each of the three axes:
 
 	$$
 		\Gtimes F &= \left< h_y - g_z, f_z - h_x, g_x - f_y \right>.
@@ -424,7 +424,7 @@ The proof is just three applications of Clairaut's theorem to show that each two
 
 We'll again omit the proof, but draw a parallel to the very similar fact that $\vec{a} \bullet \left( \vec{a} \times \vec{b} \right) = 0$ for any vectors $\vec{a}$ and $\vec{b}$.
 
-One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data the rotation of the field about each axis in the three components of $\Gtimes \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if we place a tiny flat wheel in the field that can spin while fixed in place, it will spin fastest in the field $\vec{F}$ in $#R#^3$ when its axis is parallel to $\Gtimes \vec{F}$.
+One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data about the rotation of the field about each axis in the three components of $\Gtimes \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if we place a tiny flat wheel that can spin while fixed in place into the field $\vec{F}$, then it will spin fastest when its axis is parallel to $\Gtimes \vec{F}$. Moreover, the magnitude $\left| \left| \Gtimes \vec{F} \right| \right|$ is the rate of that fastest rotation.
 
 With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in terms of these rather fancy new terms.
 
