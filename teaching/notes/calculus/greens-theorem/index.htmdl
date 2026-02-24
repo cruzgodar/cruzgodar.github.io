@@ -394,7 +394,7 @@ Curl and divergence are also sometimes written in the more mundane style $\opera
 
 ### canvas divergence-curl
 
-Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and purple negative ones.
+Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and purple negative ones. The curl is positive at points about which the field is rotating counterclockwise, negative at points where the rotation is clockwise, and zero where there is no total rotation. Similarly, divergence is positive where the field is expanding, negative where it's being compressed, and zero where its area is remaining constant.
 
 ### exc "curl and divergence"
 
