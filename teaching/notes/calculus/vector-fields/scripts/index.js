@@ -1,16 +1,16 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosGraphs,
-    desmosGraphsLoaded,
-    desmosGray,
-    desmosPurple,
-    getDesmosBounds,
-    getDesmosPoint,
-    getDesmosSlider,
-    getDesmosVector
+	createDesmosGraphs,
+	desmosBlack,
+	desmosGraphs,
+	desmosGraphsLoaded,
+	desmosGray,
+	desmosPurple,
+	getDesmosBounds,
+	getDesmosPoint,
+	getDesmosSlider,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -171,6 +171,19 @@ export default function()
 				}),
 			]
 		},
+
+		conservativeVectorField4:
+		{
+			alwaysDark: true,
+			
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+			
+			expressions:
+			[
+				{ latex: raw`\cos(x^2 + y) + y = c`, secret: true, color: desmosBlack, lineWidth: 5 },
+				{ latex: raw`c = [-10, -9.05, ..., 10]`, hidden: true, secret: false },
+			]
+		},
 	});
 
 
@@ -309,6 +322,55 @@ export default function()
 			function onDrawFrame()
 			{
 				const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField3);
+
+				applet.wilson.resizeWorld({
+					width: bounds.xmax - bounds.xmin,
+					height: bounds.ymax - bounds.ymin,
+					centerX: (bounds.xmin + bounds.xmax) / 2,
+					centerY: (bounds.ymin + bounds.ymax) / 2,
+				});
+			}
+
+			return applet;
+		});
+	});
+
+
+
+	desmosGraphsLoaded.conservativeVectorField4.then(() =>
+	{
+		createEphemeralApplet($("#conservativeVectorField4-canvas"), (canvas) =>
+		{
+			const applet = new VectorField({
+				canvas,
+				useFullscreenButton: false,
+				useResetButton: false,
+				transparency: true,
+				onDrawFrame,
+				minWorldWidth: 0.01,
+				maxWorldWidth: 100,
+				minWorldHeight: 0.01,
+				maxWorldHeight: 100,
+			});
+
+			applet.allowFullscreenWithKeyboard = false;
+			applet.allowResetWithKeyboard = false;
+
+			applet.loadPromise.then(() =>
+			{
+				applet.run({
+					resolution: 500,
+					maxParticles: 4000,
+					generatingCode: "(-2.0 * x * sin(x*x + y), 1.0 - sin(x*x + y))",
+					dt: .0025,
+					worldWidth: 6,
+					brightness: 0.9,
+				});
+			});
+
+			function onDrawFrame()
+			{
+				const bounds = getDesmosBounds(desmosGraphs.conservativeVectorField4);
 
 				applet.wilson.resizeWorld({
 					width: bounds.xmax - bounds.xmin,

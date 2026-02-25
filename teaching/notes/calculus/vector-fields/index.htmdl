@@ -180,27 +180,17 @@ Just like with Clairaut's Theorem, vector fields that satisfy the partial deriva
 
 In particular, one region that satisfies all three of these conditions is $#R#^2$ itself! Therefore, if we're trying to show that a 2D vector field is conservative and it's defined for all of $#R#^2$, then we can just check the previous theorem without worrying about the shape of the domain.
 
-### exc "the conservativity of 2D vector fields"
+### ex "the conservativity of 2D vector fields"
 
-	Determine if the following vector fields are conservative and find a potential function for each one that is.
-
-	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
-
-	2. $\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>$.
-
-	### solution
-
-	1. Differentiating,
+	Determine if the vector field
 
 	$$
-		p/py \left[ 3x^2 - 2xy \right] &= -2x
-
-		p/px \left[ -x^3 + 2y^2 \right] &= -3x^2.
+		\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>
 	$$
 
-	Those aren't the same, and so the field is not conservative.
+	is conservative and find a potential function for it if so.
 
-	2. This time,
+	Differentiating,
 
 	$$
 		p/py \left[ y^2 \cos\left( xy^2 \right) \right] &= 2y\cos\left( xy^2 \right) - y^2\sin\cos\left( xy^2 \right)(2xy)
@@ -239,6 +229,54 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 	$$
 
 	Remember that final $+c$! Since we were only asked to find a single potential function, it's fine to just take $c = 0$, but it's healthy to remember that it's there in general.
+
+###
+
+### exc "the conservativity of 2D vector fields"
+
+	Determine if the following vector fields are conservative and find a potential function for each one that is.
+
+	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
+
+	2. $\vec{G}(x, y) = \left< -2x \sin\left( x^2 + y \right),\ 1 - \sin(x^2 + y) \right>$.
+
+	### solution
+
+	1. Differentiating,
+
+	$$
+		p/py \left[ 3x^2 - 2xy \right] &= -2x
+
+		p/px \left[ -x^3 + 2y^2 \right] &= -3x^2.
+	$$
+
+	Those aren't the same, and so the field is not conservative.
+
+	2. This time,
+
+	$$
+		p/py \left[ -2x \sin\left( x^2 + y \right) \right] &= -2x\cos\left( x^2 + y \right)
+
+		p/px \left[ 1 - \sin(x^2 + y) \right] &= -\cos\left( x^2 + y \right)(2x).
+	$$
+
+	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
+
+	$$
+		\int -2x \sin\left( x^2 + y \right)\,\p x &= \sin\left( x^2 + y \right) + c_1(y)
+
+		\int \left( 1 - \sin(x^2 + y) \right)\,\p y &= y + \sin\left( x^2 + y \right) + c_2(x).
+	$$
+
+	Merging these two accounts of the potential function $g$ together, we find
+
+	$$
+		g(x, y) = \sin\left( x^2 + y \right) + y + c,
+	$$
+
+	and sure enough, those level curves are orthogonal to the field!
+
+	### melded-desmos conservativeVectorField4
 
 ###
 
