@@ -181,7 +181,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`\cos(x^2 + y) + y = c`, secret: true, color: desmosBlack, lineWidth: 5 },
-				{ latex: raw`c = [-10, -9.05, ..., 10]`, hidden: true, secret: false },
+				{ latex: raw`c = [-10, -9.05, ..., 10]`, hidden: true, secret: true },
 			]
 		},
 	});
