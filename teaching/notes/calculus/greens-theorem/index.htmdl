@@ -213,7 +213,7 @@ Let's use this to find the area of something that would have previously proven i
 	While using the integral of $\left< x, 0 \right>$ would work just as well, using this field will cancel out the more complicated first component of $\vec{r}'(t)$, so it might make things slightly easier. We have
 
 	$$
-		\vec{r}'(t) &= \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>
+		\vec{r}'(t) &= \left< 1 - 2\pi\cos(2 \pi t),\ 2\pi\sin(2 \pi t) \right>
 
 		\vec{l}'(t) &= \left< -1, 0 \right>,
 	$$
@@ -223,7 +223,7 @@ Let's use this to find the area of something that would have previously proven i
 	$$
 		& \quad \int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}
 
-		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t) \right), 0 \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ \sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
+		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t) \right), 0 \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ 2\pi\sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
 
 		&= \int_0^1 -\left( 1 - \cos(2\pi t) \right)\left( 1 - 2\pi\cos(2 \pi t) \right)\, \d t + 0
 
