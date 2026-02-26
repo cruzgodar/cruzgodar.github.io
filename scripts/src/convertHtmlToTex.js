@@ -18,7 +18,7 @@ export function convertHtmlToTex({
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{graphicx}
-\usepackage[total={${8.5 - 2 * margin}in, ${11 - 2 * margin}in}, heightrounded]{geometry}
+\usepackage[total={${8.5 - 2 * margin}in, ${11 - 2 * margin * 1.2}in}, heightrounded]{geometry}
 \usepackage{hyperref}
 
 \hypersetup

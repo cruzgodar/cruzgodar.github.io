@@ -9,18 +9,34 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
-		testGraph:
+		netChange:
 		{
-			bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
+			bounds: { xmin: -0.25, xmax: 0.75, ymin: -20, ymax: 80 },
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
 				{ latex: raw`a = 0` },
-				{ latex: raw`b = 2` },
+				{ latex: raw`b = \frac{1}{2}` },
 
-				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
+
+				{ latex: raw`f(x) = 60\{a \leq x \leq b\}`, color: desmosPurple },
+
+				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosBlue, secret: true },
+			]
+		},
+
+
+
+		rollerCoaster:
+		{
+			bounds: { xmin: -10, xmax: 70, ymin: -3, ymax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`\frac{x}{10} \{0 \leq x \leq 20\}`, color: desmosPurple, secret: true },
+				{ latex: raw`5 + \frac{-3}{20}x \{20 \leq x \leq 40\}`, color: desmosPurple, secret: true },
+				{ latex: raw`-1 \{40 \leq x \leq 60\}`, color: desmosPurple, secret: true },
 			]
 		},
 
@@ -49,11 +65,11 @@ export default function()
 
 		riemannSum:
 		{
-			bounds: { xmin: 0, xmax: 8, ymin: -2.5, ymax: 4.5 },
+			bounds: { xmin: 0, xmax: 8, ymin: -1, ymax: 3 },
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: desmosPurple },
+				{ latex: raw`f(x) = \frac{3}{2} + \frac{2}{5}(\sin(\frac{2}{3}x) + \cos(\frac{3}{2}x))`, color: desmosPurple },
 				{ latex: raw`a = 1`, sliderBounds: { min: 0, max: 8 } },
 				{ latex: raw`b = 7`, sliderBounds: { min: 0, max: 8 } },
 				{ latex: raw`n = 6`, sliderBounds: { min: 2, max: 100, step: 1 } },

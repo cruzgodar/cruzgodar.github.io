@@ -264,7 +264,7 @@ async function downloadWorksheet()
 		pageUrl,
 		title: "Worksheet ###",
 		partnerField: true,
-		margin: 0.75,
+		margin: 0.5,
 		pageNumbers: false,
 		largeText: true,
 	});

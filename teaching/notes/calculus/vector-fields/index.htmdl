@@ -238,7 +238,7 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 
 	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
 
-	2. $\vec{G}(x, y) = \left< -2x \sin\left( x^2 + y \right),\ 1 - \sin(x^2 + y) \right>$.
+	2. $\vec{G}(x, y) = \left< -2x \sin\left( x^2 + y \right),\ 1 - \sin\left( x^2 + y \right) \right>$.
 
 	### solution
 
@@ -263,15 +263,15 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
 
 	$$
-		\int -2x \sin\left( x^2 + y \right)\,\p x &= \sin\left( x^2 + y \right) + c_1(y)
+		\int -2x \sin\left( x^2 + y \right)\,\p x &= \cos\left( x^2 + y \right) + c_1(y)
 
-		\int \left( 1 - \sin(x^2 + y) \right)\,\p y &= y + \sin\left( x^2 + y \right) + c_2(x).
+		\int \left( 1 - \sin(x^2 + y) \right)\,\p y &= y + \cos\left( x^2 + y \right) + c_2(x).
 	$$
 
 	Merging these two accounts of the potential function $g$ together, we find
 
 	$$
-		g(x, y) = \sin\left( x^2 + y \right) + y + c,
+		g(x, y) = \cos\left( x^2 + y \right) + y + c,
 	$$
 
 	and sure enough, those level curves are orthogonal to the field!
