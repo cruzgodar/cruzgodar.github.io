@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosDragModes,
+	desmosPointStyles,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint
@@ -24,7 +25,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["1", "\\pi"],
 					color: desmosPurple,
-					style: "OPEN",
+					style: desmosPointStyles.OPEN,
 					dragMode: desmosDragModes.NONE,
 				}),
 			]

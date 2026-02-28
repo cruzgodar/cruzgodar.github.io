@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosPointStyles,
 	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -62,7 +63,7 @@ export default function()
 				{ latex: raw`f(t) = t^2`, color: desmosPurple, hidden: true },
 				{ latex: raw`g(h) = \frac{f(h) - f(0)}{h - 0}`, color: desmosBlue },
 
-				{ latex: raw`(0, f'(0))`, color: desmosBlue, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(0, f'(0))`, color: desmosBlue, pointStyle: desmosPointStyles.OPEN, secret: true },
 			]
 		},
 
@@ -75,7 +76,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`f(x) = \frac{\sin(x)}{x}`, color: desmosPurple },
-				{ latex: raw`(0, 1)`, color: desmosPurple, pointStyle: "OPEN" },
+				{ latex: raw`(0, 1)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN },
 			]
 		},
 
@@ -89,7 +90,7 @@ export default function()
 			[
 				{ latex: raw`g(x) = x^3 - x`, color: desmosPurple, secret: true, hidden: true },
 				{ latex: raw`g(x)`, color: desmosPurple },
-				{ latex: raw`(1, 0)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(1, 0)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN, secret: true },
 				{ latex: raw`(1, 2)`, color: desmosPurple, secret: true },
 			]
 		},
@@ -116,8 +117,8 @@ export default function()
 			[
 				{ latex: raw`f(x) = \frac{\left|x - 2\right|}{x - 2}`, color: desmosPurple, secret: true, hidden: true },
 				{ latex: raw`f(x)`, color: desmosPurple },
-				{ latex: raw`(2, -1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
-				{ latex: raw`(2, 1)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(2, -1)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN, secret: true },
+				{ latex: raw`(2, 1)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN, secret: true },
 			]
 		},
 
@@ -144,7 +145,7 @@ export default function()
 				{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: false, hidden: true },
 				{ latex: raw`f(x)`, color: desmosPurple },
 				{ latex: raw`(-3, -1)`, color: desmosPurple, secret: true },
-				{ latex: raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: "OPEN", secret: true },
+				{ latex: raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN, secret: true },
 			]
 		},
 	});

@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosPointStyles,
 	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -32,7 +33,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`f(x) = \frac{\sin(x)}{x}`, color: desmosBlue },
-				{ latex: raw`(0, 1)`, color: desmosBlue, pointStyle: "OPEN" }
+				{ latex: raw`(0, 1)`, color: desmosBlue, pointStyle: desmosPointStyles.OPEN }
 			]
 		},
 

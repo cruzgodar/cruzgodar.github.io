@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosPointStyles,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -16,7 +17,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
-				{ latex: raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
+				{ latex: raw`(1, 2)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN },
 			]
 		},
 

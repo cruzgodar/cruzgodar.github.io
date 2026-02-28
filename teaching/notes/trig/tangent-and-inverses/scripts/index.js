@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosLineStyles,
 	desmosOrange,
 	desmosPurple,
 	getDesmosSlider
@@ -58,7 +59,7 @@ export default function()
 
 				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
 				{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: desmosLineStyles.DASHED, secret: true },
 			]
 		},
 

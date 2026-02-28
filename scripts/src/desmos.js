@@ -902,10 +902,8 @@ let uid = 0;
 export function getDesmosPoint({
 	point, // ["a", "b"]
 	color,
-	// "", "X", "Y", "XY"
-	dragMode = "XY",
-	// "POINT", "OPEN", "CROSS"
-	style = "POINT",
+	dragMode = desmosDragModes.XY,
+	style = desmosPointStyles.POINT,
 	secret = true,
 	size = 9
 }) {

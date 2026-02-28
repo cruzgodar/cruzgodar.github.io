@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosLineStyles,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -19,7 +20,7 @@ export default function()
 				{ latex: raw`l(x) = g(a) + g'(a)(x - a)`, color: desmosBlue, secret: true },
 				{ latex: raw`a = 0`, sliderBounds: { min: -5, max: 5 } },
 				{ latex: raw`(a, g(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`(a + 1, g(a + 1)), (a + 1, l(a + 1))`, color: desmosRed, secret: true, lines: true, lineStyle: "DOTTED" },
+				{ latex: raw`(a + 1, g(a + 1)), (a + 1, l(a + 1))`, color: desmosRed, secret: true, lines: true, lineStyle: desmosLineStyles.DOTTED },
 			]
 		},
 	});

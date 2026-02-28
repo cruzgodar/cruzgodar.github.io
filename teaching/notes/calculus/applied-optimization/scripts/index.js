@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosLineStyles,
 	desmosPurple
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -58,8 +59,8 @@ export default function()
 				{ latex: raw`(-1, 0), (\cos(2t), \sin(2t))`, points: true, lines: true, color: desmosPurple, secret: true },
 				{ latex: raw`r = 1 \left\{ 0 \leq \theta \leq 2t \right\}`, color: desmosPurple, secret: true },
 
-				{ latex: raw`(\cos(2t), \sin(2t)), (1, 0), (-1, 0)`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: "DASHED" },
-				{ latex: raw`(0, 0), (\cos(t), \sin(t))`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: "DASHED" },
+				{ latex: raw`(\cos(2t), \sin(2t)), (1, 0), (-1, 0)`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: desmosLineStyles.DASHED },
+				{ latex: raw`(0, 0), (\cos(t), \sin(t))`, points: true, lines: true, color: desmosBlue, hidden: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 

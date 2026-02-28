@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlue,
 	desmosDragModes,
+	desmosPointStyles,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -34,7 +35,7 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`f(x) = \frac{\sin(x)}{x}`, color: desmosBlue },
-				{ latex: raw`(0, 1)`, color: desmosBlue, pointStyle: "OPEN" },
+				{ latex: raw`(0, 1)`, color: desmosBlue, pointStyle: desmosPointStyles.OPEN },
 				{ latex: raw`(0, -1)`, color: desmosBlue }
 			]
 		},
@@ -52,7 +53,7 @@ export default function()
 
 				{ latex: raw`g(x) = \left\{ 0 \leq x < 1: x - 1, 1 < x < 3: -\frac{1}{x}, 3 \leq x: -\frac{2}{3} \right\}`, color: desmosBlue },
 				{ latex: raw`(0, -1), (3, -\frac{2}{3})`, color: desmosBlue, secret: true },
-				{ latex: raw`(1, 0), (1, -1), (3, -\frac{1}{3})`, color: desmosBlue, pointStyle: "OPEN", secret: true }
+				{ latex: raw`(1, 0), (1, -1), (3, -\frac{1}{3})`, color: desmosBlue, pointStyle: desmosPointStyles.OPEN, secret: true }
 			]
 		},
 

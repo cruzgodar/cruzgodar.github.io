@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosLineStyles,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -20,8 +21,8 @@ export default function()
 				{ latex: raw`a = 0` },
 				{ latex: raw`b = 2` },
 
-				{ latex: raw`x = b\{f(a) \leq y \leq f(b)\}`, color: desmosBlack, lineStyle: "DASHED", secret: true },
-				{ latex: raw`y = f(a)\{a \leq x \leq b\}`, color: desmosBlack, lineStyle: "DASHED", secret: true },
+				{ latex: raw`x = b\{f(a) \leq y \leq f(b)\}`, color: desmosBlack, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`y = f(a)\{a \leq x \leq b\}`, color: desmosBlack, lineStyle: desmosLineStyles.DASHED, secret: true },
 			]
 		},
 
@@ -88,9 +89,9 @@ export default function()
 				{ latex: raw`(l x_x t, l x_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 } },
 				{ latex: raw`(l y_x t, l y_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 } },
 				{ latex: raw`(l z_x t, l z_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 } },
-				{ latex: raw`(-l x_x t, -l x_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: "DASHED" },
-				{ latex: raw`(-l y_x t, -l y_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: "DASHED" },
-				{ latex: raw`(-l z_x t, -l z_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: "DASHED" },
+				{ latex: raw`(-l x_x t, -l x_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: desmosLineStyles.DASHED },
+				{ latex: raw`(-l y_x t, -l y_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: desmosLineStyles.DASHED },
+				{ latex: raw`(-l z_x t, -l z_y t)`, secret: true, color: desmosBlack, parametricDomain: { min: 0, max: 1 }, lineStyle: desmosLineStyles.DASHED },
 
 				{ latex: raw`(x_S(t), y_S(t))`, secret: true, color: desmosBlue, parametricDomain: { min: 0, max: 500 } },
 				{ latex: raw`x_s(t) = x_{reg}(\mod(t, 1)) \{ 1 \leq t \leq n_{rot} \}`, hidden: true, secret: true },

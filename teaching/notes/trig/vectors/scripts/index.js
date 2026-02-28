@@ -3,6 +3,7 @@ import {
 	desmosBlack,
 	desmosBlue,
 	desmosDragModes,
+	desmosLineStyles,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -157,14 +158,14 @@ export default function()
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
 					color: desmosRed,
-					lineStyle: "DASHED",
+					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_2", "y_0 + y_2"],
 					to: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
 					color: desmosBlue,
-					lineStyle: "DASHED",
+					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({

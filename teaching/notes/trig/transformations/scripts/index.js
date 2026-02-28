@@ -3,6 +3,7 @@ import {
 	desmosBlack,
 	desmosBlue,
 	desmosDragModes,
+	desmosLineStyles,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -83,7 +84,7 @@ export default function()
 			[
 				{ latex: raw`f(x) = x^3`, color: desmosPurple },
 				{ latex: raw`f(x) = x^{1/3}`, color: desmosBlue },
-				{ latex: raw`y = x`, color: desmosBlack, secret: true, lineStyle: "DASHED" },
+				{ latex: raw`y = x`, color: desmosBlack, secret: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 

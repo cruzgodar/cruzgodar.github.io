@@ -4,6 +4,7 @@ import {
 	desmosBlue,
 	desmosDragModes,
 	desmosGray,
+	desmosLineStyles,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -160,8 +161,8 @@ export default function()
 					color: desmosPurple,
 				}),
 
-				{ latex: raw`(x_0, y_0), (x_0 + x_1, y_0)`, color: desmosOrange, points: false, lines: true, lineStyle: "DASHED" },
-				{ latex: raw`(x_0 + x_1, y_0), (x_0 + x_1, y_0 + y_1)`, color: desmosOrange, points: false, lines: true, lineStyle: "DASHED" },
+				{ latex: raw`(x_0, y_0), (x_0 + x_1, y_0)`, color: desmosOrange, points: false, lines: true, lineStyle: desmosLineStyles.DASHED },
+				{ latex: raw`(x_0 + x_1, y_0), (x_0 + x_1, y_0 + y_1)`, color: desmosOrange, points: false, lines: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 
@@ -221,12 +222,14 @@ export default function()
 					from: ["0", "0"],
 					to: ["\\frac{1}{2}", "\\frac{\\sqrt{3}}{2}"],
 					color: desmosPurple,
+					arrowSize: "0.15",
 				}),
 
 				...getDesmosVector({
 					from: ["0", "0"],
 					to: ["\\frac{1}{2}", "-\\frac{\\sqrt{3}}{2}"],
 					color: desmosPurple,
+					arrowSize: "0.15",
 				}),
 			]
 		},
@@ -332,14 +335,14 @@ export default function()
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
 					color: desmosRed,
-					lineStyle: "DASHED",
+					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_2", "y_0 + y_2"],
 					to: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
 					color: desmosBlue,
-					lineStyle: "DASHED",
+					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({

@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosPointStyles,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -18,7 +19,7 @@ export default function()
 			[
 				{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 3: \frac{1}{27} x^3, 3 \leq x: \frac{1}{(4 - x)^2}\}`, color: desmosPurple, hidden: true, secret: true },
 				{ latex: raw`f(x)`, color: desmosPurple },
-				{ latex: raw`(-3, -3), (0, 0)`, color: desmosPurple, pointStyle: "OPEN" },
+				{ latex: raw`(-3, -3), (0, 0)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN },
 				{ latex: raw`(-3, -1), (0, 1)`, color: desmosPurple },
 			]
 		},

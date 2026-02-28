@@ -3,6 +3,8 @@ import {
 	desmosBlack,
 	desmosBlue,
 	desmosDragModes,
+	desmosLineStyles,
+	desmosPointStyles,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -58,7 +60,7 @@ export default function()
 					point: ["-2", "0"],
 					color: desmosPurple,
 					dragMode: desmosDragModes.NONE,
-					style: "OPEN",
+					style: desmosPointStyles.OPEN,
 				}),
 				...getDesmosPoint({
 					point: ["-1", "1"],
@@ -69,7 +71,7 @@ export default function()
 					point: ["3", "2"],
 					color: desmosPurple,
 					dragMode: desmosDragModes.NONE,
-					style: "OPEN",
+					style: desmosPointStyles.OPEN,
 				}),
 				...getDesmosPoint({
 					point: ["4", "1"],
@@ -221,7 +223,7 @@ export default function()
 				}),
 
 				{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: "DASHED", secret: true },
+				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: desmosLineStyles.DASHED, secret: true },
 			]
 		},
 	});

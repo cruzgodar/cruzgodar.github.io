@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosLineStyles,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -63,7 +64,7 @@ export default function()
 				{ latex: raw`(0.5b\cos(\gamma), 0.5b\sin(\gamma)) + (0.2\cos(b_3), 0.2\sin(b_3))`, color: desmosBlue, label: "b", showLabel: true, hidden: true, secret: true },
 				{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))`, color: desmosPurple, label: "c", showLabel: true, hidden: true, secret: true },
 
-				{ latex: raw`(a, 0), (a, b\sin(\gamma)), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, hidden: true, points: false, lines: true, lineStyle: "DASHED" },
+				{ latex: raw`(a, 0), (a, b\sin(\gamma)), (b\cos(\gamma), b\sin(\gamma))`, color: desmosBlack, hidden: true, points: false, lines: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 
@@ -116,7 +117,7 @@ export default function()
 				{ latex: raw`(0.5b\cos(\gamma), 0.5b\sin(\gamma)) + (0.2\cos(b_3), 0.2\sin(b_3))`, color: desmosBlue, label: "b", showLabel: true, hidden: true, secret: true },
 				{ latex: raw`(0.5b\cos(\gamma) + 0.5a, 0.5b\sin(\gamma)) + (0.2\cos(0.5\gamma), 0.2\sin(0.5\gamma))`, color: desmosPurple, label: "c", showLabel: true, hidden: true, secret: true },
 
-				{ latex: raw`(b\cos(\gamma), b\sin(\gamma)), (b\cos(\gamma), 0)`, color: desmosBlack, points: false, lines: true, lineStyle: "DASHED" },
+				{ latex: raw`(b\cos(\gamma), b\sin(\gamma)), (b\cos(\gamma), 0)`, color: desmosBlack, points: false, lines: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 
