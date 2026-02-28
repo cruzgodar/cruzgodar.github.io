@@ -631,7 +631,8 @@ mjx-container
 
 	/* This accounts for the total 4px of the border. */
 	margin-right: 20px;
-	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35), inset 0 0 0 2px var(--dark-outline-color);;
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
+	outline: 2px solid var(--dark-outline-color);
 
 	background-color: var(--background);
 }
