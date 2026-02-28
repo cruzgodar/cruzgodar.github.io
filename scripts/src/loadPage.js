@@ -302,8 +302,8 @@ function packageSolution(solutionElement, showButton = true)
 	solutionElement.style.position = "absolute";
 	// This prevents canvases in the solutions from thinking
 	// they're onscreen.
-	solutionElement.style.top = "1000vh";
-	solutionElement.style.left = "1000vw";
+	solutionElement.style.top = "-1000vh";
+	solutionElement.style.left = "-1000vw";
 	solutionElement.style.opacity = 0;
 	solutionElement.style.zIndex = -100;
 
