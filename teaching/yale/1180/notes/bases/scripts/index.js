@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -43,7 +44,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["c", "d"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 

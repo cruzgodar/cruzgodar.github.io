@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosDragModes,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -103,7 +104,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["p", "q"],
 					color: desmosRed,
-					dragMode: "XY",
+					dragMode: desmosDragModes.NONE,
 					size: 12
 				}),
 				{ latex: raw`p = 4`, secret: true },

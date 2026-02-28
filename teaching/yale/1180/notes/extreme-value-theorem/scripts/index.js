@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -38,14 +39,14 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "f(a)"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
 
 				...getDesmosPoint({
 					point: ["b", "f(b)"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
 			]
@@ -80,7 +81,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "b"],
 					color: desmosRed,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
 

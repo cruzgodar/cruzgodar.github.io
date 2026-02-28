@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -18,7 +19,7 @@ export default function()
 			[
 				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
 				{ latex: raw`s = 0` },
-				{ latex: raw`(\cos(s), \sin(s))`, color: desmosPurple, dragMode: "XY" },
+				{ latex: raw`(\cos(s), \sin(s))`, color: desmosPurple, dragMode: desmosDragModes.XY },
 				{ latex: raw`y = \sin(s) - \cot(s)(x - \cos(s))`, color: desmosRed, secret: true },
 				{ latex: raw`x = \cos(s) \{s = 0\}`, color: desmosRed, secret: true },
 				{ latex: raw`x = \cos(s) \{s = \pi\}`, color: desmosRed, secret: true }

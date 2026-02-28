@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -31,7 +32,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "f(0)"],
 					color: desmosBlue,
-					dragMode: "X",
+					dragMode: desmosDragModes.X,
 				})
 			]
 		},
@@ -56,24 +57,24 @@ export default function()
 				...getDesmosPoint({
 					point: ["-2", "0"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					style: "OPEN",
 				}),
 				...getDesmosPoint({
 					point: ["-1", "1"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["3", "2"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					style: "OPEN",
 				}),
 				...getDesmosPoint({
 					point: ["4", "1"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 			]
 		},
@@ -169,14 +170,14 @@ export default function()
 					point: ["a", "0"],
 					color: desmosRed,
 					secret: true,
-					dragMode: "X"
+					dragMode: desmosDragModes.X
 				}),
 
 				...getDesmosPoint({
 					point: ["0", "b"],
 					color: desmosBlue,
 					secret: true,
-					dragMode: "Y"
+					dragMode: desmosDragModes.Y
 				}),
 
 				{ latex: raw`c = \sqrt{a^2 + b^2}`, color: desmosPurple },

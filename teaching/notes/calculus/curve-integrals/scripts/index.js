@@ -1,17 +1,18 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosGraphs,
-    desmosGraphsLoaded,
-    desmosGray,
-    desmosPurple,
-    desmosRed,
-    getColoredParametricCurve,
-    getDesmosBounds,
-    getDesmosPoint,
-    getDesmosSlider
+	createDesmosGraphs,
+	desmosBlue,
+	desmosDragModes,
+	desmosGraphs,
+	desmosGraphsLoaded,
+	desmosGray,
+	desmosPurple,
+	desmosRed,
+	getColoredParametricCurve,
+	getDesmosBounds,
+	getDesmosPoint,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -310,14 +311,14 @@ export default function()
 				...getDesmosPoint({
 					point: ["1", "-\\sqrt{3}"],
 					color: desmosBlue,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 
 				...getDesmosPoint({
 					point: ["1", "\\sqrt{3}"],
 					color: desmosRed,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 			]
@@ -360,14 +361,14 @@ export default function()
 				...getDesmosPoint({
 					point: ["-1", "-1"],
 					color: desmosBlue,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 
 				...getDesmosPoint({
 					point: ["2", "2"],
 					color: desmosRed,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 			]

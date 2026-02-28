@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosGray,
 	desmosOrange,
 	desmosPurple,
@@ -28,13 +29,13 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "f(a)"],
 					color: desmosBlack,
-					dragMode: "X",
+					dragMode: desmosDragModes.X,
 					secret: false,
 				}),
 				...getDesmosPoint({
 					point: ["b", "f(b)"],
 					color: desmosBlack,
-					dragMode: "X",
+					dragMode: desmosDragModes.X,
 					secret: false,
 				}),
 				
@@ -95,13 +96,13 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "c"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 				...getDesmosPoint({
 					point: ["b", "d"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 			]
@@ -450,7 +451,7 @@ export default function()
 
 				{ latex: raw`r = 0.25 \{ 0 \leq \theta \leq \theta_0 \}`, color: desmosBlue, secret: true },
 
-				{ latex: raw`(r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosPurple, dragMode: "NONE" },
+				{ latex: raw`(r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosPurple, dragMode: desmosDragModes.NONE },
 			]
 		},
 

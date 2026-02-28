@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosOrange,
 	desmosPurple,
 	desmosRed,
@@ -113,7 +114,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["0", "b"],
 					color: desmosRed,
-					dragMode: "Y",
+					dragMode: desmosDragModes.Y,
 				}),
 			]
 		},
@@ -135,7 +136,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["1", "a"],
 					color: desmosRed,
-					dragMode: "Y",
+					dragMode: desmosDragModes.Y,
 				}),
 			]
 		},
@@ -150,34 +151,34 @@ export default function()
 				...getDesmosPoint({
 					point: ["0", "f(0)"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "f(1)"],
 					color: desmosPurple,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				{ latex: raw`g(x) = \frac{1}{5}f(x)`, color: desmosBlue },
 				...getDesmosPoint({
 					point: ["0", "g(0)"],
 					color: desmosBlue,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "g(1)"],
 					color: desmosBlue,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				{ latex: raw`h(x) = g(x) - 2`, color: desmosRed },
 				...getDesmosPoint({
 					point: ["0", "h(0)"],
 					color: desmosRed,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "h(1)"],
 					color: desmosRed,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 				}),
 			]
 		},

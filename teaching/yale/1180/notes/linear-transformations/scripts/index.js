@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -18,7 +19,11 @@ export default function()
 			expressions:
 			[
 				...getDesmosSlider({ expression: "a = 2", secret: false }),
-				...getDesmosPoint({ point: ["a", 0], dragMode: "X", color: desmosRed }),
+				...getDesmosPoint({
+					point: ["a", 0],
+					dragMode: desmosDragModes.X,
+					color: desmosRed
+				}),
 				...getDesmosVector({ from: [0, 0], to: ["a", "0"], color: desmosBlue }),
 				...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosPurple }),
 			]

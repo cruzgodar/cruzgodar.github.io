@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed
 } from "/scripts/src/desmos.js";
@@ -68,7 +69,7 @@ export default function()
 				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
 				{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true },
 				{ latex: raw`f'(x)`, color: desmosRed, secret: true },
-				{ latex: raw`(a, f'(a))`, color: desmosRed, dragMode: "NONE", showLabel: true, secret: true },
+				{ latex: raw`(a, f'(a))`, color: desmosRed, dragMode: desmosDragModes.NONE, showLabel: true, secret: true },
 			]
 		},
 

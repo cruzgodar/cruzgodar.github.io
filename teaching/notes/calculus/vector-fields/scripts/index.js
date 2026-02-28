@@ -3,6 +3,7 @@ import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
 	createDesmosGraphs,
 	desmosBlack,
+	desmosDragModes,
 	desmosGraphs,
 	desmosGraphsLoaded,
 	desmosGray,
@@ -152,7 +153,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["1", "1"],
 					color: desmosBlack,
-					dragMode: "NONE",
+					dragMode: desmosDragModes.NONE,
 					size: 12,
 				}),
 

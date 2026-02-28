@@ -5,6 +5,30 @@ import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { clamp } from "./utils.js";
 
+export const desmosDragModes = {
+	NONE: "NONE",
+	X: "X",
+	Y: "Y",
+	XY: "XY",
+};
+
+export const desmosPointStyles = {
+	POINT: "POINT",
+	OPEN: "OPEN",
+	CROSS: "CROSS",
+	SQUARE: "SQUARE",
+	PLUS: "PLUS",
+	TRIANGLE: "TRIANGLE",
+	DIAMOND: "DIAMOND",
+	STAR: "STAR"
+};
+
+export const desmosLineStyles = {
+	SOLID: "SOLID",
+	DASHED: "DASHED",
+	DOTTED: "DOTTED",
+};
+
 
 export const desmosPurple = "_desmosPurple";
 export const desmosBlue = "_desmosBlue";

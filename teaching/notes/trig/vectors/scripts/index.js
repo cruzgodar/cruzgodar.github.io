@@ -2,6 +2,7 @@ import {
 	createDesmosGraphs,
 	desmosBlack,
 	desmosBlue,
+	desmosDragModes,
 	desmosPurple,
 	desmosRed,
 	getDesmosPoint,
@@ -50,14 +51,14 @@ export default function()
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
 					color: desmosRed,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
 					color: desmosBlue,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
@@ -122,21 +123,21 @@ export default function()
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
 					color: desmosBlue,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
 					color: desmosRed,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
@@ -220,7 +221,7 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", "b"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
@@ -309,21 +310,21 @@ export default function()
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
 					color: desmosBlack,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
 					color: desmosBlue,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_2", "y_0 + y_2"],
 					color: desmosRed,
-					dragMode: "XY",
+					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
