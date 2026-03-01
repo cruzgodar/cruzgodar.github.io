@@ -118,6 +118,7 @@ home Cruz Godar
 			vector-fields Section 6.2: Vector Fields
 			curve-integrals Section 6.3: Curve Integrals
 			greens-theorem Section 6.4: Green's Theorem
+			surface-integrals Section 6.5: Surface Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1: Vectors and Matrices

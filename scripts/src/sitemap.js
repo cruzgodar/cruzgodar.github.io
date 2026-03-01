@@ -772,7 +772,8 @@ export const sitemap =
 			"/teaching/notes/calculus/double-integrals",
 			"/teaching/notes/calculus/vector-fields",
 			"/teaching/notes/calculus/curve-integrals",
-			"/teaching/notes/calculus/greens-theorem"
+			"/teaching/notes/calculus/greens-theorem",
+			"/teaching/notes/calculus/surface-integrals"
 		]
 	},
 		
@@ -1380,6 +1381,17 @@ export const sitemap =
 	"/teaching/notes/calculus/greens-theorem":
 	{
 		"title": "Section 6.4: Green's Theorem",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/surface-integrals":
+	{
+		"title": "Section 6.5: Surface Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		
