@@ -361,7 +361,7 @@ export default function()
 			{
 				applet.run({
 					resolution: 500,
-					maxParticles: 4000,
+					maxParticles: 6000,
 					generatingCode: "(-2.0 * x * sin(x*x + y), 1.0 - sin(x*x + y))",
 					dt: .0025,
 					worldWidth: 6,

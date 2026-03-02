@@ -256,6 +256,18 @@ That was a *lot* of theory and symbol-pushing, so let's pause and summarize what
 
 ###
 
+### as "a fourth presentation of curve integrals"
+
+	Some sources, particularly those focused on applications to physics, write circulation integrals in a different manner. If $\vec{F} = \left< f, g \right>$ and $C$ is a path parameterized by $\vec{r}(t)$, they'll write
+
+	$$
+		\int_C \vec{F} \bullet \d\vec{r} = \int_C \left( f\,\d x + g\d y \right).
+	$$
+
+	Here, we're meant to interpret $\vec{r}(t) = \left< x(t), y(t) \right>$, so $\d x$ and $\d y$ mean $x'(t)\,\d t$ and $y'(t)\,\d y$, respectively; *not* to take the integral with respect to $x$ or $y$. I find this notation rather strange, and the manner in which $\d x$ acts differently from how we've seen it in every other context of integrals gives it a remarkably high potential for confusion. For that reason, this notation won't make an appearance for the rest of these notes.
+
+###
+
 With all that written out, let's now return to our swimming example to compute the circulation of the field along the path. As a reminder, $\vec{F}(x, y) = \left< -y, -x + y \right>$, and we're swimming along a circular arc. That arc has radius $2$ and travels clockwise, so a good start for the parameterization is
 
 $$
@@ -292,7 +304,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 ### exc "circulation"
 
-	Let $$\vec{F} = \left< x^2, x - 2y \right>$$.
+	Let $$\vec{F} = \left< x^2,\ x - 2y \right>$$.
 
 	1. Let $L$ be the straight-line path from $(-1, -1)$ to $(2, 2)$. Find the circulation $$\int_L \vec{F} \bullet \vec{T}\,\d s$$.
 
@@ -478,7 +490,7 @@ for any closed curve $C$, so long as $\vec{F}$ is conservative.
 		\vec{F}(x, y) = \left< -2\cos(x)\, \sin(\sin(x) + \sin(y)),\ -2\cos(y)\, \sin(\sin(x) + \sin(y)) \right>.
 	$$
 
-	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left< 2\cos(3 \pi t), 2\sin(4 \pi t) \right>$ for $0 \leq t \leq 3$.
+	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left< 2\cos(3 \pi t),\  2\sin(4 \pi t) \right>$ for $0 \leq t \leq 3$.
 
 	### melded-desmos nastyPath
 
@@ -558,11 +570,11 @@ Let's close by stating two additional facts about conservative vector fields. We
 
 	1. If $\oint_C \vec{F} \bullet \d\vec{r} = 0$ for *every* closed loop $C$ in $U$, then all circulation integrals of $\vec{F}$ are path-independent.
 
-	2. If $U$ is simply-connected and all circulation integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
+	2. If $U$ is simply connected and all circulation integrals of $\vec{F}$ are path-independent, then $\vec{F}$ is conservative.
 
 ###
 
-Remember from the last section that $U$ being simply-connected means there are no holes inside of $U$. While we won't often have a need for this theorem, it is surprisingly nice that the conservativity of a vector field is nearly completely equivalent to it integrating to zero along closed loops.
+Remember from the last section that $U$ being simply connected means there are no holes inside of $U$. While we won't often have a need for this theorem, it is surprisingly nice that the conservativity of a vector field is nearly completely equivalent to it integrating to zero along closed loops.
 
 That was a behemoth of a section! In the next one, we'll take our newfound tool of curve integrals and establish a fundamental link between them and the double integrals of the previous section.
 

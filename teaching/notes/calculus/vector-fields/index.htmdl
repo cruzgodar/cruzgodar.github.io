@@ -166,7 +166,7 @@ Miraculously, this is indeed a sufficient condition, as long as we add the neces
 		pa/py = pb/px
 	$$
 
-	everywhere in an open and connected set $U$ with no holes (the technical term is **simply-connected**), then $\vec{F}$ is conservative. If $pa/py \neq pb/px$, then $\vec{F}$ cannot be conservative, regardless of the region $U$.
+	everywhere in an open and connected set $U$ with no holes (the technical term is **simply connected**), then $\vec{F}$ is conservative. If $pa/py \neq pb/px$, then $\vec{F}$ cannot be conservative, regardless of the region $U$.
 
 ###
 
@@ -176,7 +176,7 @@ Just like with Clairaut's Theorem, vector fields that satisfy the partial deriva
 
 > - Connected: for any two points in $U$, we can draw a path from one point to the other that never leaves $U$ (intuitively, $U$ is a single object, not split into multiple disparate pieces).
 
-> - Simply-connected: any closed loop in $U$ can be contracted down to a point while staying in $U$ the entire time (intuitively, there aren't any holes or even any missing points inside of $U$.)
+> - Simply connected: any closed loop in $U$ can be contracted down to a point while staying in $U$ the entire time (intuitively, there aren't any holes or even any missing points inside of $U$.)
 
 In particular, one region that satisfies all three of these conditions is $#R#^2$ itself! Therefore, if we're trying to show that a 2D vector field is conservative and it's defined for all of $#R#^2$, then we can just check the previous theorem without worrying about the shape of the domain.
 
