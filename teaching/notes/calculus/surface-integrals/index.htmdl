@@ -2,8 +2,39 @@
 
 
 
+With our plan in place from the previous section, let's begin developing the tools we need to generalize Green's Theorem, one at a time. The first goal we identified was to be able to integrate over a surface in $#R#^3$, rather than just a region in $#R#^2$, and we'll develop a technique to do just that in this section. We need to get our bearings with what a surface even looks like algebraically, though, or we won't have a hope of knowing what it means to integrate over one.
 
+Back in section 5.3, we discussed vector-valued functions. While functions that send one variable to two or more are interesting in their own right, we've primarily thought of them as curve parameterizations since then. In effect, a function $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$ is a lens through which to understand its graph, a complicated 1-dimensional path in $#R#^3$, as the operation of a function on an orderly set of inputs in $#R#$ (often an interval $[a, b]$). Since we already have a well-established theory of functions, we can understand nearly everything about the curve in terms of $\vec{r}$.
+
+There couldn't be a better source of inspiration for building up a theory of surfaces. Rather than only a single input variable to a function $\vec{r}$, though, we'll need two, since a surface is fundamentally a 2-dimensional object. Rather frustratingly, the standard choices are $u$ and $v$: distinguishable well enough on a chalkboard, but less so when typed. To help tell them apart, I'll write $v$ as $\v$ throughout the remainder of these notes when it's being used as a parameter along with $u$.
+
+### def "parametric surface"
+
+	A **parametric surface** in $#R#^3$ is a function $\vec{r} : #R#^2 \to #R#^3$; that is,
+
+	$$
+		\vec{r}(u, \v) = \left< x(u, \v),\ y(u, \v),\ z(u, \v) \right>.
+	$$
+
+###
+
+Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the codomain and domain, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function $\vec{s}(t) = \left< a(t), b(t), c(t) \right>$ only had one input variable, and its derivative was
+
+$$
+	d/dt \left[ \vec{s}(t) \right] = \left< a'(t), b'(t), c'(t) \right>.
+$$
+
+In contrast, a function $\vec{r}(u, \v)$ has two inputs, and therefore two *partial* derivatives, each of which is a vector-valued function:
+
+$$
+	p/pu \left[ \vec{r}(u, \v) \right] &= \vec{r}_u(u, \v) = \left< x_u(u, \v),\ y_u(u, \v),\ z_u(u, \v) \right>
+
+	p/p\v \left[ \vec{r}(u, \v) \right] &= \vec{r}_\v(u, \v) = \left< x_\v(u, \v),\ y_\v(u, \v),\ z_\v(u, \v) \right>.
+$$
+
+We'll have more to say about those partial derivatives, but let's turn to examples.
 
 
 
 ### nav-buttons
+
