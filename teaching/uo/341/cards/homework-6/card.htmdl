@@ -39,7 +39,7 @@
 		T \left( [[ x ; y ; z ]] \right) = [[ x + y + z ; 2x - y - z ]].
 	$$
 
-	#. $T : #R#[x] \to #R#$ given by $T(p(x)) = p''(x)$.
+	#. $T : #R#[x] \to #R#[x]$ given by $T(p(x)) = p''(x)$.
 	
 	#. $T : #R#^#R# \to #R#$ given by $T(f) = f(0)$. In this problem, just describe the kernel in words rather than as a span.
 	
