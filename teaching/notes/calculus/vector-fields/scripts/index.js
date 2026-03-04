@@ -1,13 +1,10 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
 	desmosGraphs,
 	desmosGraphsLoaded,
-	desmosGray,
-	desmosPurple,
 	getDesmosBounds,
 	getDesmosPoint,
 	getDesmosSlider,
@@ -44,7 +41,7 @@ export default function()
 
 				{ latex: raw`A = [(a, b) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`B = [(f_1(a, b), f_2(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
-				{ latex: raw`A + \frac{ts}{25}B`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{ts}{25}B`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
 
 				{ latex: raw`S = [\arctan(f_2(a, b), f_1(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`M = [\left|(f_2(a, b), f_1(a, b))\right| \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
@@ -53,8 +50,8 @@ export default function()
 				{ latex: raw`T_1 = -(.35\cos(S + 0.5), .35\sin(S + 0.5))`, hidden: true, secret: true },
 				{ latex: raw`T_2 = -(.35\cos(S - 0.5), .35\sin(S - 0.5))`, hidden: true, secret: true },
 				
-				{ latex: raw`A + \frac{s}{25}B + tsL(T_1)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`A + \frac{s}{25}B + tsL(T_2)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_1)`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_2)`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -87,7 +84,7 @@ export default function()
 
 				{ latex: raw`A = [(a, b, c) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`B = [(f_1(a, b, c), f_2(a, b, c), f_3(a, b, c)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n], c = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
-				{ latex: raw`\vector(A, A + \frac{s}{25}B)`, color: desmosPurple, secret: true },
+				{ latex: raw`\vector(A, A + \frac{s}{25}B)`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -101,7 +98,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}`, color: desmosGray },
+				{ latex: raw`g(x, y) = \frac{x^2}{2} - \frac{y^2}{2}`, color: desmosColors.gray },
 				{ latex: raw`g_x(x, y) = \frac{d}{dx}(g(x, y))`, hidden: true },
 				{ latex: raw`g_y(x, y) = \frac{d}{dy}(g(x, y))`, hidden: true },
 
@@ -122,7 +119,7 @@ export default function()
 
 				{ latex: raw`A = [(a, b, g(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`B = [(g_x(a, b), g_y(a, b), g_x(a, b)^2 + g_y(a, b)^2) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
-				{ latex: raw`\vector(A, A + \frac{s}{10}B)`, color: desmosPurple, secret: true },
+				{ latex: raw`\vector(A, A + \frac{s}{10}B)`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -134,7 +131,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true, color: desmosBlack, lineWidth: 5 },
+				{ latex: raw`\frac{x^2}{2} - \frac{y^2}{2} = c`, secret: true, color: desmosColors.black, lineWidth: 5 },
 				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 			]
 		},
@@ -147,12 +144,12 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`xy = c`, secret: true, color: desmosBlack, lineWidth: 5 },
+				{ latex: raw`xy = c`, secret: true, color: desmosColors.black, lineWidth: 5 },
 				{ latex: raw`c = [-20, -19, ..., 20]`, hidden: true, secret: true },
 
 				...getDesmosPoint({
 					point: ["1", "1"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.NONE,
 					size: 12,
 				}),
@@ -160,14 +157,14 @@ export default function()
 				...getDesmosVector({
 					from: ["1", "1"],
 					to: ["1.35", "1.35"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					arrowSize: "0.1",
 				}),
 
 				...getDesmosVector({
 					from: ["1", "1"],
 					to: ["0.65", "0.65"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					arrowSize: "0.1",
 				}),
 			]
@@ -181,7 +178,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`\cos(x^2 + y) + y = c`, secret: true, color: desmosBlack, lineWidth: 5 },
+				{ latex: raw`\cos(x^2 + y) + y = c`, secret: true, color: desmosColors.black, lineWidth: 5 },
 				{ latex: raw`c = [-10, -9.05, ..., 10]`, hidden: true, secret: true },
 			]
 		},

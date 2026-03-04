@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -15,8 +12,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + (y - 2)^2 \leq 1`, color: desmosPurple, secret: true },
-				{ latex: raw`(2(x - 2) + (y + 4))^2 + (3(x - 2) - (y + 4))^2 \leq 25`, color: desmosBlue, secret: true }
+				{ latex: raw`x^2 + (y - 2)^2 \leq 1`, color: desmosColors.purple, secret: true },
+				{ latex: raw`(2(x - 2) + (y + 4))^2 + (3(x - 2) - (y + 4))^2 \leq 25`, color: desmosColors.blue, secret: true }
 			]
 		},
 
@@ -32,23 +29,23 @@ export default function()
 				{ latex: raw`b = (1, 3, 1)`, hidden: true },
 				{ latex: raw`c = (0, 1, 3)`, hidden: true },
 
-				{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosPurple },
-				{ latex: raw`\triangle(a, b, a + b)`, color: desmosPurple },
+				{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosColors.purple },
+				{ latex: raw`\triangle(a, b, a + b)`, color: desmosColors.purple },
 
-				{ latex: raw`\triangle((0, 0, 0), c, b)`, color: desmosBlue },
-				{ latex: raw`\triangle(c, b, c + b)`, color: desmosBlue },
+				{ latex: raw`\triangle((0, 0, 0), c, b)`, color: desmosColors.blue },
+				{ latex: raw`\triangle(c, b, c + b)`, color: desmosColors.blue },
 
-				{ latex: raw`\triangle((0, 0, 0), a, c)`, color: desmosRed },
-				{ latex: raw`\triangle(a, c, a + c)`, color: desmosRed },
+				{ latex: raw`\triangle((0, 0, 0), a, c)`, color: desmosColors.red },
+				{ latex: raw`\triangle(a, c, a + c)`, color: desmosColors.red },
 
-				{ latex: raw`\triangle(a + b, a, a + c)`, color: desmosBlue },
-				{ latex: raw`\triangle(a + b, a + b + c, a + c)`, color: desmosBlue },
+				{ latex: raw`\triangle(a + b, a, a + c)`, color: desmosColors.blue },
+				{ latex: raw`\triangle(a + b, a + b + c, a + c)`, color: desmosColors.blue },
 
-				{ latex: raw`\triangle(b + a, b, b + c)`, color: desmosRed },
-				{ latex: raw`\triangle(b + a, b + a + c, b + c)`, color: desmosRed },
+				{ latex: raw`\triangle(b + a, b, b + c)`, color: desmosColors.red },
+				{ latex: raw`\triangle(b + a, b + a + c, b + c)`, color: desmosColors.red },
 
-				{ latex: raw`\triangle(c + a, c, c + b)`, color: desmosPurple },
-				{ latex: raw`\triangle(c + a, c + b + a, c + b)`, color: desmosPurple },
+				{ latex: raw`\triangle(c + a, c, c + b)`, color: desmosColors.purple },
+				{ latex: raw`\triangle(c + a, c + b + a, c + b)`, color: desmosColors.purple },
 			]
 		},
 	});

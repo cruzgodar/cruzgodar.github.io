@@ -1,9 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosVector
 } from "/scripts/src/desmos.js";
 
@@ -16,9 +12,9 @@ export default function()
 
 			expressions:
 			[
-				...getDesmosVector({ from: [0, 0], to: [3, 2], color: desmosPurple }),
-				...getDesmosVector({ from: [0, 0], to: [-2, 1], color: desmosBlue }),
-				...getDesmosVector({ from: [-2, 1], to: [3, 2], color: desmosRed })
+				...getDesmosVector({ from: [0, 0], to: [3, 2], color: desmosColors.purple }),
+				...getDesmosVector({ from: [0, 0], to: [-2, 1], color: desmosColors.blue }),
+				...getDesmosVector({ from: [-2, 1], to: [3, 2], color: desmosColors.red })
 			]
 		},
 
@@ -28,24 +24,24 @@ export default function()
 
 			expressions:
 			[
-				...getDesmosVector({ from: [0, 0], to: [3, 2], color: desmosPurple }),
-				...getDesmosVector({ from: [0, 0], to: [-3, 1], color: desmosBlue }),
+				...getDesmosVector({ from: [0, 0], to: [3, 2], color: desmosColors.purple }),
+				...getDesmosVector({ from: [0, 0], to: [-3, 1], color: desmosColors.blue }),
 
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["\\frac{-21}{13}", "\\frac{-14}{13}"],
-					color: desmosRed
+					color: desmosColors.red
 				}),
 
 				...getDesmosVector({
 					from: ["\\frac{-21}{13}", "\\frac{-14}{13}"],
 					to: [-3, 1],
-					color: desmosOrange
+					color: desmosColors.orange
 				}),
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["-3 - \\frac{-21}{13}", "1 - \\frac{-14}{13}"],
-					color: desmosOrange
+					color: desmosColors.orange
 				}),
 			]
 		},

@@ -1,10 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosPointStyles,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors,
+	desmosPointStyles
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -17,10 +13,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 3: \frac{1}{27} x^3, 3 \leq x: \frac{1}{(4 - x)^2}\}`, color: desmosPurple, hidden: true, secret: true },
-				{ latex: raw`f(x)`, color: desmosPurple },
-				{ latex: raw`(-3, -3), (0, 0)`, color: desmosPurple, pointStyle: desmosPointStyles.OPEN },
-				{ latex: raw`(-3, -1), (0, 1)`, color: desmosPurple },
+				{ latex: raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 3: \frac{1}{27} x^3, 3 \leq x: \frac{1}{(4 - x)^2}\}`, color: desmosColors.purple, hidden: true, secret: true },
+				{ latex: raw`f(x)`, color: desmosColors.purple },
+				{ latex: raw`(-3, -3), (0, 0)`, color: desmosColors.purple, pointStyle: desmosPointStyles.OPEN },
+				{ latex: raw`(-3, -1), (0, 1)`, color: desmosColors.purple },
 			]
 		},
 
@@ -32,7 +28,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`\frac{\cos(x^2) - x}{2 - \tan(x)}`, color: desmosPurple },
+				{ latex: raw`\frac{\cos(x^2) - x}{2 - \tan(x)}`, color: desmosColors.purple },
 			]
 		},
 
@@ -44,11 +40,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(1, 2), (3, 1)`, color: desmosBlack },
+				{ latex: raw`(1, 2), (3, 1)`, color: desmosColors.black },
 
-				{ latex: raw`f(x) = \frac{2}{x^{\frac{\ln(2)}{\ln(3)}}}`, color: desmosPurple },
-				{ latex: raw`g(x) = \frac{1}{2}\sin(\frac{\pi}{2}x) + \frac{3}{2}`, color: desmosBlue },
-				{ latex: raw`h(x) = \frac{3}{2}x^2 - \frac{13}{2}x + 7`, color: desmosRed },
+				{ latex: raw`f(x) = \frac{2}{x^{\frac{\ln(2)}{\ln(3)}}}`, color: desmosColors.purple },
+				{ latex: raw`g(x) = \frac{1}{2}\sin(\frac{\pi}{2}x) + \frac{3}{2}`, color: desmosColors.blue },
+				{ latex: raw`h(x) = \frac{3}{2}x^2 - \frac{13}{2}x + 7`, color: desmosColors.red },
 			]
 		},
 
@@ -60,9 +56,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x - \cos(x)`, color: desmosPurple },
+				{ latex: raw`f(x) = x - \cos(x)`, color: desmosColors.purple },
 
-				{ latex: raw`(0, f(0)), (\frac{\pi}{2}, f(\frac{\pi}{2}))`, color: desmosBlue },
+				{ latex: raw`(0, f(0)), (\frac{\pi}{2}, f(\frac{\pi}{2}))`, color: desmosColors.blue },
 			]
 		}
 	});

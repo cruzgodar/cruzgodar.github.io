@@ -1,12 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosGray,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -28,14 +22,14 @@ export default function()
 			[
 				{ latex: raw`v = (-1, -2, 3)`, hidden: true },
 				{ latex: raw`w = (2, 3, 1)`, hidden: true },
-				{ latex: raw`\vector((0, 0, 0), v)`, color: desmosRed, secret: true },
-				{ latex: raw`\vector((0, 0, 0), w)`, color: desmosBlue, secret: true },
-				{ latex: raw`n = v \times w`, color: desmosPurple, secret: true, hidden: true },
-				{ latex: raw`n \cdot (x, y, z) = 0`, color: desmosGray, secret: true },
+				{ latex: raw`\vector((0, 0, 0), v)`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector((0, 0, 0), w)`, color: desmosColors.blue, secret: true },
+				{ latex: raw`n = v \times w`, color: desmosColors.purple, secret: true, hidden: true },
+				{ latex: raw`n \cdot (x, y, z) = 0`, color: desmosColors.gray, secret: true },
 				{ latex: raw`a = \arccos(\frac{v \cdot w}{\left|v\right|\left|w\right|})`, secret: true },
 				{ latex: raw`u = \frac{v}{\left|v\right|}`, secret: true, hidden: true },
 				{ latex: raw`u_2 = n \times u`, secret: true, hidden: true },
-				{ latex: raw`\cos(at)u + \sin(at)\frac{u_2}{\left|u_2\right|}`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`\cos(at)u + \sin(at)\frac{u_2}{\left|u_2\right|}`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -89,21 +83,21 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -111,19 +105,19 @@ export default function()
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_1", "y_0 + y_1"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 			]
 		},
@@ -157,9 +151,9 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`v = \vector((0, 0, 0), (a, b, c))`, color: desmosPurple },
+				{ latex: raw`v = \vector((0, 0, 0), (a, b, c))`, color: desmosColors.purple },
 
-				{ latex: raw`ax+by+cz = 0`, color: desmosGray, },
+				{ latex: raw`ax+by+cz = 0`, color: desmosColors.gray, },
 			]
 		},
 
@@ -171,17 +165,17 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x + 3z = 4`, color: desmosGray },
+				{ latex: raw`x + 3z = 4`, color: desmosColors.gray },
 
-				{ latex: raw`p = (2, -1, 3)`, color: desmosOrange },
+				{ latex: raw`p = (2, -1, 3)`, color: desmosColors.orange },
 
-				{ latex: raw`n = \vector((0, 0, \frac{4}{3}), (0, 0, \frac{4}{3}) + (1, 0, 3))`, color: desmosOrange },
+				{ latex: raw`n = \vector((0, 0, \frac{4}{3}), (0, 0, \frac{4}{3}) + (1, 0, 3))`, color: desmosColors.orange },
 
-				{ latex: raw`\vector((1, 1, 1), p)`, color: desmosPurple },
+				{ latex: raw`\vector((1, 1, 1), p)`, color: desmosColors.purple },
 
-				{ latex: raw`\vector(p - (\frac{7}{10}, 0, \frac{21}{10}), p)`, color: desmosRed },
+				{ latex: raw`\vector(p - (\frac{7}{10}, 0, \frac{21}{10}), p)`, color: desmosColors.red },
 
-				{ latex: raw`\vector((1, 1, 1), p - (\frac{7}{10}, 0, \frac{21}{10}))`, color: desmosBlue },
+				{ latex: raw`\vector((1, 1, 1), p - (\frac{7}{10}, 0, \frac{21}{10}))`, color: desmosColors.blue },
 			]
 		},
 
@@ -256,19 +250,19 @@ export default function()
 					secret: true,
 				}),
 
-				{ latex: raw`(x_0, y_0, z_0), (x_1, y_1, z_1), (x_2, y_2, z_2)`, color: desmosOrange },
+				{ latex: raw`(x_0, y_0, z_0), (x_1, y_1, z_1), (x_2, y_2, z_2)`, color: desmosColors.orange },
 
-				{ latex: raw`v = \vector((x_0, y_0, z_0), (x_1, y_1, z_1))`, color: desmosBlue, secret: true },
+				{ latex: raw`v = \vector((x_0, y_0, z_0), (x_1, y_1, z_1))`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`w = \vector((x_0, y_0, z_0), (x_2, y_2, z_2))`, color: desmosRed, secret: true },
+				{ latex: raw`w = \vector((x_0, y_0, z_0), (x_2, y_2, z_2))`, color: desmosColors.red, secret: true },
 
 				{ latex: raw`m = -(x_1 - x_0, y_1 - y_0, z_1 - z_0) \times (x_2 - x_0, y_2 - y_0, z_2 - z_0)`, secret: true, hidden: true },
 
 				{ latex: raw`n = \frac{m}{\left|m\right|}`, secret: true, hidden: true },
 
-				{ latex: raw`\vector((x_0, y_0, z_0), (x_0, y_0, z_0) + n)`, color: desmosPurple, secret: true },
+				{ latex: raw`\vector((x_0, y_0, z_0), (x_0, y_0, z_0) + n)`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`n \cdot (x - x_0, y - y_0, z - z_0) = 0`, color: desmosGray, secret: true },
+				{ latex: raw`n \cdot (x - x_0, y - y_0, z - z_0) = 0`, color: desmosColors.gray, secret: true },
 			]
 		},
 
@@ -322,11 +316,11 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`a = \operatorname{vector}((0, 0, 0), (a_1, a_2, a_3))`, color: desmosBlue },
+				{ latex: raw`a = \operatorname{vector}((0, 0, 0), (a_1, a_2, a_3))`, color: desmosColors.blue },
 
-				{ latex: raw`b = \operatorname{vector}((0, 0, 0), (b_1, b_2, b_3))`, color: desmosRed },
+				{ latex: raw`b = \operatorname{vector}((0, 0, 0), (b_1, b_2, b_3))`, color: desmosColors.red },
 
-				{ latex: raw`n = a \times b`, color: desmosPurple },
+				{ latex: raw`n = a \times b`, color: desmosColors.purple },
 			]
 		},
 
@@ -344,23 +338,23 @@ export default function()
 				{ latex: raw`b = (1, 3, 1)`, hidden: true },
 				{ latex: raw`c = (0, 1, 3)`, hidden: true },
 
-				{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosPurple },
-				{ latex: raw`\triangle(a, b, a + b)`, color: desmosPurple },
+				{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosColors.purple },
+				{ latex: raw`\triangle(a, b, a + b)`, color: desmosColors.purple },
 
-				{ latex: raw`\triangle((0, 0, 0), c, b)`, color: desmosBlue },
-				{ latex: raw`\triangle(c, b, c + b)`, color: desmosBlue },
+				{ latex: raw`\triangle((0, 0, 0), c, b)`, color: desmosColors.blue },
+				{ latex: raw`\triangle(c, b, c + b)`, color: desmosColors.blue },
 
-				{ latex: raw`\triangle((0, 0, 0), a, c)`, color: desmosRed },
-				{ latex: raw`\triangle(a, c, a + c)`, color: desmosRed },
+				{ latex: raw`\triangle((0, 0, 0), a, c)`, color: desmosColors.red },
+				{ latex: raw`\triangle(a, c, a + c)`, color: desmosColors.red },
 
-				{ latex: raw`\triangle(a + b, a, a + c)`, color: desmosBlue },
-				{ latex: raw`\triangle(a + b, a + b + c, a + c)`, color: desmosBlue },
+				{ latex: raw`\triangle(a + b, a, a + c)`, color: desmosColors.blue },
+				{ latex: raw`\triangle(a + b, a + b + c, a + c)`, color: desmosColors.blue },
 
-				{ latex: raw`\triangle(b + a, b, b + c)`, color: desmosRed },
-				{ latex: raw`\triangle(b + a, b + a + c, b + c)`, color: desmosRed },
+				{ latex: raw`\triangle(b + a, b, b + c)`, color: desmosColors.red },
+				{ latex: raw`\triangle(b + a, b + a + c, b + c)`, color: desmosColors.red },
 
-				{ latex: raw`\triangle(c + a, c, c + b)`, color: desmosPurple },
-				{ latex: raw`\triangle(c + a, c + b + a, c + b)`, color: desmosPurple },
+				{ latex: raw`\triangle(c + a, c, c + b)`, color: desmosColors.purple },
+				{ latex: raw`\triangle(c + a, c + b + a, c + b)`, color: desmosColors.purple },
 			]
 		},
 
@@ -372,10 +366,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(1, 3, 2) + (-1, 0, 1)t`, color: desmosPurple, parametricDomain: { min: -5, max: 5 }, secret: true },
-				{ latex: raw`\vector((0, 0, 0), (1, 3, 2) + (-1, 0, 1)a)`, color: desmosOrange, secret: true },
-				{ latex: raw`\vector((0, 0, 0), (1, 3, 2))`, color: desmosBlue, secret: true },
-				{ latex: raw`\vector((1, 3, 2), (1, 3, 2) + a(-1, 0, 1))`, color: desmosRed, secret: true },
+				{ latex: raw`(1, 3, 2) + (-1, 0, 1)t`, color: desmosColors.purple, parametricDomain: { min: -5, max: 5 }, secret: true },
+				{ latex: raw`\vector((0, 0, 0), (1, 3, 2) + (-1, 0, 1)a)`, color: desmosColors.orange, secret: true },
+				{ latex: raw`\vector((0, 0, 0), (1, 3, 2))`, color: desmosColors.blue, secret: true },
+				{ latex: raw`\vector((1, 3, 2), (1, 3, 2) + a(-1, 0, 1))`, color: desmosColors.red, secret: true },
 				...getDesmosSlider({
 					expression: raw`a = 1`,
 					min: -5,

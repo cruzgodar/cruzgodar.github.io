@@ -1,9 +1,7 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -20,7 +18,7 @@ export default function()
 
 				{ latex: raw`F(x_1, x_2) = \frac{1}{2.5} f(x_1, x_2)`, secret: true },
 
-				{ latex: raw`(3c_1 e^{5t} - c_2 e^{-t}, 4c_1 e^{5t} + c_2 e^{-t})`, color: desmosBlue, parametricDomain: { min: -1000, max: 1000 } },
+				{ latex: raw`(3c_1 e^{5t} - c_2 e^{-t}, 4c_1 e^{5t} + c_2 e^{-t})`, color: desmosColors.blue, parametricDomain: { min: -1000, max: 1000 } },
 				{ latex: raw`c_1 = 1`, sliderBounds: { min: -5, max: 5 } },
 				{ latex: raw`c_2 = 1`, sliderBounds: { min: -5, max: 5 } },
 
@@ -35,13 +33,13 @@ export default function()
 				{ latex: raw`R_2(x, y) = M(x, y)(F(x, y)[1]\sin(z) + F(x, y)[2]\cos(z))`, hidden: true, secret: true },
 				{ latex: raw`L_2(x, y) = M(x, y)(-F(x, y)[1]\sin(z) + F(x, y)[2]\cos(z))`, hidden: true, secret: true },
 
-				{ latex: raw`(A(t) - 10 + .1(t - \floor(t))F(A(t) - 10, B(t))[1], B(t) + .1(t - \floor(t))F(A(t) - 10, B(t))[2])`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1(t - \floor(t))F(A(t), B(t))[1], B(t) + .1(t - \floor(t))F(A(t), B(t))[2])`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) - 10 + .1(t - \floor(t))F(A(t) - 10, B(t))[1], B(t) + .1(t - \floor(t))F(A(t) - 10, B(t))[2])`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) + .1(t - \floor(t))F(A(t), B(t))[1], B(t) + .1(t - \floor(t))F(A(t), B(t))[2])`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
 
-				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))R_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))R_2(A(t) - 10, B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))R_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))R_2(A(t), B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))L_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))L_2(A(t) - 10, B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
-				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))L_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))L_2(A(t), B(t)))`, color: desmosPurple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))R_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))R_2(A(t) - 10, B(t)))`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))R_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))R_2(A(t), B(t)))`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) - 10 + .1F(A(t) - 10, B(t))[1] + k(t - \floor(t))L_1(A(t) - 10, B(t)), B(t) + .1F(A(t) - 10, B(t))[2] + k(t - \floor(t))L_2(A(t) - 10, B(t)))`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
+				{ latex: raw`(A(t) + .1F(A(t), B(t))[1] + k(t - \floor(t))L_1(A(t), B(t)), B(t) + .1F(A(t), B(t))[2] + k(t - \floor(t))L_2(A(t), B(t)))`, color: desmosColors.purple, parametricDomain: { min: -100, max: 100 }, secret: true },
 			]
 		},
 	});

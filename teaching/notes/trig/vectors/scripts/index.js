@@ -1,11 +1,7 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
 	desmosLineStyles,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -51,14 +47,14 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -66,7 +62,7 @@ export default function()
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				})
 			]
 		},
@@ -123,21 +119,21 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -145,33 +141,33 @@ export default function()
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_1", "y_0 + y_1"],
 					to: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_2", "y_0 + y_2"],
 					to: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					lineStyle: desmosLineStyles.DASHED,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_1 + x_2", "y_0 + y_1 + y_2"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 			]
 		},
@@ -185,13 +181,13 @@ export default function()
 				...getDesmosVector({
 					from: ["1", "0"],
 					to: ["2", "-2"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 
 				...getDesmosVector({
 					from: ["0", "-1"],
 					to: ["-1", "0"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 			]
 		},
@@ -221,7 +217,7 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["a", "b"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -229,33 +225,33 @@ export default function()
 				...(Array(5).fill().map((_, i) => getDesmosVector({
 					from: [`A[${i + 1}]`, "0"],
 					to: [`A[${i + 2}]`, "0"],
-					color: desmosRed,
+					color: desmosColors.red,
 					secret: false
 				})).flat()),
 
 				...(Array(5).fill().map((_, i) => getDesmosVector({
 					from: ["a", `B[${i + 1}]`],
 					to: ["a", `B[${i + 2}]`],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					secret: false
 				})).flat()),
 
 				...getDesmosVector({
 					from: [raw`\floor(\abs(a))\sign(a)`, "0"],
 					to: [raw`a + 0.00001\sign(a)`, "0"],
-					color: desmosRed,
+					color: desmosColors.red,
 				}),
 
 				...getDesmosVector({
 					from: ["a", raw`\floor(\abs(b))\sign(b)`],
 					to: ["a", raw`b + 0.00001\sign(b)`],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 
 				...getDesmosVector({
 					from: ["0", "0"],
 					to: ["a", "b"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 			]
 		},
@@ -310,21 +306,21 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["x_0", "y_0"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 
 				...getDesmosPoint({
 					point: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -332,19 +328,19 @@ export default function()
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_1", "y_0 + y_1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0", "y_0"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosRed,
+					color: desmosColors.red,
 				}),
 
 				...getDesmosVector({
 					from: ["x_0 + x_1", "y_0 + y_1"],
 					to: ["x_0 + x_2", "y_0 + y_2"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 			]
 		}

@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -15,17 +12,17 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \frac{1}{27}x^3 - \frac{2}{9}x^2 + 2`, color: desmosPurple },
-				{ latex: raw`F(x) = \int_0^x f(t) dt`, color: desmosBlue },
+				{ latex: raw`f(x) = \frac{1}{27}x^3 - \frac{2}{9}x^2 + 2`, color: desmosColors.purple },
+				{ latex: raw`F(x) = \int_0^x f(t) dt`, color: desmosColors.blue },
 				{ latex: raw`F(c + 1) - F(c)` },
 
 				{ latex: raw`c = 2` },
 
-				{ latex: raw`x = [c, c + 1] \{0 \leq y \leq f(c)\}`, color: desmosRed, secret: true },
-				{ latex: raw`x = [c, c + 1] \{f(c) \leq y \leq 0\}`, color: desmosRed, secret: true },
+				{ latex: raw`x = [c, c + 1] \{0 \leq y \leq f(c)\}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = [c, c + 1] \{f(c) \leq y \leq 0\}`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`0 \leq y \leq f(c) \{c \leq x \leq c + 1\}`, color: desmosRed, secret: true },
-				{ latex: raw`f(c) \leq y \leq 0 \{c \leq x \leq c + 1\}`, color: desmosRed, secret: true }
+				{ latex: raw`0 \leq y \leq f(c) \{c \leq x \leq c + 1\}`, color: desmosColors.red, secret: true },
+				{ latex: raw`f(c) \leq y \leq 0 \{c \leq x \leq c + 1\}`, color: desmosColors.red, secret: true }
 			]
 		},
 
@@ -37,21 +34,21 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = (x+\frac{1}{2})^3 - 2(x+\frac{1}{2})^2 + 1`, color: desmosPurple },
-				{ latex: raw`F(x) = \int_0^x f(t) dt`, color: desmosBlue },
+				{ latex: raw`f(x) = (x+\frac{1}{2})^3 - 2(x+\frac{1}{2})^2 + 1`, color: desmosColors.purple },
+				{ latex: raw`F(x) = \int_0^x f(t) dt`, color: desmosColors.blue },
 				{ latex: raw`F(b) - F(a)` },
 
 				{ latex: raw`a = -1.5`, secret: true },
 				{ latex: raw`b = 1.5`, secret: true },
 
-				{ latex: raw`(a, F(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`(b, F(b))`, secret: true, color: desmosBlue },
+				{ latex: raw`(a, F(a))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`(b, F(b))`, secret: true, color: desmosColors.blue },
 
-				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosPurple, secret: true },
-				{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosPurple, secret: true },
+				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true },
-				{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true }
 			]
 		}
 	});

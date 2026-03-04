@@ -1,10 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -22,11 +18,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosColors.purple },
 
 				{ latex: raw`X = [\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0, -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}]`, secret: true },
 				{ latex: raw`Y = [\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0, \frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}]`, secret: true },
-				{ latex: raw`(X, Y, f(X, Y))`, color: desmosBlue },
+				{ latex: raw`(X, Y, f(X, Y))`, color: desmosColors.blue },
 			]
 		},
 
@@ -40,7 +36,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = x^2 - y^2`, color: desmosPurple },
+				{ latex: raw`f(x, y) = x^2 - y^2`, color: desmosColors.purple },
 			]
 		},
 
@@ -54,10 +50,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = x^2 + y^2 - 3xy`, color: desmosPurple },
+				{ latex: raw`f(x, y) = x^2 + y^2 - 3xy`, color: desmosColors.purple },
 
-				{ latex: raw`(t, 0, f(t, 0))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue, secret: true },
-				{ latex: raw`(0, t, f(0, t))`, parametricDomain: { min: -5, max: 5 }, color: desmosBlue, secret: true },
+				{ latex: raw`(t, 0, f(t, 0))`, parametricDomain: { min: -5, max: 5 }, color: desmosColors.blue, secret: true },
+				{ latex: raw`(0, t, f(0, t))`, parametricDomain: { min: -5, max: 5 }, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -71,11 +67,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = x^3 - y^2 + 2xy`, color: desmosPurple },
+				{ latex: raw`f(x, y) = x^3 - y^2 + 2xy`, color: desmosColors.purple },
 
-				{ latex: raw`(0, 0, f(0, 0))`, color: desmosRed },
+				{ latex: raw`(0, 0, f(0, 0))`, color: desmosColors.red },
 
-				{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosOrange },
+				{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosColors.orange },
 			]
 		},
 
@@ -89,7 +85,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosColors.purple },
 			]
 		},
 	
@@ -103,15 +99,15 @@ export default function()
 				{ latex: raw`Y = [0, 3, q]` },
 				...getDesmosPoint({
 					point: ["p", "q"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 					size: 12
 				}),
 				{ latex: raw`p = 4`, secret: true },
 				{ latex: raw`q = 3`, secret: true },
 				{ latex: raw`I = [1, 2, ..., \length(X) - 1]`, secret: true },
-				{ latex: raw`(X[I], Y[I])`, color: desmosPurple, pointSize: 12, secret: true },
-				{ latex: raw`Y \sim mX + b`, color: desmosBlue },
+				{ latex: raw`(X[I], Y[I])`, color: desmosColors.purple, pointSize: 12, secret: true },
+				{ latex: raw`Y \sim mX + b`, color: desmosColors.blue },
 			]
 		}
 	});

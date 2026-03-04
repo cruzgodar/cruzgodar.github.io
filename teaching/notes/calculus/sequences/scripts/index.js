@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -38,13 +35,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
+				{ latex: raw`f(x) = \sin(x)`, color: desmosColors.purple },
 				{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
 				{ latex: raw`a = 0` },
 
-				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
+				{ latex: raw`(a, f(a))`, color: desmosColors.blue, secret: true },
 				{ latex: raw`D = [${derivatives.join(", ")}]`, secret: true },
-				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue, secret: true }
+				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosColors.blue, secret: true }
 			]
 		},
 
@@ -61,10 +58,10 @@ export default function()
 
 				{ latex: raw`n = [1, ..., 12]`, secret: true },
 				{ latex: raw`a(x) = 1 + (-\frac{1}{2})^x`, hidden: true, secret: true },
-				{ latex: raw`(n, a(n))`, color: desmosPurple, secret: true },
-				{ latex: raw`y = 1 \{x \geq 1\}`, color: desmosPurple, secret: true },
-				{ latex: raw`\left| y - 1 \right| < \varepsilon \{ x \geq N \}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = N \{ \left| y - 1 \right| < \varepsilon \}`, color: desmosBlue, secret: true },
+				{ latex: raw`(n, a(n))`, color: desmosColors.purple, secret: true },
+				{ latex: raw`y = 1 \{x \geq 1\}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`\left| y - 1 \right| < \varepsilon \{ x \geq N \}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = N \{ \left| y - 1 \right| < \varepsilon \}`, color: desmosColors.blue, secret: true },
 				{ latex: raw`N = \ceil(-\log_2( \varepsilon ))`, secret: true }
 			]
 		},
@@ -78,10 +75,10 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`a(n) = \cos(2\pi n)`, hidden: true },
-				{ latex: raw`f(x) = \cos(2\pi x)`, color: desmosBlue },
+				{ latex: raw`f(x) = \cos(2\pi x)`, color: desmosColors.blue },
 
 				{ latex: raw`N = [1, ..., 100]`, secret: true },
-				{ latex: raw`(N, a(N))`, color: desmosPurple, secret: true },
+				{ latex: raw`(N, a(N))`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -98,9 +95,9 @@ export default function()
 				{ latex: raw`c(n) = \frac{1}{n}`, hidden: true },
 
 				{ latex: raw`N = [1, ..., 100]`, secret: true },
-				{ latex: raw`(N, a(N))`, color: desmosBlue, secret: true },
-				{ latex: raw`(N, c(N))`, color: desmosRed, secret: true },
-				{ latex: raw`(N, b(N))`, color: desmosPurple, secret: true }
+				{ latex: raw`(N, a(N))`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(N, c(N))`, color: desmosColors.red, secret: true },
+				{ latex: raw`(N, b(N))`, color: desmosColors.purple, secret: true }
 			]
 		}
 	});

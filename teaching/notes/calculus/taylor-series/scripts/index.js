@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -38,12 +35,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
-				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
+				{ latex: raw`f(x) = \sin(x)`, color: desmosColors.purple },
+				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosColors.blue },
 				{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
 				{ latex: raw`a = 0` },
 
-				{ latex: raw`(a, f(a))`, color: desmosBlue, pointSize: 50, secret: true },
+				{ latex: raw`(a, f(a))`, color: desmosColors.blue, pointSize: 50, secret: true },
 				{ latex: raw`D = [${derivatives.join(", ")}]`, secret: true }
 			]
 		},
@@ -56,10 +53,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
+				{ latex: raw`f(x) = \sin(x)`, color: desmosColors.purple },
 				{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
-				{ latex: raw`F_1(x) = \sum_{n = 0}^N \frac{D(0)[n + 1]}{n!} (x)^n`, color: desmosBlue },
-				{ latex: raw`F_2(x) = \sum_{n = 0}^N \frac{D(3\pi)[n + 1]}{n!} (x-3\pi)^n`, color: desmosRed },
+				{ latex: raw`F_1(x) = \sum_{n = 0}^N \frac{D(0)[n + 1]}{n!} (x)^n`, color: desmosColors.blue },
+				{ latex: raw`F_2(x) = \sum_{n = 0}^N \frac{D(3\pi)[n + 1]}{n!} (x-3\pi)^n`, color: desmosColors.red },
 				{ latex: raw`f(10)` },
 				{ latex: raw`F_2(10)` },
 				{ latex: raw`F_1(10)` },
@@ -76,12 +73,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \{x = 0: 0, e^{-\frac{1}{x^2}}\}`, color: desmosPurple },
-				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosBlue },
+				{ latex: raw`f(x) = \{x = 0: 0, e^{-\frac{1}{x^2}}\}`, color: desmosColors.purple },
+				{ latex: raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: desmosColors.blue },
 				{ latex: raw`N = 5`, sliderBounds: { min: 0, max: 10, step: 1 } },
 				{ latex: raw`a = 0` },
 
-				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
+				{ latex: raw`(a, f(a))`, color: desmosColors.blue, secret: true },
 				{ latex: raw`D = [${derivatives.slice(0, 6).join(", ")}]`, secret: true }
 			]
 		}

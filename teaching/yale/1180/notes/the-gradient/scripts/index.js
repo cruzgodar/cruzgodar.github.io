@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -20,10 +17,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosPurple, hidden: false },
+				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosColors.purple, hidden: false },
 
-				{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosPurple, hidden: true, secret: true },
-				{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosPurple, hidden: true, secret: true },
+				{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, color: desmosColors.purple, hidden: true, secret: true },
+				{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, color: desmosColors.purple, hidden: true, secret: true },
 
 				...getDesmosSlider({
 					expression: "a = -0.4",
@@ -45,14 +42,14 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`(a, b, f(a, b))`, color: desmosRed },
+				{ latex: raw`(a, b, f(a, b))`, color: desmosColors.red },
 
 				// eslint-disable-next-line max-len
-				// { latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple, secret: true },
+				// { latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosRed },
+				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.red },
 
-				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosBlue },
+				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosColors.blue },
 			]
 		},
 	});

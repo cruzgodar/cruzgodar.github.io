@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -19,8 +16,8 @@ export default function()
 			[
 				...getDesmosSlider({ expression: "a = 1" }),
 				...getDesmosSlider({ expression: "b = 2" }),
-				...getDesmosPoint({ point: ["a", "b"], color: desmosPurple }),
-				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosPurple }),
+				...getDesmosPoint({ point: ["a", "b"], color: desmosColors.purple }),
+				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosColors.purple }),
 			]
 		},
 
@@ -35,28 +32,28 @@ export default function()
 				...getDesmosSlider({ expression: "c = 2" }),
 				...getDesmosSlider({ expression: "d = -2" }),
 
-				...getDesmosPoint({ point: ["a", "b"], color: desmosRed }),
-				...getDesmosPoint({ point: ["c", "d"], color: desmosBlue }),
+				...getDesmosPoint({ point: ["a", "b"], color: desmosColors.red }),
+				...getDesmosPoint({ point: ["c", "d"], color: desmosColors.blue }),
 
-				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosRed }),
-				...getDesmosVector({ from: [0, 0], to: ["c", "d"], color: desmosBlue }),
+				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosColors.red }),
+				...getDesmosVector({ from: [0, 0], to: ["c", "d"], color: desmosColors.blue }),
 				
 				...getDesmosVector({
 					from: ["a", "b"],
 					to: ["a + c", "b + d"],
-					color: desmosBlue
+					color: desmosColors.blue
 				}),
 
 				...getDesmosVector({
 					from: ["c", "d"],
 					to: ["a + c", "b + d"],
-					color: desmosRed
+					color: desmosColors.red
 				}),
 
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["a + c", "b + d"],
-					color: desmosPurple
+					color: desmosColors.purple
 				}),
 			]
 		},

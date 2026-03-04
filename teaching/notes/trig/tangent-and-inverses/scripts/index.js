@@ -1,10 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosLineStyles,
-	desmosOrange,
-	desmosPurple,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -28,10 +24,10 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.black },
 
-				{ latex: raw`(\cos(a), \sin(a))`, color: desmosPurple, points: true, secret: false },
-				{ latex: raw`(0, 0), (\cos(a), \sin(a))`, color: desmosPurple, points: false, lines: true, secret: true },
+				{ latex: raw`(\cos(a), \sin(a))`, color: desmosColors.purple, points: true, secret: false },
+				{ latex: raw`(0, 0), (\cos(a), \sin(a))`, color: desmosColors.purple, points: false, lines: true, secret: true },
 
 				{ latex: raw`\tan(a)` },
 			]
@@ -43,7 +39,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`y = \sqrt{3}x + 2`, color: desmosPurple, secret: true },
+				{ latex: raw`y = \sqrt{3}x + 2`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -55,11 +51,11 @@ export default function()
 			[
 				{ latex: raw`a = 210`, secret: true, hidden: true },
 				
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.black },
 
-				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: true, secret: true, showLabel: true },
-				{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosPurple, points: false, lines: true, secret: true },
-				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosBlue, points: false, lines: true, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosColors.purple, points: true, secret: true, showLabel: true },
+				{ latex: raw`(0, 0), (\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a))`, color: desmosColors.purple, points: false, lines: true, secret: true },
+				{ latex: raw`(\cos(\frac{\pi}{180} a), \sin(\frac{\pi}{180} a)), (\cos(\frac{\pi}{180} a), 0)`, color: desmosColors.blue, points: false, lines: true, lineStyle: desmosLineStyles.DASHED, secret: true },
 			]
 		},
 
@@ -73,8 +69,8 @@ export default function()
 			[
 				{ latex: raw`A = [ 0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360 ]` },
 
-				{ latex: raw`(A, \tan(A))`, color: desmosPurple, points: true, lines: false },
-				{ latex: raw`\tan(x)`, color: desmosPurple },
+				{ latex: raw`(A, \tan(A))`, color: desmosColors.purple, points: true, lines: false },
+				{ latex: raw`\tan(x)`, color: desmosColors.purple },
 			]
 		},
 
@@ -94,13 +90,13 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.black },
 
-				{ latex: raw`(\cos(a), \sin(a))`, color: desmosPurple, points: true, secret: false },
+				{ latex: raw`(\cos(a), \sin(a))`, color: desmosColors.purple, points: true, secret: false },
 
-				{ latex: raw`(\sign(\cos(a)), \sign(\cos(a))\tan(a)), (\sign(\cos(a)), 0)`, color: desmosOrange, points: false, lines: true, secret: true },
+				{ latex: raw`(\sign(\cos(a)), \sign(\cos(a))\tan(a)), (\sign(\cos(a)), 0)`, color: desmosColors.orange, points: false, lines: true, secret: true },
 
-				{ latex: raw`(0, 0), (\sign(\cos(a)), \sign(\cos(a))\tan(a))`, color: desmosPurple, points: true, lines: true, secret: true },
+				{ latex: raw`(0, 0), (\sign(\cos(a)), \sign(\cos(a))\tan(a))`, color: desmosColors.purple, points: true, lines: true, secret: true },
 
 				{ latex: raw`\tan(a)` },
 			]
@@ -114,8 +110,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
-				{ latex: raw`x^2 + y^2 = 1 \left\{ x \geq 0 \right\}`, color: desmosPurple, secret: true, lineWidth: 10, lineOpacity: 0.75 },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.black },
+				{ latex: raw`x^2 + y^2 = 1 \left\{ x \geq 0 \right\}`, color: desmosColors.purple, secret: true, lineWidth: 10, lineOpacity: 0.75 },
 			]
 		},
 
@@ -127,7 +123,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(0, 0), (2\sqrt{3}, 2), (2\sqrt{3}, 0), (0, 0)`, color: desmosPurple, points: false, lines: true, secret: true },
+				{ latex: raw`(0, 0), (2\sqrt{3}, 2), (2\sqrt{3}, 0), (0, 0)`, color: desmosColors.purple, points: false, lines: true, secret: true },
 			]
 		},
 	});

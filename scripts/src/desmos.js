@@ -29,36 +29,28 @@ export const desmosLineStyles = {
 	DOTTED: "DOTTED",
 };
 
-
-export const desmosPurple = "_desmosPurple";
-export const desmosBlue = "_desmosBlue";
-export const desmosRed = "_desmosRed";
-export const desmosOrange = "_desmosOrange";
-export const desmosBlack = "_desmosBlack";
-export const desmosGray = "_desmosGray";
-
-const desmosColorStrings = [
-	desmosPurple,
-	desmosBlue,
-	desmosRed,
-	desmosOrange,
-	desmosBlack,
-	desmosGray
-];
+export const desmosColors = {
+	purple: "_desmosPurple",
+	blue: "_desmosBlue",
+	red: "_desmosRed",
+	orange: "_desmosOrange",
+	black: "_desmosBlack",
+	gray: "_desmosGray",
+};
 
 function getDesmosHue(color)
 {
-	if (color === desmosPurple)
+	if (color === desmosColors.purple)
 	{
 		return 270;
 	}
 
-	if (color === desmosBlue)
+	if (color === desmosColors.blue)
 	{
 		return siteSettings.distinguishColors ? 180 : 210;
 	}
 
-	if (color === desmosRed)
+	if (color === desmosColors.red)
 	{
 		return siteSettings.distinguishColors ? 350 : 0;
 	}
@@ -68,7 +60,7 @@ function getDesmosHue(color)
 
 function getDesmosColor(color, is3d, alwaysDark, highContrast)
 {
-	if (color === desmosBlack)
+	if (color === desmosColors.black)
 	{
 		if (is3d)
 		{
@@ -78,7 +70,7 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 		return "#000000";
 	}
 
-	if (color === desmosGray)
+	if (color === desmosColors.gray)
 	{
 		if (is3d)
 		{
@@ -279,7 +271,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		for (const expression of data[key].expressions)
 		{
-			if (expression.color && desmosColorStrings.includes(expression.color))
+			if (expression.color && Object.values(desmosColors).includes(expression.color))
 			{
 				expression.color = getDesmosColor(
 					expression.color,
@@ -363,33 +355,33 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 			colors: {
 				PURPLE: getDesmosColor(
-					desmosPurple,
+					desmosColors.purple,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
 				BLUE: getDesmosColor(
-					desmosBlue,
+					desmosColors.blue,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
 				RED: getDesmosColor(
-					desmosRed,
+					desmosColors.red,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
 				ORANGE: getDesmosColor(
-					desmosOrange,
+					desmosColors.orange,
 					data[element.id].use3d,
 					data[element.id].alwaysDark,
 					data[element.id].highContrast
 				),
 				...(
 					data[element.id].use3d
-						? { BLACK: getDesmosColor(desmosGray, data[element.id].use3d) }
-						: { BLACK: getDesmosColor(desmosBlack, data[element.id].use3d) }
+						? { BLACK: getDesmosColor(desmosColors.gray, data[element.id].use3d) }
+						: { BLACK: getDesmosColor(desmosColors.black, data[element.id].use3d) }
 				)
 			},
 

@@ -4,12 +4,8 @@ import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosOrange,
-    desmosPurple,
-    desmosRed,
-    getDesmosVector
+	createDesmosGraphs, desmosColors,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -22,15 +18,15 @@ export default function()
 
 			expressions:
 			[
-				...getDesmosVector({ from: [0, 0], to: [1, 1], color: desmosPurple }),
-				...getDesmosVector({ from: [0, 0], to: [2, 1], color: desmosBlue }),
-				...getDesmosVector({ from: [1, 1], to: [3, 2], color: desmosBlue }),
-				...getDesmosVector({ from: [2, 1], to: [3, 2], color: desmosPurple }),
+				...getDesmosVector({ from: [0, 0], to: [1, 1], color: desmosColors.purple }),
+				...getDesmosVector({ from: [0, 0], to: [2, 1], color: desmosColors.blue }),
+				...getDesmosVector({ from: [1, 1], to: [3, 2], color: desmosColors.blue }),
+				...getDesmosVector({ from: [2, 1], to: [3, 2], color: desmosColors.purple }),
 
-				...getDesmosVector({ from: [0, 0], to: [3, 3], color: desmosRed }),
-				...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosOrange }),
-				...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosOrange }),
-				...getDesmosVector({ from: [4, 2], to: [7, 5], color: desmosRed }),
+				...getDesmosVector({ from: [0, 0], to: [3, 3], color: desmosColors.red }),
+				...getDesmosVector({ from: [0, 0], to: [4, 2], color: desmosColors.orange }),
+				...getDesmosVector({ from: [3, 3], to: [7, 5], color: desmosColors.orange }),
+				...getDesmosVector({ from: [4, 2], to: [7, 5], color: desmosColors.red }),
 			]
 		},
 	});

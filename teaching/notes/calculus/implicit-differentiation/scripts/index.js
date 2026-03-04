@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -16,15 +13,15 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2+y^2 = 1`, color: desmosPurple },
+				{ latex: raw`x^2+y^2 = 1`, color: desmosColors.purple },
 				{ latex: raw`a = .5`, sliderBounds: { min: -1, max: 1 } },
 				{ latex: raw`f(x) = \sqrt{1 - x^2}`, hidden: true, secret: true },
-				{ latex: raw`(a, f(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`(a, -f(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosRed, secret: true },
-				{ latex: raw`y = -f(a) + -f'(a)(x - a)`, color: desmosRed, secret: true },
-				{ latex: raw`x = 1 \{ a = 1 \}`, color: desmosRed, secret: true },
-				{ latex: raw`x = -1 \{ a = -1 \}`, color: desmosRed, secret: true },
+				{ latex: raw`(a, f(a))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`(a, -f(a))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosColors.red, secret: true },
+				{ latex: raw`y = -f(a) + -f'(a)(x - a)`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = 1 \{ a = 1 \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = -1 \{ a = -1 \}`, color: desmosColors.red, secret: true },
 			]
 		},
 
@@ -34,16 +31,16 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 - xy + y^2 = 3`, color: desmosPurple },
+				{ latex: raw`x^2 - xy + y^2 = 3`, color: desmosColors.purple },
 				{ latex: raw`a = .5`, sliderBounds: { min: -2, max: 2 } },
 				{ latex: raw`f_1(x) = \frac{1}{2}(x + \sqrt{3}\sqrt{4 - x^2})`, hidden: true, secret: true },
 				{ latex: raw`f_2(x) = \frac{1}{2}(x - \sqrt{3}\sqrt{4 - x^2})`, hidden: true, secret: true },
-				{ latex: raw`(a, f_1(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`(a, f_2(a))`, secret: true, color: desmosBlue },
-				{ latex: raw`y = f_1(a) + f_1'(a)(x - a)`, color: desmosRed, secret: true },
-				{ latex: raw`y = f_2(a) + f_2'(a)(x - a)`, color: desmosRed, secret: true },
-				{ latex: raw`x = 2 \{ a = 2 \}`, color: desmosRed, secret: true },
-				{ latex: raw`x = -2 \{ a = -2 \}`, color: desmosRed, secret: true },
+				{ latex: raw`(a, f_1(a))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`(a, f_2(a))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`y = f_1(a) + f_1'(a)(x - a)`, color: desmosColors.red, secret: true },
+				{ latex: raw`y = f_2(a) + f_2'(a)(x - a)`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = 2 \{ a = 2 \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = -2 \{ a = -2 \}`, color: desmosColors.red, secret: true },
 			]
 		},
 
@@ -58,7 +55,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`\cos(\sin(y)) = \cos(x)`, color: desmosPurple }
+				{ latex: raw`\cos(\sin(y)) = \cos(x)`, color: desmosColors.purple }
 			]
 		},
 
@@ -68,7 +65,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x\sin(y) = y`, color: desmosPurple }
+				{ latex: raw`x\sin(y) = y`, color: desmosColors.purple }
 			]
 		},
 
@@ -78,7 +75,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`\ln(x^2 + y^2) + 2^x - y^3 = c`, color: desmosPurple },
+				{ latex: raw`\ln(x^2 + y^2) + 2^x - y^3 = c`, color: desmosColors.purple },
 
 				...getDesmosSlider({
 					expression: raw`c = 0`,

@@ -1,10 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGray,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -22,7 +17,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosPurple, hidden: false },
+				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 - y^3 - x^3y)`, color: desmosColors.purple, hidden: false },
 
 				{ latex: raw`f_x(x, y) = \frac{d}{dx}(f(x, y))`, hidden: true, secret: true },
 				{ latex: raw`f_y(x, y) = \frac{d}{dy}(f(x, y))`, hidden: true, secret: true },
@@ -47,16 +42,15 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`(a, b, f(a, b))`, color: desmosRed },
+				{ latex: raw`(a, b, f(a, b))`, color: desmosColors.red },
 
-				// eslint-disable-next-line max-len
-				{ latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -3, max: 3 }, color: desmosOrange },
+				{ latex: raw`(a + \cos(s)t, b + \sin(s)t, f(a + \cos(s)t, b + \sin(s)t))`, parametricDomain: { min: -3, max: 3 }, color: desmosColors.orange },
 
-				{ latex: raw`-\cos(s)(y - b) + \sin(s)(x - a) + 0z = 0`, color: desmosGray },
+				{ latex: raw`-\cos(s)(y - b) + \sin(s)(x - a) + 0z = 0`, color: desmosColors.gray },
 
-				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -3, max: 3 }, color: desmosRed, hidden: true },
+				{ latex: raw`(a, b, f(a, b)) + t(\cos(s), \sin(s), \cos(s)f_x(a, b) + \sin(s)f_y(a, b))`, parametricDomain: { min: -3, max: 3 }, color: desmosColors.red, hidden: true },
 
-				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosBlue, hidden: true },
+				{ latex: raw`z = f(a, b) + f_x(a, b)(x - a) + f_y(a, b)(y - b)`, color: desmosColors.blue, hidden: true },
 			]
 		},
 
@@ -70,11 +64,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`6x^2+2y^4+z^6+x^4z+xy^5 = 11`, color: desmosPurple },
+				{ latex: raw`6x^2+2y^4+z^6+x^4z+xy^5 = 11`, color: desmosColors.purple },
 
-				{ latex: raw`\vector((1, 1, 1), (1, 1, 1) + \frac{(17, 13, 7)}{\left|(17, 13, 7)\right|})`, color: desmosRed, secret: true },
+				{ latex: raw`\vector((1, 1, 1), (1, 1, 1) + \frac{(17, 13, 7)}{\left|(17, 13, 7)\right|})`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`17(x - 1) + 13(y - 1) + 7(z - 1) = 0`, color: desmosBlue },
+				{ latex: raw`17(x - 1) + 13(y - 1) + 7(z - 1) = 0`, color: desmosColors.blue },
 			]
 		},
 	});

@@ -1,7 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -14,12 +12,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosColors.purple },
 				{ latex: raw`a = 0` },
 				{ latex: raw`b = 2` },
 
-				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosColors.purple, secret: true },
+				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true }
 			]
 		},
 		
@@ -29,8 +27,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x + y = 1`, color: desmosPurple, secret: true },
-				{ latex: raw`(a + 1)x + (a^2 + 1)y = 4a + 1`, color: desmosBlue, secret: true },
+				{ latex: raw`x + y = 1`, color: desmosColors.purple, secret: true },
+				{ latex: raw`(a + 1)x + (a^2 + 1)y = 4a + 1`, color: desmosColors.blue, secret: true },
 				{ latex: raw`a = 2`, sliderBounds: { min: -2, max: 2 } },
 			]
 		},

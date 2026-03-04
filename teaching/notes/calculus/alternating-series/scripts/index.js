@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -17,32 +14,32 @@ export default function()
 			[
 				{ latex: raw`n = 1`, sliderBounds: { min: 1, max: 7, step: 1 } },
 
-				{ latex: raw`f(x) = \frac{1}{x} \{ 1 \leq x \leq 2 \}`, color: desmosPurple, secret: true },
+				{ latex: raw`f(x) = \frac{1}{x} \{ 1 \leq x \leq 2 \}`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq 2\} \{n = 1\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = [1, 2] \{0 \leq y \leq 1\}`, color: desmosBlue, secret: true },
-				{ latex: raw`y = [0, 1] \{1 \leq x \leq 2\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{3}{2}, \frac{1}{2} ) \{n = 1\}`, color: desmosBlue, label: "1", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq 2\} \{n = 1\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = [1, 2] \{0 \leq y \leq 1\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y = [0, 1] \{1 \leq x \leq 2\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{3}{2}, \frac{1}{2} ) \{n = 1\}`, color: desmosColors.blue, label: "1", showLabel: true, labelSize: "large", hidden: true, secret: true },
 
-				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq \frac{3}{2}\} \{n = [2, 3]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq 1\} \{n = [2, 3]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{7}{4}, \frac{1}{2} ) \{n = 2\}`, color: desmosRed, label: "-1/2", showLabel: true, labelSize: "large", hidden: true, secret: true },
-				{ latex: raw`0 \leq y \leq \frac{2}{3} \{\frac{3}{2} \leq x \leq 2\} \{n = [3, 4, 5]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{7}{4}, \frac{1}{3} ) \{n = 3\}`, color: desmosBlue, label: "+1/3", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq \frac{3}{2}\} \{n = [2, 3]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq 1\} \{n = [2, 3]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{7}{4}, \frac{1}{2} ) \{n = 2\}`, color: desmosColors.red, label: "-1/2", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq \frac{2}{3} \{\frac{3}{2} \leq x \leq 2\} \{n = [3, 4, 5]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{7}{4}, \frac{1}{3} ) \{n = 3\}`, color: desmosColors.blue, label: "+1/3", showLabel: true, labelSize: "large", hidden: true, secret: true },
 
-				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq \frac{5}{4}\} \{n = [4, 5, 6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = \frac{5}{4} \{0 \leq y \leq 1\} \{n = [4, 5, 6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq 1\} \{n = 4\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{11}{8}, \frac{1}{2} ) \{n = 4\}`, color: desmosRed, label: "-1/4", showLabel: true, labelSize: "large", hidden: true, secret: true },
-				{ latex: raw`0 \leq y \leq \frac{4}{5} \{\frac{5}{4} \leq x \leq \frac{3}{2}\} \{n = [5, 6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq \frac{4}{5}\} \{n = [5, 6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{11}{8}, \frac{2}{5} ) \{n = 5\}`, color: desmosBlue, label: "+1/5", showLabel: true, labelSize: "large", hidden: true, secret: true },
-				{ latex: raw`0 \leq y \leq \frac{2}{3} \{\frac{3}{2} \leq x \leq \frac{7}{4}\} \{n = [6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = \frac{7}{4} \{0 \leq y \leq \frac{2}{3}\} \{n = [6, 7]\}`, color: desmosBlue, secret: true },
-				{ latex: raw`y = \frac{2}{3} \{\frac{7}{4} \leq x \leq 2\} \{n = 6\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{15}{8}, \frac{1}{3} ) \{n = 6\}`, color: desmosRed, label: "-1/6", showLabel: true, labelSize: "large", hidden: true, secret: true },
-				{ latex: raw`0 \leq y \leq \frac{4}{7} \{\frac{7}{4} \leq x \leq 2\} \{n = 7\}`, color: desmosBlue, secret: true },
-				{ latex: raw`( \frac{15}{8}, \frac{2}{7} ) \{n = 7\}`, color: desmosBlue, label: "+1/7", showLabel: true, labelSize: "large", hidden: true, secret: true }
+				{ latex: raw`0 \leq y \leq 1 \{1 \leq x \leq \frac{5}{4}\} \{n = [4, 5, 6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = \frac{5}{4} \{0 \leq y \leq 1\} \{n = [4, 5, 6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq 1\} \{n = 4\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{11}{8}, \frac{1}{2} ) \{n = 4\}`, color: desmosColors.red, label: "-1/4", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq \frac{4}{5} \{\frac{5}{4} \leq x \leq \frac{3}{2}\} \{n = [5, 6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = \frac{3}{2} \{0 \leq y \leq \frac{4}{5}\} \{n = [5, 6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{11}{8}, \frac{2}{5} ) \{n = 5\}`, color: desmosColors.blue, label: "+1/5", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq \frac{2}{3} \{\frac{3}{2} \leq x \leq \frac{7}{4}\} \{n = [6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = \frac{7}{4} \{0 \leq y \leq \frac{2}{3}\} \{n = [6, 7]\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y = \frac{2}{3} \{\frac{7}{4} \leq x \leq 2\} \{n = 6\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{15}{8}, \frac{1}{3} ) \{n = 6\}`, color: desmosColors.red, label: "-1/6", showLabel: true, labelSize: "large", hidden: true, secret: true },
+				{ latex: raw`0 \leq y \leq \frac{4}{7} \{\frac{7}{4} \leq x \leq 2\} \{n = 7\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`( \frac{15}{8}, \frac{2}{7} ) \{n = 7\}`, color: desmosColors.blue, label: "+1/7", showLabel: true, labelSize: "large", hidden: true, secret: true }
 			]
 		},
 
@@ -62,9 +59,9 @@ export default function()
 				{ latex: raw`s(n) = \{n = 0: 0, n > 0: \sum_{k = 1}^n a(k) \}`, hidden: true, secret: true },
 				{ latex: raw`c(n) = \frac{s(n - 1) + s(n)}{2}`, hidden: true, secret: true },
 				{ latex: raw`r(n) = \left| s(n) - c(n) \right|`, hidden: true, secret: true },
-				{ latex: raw`(x - c(2m + 1))^2 + y^2 = r(2m + 1)^2 \{y \geq 0\}`, color: desmosBlue, secret: true },
-				{ latex: raw`(x - c(2m))^2 + y^2 = r(2m)^2 \{y \leq 0\}`, color: desmosBlue, secret: true },
-				{ latex: raw`(s(10000), 0)`, color: desmosRed, secret: true },
+				{ latex: raw`(x - c(2m + 1))^2 + y^2 = r(2m + 1)^2 \{y \geq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(x - c(2m))^2 + y^2 = r(2m)^2 \{y \leq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(s(10000), 0)`, color: desmosColors.red, secret: true },
 			]
 		},
 
@@ -84,9 +81,9 @@ export default function()
 				{ latex: raw`s(n) = \{n = 0: 0, n > 0: \sum_{k = 1}^n a(k) \}`, hidden: true, secret: true },
 				{ latex: raw`c(n) = \frac{s(n - 1) + s(n)}{2}`, hidden: true, secret: true },
 				{ latex: raw`r(n) = \left| s(n) - c(n) \right|`, hidden: true, secret: true },
-				{ latex: raw`(x - c(2m + 1))^2 + y^2 = r(2m + 1)^2 \{y \geq 0\}`, color: desmosBlue, secret: true },
-				{ latex: raw`(x - c(2m))^2 + y^2 = r(2m)^2 \{y \leq 0\}`, color: desmosBlue, secret: true },
-				{ latex: raw`(s(10000), 0)`, color: desmosRed, secret: true },
+				{ latex: raw`(x - c(2m + 1))^2 + y^2 = r(2m + 1)^2 \{y \geq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(x - c(2m))^2 + y^2 = r(2m)^2 \{y \leq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(s(10000), 0)`, color: desmosColors.red, secret: true },
 			]
 		},
 	});

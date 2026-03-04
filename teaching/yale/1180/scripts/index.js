@@ -1,9 +1,7 @@
 import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider,
 	recreateDesmosGraphs
 } from "/scripts/src/desmos.js";
@@ -62,9 +60,9 @@ export default async function load()
 					secret: false
 				}),
 
-				{ latex: raw`\sin(t)x - \cos(t)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(t)x + \sin(t)y \geq 0\}`, color: desmosBlue, secret: true },
+				{ latex: raw`\sin(t)x - \cos(t)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(t)x + \sin(t)y \geq 0\}`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`\vector((0, 0, 0), (\cos(s)\cos(t), \cos(s)\sin(t), \sin(s)))`, color: desmosPurple, secret: true },
+				{ latex: raw`\vector((0, 0, 0), (\cos(s)\cos(t), \cos(s)\sin(t), \sin(s)))`, color: desmosColors.purple, secret: true },
 			]
 		},
 	});

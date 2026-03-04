@@ -1,11 +1,7 @@
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosLineStyles,
-	desmosOrange,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors,
+	desmosLineStyles
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -18,27 +14,27 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2 - 2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^2 - 2`, color: desmosColors.purple },
 				{ latex: raw`x_0 = .5` },
 				{ latex: raw`(x_0, f(x_0))`, secret: true },
 
 				{ latex: raw`x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}`, secret: true },
-				{ latex: raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_0 \leq x \leq x_1\}`, color: desmosBlue, secret: true },
-				{ latex: raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_1 \leq x \leq x_0\}`, color: desmosBlue, secret: true },
+				{ latex: raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_0 \leq x \leq x_1\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_1 \leq x \leq x_0\}`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`x = x_1\{0 \leq y \leq f(x_1)\}`, color: desmosRed, lineStyle: desmosLineStyles.DASHED, secret: true },
-				{ latex: raw`x = x_1\{f(x_1) \leq y \leq 0\}`, color: desmosRed, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`x = x_1\{0 \leq y \leq f(x_1)\}`, color: desmosColors.red, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`x = x_1\{f(x_1) \leq y \leq 0\}`, color: desmosColors.red, lineStyle: desmosLineStyles.DASHED, secret: true },
 				{ latex: raw`x_2 = x_1 - \frac{f(x_1)}{f'(x_1)}`, secret: true },
-				{ latex: raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_1 \leq x \leq x_2\}`, color: desmosRed, secret: true },
-				{ latex: raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_2 \leq x \leq x_1\}`, color: desmosRed, secret: true },
+				{ latex: raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_1 \leq x \leq x_2\}`, color: desmosColors.red, secret: true },
+				{ latex: raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_2 \leq x \leq x_1\}`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`x = x_2\{0 \leq y \leq f(x_2)\}`, color: desmosOrange, lineStyle: desmosLineStyles.DASHED, secret: true },
-				{ latex: raw`x = x_2\{f(x_2) \leq y \leq 0\}`, color: desmosOrange, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`x = x_2\{0 \leq y \leq f(x_2)\}`, color: desmosColors.orange, lineStyle: desmosLineStyles.DASHED, secret: true },
+				{ latex: raw`x = x_2\{f(x_2) \leq y \leq 0\}`, color: desmosColors.orange, lineStyle: desmosLineStyles.DASHED, secret: true },
 				{ latex: raw`x_3 = x_2 - \frac{f(x_2)}{f'(x_2)}`, secret: true },
-				{ latex: raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_2 \leq x \leq x_3\}`, color: desmosOrange, secret: true },
-				{ latex: raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_3 \leq x \leq x_2\}`, color: desmosOrange, secret: true },
+				{ latex: raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_2 \leq x \leq x_3\}`, color: desmosColors.orange, secret: true },
+				{ latex: raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_3 \leq x \leq x_2\}`, color: desmosColors.orange, secret: true },
 
-				{ latex: raw`(x_3, 0)`, color: desmosOrange, showLabel: true, secret: true },
+				{ latex: raw`(x_3, 0)`, color: desmosColors.orange, showLabel: true, secret: true },
 			]
 		},
 	});

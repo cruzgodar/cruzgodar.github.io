@@ -1,8 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosPurple,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -17,15 +15,15 @@ export default function()
 
 			expressions:
 			[
-				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosPurple }),
+				...getDesmosVector({ from: [0, 0], to: ["a", "b"], color: desmosColors.purple }),
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["6a + 3b", "-3a + 6b"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 				...getDesmosPoint({
 					point: ["a", "b"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					dragMode: desmosDragModes.XY
 				}),
 				...getDesmosSlider({ expression: "a = 1" }),

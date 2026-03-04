@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -16,9 +13,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`y \geq \left|x\right|\left\{ x^2 + y^2 \leq 1 \right\}`, color: desmosPurple, secret: true },
+				{ latex: raw`y \geq \left|x\right|\left\{ x^2 + y^2 \leq 1 \right\}`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`x^2 + y^2 = 1 \left\{ y \geq \left|x\right| \right\}`, color: desmosPurple, secret: true },
+				{ latex: raw`x^2 + y^2 = 1 \left\{ y \geq \left|x\right| \right\}`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -30,13 +27,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(t, 0, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple, secret: true },
+				{ latex: raw`(t, 0, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(0, t, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosPurple, secret: true },
+				{ latex: raw`(0, t, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(2\cos(t), 2\sin(t), 0)`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosPurple, secret: true },
+				{ latex: raw`(2\cos(t), 2\sin(t), 0)`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`f(x, y) = \sqrt{4 - x^2 - y^2}`, color: desmosBlue, hidden: true },
+				{ latex: raw`f(x, y) = \sqrt{4 - x^2 - y^2}`, color: desmosColors.blue, hidden: true },
 			]
 		},
 
@@ -48,15 +45,15 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(t, 0, 21-(t-1)^2)`, parametricDomain: { min: 0, max: 10 }, color: desmosPurple, secret: true },
+				{ latex: raw`(t, 0, 21-(t-1)^2)`, parametricDomain: { min: 0, max: 10 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(0, t, 24-(t-2)^2)`, parametricDomain: { min: 0, max: 10 }, color: desmosPurple, secret: true },
+				{ latex: raw`(0, t, 24-(t-2)^2)`, parametricDomain: { min: 0, max: 10 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(x-1)^2+(y-2)^2=25 \left\{ x \geq 0 \right\}\left\{ y \geq 0 \right\}`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosPurple, secret: true },
+				{ latex: raw`(x-1)^2+(y-2)^2=25 \left\{ x \geq 0 \right\}\left\{ y \geq 0 \right\}`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`f(x, y) = 25-(x-1)^2-(y-2)^2\left\{ x \geq 0 \right\}\left\{ y \geq 0 \right\}`, color: desmosBlue, hidden: true },
+				{ latex: raw`f(x, y) = 25-(x-1)^2-(y-2)^2\left\{ x \geq 0 \right\}\left\{ y \geq 0 \right\}`, color: desmosColors.blue, hidden: true },
 
-				{ latex: raw`(1, 2, 25)`, color: desmosRed, hidden: true },
+				{ latex: raw`(1, 2, 25)`, color: desmosColors.red, hidden: true },
 			]
 		},
 
@@ -66,11 +63,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 = c`, color: desmosBlue },
+				{ latex: raw`x^2 + y^2 = c`, color: desmosColors.blue },
 
 				{ latex: raw`c = [ 0, 1, ..., 10 ]`, },
 
-				{ latex: raw`(0, 0)`, color: desmosBlue, secret: true },
+				{ latex: raw`(0, 0)`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -82,13 +79,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`z = x^2 + y^2 \left\{ z \leq 10 \right\}`, color: desmosPurple },
+				{ latex: raw`z = x^2 + y^2 \left\{ z \leq 10 \right\}`, color: desmosColors.purple },
 
-				{ latex: raw`x^2 + y^2 = c \left\{ z = c \right\}`, color: desmosBlue },
+				{ latex: raw`x^2 + y^2 = c \left\{ z = c \right\}`, color: desmosColors.blue },
 
 				{ latex: raw`c = [ 0, 1, ..., 10 ]`, },
 
-				{ latex: raw`(0, 0, 0)`, color: desmosBlue, secret: true },
+				{ latex: raw`(0, 0, 0)`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -98,7 +95,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 - y^2 = c`, color: desmosBlue, secret: true },
+				{ latex: raw`x^2 - y^2 = c`, color: desmosColors.blue, secret: true },
 
 				...getDesmosSlider({
 					expression: raw`c = 0`,

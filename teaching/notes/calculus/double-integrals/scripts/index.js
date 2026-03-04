@@ -1,12 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosGray,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -21,20 +15,20 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1 + \frac{1}{4}(\sin(x) + \cos(2x)) - \frac{(x+2)^3}{150} - \frac{x^2}{10}`, color: desmosPurple },
+				{ latex: raw`f(x) = 1 + \frac{1}{4}(\sin(x) + \cos(2x)) - \frac{(x+2)^3}{150} - \frac{x^2}{10}`, color: desmosColors.purple },
 				{ latex: raw`a = -5`, sliderBounds: { min: -10, max: "b" } },
 				{ latex: raw`b = 5`, sliderBounds: { min: -10, max: 10 } },
 				{ latex: raw`n = 10`, sliderBounds: { min: 2, max: 100, step: 1 } },
 
 				...getDesmosPoint({
 					point: ["a", "f(a)"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.X,
 					secret: false,
 				}),
 				...getDesmosPoint({
 					point: ["b", "f(b)"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.X,
 					secret: false,
 				}),
@@ -47,13 +41,13 @@ export default function()
 				{ latex: raw`L = [a, a + s, ..., b - s]`, secret: true },
 				{ latex: raw`R = [a + s, a + 2s, ..., b]`, secret: true },
 
-				{ latex: raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosRed, secret: true },
-				{ latex: raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true },
-				{ latex: raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true },
+				{ latex: raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`f(L) \leq y \leq 0 \{ L \leq x \leq R \}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = L \{ f(L) \leq y \leq 0 \}`, color: desmosBlue, secret: true },
-				{ latex: raw`x = R \{ f(L) \leq y \leq 0 \}`, color: desmosBlue, secret: true }
+				{ latex: raw`f(L) \leq y \leq 0 \{ L \leq x \leq R \}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = L \{ f(L) \leq y \leq 0 \}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`x = R \{ f(L) \leq y \leq 0 \}`, color: desmosColors.blue, secret: true }
 			]
 		},
 
@@ -88,20 +82,20 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`a \leq x \leq b`, color: desmosBlue, fillOpacity: 0.2, },
-				{ latex: raw`a \leq x \leq b \{ c \leq y \leq d \}`, color: desmosPurple },
-				{ latex: raw`c \leq y \leq d`, color: desmosRed, fillOpacity: 0.2, },
-				{ latex: raw`c \leq y \leq d \{ a \leq x \leq b \}`, color: desmosPurple },
+				{ latex: raw`a \leq x \leq b`, color: desmosColors.blue, fillOpacity: 0.2, },
+				{ latex: raw`a \leq x \leq b \{ c \leq y \leq d \}`, color: desmosColors.purple },
+				{ latex: raw`c \leq y \leq d`, color: desmosColors.red, fillOpacity: 0.2, },
+				{ latex: raw`c \leq y \leq d \{ a \leq x \leq b \}`, color: desmosColors.purple },
 
 				...getDesmosPoint({
 					point: ["a", "c"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
 				...getDesmosPoint({
 					point: ["b", "d"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -121,7 +115,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \sin(x) + \cos(y) + \frac{(x + y)^3}{100}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = \sin(x) + \cos(y) + \frac{(x + y)^3}{100}`, color: desmosColors.purple },
 
 				...getDesmosSlider({
 					expression: raw`m = 3`,
@@ -165,8 +159,8 @@ export default function()
 				}),
 
 				// bounding rectangle
-				{ latex: raw`(t, [c, d], 0)`, color: desmosGray, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`([a, b], t, 0)`, color: desmosGray, parametricDomain: { min: "c", max: "d" }, secret: true },
+				{ latex: raw`(t, [c, d], 0)`, color: desmosColors.gray, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`([a, b], t, 0)`, color: desmosColors.gray, parametricDomain: { min: "c", max: "d" }, secret: true },
 
 				{ latex: raw`s_x = \frac{b - a}{m}`, secret: true },
 				{ latex: raw`s_y = \frac{d - c}{n}`, secret: true },
@@ -188,8 +182,8 @@ export default function()
 				{ latex: raw`I = \floor(\frac{L}{n}) + 1`, secret: true },
 				{ latex: raw`J = \mod(L, n) + 1`, secret: true },
 
-				{ latex: raw`0 \leq z \leq f(M_x[I], M_y[J]) \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosRed, secret: true },
-				{ latex: raw`f(M_x[I], M_y[J]) \leq z \leq 0 \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosBlue, secret: true },
+				{ latex: raw`0 \leq z \leq f(M_x[I], M_y[J]) \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`f(M_x[I], M_y[J]) \leq z \leq 0 \{ L_x[I] \leq x \leq R_x[I] \} \{ L_y[J] \leq y \leq R_y[J] \}`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -206,7 +200,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = x^2 + xy + xy^2 - 1 \left\{ a \leq x \leq b \right\} \left\{ c \leq y \leq d \right\}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = x^2 + xy + xy^2 - 1 \left\{ a \leq x \leq b \right\} \left\{ c \leq y \leq d \right\}`, color: desmosColors.purple },
 
 				...getDesmosSlider({
 					expression: raw`a = -2`,
@@ -240,25 +234,25 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`0 \leq z \leq f(x, y) \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosRed },
-				{ latex: raw`f(x, y) \leq z \leq 0 \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosBlue },
+				{ latex: raw`0 \leq z \leq f(x, y) \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosColors.red },
+				{ latex: raw`f(x, y) \leq z \leq 0 \left\{ x = x_0 \right\} \left\{ c \leq y \leq d \right\}`, color: desmosColors.blue },
 
 				// Red and blue regions bottom boundary
-				{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosRed, parametricDomain: { min: "c", max: "d" }, secret: true },
-				{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosBlue, parametricDomain: { min: "c", max: "d" }, secret: true },
+				{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosColors.red, parametricDomain: { min: "c", max: "d" }, secret: true },
+				{ latex: raw`(x_0, t, 0) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosColors.blue, parametricDomain: { min: "c", max: "d" }, secret: true },
 
 				// Red and blue regions side boundary
-				{ latex: raw`(x_0, c, t)`, color: desmosRed, parametricDomain: { min: "0", max: "f(x_0, c)" }, secret: true },
-				{ latex: raw`(x_0, c, t)`, color: desmosBlue, parametricDomain: { min: "f(x_0, c)", max: "0" }, secret: true },
+				{ latex: raw`(x_0, c, t)`, color: desmosColors.red, parametricDomain: { min: "0", max: "f(x_0, c)" }, secret: true },
+				{ latex: raw`(x_0, c, t)`, color: desmosColors.blue, parametricDomain: { min: "f(x_0, c)", max: "0" }, secret: true },
 
-				{ latex: raw`(x_0, d, t)`, color: desmosRed, parametricDomain: { min: "0", max: "f(x_0, d)" }, secret: true },
-				{ latex: raw`(x_0, d, t)`, color: desmosBlue, parametricDomain: { min: "f(x_0, d)", max: "0" }, secret: true },
+				{ latex: raw`(x_0, d, t)`, color: desmosColors.red, parametricDomain: { min: "0", max: "f(x_0, d)" }, secret: true },
+				{ latex: raw`(x_0, d, t)`, color: desmosColors.blue, parametricDomain: { min: "f(x_0, d)", max: "0" }, secret: true },
 
-				{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosRed, parametricDomain: { min: "c", max: "d" }, secret: true },
-				{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosBlue, parametricDomain: { min: "c", max: "d" }, secret: true },
+				{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \geq 0 \right\}`, color: desmosColors.red, parametricDomain: { min: "c", max: "d" }, secret: true },
+				{ latex: raw`(x_0, t, f(x_0, t)) \left\{ f(x_0, t) \leq 0 \right\}`, color: desmosColors.blue, parametricDomain: { min: "c", max: "d" }, secret: true },
 
-				{ latex: raw`( t, -2, \int_c^d f(t, y) dy )`, color: desmosGray, parametricDomain: { min: "a", max: "b" } },
-				{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosOrange, secret: true },
+				{ latex: raw`( t, -2, \int_c^d f(t, y) dy )`, color: desmosColors.gray, parametricDomain: { min: "a", max: "b" } },
+				{ latex: raw`( x_0, -2, \int_c^d f(x_0, y) dy )`, color: desmosColors.orange, secret: true },
 			]
 		},
 
@@ -291,16 +285,16 @@ export default function()
 				{ latex: raw`c(x) = -1`, hidden: true },
 				{ latex: raw`d(x) = 1`, hidden: true },
 
-				{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-				{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
+				{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
 
-				{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
-				{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
+				{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
 
-				{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosColors.red, lineWidth: 5, secret: true },
 
-				{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
-				{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
+				{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 			]
 		},
 
@@ -333,16 +327,16 @@ export default function()
 				{ latex: raw`c(x) = -\sec(x)`, hidden: true },
 				{ latex: raw`d(x) = \sin(x) + 1`, hidden: true },
 
-				{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-				{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`c(x) < y < d(x) \left\{ a < x < b \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
+				{ latex: raw`d(x) < y < c(x) \left\{ a < x < b \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
 
-				{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
-				{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`x = [a, b] \left\{ c([a, b]) \leq y \leq d([a, b]) \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
+				{ latex: raw`x = [a, b] \left\{ d([a, b]) \leq y \leq c([a, b]) \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
 
-				{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				{ latex: raw`y = [c(x), d(x)] \left\{ a \leq x \leq b \right\}`, color: desmosColors.red, lineWidth: 5, secret: true },
 
-				{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
-				{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`x = x_0 \left\{ c(x_0) \leq y \leq d(x_0) \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
+				{ latex: raw`x = x_0 \left\{ d(x_0) \leq y \leq c(x_0) \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 			]
 		},
 
@@ -375,16 +369,16 @@ export default function()
 				{ latex: raw`a(y) = y^4 - 4`, hidden: true },
 				{ latex: raw`b(y) = -3y^2`, hidden: true },
 
-				{ latex: raw`a(y) < x < b(y) \left\{ -1 < y < 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-				{ latex: raw`b(y) < x < a(y) \left\{ -1 < y < 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`a(y) < x < b(y) \left\{ -1 < y < 1 \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
+				{ latex: raw`b(y) < x < a(y) \left\{ -1 < y < 1 \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
 
-				{ latex: raw`y = [c, d] \left\{ a([c, d]) \leq x \leq b([c, d]) \right\}`, color: desmosBlue, secret: true },
-				{ latex: raw`y = [c, d] \left\{ b([c, d]) \leq x \leq a([c, d]) \right\}`, color: desmosBlue, secret: true },
+				{ latex: raw`y = [c, d] \left\{ a([c, d]) \leq x \leq b([c, d]) \right\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y = [c, d] \left\{ b([c, d]) \leq x \leq a([c, d]) \right\}`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`x = [a(y), b(y)] \left\{ c \leq y \leq d \right\}`, color: desmosRed, secret: true },
+				{ latex: raw`x = [a(y), b(y)] \left\{ c \leq y \leq d \right\}`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`y = y_0 \left\{ a(y_0) \leq x \leq b(y_0) \right\}`, color: desmosPurple, secret: true },
-				{ latex: raw`y = y_0 \left\{ b(y_0) \leq x \leq a(y_0) \right\}`, color: desmosPurple, secret: true },
+				{ latex: raw`y = y_0 \left\{ a(y_0) \leq x \leq b(y_0) \right\}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`y = y_0 \left\{ b(y_0) \leq x \leq a(y_0) \right\}`, color: desmosColors.purple, secret: true },
 			]
 		},
 
@@ -394,13 +388,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^3 \leq y \leq 8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`x^3 \leq y \leq 8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
 
-				{ latex: raw`x^3`, color: desmosBlue, lineOpacity: 0.5 },
-				{ latex: raw`8 - (x - 2)^2`, color: desmosRed, lineOpacity: 0.5 },
+				{ latex: raw`x^3`, color: desmosColors.blue, lineOpacity: 0.5 },
+				{ latex: raw`8 - (x - 2)^2`, color: desmosColors.red, lineOpacity: 0.5 },
 
-				{ latex: raw`x^3 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosBlue, },
-				{ latex: raw`8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosRed, },
+				{ latex: raw`x^3 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosColors.blue, },
+				{ latex: raw`8 - (x - 2)^2 \left\{ -1 \leq x \leq 2 \right\}`, color: desmosColors.red, },
 			]
 		},
 
@@ -410,16 +404,16 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`\frac{x^2}{2} \leq y \leq \tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
-				{ latex: raw`\frac{x^2}{2} \leq y \leq x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosBlack, fillOpacity: 0.15, },
+				{ latex: raw`\frac{x^2}{2} \leq y \leq \tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
+				{ latex: raw`\frac{x^2}{2} \leq y \leq x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosColors.black, fillOpacity: 0.15, },
 
-				{ latex: raw`\frac{x^2}{2}`, color: desmosPurple, lineOpacity: 0.5 },
-				{ latex: raw`\tan(\frac{\pi}{4} x)`, color: desmosBlue, lineOpacity: 0.5 },
-				{ latex: raw`x`, color: desmosRed, lineOpacity: 0.5 },
+				{ latex: raw`\frac{x^2}{2}`, color: desmosColors.purple, lineOpacity: 0.5 },
+				{ latex: raw`\tan(\frac{\pi}{4} x)`, color: desmosColors.blue, lineOpacity: 0.5 },
+				{ latex: raw`x`, color: desmosColors.red, lineOpacity: 0.5 },
 
-				{ latex: raw`\frac{x^2}{2} \left\{ 0 \leq x \leq 2 \right\}`, color: desmosPurple, },
-				{ latex: raw`\tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosBlue, },
-				{ latex: raw`x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosRed, },
+				{ latex: raw`\frac{x^2}{2} \left\{ 0 \leq x \leq 2 \right\}`, color: desmosColors.purple, },
+				{ latex: raw`\tan(\frac{\pi}{4} x) \left\{ 0 \leq x \leq 1 \right\}`, color: desmosColors.blue, },
+				{ latex: raw`x \left\{ 1 \leq x \leq 2 \right\}`, color: desmosColors.red, },
 			]
 		},
 
@@ -447,11 +441,11 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`(0, 0), (r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosBlue, points: false, lines: true, secret:true },
+				{ latex: raw`(0, 0), (r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosColors.blue, points: false, lines: true, secret:true },
 
-				{ latex: raw`r = 0.25 \{ 0 \leq \theta \leq \theta_0 \}`, color: desmosBlue, secret: true },
+				{ latex: raw`r = 0.25 \{ 0 \leq \theta \leq \theta_0 \}`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`(r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosPurple, dragMode: desmosDragModes.NONE },
+				{ latex: raw`(r_0 \cos(\theta_0), r_0 \sin(\theta_0))`, color: desmosColors.purple, dragMode: desmosDragModes.NONE },
 			]
 		},
 
@@ -515,17 +509,17 @@ export default function()
 
 				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
 
-				{ latex: raw`\sqrt{x^2 + y^2} < d \{ a \leq T(x, y) \leq b \} \{ c < \sqrt{x^2 + y^2} \}`, color: desmosBlack, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} < d \{ a \leq T(x, y) \leq b \} \{ c < \sqrt{x^2 + y^2} \}`, color: desmosColors.black, fillOpacity: 0.15, secret: true },
 
-				{ latex: raw`[a, b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`[a, b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
 
-				{ latex: raw`\sqrt{x^2+y^2} = [c, d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				{ latex: raw`\sqrt{x^2+y^2} = [c, d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosColors.red, lineWidth: 5, secret: true },
 
-				{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 
-				{ latex: raw`[a, a + \frac{b - a}{m}, ..., b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`[a, a + \frac{b - a}{m}, ..., b] = T(x, y) \left\{ c \leq \sqrt{x^2+y^2} \leq d \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
 
-				{ latex: raw`\sqrt{x^2+y^2} = [c, c + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				{ latex: raw`\sqrt{x^2+y^2} = [c, c + \frac{d - c}{n}, ..., d] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosColors.red, lineWidth: 5, secret: true },
 			]
 		},
 
@@ -561,13 +555,13 @@ export default function()
 
 				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
 
-				{ latex: raw`\sqrt{x^2 + y^2} < 2\sin(2T(x, y)) \{ a \leq T(x, y) \leq b \} \{ 1 < \sqrt{x^2 + y^2} \}`, color: desmosBlack, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} < 2\sin(2T(x, y)) \{ a \leq T(x, y) \leq b \} \{ 1 < \sqrt{x^2 + y^2} \}`, color: desmosColors.black, fillOpacity: 0.15, secret: true },
 
-				{ latex: raw`[a, b] = T(x, y) \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosBlue, lineWidth: 5, secret: true },
+				{ latex: raw`[a, b] = T(x, y) \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosColors.blue, lineWidth: 5, secret: true },
 
-				{ latex: raw`\sqrt{x^2+y^2} = [1, 2\sin(2T(x, y))] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosRed, lineWidth: 5, secret: true },
+				{ latex: raw`\sqrt{x^2+y^2} = [1, 2\sin(2T(x, y))] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosColors.red, lineWidth: 5, secret: true },
 
-				{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`\mod(\arctan(y, x) + 2\pi, 2\pi) = \theta_0 \left\{ 1 \leq \sqrt{x^2+y^2} \leq 2\sin(2T(x, y)) \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 			]
 		},
 
@@ -586,11 +580,11 @@ export default function()
 
 				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
 
-				{ latex: raw`\sqrt{x^2 + y^2} < 3 \{ \frac{\pi}{3} \leq T(x, y) \leq \frac{7\pi}{6} \} \{ 2 < \sqrt{x^2 + y^2} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} < 3 \{ \frac{\pi}{3} \leq T(x, y) \leq \frac{7\pi}{6} \} \{ 2 < \sqrt{x^2 + y^2} \}`, color: desmosColors.purple, fillOpacity: 0.15, secret: true },
 
-				{ latex: raw`[a, b] = T(x, y) \left\{ 2 \leq \sqrt{x^2+y^2} \leq 3 \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`[a, b] = T(x, y) \left\{ 2 \leq \sqrt{x^2+y^2} \leq 3 \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 
-				{ latex: raw`\sqrt{x^2+y^2} = [2, 3] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosPurple, lineWidth: 5, secret: true },
+				{ latex: raw`\sqrt{x^2+y^2} = [2, 3] \left\{ a \leq T(x, y) \leq b \right\}`, color: desmosColors.purple, lineWidth: 5, secret: true },
 			]
 		},
 
@@ -609,11 +603,11 @@ export default function()
 
 				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
 
-				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosRed, fillOpacity: 0.15, secret: true },
-				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ 0 \leq T(x, y) \leq 2\pi \}`, color: desmosBlue, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosColors.red, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ 0 \leq T(x, y) \leq 2\pi \}`, color: desmosColors.blue, fillOpacity: 0.15, secret: true },
 
-				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \frac{\pi}{4} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
-				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ \frac{\pi}{4} \leq T(x, y) \leq \frac{\pi}{2} \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \sin(T(x, y)) \{ 0 \leq T(x, y) \leq \frac{\pi}{4} \}`, color: desmosColors.purple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} \leq \cos(T(x, y)) \{ \frac{\pi}{4} \leq T(x, y) \leq \frac{\pi}{2} \}`, color: desmosColors.purple, fillOpacity: 0.15, secret: true },
 			]
 		},
 
@@ -629,9 +623,9 @@ export default function()
 			[
 				{ latex: raw`T(x, y) = \mod(\arctan(y, x) + 2\pi, 2\pi)`, hidden: true, secret: true },
 
-				{ latex: raw`T(x, y) \leq \sqrt{x^2 + y^2} \{ 0 \leq T(x, y) \leq \pi \} \{ \sqrt{x^2 + y^2} \leq \pi \}`, color: desmosPurple, fillOpacity: 0.15, secret: true },
-				{ latex: raw`\sqrt{x^2 + y^2} = \pi \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosPurple, secret: true },
-				{ latex: raw`y = 0 \{ 0 \leq x \leq \pi \}`, color: desmosPurple, secret: true },
+				{ latex: raw`T(x, y) \leq \sqrt{x^2 + y^2} \{ 0 \leq T(x, y) \leq \pi \} \{ \sqrt{x^2 + y^2} \leq \pi \}`, color: desmosColors.purple, fillOpacity: 0.15, secret: true },
+				{ latex: raw`\sqrt{x^2 + y^2} = \pi \{ 0 \leq T(x, y) \leq \pi \}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`y = 0 \{ 0 \leq x \leq \pi \}`, color: desmosColors.purple, secret: true },
 			]
 		}
 	});

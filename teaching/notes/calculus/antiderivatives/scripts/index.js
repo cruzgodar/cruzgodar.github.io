@@ -1,7 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -14,8 +12,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple },
-				{ latex: raw`f'(x)`, color: desmosBlue },
+				{ latex: raw`f(x) = \frac{x^3}{3} + C`, color: desmosColors.purple },
+				{ latex: raw`f'(x)`, color: desmosColors.blue },
 				{ latex: raw`C = 2` }
 			]
 		}

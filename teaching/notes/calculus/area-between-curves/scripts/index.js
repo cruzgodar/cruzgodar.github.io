@@ -1,9 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -16,12 +12,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x`, color: desmosRed },
-				{ latex: raw`g(x) = x^2`, color: desmosBlue },
+				{ latex: raw`f(x) = x`, color: desmosColors.red },
+				{ latex: raw`g(x) = x^2`, color: desmosColors.blue },
 				{ latex: raw`a = 0` },
 				{ latex: raw`b = 1` },
-				{ latex: raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple },
-				{ latex: raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple }
+				{ latex: raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 
@@ -33,12 +29,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x)`, color: desmosRed },
-				{ latex: raw`g(x) = \cos(x)`, color: desmosBlue },
+				{ latex: raw`f(x) = \sin(x)`, color: desmosColors.red },
+				{ latex: raw`g(x) = \cos(x)`, color: desmosColors.blue },
 				{ latex: raw`a = 0` },
 				{ latex: raw`b = \pi` },
-				{ latex: raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple },
-				{ latex: raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple }
+				{ latex: raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 
@@ -50,12 +46,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1`, color: desmosRed },
-				{ latex: raw`g(x) = 3 - x`, color: desmosOrange },
-				{ latex: raw`h(x) = x^2 + 1`, color: desmosBlue },
+				{ latex: raw`f(x) = 1`, color: desmosColors.red },
+				{ latex: raw`g(x) = 3 - x`, color: desmosColors.orange },
+				{ latex: raw`h(x) = x^2 + 1`, color: desmosColors.blue },
 
-				{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple },
-				{ latex: raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosPurple }
+				{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 
@@ -67,12 +63,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1 - x`, color: desmosRed },
-				{ latex: raw`g(x) = x^2`, color: desmosBlue },
-				{ latex: raw`h(x) = \sqrt{x}`, color: desmosOrange },
+				{ latex: raw`f(x) = 1 - x`, color: desmosColors.red },
+				{ latex: raw`g(x) = x^2`, color: desmosColors.blue },
+				{ latex: raw`h(x) = \sqrt{x}`, color: desmosColors.orange },
 
-				{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple },
-				{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple }
+				{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 
@@ -84,12 +80,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1`, color: desmosRed },
-				{ latex: raw`g(x) = 3 - x`, color: desmosOrange },
-				{ latex: raw`h(x) = x^2 + 1`, color: desmosBlue },
+				{ latex: raw`f(x) = 1`, color: desmosColors.red },
+				{ latex: raw`g(x) = 3 - x`, color: desmosColors.orange },
+				{ latex: raw`h(x) = x^2 + 1`, color: desmosColors.blue },
 
-				{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple },
-				{ latex: raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosPurple }
+				{ latex: raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 
@@ -101,12 +97,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = 1 - x`, color: desmosRed },
-				{ latex: raw`g(x) = x^2`, color: desmosBlue },
-				{ latex: raw`h(x) = \sqrt{x}`, color: desmosOrange },
+				{ latex: raw`f(x) = 1 - x`, color: desmosColors.red },
+				{ latex: raw`g(x) = x^2`, color: desmosColors.blue },
+				{ latex: raw`h(x) = \sqrt{x}`, color: desmosColors.orange },
 
-				{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple },
-				{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple }
+				{ latex: raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosColors.purple },
+				{ latex: raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosColors.purple }
 			]
 		},
 	});

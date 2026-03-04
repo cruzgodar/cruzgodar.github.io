@@ -1,12 +1,7 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
 	desmosLineStyles,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -21,12 +16,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosColors.purple },
 				{ latex: raw`a = 0` },
 				{ latex: raw`b = 2` },
 
-				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
-				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
+				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosColors.purple, secret: true },
+				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true }
 			]
 		},
 
@@ -36,10 +31,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x`, color: desmosPurple },
-				{ latex: raw`f(x) = x^2`, color: desmosBlue },
-				{ latex: raw`f(x) = x^3`, color: desmosRed },
-				{ latex: raw`f(x) = x^a`, color: desmosOrange },
+				{ latex: raw`f(x) = x`, color: desmosColors.purple },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.blue },
+				{ latex: raw`f(x) = x^3`, color: desmosColors.red },
+				{ latex: raw`f(x) = x^a`, color: desmosColors.orange },
 				{ latex: raw`a = 4`, sliderBounds: { min: 4, max: 10, step: 1 } },
 			]
 		},
@@ -50,9 +45,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^{-1}`, color: desmosPurple },
-				{ latex: raw`f(x) = x^{-2}`, color: desmosBlue },
-				{ latex: raw`f(x) = x^{-a}`, color: desmosRed },
+				{ latex: raw`f(x) = x^{-1}`, color: desmosColors.purple },
+				{ latex: raw`f(x) = x^{-2}`, color: desmosColors.blue },
+				{ latex: raw`f(x) = x^{-a}`, color: desmosColors.red },
 				{ latex: raw`a = 3`, sliderBounds: { min: 3, max: 10, step: 1 } },
 			]
 		},
@@ -63,9 +58,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^{1/2}`, color: desmosPurple },
-				{ latex: raw`f(x) = x^{1/3}`, color: desmosBlue },
-				{ latex: raw`f(x) = x^{1/a}`, color: desmosRed },
+				{ latex: raw`f(x) = x^{1/2}`, color: desmosColors.purple },
+				{ latex: raw`f(x) = x^{1/3}`, color: desmosColors.blue },
+				{ latex: raw`f(x) = x^{1/a}`, color: desmosColors.red },
 				...getDesmosSlider({
 					expression: "a = 4",
 					min: 4,
@@ -82,9 +77,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3`, color: desmosPurple },
-				{ latex: raw`f(x) = x^{1/3}`, color: desmosBlue },
-				{ latex: raw`y = x`, color: desmosBlack, secret: true, lineStyle: desmosLineStyles.DASHED },
+				{ latex: raw`f(x) = x^3`, color: desmosColors.purple },
+				{ latex: raw`f(x) = x^{1/3}`, color: desmosColors.blue },
+				{ latex: raw`y = x`, color: desmosColors.black, secret: true, lineStyle: desmosLineStyles.DASHED },
 			]
 		},
 
@@ -94,7 +89,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = e^x`, color: desmosPurple },
+				{ latex: raw`f(x) = e^x`, color: desmosColors.purple },
 			]
 		},
 
@@ -104,8 +99,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2`, color: desmosPurple },
-				{ latex: raw`g(x) = f(x) + b`, color: desmosBlue },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.purple },
+				{ latex: raw`g(x) = f(x) + b`, color: desmosColors.blue },
 				...getDesmosSlider({
 					expression: "b = 1",
 					min: -5,
@@ -114,7 +109,7 @@ export default function()
 				}),
 				...getDesmosPoint({
 					point: ["0", "b"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.Y,
 				}),
 			]
@@ -126,8 +121,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2`, color: desmosPurple },
-				{ latex: raw`g(x) = af(x)`, color: desmosBlue },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.purple },
+				{ latex: raw`g(x) = af(x)`, color: desmosColors.blue },
 				...getDesmosSlider({
 					expression: "a = 2",
 					min: -5,
@@ -136,7 +131,7 @@ export default function()
 				}),
 				...getDesmosPoint({
 					point: ["1", "a"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.Y,
 				}),
 			]
@@ -148,37 +143,37 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = e^x`, color: desmosPurple },
+				{ latex: raw`f(x) = e^x`, color: desmosColors.purple },
 				...getDesmosPoint({
 					point: ["0", "f(0)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "f(1)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					dragMode: desmosDragModes.NONE,
 				}),
-				{ latex: raw`g(x) = \frac{1}{5}f(x)`, color: desmosBlue },
+				{ latex: raw`g(x) = \frac{1}{5}f(x)`, color: desmosColors.blue },
 				...getDesmosPoint({
 					point: ["0", "g(0)"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "g(1)"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.NONE,
 				}),
-				{ latex: raw`h(x) = g(x) - 2`, color: desmosRed },
+				{ latex: raw`h(x) = g(x) - 2`, color: desmosColors.red },
 				...getDesmosPoint({
 					point: ["0", "h(0)"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 				}),
 				...getDesmosPoint({
 					point: ["1", "h(1)"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 				}),
 			]
@@ -190,8 +185,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x = y^3`, color: desmosPurple },
-				{ latex: raw`x = cy^3 + d`, color: desmosBlue },
+				{ latex: raw`x = y^3`, color: desmosColors.purple },
+				{ latex: raw`x = cy^3 + d`, color: desmosColors.blue },
 				...getDesmosSlider({
 					expression: "c = 2",
 					min: -5,
@@ -213,16 +208,16 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`f(x) = \ln(x - 2)`, secret: true, hidden: true },
-				{ latex: raw`f(x)`, color: desmosPurple },
+				{ latex: raw`f(x)`, color: desmosColors.purple },
 
 				{ latex: raw`g(x) = \ln(\frac{1}{3}(x + 1))`, secret: true, hidden: true },
-				{ latex: raw`g(x)`, color: desmosBlue, hidden: true },
+				{ latex: raw`g(x)`, color: desmosColors.blue, hidden: true },
 
 				{ latex: raw`h(x) = 2\ln(-2x)`, secret: true, hidden: true },
-				{ latex: raw`h(x)`, color: desmosRed, hidden: true },
+				{ latex: raw`h(x)`, color: desmosColors.red, hidden: true },
 
 				{ latex: raw`l(x) = -2\ln(-\frac{1}{2}(x + 1)) + 1`, secret: true, hidden: true },
-				{ latex: raw`l(x)`, color: desmosOrange, hidden: true },
+				{ latex: raw`l(x)`, color: desmosColors.orange, hidden: true },
 			]
 		}
 	});

@@ -1,11 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -20,7 +15,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - x^2 - x + 1 \left\{ a \leq x \leq b\right\}`, color: desmosPurple },
+				{ latex: raw`f(x) = x^3 - x^2 - x + 1 \left\{ a \leq x \leq b\right\}`, color: desmosColors.purple },
 
 				...getDesmosSlider({
 					expression: raw`a = -1.5`,
@@ -38,14 +33,14 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["a", "f(a)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
 
 				...getDesmosPoint({
 					point: ["b", "f(b)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
@@ -58,8 +53,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 \leq 1`, color: desmosPurple },
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlue },
+				{ latex: raw`x^2 + y^2 \leq 1`, color: desmosColors.purple },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.blue },
 
 				...getDesmosSlider({
 					expression: raw`a = -0.5`,
@@ -80,12 +75,12 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["a", "b"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 					secret: false
 				}),
 
-				{ latex: raw`(x - a)^2 + (y - b)^2 = \epsilon^2`, color: desmosRed, secret: true },
+				{ latex: raw`(x - a)^2 + (y - b)^2 = \epsilon^2`, color: desmosColors.red, secret: true },
 			]
 		},
 
@@ -95,11 +90,11 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`1 \leq x \leq 3 \left\{ 2 \leq y \leq 4 \right\}`, color: desmosPurple },
-				{ latex: raw`x = [1, 3] \left\{ 2 \leq y \leq 4 \right\}`, color: desmosBlue },
-				{ latex: raw`y = [2, 4] \left\{ 1 \leq x \leq 3 \right\}`, color: desmosBlue },
+				{ latex: raw`1 \leq x \leq 3 \left\{ 2 \leq y \leq 4 \right\}`, color: desmosColors.purple },
+				{ latex: raw`x = [1, 3] \left\{ 2 \leq y \leq 4 \right\}`, color: desmosColors.blue },
+				{ latex: raw`y = [2, 4] \left\{ 1 \leq x \leq 3 \right\}`, color: desmosColors.blue },
 
-				{ latex: raw`r = 5`, color: desmosBlack, hidden: true },
+				{ latex: raw`r = 5`, color: desmosColors.black, hidden: true },
 			]
 		},
 
@@ -113,13 +108,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = x^3 - y^2 + 2xy \left\{ -1 \leq x \leq 0 \right\}\left\{ -2 \leq y \leq 0 \right\}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = x^3 - y^2 + 2xy \left\{ -1 \leq x \leq 0 \right\}\left\{ -2 \leq y \leq 0 \right\}`, color: desmosColors.purple },
 
-				{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosOrange },
-				{ latex: raw`(0, -2, f(0, -2))`, color: desmosBlue },
+				{ latex: raw`(-\frac{2}{3}, -\frac{2}{3}, f(-\frac{2}{3}, -\frac{2}{3}))`, color: desmosColors.orange },
+				{ latex: raw`(0, -2, f(0, -2))`, color: desmosColors.blue },
 
-				{ latex: raw`(t, [-2, 0], f(t, [-2, 0]))`, parametricDomain: { min: -1, max: 0 }, color: desmosRed, secret: true },
-				{ latex: raw`([-1, 0], t, f([-1, 0], t))`, parametricDomain: { min: -2, max: 0 }, color: desmosRed, secret: true },
+				{ latex: raw`(t, [-2, 0], f(t, [-2, 0]))`, parametricDomain: { min: -1, max: 0 }, color: desmosColors.red, secret: true },
+				{ latex: raw`([-1, 0], t, f([-1, 0], t))`, parametricDomain: { min: -2, max: 0 }, color: desmosColors.red, secret: true },
 			]
 		},
 
@@ -133,7 +128,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \frac{xy}{2} - x - y \{0 \leq x \leq 2\}\{ 0 \leq y \leq 2x \}`, color: desmosPurple },
+				{ latex: raw`f(x, y) = \frac{xy}{2} - x - y \{0 \leq x \leq 2\}\{ 0 \leq y \leq 2x \}`, color: desmosColors.purple },
 			]
 		},
 	});

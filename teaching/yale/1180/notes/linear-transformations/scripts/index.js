@@ -1,9 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -22,10 +19,10 @@ export default function()
 				...getDesmosPoint({
 					point: ["a", 0],
 					dragMode: desmosDragModes.X,
-					color: desmosRed
+					color: desmosColors.red
 				}),
-				...getDesmosVector({ from: [0, 0], to: ["a", "0"], color: desmosBlue }),
-				...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosPurple }),
+				...getDesmosVector({ from: [0, 0], to: ["a", "0"], color: desmosColors.blue }),
+				...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosColors.purple }),
 			]
 		},
 
@@ -42,30 +39,34 @@ export default function()
 				...getDesmosSlider({ expression: "x_1 = 2", secret: false }),
 				...getDesmosSlider({ expression: "x_2 = 1", secret: false }),
 				
-				...getDesmosPoint({ point: ["a_{11}", "a_{21}"], color: desmosRed }),
-				...getDesmosPoint({ point: ["a_{12}", "a_{22}"], color: desmosBlue }),
-				...getDesmosPoint({ point: ["x_1", "x_2"], color: desmosPurple }),
+				...getDesmosPoint({ point: ["a_{11}", "a_{21}"], color: desmosColors.red }),
+				...getDesmosPoint({ point: ["a_{12}", "a_{22}"], color: desmosColors.blue }),
+				...getDesmosPoint({ point: ["x_1", "x_2"], color: desmosColors.purple }),
 
-				...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosRed }),
-				...getDesmosVector({ from: [0, 0], to: [0, 1], color: desmosBlue }),
-				...getDesmosVector({ from: [0, 0], to: ["x_1", "x_2"], color: desmosPurple }),
+				...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosColors.red }),
+				...getDesmosVector({ from: [0, 0], to: [0, 1], color: desmosColors.blue }),
+				...getDesmosVector({
+					from: [0, 0],
+					to: ["x_1", "x_2"],
+					color: desmosColors.purple
+				}),
 
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["a_{11}", "a_{21}"],
-					color: desmosRed
+					color: desmosColors.red
 				}),
 
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["a_{12}", "a_{22}"],
-					color: desmosBlue
+					color: desmosColors.blue
 				}),
 
 				...getDesmosVector({
 					from: [0, 0],
 					to: ["a_{11}x_1 + a_{12}x_2", "a_{21}x_1 + a_{22}x_2"],
-					color: desmosPurple
+					color: desmosColors.purple
 				}),
 			]
 		},

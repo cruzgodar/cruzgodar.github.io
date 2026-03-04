@@ -1,10 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosDragModes,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors,
+	desmosDragModes
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -17,12 +13,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosBlack },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.black },
 				{ latex: raw`s = 0` },
-				{ latex: raw`(\cos(s), \sin(s))`, color: desmosPurple, dragMode: desmosDragModes.XY },
-				{ latex: raw`y = \sin(s) - \cot(s)(x - \cos(s))`, color: desmosRed, secret: true },
-				{ latex: raw`x = \cos(s) \{s = 0\}`, color: desmosRed, secret: true },
-				{ latex: raw`x = \cos(s) \{s = \pi\}`, color: desmosRed, secret: true }
+				{ latex: raw`(\cos(s), \sin(s))`, color: desmosColors.purple, dragMode: desmosDragModes.XY },
+				{ latex: raw`y = \sin(s) - \cot(s)(x - \cos(s))`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = \cos(s) \{s = 0\}`, color: desmosColors.red, secret: true },
+				{ latex: raw`x = \cos(s) \{s = \pi\}`, color: desmosColors.red, secret: true }
 			]
 		},
 
@@ -32,12 +28,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x)`, color: desmosPurple },
-				{ latex: raw`f'(x)`, color: desmosBlue, secret: true },
+				{ latex: raw`f(x) = \sin(x)`, color: desmosColors.purple },
+				{ latex: raw`f'(x)`, color: desmosColors.blue, secret: true },
 				{ latex: raw`a = 0` },
-				{ latex: raw`(a, f(a))`, secret: true, color: desmosPurple },
-				{ latex: raw`(a, f'(a))`, color: desmosBlue, secret: true, showLabel: true },
-				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosRed, secret: true }
+				{ latex: raw`(a, f(a))`, secret: true, color: desmosColors.purple },
+				{ latex: raw`(a, f'(a))`, color: desmosColors.blue, secret: true, showLabel: true },
+				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosColors.red, secret: true }
 			]
 		},
 
@@ -49,10 +45,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = e^x`, color: desmosPurple },
+				{ latex: raw`f(x) = e^x`, color: desmosColors.purple },
 				{ latex: raw`a = 0` },
-				{ latex: raw`(a, f(a))`, secret: true, color: desmosPurple, showLabel: true },
-				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosBlue, secret: true }
+				{ latex: raw`(a, f(a))`, secret: true, color: desmosColors.purple, showLabel: true },
+				{ latex: raw`y = f(a) + f'(a)(x - a)`, color: desmosColors.blue, secret: true }
 			]
 		},
 	});

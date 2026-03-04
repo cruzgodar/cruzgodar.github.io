@@ -1,9 +1,8 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs,
-    desmosPurple,
-    getDesmosSlider
+	createDesmosGraphs, desmosColors,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -36,7 +35,7 @@ export default function()
 
 				{ latex: raw`A = [(a, b) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`B = [(f_1(a, b), f_2(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
-				{ latex: raw`A + \frac{ts}{25}B`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{ts}{25}B`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
 
 				{ latex: raw`S = [\arctan(f_2(a, b), f_1(a, b)) \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
 				{ latex: raw`M = [\left|(f_2(a, b), f_1(a, b))\right| \for a = [-n, -n+1, ..., n], b = [-n, -n+1, ..., n]]`, hidden: true, secret: true },
@@ -45,8 +44,8 @@ export default function()
 				{ latex: raw`T_1 = -(.35\cos(S + 0.5), .35\sin(S + 0.5))`, hidden: true, secret: true },
 				{ latex: raw`T_2 = -(.35\cos(S - 0.5), .35\sin(S - 0.5))`, hidden: true, secret: true },
 				
-				{ latex: raw`A + \frac{s}{25}B + tsL(T_1)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`A + \frac{s}{25}B + tsL(T_2)`, color: desmosPurple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_1)`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`A + \frac{s}{25}B + tsL(T_2)`, color: desmosColors.purple, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 	});

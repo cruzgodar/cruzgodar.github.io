@@ -1,10 +1,6 @@
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint,
 	getDesmosSlider,
 	getDesmosVector
@@ -43,7 +39,7 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["c", "d"],
-					color: desmosBlack,
+					color: desmosColors.black,
 					dragMode: desmosDragModes.XY,
 					secret: false,
 				}),
@@ -51,33 +47,33 @@ export default function()
 				...(Array(5).fill().map((_, i) => getDesmosVector({
 					from: [`-A[${i + 1}]`, `A[${i + 1}]`],
 					to: [`-A[${i + 2}]`, `A[${i + 2}]`],
-					color: desmosRed,
+					color: desmosColors.red,
 					secret: true
 				})).flat()),
 
 				...(Array(5).fill().map((_, i) => getDesmosVector({
 					from: [`-a + 2B[${i + 1}]`, `a + B[${i + 1}]`],
 					to: [`-a + 2B[${i + 2}]`, `a + B[${i + 2}]`],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					secret: true
 				})).flat()),
 
 				...getDesmosVector({
 					from: [raw`-\floor(\abs(a))\sign(a)`, raw`\floor(\abs(a))\sign(a)`],
 					to: [raw`-(a + 0.00001\sign(a))`, raw`(a + 0.00001\sign(a))`],
-					color: desmosRed,
+					color: desmosColors.red,
 				}),
 
 				...getDesmosVector({
 					from: [raw`-a + 2\floor(\abs(b))\sign(b)`, raw`a + \floor(\abs(b))\sign(b)`],
 					to: [raw`-a + 2(b + 0.00001\sign(b))`, raw`a + (b + 0.00001\sign(b))`],
-					color: desmosBlue,
+					color: desmosColors.blue,
 				}),
 
 				...getDesmosVector({
 					from: ["0", "0"],
 					to: ["c", "d"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 				}),
 			]
 		}

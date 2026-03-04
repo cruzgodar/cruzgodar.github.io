@@ -2,13 +2,9 @@ import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosGraphs,
 	desmosGraphsLoaded,
-	desmosPurple,
-	desmosRed,
 	getColoredParametricCurve,
 	getDesmosBounds,
 	getDesmosSlider,
@@ -36,9 +32,9 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosBlack },
-				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosBlack },
-				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosBlack },
+				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosColors.black },
+				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosColors.black },
+				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosColors.black },
 
 				...getDesmosSlider({
 					expression: raw`x_0 = 0.75`,
@@ -47,7 +43,7 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`x = x_0\{ 0 \leq y \leq \sqrt{x_0} \}`, color: desmosPurple },
+				{ latex: raw`x = x_0\{ 0 \leq y \leq \sqrt{x_0} \}`, color: desmosColors.purple },
 			]
 		},
 
@@ -59,28 +55,28 @@ export default function()
 			[
 				{ latex: raw`f(x) = \sqrt{x}`, hidden: true, secret: true },
 
-				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosPurple },
-				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosBlue },
-				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosRed },
+				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosColors.purple },
+				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosColors.blue },
+				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosColors.red },
 
 				...getDesmosVector({
 					from: ["0.4", "f(0.4)"],
 					to: ["0.4 + 0.001", "f(0.4) + 0.001f'(0.4)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					arrowSize: "0.05",
 				}),
 
 				...getDesmosVector({
 					from: ["0.5", "0"],
 					to: ["0.5 - 0.001", "0"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					arrowSize: "0.05",
 				}),
 
 				...getDesmosVector({
 					from: ["1", "0.5"],
 					to: ["1", "0.5 - 0.001"],
-					color: desmosRed,
+					color: desmosColors.red,
 					arrowSize: "0.05",
 				}),
 			]
@@ -94,28 +90,28 @@ export default function()
 			[
 				{ latex: raw`f(x) = \sqrt{x}`, hidden: true, secret: true },
 
-				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosPurple },
-				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosBlue },
-				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosRed },
+				{ latex: raw`y = \sqrt{x}\{ 0 \leq x \leq 1 \}`, color: desmosColors.purple },
+				{ latex: raw`y = 0\{ 0 \leq x \leq 1 \}`, color: desmosColors.blue },
+				{ latex: raw`x = 1\{ 0 \leq y \leq 1 \}`, color: desmosColors.red },
 
 				...getDesmosVector({
 					from: ["0.4", "f(0.4)"],
 					to: ["0.4 - 0.001", "f(0.4) - 0.001f'(0.4)"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					arrowSize: "0.05",
 				}),
 
 				...getDesmosVector({
 					from: ["0.5", "0"],
 					to: ["0.5 + 0.001", "0"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					arrowSize: "0.05",
 				}),
 
 				...getDesmosVector({
 					from: ["1", "0.5"],
 					to: ["1", "0.5 + 0.001"],
-					color: desmosRed,
+					color: desmosColors.red,
 					arrowSize: "0.05",
 				}),
 			]
@@ -127,7 +123,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`(t - \sin(2\pi t), 1 - \cos(2\pi t))`, color: desmosPurple },
+				{ latex: raw`(t - \sin(2\pi t), 1 - \cos(2\pi t))`, color: desmosColors.purple },
 			]
 		},
 

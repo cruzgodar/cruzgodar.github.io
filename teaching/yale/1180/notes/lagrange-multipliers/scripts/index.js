@@ -1,9 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -17,9 +13,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`2x + xy + 5y = c`, color: desmosPurple },
+				{ latex: raw`2x + xy + 5y = c`, color: desmosColors.purple },
 
-				{ latex: raw`10x + 5y = 100`, color: desmosBlue },
+				{ latex: raw`10x + 5y = 100`, color: desmosColors.blue },
 
 				...getDesmosSlider({
 					expression: raw`c = 100`,
@@ -40,13 +36,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x, y) = 2x^2+\sqrt{3}xy+3y^2 `, color: desmosPurple },
+				{ latex: raw`f(x, y) = 2x^2+\sqrt{3}xy+3y^2 `, color: desmosColors.purple },
 
-				{ latex: raw`2x^2+\sqrt{3}xy+3y^2\left\{ x^2 + y^2 = 1\right\}`, color: desmosBlue },
+				{ latex: raw`2x^2+\sqrt{3}xy+3y^2\left\{ x^2 + y^2 = 1\right\}`, color: desmosColors.blue },
 
-				{ latex: raw`(\frac{1}{2}, \frac{\sqrt{3}}{2}, f(\frac{1}{2}, \frac{\sqrt{3}}{2}) ), (-\frac{1}{2}, -\frac{\sqrt{3}}{2}, f(-\frac{1}{2}, -\frac{\sqrt{3}}{2}) )`, color: desmosOrange },
+				{ latex: raw`(\frac{1}{2}, \frac{\sqrt{3}}{2}, f(\frac{1}{2}, \frac{\sqrt{3}}{2}) ), (-\frac{1}{2}, -\frac{\sqrt{3}}{2}, f(-\frac{1}{2}, -\frac{\sqrt{3}}{2}) )`, color: desmosColors.orange },
 
-				{ latex: raw`(-\frac{\sqrt{3}}{2}, \frac{1}{2}, f(-\frac{\sqrt{3}}{2}, \frac{1}{2}) ), (\frac{\sqrt{3}}{2}, -\frac{1}{2}, f(\frac{\sqrt{3}}{2}, -\frac{1}{2}) )`, color: desmosRed },
+				{ latex: raw`(-\frac{\sqrt{3}}{2}, \frac{1}{2}, f(-\frac{\sqrt{3}}{2}, \frac{1}{2}) ), (\frac{\sqrt{3}}{2}, -\frac{1}{2}, f(\frac{\sqrt{3}}{2}, -\frac{1}{2}) )`, color: desmosColors.red },
 			]
 		},
 	});

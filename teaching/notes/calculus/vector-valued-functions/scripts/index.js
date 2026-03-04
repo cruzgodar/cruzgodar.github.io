@@ -1,8 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
+	createDesmosGraphs, desmosColors,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -18,12 +15,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(\cos(t), \sin(t), 1)`, color: desmosPurple, parametricDomain: { min: -5, max: 5 } },
-				{ latex: raw`v = \vector((0, 0, 0), (\cos(s), \sin(s), 1))`, color: desmosBlue, hidden: true, secret: true, },
-				{ latex: raw`v`, color: desmosBlue, },
-				{ latex: raw`(\cos(t), \sin(t), t)`, color: desmosPurple, parametricDomain: { min: -5, max: 5 }, hidden: true },
-				{ latex: raw`w = \vector((0, 0, 0), (\cos(s), \sin(s), s))`, color: desmosBlue, hidden: true, secret: true, },
-				{ latex: raw`w`, color: desmosBlue, hidden: true },
+				{ latex: raw`(\cos(t), \sin(t), 1)`, color: desmosColors.purple, parametricDomain: { min: -5, max: 5 } },
+				{ latex: raw`v = \vector((0, 0, 0), (\cos(s), \sin(s), 1))`, color: desmosColors.blue, hidden: true, secret: true, },
+				{ latex: raw`v`, color: desmosColors.blue, },
+				{ latex: raw`(\cos(t), \sin(t), t)`, color: desmosColors.purple, parametricDomain: { min: -5, max: 5 }, hidden: true },
+				{ latex: raw`w = \vector((0, 0, 0), (\cos(s), \sin(s), s))`, color: desmosColors.blue, hidden: true, secret: true, },
+				{ latex: raw`w`, color: desmosColors.blue, hidden: true },
 				...getDesmosSlider({
 					expression: raw`s = 1`,
 					min: -5,
@@ -43,9 +40,9 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 + z^2 = 9`, color: desmosPurple },
-				{ latex: raw`z = x + 4`, color: desmosBlue },
-				{ latex: raw`x^2 + y^2 + z^2 = 9 \left\{ z = x + 4 \right\}`, color: desmosRed },
+				{ latex: raw`x^2 + y^2 + z^2 = 9`, color: desmosColors.purple },
+				{ latex: raw`z = x + 4`, color: desmosColors.blue },
+				{ latex: raw`x^2 + y^2 + z^2 = 9 \left\{ z = x + 4 \right\}`, color: desmosColors.red },
 			]
 		},
 
@@ -60,8 +57,8 @@ export default function()
 				{ latex: raw`X(t) = \cos(t)`, hidden: true },
 				{ latex: raw`Y(t) = \sin(t)`, hidden: true },
 				{ latex: raw`Z(t) = \frac{2}{3}t^{3/2}`, hidden: true },
-				{ latex: raw`l(t) = (X(t), Y(t), Z(t))`, color: desmosPurple, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
-				{ latex: raw`l(t)`, color: desmosPurple, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
+				{ latex: raw`l(t) = (X(t), Y(t), Z(t))`, color: desmosColors.purple, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
+				{ latex: raw`l(t)`, color: desmosColors.purple, parametricDomain: { min: 0, max: "b" }, lineWidth: 2 },
 				...getDesmosSlider({
 					expression: raw`b = 35`,
 					min: 0,
@@ -69,7 +66,7 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`\vector((0, 0, 0), l(s))`, color: desmosBlue, lineWidth: 2, secret: true },
+				{ latex: raw`\vector((0, 0, 0), l(s))`, color: desmosColors.blue, lineWidth: 2, secret: true },
 
 				...getDesmosSlider({
 					expression: raw`s = 1`,
@@ -80,11 +77,11 @@ export default function()
 				
 				{ latex: raw`d(t) = (X'(t), Y'(t), Z'(t))` },
 
-				{ latex: raw`\vector(l(s), l(s) + d(s))`, color: desmosRed, lineWidth: 2, secret: true },
+				{ latex: raw`\vector(l(s), l(s) + d(s))`, color: desmosColors.red, lineWidth: 2, secret: true },
 
-				{ latex: raw`l(A)`, points: true, color: desmosRed, hidden: true, },
+				{ latex: raw`l(A)`, points: true, color: desmosColors.red, hidden: true, },
 				
-				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), Z(A) + tZ'(A))`, color: desmosRed, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, lineWidth: 2 },
+				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), Z(A) + tZ'(A))`, color: desmosColors.red, parametricDomain: { min: raw`-\frac{b}{2a}`, max: raw`\frac{b}{2a}` }, hidden: true, lineWidth: 2 },
 
 				...getDesmosSlider({
 					expression: raw`n = 2`,

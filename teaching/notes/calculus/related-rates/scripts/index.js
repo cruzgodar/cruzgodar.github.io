@@ -1,6 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosPurple
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -13,7 +12,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(0, 0), (10t, 30), (10t, 0), (0, 0)`, color: desmosPurple, lines: true },
+				{ latex: raw`(0, 0), (10t, 30), (10t, 0), (0, 0)`, color: desmosColors.purple, lines: true },
 				{ latex: raw`t = 4` },
 			]
 		},

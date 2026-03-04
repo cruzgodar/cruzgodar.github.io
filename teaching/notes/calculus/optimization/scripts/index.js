@@ -1,9 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosOrange,
-	desmosPurple,
-	desmosRed
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -16,10 +12,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^5 - 3x^3 + x \{-1.5 \leq x \leq 1.5\}`, color: desmosPurple, secret: true },
-				{ latex: raw`(-3, 0), (-2, 2), (-1.5, f(-1.5))`, secret: true, points: false, lines: true, color: desmosPurple },
-				{ latex: raw`(-3, 0), (-1.5, f(-1.5)), (-.345, f(-.345)), (1.297, f(1.297))`, secret: true, color: desmosBlue },
-				{ latex: raw`(-2, 2), (-1.297, f(-1.297)), (.345, f(.345)), (1.5, f(1.5))`, secret: true, color: desmosRed },
+				{ latex: raw`f(x) = x^5 - 3x^3 + x \{-1.5 \leq x \leq 1.5\}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`(-3, 0), (-2, 2), (-1.5, f(-1.5))`, secret: true, points: false, lines: true, color: desmosColors.purple },
+				{ latex: raw`(-3, 0), (-1.5, f(-1.5)), (-.345, f(-.345)), (1.297, f(1.297))`, secret: true, color: desmosColors.blue },
+				{ latex: raw`(-2, 2), (-1.297, f(-1.297)), (.345, f(.345)), (1.5, f(1.5))`, secret: true, color: desmosColors.red },
 			]
 		},
 
@@ -31,8 +27,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3`, color: desmosPurple },
-				{ latex: raw`(0, 0)`, color: desmosBlue },
+				{ latex: raw`f(x) = x^3`, color: desmosColors.purple },
+				{ latex: raw`(0, 0)`, color: desmosColors.blue },
 			]
 		},
 
@@ -44,7 +40,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^5 - 3x^3 + x \left\{-2 \leq x \leq 1.5\right\}`, color: desmosPurple },
+				{ latex: raw`f(x) = x^5 - 3x^3 + x \left\{-2 \leq x \leq 1.5\right\}`, color: desmosColors.purple },
 			]
 		},
 
@@ -56,12 +52,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^5 - 3x^3 + x`, color: desmosPurple, hidden: true, secret: true },
-				{ latex: raw`f(x)`, color: desmosPurple },
-				{ latex: raw`f''(x)`, color: desmosOrange, hidden: true },
+				{ latex: raw`f(x) = x^5 - 3x^3 + x`, color: desmosColors.purple, hidden: true, secret: true },
+				{ latex: raw`f(x)`, color: desmosColors.purple },
+				{ latex: raw`f''(x)`, color: desmosColors.orange, hidden: true },
 
-				{ latex: raw`y \geq f(x) \{-.949 \leq x \leq 0, .949 \leq x\}`, color: desmosRed, secret: true },
-				{ latex: raw`y \leq f(x) \{x \leq -.949, 0 \leq x \leq .949\}`, color: desmosBlue, secret: true },
+				{ latex: raw`y \geq f(x) \{-.949 \leq x \leq 0, .949 \leq x\}`, color: desmosColors.red, secret: true },
+				{ latex: raw`y \leq f(x) \{x \leq -.949, 0 \leq x \leq .949\}`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -73,7 +69,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`g(t) = t^6 - t^4`, color: desmosPurple },
+				{ latex: raw`g(t) = t^6 - t^4`, color: desmosColors.purple },
 			]
 		}
 	});

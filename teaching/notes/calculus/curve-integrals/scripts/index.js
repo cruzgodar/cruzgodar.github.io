@@ -1,14 +1,10 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
 	desmosGraphs,
 	desmosGraphsLoaded,
-	desmosGray,
-	desmosPurple,
-	desmosRed,
 	getColoredParametricCurve,
 	getDesmosBounds,
 	getDesmosPoint,
@@ -40,7 +36,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \sin(-x) + \cos(y) + \frac{(-x + y)^3}{100} - 0.49`, color: desmosGray, hidden: false },
+				{ latex: raw`f(x, y) = \sin(-x) + \cos(y) + \frac{(-x + y)^3}{100} - 0.49`, color: desmosColors.gray, hidden: false },
 				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
 				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
@@ -64,20 +60,20 @@ export default function()
 				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
 
 				// Fills
-				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosColors.red, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosColors.blue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
 
 				// Top
-				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Bottom
-				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosColors.red, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosColors.blue, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Side boundaries
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -91,7 +87,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosGray, hidden: false },
+				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosColors.gray, hidden: false },
 				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
 				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
@@ -115,20 +111,20 @@ export default function()
 				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
 
 				// Fills
-				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosColors.red, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosColors.blue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
 
 				// Top
-				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Bottom
-				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosColors.red, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosColors.blue, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Side boundaries
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_1(s([c,d]).x, s([c,d]).y))`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s([c,d]).x, s([c,d]).y, tf_2(s([c,d]).x, s([c,d]).y))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -149,7 +145,7 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosGray, hidden: true },
+				{ latex: raw`f(x, y) = \sin(y) + \cos(-x) + \frac{(y - x)^3}{100} - \frac{1}{2}`, color: desmosColors.gray, hidden: true },
 				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
 				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
@@ -177,28 +173,28 @@ export default function()
 				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
 
 				// Fills
-				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_1(X(A), Y(A)))`, color: desmosRed, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_1(X(A), Y(A)))`, color: desmosColors.red, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + uX'(A), Y(A) + uY'(A), vf_2(X(A), Y(A)))`, color: desmosColors.blue, parametricDomain3Du: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
 
 				// Top
-				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Rectangle bottoms
-				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), 0)`, color: desmosRed, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
-				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), 0)`, color: desmosBlue, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
+				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), 0)`, color: desmosColors.red, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
+				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), 0)`, color: desmosColors.blue, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
 
 				// Rectangle tops
-				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), f_1(X(A), Y(A)))`, color: desmosRed, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
-				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), f_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
+				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), f_1(X(A), Y(A)))`, color: desmosColors.red, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
+				{ latex: raw`(X(A) + tX'(A), Y(A) + tY'(A), f_2(X(A), Y(A)))`, color: desmosColors.blue, parametricDomain: { min: raw`-\frac{b - a}{2n}`, max: raw`\frac{b - a}{2n}` }, secret: false },
 
 				// Rectangle left sides
-				{ latex: raw`(X(A) + (-\frac{b - a}{2n})X'(A), Y(A) + (-\frac{b - a}{2n})Y'(A), tf_1(X(A), Y(A)))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(X(A) + (-\frac{b - a}{2n})X'(A), Y(A) + (-\frac{b - a}{2n})Y'(A), tf_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + (-\frac{b - a}{2n})X'(A), Y(A) + (-\frac{b - a}{2n})Y'(A), tf_1(X(A), Y(A)))`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + (-\frac{b - a}{2n})X'(A), Y(A) + (-\frac{b - a}{2n})Y'(A), tf_2(X(A), Y(A)))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 
 				// Rectangle right sides
-				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_1(X(A), Y(A)))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_2(X(A), Y(A)))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_1(X(A), Y(A)))`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(X(A) + (\frac{b - a}{2n})X'(A), Y(A) + (\frac{b - a}{2n})Y'(A), tf_2(X(A), Y(A)))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -212,7 +208,7 @@ export default function()
 			
 			expressions:
 			[
-				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 + 2y^2) - \frac{5}{4}`, color: desmosGray, hidden: true },
+				{ latex: raw`f(x, y) = \frac{1}{4}(x^2 + 2y^2) - \frac{5}{4}`, color: desmosColors.gray, hidden: true },
 				{ latex: raw`f_1(x, y) = f(x, y)\{ f(x, y) \geq 0 \}`, hidden: true, secret: true },
 				{ latex: raw`f_2(x, y) = f(x, y)\{ f(x, y) \leq 0 \}`, hidden: true, secret: true },
 
@@ -239,23 +235,23 @@ export default function()
 				{ latex: raw`d = b \{ \left|s(b) - s(a)\right| > 0 \}`, hidden: true, secret: true },
 
 				// Fills
-				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosRed, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosBlue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_1(s(u).x, s(u).y))`, color: desmosColors.red, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(u).x, s(u).y, vf_2(s(u).x, s(u).y))`, color: desmosColors.blue, parametricDomain3Du: { min: "a", max: "b" }, parametricDomain3Dv: { min: 0, max: 1 }, secret: true },
 
 				// Top
-				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosPurple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_1(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, f_2(s(t).x, s(t).y))`, color: desmosColors.purple, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Bottom
-				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosRed, parametricDomain: { min: "a", max: "b" }, secret: true },
-				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosBlue, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_1(s(t).x, s(t).y))`, color: desmosColors.red, parametricDomain: { min: "a", max: "b" }, secret: true },
+				{ latex: raw`(s(t).x, s(t).y, 0f_2(s(t).x, s(t).y))`, color: desmosColors.blue, parametricDomain: { min: "a", max: "b" }, secret: true },
 
 				// Places to draw the side boundaries
 				{ latex: raw`I = [0, \frac{1}{2}, 1]`, secret: true },
 
 				// Side boundaries
-				{ latex: raw`(s(I).x, s(I).y, tf_1(s(I).x, s(I).y))`, color: desmosRed, parametricDomain: { min: 0, max: 1 }, secret: true },
-				{ latex: raw`(s(I).x, s(I).y, tf_2(s(I).x, s(I).y))`, color: desmosBlue, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(I).x, s(I).y, tf_1(s(I).x, s(I).y))`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+				{ latex: raw`(s(I).x, s(I).y, tf_2(s(I).x, s(I).y))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 			]
 		},
 
@@ -267,10 +263,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(1, 1, 0), (0, 1, 1)`, color: desmosPurple },
+				{ latex: raw`(1, 1, 0), (0, 1, 1)`, color: desmosColors.purple },
 
-				{ latex: raw`(\cos(t), 1, \sin(t))`, color: desmosBlue, points: false, lines: true, secret: true, parametricDomain: { min: 0, max: "\\pi/2" } },
-				{ latex: raw`(1, 1, 0), (0, 1, 0), (0, 1, 1)`, color: desmosRed, points: false, lines: true, secret: true },
+				{ latex: raw`(\cos(t), 1, \sin(t))`, color: desmosColors.blue, points: false, lines: true, secret: true, parametricDomain: { min: 0, max: "\\pi/2" } },
+				{ latex: raw`(1, 1, 0), (0, 1, 0), (0, 1, 1)`, color: desmosColors.red, points: false, lines: true, secret: true },
 			]
 		},
 
@@ -310,14 +306,14 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["1", "-\\sqrt{3}"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 
 				...getDesmosPoint({
 					point: ["1", "\\sqrt{3}"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
@@ -360,14 +356,14 @@ export default function()
 
 				...getDesmosPoint({
 					point: ["-1", "-1"],
-					color: desmosBlue,
+					color: desmosColors.blue,
 					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),
 
 				...getDesmosPoint({
 					point: ["2", "2"],
-					color: desmosRed,
+					color: desmosColors.red,
 					dragMode: desmosDragModes.NONE,
 					size: 15,
 				}),

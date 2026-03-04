@@ -1,7 +1,5 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple
+	createDesmosGraphs, desmosColors
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -14,13 +12,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.purple },
 				{ latex: raw`a = 1` },
 				{ latex: raw`h = .1`, sliderBounds: { min: 0, max: 10 } },
 				{ latex: raw`m = \frac{f(a + h) - f(a)}{h}`, secret: true },
-				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
-				{ latex: raw`(a + h, f(a + h))`, color: desmosBlue, secret: true },
-				{ latex: raw`y - f(a) = m(x - a)`, color: desmosBlue, secret: true },
+				{ latex: raw`(a, f(a))`, color: desmosColors.blue, secret: true },
+				{ latex: raw`(a + h, f(a + h))`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y - f(a) = m(x - a)`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -32,10 +30,10 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.purple },
 				{ latex: raw`a = 1` },
-				{ latex: raw`(a, f(a))`, color: desmosBlue, secret: true },
-				{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true },
+				{ latex: raw`(a, f(a))`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y - f(a) = f'(a)(x - a)`, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -47,8 +45,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^2`, color: desmosPurple },
-				{ latex: raw`f'(x)`, color: desmosBlue },
+				{ latex: raw`f(x) = x^2`, color: desmosColors.purple },
+				{ latex: raw`f'(x)`, color: desmosColors.blue },
 			]
 		},
 
@@ -60,8 +58,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \sin(x) + 1 - .1x^2`, color: desmosPurple },
-				{ latex: raw`f'(x)`, color: desmosBlue, hidden: true },
+				{ latex: raw`f(x) = \sin(x) + 1 - .1x^2`, color: desmosColors.purple },
+				{ latex: raw`f'(x)`, color: desmosColors.blue, hidden: true },
 			]
 		},
 
@@ -73,7 +71,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 + 1 - 2x^2`, color: desmosPurple },
+				{ latex: raw`f(x) = x^3 + 1 - 2x^2`, color: desmosColors.purple },
 			]
 		},
 
@@ -85,7 +83,7 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \left|x\right|`, color: desmosPurple },
+				{ latex: raw`f(x) = \left|x\right|`, color: desmosColors.purple },
 			]
 		},
 	});

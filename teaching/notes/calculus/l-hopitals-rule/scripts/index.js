@@ -1,10 +1,7 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
+	createDesmosGraphs, desmosColors,
 	desmosDragModes,
 	desmosPointStyles,
-	desmosPurple,
-	desmosRed,
 	getDesmosPoint
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -18,13 +15,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`-\sin(\pi x)`, color: desmosBlue },
-				{ latex: raw`\ln(x)`, color: desmosRed },
+				{ latex: raw`-\sin(\pi x)`, color: desmosColors.blue },
+				{ latex: raw`\ln(x)`, color: desmosColors.red },
 
-				{ latex: raw`\frac{-\sin(\pi x)}{\ln(x)}`, color: desmosPurple },
+				{ latex: raw`\frac{-\sin(\pi x)}{\ln(x)}`, color: desmosColors.purple },
 				...getDesmosPoint({
 					point: ["1", "\\pi"],
-					color: desmosPurple,
+					color: desmosColors.purple,
 					style: desmosPointStyles.OPEN,
 					dragMode: desmosDragModes.NONE,
 				}),
