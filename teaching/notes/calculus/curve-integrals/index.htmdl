@@ -482,6 +482,8 @@ $$
 
 for any closed curve $C$, so long as $\vec{F}$ is conservative.
 
+We've talked a lot about path-independence, but what does it actually mean? A particularly helpful example to keep in mind is the 3D vector field of force due to gravity. A common notion in introductory physics is gravitational potential energy, which increases as we raise an object up against gravity (and can be converted into kinetic energy by releasing it). Implicit in that notion is that only raising and lowering an object's height matters; the path taken to raise an object from a low point to a high one is irrelevant. That a statement that gravity is a conservative vector field! In fact, the word conservative comes from conservation of energy, which is the equivalent idea in physics.
+
 ### exc "the Fundamental Theorem of Curve Integrals"
 
 	Let $\vec{F}$ be the vector field
