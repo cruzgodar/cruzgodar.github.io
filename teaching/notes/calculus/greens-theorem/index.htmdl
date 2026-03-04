@@ -287,10 +287,10 @@ Let's use this to find the area of something that would have previously proven i
 	2. Evaluate the circulation integral
 
 	$$
-		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r},
+		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r},
 	$$
 
-	where $C$ is the circle of radius $2$ centered at the origin, oriented counterclockwise.
+	where $C$ is the boundary of the top half of the unit circle: $x^2 + y^2 \leq 1$ and $y \geq 0$, oriented counterclockwise.
 
 	### solution
 
@@ -318,10 +318,24 @@ Let's use this to find the area of something that would have previously proven i
 		&= 6\pi.
 	$$
 
-	2. While we certainly *could* evaluate that curve integral, it would be full of high powers on trig functions, which is something we'd really like to avoid. Let's try Green's Theorem instead:
+	2. While we could try evaluate that curve integral, it would be full of high powers on trig functions and also a $\sin(t)$ inside of an exponential, which is something we'd really like to avoid. Let's try Green's Theorem instead:
 
 	$$
-		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r} = \iint_{}
+		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r} = \iint_{D} \left( 3x^2 + 3y^2 \right)\d A,
+	$$
+
+	where $D$ is the solid semicircle whose boundary is $C$. Now that disk is not particularly nice to integrate over... unless we switch to polar coordinates! That disk is given by $0 \leq r \leq 1$ for $0 \leq \theta \leq \pi$, and so we have
+
+	$$
+		\iint_{D} \left( 3x^2 + 3y^2 \right)\d A &= \int_0^\pi \!\!\! \int_0^1 3r^2\,r\,\d r\,\d \theta
+
+		&= \int_0^\pi \left. \left[ \frac{3}{4}r^4 \right] \right|_0^1 \d \theta
+
+		&= \int_0^\pi \frac{3}{4}\, \d \theta
+
+		&= \int_0^\pi \frac{3}{4}\, \d \theta
+
+		&= \frac{3}{4}\pi.
 	$$
 
 ###
