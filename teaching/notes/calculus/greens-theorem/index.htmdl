@@ -203,19 +203,19 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 		
 		&= -\oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
 
-		&= \iint_R 2\,\d A
+		&= -\iint_R 2\,\d A
 
-		&= \int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
+		&= -\int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
 
-		&= \int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
+		&= -\int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
 
-		&= \int_0^1 \left( 2-2x \right) \,\d x
+		&= -\int_0^1 \left( 2-2x \right) \,\d x
 
-		&= \left. \left[ 2x - x^2 \right] \right|_0^1
+		&= -\left. \left[ 2x - x^2 \right] \right|_0^1
 
-		&= 2 - 1
+		&= -(2 - 1)
 
-		&= 1.
+		&= -1.
 	$$
 
 ###
