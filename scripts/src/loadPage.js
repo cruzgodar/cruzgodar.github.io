@@ -351,22 +351,38 @@ function packageSolution(solutionElement, showButton = true)
 				window.getComputedStyle(textButtonsElement).marginTop
 			);
 
-			solutionElement.style.height = 0;
 			solutionElement.style.position = "relative";
 
-			await animate((t) =>
+			if (siteSettings.reduceMotion && document.startViewTransition)
 			{
-				solutionElement.style.height = `${solutionElementHeight * t}px`;
-				textButtonsElement.style.height = `${textButtonsElementHeight * (1 - t)}px`;
-				textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - t)}px`;
-				textButtonsElement.style.opacity = 1 - t;
-				solutionElement.style.opacity = t;
-			}, 450, "easeOutQuint");
+				document.startViewTransition(() =>
+				{
+					solutionElement.style.height = `${solutionElementHeight}px`;
+					solutionElement.style.opacity = 1;
+					
+					solutionElement.style.height = "auto";
+					solutionElement.style.width = "auto";
+					solutionElement.style.removeProperty("z-index");
+					textButtonsElement.remove();
+				});
+			}
 
-			solutionElement.style.height = "auto";
-			solutionElement.style.width = "auto";
-			solutionElement.style.removeProperty("z-index");
-			textButtonsElement.remove();
+			else
+			{
+				await animate((t) =>
+				{
+					solutionElement.style.height = `${solutionElementHeight * t}px`;
+					textButtonsElement.style.height = `${textButtonsElementHeight * (1 - t)}px`;
+					textButtonsElement.style.marginTop = `${textButtonsElementMarginTop * (1 - t)}px`;
+					textButtonsElement.style.opacity = 1 - t;
+					solutionElement.style.opacity = t;
+				}, 450, "easeOutQuint");
+
+				solutionElement.style.height = "auto";
+				solutionElement.style.width = "auto";
+				solutionElement.style.removeProperty("z-index");
+				textButtonsElement.remove();
+			}
 		}
 	});
 }

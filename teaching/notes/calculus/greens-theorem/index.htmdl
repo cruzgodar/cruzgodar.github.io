@@ -114,6 +114,16 @@ At long last, we can add all of those curve integrals by writing the boundary of
 
 	and its positive oriented boundary. Were you right?
 
+	### solution
+
+	1. The unit disk, for example, has a boundary that's counterclockwise, since that keeps the disk on the left the entire way.
+
+	### desmos unitDiskBoundary
+
+	3. This one is a little weird! The outside boundary circle is still oriented counterclockwise, but the inner one is clockwise --- being on the inside effectively reverses which direction is considered positive. It's a good reminder not to rely too heavily on positive orientation always being counterclockwise!
+
+	### desmos clockwiseBoundary
+
 ###
 
 The use of the partial symbol for boundary is potentially a little confusing, but it comes from a part of math upstream from us that has good reason for it. It also won't conflict with any of our current notation, and so we'll go along with it. With this notation, we have
@@ -177,6 +187,36 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 	$$
 
 	where $T$ is the triangle with vertices $(0, 0)$, $(1, 0)$, and $(0, 1)$, oriented clockwise.
+
+	### solution
+
+	As a curve integral, this looks absolutely horrid, since we'd have to deal with both of those integrands. Instead, though, we can apply Green's Theorem on this triangle! If $R$ is the filled-in triangle with the vertices as given, then $T = -\p R$, since it's oriented clockwise and is on the outside of the region. The integrand in Green's Theorem is
+
+	$$
+		p/px \left[ 2x + \sin\left( y^2 \right) \right] - p/py \left[ \sqrt{x^3 + 1} \right] &= 2,
+	$$
+
+	and so the whole integral becomes
+
+	$$
+		\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r} &= \oint_{-\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
+		
+		&= -\oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
+
+		&= \iint_R 2\,\d A
+
+		&= \int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
+
+		&= \int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
+
+		&= \int_0^1 \left( 2-2x \right) \,\d x
+
+		&= \left. \left[ 2x - x^2 \right] \right|_0^1
+
+		&= 2 - 1
+
+		&= 1.
+	$$
 
 ###
 
@@ -242,7 +282,7 @@ Let's use this to find the area of something that would have previously proven i
 
 ### exc "Green's Theorem"
 
-	1. Compute the area of the ellipse $$\frac{x^2}{9} + \frac{y^2}{4} = 1$$.
+	1. Compute the area of the ellipse $E$ given by $$\frac{x^2}{9} + \frac{y^2}{4} \leq 1$$.
 
 	2. Evaluate the circulation integral
 
@@ -250,7 +290,39 @@ Let's use this to find the area of something that would have previously proven i
 		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r},
 	$$
 
-	where $C$ is the circle of radius $2$ centered at the origin.
+	where $C$ is the circle of radius $2$ centered at the origin, oriented counterclockwise.
+
+	### solution
+
+	1. Let's begin by parameterizing the boundary:
+
+	$$
+		\vec{r}(t) = \left< 3\cos(t), 2\sin(t) \right>,\quad t \in [0, 2\pi].
+	$$
+
+	Now we can set up the area integral in terms of Green's Theorem, which should hopefully be more pleasant than the double integral. None of the forms of the area integral look more pleasant than any other, so let's just use the first one. We have
+
+	$$
+		|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
+
+		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\,\d t
+
+		&= \int_0^{2\pi} 6\cos^2(t)\,\d t
+
+		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\,\d t
+
+		&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
+
+		&= 6\pi + \frac{3}{2}\sin(4\pi)
+
+		&= 6\pi.
+	$$
+
+	2. While we certainly *could* evaluate that curve integral, it would be full of high powers on trig functions, which is something we'd really like to avoid. Let's try Green's Theorem instead:
+
+	$$
+		\oint_C \left< -y^3, x^3 \right> \bullet \d\vec{r} = \iint_{}
+	$$
 
 ###
 

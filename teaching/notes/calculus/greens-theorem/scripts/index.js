@@ -28,7 +28,7 @@ export default function()
 	createDesmosGraphs({
 		slicingAndBoundaries:
 		{
-			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -3, zmax: 3 },
+			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25 },
 			
 			expressions:
 			[
@@ -49,7 +49,7 @@ export default function()
 
 		negativeBoundaryCurve:
 		{
-			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -3, zmax: 3 },
+			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25 },
 			
 			expressions:
 			[
@@ -82,9 +82,117 @@ export default function()
 			]
 		},
 
+		unitDiskBoundary:
+		{
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25 },
+			
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 \leq 1`, color: desmosColors.purple },
+				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.blue },
+
+				...getDesmosVector({
+					from: ["\\frac{1}{\\sqrt{2}}", "\\frac{1}{\\sqrt{2}}"],
+					to: ["\\frac{1}{\\sqrt{2}} - 0.001", "\\frac{1}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.05",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{1}{\\sqrt{2}}", "\\frac{1}{\\sqrt{2}}"],
+					to: ["-\\frac{1}{\\sqrt{2}} - 0.001", "\\frac{1}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.05",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{1}{\\sqrt{2}}", "-\\frac{1}{\\sqrt{2}}"],
+					to: ["-\\frac{1}{\\sqrt{2}} + 0.001", "-\\frac{1}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.05",
+				}),
+
+				...getDesmosVector({
+					from: ["\\frac{1}{\\sqrt{2}}", "-\\frac{1}{\\sqrt{2}}"],
+					to: ["\\frac{1}{\\sqrt{2}} + 0.001", "-\\frac{1}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.05",
+				}),
+			]
+		},
+
+		clockwiseBoundary:
+		{
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5 },
+			
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 \leq 4 \{ 1 \leq x^2 + y^2 \}`, color: desmosColors.purple },
+				{ latex: raw`x^2 + y^2 = [1, 4]`, color: desmosColors.blue },
+
+				...getDesmosVector({
+					from: ["\\frac{1}{\\sqrt{2}}", "\\frac{1}{\\sqrt{2}}"],
+					to: ["\\frac{1}{\\sqrt{2}} + 0.001", "\\frac{1}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{1}{\\sqrt{2}}", "\\frac{1}{\\sqrt{2}}"],
+					to: ["-\\frac{1}{\\sqrt{2}} + 0.001", "\\frac{1}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{1}{\\sqrt{2}}", "-\\frac{1}{\\sqrt{2}}"],
+					to: ["-\\frac{1}{\\sqrt{2}} - 0.001", "-\\frac{1}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["\\frac{1}{\\sqrt{2}}", "-\\frac{1}{\\sqrt{2}}"],
+					to: ["\\frac{1}{\\sqrt{2}} - 0.001", "-\\frac{1}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+
+
+				...getDesmosVector({
+					from: ["\\frac{2}{\\sqrt{2}}", "\\frac{2}{\\sqrt{2}}"],
+					to: ["\\frac{2}{\\sqrt{2}} - 0.001", "\\frac{2}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{2}{\\sqrt{2}}", "\\frac{2}{\\sqrt{2}}"],
+					to: ["-\\frac{2}{\\sqrt{2}} - 0.001", "\\frac{2}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["-\\frac{2}{\\sqrt{2}}", "-\\frac{2}{\\sqrt{2}}"],
+					to: ["-\\frac{2}{\\sqrt{2}} + 0.001", "-\\frac{2}{\\sqrt{2}} - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["\\frac{2}{\\sqrt{2}}", "-\\frac{2}{\\sqrt{2}}"],
+					to: ["\\frac{2}{\\sqrt{2}} + 0.001", "-\\frac{2}{\\sqrt{2}} + 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+			]
+		},
+
 		positiveBoundaryCurve:
 		{
-			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -3, zmax: 3 },
+			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25 },
 			
 			expressions:
 			[
