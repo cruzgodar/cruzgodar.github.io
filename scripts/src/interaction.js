@@ -130,7 +130,7 @@ function handleFullscreenButtonPress()
 	{
 		const applet = currentlyLoadedApplets[i];
 
-		if (!applet.allowFullscreenWithKeyboard)
+		if (!applet.allowFullscreenWithKeyboard || applet.destroyed)
 		{
 			continue;
 		}
@@ -195,6 +195,19 @@ function handleFullscreenButtonPress()
 		currentlyLoadedApplets.length === 0
 		|| !currentlyLoadedApplets[minIndex]?.allowFullscreenWithKeyboard
 	) {
+		return;
+	}
+
+	const applet = currentlyLoadedApplets[minIndex];
+
+	if (!applet.canvas || !document.body.contains(applet.canvas))
+	{
+		return;
+	}
+
+	const rect = applet.canvas.getBoundingClientRect();
+	if (rect.bottom < 0 || rect.top > window.innerHeight)
+	{
 		return;
 	}
 
