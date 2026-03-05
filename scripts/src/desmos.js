@@ -634,38 +634,44 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		fullscreenButton.addEventListener("click", () =>
 		{
-			// Look up the canvas fresh each time, since ephemeral applets
-			// replace the canvas element when they're recreated.
-			const canvas = border.querySelector("canvas");
-
 			if (isFullscreen(border))
 			{
-				exitFullscreen({
-					element: border,
-					callback: () =>
-					{
-						enterIcon.style.display = "";
-						exitIcon.style.display = "none";
-
-						if (canvas?.wilson)
-						{
-							canvas.wilson.exitExternalFullscreen();
-						}
-					}
-				});
+				exitFullscreen({ element: border });
 			}
 			else
 			{
+				// Look up the canvas fresh, since ephemeral applets
+				// replace the canvas element when they're recreated.
+				const canvas = border.querySelector("canvas");
+
 				enterFullscreen({
 					element: border,
 					callback: () =>
 					{
+						desmosGraphs[element.id].resize();
+
 						enterIcon.style.display = "none";
 						exitIcon.style.display = "";
 
 						if (canvas?.wilson)
 						{
 							canvas.wilson.enterExternalFullscreen();
+						}
+					},
+					exitCallback: () =>
+					{
+						// Look up canvas fresh — it may have been
+						// replaced by ephemeral applet recreation.
+						const canvas = border.querySelector("canvas");
+
+						desmosGraphs[element.id].resize();
+
+						enterIcon.style.display = "";
+						exitIcon.style.display = "none";
+
+						if (canvas?.wilson)
+						{
+							canvas.wilson.exitExternalFullscreen();
 						}
 					}
 				});

@@ -195,6 +195,7 @@ export function isFullscreen(element)
 export async function enterFullscreen({
 	element,
 	callback = () => {},
+	exitCallback = () => {},
 	crossfade = siteSettings.reduceMotion,
 }) {
 	if (fullscreenData.has(element))
@@ -247,6 +248,7 @@ export async function enterFullscreen({
 		initialWindowInnerHeight: window.innerHeight,
 		preventGestures,
 		onKeydown,
+		exitCallback,
 	});
 
 	const apply = () =>
@@ -326,6 +328,7 @@ export async function exitFullscreen({
 		document.removeEventListener("gestureend", data.preventGestures);
 		document.removeEventListener("keydown", data.onKeydown);
 
+		data.exitCallback();
 		callback();
 	};
 
