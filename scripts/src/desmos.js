@@ -623,20 +623,20 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		fullscreenButton.appendChild(enterIcon);
 		fullscreenButton.appendChild(exitIcon);
 
-		fullscreenButton.style.viewTransitionName =
-			`desmos-fullscreen-button-${element.id}`;
-
 		addHoverEventWithScale({
 			element: fullscreenButton,
 			scale: 1.1,
 			addBounceOnTouch: () => true,
 		});
 
-		fullscreenButton.addEventListener("click", () =>
+		fullscreenButton.addEventListener("click", async () =>
 		{
+			fullscreenButton.style.viewTransitionName =
+				`desmos-fullscreen-button-${element.id}`;
+
 			if (isFullscreen(border))
 			{
-				exitFullscreen({ element: border });
+				await exitFullscreen({ element: border });
 			}
 			else
 			{
@@ -644,7 +644,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				// replace the canvas element when they're recreated.
 				const canvas = border.querySelector("canvas");
 
-				enterFullscreen({
+				await enterFullscreen({
 					element: border,
 					callback: () =>
 					{
@@ -676,6 +676,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					}
 				});
 			}
+
+			fullscreenButton.style.viewTransitionName = "";
 		});
 
 		border.appendChild(fullscreenButton);
@@ -926,6 +928,7 @@ export async function getDesmosScreenshot(id, forPdf = false)
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
 
 	console.log(desmosGraphs[id]);
+	console.log(desmosGraphs[id].getExpressions());
 
 	if (!is3d)
 	{
