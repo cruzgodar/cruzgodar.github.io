@@ -1,14 +1,14 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-	createDesmosGraphs, desmosColors,
-	desmosDragModes,
-	desmosGraphs,
-	desmosGraphsLoaded,
-	getColoredParametricCurve,
-	getDesmosBounds,
-	getDesmosPoint,
-	getDesmosSlider
+    createDesmosGraphs, desmosColors,
+    desmosDragModes,
+    desmosGraphs,
+    desmosGraphsLoaded,
+    getDesmosBounds,
+    getDesmosPoint,
+    getDesmosSlider,
+    getParametricCirculationCurve
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -284,7 +284,7 @@ export default function()
 				{ latex: raw`l_1(t) = (1, -\sqrt{3}) + t(0, 2\sqrt{3})` },
 				{ latex: raw`l_2(t) = (2\cos(-t), 2\sin(-t))` },
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [1, -Math.sqrt(3) + 2 * Math.sqrt(3) * t],
 					pathFunctionDesmos: raw`l_1(t)`,
@@ -294,7 +294,7 @@ export default function()
 					colorFunction
 				}),
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [2 * Math.cos(-t), 2 * Math.sin(-t)],
 					pathFunctionDesmos: raw`l_2(t)`,
@@ -334,7 +334,7 @@ export default function()
 				{ latex: raw`l_1(t) = (-1, -1) + t(3, 3)` },
 				{ latex: raw`l_2(t) = (t, t^2 - 2)` },
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [x * x, x - 2 * y],
 					pathFunction: (t) => [-1 + 3 * t, -1 + 3 * t],
 					pathFunctionDesmos: raw`l_1(t)`,
@@ -344,7 +344,7 @@ export default function()
 					colorFunction
 				}),
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [x * x, x - 2 * y],
 					pathFunction: (t) => [t, t * t - 2],
 					pathFunctionDesmos: raw`l_2(t)`,
@@ -383,7 +383,7 @@ export default function()
 			[
 				{ latex: raw`l(t) = (2\cos(3 \pi t), 2\sin(4 \pi t))` },
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [
 						-2 * Math.cos(x) * (Math.sin(Math.sin(x) + Math.sin(y))),
 						-2 * Math.cos(y) * (Math.sin(Math.sin(x) + Math.sin(y)))

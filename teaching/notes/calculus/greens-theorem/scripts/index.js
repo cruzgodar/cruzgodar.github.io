@@ -5,10 +5,10 @@ import {
 	createDesmosGraphs, desmosColors,
 	desmosGraphs,
 	desmosGraphsLoaded,
-	getColoredParametricCurve,
 	getDesmosBounds,
 	getDesmosSlider,
-	getDesmosVector
+	getDesmosVector,
+	getParametricCirculationCurve
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -249,7 +249,7 @@ export default function()
 				{ latex: raw`l_1(t) = (2\cos(t), 2\sin(t))` },
 				{ latex: raw`l_2(t) = (-\sqrt{3}, -1) + t(2\sqrt{3}, 0)` },
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [2 * Math.cos(t), 2 * Math.sin(t)],
 					pathFunctionDesmos: raw`l_1(t)`,
@@ -260,7 +260,7 @@ export default function()
 					colorFunction
 				}),
 
-				...getColoredParametricCurve({
+				...getParametricCirculationCurve({
 					fieldFunction: (x, y) => [-y, -x + y],
 					pathFunction: (t) => [-Math.sqrt(3) + 2 * Math.sqrt(3) * t, -1],
 					pathFunctionDesmos: raw`l_2(t)`,

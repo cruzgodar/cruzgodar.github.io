@@ -1077,7 +1077,7 @@ export function getDesmosBounds(desmosGraph)
 	};
 }
 
-export function getColoredParametricCurve({
+export function getParametricCirculationCurve({
 	// a function mapping x and y to a 2D vector
 	fieldFunction,
 	// a function mapping t to (x, y)
@@ -1131,6 +1131,42 @@ export function getColoredParametricCurve({
 			parametricDomain: { min: t, max: t + step },
 			color,
 			lineWidth: 5,
+			secret: true
+		};
+	});
+}
+
+
+
+export function getColored3DCurve({
+	// a function mapping t to (x, y, z).
+	// By leaving this constant even if the demsos function
+	// changes, the color can be made to be attached to the curve
+	// itself, rather than its location.
+	pathFunction,
+	// the Desmos equivalent as a function of t
+	pathFunctionDesmos,
+	minT,
+	maxT,
+	numSlices,
+	// a function mapping (x, y, z),
+	// evaluated at the midpoint of the segment,
+	// to a hex string.
+	colorFunction,
+}) {
+	return Array.from({ length: numSlices }, (_, i) =>
+	{
+		const step = (maxT - minT) / numSlices;
+		const t = minT + i * step;
+
+		const pathFunctionMidpoint = pathFunction(t + step / 2);
+
+		const color = colorFunction(pathFunctionMidpoint);
+
+		return {
+			latex: pathFunctionDesmos,
+			parametricDomain: { min: t, max: t + step },
+			color,
 			secret: true
 		};
 	});
