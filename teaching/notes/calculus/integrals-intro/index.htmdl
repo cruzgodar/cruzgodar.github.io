@@ -192,7 +192,7 @@ Since they're defined as limits of sums, integrals have many of the same nice pr
 
 
 
-### prop "basic integral properties"
+### prop "properties of integrals"
 	
 	1. $$\int_a^a f(x)\,\d x = 0$$ (lines have no area).
 	
@@ -204,11 +204,37 @@ Since they're defined as limits of sums, integrals have many of the same nice pr
 	
 	5. If $$f(x) \geq g(x)$$ on $$[a, b]$$, then $$\int_a^b f(x)\,\d x \geq \int_a^b g(x)\,\d x$$.
 	
-	Property 4 is the same kind of stitching-together property as the one for sums --- we're just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results.
-	
 ###
 
+Property 4 is the same kind of stitching-together property as the one for sums --- we're just breaking an area into two pieces. This is particularly useful for piecewise-defined functions, since we can integrate each piece separately and add up the results. Moreover, by combining properties 1 and 4, we can find a reasonable definition of an integral whose limits are ordered backwards: if $a < b$, then
 
+$$
+	\int_b^a f(x)\,\d x
+$$
+
+looks a little strange, but if we write
+
+$$
+	\int_b^a f(x)\,\d x + \int_a^b f(x)\,\d x = \int_b^b f(x)\,\d x = 0,
+$$
+
+then there's only one possible value for that out-of-order integral!
+
+### prop "integrals with limits out of order"
+
+	For any limits $a$ and $b$,
+
+	$$
+		\int_b^a f(x)\,\d x = -\int_a^b f(x)\,\d x.
+	$$
+
+###
+
+### exc "integrals with limits out of order"
+
+	Suppose $$\int_1^2 f(x)\,\d x = -3$$ and $$\int_{-3}^1 f(x)\,\d x = 1$$. What is the value of $$\int_1^{-3} f(x)\,\d x$$?
+
+###
 
 One quantity integrals let us calculate conveniently is average value --- for a list of values, we add them all up and divide by the number of values, but for a function, we'll need to be a little more careful.
 
@@ -248,7 +274,23 @@ This is a reasonable definition, since the integral is adding up the values of $
 
 
 
-In the next section, we'll take a break from computing areas to work on some machinery that will let us bypass the limit definition of the integral.
+While there are many things we can do with an object like a definite integral that gives area, one of the most interesting is to express it as a function --- we've spent a long time studying functions and their derivatives, after all. To that end, let's let $f(x)$ be a function, fix an $x$-value $a$, and define a function
+
+$$
+	g(x) = \int_a^x f(x)\,\d x.
+$$
+
+### exc "an area function"
+
+	The function $f(x)$ is graphed below.
+
+	### desmos areaFunction
+
+	1. let $$g(x) = \int_0^x f(x)\,\d x$$. Sketch a graph of $g$ on $[-4, 4]$ (I recommend starting with positive $x$-values).
+
+	2. Sketch a graph of $g'$ on $[-4, 4]$.
+
+###
 
 
 

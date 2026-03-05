@@ -319,8 +319,8 @@ export async function exitFullscreen({
 		data.placeholder.parentElement?.insertBefore(element, data.placeholder);
 		data.placeholder.remove();
 		data.container.remove();
-
 		element.classList.remove("fullscreen");
+		window.scrollTo(0, data.scrollY);
 
 		document.documentElement.style.userSelect = "auto";
 		document.removeEventListener("gesturestart", data.preventGestures);
@@ -371,8 +371,6 @@ export async function exitFullscreen({
 	{
 		apply();
 	}
-
-	window.scrollTo(0, data.scrollY);
 
 	fullscreenData.delete(element);
 }

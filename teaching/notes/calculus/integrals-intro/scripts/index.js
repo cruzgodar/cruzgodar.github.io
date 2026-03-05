@@ -96,6 +96,21 @@ export default function()
 				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.red, secret: true },
 				{ latex: raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosColors.blue, secret: true }
 			]
+		},
+
+
+
+		areaFunction:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`2 \{0 \leq x \leq 2\}`, color: desmosColors.purple },
+				{ latex: raw`4-x \{2 \leq x \leq 4\}`, color: desmosColors.purple },
+				{ latex: raw`x + 2 \{-2 \leq x \leq 0\}`, color: desmosColors.purple },
+				{ latex: raw`0 \{-4 \leq x \leq -2\}`, color: desmosColors.purple },
+			]
 		}
 	});
 }
