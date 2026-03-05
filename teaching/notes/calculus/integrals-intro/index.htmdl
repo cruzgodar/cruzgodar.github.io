@@ -232,7 +232,7 @@ then there's only one possible value for that out-of-order integral!
 
 ### exc "integrals with limits out of order"
 
-	Suppose $$\int_1^2 f(x)\,\d x = -3$$ and $$\int_{-3}^1 f(x)\,\d x = 1$$. What is the value of $$\int_1^{-3} f(x)\,\d x$$?
+	Suppose $$\int_1^2 2f(x)\,\d x = -6$$ and $$\int_{-3}^1 f(x)\,\d x = 1$$. What is the value of $$\int_2^{-3} f(x)\,\d x$$?
 
 ###
 

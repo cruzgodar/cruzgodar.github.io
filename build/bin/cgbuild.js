@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { spawnSync } from "child_process";
-import { readdirSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
@@ -93,7 +93,7 @@ function restoreStaleOutputFiles()
 		}
 
 		// If the source file is NOT modified, the output is stale --- restore it.
-		if (sourceFile && !modifiedFiles.has(sourceFile))
+		if (sourceFile && existsSync(root + sourceFile) && !modifiedFiles.has(sourceFile))
 		{
 			console.log(`Restoring ${file}`);
 

@@ -102,7 +102,7 @@ export default function()
 
 		areaFunction:
 		{
-			bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 4 },
+			bounds: { xmin: -5, xmax: 5, ymin: -2, ymax: 8 },
 
 			expressions:
 			[
