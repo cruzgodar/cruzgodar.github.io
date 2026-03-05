@@ -138,3 +138,40 @@ function calculateSimilarity(query, target)
 	// Normalize by query length
 	return Math.min(score / query.length, 0.5); // Cap at 0.5 for non-substring matches
 }
+
+// Finds named properties in a (usually Desmos calculator) object.
+export function searchProperties(obj, regex, seen = new WeakSet(), path = "")
+{
+	const results = [];
+
+	if (obj === null || typeof obj !== "object")
+	{
+		return results;
+	}
+
+	if (seen.has(obj))
+	{
+		return results;
+	}
+
+	seen.add(obj);
+
+	for (const key of Object.keys(obj))
+	{
+		const currentPath = path
+			? `${path}.${key}`
+			: key;
+
+		if (regex.test(key))
+		{
+			results.push({ path: currentPath, key, value: obj[key] });
+		}
+
+		if (obj[key] !== null && typeof obj[key] === "object")
+		{
+			results.push(...searchProperties(obj[key], regex, seen, currentPath));
+		}
+	}
+
+	return results;
+}

@@ -39,7 +39,7 @@ export default function()
 				{ latex: raw`X(u) = \tan(\pi (u - \frac{1}{2}))`, hidden: true, secret: false },
 				{ latex: raw`Y(v) = \tan(\pi (v - \frac{1}{2}))`, hidden: true, secret: false },
 				{ latex: raw`c(u, v) = \frac{1}{1 + X(u)^2 + Y(v)^2}(2X(u), 2Y(v), -1 + X(u)^2 + Y(v)^2)`, hidden: true, secret: false },
-				{ latex: raw`(1 - s) (u, v, 0) + s c(u, v)`, color: desmosColors.purple, parametricDomain3Du: { min: 0, max: 1 }, parametricDomain3Dv: { min: 0, max: 1 }, secret: false },
+				{ latex: raw`(1 - s) (u, v, 0) + s c(u, v)`, colorLatex: "C", parametricDomain3Du: { min: 0, max: 1 }, parametricDomain3Dv: { min: 0, max: 1 }, secret: false },
 
 				...getDesmosSlider({
 					expression: "s = 0",
@@ -47,6 +47,8 @@ export default function()
 					max: 1,
 					secret: false
 				}),
+
+				{ latex: raw`C = \operatorname{rgb}(255x, 255y, 127)` },
 			]
 		},
 	});

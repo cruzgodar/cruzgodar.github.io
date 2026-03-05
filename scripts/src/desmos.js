@@ -5,7 +5,7 @@ import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
-import { clamp } from "./utils.js";
+import { clamp, searchProperties } from "./utils.js";
 
 export const desmosDragModes = {
 	NONE: "NONE",
@@ -929,6 +929,8 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 	console.log(desmosGraphs[id]);
 	console.log(desmosGraphs[id].getExpressions());
+
+	console.log(searchProperties(desmosGraphs[id], /colorLatex/));
 
 	if (!is3d)
 	{
