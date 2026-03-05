@@ -31,6 +31,10 @@ export const desmosLineStyles = {
 	DOTTED: "DOTTED",
 };
 
+// Properties that the Desmos API erases during graph construction.
+// These must be re-applied from the original expression data to the state object.
+const desmosApiErasedProperties = ["colorLatex"];
+
 export const desmosColors = {
 	purple: "_desmosPurple",
 	blue: "_desmosBlue",
@@ -98,6 +102,21 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 	return invert
 		? hsvToHex(hue + 0.5, value, saturation)
 		: hsvToHex(hue, saturation, value);
+}
+
+function restoreErasedProperties(state, originalExpressions)
+{
+	for (let i = 0; i < originalExpressions.length; i++)
+	{
+		for (const property of desmosApiErasedProperties)
+		{
+			if (originalExpressions[i][property])
+			{
+				state.expressions.list[i][property] =
+					originalExpressions[i][property];
+			}
+		}
+	}
 }
 
 export let desmosGraphs = {};
@@ -522,6 +541,13 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				desmosGraphs[element.id] = calculator;
 
 				desmosGraphsDefaultState[element.id] = calculator.getState();
+
+				restoreErasedProperties(
+					desmosGraphsDefaultState[element.id],
+					data[element.id].expressions
+				);
+
+				calculator.setState(desmosGraphsDefaultState[element.id]);
 				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
 
 				// Store the clean default state in the config so swap3dGraph()
@@ -581,6 +607,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				desmosGraphsDefaultState[element.id] = desmosGraphs[element.id].getState();
 
+				restoreErasedProperties(
+					desmosGraphsDefaultState[element.id],
+					data[element.id].expressions
+				);
+
+				desmosGraphs[element.id].setState(desmosGraphsDefaultState[element.id]);
 				desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
 
 				if (window.DEBUG && !recreating)
