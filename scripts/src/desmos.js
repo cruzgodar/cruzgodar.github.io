@@ -1,6 +1,5 @@
 import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
-import { enterFullscreen } from "./fullscreen.js";
 import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
@@ -586,15 +585,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				{
 					element.addEventListener("click", (e) =>
 					{
-						// if (e.metaKey)
-						// {
-						// 	getDesmosScreenshot(element.id, e.altKey);
-						// }
-
-						enterFullscreen({
-							element,
-							callback: () => desmosGraphs[element.id].resize()
-						});
+						if (e.metaKey)
+						{
+							getDesmosScreenshot(element.id, e.altKey);
+						}
 					});
 				}
 
