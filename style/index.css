@@ -2377,6 +2377,11 @@ to hide them in that case. */
 	border-radius: 0 !important;
 }
 
+.desmos-border.fullscreen canvas
+{
+	border-radius: 0;
+}
+
 .desmos-fullscreen-button
 {
 	position: absolute;

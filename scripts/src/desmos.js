@@ -604,9 +604,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			isConstructed: false,
 		};
 
-		// Create a fullscreen button for each graph.
-		const border = element.parentElement;
+		// Create a fullscreen button for each graph,
+		// removing any existing one first (e.g. from recreateDesmosGraphs).
+		const border = element.closest(".desmos-border");
 		border.style.position = "relative";
+		border.querySelector(".desmos-fullscreen-button")?.remove();
 
 		const fullscreenButton = document.createElement("div");
 		fullscreenButton.classList.add("desmos-fullscreen-button");
@@ -632,6 +634,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		fullscreenButton.addEventListener("click", () =>
 		{
+			// Look up the canvas fresh each time, since ephemeral applets
+			// replace the canvas element when they're recreated.
+			const canvas = border.querySelector("canvas");
+
 			if (isFullscreen(border))
 			{
 				exitFullscreen({
@@ -640,6 +646,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					{
 						enterIcon.style.display = "";
 						exitIcon.style.display = "none";
+
+						if (canvas?.wilson)
+						{
+							canvas.wilson.exitExternalFullscreen();
+						}
 					}
 				});
 			}
@@ -651,6 +662,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					{
 						enterIcon.style.display = "none";
 						exitIcon.style.display = "";
+
+						if (canvas?.wilson)
+						{
+							canvas.wilson.enterExternalFullscreen();
+						}
 					}
 				});
 			}
