@@ -1,6 +1,8 @@
 import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
+import { enterFullscreen, exitFullscreen, isFullscreen } from "./fullscreen.js";
 import { distinguishColorsCheckboxContainer } from "./header.js";
+import { addHoverEventWithScale } from "./hoverEvents.js";
 import { addTemporaryListener, loadScript, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { clamp } from "./utils.js";
@@ -601,6 +603,60 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			is3d: data[element.id].use3d,
 			isConstructed: false,
 		};
+
+		// Create a fullscreen button for each graph.
+		const border = element.parentElement;
+		border.style.position = "relative";
+
+		const fullscreenButton = document.createElement("div");
+		fullscreenButton.classList.add("desmos-fullscreen-button");
+
+		const enterIcon = document.createElement("img");
+		enterIcon.src = "/graphics/general-icons/enter-fullscreen.png";
+
+		const exitIcon = document.createElement("img");
+		exitIcon.src = "/graphics/general-icons/exit-fullscreen.png";
+		exitIcon.style.display = "none";
+
+		fullscreenButton.appendChild(enterIcon);
+		fullscreenButton.appendChild(exitIcon);
+
+		fullscreenButton.style.viewTransitionName =
+			`desmos-fullscreen-button-${element.id}`;
+
+		addHoverEventWithScale({
+			element: fullscreenButton,
+			scale: 1.1,
+			addBounceOnTouch: () => true,
+		});
+
+		fullscreenButton.addEventListener("click", () =>
+		{
+			if (isFullscreen(border))
+			{
+				exitFullscreen({
+					element: border,
+					callback: () =>
+					{
+						enterIcon.style.display = "";
+						exitIcon.style.display = "none";
+					}
+				});
+			}
+			else
+			{
+				enterFullscreen({
+					element: border,
+					callback: () =>
+					{
+						enterIcon.style.display = "none";
+						exitIcon.style.display = "";
+					}
+				});
+			}
+		});
+
+		border.appendChild(fullscreenButton);
 	}
 
 

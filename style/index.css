@@ -2360,6 +2360,46 @@ to hide them in that case. */
 	height: 100vh;
 }
 
+.desmos-border.fullscreen
+{
+	width: 100vw;
+	height: 100vh;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+}
+
+.desmos-border.fullscreen .desmos-container,
+.desmos-border.fullscreen .dcg-container
+{
+	width: 100vw;
+	height: 100vh;
+	border-radius: 0 !important;
+}
+
+.desmos-fullscreen-button
+{
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	width: 16px;
+	height: 16px;
+	z-index: 50;
+	background: var(--background);
+	border: 2px solid var(--normal-contrast);
+	padding: 5px;
+	border-radius: 8px;
+	cursor: pointer;
+	outline: none;
+}
+
+.desmos-fullscreen-button img
+{
+	width: 100%;
+	height: 100%;
+	filter: invert(calc(.25 + var(--theme)* .5657));
+}
+
 
 .notes-images
 {
