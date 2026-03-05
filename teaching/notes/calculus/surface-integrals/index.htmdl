@@ -14,9 +14,7 @@ Here, adjust the $s$ value to morph the interval $[0, 1]$ in $#R#$ (represented 
 
 ### desmos parametricSurfaceShaping
 
-There couldn't be a better source of inspiration for building up a theory of surfaces. Rather than only a single input variable to a function $\vec{r}$, though, we'll need two, since a surface is fundamentally a 2-dimensional object. 
-
-curve as  Rather frustratingly, the standard choices are $u$ and $v$: distinguishable well enough on a chalkboard, but less so when typed. To help tell them apart, I'll write $v$ as $\v$ throughout the remainder of these notes when it's being used as a parameter along with $u$.
+To parameterize a surface, we'll need two input variables to a function $\vec{r}$, since a surface is fundamentally a 2-dimensional object. In the previous graph, the rectangle $[0, 1]^2$ in $#R#^2$ morphs into a unit sphere. Rather frustratingly, the standard choices are $u$ and $v$: distinguishable well enough on a chalkboard, but less so when typed. To help tell them apart, I'll write $v$ as $\v$ throughout the remainder of these notes when it's being used as a parameter along with $u$.
 
 ### def "parametric surface"
 
