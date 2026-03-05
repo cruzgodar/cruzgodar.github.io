@@ -1,4 +1,5 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
+import { isFullscreen } from "./fullscreen.js";
 import { removeHoverEvents } from "./hoverEvents.js";
 import { addTemporaryListener } from "./main.js";
 
@@ -108,6 +109,20 @@ export function updateTapClickElements()
 
 function handleFullscreenButtonPress()
 {
+	const desmosFullscreenButtons = document.querySelectorAll(".desmos-fullscreen-button");
+
+	// Check if any desmos graph is currently fullscreen.
+	for (const button of desmosFullscreenButtons)
+	{
+		const border = button.closest(".desmos-border");
+
+		if (isFullscreen(border))
+		{
+			button.click();
+			return;
+		}
+	}
+
 	let minDistance = Infinity;
 	let minIndex = 0;
 
@@ -121,7 +136,7 @@ function handleFullscreenButtonPress()
 		}
 
 		const wilson = applet.wilsonForFullscreen ?? applet.wilson;
-		
+
 		if (wilson.currentlyFullscreen)
 		{
 			wilson.exitFullscreen();
@@ -129,6 +144,12 @@ function handleFullscreenButtonPress()
 		}
 
 		const rect = applet.canvas.getBoundingClientRect();
+
+		if (rect.bottom < 0 || rect.top > window.innerHeight)
+		{
+			continue;
+		}
+
 		const center = rect.top + rect.height / 2;
 		const distance = Math.abs(window.innerHeight / 2 - center);
 
@@ -139,8 +160,41 @@ function handleFullscreenButtonPress()
 		}
 	}
 
-	if (!currentlyLoadedApplets[minIndex].allowFullscreenWithKeyboard)
+	// Check on-screen desmos graphs.
+	let bestDesmosButton = null;
+
+	for (const button of desmosFullscreenButtons)
 	{
+		const border = button.closest(".desmos-border");
+		const rect = border.getBoundingClientRect();
+
+		if (rect.bottom < 0 || rect.top > window.innerHeight)
+		{
+			continue;
+		}
+
+		const center = rect.top + rect.height / 2;
+		const distance = Math.abs(window.innerHeight / 2 - center);
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			bestDesmosButton = button;
+		}
+	}
+
+	// If a desmos graph is closer, click its fullscreen button.
+	if (bestDesmosButton)
+	{
+		bestDesmosButton.click();
+		return;
+	}
+
+	// Otherwise, use the closest applet (original logic).
+	if (
+		currentlyLoadedApplets.length === 0
+		|| !currentlyLoadedApplets[minIndex]?.allowFullscreenWithKeyboard
+	) {
 		return;
 	}
 
