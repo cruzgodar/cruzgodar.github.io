@@ -24,7 +24,7 @@ export default function()
 					numSlices: 100,
 					colorFunction: ([x]) =>
 					{
-						return hsvToHex(x, 1, 1);
+						return hsvToHex(1 - 0.5 * x, 1, 1);
 					}
 				}),
 
@@ -51,12 +51,12 @@ export default function()
 				{ latex: raw`Y(v) = \tan(\pi (v - \frac{1}{2}))`, hidden: true, secret: false },
 				{ latex: raw`c(u, v) = \frac{1}{1 + X(u)^2 + Y(v)^2}(2X(u), 2Y(v), -1 + X(u)^2 + Y(v)^2)`, hidden: true, secret: false },
 
-				{ latex: raw`(1 - s) (u, v, 0) + s c(u, v)`, colorLatex: "C", secret: false },
+				{ latex: raw`(1 - s) (u, v, 0) + s c(u, v)`, colorLatex: "C", secret: true },
 
 				// The inverse of the parameterization. This isn't the exact inverse, but the
 				// fiddling with s makes it work at both endpoints and look decent in-between.
-				{ latex: raw`U(x, y, z) = s\frac{1}{2} + \frac{4 - 3s}{\pi}\arctan(\frac{x}{1 - z})`, secret: false },
-				{ latex: raw`V(x, y, z) = s\frac{1}{2} + \frac{4 - 3s}{\pi}\arctan(\frac{y}{1 - z})`, secret: false },
+				{ latex: raw`U(x, y, z) = s\frac{1}{2} + \frac{4 - 3s}{\pi}\arctan(\frac{x}{1 - z})`, secret: true },
+				{ latex: raw`V(x, y, z) = s\frac{1}{2} + \frac{4 - 3s}{\pi}\arctan(\frac{y}{1 - z})`, secret: true },
 
 				...getDesmosSlider({
 					expression: "s = 0",
@@ -65,7 +65,7 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`C = \operatorname{rgb}(255U(x, y, z), 255V(x, y, z), 127)` },
+				{ latex: raw`C = \operatorname{rgb}(255U(x, y, z), 255V(x, y, z), 255)`, secret: true },
 			]
 		},
 	});
