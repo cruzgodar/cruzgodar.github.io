@@ -65,7 +65,7 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`C = \operatorname{rgb}(255U(x, y, z), 255V(x, y, z), 255)`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(255\left|U(x, y, z)\right|^{1.3151}, 255\left|V(x, y, z)\right|^{1.3151}, 255)`, secret: true },
 			]
 		},
 	});

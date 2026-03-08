@@ -849,7 +849,7 @@ class Wilson {
     // Enters fullscreen state for the canvas (resizes buffer, updates world
     // coordinates) without managing its own fullscreen container. Used when
     // an external system (e.g. desmos fullscreen) handles the container.
-    enterExternalFullscreen() {
+    enterManagedFullscreen() {
         __classPrivateFieldSet(this, _Wilson_externalFullscreenActive, true, "f");
         __classPrivateFieldSet(this, _Wilson_externalFullscreenOldFillScreen, __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f"), "f");
         __classPrivateFieldSet(this, _Wilson_fullscreenFillScreen, true, "f");
@@ -870,7 +870,7 @@ class Wilson {
         __classPrivateFieldGet(this, _Wilson_onResizeWindow, "f").call(this);
         this.onSwitchFullscreen(true);
     }
-    exitExternalFullscreen() {
+    exitManagedFullscreen() {
         __classPrivateFieldSet(this, _Wilson_externalFullscreenActive, false, "f");
         __classPrivateFieldSet(this, _Wilson_currentlyFullscreen, false, "f");
         this.currentlyFullscreen = false;

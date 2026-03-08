@@ -687,7 +687,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 						if (canvas?.wilson)
 						{
-							canvas.wilson.enterExternalFullscreen();
+							canvas.wilson.enterManagedFullscreen();
 						}
 					},
 					exitCallback: () =>
@@ -703,7 +703,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 						if (canvas?.wilson)
 						{
-							canvas.wilson.exitExternalFullscreen();
+							canvas.wilson.exitManagedFullscreen();
 						}
 					}
 				});
