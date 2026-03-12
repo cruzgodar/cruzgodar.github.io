@@ -128,7 +128,7 @@ The last entry in the list deserves some explanation. Given two vector spaces $V
 		S\left( [[ x ; y ; z ]] \right) = [[ 2x + y - z ; x + z ]].
 	$$
 	
-	Find the matrix for $T$ and use it to evaluate $S\left( [[ 1 ; 2 ; 3 ]] \right)$.
+	Find the matrix for $S$ and use it to evaluate $S\left( [[ 1 ; 2 ; 3 ]] \right)$.
 	
 ###
 
