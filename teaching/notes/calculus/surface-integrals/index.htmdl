@@ -26,7 +26,13 @@ To parameterize a surface, we'll need two input variables to a function $\vec{r}
 
 ###
 
-Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the codomain and domain, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function $\vec{s}(t) = \left< a(t), b(t), c(t) \right>$ only had one input variable, and its derivative was
+Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the codomain and domain, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function
+
+$$
+	\vec{s}(t) = \left< a(t), b(t), c(t) \right>
+$$
+
+only had one input variable, and its derivative was
 
 $$
 	d/dt \left[ \vec{s}(t) \right] = \left< a'(t), b'(t), c'(t) \right>.

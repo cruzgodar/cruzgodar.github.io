@@ -13,7 +13,7 @@ We spent the last section discussing how circulation integrals of a conservative
 Let's return to the world of double integrals for a moment. When we integrate some function $h(x, y)$ over the region $R$ bounded by $y = \sqrt{x}$, $y = 0$, and $x = 1$, then the double integral
 
 $$
-	\iint_R h(x, y)\,\d A = \int_0^1 \int_0^{\sqrt{x}} h(x, y)\,\d y\,\d x
+	\iint_R h(x, y)\,\d A = \int_0^1\!\!\! \int_0^{\sqrt{x}} h(x, y)\,\d y\,\d x
 $$
 
 is slicing the region vertically, with each slice measuring the area of a cross-section parallel to the $y$-axis.
