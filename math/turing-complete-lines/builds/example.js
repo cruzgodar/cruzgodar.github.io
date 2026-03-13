@@ -14,6 +14,8 @@ export function getExampleBuilds(expression, animationTime = 500)
 
 		slide.appendChild(canvasBundle);
 
+		applet.animationRunning = false;
+
 		applet.run({
 			expression,
 		});

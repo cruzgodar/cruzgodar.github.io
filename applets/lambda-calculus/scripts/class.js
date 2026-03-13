@@ -197,7 +197,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		if (betaReduce)
 		{
-			this.expressionTextarea.syncOverlay = false;
+			if (this.expressionTextarea)
+			{
+				this.expressionTextarea.syncOverlay = false;
+			}
 
 			if (!expandShorthands)
 			{
@@ -219,7 +222,10 @@ export class LambdaCalculus extends AnimationFrameApplet
 				);
 			}
 
-			this.expressionTextarea.syncOverlay = true;
+			if (this.expressionTextarea)
+			{
+				this.expressionTextarea.syncOverlay = true;
+			}
 		}
 
 		return [html, text];
