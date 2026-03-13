@@ -28,7 +28,8 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			
 			
 			r = length(z);
-			return .5 * r * log(r) / length(zPrime);
+			float juliaSetDistance = .5 * r * log(r) / length(zPrime);
+			return max(juliaSetDistance, dot(pos, normalVector));
 		`;
 
 		const getColorGlsl = /* glsl */`
@@ -73,11 +74,13 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 
 		const uniformsGlsl = /* glsl */`
 			uniform vec3 c;
+			uniform vec3 normalVector;
 			uniform float juliaProportion;
 		`;
 
 		const uniforms = {
 			c: [-.54, -.25, -.668],
+			normalVector: [0, 0, 1],
 			juliaProportion: 1,
 		};
 

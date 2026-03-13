@@ -256,11 +256,6 @@ let desmosData = {};
 
 export async function createDesmosGraphs(desmosDataInitializer = desmosData, recreating = false)
 {
-	if (window.OFFLINE)
-	{
-		return;
-	}
-
 	// Return any active 3D calculators to the persistent pool (don't destroy them).
 	returnPersistent3dGraphsToPool();
 

@@ -94,8 +94,16 @@ export default function()
 			rhoSlider.value * Math.sin(thetaSlider.value) * Math.cos(phiSlider.value),
 			rhoSlider.value * Math.sin(phiSlider.value),
 		];
+		
+		console.log(c);
 
-		applet.setUniforms({ c });
+		const normalVector = [
+			0,
+			-Math.sin(phiSlider.value),
+			Math.cos(phiSlider.value)
+		];
+
+		applet.setUniforms({ c, normalVector });
 
 		applet.needNewFrame = true;
 	}

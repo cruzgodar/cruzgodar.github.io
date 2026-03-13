@@ -583,7 +583,8 @@ function getIndexHTML(pageTitle, firstParagraphText)
 	<script type="module">
 		const params = new URLSearchParams(window.location.search);
 
-		window.DEBUG = params.get("debug") === "1";
+		window.OFFLINE = params.get("debug") === "2";
+		window.DEBUG = window.OFFLINE || params.get("debug") === "1";
 
 		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("${parentFolder}"));
 	</script>
