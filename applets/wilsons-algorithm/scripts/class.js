@@ -7,7 +7,9 @@ import { WilsonCPU } from "/scripts/wilson.js";
 export class WilsonsAlgorithm extends AnimationFrameApplet
 {
 	webWorker;
-	maximumSpeed = false;
+	animateMaze = true;
+	animateColoring = true;
+	currentlyColoring = false;
 	gridSize;
 	resolution = 1000;
 	imageData;
@@ -37,15 +39,19 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 	run({
 		gridSize,
-		maximumSpeed,
+		animateMaze,
+		animateColoring,
 		noBorders,
-		reverseGenerateSkeleton = false
+		reverseGeneratingSkeleton = false
 	}) {
 		let timeoutId;
 
 		this.gridSize = gridSize;
 		this.resolution = noBorders ? gridSize : 2 * gridSize + 1;
-		this.maximumSpeed = maximumSpeed;
+		this.animateMaze = animateMaze;
+		this.animateColoring = animateColoring;
+
+		this.currentlyColoring = false;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
@@ -71,29 +77,30 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 		// The worker has three seconds to draw its initial line.
 		// If it can't do that, we cancel it and spawn a new worker
 		// that reverse-generates a skeleton.
-		if (!reverseGenerateSkeleton)
+		if (!reverseGeneratingSkeleton)
 		{
 			timeoutId = setTimeout(() =>
 			{
 				this.run({
 					gridSize,
-					maximumSpeed,
+					animateMaze,
+					animateColoring,
 					noBorders,
-					reverseGenerateSkeleton: true
+					reverseGeneratingSkeleton: true
 				});
 			}, 3000);
 		}
 
-		this.webWorker.postMessage([gridSize, noBorders, reverseGenerateSkeleton]);
+		this.webWorker.postMessage([gridSize, noBorders, reverseGeneratingSkeleton]);
 
 		this.resume();
 	}
 
 	drawFrame()
 	{
-		const numPixelsToDraw = this.maximumSpeed
-			? this.pixels.length
-			: Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length);
+		const numPixelsToDraw = this.animateMaze && !this.currentlyColoring
+			? Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length)
+			: this.pixels.length;
 
 		if (this.pixels.length === 0)
 		{
@@ -111,7 +118,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			|| firstColor[1] !== 255
 			|| firstColor[2] !== 255
 		) {
-			this.maximumSpeed = true;
+			this.currentlyColoring = true;
 		}
 
 		
@@ -123,9 +130,12 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			this.imageData[4 * index + 1] = this.pixels[i][2][1];
 			this.imageData[4 * index + 2] = this.pixels[i][2][2];
 
-			if (this.pixels[i][2][0] !== firstColor[0]
-				|| this.pixels[i][2][1] !== firstColor[1]
-				|| this.pixels[i][2][2] !== firstColor[2]
+			if (
+				this.animateColoring && (
+					this.pixels[i][2][0] !== firstColor[0]
+					|| this.pixels[i][2][1] !== firstColor[1]
+					|| this.pixels[i][2][2] !== firstColor[2]
+				)
 			) {
 				break;
 			}

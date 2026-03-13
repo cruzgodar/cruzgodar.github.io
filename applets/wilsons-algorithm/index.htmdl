@@ -17,7 +17,8 @@ The other thing to watch out for is hitting the single white dot you selected at
 ###
 
 ### checkboxes
-	maximum-speed
+	animate-maze
+	animate-coloring
 	draw-borders
 ###
 

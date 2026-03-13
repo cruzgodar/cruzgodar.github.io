@@ -28,9 +28,16 @@ export default function()
 		filename: () => "wilsons-algorithm.png"
 	});
 
-	const maximumSpeedCheckbox = new Checkbox({
-		element: $("#maximum-speed-checkbox"),
-		name: "Maximum speed"
+	const animateMazeCheckbox = new Checkbox({
+		element: $("#animate-maze-checkbox"),
+		name: "Animate drawing maze",
+		checked: true
+	});
+
+	const animateColoringCheckbox = new Checkbox({
+		element: $("#animate-coloring-checkbox"),
+		name: "Animate coloring",
+		checked: true
 	});
 
 	const drawBordersCheckbox = new Checkbox({
@@ -43,8 +50,16 @@ export default function()
 	{
 		applet.run({
 			gridSize: gridSizeInput.value,
-			maximumSpeed: maximumSpeedCheckbox.checked,
+			animateMaze: animateMazeCheckbox.checked,
+			animateColoring: animateColoringCheckbox.checked,
 			noBorders: !drawBordersCheckbox.checked
 		});
 	}
+
+	applet.run({
+		gridSize: gridSizeInput.value,
+		animateMaze: false,
+		animateColoring: false,
+		noBorders: !drawBordersCheckbox.checked
+	});
 }
