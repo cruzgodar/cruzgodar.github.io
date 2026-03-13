@@ -272,7 +272,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 		this.wilson.useFramebuffer(null);
 		this.wilson.drawFrame();
 
-		if (this.drawingFractal)
+		if (this.drawingFractal && !this.animationPaused)
 		{
 			this.needNewFrame = true;
 		}

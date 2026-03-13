@@ -73,4 +73,12 @@ export default function()
 			maximumSpeed: maximumSpeedCheckbox.checked
 		});
 	}
+
+	applet.run({
+		resolution: 500,
+		sigma: 10,
+		rho: 28,
+		beta: 2.67,
+		maximumSpeed: true
+	});
 }

@@ -139,6 +139,18 @@ function calculateSimilarity(query, target)
 	return Math.min(score / query.length, 0.5); // Cap at 0.5 for non-substring matches
 }
 
+export function shuffleArray(array)
+{
+	for (let i = 0; i < array.length - 1; i++)
+	{
+		const j = Math.floor(Math.random() * (array.length - i - 1)) + i;
+
+		const temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+}
+
 // Finds named properties in a (usually Desmos calculator) object.
 export function searchProperties(obj, regex, seen = new WeakSet(), path = "")
 {

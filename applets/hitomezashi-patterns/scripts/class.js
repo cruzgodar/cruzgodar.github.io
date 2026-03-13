@@ -1,5 +1,6 @@
 import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { shuffleArray } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class HitomezashiPatterns extends Applet
@@ -24,7 +25,9 @@ export class HitomezashiPatterns extends Applet
 
 	currentRow = 1;
 	currentCol = 1;
-	currentRegion = 0;
+
+	regionDrawingProgress = 0;
+	animationFramesPerRegion = 15;
 
 	lineWidth;
 
@@ -68,6 +71,8 @@ export class HitomezashiPatterns extends Applet
 		this.doDrawBoundaries = doDrawBoundaries;
 		this.doDrawRegions = doDrawRegions;
 		this.maximumSpeed = maximumSpeed;
+
+		this.regionDrawingProgress = 0;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
@@ -330,7 +335,7 @@ export class HitomezashiPatterns extends Applet
 
 			this.currentRegion = 0;
 
-			setTimeout(this.drawRegionsStep.bind(this), 1000);
+			setTimeout(this.drawRegionsStep.bind(this), 200);
 		}
 	}
 
@@ -458,7 +463,7 @@ export class HitomezashiPatterns extends Applet
 			}
 		}
 
-
+		shuffleArray(this.regionsOrdered);
 
 		// Get unique values.
 		this.regionSizes = Array.from(new Set(this.regionSizes));
@@ -515,21 +520,28 @@ export class HitomezashiPatterns extends Applet
 
 	drawRegionsStep()
 	{
-		for (let i = 0; i < Math.ceil(this.gridSize / 50); i++)
+		for (let i = 0; i < this.numRegions; i++)
 		{
-			const regionLength = this.regionsOrdered[this.currentRegion].length;
+			const regionLength = this.regionsOrdered[i].length;
 
 			// Cycle colors every gridSize regions (this is just an experimentally good value).
-			const h = (this.currentRegion % (2 * this.gridSize)) / (2 * this.gridSize);
+			const h = (i % (2 * this.gridSize)) / (2 * this.gridSize);
 
 			// Color the largest regions darkest, but linearly according to the list of lengths,
 			// so that all the medium regions aren't extremely bright when there's
 			// a very large region.
-			const v = regionLength === 1
+			let v = regionLength === 1
 				? .5
 				: Math.sqrt(
 					this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2)
 				);
+
+			v *= Math.min((this.regionDrawingProgress - i) / this.animationFramesPerRegion, 1);
+
+			if (v < 0)
+			{
+				continue;
+			}
 
 			const rgb = hsvToRgb(h, 1, v);
 
@@ -537,8 +549,8 @@ export class HitomezashiPatterns extends Applet
 
 			for (let j = 0; j < regionLength; j++)
 			{
-				const row = this.regionsOrdered[this.currentRegion][j][0];
-				const col = this.regionsOrdered[this.currentRegion][j][1];
+				const row = this.regionsOrdered[i][j][0];
+				const col = this.regionsOrdered[i][j][1];
 
 				this.wilson.ctx.fillRect(
 					(this.resolution / this.gridSize) * col,
@@ -553,8 +565,8 @@ export class HitomezashiPatterns extends Applet
 
 			for (let j = 0; j < regionLength; j++)
 			{
-				const row = this.regionsOrdered[this.currentRegion][j][0];
-				const col = this.regionsOrdered[this.currentRegion][j][1];
+				const row = this.regionsOrdered[i][j][0];
+				const col = this.regionsOrdered[i][j][1];
 
 				this.wilson.ctx.fillRect(
 					(this.resolution / this.gridSize) * col + this.lineWidth / 2,
@@ -563,23 +575,15 @@ export class HitomezashiPatterns extends Applet
 					this.resolution / this.gridSize - this.lineWidth
 				);
 			}
-
-
-
-			this.currentRegion++;
-
-			if (this.currentRegion === this.numRegions)
-			{
-				return;
-			}
 		}
 
-		if (this.currentRegion < this.numRegions)
-		{
-			if (!this.animationPaused)
-			{
-				requestAnimationFrame(this.drawRegionsStep.bind(this));
-			}
+		this.regionDrawingProgress++;
+
+		if (
+			this.regionDrawingProgress < this.numRegions + this.animationFramesPerRegion
+			&& !this.animationPaused
+		) {
+			requestAnimationFrame(this.drawRegionsStep.bind(this));
 		}
 	}
 }

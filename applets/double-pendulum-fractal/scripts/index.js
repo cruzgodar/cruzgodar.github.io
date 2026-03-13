@@ -56,4 +56,7 @@ export default function()
 			centerUnstableEquilibrium: centerUnstableEquilibriumCheckbox.checked
 		});
 	}
+
+	run();
+	applet.pause();
 }

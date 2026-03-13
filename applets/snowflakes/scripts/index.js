@@ -122,6 +122,18 @@ export default function()
 		});
 	}
 
+	applet.run({
+		resolution: 500,
+		computationsPerFrame: 25,
+		rho: rhoInput.value,
+		beta: betaInput.value,
+		alpha: alphaInput.value,
+		theta: thetaInput.value,
+		kappa: kappaInput.value,
+		mu: muInput.value,
+		gamma: gammaInput.value
+	});
+
 	function randomizeParameters()
 	{
 		rhoInput.setValue(

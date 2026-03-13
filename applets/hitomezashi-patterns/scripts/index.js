@@ -87,6 +87,16 @@ export default function()
 		});
 	}
 
+	applet.run({
+		resolution: 2000,
+		gridSize: 50,
+		rowProb: rowProbInput.value,
+		colProb: colProbInput.value,
+		doDrawBoundaries: drawBoundariesCheckbox.checked,
+		doDrawRegions: drawRegionsCheckbox.checked,
+		maximumSpeed: true
+	});
+
 	function onCheckDrawBoundariesCheckbox()
 	{
 		if (!drawBoundariesCheckbox.checked && !drawRegionsCheckbox.checked)
