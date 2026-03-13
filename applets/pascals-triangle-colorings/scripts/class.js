@@ -10,6 +10,7 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 	pixelsPerRow = 0;
 	pixelsPerFrame = 10;
 	delayOnMeet = 0;
+	maximumSpeed = false;
 
 	resolution = 2000;
 
@@ -54,15 +55,20 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 	run({
 		resolution,
 		gridSize,
-		numColors
+		numColors,
+		maximumSpeed
 	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 		this.numColors = numColors;
+		this.maximumSpeed = maximumSpeed;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.pixelsPerFrame = Math.ceil(this.resolution / 200);
+		this.pixelsPerFrame = this.maximumSpeed
+			? this.resolution
+			: Math.ceil(this.resolution / 200);
+		
 		this.pixelsPerRow = Math.round(this.resolution / (this.gridSize + 2));
 		this.delayOnMeet = 2 * this.pixelsPerRow;
 

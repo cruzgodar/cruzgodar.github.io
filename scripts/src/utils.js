@@ -151,6 +151,12 @@ export function shuffleArray(array)
 	}
 }
 
+// Gets a random hue between 200-360 and 0-45.
+export function getRandomNonGreenHue()
+{
+	return ((Math.random() * (160 + 45) + 200) % 360) / 360;
+}
+
 // Finds named properties in a (usually Desmos calculator) object.
 export function searchProperties(obj, regex, seen = new WeakSet(), path = "")
 {

@@ -52,4 +52,11 @@ export default function()
 			numColors: numColorsInput.value
 		});
 	}
+
+	applet.run({
+		resolution: 2000,
+		gridSize: 27,
+		numColors: 3,
+		maximumSpeed: true
+	});
 }

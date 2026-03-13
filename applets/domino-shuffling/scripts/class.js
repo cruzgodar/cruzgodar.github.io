@@ -8,6 +8,7 @@ export class DominoShuffling extends AnimationFrameApplet
 {
 	resolution = 2000;
 	diamondSize = 20;
+	maximumSpeed = false;
 
 	useSmoothColors = true;
 
@@ -56,7 +57,8 @@ export class DominoShuffling extends AnimationFrameApplet
 	run({
 		resolution,
 		diamondSize,
-		useSmoothColors
+		useSmoothColors,
+		maximumSpeed = false
 	}) {
 		this.resolution = resolution;
 
@@ -65,6 +67,7 @@ export class DominoShuffling extends AnimationFrameApplet
 		this.diamondSize = diamondSize;
 		this.framesPerAnimationStep = Math.ceil(100 / this.diamondSize);
 		this.useSmoothColors = useSmoothColors;
+		this.maximumSpeed = maximumSpeed;
 
 
 
@@ -153,6 +156,23 @@ export class DominoShuffling extends AnimationFrameApplet
 
 		this.frame = this.framesPerAnimationStep - 1;
 
+
+
+		if (this.maximumSpeed)
+		{
+			while (this.currentDiamondSize < this.diamondSize - 1)
+			{
+				this.moveDominos();
+
+				this.fillSpaces();
+			}
+
+			this.drawDiamond();
+
+			return;
+		}
+
+
 		this.resume();
 	}
 
@@ -170,17 +190,11 @@ export class DominoShuffling extends AnimationFrameApplet
 
 			this.fillSpaces();
 
-			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
 			this.drawDiamond();
 		}
 
 		if (this.frame === 0 && this.currentDiamondSize === this.diamondSize - 1)
 		{
-			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
 			this.drawDiamond();
 		}
 
@@ -190,10 +204,11 @@ export class DominoShuffling extends AnimationFrameApplet
 		}
 	}
 
-
-
 	drawDiamond()
 	{
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
+		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+
 		for (let i = -this.currentDiamondSize; i < this.currentDiamondSize; i++)
 		{
 			for (let j = -this.currentDiamondSize; j < this.currentDiamondSize; j++)

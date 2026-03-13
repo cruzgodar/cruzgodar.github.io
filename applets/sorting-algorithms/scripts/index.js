@@ -82,6 +82,14 @@ export default function()
 		});
 	}
 
+	applet.run({
+		resolution: 2000,
+		algorithm: "bubble",
+		dataLength: 3,
+		doPlaySound: false,
+		shuffle: false
+	});
+
 	function onDropdownInput()
 	{
 		for (const element of $$(".info-text"))

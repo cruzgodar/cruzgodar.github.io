@@ -48,7 +48,14 @@ export default function()
 		applet.run({
 			resolution: resolutionInput.value,
 			diamondSize: diamondSizeInput.value + 1,
-			useSmoothColors: useSmoothColorsCheckbox.checked
+			useSmoothColors: useSmoothColorsCheckbox.checked,
 		});
 	}
+
+	applet.run({
+		resolution: 2000,
+		diamondSize: 21,
+		useSmoothColors: useSmoothColorsCheckbox.checked,
+		maximumSpeed: true
+	});
 }

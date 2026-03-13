@@ -68,6 +68,15 @@ export default function()
 		});
 	}
 
+	applet.run({
+		resolution: 500,
+		density: densityInput.value,
+		northAmount: northAmountSlider.value,
+		computationsPerFrame: computationsPerFrameSlider.value,
+	});
+
+	applet.pause();
+
 	function onSliderInput()
 	{
 		applet.northAmount = northAmountSlider.value;

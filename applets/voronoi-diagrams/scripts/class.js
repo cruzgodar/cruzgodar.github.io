@@ -489,7 +489,7 @@ export class VoronoiDiagrams extends Applet
 		{
 			this.colors[i] = hsvToRgb(
 				Math.random(),
-				0.5 + 0.25 * Math.random(),
+				0.4 + 0.5 * Math.random(),
 				0.5 + 0.5 * Math.random()
 			);
 

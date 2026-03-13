@@ -77,6 +77,15 @@ export default function()
 		});
 	}
 
+	applet.run({
+		resolution: 1000,
+		numPoints: 20,
+		metric: metricSlider.value,
+		maximumSpeed: true,
+		drawPoints: !hidePointsCheckbox.checked,
+		useDraggable: useDraggableCheckbox.checked
+	});
+
 	function onSliderInput()
 	{
 		applet.metric = metricSlider.value;

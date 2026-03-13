@@ -157,14 +157,15 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		resolution,
 		algorithm,
 		dataLength,
-		doPlaySound
+		doPlaySound,
+		shuffle = true
 	}) {
 		this.resolution = resolution;
 
 		this.generators = [
 			this.shuffleArray.bind(this),
 			this.algorithms[algorithm].bind(this),
-			this.verifyArray.bind(this)
+			this.verifyArray.bind(this),
 		];
 
 		this.currentGeneratorIndex = 0;
@@ -173,6 +174,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		this.dataLength = dataLength;
 
 		this.doPlaySound = doPlaySound;
+		this.shuffle = shuffle;
 
 
 
@@ -206,6 +208,12 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			this.wilson.setUniforms({
 				dataLength: this.dataLength
 			});
+		}
+
+		if (!this.shuffle)
+		{
+			this.drawFrame();
+			return;
 		}
 
 
@@ -266,6 +274,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		});
 
 		this.wilson.drawFrame();
+
+		if (!this.shuffle)
+		{
+			return;
+		}
 
 		this.decreaseBrightness();
 

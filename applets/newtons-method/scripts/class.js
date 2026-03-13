@@ -2,7 +2,7 @@ import { getFloatGlsl, hsvToRgb, rgbToHex } from "../../../scripts/applets/apple
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { animate, sleep } from "/scripts/src/utils.js";
+import { animate, getRandomNonGreenHue, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
@@ -698,7 +698,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		for (const root in this.colors)
 		{
 			const color = hsvToRgb(
-				(Math.random() * 0.55 + 0.525) % 1,
+				getRandomNonGreenHue(),
 				0.2 * Math.random() + 0.3,
 				0.2 * Math.random() + 0.8,
 			);
