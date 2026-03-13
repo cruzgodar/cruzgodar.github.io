@@ -1,9 +1,9 @@
 import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import {
-    DownloadHighResButton,
-    GenerateButton,
-    ToggleButton
+	DownloadHighResButton,
+	GenerateButton,
+	ToggleButton
 } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
@@ -53,7 +53,7 @@ export default function()
 	const examples =
 	{
 		mandelbrot: "cadd(cpow(z, 2.0), c)",
-		variedExponent: "cadd(cpow(z, draggableArg + vec2(3.0, 0.0)), c)",
+		variedExponent: "cadd(cpow(z, vec2(4.0, 0.0)), c)",
 		trig: "csin(cmul(z, c))",
 		cornucopia: "ccos(z) + ccos(2.0*c) - cdiv(c,z)",
 		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",

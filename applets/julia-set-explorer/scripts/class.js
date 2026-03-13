@@ -22,6 +22,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	juliaMode = "mandelbrot";
 
 	numIterations = 500;
+	hasRun = false;
 
 	switchJuliaModeButton;
 	ignoreBrightnessCalculation = false;
@@ -152,17 +153,24 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	
 
-	async getShaders(forHiddenCanvas = false)
-	{
+	async getShaders({
+		oldGeneratingCode,
+		forHiddenCanvas = false
+	}) {
 		await loadGlsl();
 
-		const draggableUniformString = this.needDraggable ? "uniform vec2 draggableArg;" : "";
+		const codeInterpolationString = oldGeneratingCode ? "uniform float codeInterpolation;" : "";
+
+		const generatingCodeGlsl = oldGeneratingCode
+			? /* glsl */`codeInterpolation * (${this.generatingCode}) + (1.0 - codeInterpolation) * (${oldGeneratingCode})`
+			: this.generatingCode;
+
 
 		const worldAdjustGlsl = getVectorGlsl(this.worldAdjust);
 
 		const bailoutRadiusGlsl = getFloatGlsl(this.bailoutRadius);
 
-		const glslBundle = getGlslBundle(this.generatingCode);
+		const glslBundle = getGlslBundle(this.generatingCode + " " + (oldGeneratingCode ?? ""));
 
 		const color = forHiddenCanvas ? "vec3(1.0)" : "color";
 
@@ -179,7 +187,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
-			${draggableUniformString}
+			uniform vec2 draggableArg;
+
+			${codeInterpolationString}
 					
 			${glslBundle}
 			
@@ -217,7 +227,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 						break;
 					}
 					
-					z = ${this.generatingCode};
+					z = ${generatingCodeGlsl};
 
 					r = length(z);
 					
@@ -245,7 +255,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform float juliaRadius;
 			uniform float crosshairSize;
 			
-			${draggableUniformString}
+			uniform vec2 draggableArg;
 					
 			${glslBundle}
 			
@@ -332,7 +342,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
-			${draggableUniformString}
+			uniform vec2 draggableArg;
 					
 			${glslBundle}
 			
@@ -393,7 +403,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			uniform float brightnessScale;
 			uniform float juliaProportion;
 			
-			${draggableUniformString}
+			uniform vec2 draggableArg;
 					
 			${glslBundle}
 			
@@ -459,16 +469,24 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		maxWorldSize = this.maxWorldSize,
 		bailoutRadius = this.bailoutRadius,
 	}) {
+		this.needDraggable = generatingCode?.indexOf("draggableArg") !== -1;
+
+		if (this.hasRun)
+		{
+			await this.interpolateBetweenRuns(generatingCode);
+		}
+
+
+
 		this.juliaMode = "mandelbrot";
 		this.generatingCode = generatingCode;
 		this.worldAdjust = worldAdjust;
 		this.maxWorldSize = maxWorldSize;
 		this.bailoutRadius = bailoutRadius;
-		this.needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
 		const [shaders, shadersHidden] = await Promise.all([
-			this.getShaders(),
-			this.getShaders(true),
+			this.getShaders({}),
+			this.getShaders({ forHiddenCanvas: true }),
 		]);
 
 		this.wilson.loadShader({
@@ -595,28 +613,35 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				draggableArg: [0, 0],
 			},
 		});
+		
 
 
+		if (!this.hasRun)
+		{
+			this.wilson.resizeWorld({
+				width: 4,
+				height: 4,
+				centerX: 0,
+				centerY: 0,
+				minWorldX: -this.maxWorldSize / 2,
+				maxWorldX: this.maxWorldSize / 2,
+				minWorldY: -this.maxWorldSize / 2,
+				maxWorldY: this.maxWorldSize / 2,
+				minWidth: 0.00001,
+				minHeight: 0.00001,
+			});
 
-		this.wilson.resizeWorld({
-			width: 4,
-			height: 4,
-			centerX: 0,
-			centerY: 0,
-			minWorldX: -this.maxWorldSize / 2,
-			maxWorldX: this.maxWorldSize / 2,
-			minWorldY: -this.maxWorldSize / 2,
-			maxWorldY: this.maxWorldSize / 2,
-			minWidth: 0.00001,
-			minHeight: 0.00001,
-		});
+			this.wilsonHidden.resizeWorld({
+				width: 4,
+				height: 4,
+				centerX: 0,
+				centerY: 0,
+			});
 
-		this.wilsonHidden.resizeWorld({
-			width: 4,
-			height: 4,
-			centerX: 0,
-			centerY: 0,
-		});
+			this.hasRun = true;
+		}
+
+
 
 		this.wilson.draggables.draggableArg.element.style.display = this.needDraggable
 			? "block"
@@ -627,6 +652,67 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		this.needNewFrame = true,
 		this.resume();
+	}
+
+
+
+	async interpolateBetweenRuns(newGeneratingCode)
+	{
+		if (this.juliaMode === "julia")
+		{
+			await this.advanceJuliaMode();
+		}
+
+		else
+		{
+			await this.animateResetWorldCoordinates();
+		}
+
+		const oldGeneratingCode = this.generatingCode;
+		this.generatingCode = newGeneratingCode;
+
+		const [shaders, shadersHidden] = await Promise.all([
+			this.getShaders({ oldGeneratingCode }),
+			this.getShaders({ oldGeneratingCode, forHiddenCanvas: true }),
+		]);
+
+		this.wilson.loadShader({
+			id: "mandelbrot",
+			shader: shaders.mandelbrot,
+			uniforms: {
+				worldCenter: [0, 0],
+				worldSize: [4, 4],
+				numIterations: this.numIterations,
+				brightnessScale: 10,
+				draggableArg: [0, 0],
+				codeInterpolation: 0,
+			},
+		});
+
+		this.wilsonHidden.loadShader({
+			id: "mandelbrot",
+			shader: shadersHidden.mandelbrot,
+			uniforms: {
+				worldCenter: [0, 0],
+				worldSize: [4, 4],
+				numIterations: this.numIterations,
+				brightnessScale: 10,
+				draggableArg: [0, 0],
+				codeInterpolation: 0,
+			},
+		});
+
+		await animate((t) =>
+		{
+			this.wilson.setUniforms({
+				codeInterpolation: t,
+			});
+			this.wilsonHidden.setUniforms({
+				codeInterpolation: t,
+			});
+
+			this.needNewFrame = true;
+		}, 1000, "easeInOutQuad");
 	}
 
 
@@ -677,37 +763,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				c: this.c,
 			});
 
-			const worldWidth = this.wilson.worldWidth;
-			const worldHeight = this.wilson.worldHeight;
-			const worldCenterX = this.wilson.worldCenterX;
-			const worldCenterY = this.wilson.worldCenterY;
 
-			const levelsToZoom = Math.abs(
-				Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4))
-			);
 
-			const animationTime = levelsToZoom > 1
-				? 500
-				: levelsToZoom > 0
-					? 200
-					: 0;
-
-			await animate((t) =>
-			{
-				this.wilson.resizeWorld({
-					width: worldWidth * (1 - t) + 4 * t,
-					height: worldHeight * (1 - t) + 4 * t,
-					centerX: worldCenterX * (1 - t),
-					centerY: worldCenterY * (1 - t),
-				});
-
-				this.needNewFrame = true;
-			}, animationTime, "easeInOutCubic");
-
-			if (levelsToZoom > 0)
-			{
-				await sleep(100);
-			}
+			await this.animateResetWorldCoordinates();
 
 			await animate((t) =>
 			{
@@ -803,6 +861,50 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 
 		this.needNewFrame = true;
+	}
+
+
+
+	async animateResetWorldCoordinates()
+	{
+		const worldWidth = this.wilson.worldWidth;
+		const worldHeight = this.wilson.worldHeight;
+		const worldCenterX = this.wilson.worldCenterX;
+		const worldCenterY = this.wilson.worldCenterY;
+
+		const levelsToZoom = Math.abs(
+			Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4))
+		);
+
+		const animationTime = levelsToZoom > 1
+			? 500
+			: levelsToZoom > 0
+				? 200
+				: 0;
+
+		await animate((t) =>
+		{
+			this.wilson.resizeWorld({
+				width: worldWidth * (1 - t) + 4 * t,
+				height: worldHeight * (1 - t) + 4 * t,
+				centerX: worldCenterX * (1 - t),
+				centerY: worldCenterY * (1 - t),
+			});
+
+			this.wilsonHidden.resizeWorld({
+				width: worldWidth * (1 - t) + 4 * t,
+				height: worldHeight * (1 - t) + 4 * t,
+				centerX: worldCenterX * (1 - t),
+				centerY: worldCenterY * (1 - t),
+			});
+
+			this.needNewFrame = true;
+		}, animationTime, "easeInOutCubic");
+
+		if (levelsToZoom > 0)
+		{
+			await sleep(100);
+		}
 	}
 
 	
