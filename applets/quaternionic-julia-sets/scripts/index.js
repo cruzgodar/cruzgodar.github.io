@@ -1,4 +1,5 @@
 import { QuaternionicJuliaSets } from "./class.js";
+import { crossProduct, normalize } from "/scripts/applets/raymarchApplet.js";
 import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
@@ -6,6 +7,7 @@ import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
+import { animate } from "/scripts/src/utils.js";
 
 export default function()
 {
@@ -76,6 +78,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const showCrossSectionCheckbox = new Checkbox({
+		element: $("#show-cross-section-checkbox"),
+		name: "Show cross-section",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	onSliderInput();
@@ -89,19 +97,20 @@ export default function()
 
 	function onSliderInput()
 	{
-		const c = [
-			rhoSlider.value * Math.cos(thetaSlider.value) * Math.cos(phiSlider.value),
-			rhoSlider.value * Math.sin(thetaSlider.value) * Math.cos(phiSlider.value),
-			rhoSlider.value * Math.sin(phiSlider.value),
-		];
-		
-		console.log(c);
+		const rho = rhoSlider.value;
+		const phi = phiSlider.value;
+		const theta = thetaSlider.value === 0 ? 0.001 : thetaSlider.value;
 
-		const normalVector = [
-			0,
-			-Math.sin(phiSlider.value),
-			Math.cos(phiSlider.value)
+		const c = [
+			rho * Math.cos(theta) * Math.cos(phi),
+			rho * Math.sin(theta) * Math.cos(phi),
+			rho * Math.sin(phi),
 		];
+
+		const normalVector = normalize(crossProduct(
+			c,
+			phi >= 0 ? [-1, 0, 0] : [1, 0, 0],
+		));
 
 		applet.setUniforms({ c, normalVector });
 
@@ -117,6 +126,16 @@ export default function()
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
+		}
+
+		if (applet.showCrossSection !== showCrossSectionCheckbox.checked)
+		{
+			applet.showCrossSection = showCrossSectionCheckbox.checked;
+
+			animate((t) =>
+			{
+				applet.setUniforms({ planeTranslation: applet.showCrossSection ? 1 - t : t });
+			}, 500, "easeOutCubic");
 		}
 	}
 }

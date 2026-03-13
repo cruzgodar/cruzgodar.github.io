@@ -3,6 +3,8 @@ import { animate } from "/scripts/src/utils.js";
 
 export class QuaternionicJuliaSets extends RaymarchApplet
 {
+	showCrossSection = false;
+
 	constructor({ canvas })
 	{
 		const distanceEstimatorGlsl = /* glsl */`
@@ -29,7 +31,9 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			
 			r = length(z);
 			float juliaSetDistance = .5 * r * log(r) / length(zPrime);
-			return max(juliaSetDistance, dot(pos, normalVector));
+
+			// The 1.5 is an experimental factor for the minimum radius sphere that still fits all the julia sets we draw
+			return max(juliaSetDistance, dot(pos - normalVector * planeTranslation * 1.35, normalVector));
 		`;
 
 		const getColorGlsl = /* glsl */`
@@ -75,12 +79,14 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 		const uniformsGlsl = /* glsl */`
 			uniform vec3 c;
 			uniform vec3 normalVector;
+			uniform float planeTranslation;
 			uniform float juliaProportion;
 		`;
 
 		const uniforms = {
 			c: [-.54, -.25, -.668],
 			normalVector: [0, 0, 1],
+			planeTranslation: 1,
 			juliaProportion: 1,
 		};
 
