@@ -497,7 +497,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				worldSize: [4, 4],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -512,7 +512,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				juliaRadius: bubbleRadius,
 				crosshairSize: 0.002,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -525,7 +525,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				c: this.c,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -539,7 +539,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				juliaProportion: 1,
 				juliaC: this.c,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -553,7 +553,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				worldSize: [4, 4],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -568,7 +568,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				juliaRadius: bubbleRadius,
 				crosshairSize: 0.002,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -581,7 +581,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				c: this.c,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -595,7 +595,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				juliaProportion: 1,
 				juliaC: this.c,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 
@@ -610,7 +610,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				c: this.c,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
 		});
 		
@@ -684,7 +684,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				worldSize: [4, 4],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 				codeInterpolation: 0,
 			},
 		});
@@ -697,7 +697,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				worldSize: [4, 4],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
-				draggableArg: [0, 0],
+				draggableArg: this.wilson.draggables.draggableArg.location,
 				codeInterpolation: 0,
 			},
 		});
