@@ -28,4 +28,6 @@ export default function()
 	{
 		applet.run();
 	}
+
+	applet.run();
 }

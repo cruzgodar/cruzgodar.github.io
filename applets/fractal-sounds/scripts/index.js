@@ -3,7 +3,6 @@ import { DownloadHighResButton } from "/scripts/components/buttons.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -120,7 +119,7 @@ export default function()
 
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];
-		const resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
+		const resolution = resolutionInput.value;
 		const numIterations = 200;
 
 		applet.run({
@@ -134,12 +133,12 @@ export default function()
 	function changeResolution()
 	{
 		applet.wilsonJulia.resizeCanvas({
-			width: resolutionInput.value * siteSettings.resolutionMultiplier
+			width: resolutionInput.value
 		});
 
 		applet.wilson.resizeCanvas({
 			width: Math.min(
-				Math.floor(resolutionInput.value * siteSettings.resolutionMultiplier * 3),
+				Math.floor(resolutionInput.value * 3),
 				2000
 			)
 		});

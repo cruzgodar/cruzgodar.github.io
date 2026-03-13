@@ -1,9 +1,9 @@
 import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import {
-	DownloadHighResButton,
-	GenerateButton,
-	ToggleButton
+    DownloadHighResButton,
+    GenerateButton,
+    ToggleButton
 } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
@@ -12,7 +12,6 @@ import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -144,7 +143,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
+		applet.resolution = resolutionInput.value;
 		applet.wilson && applet.wilson.resizeCanvas({ width: applet.resolution });
 		applet.wilsonPreview && applet.wilsonPreview.resizeCanvas({
 			width: Math.ceil(applet.resolution / 4)

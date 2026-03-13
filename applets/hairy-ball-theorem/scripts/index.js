@@ -7,7 +7,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -91,8 +90,7 @@ export default function()
 		vectorFieldGeneratingCode: rawGlslCheckbox.checked
 			? glslTextarea.value
 			: parseNaturalGlsl(glslTextarea.value),
-		vectorFieldAppletResolution: vectorFieldResolutionInput.value
-			* siteSettings.resolutionMultiplier,
+		vectorFieldAppletResolution: vectorFieldResolutionInput.value,
 		vectorFieldDilation: vectorFieldDilationInput.value
 	});
 
@@ -110,7 +108,7 @@ export default function()
 	function changeResolution()
 	{
 		applet.wilson.resizeCanvas({
-			width: resolutionInput.value * siteSettings.resolutionMultiplier
+			width: resolutionInput.value
 		});
 	}
 
@@ -120,8 +118,7 @@ export default function()
 			? glslTextarea.value
 			: parseNaturalGlsl(glslTextarea.value);
 
-		applet.vectorFieldAppletResolution = vectorFieldResolutionInput.value
-			* siteSettings.resolutionMultiplier;
+		applet.vectorFieldAppletResolution = vectorFieldResolutionInput.value;
 		applet.vectorFieldDilation = vectorFieldDilationInput.value;
 		applet.runVectorField(generatingCode);
 	}

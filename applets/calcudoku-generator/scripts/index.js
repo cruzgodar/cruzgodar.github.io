@@ -48,4 +48,9 @@ export default function()
 			maxCageSize: maxCageSizeInput.value
 		});
 	}
+
+	applet.run({
+		gridSize: 6,
+		maxCageSize: 3
+	});
 }

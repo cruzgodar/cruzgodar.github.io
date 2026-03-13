@@ -43,4 +43,9 @@ export default function()
 			k: kInput.value,
 		});
 	}
+
+	applet.run({
+		resolution: 500,
+		k: 1,
+	});
 }

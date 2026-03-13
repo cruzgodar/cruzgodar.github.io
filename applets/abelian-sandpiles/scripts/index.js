@@ -42,7 +42,7 @@ export default function()
 	const centerGrainsInput = new TextBox({
 		element: $("#center-grains-input"),
 		name: "Center Grains",
-		value: 100000,
+		value: 16384,
 		minValue: 0,
 		maxValue: 1000000,
 		onEnter: run,
@@ -89,6 +89,13 @@ export default function()
 			palette: palettes[palettesDropdown.value || "nectarine"]
 		});
 	}
+
+	applet.run({
+		resolution: 50,
+		numGrains: 2048,
+		computationsPerFrame: 100,
+		palette: palettes[palettesDropdown.value || "nectarine"]
+	});
 
 	function onSliderInput()
 	{

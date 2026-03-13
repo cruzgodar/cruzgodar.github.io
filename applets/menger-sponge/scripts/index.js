@@ -6,7 +6,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -97,7 +96,7 @@ export default function()
 	function changeResolution()
 	{
 		applet.wilson.resizeCanvas({
-			width: resolutionInput.value * siteSettings.resolutionMultiplier
+			width: resolutionInput.value
 		});
 	}
 

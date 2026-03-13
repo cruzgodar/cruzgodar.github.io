@@ -4,7 +4,6 @@ import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -69,7 +68,7 @@ export default function()
 	function run()
 	{
 		applet.run({
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
+			resolution: resolutionInput.value,
 			numPoints: numPointsInput.value,
 			metric: metricSlider.value,
 			maximumSpeed: maximumSpeedCheckbox.checked,

@@ -63,7 +63,6 @@ export const siteSettings =
 	distinguishColors: params.get("distinguishcolors") === "1",
 	scroll: parseInt(sessionStorage.getItem("scroll") ?? 0),
 	card: params.get("card"),
-	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 };
 
 
@@ -180,18 +179,6 @@ export function getQueryParams(additionalQueryParams = {})
 	else
 	{
 		params.delete("card");
-	}
-
-	
-
-	if (siteSettings.resolutionMultiplier && siteSettings.resolutionMultiplier !== 1)
-	{
-		params.set("resmult", siteSettings.resolutionMultiplier);
-	}
-
-	else
-	{
-		params.delete("resmult");
 	}
 
 

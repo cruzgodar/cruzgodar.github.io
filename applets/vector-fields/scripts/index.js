@@ -7,7 +7,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -134,7 +133,7 @@ export default function()
 		
 		applet.run({
 			generatingCode,
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
+			resolution: resolutionInput.value,
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),

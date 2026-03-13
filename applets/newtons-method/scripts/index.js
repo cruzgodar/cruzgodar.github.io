@@ -3,7 +3,6 @@ import { hexToRgb } from "/scripts/applets/applet.js";
 import { Button, DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -118,7 +117,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
+		applet.resolution = resolutionInput.value;
 
 		applet.wilson.resizeCanvas({ width: applet.resolution });
 	}

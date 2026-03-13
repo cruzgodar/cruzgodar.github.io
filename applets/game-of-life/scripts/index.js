@@ -15,7 +15,6 @@ import { Dropdown } from "/scripts/components/dropdowns.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -121,7 +120,7 @@ export default function()
 		gridSizeInput.setValue(newGridSize);
 
 		applet.run({
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
+			resolution: resolutionInput.value,
 			gridSize: newGridSize,
 			state,
 			pauseUpdating,
@@ -141,7 +140,7 @@ export default function()
 	function changeResolution()
 	{
 		applet.resolution = Math.max(
-			resolutionInput.value * siteSettings.resolutionMultiplier,
+			resolutionInput.value,
 			applet.gridSize * 2
 		);
 

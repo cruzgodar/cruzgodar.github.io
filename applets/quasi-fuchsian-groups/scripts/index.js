@@ -2,7 +2,6 @@ import { QuasiFuchsianGroups } from "./class.js";
 import { GenerateButton } from "/scripts/components/buttons.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -52,7 +51,7 @@ export default function()
 	async function run()
 	{
 		await applet.requestHighResFrame(
-			highResolutionInput.value * siteSettings.resolutionMultiplier,
+			highResolutionInput.value,
 			maxDepthInput.value,
 			maxPixelBrightnessInput.value
 		);
@@ -62,8 +61,8 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolutionSmall = resolutionInput.value * siteSettings.resolutionMultiplier;
-		applet.resolutionLarge = resolutionInput.value * siteSettings.resolutionMultiplier * 3;
+		applet.resolutionSmall = resolutionInput.value;
+		applet.resolutionLarge = resolutionInput.value * 3;
 
 		applet.wilson.resizeCanvas({
 			width: applet.resolutionSmall

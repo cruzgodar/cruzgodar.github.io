@@ -7,7 +7,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 const minScale = 1.125;
 const minScaleEpsilon = .00003;
@@ -126,7 +125,7 @@ export default function()
 	function changeResolution()
 	{
 		applet.wilson.resizeCanvas({
-			width: resolutionInput.value * siteSettings.resolutionMultiplier
+			width: resolutionInput.value
 		});
 	}
 

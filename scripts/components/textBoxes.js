@@ -1,6 +1,5 @@
 import { addTemporaryParam, pageUrl } from "../src/main.js";
 import { getDisplayUrl } from "../src/navigation.js";
-import { siteSettings } from "../src/settings.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
 
@@ -75,13 +74,6 @@ export class TextBox extends CappedInputElement
 		if (!this.valueTypeIsString)
 		{
 			this.setCap();
-		}
-
-		if (
-			this.name.toLowerCase().includes("resolution")
-			&& siteSettings.resolutionMultiplier !== 1
-		) {
-			setTimeout(() => this.onInput());
 		}
 
 		if (this.persistState)
