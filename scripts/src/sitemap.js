@@ -2196,6 +2196,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/math/interactivity-fidelity-polish",
 			"/math/turing-complete-lines",
 			"/math/dissertation-defense",
 			"/math/light-shadow-world-of-nails",
@@ -2206,6 +2207,15 @@ export const sitemap =
 		]
 	},
 		
+	"/math/interactivity-fidelity-polish":
+	{
+		"title": "Interactivity, Fidelity, and Polish: Lessons Learned from Eight Years of Making Digital Mathematics",
+		
+		"parent": "/math",
+		
+		"children": []
+	},
+	
 	"/math/turing-complete-lines":
 	{
 		"title": "Turing Complete Lines: An Introduction to Lambda Calculus",

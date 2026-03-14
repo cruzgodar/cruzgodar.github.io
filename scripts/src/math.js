@@ -1,15 +1,26 @@
 import { cardIsOpen } from "./cards.js";
-import { pageElement } from "./main.js";
+import { loadScript, pageElement } from "./main.js";
 import anime from "/scripts/anime.js";
 
-export function typesetMath()
+let mathJaxLoaded = false;
+
+export async function typesetMath()
 {
-	if (window.OFFLINE)
+	if (!mathJaxLoaded)
 	{
-		return;
+		window.MathJax = {
+			tex:
+			{
+				inlineMath: { "[+]": [["$", "$"]] }
+			}
+		};
+		
+		await loadScript("/scripts/mathjax.min.js");
+
+		mathJaxLoaded = true;
 	}
-	// eslint-disable-next-line no-undef
-	return MathJax.typesetPromise();
+
+	await window.MathJax.typesetPromise();
 }
 
 export async function showTex(element)

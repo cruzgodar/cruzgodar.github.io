@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Dissertation Defense</title>
+
+	<meta property="og:title" content="Dissertation Defense"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="https://cruzgodar.com/math/dissertation-defense/"/>
+	<meta property="og:image" content="https://cruzgodar.com/math/dissertation-defense/cover.webp"/>
+	<meta property="og:locale" content="en_US"/>
+	<meta property="og:site_name" content="Cruz Godar"/>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#ffffff">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet" as="font">
+
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	
+	<link rel="stylesheet" type="text/css" href="/style/wilson.min.css">
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+	<div id="lapsa-slide-container">
+		<div id="title" class="medium-canvas">
+			<h1>Math Visualization</h1>
+			
+			<h2>Cruz Godar</h2>
+			
+			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/math/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+
+			<div id="canvas-bundle" style="opacity: 0">
+				<div>
+					<div style="position: absolute; width: 100%">
+						<canvas id="output-canvas"></canvas>
+					</div>
+					
+					<div id="numbers-canvas-container" style="width: 100%">
+						<canvas id="numbers-canvas" style="opacity: 0"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		window.MathJax = {
+			tex:
+			{
+				inlineMath: { "[+]": [["$", "$"]] }
+			}
+		};
+	</script>
+
+	<script src="/scripts/mathjax.min.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>
