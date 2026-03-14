@@ -9,7 +9,9 @@ export async function typesetMath()
 		window.MathJax = {
 			tex:
 			{
-				inlineMath: { "[+]": [["$", "$"]] }
+				inlineMath: { "[+]": [["$", "$"]] },
+				allowTexHTML: true,
+				packages: { "[+]": ["texhtml"] },
 			},
 
 			loader:
@@ -26,5 +28,5 @@ export async function typesetMath()
 		return;
 	}
 
-	window.MathJax.typeset();
+	await window.MathJax.typesetPromise();
 }
