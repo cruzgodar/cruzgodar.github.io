@@ -122,13 +122,6 @@ export function clearTemporaryParams()
 
 
 
-const scriptsLoaded =
-{
-	glsl: 0
-};
-
-
-
 export async function loadSite(url = pageUrl)
 {
 	await initDarkTheme(url);
@@ -225,58 +218,6 @@ export async function loadSite(url = pageUrl)
 
 		window.addEventListener("beforeunload", setScroll);
 	}
-}
-
-
-
-// Loads a script with the given source and returns a promise for when it completes.
-export function loadScript(src, isModule = false)
-{
-	return new Promise((resolve, reject) =>
-	{
-		if (scriptsLoaded[src])
-		{
-			resolve();
-			return;
-		}
-
-		const script = document.createElement("script");
-
-		if (isModule)
-		{
-			script.setAttribute("type", "module");
-		}
-
-		document.body.appendChild(script);
-
-		script.onload = () =>
-		{
-			scriptsLoaded[src] = true;
-
-			resolve();
-		};
-
-		script.onerror = reject;
-		script.async = true;
-		script.src = src;
-	});
-}
-
-
-
-// Loads a style with the given href.
-export function loadStyle(href)
-{
-	const style = document.createElement("link");
-
-	style.setAttribute("rel", "stylesheet");
-	style.setAttribute("type", "text/css");
-
-	document.head.appendChild(style);
-
-	style.setAttribute("href", href);
-
-	return style;
 }
 
 

@@ -1,5 +1,5 @@
 import { Applet } from "/scripts/applets/applet.js";
-import { loadScript } from "/scripts/src/main.js";
+import { loadScript } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class SingularValueDecompositions extends Applet

@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker, loadScript } from "/scripts/src/main.js";
+import { addTemporaryWorker } from "/scripts/src/main.js";
+import { loadScript } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const boxSize = 4;

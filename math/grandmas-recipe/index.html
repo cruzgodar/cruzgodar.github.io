@@ -223,16 +223,11 @@
 
 
 	
-	<script>
-		window.MathJax = {
-			tex:
-			{
-				inlineMath: { "[+]": [["$", "$"]] }
-			}
-		};
-	</script>
+	<script type="module">
+		import { typesetMath } from "/scripts/src/math.min.js";
 
-	<script src="/scripts/mathjax.min.js"></script>
+		typesetMath();
+	</script>
 	
 	<script src="index.js" type="module"></script>
 </body>

@@ -3,9 +3,9 @@ import { changeOpacity } from "./animation.js";
 import { enterFullscreen, exitFullscreen, isFullscreen } from "./fullscreen.js";
 import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
-import { addTemporaryListener, loadScript, raw } from "./main.js";
+import { addTemporaryListener, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
-import { clamp, searchProperties } from "./utils.js";
+import { clamp, loadScript, searchProperties } from "./utils.js";
 
 export const desmosDragModes = {
 	NONE: "NONE",

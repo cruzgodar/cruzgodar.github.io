@@ -1,5 +1,60 @@
 import anime from "../anime.js";
 
+const scriptsLoaded =
+{
+	glsl: 0
+};
+
+// Loads a script with the given source and returns a promise for when it completes.
+export function loadScript(src, isModule = false)
+{
+	return new Promise((resolve, reject) =>
+	{
+		if (scriptsLoaded[src])
+		{
+			resolve();
+			return;
+		}
+
+		const script = document.createElement("script");
+
+		if (isModule)
+		{
+			script.setAttribute("type", "module");
+		}
+
+		document.body.appendChild(script);
+
+		script.onload = () =>
+		{
+			scriptsLoaded[src] = true;
+
+			resolve();
+		};
+
+		script.onerror = reject;
+		script.async = true;
+		script.src = src;
+	});
+}
+
+
+
+// Loads a style with the given href.
+export function loadStyle(href)
+{
+	const style = document.createElement("link");
+
+	style.setAttribute("rel", "stylesheet");
+	style.setAttribute("type", "text/css");
+
+	document.head.appendChild(style);
+
+	style.setAttribute("href", href);
+
+	return style;
+}
+
 export function sleep(ms)
 {
 	return new Promise(resolve => setTimeout(resolve, ms));

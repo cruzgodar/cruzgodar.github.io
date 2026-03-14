@@ -1,4 +1,6 @@
-import { loadScript } from "./main.js";
+// The import is only to utils, so this file is safe for e.g. slides to import
+
+import { loadScript } from "./utils.js";
 
 export async function typesetMath()
 {
