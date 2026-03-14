@@ -718,6 +718,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		callback: onScroll
 	});
 
+	addTemporaryListener({
+		object: window,
+		event: "resize",
+		callback: onScroll
+	});
+
 	onScroll();
 }
 

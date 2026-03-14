@@ -7,19 +7,21 @@ export async function typesetMath()
 	if (window.MathJax === undefined)
 	{
 		window.MathJax = {
+			loader:
+			{
+				load: ["[tex]/texhtml"],
+
+				paths:
+				{
+					"mathjax-newcm": "/scripts/mathjax/mathjax-newcm-font"
+				}
+			},
+
 			tex:
 			{
 				inlineMath: { "[+]": [["$", "$"]] },
 				allowTexHTML: true,
 				packages: { "[+]": ["texhtml"] },
-			},
-
-			loader:
-			{
-				paths:
-				{
-					"mathjax-newcm": "/scripts/mathjax/mathjax-newcm-font"
-				}
 			}
 		};
 		
