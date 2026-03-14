@@ -379,6 +379,11 @@ async function fadeOutPage(noFadeOut)
 
 function unloadPage()
 {
+	if (window.MathJax !== undefined)
+	{
+		window.MathJax.typesetClear();
+	}
+	
 	// Remove temporary things outside the page element.
 	const elements = document.querySelectorAll(
 		"script, .temporary-style, .WILSON_fullscreen-container, .temporary-element"

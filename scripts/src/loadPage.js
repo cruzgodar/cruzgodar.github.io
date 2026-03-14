@@ -56,11 +56,9 @@ export async function loadPage(noFadeIn = false)
 		titleElement.textContent = sitemap[pageUrl].title;
 	}
 
-
+	const promises = [loadCustomStyle()];
 
 	initBanner();
-
-	await loadCustomStyle();
 
 	setLinks(pageElement);
 
@@ -80,7 +78,7 @@ export async function loadPage(noFadeIn = false)
 
 	loadImages();
 
-	typesetMath();
+	promises.push(typesetMath());
 
 	initCards();
 
@@ -94,7 +92,11 @@ export async function loadPage(noFadeIn = false)
 
 	window.scrollTo(0, 0);
 
-	await loadCustomScripts();
+	promises.push(loadCustomScripts());
+
+	
+	
+	await Promise.all(promises);
 
 	await fadeInPage(noFadeIn);
 

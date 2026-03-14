@@ -14,5 +14,6 @@
 		"teaching/uo/342/extra/eigenfaces-demo/scripts/data.min.js",
 		"teaching/notes/linear-algebra/singular-value-decompositions/scripts/vData.min.js",
 		"teaching/notes/linear-algebra/singular-value-decompositions/scripts/data.min.js",
+		"scripts/mathjax"
 	]
 }
