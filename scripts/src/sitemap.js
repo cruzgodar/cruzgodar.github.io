@@ -2209,7 +2209,7 @@ export const sitemap =
 		
 	"/math/interactivity-fidelity-polish":
 	{
-		"title": "Interactivity, Fidelity, and Polish: Lessons Learned from Eight Years of Making Digital Mathematics",
+		"title": "Interactivity, Fidelity, and Polish: Building Modern Math Illustration",
 		
 		"parent": "/math",
 		

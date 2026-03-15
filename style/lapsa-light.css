@@ -35,9 +35,9 @@ body
 	z-index: 10;
 }
 
-.WILSON_enter-fullscreen-button
+.WILSON_enter-fullscreen-button, .WILSON_reset-button
 {
-	display: none;
+	display: none !important;
 }
 
 dfn

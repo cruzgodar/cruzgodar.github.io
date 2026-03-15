@@ -121,25 +121,27 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		});
 		this.wilsonHidden.useFramebuffer("draw");
 
+		
+		if (previewCanvas)
+		{
+			const optionsPreview = {
+				shader: tempShader,
 
+				canvasWidth: Math.ceil(this.resolution / 4),
 
-		const optionsPreview = {
-			shader: tempShader,
+				worldWidth: 3,
+				worldCenterX: -worldAdjust[0],
+				worldCenterY: -worldAdjust[1],
 
-			canvasWidth: Math.ceil(this.resolution / 4),
+				verbose: window.DEBUG,
+			};
 
-			worldWidth: 3,
-			worldCenterX: -worldAdjust[0],
-			worldCenterY: -worldAdjust[1],
+			this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
 
-			verbose: window.DEBUG,
-		};
-
-		this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
-
-		this.wilson.canvas.parentElement.appendChild(
-			this.wilsonPreview.canvas
-		);
+			this.wilson.canvas.parentElement.appendChild(
+				this.wilsonPreview.canvas
+			);
+		}
 
 
 
@@ -600,20 +602,21 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		});
 
 
-
-		this.wilsonPreview.loadShader({
-			id: "julia",
-			shader: shaders.julia,
-			uniforms: {
-				worldCenter: [-worldAdjust[0], -worldAdjust[1]],
-				worldSize: [3, 3],
-				numIterations: this.numIterations,
-				brightnessScale: 10,
-				c: this.c,
-				draggableArg: this.wilson.draggables.draggableArg.location,
-			},
-		});
-		
+		if (this.wilsonPreview)
+		{
+			this.wilsonPreview.loadShader({
+				id: "julia",
+				shader: shaders.julia,
+				uniforms: {
+					worldCenter: [-worldAdjust[0], -worldAdjust[1]],
+					worldSize: [3, 3],
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+					c: this.c,
+					draggableArg: this.wilson.draggables.draggableArg.location,
+				},
+			});
+		}
 
 
 		if (!this.hasRun)
@@ -730,16 +733,22 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaRadius: bubbleRadius,
 			}, "juliaPicker");
 			
-			this.wilsonPreview.canvas.style.opacity = 0;
-			this.wilsonPreview.canvas.style.zIndex = 0;
+			if (this.wilsonPreview)
+			{
+				this.wilsonPreview.canvas.style.opacity = 0;
+				this.wilsonPreview.canvas.style.zIndex = 0;
+			}
 
 			await sleep(50);
 
-			changeOpacity({
-				element: this.wilsonPreview.canvas,
-				opacity: 1,
-				duration: 100,
-			});
+			if (this.wilsonPreview)
+			{
+				changeOpacity({
+					element: this.wilsonPreview.canvas,
+					opacity: 1,
+					duration: 100,
+				});
+			}
 
 			// Prevent the middle of the mandelbrot set from being distorted.
 			this.c = [10000, 10000];
@@ -797,15 +806,18 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			this.ignoreBrightnessCalculation = true;
 
-			changeOpacity({
-				element: this.wilsonPreview.canvas,
-				opacity: 0,
-				duration: 100,
-			})
-				.then(() =>
-				{
-					this.wilsonPreview.canvas.style.zIndex = -1;
-				});
+			if (this.wilsonPreview)
+			{
+				changeOpacity({
+					element: this.wilsonPreview.canvas,
+					opacity: 0,
+					duration: 100,
+				})
+					.then(() =>
+					{
+						this.wilsonPreview.canvas.style.zIndex = -1;
+					});
+			}
 
 			// Animate the Julia set out from the clicked location.
 			animate((t) =>
@@ -1004,8 +1016,11 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.wilson.setUniforms({ draggableArg: [x, y] }, shader);
 			this.wilsonHidden.setUniforms({ draggableArg: [x, y] }, shader);
 		}
-
-		this.wilsonPreview.setUniforms({ draggableArg: [x, y] });
+		
+		if (this.wilsonPreview)
+		{
+			this.wilsonPreview.setUniforms({ draggableArg: [x, y] });
+		}
 
 		this.needNewFrame = true;
 	}
@@ -1093,11 +1108,14 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		{
 			this.wilson.setUniforms({ juliaC: this.c });
 
-			this.wilsonPreview.setUniforms({
-				c: [this.c[0] + this.worldAdjust[0], this.c[1] + this.worldAdjust[1]],
-			});
+			if (this.wilsonPreview)
+			{
+				this.wilsonPreview.setUniforms({
+					c: [this.c[0] + this.worldAdjust[0], this.c[1] + this.worldAdjust[1]],
+				});
 
-			this.wilsonPreview.drawFrame();
+				this.wilsonPreview.drawFrame();
+			}
 		}
 
 		this.wilson.drawFrame();

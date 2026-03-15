@@ -58,9 +58,9 @@ body
 	box-shadow: 0px 0px calc(2 * var(--vl)) 0px rgb(127, 127, 127) !important;
 }
 
-.WILSON_enter-fullscreen-button
+.WILSON_enter-fullscreen-button, .WILSON_reset-button
 {
-	display: none;
+	display: none !important;
 }
 
 
