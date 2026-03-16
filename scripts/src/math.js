@@ -22,6 +22,15 @@ export async function typesetMath()
 				inlineMath: { "[+]": [["$", "$"]] },
 				allowTexHTML: true,
 				packages: { "[+]": ["texhtml"] },
+			},
+
+			output:
+			{
+				displayOverflow: "overflow",
+				linebreaks:
+				{
+					inline: false,
+				}
 			}
 		};
 		
