@@ -603,7 +603,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 			const s2 = expression.input.color.s;
 
 			expression.color = {
-				h: Math.abs(h1 - h2) <= 0.5
+				// Float precision yay
+				h: Math.abs(h1 - h2) < 0.499999
 					? (h1 + h2) / 2
 					: ((h1 + h2 + 1) / 2) % 1,
 				s: Math.max(

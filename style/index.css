@@ -369,7 +369,7 @@ mjx-container
 	/* For some reason this needs to be in terms of vh or Chrome starts changing it wrt width. */
 	margin-top: calc(-100vh * .05);
 	
-	z-index: 1000;
+	z-index: 2000;
 	
 	display: none;
 	flex-direction: column;
@@ -757,14 +757,6 @@ body > .WILSON_fullscreen-container .fps-canvas
 	border-radius: 8px;
 	cursor: pointer;
 	outline: none;
-}
-
-.WILSON_fullscreen-container.WILSON_fullscreen .wilson-help-button
-{
-	z-index: 1000;
-	opacity: 0;
-	pointer-events: none;
-
 }
 
 .wilson-help-button img
@@ -1209,7 +1201,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	font-size: 100%;
 	text-align: center;
 
-	font-family: "Source Code Pro", monospace;
+	font-family: Menlo, Monaco, Consolas, monospace;
 	
 	transition: border-color .25s ease-out, color .25s ease-out;
 }
@@ -1324,7 +1316,7 @@ body > .WILSON_fullscreen-container .fps-canvas
 	box-sizing: border-box;
 	-webkit-appearance: none;
 	appearance: none;
-	font-family: "Source Code Pro", monospace;
+	font-family: Menlo, Monaco, Consolas, monospace;
 	
 	font-size: 100%;
 	
