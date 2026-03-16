@@ -73,7 +73,7 @@ dfn
 	height: calc(45 * var(--vl));
 }
 
-.medium-canvas #canvas-bundle
+.medium-canvas :is(#canvas-bundle, .canvas-bundle)
 {
 	position: absolute;
 	
@@ -87,7 +87,7 @@ dfn
 	height: calc(40 * var(--vl));
 }
 
-.large-canvas #canvas-bundle
+.large-canvas :is(#canvas-bundle, .canvas-bundle)
 {
 	position: absolute;
 	
@@ -101,7 +101,7 @@ dfn
 	height: calc(55.625 * var(--vl));
 }
 
-.full-square-canvas #canvas-bundle
+.full-square-canvas :is(#canvas-bundle, .canvas-bundle)
 {
 	position: absolute;
 	
@@ -132,7 +132,7 @@ dfn
 	border-radius: 0;
 }
 
-.full-canvas #canvas-bundle
+.full-canvas :is(#canvas-bundle, .canvas-bundle)
 {
 	position: absolute;
 	
@@ -140,7 +140,7 @@ dfn
 	top: 0;
 }
 
-.under-text #canvas-bundle
+.under-text :is(#canvas-bundle, .canvas-bundle)
 {
 	z-index: -1;
 }

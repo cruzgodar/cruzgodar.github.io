@@ -1,3 +1,4 @@
+import { fidelityBuilds } from "./builds/fidelity.js";
 import { titleBuilds } from "./builds/title.js";
 import Lapsa from "/scripts/lapsa.js";
 
@@ -18,6 +19,7 @@ const options =
 	builds:
 	{
 		title: titleBuilds,
+		fidelity: fidelityBuilds,
 	}
 };
 

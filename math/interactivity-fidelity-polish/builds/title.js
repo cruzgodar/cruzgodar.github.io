@@ -10,6 +10,7 @@ async function reset({ slide })
 	{
 		return;
 	}
+	
 	everLoaded = true;
 
 	const canvas = slide.querySelector("canvas");

@@ -101,6 +101,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 	constructor({
 		canvas,
 		shape = "octahedron",
+		epsilonScaling = 0.75,
+		minEpsilon,
 	}) {
 		const constantsGlsl = [];
 
@@ -151,7 +153,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			cameraPos: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
-			epsilonScaling: 0.75,
+			epsilonScaling,
+			minEpsilon,
 			stepFactor: .6,
 		});
 
