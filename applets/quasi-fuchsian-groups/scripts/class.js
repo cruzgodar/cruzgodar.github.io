@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const boxSize = 4;
@@ -834,7 +833,9 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			width: resolution
 		});
 
-		this.webWorker = addTemporaryWorker("/applets/quasi-fuchsian-groups/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker(
+			"/applets/quasi-fuchsian-groups/scripts/worker.js"
+		);
 
 		const workerPromise = new Promise(resolve =>
 		{

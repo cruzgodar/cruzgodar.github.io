@@ -1,6 +1,5 @@
 import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class MagicCarpets extends Applet
@@ -60,7 +59,7 @@ export class MagicCarpets extends Applet
 
 
 
-		this.webWorker = addTemporaryWorker("/applets/magic-carpets/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/magic-carpets/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
 		{

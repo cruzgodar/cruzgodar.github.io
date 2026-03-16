@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -48,7 +47,7 @@ export class BrownianTrees extends AnimationFrameApplet
 
 		this.wilson.drawFrame(this.imageData);
 
-		this.webWorker = addTemporaryWorker("/applets/brownian-trees/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/brownian-trees/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
 		{

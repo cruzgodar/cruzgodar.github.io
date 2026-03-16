@@ -2,8 +2,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import {
-	addTemporaryInterval,
-	addTemporaryWorker
+	addTemporaryInterval
 } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -180,7 +179,7 @@ export class BinaryTrees extends AnimationFrameApplet
 	{
 		this.linesToDraw = [];
 
-		this.webWorker = addTemporaryWorker("/applets/binary-trees/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/binary-trees/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
 		{

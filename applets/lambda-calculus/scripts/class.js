@@ -1,7 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { browserSupportsP3, browserSupportsRec2020, convertColor } from "/scripts/src/browser.js";
-import { addTemporaryInterval, addTemporaryWorker } from "/scripts/src/main.js";
+import { addTemporaryInterval } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { animate, clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
@@ -1751,8 +1751,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			if (this.expressionTextarea && updateExpressionDuringReduction)
 			{
-				this.worker && this.worker.terminate();
-				this.worker = addTemporaryWorker("/applets/lambda-calculus/scripts/worker.js");
+				this.worker = this.addTemporaryWorker("/applets/lambda-calculus/scripts/worker.js");
 
 				this.worker.onmessage = e =>
 				{

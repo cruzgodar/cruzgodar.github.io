@@ -102,14 +102,14 @@
 			</div>
 		</div>
 
-		<div id="webassembly" class="medium-canvas">
+		<div id="webAssembly" class="medium-canvas">
 			<h2>Single-threaded performance</h2>
 			
-			<p class="build left-text">If something can't be parallelized but is performance-critical, </p>
+			<p class="build left-text">If something can't be parallelized but is performance-critical, you may be able to write that specific part in a lower-level language</p>
 
-			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object</p>
+			<p class="build left-text">For example, WebAssembly lets compiled C code be run from JS</p>
 
-			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
+			<p class="build left-text">It's used here in the tight loop for finding random walks in Wilson's Algorithm</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>

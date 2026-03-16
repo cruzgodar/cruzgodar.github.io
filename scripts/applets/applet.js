@@ -50,7 +50,7 @@ export class Applet
 
 	fpsDisplayCtx;
 
-	workers = [];
+	workers = {};
 	timeoutIds = [];
 
 	keysPressed = {};
@@ -99,13 +99,12 @@ export class Applet
 
 		this.animationPaused = true;
 
-		for (const worker of this.workers)
+		for (const worker of Object.values(this.workers))
 		{
-			if (worker?.terminate)
-			{
-				worker.terminate();
-			}
+			worker?.terminate?.();
 		}
+
+		this.workers = {};
 
 		for (const timeoutId of this.timeoutIds)
 		{
@@ -166,6 +165,24 @@ export class Applet
 		});
 
 		onScroll();
+	}
+
+
+	
+	addTemporaryWorker(src)
+	{
+		if (this.workers[src]?.terminate)
+		{
+			this.workers[src].terminate();
+		}
+	
+		const replacedSrc = window.DEBUG ? src : src.replace(".js", ".min.js");
+	
+		const worker = new Worker(replacedSrc);
+	
+		this.workers[src] = worker;
+	
+		return worker;
 	}
 
 

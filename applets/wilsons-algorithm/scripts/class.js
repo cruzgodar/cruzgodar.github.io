@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -63,7 +62,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 		this.pixels = [];
 
-		this.webWorker = addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
 
 		this.webWorker.onmessage = e =>
 		{

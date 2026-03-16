@@ -21,14 +21,12 @@ import {
 	clearTemporaryIntervals,
 	clearTemporaryListeners,
 	clearTemporaryParams,
-	clearTemporaryWorkers,
 	pageElement,
 	pageUrl,
 	setPageUrl,
 	temporaryIntervals,
 	temporaryListeners,
-	temporaryParams,
-	temporaryWorkers
+	temporaryParams
 } from "./main.js";
 import {
 	forceThemePages,
@@ -409,18 +407,6 @@ function unloadPage()
 	}
 
 	clearTemporaryIntervals();
-
-
-
-	for (const key in temporaryWorkers)
-	{
-		if (temporaryWorkers[key]?.terminate)
-		{
-			temporaryWorkers[key].terminate();
-		}
-	}
-
-	clearTemporaryWorkers();
 
 
 

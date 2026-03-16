@@ -1,7 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -75,7 +74,7 @@ export class CalcudokuGenerator extends Applet
 
 
 
-		this.webWorker = addTemporaryWorker("/applets/calcudoku-generator/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/calcudoku-generator/scripts/worker.js");
 
 
 

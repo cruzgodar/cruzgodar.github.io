@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const brightnessScale = 10;
@@ -58,7 +57,7 @@ export class StrangeAttractors extends AnimationFrameApplet
 
 
 
-		this.webWorker = addTemporaryWorker("/applets/strange-attractors/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/strange-attractors/scripts/worker.js");
 
 		this.webWorker.onmessage = e =>
 		{

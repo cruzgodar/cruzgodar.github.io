@@ -83,31 +83,6 @@ export function clearTemporaryIntervals()
 
 
 
-export let temporaryWorkers = {};
-
-export function addTemporaryWorker(src)
-{
-	if (temporaryWorkers[src]?.terminate)
-	{
-		temporaryWorkers[src].terminate();
-	}
-
-	const replacedSrc = window.DEBUG ? src : src.replace(".js", ".min.js");
-
-	const worker = new Worker(replacedSrc);
-
-	temporaryWorkers[src] = worker;
-
-	return worker;
-}
-
-export function clearTemporaryWorkers()
-{
-	temporaryWorkers = {};
-}
-
-
-
 export let temporaryParams = [];
 
 export function addTemporaryParam(key)

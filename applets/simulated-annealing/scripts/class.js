@@ -1,6 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class SimulatedAnnealing extends Applet
@@ -54,7 +53,7 @@ export class SimulatedAnnealing extends Applet
 
 
 
-		this.webWorker = addTemporaryWorker("/applets/simulated-annealing/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/simulated-annealing/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
 		{

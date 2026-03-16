@@ -1,7 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
@@ -50,7 +49,7 @@ export class SudokuGenerator extends Applet
 
 		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 
-		this.webWorker = addTemporaryWorker("/applets/sudoku-generator/scripts/worker.js");
+		this.webWorker = this.addTemporaryWorker("/applets/sudoku-generator/scripts/worker.js");
 
 		this.webWorker.onmessage = e =>
 		{
