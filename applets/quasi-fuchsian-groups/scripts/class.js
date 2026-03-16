@@ -1,6 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { loadScript } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const boxSize = 4;
@@ -27,8 +26,6 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 	brightness;
 	image;
-
-	Complex;
 
 
 
@@ -193,18 +190,11 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-		loadScript("/scripts/complex.min.js")
-			.then(() =>
-			{
-				// eslint-disable-next-line no-undef
-				this.Complex = Complex;
+		this.resume();
 
-				this.resume();
+		this.onResizeCanvas();
 
-				this.onResizeCanvas();
-
-				this.changeRecipe("grandma");
-			});
+		this.changeRecipe("grandma");
 	}
 
 
@@ -213,73 +203,131 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 		p1 = this.wilson.draggables.ta.location,
 		p2 = this.wilson.draggables.tb.location,
 	) {
-		// Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new this.Complex(p1[0], p1[1]);
-		const tb = new this.Complex(p2[0], p2[1]);
+		// Use Grandma's recipe, candidate for the worst-named algorithm of the last two decades.
+		const taX = p1[0];
+		const taY = p1[1];
+		const tbX = p2[0];
+		const tbY = p2[1];
 
-		const b = ta.mul(tb);
+		// b = ta * tb
+		const bX = taX * tbX - taY * tbY;
+		const bY = taX * tbY + taY * tbX;
 
-		const c = ta.mul(ta).add(tb.mul(tb));
+		// c = ta^2 + tb^2
+		const cX = taX * taX - taY * taY + tbX * tbX - tbY * tbY;
+		const cY = 2 * taX * taY + 2 * tbX * tbY;
 
-		const discriminant = b.mul(b).sub(c.mul(4));
+		// discriminant = b^2 - 4c
+		const discX = bX * bX - bY * bY - 4 * cX;
+		const discY = 2 * bX * bY - 4 * cY;
 
-		const tab = discriminant.arg() > 0
-			? b.sub(discriminant.sqrt()).div(2)
-			: b.add(discriminant.sqrt()).div(2);
+		// sqrt(discriminant)
+		const discR = Math.sqrt(Math.sqrt(discX * discX + discY * discY));
+		const discTheta = Math.atan2(discY, discX) / 2;
+		const sqrtDiscX = discR * Math.cos(discTheta);
+		const sqrtDiscY = discR * Math.sin(discTheta);
 
-		const z0 = tab
-			.sub(2)
-			.mul(tb)
-			.div(tb
-				.mul(tab)
-				.sub(ta.mul(2))
-				.add(tab.mul(new this.Complex([0, 2])))
-			);
+		// tab = disc.arg() > 0 ? (b - sqrt(disc)) / 2 : (b + sqrt(disc)) / 2
+		let tabX, tabY;
+
+		if (Math.atan2(discY, discX) > 0)
+		{
+			tabX = (bX - sqrtDiscX) / 2;
+			tabY = (bY - sqrtDiscY) / 2;
+		}
+		else
+		{
+			tabX = (bX + sqrtDiscX) / 2;
+			tabY = (bY + sqrtDiscY) / 2;
+		}
+
+		// z0 = (tab - 2) * tb / (tb * tab - 2 * ta + tab * [0, 2])
+		// numerator: (tab - 2) * tb
+		const z0NumX = (tabX - 2) * tbX - tabY * tbY;
+		const z0NumY = (tabX - 2) * tbY + tabY * tbX;
+
+		// denominator: tb * tab - 2 * ta + tab * [0, 2]
+		// tab * [0, 2] = [-2 * tabY, 2 * tabX]
+		const z0DenX = tbX * tabX - tbY * tabY - 2 * taX - 2 * tabY;
+		const z0DenY = tbX * tabY + tbY * tabX - 2 * taY + 2 * tabX;
+
+		const z0D = z0DenX * z0DenX + z0DenY * z0DenY;
+		const z0X = (z0NumX * z0DenX + z0NumY * z0DenY) / z0D;
+		const z0Y = (z0NumY * z0DenX - z0NumX * z0DenY) / z0D;
 
 
 
-		const c1 = ta.div(2);
+		// c1 = ta / 2
+		const c1X = taX / 2;
+		const c1Y = taY / 2;
 
-		const c2 = ta
-			.mul(tab)
-			.sub(tb.mul(2))
-			.add(new this.Complex([0, 4]))
-			.div(tab.mul(2).add(4).mul(z0));
+		// c2 = (ta * tab - 2 * tb + [0, 4]) / ((2 * tab + 4) * z0)
+		// ta * tab
+		const taTabX = taX * tabX - taY * tabY;
+		const taTabY = taX * tabY + taY * tabX;
 
-		const c3 = ta
-			.mul(tab)
-			.sub(tb.mul(2))
-			.sub(new this.Complex([0, 4]))
-			.mul(z0)
-			.div(tab.mul(2).sub(4));
+		const c2NumX = taTabX - 2 * tbX;
+		const c2NumY = taTabY - 2 * tbY + 4;
 
-		const c4 = tb.sub(new this.Complex([0, 2])).div(2);
-		const c5 = tb.div(2);
-		const c6 = tb.add(new this.Complex([0, 2])).div(2);
+		// (2 * tab + 4) * z0
+		const c2DenAX = 2 * tabX + 4;
+		const c2DenAY = 2 * tabY;
+		const c2DenX = c2DenAX * z0X - c2DenAY * z0Y;
+		const c2DenY = c2DenAX * z0Y + c2DenAY * z0X;
 
-		this.coefficients[0][0][0] = c1.re;
-		this.coefficients[0][0][1] = c1.im;
+		const c2D = c2DenX * c2DenX + c2DenY * c2DenY;
+		const c2X = (c2NumX * c2DenX + c2NumY * c2DenY) / c2D;
+		const c2Y = (c2NumY * c2DenX - c2NumX * c2DenY) / c2D;
 
-		this.coefficients[0][1][0] = c2.re;
-		this.coefficients[0][1][1] = c2.im;
+		// c3 = (ta * tab - 2 * tb - [0, 4]) * z0 / (2 * tab - 4)
+		const c3NumAX = taTabX - 2 * tbX;
+		const c3NumAY = taTabY - 2 * tbY - 4;
 
-		this.coefficients[0][2][0] = c3.re;
-		this.coefficients[0][2][1] = c3.im;
+		const c3NumX = c3NumAX * z0X - c3NumAY * z0Y;
+		const c3NumY = c3NumAX * z0Y + c3NumAY * z0X;
 
-		this.coefficients[0][3][0] = c1.re;
-		this.coefficients[0][3][1] = c1.im;
+		const c3DenX = 2 * tabX - 4;
+		const c3DenY = 2 * tabY;
 
-		this.coefficients[1][0][0] = c4.re;
-		this.coefficients[1][0][1] = c4.im;
+		const c3D = c3DenX * c3DenX + c3DenY * c3DenY;
+		const c3X = (c3NumX * c3DenX + c3NumY * c3DenY) / c3D;
+		const c3Y = (c3NumY * c3DenX - c3NumX * c3DenY) / c3D;
 
-		this.coefficients[1][1][0] = c5.re;
-		this.coefficients[1][1][1] = c5.im;
+		// c4 = (tb - [0, 2]) / 2
+		const c4X = tbX / 2;
+		const c4Y = (tbY - 2) / 2;
 
-		this.coefficients[1][2][0] = c5.re;
-		this.coefficients[1][2][1] = c5.im;
+		// c5 = tb / 2
+		const c5X = tbX / 2;
+		const c5Y = tbY / 2;
 
-		this.coefficients[1][3][0] = c6.re;
-		this.coefficients[1][3][1] = c6.im;
+		// c6 = (tb + [0, 2]) / 2
+		const c6X = tbX / 2;
+		const c6Y = (tbY + 2) / 2;
+
+		this.coefficients[0][0][0] = c1X;
+		this.coefficients[0][0][1] = c1Y;
+
+		this.coefficients[0][1][0] = c2X;
+		this.coefficients[0][1][1] = c2Y;
+
+		this.coefficients[0][2][0] = c3X;
+		this.coefficients[0][2][1] = c3Y;
+
+		this.coefficients[0][3][0] = c1X;
+		this.coefficients[0][3][1] = c1Y;
+
+		this.coefficients[1][0][0] = c4X;
+		this.coefficients[1][0][1] = c4Y;
+
+		this.coefficients[1][1][0] = c5X;
+		this.coefficients[1][1][1] = c5Y;
+
+		this.coefficients[1][2][0] = c5X;
+		this.coefficients[1][2][1] = c5Y;
+
+		this.coefficients[1][3][0] = c6X;
+		this.coefficients[1][3][1] = c6Y;
 
 
 
@@ -351,58 +399,173 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 		p2 = this.wilson.draggables.tb.location,
 		p3 = this.wilson.draggables.tc.location
 	) {
-		const ta = new this.Complex(p1[0], p1[1]);
-		const tb = new this.Complex(p2[0], p2[1]);
-		const tab = new this.Complex(p3[0], p3[1]);
-		const I = new this.Complex(0, 1);
-		const TWO = new this.Complex(2, 0);
+		const taX = p1[0];
+		const taY = p1[1];
+		const tbX = p2[0];
+		const tbY = p2[1];
+		const tabX = p3[0];
+		const tabY = p3[1];
 
-		const tc = ta.mul(ta).add(tb.mul(tb)).add(tab.mul(tab)).sub(ta.mul(tb).mul(tab)).sub(2);
+		// tc = ta^2 + tb^2 + tab^2 - ta * tb * tab - 2
+		const taTbX = taX * tbX - taY * tbY;
+		const taTbY = taX * tbY + taY * tbX;
 
-		const Q = TWO.sub(tc).sqrt();
+		const tcX = taX * taX - taY * taY
+			+ tbX * tbX - tbY * tbY
+			+ tabX * tabX - tabY * tabY
+			- (taTbX * tabX - taTbY * tabY)
+			- 2;
+		const tcY = 2 * taX * taY
+			+ 2 * tbX * tbY
+			+ 2 * tabX * tabY
+			- (taTbX * tabY + taTbY * tabX);
 
-		const mag = tc.add(I.mul(Q).mul(tc.add(2).sqrt())).abs();
+		// Q = sqrt(2 - tc)
+		const twoMinusTcX = 2 - tcX;
+		const twoMinusTcY = -tcY;
+		const qR = Math.sqrt(Math.sqrt(twoMinusTcX * twoMinusTcX + twoMinusTcY * twoMinusTcY));
+		const qTheta = Math.atan2(twoMinusTcY, twoMinusTcX) / 2;
+		const qX = qR * Math.cos(qTheta);
+		const qY = qR * Math.sin(qTheta);
 
-		const R = tc.add(2).sqrt().mul(mag >= 2 ? 1 : -1);
+		// i * Q = [-qY, qX]
 
-		const z0 = tab.sub(2).mul(tb.add(R)).div(tb.mul(tab).sub(ta.mul(2)).add(I.mul(Q).mul(tab)));
+		// sqrt(tc + 2)
+		const tcP2X = tcX + 2;
+		const tcP2Y = tcY;
+		const tcP2R = Math.sqrt(Math.sqrt(tcP2X * tcP2X + tcP2Y * tcP2Y));
+		const tcP2Theta = Math.atan2(tcP2Y, tcP2X) / 2;
+		const sqrtTcP2X = tcP2R * Math.cos(tcP2Theta);
+		const sqrtTcP2Y = tcP2R * Math.sin(tcP2Theta);
+
+		// mag = |tc + i * Q * sqrt(tc + 2)|
+		// i * Q * sqrt(tc + 2)
+		const iQSqrtX = -qY * sqrtTcP2X - qX * sqrtTcP2Y;
+		const iQSqrtY = -qY * sqrtTcP2Y + qX * sqrtTcP2X;
+
+		const mag = Math.sqrt(
+			(tcX + iQSqrtX) * (tcX + iQSqrtX)
+			+ (tcY + iQSqrtY) * (tcY + iQSqrtY)
+		);
+
+		// R = sqrt(tc + 2) * (mag >= 2 ? 1 : -1)
+		const sign = mag >= 2 ? 1 : -1;
+		const rX = sqrtTcP2X * sign;
+		const rY = sqrtTcP2Y * sign;
+
+		// z0 = (tab - 2) * (tb + R) / (tb * tab - 2 * ta + i * Q * tab)
+		// numerator: (tab - 2) * (tb + R)
+		const z0NumX = (tabX - 2) * (tbX + rX) - tabY * (tbY + rY);
+		const z0NumY = (tabX - 2) * (tbY + rY) + tabY * (tbX + rX);
+
+		// i * Q * tab = [-qY, qX] * [tabX, tabY]
+		const iQTabX = -qY * tabX - qX * tabY;
+		const iQTabY = -qY * tabY + qX * tabX;
+
+		// denominator: tb * tab - 2 * ta + i * Q * tab
+		const z0DenX = tbX * tabX - tbY * tabY - 2 * taX + iQTabX;
+		const z0DenY = tbX * tabY + tbY * tabX - 2 * taY + iQTabY;
+
+		const z0D = z0DenX * z0DenX + z0DenY * z0DenY;
+		const z0X = (z0NumX * z0DenX + z0NumY * z0DenY) / z0D;
+		const z0Y = (z0NumY * z0DenX - z0NumX * z0DenY) / z0D;
 
 
 
-		const c1 = ta.div(2);
-		const c2 = ta.mul(tab).sub(tb.mul(2)).add(I.mul(Q).mul(2)).div(z0.mul(tab.mul(2).add(4)));
-		const c3 = z0.mul(ta.mul(tab).sub(tb.mul(2)).sub(I.mul(2).mul(Q))).div(tab.mul(2).sub(4));
+		// c1 = ta / 2
+		const c1X = taX / 2;
+		const c1Y = taY / 2;
 
-		const c4 = tb.sub(I.mul(Q)).div(2);
-		const c5 = tb.mul(tab).sub(ta.mul(2)).add(I.mul(Q).mul(tab)).div(z0.mul(tab.mul(2).add(4)));
-		const c6 = tb.mul(tab).sub(ta.mul(2)).sub(I.mul(Q).mul(tab)).mul(z0).div(tab.mul(2).sub(4));
-		const c7 = tb.add(I.mul(Q)).div(2);
+		// ta * tab (reused below)
+		const taTabX = taX * tabX - taY * tabY;
+		const taTabY = taX * tabY + taY * tabX;
+
+		// 2 * tab + 4 and 2 * tab - 4 (reused below)
+		const tab2P4X = 2 * tabX + 4;
+		const tab2P4Y = 2 * tabY;
+		const tab2M4X = 2 * tabX - 4;
+		const tab2M4Y = 2 * tabY;
+
+		// c2 = (ta * tab - 2 * tb + 2 * i * Q) / (z0 * (2 * tab + 4))
+		// i * Q * 2 = [-2 * qY, 2 * qX]
+		const c2NumX = taTabX - 2 * tbX - 2 * qY;
+		const c2NumY = taTabY - 2 * tbY + 2 * qX;
+
+		const c2DenX = z0X * tab2P4X - z0Y * tab2P4Y;
+		const c2DenY = z0X * tab2P4Y + z0Y * tab2P4X;
+
+		const c2D = c2DenX * c2DenX + c2DenY * c2DenY;
+		const c2X = (c2NumX * c2DenX + c2NumY * c2DenY) / c2D;
+		const c2Y = (c2NumY * c2DenX - c2NumX * c2DenY) / c2D;
+
+		// c3 = z0 * (ta * tab - 2 * tb - 2 * i * Q) / (2 * tab - 4)
+		// -2 * i * Q = [2 * qY, -2 * qX]
+		const c3AX = taTabX - 2 * tbX + 2 * qY;
+		const c3AY = taTabY - 2 * tbY - 2 * qX;
+
+		const c3NumX = z0X * c3AX - z0Y * c3AY;
+		const c3NumY = z0X * c3AY + z0Y * c3AX;
+
+		const c3D = tab2M4X * tab2M4X + tab2M4Y * tab2M4Y;
+		const c3X = (c3NumX * tab2M4X + c3NumY * tab2M4Y) / c3D;
+		const c3Y = (c3NumY * tab2M4X - c3NumX * tab2M4Y) / c3D;
+
+		// c4 = (tb - i * Q) / 2
+		// -i * Q = [qY, -qX]
+		const c4X = (tbX + qY) / 2;
+		const c4Y = (tbY - qX) / 2;
+
+		// c5 = (tb * tab - 2 * ta + i * Q * tab) / (z0 * (2 * tab + 4))
+		// tb * tab - 2 * ta + i * Q * tab = z0Den
+		const c5NumX = z0DenX;
+		const c5NumY = z0DenY;
+
+		const c5D = c2DenX * c2DenX + c2DenY * c2DenY;
+		const c5X = (c5NumX * c2DenX + c5NumY * c2DenY) / c5D;
+		const c5Y = (c5NumY * c2DenX - c5NumX * c2DenY) / c5D;
+
+		// c6 = (tb * tab - 2 * ta - i * Q * tab) * z0 / (2 * tab - 4)
+		// -i * Q * tab = [qY * tabX + qX * tabY, qY * tabY - qX * tabX]
+		const c6AX = tbX * tabX - tbY * tabY - 2 * taX + qY * tabX + qX * tabY;
+		const c6AY = tbX * tabY + tbY * tabX - 2 * taY + qY * tabY - qX * tabX;
+
+		const c6NumX = c6AX * z0X - c6AY * z0Y;
+		const c6NumY = c6AX * z0Y + c6AY * z0X;
+
+		const c6D = tab2M4X * tab2M4X + tab2M4Y * tab2M4Y;
+		const c6X = (c6NumX * tab2M4X + c6NumY * tab2M4Y) / c6D;
+		const c6Y = (c6NumY * tab2M4X - c6NumX * tab2M4Y) / c6D;
+
+		// c7 = (tb + i * Q) / 2
+		// i * Q = [-qY, qX]
+		const c7X = (tbX - qY) / 2;
+		const c7Y = (tbY + qX) / 2;
 
 
 
-		this.coefficients[0][0][0] = c1.re;
-		this.coefficients[0][0][1] = c1.im;
+		this.coefficients[0][0][0] = c1X;
+		this.coefficients[0][0][1] = c1Y;
 
-		this.coefficients[0][1][0] = c2.re;
-		this.coefficients[0][1][1] = c2.im;
+		this.coefficients[0][1][0] = c2X;
+		this.coefficients[0][1][1] = c2Y;
 
-		this.coefficients[0][2][0] = c3.re;
-		this.coefficients[0][2][1] = c3.im;
+		this.coefficients[0][2][0] = c3X;
+		this.coefficients[0][2][1] = c3Y;
 
-		this.coefficients[0][3][0] = c1.re;
-		this.coefficients[0][3][1] = c1.im;
+		this.coefficients[0][3][0] = c1X;
+		this.coefficients[0][3][1] = c1Y;
 
-		this.coefficients[1][0][0] = c4.re;
-		this.coefficients[1][0][1] = c4.im;
+		this.coefficients[1][0][0] = c4X;
+		this.coefficients[1][0][1] = c4Y;
 
-		this.coefficients[1][1][0] = c5.re;
-		this.coefficients[1][1][1] = c5.im;
+		this.coefficients[1][1][0] = c5X;
+		this.coefficients[1][1][1] = c5Y;
 
-		this.coefficients[1][2][0] = c6.re;
-		this.coefficients[1][2][1] = c6.im;
+		this.coefficients[1][2][0] = c6X;
+		this.coefficients[1][2][1] = c6Y;
 
-		this.coefficients[1][3][0] = c7.re;
-		this.coefficients[1][3][1] = c7.im;
+		this.coefficients[1][3][0] = c7X;
+		this.coefficients[1][3][1] = c7Y;
 
 
 

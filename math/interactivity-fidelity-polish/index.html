@@ -82,7 +82,7 @@
 			
 			<p class="build left-text">Code performance matters!</p>
 
-			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object</p>
+			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object (especially important when those objects are unusual)</p>
 
 			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
 
@@ -99,6 +99,20 @@
 			<div id="gpu-canvas-container">
 				<canvas></canvas>
 				<p>GPU: 400x pixels at same fps on an M3 MacBook Pro</p>
+			</div>
+		</div>
+
+		<div id="webassembly" class="medium-canvas">
+			<h2>Single-threaded performance</h2>
+			
+			<p class="build left-text">If something can't be parallelized but is performance-critical, </p>
+
+			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object</p>
+
+			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
 			</div>
 		</div>
 	</div>
