@@ -9,6 +9,8 @@
 	position: relative;
 }
 
+
+
 #title .canvas-bundle
 {
 	bottom: calc(-5 * var(--vl));
@@ -19,4 +21,22 @@
 {
 	width: calc(55 * var(--vl));
 	height: calc(55 * var(--vl));
+}
+
+
+
+#parallelization
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#parallelization canvas
+{
+	width: calc(43.75 * var(--vl));
+	height: calc(43.75 * var(--vl));
+
+	border-radius: calc(2.5 * var(--vl));
 }

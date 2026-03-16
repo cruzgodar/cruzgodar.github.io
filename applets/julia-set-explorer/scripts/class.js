@@ -42,6 +42,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		worldAdjust = [0, 0],
 		maxWorldSize = 4,
 		bailoutRadius = 4,
+		juliaMode = "mandelbrot",
+		c = [0, 0],
 	}) {
 		super(canvas);
 
@@ -150,6 +152,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			worldAdjust,
 			maxWorldSize,
 			bailoutRadius,
+			juliaMode,
+			c
 		});
 	}
 
@@ -470,6 +474,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		worldAdjust = this.worldAdjust,
 		maxWorldSize = this.maxWorldSize,
 		bailoutRadius = this.bailoutRadius,
+		juliaMode = "mandelbrot",
+		c = [0, 0],
 	}) {
 		this.needDraggable = generatingCode?.indexOf("draggableArg") !== -1;
 
@@ -480,7 +486,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 
-		this.juliaMode = "mandelbrot";
+		this.juliaMode = juliaMode;
+		this.c = c;
 		this.generatingCode = generatingCode;
 		this.worldAdjust = worldAdjust;
 		this.maxWorldSize = maxWorldSize;
@@ -650,8 +657,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			? "block"
 			: "none";
 
-		this.wilson.useShader("mandelbrot");
-		this.wilsonHidden.useShader("mandelbrot");
+		this.wilson.useShader(this.juliaMode);
+		this.wilsonHidden.useShader(this.juliaMode);
 
 		this.needNewFrame = true,
 		this.resume();

@@ -84,21 +84,16 @@
 
 			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object</p>
 
+			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
+
 			<div class="canvas-bundle">
 				<canvas></canvas>
 			</div>
 		</div>
 
-		<div id="fidelity" class="medium-canvas">
-			<h1>Fidelity</h1>
-			
-			<p class="build left-text">Code performance matters!</p>
-
-			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object</p>
-
-			<div class="canvas-bundle">
-				<canvas></canvas>
-			</div>
+		<div id="parallelization">
+			<canvas id="cpu-canvas"></canvas>
+			<canvas id="gpu-canvas"></canvas>
 		</div>
 	</div>
 
