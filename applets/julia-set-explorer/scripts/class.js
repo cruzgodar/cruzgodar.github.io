@@ -29,7 +29,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	pastBrightnessScales = [];
 	c = [0, 0];
 	
-	resolution = 1000;
+	resolution;
 	resolutionHidden = 50;
 
 
@@ -44,6 +44,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		bailoutRadius = 4,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
+		resolution = 1000,
 	}) {
 		super(canvas);
 
@@ -54,7 +55,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		const options = {
 			shader: tempShader,
 
-			canvasWidth: this.resolution,
+			canvasWidth: resolution,
 
 			worldWidth: 4,
 			worldCenterX: 0,
@@ -153,7 +154,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			maxWorldSize,
 			bailoutRadius,
 			juliaMode,
-			c
+			c,
+			resolution
 		});
 	}
 
@@ -476,6 +478,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		bailoutRadius = this.bailoutRadius,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
+		resolution = this.resolution,
 	}) {
 		this.needDraggable = generatingCode?.indexOf("draggableArg") !== -1;
 
@@ -492,6 +495,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.worldAdjust = worldAdjust;
 		this.maxWorldSize = maxWorldSize;
 		this.bailoutRadius = bailoutRadius;
+		this.resolution = resolution;
 
 		const [shaders, shadersHidden] = await Promise.all([
 			this.getShaders({}),

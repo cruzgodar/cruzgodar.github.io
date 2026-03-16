@@ -30,13 +30,27 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+
+#parallelization :is(#cpu-canvas-container, #gpu-canvas-container)
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 
-#parallelization canvas
+:is(#cpu-canvas-container, #gpu-canvas-container) canvas
 {
 	width: calc(43.75 * var(--vl));
 	height: calc(43.75 * var(--vl));
+	aspect-ratio: 1;
 
 	border-radius: calc(2.5 * var(--vl));
+}
+
+:is(#cpu-canvas-container, #gpu-canvas-container) p
+{
+	text-align: center;
+	margin-top: calc(3.5 * var(--vl));
 }

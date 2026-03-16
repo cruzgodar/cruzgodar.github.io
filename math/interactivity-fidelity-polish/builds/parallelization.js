@@ -1,10 +1,11 @@
+import { JuliaSetCpu } from "/applets/julia-set-cpu/class.js";
 import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 
 let everLoaded = false;
 let appletCpu;
 let appletGpu;
 
-async function reset({ slide, forward })
+async function reset({ slide })
 {
 	if (everLoaded)
 	{
@@ -13,25 +14,35 @@ async function reset({ slide, forward })
 
 	everLoaded = true;
 
-	const canvasCpu = slide.querySelector("#cpu-canvas");
-	const canvasGpu = slide.querySelector("#gpu-canvas");
+	const canvasCpu = slide.querySelector("#cpu-canvas-container canvas");
+	const canvasGpu = slide.querySelector("#gpu-canvas-container canvas");
+
+	appletCpu = new JuliaSetCpu({
+		canvas: canvasCpu,
+		c: [-0.76, 0.05],
+		maxWorldSize: 3.25,
+		resolution: 65,
+	});
 
 	appletGpu = new JuliaSetExplorer({
 		canvas: canvasGpu,
 		generatingCode: "cmul(z, z) + c",
 		juliaMode: "julia",
-		c: [0, 1],
-		maxWorldSize: 3.25
+		c: [-0.76, 0.05],
+		maxWorldSize: 3.25,
+		resolution: 1300,
 	});
 }
 
 function load()
 {
+	appletCpu?.resume?.();
 	appletGpu?.resume?.();
 }
 
 function unload()
 {
+	appletCpu?.pause?.();
 	appletGpu?.pause?.();
 }
 
