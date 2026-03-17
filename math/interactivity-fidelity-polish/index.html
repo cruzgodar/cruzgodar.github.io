@@ -115,6 +115,46 @@
 				<canvas></canvas>
 			</div>
 		</div>
+
+		<div id="webAssembly" class="medium-canvas">
+			<h2>Single-threaded performance</h2>
+			
+			<p class="build left-text">If something can't be parallelized but is performance-critical, you may be able to write that specific part in a lower-level language</p>
+
+			<p class="build left-text">For example, WebAssembly lets compiled C code be run from JS</p>
+
+			<p class="build left-text">It's used here in the tight loop for finding random walks in Wilson's Algorithm</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="performanceCompromises" class="medium-canvas">
+			<h2>Performance compromises</h2>
+			
+			<p class="build left-text">When it's not possible to have the best of both worlds and render at a high resolution and framerate, at least get each world individually</p>
+
+			<p class="build left-text">Rendering realtime previews at a low resolution and single renders at high resolution is a good compromise</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="expandability" class="medium-canvas">
+			<h1>Expandability</h1>
+			
+			<p class="build left-text">Plan for future advances in technology: don't set hard limits on resolution, framerate, etc. by today's screens</p>
+
+			<p class="build left-text">Eventually, HDR will be one of these items (WebGPU supports it now)</p>
+
+			<p class="build left-text">If possible, let (advanced) users write small amounts of code to customize behavior</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
 	</div>
 
 	<script type="module">

@@ -1,16 +1,13 @@
 import { KaleidoscopicIFSFractals } from "/applets/kaleidoscopic-ifs-fractals/scripts/class.js";
 
-let everLoaded = false;
 let applet;
 
 async function reset({ slide, forward })
 {
-	if (everLoaded)
+	if (applet)
 	{
 		return;
 	}
-
-	everLoaded = true;
 
 	const canvas = slide.querySelector("canvas");
 

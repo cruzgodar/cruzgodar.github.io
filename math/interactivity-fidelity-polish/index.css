@@ -69,3 +69,11 @@
 	width: calc(45 * var(--vl));
 	height: calc(45 * var(--vl));
 }
+
+
+
+#performanceCompromises .canvas-bundle canvas
+{
+	width: calc(47.5 * var(--vl));
+	height: calc(47.5 * var(--vl));
+}

@@ -1,17 +1,14 @@
 import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 
 let loaded;
-let everLoaded = false;
 let applet;
 
 async function reset({ slide })
 {
-	if (everLoaded)
+	if (applet)
 	{
 		return;
 	}
-	
-	everLoaded = true;
 
 	const canvas = slide.querySelector("canvas");
 

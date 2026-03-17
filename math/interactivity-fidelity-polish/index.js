@@ -1,5 +1,6 @@
 import { fidelityBuilds } from "./builds/fidelity.js";
 import { parallelizationBuilds } from "./builds/parallelization.js";
+import { performanceCompromisesBuilds } from "./builds/performanceCompromises.js";
 import { titleBuilds } from "./builds/title.js";
 import { webAssemblyBuilds } from "./builds/webAssembly.js";
 import Lapsa from "/scripts/lapsa.js";
@@ -24,6 +25,7 @@ const options =
 		fidelity: fidelityBuilds,
 		parallelization: parallelizationBuilds,
 		webAssembly: webAssemblyBuilds,
+		performanceCompromises: performanceCompromisesBuilds,
 	}
 };
 

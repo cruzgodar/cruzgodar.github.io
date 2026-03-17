@@ -1,18 +1,15 @@
 import { JuliaSetCpu } from "/applets/julia-set-cpu/class.js";
 import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 
-let everLoaded = false;
 let appletCpu;
 let appletGpu;
 
 async function reset({ slide })
 {
-	if (everLoaded)
+	if (appletCpu)
 	{
 		return;
 	}
-
-	everLoaded = true;
 
 	const canvasCpu = slide.querySelector("#cpu-canvas-container canvas");
 	const canvasGpu = slide.querySelector("#gpu-canvas-container canvas");
