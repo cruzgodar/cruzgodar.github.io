@@ -57,13 +57,13 @@
 
 
 
-#webAssembly .canvas-bundle
+:is(#webAssembly, #expandability, #interactivity) .canvas-bundle
 {
 	bottom: calc(1.25 * var(--vl));
 	right: calc(1.25 * var(--vl));
 }
 
-#webAssembly .canvas-bundle canvas
+:is(#webAssembly, #expandability, #interactivity) .canvas-bundle canvas
 {
 	border-radius: calc(1.25 * var(--vl));
 	width: calc(45 * var(--vl));
@@ -76,4 +76,19 @@
 {
 	width: calc(47.5 * var(--vl));
 	height: calc(47.5 * var(--vl));
+}
+
+
+
+#interactivity #WILSON_draggable-a
+{
+	background-color: rgb(255, 127, 127);
+}
+
+
+
+#metric-slider
+{
+	width: 75%;
+	margin-left: -1.5%;
 }

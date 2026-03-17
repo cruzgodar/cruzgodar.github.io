@@ -1,4 +1,6 @@
+import { expandabilityBuilds } from "./builds/expandability.js";
 import { fidelityBuilds } from "./builds/fidelity.js";
+import { interactivityBuilds } from "./builds/interactivity.js";
 import { parallelizationBuilds } from "./builds/parallelization.js";
 import { performanceCompromisesBuilds } from "./builds/performanceCompromises.js";
 import { titleBuilds } from "./builds/title.js";
@@ -26,6 +28,8 @@ const options =
 		parallelization: parallelizationBuilds,
 		webAssembly: webAssemblyBuilds,
 		performanceCompromises: performanceCompromisesBuilds,
+		expandability: expandabilityBuilds,
+		interactivity: interactivityBuilds,
 	}
 };
 

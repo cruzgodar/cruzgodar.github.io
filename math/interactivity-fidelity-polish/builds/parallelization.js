@@ -4,10 +4,16 @@ import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 let appletCpu;
 let appletGpu;
 
-async function reset({ slide })
+function load({ slide })
 {
 	if (appletCpu)
 	{
+		appletCpu?.resume?.();
+		appletGpu?.resume?.();
+
+		appletCpu?.wilson?.reset?.();
+		appletGpu?.wilson?.reset?.();
+
 		return;
 	}
 
@@ -29,12 +35,9 @@ async function reset({ slide })
 		maxWorldSize: 3.25,
 		resolution: 1300,
 	});
-}
 
-function load()
-{
-	appletCpu?.resume?.();
-	appletGpu?.resume?.();
+	appletCpu.wilson.animateReset = false;
+	appletGpu.wilson.animateReset = false;
 }
 
 function unload()
@@ -45,7 +48,6 @@ function unload()
 
 export const parallelizationBuilds =
 {
-	reset,
 	load,
 	unload
 };

@@ -2,10 +2,11 @@ import { QuasiFuchsianGroups } from "/applets/quasi-fuchsian-groups/scripts/clas
 
 let applet;
 
-async function reset({ slide })
+function load({ slide })
 {
 	if (applet)
 	{
+		applet?.resume?.();
 		return;
 	}
 
@@ -16,11 +17,6 @@ async function reset({ slide })
 	});
 }
 
-function load()
-{
-	applet?.resume?.();
-}
-
 function unload()
 {
 	applet?.pause?.();
@@ -28,7 +24,6 @@ function unload()
 
 export const performanceCompromisesBuilds =
 {
-	reset,
 	load,
 	unload
 };

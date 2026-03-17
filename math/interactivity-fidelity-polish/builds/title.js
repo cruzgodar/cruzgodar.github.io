@@ -3,10 +3,14 @@ import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 let loaded;
 let applet;
 
-async function reset({ slide })
+function load({ slide })
 {
 	if (applet)
 	{
+		loaded = true;
+		applet?.resume?.();
+		applet?.wilson?.reset?.();
+
 		return;
 	}
 
@@ -34,6 +38,8 @@ async function reset({ slide })
 		worldAdjust: worldAdjusts[index],
 	});
 
+	applet.wilson.animateReset = false;
+
 	setInterval(() =>
 	{
 		index = (index + 1) % generatingCodes.length;
@@ -46,12 +52,8 @@ async function reset({ slide })
 			});
 		}
 	}, 3500);
-}
 
-function load()
-{
 	loaded = true;
-	applet?.resume?.();
 }
 
 function unload()
@@ -62,7 +64,6 @@ function unload()
 
 export const titleBuilds =
 {
-	reset,
 	load,
 	unload
 };

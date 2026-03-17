@@ -2,21 +2,8 @@ import { KaleidoscopicIFSFractals } from "/applets/kaleidoscopic-ifs-fractals/sc
 
 let applet;
 
-async function reset({ slide, forward })
+async function reset({ forward })
 {
-	if (applet)
-	{
-		return;
-	}
-
-	const canvas = slide.querySelector("canvas");
-
-	applet = new KaleidoscopicIFSFractals({
-		canvas,
-		epsilonScaling: 100,
-		minEpsilon: 0.0075,
-	});
-
 	applet.wilson.resizeCanvas({
 		width: forward ? 100 : 500
 	});
@@ -29,9 +16,21 @@ async function build2({ forward })
 	});
 }
 
-function load()
+function load({ slide })
 {
-	applet?.resume?.();
+	if (applet)
+	{
+		applet?.resume?.();
+		return;
+	}
+
+	const canvas = slide.querySelector("canvas");
+
+	applet = new KaleidoscopicIFSFractals({
+		canvas,
+		epsilonScaling: 100,
+		minEpsilon: 0.0075,
+	});
 }
 
 function unload()
