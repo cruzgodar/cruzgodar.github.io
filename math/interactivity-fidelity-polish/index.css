@@ -1,5 +1,6 @@
 .canvas-bundle canvas
 {
+	border-radius: calc(2.5 * var(--vl));
 	width: calc(50 * var(--vl));
 	height: calc(50 * var(--vl));
 }
@@ -14,7 +15,6 @@
 #title .canvas-bundle
 {
 	bottom: calc(-5 * var(--vl));
-	right: calc(-10 * var(--vl));
 }
 
 #title .canvas-bundle canvas
@@ -53,4 +53,19 @@
 {
 	text-align: center;
 	margin-top: calc(3.5 * var(--vl));
+}
+
+
+
+#webAssembly .canvas-bundle
+{
+	bottom: calc(1.25 * var(--vl));
+	right: calc(1.25 * var(--vl));
+}
+
+#webAssembly .canvas-bundle canvas
+{
+	border-radius: calc(1.25 * var(--vl));
+	width: calc(45 * var(--vl));
+	height: calc(45 * var(--vl));
 }

@@ -18,16 +18,23 @@ async function reset({ slide })
 	const generatingCodes = [
 		"cmul(z, z) + c",
 		"cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)", // Burning ship
-		"cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)", // Rational map
 		"cadd(cpow(z, vec2(4.0, 0.0)), c)", // Varied exponent
 		"csin(cmul(z, c))", // Trig
+	];
+
+	const worldAdjusts = [
+		[-0.75, 0],
+		[-0.25, 0.5], // Burning ship
+		[-0.5, 0], // Varied exponent
+		[0, 0], // Trig
 	];
 
 	let index = 0;
 
 	applet = new JuliaSetExplorer({
 		canvas,
-		generatingCode: generatingCodes[index]
+		generatingCode: generatingCodes[index],
+		worldAdjust: worldAdjusts[index],
 	});
 
 	setInterval(() =>
@@ -37,7 +44,8 @@ async function reset({ slide })
 		if (loaded)
 		{
 			applet.run({
-				generatingCode: generatingCodes[index]
+				generatingCode: generatingCodes[index],
+				worldAdjust: worldAdjusts[index],
 			});
 		}
 	}, 3500);

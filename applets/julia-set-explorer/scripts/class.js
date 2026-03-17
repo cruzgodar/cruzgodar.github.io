@@ -163,6 +163,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	async getShaders({
 		oldGeneratingCode,
+		oldWorldAdjust,
 		forHiddenCanvas = false
 	}) {
 		await loadGlsl();
@@ -174,7 +175,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			: this.generatingCode;
 
 
-		const worldAdjustGlsl = getVectorGlsl(this.worldAdjust);
+		const worldAdjustGlsl = oldWorldAdjust
+			? /* glsl */`codeInterpolation * (${getVectorGlsl(this.worldAdjust)}) + (1.0 - codeInterpolation) * (${getVectorGlsl(oldWorldAdjust)})`
+			: getVectorGlsl(this.worldAdjust);
 
 		const bailoutRadiusGlsl = getFloatGlsl(this.bailoutRadius);
 
@@ -484,7 +487,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		if (this.hasRun)
 		{
-			await this.interpolateBetweenRuns(generatingCode);
+			await this.interpolateBetweenRuns(generatingCode, worldAdjust);
 		}
 
 
@@ -670,7 +673,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 
 
-	async interpolateBetweenRuns(newGeneratingCode)
+	async interpolateBetweenRuns(newGeneratingCode, newWorldAdjust)
 	{
 		if (this.juliaMode === "julia")
 		{
@@ -685,9 +688,16 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		const oldGeneratingCode = this.generatingCode;
 		this.generatingCode = newGeneratingCode;
 
+		const oldWorldAdjust = [...this.worldAdjust];
+		this.worldAdjust = newWorldAdjust;
+
 		const [shaders, shadersHidden] = await Promise.all([
-			this.getShaders({ oldGeneratingCode }),
-			this.getShaders({ oldGeneratingCode, forHiddenCanvas: true }),
+			this.getShaders({ oldGeneratingCode, oldWorldAdjust }),
+			this.getShaders({
+				oldGeneratingCode,
+				oldWorldAdjust,
+				forHiddenCanvas: true
+			}),
 		]);
 
 		this.wilson.loadShader({

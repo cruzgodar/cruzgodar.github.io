@@ -1,6 +1,7 @@
 import { fidelityBuilds } from "./builds/fidelity.js";
 import { parallelizationBuilds } from "./builds/parallelization.js";
 import { titleBuilds } from "./builds/title.js";
+import { webAssemblyBuilds } from "./builds/webAssembly.js";
 import Lapsa from "/scripts/lapsa.js";
 
 function setup()
@@ -22,6 +23,7 @@ const options =
 		title: titleBuilds,
 		fidelity: fidelityBuilds,
 		parallelization: parallelizationBuilds,
+		webAssembly: webAssemblyBuilds,
 	}
 };
 
