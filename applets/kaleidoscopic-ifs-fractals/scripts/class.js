@@ -1,11 +1,16 @@
 import { getVectorGlsl } from "/scripts/applets/applet.js";
 import {
 	dotProduct,
+	getRotationMatrix,
 	mat3TimesVector,
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { clamp } from "/scripts/src/utils.js";
+
+const minScale = 1.125;
+const minScaleEpsilon = .00003;
+const maxScaleEpsilon = .0000003;
 
 const ns = {
 	tetrahedron: [
@@ -103,6 +108,9 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		shape = "octahedron",
 		epsilonScaling = 0.75,
 		minEpsilon,
+		theta = 0.2004,
+		phi = 1.6538,
+		resolution = 500,
 	}) {
 		const constantsGlsl = [];
 
@@ -143,13 +151,14 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		super({
 			canvas,
+			resolution,
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			uniformsGlsl,
 			addGlsl,
 			uniforms,
-			theta: 0.2004,
-			phi: 1.6538,
+			theta,
+			phi,
 			cameraPos: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
@@ -159,6 +168,33 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		});
 
 		this.shape = shape;
+	}
+
+
+
+	changeScale(scale)
+	{
+		// Exponentially interpolate from minScaleEpsilon to maxScaleEpsilon.
+		const power = (scale - minScale) / (2 - minScale)
+			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
+
+		// Interpolate from 44 at 8/3 to 56 at 2.
+		const numIterations = Math.floor(
+			44 - (56 - 44) * (scale - 8 / 3) / (8 / 3 - 2)
+		);
+
+		this.setUniforms({
+			scale,
+			minEpsilon: minScaleEpsilon / Math.pow(10, power),
+			numIterations,
+		});
+	}
+
+	changeRotationAngles(x, y, z)
+	{
+		this.setUniforms({
+			rotationMatrix: getRotationMatrix(x, y, z)
+		});
 	}
 
 

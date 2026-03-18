@@ -1,7 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { getFloatGlsl, hsvToRgb, tempShader } from "/scripts/applets/applet.js";
-import { animate, sleep } from "/scripts/src/utils.js";
+import { animate, getRandomNonGreenHues, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const derivativePrecision = 20;
@@ -98,8 +98,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 
 
-	run({ generatingCode })
+	async run({ generatingCode, resolution = this.resolution })
 	{
+		await this.loadPromise;
+		
 		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
 		const shader = /* glsl */`
@@ -252,6 +254,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			centerY: 0
 		});
 
+		this.resolution = resolution;
+
+		this.wilson.resizeCanvas({ width: this.resolution });
+
 		this.wilson.draggables.draggableArg.element.style.display =
 			needDraggable ? "block" : "none";
 
@@ -270,36 +276,20 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		const newColors = new Array(12);
 
-		let hue = 0;
-
-		const restrictions = [.275];
-
-		const restrictionWidth = .2;
+		const hues = getRandomNonGreenHues({
+			count: 4,
+			excludedRanges: [[75 / 360, 175 / 360]],
+			separation: 1,
+		});
 
 
 
 		for (let i = 0; i < 4; i++)
 		{
-			hue = Math.random() * (1 - (i + 1) * 2 * restrictionWidth);
-
-			for (let j = 0; j <= i; j++)
-			{
-				if (hue > restrictions[j])
-				{
-					hue += restrictionWidth * 2;
-				}
-			}
-
-			restrictions[i] = hue - restrictionWidth;
-
-			restrictions.sort();
-
-
-
 			const rgb = hsvToRgb(
-				hue,
-				Math.random() * .35 + .3,
-				Math.random() * .2 + .8
+				hues[i],
+				0.35 * Math.random() + 0.3,
+				0.2 * Math.random() + 0.8,
 			);
 
 			newColors[3 * i] = rgb[0] / 255;
@@ -316,8 +306,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		const oldColors = [...this.colors];
 		const newColors = this.generateNewPalette();
-
-		console.log(oldColors, newColors);
 
 		animate((t) =>
 		{
@@ -341,7 +329,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 				this.needNewFrame = true;
 			}
-		}, 1000);
+		}, 500);
 	}
 
 

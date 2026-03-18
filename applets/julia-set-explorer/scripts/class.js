@@ -491,13 +491,14 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		juliaMode = "mandelbrot",
 		c = [0, 0],
 		resolution = this.resolution,
+		animate = true,
 	}) {
 		let resolve;
 		this.loadPromise = new Promise(r => resolve = r);
 
 		this.needDraggable = generatingCode?.indexOf("draggableArg") !== -1;
 
-		if (this.hasRun)
+		if (this.hasRun && animate)
 		{
 			await this.interpolateBetweenRuns(generatingCode, worldAdjust);
 		}

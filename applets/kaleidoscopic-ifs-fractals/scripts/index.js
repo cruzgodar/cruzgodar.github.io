@@ -1,5 +1,4 @@
 import { KaleidoscopicIFSFractals } from "./class.js";
-import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { DownloadHighResButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
@@ -7,10 +6,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
-
-const minScale = 1.125;
-const minScaleEpsilon = .00003;
-const maxScaleEpsilon = .0000003;
 
 export default function()
 {
@@ -67,7 +62,7 @@ export default function()
 		element: $("#scale-slider"),
 		name: "Scale",
 		value: 2,
-		min: minScale,
+		min: 1.125,
 		max: 8 / 3,
 		snapPoints: [2],
 		onInput: onSliderInput
@@ -101,25 +96,13 @@ export default function()
 
 	function onSliderInput()
 	{
-		// Exponentially interpolate from minScaleEpsilon to maxScaleEpsilon.
-		const power = (scaleSlider.value - minScale) / (2 - minScale)
-			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
-
-		// Interpolate from 44 at 8/3 to 56 at 2.
-		const numIterations = Math.floor(
-			44 - (56 - 44) * (scaleSlider.value - 8 / 3) / (8 / 3 - 2)
+		applet.changeScale(scaleSlider.value);
+		
+		applet.changeRotationAngles(
+			rotationAngleXSlider.value,
+			rotationAngleYSlider.value,
+			rotationAngleZSlider.value
 		);
-
-		applet.setUniforms({
-			scale: scaleSlider.value,
-			minEpsilon: minScaleEpsilon / Math.pow(10, power),
-			numIterations,
-			rotationMatrix: getRotationMatrix(
-				rotationAngleXSlider.value,
-				rotationAngleYSlider.value,
-				rotationAngleZSlider.value
-			)
-		});
 	}
 
 	function changeResolution()

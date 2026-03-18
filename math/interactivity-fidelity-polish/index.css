@@ -57,13 +57,13 @@
 
 
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair) .canvas-bundle
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle
 {
 	bottom: calc(1.25 * var(--vl));
 	right: calc(1.25 * var(--vl));
 }
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair) .canvas-bundle canvas
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle canvas
 {
 	border-radius: calc(1.25 * var(--vl));
 	width: calc(45 * var(--vl));
@@ -91,4 +91,25 @@
 {
 	width: 50%;
 	margin-left: -1.5%;
+}
+
+
+
+#beauty .canvas-bundle
+{
+	bottom: calc(-6 * var(--vl));
+	right: calc(-9 * var(--vl));
+}
+
+#beauty .canvas-bundle canvas
+{
+	width: calc(62.5 * var(--vl));
+	height: calc(62.5 * var(--vl));
+}
+
+
+
+#palettes .WILSON_draggable
+{
+	display: none;
 }

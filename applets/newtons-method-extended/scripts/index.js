@@ -1,8 +1,8 @@
 import { NewtonsMethodExtended } from "./class.js";
 import {
-    Button,
-    DownloadHighResButton,
-    GenerateButton
+	Button,
+	DownloadHighResButton,
+	GenerateButton
 } from "/scripts/components/buttons.js";
 import { Dropdown } from "/scripts/components/dropdowns.js";
 import { Textarea } from "/scripts/components/textareas.js";

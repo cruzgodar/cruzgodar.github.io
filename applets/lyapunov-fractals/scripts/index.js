@@ -29,11 +29,14 @@ export default function()
 		onInput: run
 	});
 
-	run();
+	run(true);
 
-	function run()
+	function run(instant = false)
 	{
-		applet.run({ generatingString: generatingStringInput.value.toUpperCase() });
+		applet.run({
+			generatingString: generatingStringInput.value.toUpperCase(),
+			instant
+		});
 	}
 
 	function changeResolution()

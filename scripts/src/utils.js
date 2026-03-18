@@ -206,11 +206,102 @@ export function shuffleArray(array)
 	}
 }
 
-// Gets a random hue between 200-360 and 0-45.
-export function getRandomNonGreenHue()
-{
-	return ((Math.random() * (160 + 45) + 200) % 360) / 360;
+
+// Separation = 0 gives fully random hues.
+// Separation = 1-3 gives a soft spread.
+// Separation -> infty converges to maximally spaced hues
+export function getRandomNonGreenHues({
+	count,
+	excludedRanges = [[45 / 360, 200 / 360]],
+	separation = 4
+}) {
+	const sorted = [...excludedRanges].sort((a, b) => a[0] - b[0]);
+	const allowed = [];
+	let cursor = 0;
+
+	for (const [start, end] of sorted)
+	{
+		if (cursor < start)
+		{
+			allowed.push([cursor, start]);
+		}
+
+		cursor = Math.max(cursor, end);
+	}
+
+	if (cursor < 1)
+	{
+		allowed.push([cursor, 1]);
+	}
+
+	const totalLength = allowed.reduce((sum, [a, b]) => sum + (b - a), 0);
+
+	function sampleUniform()
+	{
+		let r = Math.random() * totalLength;
+
+		for (const [start, end] of allowed)
+		{
+			const len = end - start;
+
+			if (r <= len)
+			{
+				return start + r;
+			}
+
+			r -= len;
+		}
+
+		return allowed.at(-1)[1];
+	}
+
+	function hueDist(a, b)
+	{
+		const d = Math.abs(a - b);
+		return Math.min(d, 1 - d);
+	}
+
+	const hues = [];
+
+	for (let i = 0; i < count; i++)
+	{
+		let best = null;
+		let bestDist = -1;
+
+		for (let attempt = 0; attempt < 1000; attempt++)
+		{
+			const candidate = sampleUniform();
+
+			if (hues.length === 0)
+			{
+				best = candidate;
+				break;
+			}
+
+			const minDist = Math.min(...hues.map(h => hueDist(h, candidate)));
+
+			if (minDist > bestDist)
+			{
+				best = candidate;
+				bestDist = minDist;
+			}
+
+			// Normalize: max circular distance is 0.5, so minDist * 2 ∈ [0, 1].
+			// At separation = 0, acceptance is always 1 (fully random).
+			// Higher separation = stronger repulsion.
+			if (Math.random() < (minDist * 2) ** separation)
+			{
+				break;
+			}
+		}
+
+		hues.push(best);
+	}
+
+	return hues;
 }
+
+
 
 // Finds named properties in a (usually Desmos calculator) object.
 export function searchProperties(obj, regex, seen = new WeakSet(), path = "")

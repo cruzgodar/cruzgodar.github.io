@@ -187,25 +187,31 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 
 
-	async run({ generatingString })
-	{
+	async run({
+		generatingString,
+		resolution = this.resolution,
+		instant = false
+	}) {
 		const shader = this.getShader({
 			generatingString,
 			oldGeneratingString: this.hasRun ? this.generatingString : undefined
 		});
 
 		this.generatingString = generatingString;
+		this.resolution = resolution;
+
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.wilson.loadShader({
 			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				codeInterpolation: this.hasRun ? 0 : 1,
+				codeInterpolation: (this.hasRun && !instant) ? 0 : 1,
 			},
 		});
 
-		if (this.hasRun)
+		if (this.hasRun && !instant)
 		{
 			await animate((t) =>
 			{
