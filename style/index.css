@@ -766,6 +766,14 @@ body > .WILSON_fullscreen-container .fps-canvas
 	filter: invert(calc(.25 + var(--theme)* .5657));
 }
 
+body > .WILSON_fullscreen-container .wilson-help-button
+{
+	position: fixed;
+	left: calc(10px + env(safe-area-inset-left));
+	top: calc(10px + env(safe-area-inset-top));
+	z-index: 1000;
+}
+
 
 
 #canvas-landscape
