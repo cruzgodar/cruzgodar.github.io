@@ -178,7 +178,7 @@ Let's work through this example to find the distance we're interested in.
 
 	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
 
-	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the blue one above) is
+	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the purple one above) is
 
 	$$
 		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
