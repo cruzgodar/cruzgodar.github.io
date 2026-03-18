@@ -1,17 +1,20 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
-import { sleep } from "/scripts/src/utils.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class LyapunovFractals extends AnimationFrameApplet
 {
 	wilsonHidden;
 
+	hasRun = false;
+	generatingString = "AB";
 	numIterations = 100;
 
+	brightnessScale = 10;
 	pastBrightnessScales = [];
 
-	resolution = 500;
+	resolution = 1000;
 	resolutionHidden = 50;
 
 
@@ -26,7 +29,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 		{
 			shader: tempShader,
 
-			canvasWidth: 500,
+			canvasWidth: this.resolution,
 
 			worldWidth: 4,
 			worldCenterX: 2,
@@ -83,38 +86,41 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 	getShader({
 		generatingString,
-		oldGeneratingString
+		oldGeneratingString = this.generatingString
 	}) {
-		const aGlsl = /* glsl */`
-			x = z.x * x * (1.0 - x);
-			
-			color.x += abs(z.x) / 40.0;
-		`;
+		const zVars = {
+			A: "z.x",
+			B: "z.y",
+		};
 
-		const bGlsl = /* glsl */`
-			x = z.y * x * (1.0 - x);
-			
-			color.y += abs(z.y) / 40.0;
-		`;
+		const maxLen = Math.max(generatingString.length, oldGeneratingString.length);
+		generatingString = generatingString.padEnd(maxLen, "0");
+		oldGeneratingString = oldGeneratingString.padEnd(maxLen, "0");
 
-		const updateLambdaGlsl = /* glsl */`
-			lambda += log(abs(1.0 - 2.0*x));
-			
-			color.z = -lambda / 100.0;
-		`;
+		let loopInternalsGlsl = "";
 
-		const loopInternalsGlsl = generatingString.split("").map(l =>
+		for (let i = 0; i < maxLen; i++)
 		{
-			if (l === "A")
-			{
-				return aGlsl + updateLambdaGlsl;
-			}
+			const l = generatingString[i];
+			const oldL = oldGeneratingString[i];
+			const zVar = /* glsl */`mix(${zVars[oldL] ?? "0.0"}, ${zVars[l] ?? "0.0"}, codeInterpolation)`;
 
-			else
-			{
-				return bGlsl + updateLambdaGlsl;
-			}
-		}).join("\n");
+			const colorXAmount = /* glsl */`(codeInterpolation * ${l === "A" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" ? "1.0" : "0.0"})`;
+			const colorYAmount = /* glsl */`(codeInterpolation * ${l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "B" ? "1.0" : "0.0"})`;
+
+			const updateAmount = /* glsl */`(codeInterpolation * ${l === "A" || l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" || oldL === "B" ? "1.0" : "0.0"})`;
+
+			loopInternalsGlsl += /* glsl */`
+				x = mix(x, ${zVar} * x * (1.0 - x), ${updateAmount});
+				
+				color.x += ${colorXAmount} * abs(z.x) / 40.0;
+				color.y += ${colorYAmount} * abs(z.y) / 40.0;
+
+				lambda += ${updateAmount} * log(abs(1.0 - 2.0*x));
+				
+				color.z = mix(color.z, -lambda / 100.0, ${updateAmount});
+			`;
+		}
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -125,6 +131,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 			uniform vec2 worldSize;
 			
 			uniform float brightnessScale;
+			uniform float codeInterpolation;
 			
 			
 			
@@ -142,7 +149,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 				
 				vec3 color = vec3(0.0, 0.0, 0.0);
 				
-				for (int iteration = 0; iteration < ${Math.floor(250 / generatingString.length)}; iteration++)
+				for (int iteration = 0; iteration < 50; iteration++)
 				{
 					${loopInternalsGlsl}
 				}
@@ -163,16 +170,22 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 
 
-	run({ generatingString, oldGeneratingString })
+	run({ generatingString })
 	{
-		const shader = this.getShader({ generatingString, oldGeneratingString });
+		const shader = this.getShader({
+			generatingString,
+			oldGeneratingString: this.generatingString
+		});
+
+		this.generatingString = generatingString;
 
 		this.wilsonHidden.loadShader({
 			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				brightnessScale: 20,
+				brightnessScale: 10,
+				codeInterpolation: this.hasRun ? 0 : 1,
 			},
 		});
 
@@ -181,11 +194,30 @@ export class LyapunovFractals extends AnimationFrameApplet
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				brightnessScale: 20,
+				brightnessScale: this.brightnessScale,
+				codeInterpolation: this.hasRun ? 0 : 1,
 			},
 		});
 
-		this.needNewFrame = true;
+		if (this.hasRun)
+		{
+			animate((t) =>
+			{
+				this.wilson.setUniforms({
+					codeInterpolation: t
+				});
+
+				this.wilsonHidden.setUniforms({
+					codeInterpolation: t
+				});
+
+				this.needNewFrame = true;
+			}, 750, "easeInOutQuad");
+		}
+
+		// This is an inelegant solution, but it prevents the state-persisting text box
+		// from triggering an animation on page load
+		setTimeout(() => this.hasRun = true, 1000);
 	}
 
 	drawFrame()
@@ -210,12 +242,12 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (
+		this.brightnessScale = (
 			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
 			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 255 * 6;
+		) / 255 * 4;
 
-		this.pastBrightnessScales.push(brightnessScale);
+		this.pastBrightnessScales.push(this.brightnessScale);
 
 		const denom = this.pastBrightnessScales.length;
 
@@ -224,21 +256,21 @@ export class LyapunovFractals extends AnimationFrameApplet
 			this.pastBrightnessScales.shift();
 		}
 
-		brightnessScale = 0;
+		this.brightnessScale = 0;
 
 		for (let i = 0; i < this.pastBrightnessScales.length; i++)
 		{
-			brightnessScale += this.pastBrightnessScales[i];
+			this.brightnessScale += this.pastBrightnessScales[i];
 		}
 
-		brightnessScale = Math.max(brightnessScale / denom, .5);
+		this.brightnessScale = Math.max(this.brightnessScale / denom, .05);
 
 
 
 		this.wilson.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-			brightnessScale
+			brightnessScale: this.brightnessScale
 		});
 
 		this.wilson.drawFrame();

@@ -751,7 +751,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			});
 
 			this.needNewFrame = true;
-		}, 1000, "easeInOutQuad");
+		}, 750, "easeInOutQuad");
 	}
 
 
