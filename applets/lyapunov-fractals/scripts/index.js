@@ -40,6 +40,8 @@ export default function()
 	{
 		applet.resolution = resolutionInput.value;
 
-		applet.changeAspectRatio(true);
+		applet.wilson.resizeCanvas({
+			width: applet.resolution
+		});
 	}
 }

@@ -81,9 +81,40 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 
 
-	run({ generatingString })
-	{
-		const generatingCode = generatingString.split("").map(l => l === "B" ? 1 : 0);
+	getShader({
+		generatingString,
+		oldGeneratingString
+	}) {
+		const aGlsl = /* glsl */`
+			x = z.x * x * (1.0 - x);
+			
+			color.x += abs(z.x) / 40.0;
+		`;
+
+		const bGlsl = /* glsl */`
+			x = z.y * x * (1.0 - x);
+			
+			color.y += abs(z.y) / 40.0;
+		`;
+
+		const updateLambdaGlsl = /* glsl */`
+			lambda += log(abs(1.0 - 2.0*x));
+			
+			color.z = -lambda / 100.0;
+		`;
+
+		const loopInternalsGlsl = generatingString.split("").map(l =>
+		{
+			if (l === "A")
+			{
+				return aGlsl + updateLambdaGlsl;
+			}
+
+			else
+			{
+				return bGlsl + updateLambdaGlsl;
+			}
+		}).join("\n");
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -94,8 +125,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 			uniform vec2 worldSize;
 			
 			uniform float brightnessScale;
-			
-			uniform int seq[12];
 			
 			
 			
@@ -115,26 +144,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < ${Math.floor(250 / generatingString.length)}; iteration++)
 				{
-					for (int index = 0; index < ${generatingString.length}; index++)
-					{
-						if (seq[index] == 0)
-						{
-							x = z.x * x * (1.0 - x);
-							
-							color.x += abs(z.x) / 40.0;
-						}
-						
-						else
-						{
-							x = z.y * x * (1.0 - x);
-							
-							color.y += abs(z.y) / 40.0;
-						}
-						
-						lambda += log(abs(1.0 - 2.0*x));
-						
-						color.z = -lambda / 100.0;
-					}
+					${loopInternalsGlsl}
 				}
 				
 				lambda *= 0.0001;
@@ -148,13 +158,21 @@ export class LyapunovFractals extends AnimationFrameApplet
 			}
 		`;
 
+		return shader;
+	}
+
+
+
+	run({ generatingString, oldGeneratingString })
+	{
+		const shader = this.getShader({ generatingString, oldGeneratingString });
+
 		this.wilsonHidden.loadShader({
 			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				brightnessScale: 20,
-				seq: generatingCode,
 			},
 		});
 
@@ -164,7 +182,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				brightnessScale: 20,
-				seq: generatingCode,
 			},
 		});
 
