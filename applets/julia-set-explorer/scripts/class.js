@@ -18,6 +18,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	generatingCode;
 	worldAdjust;
 	maxWorldSize;
+	defaultWorldSize;
 	needDraggable;
 	bailoutRadius;
 
@@ -44,6 +45,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		generatingCode,
 		worldAdjust = [0, 0],
 		maxWorldSize = 4,
+		defaultWorldSize = 4,
 		bailoutRadius = 4,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
@@ -62,7 +64,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 			canvasWidth: resolution,
 
-			worldWidth: 4,
+			worldWidth: defaultWorldSize,
 			worldCenterX: 0,
 			worldCenterY: 0,
 
@@ -135,20 +137,20 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			const optionsPreview = {
 				shader: tempShader,
 
-				canvasWidth: Math.ceil(this.resolution / 4),
+				canvasWidth: Math.ceil(resolution / 4),
 
-				worldWidth: 3,
+				worldWidth: this.defaultWorldSize * 0.75,
 				worldCenterX: -worldAdjust[0],
 				worldCenterY: -worldAdjust[1],
 
 				verbose: window.DEBUG,
 			};
 
-			this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
-
 			this.wilson.canvas.parentElement.appendChild(
-				this.wilsonPreview.canvas
+				previewCanvas
 			);
+
+			this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
 		}
 
 
@@ -157,6 +159,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			generatingCode,
 			worldAdjust,
 			maxWorldSize,
+			defaultWorldSize,
 			bailoutRadius,
 			juliaMode,
 			c,
@@ -483,6 +486,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		generatingCode = this.generatingCode,
 		worldAdjust = this.worldAdjust,
 		maxWorldSize = this.maxWorldSize,
+		defaultWorldSize = this.defaultWorldSize,
 		bailoutRadius = this.bailoutRadius,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
@@ -505,6 +509,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		this.generatingCode = generatingCode;
 		this.worldAdjust = worldAdjust;
 		this.maxWorldSize = maxWorldSize;
+		this.defaultWorldSize = defaultWorldSize;
 		this.bailoutRadius = bailoutRadius;
 		this.resolution = resolution;
 
@@ -518,7 +523,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shaders.mandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
@@ -530,7 +535,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shaders.juliaPicker,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				juliaC: this.c,
@@ -545,7 +550,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shaders.julia,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				c: this.c,
@@ -558,7 +563,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shaders.juliaToMandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				juliaProportion: 1,
@@ -574,7 +579,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shadersHidden.mandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
@@ -586,7 +591,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shadersHidden.juliaPicker,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				juliaC: this.c,
@@ -601,7 +606,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shadersHidden.julia,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				c: this.c,
@@ -614,7 +619,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shadersHidden.juliaToMandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				juliaProportion: 1,
@@ -631,7 +636,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				shader: shaders.julia,
 				uniforms: {
 					worldCenter: [-worldAdjust[0], -worldAdjust[1]],
-					worldSize: [3, 3],
+					worldSize: [this.defaultWorldSize * 0.75, this.defaultWorldSize * 0.75],
 					numIterations: this.numIterations,
 					brightnessScale: 10,
 					c: this.c,
@@ -644,8 +649,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		if (!this.hasRun)
 		{
 			this.wilson.resizeWorld({
-				width: 4,
-				height: 4,
+				width: this.defaultWorldSize,
+				height: this.defaultWorldSize,
 				centerX: 0,
 				centerY: 0,
 				minWorldX: -this.maxWorldSize / 2,
@@ -657,8 +662,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			});
 
 			this.wilsonHidden.resizeWorld({
-				width: 4,
-				height: 4,
+				width: this.defaultWorldSize,
+				height: this.defaultWorldSize,
 				centerX: 0,
 				centerY: 0,
 			});
@@ -715,7 +720,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shaders.mandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
@@ -728,7 +733,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			shader: shadersHidden.mandelbrot,
 			uniforms: {
 				worldCenter: [0, 0],
-				worldSize: [4, 4],
+				worldSize: [this.defaultWorldSize, this.defaultWorldSize],
 				numIterations: this.numIterations,
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
@@ -917,8 +922,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		const levelsToZoom = Math.abs(
 			Math.min(
-				Math.log2(worldWidth / this.maxWorldSize),
-				Math.log2(worldHeight / this.maxWorldSize)
+				Math.log2(worldWidth / this.defaultWorldSize),
+				Math.log2(worldHeight / this.defaultWorldSize)
 			)
 		);
 
@@ -931,15 +936,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		await animate((t) =>
 		{
 			this.wilson.resizeWorld({
-				width: worldWidth * (1 - t) + 4 * t,
-				height: worldHeight * (1 - t) + 4 * t,
+				width: worldWidth * (1 - t) + this.defaultWorldSize * t,
+				height: worldHeight * (1 - t) + this.defaultWorldSize * t,
 				centerX: worldCenterX * (1 - t),
 				centerY: worldCenterY * (1 - t),
 			});
 
 			this.wilsonHidden.resizeWorld({
-				width: worldWidth * (1 - t) + 4 * t,
-				height: worldHeight * (1 - t) + 4 * t,
+				width: worldWidth * (1 - t) + this.defaultWorldSize * t,
+				height: worldHeight * (1 - t) + this.defaultWorldSize * t,
 				centerX: worldCenterX * (1 - t),
 				centerY: worldCenterY * (1 - t),
 			});

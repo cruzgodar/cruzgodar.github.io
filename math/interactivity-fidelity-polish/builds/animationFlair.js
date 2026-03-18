@@ -15,6 +15,7 @@ function load({ slide })
 		canvas,
 		generatingCode: "cadd(cmul(z, z), c)",
 		worldAdjust: [-0.75, 0],
+		defaultWorldSize: 3.25,
 		maxWorldSize: 3.25,
 		onClickCanvas: async () =>
 		{
