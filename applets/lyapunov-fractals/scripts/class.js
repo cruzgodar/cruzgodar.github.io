@@ -17,8 +17,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createHiddenCanvas();
-
 		const options =
 		{
 			shader: tempShader,
@@ -207,8 +205,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 			},
 		});
 
-		this.pastBrightnessScales = [];
-
 		if (this.hasRun)
 		{
 			await animate((t) =>
@@ -232,6 +228,8 @@ export class LyapunovFractals extends AnimationFrameApplet
 				},
 			});
 		}
+
+		this.needNewFrame = true;
 
 		// This is an inelegant solution, but it prevents the state-persisting text box
 		// from triggering an animation on page load
