@@ -1,18 +1,12 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { tempShader } from "/scripts/applets/applet.js";
+import { getFloatGlsl, tempShader } from "/scripts/applets/applet.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class LyapunovFractals extends AnimationFrameApplet
 {
-	wilsonHidden;
-
 	hasRun = false;
 	generatingString = "AB";
-	numIterations = 100;
-
-	brightnessScale = 10;
-	pastBrightnessScales = [];
 
 	resolution = 1000;
 	resolutionHidden = 50;
@@ -68,17 +62,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 		this.wilson = new WilsonGPU(canvas, options);
 
-		const optionsHidden =
-		{
-			shader: tempShader,
-
-			canvasWidth: this.resolutionHidden,
-
-			verbose: window.DEBUG,
-		};
-
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
-
 		this.resume();
 	}
 
@@ -86,41 +69,77 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 	getShader({
 		generatingString,
-		oldGeneratingString = this.generatingString
+		oldGeneratingString
 	}) {
 		const zVars = {
 			A: "z.x",
 			B: "z.y",
 		};
 
-		const maxLen = Math.max(generatingString.length, oldGeneratingString.length);
+		const originalGeneratingStringLength = generatingString.length;
+		const originalOldGeneratingStringLength = oldGeneratingString?.length ?? 0;
+
+		const maxLen = Math.max(generatingString.length, oldGeneratingString?.length ?? 0);
 		generatingString = generatingString.padEnd(maxLen, "0");
-		oldGeneratingString = oldGeneratingString.padEnd(maxLen, "0");
+
+		if (oldGeneratingString)
+		{
+			oldGeneratingString = oldGeneratingString.padEnd(maxLen, "0");
+		}
 
 		let loopInternalsGlsl = "";
 
-		for (let i = 0; i < maxLen; i++)
+		if (oldGeneratingString)
 		{
-			const l = generatingString[i];
-			const oldL = oldGeneratingString[i];
-			const zVar = /* glsl */`mix(${zVars[oldL] ?? "0.0"}, ${zVars[l] ?? "0.0"}, codeInterpolation)`;
+			for (let i = 0; i < maxLen; i++)
+			{
+				const l = generatingString[i];
+				const oldL = oldGeneratingString[i];
+				const zVar = /* glsl */`mix(${zVars[oldL] ?? "0.0"}, ${zVars[l] ?? "0.0"}, codeInterpolation)`;
 
-			const colorXAmount = /* glsl */`(codeInterpolation * ${l === "A" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" ? "1.0" : "0.0"})`;
-			const colorYAmount = /* glsl */`(codeInterpolation * ${l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "B" ? "1.0" : "0.0"})`;
+				const colorXAmount = /* glsl */`(codeInterpolation * ${l === "A" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" ? "1.0" : "0.0"})`;
+				const colorYAmount = /* glsl */`(codeInterpolation * ${l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "B" ? "1.0" : "0.0"})`;
 
-			const updateAmount = /* glsl */`(codeInterpolation * ${l === "A" || l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" || oldL === "B" ? "1.0" : "0.0"})`;
+				const updateAmount = /* glsl */`(codeInterpolation * ${l === "A" || l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" || oldL === "B" ? "1.0" : "0.0"})`;
 
-			loopInternalsGlsl += /* glsl */`
-				x = mix(x, ${zVar} * x * (1.0 - x), ${updateAmount});
-				
-				color.x += ${colorXAmount} * abs(z.x) / 40.0;
-				color.y += ${colorYAmount} * abs(z.y) / 40.0;
+				loopInternalsGlsl += /* glsl */`
+					x = mix(x, ${zVar} * x * (1.0 - x), ${updateAmount});
+					
+					color.x += ${colorXAmount} * abs(z.x) / 40.0;
+					color.y += ${colorYAmount} * abs(z.y) / 40.0;
 
-				lambda += ${updateAmount} * log(abs(1.0 - 2.0*x));
-				
-				color.z = mix(color.z, -lambda / 100.0, ${updateAmount});
-			`;
+					lambda += ${updateAmount} * log(abs(1.0 - 2.0*x));
+					
+					color.z = mix(color.z, -lambda / 100.0, ${updateAmount});
+				`;
+			}
 		}
+
+		else
+		{
+			for (let i = 0; i < maxLen; i++)
+			{
+				const l = generatingString[i];
+				const zVar = zVars[l];
+
+				const colorGlsl = l === "A"
+					? "color.x += abs(z.x) / 40.0;"
+					: "color.y += abs(z.y) / 40.0;";
+
+				loopInternalsGlsl += /* glsl */`
+					x = ${zVar} * x * (1.0 - x);
+					${colorGlsl}
+
+					lambda += log(abs(1.0 - 2.0*x));
+					
+					color.z = -lambda / 100.0;
+				`;
+			}
+		}
+
+		const brightnessGlsl = oldGeneratingString
+			? /* glsl */`mix(${Math.pow(originalOldGeneratingStringLength, 2) * 0.0375}, ${Math.pow(originalGeneratingStringLength, 2) * 0.0375}, codeInterpolation)`
+			: getFloatGlsl(Math.pow(maxLen, 2) * 0.0375);
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -158,7 +177,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 				
 				if (lambda <= 0.0)
 				{
-					gl_FragColor = vec4(-lambda / brightnessScale * color, 1.0);
+					gl_FragColor = vec4(-lambda / ${brightnessGlsl} * color, 1.0);
 					
 					return;
 				}
@@ -170,107 +189,60 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 
 
-	run({ generatingString })
+	async run({ generatingString })
 	{
 		const shader = this.getShader({
 			generatingString,
-			oldGeneratingString: this.generatingString
+			oldGeneratingString: this.hasRun ? this.generatingString : undefined
 		});
 
 		this.generatingString = generatingString;
-
-		this.wilsonHidden.loadShader({
-			shader,
-			uniforms: {
-				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				brightnessScale: 10,
-				codeInterpolation: this.hasRun ? 0 : 1,
-			},
-		});
 
 		this.wilson.loadShader({
 			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				brightnessScale: this.brightnessScale,
 				codeInterpolation: this.hasRun ? 0 : 1,
 			},
 		});
 
+		this.pastBrightnessScales = [];
+
 		if (this.hasRun)
 		{
-			animate((t) =>
+			await animate((t) =>
 			{
 				this.wilson.setUniforms({
 					codeInterpolation: t
 				});
 
-				this.wilsonHidden.setUniforms({
-					codeInterpolation: t
-				});
-
 				this.needNewFrame = true;
 			}, 750, "easeInOutQuad");
+
+			const shader = this.getShader({
+				generatingString,
+			});
+
+			this.wilson.loadShader({
+				shader,
+				uniforms: {
+					worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+					worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				},
+			});
 		}
 
 		// This is an inelegant solution, but it prevents the state-persisting text box
 		// from triggering an animation on page load
-		setTimeout(() => this.hasRun = true, 1000);
+		setTimeout(() => this.hasRun = true, 750);
 	}
 
 	drawFrame()
 	{
-		this.wilsonHidden.setUniforms({
-			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-		});
-
-		this.wilsonHidden.drawFrame();
-
-
-
-		const pixelData = this.wilsonHidden.readPixels();
-
-		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
-
-		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		{
-			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
-		}
-
-		brightnesses.sort((a, b) => a - b);
-
-		this.brightnessScale = (
-			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 255 * 4;
-
-		this.pastBrightnessScales.push(this.brightnessScale);
-
-		const denom = this.pastBrightnessScales.length;
-
-		if (denom > 10)
-		{
-			this.pastBrightnessScales.shift();
-		}
-
-		this.brightnessScale = 0;
-
-		for (let i = 0; i < this.pastBrightnessScales.length; i++)
-		{
-			this.brightnessScale += this.pastBrightnessScales[i];
-		}
-
-		this.brightnessScale = Math.max(this.brightnessScale / denom, .05);
-
-
-
 		this.wilson.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-			brightnessScale: this.brightnessScale
 		});
 
 		this.wilson.drawFrame();
