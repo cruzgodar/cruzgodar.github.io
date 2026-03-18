@@ -50,7 +50,7 @@
 
 			<p class="build">Web developer (interactive notes/textbook for many intro courses, the library that powers these slides)</p>
 
-			<p class="build">Mathematical illustrator (50+ interactive applets over 8+ years, JS library to build them)</p>
+			<p class="build">Mathematical illustrator (50+ interactive applets over 8+ years, including every visualization in this talk)</p>
 		</div>
 
 		<div>
@@ -145,16 +145,76 @@
 		<div id="interactivity" class="medium-canvas">
 			<h1>Interactivity</h1>
 			
-			<p class="build left-text">Draw things where they are! Prioritize controls that live <em></em>in</em> the space.</p>
+			<p class="build left-text">Draw things where they are! Prioritize controls that live <em></em>in</em> the space</p>
 
-			<div class="build left-text">
-				<p>When that's not possible, realtime and direct controls like sliders are better than indirect ones like text fields.</p>
+			<div data-build="2" class="left-text">
+				<p>When that's not possible, realtime and direct controls like sliders are better than indirect ones like text fields</p>
 
 				<div style="width: 100%; display: flex; align-items: center; flex-direction: column">
 					<input id="metric-slider" type="range" min="0" max="1" value="0.5" step="0.0001">
-					<p style="width: 100%; text-align: center">Metric: <span id="metric-label">2.0</span></p>
+					<p style="width: 100%; text-align: center; margin-top: var(--vl)">Metric: <span id="metric-label">2.0</span></p>
 				</div>
 			</div>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="clarity" class="medium-canvas">
+			<h1>Clarity</h1>
+			
+			<p class="build left-text">This is a broad topic, but one thing that can help is (sparing) use of animation</p>
+
+			<p class="build left-text">Showing things moving or being drawn can help the user keep their place</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationEducation" class="medium-canvas">
+			<h2>Animation as education</h2>
+			
+			<p class="build left-text">Showing objects animating can also have educational value</p>
+
+			<p class="build left-text">This is the beta reduction process for a lambda calculus Tromp diagram; the full applet allows the animation to be slowed down or paused</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationSubstance" class="medium-canvas">
+			<h2>Animation as substance</h2>
+			
+			<p class="build left-text">Sometimes the animation is an intrinsic part of the value</p>
+
+			<p class="build left-text">The growth of a Gravner&ndash;Griffeath snowflake is as much about the process as the final result</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationFlair" class="medium-canvas">
+			<h2>Animation as flair</h2>
+			
+			<p class="build left-text">There is still a place for animation outside of these categories, but if you're only animating between two successive user inputs, be conservative</p>
+
+			<p class="build left-text">If you're going to keep animations for beauty, make sure they're merited, reasonably short, and/or skippable</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="accessibility" class="medium-canvas">
+			<h1>Accessibility</h1>
+			
+			<p class="build left-text">A high skill ceiling should not preclude a low skill floor</p>
+
+			<p class="build left-text">If you're going to keep animations for beauty, make sure they're merited, reasonably short, and/or skippable</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>

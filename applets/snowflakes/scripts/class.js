@@ -512,12 +512,12 @@ export class Snowflakes extends AnimationFrameApplet
 	run({
 		resolution = 500,
 		computationsPerFrame = 25,
-		rho = .635,
-		beta = 1.6,
-		alpha = .4,
-		theta = .025,
-		kappa = .0025,
-		mu = .015,
+		rho = .3673,
+		beta = 1.1016,
+		alpha = .4022,
+		theta = .0311,
+		kappa = .0013,
+		mu = .019,
 		gamma = .0005
 	}) {
 		this.resolution = resolution;

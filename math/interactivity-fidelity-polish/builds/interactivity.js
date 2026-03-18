@@ -15,7 +15,7 @@ async function reset({ forward })
 	}
 }
 
-async function build0({ forward })
+async function build1({ forward })
 {
 	if (forward)
 	{
@@ -64,7 +64,7 @@ function unload()
 export const interactivityBuilds =
 {
 	reset,
-	0: build0,
+	1: build1,
 	load,
 	unload
 };

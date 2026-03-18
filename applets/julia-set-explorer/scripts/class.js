@@ -13,6 +13,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	wilsonPreview;
 	wilsonHidden;
 
+	loadPromise;
+
 	generatingCode;
 	worldAdjust;
 	maxWorldSize;
@@ -28,6 +30,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	ignoreBrightnessCalculation = false;
 	pastBrightnessScales = [];
 	c = [0, 0];
+	onClickCanvas;
 	
 	resolution;
 	resolutionHidden = 50;
@@ -45,10 +48,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		juliaMode = "mandelbrot",
 		c = [0, 0],
 		resolution = 1000,
+		onClickCanvas = () => {},
 	}) {
 		super(canvas);
 
 		this.switchJuliaModeButton = switchJuliaModeButton;
+		this.onClickCanvas = onClickCanvas;
 
 		
 
@@ -483,6 +488,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		c = [0, 0],
 		resolution = this.resolution,
 	}) {
+		let resolve;
+		this.loadPromise = new Promise(r => resolve = r);
+
 		this.needDraggable = generatingCode?.indexOf("draggableArg") !== -1;
 
 		if (this.hasRun)
@@ -669,6 +677,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		this.needNewFrame = true,
 		this.resume();
+
+		resolve();
 	}
 
 
@@ -906,7 +916,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		const worldCenterY = this.wilson.worldCenterY;
 
 		const levelsToZoom = Math.abs(
-			Math.min(Math.log2(worldWidth / 4), Math.log2(worldHeight / 4))
+			Math.min(
+				Math.log2(worldWidth / this.maxWorldSize),
+				Math.log2(worldHeight / this.maxWorldSize)
+			)
 		);
 
 		const animationTime = levelsToZoom > 1
@@ -961,6 +974,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	onMousedown()
 	{
+		this.onClickCanvas();
+
 		if (this.juliaMode === "juliaPicker")
 		{
 			this.advanceJuliaMode();
@@ -1012,6 +1027,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	onTouchend()
 	{
+		this.onClickCanvas();
+
 		if (this.juliaMode === "juliaPicker")
 		{
 			this.advanceJuliaMode();

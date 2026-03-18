@@ -1,3 +1,7 @@
+import { animationEducationBuilds } from "./builds/animationEducation.js";
+import { animationFlairBuilds } from "./builds/animationFlair.js";
+import { animationSubstanceBuilds } from "./builds/animationSubstance.js";
+import { clarityBuilds } from "./builds/clarity.js";
 import { expandabilityBuilds } from "./builds/expandability.js";
 import { fidelityBuilds } from "./builds/fidelity.js";
 import { interactivityBuilds } from "./builds/interactivity.js";
@@ -30,6 +34,10 @@ const options =
 		performanceCompromises: performanceCompromisesBuilds,
 		expandability: expandabilityBuilds,
 		interactivity: interactivityBuilds,
+		clarity: clarityBuilds,
+		animationEducation: animationEducationBuilds,
+		animationSubstance: animationSubstanceBuilds,
+		animationFlair: animationFlairBuilds,
 	}
 };
 

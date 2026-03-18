@@ -57,13 +57,13 @@
 
 
 
-:is(#webAssembly, #expandability, #interactivity) .canvas-bundle
+:is(#webAssembly, #expandability, #interactivity, #animationFlair) .canvas-bundle
 {
 	bottom: calc(1.25 * var(--vl));
 	right: calc(1.25 * var(--vl));
 }
 
-:is(#webAssembly, #expandability, #interactivity) .canvas-bundle canvas
+:is(#webAssembly, #expandability, #interactivity, #animationFlair) .canvas-bundle canvas
 {
 	border-radius: calc(1.25 * var(--vl));
 	width: calc(45 * var(--vl));
@@ -89,6 +89,6 @@
 
 #metric-slider
 {
-	width: 75%;
+	width: 50%;
 	margin-left: -1.5%;
 }
