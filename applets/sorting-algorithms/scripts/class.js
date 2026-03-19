@@ -18,8 +18,6 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	doPlaySound = true;
 
-	timeElapsed = 0;
-
 	algorithms = {
 		bubble: this.bubbleSort,
 		insertion: this.insertionSort,
@@ -251,11 +249,6 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-	prepareFrame(timeElapsed)
-	{
-		this.timeElapsed = timeElapsed;
-	}
-
 	drawFrame()
 	{
 		const textureData = new Uint8Array(this.dataLength * 4);
@@ -327,7 +320,14 @@ export class SortingAlgorithms extends AnimationFrameApplet
 	{
 		for (const audioNode of this.audioNodes)
 		{
-			audioNode[0].close();
+			const [audioContext, , audioGainNode] = audioNode;
+
+			audioGainNode.gain.linearRampToValueAtTime(
+				0.0001,
+				audioContext.currentTime + 0.05
+			);
+
+			setTimeout(() => audioContext.close(), 50);
 		}
 
 		this.audioNodes = [];
@@ -343,8 +343,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			this.audioNodes[this.currentGeneratorIndex][2].gain
 				.linearRampToValueAtTime(
 					this.doPlaySound ? 1 : 0.0001,
-					this.audioNodes[this.currentGeneratorIndex][0].currentTime
-						+ this.timeElapsed / 1000
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
 				);
 		}
 	}
@@ -388,8 +387,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 				.linearRampToValueAtTime(
 					(this.maxFrequency - this.minFrequency) * this.data[index] / this.dataLength
 						+ this.minFrequency,
-					this.audioNodes[this.currentGeneratorIndex][0].currentTime
-						+ this.timeElapsed / 1000
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
 				);
 		}
 	}
@@ -409,7 +407,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		this.audioNodes[this.currentGeneratorIndex][2].gain
 			.linearRampToValueAtTime(
 				0.0001,
-				this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000
+				this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
 			);
 
 		this.currentGeneratorIndex++;
@@ -446,6 +444,42 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		this.pause();
 
 		await sleep(33);
+	}
+
+	pause()
+	{
+		if (this.audioNodes[this.currentGeneratorIndex])
+		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					0.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
+				);
+		}
+
+		super.pause();
+	}
+
+	resume()
+	{
+		super.resume();
+
+		if (this.doPlaySound && this.audioNodes[this.currentGeneratorIndex])
+		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					1,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
+				);
+		}
+	}
+
+	destroy()
+	{
+		this.destroyAudioNodes();
+		clearTimeout(this.timeoutId);
+
+		super.destroy();
 	}
 
 

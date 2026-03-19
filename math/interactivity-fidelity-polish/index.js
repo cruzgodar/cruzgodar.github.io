@@ -1,4 +1,5 @@
 import { accessibilityBuilds } from "./builds/accessibility.js";
+import { addingSoundBuilds } from "./builds/addingSound.js";
 import { animationEducationBuilds } from "./builds/animationEducation.js";
 import { animationFlairBuilds } from "./builds/animationFlair.js";
 import { animationSubstanceBuilds } from "./builds/animationSubstance.js";
@@ -48,6 +49,7 @@ const options =
 		barrierToEntry: barrierToEntryBuilds,
 		beauty: beautyBuilds,
 		palettes: palettesBuilds,
+		addingSound: addingSoundBuilds,
 	}
 };
 
