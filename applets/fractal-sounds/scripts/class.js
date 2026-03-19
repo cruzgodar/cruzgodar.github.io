@@ -37,6 +37,8 @@ export class FractalSounds extends AnimationFrameApplet
 	lastX = 0;
 	lastY = 0;
 
+	audioNodes = [];
+
 
 
 	constructor({ canvas, lineDrawerCanvas })
@@ -539,8 +541,26 @@ export class FractalSounds extends AnimationFrameApplet
 		source.connect(audioGainNode);
 		audioGainNode.connect(audioContext.destination);
 
+		const audioNode = [audioContext, source, audioGainNode];
+		this.audioNodes.push(audioNode);
+
+		source.onended = () =>
+		{
+			const index = this.audioNodes.indexOf(audioNode);
+
+			if (index !== -1)
+			{
+				this.audioNodes.splice(index, 1);
+			}
+
+			audioContext.close();
+		};
+
 		source.start(0);
-		audioGainNode.gain.exponentialRampToValueAtTime(.0001, numFrames / 44100);
+		audioGainNode.gain.exponentialRampToValueAtTime(
+			.0001,
+			audioContext.currentTime + numFrames / sampleRate
+		);
 	}
 
 
@@ -632,9 +652,51 @@ export class FractalSounds extends AnimationFrameApplet
 
 	async beforeSwitchFullscreen()
 	{
-		this.animationPaused = true;
+		this.pause();
 
 		await sleep(33);
+	}
+
+	destroyAudioNodes()
+	{
+		for (const [audioContext, , audioGainNode] of this.audioNodes)
+		{
+			audioGainNode.gain.linearRampToValueAtTime(
+				0.0001,
+				audioContext.currentTime + 0.05
+			);
+
+			setTimeout(() => audioContext.close(), 50);
+		}
+
+		this.audioNodes = [];
+	}
+
+	pause()
+	{
+		for (const [audioContext] of this.audioNodes)
+		{
+			audioContext.suspend();
+		}
+
+		super.pause();
+	}
+
+	resume()
+	{
+		super.resume();
+
+		for (const [audioContext] of this.audioNodes)
+		{
+			audioContext.resume();
+		}
+	}
+
+	destroy()
+	{
+		this.destroyAudioNodes();
+
+		super.destroy();
 	}
 
 	downloadHighResFrame(filename, resolution)
