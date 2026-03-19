@@ -247,6 +247,8 @@ export class FractalSounds extends AnimationFrameApplet
 			centerY: 0
 		});
 
+		this.wilsonJulia.resizeCanvas({ width: this.resolution });
+
 		this.resume();
 	}
 

@@ -19,6 +19,7 @@ function load({ slide })
 	});
 
 	applet.run({
+		resolution: 1500,
 		glslCode: "cdiv(cmul(cmul(z, z), z), ONE + z*z) + c",
 		jsCode: (x, y, a, b) => [
 			a + (
