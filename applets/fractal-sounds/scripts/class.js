@@ -149,150 +149,97 @@ export class FractalSounds extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.numIterations = numIterations;
 
+		const numHarmonics = 8;
+
 		const shader = /* glsl */`
 			precision highp float;
-			
+
 			varying vec2 uv;
-			
+
 			uniform vec2 worldSize;
 			uniform vec2 worldCenter;
-			
+
 			uniform int numIterations;
 			uniform float brightnessScale;
-			
+
+			const int numHarmonics = ${numHarmonics};
 			const float hueMultiplier = 100.0;
-			
-			const vec3 color1 = vec3(1.0, 0.0, 0.0);
-			const vec3 color2 = vec3(1.0, .4157, 0.0);
-			const vec3 color3 = vec3(1.0, .8471, 0.0);
-			const vec3 color4 = vec3(.7333, 1.0, 0.0);
-			const vec3 color5 = vec3(.2980, 1.0, 0.0);
-			const vec3 color6 = vec3(0.0, 1.0, .1137);
-			const vec3 color7 = vec3(0.0, 1.0, .5490);
-			const vec3 color8 = vec3(0.0, 1.0, .9647);
-			const vec3 color9 = vec3(0.0, .6, 1.0);
-			const vec3 color10 = vec3(0.0, .1804, 1.0);
-			const vec3 color11 = vec3(.2471, 0.0, 1.0);
-			const vec3 color12 = vec3(.6667, 0.0, 1.0);
-			const vec3 color13 = vec3(1.0, 0.0, .8980);
-			
-			
-			
+
+
+
 			${getGlslBundle(glslCode)}
-			
-			
-			
+
+
+
 			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
 				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 			}
-			
-			
-			
+
+
+
 			void main(void)
 			{
 				vec2 z = uv * worldSize * 0.5 + worldCenter;
-				
+
 				float brightness = exp(-max(length(z), .5));
-				
+
 				vec2 c = z;
-				
+
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-				
-				
-				
-				vec2 lastZ1 = vec2(0.0, 0.0);
-				vec2 lastZ2 = vec2(0.0, 0.0);
-				vec2 lastZ3 = vec2(0.0, 0.0);
-				vec2 lastZ4 = vec2(0.0, 0.0);
-				vec2 lastZ5 = vec2(0.0, 0.0);
-				vec2 lastZ6 = vec2(0.0, 0.0);
-				vec2 lastZ7 = vec2(0.0, 0.0);
-				vec2 lastZ8 = vec2(0.0, 0.0);
-				vec2 lastZ9 = vec2(0.0, 0.0);
-				vec2 lastZ10 = vec2(0.0, 0.0);
-				vec2 lastZ11 = vec2(0.0, 0.0);
-				vec2 lastZ12 = vec2(0.0, 0.0);
-				vec2 lastZ13 = vec2(0.0, 0.0);
-				
-				float hue1 = 0.0;
-				float hue2 = 0.0;
-				float hue3 = 0.0;
-				float hue4 = 0.0;
-				float hue5 = 0.0;
-				float hue6 = 0.0;
-				float hue7 = 0.0;
-				float hue8 = 0.0;
-				float hue9 = 0.0;
-				float hue10 = 0.0;
-				float hue11 = 0.0;
-				float hue12 = 0.0;
-				float hue13 = 0.0;
-				
-				
-				
+
+
+
+				vec2 lastZ[numHarmonics];
+				vec3 harmonicColors[numHarmonics];
+
+				for (int i = 0; i < numHarmonics; i++)
+				{
+					lastZ[i] = vec2(0.0, 0.0);
+					harmonicColors[i] = hsvToRgb(vec3(
+						float(i) / float(numHarmonics), 1.0, 1.0
+					));
+				}
+
+				vec3 color = vec3(0.0, 0.0, 0.0);
+
+
+
 				for (int iteration = 0; iteration < 3001; iteration++)
 				{
 					if (iteration == numIterations)
 					{
-						vec3 color = hue1 * color1
-							+ hue2 * color2
-							+ hue3 * color3
-							+ hue4 * color4
-							+ hue5 * color5
-							+ hue6 * color6
-							+ hue7 * color7
-							+ hue8 * color8
-							+ hue9 * color9
-							+ hue10 * color10
-							+ hue11 * color11
-							+ hue12 * color12
-							+ hue13 * color13;
-						
-						gl_FragColor = vec4(brightness / brightnessScale * normalize(color), 1.0);
+						gl_FragColor = vec4(
+							brightness / brightnessScale * normalize(color), 1.0
+						);
 						return;
 					}
-					
+
 					if (length(z) >= 10.0)
 					{
 						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 						return;
 					}
-					
-					lastZ13 = lastZ12;
-					lastZ12 = lastZ11;
-					lastZ11 = lastZ10;
-					lastZ10 = lastZ9;
-					lastZ9 = lastZ8;
-					lastZ8 = lastZ7;
-					lastZ7 = lastZ6;
-					lastZ6 = lastZ5;
-					lastZ5 = lastZ4;
-					lastZ4 = lastZ3;
-					lastZ3 = lastZ2;
-					lastZ2 = lastZ1;
-					lastZ1 = z;
+
+					for (int i = numHarmonics - 1; i >= 1; i--)
+					{
+						lastZ[i] = lastZ[i - 1];
+					}
+					lastZ[0] = z;
+
 					z = ${glslCode};
-					
-					
-					
+
+
+
 					brightness += exp(-max(length(z), .5));
-					
-					hue1 += exp(-hueMultiplier * length(z - lastZ1));
-					hue2 += exp(-hueMultiplier * length(z - lastZ2));
-					hue3 += exp(-hueMultiplier * length(z - lastZ3));
-					hue4 += exp(-hueMultiplier * length(z - lastZ4));
-					hue5 += exp(-hueMultiplier * length(z - lastZ5));
-					hue6 += exp(-hueMultiplier * length(z - lastZ6));
-					hue7 += exp(-hueMultiplier * length(z - lastZ7));
-					hue8 += exp(-hueMultiplier * length(z - lastZ8));
-					hue9 += exp(-hueMultiplier * length(z - lastZ9));
-					hue10 += exp(-hueMultiplier * length(z - lastZ10));
-					hue11 += exp(-hueMultiplier * length(z - lastZ11));
-					hue12 += exp(-hueMultiplier * length(z - lastZ12));
-					hue13 += exp(-hueMultiplier * length(z - lastZ13));
+
+					for (int k = 0; k < numHarmonics; k++)
+					{
+						color += exp(-hueMultiplier * length(z - lastZ[k]))
+							* harmonicColors[k];
+					}
 				}
 			}
 		`;
