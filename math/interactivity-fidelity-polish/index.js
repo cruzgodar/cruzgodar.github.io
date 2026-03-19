@@ -6,6 +6,7 @@ import { animationSubstanceBuilds } from "./builds/animationSubstance.js";
 import { barrierToEntryBuilds } from "./builds/barrierToEntry.js";
 import { beautyBuilds } from "./builds/beauty.js";
 import { clarityBuilds } from "./builds/clarity.js";
+import { designingAroundSoundBuilds } from "./builds/designingAroundSound.js";
 import { expandabilityBuilds } from "./builds/expandability.js";
 import { fidelityBuilds } from "./builds/fidelity.js";
 import { interactivityBuilds } from "./builds/interactivity.js";
@@ -50,6 +51,7 @@ const options =
 		beauty: beautyBuilds,
 		palettes: palettesBuilds,
 		addingSound: addingSoundBuilds,
+		designingAroundSound: designingAroundSoundBuilds,
 	}
 };
 

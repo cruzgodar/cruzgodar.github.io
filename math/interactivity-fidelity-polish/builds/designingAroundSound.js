@@ -2,32 +2,11 @@ import { FractalSounds } from "/applets/fractal-sounds/scripts/class.js";
 
 let applet;
 
-async function build2({ forward })
-{
-	if (!forward)
-	{
-		return;
-	}
-
-	applet.run({
-		resolution: 2000,
-		algorithm: "merge",
-		dataLength: 512,
-		doPlaySound: true,
-	});
-}
-
 function load({ slide })
 {
 	if (applet)
 	{
-		applet.run({
-			resolution: 2000,
-			algorithm: "merge",
-			dataLength: 512,
-			shuffle: false,
-		});
-
+		applet?.resume?.();
 		return;
 	}
 
@@ -52,7 +31,6 @@ function unload()
 
 export const designingAroundSoundBuilds =
 {
-	2: build2,
 	load,
 	unload
 };

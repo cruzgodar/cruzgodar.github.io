@@ -183,15 +183,14 @@ export class FractalSounds extends AnimationFrameApplet
 					harmonicDirs[i] = vec2(cos(angle), sin(angle));
 				}
 
-				float harmonicWeights[numHarmonics];
+				float hitCounts[numHarmonics];
 
 				for (int i = 0; i < numHarmonics; i++)
 				{
-					harmonicWeights[i] = 0.0;
+					hitCounts[i] = 0.0;
 				}
 
 				vec2 hueDir = vec2(0.0, 0.0);
-				float totalWeight = 0.0;
 				float totalDisplacement = 0.0;
 
 
@@ -202,17 +201,15 @@ export class FractalSounds extends AnimationFrameApplet
 					{
 						float hue = atan(hueDir.y, hueDir.x) / 6.283185;
 
-						float maxHarmonicWeight = 0.0;
+						float maxHitCount = 0.0;
 						for (int k = 0; k < numHarmonics; k++)
 						{
-							maxHarmonicWeight = max(maxHarmonicWeight, harmonicWeights[k]);
+							maxHitCount = max(maxHitCount, hitCounts[k]);
 						}
-						float saturation = totalWeight > 0.0
-							? maxHarmonicWeight / totalWeight
-							: 0.0;
+						float saturation = clamp(maxHitCount / float(numIterations), 0.0, 1.0);
 
 						float activity = 1.0 - exp(-totalDisplacement / float(numIterations));
-						float value = brightness * 0.01 * (0.5 + 0.5 * activity);
+						float value = brightness * 0.01 * (0.05 + 0.95 * activity);
 
 						gl_FragColor = vec4(
 							hsvToRgb(vec3(hue, saturation, value)), 1.0
@@ -243,8 +240,7 @@ export class FractalSounds extends AnimationFrameApplet
 					{
 						float weight = exp(-hueMultiplier * length(z - lastZ[k]));
 						hueDir += weight * harmonicDirs[k];
-						totalWeight += weight;
-						harmonicWeights[k] += weight;
+						hitCounts[k] += step(0.001, weight);
 					}
 				}
 			}
