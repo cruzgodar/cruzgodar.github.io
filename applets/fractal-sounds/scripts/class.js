@@ -11,7 +11,6 @@ export class FractalSounds extends AnimationFrameApplet
 {
 	loadPromise;
 
-	wilsonHidden;
 	wilsonJulia;
 
 	juliaMode = 0;
@@ -22,10 +21,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 	zoomLevel = 0;
 
-	pastBrightnessScales = [];
-
 	resolution = 500;
-	resolutionHidden = 100;
 
 	needToClear = false;
 
@@ -68,21 +64,6 @@ export class FractalSounds extends AnimationFrameApplet
 		};
 
 		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
-
-
-
-		const hiddenCanvas = this.createHiddenCanvas();
-
-		const optionsHidden =
-		{
-			shader: tempShader,
-
-			canvasWidth: this.resolutionHidden,
-
-			verbose: window.DEBUG,
-		};
-
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
 
 
 
@@ -160,7 +141,6 @@ export class FractalSounds extends AnimationFrameApplet
 			uniform vec2 worldCenter;
 
 			uniform int numIterations;
-			uniform float brightnessScale;
 
 			const int numHarmonics = ${numHarmonics};
 			const float hueMultiplier = 100.0;
@@ -193,26 +173,49 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 				vec2 lastZ[numHarmonics];
-				vec3 harmonicColors[numHarmonics];
+				vec2 harmonicDirs[numHarmonics];
 
 				for (int i = 0; i < numHarmonics; i++)
 				{
 					lastZ[i] = vec2(0.0, 0.0);
-					harmonicColors[i] = hsvToRgb(vec3(
-						float(i) / float(numHarmonics), 1.0, 1.0
-					));
+
+					float angle = 6.283185 * float(i) / float(numHarmonics);
+					harmonicDirs[i] = vec2(cos(angle), sin(angle));
 				}
 
-				vec3 color = vec3(0.0, 0.0, 0.0);
+				float harmonicWeights[numHarmonics];
+
+				for (int i = 0; i < numHarmonics; i++)
+				{
+					harmonicWeights[i] = 0.0;
+				}
+
+				vec2 hueDir = vec2(0.0, 0.0);
+				float totalWeight = 0.0;
+				float totalDisplacement = 0.0;
 
 
 
-				for (int iteration = 0; iteration < 3001; iteration++)
+				for (int iteration = 0; iteration < 501; iteration++)
 				{
 					if (iteration == numIterations)
 					{
+						float hue = atan(hueDir.y, hueDir.x) / 6.283185;
+
+						float maxHarmonicWeight = 0.0;
+						for (int k = 0; k < numHarmonics; k++)
+						{
+							maxHarmonicWeight = max(maxHarmonicWeight, harmonicWeights[k]);
+						}
+						float saturation = totalWeight > 0.0
+							? maxHarmonicWeight / totalWeight
+							: 0.0;
+
+						float activity = 1.0 - exp(-totalDisplacement / float(numIterations));
+						float value = brightness * 0.01 * (0.5 + 0.5 * activity);
+
 						gl_FragColor = vec4(
-							brightness / brightnessScale * normalize(color), 1.0
+							hsvToRgb(vec3(hue, saturation, value)), 1.0
 						);
 						return;
 					}
@@ -234,11 +237,14 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 					brightness += exp(-max(length(z), .5));
+					totalDisplacement += length(z - lastZ[0]);
 
 					for (int k = 0; k < numHarmonics; k++)
 					{
-						color += exp(-hueMultiplier * length(z - lastZ[k]))
-							* harmonicColors[k];
+						float weight = exp(-hueMultiplier * length(z - lastZ[k]));
+						hueDir += weight * harmonicDirs[k];
+						totalWeight += weight;
+						harmonicWeights[k] += weight;
 					}
 				}
 			}
@@ -250,23 +256,10 @@ export class FractalSounds extends AnimationFrameApplet
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				numIterations: this.numIterations,
-				brightnessScale: 1,
-			},
-		});
-
-		this.wilsonHidden.loadShader({
-			shader,
-			uniforms: {
-				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-				numIterations: this.numIterations,
-				brightnessScale: 1,
 			},
 		});
 
 		this.juliaMode = 0;
-
-		this.pastBrightnessScales = [];
 
 		this.wilson.resizeWorld({
 			width: 4,
@@ -514,61 +507,10 @@ export class FractalSounds extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
-
-		this.wilsonHidden.setUniforms({
-			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-			numIterations: this.numIterations,
-			brightnessScale: 20,
-		});
-
-		this.wilsonHidden.drawFrame();
-
-
-
-		const pixelData = this.wilsonHidden.readPixels();
-
-		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
-
-		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		{
-			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
-		}
-
-		brightnesses.sort((a, b) => a - b);
-
-		const brightnessScale = (
-			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 20 + zoomLevel * 2;
-
-		this.pastBrightnessScales.push(brightnessScale);
-
-		if (this.pastBrightnessScales.length > 10)
-		{
-			this.pastBrightnessScales.shift();
-		}
-
-		let averageBrightnessScale = 0;
-
-		for (let i = 0; i < this.pastBrightnessScales.length; i++)
-		{
-			averageBrightnessScale += this.pastBrightnessScales[i];
-		}
-
-		averageBrightnessScale = Math.max(
-			averageBrightnessScale / this.pastBrightnessScales.length,
-			.5
-		);
-
-
-
 		this.wilsonJulia.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			numIterations: this.numIterations,
-			brightnessScale: averageBrightnessScale
 		});
 
 		this.wilsonJulia.drawFrame();

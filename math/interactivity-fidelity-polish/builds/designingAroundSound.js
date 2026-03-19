@@ -1,4 +1,4 @@
-import { SortingAlgorithms } from "/applets/sorting-algorithms/scripts/class.js";
+import { FractalSounds } from "/applets/fractal-sounds/scripts/class.js";
 
 let applet;
 
@@ -33,7 +33,7 @@ function load({ slide })
 
 	const canvas = slide.querySelector("canvas");
 
-	applet = new SortingAlgorithms({
+	applet = new FractalSounds({
 		canvas,
 	});
 
@@ -50,7 +50,7 @@ function unload()
 	applet?.pause?.();
 }
 
-export const addingSoundBuilds =
+export const designingAroundSoundBuilds =
 {
 	2: build2,
 	load,
