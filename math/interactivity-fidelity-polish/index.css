@@ -57,13 +57,13 @@
 
 
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes, #designingAroundSound) .canvas-bundle
 {
 	bottom: calc(1.25 * var(--vl));
 	right: calc(1.25 * var(--vl));
 }
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle canvas
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes, #designingAroundSound) .canvas-bundle canvas
 {
 	border-radius: calc(1.25 * var(--vl));
 	width: calc(45 * var(--vl));
@@ -116,12 +116,14 @@
 
 
 
-#designingAroundSound .canvas-bundle
+#designingAroundSound #fractal-sounds-canvas-container
 {
 	position: relative;
+	width: calc(45 * var(--vl));
+	height: calc(45 * var(--vl));
 }
 
-#designingAroundSound #fractal-sounds-mandelbrot-canvas, #fractal-sounds-path-canvas
+#designingAroundSound #fractal-sounds-mandelbrot-canvas-container, #fractal-sounds-path-canvas-container
 {
 	position: absolute;
 	top: 0;

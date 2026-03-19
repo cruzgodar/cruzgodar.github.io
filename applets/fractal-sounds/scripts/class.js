@@ -16,8 +16,6 @@ export class FractalSounds extends AnimationFrameApplet
 
 	aspectRatio = 1;
 
-	numIterations = 200;
-
 	zoomLevel = 0;
 
 	resolution = 500;
@@ -117,15 +115,14 @@ export class FractalSounds extends AnimationFrameApplet
 		glslCode,
 		jsCode,
 		resolution,
-		numIterations
 	}) {
 		await this.loadPromise;
 		
 		this.currentFractalFunction = jsCode;
 
 		this.resolution = resolution;
-		this.numIterations = numIterations;
 
+		const numIterations = 200;
 		const numHarmonics = 8;
 
 		const shader = /* glsl */`
@@ -136,7 +133,7 @@ export class FractalSounds extends AnimationFrameApplet
 			uniform vec2 worldSize;
 			uniform vec2 worldCenter;
 
-			uniform int numIterations;
+			const int numIterations = ${numIterations};
 
 			const int numHarmonics = ${numHarmonics};
 			const float hueMultiplier = 100.0;
@@ -187,28 +184,8 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-				for (int iteration = 0; iteration < 501; iteration++)
+				for (int iteration = 0; iteration < ${numIterations}; iteration++)
 				{
-					if (iteration == numIterations)
-					{
-						float hue = atan(orbitSum.y, orbitSum.x) / 6.283185;
-
-						float maxHitCount = 0.0;
-						for (int k = 0; k < numHarmonics; k++)
-						{
-							maxHitCount = max(maxHitCount, hitCounts[k]);
-						}
-						float saturation = clamp(maxHitCount / float(numIterations), 0.0, 1.0);
-
-						float activity = 1.0 - exp(-totalDisplacement / float(numIterations));
-						float value = brightness * 0.01 * (0.05 + 0.95 * activity);
-
-						gl_FragColor = vec4(
-							hsvToRgb(vec3(hue, saturation, value)), 1.0
-						);
-						return;
-					}
-
 					if (length(z) >= 10.0)
 					{
 						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -234,6 +211,22 @@ export class FractalSounds extends AnimationFrameApplet
 						hitCounts[k] += step(0.001, exp(-hueMultiplier * length(z - lastZ[k])));
 					}
 				}
+
+				float hue = atan(orbitSum.y, orbitSum.x) / 6.283185;
+
+				float maxHitCount = 0.0;
+				for (int k = 0; k < numHarmonics; k++)
+				{
+					maxHitCount = max(maxHitCount, hitCounts[k]);
+				}
+				float saturation = clamp(pow(maxHitCount / float(numIterations), 0.5), 0.0, 1.0);
+
+				float activity = 1.0 - exp(-totalDisplacement / float(numIterations));
+				float value = brightness * 0.015 * (0.05 + 0.95 * activity);
+
+				gl_FragColor = vec4(
+					hsvToRgb(vec3(hue, saturation, value)), 1.0
+				);
 			}
 		`;
 
@@ -242,7 +235,6 @@ export class FractalSounds extends AnimationFrameApplet
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-				numIterations: this.numIterations,
 			},
 		});
 
@@ -497,7 +489,6 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilsonJulia.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-			numIterations: this.numIterations,
 		});
 
 		this.wilsonJulia.drawFrame();

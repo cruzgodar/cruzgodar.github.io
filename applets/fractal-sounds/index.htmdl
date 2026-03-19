@@ -41,5 +41,5 @@ Half the reason I made the <a href="/applets/sorting-algorithms">sorting algorit
 </div>
 
 ### card applet-controls "Controls"
-	Drag on the scene to look around, and pinch or scroll to zoom. <span class="click-tap"><span>Click</span><span>Tap</span></span> to play a sound --- the colors roughly indicate the fundamental frequencies of each point.
+	Drag on the scene to look around, and pinch or scroll to zoom. <span class="click-tap"><span>Click</span><span>Tap</span></span> to play a sound; different colors roughly indicate different types of sounds, dark regions indicate paths that terminate before a full sound wave can be formed, and pale regions indicate chaotic paths that produce something close to white noise.
 ###

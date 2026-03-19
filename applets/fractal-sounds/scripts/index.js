@@ -120,13 +120,11 @@ export default function()
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];
 		const resolution = resolutionInput.value;
-		const numIterations = 200;
 
 		applet.run({
 			glslCode,
 			jsCode,
 			resolution,
-			numIterations
 		});
 	}
 
