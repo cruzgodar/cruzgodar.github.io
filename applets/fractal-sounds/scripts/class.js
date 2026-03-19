@@ -3,7 +3,6 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { $$ } from "/scripts/src/main.js";
 import { sleep } from "/scripts/src/utils.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -107,11 +106,6 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilson = new WilsonCPU(lineDrawerCanvas, options);
 		this.wilsonForFullscreen = this.wilsonJulia;
 
-		const elements = $$(".WILSON_fullscreen-container");
-
-		elements[0].style.setProperty("z-index", 200, "important");
-		elements[1].style.setProperty("z-index", 300, "important");
-
 		this.wilson.ctx.lineWidth = 40;
 
 		this.loadPromise = loadGlsl();
@@ -119,12 +113,14 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		glslCode,
 		jsCode,
 		resolution,
 		numIterations
 	}) {
+		await this.loadPromise;
+		
 		this.currentFractalFunction = jsCode;
 
 		this.resolution = resolution;
@@ -173,14 +169,10 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 				vec2 lastZ[numHarmonics];
-				vec2 harmonicDirs[numHarmonics];
 
 				for (int i = 0; i < numHarmonics; i++)
 				{
 					lastZ[i] = vec2(0.0, 0.0);
-
-					float angle = 6.283185 * float(i) / float(numHarmonics);
-					harmonicDirs[i] = vec2(cos(angle), sin(angle));
 				}
 
 				float hitCounts[numHarmonics];
@@ -190,8 +182,8 @@ export class FractalSounds extends AnimationFrameApplet
 					hitCounts[i] = 0.0;
 				}
 
-				vec2 hueDir = vec2(0.0, 0.0);
 				float totalDisplacement = 0.0;
+				vec2 orbitSum = vec2(0.0, 0.0);
 
 
 
@@ -199,7 +191,7 @@ export class FractalSounds extends AnimationFrameApplet
 				{
 					if (iteration == numIterations)
 					{
-						float hue = atan(hueDir.y, hueDir.x) / 6.283185;
+						float hue = atan(orbitSum.y, orbitSum.x) / 6.283185;
 
 						float maxHitCount = 0.0;
 						for (int k = 0; k < numHarmonics; k++)
@@ -235,12 +227,11 @@ export class FractalSounds extends AnimationFrameApplet
 
 					brightness += exp(-max(length(z), .5));
 					totalDisplacement += length(z - lastZ[0]);
+					orbitSum += z;
 
 					for (int k = 0; k < numHarmonics; k++)
 					{
-						float weight = exp(-hueMultiplier * length(z - lastZ[k]));
-						hueDir += weight * harmonicDirs[k];
-						hitCounts[k] += step(0.001, weight);
+						hitCounts[k] += step(0.001, exp(-hueMultiplier * length(z - lastZ[k])));
 					}
 				}
 			}
@@ -524,7 +515,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 			const buttonContainers = document.querySelectorAll(".WILSON_button-container");
 
-			containers[0].appendChild(buttonContainers[2]);
+			containers[0].appendChild(buttonContainers[1]);
 		}
 
 		else

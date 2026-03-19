@@ -57,13 +57,13 @@
 
 
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes, #designingAroundSound) .canvas-bundle
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle
 {
 	bottom: calc(1.25 * var(--vl));
 	right: calc(1.25 * var(--vl));
 }
 
-:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes, #designingAroundSound) .canvas-bundle canvas
+:is(#webAssembly, #expandability, #interactivity, #animationFlair, #accessibility, #palettes) .canvas-bundle canvas
 {
 	border-radius: calc(1.25 * var(--vl));
 	width: calc(45 * var(--vl));
