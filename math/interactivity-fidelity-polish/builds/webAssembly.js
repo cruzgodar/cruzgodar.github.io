@@ -41,6 +41,7 @@ async function build2({ forward })
 function unload()
 {
 	applet.destroy();
+	applet = undefined;
 }
 
 export const webAssemblyBuilds =

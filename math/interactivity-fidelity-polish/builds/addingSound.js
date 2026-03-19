@@ -21,7 +21,13 @@ function load({ slide })
 {
 	if (applet)
 	{
-		applet?.resume?.();
+		applet.run({
+			resolution: 2000,
+			algorithm: "merge",
+			dataLength: 512,
+			shuffle: false,
+		});
+
 		return;
 	}
 

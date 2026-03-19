@@ -183,7 +183,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-		if (this.dataLength !== oldDataLength)
+		if (this.dataLength !== oldDataLength || !this.shuffle)
 		{
 			this.data = new Array(this.dataLength);
 			this.brightness = new Array(this.dataLength);
