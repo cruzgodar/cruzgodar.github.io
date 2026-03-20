@@ -2,10 +2,20 @@ import { JuliaSetExplorer } from "/applets/julia-set-explorer/scripts/class.js";
 
 let applet;
 
+async function reset()
+{
+	if (applet.juliaMode === "julia")
+	{
+		await applet.advanceJuliaMode();
+		applet.advanceJuliaMode();
+	}
+}
+
 function load({ slide })
 {
 	if (applet)
 	{
+		applet?.resume?.();
 		return;
 	}
 
@@ -35,11 +45,12 @@ function load({ slide })
 
 function unload()
 {
-	applet.destroy();
+	applet?.pause?.();
 }
 
 export const animationFlairBuilds =
 {
+	reset,
 	load,
 	unload
 };

@@ -10,6 +10,12 @@ async function reset({ forward })
 		applet.showCrossSection = true;
 		applet.setUniforms({ planeTranslation: 0 });
 	}
+
+	else
+	{
+		applet.showCrossSection = false;
+		applet.setUniforms({ planeTranslation: 1 });
+	}
 }
 
 async function build2({ forward, duration = 500 })
