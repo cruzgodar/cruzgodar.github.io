@@ -428,22 +428,28 @@ We'll call this the **flux form of Green's Theorem** and the previous version th
 		\oint_C \vec{F} \bullet \vec{n}\,\d s,
 	$$
 
-	where $C$ is the unit circle, oriented counterclockwise, and $\vec{F}(x, y) = \left< x^2, y^2 \right>$.
+	where $C$ is the unit circle, oriented counterclockwise, and $\vec{F}(x, y) = \left< x^3, y^3 \right>$.
 
 	### solution
 
 	Applying Green's Theorem, we have
 
 	$$
-		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^2 \right] + p/py \left[ y^2 \right] \right)\,\d A
+		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^3 \right] + p/py \left[ y^3 \right] \right)\,\d A
 
-		&= \iint_R \left( 2x + 2y \right)\,\d A,
+		&= \iint_R \left( 3x^2 + 3y^2 \right)\,\d A,
 	$$
 
 	where $R$ is the solid unit disk. That's a great integral to transform into polar coordinates:
 
 	$$
-		\iint_R \left( 2x + 2y \right)\,\d A &= \int_0^{2\pi}\int_0^1 \left( 2r\cos(\theta) + 2r\sin(\theta) \right)r\,\d r\,\d\theta
+		\iint_R \left( 3x^2 + 3y^2 \right)\,\d A &= \int_0^{2\pi}\int_0^1 3r^2\,r\,\d r\,\d\theta
+
+		&= 3\int_0^{2\pi}\int_0^1 r^3\,\d r\,\d\theta
+
+		&= 3\int_0^{2\pi} \frac{1}{4}\,\d\theta
+
+		&= \frac{3\pi}{2}.
 	$$
 
 ###
@@ -572,7 +578,7 @@ The dot product with $\vec{k}$ in the circulation form of Green's Theorem is jus
 
 Our goal for the remainder of multivariable calculus is to bring Green's Theorem to $#R#^3$, and now that we've defined curl and divergence, we can see the outline of what that will look like. The curve integral part of the circulation form of Green's Theorem will move to $#R#^3$ just fine --- we've already been taking integrals along curves in $#R#^3$ with no issue. However, those curves supposed to be the boundary of something in 3D space, and that no longer needs to be a flat region like it did in $#R#^2$. Instead, it could be an arbitrary surface, and so we'll need to develop a theory of integrating over surfaces. That will come in the next section, and the Green's Theorem analogue in the one after that.
 
-The flux form of Green's Theorem is slightly more complicated. Like we alluded to earlier, there is no such thing as a single normal vector to a curve in $#R#^3$; that property is held instead by surfaces (for example, planes have normal vectors in $#R#^3$, but lines do not). The flux integral in Green's Theorem will therefore need to be replaced by a surface integral. Moreover, that surface is supposed to be the boundary of something, which will have to be an entire solid region of $#R#^3$. Since there's no extra dimension for it to curve into like with surface integrals, objects like these will be flat in a sense, and we'll be able to handle them with a direct analogue of double integrals by just integrating one more time. We'll spend one section developing these so-called triple integrals, and then one final section returning to our final analogue of Green's Theorem, rounding out our journey through calculus in $#R#^3$.
+The flux form of Green's Theorem is slightly more complicated. As we alluded to earlier, there is no such thing as a single normal vector to a curve in $#R#^3$; that property is held instead by surfaces (for example, planes have normal vectors in $#R#^3$, but lines do not). The flux integral in Green's Theorem will therefore need to be replaced by a surface integral. Moreover, that surface is supposed to be the boundary of something, which will have to be an entire solid region of $#R#^3$. Since there's no extra dimension for it to curve into like with surface integrals, objects like these will be flat in a sense, and we'll be able to handle them with a direct analogue of double integrals by just integrating one more time. We'll spend one section developing these so-called triple integrals, and then one final section returning to our final analogue of Green's Theorem, rounding out our journey through calculus in $#R#^3$.
 
 
 

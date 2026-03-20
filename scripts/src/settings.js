@@ -61,7 +61,7 @@ export const siteSettings =
 	reduceMotion,
 	increaseContrast,
 	distinguishColors: params.get("distinguishcolors") === "1",
-	scroll: parseInt(sessionStorage.getItem("scroll") ?? 0),
+	scroll: 0,
 	card: params.get("card"),
 };
 
@@ -501,7 +501,7 @@ export function setScroll()
 {
 	siteSettings.scroll = cardIsOpen ? cardContainer.scrollTop : window.scrollY;
 
-	sessionStorage.setItem("scroll", siteSettings.scroll);
+	sessionStorage.setItem("scroll-" + pageUrl, siteSettings.scroll);
 }
 
 

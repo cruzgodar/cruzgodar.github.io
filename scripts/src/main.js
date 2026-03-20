@@ -230,12 +230,12 @@ async function showAndRestoreScroll()
 	await pageLayoutReady;
 	await sleep(10);
 
+	const savedScroll = parseInt(sessionStorage.getItem("scroll-" + pageUrl) ?? 0);
+
 	if (siteSettings.card)
 	{
 		if (!blockCardPages.includes(pageUrl))
 		{
-			const targetScroll = siteSettings.scroll;
-
 			await openCard({
 				id: siteSettings.card,
 				fromElement: pageElement,
@@ -244,9 +244,9 @@ async function showAndRestoreScroll()
 
 			for (let i = 0; i < 20; i++)
 			{
-				cardContainer.scrollTo(0, targetScroll);
+				cardContainer.scrollTo(0, savedScroll);
 
-				if (targetScroll === 0 || cardContainer.scrollTop >= targetScroll - 1)
+				if (savedScroll === 0 || cardContainer.scrollTop >= savedScroll - 1)
 				{
 					break;
 				}
@@ -263,15 +263,13 @@ async function showAndRestoreScroll()
 
 	else
 	{
-		const targetScroll = siteSettings.scroll;
-
 		// Retry scroll restoration until the page is tall enough
 		// or we've waited long enough.
 		for (let i = 0; i < 20; i++)
 		{
-			window.scrollTo(0, targetScroll);
+			window.scrollTo(0, savedScroll);
 
-			if (targetScroll === 0 || window.scrollY >= targetScroll - 1)
+			if (savedScroll === 0 || window.scrollY >= savedScroll - 1)
 			{
 				break;
 			}
