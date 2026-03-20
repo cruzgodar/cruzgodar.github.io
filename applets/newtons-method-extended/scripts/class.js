@@ -12,9 +12,13 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	wilsonHidden;
 
+	hasRun = false;
+
+	defaultWorldSize = 32;
 
 
-	a = [1, 0];
+	generatingCode;
+	a = [5, 0];
 	c = [0, 0];
 	draggableArg = [.5, .5];
 
@@ -93,16 +97,45 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 		this.wilson.draggables.draggableArg.element.style.display = "none";
 
+		this.colors = this.generateNewPalette();
+
 		this.loadPromise = loadGlsl();
 	}
 
 
 
-	async run({ generatingCode, resolution = this.resolution })
-	{
-		await this.loadPromise;
-		
-		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+	async getShader({
+		oldGeneratingCode,
+		needDraggable
+	}) {
+		const updateGlsl = oldGeneratingCode
+			? /* glsl */`
+				(1.0 - codeInterpolation) * cmul(cmul(oldF(z, firstZ), cinv(oldFPrime(z, firstZ))), a * 0.2) +  codeInterpolation * cmul(cmul(f(z, firstZ), cinv(fPrime(z, firstZ))), a * 0.2)
+			`
+			: /* glsl */`
+				cmul(cmul(f(z, firstZ), cinv(fPrime(z, firstZ))), a * 0.2)
+			`;
+
+		const oldFGlsl = oldGeneratingCode
+			? /* glsl */`
+				//Returns f(z) for a polynomial f with given roots.
+				vec2 oldF(vec2 z, vec2 firstZ)
+				{
+					return ${oldGeneratingCode} + firstZ;
+				}
+				
+				//Approximates f'(z) for a polynomial f with given roots.
+				vec2 oldFPrime(vec2 z, vec2 firstZ)
+				{
+					return 1.0 / 12.0 * ${getFloatGlsl(derivativePrecision)} * (
+						-oldF(z + vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+						+ 8.0 * oldF(z + vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+						- 8.0 * oldF(z - vec2(1.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+						+ oldF(z - vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
+					);
+				}
+			`
+			: "";
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -122,22 +155,21 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			${needDraggable ? "uniform vec2 draggableArg;" : ""}
 			
 			uniform float brightnessScale;
+			uniform float codeInterpolation;
 			
 			const float threshhold = .001;
 			
 			
 			
-			${getGlslBundle(generatingCode)}
+			${getGlslBundle(this.generatingCode + " " + (oldGeneratingCode ?? ""))}
 			
 			
 			
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z, vec2 firstZ)
 			{
-				return ${generatingCode} + firstZ;
+				return ${this.generatingCode} + firstZ;
 			}
-			
-			
 			
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 fPrime(vec2 z, vec2 firstZ)
@@ -149,6 +181,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 					+ f(z - vec2(2.0 * ${getFloatGlsl(1 / derivativePrecision)}, 0.0), firstZ)
 				);
 			}
+
+			${oldFGlsl}
 			
 			
 			
@@ -165,7 +199,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < 200; iteration++)
 				{
-					vec2 temp = cmul(cmul(f(z, firstZ), cinv(fPrime(z, firstZ))), a);
+					vec2 temp = ${updateGlsl};
 					
 					oldZ = lastZ;
 					
@@ -207,14 +241,66 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			}
 		`;
 
-		this.pastBrightnessScales = [];
+		return shader;
+	}
 
-		this.a = [1, 0];
-		this.c = [0, 0];
+	
 
-		this.wilson.setDraggables({ a: this.a, c: this.c });
+	async animateResetWorldCoordinates()
+	{
+		const worldWidth = this.wilson.worldWidth;
+		const worldHeight = this.wilson.worldHeight;
+		const worldCenterX = this.wilson.worldCenterX;
+		const worldCenterY = this.wilson.worldCenterY;
 
-		this.colors = this.generateNewPalette();
+		const levelsToZoom = Math.abs(
+			Math.min(
+				Math.log2(worldWidth / this.defaultWorldSize),
+				Math.log2(worldHeight / this.defaultWorldSize)
+			)
+		);
+
+		const animationTime = levelsToZoom > 1
+			? 500
+			: levelsToZoom > 0
+				? 200
+				: 0;
+
+		await animate((t) =>
+		{
+			this.wilson.resizeWorld({
+				width: worldWidth * (1 - t) + this.defaultWorldSize * t,
+				height: worldHeight * (1 - t) + this.defaultWorldSize * t,
+				centerX: worldCenterX * (1 - t),
+				centerY: worldCenterY * (1 - t),
+			});
+
+			this.wilsonHidden.resizeWorld({
+				width: worldWidth * (1 - t) + this.defaultWorldSize * t,
+				height: worldHeight * (1 - t) + this.defaultWorldSize * t,
+				centerX: worldCenterX * (1 - t),
+				centerY: worldCenterY * (1 - t),
+			});
+
+			this.needNewFrame = true;
+		}, animationTime, "easeInOutCubic");
+
+		if (levelsToZoom > 0)
+		{
+			await sleep(100);
+		}
+	}
+
+	async interpolateBetweenRuns({
+		newGeneratingCode,
+		needDraggable
+	}) {
+		await this.animateResetWorldCoordinates();
+
+		const oldGeneratingCode = this.generatingCode;
+		this.generatingCode = newGeneratingCode;
+
+		const shader = await this.getShader({ oldGeneratingCode, needDraggable });
 
 		this.wilson.loadShader({
 			shader,
@@ -227,7 +313,90 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 				color3: [this.colors[9], this.colors[10], this.colors[11]],
 				a: this.a,
 				c: this.c,
-				brightnessScale: 12.75,
+				brightnessScale: this.brightnessScale,
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+				codeInterpolation: 0,
+			},
+		});
+
+		this.wilsonHidden.loadShader({
+			shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				color0: [this.colors[0], this.colors[1], this.colors[2]],
+				color1: [this.colors[3], this.colors[4], this.colors[5]],
+				color2: [this.colors[6], this.colors[7], this.colors[8]],
+				color3: [this.colors[9], this.colors[10], this.colors[11]],
+				a: this.a,
+				c: this.c,
+				brightnessScale: 10,
+				codeInterpolation: 0,
+			},
+		});
+
+		await animate((t) =>
+		{
+			this.wilson.setUniforms({
+				codeInterpolation: t,
+			});
+			this.wilsonHidden.setUniforms({
+				codeInterpolation: t,
+			});
+
+			this.needNewFrame = true;
+		}, 750, "easeInOutQuad");
+	}
+
+
+
+	async run({
+		generatingCode,
+		resolution = this.resolution,
+		animate = true,
+	}) {
+		await this.loadPromise;
+		
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+
+		if (this.hasRun && animate)
+		{
+			await this.interpolateBetweenRuns({ newGeneratingCode: generatingCode, needDraggable });
+		}
+
+		else
+		{
+			this.generatingCode = generatingCode;
+
+			this.pastBrightnessScales = [];
+			this.brightnessScale = 12.75;
+			this.a = [5, 0];
+			this.c = [0, 0];
+
+			this.wilson.resizeWorld({
+				width: 32,
+				height: 32,
+				centerX: 0,
+				centerY: 0
+			});
+
+			this.wilson.setDraggables({ a: this.a, c: this.c });
+		}
+
+		const shader = await this.getShader({ needDraggable });
+
+		this.wilson.loadShader({
+			shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				color0: [this.colors[0], this.colors[1], this.colors[2]],
+				color1: [this.colors[3], this.colors[4], this.colors[5]],
+				color2: [this.colors[6], this.colors[7], this.colors[8]],
+				color3: [this.colors[9], this.colors[10], this.colors[11]],
+				a: this.a,
+				c: this.c,
+				brightnessScale: this.brightnessScale,
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			},
 		});
@@ -247,19 +416,14 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			},
 		});
 
-		this.wilson.resizeWorld({
-			width: 32,
-			height: 32,
-			centerX: 0,
-			centerY: 0
-		});
-
 		this.resolution = resolution;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.wilson.draggables.draggableArg.element.style.display =
 			needDraggable ? "block" : "none";
+
+		this.hasRun = true;
 
 		this.resume();
 	}

@@ -81,7 +81,10 @@ export default function()
 
 	function run()
 	{
-		applet.run({ generatingCode: glslTextarea.value });
+		applet.run({
+			generatingCode: glslTextarea.value,
+			resolution: resolutionInput.value
+		});
 	}
 
 	function changeResolution()
