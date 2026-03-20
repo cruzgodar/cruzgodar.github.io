@@ -484,15 +484,41 @@ Use the dropdown to color this vector field by (the $z$-component of) its curl a
 
 ### exc "curl and divergence"
 
-	1. Let $\vec{F}(x, y, z) = \left< 2x^2 + y, z - \sin(y), z \right>$. Compute $\Gbullet \vec{F}$.
+	1. Let $\vec{F}(x, y, z) = \left< 2x^2 + y,\ z - \sin(y),\ z \right>$. Compute $\Gbullet \vec{F}$.
 
 	2. Let $f(x, y, z) = 3xy + 2y\sin(z) + z^2$. Find $\Gtimes \G f$. Does this match with our previous understanding of gradients and curl?
 
-	3. Is it possible for a non-constant vector field $\vec{G}$ in $#R#^2$ to have $\Gtimes \vec{G} = \vec{0}$ but $\G \bullet \vec{G} \neq 0$? What about vice versa? Give an example of each or explain why they're impossible.
+	3. Give an example of a non-constant vector field $\vec{G}$ in $#R#^2$ (not $#R#^3$) with $\Gtimes \vec{G} = \vec{0}$ but $\G \bullet \vec{G} \neq 0$, and a non-constant field $\vec{H}$ with $\Gbullet \vec{H} = \vec{0}$ but $\Gtimes \vec{H} \neq 0$.
+	
+	### solution
+
+	1. The divergence is
+
+	$$
+		\Gbullet \left< 2x^2 + y,\ z - \sin(y),\ z \right> &= p/px \left[ 2x^2 + y \right] + p/py \left[ z - \sin(y) \right] + p/pz \left[ z \right]
+
+		&= 4x - \cos(y) + 1.
+	$$
+
+	2. We have
+
+	$$
+		\Gtimes \G f &= \Gtimes \left< 3y,\ 3x + 2\sin(z),\ 2y\cos(z) + 2z \right>
+
+		&= \det [[ \vec{i}, \vec{j}, \vec{k} ; p/px, p/py, p/pz ; 3y, 3x + 2\sin(z), 2y\cos(z) + 2z ]]
+
+		&= \left< p/py\left[ 2y\cos(z) + 2z \right] - p/pz \left[ 3x + 2\sin(z) \right],\ p/pz \left[ 3y \right] - p/px\left[ 2y\cos(z) + 2z \right],\ p/px \left[ 3x + 2\sin(z) \right] - p/py \left[ 3y \right] \right>
+
+		&= \left< 2\cos(z) - 2\cos(z),\ 0 - 0,\ 3 - 3 \right>
+
+		&= \vec{0}.
+	$$
+
+	3. An example of the first type of field is $\vec{G} = \left< x, y \right>$, since then both partials in the curl are zero. Similarly, $\vec{H} = \left< -y, x \right>$ or something similar will work for the second.
 
 ###
 
-That second part was suggestive of something more general: in $#R#^2$, conservative vector fields have the form $\vec{F} = \left< f, g \right>$ where $f_y = g_x$, or in other words $g_x - f_y = 0$. That's now only one component of three of the curl of a field in $#R#^3$, but the generalization we would hope holds absolutely does!
+That second question was suggestive of something more general: in $#R#^2$, conservative vector fields have the form $\vec{F} = \left< f, g \right>$ where $f_y = g_x$, or in other words $g_x - f_y = 0$. That's now only one component of three of the curl of a field in $#R#^3$, but the generalization we would hope holds absolutely does!
 
 ### prop "conservative vector fields in $#R#^3$"
 
