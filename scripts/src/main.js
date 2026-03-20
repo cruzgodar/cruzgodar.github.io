@@ -2,6 +2,7 @@ import { cardContainer, openCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
+import { pageLayoutReady } from "./loadPage.js";
 import { redirect } from "./navigation.js";
 import {
 	initDarkTheme,
@@ -226,6 +227,7 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 
 async function showAndRestoreScroll()
 {
+	await pageLayoutReady;
 	await sleep(10);
 
 	if (siteSettings.card)

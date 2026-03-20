@@ -38,10 +38,15 @@ export let pageShown = true;
 
 export let siteLoaded = false;
 
+export let pageLayoutReady = Promise.resolve();
+
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
 export async function loadPage(noFadeIn = false)
 {
+	let resolveLayoutReady;
+	pageLayoutReady = new Promise(r => resolveLayoutReady = r);
+
 	pageShown = false;
 
 	window.dispatchEvent(new Event("scroll"));
@@ -97,6 +102,8 @@ export async function loadPage(noFadeIn = false)
 	
 	
 	await Promise.all(promises);
+
+	resolveLayoutReady();
 
 	await fadeInPage(noFadeIn);
 

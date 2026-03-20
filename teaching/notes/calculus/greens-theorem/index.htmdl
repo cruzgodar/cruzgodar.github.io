@@ -428,7 +428,23 @@ We'll call this the **flux form of Green's Theorem** and the previous version th
 		\oint_C \vec{F} \bullet \vec{n}\,\d s,
 	$$
 
-	where $C$ is the unit circle and $\vec{F}(x, y) = \left< x^2, y^2 \right>$.
+	where $C$ is the unit circle, oriented counterclockwise, and $\vec{F}(x, y) = \left< x^2, y^2 \right>$.
+
+	### solution
+
+	Applying Green's Theorem, we have
+
+	$$
+		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^2 \right] + p/py \left[ y^2 \right] \right)\,\d A
+
+		&= \iint_R \left( 2x + 2y \right)\,\d A,
+	$$
+
+	where $R$ is the solid unit disk. That's a great integral to transform into polar coordinates:
+
+	$$
+		\iint_R \left( 2x + 2y \right)\,\d A &= \int_0^{2\pi}\int_0^1 \left( 2r\cos(\theta) + 2r\sin(\theta) \right)r\,\d r\,\d\theta
+	$$
 
 ###
 
@@ -538,7 +554,7 @@ We'll again omit the proof, but draw a parallel to the very similar fact that $\
 
 One question that we might like answered at this point has to do with the curl vector specifically. We know we're encoding data about the rotation of the field about each axis in the three components of $\Gtimes \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- pointing in the direction of greatest increase of the function --- so too does the entire curl vector have significance. Its direction is the **axis of fastest rotation**; in other words, if we place a tiny flat wheel that can spin while fixed in place into the field $\vec{F}$, then it will spin fastest when its axis is parallel to $\Gtimes \vec{F}$. Moreover, the magnitude $\left| \left| \Gtimes \vec{F} \right| \right|$ is the rate of that fastest rotation.
 
-With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in terms of these rather fancy new terms.
+With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in these fancy new terms.
 
 ### thm "The vector forms of Green's Theorem"
 
