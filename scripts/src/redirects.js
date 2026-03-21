@@ -7,13 +7,13 @@ export const redirects = {
 	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/parts-1-and-2-review",
 	"/teaching/notes/calculus/calc-2-review": "/teaching/notes/calculus/part-3-review",
 
-	// "/teaching/notes/linear-algebra/linear-algebra-1-review": "/teaching/notes/linear-algebra/parts-1-and-2-review",
+	"/teaching/notes/linear-algebra/linear-algebra-1-review": "/teaching/notes/linear-algebra/parts-1-and-2-review",
 
 	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/the-unit-circle",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
-		"/teaching/notes/linear-algebra/linear-algebra-1-review",
+		"/teaching/notes/linear-algebra/parts-1-and-2-review",
 	"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues":
 		"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
 	"/teaching/uo/342/notes/2-diagonalization":
