@@ -93,6 +93,16 @@ export default function()
 		name: "Update expression during reduction",
 	});
 
+	const animateSingleSubstitutionsCheckbox = new Checkbox({
+		element: $("#animate-single-substitutions-checkbox"),
+		name: "Animate single substitutions",
+		checked: true,
+		onInput: () =>
+		{
+			applet.skipSingleSubstitutionAnimations = !animateSingleSubstitutionsCheckbox.checked;
+		}
+	});
+
 	new Button({
 		element: $("#reduce-button"),
 		name: "Reduce",

@@ -123,6 +123,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 	numLambdas = 0;
 	animationTime = 500;
 	animationPaused = false;
+	skipSingleSubstitutionAnimations = false;
 
 	animationRunning = false;
 	needReload = false;
@@ -1460,6 +1461,88 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}, this.animationTime * 0.5, "easeInOutQuad");
 
 		yield await sleep(this.animationTime / 3);
+
+
+		// When there's only one replacement block and it's not a literal,
+		// we can merge steps 2 and 3: move the input directly from its old
+		// position to its final position while stretching the diagram.
+		if (
+			this.skipSingleSubstitutionAnimations
+			&& !replacementIsLiteral
+			&& newRects.length !== 0
+			&& numReplacementBlocks === 1
+		) {
+			// Sleight of hand: switch to drawing betaReducedExpression,
+			// but position everything at its current (old) location.
+			for (const key of preservedRects)
+			{
+				betaReducedExpression.rectIndex[key].row = oldRectIndex[key].row;
+				betaReducedExpression.rectIndex[key].col = oldRectIndex[key].col;
+				betaReducedExpression.rectIndex[key].width = oldRectIndex[key].width;
+				betaReducedExpression.rectIndex[key].height = oldRectIndex[key].height;
+			}
+
+			// Position new rects at the old replacement rects' positions.
+			for (let j = 0; j < replacementRects.length; j++)
+			{
+				const replacementRectKey = replacementRects[j];
+				const key = newRects[j];
+
+				betaReducedExpression.rectIndex[key].row =
+					expression.rectIndex[replacementRectKey].row;
+				betaReducedExpression.rectIndex[key].col =
+					expression.rectIndex[replacementRectKey].col;
+				betaReducedExpression.rectIndex[key].width =
+					expression.rectIndex[replacementRectKey].width;
+				betaReducedExpression.rectIndex[key].height =
+					expression.rectIndex[replacementRectKey].height;
+			}
+
+			const mergedStartIndex = structuredClone(betaReducedExpression.rectIndex);
+
+			await animate((t) =>
+			{
+				this.outerExpressionSize = (1 - t) * oldExpressionSize
+					+ t * newExpressionSize;
+
+				for (const key in newRectIndex)
+				{
+					betaReducedExpression.rectIndex[key].row =
+						(1 - t) * mergedStartIndex[key].row
+						+ t * newRectIndex[key].row;
+
+					betaReducedExpression.rectIndex[key].col =
+						(1 - t) * mergedStartIndex[key].col
+						+ t * newRectIndex[key].col;
+
+					betaReducedExpression.rectIndex[key].width =
+						(1 - t) * mergedStartIndex[key].width
+						+ t * newRectIndex[key].width;
+
+					betaReducedExpression.rectIndex[key].height =
+						(1 - t) * mergedStartIndex[key].height
+						+ t * newRectIndex[key].height;
+
+					if (key in rgbOld && key in rgbNew)
+					{
+						const r = (1 - t) * rgbOld[key][0] + t * rgbNew[key][0];
+						const g = (1 - t) * rgbOld[key][1] + t * rgbNew[key][1];
+						const b = (1 - t) * rgbOld[key][2] + t * rgbNew[key][2];
+						betaReducedExpression.rectIndex[key].color = convertColor(r, g, b);
+					}
+				}
+
+				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+				this.drawExpressionStep(betaReducedExpression);
+			}, this.animationTime, "easeInOutQuad");
+
+			this.drawExpression(betaReducedExpression);
+
+			yield await sleep(this.animationTime / 3);
+
+			return;
+		}
 
 
 		// Stretch rects to their new positions and
