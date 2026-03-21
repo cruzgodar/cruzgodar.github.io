@@ -938,19 +938,27 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	position: relative;
 	display: flex;
 	
-	justify-content: space-evenly;
+	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
 	
-	width: var(--text-width);
+	width: min(100%, var(--text-width));
 	margin: 0 auto;
 	
 	row-gap: 32px;
-	column-gap: 16px;
+	column-gap: 32px;
 	
 	margin-top: 32px;
+}
 
-	z-index: 75;
+.applet-controls .dropdown-container
+{
+	margin-top: 0;
+}
+
+.applet-controls .text-field-container
+{
+	margin-top: 0;
 }
 
 .contents-button-container
@@ -987,6 +995,11 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	-webkit-user-select: none;
 }
 
+.text-button:not(.dropdown)
+{
+	max-width: 100px;
+}
+
 .text-button:not(:hover):focus
 {
 	outline: none;
@@ -1013,6 +1026,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	transition: box-shadow .2s ease-out;
 
 	z-index: 75;
+
+	margin-top: 44px;
 }
 
 .text-button.file-upload
@@ -1064,6 +1079,11 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	background: var(--neutral-hover);
 
 	box-shadow: inset 0 0 0 2px var(--contrast-border-color);
+}
+
+.dropdown-holder
+{
+	z-index: 75;
 }
 
 .checkbox-row
@@ -1337,9 +1357,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	flex-direction: column;
 	align-items: center;
 	
-	margin: 0 auto;
-	
 	margin-top: 32px;
+
+	transform: translateY(14px);
 
 	cursor: text;
 }
@@ -1379,6 +1399,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	transform: translateY(22px);
 }
 
 .slider-bar
@@ -1541,18 +1562,6 @@ option
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-}
-
-
-
-
-
-@media (min-aspect-ratio: 1/1), (max-width: 1000px)
-{
-	.applet-controls
-	{
-		width: 100%;
-	}
 }
 
 
