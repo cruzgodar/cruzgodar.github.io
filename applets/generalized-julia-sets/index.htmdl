@@ -2,31 +2,20 @@ This one's been a long time coming. The first applet I ever made for the site wa
 
 Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala</a> --- thank you!
 
-### dropdown examples
-
 
 
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
 
-### textarea glsl
-
-### text-boxes
-	resolution
-###
-
-### checkboxes
-	show-preview-canvas
-###
-
-### sliders
-	num-iterations
-###
-
-### buttons
-	generate
-	switch-julia-mode
+### controls
+	dropdown examples
+	textarea glsl
+	text-box resolution
+	checkbox show-preview-canvas
+	slider num-iterations
+	button generate
+	button switch-julia-mode
 ###
 
 </div>
@@ -47,7 +36,9 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 <div id="canvas-landscape-right">
 
-### dropdown download
+### controls
+	dropdown download
+###
 
 </div>
 

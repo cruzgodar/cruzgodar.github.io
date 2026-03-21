@@ -1,14 +1,11 @@
 import { write } from "../file-io.js";
+import { controls } from "./components/applet-controls.js";
 import { banner } from "./components/banner.js";
-import { buttons, navButtons } from "./components/buttons.js";
 import { canvas } from "./components/canvas.js";
 import { card } from "./components/card.js";
 import { carousel } from "./components/carousel.js";
 import { center } from "./components/center.js";
-import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
-import { dropdown } from "./components/dropdown.js";
-import { fileUpload } from "./components/fileUpload.js";
 import { galleryBlock } from "./components/galleryBlock.js";
 import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
@@ -16,11 +13,8 @@ import { parseLatex } from "./components/latex.js";
 import { meldedDesmos } from "./components/melded-desmos.js";
 import { notesEnvironment, notesEnvironmentNames } from "./components/notesEnvironment.js";
 import { raymarchControls } from "./components/raymarchControls.js";
-import { sliders } from "./components/sliders.js";
 import { solution } from "./components/solution.js";
 import { parseText } from "./components/text.js";
-import { textarea } from "./components/textarea.js";
-import { textBoxes } from "./components/textBoxes.js";
 
 let sitemap;
 let parentFolder;
@@ -28,10 +22,6 @@ let parentFolder;
 const manualHeaderPages =
 [
 	"/home",
-
-	"/projects/wilson",
-
-	"/writing/caligo",
 ];
 
 const singleLineComponents = [
@@ -40,8 +30,6 @@ const singleLineComponents = [
 	"card",
 	"center",
 	"desmos",
-	"dropdown",
-	"file-upload",
 	"image",
 	"melded-desmos",
 	"nav-buttons",
@@ -52,26 +40,19 @@ const singleLineComponents = [
 
 const components = {
 	"banner": banner,
-	"buttons": buttons,
 	"canvas": canvas,
 	"card": card,
 	"carousel": carousel,
 	"center": center,
-	"checkboxes": checkboxes,
+	"controls": controls,
 	"desmos": desmos,
-	"dropdown": dropdown,
-	"file-upload": fileUpload,
 	"gallery-block": galleryBlock,
 	"image": image,
 	"image-links": imageLinks,
 	"melded-desmos": meldedDesmos,
-	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
 	"raymarch-controls": raymarchControls,
-	"sliders": sliders,
 	"solution": solution,
-	"textarea": textarea,
-	"text-boxes": textBoxes,
 };
 
 export let currentNumberedItem = 1;

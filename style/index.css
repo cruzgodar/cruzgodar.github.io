@@ -468,7 +468,7 @@ mjx-container
 	-webkit-user-select: none;
 }
 
-.card .text-buttons
+.card .applet-controls
 {
 	grid-template-columns: unset !important;
 }
@@ -933,39 +933,24 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 /* Adds support for text buttons and text boxes. */
 
-
-
-.text-boxes, .text-buttons, .sliders
+.applet-controls
 {
 	position: relative;
-	display: grid;
+	display: flex;
 	
-	justify-content: center;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: wrap;
 	
-	width: 70%;
+	width: var(--text-width);
 	margin: 0 auto;
-
-	grid-template-columns: repeat(auto-fit, 100px);
 	
-	row-gap: 16px;
-	column-gap: 10px;
+	row-gap: 32px;
+	column-gap: 16px;
 	
 	margin-top: 32px;
-}
 
-.text-buttons.dropdown-holder
-{
 	z-index: 75;
-}
-
-.sliders
-{
-	grid-template-columns: repeat(auto-fit, 170px);
-}
-
-.text-boxes
-{
-	align-items: start;
 }
 
 .contents-button-container
@@ -1079,25 +1064,6 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	background: var(--neutral-hover);
 
 	box-shadow: inset 0 0 0 2px var(--contrast-border-color);
-}
-
-
-
-.checkboxes
-{
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	
-	justify-content: center;
-	align-items: center;
-	
-	width: 100%;
-	margin: 0 auto;
-	column-gap: 32px;
-	row-gap: 32px;
-	
-	margin-top: 32px;
 }
 
 .checkbox-row
@@ -1408,6 +1374,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 .slider-container
 {
+	width: 170px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -1582,7 +1549,7 @@ option
 
 @media (min-aspect-ratio: 1/1), (max-width: 1000px)
 {
-	.text-boxes, .text-buttons, .sliders, .checkboxes
+	.applet-controls
 	{
 		width: 100%;
 	}
@@ -1952,7 +1919,7 @@ option
 	max-width: calc(100% - 42px);
 }
 
-#accessibility-tooltip .checkboxes
+#accessibility-tooltip .applet-controls
 {
 	margin-top: 16px;
 }
