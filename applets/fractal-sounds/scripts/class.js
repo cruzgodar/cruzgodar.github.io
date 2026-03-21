@@ -180,7 +180,6 @@ export class FractalSounds extends AnimationFrameApplet
 				}
 
 				float totalDisplacement = 0.0;
-				vec2 orbitSum = vec2(0.0, 0.0);
 
 
 
@@ -204,7 +203,6 @@ export class FractalSounds extends AnimationFrameApplet
 
 					brightness += exp(-max(length(z), .5));
 					totalDisplacement += length(z - lastZ[0]);
-					orbitSum += z;
 
 					for (int k = 0; k < numHarmonics; k++)
 					{
@@ -212,17 +210,30 @@ export class FractalSounds extends AnimationFrameApplet
 					}
 				}
 
-				float hue = atan(orbitSum.y, orbitSum.x) / 6.283185;
+				vec2 hueDir = vec2(0.0, 0.0);
+				for (int k = 0; k < numHarmonics; k++)
+				{
+					float angle = 6.283185 * float(k) / float(numHarmonics);
+					hueDir += hitCounts[k] / float(k + 1) * vec2(cos(angle), sin(angle));
+				}
+				float hue = atan(hueDir.y, hueDir.x) / 6.283185;
 
 				float maxHitCount = 0.0;
 				for (int k = 0; k < numHarmonics; k++)
 				{
 					maxHitCount = max(maxHitCount, hitCounts[k]);
 				}
-				float saturation = clamp(pow(maxHitCount / float(numIterations), 0.5), 0.0, 1.0);
 
 				float activity = 1.0 - exp(-totalDisplacement / float(numIterations));
-				float value = brightness * 0.015 * (0.05 + 0.95 * activity);
+
+				float saturation = clamp(
+					pow(maxHitCount / float(numIterations), 0.5)
+						* activity,
+					0.0,
+					1.0
+				);
+
+				float value = brightness * 0.013 * (0.05 + 0.95 * activity);
 
 				gl_FragColor = vec4(
 					hsvToRgb(vec3(hue, saturation, value)), 1.0
