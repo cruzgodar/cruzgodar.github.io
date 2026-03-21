@@ -188,7 +188,7 @@ export class VectorField extends AnimationFrameApplet
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset,
 
-			onResizeCanvas: () => this.generateNewField({ delayResuing: true }),
+			onResizeCanvas: () => this.generateNewField({ delayResuming: true }),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -533,7 +533,7 @@ export class VectorField extends AnimationFrameApplet
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
-		delayResuing = false,
+		delayResuming = false,
 	}) {
 		await this.loadPromise;
 
@@ -645,7 +645,7 @@ export class VectorField extends AnimationFrameApplet
 
 		clearTimeout(this.resumeTimeout);
 
-		if (!delayResuing)
+		if (!delayResuming)
 		{
 			this.resume();
 		}

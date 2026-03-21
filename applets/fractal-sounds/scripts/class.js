@@ -3,19 +3,21 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { sleep } from "/scripts/src/utils.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
 {
 	loadPromise;
 
+	hasRun = false;
+
+	glslCode;
+
 	wilsonJulia;
 
-	juliaMode = 0;
-
 	aspectRatio = 1;
-
+	defaultWorldSize = 4;
 	zoomLevel = 0;
 
 	resolution = 500;
@@ -111,19 +113,15 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	async run({
-		glslCode,
-		jsCode,
-		resolution,
+	getShader({
+		oldGlslCode,
 	}) {
-		await this.loadPromise;
-		
-		this.currentFractalFunction = jsCode;
-
-		this.resolution = resolution;
-
 		const numIterations = 200;
 		const numHarmonics = 8;
+
+		const glslCodeGlsl = oldGlslCode
+			? /* glsl */`codeInterpolation * (${this.glslCode}) + (1.0 - codeInterpolation) * (${oldGlslCode})`
+			: this.glslCode;
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -138,9 +136,11 @@ export class FractalSounds extends AnimationFrameApplet
 			const int numHarmonics = ${numHarmonics};
 			const float hueMultiplier = 100.0;
 
+			uniform float codeInterpolation;
 
 
-			${getGlslBundle(glslCode)}
+
+			${getGlslBundle(this.glslCode + " " + (oldGlslCode ?? ""))}
 
 
 
@@ -198,7 +198,7 @@ export class FractalSounds extends AnimationFrameApplet
 					}
 					lastZ[0] = z;
 
-					z = ${glslCode};
+					z = ${glslCodeGlsl};
 
 
 
@@ -230,6 +230,103 @@ export class FractalSounds extends AnimationFrameApplet
 			}
 		`;
 
+		return shader;
+	}
+
+	
+
+	async animateResetWorldCoordinates()
+	{
+		const worldWidth = this.wilson.worldWidth;
+		const worldHeight = this.wilson.worldHeight;
+		const worldCenterX = this.wilson.worldCenterX;
+		const worldCenterY = this.wilson.worldCenterY;
+
+		const levelsToZoom = Math.abs(
+			Math.min(
+				Math.log2(worldWidth / this.defaultWorldSize),
+				Math.log2(worldHeight / this.defaultWorldSize)
+			)
+		);
+
+		const animationTime = levelsToZoom > 1
+			? 500
+			: levelsToZoom > 0
+				? 200
+				: 0;
+
+		await animate((t) =>
+		{
+			this.wilson.resizeWorld({
+				width: worldWidth * (1 - t) + this.defaultWorldSize * t,
+				height: worldHeight * (1 - t) + this.defaultWorldSize * t,
+				centerX: worldCenterX * (1 - t),
+				centerY: worldCenterY * (1 - t),
+			});
+
+			this.needNewFrame = true;
+		}, animationTime, "easeInOutCubic");
+
+		if (levelsToZoom > 0)
+		{
+			await sleep(100);
+		}
+	}
+
+	async interpolateBetweenRuns(glslCode)
+	{
+		await this.animateResetWorldCoordinates();
+
+		const oldGlslCode = this.glslCode;
+		this.glslCode = glslCode;
+
+		const shader = this.getShader({ oldGlslCode });
+
+		this.wilsonJulia.loadShader({
+			shader,
+			uniforms: {
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				codeInterpolation: 0,
+			},
+		});
+
+		await animate((t) =>
+		{
+			this.wilsonJulia.setUniforms({
+				codeInterpolation: t,
+			});
+
+			this.needNewFrame = true;
+		}, 750, "easeInOutQuad");
+	}
+
+
+
+	async run({
+		glslCode,
+		jsCode,
+		resolution,
+		animate = true
+	}) {
+		await this.loadPromise;
+		
+		this.currentFractalFunction = jsCode;
+
+		this.resolution = resolution;
+
+		if (this.hasRun && animate)
+		{
+			await this.interpolateBetweenRuns(glslCode);
+		}
+
+		else
+		{
+			this.glslCode = glslCode;
+		}
+
+		const shader = this.getShader({});
+
 		this.wilsonJulia.loadShader({
 			shader,
 			uniforms: {
@@ -237,8 +334,6 @@ export class FractalSounds extends AnimationFrameApplet
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			},
 		});
-
-		this.juliaMode = 0;
 
 		this.wilson.resizeWorld({
 			width: 4,
@@ -250,6 +345,8 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilsonJulia.resizeCanvas({ width: this.resolution });
 
 		this.resume();
+
+		this.hasRun = true;
 	}
 
 
