@@ -123,5 +123,37 @@ export default function()
 				{ latex: raw`(u, v, u\cos(v))`, parametricDomain3Du: { min: "-2\\pi", max: "2\\pi" }, parametricDomain3Dv: { min: "-2\\pi", max: "2\\pi" }, color: desmosColors.purple, secret: true },
 			]
 		},
+
+		parametricPlane:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`2x+2(z-1)=0`, color: desmosColors.purple },
+
+				{ latex: raw`(0, 0, 1)`, color: desmosColors.orange },
+				{ latex: raw`\vector((0, 0, 1), (-1, -2, 2))`, color: desmosColors.blue },
+				{ latex: raw`\vector((0, 0, 1), (1, 0, 0))`, color: desmosColors.red },
+			]
+		},
+
+		wigglyCylinder:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`(v, \cos(u), \sin(\frac{\pi}{2} v) + \sin(u))`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -2, max: 2 }, color: desmosColors.purple },
+			]
+		},
 	});
 }

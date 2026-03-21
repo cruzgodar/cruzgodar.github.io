@@ -71,9 +71,9 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 	1. Describe and roughly sketch the following parametric surfaces:
 
 	$$
-		\vec{r}(u, \v) &= \left< 0, 0, 1 \right>\ +\ u\left< -1, -2, 1 \right>\ +\ \v\left< 1, 0, -1 \right>
+		\vec{r}(u, \v) &= \left< 0, 0, 1 \right>\ +\ u\left< -1, -2, 1 \right>\ +\ \v\left< 1, 0, -1 \right>, \quad -2 \leq u \leq 2,\ -2 \leq \v \leq 2
 
-		\vec{s}(u, \v) &=\left< \v,\ \sin(v) + \cos(u),\ \sin(u) \right>.
+		\vec{s}(u, \v) &=\left< \v,\ \cos(u),\ \sin\left(\frac{\pi}{2} \v \right) + \sin(u) \right>, \quad 0 \leq u \leq 2\pi,\ -2 \leq \v \leq 2
 	$$
 
 	(Hint: $\vec{s}$ is very similar to the previous example!)
@@ -85,6 +85,33 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 	3. Find a parameterization for the graph of $z = x\cos(y)$ on the square $[0, \pi]^2$.
 
 	### desmos functionParameterization
+
+	### solution
+
+	1. The graph of $\vec{r}(u, \v)$ is a plane passing through $(0, 0, 1)$ that is parallel to both $\left< -1, -2, 1 \right>$ and $\left< 1, 0, -1 \right>$, and that therefore has a normal vector of
+
+	$$
+		\left< -1, -2, 1 \right> \times \left< 1, 0, -1 \right> = \left< 2, 0, 2 \right>.
+	$$
+
+	### desmos parametricPlane
+
+	The graph of $\vec{s}$ is identical to the cylinder we graphed before, but the extra term of $\sin\left(\frac{\pi}{2} \v \right)$ makes the $z$-coordinate oscillate by a sine function as the $x$-coordinate changes.
+
+	### desmos wigglyCylinder
+
+	2. One way to parameterize this surface is to begin with a parameterization of a cylinder and modify its radius to be equal to the $z$-coordinate:
+
+	$$
+		\vec{r}(u, \v) &= \left< \v\cos(u),\ \v\sin(u),\ \v \right>, \quad 0 \leq u \leq 2\pi,\ -2 \leq \v \leq 2
+	$$
+
+	3. Just like we can parameterize the graph of a single-variable function $y = f(x)$ by setting $x = t$ and $y = f(t)$, we can do the same for a function of two variables $z = f(x, y)$ by setting $x = u$, $y = \v$, and $z = f(u, \v)$. Here, the parameterization is
+
+	$$
+		\vec{r}(u, \v) &= \left< u,\ \v,\ u\cos(\v) \right>, \quad 0 \leq u \leq \pi,\ 0 \leq \v \leq \pi.
+	$$
+
 ###
 
 
