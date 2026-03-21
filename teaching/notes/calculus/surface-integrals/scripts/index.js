@@ -1,5 +1,10 @@
 import { hsvToHex } from "/scripts/applets/applet.js";
-import { createDesmosGraphs, getColored3DCurve, getDesmosSlider } from "/scripts/src/desmos.js";
+import {
+	createDesmosGraphs,
+	desmosColors,
+	getColored3DCurve,
+	getDesmosSlider
+} from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
@@ -66,6 +71,56 @@ export default function()
 				}),
 
 				{ latex: raw`C = \operatorname{rgb}(255\left|U(x, y, z)\right|^{1.3151}, 255\left|V(x, y, z)\right|^{1.3151}, 255)`, secret: true },
+			]
+		},
+
+		parametricSurface:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`s(u, v) = (v, \cos(u), \sin(u))` },
+
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -1, max: 1 }, color: desmosColors.purple },
+
+				{ latex: raw`U = [0, \frac{\pi}{4}, ..., 2\pi]` },
+				{ latex: raw`V = [-1, -0.5, ..., 1]` },
+
+				{ latex: raw`s(t, V)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.blue },
+				{ latex: raw`s(U, t)`, parametricDomain: { min: -1, max: 1 }, color: desmosColors.red },
+			]
+		},
+
+		doubleCone:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`(v\cos(u), v\sin(u), v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
+			]
+		},
+
+		functionParameterization:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -7.5, xmax: 7.5, ymin: -7.5, ymax: 7.5, zmin: -7.5, zmax: 7.5 },
+
+			expressions:
+			[
+				{ latex: raw`(u, v, u\cos(v))`, parametricDomain3Du: { min: "-2\\pi", max: "2\\pi" }, parametricDomain3Dv: { min: "-2\\pi", max: "2\\pi" }, color: desmosColors.purple, secret: true },
 			]
 		},
 	});

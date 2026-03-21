@@ -29,13 +29,13 @@ To parameterize a surface, we'll need two input variables to a function $\vec{r}
 Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the codomain and domain, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function
 
 $$
-	\vec{s}(t) = \left< a(t), b(t), c(t) \right>
+	\vec{s}(t) = \left< a(t),\ b(t),\ c(t) \right>
 $$
 
 only had one input variable, and its derivative was
 
 $$
-	d/dt \left[ \vec{s}(t) \right] = \left< a'(t), b'(t), c'(t) \right>.
+	d/dt \left[ \vec{s}(t) \right] = \left< a'(t),\ b'(t),\ c'(t) \right>.
 $$
 
 In contrast, a function $\vec{r}(u, \v)$ has two inputs, and therefore two *partial* derivatives, each of which is a vector-valued function:
@@ -48,6 +48,44 @@ $$
 
 We'll have more to say about those partial derivatives, but let's turn to examples.
 
+### ex "plotting a parametric surface"
+
+	Describe and sketch the graph of the surface $S$ parameterized by
+
+	$$
+		\vec{r}(u, \v) = \left< \v,\ \cos(u),\ \sin(u) \right>,
+	$$
+
+	where $u \in [0, 2\pi]$ and $\v \in [-2, 2]$
+
+	We often thought about functions of two variables in terms of their level curves by holding $z$ fixed and plotting an implicit equation of $x$ and $y$. In much the same way, we can get an impression of a surface by holding either $u$ or $\v$ fixed and plotting the parametric curve that results from letting the other one vary. Here, fixing $\v$ produces circles parallel to the $yz$-plane (plotted in blue), while fixing $u$ gives lines with direction vector $\left< 1, 0, 0 \right>$ passing through those circles (plotted in red):
+
+	### desmos parametricSurface
+
+	The result, plotted in purple, is a cylinder parallel to the $x$-axis.
+
+###
+
+### exc "plotting a parametric surface"
+
+	1. Describe and roughly sketch the following parametric surfaces:
+
+	$$
+		\vec{r}(u, \v) &= \left< 0, 0, 1 \right>\ +\ u\left< -1, -2, 1 \right>\ +\ \v\left< 1, 0, -1 \right>
+
+		\vec{s}(u, \v) &=\left< \v,\ \sin(v) + \cos(u),\ \sin(u) \right>.
+	$$
+
+	(Hint: $\vec{s}$ is very similar to the previous example!)
+
+	2. Find a parameterization for a double cone with slope 1 that reaches $z = \pm 2$, as shown:
+
+	### desmos doubleCone
+
+	3. Find a parameterization for the graph of $z = x\cos(y)$ on the square $[0, \pi]^2$.
+
+	### desmos functionParameterization
+###
 
 
 ### nav-buttons
