@@ -13,6 +13,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	currentGenerator;
 
+	speedFactor = 1;
+
 	minFrequency = 30;
 	maxFrequency = 600;
 
@@ -155,15 +157,17 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		resolution,
 		algorithm,
 		dataLength,
+		speedFactor = 1,
 		doPlaySound,
-		shuffle = true
+		shuffle = true,
+		verify = true,
 	}) {
 		this.resolution = resolution;
 
 		this.generators = [
 			this.shuffleArray.bind(this),
 			this.algorithms[algorithm].bind(this),
-			this.verifyArray.bind(this),
+			...(verify ? [this.verifyArray.bind(this)] : []),
 		];
 
 		this.currentGeneratorIndex = 0;
@@ -172,6 +176,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		this.dataLength = dataLength;
 
 		this.doPlaySound = doPlaySound;
+		this.speedFactor = speedFactor;
 		this.shuffle = shuffle;
 
 
@@ -484,7 +489,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-	* shuffleArray()
+	async * shuffleArray()
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength / 60);
 
@@ -534,7 +539,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* bubbleSort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * this.dataLength / 2500);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * this.dataLength / 2500 * this.speedFactor
+		);
 
 		while (true)
 		{
@@ -571,7 +578,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* insertionSort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * this.dataLength / 5000);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * this.dataLength / 5000 * this.speedFactor
+		);
 
 		for (let i = 1; i < this.dataLength; i++)
 		{
@@ -611,7 +620,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* selectionSort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength / 1000);
+		this.operationsPerFrame = Math.ceil(this.dataLength / 1000 * this.speedFactor);
 
 		for (let i = 0; i < this.dataLength; i++)
 		{
@@ -645,7 +654,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* heapsort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 500);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * Math.log(this.dataLength) / 500 * this.speedFactor
+		);
 
 		// Build the heap.
 		for (let i = 1; i < this.dataLength; i++)
@@ -774,7 +785,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			return;
 		}
 
-		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 200);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * Math.log(this.dataLength) / 200 * this.speedFactor
+		);
 
 
 
@@ -796,7 +809,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 					this.readFromPosition(i);
 					this.readFromPosition(i + 1);
 
-					if (this.writeToPosition(i)) {yield;}
+					// Should be i, but this fixes the sound
+					if (this.writeToPosition(i + 1)) {yield;}
 					if (this.writeToPosition(i + 1)) {yield;}
 
 					const temp = this.data[i];
@@ -881,7 +895,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 				this.readFromPosition(i);
 				this.readFromPosition(i - 1);
 
-				if (this.writeToPosition(i)) {yield;}
+				// Should be i, but this fixes the sound
+				if (this.writeToPosition(i - 1)) {yield;}
 				if (this.writeToPosition(i - 1)) {yield;}
 
 				const temp = this.data[i];
@@ -896,7 +911,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 				this.readFromPosition(i);
 				this.readFromPosition(i + 1);
 
-				if (this.writeToPosition(i)) {yield;}
+				// Should be i, but this fixes the sound
+				if (this.writeToPosition(i + 1)) {yield;}
 				if (this.writeToPosition(i + 1)) {yield;}
 
 				const temp = this.data[i];
@@ -924,7 +940,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* quicksort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 2250);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * Math.log(this.dataLength) / 2250 * this.speedFactor
+		);
 
 		const currentEndpoints = new Array(this.dataLength);
 		currentEndpoints[0] = 0;
@@ -1021,7 +1039,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* shellsort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength / 100);
+		this.operationsPerFrame = Math.ceil(this.dataLength / 100 * this.speedFactor);
 
 		const gaps = [];
 
@@ -1075,7 +1093,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* cycleSort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength / 2000);
+		this.operationsPerFrame = Math.ceil(this.dataLength / 2000 * this.speedFactor);
 
 		const done = new Array(this.dataLength);
 
@@ -1151,7 +1169,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-		this.operationsPerFrame = Math.ceil(this.dataLength * maxKeyLength / 650);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * maxKeyLength / 650 * this.speedFactor
+		);
 
 
 
@@ -1266,7 +1286,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-		this.operationsPerFrame = Math.ceil(this.dataLength * maxKeyLength / 650);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * maxKeyLength / 650 * this.speedFactor
+		);
 
 
 
@@ -1336,7 +1358,9 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	* gravitySort()
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * this.dataLength / 1000000);
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * this.dataLength / 1000000 * this.speedFactor
+		);
 
 		const beads = new Array(this.dataLength);
 

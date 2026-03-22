@@ -14,6 +14,7 @@ async function build2({ forward })
 		algorithm: "merge",
 		dataLength: 512,
 		doPlaySound: true,
+		verify: false
 	});
 }
 

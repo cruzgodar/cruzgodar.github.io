@@ -2,6 +2,37 @@ import { FractalSounds } from "/applets/fractal-sounds/scripts/class.js";
 
 let applet;
 
+const glslCodeMandelbrot = "cmul(z, z) + c";
+const glslCodeSfx = "cmul(z, dot(z, z)) - cmul(z, c*c)";
+
+const jsCodeMandelbrot = (x, y, a, b) => [
+	x * x - y * y + a,
+	2 * x * y + b
+];
+
+const jsCodeSfx = (x, y, a, b) => [
+	x * x * x + x * y * y - x * a * a + y * b * b,
+	x * x * y - x * b * b + y * y * y - y * a * a
+];
+
+async function reset({ forward })
+{
+	applet.run({
+		resolution: 1500,
+		glslCode: forward ? glslCodeMandelbrot : glslCodeSfx,
+		jsCode: forward ? jsCodeMandelbrot : jsCodeSfx,
+	});
+}
+
+async function build2({ forward })
+{
+	applet.run({
+		resolution: 1500,
+		glslCode: forward ? glslCodeSfx : glslCodeMandelbrot,
+		jsCode: forward ? jsCodeSfx : jsCodeMandelbrot
+	});
+}
+
 function load({ slide })
 {
 	if (applet)
@@ -17,34 +48,6 @@ function load({ slide })
 		canvas,
 		lineDrawerCanvas
 	});
-
-	applet.run({
-		resolution: 1500,
-		glslCode: "cdiv(cmul(cmul(z, z), z), ONE + z*z) + c",
-		jsCode: (x, y, a, b) => [
-			a + (
-				x * x * x * x * x + x * x * x * (1 - 3 * y * y)
-				+ 3 * x * x * y * y * y
-				- 3 * x * y * y
-				- y * y * y * y * y
-			) / (
-				x * x * x * x
-				+ 2 * x * x + y * y * y * y + 1
-			),
-			b + (
-				y * (
-					3 * x * x * x * x
-					- x * x * x * y
-					- x * x * (y * y - 3)
-					+ 3 * x * y * y * y - y * y
-				)
-			) / (
-				x * x * x * x
-				+ 2 * x * x + y * y * y * y
-				+ 1
-			)
-		]
-	});
 }
 
 function unload()
@@ -54,6 +57,8 @@ function unload()
 
 export const designingAroundSoundBuilds =
 {
+	reset,
+	2: build2,
 	load,
 	unload
 };

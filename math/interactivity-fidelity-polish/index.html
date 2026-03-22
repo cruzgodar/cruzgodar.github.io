@@ -46,11 +46,11 @@
 		<div>
 			<h1>Who am I?</h1>
 			
-			<p class="build">Teacher (currently a lecturer at Yale)</p>
+			<p class="build">Teacher: currently a lecturer at Yale</p>
 
-			<p class="build">Web developer (interactive notes/textbook for many intro courses, the library that powers these slides)</p>
+			<p class="build">Web developer: interactive notes/textbook for intro courses, library that powers these slides</p>
 
-			<p class="build">Mathematical illustrator (50+ interactive applets over 8+ years, including every visualization in this talk)</p>
+			<p class="build">Mathematical illustrator: 51 interactive web applets over 8 years, every visual in this talk</p>
 		</div>
 
 		<div>
@@ -58,21 +58,21 @@
 			
 			<p class="build">I'd like to share what I've learned about making great visualizations</p>
 
-			<p class="build">This is a short, fast-paced talk with a lot of advice, some points more subjective than others</p>
+			<p class="build">Short, fast-paced talk with a lot of advice (subjectivity varies)</p>
 
-			<p class="build">My goal is to share design principles I've learned in the hopes that it helps, never to tell you what you're doing is wrong</p>
+			<p class="build">My goal is to share the most objective principles I've learned, never to tell you what you're doing is wrong</p>
 
-			<p class="build">This talk is directed to developers of web applets primarily, but it should be broadly applicable</p>
+			<p class="build">Directed to developers of web applets primarily, but should be broadly applicable</p>
 		</div>
 
 		<div>
 			<h1>Target audiences</h1>
 			
-			<p class="build">Math visualizations can interface with three very different groups: mathematicians, non-mathematician enthusiasts, and students</p>
+			<p class="build">Visualizations can interface with three very different groups: mathematicians, non-mathematician enthusiasts, and students</p>
 
-			<p class="build">Often only one or two of these are considered</p>
+			<p class="build">Often only one or two are considered</p>
 
-			<p class="build">Some different primary goals between these audiences: visual fidelity, low barrier to entry, interactivity, clarity of explanation, etc.</p>
+			<p class="build">Different primary goals between these audiences: visual fidelity, low barrier to entry, interactivity and clarity of explanation, etc.</p>
 
 			<p class="build">I believe nearly all visualizations can appeal to all three groups, and that they're at their best when they do</p>
 		</div>
@@ -80,9 +80,9 @@
 		<div id="fidelity" class="medium-canvas">
 			<h1>Fidelity</h1>
 			
-			<p class="build left-text">Code performance matters!</p>
+			<p class="build left-text">Code performance matters to all audiences!</p>
 
-			<p class="build left-text">There is a visual threshold between something feeling like a rendering and actually manipulating an object (especially important when those objects are unusual)</p>
+			<p class="build left-text">Visual threshold between something feeling like a rendering and actually manipulating an object (important when those objects don't have physical analogues)</p>
 
 			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
 
@@ -105,11 +105,11 @@
 		<div id="webAssembly" class="medium-canvas">
 			<h2>Single-threaded performance</h2>
 			
-			<p class="build left-text">If something can't be parallelized but is performance-critical, you may be able to write that specific part in a lower-level language</p>
+			<p class="build left-text">When parallelization is impossible but something is performance-critical, it may be possible to write just that part in a lower-level language</p>
 
-			<p class="build left-text">For example, WebAssembly lets compiled C code be run from JS</p>
+			<p class="build left-text">WebAssembly lets compiled C code be run from JS</p>
 
-			<p class="build left-text">It's used here in the tight loop for finding random walks in Wilson's Algorithm</p>
+			<p class="build left-text">Used here in a tight loop for finding random walks in Wilson's Algorithm</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -119,9 +119,9 @@
 		<div id="performanceCompromises" class="medium-canvas">
 			<h2>Performance compromises</h2>
 			
-			<p class="build left-text">When it's not possible to have the best of both worlds and render at a high resolution and framerate, at least get each world individually</p>
+			<p class="build left-text">When it's not possible to render at both a high resolution and framerate, try to get the best of both worlds</p>
 
-			<p class="build left-text">Rendering realtime previews at a low resolution and single renders at high resolution is a good compromise</p>
+			<p class="build left-text">Rendering realtime previews at a low resolution and final renders at high resolution is a good compromise</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -129,13 +129,13 @@
 		</div>
 
 		<div id="expandability" class="medium-canvas">
-			<h1>Expandability</h1>
+			<h2>Expandability</h2>
 			
-			<p class="build left-text">Expect future advances in technology: don't set hard limits on resolution, framerate, etc. by today's screens</p>
+			<p class="build left-text">Expect future advances in technology: keep limits soft on resolution, framerate, etc.</p>
 
 			<p class="build left-text">Eventually, HDR will be one of these items (WebGPU supports it now)</p>
 
-			<p class="build left-text">If possible, let (advanced) users write small amounts of code to customize behavior</p>
+			<p class="build left-text">Consider leting users write small amounts of code to customize behavior</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -148,7 +148,7 @@
 			<p class="build left-text">Draw things where they are! Prioritize controls that live <em></em>in</em> the space</p>
 
 			<div data-build="2" class="left-text">
-				<p>When that's not possible, realtime and direct controls like sliders are better than indirect ones like text fields</p>
+				<p>When that's impractical, realtime and direct controls like sliders are better than indirect ones like text fields</p>
 
 				<div style="width: 100%; display: flex; align-items: center; flex-direction: column">
 					<input id="metric-slider" type="range" min="0" max="1" value="0.5" step="0.0001">
@@ -161,62 +161,14 @@
 			</div>
 		</div>
 
-		<div id="clarity" class="medium-canvas">
-			<h1>Clarity</h1>
-			
-			<p class="build left-text">This is a broad topic, but one thing that can help is (sparing) use of animation</p>
-
-			<p class="build left-text">Showing things moving or being drawn can help the user keep their place</p>
-
-			<div class="canvas-bundle">
-				<canvas></canvas>
-			</div>
-		</div>
-
-		<div id="animationEducation" class="medium-canvas">
-			<h2>Animation as education</h2>
-			
-			<p class="build left-text">Showing objects animating can also have educational value</p>
-
-			<p class="build left-text">This is the beta reduction process for a lambda calculus Tromp diagram; the full applet allows the animation to be slowed down or paused</p>
-
-			<div class="canvas-bundle">
-				<canvas></canvas>
-			</div>
-		</div>
-
-		<div id="animationSubstance" class="medium-canvas">
-			<h2>Animation as substance</h2>
-			
-			<p class="build left-text">Sometimes the animation is an intrinsic part of the value</p>
-
-			<p class="build left-text">The growth of a Gravner&ndash;Griffeath snowflake is as much about the process as the final result</p>
-
-			<div class="canvas-bundle">
-				<canvas></canvas>
-			</div>
-		</div>
-
-		<div id="animationFlair" class="medium-canvas">
-			<h2>Animation as flair</h2>
-			
-			<p class="build left-text">There is still a place for animation outside of these categories, but if you're only animating between two successive user inputs, be conservative</p>
-
-			<p class="build left-text">If you're going to keep animations for beauty, make sure they're merited, reasonably short, and/or skippable</p>
-
-			<div class="canvas-bundle">
-				<canvas></canvas>
-			</div>
-		</div>
-
 		<div id="accessibility" class="medium-canvas">
 			<h1>Accessibility</h1>
 			
 			<p class="build left-text">A high skill ceiling should not preclude a low skill floor</p>
 
-			<p class="build left-text">It should be easy to directly manipulate the scene in a way that aligns with users' intuitions</p>
+			<p class="build left-text">Should be easy to directly manipulate the scene itself in a way that aligns with users' intuition</p>
 
-			<p class="build left-text">For 2D scenes, that usually looks like Google-Maps-style panning and zooming with inertia</p>
+			<p class="build left-text">For 2D scenes, that usually looks like Google-Maps-style panning and pinch-to-zoom with inertia</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -226,9 +178,9 @@
 		<div id="threeDScenes" class="medium-canvas">
 			<h2>3D scenes</h2>
 			
-			<p class="build left-text">For 3D objects, a natural interaction method is rotating</p>
+			<p class="build left-text">A natural interaction method here is rotating</p>
 
-			<p class="build left-text">Take caution when using video-game-like controls for looking around as the default, since users can accidentally lose sight of the entire scene</p>
+			<p class="build left-text">Take caution when defaulting to looking-around controls, since users can lose sight of the entire scene</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -238,9 +190,57 @@
 		<div id="barrierToEntry" class="medium-canvas">
 			<h2>Minimize barrier to entry</h2>
 			
-			<p class="build left-text">Provide sensible and pleasant defaults to parameters and quality, and if your applet requires writing code, add nice examples that don't require copy-pasting</p>
+			<p class="build left-text">Provide sensible and pleasant defaults, and if your applet requires writing code, add nice examples that don't require copy-pasting</p>
 
-			<p data-build="2" class="left-text">Most importantly, build with (small) touchscreens in mind! There are always edge cases that degrade user experience if unconsidered</p>
+			<p data-build="2" class="left-text">Build with small screens and touchscreens in mind! There are always edge cases that degrade user experience if unconsidered</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="clarity" class="medium-canvas">
+			<h1>Clarity</h1>
+			
+			<p class="build left-text">A broad topic, but one thing that can help is (sparing) use of animation</p>
+
+			<p class="build left-text">Showing something moving or being drawn can help users keep their place</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationEducation" class="medium-canvas">
+			<h2>Animation as education</h2>
+			
+			<p class="build left-text">Animation can also have substantial educational value</p>
+
+			<p class="build left-text">The beta reduction process for a lambda calculus Tromp diagram; the full applet allows the animation to be slowed down or paused</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationSubstance" class="medium-canvas">
+			<h2>Animation as substance</h2>
+			
+			<p class="build left-text">Sometimes animation is an intrinsic part of the a process</p>
+
+			<p class="build left-text">The Gravner&ndash;Griffeath snowflake model is as much about the growth process as the final result</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
+		</div>
+
+		<div id="animationFlair" class="medium-canvas">
+			<h2>Animation as flair</h2>
+			
+			<p class="build left-text">Still a place for animation outside of these categories, but be conservative when animating only between two successive user inputs</p>
+
+			<p class="build left-text">Like all animations, these should be reasonably short and/or skippable</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -252,7 +252,7 @@
 			
 			<p class="build left-text">By far the most subjective topic in this talk!</p>
 
-			<p class="build left-text">When choosing color, try to match the color space to what you're building: for example, RGB works well for colors from $xyz$-coordinates, and HSV is a natural choice when one quantity is circular (e.g. an angle)</p>
+			<p class="build left-text">When choosing color, match the color space to the math: RGB usually works well for colors from $xyz$-coordinates, HSV when one quantity is circular (e.g. an angle), etc.</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -262,9 +262,9 @@
 		<div id="palettes" class="medium-canvas">
 			<h2>Color palettes</h2>
 			
-			<p class="build left-text">When coloring something more discrete, you can generate a palette randomly, but it can be best to restrict the color possibilities to produce something pleasant</p>
+			<p class="build left-text">For discrete coloring, can generate random palettes, but it can be best to restrict the color space: e.g. hues without intense greens, medium saturations, high values</p>
 
-			<p class="build left-text">For example, random hues without intense greens, medium-low saturations, high values</p>
+			<p class="build left-text">Distinguishing color usually isn't critical for visualizations, but for student-facing work, use colorblind-friendly palettes at least optionally</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -274,7 +274,7 @@
 		<div id="addingSound" class="medium-canvas">
 			<h2>Adding sound</h2>
 			
-			<p class="build left-text">Taking an existing process or scene and adding sound can provide a novel and intuitive path to understanding it</p>
+			<p class="build left-text">Adding sound to an existing process can provide a novel and intuitive way to understand it</p>
 
 			<p class="build left-text">Most famously done with sorting algorithms</p>
 
@@ -286,7 +286,7 @@
 		<div id="designingAroundSound" class="medium-canvas">
 			<h2>Designing around sound</h2>
 			
-			<p class="build left-text">It's also possible to design an applet from the ground up to play sound, typically by constructing a sound wave out of individual samples</p>
+			<p class="build left-text">Can make sound a part of the process, often by constructing a sound wave out of individual samples</p>
 
 			<p class="build left-text">YouTuber CodeParade did this with orbits in Mandelbrot sets, and 2swap with state space paths of double pendulums</p>
 
@@ -309,7 +309,7 @@
 
 			<p class="build">If you care, you love to learn, and you're maybe just a little bit obsessive about making your work the best it can be, you can become excellent at this, just like anything else</p>
 
-			<p class="build">If you create web applets and are looking for a place to start implementing some of these ideas, I've written a library called Wilson to simplify much of the process that you may find useful</p>
+			<p class="build">If you create web applets and are looking for a place to start implementing some of these ideas, I've written a library called Wilson to simplify much of the process, and you may find it useful</p>
 		</div>
 
 		<div id="thankYou" class="medium-canvas">
@@ -317,9 +317,13 @@
 			
 			<p class="build left-text">I hope I've inspired you to create new visualizations or return to improve old ones</p>
 
-			<p class="build left-text">My list of planned future projects is nearly as long as my list of completed ones, and if you have ideas for interactive illustration, I'd be more than happy to collaborate</p>
+			<p class="build left-text">My list of planned future projects is as long as my list of completed ones, but I'm always happy to make it longer &mdash; if you have ideas for interactive illustration, let's collaborate!</p>
 
 			<p class="build left-text">Questions?</p>
+
+			<div class="canvas-bundle">
+				<canvas></canvas>
+			</div>
 		</div>
 	</div>
 

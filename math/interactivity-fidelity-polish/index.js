@@ -13,6 +13,7 @@ import { interactivityBuilds } from "./builds/interactivity.js";
 import { palettesBuilds } from "./builds/palettes.js";
 import { parallelizationBuilds } from "./builds/parallelization.js";
 import { performanceCompromisesBuilds } from "./builds/performanceCompromises.js";
+import { thankYouBuilds } from "./builds/thankYou.js";
 import { threeDScenesBuilds } from "./builds/threeDScenes.js";
 import { titleBuilds } from "./builds/title.js";
 import { webAssemblyBuilds } from "./builds/webAssembly.js";
@@ -52,6 +53,7 @@ const options =
 		palettes: palettesBuilds,
 		addingSound: addingSoundBuilds,
 		designingAroundSound: designingAroundSoundBuilds,
+		thankYou: thankYouBuilds
 	}
 };
 
