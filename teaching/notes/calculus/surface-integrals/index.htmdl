@@ -130,7 +130,9 @@ One of the primary ways we've interfaced with surfaces so far is finding tangent
 
 Let $\vec{r}(u, \v)$ be a parametric surface and consider the point with $u = a$ and $\v = b$. To find the equation of the tangent plane to the surface at $\vec{r}(a, b)$, we need to find a vector normal to the surface at that point. One way to find that is to find two nonparallel vectors in the place and take their cross product, as in the previous exercise.
 
-Let's return to the wireframe diagrams produced by holding one of $u$ and $\v$ constant and letting the other vary. Setting $u = a$ and letting $$
+Let's return to the wireframe diagrams produced by holding one of $u$ and $\v$ constant and letting the other vary. Setting $\v = b$ and letting $u$ vary produces a single-parameter function $\vec{r}(u, b)$, and similarly for $\vec{r}(a, \v)$. By differentiating the first of those with respect to $u$ and the second with respect to $\v$, we can find two different tangent vectors to the surface; by crossing those, we can find the normal vector we're after.
+
+### desmos wireframeNormalVector
 
 
 

@@ -176,6 +176,35 @@ export default function()
 				}),
 				{ latex: raw`(u, f(u)\cos(v), f(u)\sin(v))`, parametricDomain3Du: { min: -2.5, max: 2.5 }, parametricDomain3Dv: { min: 0, max: "b" }, color: desmosColors.purple },
 			]
+		},
+
+		wireframeNormalVector:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`s(u, v) = (\cos(u), \sin(v), \sin(u)\cos(v))` },
+
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+
+				{ latex: raw`a = 1` },
+				{ latex: raw`b = 0` },
+
+				{ latex: raw`s(a, b)`, color: desmosColors.orange },
+				{ latex: raw`s(t, b)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.blue },
+				{ latex: raw`s(a, t)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.red },
+
+				{ latex: raw`s_u(t) = \frac{d}{dt}s(t, b)`, hidden: true, secret: true },
+				{ latex: raw`s_v(t) = \frac{d}{dt}s(a, t)`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(s(a, b), s(a, b) + s_u(a))`, color: desmosColors.purple, secret: true },
+				{ latex: raw`\vector(s(a, b), s(a, b) + s_v(b))`, color: desmosColors.purple, secret: true },
+			]
 		}
 	});
 }
