@@ -155,5 +155,27 @@ export default function()
 				{ latex: raw`(v, \cos(u), \sin(\frac{\pi}{2} v) + \sin(u))`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -2, max: 2 }, color: desmosColors.purple },
 			]
 		},
+
+		surfaceOfRevolution:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \frac{1}{2}\sin(x) + \frac{3}{2}`, hidden: true },
+				{ latex: raw`(t, f(t), 0)`, parametricDomain: { min: -2.5, max: 2.5 }, color: desmosColors.blue, secret: true },
+				...getDesmosSlider({
+					expression: "b = 0",
+					min: 0,
+					max: "2\\pi",
+					secret: false,
+				}),
+				{ latex: raw`(u, f(u)\cos(v), f(u)\sin(v))`, parametricDomain3Du: { min: -2.5, max: 2.5 }, parametricDomain3Dv: { min: 0, max: "b" }, color: desmosColors.purple },
+			]
+		}
 	});
 }

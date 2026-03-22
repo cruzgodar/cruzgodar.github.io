@@ -114,5 +114,27 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 
 ###
 
+In section <a href="/teaching/notes/calculus/arc-length-and-surface-area">3.10</a>, we computed the surface area of solids of revolution. Let's very briefly look at parameterizing those surfaces to build some intuition from a familiar topic.
+
+Given a function $y = f(x)$, rotating its graph about the $x$-axis produces a shape whose cross-sections orthogonal to the $x$-axis are circles.
+
+### desmos surfaceOfRevolution
+
+Here, increase $b$ to draw the surface of revolution; as is so often the case, the visual is more effective than any description. Following the idea of the parameterizing the cone in the previous exercise, we can parameterize this surface as
+
+$$
+	\vec{r}(u, \v) = \left< u,\ f(u)\cos(\v),\ f(u)\sin(\v) \right>.
+$$
+
+One of the primary ways we've interfaced with surfaces so far is finding tangent planes, and that seems like a good place to start if we'd like to understand parametric surfaces better.
+
+Let $\vec{r}(u, \v)$ be a parametric surface and consider the point with $u = a$ and $\v = b$. To find the equation of the tangent plane to the surface at $\vec{r}(a, b)$, we need to find a vector normal to the surface at that point. One way to find that is to find two nonparallel vectors in the place and take their cross product, as in the previous exercise.
+
+Let's return to the wireframe diagrams produced by holding one of $u$ and $\v$ constant and letting the other vary. Setting $u = a$ and letting $$
+
+
+
+
+
 
 ### nav-buttons
