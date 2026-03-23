@@ -9,6 +9,7 @@ async function reset({ slide, forward })
 
 	applet.run({
 		expression: "(λx.xx)(λf.λx.fx)",
+		force: true
 	});
 
 	if (!forward)
@@ -33,6 +34,7 @@ async function build1({ duration = 2000, forward })
 
 		applet.run({
 			expression: "(λx.xx)(λf.λx.fx)",
+			force: true
 		});
 
 		applet.resume();
@@ -52,7 +54,8 @@ async function build1({ duration = 2000, forward })
 
 	applet.run({
 		expression: "(λx.xx)(λf.λx.fx)",
-		betaReduce: true
+		betaReduce: true,
+		force: true
 	});
 
 	let resolve;
@@ -82,7 +85,8 @@ async function build3({ duration = 2000, forward })
 		applet.run({
 			expression: "(λx.xx)(λf.λx.fx)",
 			betaReduce: true,
-			maxBetaReductions: 1
+			maxBetaReductions: 1,
+			force: true
 		});
 
 		applet.resume();

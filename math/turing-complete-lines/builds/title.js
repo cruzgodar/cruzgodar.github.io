@@ -7,7 +7,8 @@ async function reset({ slide })
 
 	applet.run({
 		expression: "(λx.xx)(λx.xx)",
-		betaReduce: true
+		betaReduce: true,
+		force: true
 	});
 }
 

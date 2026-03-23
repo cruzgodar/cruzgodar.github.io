@@ -11,6 +11,7 @@ export function getExampleBuilds(expression, animationTime = 500)
 
 		applet.run({
 			expression,
+			force: true
 		});
 	}
 
@@ -25,7 +26,8 @@ export function getExampleBuilds(expression, animationTime = 500)
 
 		applet.run({
 			expression,
-			betaReduce: true
+			betaReduce: true,
+			force: true
 		});
 	}
 

@@ -7,6 +7,7 @@ async function reset({ slide })
 
 	applet.run({
 		expression: "(λx.xx)(λf.λx.fx)",
+		force: true
 	});
 }
 

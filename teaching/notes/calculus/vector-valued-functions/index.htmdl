@@ -177,7 +177,7 @@ For a small number of segments, our approximation is pretty poor, like a too-str
 	Let $\vec{r}(t)$ be a differentiable vector-valued function with continuous derivatives. The arc length of the graph of $\vec{r}(t)$ between $t = a$ and $t = b$ is
 
 	$$
-		\int_a^b \left| \left| \vec{r}'(t) \right| \right|\,\d t.
+		\int_a^b \left| \left| \vec{r}'(t) \right| \right|\d t.
 	$$
 
 ###

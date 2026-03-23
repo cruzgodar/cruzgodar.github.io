@@ -21,7 +21,8 @@ const CONNECTOR = 3;
 // Applications get a startText and endText field.
 // And lambdas get an argumentText, and literals get a valueText
 // so that we can uniqueify the argument as we parse.
-// Finally, literals can be shorthands! They get a shorthand field.
+// Literals can be shorthands! They get a shorthand field.
+// Literals get an isConnected field too for if they're plugged into somethi
 
 // The outermost expression also gets a rectIndex field.
 
@@ -518,8 +519,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}
 	}
 
+	containsApplication(expression)
+	{
+		if (expression.type === APPLICATION)
+		{
+			return true;
+		}
+
+		if (expression.type === LAMBDA)
+		{
+			return this.containsApplication(expression.body);
+		}
+
+		return false;
+	}
+
 	// Adds bindingLambda pointers to each literal expression.
-	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {}, argumentsSeen = [])
+	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {}, argumentsSeen = [], insideApplication = false)
 	{
 		if (expression.type === LITERAL)
 		{
@@ -529,10 +545,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 			}
 
 			expression.bindingLambda = bindings[expression.value];
+
+			expression.isConnected =
+				(expression.bindingLambda?.isInsideApplication
+				|| expression.bindingLambda?.bodyContainsApplication) ?? false;
 		}
 
 		else if (expression.type === LAMBDA)
 		{
+			expression.isInsideApplication = insideApplication;
+			expression.bodyContainsApplication = this.containsApplication(expression.body);
+
 			if (argumentsSeen.includes(expression.argument))
 			{
 				this.nextUniqueArgument++;
@@ -547,7 +570,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				}, {
 					...argumentRewriteMap,
 					[oldArgument]: this.nextUniqueArgument,
-				}, argumentsSeen);
+				}, argumentsSeen, insideApplication);
 			}
 
 			else
@@ -557,7 +580,7 @@ export class LambdaCalculus extends AnimationFrameApplet
 				this.addExpressionBindings(expression.body, {
 					...bindings,
 					[expression.argument]: expression,
-				}, argumentRewriteMap, argumentsSeen);
+				}, argumentRewriteMap, argumentsSeen, insideApplication);
 			}
 		}
 
@@ -567,14 +590,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 				expression.function,
 				bindings,
 				argumentRewriteMap,
-				argumentsSeen
+				argumentsSeen,
+				true
 			);
 
 			this.addExpressionBindings(
 				expression.input,
 				bindings,
 				argumentRewriteMap,
-				argumentsSeen
+				argumentsSeen,
+				true
 			);
 		}
 	}
@@ -785,7 +810,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 					row: expression.bindingLambda.row + 1,
 					col: expression.col + 1,
 					width: 1,
-					height: expression.row - 1 - (expression.bindingLambda.row + 1) + 1,
+					height: expression.row - 1 - (expression.bindingLambda.row + 1)
+						+ (expression.isConnected ? 0 : 1),
 				}
 			];
 

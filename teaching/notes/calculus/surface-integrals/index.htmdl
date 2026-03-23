@@ -198,4 +198,18 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 
 
 
+## Surface Area
+
+When we developed curve integrals in <a href="/teaching/notes/calculus/curve-integrals">section 6.3</a>, we leaned heavily on the formula for arc length that we found back in <a href="/teaching/notes/calculus/vector-valued-functions">section 5.3</a>. To begin treading the same path for surfaces, let's find a formula for surface area.
+
+For a vector-valued function $\vec{s}(t)$ defined for $t \in [a, b]$, the arc length integral
+
+$$
+	\int_a^b \left| \left| \vec{s}'(t) \right| \right|\d t
+$$
+
+works because approximating $\vec{s}(t)$ in chunks of $\Delta t$ by line segments results in each segment having length $\left| \left| \vec{s}'(t) \right| \right|\Delta t$. To bring that idea to parametric surfaces, let's look at that line-segment approximation in a different way: we split the domain $[a, b]$ into chunks of size $\Delta t$, and then mapped each onto a line with direction vector $\vec{s}'(t)$. Now, though, let's consider a function $\vec{r}(u, \v)$ defined for $u \in [a, b]$ and $\v \in [c, d]$; now the domain is the rectangle $[a, b] \times [c, d]$, and so we're mapping a small region with area $\Delta u \Delta v$
+
+
+
 ### nav-buttons
