@@ -134,8 +134,67 @@ Let's return to the wireframe diagrams produced by holding one of $u$ and $\v$ c
 
 ### desmos wireframeNormalVector
 
+Since both of those derivatives were with respect to only one variable of $\vec{r}$, they were really partial derivatives: specifically, $\vec{r}_u(a, b)$ and $\vec{r}_{\v}(a, b)$. Therefore, the normal vector is
 
+$$
+	\left( \vec{r}_u \times \vec{r}_{\v} \right)(a, b) = \vec{r}_u(a, b) \times \vec{r}_{\v}(a, b).
+$$
 
+Toggle on the bottommost expression in the previous Desmos graph to see the plane!
+
+A condition for a parameterized curve being smooth was that its normal vector was always  defined and nonzero. In just the same way, we say a parameterized surface $\vec{r}(u, \v)$ is **smooth** if $\vec{r}_u \times \vec{r}_{\v}$ is always defined and nonzero; that avoids issues like cusps, as well as degenerate surfaces that are actually just curves (for example, if one of $u$ or $\v$ isn't present in the formula at all). In that case, $\vec{r}_u$ and $\vec{r}_{\v}$ would be parallel, so the cross product would be zero.
+
+### exc "the tangent plane to parameterized surface"
+
+	Let $\vec{s}(u, \v)$ be defined by
+
+	$$
+		\vec{s}(u, \v) = \left< \sin(u + 2\v),\ \sin(u),\ \cos(\v) \right>,
+	$$
+
+	where $u, \v \in [0, 2\pi]$. Find the formula for a tangent plane to $\vec{s}$ at the points $(u, v) = (0, 0)$, and $(u, v) = \left( \frac{\pi}{2}, 0 \right)$, and $(u, v) = \left( 0, \frac{\pi}{2} \right)$. Do they seem reasonable, given the graph below?
+
+	### desmos nastyTangentPlanes
+
+	### solution
+
+	The derivatives are
+
+	$$
+		\vec{r}_u &= \left< \cos(u + 2\v),\ \cos(u),\ 0 \right>
+		\vec{r}_{\v} &= \left< 2\cos(\v),\ 0,\ -\sin(\v) \right>,
+	$$
+
+	which at the given points are
+
+	$$
+		\vec{r}_u(0, 0) &= \left< 1, 1, 0 \right>
+		\vec{r}_{\v}(0, 0) &= \left< 2, 0, 0 \right>
+
+		~
+
+		\vec{r}_u\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+		\vec{r}_{\v}\left( \frac{\pi}{2}, 0 \right) &= \left< 2, 0, 0 \right>
+
+		~
+
+		\vec{r}_u\left( 0, \frac{\pi}{2} \right) &= \left< -1, 1, 0 \right>
+		\vec{r}_{\v}\left( 0, \frac{\pi}{2} \right) &= \left< 0, 0, -1 \right>.
+	$$
+
+	The cross products are
+
+	$$
+		\left( \vec{r}_u \times \vec{r}_{\v} \right)(0, 0) &= \left< 0, 0, -2 \right>
+
+		\left( \vec{r}_u \times \vec{r}_{\v} \right)\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+
+		\left( \vec{r}_u \times \vec{r}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -, 0 \right>.
+	$$
+
+	The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
+
+###
 
 
 

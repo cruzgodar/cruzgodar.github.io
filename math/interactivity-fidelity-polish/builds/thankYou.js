@@ -19,7 +19,7 @@ function load({ slide })
 	applet.run({
 		numBoids: 2000,
 		numBoidsOfPrey: 1,
-		alignmentFactor: 0.006,
+		alignmentFactor: 0.0075,
 		avoidFactor: 0.15
 	});
 }

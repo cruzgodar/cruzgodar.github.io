@@ -163,6 +163,6 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			});
 
 			this.needNewFrame = true;
-		}, instant ? 0 : 1000, "easeInOutQuad");
+		}, instant ? 0 : 750, "easeInOutQuad");
 	}
 }

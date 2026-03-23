@@ -6,7 +6,7 @@ async function reset({ forward })
 {
 	if (!forward)
 	{
-		build2({ forward: true });
+		build3({ forward: true });
 	}
 }
 
@@ -24,7 +24,7 @@ function load({ slide })
 	});
 }
 
-async function build2({ forward })
+async function build3({ forward })
 {
 	if (!forward)
 	{
@@ -47,7 +47,7 @@ function unload()
 export const webAssemblyBuilds =
 {
 	reset,
-	2: build2,
+	3: build3,
 	load,
 	unload
 };
