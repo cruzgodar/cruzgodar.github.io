@@ -213,12 +213,12 @@ home Cruz Godar
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
 		lapsa Lapsa
+
+	about About
 	
 	writing Writing
 		desolation-point Desolation Point
 		mist Mist
-	
-	about About
 	
 	404 Oh No!
 	

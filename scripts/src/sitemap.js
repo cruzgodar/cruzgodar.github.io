@@ -2279,6 +2279,15 @@ export const sitemap =
 		"children": []
 	},
 	
+	"/about":
+	{
+		"title": "About",
+		
+		"parent": "/home",
+		
+		"children": []
+	},
+	
 	"/writing":
 	{
 		"title": "Writing",
@@ -2306,15 +2315,6 @@ export const sitemap =
 		"title": "Mist",
 		
 		"parent": "/writing",
-		
-		"children": []
-	},
-	
-	"/about":
-	{
-		"title": "About",
-		
-		"parent": "/home",
 		
 		"children": []
 	},
