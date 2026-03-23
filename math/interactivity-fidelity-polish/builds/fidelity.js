@@ -7,6 +7,8 @@ async function reset({ forward })
 	applet.wilson.resizeCanvas({
 		width: forward ? 100 : 500
 	});
+
+	applet.fpsCap = forward ? 15 : undefined;
 }
 
 async function build2({ forward })
@@ -14,6 +16,8 @@ async function build2({ forward })
 	applet.wilson.resizeCanvas({
 		width: forward ? 500 : 100
 	});
+
+	applet.fpsCap = forward ? undefined : 15;
 }
 
 function load({ slide })

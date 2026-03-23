@@ -23,6 +23,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	resolution = 500;
 
+	fpsCap;
+	timeSinceLastFrame = Infinity;
+
 	maxMarches;
 	maxShadowMarches;
 	maxReflectionMarches;
@@ -516,6 +519,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.touchDelay = Math.max(0, this.touchDelay - timeElapsed);
 
 		this.moveUpdate(timeElapsed);
+
+		this.timeSinceLastFrame += timeElapsed;
 	}
 
 	onReset()
@@ -554,7 +559,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.calculateVectors();
 
-		this.wilson.drawFrame();
+		if (this.fpsCap)
+		{
+			if (this.timeSinceLastFrame >= 1000 / this.fpsCap)
+			{
+				this.timeSinceLastFrame = 0;
+				this.wilson.drawFrame();
+			}
+		}
+
+		else
+		{
+			this.wilson.drawFrame();
+		}
 	}
 
 	downloadHighResFrame(filename, resolution = this.resolution)
