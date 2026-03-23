@@ -241,6 +241,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		if (!this.doPlaySound)
 		{
 			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.setValueAtTime(
+					this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+				);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
 				.linearRampToValueAtTime(
 					.0001,
 					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.00001
@@ -327,6 +332,10 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		{
 			const [audioContext, , audioGainNode] = audioNode;
 
+			audioGainNode.gain.setValueAtTime(
+				audioGainNode.gain.value,
+				audioContext.currentTime
+			);
 			audioGainNode.gain.linearRampToValueAtTime(
 				0.0001,
 				audioContext.currentTime + 0.05
@@ -345,6 +354,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 		if (this.audioNodes[this.currentGeneratorIndex])
 		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.setValueAtTime(
+					this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+				);
 			this.audioNodes[this.currentGeneratorIndex][2].gain
 				.linearRampToValueAtTime(
 					this.doPlaySound ? 1 : 0.0001,
@@ -410,6 +424,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		this.changingSound = true;
 
 		this.audioNodes[this.currentGeneratorIndex][2].gain
+			.setValueAtTime(
+				this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+				this.audioNodes[this.currentGeneratorIndex][0].currentTime
+			);
+		this.audioNodes[this.currentGeneratorIndex][2].gain
 			.linearRampToValueAtTime(
 				0.0001,
 				this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
@@ -425,6 +444,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 				if (!this.doPlaySound)
 				{
+					this.audioNodes[this.currentGeneratorIndex][2].gain
+						.setValueAtTime(
+							this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+							this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						);
 					this.audioNodes[this.currentGeneratorIndex][2].gain
 						.linearRampToValueAtTime(
 							.0001,
@@ -456,6 +480,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		if (this.audioNodes[this.currentGeneratorIndex])
 		{
 			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.setValueAtTime(
+					this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+				);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
 				.linearRampToValueAtTime(
 					0.0001,
 					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.02
@@ -471,6 +500,11 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 		if (this.doPlaySound && this.audioNodes[this.currentGeneratorIndex])
 		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.setValueAtTime(
+					this.audioNodes[this.currentGeneratorIndex][2].gain.value,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+				);
 			this.audioNodes[this.currentGeneratorIndex][2].gain
 				.linearRampToValueAtTime(
 					1,
