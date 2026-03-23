@@ -535,8 +535,13 @@ export class LambdaCalculus extends AnimationFrameApplet
 	}
 
 	// Adds bindingLambda pointers to each literal expression.
-	addExpressionBindings(expression, bindings = {}, argumentRewriteMap = {}, argumentsSeen = [], insideApplication = false)
-	{
+	addExpressionBindings(
+		expression,
+		bindings = {},
+		argumentRewriteMap = {},
+		argumentsSeen = [],
+		insideApplication = false
+	) {
 		if (expression.type === LITERAL)
 		{
 			if (expression.value in argumentRewriteMap)

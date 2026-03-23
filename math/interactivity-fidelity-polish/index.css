@@ -129,3 +129,17 @@
 	top: 0;
 	left: 0;
 }
+
+input[type="range"]
+{
+	-webkit-appearance: none;
+	background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track
+{
+	-webkit-appearance: none;
+	background: #ccc; /* or whatever you want */
+	height: 8px;
+	border-radius: 4px;
+}
