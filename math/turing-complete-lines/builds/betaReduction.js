@@ -3,14 +3,8 @@ import { applet, canvasBundle } from "../index.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { sleep } from "/scripts/src/utils.js";
 
-async function reset({ slide, duration, forward })
+async function reset({ slide, forward })
 {
-	await changeOpacity({
-		element: canvasBundle,
-		opacity: 0,
-		duration: duration / 2
-	});
-
 	slide.appendChild(canvasBundle);
 
 	applet.run({
@@ -23,15 +17,9 @@ async function reset({ slide, duration, forward })
 		await build3({ slide, duration: 300, forward: true });
 		await build6({ slide, duration: 300, forward: true });
 	}
-
-	await changeOpacity({
-		element: canvasBundle,
-		opacity: 1,
-		duration: duration / 2
-	});
 }
 
-async function build1({ duration = 1500, forward })
+async function build1({ duration = 2000, forward })
 {
 	if (!forward)
 	{
@@ -79,7 +67,7 @@ async function build1({ duration = 1500, forward })
 	return promise;
 }
 
-async function build3({ duration = 1500, forward })
+async function build3({ duration = 2000, forward })
 {
 	if (!forward)
 	{

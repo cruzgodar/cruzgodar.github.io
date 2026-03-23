@@ -1,29 +1,16 @@
 
 import { applet, canvasBundle } from "../index.js";
-import { changeOpacity } from "/scripts/src/animation.js";
 
 export function getExampleBuilds(expression, animationTime = 500)
 {
-	async function reset({ slide, duration })
+	async function reset({ slide })
 	{
-		await changeOpacity({
-			element: canvasBundle,
-			opacity: 0,
-			duration: duration / 2
-		});
-
 		slide.appendChild(canvasBundle);
 
 		applet.animationRunning = false;
 
 		applet.run({
 			expression,
-		});
-
-		await changeOpacity({
-			element: canvasBundle,
-			opacity: 1,
-			duration: duration / 2
 		});
 	}
 
