@@ -190,13 +190,23 @@ export default function()
 			[
 				{ latex: raw`s(u, v) = (\cos(u), \sin(v), \sin(u)\cos(v))` },
 
-				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
 
-				{ latex: raw`a = 1` },
-				{ latex: raw`b = 0` },
+				...getDesmosSlider({
+					expression: "a = 1",
+					min: 0,
+					max: "\\pi",
+					secret: false
+				}),
+				...getDesmosSlider({
+					expression: "b = 0",
+					min: 0,
+					max: "2\\pi",
+					secret: false
+				}),
 
 				{ latex: raw`s(a, b)`, color: desmosColors.orange },
-				{ latex: raw`s(t, b)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.blue },
+				{ latex: raw`s(t, b)`, parametricDomain: { min: 0, max: "\\pi" }, color: desmosColors.blue },
 				{ latex: raw`s(a, t)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.red },
 
 				{ latex: raw`s_u(t) = \frac{d}{dt}s(t, b)`, hidden: true, secret: true },
@@ -221,12 +231,93 @@ export default function()
 			[
 				{ latex: raw`s(u, v) = (\sin(u + 2v), \sin(u), \cos(v))` },
 
-				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: 0, max: "\\pi" }, color: desmosColors.gray },
 
 				{ latex: raw`s(0, 0)`, color: desmosColors.purple },
 				{ latex: raw`s(\frac{\pi}{2}, 0)`, color: desmosColors.blue },
 				{ latex: raw`s(0, \frac{\pi}{2})`, color: desmosColors.red },
 			]
-		}
+		},
+
+		surfaceAreaParallelograms:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`s(u, v) = (\cos(u), \sin(v), \sin(u)\cos(v))` },
+
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+
+				...getDesmosSlider({
+					expression: "a = 0.6",
+					min: 0,
+					max: "\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "b = 1.6",
+					min: "a",
+					max: "\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "c = 5",
+					min: 0,
+					max: "2\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "d = 6",
+					min: "c",
+					max: "2\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "m = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "n = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				{ latex: raw`P = [(i, j) \for i = [a, a + \frac{b - a}{m - 1}, ..., b], j = [c, c + \frac{d - c}{n - 1}, ..., d]]`, hidden: true, secret: true },
+
+				
+
+				{ latex: raw`s_u(t, y) = \frac{d}{dt}s(t, y)`, hidden: true, secret: true },
+				{ latex: raw`s_v(x, t) = \frac{d}{dt}s(x, t)`, hidden: true, secret: true },
+
+				{
+					latex: raw`s(P.x, P.y) + u(s_u(P.x, P.y)) + v(s_v(P.x, P.y))`,
+					color: desmosColors.purple,
+					parametricDomain3Du: {
+						min: "-\\frac{b - a}{2(m - 1)}",
+						max: "\\frac{b - a}{2(m - 1)}"
+					},
+					parametricDomain3Dv: {
+						min: "-\\frac{d - c}{2(n - 1)}",
+						max: "\\frac{d - c}{2(n - 1)}"
+					},
+					secret: true
+				},
+			]
+		},
 	});
 }

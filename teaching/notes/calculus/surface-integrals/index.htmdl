@@ -196,10 +196,6 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 
 ###
 
-
-
-## Surface Area
-
 When we developed curve integrals in <a href="/teaching/notes/calculus/curve-integrals">section 6.3</a>, we leaned heavily on the formula for arc length that we found back in <a href="/teaching/notes/calculus/vector-valued-functions">section 5.3</a>. To begin treading the same path for surfaces, let's find a formula for surface area.
 
 For a vector-valued function $\vec{s}(t)$ defined for $t \in [a, b]$, the arc length integral
@@ -208,7 +204,121 @@ $$
 	\int_a^b \left| \left| \vec{s}'(t) \right| \right|\d t
 $$
 
-works because approximating $\vec{s}(t)$ in chunks of $\Delta t$ by line segments results in each segment having length $\left| \left| \vec{s}'(t) \right| \right|\Delta t$. To bring that idea to parametric surfaces, let's look at that line-segment approximation in a different way: we split the domain $[a, b]$ into chunks of size $\Delta t$, and then mapped each onto a line with direction vector $\vec{s}'(t)$. Now, though, let's consider a function $\vec{r}(u, \v)$ defined for $u \in [a, b]$ and $\v \in [c, d]$; now the domain is the rectangle $[a, b] \times [c, d]$, and so we're mapping a small region with area $\Delta u \Delta v$
+works because approximating $\vec{s}(t)$ in chunks of $\Delta t$ by line segments results in each segment having length $\left| \left| \vec{s}'(t) \right| \right|\Delta t$. To bring that idea to parametric surfaces, let's look at that line-segment approximation in a different way: we split the domain $[a, b]$ into chunks of size $\Delta t$, and then mapped each onto a line with direction vector $\vec{s}'(t)$. Now, though, let's consider a function $\vec{r}(u, \v)$ defined for $u \in [a, b]$ and $\v \in [c, d]$; now the domain is the rectangle $[a, b] \times [c, d]$, and so we're mapping a small region with area $\Delta u \, \Delta v$ onto the tangent plane. The result is a small parallelogram whose sides are the vectors $(\Delta u) \vec{r}_u$ and $(\Delta \v) \vec{r}_{\v}$.
+
+### desmos surfaceAreaParallelograms
+
+And we know the area of a parallelogram in terms of the side vectors --- it's the magnitude of their cross product! In total, each parallelogram has an area of
+
+$$
+	\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\Delta u\, \Delta \v,
+$$
+
+and so we can fashion a formula for surface area.
+
+### thm "surface area of a parametric surface"
+
+	Let $S$ be a surface parametrized by $\vec{r}(u, \v)$ for $u \in [a, b]$ and $\v \in [c, d]$. Then the surface area of $S$ is
+
+	$$
+		\int_a^b \!\!\! \int_c^d \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u.
+	$$
+
+###
+
+### exc "the surface area of a cylinder"
+
+	Find the surface area of a cylinder of radius $r$ and height $h$ without endcaps by parameterizing it as a surface and integrating.
+
+	### solution
+
+	We can parameterize this cylinder by
+
+	$$
+		\vec{c}(u, \v) = \left< r\cos(u),\ r\sin(u),\ \v \right>,
+	$$
+
+	where $u \in [0. 2\pi]$ and $\v \in [0, h]$. Now
+
+	$$
+		\vec{c}_u &= \left< -r\sin(u),\ r\cos(u),\ 0 \right>
+
+		\vec{c}_{\v} &= \left< 0, 0, 1 \right>
+
+		\vec{c}_u \times \vec{c}_{\v} &= \left< -r\cos(u),\ -r\sin(u),\ 0 \right>
+
+		\left| \left| \vec{c}_u \times \vec{c}_{\v} \right| \right| &= r.
+	$$
+
+	the surface area is then
+
+	$$
+		\int_0^{2\pi} \int_0^h r\,\d\v\,\d u = 2\pi r h,
+	$$
+
+	which matches what we know!
+
+###
+
+If we're looking to find the surface area of the graph of a function $z = f(x, y)$ on a region $R$, then we can parameterize it by $\vec{r}(u, \v) = \left< u, \v, f(u, \v) \right>$. Then
+
+$$
+	\vec{r}_u &= \left< 1, 0, f_x(u, \v) \right>
+
+	\vec{r}_{\v} &= \left< 0, 1, f_y(u, \v) \right>
+
+	\vec{r}_u \times \vec{r}_{\v} &= \left< -f_x(u, \v),\ -f_y(u, \v),\ 1 \right>
+
+	\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= \sqrt{f_x(u, \v)^2 + f_y(u, \v)^2 + 1}.
+$$
+
+The surface area integral is then
+
+$$
+	\iint_R \sqrt{f_x^2 + f_y^2 + 1}\,\d A.
+$$
+
+### exc "the surface area of a graph"
+
+	Find the surface area of the paraboloid $z = 8 - 2x^2 - 2y^2$ that lies above the $xy$-plane.
+
+	### solution
+
+	Let's use the previous formula, which asks us to integrate
+
+	$$
+	 	\sqrt{(-4x)^2 + (-4y)^2 + 1} &= \sqrt{16(x^2 + y^2) + 1}.
+	$$
+
+	We also need to know the region we're integrating over, which is given by the intersection of the function with $z = 0$:
+
+	$$
+		2x^2 + 2y^2 &= 8
+
+		x^2 + y^2 &= 4,
+	$$
+
+	so it's a circle of radius $2$ centered at the origin. That's most easily handled with polar coordinates!
+
+	$$
+		\int_0^{2\pi}\int_0^2 \sqrt{16r^2 + 1}\,r\,\d r\,\d\theta &= \int_0^{2\pi}\int_0^2 \frac{1}{32}\sqrt{w}\,\d w,
+	$$
+
+	where $w = 16r^2 + 1$ and $\d w = 32r\,\d r$ (this is just a $u$-sub, but I'm avoiding using $u$ for clarity). Continuing,
+
+	$$
+		\int_0^{2\pi} \int_0^2 \frac{1}{32}\sqrt{w}\,\d w &= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{w^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
+
+		&= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{\left( 16r^2 + 1 \right)^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
+
+		&= \frac{1}{32} \int_0^{2\pi} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)\d\theta
+
+		&= \frac{\pi}{16} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)
+
+		&\approx 68.467
+	$$
+
+###
 
 
 
