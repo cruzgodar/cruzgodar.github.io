@@ -35,6 +35,7 @@ const options =
 		betterFactorial: getExampleBuilds("(λn.n(λg.λa.λb.g(>a)(*ab))(λa.λb.b)11)4", 300),
 		// eslint-disable-next-line max-len
 		upArrows: getExampleBuilds("(Yλf.λn.λa.λb.(_(<n)(ba)(((<b)(λg.λc.λd.gc(f(<n)cd)))(λc.λd.d)aa)))223", 75),
+		predecessor: getExampleBuilds("<5"),
 	}
 };
 

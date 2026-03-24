@@ -272,7 +272,7 @@
 		</div>
 
 		<div>
-			<p>To close out, here's a function I designed that computes $a \uparrow^n b$:</p>
+			<p>Here's a function I designed that computes $a \uparrow^n b$:</p>
 
 			<pre><code>Yλf.λn.λa.λb.
 (
@@ -288,6 +288,53 @@
 
 		<div id="upArrows" class="large-canvas">
 			<p>Ex: $2 \uparrow \uparrow 3 = 16$.</p>
+		</div>
+
+		<div>
+			<h1>The Predecessor Function</h1>
+
+			<p>The function</p>
+
+			<pre><code>&lt; := λn.λf.λx.
+(
+	n(λg.λh.h(gf))(λh.x)(λx.x)
+)</code></pre><div class="lapsa-padding-bottom"></div>
+
+			<p>is $n \mapsto n - 1$. Let's understand it!</p>
+
+			<p class="build">The block <code>λg.λh.h(gf)</code> takes in <code>g</code>, applies it to <code>f</code>, and then wraps the result in another lambda.</p>
+
+			<p class="build">In the first application, <code>(λg.λh.h(gf))(λh.x) ≡ λh.h((λh.x)f) ≡ λh.h(x)</code></p>
+		</div>
+
+		<div>
+			<p>Next,</p>
+
+			<pre><code>(λg.λh.h(gf))(λh.h(x))
+
+ ≡ (λg.λh.h(gf))(λk.k(x))
+
+ ≡ λh.h((λk.k(x))f)
+
+ ≡ λh.h(f(x))</code></pre><div class="lapsa-padding-bottom"></div>
+
+			<p>so in general, this construct takes <code>λh.h(f(...(f(x))...))</code> and adds another <code>f</code>.</p>
+
+			<p class="build">But after two applications, we only have <em>one</em> <code>f</code>, since the first application used <code>λh.x</code> which didn't provide a place for <code>f</code> to go.</p>
+		</div>
+
+		<div>
+			<p>In total,</p>
+
+			<pre><code>n(λg.λh.h(gf))(λh.x)
+
+ ≡ λh.h(f(...(f(x))...))</code></pre><div class="lapsa-padding-bottom"></div>
+
+			<p>with $n - 1$ <code>f</code>s. To get out the church numeral we're after, we can evaluate this at <code>h = I</code>.</p>
+		</div>
+
+		<div id="predecessor" class="large-canvas">
+			<p>Ex: <code><span style="color: color(display-p3 0.39374999999999993 0.9747395833333337 1 / 1)">&lt;</span><span style="color: color(display-p3 1 0.39374999999999993 0.810546875 / 1)">5</span> ≡ <span style="color: color(display-p3 0.19999999999999996 0.7333333333333328 1 / 1)">4</span></code></p>
 		</div>
 
 		<div style="display: flex; flex-direction: column; justify-content: center">
