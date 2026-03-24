@@ -2,41 +2,54 @@
 
 import { loadScript } from "./utils.js";
 
+let loadingMathJaxPromise = null;
+
 export async function typesetMath()
 {
+	if (loadingMathJaxPromise)
+	{
+		return loadingMathJaxPromise;
+	}
+
 	if (window.MathJax === undefined)
 	{
-		window.MathJax = {
-			loader:
-			{
-				load: ["[tex]/texhtml"],
-
-				paths:
+		loadingMathJaxPromise = (async () =>
+		{
+			window.MathJax = {
+				loader:
 				{
-					"mathjax-newcm": "/scripts/mathjax/mathjax-newcm-font"
-				}
-			},
+					load: ["[tex]/texhtml"],
 
-			tex:
-			{
-				inlineMath: { "[+]": [["$", "$"]] },
-				allowTexHTML: true,
-				packages: { "[+]": ["texhtml"] },
-			},
+					paths:
+					{
+						"mathjax-newcm": "/scripts/mathjax/mathjax-newcm-font"
+					}
+				},
 
-			output:
-			{
-				displayOverflow: "overflow",
-				linebreaks:
+				tex:
 				{
-					inline: false,
-				}
-			}
-		};
-		
-		await loadScript("/scripts/mathjax/tex-svg.js");
+					inlineMath: { "[+]": [["$", "$"]] },
+					allowTexHTML: true,
+					packages: { "[+]": ["texhtml"] },
+				},
 
-		return;
+				output:
+				{
+					displayOverflow: "overflow",
+					linebreaks:
+					{
+						inline: false,
+					}
+				}
+			};
+
+			await loadScript("/scripts/mathjax/tex-svg.js");
+			await window.MathJax.startup.promise;
+
+			loadingMathJaxPromise = null;
+		})();
+
+		return loadingMathJaxPromise;
 	}
 
 	await window.MathJax.typesetPromise();

@@ -6,6 +6,8 @@ import { convertColor } from "/scripts/src/browser.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
+const numLines = 400;
+
 export class FractalSounds extends AnimationFrameApplet
 {
 	loadPromise;
@@ -459,7 +461,7 @@ export class FractalSounds extends AnimationFrameApplet
 		x = 0;
 		y = 0;
 
-		for (let i = 0; i < 300; i++)
+		for (let i = 0; i < numLines; i++)
 		{
 			if (Math.abs(next[0]) > 10 || Math.abs(next[1]) > 10)
 			{
@@ -474,7 +476,7 @@ export class FractalSounds extends AnimationFrameApplet
 			const coords = this.wilson.interpolateWorldToCanvas([x, y]);
 			this.wilson.ctx.lineTo(coords[1], coords[0]);
 		}
-
+		
 		this.wilson.ctx.stroke();
 	}
 

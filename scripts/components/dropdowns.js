@@ -103,83 +103,102 @@ export class Dropdown extends InputElement
 			this.optionContainerElement.appendChild(optionElement);
 		}
 
-		setTimeout(() =>
+		this.buttonElement.addEventListener("click", () =>
 		{
-			for (const element of this.optionElements.slice(1))
+			if (!this.isOpen)
 			{
-				addHoverEvent({ element });
-			}
-
-			this.optionElements[0].innerHTML +=
-				" <span style=\"font-size: 12px; margin-right: -2px\">&#x25BC;</span>";
-			
-			this.buttonElement.style.height = (
-				this.optionElements[this.selectedItem].getBoundingClientRect().height * 1.075
-			) + "px";
-
-			this.buttonElement.style.width = (
-				this.optionElements[this.selectedItem].getBoundingClientRect().width + 16
-			) + "px";
-
-			this.buttonElement.parentNode.parentNode.style.height = (
-				this.optionElements[this.selectedItem].getBoundingClientRect().height * 1.075
-			) + "px";
-
-			this.buttonElement.parentNode.parentNode.style.width = (
-				this.optionElements[this.selectedItem].getBoundingClientRect().width + 16
-			) + "px";
-
-			this.optionContainerElement.style.transform = "translateY(-10px)";
-
-			this.buttonElement.addEventListener("click", () =>
-			{
-				if (!this.isOpen)
+				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
-					if (document.startViewTransition && siteSettings.reduceMotion)
-					{
-						document.startViewTransition(() => this.open(0));
-					}
-
-					else
-					{
-						this.open();
-					}
-				}
-			});
-
-			if (this.persistState)
-			{
-				const value = new URLSearchParams(window.location.search).get(this.element.id);
-				
-				if (value)
-				{
-					setTimeout(() =>
-					{
-						this.setValue({
-							newValue: decodeURIComponent(value),
-							instant: true,
-						});
-						this.loadResolve();
-					}, 10);
+					document.startViewTransition(() => this.open(0));
 				}
 
 				else
 				{
-					this.loadResolve();
+					this.open();
 				}
+			}
+		});
 
-				addTemporaryParam(this.element.id);
+		for (const element of this.optionElements.slice(1))
+		{
+			addHoverEvent({ element });
+		}
+
+		this.optionElements[0].innerHTML +=
+			" <span style=\"font-size: 12px; margin-right: -2px\">&#x25BC;</span>";
+
+		this.initState();
+		this.loaded.then(() => this.updateSizing());
+	}
+
+	async updateSizing()
+	{
+		this.buttonElement.style.height = (
+			this.optionElements[this.selectedItem].getBoundingClientRect().height * 1.075
+		) + "px";
+
+		this.buttonElement.style.width = (
+			this.optionElements[this.selectedItem].getBoundingClientRect().width + 16
+		) + "px";
+
+		this.buttonElement.parentNode.parentNode.style.height = (
+			this.optionElements[this.selectedItem].getBoundingClientRect().height * 1.075
+		) + "px";
+
+		this.buttonElement.parentNode.parentNode.style.width = (
+			this.optionElements[this.selectedItem].getBoundingClientRect().width + 16
+		) + "px";
+
+		this.optionContainerElement.style.transform = "translateY(-10px)";
+
+		if (this.value)
+		{
+			this.setValue({ newValue: this.value, instant: true });
+		}
+	}
+
+	initState()
+	{
+		if (this.persistState)
+		{
+			const value = new URLSearchParams(window.location.search).get(this.element.id);
+			
+			if (value)
+			{
+				setTimeout(() =>
+				{
+					this.setValue({
+						newValue: decodeURIComponent(value),
+						instant: true,
+					});
+
+					this.loadResolve();
+				}, 10);
 			}
 
 			else
 			{
 				this.loadResolve();
 			}
-		}, 16);
+
+			addTemporaryParam(this.element.id);
+		}
+
+		else
+		{
+			this.loadResolve();
+		}
 	}
+
+
 
 	async open(animationTime = opacityAnimationTime)
 	{
+		if (this.isOpen)
+		{
+			return;
+		}
+
 		this.isOpen = true;
 
 		this.buttonElement.classList.add("expanded");

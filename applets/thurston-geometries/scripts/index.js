@@ -108,7 +108,7 @@ export default function()
 		onInput: onDropdownInput
 	});
 
-	typesetMath();
+	typesetMath().then(() => geometriesDropdown.updateSizing());
 
 	function run()
 	{

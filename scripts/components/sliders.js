@@ -229,7 +229,7 @@ export class Slider extends CappedInputElement
 			}
 
 			this.loadResolve();
-		}, 10);
+		}, 50);
 	}
 
 
