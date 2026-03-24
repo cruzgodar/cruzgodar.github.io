@@ -315,10 +315,19 @@ $$
 
 		&= \frac{\pi}{16} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)
 
-		&\approx 68.467
+		&\approx 68.467.
 	$$
 
 ###
+
+
+
+## Surface Integrals
+
+Having covered curve integrals and double integrals so thoroughly, we're now prepared to jump right into surface integrals! Given a function $f(x, y, z)$ and a surface $S$ parameterized by $\vec{r}(u, \v)$, we can define the surface integral as the limit of a Riemann sum over the surface.
+
+### desmos surfaceIntegralMango
+
 
 
 

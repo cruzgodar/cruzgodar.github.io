@@ -319,5 +319,103 @@ export default function()
 				},
 			]
 		},
+
+		surfaceIntegralMango:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`s(u, v) = (\cos(u), \sin(-v), \sin(u)\cos(-v))` },
+
+				{ latex: raw`f(x, y, z) = \frac{1}{2.5}\left| x + y + z \right|`, hidden: true },
+
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+
+				...getDesmosSlider({
+					expression: "a = 0.6",
+					min: 0,
+					max: "\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "b = 1.6",
+					min: "a",
+					max: "\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "c = -6.25",
+					min: "-2\\pi",
+					max: 0,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "d = -5.5",
+					min: "-2\\pi",
+					max: 0,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "m = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "n = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				{ latex: raw`P = [(i, j) \for i = [a, a + \frac{b - a}{m - 1}, ..., b], j = [c, c + \frac{d - c}{n - 1}, ..., d]]`, hidden: true, secret: true },
+
+				
+
+				{ latex: raw`s_u(t, y) = \frac{d}{dt}s(t, y)`, hidden: true, secret: true },
+				{ latex: raw`s_v(x, t) = \frac{d}{dt}s(x, t)`, hidden: true, secret: true },
+
+				// {
+				// 	latex: raw`s(P.x, P.y) + u(s_u(P.x, P.y)) + v(s_v(P.x, P.y))`,
+				// 	color: desmosColors.purple,
+				// 	parametricDomain3Du: {
+				// 		min: "-\\frac{b - a}{2(m - 1)}",
+				// 		max: "\\frac{b - a}{2(m - 1)}"
+				// 	},
+				// 	parametricDomain3Dv: {
+				// 		min: "-\\frac{d - c}{2(n - 1)}",
+				// 		max: "\\frac{d - c}{2(n - 1)}"
+				// 	},
+				// 	secret: true
+				// },
+
+				{ latex: raw`h_u = \frac{b - a}{2(m - 1)}`, hidden: true, secret: false },
+				{ latex: raw`h_v = \frac{d - c}{2(n - 1)}`, hidden: true, secret: false },
+
+				{ latex: raw`D(i, j) = \left|s_u(i, j)\right|^2 \left|s_v(i, j)\right|^2 - (s_u(i, j) \cdot s_v(i, j))^2`, hidden: true, secret: false },
+
+				{ latex: raw`U(i, j, w) = \frac{\left|s_v(i, j)\right|^2 (w \cdot s_u(i, j)) - (s_u(i, j) \cdot s_v(i, j))(w \cdot s_v(i, j))}{D(i, j)}`, hidden: true, secret: false },
+
+				{ latex: raw`V(i, j, w) = \frac{\left|s_u(i, j)\right|^2 (w \cdot s_v(i, j)) - (s_u(i, j) \cdot s_v(i, j))(w \cdot s_u(i, j))}{D(i, j)}`, hidden: true, secret: false },
+
+				{
+					latex: raw`0 \le (s_u(P.x, P.y) \times s_v(P.x, P.y)) \cdot ((x, y, z) - s(P.x, P.y)) \le f(s(P.x, P.y).x, s(P.x, P.y).y, s(P.x, P.y).z) \cdot \left|(s_u(P.x, P.y) \times s_v(P.x, P.y))\right| \left\{ -h_u \le U(P.x, P.y, (x, y, z) - s(P.x, P.y)) \le h_u \right\} \left\{ -h_v \le V(P.x, P.y, (x, y, z) - s(P.x, P.y)) \le h_v \right\}`,
+					color: desmosColors.purple,
+					secret: false
+				},
+			]
+		}
 	});
 }
