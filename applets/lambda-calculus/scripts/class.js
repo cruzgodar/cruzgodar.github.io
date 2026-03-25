@@ -1250,8 +1250,61 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 
 
+	getLiteralRectIds(expression)
+	{
+		if (expression.type === LITERAL)
+		{
+			return [expression.rects[0].id];
+		}
+
+		if (expression.type === LAMBDA)
+		{
+			return this.getLiteralRectIds(expression.body);
+		}
+
+		return [
+			...this.getLiteralRectIds(expression.function),
+			...this.getLiteralRectIds(expression.input),
+		];
+	}
+
 	async *animateBetaReduction(expression, betaReducedExpression)
 	{
+		console.log(expression, betaReducedExpression);
+		// For literal rects in the post-reduction expression with new IDs,
+		// patch the pre-reduction rectIndex so that the corresponding
+		// old literal rect shares the same ID. This way the animation
+		// treats it as a preserved rect that smoothly moves.
+		const newLiteralRectIds = this.getLiteralRectIds(betaReducedExpression)
+			.filter(id => !(id in expression.rectIndex));
+
+		const oldLiteralRectIds = Object.keys(expression.rectIndex).filter(
+			id => !(id in betaReducedExpression.rectIndex)
+				&& expression.rectIndex[id].type === LITERAL
+		);
+
+		if (newLiteralRectIds.length === 1 && oldLiteralRectIds.length >= 1)
+		{
+			const oldId = oldLiteralRectIds[0];
+			const oldRect = expression.rectIndex[oldId];
+
+			const connectorSurvived = Object.entries(expression.rectIndex).some(
+				([id, r]) => r.type === CONNECTOR
+					&& r.col === oldRect.col
+					&& r.row < oldRect.row + oldRect.height
+					&& r.row + r.height > oldRect.row
+					&& id in betaReducedExpression.rectIndex
+			);
+
+			if (!connectorSurvived)
+			{
+				const newId = newLiteralRectIds[0];
+				delete expression.rectIndex[oldId];
+				oldRect.id = parseInt(newId);
+				expression.rectIndex[newId] = oldRect;
+			}
+		}
+
 		const oldRectIndex = structuredClone(expression.rectIndex);
 
 		// This stores the actual rects of the new expression so we know where
