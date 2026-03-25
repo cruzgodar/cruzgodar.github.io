@@ -75,14 +75,17 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 			void main(void)
 			{
 				vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * ${2 * Math.PI};
+
+				float c = cos(state.x - state.y);
+				float s = sin(state.x - state.y);
 				
-				float denom = 16.0 - 9.0 * cos(state.x - state.y) * cos(state.x - state.y);
+				float denom = 16.0 - 9.0 * c * c;
 				
-				vec4 dState = vec4(6.0 * (2.0 * state.z - 3.0 * cos(state.x - state.y) * state.w) / denom, 6.0 * (8.0 * state.w - 3.0 * cos(state.x - state.y) * state.z) / denom, 0.0, 0.0);
+				vec4 dState = vec4(6.0 * (2.0 * state.z - 3.0 * c * state.w) / denom, 6.0 * (8.0 * state.w - 3.0 * c * state.z) / denom, 0.0, 0.0);
 				
-				dState.z = -(dState.x * dState.y * sin(state.x - state.y) + 3.0 * sin(state.x)) / 2.0;
+				dState.z = -(dState.x * dState.y * s + 3.0 * sin(state.x)) / 2.0;
 				
-				dState.w = (dState.x * dState.y * sin(state.x - state.y) - sin(state.y)) / 2.0;
+				dState.w = (dState.x * dState.y * s - sin(state.y)) / 2.0;
 				
 				
 				
