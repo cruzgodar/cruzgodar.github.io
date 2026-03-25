@@ -1268,13 +1268,36 @@ export class LambdaCalculus extends AnimationFrameApplet
 		];
 	}
 
+	findSubstitutionResult(pre, post)
+	{
+		if (pre.type === APPLICATION && pre.function.type === LAMBDA
+			&& (post.type !== APPLICATION || post.function.type !== LAMBDA))
+		{
+			return post;
+		}
+
+		if (pre.type === LAMBDA && post.type === LAMBDA)
+		{
+			return this.findSubstitutionResult(pre.body, post.body);
+		}
+
+		if (pre.type === APPLICATION && post.type === APPLICATION)
+		{
+			return this.findSubstitutionResult(pre.function, post.function)
+				|| this.findSubstitutionResult(pre.input, post.input);
+		}
+
+		return null;
+	}
+
 	async *animateBetaReduction(expression, betaReducedExpression)
 	{
-		console.log(expression, betaReducedExpression);
-		// For literal rects in the post-reduction expression with new IDs,
-		// patch the pre-reduction rectIndex so that the corresponding
-		// old literal rect shares the same ID. This way the animation
-		// treats it as a preserved rect that smoothly moves.
+		// This absolutely nasty opening solves a very obscure problem:
+		// when substituting a literal into an expression that doesn't contain
+		// any applications, we'd normally remove both the literal rect and
+		// the connector one, leaving nothing to animate to take on the new literal
+		// rect. Instead, we patch the ID of the literal rect (the connector would be
+		// morally better, but it might not exist), so that it animates into position.
 		const newLiteralRectIds = this.getLiteralRectIds(betaReducedExpression)
 			.filter(id => !(id in expression.rectIndex));
 
@@ -1283,26 +1306,22 @@ export class LambdaCalculus extends AnimationFrameApplet
 				&& expression.rectIndex[id].type === LITERAL
 		);
 
-		if (newLiteralRectIds.length === 1 && oldLiteralRectIds.length >= 1)
-		{
+		const substitutionResult = this.findSubstitutionResult(
+			expression, betaReducedExpression
+		);
+
+		if (
+			newLiteralRectIds.length === 1
+			&& oldLiteralRectIds.length >= 1
+			&& substitutionResult
+			&& !this.containsApplication(substitutionResult)
+		) {
 			const oldId = oldLiteralRectIds[0];
+			const newId = newLiteralRectIds[0];
 			const oldRect = expression.rectIndex[oldId];
-
-			const connectorSurvived = Object.entries(expression.rectIndex).some(
-				([id, r]) => r.type === CONNECTOR
-					&& r.col === oldRect.col
-					&& r.row < oldRect.row + oldRect.height
-					&& r.row + r.height > oldRect.row
-					&& id in betaReducedExpression.rectIndex
-			);
-
-			if (!connectorSurvived)
-			{
-				const newId = newLiteralRectIds[0];
-				delete expression.rectIndex[oldId];
-				oldRect.id = parseInt(newId);
-				expression.rectIndex[newId] = oldRect;
-			}
+			delete expression.rectIndex[oldId];
+			oldRect.id = parseInt(newId);
+			expression.rectIndex[newId] = oldRect;
 		}
 
 		const oldRectIndex = structuredClone(expression.rectIndex);
