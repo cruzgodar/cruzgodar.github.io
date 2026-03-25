@@ -18,7 +18,7 @@ export async function typesetMath()
 			window.MathJax = {
 				loader:
 				{
-					load: ["[tex]/texhtml"],
+					load: ["[tex]/texhtml", "ui/lazy"],
 
 					paths:
 					{

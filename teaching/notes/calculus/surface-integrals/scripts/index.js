@@ -251,7 +251,23 @@ export default function()
 			[
 				{ latex: raw`s(u, v) = (\cos(u), \sin(v), \sin(u)\cos(v))` },
 
-				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.purple },
+
+				...getDesmosSlider({
+					expression: "m = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "n = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
 
 				...getDesmosSlider({
 					expression: "a = 0.6",
@@ -281,22 +297,6 @@ export default function()
 					secret: false
 				}),
 
-				...getDesmosSlider({
-					expression: "m = 4",
-					min: 1,
-					max: 10,
-					step: 1,
-					secret: false
-				}),
-
-				...getDesmosSlider({
-					expression: "n = 4",
-					min: 1,
-					max: 10,
-					step: 1,
-					secret: false
-				}),
-
 				{ latex: raw`P = [(i, j) \for i = [a, a + \frac{b - a}{m - 1}, ..., b], j = [c, c + \frac{d - c}{n - 1}, ..., d]]`, hidden: true, secret: true },
 
 				
@@ -306,7 +306,7 @@ export default function()
 
 				{
 					latex: raw`s(P.x, P.y) + u(s_u(P.x, P.y)) + v(s_v(P.x, P.y))`,
-					color: desmosColors.purple,
+					color: desmosColors.red,
 					parametricDomain3Du: {
 						min: "-\\frac{b - a}{2(m - 1)}",
 						max: "\\frac{b - a}{2(m - 1)}"
@@ -334,7 +334,23 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = \frac{1}{2.5}\left| x + y + z \right|`, hidden: true },
 
-				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.gray },
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.purple },
+
+				...getDesmosSlider({
+					expression: "m = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "n = 4",
+					min: 1,
+					max: 10,
+					step: 1,
+					secret: false
+				}),
 
 				...getDesmosSlider({
 					expression: "a = 0.6",
@@ -364,22 +380,6 @@ export default function()
 					secret: false
 				}),
 
-				...getDesmosSlider({
-					expression: "m = 4",
-					min: 1,
-					max: 10,
-					step: 1,
-					secret: false
-				}),
-
-				...getDesmosSlider({
-					expression: "n = 4",
-					min: 1,
-					max: 10,
-					step: 1,
-					secret: false
-				}),
-
 				{ latex: raw`P = [(i, j) \for i = [a, a + \frac{b - a}{m - 1}, ..., b], j = [c, c + \frac{d - c}{n - 1}, ..., d]]`, hidden: true, secret: true },
 
 				
@@ -387,19 +387,7 @@ export default function()
 				{ latex: raw`s_u(t, y) = \frac{d}{dt}s(t, y)`, hidden: true, secret: true },
 				{ latex: raw`s_v(x, t) = \frac{d}{dt}s(x, t)`, hidden: true, secret: true },
 
-				// {
-				// 	latex: raw`s(P.x, P.y) + u(s_u(P.x, P.y)) + v(s_v(P.x, P.y))`,
-				// 	color: desmosColors.purple,
-				// 	parametricDomain3Du: {
-				// 		min: "-\\frac{b - a}{2(m - 1)}",
-				// 		max: "\\frac{b - a}{2(m - 1)}"
-				// 	},
-				// 	parametricDomain3Dv: {
-				// 		min: "-\\frac{d - c}{2(n - 1)}",
-				// 		max: "\\frac{d - c}{2(n - 1)}"
-				// 	},
-				// 	secret: true
-				// },
+
 
 				{ latex: raw`h_u = \frac{b - a}{2(m - 1)}`, hidden: true, secret: false },
 				{ latex: raw`h_v = \frac{d - c}{2(n - 1)}`, hidden: true, secret: false },
@@ -412,7 +400,7 @@ export default function()
 
 				{
 					latex: raw`0 \le (s_u(P.x, P.y) \times s_v(P.x, P.y)) \cdot ((x, y, z) - s(P.x, P.y)) \le f(s(P.x, P.y).x, s(P.x, P.y).y, s(P.x, P.y).z) \cdot \left|(s_u(P.x, P.y) \times s_v(P.x, P.y))\right| \left\{ -h_u \le U(P.x, P.y, (x, y, z) - s(P.x, P.y)) \le h_u \right\} \left\{ -h_v \le V(P.x, P.y, (x, y, z) - s(P.x, P.y)) \le h_v \right\}`,
-					color: desmosColors.purple,
+					color: desmosColors.red,
 					secret: false
 				},
 			]

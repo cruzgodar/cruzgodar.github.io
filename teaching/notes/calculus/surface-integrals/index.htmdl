@@ -218,10 +218,10 @@ and so we can fashion a formula for surface area.
 
 ### thm "surface area of a parametric surface"
 
-	Let $S$ be a surface parametrized by $\vec{r}(u, \v)$ for $u \in [a, b]$ and $\v \in [c, d]$. Then the surface area of $S$ is
+	Let $S$ be a surface parametrized by $\vec{r}(u, \v)$ for $(u, \v) \in R$. Then the surface area of $S$ is
 
 	$$
-		\int_a^b \!\!\! \int_c^d \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u.
+		\iint_R \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d A.
 	$$
 
 ###
@@ -324,9 +324,23 @@ $$
 
 ## Surface Integrals
 
-Having covered curve integrals and double integrals so thoroughly, we're now prepared to jump right into surface integrals! Given a function $f(x, y, z)$ and a surface $S$ parameterized by $\vec{r}(u, \v)$, we can define the surface integral as the limit of a Riemann sum over the surface.
+Having covered curve integrals and double integrals so thoroughly, we're now prepared to jump right into surface integrals! Given a function $f(x, y, z)$ and a surface $S$ parameterized by $\vec{r}(u, \v)$, we can define the surface integral as the limit of a Riemann sum over the surface --- it looks like a sliced and inverted piece of mango.
 
 ### desmos surfaceIntegralMango
+
+### def "surface integral"
+
+	Let $S$ be a surface parametrized by $\vec{r}(u, \v)$ for $(u, \v) \in R$, and let $f(x, y, z)$ be a function on $#R#^3$. The **surface integral** of $f$ over $S$ is
+
+	$$
+		\iint_S f\,\d s = \iint_R f\left( \vec{r}(u, \v) \right) \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u,
+	$$
+
+	where $\d s = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u$ represents infinitesimal surface area.
+
+###
+
+Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals live only in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango, and it would become just a Riemann sum of a double integral.
 
 
 
