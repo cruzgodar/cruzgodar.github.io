@@ -1,6 +1,6 @@
 These notes cover a one-semester ordinary differential equations and linear algebra course, including first- and second-order DEs, an intro to linear algebra, and systems of DEs. As with all of my notes, please feel free to use these as either a student or teacher, and let me know if there is anything that could be improved!
 
-## Part 1: First-Order Differential Equations
+## Chapter 1: First-Order Differential Equations
 
 ### image-links
 	calc-review
@@ -9,7 +9,7 @@ These notes cover a one-semester ordinary differential equations and linear alge
 	existence-and-exactness
 ###
 
-## Part 2: Second-Order Differential Equations
+## Chapter 2: Second-Order Differential Equations
 
 ### image-links
 	intro-to-second-order-linear
@@ -18,7 +18,7 @@ These notes cover a one-semester ordinary differential equations and linear alge
 	higher-order-des
 ###
 
-## Part 3: Introduction to Linear Algebra
+## Chapter 3: Introduction to Linear Algebra
 
 ### image-links
 	intro-to-linear-algebra
@@ -26,7 +26,7 @@ These notes cover a one-semester ordinary differential equations and linear alge
 	determinants-and-eigenthings
 ###
 
-## Part 4: Systems of Differential Equations
+## Chapter 4: Systems of Differential Equations
 
 ### image-links
 	intro-to-systems

@@ -2,7 +2,7 @@
 
 
 
-We began discussing directional derivatives in part 5 out of a desire to understand derivatives more completely --- partial derivatives were very literally a partial extension of the notion of a derivative to functions of multiple variables, and while directional derivatives didn't immediately seem like the solution that would fill in the gaps, deriving a formula for them led us to the gradient, which ended up being a very important part of our journey.
+We began discussing directional derivatives in chapter 5 out of a desire to understand derivatives more completely --- partial derivatives were very literally a partial extension of the notion of a derivative to functions of multiple variables, and while directional derivatives didn't immediately seem like the solution that would fill in the gaps, deriving a formula for them led us to the gradient, which ended up being a very important part of our journey.
 
 We'll see much of that story play out with integrals. Returning to the world of double integrals for a moment, the inner integral in
 

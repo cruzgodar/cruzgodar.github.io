@@ -1,6 +1,6 @@
 These notes cover a one-semester matrix algebra course, including row reduction, eigenvalues and eigenvectors, inner products, and abstract vector spaces. As with all of my notes, please feel free to use these as either a student or teacher, and let me know if there is anything that could be improved!
 
-## Part 1: Vectors and Matrices
+## Chapter 1: Vectors and Matrices
 
 ### image-links
 	vectors-and-matrices
@@ -11,17 +11,17 @@ These notes cover a one-semester matrix algebra course, including row reduction,
 	the-determinant
 ###
 
-## Part 2: Vector Spaces
+## Chapter 2: Vector Spaces
 
 ### image-links
 	vector-spaces
 	bases-and-dimension
 	the-fundamental-theorem-of-linear-algebra
 	intro-to-markov-chains
-	parts-1-and-2-review
+	chapters-1-and-2-review
 ###
 
-## Part 3: Eigenvalues and Eigenvectors
+## Chapter 3: Eigenvalues and Eigenvectors
 
 ### image-links
 	eigenvectors-and-eigenvalues
@@ -29,7 +29,7 @@ These notes cover a one-semester matrix algebra course, including row reduction,
 	intro-to-des
 ###
 
-## Part 4: Inner Product Spaces
+## Chapter 4: Inner Product Spaces
 
 ### image-links
 	the-dot-product

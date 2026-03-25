@@ -24,7 +24,7 @@ To briefly review, most common functions are continuous where they are defined, 
 	
 ###
 
-For example, $$\lim_{x \to 1} \frac{x - 1}{x^2 - 3x + 2}$$ is in indeterminate form, since we can't plug in $x = 1$ without getting $\frac{0}{0}$. We could use some of the methods we learned in part 1 to rewrite it as
+For example, $$\lim_{x \to 1} \frac{x - 1}{x^2 - 3x + 2}$$ is in indeterminate form, since we can't plug in $x = 1$ without getting $\frac{0}{0}$. We could use some of the methods we learned in chapter 1 to rewrite it as
 
 $$
 	\lim_{x \to 1} \frac{x - 1}{x^2 - 3x + 2} &= \lim_{x \to 1} \frac{x - 1}{(x - 1)(x - 2)}

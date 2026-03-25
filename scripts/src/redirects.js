@@ -4,10 +4,14 @@ export const redirects = {
 	"/applets/flag-overlap": "/applets/flagle",
 
 	// Renamed teaching pages post-extraction
-	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/parts-1-and-2-review",
-	"/teaching/notes/calculus/calc-2-review": "/teaching/notes/calculus/part-3-review",
+	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/chapters-1-and-2-review",
+	"/teaching/notes/calculus/parts-1-and-2-review": "/teaching/notes/calculus/chapters-1-and-2-review",
 
-	"/teaching/notes/linear-algebra/linear-algebra-1-review": "/teaching/notes/linear-algebra/parts-1-and-2-review",
+	"/teaching/notes/calculus/calc-2-review": "/teaching/notes/calculus/chapter-3-review",
+	"/teaching/notes/calculus/part-3-review": "/teaching/notes/calculus/chapter-3-review",
+
+	"/teaching/notes/linear-algebra/linear-algebra-1-review": "/teaching/notes/linear-algebra/chapters-1-and-2-review",
+	"/teaching/notes/linear-algebra/parts-1-and-2-review": "/teaching/notes/linear-algebra/chapters-1-and-2-review",
 
 	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/the-unit-circle",
 	

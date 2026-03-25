@@ -1,6 +1,6 @@
 These notes cover a standard three-semester calculus sequence, including limits, derivatives, integrals, series, and multivariable and vector calculus. As with all of my notes, please feel free to use these as either a student or teacher, and let me know if there is anything that could be improved!
 
-## Part 1: Limits
+## Chapter 1: Limits
 
 ### image-links
 	algebra-and-trig-review
@@ -9,7 +9,7 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	continuity
 ###
 
-## Part 2: Derivatives
+## Chapter 2: Derivatives
 
 ### image-links
 	intro-to-derivatives
@@ -24,10 +24,10 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	related-rates
 	applied-optimization
 	newtons-method
-	parts-1-and-2-review
+	chapters-1-and-2-review
 ###
 
-## Part 3: Integrals
+## Chapter 3: Integrals
 
 ### image-links
 	riemann-sums
@@ -46,10 +46,10 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	partial-fractions
 	improper-integrals
 	intro-to-des
-	part-3-review
+	chapter-3-review
 ###
 
-## Part 4: Series
+## Chapter 4: Series
 
 ### image-links
 	sequences
@@ -64,7 +64,7 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	applications-of-taylor-series
 ###
 
-## Part 5: Multivariable Calculus
+## Chapter 5: Multivariable Calculus
 
 ### image-links
 	coordinate-systems
@@ -79,7 +79,7 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	lagrange-multipliers
 ###
 
-## Part 6: Vector Calculus
+## Chapter 6: Vector Calculus
 
 ### image-links
 	double-integrals

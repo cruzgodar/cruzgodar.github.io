@@ -142,7 +142,7 @@ That formula for the directional derivative suggests that for a function $f(x, y
 
 ###
 
-The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$. We'll have a *lot* more to say about that in part 6, but it's just a useful fact to note for now.
+The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$. We'll have a *lot* more to say about that in chapter 6, but it's just a useful fact to note for now.
 
 ### ex "the gradient"
 

@@ -731,7 +731,7 @@ export const sitemap =
 			"/teaching/notes/calculus/related-rates",
 			"/teaching/notes/calculus/applied-optimization",
 			"/teaching/notes/calculus/newtons-method",
-			"/teaching/notes/calculus/parts-1-and-2-review",
+			"/teaching/notes/calculus/chapters-1-and-2-review",
 			"/teaching/notes/calculus/riemann-sums",
 			"/teaching/notes/calculus/integrals-intro",
 			"/teaching/notes/calculus/antiderivatives",
@@ -748,7 +748,7 @@ export const sitemap =
 			"/teaching/notes/calculus/partial-fractions",
 			"/teaching/notes/calculus/improper-integrals",
 			"/teaching/notes/calculus/intro-to-des",
-			"/teaching/notes/calculus/part-3-review",
+			"/teaching/notes/calculus/chapter-3-review",
 			"/teaching/notes/calculus/sequences",
 			"/teaching/notes/calculus/series",
 			"/teaching/notes/calculus/divergence-and-integral-tests",
@@ -949,9 +949,9 @@ export const sitemap =
 		"customStyle": true
 	},
 	
-	"/teaching/notes/calculus/parts-1-and-2-review":
+	"/teaching/notes/calculus/chapters-1-and-2-review":
 	{
-		"title": "Parts 1 and 2 Review",
+		"title": "Chapters 1 and 2 Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1124,9 +1124,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/part-3-review":
+	"/teaching/notes/calculus/chapter-3-review":
 	{
-		"title": "Part 3 Review",
+		"title": "Chapter 3 Review",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1418,7 +1418,7 @@ export const sitemap =
 			"/teaching/notes/linear-algebra/bases-and-dimension",
 			"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra",
 			"/teaching/notes/linear-algebra/intro-to-markov-chains",
-			"/teaching/notes/linear-algebra/parts-1-and-2-review",
+			"/teaching/notes/linear-algebra/chapters-1-and-2-review",
 			"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
 			"/teaching/notes/linear-algebra/diagonalization",
 			"/teaching/notes/linear-algebra/intro-to-des",
@@ -1535,9 +1535,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/linear-algebra/parts-1-and-2-review":
+	"/teaching/notes/linear-algebra/chapters-1-and-2-review":
 	{
-		"title": "Parts 1 and 2 Review",
+		"title": "Chapters 1 and 2 Review",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		

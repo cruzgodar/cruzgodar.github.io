@@ -72,7 +72,7 @@ home Cruz Godar
 			related-rates Section 2.10: Related Rates
 			applied-optimization Section 2.11: Applied Optimization
 			newtons-method Section 2.12: Newton's Method
-			parts-1-and-2-review Parts 1 and 2 Review
+			chapters-1-and-2-review Chapters 1 and 2 Review
 
 			riemann-sums Section 3.1: Riemann Sums
 			integrals-intro Section 3.2: Intro to Integrals
@@ -90,7 +90,7 @@ home Cruz Godar
 			partial-fractions Section 3.14: Partial Fractions
 			improper-integrals Section 3.15: Improper Integrals
 			intro-to-des Section 3.16: Intro to Differential Equations
-			part-3-review Part 3 Review
+			chapter-3-review Chapter 3 Review
 
 			sequences Section 4.1: Sequences
 			series Section 4.2: Series
@@ -132,7 +132,7 @@ home Cruz Godar
 			bases-and-dimension Section 2.2: Bases and Dimension
 			the-fundamental-theorem-of-linear-algebra Section 2.4: The Fundamental Theorem of Linear Algebra
 			intro-to-markov-chains Section 2.4: Intro to Markov Chains
-			parts-1-and-2-review Parts 1 and 2 Review
+			chapters-1-and-2-review Chapters 1 and 2 Review
 
 			eigenvectors-and-eigenvalues Section 3.1: Intro to Eigenvectors and Eigenvalues
 			diagonalization Section 3.2: Diagonalization
