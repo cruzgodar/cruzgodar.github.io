@@ -431,7 +431,7 @@ export const galleryImageData =
 		title: "The Secant Method",
 
 		parameters: /* html */`
-			Generated from the polynomial $z^6 - 1$ with $a = 1.15$
+			Generated from the polynomial $z^6 - 1$ with $a = 0.115$
 		`,
 
 		appletLink: "/applets/newtons-method/?switch-method-button=1",

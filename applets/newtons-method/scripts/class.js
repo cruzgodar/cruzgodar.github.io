@@ -610,6 +610,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 				this.wilsonHidden.setUniforms({ [id]: location });
 			}
 
+			this.updateRootSetterValues();
+
 			this.needNewFrame = true;
 		}, doAnimation ? duration : 0, easing);
 	}
@@ -707,7 +709,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 			const color = hsvToRgb(
 				hues[i],
 				0.2 * Math.random() + 0.3,
-				0.2 * Math.random() + 0.8,
+				0.2 * Math.random() + 0.75,
 			);
 
 			this.setColor({
@@ -772,8 +774,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.updateRootSetterValues();
-
 		this.wilsonHidden.setUniforms({
 			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY]
