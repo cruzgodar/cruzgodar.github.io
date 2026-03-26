@@ -15,6 +15,9 @@ export async function typesetMath()
 	{
 		loadingMathJaxPromise = (async () =>
 		{
+			const dropdowns = Array.from(document.body.querySelectorAll(".dropdown"));
+			const lazyAlwaysTypeset = dropdowns.length > 0 ? dropdowns : null;
+
 			window.MathJax = {
 				loader:
 				{
@@ -40,6 +43,11 @@ export async function typesetMath()
 					{
 						inline: false,
 					}
+				},
+
+				options:
+				{
+					lazyAlwaysTypeset,
 				}
 			};
 
@@ -51,6 +59,10 @@ export async function typesetMath()
 
 		return loadingMathJaxPromise;
 	}
+
+	const dropdowns = Array.from(document.body.querySelectorAll(".dropdown"));
+	window.MathJax.startup.document.options.lazyAlwaysTypeset =
+		dropdowns.length > 0 ? dropdowns : null;
 
 	await window.MathJax.typesetPromise();
 }
