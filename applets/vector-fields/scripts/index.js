@@ -8,6 +8,10 @@ import { Textarea } from "/scripts/components/textareas.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 
+// MAKING VECTOR FIELD COVER IMAGES:
+// 1500 resolution, 20000 particles, 255 lifetime, let it run
+// Crop to about 1200x1200
+
 export default function()
 {
 	const applet = new VectorField({ canvas: $("#output-canvas") });
