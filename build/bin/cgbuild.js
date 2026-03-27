@@ -27,6 +27,7 @@ const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
 	pdf: process.argv.slice(2).includes("--pdf"),
+	images: process.argv.slice(2).includes("--images"),
 };
 
 const courseNames = [
@@ -239,7 +240,16 @@ async function buildFile(file)
 	}
 
 	else if (
-		extension === "pdf"
+		extension === "png"
+		&& (!options.clean || (options.clean && options.images))
+	) {
+		console.log(file);
+		
+		await buildCoverImage(file);
+	}
+
+	else if (
+		filename === "index" && extension === "pdf"
 		&& (!options.clean || (options.clean && options.pdf))
 	) {
 		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
@@ -307,6 +317,21 @@ function buildPDFFile(file)
 		"-morphology",
 		"Erode",
 		"Diamond",
+		"-resize",
+		"500x500",
+		"-quality",
+		"85",
+		`${root}${outputFile}`
+	]);
+}
+
+function buildCoverImage(file)
+{
+	const index = file.lastIndexOf("/");
+	const outputFile = (index === -1 ? file : file.slice(0, index + 1)) + "cover.webp";
+
+	spawnSync("magick", [
+		`${root}${file}`,
 		"-resize",
 		"500x500",
 		"-quality",
