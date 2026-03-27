@@ -456,7 +456,7 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields rather than functions by taking a dot product of the field with a vector on the surface. Unlike in $#R#^2$, where we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, a point on a surface in $#R#^3$ has no such thing as a single unit tangent vector; that's effectively what it means to be a parametric function of two variables instead of one. However, there are still well-defined normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
 
-There's one somewhat new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
+There's one new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
 
 Have a look at this surface, though --- it's the famous **Möbius strip**, constructed by gluing a strip of paper into a loop with a $180^\circ$ twist. The red vector is normal to the surface; change the value of $a$ to slide it along until it's eventually at the same point where it started.
 
@@ -470,7 +470,21 @@ It's upside-down! This surface has the remarkable property that it's impossible 
 
 ###
 
-Informally, the Möbius strip only has one side instead of two, despite being fashioned from a two-sided strip. However, I think leaving the discussion there and just ignoring nonorientable surfaces for the remainder of the course leaves far too many loose ends to be reasonable.
+### as "orientability and curves"
+
+	Informally, the Möbius strip only has one side instead of two, despite being fashioned from a two-sided strip. However, I think leaving the discussion there and just ignoring nonorientable surfaces for the remainder of the course leaves too large a loose end to be acceptable: why didn't we need to work through all of this for curves?
+
+	The answer is somewhat subtle. If we're given the *parameterization* $\vec{r}(t)$ of a curve, then there is no ambiguity over the unit tangent vector at each point, so long as the derivative $\vec{r}'(t)$ exists and is nonzero. That rules out things like cusps and stalling at a point for some time, but not self-intersections. And indeed, a parameterized curve can intersect itself without causing an orientation issue: for example, the following curve in $#R#^2$ always has a well-defined unit tangent vector, even at the origin, since it just crosses through there at two different points in time.
+
+	### desmos orientabilityAllegory
+
+	Since the definition of orientability wants direction as a function of coordinates on the curve or surface, not parameters, the purple curve *itself* isn't orientable, strictly speaking. If we forget the parameterization, we have no idea what direction to assign the origin, even with notions like positive orientation. That's due in part to the self-intersection, but if we remove it by only defining the purple curve for $t \in \left[ \frac{1}{4}, \frac{3}{4} \right]$ (try adjusting $a$ and $b$), then we can still see the issue: there's a cusp at the origin, so we're not going to be able to vary the unit tangent vector smoothly. In effect, there is no way to join up one end of a smooth curve to another in a way that makes the unit tangent vectors (and therefore the unit normal vectors) discontinuous without that discontinuity showing up in the curve itself.
+
+	The Möbius strip is a lot like this curve. It's effectively intersecting itself at the point where the red vector flips: it should be drawn an entire second time to complete the parameterization and return to its original orientation. In that sense, the *parameterization* of the Möbius strip has a well-defined normal vector at pair of parameters $(u, \v)$, but not the surface itself. And the difference between surfaces and curves is that the extra parameter in surfaces affords them room to rotate and do what curves cannot: reconnect with themselves in a way that breaks the continuity of the normal vectors, but not the surface itself.
+
+###
+
+
 
 
 

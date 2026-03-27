@@ -3,7 +3,8 @@ import {
 	createDesmosGraphs,
 	desmosColors,
 	getColored3DCurve,
-	getDesmosSlider
+	getDesmosSlider,
+	getDesmosVector
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -457,6 +458,49 @@ export default function()
 
 				{ latex: raw`\vector(s_1(a, 0), s_1(a, 0) + 0.75\frac{s_{u1}(a) \times s_{v1}(0)}{\left| s_{u1}(a) \times s_{v1}(0) \right|})\{ a > 0 \}`, color: desmosColors.red, secret: true },
 				{ latex: raw`\vector(s_2(-a, 0), s_2(-a, 0) + 0.75\frac{s_{u2}(-a) \times s_{v2}(0)}{\left| s_{u2}(-a) \times s_{v2}(0) \right|})\{ a \leq 0 \}`, color: desmosColors.red, secret: true },
+			]
+		},
+
+		orientabilityAllegory:
+		{
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`c(t) = (\cos(2\pi t), \sin(4\pi t))` },
+				{ latex: raw`c(t)`, parametricDomain: { min: "a", max: "b" }, color: desmosColors.purple },
+
+				...getDesmosSlider({
+					expression: "s = 0",
+					min: "a",
+					max: "b",
+					secret: false,
+				}),
+
+				...getDesmosSlider({
+					expression: "a = 0",
+					min: 0,
+					max: 1,
+					step: 0.01,
+					secret: false,
+				}),
+
+				...getDesmosSlider({
+					expression: "b = 1",
+					min: "a",
+					max: 1,
+					step: 0.01,
+					secret: false,
+				}),
+
+				{ latex: raw`d(t) = 0.5\frac{c'(t)}{\left| c'(t) \right|}`, secret: true },
+
+				...getDesmosVector({
+					from: ["c(s).x", "c(s).y"],
+					to: ["c(s).x + d(s).x", "c(s).y + d(s).y"],
+					color: desmosColors.blue,
+					arrowSize: 0.1
+				}),
 			]
 		}
 	});
