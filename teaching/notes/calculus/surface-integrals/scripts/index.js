@@ -419,7 +419,7 @@ export default function()
 			[
 				{ latex: raw`(u, v, 0)`, colorLatex: "D", },
 
-				{ latex: raw`D = \operatorname{rgb}(255, 255, 0)`, secret: true },
+				{ latex: raw`D = \operatorname{rgb}(255x, 255y, 0)`, secret: true },
 			]
 		},
 

@@ -807,6 +807,8 @@ function swap3dGraph(oldId, newId)
 	{
 		const state = calculator.getState();
 
+		restoreErasedProperties(state, newConfig.expressions);
+
 		// Zero out any lingering rotation/spin from the previous graph
 		// so the default state has a clean camera.
 		state.graph.worldRotation3D = [];
