@@ -20,6 +20,10 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 
 	fillRegions = true;
 
+	hues = [];
+	saturations = [];
+	values = [];
+
 	parities = [];
 	coordinates = [];
 	colors = [];
@@ -78,7 +82,24 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 
 		this.activeNodes = [[0, 0, 0, 0]];
 
+		for (let i = 0; i < this.numColors; i++)
+		{
+			this.hues[i] = Math.random();
+		}
 
+		this.saturations = new Array(this.numColors);
+		this.saturations[0] = 0.15;
+		for (let i = 1; i < this.numColors; i++)
+		{
+			this.saturations[i] = Math.random() * 0.35 + 0.35;
+		}
+
+		this.values = new Array(this.numColors);
+		this.values[0] = 1;
+		for (let i = 1; i < this.numColors; i++)
+		{
+			this.values[i] = Math.random() * 0.2 + 0.7;
+		}
 
 		this.parities = new Array(this.gridSize);
 		this.colors = new Array(this.gridSize);
@@ -100,7 +121,10 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 		}
 
 		this.parities[0][0] = 1;
-		this.colors[0][0] = hsvToRgb(1 / this.numColors, 1, 1);
+		const h = this.hues[1];
+		const s = this.saturations[1];
+		const v = this.values[1];
+		this.colors[0][0] = hsvToRgb(h, s, v);
 
 
 
@@ -118,11 +142,11 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 					this.parities[i - 1][j - 1] + this.parities[i - 1][j]
 				) % this.numColors;
 
-				this.colors[i][j] = hsvToRgb(
-					this.parities[i][j] / this.numColors,
-					1,
-					1
-				);
+				const h = this.hues[this.parities[i][j]];
+				const s = this.saturations[this.parities[i][j]];
+				const v = this.values[this.parities[i][j]];
+
+				this.colors[i][j] = hsvToRgb(h, s, v);
 			}
 		}
 
