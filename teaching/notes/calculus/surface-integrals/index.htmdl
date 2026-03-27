@@ -452,5 +452,27 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 
 
+## Surface Integrals of Vector Fields
+
+Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields rather than functions by taking a dot product of the field with a vector on the surface. Unlike in $#R#^2$, where we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, a point on a surface in $#R#^3$ has no such thing as a single unit tangent vector; that's effectively what it means to be a parametric function of two variables instead of one. However, there are still well-defined normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
+
+There's one somewhat new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
+
+Have a look at this surface, though --- it's the famous **Möbius strip**, constructed by gluing a strip of paper into a loop with a $180^\circ$ twist. The red vector is normal to the surface; change the value of $a$ to slide it along until it's eventually at the same point where it started.
+
+### desmos mobiusStrip
+
+It's upside-down! This surface has the remarkable property that it's impossible to choose a unit normal vector at every point so that they change continuously. That would foil our attempts to integrate using those normal vectors, so let's give this notion a name so that we can focus only on the surfaces that don't misbehave like this.
+
+### def "orientable surface"
+
+	A surface $S$ in $#R#^3$ is **orientable** if there is a choice of unit normal vector $\vec{n}(x, y, z)$ for each point $(x, y, z)$ on $S$, so that $\vec{n}$ is a continuous function on $S$.
+
+###
+
+Informally, the Möbius strip only has one side instead of two, despite being fashioned from a two-sided strip. However, I think leaving the discussion there and just ignoring nonorientable surfaces for the remainder of the course leaves far too many loose ends to be reasonable.
+
+
+
 
 ### nav-buttons

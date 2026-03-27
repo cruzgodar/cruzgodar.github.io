@@ -420,6 +420,44 @@ export default function()
 
 				{ latex: raw`D = \operatorname{rgb}(255, 255, 0)`, secret: true },
 			]
+		},
+
+		mobiusStrip:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`s_1(u, v) = (\cos(b + u), \sin(b + u), 0) + v\frac{((1 - (\frac{u}{\pi})^c)(0, 0, 1) + (\frac{u}{\pi})^c(\cos(b + u), \sin(b + u), 0))}{\left| ((1 - (\frac{u}{\pi})^c)(0, 0, 1) + (\frac{u}{\pi})^c(\cos(b + u), \sin(b + u), 0)) \right|}`, secret: true },
+
+				{ latex: raw`s_2(u, v) = (\cos(b + 2\pi - u), \sin(b + 2\pi - u), 0) + v\frac{((1 - (\frac{u}{\pi})^c)(0, 0, -1) + (\frac{u}{\pi})^c(\cos(b + 2\pi - u), \sin(b + 2\pi - u), 0))}{\left| ((1 - (\frac{u}{\pi})^c)(0, 0, -1) + (\frac{u}{\pi})^c(\cos(b + 2\pi - u), \sin(b + 2\pi - u), 0)) \right|}`, secret: true },
+
+				{ latex: raw`c = 10`, secret: true },
+				{ latex: raw`b = 1.8`, secret: true },
+
+				{ latex: raw`s_1(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: -0.2, max: 0.2 }, color: desmosColors.purple, secret: true },
+				{ latex: raw`s_2(\pi - u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: -0.2, max: 0.2 }, color: desmosColors.purple, secret: true },
+
+				...getDesmosSlider({
+					expression: "a = -3.14",
+					min: "-\\pi",
+					max: "\\pi",
+					secret: false,
+				}),
+
+				{ latex: raw`s_{u1}(t) = \frac{d}{dt}s_1(t, 0)`, hidden: true, secret: true },
+				{ latex: raw`s_{v1}(t) = \frac{d}{dt}s_1(a, t)`, hidden: true, secret: true },
+
+				{ latex: raw`s_{u2}(t) = \frac{d}{dt}s_2(t, 0)`, hidden: true, secret: true },
+				{ latex: raw`s_{v2}(t) = \frac{d}{dt}s_2(-a, t)`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(s_1(a, 0), s_1(a, 0) + 0.75\frac{s_{u1}(a) \times s_{v1}(0)}{\left| s_{u1}(a) \times s_{v1}(0) \right|})\{ a > 0 \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector(s_2(-a, 0), s_2(-a, 0) + 0.75\frac{s_{u2}(-a) \times s_{v2}(0)}{\left| s_{u2}(-a) \times s_{v2}(0) \right|})\{ a \leq 0 \}`, color: desmosColors.red, secret: true },
+			]
 		}
 	});
 }
