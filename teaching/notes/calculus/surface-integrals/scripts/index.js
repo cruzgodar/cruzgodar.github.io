@@ -78,7 +78,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
 
@@ -100,7 +100,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
@@ -128,7 +128,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
@@ -160,7 +160,7 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
@@ -337,7 +337,7 @@ export default function()
 				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "\\pi" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.purple },
 
 				...getDesmosSlider({
-					expression: "m = 4",
+					expression: "m = 5",
 					min: 1,
 					max: 10,
 					step: 1,
@@ -345,7 +345,7 @@ export default function()
 				}),
 
 				...getDesmosSlider({
-					expression: "n = 4",
+					expression: "n = 5",
 					min: 1,
 					max: 10,
 					step: 1,
@@ -403,6 +403,22 @@ export default function()
 					color: desmosColors.red,
 					secret: false
 				},
+			]
+		},
+
+		surfaceIntegralColor:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`(u, v, 0)`, colorLatex: "D", },
+
+				{ latex: raw`D = \operatorname{rgb}(255, 255, 0)`, secret: true },
 			]
 		}
 	});

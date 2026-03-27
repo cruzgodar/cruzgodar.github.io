@@ -324,7 +324,7 @@ $$
 
 ## Surface Integrals
 
-Having covered curve integrals and double integrals so thoroughly, we're now prepared to jump right into surface integrals! Given a function $f(x, y, z)$ and a surface $S$ parameterized by $\vec{r}(u, \v)$, we can define the surface integral as the limit of a Riemann sum over the surface --- it looks like a sliced and inverted piece of mango.
+Having covered curve integrals and double integrals so thoroughly, we're now prepared to jump right into surface integrals! Given a function $f(x, y, z)$ and a surface $S$ parameterized by $\vec{r}(u, \v)$, we can define the surface integral as the limit of a Riemann sum over the surface --- it looks like a sliced and spread piece of mango.
 
 ### desmos surfaceIntegralMango
 
@@ -333,14 +333,122 @@ Having covered curve integrals and double integrals so thoroughly, we're now pre
 	Let $S$ be a surface parametrized by $\vec{r}(u, \v)$ for $(u, \v) \in R$, and let $f(x, y, z)$ be a function on $#R#^3$. The **surface integral** of $f$ over $S$ is
 
 	$$
-		\iint_S f\,\d s = \iint_R f\left( \vec{r}(u, \v) \right) \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u,
+		\iint_S f\,\d s &= \iint_R f\left( \vec{r} \right) \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d A
+
+		&= \iint_R f\left( \vec{r}(u, \v) \right) \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u,
 	$$
 
 	where $\d s = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u$ represents infinitesimal surface area.
 
 ###
 
-Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals live only in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango, and it would become just a Riemann sum of a double integral.
+Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals only meaningfully live in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango, and it would become just a Riemann sum of a double integral.
+
+### ex "a surface integral"
+
+	Let $S$ be the cylinder of height $2$ parallel to the $x$-axis and centered at the origin. Find
+
+	$$
+		\iint_S \left( x^2 + z \right)\d s.
+	$$
+
+	We've already seen a parameterization of this cylinder earlier in the section: 
+	
+	$$
+		\vec{r}(u, \v) = \left< \v,\, \cos(u),\, \sin(u) \right>
+	$$
+
+	for $u \in [0, 2\pi]$ and $\v \in [-1, 1]$ works nicely. Now we need to compute that cross product.
+	
+	$$
+		\vec{r}_u &= \left< 0,\, -\sin(u),\, \cos(u) \right>
+
+		\vec{r}_{\v} &= \left< 1, 0, 0 \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 0,\, \cos(u),\, \sin(u) \right>
+
+		\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= 1.
+	$$
+
+	Rewriting the integral,
+
+	$$
+		\iint_S \left( x^2 + z \right)\,\d s &= \int_0^{2\pi}\!\! \int_{-1}^1 \left( \v^2 + \sin(u) \right)(1)\,\d\v\,\d u
+
+		&= \int_0^{2\pi} \left. \left[ \frac{\v^3}{3} + \v\sin(u) \right] \right|_{-1}^1\,\d u
+
+		&= \int_0^{2\pi} \left( \frac{2}{3} + 4\sin(u) \right)\d u
+
+		&= \left. \left[ \frac{2}{3} u - 4\cos(u) \right] \right|_0^{2\pi}
+
+		&= \frac{4\pi}{3}.
+	$$
+
+	The Riemann sum visualization we saw before is great in ideal conditions, but when the function we're integrating is negative or the surface isn't convex, it leaves something to be desired. An alternative and more flexible way to visualize surface integrals is with color, like a heatmap: then the surface integral is the net temperature over the entire region.
+
+	### desmos surfaceIntegralColor
+
+###
+
+### exc "a surface integral"
+
+	Let $S$ be the surface of revolution for the graph $y = x^2$ on $[0, 1]$ about the $x$-axis. Find $\iint_S f\,\d s$ for $f(x, y, z) = \frac{1}{x}\sqrt{y^2 + z^2}$.
+
+	### solution
+
+	Let's begin by parameterizing the surface: 
+	
+	$$
+		\vec{r}(u, \v) = \left< u,\ u^2\cos(\v),\ u^2\sin(\v) \right>
+	$$
+
+	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. Then
+
+	$$
+		\vec{r}_u &= \left< 1,\ 2u\cos(\v),\ 2u\sin(\v) \right>
+
+		\vec{r}_{\v} &= \left< 0,\ -u^2\sin(\v),\ u^2\cos(\v) \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 2u^3 \cos^2(\v) + 2u^3 \sin^2(\v),\ -u^2\cos(\v), -u^2\sin^2(\v) \right>
+
+		&= \left< 2u^3,\ -u^2\cos(\v), -u^2\sin^2(\v) \right>
+
+		\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= \sqrt{4u^6 + u^4}
+
+		&= u^2\sqrt{4u^2 + 1}.
+	$$
+
+	Now we're ready to set up the integral!
+
+	$$
+		\iint_S f\,\d s &= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} \sqrt{u^4\cos^2(\v) + u^4\sin^2(\v)} u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
+
+		&= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} u^2 u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
+
+		&= \int_0^1 \!\! \int_0^{2\pi} u^3\sqrt{4u^2 + 1}\,\d\v\,\d u
+
+		&= 2\pi\int_0^1 \!\! u^3\sqrt{4u^2 + 1}\,\d u
+	$$
+
+	With $w = 4u^2 + 1$ and $\d w = 8u\,\d u$,
+
+	$$
+		2\pi\int_0^1 u^3\sqrt{4u^2 + 1}\,\d\v\,\d u &= \frac{\pi}{4}\int_0^1 u^2w^{1/2}\,\d\v\,\d w
+
+		&= \frac{\pi}{4}\int_0^1 \frac{1}{4}(w - 1)w^{1/2}\,\d w
+
+		&= \frac{\pi}{16}\int_0^1 \left( w^{3/2} - w^{1/2} \right)\d w
+
+		&= \frac{\pi}{16} \left. \left[ \frac{2}{5}w^{5/2} - \frac{2}{3}w^{3/2} \right] \right|_0^1
+
+		&= \frac{\pi}{16} \left. \left[ \frac{2}{5}\left( 4u^2 + 1 \right)^{5/2} - \frac{2}{3}\left( 4u^2 + 1 \right)^{3/2} \right] \right|_0^1
+
+		&= \frac{\pi}{16} \left( \frac{2}{5}(5)^{5/2} - \frac{2}{3}(5)^{3/2} - \frac{2}{5} + \frac{2}{3} \right)
+
+		&\approx 2.979.
+	$$
+
+###
 
 
 
