@@ -61,6 +61,7 @@
 		}
 	},
 	"liveServer.settings.ignoreFiles": [
+		".git/**",
 		".vscode/**",
 		"**/*.scss",
 		"**/*.sass",
@@ -69,8 +70,7 @@
 		"**/index.js",
 		"**/class.js",
 		"**/worker.js",
-		"**/data.html",
-		"**/index.html",
+		"**/index.htmdl",
 		"**/sitemap.xml",
 		"**/*.tex",
 		"**/*.aux",

@@ -511,15 +511,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				// Configure the calculator for this graph's data.
 				calculator.setMathBounds(bounds);
 				calculator.setExpressions(data[element.id].expressions);
+				
+				calculator.controller.graphSettings.showPlane3D = options.showPlane3D ?? true;
+				calculator.controller.graphSettings.showAxis3D = options.showAxis3D ?? true;
 
-				if (options.showPlane3D !== undefined)
-				{
-					calculator.controller.graphSettings.showPlane3D = options.showPlane3D;
-				}
-				else
-				{
-					calculator.controller.graphSettings.showPlane3D = true;
-				}
 
 				calculator.controller.graphSettings.showBox3D = false;
 
@@ -569,13 +564,10 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			{
 				desmosGraphs[element.id] = desmosClass(element, options);
 
-
-
-				if (options.showPlane3D !== undefined)
-				{
-					desmosGraphs[element.id].controller.graphSettings.showPlane3D =
-						options.showPlane3D;
-				}
+				desmosGraphs[element.id].controller.graphSettings.showPlane3D =
+					options.showPlane3D ?? true;
+				desmosGraphs[element.id].controller.graphSettings.showAxis3D =
+					options.showAxis3D ?? true;
 
 
 
@@ -780,14 +772,8 @@ function swap3dGraph(oldId, newId)
 	}
 
 	// Apply 3D-specific controller settings.
-	if (newConfig.options.showPlane3D !== undefined)
-	{
-		calculator.controller.graphSettings.showPlane3D = newConfig.options.showPlane3D;
-	}
-	else
-	{
-		calculator.controller.graphSettings.showPlane3D = true;
-	}
+	calculator.controller.graphSettings.showPlane3D = newConfig.options.showPlane3D ?? true;
+	calculator.controller.graphSettings.showAxis3D = newConfig.options.showAxis3D ?? true;
 
 	calculator.controller.graphSettings.showBox3D = false;
 

@@ -417,9 +417,16 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(u, v, 0)`, colorLatex: "D", },
+				{ latex: raw`(v, \cos(u), \sin(u))`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -1, max: 1 }, colorLatex: "C" },
 
-				{ latex: raw`D = \operatorname{rgb}(255x, 255y, 0)`, secret: true },
+				{ latex: raw`f(x, y, z) = x^2 + z` },
+
+				// the purple, red, and blue amounts
+				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
 			]
 		},
 
@@ -427,9 +434,9 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, showAxis3D: false },
 
-			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+			bounds: { xmin: -0.9, xmax: 0.9, ymin: -0.9, ymax: 0.9, zmin: -0.9, zmax: 0.9 },
 
 			expressions:
 			[
@@ -456,8 +463,8 @@ export default function()
 				{ latex: raw`s_{u2}(t) = \frac{d}{dt}s_2(t, 0)`, hidden: true, secret: true },
 				{ latex: raw`s_{v2}(t) = \frac{d}{dt}s_2(-a, t)`, hidden: true, secret: true },
 
-				{ latex: raw`\vector(s_1(a, 0), s_1(a, 0) + 0.75\frac{s_{u1}(a) \times s_{v1}(0)}{\left| s_{u1}(a) \times s_{v1}(0) \right|})\{ a > 0 \}`, color: desmosColors.red, secret: true },
-				{ latex: raw`\vector(s_2(-a, 0), s_2(-a, 0) + 0.75\frac{s_{u2}(-a) \times s_{v2}(0)}{\left| s_{u2}(-a) \times s_{v2}(0) \right|})\{ a \leq 0 \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector(s_1(a, 0), s_1(a, 0) + 0.5\frac{s_{u1}(a) \times s_{v1}(0)}{\left| s_{u1}(a) \times s_{v1}(0) \right|})\{ a > 0 \}`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector(s_2(-a, 0), s_2(-a, 0) + 0.5\frac{s_{u2}(-a) \times s_{v2}(0)}{\left| s_{u2}(-a) \times s_{v2}(0) \right|})\{ a \leq 0 \}`, color: desmosColors.red, secret: true },
 			]
 		},
 
