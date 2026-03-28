@@ -509,6 +509,26 @@ export default function()
 					arrowSize: 0.1
 				}),
 			]
+		},
+
+		positiveOrientation:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true, showAxis3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`\rho = 1`, color: desmosColors.purple, secret: true },
+
+				{ latex: raw`P = [(\sin(i)\cos(j), \sin(i)\sin(j), \cos(i)) \for i = [0, \frac{\pi}{3} + a, \frac{\pi}{6} + a, \frac{\pi}{2}, \pi - \frac{\pi}{6} - a, \pi - \frac{\pi}{3} - a, \pi], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
+
+				{ latex: raw`a = 0.1`, secret: true },
+
+				{ latex: raw`\vector(P, 1.25P)`, color: desmosColors.red, secret: true },
+			]
 		}
 	});
 }

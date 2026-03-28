@@ -338,7 +338,7 @@ Having covered curve integrals and double integrals so thoroughly, we're now pre
 		&= \iint_R f\left( \vec{r}(u, \v) \right) \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u,
 	$$
 
-	where $\d s = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u$ represents infinitesimal surface area.
+	where $\d s = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u$ represents infinitesimal surface area. This is sometimes written $\d S$, conflicting with the notation for the surface itself; I prefer a lowercase $s$, similar to arc length.
 
 ###
 
@@ -454,7 +454,7 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 ## Surface Integrals of Vector Fields
 
-Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields rather than functions by taking a dot product of the field with a vector on the surface. Unlike in $#R#^2$, where we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, a point on a surface in $#R#^3$ has no such thing as a single unit tangent vector; that's effectively what it means to be a parametric function of two variables instead of one. However, there are still well-defined normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
+Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields instead of functions: we just need to take a dot product of the field with a vector on the surface. In $#R#^2$, we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, but a point on a surface in $#R#^3$ has no such thing as a single unit tangent vector; that's effectively what it means to be a parametric function of two variables instead of one. However, there are still well-defined normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
 
 There's one new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
 
@@ -484,7 +484,37 @@ It's upside-down! This surface has the remarkable property that it's impossible 
 
 ###
 
+When we considered closed curves in $#R#^2$ the previous section, a positive orientation on the curve induced normal vectors that pointed outward. For surfaces, we start with normal vectors themselves rather than tangent vectors, but we can do exactly the same thing: the **positive** orientation of a closed orientable surface is the choice of unit normal vectors that is outward at every point, like a porcupine.
 
+### desmos positiveOrientation
+
+We'll primarily find the positive orientation of surfaces useful in the next section. For now, let's get to the definition of a surface integral through a vector field; it's a direct blending of a typical surface integral with a curve integral measuring flux.
+
+### def "surface integral through a vector field"
+
+	Let $S$ be a oriented surface parameterized by $\vec{r}(u, \v)$ for $(u, \v) \in R$, and let $\vec{F}(x, y, z)$ be a continuous vector field in $#R#^3$. The **surface integral** of $\vec{F}$ over $S$ is
+
+	$$
+		\iint_S \vec{F} \bullet \vec{n}\,\d s,
+	$$
+
+	where $\d s$ still represents infinitesimal arc length and $\vec{n}$ is the unit normal vector. Since
+
+	$$
+		\vec{n}(u, \v) = \frac{\vec{r}_u \times \vec{r}_{\v}}{\left| \vec{r}_u \times \vec{r}_{\v} \right|}
+	$$
+
+	and $\d s = \left| \vec{r}_u \times \vec{r}_{\v} \right|\,\d A$, we can write surface integrals in two other forms, exactly analogous to curve integrals:
+
+	$$
+		\iint_S \vec{F} \bullet \vec{n}\,\d s &= \iint_S \vec{F} \bullet \d\vec{s}
+
+		&= \iint_R \vec{F}(u, \v) \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right) \d A.
+	$$
+
+	These integrals measure the **flux** of the vector field through the surface.
+
+###
 
 
 
