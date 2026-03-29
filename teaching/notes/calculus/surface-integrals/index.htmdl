@@ -6,7 +6,7 @@ With our plan in place from the previous section, let's begin developing the too
 
 Back in section 5.3, we discussed vector-valued functions. While functions that send one variable to two or more are interesting in their own right, we've primarily thought of them as curve parameterizations since then. In effect, a function $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$ is a lens through which to understand its graph, a complicated 1-dimensional path in $#R#^3$, as the operation of a function on an orderly set of inputs in $#R#$ (often an interval $[a, b]$). Since we already have a well-established theory of functions, we can understand nearly everything about the curve in terms of $\vec{r}$.
 
-To prepare for the move to surfaces, let's look at a slightly different perspective on curves: we can think of a function $\vec{l}(t)$ as giving instructions for shaping a 1D curve in $#R#$ into a 3D curve in $#R#^3$.
+To prepare for the move to surfaces, let's look at a slightly different perspective on curves: we can think of a function $\vec{l}(t)$ as giving instructions for shaping a 1D "curve" in $#R#$ into a 3D curve in $#R#^3$.
 
 ### desmos parametricCurveShaping
 
@@ -26,7 +26,7 @@ To parameterize a surface, we'll need two input variables to a function $\vec{r}
 
 ###
 
-Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the codomain and domain, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function
+Most of our understanding of parametric surfaces will come from analogies to functions of two variables and parametric curves (which match the domain of $#R#^2$ and codomain of $#R#^3$, respectively). To get a sense of how these two reference points interact, let's think about derivatives. A vector-valued function
 
 $$
 	\vec{s}(t) = \left< a(t),\ b(t),\ c(t) \right>
@@ -120,15 +120,17 @@ Given a function $y = f(x)$, rotating its graph about the $x$-axis produces a sh
 
 ### desmos surfaceOfRevolution
 
-Here, increase $b$ to draw the surface of revolution; as is so often the case, the visual is more effective than any description. Following the idea of the parameterizing the cone in the previous exercise, we can parameterize this surface as
+Here, increase $b$ to draw the surface of revolution; as is so often the case, the visual is more effective than any description. Following the idea of parameterizing the cone in the previous exercise, we can parameterize this surface as
 
 $$
-	\vec{r}(u, \v) = \left< u,\ f(u)\cos(\v),\ f(u)\sin(\v) \right>.
+	\vec{r}(u, \v) = \left< u,\ f(u)\cos(\v),\ f(u)\sin(\v) \right>,
 $$
+
+where $\v \in [0, 2\pi]$ and $u$ covers the domain of $f$.
 
 One of the primary ways we've interfaced with surfaces so far is finding tangent planes, and that seems like a good place to start if we'd like to understand parametric surfaces better.
 
-Let $\vec{r}(u, \v)$ be a parametric surface and consider the point with $u = a$ and $\v = b$. To find the equation of the tangent plane to the surface at $\vec{r}(a, b)$, we need to find a vector normal to the surface at that point. One way to find that is to find two nonparallel vectors in the place and take their cross product, as in the previous exercise.
+Let $\vec{r}(u, \v)$ be a parametric surface and consider the point with $u = a$ and $\v = b$. To find the equation of the tangent plane to the surface at $\vec{r}(a, b)$, we need to find a vector normal to the surface at that point. One way to find that is to find two nonparallel vectors in the plane and take their cross product, as in the previous exercise.
 
 Let's return to the wireframe diagrams produced by holding one of $u$ and $\v$ constant and letting the other vary. Setting $\v = b$ and letting $u$ vary produces a single-parameter function $\vec{r}(u, b)$, and similarly for $\vec{r}(a, \v)$. By differentiating the first of those with respect to $u$ and the second with respect to $\v$, we can find two different tangent vectors to the surface; by crossing those, we can find the normal vector we're after.
 
@@ -142,9 +144,9 @@ $$
 
 Toggle on the bottommost expression in the previous Desmos graph to see the plane!
 
-A condition for a parameterized curve being smooth was that its normal vector was always  defined and nonzero. In just the same way, we say a parameterized surface $\vec{r}(u, \v)$ is **smooth** if $\vec{r}_u \times \vec{r}_{\v}$ is always defined and nonzero; that avoids issues like cusps, as well as degenerate surfaces that are actually just curves (for example, if one of $u$ or $\v$ isn't present in the formula at all). In that case, $\vec{r}_u$ and $\vec{r}_{\v}$ would be parallel, so the cross product would be zero.
+A condition for a parameterized curve being smooth was that its normal vector was always  defined and nonzero (that's equivalent to the tangent vector having the same property). In just the same way, we say a parameterized surface $\vec{r}(u, \v)$ is **smooth** if $\vec{r}_u \times \vec{r}_{\v}$ is always defined and nonzero; that avoids issues like cusps, as well as degenerate surfaces that are actually just curves. Then $\vec{r}_u$ and $\vec{r}_{\v}$ would be parallel, so the cross product would be zero.
 
-### exc "the tangent plane to parameterized surface"
+### exc "the tangent plane to a parameterized surface"
 
 	Let $\vec{s}(u, \v)$ be defined by
 
@@ -152,7 +154,7 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 		\vec{s}(u, \v) = \left< \sin(u + 2\v),\ \sin(u),\ \cos(\v) \right>,
 	$$
 
-	where $u, \v \in [0, 2\pi]$. Find the formula for a tangent plane to $\vec{s}$ at the points $(u, v) = (0, 0)$, and $(u, v) = \left( \frac{\pi}{2}, 0 \right)$, and $(u, v) = \left( 0, \frac{\pi}{2} \right)$. Do they seem reasonable, given the graph below?
+	where $u, \v \in [0, 2\pi]$. Find the formula for a tangent plane to $\vec{s}$ at the points $(u, \v) = (0, 0)$, and $(u, \v) = \left( \frac{\pi}{2}, 0 \right)$, and $(u, \v) = \left( 0, \frac{\pi}{2} \right)$. Do they seem reasonable, given the graph below?
 
 	### desmos nastyTangentPlanes
 
@@ -161,38 +163,38 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 	The derivatives are
 
 	$$
-		\vec{r}_u &= \left< \cos(u + 2\v),\ \cos(u),\ 0 \right>
-		\vec{r}_{\v} &= \left< 2\cos(\v),\ 0,\ -\sin(\v) \right>,
+		\vec{s}_u &= \left< \cos(u + 2\v),\ \cos(u),\ 0 \right>
+		\vec{s}_{\v} &= \left< 2\cos(u + \v),\ 0,\ -\sin(\v) \right>,
 	$$
 
 	which at the given points are
 
 	$$
-		\vec{r}_u(0, 0) &= \left< 1, 1, 0 \right>
-		\vec{r}_{\v}(0, 0) &= \left< 2, 0, 0 \right>
+		\vec{s}_u(0, 0) &= \left< 1, 1, 0 \right>
+		\vec{s}_{\v}(0, 0) &= \left< 2, 0, 0 \right>
 
 		~
 
-		\vec{r}_u\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
-		\vec{r}_{\v}\left( \frac{\pi}{2}, 0 \right) &= \left< 2, 0, 0 \right>
+		\vec{s}_u\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+		\vec{s}_{\v}\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
 
 		~
 
-		\vec{r}_u\left( 0, \frac{\pi}{2} \right) &= \left< -1, 1, 0 \right>
-		\vec{r}_{\v}\left( 0, \frac{\pi}{2} \right) &= \left< 0, 0, -1 \right>.
+		\vec{s}_u\left( 0, \frac{\pi}{2} \right) &= \left< -1, 1, 0 \right>
+		\vec{s}_{\v}\left( 0, \frac{\pi}{2} \right) &= \left< -2, 0, -1 \right>.
 	$$
 
 	The cross products are
 
 	$$
-		\left( \vec{r}_u \times \vec{r}_{\v} \right)(0, 0) &= \left< 0, 0, -2 \right>
+		\left( \vec{s}_u \times \vec{s}_{\v} \right)(0, 0) &= \left< 0, 0, -2 \right>
 
-		\left( \vec{r}_u \times \vec{r}_{\v} \right)\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+		\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
 
-		\left( \vec{r}_u \times \vec{r}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -, 0 \right>.
+		\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -1, 2 \right>.
 	$$
 
-	The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
+	The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, \v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of the tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
 
 ###
 
@@ -204,7 +206,7 @@ $$
 	\int_a^b \left| \left| \vec{s}'(t) \right| \right|\d t
 $$
 
-works because approximating $\vec{s}(t)$ in chunks of $\Delta t$ by line segments results in each segment having length $\left| \left| \vec{s}'(t) \right| \right|\Delta t$. To bring that idea to parametric surfaces, let's look at that line-segment approximation in a different way: we split the domain $[a, b]$ into chunks of size $\Delta t$, and then mapped each onto a line with direction vector $\vec{s}'(t)$. Now, though, let's consider a function $\vec{r}(u, \v)$ defined for $u \in [a, b]$ and $\v \in [c, d]$; now the domain is the rectangle $[a, b] \times [c, d]$, and so we're mapping a small region with area $\Delta u \, \Delta v$ onto the tangent plane. The result is a small parallelogram whose sides are the vectors $(\Delta u) \vec{r}_u$ and $(\Delta \v) \vec{r}_{\v}$.
+works because approximating $\vec{s}(t)$ in chunks of $\Delta t$ by line segments results in each segment having length $\left| \left| \vec{s}'(t) \right| \right|\Delta t$. To bring that idea to parametric surfaces, let's look at that line-segment approximation in a different way: we split the domain $[a, b]$ into chunks of size $\Delta t$, and then mapped each onto a line segment with direction vector $\vec{s}'(t)$. Now, though, let's consider a function $\vec{r}(u, \v)$ defined for $u \in [a, b]$ and $\v \in [c, d]$; now the domain is the rectangle $[a, b] \times [c, d]$, and so we're mapping a small region with area $\Delta u \, \Delta v$ onto the tangent plane. The result is a small parallelogram whose sides are the vectors $(\Delta u) \vec{r}_u$ and $(\Delta \v) \vec{r}_{\v}$.
 
 ### desmos surfaceAreaParallelograms
 
@@ -238,14 +240,14 @@ and so we can fashion a formula for surface area.
 		\vec{c}(u, \v) = \left< r\cos(u),\ r\sin(u),\ \v \right>,
 	$$
 
-	where $u \in [0. 2\pi]$ and $\v \in [0, h]$. Now
+	where $u \in [0, 2\pi]$ and $\v \in [0, h]$. Now
 
 	$$
 		\vec{c}_u &= \left< -r\sin(u),\ r\cos(u),\ 0 \right>
 
 		\vec{c}_{\v} &= \left< 0, 0, 1 \right>
 
-		\vec{c}_u \times \vec{c}_{\v} &= \left< -r\cos(u),\ -r\sin(u),\ 0 \right>
+		\vec{c}_u \times \vec{c}_{\v} &= \left< r\cos(u),\ r\sin(u),\ 0 \right>
 
 		\left| \left| \vec{c}_u \times \vec{c}_{\v} \right| \right| &= r.
 	$$
@@ -342,7 +344,7 @@ Having covered curve integrals and double integrals so thoroughly, we're now pre
 
 ###
 
-Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals only meaningfully live in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango, and it would become just a Riemann sum of a double integral.
+Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals only meaningfully live in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango-like Riemann sum, and it would become just a Riemann sum for a double integral.
 
 ### ex "a surface integral"
 
@@ -377,9 +379,9 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 		&= \int_0^{2\pi} \left. \left[ \frac{\v^3}{3} + \v\sin(u) \right] \right|_{-1}^1\,\d u
 
-		&= \int_0^{2\pi} \left( \frac{2}{3} + 4\sin(u) \right)\d u
+		&= \int_0^{2\pi} \left( \frac{2}{3} + 2\sin(u) \right)\d u
 
-		&= \left. \left[ \frac{2}{3} u - 4\cos(u) \right] \right|_0^{2\pi}
+		&= \left. \left[ \frac{2}{3} u - 2\cos(u) \right] \right|_0^{2\pi}
 
 		&= \frac{4\pi}{3}.
 	$$
@@ -405,13 +407,13 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. Then
 
 	$$
-		\vec{r}_u &= \left< 1,\ 2u\cos(\v),\ 2u\sin(\v) \right>
+		\vec{r}_u &= \left< 1,\, 2u\cos(\v),\, 2u\sin(\v) \right>
 
-		\vec{r}_{\v} &= \left< 0,\ -u^2\sin(\v),\ u^2\cos(\v) \right>
+		\vec{r}_{\v} &= \left< 0,\, -u^2\sin(\v),\, u^2\cos(\v) \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< 2u^3 \cos^2(\v) + 2u^3 \sin^2(\v),\ -u^2\cos(\v), -u^2\sin^2(\v) \right>
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 2u^3 \cos^2(\v) + 2u^3 \sin^2(\v),\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
 
-		&= \left< 2u^3,\ -u^2\cos(\v), -u^2\sin^2(\v) \right>
+		&= \left< 2u^3,\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
 
 		\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= \sqrt{4u^6 + u^4}
 
@@ -433,7 +435,7 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 	With $w = 4u^2 + 1$ and $\d w = 8u\,\d u$,
 
 	$$
-		2\pi\int_0^1 u^3\sqrt{4u^2 + 1}\,\d\v\,\d u &= \frac{\pi}{4}\int_0^1 u^2w^{1/2}\,\d\v\,\d w
+		2\pi\int_0^1 u^3\sqrt{4u^2 + 1}\,\d u &= \frac{\pi}{4}\int_0^1 u^2w^{1/2}\,\d w
 
 		&= \frac{\pi}{4}\int_0^1 \frac{1}{4}(w - 1)w^{1/2}\,\d w
 
@@ -454,9 +456,9 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 ## Surface Integrals of Vector Fields
 
-Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields instead of functions: we just need to take a dot product of the field with a vector on the surface. In $#R#^2$, we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, but a point on a surface in $#R#^3$ has no such thing as a single unit tangent vector; that's effectively what it means to be a parametric function of two variables instead of one. However, there are still well-defined normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
+Just like with curve integrals, we can slightly adapt surface integrals to be of vector fields instead of functions: we just need to take a dot product of the field with a vector on the surface. In $#R#^2$, we could choose either the tangent vector or the normal vector to a curve to compute either the circulation along it or the flux through it, but a point on a surface in $#R#^3$ doesn't have a single unit tangent vector, since there are infinitely many directions tangent to any given point on a smooth surface. However, there are still well-defined and (nearly) unique normal vectors! We've already computed them, too: for a surface parameterized by $\vec{r}(u, \v)$, the normal vector is $\vec{r}_u \times \vec{r}_{\v}$.
 
-There's one new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
+There's one new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}'(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
 
 Have a look at this surface, though --- it's the famous **Möbius strip**, constructed by gluing a strip of paper into a loop with a $180^\circ$ twist. The red vector is normal to the surface; change the value of $a$ to slide it along until it's eventually at the same point where it started.
 
@@ -480,7 +482,7 @@ It's upside-down! This surface has the remarkable property that it's impossible 
 
 	Since the definition of orientability wants direction as a function of coordinates on the curve or surface, not parameters, the purple curve *itself* isn't orientable, strictly speaking. If we forget the parameterization, we have no idea what direction to assign the origin, even with notions like positive orientation. That's due in part to the self-intersection, but if we remove it by only defining the purple curve for $t \in \left[ \frac{1}{4}, \frac{3}{4} \right]$ (try adjusting $a$ and $b$), then we can still see the issue: there's a cusp at the origin, so we're not going to be able to vary the unit tangent vector smoothly. In effect, there is no way to join up one end of a smooth curve to another in a way that makes the unit tangent vectors (and therefore the unit normal vectors) discontinuous without that discontinuity showing up in the curve itself.
 
-	The Möbius strip is a lot like this curve. It's effectively intersecting itself at the point where the red vector flips: it should be drawn an entire second time to complete the parameterization and return to its original orientation. In that sense, the *parameterization* of the Möbius strip has a well-defined normal vector at pair of parameters $(u, \v)$, but not the surface itself. And the difference between surfaces and curves is that the extra parameter in surfaces affords them room to rotate and do what curves cannot: reconnect with themselves in a way that breaks the continuity of the normal vectors, but not the surface itself.
+	The Möbius strip is a lot like this curve. It's effectively intersecting itself at the point where the red vector flips, and there's a sense in which it should be drawn an entire second time to complete the parameterization and return to its original orientation. In that sense, the *parameterization* of the Möbius strip has a well-defined normal vector at pair of parameters $(u, \v)$, but not the surface itself. And the difference between surfaces and curves is that the extra parameter in surfaces affords them room to rotate and do what curves cannot: reconnect with themselves in a way that breaks the continuity of the normal vectors, but not the surface itself.
 
 ###
 
@@ -498,13 +500,13 @@ We'll primarily find the positive orientation of surfaces useful in the next sec
 		\iint_S \vec{F} \bullet \vec{n}\,\d s,
 	$$
 
-	where $\d s$ still represents infinitesimal arc length and $\vec{n}$ is the unit normal vector. Since
+	where $\d s$ still represents infinitesimal surface area and $\vec{n}$ is the unit normal vector. Since
 
 	$$
-		\vec{n}(u, \v) = \frac{\vec{r}_u \times \vec{r}_{\v}}{\left| \vec{r}_u \times \vec{r}_{\v} \right|}
+		\vec{n}(u, \v) = \frac{\vec{r}_u \times \vec{r}_{\v}}{\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|}
 	$$
 
-	and $\d s = \left| \vec{r}_u \times \vec{r}_{\v} \right|\,\d A$, we can write surface integrals in two other forms, exactly analogous to curve integrals:
+	and $\d s = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\,\d A$, we can write surface integrals in two other forms, exactly analogous to curve integrals:
 
 	$$
 		\iint_S \vec{F} \bullet \vec{n}\,\d s &= \iint_S \vec{F} \bullet \d\vec{s}
@@ -528,7 +530,7 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 
 	1. Find the flux of the field $\vec{F}(x, y, z) = \left< 2x, y, z \right>$ through the portion of $x + y + z = 1$ in the first octant.
 
-	2. Let $\vec{G} = \left< x^2, y^2, z^2 \right>$. Find the flux of $\vec{G}$ through the surface given by $x = \sqrt{y^2 + z^2}$ for $x \geq 3$ without integrating.
+	2. Let $\vec{G} = \left< x, y, z \right>$. Find the flux of $\vec{G}$ through the surface given by $x = \sqrt{y^2 + z^2}$ for $x \geq 3$ without integrating.
 
 	3. Let $S$ be the portion of $z = x^2 + y^2$ below $z = 1$. Find the surface integral
 
@@ -546,7 +548,7 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 		\vec{r}(u, \v) = \left< u,\ \v,\ 1 - u - \v \right>
 	$$
 
-	for $u$ and $\v$ in the triangle $T$ with vertices at $(0, 0)$, $(1, 0)$, and $(1, 1)$. Then
+	for $u$ and $\v$ in the triangle $T$ with vertices at $(0, 0)$, $(1, 0)$, and $(0, 1)$. Then
 
 	$$
 		\vec{r}_u &= \left< 1, 0, -1 \right>
@@ -567,9 +569,9 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 
 		&= \int_0^1 \!\!\! \int_0^{1 - u} \left( u + 1 \right)\d\v\,\d u
 
-		&= \int_0^1 \left( \frac{u^2}{2} + u \right)\left( 1 - u \right) \d u
+		&= \int_0^1 \left( u + 1 \right)\left( 1 - u \right) \d u
 
-		&= \frac{5}{24}.
+		&= \frac{2}{3}.
 	$$
 
 	We can color the surface by the dot product (i.e. the quantity we're eventually integrating) and superimpose the field on it.
