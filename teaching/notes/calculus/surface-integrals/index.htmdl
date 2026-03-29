@@ -524,7 +524,105 @@ $$
 
 using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scaled normal vector. I've stayed as far away from that as I reasonably can!
 
+### exc "a surface integral through a vector field"
 
+	1. Find the flux of the field $\vec{F}(x, y, z) = \left< 2x, y, z \right>$ through the portion of $x + y + z = 1$ in the first octant.
+
+	2. Let $\vec{G} = \left< x^2, y^2, z^2 \right>$. Find the flux of $\vec{G}$ through the surface given by $x = \sqrt{y^2 + z^2}$ for $x \geq 3$ without integrating.
+
+	3. Let $S$ be the portion of $z = x^2 + y^2$ below $z = 1$. Find the surface integral
+
+	$$
+		\iint_S \vec{H} \bullet \d\vec{s},
+	$$
+
+	where $\vec{H}(x, y, z) = \left< x, y, z^2 \right>$.
+
+	### solution
+
+	1. Let's start with the surface. We can parameterize that plane in a number of ways, but the simplest is probably
+
+	$$
+		\vec{r}(u, \v) = \left< u,\ \v,\ 1 - u - \v \right>
+	$$
+
+	for $u$ and $\v$ in the triangle $T$ with vertices at $(0, 0)$, $(1, 0)$, and $(1, 1)$. Then
+
+	$$
+		\vec{r}_u &= \left< 1, 0, -1 \right>
+
+		\vec{r}_{\v} &= \left< 0, 1, -1 \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 1, 1, 1 \right>.
+	$$
+
+	Just like with circulation integrals, we don't need to compute the magnitude of the cross product! We just have
+
+	$$
+		\iint_S \vec{F} \bullet \d\vec{s} &= \iint_T \vec{F}\left( u,\ \v,\ 1 - u - \v \right) \bullet \left< 1, 1, 1 \right>\d A
+
+		&= \iint_T \left< 2u,\ \v,\ 1 - u - \v \right> \bullet \left< 1, 1, 1 \right>\d A
+
+		&= \iint_T \left( u + 1 \right)\d A
+
+		&= \int_0^1 \!\!\! \int_0^{1 - u} \left( u + 1 \right)\d\v\,\d u
+
+		&= \int_0^1 \left( \frac{u^2}{2} + u \right)\left( 1 - u \right) \d u
+
+		&= \frac{5}{24}.
+	$$
+
+	We can color the surface by the dot product (i.e. the quantity we're eventually integrating) and superimpose the field on it.
+
+	### desmos surfaceIntegralThroughVectorField
+
+	2. Here, the flux is zero! The field is always parallel to the surface.
+
+	### desmos surfaceIntegralThroughVectorField2
+
+	3. Starting as usual with the parameterization, let's take
+
+	$$
+		\vec{r}(u, \v) = \left< u,\, \v,\, u^2 + \v^2 \right>
+	$$
+
+	for $u$ and $\v$ in the solid unit disk $D$, from which we can find
+
+	$$
+		\vec{r}_u &= \left< 1, 0, 2u \right>
+
+		\vec{r}_{\v} &= \left< 0, 1, 2\v \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< -2u, -2\v, 1 \right>.
+	$$
+
+	Now
+
+	$$
+		\iint_S \vec{H} \bullet \d\vec{s} &= \iint_D \vec{H}\left( u,\, \v,\, u^2 + \v^2 \right) \bullet \left< -2u, -2\v, 1 \right>\d A
+
+		&= \iint_D \left< u,\, \v,\, \left( u^2 + \v^2 \right)^2 \right> \bullet \left< -2u, -2\v, 1 \right>\d A
+
+		&= \iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A.
+	$$
+
+	That's about as polar as an integral can look, so let's change coordinates:
+
+	$$
+		\iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A &= \int_0^{2\pi} \!\! \int_0^1 \left( -2r^2 + r^4 \right)r\,\d r\d\theta
+
+		&= \int_0^{2\pi} \!\! \int_0^1 \left( -2r^3 + r^5 \right)\d r\d\theta
+
+		&= \int_0^{2\pi} \left( -\frac{1}{2} + \frac{1}{6} \right)\d\theta
+
+		&= -\frac{2\pi}{3}.
+	$$
+
+	### desmos surfaceIntegralThroughVectorField3
+
+###
+
+We've developed a solid theory of surfaces and integrals through them! We're now well prepared for the first generalization of Green's Theorem in the next section, relating flux integrals over a surface to curve integrals along its boundary.
 
 
 

@@ -529,6 +529,93 @@ export default function()
 
 				{ latex: raw`\vector(P, 1.25P)`, color: desmosColors.red, secret: true },
 			]
+		},
+
+		surfaceIntegralThroughVectorField:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
+
+			expressions:
+			[
+				{ latex: raw`(u, v, 1 - u - v)\{z \geq 0\}`, parametricDomain3Du: { min: 0, max: 1 }, parametricDomain3Dv: { min: 0, max: 1 }, colorLatex: "C" },
+
+				{ latex: raw`f(x, y, z) = (0.05x, y, z) \cdot (\frac{1}{\sqrt{3}} 1, 1, 1)` },
+
+				// the purple, red, and blue amounts
+				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+
+
+
+				{ latex: raw`Q = [(i, j, 1 - i - j\{1 - i - j \geq 0\}) \for i = [0.1, 0.1 + \frac{1}{6}, ... 0.9], j = [0.1, 0.1 + \frac{1}{6}, ... 0.9]]`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(Q, Q + 0.2(2Q.x, Q.y, Q.z))`, color: desmosColors.blue, secret: true },
+			]
+		},
+
+		surfaceIntegralThroughVectorField2:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -0.5, xmax: 3.5, ymin: -3.5, ymax: 3.5, zmin: -3.5, zmax: 3.5 },
+
+			expressions:
+			[
+				{ latex: raw`x = \sqrt{y^2 + z^2} \{ x \leq 3 \}`, colorLatex: "C", secret: true },
+
+				{ latex: raw`f(x, y, z) = 0`, secret: true },
+
+				// the purple, red, and blue amounts
+				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+
+
+
+				{ latex: raw`Q = [(i, i\cos(j), i\sin(j)) \for i = [0.5, 1, ..., 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(Q, Q + 0.15(Q.x, Q.y, Q.z))`, color: desmosColors.blue, secret: true },
+			]
+		},
+
+		surfaceIntegralThroughVectorField3:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
+
+			expressions:
+			[
+				{ latex: raw`z = x^2 + y^2 \{z \leq 1\}`, colorLatex: "C", secret: true },
+
+				{ latex: raw`f(x, y, z) = (x, y, z^2) \cdot (\frac{1}{\left| (-2x, -2y, 1) \right|} -2x, -2y, 1)`, secret: true },
+
+				// the purple, red, and blue amounts
+				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+
+
+
+				{ latex: raw`Q = [(\sqrt{i}\cos(j), \sqrt{i}\sin(j), i) \for i = [0.2, 0.4, 0.6, 0.8], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(Q, Q + 0.25(Q.x, Q.y, Q.z^2))`, color: desmosColors.red, secret: true },
+			]
 		}
 	});
 }
