@@ -516,6 +516,15 @@ We'll primarily find the positive orientation of surfaces useful in the next sec
 
 ###
 
+As with the definition of standard surface integrals, the little $s$ for surface area is usually written $S$, resulting in
+
+$$
+	\iint_S \vec{F} \bullet \vec{n}\,\d S &= \iint_S \vec{F} \bullet \d\vec{S}
+$$
+
+using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scaled normal vector. I've stayed as far away from that as I reasonably can!
+
+
 
 
 

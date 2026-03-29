@@ -207,7 +207,7 @@ export default function()
 				}),
 
 				{ latex: raw`s(a, b)`, color: desmosColors.orange },
-				{ latex: raw`s(t, b)`, parametricDomain: { min: 0, max: "\\pi" }, color: desmosColors.blue },
+				{ latex: raw`s(t, b)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.blue },
 				{ latex: raw`s(a, t)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.red },
 
 				{ latex: raw`s_u(t) = \frac{d}{dt}s(t, b)`, hidden: true, secret: true },
