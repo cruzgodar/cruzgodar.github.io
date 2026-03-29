@@ -74,23 +74,12 @@
 	</div>
 
 	<div id="height-measurer"></div>
-
-	<script>
-		window.MathJax =
-		{
-			tex:
-			{
-				inlineMath: [["$", "$"], ["\\(", "\\)"]]
-			}
-		};
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
 	
 	<script type="module">
 		const params = new URLSearchParams(window.location.search);
 
-		window.DEBUG = params.get("debug") === "1";
+		window.OFFLINE = params.get("debug") === "2";
+		window.DEBUG = window.OFFLINE || params.get("debug") === "1";
 
 		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("/teaching/uo/253/cards/homework-5"));
 	</script>

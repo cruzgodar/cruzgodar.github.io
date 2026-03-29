@@ -47,7 +47,7 @@
 
 	> b) Raise both sides of the inequality to the power of $\frac{1}{n}$ to get $a_n^{1/n} \leq a_N^{1/n} r^{1 - \frac{N}{n}}$. Now take the limit of both sides as $n \to \infty$.
 
-	> c) What can we conclude about the relationship between ratio test and the root test?
+	> c) What can we conclude about the relationship between the ratio test and the root test?
 
 	#. Let $$a_n = \frac{1}{2^{n + (-1)^{n + 1}}}$$ and consider the sum
 
