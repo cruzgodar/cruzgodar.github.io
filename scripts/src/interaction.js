@@ -344,13 +344,26 @@ export function listenForWilsonButtons()
 
 			if (e.key === "f")
 			{
+				// Delay and check if the window resized, which indicates
+				// the OS entered fullscreen (e.g. fn+F on Mac). The OS
+				// fullscreen doesn't use the Fullscreen API, so we detect
+				// it by checking if the window dimensions changed.
+				const heightAtKeydown = window.innerHeight;
+				const widthAtKeydown = window.innerWidth;
+
 				setTimeout(() =>
 				{
-					if (!document.fullscreenElement)
-					{
-						handleFullscreenButtonPress();
+					if (
+						Math.abs(window.innerHeight - heightAtKeydown) > 8
+						|| Math.abs(window.innerWidth - widthAtKeydown) > 8
+						|| document.fullscreenElement
+						|| document.webkitFullscreenElement
+					) {
+						return;
 					}
-				}, 0);
+
+					handleFullscreenButtonPress();
+				}, 50);
 			}
 
 			if (e.key === "r")
