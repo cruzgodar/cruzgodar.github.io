@@ -1,7 +1,11 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
-import { isFullscreen } from "./fullscreen.js";
+import { cardIsOpen, closeCard } from "./cards.js";
+import { desmosGraphs, desmosGraphsDefaultState } from "./desmos.js";
+import { exitFullscreen, getAnyFullscreenElement, isFullscreen } from "./fullscreen.js";
+import { accessibilityDialogOpen, hideAccessibilityDialog } from "./header.js";
 import { removeHoverEvents } from "./hoverEvents.js";
 import { addTemporaryListener } from "./main.js";
+import { contentsShown, hideContents } from "./pageContent.js";
 
 // Whether this is a touchscreen device on the current page.
 // It's assumed to be false on every page until a touchstart or touchmove
@@ -46,6 +50,35 @@ export function initInteractionListeners()
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
+		if (e.key === "Escape")
+		{
+			const fullscreenEl = getAnyFullscreenElement();
+
+			if (fullscreenEl)
+			{
+				e.preventDefault();
+				exitFullscreen({ element: fullscreenEl });
+			}
+
+			else if (cardIsOpen)
+			{
+				e.preventDefault();
+				closeCard();
+			}
+
+			else if (accessibilityDialogOpen)
+			{
+				e.preventDefault();
+				hideAccessibilityDialog();
+			}
+
+			else if (contentsShown)
+			{
+				e.preventDefault();
+				hideContents();
+			}
+		}
+
 		// Click the focused element when the enter key is pressed.
 		if (e.key === "Enter")
 		{
@@ -242,8 +275,49 @@ function handleResetButtonPress()
 		}
 	}
 
-	if (!currentlyLoadedApplets[minIndex].allowResetWithKeyboard)
+	// Check on-screen desmos graphs.
+	let bestDesmosId = null;
+
+	const desmosElements = document.querySelectorAll(".desmos-border");
+
+	for (const border of desmosElements)
 	{
+		const graphElement = border.querySelector(".desmos-container");
+
+		if (!graphElement || !desmosGraphs[graphElement.id])
+		{
+			continue;
+		}
+
+		const rect = border.getBoundingClientRect();
+
+		if (rect.bottom < 0 || rect.top > window.innerHeight)
+		{
+			continue;
+		}
+
+		const center = rect.top + rect.height / 2;
+		const distance = Math.abs(window.innerHeight / 2 - center);
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			bestDesmosId = graphElement.id;
+		}
+	}
+
+	// If a desmos graph is closer, reset it.
+	if (bestDesmosId)
+	{
+		desmosGraphs[bestDesmosId].setState(desmosGraphsDefaultState[bestDesmosId]);
+		return;
+	}
+
+	// Otherwise, reset the closest applet.
+	if (
+		currentlyLoadedApplets.length === 0
+		|| !currentlyLoadedApplets[minIndex]?.allowResetWithKeyboard
+	) {
 		return;
 	}
 
@@ -270,7 +344,13 @@ export function listenForWilsonButtons()
 
 			if (e.key === "f")
 			{
-				handleFullscreenButtonPress();
+				setTimeout(() =>
+				{
+					if (!document.fullscreenElement)
+					{
+						handleFullscreenButtonPress();
+					}
+				}, 0);
 			}
 
 			if (e.key === "r")

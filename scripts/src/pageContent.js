@@ -11,7 +11,7 @@ const contentsSelector = ".notes-title, .section-text, .heading-text";
 let contentsContainerElement;
 let contentsElement;
 let indicatorElement;
-let contentsShown = false;
+export let contentsShown = false;
 let contentsAnimating = false;
 
 export function initPageContents()
@@ -171,7 +171,7 @@ async function showContents()
 	contentsAnimating = false;
 }
 
-async function hideContents()
+export async function hideContents()
 {
 	if (!contentsShown || contentsAnimating)
 	{

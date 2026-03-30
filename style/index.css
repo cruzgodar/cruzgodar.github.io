@@ -2389,7 +2389,6 @@ to hide them in that case. */
 	bottom: 10px;
 	width: 16px;
 	height: 16px;
-	z-index: 50;
 	background: var(--background);
 	border: 2px solid var(--normal-contrast);
 	padding: 5px;

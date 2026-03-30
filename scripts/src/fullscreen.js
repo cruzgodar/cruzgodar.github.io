@@ -1,6 +1,17 @@
 import { siteSettings } from "./settings.js";
 
 const fullscreenData = new WeakMap();
+const fullscreenElements = new Set();
+
+export function getAnyFullscreenElement()
+{
+	for (const el of fullscreenElements)
+	{
+		return el;
+	}
+
+	return null;
+}
 
 function addEnterTransitionStyle(elementRect, aspectRatio, salt)
 {
@@ -217,7 +228,7 @@ export async function enterFullscreen({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		zIndex: "1000",
+		zIndex: "3000",
 		backgroundColor: "black",
 		fontSize: "0",
 	});
@@ -229,14 +240,6 @@ export async function enterFullscreen({
 	const elementRect = element.getBoundingClientRect();
 	const aspectRatio = elementRect.width / elementRect.height;
 
-	const onKeydown = (e) =>
-	{
-		if (e.key === "Escape" && fullscreenData.has(element))
-		{
-			exitFullscreen({ element });
-		}
-	};
-
 	fullscreenData.set(element, {
 		placeholder,
 		container,
@@ -247,9 +250,10 @@ export async function enterFullscreen({
 		initialWindowInnerWidth: window.innerWidth,
 		initialWindowInnerHeight: window.innerHeight,
 		preventGestures,
-		onKeydown,
 		exitCallback,
 	});
+
+	fullscreenElements.add(element);
 
 	const apply = () =>
 	{
@@ -262,8 +266,6 @@ export async function enterFullscreen({
 		document.addEventListener("gesturestart", preventGestures);
 		document.addEventListener("gesturechange", preventGestures);
 		document.addEventListener("gestureend", preventGestures);
-		document.addEventListener("keydown", onKeydown);
-
 		callback();
 	};
 
@@ -326,8 +328,6 @@ export async function exitFullscreen({
 		document.removeEventListener("gesturestart", data.preventGestures);
 		document.removeEventListener("gesturechange", data.preventGestures);
 		document.removeEventListener("gestureend", data.preventGestures);
-		document.removeEventListener("keydown", data.onKeydown);
-
 		data.exitCallback();
 		callback();
 	};
@@ -373,4 +373,5 @@ export async function exitFullscreen({
 	}
 
 	fullscreenData.delete(element);
+	fullscreenElements.delete(element);
 }

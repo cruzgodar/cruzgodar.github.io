@@ -28,13 +28,6 @@ if (closeButton)
 
 	closeButton.addEventListener("click", () => closeCard());
 
-	document.documentElement.addEventListener("keydown", (e) =>
-	{
-		if (e.key === "Escape" && cardIsOpen)
-		{
-			closeCard();
-		}
-	});
 }
 
 export let scrollBeforeCard = 0;

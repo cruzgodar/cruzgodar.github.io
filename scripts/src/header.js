@@ -20,7 +20,7 @@ export let distinguishColorsCheckbox;
 
 export let distinguishColorsCheckboxContainer;
 
-let accessibilityDialogOpen = false;
+export let accessibilityDialogOpen = false;
 let accessibilityDialogAnimating = false;
 
 export function addHeader()
@@ -285,7 +285,7 @@ async function showAccessibilityDialog()
 	accessibilityDialogAnimating = false;
 }
 
-async function hideAccessibilityDialog()
+export async function hideAccessibilityDialog()
 {
 	if (accessibilityDialogAnimating)
 	{
