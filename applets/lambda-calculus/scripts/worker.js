@@ -145,6 +145,7 @@ function expressionToString({
 	const inputString = expressionToString({
 		expression: expression.input,
 		addHtml,
+		darkTheme
 	});
 
 
