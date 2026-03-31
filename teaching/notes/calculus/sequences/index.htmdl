@@ -109,11 +109,11 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	To check our answer, let's plug it into the recurrence. We have $a_1 = 2^{1 - 1} = 1$ and
 	
 	$$
-		a_n &= 2a_{n - 1}
+		a_n &= 2a_{n - 2}
 		
-		&= 2\left( 2^{n - 1} \right)
+		&= 2\left( 2^{n - 2} \right)
 		
-		&= 2^n,
+		&= 2^{n - 1},
 	$$
 	
 	which is exactly correct!
