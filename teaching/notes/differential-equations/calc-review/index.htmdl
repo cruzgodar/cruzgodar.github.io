@@ -309,9 +309,9 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 		
 		\log(1 + x) &= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots & (-1, 1]
 		
-		\sin(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} - \frac{x^5}{5!} + \frac{x^7}{7!} - \cdots & (-\infty, \infty)
+		\sin(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots & (-\infty, \infty)
 		
-		\cos(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} - \frac{x^4}{4!} + \frac{x^6}{6!} - \cdots & (-\infty, \infty)
+		\cos(x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots & (-\infty, \infty)
 		
 		(1 + x)^r &= \sum_{n = 0}^\infty \binom{r}{n} x^n = 1 + rx + \frac{r(r - 1)}{2!}x^2 + \frac{r(r - 1)(r - 2)}{3!}x^3 + \cdots & (-1, 1)
 	$$

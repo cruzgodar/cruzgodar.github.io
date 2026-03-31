@@ -200,6 +200,12 @@ export async function redirect({
 		window.scrollTo(0, lastPageScroll);
 	}
 
+	else if (navigationTransitionType === -1)
+	{
+		const savedScroll = parseInt(sessionStorage.getItem("scroll-" + url) ?? 0);
+		window.scrollTo(0, savedScroll);
+	}
+
 	lastPageScroll = temp;
 }
 
