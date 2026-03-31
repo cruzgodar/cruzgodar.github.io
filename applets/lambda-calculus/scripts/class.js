@@ -1845,8 +1845,14 @@ export class LambdaCalculus extends AnimationFrameApplet
 			addHtml: false,
 		});
 
-		let collapsedExpressionString = expressionString.replaceAll(/a-zA-Z/g, "x")
+		let collapsedExpressionString = expressionString.replaceAll(/[a-zA-Z]/g, "x")
 			.replaceAll(/\(\)/g, "");
+
+		// Keep a sliding window of recent expressions to detect
+		// multi-step cycles (e.g. A -> B -> A' where A' contains A).
+		const historyLength = 4;
+		const recentExpressionStrings = [expressionString];
+		const recentCollapsedStrings = [collapsedExpressionString];
 
 		outerLoop: for (let i = 0; i < maxBetaReductions; i++)
 		{
@@ -1857,18 +1863,51 @@ export class LambdaCalculus extends AnimationFrameApplet
 					addHtml: false,
 				});
 
-				const collapsedString = string.replaceAll(/a-zA-Z/g, "x")
+				const collapsedString = string.replaceAll(/[a-zA-Z]/g, "x")
 					.replaceAll(/\(\)/g, "");
+
+				// Check against all recent expressions, not just the current one.
+				let containsAsSubstring = false;
+				let isNestedBadly = false;
+				let isNestedVeryBadly = false;
+				let lengthDelta = string.length - expressionString.length;
+
+				for (let j = 0; j < recentCollapsedStrings.length; j++)
+				{
+					const pastCollapsed = recentCollapsedStrings[j];
+					const pastExact = recentExpressionStrings[j];
+
+					if (
+						collapsedString.includes(pastCollapsed)
+						&& collapsedString.length > pastCollapsed.length
+					) {
+						containsAsSubstring = true;
+					}
+
+					if (this.isSubexpressionOf(pastCollapsed, collapsedString))
+					{
+						isNestedBadly = true;
+					}
+
+					if (this.isSubexpressionOf(pastExact, string))
+					{
+						isNestedVeryBadly = true;
+					}
+
+					lengthDelta = Math.max(
+						lengthDelta,
+						string.length - pastExact.length
+					);
+				}
 
 				return {
 					expression: reduction,
 					expressionString: string,
 					collapsedExpressionString: collapsedString,
-					isNestedBadly: this.isSubexpressionOf(
-						collapsedExpressionString,
-						collapsedString
-					),
-					isNestedVeryBadly: this.isSubexpressionOf(expressionString, string)
+					containsAsSubstring,
+					isNestedBadly,
+					isNestedVeryBadly,
+					lengthDelta,
 				};
 			});
 
@@ -1877,15 +1916,16 @@ export class LambdaCalculus extends AnimationFrameApplet
 				break;
 			}
 
-			// Sort expressions by containment, then by string length.
+			// Sort expressions by containment, then by growth, then by string length.
+			// Reductions that show signs of self-replication are always last.
 			const sortedBetaReductions = betaReductions.sort((a, b) =>
 			{
-				if (!a.isNestedVeryBadly && b.isNestedVeryBadly)
+				if (!a.containsAsSubstring && b.containsAsSubstring)
 				{
 					return -1;
 				}
 
-				if (a.isNestedVeryBadly && !b.isNestedVeryBadly)
+				if (a.containsAsSubstring && !b.containsAsSubstring)
 				{
 					return 1;
 				}
@@ -1898,6 +1938,25 @@ export class LambdaCalculus extends AnimationFrameApplet
 				if (a.isNestedBadly && !b.isNestedBadly)
 				{
 					return 1;
+				}
+
+				if (!a.isNestedVeryBadly && b.isNestedVeryBadly)
+				{
+					return -1;
+				}
+
+				if (a.isNestedVeryBadly && !b.isNestedVeryBadly)
+				{
+					return 1;
+				}
+
+				// Prefer reductions that shrink the expression.
+				const aGrows = a.lengthDelta > 0 ? 1 : 0;
+				const bGrows = b.lengthDelta > 0 ? 1 : 0;
+
+				if (aGrows !== bGrows)
+				{
+					return aGrows - bGrows;
 				}
 
 				return a.expressionString.length - b.expressionString.length;
@@ -1934,6 +1993,15 @@ export class LambdaCalculus extends AnimationFrameApplet
 			expression = sortedBetaReductions[0].expression;
 			expressionString = sortedBetaReductions[0].expressionString;
 			collapsedExpressionString = sortedBetaReductions[0].collapsedExpressionString;
+
+			recentExpressionStrings.push(expressionString);
+			recentCollapsedStrings.push(collapsedExpressionString);
+
+			if (recentExpressionStrings.length > historyLength)
+			{
+				recentExpressionStrings.shift();
+				recentCollapsedStrings.shift();
+			}
 
 			if (this.expressionTextarea && updateExpressionDuringReduction)
 			{
