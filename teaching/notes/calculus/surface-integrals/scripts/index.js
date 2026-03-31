@@ -157,6 +157,53 @@ export default function()
 			]
 		},
 
+		sphericalHalfCircles:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+			
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 + z^2 = 1`, color: desmosColors.gray },
+				{ latex: raw`(\cos(t), \sin(t), 0)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.purple },
+
+				...getDesmosSlider({
+					expression: "a = 5",
+					min: 0,
+					max: "2\\pi",
+					secret: false,
+				}),
+				
+				{ latex: raw`(\cos(a), \sin(a), 0)`, color: desmosColors.red },
+				{ latex: raw`(\sin(t)\cos(a), \sin(t)\sin(a), \cos(t))`, parametricDomain: { min: 0, max: "\\pi" }, color: desmosColors.blue },
+			]
+		},
+
+		sphericalCoordinates:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+			
+			expressions:
+			[
+				{ latex: raw`s(u, v) = (\sin(v)\cos(u), \sin(v)\sin(u), \cos(v))` },
+
+				{ latex: raw`s(u, v)`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: 0, max: "\\pi" }, color: desmosColors.purple },
+
+				{ latex: raw`U = [0, \frac{\pi}{6}, ..., 2\pi]` },
+				{ latex: raw`V = [0, \frac{\pi}{6}, ..., \pi]` },
+
+				{ latex: raw`s(t, V)`, parametricDomain: { min: 0, max: "2\\pi" }, color: desmosColors.blue },
+				{ latex: raw`s(U, t)`, parametricDomain: { min: 0, max: "\\pi" }, color: desmosColors.red },
+			]
+		},
+
 		surfaceOfRevolution:
 		{
 			use3d: true,

@@ -263,18 +263,8 @@ async function showAndRestoreScroll()
 
 	else
 	{
-		// Retry scroll restoration until the page is tall enough
-		// or we've waited long enough.
-		for (let i = 0; i < 20; i++)
-		{
-			window.scrollTo(0, savedScroll);
-
-			if (savedScroll === 0 || window.scrollY >= savedScroll - 1)
-			{
-				break;
-			}
-
-			await sleep(50);
-		}
+		window.scrollTo(0, savedScroll);
 	}
+
+	window.dispatchEvent(new Event("scroll"));
 }

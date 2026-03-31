@@ -30,7 +30,7 @@ The simplest way to describe continuous functions is that they're the ones whose
 
 	### solution
 	
-	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to 3} f(x)$ DNE, so it's not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it's not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it's not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
+	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to -3} f(x)$ DNE, so it's not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it's not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it's not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
 
 ###
 
