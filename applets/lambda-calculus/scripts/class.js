@@ -6,6 +6,8 @@ import { siteSettings } from "/scripts/src/settings.js";
 import { animate, clamp, sleep } from "/scripts/src/utils.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
+const useNormalOrderReduction = false;
+
 const LITERAL = 0; // { value, bindingLambda }
 const LAMBDA = 1; // { argument, body }
 const APPLICATION = 2; // { function, input }
@@ -27,8 +29,10 @@ const CONNECTOR = 3;
 // The outermost expression also gets a rectIndex field.
 
 const shorthands = {
-	"0": "(λfλxx)",
+	"T": "(λxλyx)",
 	"F": "(λxλyy)",
+
+	"0": "(λfλxx)",
 	"1": "(λfλxf(x))",
 	"2": "(λfλxf(f(x)))",
 	"3": "(λfλxf(f(f(x))))",
@@ -44,7 +48,6 @@ const shorthands = {
 
 	"I": "(λxx)",
 	"K": "(λxλyx)",
-	"T": "(λxλyx)",
 	"S": "(λxλyλz(xz)(yz))",
 	"Y": "(λf(λxf(xx))(λxf(xx)))",
 
@@ -1209,6 +1212,71 @@ export class LambdaCalculus extends AnimationFrameApplet
 		}
 	}
 
+	// Returns the single leftmost-outermost beta reduction (normal order).
+	findNormalOrderReduction(expression)
+	{
+		if (expression.type === APPLICATION)
+		{
+			// If this application is itself a redex, reduce it (outermost first).
+			if (expression.function.type === LAMBDA)
+			{
+				const clonedExpression = structuredClone(expression);
+
+				const expressionToReduce = clonedExpression.function.body;
+				const bindingLambdaToReplace = clonedExpression.function;
+				const replacementValue = clonedExpression.input;
+
+				this.removeExpressionRectIndices(replacementValue);
+
+				return this.computeBetaReduction(
+					expressionToReduce,
+					bindingLambdaToReplace,
+					replacementValue
+				);
+			}
+
+			// Otherwise, try the function side first (leftmost), then the input side.
+			const functionReduction = this.findNormalOrderReduction(expression.function);
+
+			if (functionReduction)
+			{
+				const reducedExpression = structuredClone(expression);
+				reducedExpression.function = functionReduction;
+				return reducedExpression;
+			}
+
+			const inputReduction = this.findNormalOrderReduction(expression.input);
+
+			if (inputReduction)
+			{
+				const reducedExpression = structuredClone(expression);
+				reducedExpression.input = inputReduction;
+				return reducedExpression;
+			}
+
+			return null;
+		}
+
+		else if (expression.type === LAMBDA)
+		{
+			const bodyReduction = this.findNormalOrderReduction(expression.body);
+
+			if (bodyReduction)
+			{
+				const reducedExpression = structuredClone(expression);
+				reducedExpression.body = bodyReduction;
+				return reducedExpression;
+			}
+
+			return null;
+		}
+
+		else
+		{
+			return null;
+		}
+	}
+
 	// Returns the beta reduction of the expression, replacing any literals
 	// with the given binding lambda with replacementValue.
 	computeBetaReduction(expression, bindingLambdaToReplace, replacementValue)
@@ -1856,8 +1924,17 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		outerLoop: for (let i = 0; i < maxBetaReductions; i++)
 		{
-			const betaReductions = this.listAllBetaReductions(expression).map(reduction =>
+			let chosenReduction;
+
+			if (useNormalOrderReduction)
 			{
+				const reduction = this.findNormalOrderReduction(expression);
+
+				if (!reduction)
+				{
+					break;
+				}
+
 				const string = this.expressionToString({
 					expression: reduction,
 					addHtml: false,
@@ -1866,106 +1943,128 @@ export class LambdaCalculus extends AnimationFrameApplet
 				const collapsedString = string.replaceAll(/[a-zA-Z]/g, "x")
 					.replaceAll(/\(\)/g, "");
 
-				// Check against all recent expressions, not just the current one.
-				let containsAsSubstring = false;
-				let isNestedBadly = false;
-				let isNestedVeryBadly = false;
-				let lengthDelta = string.length - expressionString.length;
-
-				for (let j = 0; j < recentCollapsedStrings.length; j++)
-				{
-					const pastCollapsed = recentCollapsedStrings[j];
-					const pastExact = recentExpressionStrings[j];
-
-					if (
-						collapsedString.includes(pastCollapsed)
-						&& collapsedString.length > pastCollapsed.length
-					) {
-						containsAsSubstring = true;
-					}
-
-					if (this.isSubexpressionOf(pastCollapsed, collapsedString))
-					{
-						isNestedBadly = true;
-					}
-
-					if (this.isSubexpressionOf(pastExact, string))
-					{
-						isNestedVeryBadly = true;
-					}
-
-					lengthDelta = Math.max(
-						lengthDelta,
-						string.length - pastExact.length
-					);
-				}
-
-				return {
+				chosenReduction = {
 					expression: reduction,
 					expressionString: string,
 					collapsedExpressionString: collapsedString,
-					containsAsSubstring,
-					isNestedBadly,
-					isNestedVeryBadly,
-					lengthDelta,
 				};
-			});
-
-			if (betaReductions.length === 0)
-			{
-				break;
 			}
 
-			// Sort expressions by containment, then by growth, then by string length.
-			// Reductions that show signs of self-replication are always last.
-			const sortedBetaReductions = betaReductions.sort((a, b) =>
+			else
 			{
-				if (!a.containsAsSubstring && b.containsAsSubstring)
+				const betaReductions = this.listAllBetaReductions(expression).map(reduction =>
 				{
-					return -1;
+					const string = this.expressionToString({
+						expression: reduction,
+						addHtml: false,
+					});
+
+					const collapsedString = string.replaceAll(/[a-zA-Z]/g, "x")
+						.replaceAll(/\(\)/g, "");
+
+					// Check against all recent expressions, not just the current one.
+					let containsAsSubstring = false;
+					let isNestedBadly = false;
+					let isNestedVeryBadly = false;
+					let lengthDelta = string.length - expressionString.length;
+
+					for (let j = 0; j < recentCollapsedStrings.length; j++)
+					{
+						const pastCollapsed = recentCollapsedStrings[j];
+						const pastExact = recentExpressionStrings[j];
+
+						if (
+							collapsedString.includes(pastCollapsed)
+							&& collapsedString.length > pastCollapsed.length
+						) {
+							containsAsSubstring = true;
+						}
+
+						if (this.isSubexpressionOf(pastCollapsed, collapsedString))
+						{
+							isNestedBadly = true;
+						}
+
+						if (this.isSubexpressionOf(pastExact, string))
+						{
+							isNestedVeryBadly = true;
+						}
+
+						lengthDelta = Math.max(
+							lengthDelta,
+							string.length - pastExact.length
+						);
+					}
+
+					return {
+						expression: reduction,
+						expressionString: string,
+						collapsedExpressionString: collapsedString,
+						containsAsSubstring,
+						isNestedBadly,
+						isNestedVeryBadly,
+						lengthDelta,
+					};
+				});
+
+				if (betaReductions.length === 0)
+				{
+					break;
 				}
 
-				if (a.containsAsSubstring && !b.containsAsSubstring)
+				// Sort expressions by containment, then by growth, then by string length.
+				// Reductions that show signs of self-replication are always last.
+				betaReductions.sort((a, b) =>
 				{
-					return 1;
-				}
+					if (!a.containsAsSubstring && b.containsAsSubstring)
+					{
+						return -1;
+					}
 
-				if (!a.isNestedBadly && b.isNestedBadly)
-				{
-					return -1;
-				}
+					if (a.containsAsSubstring && !b.containsAsSubstring)
+					{
+						return 1;
+					}
 
-				if (a.isNestedBadly && !b.isNestedBadly)
-				{
-					return 1;
-				}
+					if (!a.isNestedBadly && b.isNestedBadly)
+					{
+						return -1;
+					}
 
-				if (!a.isNestedVeryBadly && b.isNestedVeryBadly)
-				{
-					return -1;
-				}
+					if (a.isNestedBadly && !b.isNestedBadly)
+					{
+						return 1;
+					}
 
-				if (a.isNestedVeryBadly && !b.isNestedVeryBadly)
-				{
-					return 1;
-				}
+					if (!a.isNestedVeryBadly && b.isNestedVeryBadly)
+					{
+						return -1;
+					}
 
-				// Prefer reductions that shrink the expression.
-				const aGrows = a.lengthDelta > 0 ? 1 : 0;
-				const bGrows = b.lengthDelta > 0 ? 1 : 0;
+					if (a.isNestedVeryBadly && !b.isNestedVeryBadly)
+					{
+						return 1;
+					}
 
-				if (aGrows !== bGrows)
-				{
-					return aGrows - bGrows;
-				}
+					// Prefer reductions that shrink the expression.
+					const aGrows = a.lengthDelta > 0 ? 1 : 0;
+					const bGrows = b.lengthDelta > 0 ? 1 : 0;
 
-				return a.expressionString.length - b.expressionString.length;
-			});
+					if (aGrows !== bGrows)
+					{
+						return aGrows - bGrows;
+					}
 
-			this.setupExpression(sortedBetaReductions[0].expression, true);
+					return a.expressionString.length - b.expressionString.length;
+				});
+
+				chosenReduction = betaReductions[0];
+			}
+
+			this.setupExpression(chosenReduction.expression, true);
 			const animation = this.animateBetaReduction(
 				expression,
-				sortedBetaReductions[0].expression
+				chosenReduction.expression
 			);
 
 			// eslint-disable-next-line no-unused-vars
@@ -1990,9 +2089,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 				}
 			}
 
-			expression = sortedBetaReductions[0].expression;
-			expressionString = sortedBetaReductions[0].expressionString;
-			collapsedExpressionString = sortedBetaReductions[0].collapsedExpressionString;
+			expression = chosenReduction.expression;
+			expressionString = chosenReduction.expressionString;
+			collapsedExpressionString = chosenReduction.collapsedExpressionString;
 
 			recentExpressionStrings.push(expressionString);
 			recentCollapsedStrings.push(collapsedExpressionString);
