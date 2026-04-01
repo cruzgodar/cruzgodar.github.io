@@ -773,7 +773,8 @@ export const sitemap =
 			"/teaching/notes/calculus/vector-fields",
 			"/teaching/notes/calculus/curve-integrals",
 			"/teaching/notes/calculus/greens-theorem",
-			"/teaching/notes/calculus/surface-integrals"
+			"/teaching/notes/calculus/surface-integrals",
+			"/teaching/notes/calculus/stokes-theorem"
 		]
 	},
 		
@@ -1392,6 +1393,17 @@ export const sitemap =
 	"/teaching/notes/calculus/surface-integrals":
 	{
 		"title": "Section 6.5: Surface Integrals",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/stokes-theorem":
+	{
+		"title": "Section 6.6: Stokes' Theorem",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -2285,7 +2297,9 @@ export const sitemap =
 		
 		"parent": "/home",
 		
-		"children": []
+		"children": [],
+
+		"customStyle": true
 	},
 	
 	"/writing":

@@ -1,0 +1,9 @@
+p.body-text
+{
+	text-align: left;
+}
+
+.justify p.body-text
+{
+	text-align: justify;
+}

@@ -3,7 +3,7 @@ import { carouselFillAnimationTime, carouselSwitchAnimationTime } from "../src/a
 import { $$, addTemporaryListener } from "../src/main.js";
 import { sleep } from "../src/utils.js";
 
-const dotSize = 8;
+const dotSize = 12;
 const expandedDotWidth = 128;
 
 const carousels = new Set();

@@ -1621,9 +1621,9 @@ option
 
 .carousel-dot
 {
-	width: 8px;
-	height: 8px;
-	border-radius: 8px;
+	width: 12px;
+	height: 12px;
+	border-radius: 12px;
 	border: 2px solid var(--low-contrast);
 
 	display: flex;
@@ -1651,11 +1651,11 @@ option
 .carousel-dot .fill
 {
 	opacity: 0;
-	width: 8px;
-	height: 8px;
+	width: 12px;
+	height: 12px;
 	margin-left: -2px;
 	margin-right: -2px;
-	border-radius: 4px;
+	border-radius: 6px;
 	background-color: var(--low-contrast);
 }
 
