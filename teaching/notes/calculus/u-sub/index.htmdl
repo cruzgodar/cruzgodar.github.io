@@ -252,13 +252,11 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 
 
-One last type of $u$-sub problem to explore is where the substitution doesn't *quite* work, but is close enough that we can fix it.
+A different type of $u$-sub problem to explore is where the substitution doesn't *quite* work, but is close enough that we can fix it.
 
-
-
-### ex "another $u$-sub"
+### ex "a more complicated $u$-sub"
 	
-	Find $$\int \frac{x}{\sqrt{x - 1}}\,\d x$$.
+	Find $$\int x\sqrt{x - 1}\,\d x$$.
 
 	### solution
 	
@@ -282,6 +280,52 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 		&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
 	$$
 	
+###
+
+### exc "a more complicated $u$-sub"
+	
+	Find $$\int \frac{x}{x + 1}\,\d x$$.
+
+	### solution
+	
+	With $u = x + 1$, we have $\d u = 1\,\d x$, so
+	
+	$$
+		\int \frac{x}{x + 1}\,\d x &= \int \frac{x}{u}\,\d u
+
+		&= \int \frac{u - 1}{u}\,\d u
+
+		&= \int \left( u - \frac{1}{u} \right)\d u
+
+		&= \frac{u^2}{2} - \ln(u) + C
+
+		&= \frac{(x + 1)^2}{2} - \ln(x + 1) + C.
+	$$
+	
+###
+
+To close, let's use $u$-sub to evaluate a more complicated integral that we haven't been able to approach so far.
+
+### ex "the integral of $\tan(x)$"
+
+	Find $$\int \tan(x)\,\d x$$.
+
+	It's hard to get a single foothold on this problem as it's written, so let's try to rewrite $\tan(x)$ in a way that's more amenable to the techniques we've learned. If we write $\tan(x) = \frac{\sin(x)}{\cos(x)}$, then
+
+	$$
+		\int \tan(x)\,\d x &= \int \frac{\sin(x)}{\cos(x)}\,\d x,
+	$$
+
+	and we can take $u = \cos(x)$ and $\d u = -\sin(x)\,\d x$. Then we have
+
+	$$
+		\int \frac{\sin(x)}{\cos(x)}\,\d x &= \int -\frac{1}{u}\,\d u
+
+		&= -\ln(u) + C
+
+		&= -\ln(\cos(x)) + C.
+	$$
+
 ###
 
 
