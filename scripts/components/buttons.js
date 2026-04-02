@@ -374,7 +374,10 @@ export function initNavButtons()
 	{
 		for (const element of $$(".previous-nav-button"))
 		{
-			element.addEventListener("click", () => redirect({ url: list[index - 1] }));
+			element.addEventListener("click", (e) =>
+			{
+				redirect({ url: list[index - 1], inNewTab: e.metaKey });
+			});
 		}
 	}
 
@@ -389,7 +392,10 @@ export function initNavButtons()
 
 	for (const element of $$(".home-nav-button"))
 	{
-		element.addEventListener("click", () => redirect({ url: sitemap[pageUrl].parent }));
+		element.addEventListener("click", (e) =>
+		{
+			redirect({ url: sitemap[pageUrl].parent, inNewTab: e.metaKey });
+		});
 	}
 
 
@@ -398,7 +404,10 @@ export function initNavButtons()
 	{
 		for (const element of $$(".next-nav-button"))
 		{
-			element.addEventListener("click", () => redirect({ url: list[index + 1] }));
+			element.addEventListener("click", (e) =>
+			{
+				redirect({ url: list[index + 1], inNewTab: e.metaKey });
+			});
 		}
 	}
 

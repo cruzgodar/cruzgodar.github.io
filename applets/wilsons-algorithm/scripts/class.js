@@ -106,21 +106,20 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			return;
 		}
 
-		const firstColor = [
-			this.pixels[0][2][0],
-			this.pixels[0][2][1],
-			this.pixels[0][2][2]
-		];
-
 		if (
-			firstColor[0] !== 255
-			|| firstColor[1] !== 255
-			|| firstColor[2] !== 255
+			!this.currentlyColoring && (
+				this.pixels[0][2][0] !== 255
+				|| this.pixels[0][2][1] !== 255
+				|| this.pixels[0][2][2] !== 255
+			)
 		) {
 			this.currentlyColoring = true;
+			this.needNewFrame = true;
+			return;
 		}
 
-		
+		const firstDistance = this.pixels[0][3] ?? 0;
+
 		let i;
 		for (i = 0; i < numPixelsToDraw; i++)
 		{
@@ -130,11 +129,8 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			this.imageData[4 * index + 2] = this.pixels[i][2][2];
 
 			if (
-				this.animateColoring && (
-					this.pixels[i][2][0] !== firstColor[0]
-					|| this.pixels[i][2][1] !== firstColor[1]
-					|| this.pixels[i][2][2] !== firstColor[2]
-				)
+				this.animateColoring && this.currentlyColoring
+				&& this.pixels[i][3] > firstDistance
 			) {
 				break;
 			}

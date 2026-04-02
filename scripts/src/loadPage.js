@@ -32,7 +32,7 @@ import {
 import { initPageContents } from "./pageContent.js";
 import { siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
-import { animate, asyncFetch, sleep } from "./utils.js";
+import { animate, asyncFetch } from "./utils.js";
 
 export let pageShown = true;
 
@@ -352,7 +352,7 @@ function packageSolution(solutionElement, showButton = true)
 			solutionElement.style.top = 0;
 			solutionElement.style.left = 0;
 
-			await sleep(10);
+			window.dispatchEvent(new Event("scroll"));
 
 			const solutionElementHeight = solutionElement.getBoundingClientRect().height;
 			const textButtonsElementHeight = textButtonsElement.getBoundingClientRect().height;
@@ -392,6 +392,8 @@ function packageSolution(solutionElement, showButton = true)
 				solutionElement.style.removeProperty("z-index");
 				textButtonsElement.remove();
 			}
+
+			window.dispatchEvent(new Event("scroll"));
 		}
 	});
 }

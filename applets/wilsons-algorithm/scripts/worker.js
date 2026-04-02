@@ -604,6 +604,7 @@ async function colorGraph(linearColoring = false)
 				edgesByDistance[j][1][0],
 				edgesByDistance[j][1][1],
 				rgb,
+				i,
 			);
 		}
 	}
@@ -611,7 +612,7 @@ async function colorGraph(linearColoring = false)
 
 
 
-function drawLine(row1, column1, row2, column2, rgb)
+function drawLine(row1, column1, row2, column2, rgb, distance)
 {
 	if (column1 === column2)
 	{
@@ -621,17 +622,17 @@ function drawLine(row1, column1, row2, column2, rgb)
 		if (noBorders)
 		{
 			postMessage([
-				[x, y, rgb],
-				[x, y + 1, rgb]
+				[x, y, rgb, distance],
+				[x, y + 1, rgb, distance]
 			]);
 		}
 
 		else
 		{
 			postMessage([
-				[2 * x + 1, 2 * y + 1, rgb],
-				[2 * x + 1, 2 * y + 2, rgb],
-				[2 * x + 1, 2 * y + 3, rgb]
+				[2 * x + 1, 2 * y + 1, rgb, distance],
+				[2 * x + 1, 2 * y + 2, rgb, distance],
+				[2 * x + 1, 2 * y + 3, rgb, distance]
 			]);
 		}
 	}
@@ -644,17 +645,17 @@ function drawLine(row1, column1, row2, column2, rgb)
 		if (noBorders)
 		{
 			postMessage([
-				[x, y, rgb],
-				[x + 1, y, rgb]
+				[x, y, rgb, distance],
+				[x + 1, y, rgb, distance]
 			]);
 		}
 
 		else
 		{
 			postMessage([
-				[2 * x + 1, 2 * y + 1, rgb],
-				[2 * x + 2, 2 * y + 1, rgb],
-				[2 * x + 3, 2 * y + 1, rgb]
+				[2 * x + 1, 2 * y + 1, rgb, distance],
+				[2 * x + 2, 2 * y + 1, rgb, distance],
+				[2 * x + 3, 2 * y + 1, rgb, distance]
 			]);
 		}
 	}

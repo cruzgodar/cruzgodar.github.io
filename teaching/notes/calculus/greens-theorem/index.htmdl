@@ -156,7 +156,7 @@ $$
 
 While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$ --- the magic of the theorem we're about to state is that it's true for a much larger class of regions!
 
-<div class="notes-thm notes-environment"><div class="notes-def-title notes-title">Green’s Theorem</div>
+### thm "Green's Theorem"
 
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g \right>$ be a vector field, where $f$ and $g$ have continuous partial derivatives on and around $R$. Then
 
@@ -164,7 +164,7 @@ While all of our logic relied on the region $R$ being the type of region we coul
 		\int_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
 	$$
 
-</div>
+###
 
 While we certainly didn't introduce them in such a manner, the Fundamental Theorems of both Calculus and Curve Integrals were closer to Green's Theorem than they might seem at first: both equated a function evaluated on the boundary of a set (either an interval $[a, b]$ or a path in space) to the integral of its derivative over the set. In the Fundamental Theorem of Calculus, the relationship between the function and its derivative was straightforward enough: even if the theory of differentiation took a long time to develop, a function and its derivative were both functions of one variable, and every continuous function had an antiderivative. In the Fundamental Theorem of Curve Integrals, that relationship became more distant: the derivative of a function of multiple variables is its gradient, which is a vector field, and not every function of multiple variables even has an antiderivative.
 
@@ -477,7 +477,7 @@ We're now going to define these properly and give them names, but in keeping wit
 	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field written $\Gtimes \vec{F}$ or $\operatorname{curl} \vec{F}$ that gives the infinitesimal circulation of $\vec{F}$ at a point, measured about each of the three axes:
 
 	$$
-		\Gtimes \vec{F} &= \left< h_y - g_z, f_z - h_x, g_x - f_y \right>.
+		\Gtimes \vec{F} &= \left< h_y - g_z,\ f_z - h_x,\ g_x - f_y \right>.
 	$$
 
 	The notation involving the gradient is strikingly accurate --- if we imagine the gradient itself as being a vector of operators $\nabla = \left< p/px, p/py, p/pz \right>$ and allow multiplication like $p/px \cdot h$ to indicate taking a partial derivative, then

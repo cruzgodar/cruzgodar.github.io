@@ -2,13 +2,49 @@
 
 
 
-While surface integrals were complicated --- maybe even the most technically complicated object we'll study in the course --- the path to the summit is now largely clear. In this section, we'll examine the result of bringing the circulation form of Green's Theorem to $#R#^3$; recall that in $#R#^2$, Green's theorem stated that for a region $R$ with positively-oriented boundary $\p R$,
+While surface integrals were complicated --- maybe even the most technically complicated object we'll study in the course --- the path to the summit is now largely clear. In this section, we'll examine the result of bringing the circulation form of Green's Theorem to $#R#^3$; to begin, let's take a region and its boundary that live in $#R#^2$ and transplant them as delicately as possible into 3D space.
+
+Let $D$ be the unit disk in the $xy$-plane in $#R#^3$; that is,
 
 $$
-	\int_{\p R} \vec{F} \bullet \vec{T}\,\d s = \iint_R \operatorname{curl} \vec{F} \,\d A.
+	D = \left\{ (x, y, 0) \in #R#^3 \mid x^2 + y^2 \leq 1 \right\}.
 $$
 
-Let's analyze what differences we'd expect to see. The most noticeable change is that the flat region $R$ will be replaced by a surface $S$, since that's the general object whose boundary $\p S$ is a curve. That means the right-hand side will become a surface integral; in $#R#^2$, $\operatorname{curl} \vec{F}$ was a scalar, but it's now a vector, and so we'd expect the surface integral to be of a vector field. There's also an unknown: we required the boundary $\p R$ to be positively-oriented in $#R#^2$, but what does a positive orientation mean in $#R#^3$? If $S$ is the unit disk $x^2 + y^2 \leq 1$, then we can't just say that the boundary $x^2 + y^2 = 1$ should be oriented counterclockwise: that would change depending on whether we're looking at the circle from above or below.
+As an object in $#R#^2$, Green's theorem tells that for any 2D field $\left< f, g \right>$,
+
+$$
+	\int_{\p D} \left< f, g \right> \bullet \d \vec{r} = \iint_D \operatorname{curl} \left< f, g \right> \,\d A = \iint_D \operatorname{curl} \left( g_x - f_y \right) \,\d A
+$$
+
+where $\p D$ is the unit circle, oriented counterclockwise.
+
+### desmos unitCircle3D
+
+Let's now begin to translate each of the elements of that Green's Theorem equation into $#R#^3$. The first and most notable change is that $D$ is now a surface, and so the right-hand side of Green's Theorem has to become a surface integral. Next, the vector field may have a $z$-component, so let's let $\vec{F} = \left< f, g, h \right>$ be a general field in $#R#^3$. Then $\operatorname{curl}\vec{F} = \Gtimes \vec{F}$ is a vector instead of a scalar, and so that new surface integral actually needs to be of a vector field:
+
+$$
+	\iint_D \left( \Gtimes \vec{F} \right) \bullet \vec{n} \,\d s.
+$$
+
+What is that unit normal vector $\vec{n}$ going to be? Since $D$ is perfectly flat, it should be either $\vec{k}$ or $-\vec{k}$, and we can see which one is correct by expanding the curl. We have
+
+$$
+	\Gtimes \vec{F} = \left< h_y - g_z,\ f_z - h_x,\ g_x - f_y \right>,
+$$
+
+so to keep the function inside the surface integral equal to $g_x - f_y$ as it was in Green's Theorem, we should take $\vec{n} = \vec{k}$, orienting the surface so that the normal vectors point upward.
+
+The last object to consider is the curve integral on the left side. While the integral itself translates just fine to $#R#^3$ --- we've been taking curve integrals in 3D space ever since we introduced them --- the orientation of $\p D$ takes a little more care. In $#R#^2$, we said it had to be positively-oriented, which meant that if we walked around it, we'd keep $D$ on our left. For this circle, that meant a counterclockwise orientation, but that's a somewhat more delicate notion in $#R#^3$: turn that previous graph upside-down, and the counterclockwise orientation will seemingly become clockwise! To avoid this, we'll need to add a single caveat to oriented boundaries of surfaces so that we avoid this ambiguity.
+
+### def "oriented boundary of a surface"
+
+	Let $S$ be a smooth, oriented surface in $#R#^3$. The **positively-oriented boundary** of $S$ is the curve $\p S$, oriented so that walking along $\p S$ while staying parallel to the normal vector for $S$ keeps $S$ on the left.
+
+###
+
+For example, this cap of a sphere oriented so the convex side points outward has a boundary oriented as shown.
+
+### desmos sphereCap
 
 
 
