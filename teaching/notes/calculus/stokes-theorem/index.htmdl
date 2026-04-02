@@ -2,7 +2,13 @@
 
 
 
+While surface integrals were complicated --- maybe even the most technically complicated object we'll study in the course --- the path to the summit is now largely clear. In this section, we'll examine the result of bringing the circulation form of Green's Theorem to $#R#^3$; recall that in $#R#^2$, Green's theorem stated that for a region $R$ with positively-oriented boundary $\p R$,
 
+$$
+	\int_{\p R} \vec{F} \bullet \vec{T}\,\d s = \iint_R \operatorname{curl} \vec{F} \,\d A.
+$$
+
+Let's analyze what differences we'd expect to see. The most noticeable change is that the flat region $R$ will be replaced by a surface $S$, since that's the general object whose boundary $\p S$ is a curve. That means the right-hand side will become a surface integral; in $#R#^2$, $\operatorname{curl} \vec{F}$ was a scalar, but it's now a vector, and so we'd expect the surface integral to be of a vector field. There's also an unknown: we required the boundary $\p R$ to be positively-oriented in $#R#^2$, but what does a positive orientation mean in $#R#^3$? If $S$ is the unit disk $x^2 + y^2 \leq 1$, then we can't just say that the boundary $x^2 + y^2 = 1$ should be oriented counterclockwise: that would change depending on whether we're looking at the circle from above or below.
 
 
 

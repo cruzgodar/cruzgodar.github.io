@@ -474,29 +474,31 @@ We're now going to define these properly and give them names, but in keeping wit
 
 ### def "curl and divergence"
 
-	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field $\Gtimes F$ that gives the infinitesimal circulation of $\vec{F}$ at a point, measured about each of the three axes:
+	Let $\vec{F} = \left< f, g, h \right>$ be a vector field in $#R#^3$. The **curl** of $\vec{F}$ is a vector field written $\Gtimes \vec{F}$ or $\operatorname{curl} \vec{F}$ that gives the infinitesimal circulation of $\vec{F}$ at a point, measured about each of the three axes:
 
 	$$
-		\Gtimes F &= \left< h_y - g_z, f_z - h_x, g_x - f_y \right>.
+		\Gtimes \vec{F} &= \left< h_y - g_z, f_z - h_x, g_x - f_y \right>.
 	$$
 
 	The notation involving the gradient is strikingly accurate --- if we imagine the gradient itself as being a vector of operators $\nabla = \left< p/px, p/py, p/pz \right>$ and allow multiplication like $p/px \cdot h$ to indicate taking a partial derivative, then
 
 	$$
-		\Gtimes F &= \left< p/px, p/py, p/pz \right> \times \left< f, g, h \right>.
+		\Gtimes \vec{F} &= \left< p/px, p/py, p/pz \right> \times \left< f, g, h \right>.
 	$$
 
-	The **divergence** of $\vec{F}$ is a function of three variables $\Gbullet F$ that gives the infinitesimal flux of $\vec{F}$ out of a point:
+	The **divergence** of $\vec{F}$ is a function of three variables written $\Gbullet \vec{F}$ or $\operatorname{div} \vec{F}$ that gives the infinitesimal flux of $\vec{F}$ out of a point:
 
 	$$
-		\Gbullet F &= f_x + g_y + h_z
+		\Gbullet \vec{F} &= f_x + g_y + h_z
 
 		&= \left< p/px, p/py, p/pz \right> \bullet \left< f, g, h \right>.
 	$$
 
+	If $\vec{G} = \left< f, g \right>$ is a field in $#R#^2$, then $\operatorname{curl} \vec{F} = g_x - f_y$ is a scalar. It's the third component of the 3D curl vector, since a field in $#R#^2$ can effectively only spiral about the $z$-axis. Similarly, $\operatorname{div} \vec{F} = g_x - f_y$. For 2D fields like these, we tend not to use the $\nabla$ notation, mostly since the curl is no longer a vector.
+
 ###
 
-Curl and divergence are also sometimes written in the more mundane style $\operatorname{curl} \vec{F}$ and $\operatorname{div} \vec{F}$, but we'll stick with the $\nabla$ expressions. It can be a little overwhelming to keep the notions of circulation, flux, curl, and divergence distinct; to disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure expanding motion. Most importantly, though, circulation and flux are only defined relative to paths (or surfaces, as we'll see later) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
+It can be a little overwhelming to keep the notions of circulation, flux, curl, and divergence distinct; to disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure expanding motion. Most importantly, though, circulation and flux are only defined relative to paths (or surfaces, as we'll see later) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
 
 ### dropdown divergence-curl
 
@@ -567,18 +569,16 @@ With divergence and curl in hand, we can finally phrase both forms of Green's Th
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g, 0 \right>$ be a vector field restricted to $#R#^2$ whose component functions have continuous partial derivatives on and around $R$. Then
 
 	$$
-		\int_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R (\Gtimes \vec{F}) \bullet \vec{k} \,\d A
+		\int_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R \operatorname{curl} \vec{F} \,\d A
 
-		\int_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \Gbullet \vec{F} \,\d A.
+		\int_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \operatorname{div} \vec{F} \,\d A.
 	$$
 
 ###
 
-The dot product with $\vec{k}$ in the circulation form of Green's Theorem is just a clean way of writing the third component. This entire statement isn't typically how we think of Green's theorem, but it's the perfect capstone to this section, because it sets the stage for the final four that follow it.
+These statements are a perfect capstone to this section --- they set the stage for the final four that follow it. Our goal for the remainder of multivariable calculus is to bring Green's Theorem to $#R#^3$, and now that we've defined curl and divergence, we can see the outline of what that will look like. The curve integral part of the circulation form of Green's Theorem will move to $#R#^3$ just fine --- we've already been taking integrals along curves in $#R#^3$ with no issue. However, those curves are supposed to be the boundary of something in 3D space, and that no longer needs to be a flat region like it did in $#R#^2$. Instead, it could be an arbitrary surface, and so we'll need to develop a theory of integrating over surfaces. That will come in the next section, and the Green's Theorem analogue in the one after that.
 
-Our goal for the remainder of multivariable calculus is to bring Green's Theorem to $#R#^3$, and now that we've defined curl and divergence, we can see the outline of what that will look like. The curve integral part of the circulation form of Green's Theorem will move to $#R#^3$ just fine --- we've already been taking integrals along curves in $#R#^3$ with no issue. However, those curves supposed to be the boundary of something in 3D space, and that no longer needs to be a flat region like it did in $#R#^2$. Instead, it could be an arbitrary surface, and so we'll need to develop a theory of integrating over surfaces. That will come in the next section, and the Green's Theorem analogue in the one after that.
-
-The flux form of Green's Theorem is slightly more complicated. As we alluded to earlier, there is no such thing as a single normal vector to a curve in $#R#^3$; that property is held instead by surfaces (for example, planes have normal vectors in $#R#^3$, but lines do not). The flux integral in Green's Theorem will therefore need to be replaced by a surface integral. Moreover, that surface is supposed to be the boundary of something, which will have to be an entire solid region of $#R#^3$. Since there's no extra dimension for it to curve into like with surface integrals, objects like these will be flat in a sense, and we'll be able to handle them with a direct analogue of double integrals by just integrating one more time. We'll spend one section developing these so-called triple integrals, and then one last section returning to our final analogue of Green's Theorem, rounding out our journey through calculus in $#R#^3$.
+The flux form of Green's Theorem is more complicated. As we alluded to earlier, there is no such thing as a single normal vector to a curve in $#R#^3$; that property is held instead by surfaces (for example, planes have normal vectors in $#R#^3$, but lines do not). The flux integral in Green's Theorem will therefore need to be replaced by a surface integral. Moreover, that surface is supposed to be the boundary of something, which will have to be an entire solid region of $#R#^3$. Since there's no extra dimension for it to curve into like with surface integrals, objects like these will be flat in a sense, and we'll be able to handle them with a direct analogue of double integrals by just integrating one additional time. We'll spend one section developing these so-called triple integrals, and then one last section returning to our final analogue of Green's Theorem, rounding out our journey through calculus in $#R#^3$.
 
 
 
