@@ -23,7 +23,7 @@ where $\p D$ is the unit circle, oriented counterclockwise.
 Let's now begin to translate each of the elements of that Green's Theorem equation into $#R#^3$. The first and most notable change is that $D$ is now a surface, and so the right-hand side of Green's Theorem has to become a surface integral. Next, the vector field may have a $z$-component, so let's let $\vec{F} = \left< f, g, h \right>$ be a general field in $#R#^3$. Then $\operatorname{curl}\vec{F} = \Gtimes \vec{F}$ is a vector instead of a scalar, and so that new surface integral actually needs to be of a vector field:
 
 $$
-	\iint_D \left( \Gtimes \vec{F} \right) \bullet \vec{n} \,\d s.
+	\iint_D \left( \Gtimes \vec{F} \right) \bullet \vec{n} \,\d\sigma.
 $$
 
 What is that unit normal vector $\vec{n}$ going to be? Since $D$ is perfectly flat, it should be either $\vec{k}$ or $-\vec{k}$, and we can see which one is correct by expanding the curl. We have
@@ -38,13 +38,31 @@ The last object to consider is the curve integral on the left side. While the in
 
 ### def "oriented boundary of a surface"
 
-	Let $S$ be a smooth, oriented surface in $#R#^3$. The **positively-oriented boundary** of $S$ is the curve $\p S$, oriented so that walking along $\p S$ while staying parallel to the normal vector for $S$ keeps $S$ on the left.
+	Let $S$ be a smooth, oriented surface in $#R#^3$. The **positively-oriented boundary** of $S$ is the closed curve $\p S$, oriented so that walking along $\p S$ while staying parallel to the normal vector for $S$ keeps $S$ on the left.
 
 ###
 
-For example, this cap of a sphere oriented so the convex side points outward has a boundary oriented as shown.
+For example, this cap of a sphere oriented so the convex side points outward has a boundary oriented as shown. If we reversed the orientation, so that the red vectors pointed inward instead, the orientation of the blue boundary would be reversed.
 
 ### desmos sphereCap
+
+The mathematical way to phrase this definition is that an orientation of the surface **induces** an orientation of the boundary. There's also a connection with the right-hand rule, in that if you curl the fingers in the direction of the boundary, then your thumb should roughly point in the direction of the normal vectors to the surface.
+
+With all of the pieces translated to 3D, we're ready to state the theorem. Happily, there are no extra surprises!
+
+### thm "Stokes' Theorem"
+
+	Let $S$ be a smooth, oriented surface in $#R#^3$ whose positively-oriented boundary $\p S$ is a path (i.e. a piecewise-smooth closed curve), and let $\vec{F}$ be a vector field whose components have continuous partial derivatives on and around $S$. Then
+
+	$$
+		\int_{\p S} \vec{F} \bullet \d\vec{r} = \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}.
+	$$
+
+	In other words, the circulation around the boundary of $S$ is equal to the integral of the curl across $S$.
+
+###
+
+Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the  generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that that was correct. 
 
 
 

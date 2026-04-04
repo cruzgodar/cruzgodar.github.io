@@ -43,13 +43,11 @@ export default function()
 				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
 
 				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
-				{ latex: raw`\vector(s(T), s(T) + 0.2\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.15\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`P = [(\sin(i)\cos(j), \sin(i)\sin(j), \cos(i)) \for i = [0, \frac{\pi}{3} + a, \frac{\pi}{6} + a, \frac{\pi}{2}, \pi - \frac{\pi}{6} - a, \pi - \frac{\pi}{3} - a, \pi], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+				{ latex: raw`P = [(\cos(i), \sin(i)\cos(j), \sin(i)\sin(j)) \for i = [0, 0.375, 0.7], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
-				{ latex: raw`a = 0.1`, secret: true },
-
-				{ latex: raw`\vector(P, 1.25P)`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector(P, 1.2P)`, color: desmosColors.red, secret: true },
 			]
 		}
 	});

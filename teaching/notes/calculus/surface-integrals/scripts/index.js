@@ -663,6 +663,35 @@ export default function()
 
 				{ latex: raw`\vector(Q, Q + 0.25(Q.x, Q.y, Q.z^2))`, color: desmosColors.red, secret: true },
 			]
+		},
+
+		surfaceIntegralThroughVectorField4:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 + z^2 = 1 \{x \geq 0\} \{y \geq 0\} \{z \geq 0\}`, colorLatex: "C", secret: true },
+
+				{ latex: raw`f(x, y, z) = 0.75((1 + xyz, z^3, x^2 + y^2) \cdot (\frac{1}{\left| (-x, -y, -z) \right|} (-x, -y, -z)))^3`, secret: true },
+
+				// the purple, red, and blue amounts
+				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+
+
+
+				{ latex: raw`Q = [(i, j, \sqrt{1 - i^2 - j^2}) \for i = [0.1, 0.1 + 0.169, ... 0.9], j = [0.1, 0.1 + 0.169, ... 0.9]]`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(Q, Q + 0.15(1 + Q.xQ.yQ.z, Q.z^3, Q.x^2 + Q.y^2))`, color: desmosColors.red, secret: true },
+			]
 		}
 	});
 }
