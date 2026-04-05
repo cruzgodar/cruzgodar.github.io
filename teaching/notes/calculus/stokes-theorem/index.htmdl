@@ -134,29 +134,153 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 
 ### ex "Stokes' Theorem"
 
-	Let $\vec{F}$ be a field defined by
+	Let $\vec{F}$ be the vector field
+
+	$$
+		\vec{F}(x, y, z) = \left< -y^3, x^3, z^3 \right>.
+	$$
+
+	Find the circulation of $\vec{F}$ around the circle $C$ of radius $2$ parallel to the $xy$-plane centered at $(0, 0, 3)$, oriented counterclockwise when looking at it from above.
+
+	### desmos suspendedCircle
+
+	To do this directly, we would need to parameterize $C$; let's take
+
+	$$
+		\vec{s}(t) = \left< 2\cos(t),\ 2\sin(t),\ 3 \right>
+	$$
+
+	for $t \in [0, 2\pi]$, which results in circulation integral of
+
+	$$
+		\int_{C} \vec{F} \bullet \d\vec{s} &= \int_0^{2\pi} \left< -8\sin^3(t),\ 8\cos^3(t),\ 27 \right> \bullet \left< -2\sin(t),\ 2\cos(t),\ 0 \right>\d t
+
+		&= \int_0^{2\pi} \left( 16\sin^4(t) + 16\cos^4(t) \right)\d t,
+	$$
+
+	and while it's *possible* to evaluate that integral, it's a lot of work that we could avoid; let's try Stokes' Theorem instead. When we used Green's Theorem to translate curve integrals into double integrals, there was only one choice of region whose oriented boundary was the curve we were given. In $#R#^3$, though, there are infinitely many surfaces whose boundary is any given curve! The simplest possible one we could take here is the filled-in disk, oriented upward --- toggle it on in the Desmos graph to see. However, we could just as well take the surface given by $z = \frac{3}{4}\left( x^2 + y^2 \right)$ for $z \leq 3$ or $x^2 + y^2 + z^2 = 13$ for $z \geq 3$, both oriented upward. Toggle those on to compare; if you're wondering where those constants came from, remember that we want $x^2 + y^2 = 4$ and $z = 3$ to satisfy whatever equation we choose.
+
+	So which surface should we pick? When in doubt, pick the flattest surface possible. It's easier to parameterize and has a simpler normal vector, so unless there's something special about the curl of the field that makes it particularly nice on a portion of a sphere or something similar, flat surfaces are our best bet. In our case, the curl of $\vec{F}$ is
+
+	$$
+		\Gtimes \vec{F} = \left< 0, 0, 3x^2 + 3y^2 \right>,
+	$$
+
+	which looks well-suited to the flat disk if $x$ and $y$ are parameterized with $\cos$ and $\sin$. Specifically, we can parameterize that disk by functionally using polar coordinates as
+
+	$$
+		\vec{r}(u, \v) = \left< u\cos(\v),\ u\sin(\v),\ 3 \right>
+	$$
+
+	for $u \in [0, 2]$ and $\v \in [0, 2\pi]$. Then
+
+	$$
+		\vec{r}_u &= \left< \cos(\v),\ \sin(\v),\ 0 \right>
+
+		\vec{r}_{\v} &= \left< -u\sin(\v),\ u\cos(\v),\ 0 \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 0, 0, u\sin^2(\v) + u^2\cos^2(\v) \right>
+
+		&= \left< 0, 0, u \right>,
+	$$
+
+	which is correctly oriented upward, since $u \geq 0$. As a side note, the magnitude of the cross product equaling $u$ here is no coincidence: $u$ is the variable we usually call $r$ in polar coordinates, and so one way to think about a polar double integral is as a reparameterization of a scalar surface integral over a flat surface, where the extra factor of $u = r$ comes exactly from $\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|$.
+
+	Back to our problem. We're interested in a vector surface integral, not a scalar one, so we just need the cross product and not its magnitude. If we call the disk $D$, then $\p D = C$, so
+
+	$$
+		\int_C \vec{F} \bullet \d\vec{s} &= \iint_D \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
+
+		&= \int_0^{2\pi} \!\! \int_0^2 \left< 0, 0, 3\left( u\cos(\v) \right)^2 + 3\left( u\sin(\v) \right)^2 \right> \bullet \left< 0, 0, u \right>\d u\,\d\v
+
+		&= \int_0^{2\pi} \!\! \int_0^2 \left( 3u^3\cos^2(\v) + 3u^3\sin^2(\v) \right)\d u\,\d\v
+
+		&= \int_0^{2\pi} \!\! \int_0^2 3u^3\,\d u\,\d\v
+
+		&= 24\pi.
+	$$
+
+###
+
+We'll return to the idea of being able to choose different surfaces to represent the same integral soon, but let's first get some practice with Stokes' Theorem itself.
+
+### exc "Stokes' Theorem"
+
+	1. Let $\vec{F}$ be a field defined by
 
 	$$
 		\vec{F}(x, y, z) = \left< x + 2z,\ 2y - 3x,\ 5y + z \right>.
 	$$
 
-	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $x + y + z = 2$ in the first octant, oriented counterclockwise when looking at it from the origin.
+	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $P$ given by $x + y + z = 2$ in the first octant, oriented counterclockwise when looking at it from the origin.
 
 	### desmos planeTriangle
 
-	Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
+	2. Let $\vec{G}(x, y, z) = \left< y,\, 2x+z,\, xy \right>$ and let $S$ be the top half of the unit sphere, oriented downward. Compute
+
+	$$
+		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma}.
+	$$
+
+	### solution
+
+	1. Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
 
 	$$
 		\Gtimes \vec{F} = \left< 5, 2, -3 \right>,
 	$$
 
-	which looks dramatically simpler! We can parameterize the 
+	which looks dramatically simpler! We can parameterize the surface by
 
-###
+	$$
+		\vec{r}(u, \v) = \left< u, \v, 2 - u - \v \right>
+	$$
 
-### exc "Stokes' Theorem"
+	for $(u, \v)$ in the triangle $T$ in the $u\v$-plane with vertices at $(0, 0)$, $(2, 0)$, and $(0, 2)$. Checking our orientation,
 
-	
+	$$
+		\vec{r}_u = \left< 1, 0, -1 \right>
+
+		\vec{r}_{\v} = \left< 0, 1, -1 \right>
+
+		\vec{r}_u \times \vec{r}_{\v} = \left< 1, 1, 1 \right>,
+	$$
+
+	which points away from the origin. That would make the orientation of the boundary counterclockwise when viewed from the perspective shown above, which isn't right. Rather than reworking our entire parameterization, though, let's just negate the value of the cross product and therefore the surface integral:
+
+	$$
+		\int_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
+
+		&= \iint_T \left< 5, 2, -3 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
+
+		&= \iint_T \left< 5, 2, -3 \right> \bullet \left< -1, -1, -1 \right>\d A
+
+		&= \iint_T -4\,\d A
+
+		&= -4 \left| T \right|
+
+		&= -4(2)
+
+		&= -8.
+	$$
+
+	2. This one is set up directly for use with Stokes' Theorem, which is rather common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
+
+	Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, -y,\, -1 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
+
+	### desmos hemisphere
+
+	Now we can use Stokes' Theorem to switch from integrating the curl over the hemisphere to integrating the field itself around the boundary: with
+
+	$$
+		\vec{r}(t) = \left< \cos(-t), \sin(-t), 0 \right>
+	$$
+
+	parameterizing the unit circle clockwise, we have
+
+	$$
+		
+	$$
 
 ###
 

@@ -54,32 +54,6 @@ export default function()
 			]
 		},
 
-		eggCarton:
-		{
-			use3d: true,
-
-			options: { showPlane3D: false },
-
-			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -2, zmax: 6 },
-
-			expressions:
-			[
-				{ latex: raw`z = \cos(x) + \cos(y) + 2 \{ x^2 + y^2 \leq \pi^2 \}`, color: desmosColors.purple, secret: true },
-
-				{ latex: raw`s(t) = (\pi\cos(-t), \pi\sin(-t), \cos(\pi\cos(-t)) + \cos(\pi\sin(-t)) + 2)`, secret: true },
-				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
-
-				{ latex: raw`T = [\frac{\pi}{8}, \frac{3\pi}{8}, ..., \frac{15\pi}{8}]`, secret: true },
-				{ latex: raw`\vector(s(T), s(T) + 0.5\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
-
-				{ latex: raw`P = [(i\cos(j), i\sin(j), \cos(i\cos(j)) + \cos(i\sin(j)) + 2) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
-
-				{ latex: raw`Q = [(-\sin(i\cos(j)), -\sin(i\sin(j)), -1) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
-
-				{ latex: raw`\vector(P - (0, 0, 0.01), P + 0.5Q)`, color: desmosColors.red, secret: true },
-			]
-		},
-
 		cylinder:
 		{
 			use3d: true,
@@ -107,7 +81,59 @@ export default function()
 
 				{ latex: raw`Q = [(-\cos(j), -\sin(j), 0) \for i = [-0.75, 0, 0.75], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
-				{ latex: raw`\vector(P, P + 0.35Q)`, color: desmosColors.red, secret: true },
+				{ latex: raw`\vector(P, P + 0.35\frac{Q}{\left|Q\right|})`, color: desmosColors.red, secret: true },
+			]
+		},
+
+		eggCarton:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false },
+
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -2, zmax: 6 },
+
+			expressions:
+			[
+				{ latex: raw`z = \cos(x) + \cos(y) + 2 \{ x^2 + y^2 \leq \pi^2 \}`, color: desmosColors.purple, secret: true },
+
+				{ latex: raw`s(t) = (\pi\cos(-t), \pi\sin(-t), \cos(\pi\cos(-t)) + \cos(\pi\sin(-t)) + 2)`, secret: true },
+				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+
+				{ latex: raw`T = [\frac{\pi}{8}, \frac{3\pi}{8}, ..., \frac{15\pi}{8}]`, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.5\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`P = [(i\cos(j), i\sin(j), \cos(i\cos(j)) + \cos(i\sin(j)) + 2) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+
+				{ latex: raw`Q = [(-\sin(i\cos(j)), -\sin(i\sin(j)), -1) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+
+				{ latex: raw`\vector(P - (0, 0, 0.01), P + 0.8\frac{Q}{\left|Q\right|})`, color: desmosColors.red, secret: true },
+			]
+		},
+
+		suspendedCircle:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.87, 0.34, -0.35, -0.31, -0.94, -0.13, -0.38, 0, 0.93]
+			},
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: 0.25, zmax: 5.25 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 \leq 4 \{z = 3\}`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`z = \frac{3}{4} (x^2 + y^2) \{z \leq 3\}`, color: desmosColors.red, hidden: true },
+				{ latex: raw`x^2 + y^2 + z^2 = 13 \{z \geq 3\}`, color: desmosColors.orange, hidden: true },
+
+				{ latex: raw`s(t) = (2\cos(t), 2\sin(t), 3)`, secret: true },
+				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+
+				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.35\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 			]
 		},
 
@@ -137,7 +163,7 @@ export default function()
 				{ latex: raw`s_1(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 
 				{ latex: raw`T = [0.5]`, secret: true },
-				{ latex: raw`\vector(s_1(T), s_1(T) + 0.25\frac{s_1'(T)}{\left| s_1'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+				{ latex: raw`\vector(s_1(T), s_1(T) + 0.2\frac{s_1'(T)}{\left| s_1'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 
 				{ latex: raw`s_2(t) = (0, 0, 2) + (0, 2, -2)t`, secret: true },
 				{ latex: raw`s_2(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
@@ -148,6 +174,33 @@ export default function()
 				{ latex: raw`s_3(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 
 				{ latex: raw`\vector(s_3(T), s_3(T) + 0.25\frac{s_3'(T)}{\left| s_3'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+			]
+		},
+
+		hemisphere:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.9, -0.3, -0.33, 0.28, -0.95, 0.1, -0.34, 0, 0.94]
+			},
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.25, zmax: 1.75 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 + y^2 + z^2 = 1 \{z \geq 0\}`, color: desmosColors.purple },
+
+				{ latex: raw`s(t) = (\cos(-t), \sin(-t), 0)`, secret: true },
+				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+
+				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.25\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`P = [(i\cos(j), i\sin(j), \sqrt{1 - i^2}) \for i = [0.25, 0.6, 0.99], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+
+				{ latex: raw`\vector(0.99P, 0.75P)`, color: desmosColors.red, secret: true },
 			]
 		}
 	});

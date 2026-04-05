@@ -21,7 +21,7 @@ export default function()
 		return hsvToHex(
 			(270 + (120 - 270) * 0.5 * (Math.sign(c) + 1) + 180) / 360,
 			1,
-			0.4 * Math.abs(c),
+			0.625 * Math.abs(c),
 		);
 	}
 	

@@ -99,7 +99,7 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 	
 	const saturation = isDark
 		? highContrast
-			? 0.5
+			? 0.65
 			: 0.8
 		: 0.75;
 
