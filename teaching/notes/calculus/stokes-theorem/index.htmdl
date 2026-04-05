@@ -216,7 +216,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 
 	### desmos planeTriangle
 
-	2. Let $\vec{G}(x, y, z) = \left< y,\, 2x+z,\, xy \right>$ and let $S$ be the top half of the unit sphere, oriented downward. Compute
+	2. Let $\vec{G}(x, y, z) = \left< z^2 - y,\, x+z,\, xy \right>$, and let $S$ be the top half of the unit sphere, oriented downward. Compute
 
 	$$
 		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma}.
@@ -233,7 +233,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 	which looks dramatically simpler! We can parameterize the surface by
 
 	$$
-		\vec{r}(u, \v) = \left< u, \v, 2 - u - \v \right>
+		\vec{r}(u, \v) = \left< u,\, \v,\, 2 - u - \v \right>
 	$$
 
 	for $(u, \v)$ in the triangle $T$ in the $u\v$-plane with vertices at $(0, 0)$, $(2, 0)$, and $(0, 2)$. Checking our orientation,
@@ -266,20 +266,30 @@ We'll return to the idea of being able to choose different surfaces to represent
 
 	2. This one is set up directly for use with Stokes' Theorem, which is rather common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
 
-	Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, -y,\, -1 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
+	Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, 2z - y,\, 2 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
 
 	### desmos hemisphere
 
 	Now we can use Stokes' Theorem to switch from integrating the curl over the hemisphere to integrating the field itself around the boundary: with
 
 	$$
-		\vec{r}(t) = \left< \cos(-t), \sin(-t), 0 \right>
+		\vec{r}(t) &= \left< \cos(-t),\ \sin(-t),\ 0 \right>
+
+		\vec{r}'(t) &= \left< \sin(-t),\, -\cos(-t),\ 0 \right>
 	$$
 
 	parameterizing the unit circle clockwise, we have
 
 	$$
-		
+		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma} &= \int_{\p S} \vec{G} \bullet \d\vec{r}
+
+		&= \int_0^{2\pi} \left< -\sin(-t),\ \cos(-t),\ \cos(-t)\sin(-t) \right> \bullet \left< \sin(-t),\, -\cos(-t),\ 0 \right>\d t
+
+		&= \int_0^{2\pi} \left( -\sin^2(-t) - \cos^2(-t) \right)\d t
+
+		&= \int_0^{2\pi} -1\,\d t
+
+		&= -2\pi.
 	$$
 
 ###
