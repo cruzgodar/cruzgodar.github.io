@@ -157,7 +157,7 @@ export default function()
 
 				{ latex: raw`Q = [(i, j, 2 - i - j\{2 - i - j \geq 0\}) \for i = [0.1, 0.1 + \frac{2}{6}, ... 1.8], j = [0.1, 0.1 + \frac{2}{6}, ... 1.8]]`, hidden: true, secret: true },
 
-				{ latex: raw`\vector(Q, Q + 0.05(Q.x + 2Q.z, 2Q.y - 3Q.x, 5Q.y + Q.z))`, color: desmosColors.orange, secret: true },
+				{ latex: raw`\vector(Q, Q + 0.05(Q.x + 2Q.z, -2Q.y - 2Q.x, 5Q.y + Q.z))`, color: desmosColors.orange, secret: true },
 
 				{ latex: raw`s_1(t) = (2, 0, 0) + (-2, 0, 2)t`, secret: true },
 				{ latex: raw`s_1(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
@@ -196,7 +196,7 @@ export default function()
 				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
 
 				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
-				{ latex: raw`\vector(s(T), s(T) + 0.25\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.225\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 
 				{ latex: raw`P = [(i\cos(j), i\sin(j), \sqrt{1 - i^2}) \for i = [0.25, 0.6, 0.99], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
 

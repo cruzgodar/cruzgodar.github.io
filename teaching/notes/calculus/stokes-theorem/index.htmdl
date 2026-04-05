@@ -209,7 +209,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 	1. Let $\vec{F}$ be a field defined by
 
 	$$
-		\vec{F}(x, y, z) = \left< x + 2z,\ 2y - 3x,\ 5y + z \right>.
+		\vec{F}(x, y, z) = \left< x + 2z,\ -2x - 2y,\ 5y + z \right>.
 	$$
 
 	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $P$ given by $x + y + z = 2$ in the first octant, oriented counterclockwise when looking at it from the origin.
@@ -227,7 +227,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 	1. Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
 
 	$$
-		\Gtimes \vec{F} = \left< 5, 2, -3 \right>,
+		\Gtimes \vec{F} = \left< 5, 2, -2 \right>,
 	$$
 
 	which looks dramatically simpler! We can parameterize the surface by
@@ -251,20 +251,20 @@ We'll return to the idea of being able to choose different surfaces to represent
 	$$
 		\int_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
 
-		&= \iint_T \left< 5, 2, -3 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
+		&= \iint_T \left< 5, 2, -2 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
 
-		&= \iint_T \left< 5, 2, -3 \right> \bullet \left< -1, -1, -1 \right>\d A
+		&= \iint_T \left< 5, 2, -2 \right> \bullet \left< -1, -1, -1 \right>\d A
 
-		&= \iint_T -4\,\d A
+		&= \iint_T -5\,\d A
 
-		&= -4 \left| T \right|
+		&= -5 \left| T \right|
 
-		&= -4(2)
+		&= -5(2)
 
-		&= -8.
+		&= -10.
 	$$
 
-	2. This one is set up directly for use with Stokes' Theorem, which is rather common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
+	2. This one is set up directly for use with Stokes' Theorem, which is somewhat common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
 
 	Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, 2z - y,\, 2 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
 
@@ -308,7 +308,7 @@ Now, Stokes' Theorem lets us express the flux of a field $\vec{F}$ through a sur
 
 ###
 
-When we began discussing vector fields with potential functions, we noticed they were conservative, since $\Gtimes \G f = \vec{0}$ for reasonably well-behaved functions $f$ by Clairaut's theorem. Wonderfully, the reverse was true, and for any reasonably well-behaved field $\vec{F}$, knowing it's conservative is enough to guarantee it has a potential function. This time around, there's a very similar story: for any field $\vec{F}$ whose entries all have continuous first partial derivatives, $\Gbullet (\Gtimes f) = 0$, again by Clairaut's theorem, and it's just as wonderful that the converse is true.
+When we began discussing vector fields with potential functions, we noticed they were conservative, since $\Gtimes \G f = \vec{0}$ for any reasonably well-behaved function $f$ by Clairaut's theorem. Wonderfully, the reverse was true, and for any reasonably well-behaved field $\vec{F}$, knowing it's conservative is enough to guarantee it has a potential function. This time around, there's a very similar story: for any field $\vec{F}$ whose entries all have continuous first partial derivatives, $\Gbullet (\Gtimes f) = 0$, again by Clairaut's theorem, and it's just as wonderful that the converse is true.
 
 ### thm "divergence-zero fields have vector potentials"
 
@@ -324,7 +324,27 @@ This property will serve as our equivalent to conservativity, so let's give it a
 
 ###
 
-We're using $\operatorname{div} \vec{F}$ rather than $\Gbullet \vec{F}$ since this definition works just as well for 2D fields, but we'll only be using it for 3D ones from here on out. The results we've stated so far tell us that incompressible fields have vector potentials, and by Stokes' Theorem, that means their flux through any surface depends only on their circulation along its boundary. We'll give this the somewhat clunky name **surface-independence**, and we can use it to reduce complicated surface integrals to simpler ones
+We're using $\operatorname{div} \vec{F}$ rather than $\Gbullet \vec{F}$ since this definition works just as well for 2D fields, but we'll only be using it for 3D ones from here on out. The results we've stated so far tell us that incompressible fields have vector potentials; for example, the field $\vec{F}$ given by
+
+$$
+	\vec{F}(x, y, z) \left< x + 2z,\ -2x - 2y,\ 5y + z \right>
+$$
+
+from the previous exercise is incompressible, since
+
+$$
+	\Gbullet \vec{F} = 1 - 2 + 1 = 0.
+$$
+
+While we won't discuss how to find vector potentials in this course, we can verify that
+
+$$
+	\left< -2xz - 2yz,\ 5xy - xz - z^2,\ 0 \right>
+$$
+
+is one for this field (in general, vector potentials are not unique).
+
+By Stokes' Theorem, the flux of an incompressible field through any surface depends only on its circulation along the surface's boundary. We'll give this property the somewhat clunky name **surface-independence**, and we can use it to reduce complicated surface integrals to simpler ones.
 
 
 

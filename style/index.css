@@ -2488,7 +2488,7 @@ to hide them in that case. */
 /* Re-align with text-buttons not in environments */
 .notes-environment > .text-buttons
 {
-	margin-left: -6px;
+	padding-left: -6px;
 }
 
 .notes-def
