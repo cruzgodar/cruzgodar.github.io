@@ -5,7 +5,7 @@ import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { addTemporaryListener, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
-import { clamp, loadScript, searchProperties } from "./utils.js";
+import { clamp, loadScript } from "./utils.js";
 
 export const desmosDragModes = {
 	NONE: "NONE",
@@ -34,6 +34,13 @@ export const desmosLineStyles = {
 // Properties that the Desmos API erases during graph construction.
 // These must be re-applied from the original expression data to the state object.
 const desmosApiErasedProperties = ["colorLatex"];
+
+const desmosApiHiddenOptions = {
+	showPlane3D: true,
+	showAxis3D: true,
+	showNumbers3D: true,
+	// worldRotation3D: [],
+};
 
 export const desmosColors = {
 	purple: "_desmosPurple",
@@ -511,10 +518,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 				// Configure the calculator for this graph's data.
 				calculator.setMathBounds(bounds);
 				calculator.setExpressions(data[element.id].expressions);
-				
-				calculator.controller.graphSettings.showPlane3D = options.showPlane3D ?? true;
-				calculator.controller.graphSettings.showAxis3D = options.showAxis3D ?? true;
 
+				for (const key in desmosApiHiddenOptions)
+				{
+					calculator.controller.graphSettings[key] =
+						options[key] ?? desmosApiHiddenOptions[key];
+				}
 
 				calculator.controller.graphSettings.showBox3D = false;
 
@@ -536,6 +545,9 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					desmosGraphsDefaultState[element.id],
 					data[element.id].expressions
 				);
+
+				desmosGraphsDefaultState[element.id].graph.worldRotation3D =
+					options.worldRotation3D ?? [];
 
 				calculator.setState(desmosGraphsDefaultState[element.id]);
 				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
@@ -564,10 +576,11 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			{
 				desmosGraphs[element.id] = desmosClass(element, options);
 
-				desmosGraphs[element.id].controller.graphSettings.showPlane3D =
-					options.showPlane3D ?? true;
-				desmosGraphs[element.id].controller.graphSettings.showAxis3D =
-					options.showAxis3D ?? true;
+				for (const key in desmosApiHiddenOptions)
+				{
+					desmosGraphs[element.id].controller.graphSettings[key] =
+						options[key] ?? desmosApiHiddenOptions[key];
+				}
 
 
 
@@ -598,6 +611,9 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 					desmosGraphsDefaultState[element.id],
 					data[element.id].expressions
 				);
+
+				desmosGraphsDefaultState[element.id].graph.worldRotation3D =
+					options.worldRotation3D ?? [];
 
 				desmosGraphs[element.id].setState(desmosGraphsDefaultState[element.id]);
 				desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
@@ -772,8 +788,11 @@ function swap3dGraph(oldId, newId)
 	}
 
 	// Apply 3D-specific controller settings.
-	calculator.controller.graphSettings.showPlane3D = newConfig.options.showPlane3D ?? true;
-	calculator.controller.graphSettings.showAxis3D = newConfig.options.showAxis3D ?? true;
+	for (const key in desmosApiHiddenOptions)
+	{
+		calculator.controller.graphSettings[key] =
+			newConfig.options[key] ?? desmosApiHiddenOptions[key];
+	}
 
 	calculator.controller.graphSettings.showBox3D = false;
 
@@ -795,9 +814,7 @@ function swap3dGraph(oldId, newId)
 
 		restoreErasedProperties(state, newConfig.expressions);
 
-		// Zero out any lingering rotation/spin from the previous graph
-		// so the default state has a clean camera.
-		state.graph.worldRotation3D = [];
+		state.graph.worldRotation3D = newConfig.options.worldRotation3D ?? [];
 		state.graph.axis3D = [0, 0, 1];
 		state.graph.speed3D = 0;
 
@@ -948,10 +965,13 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
 
-	console.log(desmosGraphs[id]);
-	console.log(desmosGraphs[id].getExpressions());
+	console.log(`ID: ${id}`);
 
-	console.log(searchProperties(desmosGraphs[id], /colorLatex/));
+	if (is3d)
+	{
+		console.log("World rotation:");
+		console.log(`[${desmosGraphs[id].controller.graphSettings.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
+	}
 
 	if (!is3d)
 	{

@@ -48,6 +48,74 @@ For example, this cap of a sphere oriented so the convex side points outward has
 
 The mathematical way to phrase this definition is that an orientation of the surface **induces** an orientation of the boundary. There's also a connection with the right-hand rule, in that if you curl the fingers in the direction of the boundary, then your thumb should roughly point in the direction of the normal vectors to the surface.
 
+### exc "oriented boundaries"
+
+	1. Let $C$ be the cylinder of radius $1$ and height $2$ centered at the origin and parallel to the $z$-axis, oriented so that the top boundary circle has a counterclockwise orientation when viewed from above. Determine whether the orientation on $C$ is outward or inward and find the orientation of the other boundary circle.
+
+	2. (Challenge question) Let $S$ be the surface given by the graph of $z = \cos(x) + \cos(y) + 2$ lying above the circle of radius $\pi$ centered at the origin, oriented so that flux of the field $\vec{F} = \left< 0, 0, z \right>$ through $S$ is negative. Find a parameterization for $S$, and then find a parameterization for the oriented boundary $\p S$, making sure the boundary parameterization is oriented correctly.
+
+	### solution
+
+	1. Walking around the inside of the top circle in its oriented direction keeps the surface on our left, so the cylinder needs to be oriented inward.
+
+	### desmos cylinder
+
+	On the bottom, walking around the inside of the cylinder only keeps the surface on our left if we walk clockwise when viewed from above --- that means the two boundary circles necessarily have different orientations!
+
+	2. We can try to parameterize $S$ as
+
+	$$
+		\vec{r}(u, \v) = \left< u,\ \v,\ \cos(u) + \cos(\v) + 2 \right>,
+	$$
+
+	which would result in
+
+	$$
+		\vec{r}_u &= \left< 1, 0, -\sin(u) \right>
+
+		\vec{r}_{\v} &= \left< 0, 1, -\sin(\v) \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< \cos(u),\ \cos(\v),\ 1 \right>.
+	$$
+
+	However, that would always have a nonnegative dot product with the field $\vec{F}$, since $S$ lives on or above the $xy$-plane. Therefore, we need to reverse the orientation of $S$, which we can do by swapping the roles of $u$ and $\v$:
+
+	$$
+		\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
+
+		\vec{r}_u \times \vec{r}_{\v} &= \left< -\sin(\v),\, -\sin(u),\, -1 \right>,
+	$$
+
+	for $(u, \v) \in #R#^2$ with $u^2 + \v^2 \leq \pi^2$. Now the boundary of $S$ is given by the boundary of the $u\v$-domain: that is, $u^2 + \v^2 = \pi^2$. If the normal vectors to the surface point mostly downward, then we want to walk around the circle with our head roughly pointing downward. To keep $S$ on our left, we need to walk counterclockwise from the perspective of looking up at the circle from below, which is clockwise when viewed from above.
+
+	### desmos eggCarton
+
+	Ordinarily, we would want to parameterize the boundary in the $u\v$-plane with
+
+	$$
+		u &= \pi\cos(-t)
+
+		\v &= \pi\sin(-t)
+	$$
+
+	for $t \in [0, 2\pi]$, with the $-t$ making the circle clockwise. However, since $\v$ is representing the $x$-coordinate and $u$ is representing the $y$-coordinate in $\vec{r}$, we'll want to swap the formulas for $u$ and $\v$:
+
+	$$
+		\v &= \pi\cos(-t)
+
+		u &= \pi\sin(-t)
+	$$
+
+	Then the total parameterization comes from plugging this into $\vec{r}(u, \v)$ to map it onto the surface: $\p S$ is parameterized by
+
+	$$
+		\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
+
+		&= \left< \pi\cos(-t),\ \pi\sin(-t),\ \cos(\pi\cos(-t)) + \cos(\pi\sin(-t)) + 2 \right>.
+	$$
+
+###
+
 With all of the pieces translated to 3D, we're ready to state the theorem. Happily, there are no extra surprises!
 
 ### thm "Stokes' Theorem"
@@ -62,7 +130,35 @@ With all of the pieces translated to 3D, we're ready to state the theorem. Happi
 
 ###
 
-Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the  generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that that was correct. 
+Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that that was correct.
+
+### ex "Stokes' Theorem"
+
+	Let $\vec{F}$ be a field defined by
+
+	$$
+		\vec{F}(x, y, z) = \left< x + 2z,\ 2y - 3x,\ 5y + z \right>.
+	$$
+
+	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $x + y + z = 2$ in the first octant, oriented counterclockwise when looking at it from the origin.
+
+	### desmos planeTriangle
+
+	Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
+
+	$$
+		\Gtimes \vec{F} = \left< 5, 2, -3 \right>,
+	$$
+
+	which looks dramatically simpler! We can pra
+
+###
+
+### exc "Stokes' Theorem"
+
+	
+
+###
 
 
 
