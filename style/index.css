@@ -2485,6 +2485,12 @@ to hide them in that case. */
 	margin-bottom: 0 !important;
 }
 
+/* Re-align with text-buttons not in environments */
+.notes-environment > .text-buttons
+{
+	margin-left: -6px;
+}
+
 .notes-def
 {
 	border-color: rgb(3.06% 54.29% 4.56%);

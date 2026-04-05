@@ -76,7 +76,7 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 	{
 		if (is3d)
 		{
-			throw new Error("desmosBlack is not a valid color for 3d graphs");
+			throw new Error("Black is not a valid color for 3d graphs");
 		}
 		
 		return "#000000";
@@ -89,7 +89,7 @@ function getDesmosColor(color, is3d, alwaysDark, highContrast)
 			return "#777777";
 		}
 		
-		throw new Error("desmosGray is not a valid color for 2d graphs");
+		throw new Error("Gray is not a valid color for 2d graphs");
 	}
 
 	const isDark = alwaysDark || siteSettings.darkTheme;
