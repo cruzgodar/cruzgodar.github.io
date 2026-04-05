@@ -39,7 +39,6 @@ const desmosApiHiddenOptions = {
 	showPlane3D: true,
 	showAxis3D: true,
 	showNumbers3D: true,
-	// worldRotation3D: [],
 };
 
 export const desmosColors = {
@@ -124,6 +123,45 @@ function restoreErasedProperties(state, originalExpressions)
 			}
 		}
 	}
+}
+
+function applyWorldRotation3D(calculator, rotation)
+{
+	if (!rotation || rotation.length !== 9)
+	{
+		return;
+	}
+
+	const grapher3d = calculator.controller.getGrapher3d?.();
+
+	if (!grapher3d?.controls)
+	{
+		return;
+	}
+
+	const controls = grapher3d.controls;
+	const matrix = controls.worldRotation3D.clone();
+	matrix.set(
+		rotation[0], rotation[3], rotation[6],
+		rotation[1], rotation[4], rotation[7],
+		rotation[2], rotation[5], rotation[8]
+	);
+
+	// Set the controls directly so the visual is correct immediately
+	// and the animation below starts from the correct orientation.
+	controls.setWorldRotation(matrix);
+	controls.unsnappedRotation.copy(controls.worldRotation3D);
+	controls.speed3D = 0;
+
+	// Use the same animation path as Desmos's built-in view buttons.
+	// This sets transition.isOrienting, which blocks drag until the
+	// render loop completes the animation and properly populates
+	// all internal state (including redrawResult's quaternion).
+	grapher3d.viewportController.animateToOrientation(matrix);
+
+	// Force the animation to complete on the very next render frame.
+	grapher3d.transition.startTime = 0;
+	grapher3d.transition.duration = 1;
 }
 
 export let desmosGraphs = {};
@@ -551,6 +589,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				calculator.setState(desmosGraphsDefaultState[element.id]);
 				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
+				applyWorldRotation3D(calculator, options.worldRotation3D);
 
 				// Store the clean default state in the config so swap3dGraph()
 				// can fully reset the calculator (including camera and spin).
@@ -617,6 +656,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				desmosGraphs[element.id].setState(desmosGraphsDefaultState[element.id]);
 				desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
+				applyWorldRotation3D(desmosGraphs[element.id], options.worldRotation3D);
 
 				if (window.DEBUG && !recreating)
 				{
@@ -771,6 +811,7 @@ function swap3dGraph(oldId, newId)
 		// state that includes expressions, bounds, and a zeroed-out camera.
 		// setState() fully resets everything in one call.
 		calculator.setState(newConfig.defaultState);
+		applyWorldRotation3D(calculator, newConfig.options.worldRotation3D);
 	}
 	else
 	{
@@ -815,13 +856,14 @@ function swap3dGraph(oldId, newId)
 		restoreErasedProperties(state, newConfig.expressions);
 
 		state.graph.worldRotation3D = newConfig.options.worldRotation3D ?? [];
-		state.graph.axis3D = [0, 0, 1];
+
 		state.graph.speed3D = 0;
 
 		newConfig.defaultState = state;
 
 		// Apply the cleaned state so the calculator actually stops spinning.
 		calculator.setState(newConfig.defaultState);
+		applyWorldRotation3D(calculator, newConfig.options.worldRotation3D);
 	}
 
 	desmosGraphsDefaultState[newId] = newConfig.defaultState;
@@ -965,12 +1007,11 @@ export async function getDesmosScreenshot(id, forPdf = false)
 
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
 
-	console.log(`ID: ${id}`);
-
 	if (is3d)
 	{
-		console.log("World rotation:");
-		console.log(`[${desmosGraphs[id].controller.graphSettings.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
+		const state = desmosGraphs[id].getState();
+		console.log(`${id} worldRotation3D:`);
+		console.log(`[${state.graph.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
 	}
 
 	if (!is3d)

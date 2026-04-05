@@ -150,7 +150,7 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 		\Gtimes \vec{F} = \left< 5, 2, -3 \right>,
 	$$
 
-	which looks dramatically simpler! We can pra
+	which looks dramatically simpler! We can parameterize the 
 
 ###
 

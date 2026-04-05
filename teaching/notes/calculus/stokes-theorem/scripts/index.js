@@ -118,7 +118,7 @@ export default function()
 			options: {
 				showPlane3D: false,
 				showNumbers3D: false,
-				worldRotation3D: [-0.9, 0.23, -0.37, -0.21, -0.97, -0.09, -0.38, 0, 0.92],
+				worldRotation3D: [-0.62, 0.7, -0.35, -0.61, -0.72, -0.34, -0.49, 0, 0.87],
 			},
 
 			bounds: { xmin: -0.5, xmax: 2.5, ymin: -0.5, ymax: 2.5, zmin: -0.5, zmax: 2.5 },
@@ -133,11 +133,21 @@ export default function()
 
 				{ latex: raw`\vector(Q, Q + 0.05(Q.x + 2Q.z, 2Q.y - 3Q.x, 5Q.y + Q.z))`, color: desmosColors.orange, secret: true },
 
-				// { latex: raw`s_1(t) = (\cos(t), \sin(t), 1)`, secret: true },
-				// { latex: raw`s_1(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+				{ latex: raw`s_1(t) = (2, 0, 0) + (-2, 0, 2)t`, secret: true },
+				{ latex: raw`s_1(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
 
-				// { latex: raw`T = [0, \frac{\pi}{2}, ..., \frac{3\pi}{2}]`, secret: true },
-				// { latex: raw`\vector(s_1(T), s_1(T) + 0.25\frac{s_1'(T)}{\left| s_1'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+				{ latex: raw`T = [0.5]`, secret: true },
+				{ latex: raw`\vector(s_1(T), s_1(T) + 0.25\frac{s_1'(T)}{\left| s_1'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`s_2(t) = (0, 0, 2) + (0, 2, -2)t`, secret: true },
+				{ latex: raw`s_2(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
+
+				{ latex: raw`\vector(s_2(T), s_2(T) + 0.25\frac{s_2'(T)}{\left| s_2'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`s_3(t) = (0, 2, 0) + (2, -2, 0)t`, secret: true },
+				{ latex: raw`s_3(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
+
+				{ latex: raw`\vector(s_3(T), s_3(T) + 0.25\frac{s_3'(T)}{\left| s_3'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 			]
 		}
 	});
