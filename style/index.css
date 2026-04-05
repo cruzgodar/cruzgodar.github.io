@@ -2354,6 +2354,21 @@ to hide them in that case. */
 	height: min(calc(var(--text-width) - var(--w-offset)), calc(90vw - var(--w-offset)), calc(60vh - var(--h-offset)));
 }
 
+/* The graphs get varying levels of brightness applied to them, both to generally
+   improve appearance and to counteract the non-WebGL P3 mixing issue. */
+.desmos-container
+{
+	filter: brightness(calc(1 + var(--theme) * 0.125));
+}
+
+@media (color-gamut: p3)
+{
+	.desmos-container:not(.is3d)
+	{
+		filter: brightness(calc(1 + var(--theme) * 0.25));
+	}
+}
+
 .desmos-container.fullscreen
 {
 	width: 100%;

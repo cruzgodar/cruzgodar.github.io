@@ -14,7 +14,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [0.27, 0.96, 0.06, -0.94, 0.27, -0.2, -0.21, 0, 0.98]
+			},
 
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
@@ -126,6 +129,10 @@ export default function()
 		{
 			use3d: true,
 
+			options: {
+				worldRotation3D: [-0.86, 0.43, -0.29, -0.4, -0.9, -0.14, -0.33, 0, 0.95]
+			},
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
@@ -161,27 +168,37 @@ export default function()
 		{
 			use3d: true,
 
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.59, -0.8, -0.06, 0.8, -0.59, 0.09, -0.11, 0, 0.99]
+			},
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
 			[
-				{ latex: raw`x + 3z = 4`, color: desmosColors.gray },
+				{ latex: raw`x + 3z = 4`, color: desmosColors.gray, secret: true },
 
-				{ latex: raw`p = (2, -1, 3)`, color: desmosColors.orange },
+				{ latex: raw`p = (2, -1, 3)`, color: desmosColors.orange, secret: true },
 
-				{ latex: raw`n = \vector((0, 0, \frac{4}{3}), (0, 0, \frac{4}{3}) + (1, 0, 3))`, color: desmosColors.orange },
+				{ latex: raw`n = \vector((0, 0, \frac{4}{3}), (0, 0, \frac{4}{3}) + (1, 0, 3))`, color: desmosColors.orange, secret: true },
 
-				{ latex: raw`\vector((1, 1, 1), p)`, color: desmosColors.purple },
+				{ latex: raw`\vector((1, 1, 1), p)`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`\vector(p - (\frac{7}{10}, 0, \frac{21}{10}), p)`, color: desmosColors.red },
+				{ latex: raw`\vector(p - (\frac{7}{10}, 0, \frac{21}{10}), p)`, color: desmosColors.red, secret: true },
 
-				{ latex: raw`\vector((1, 1, 1), p - (\frac{7}{10}, 0, \frac{21}{10}))`, color: desmosColors.blue },
+				{ latex: raw`\vector((1, 1, 1), p - (\frac{7}{10}, 0, \frac{21}{10}))`, color: desmosColors.blue, secret: true },
 			]
 		},
 
 		planeFromPoints:
 		{
 			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.95, 0.11, -0.3, -0.1, -0.99, -0.03, -0.3, 0, 0.95]
+			},
 
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
@@ -330,7 +347,11 @@ export default function()
 
 			bounds: { xmin: -1, xmax: 6, ymin: -1, ymax: 6, zmin: -1, zmax: 6 },
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.93, -0.3, -0.21, 0.3, -0.95, 0.07, -0.22, 0, 0.98]
+			},
 
 			expressions:
 			[

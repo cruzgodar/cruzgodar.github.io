@@ -164,6 +164,35 @@ function applyWorldRotation3D(calculator, rotation)
 	grapher3d.transition.duration = 1;
 }
 
+// Wrap the grapher3d's setGrapherState so that applyWorldRotation3D
+// runs after every internal state restoration (reset, undo, etc.),
+// not just explicit API setState calls.
+function hookSetGrapherState(calculator)
+{
+	const grapher3d = calculator.controller.getGrapher3d?.();
+
+	if (!grapher3d || grapher3d.__rotationHooked)
+	{
+		return;
+	}
+
+	const origSetGrapherState = grapher3d.setGrapherState.bind(grapher3d);
+
+	grapher3d.setGrapherState = function(graphState)
+	{
+		origSetGrapherState(graphState);
+
+		const rotation = graphState?.worldRotation3D;
+
+		if (rotation?.length === 9)
+		{
+			applyWorldRotation3D(calculator, rotation);
+		}
+	};
+
+	grapher3d.__rotationHooked = true;
+}
+
 export let desmosGraphs = {};
 
 export let desmosGraphsDefaultState = {};
@@ -273,6 +302,8 @@ export function returnPersistent3dGraphsToPool()
 				calculator.removeExpressions(existingExpressions);
 			}
 		}
+
+		desmosGraphConfigs[activeId]?.element?.classList.remove("is3d");
 
 		delete desmosGraphs[activeId];
 		delete desmosGraphsDefaultState[activeId];
@@ -502,6 +533,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		const constructor = data[element.id].use3d
 			? () =>
 			{
+				element.classList.add("is3d");
+
 				let calculator;
 				let poolEntry;
 
@@ -520,6 +553,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 					poolEntry = { calculator, poolElement };
 					persistent3dPool.push(poolEntry);
+
+					hookSetGrapherState(calculator);
 				}
 				else
 				{
@@ -589,7 +624,6 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				calculator.setState(desmosGraphsDefaultState[element.id]);
 				calculator.setDefaultState(desmosGraphsDefaultState[element.id]);
-				applyWorldRotation3D(calculator, options.worldRotation3D);
 
 				// Store the clean default state in the config so swap3dGraph()
 				// can fully reset the calculator (including camera and spin).
@@ -656,7 +690,7 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 				desmosGraphs[element.id].setState(desmosGraphsDefaultState[element.id]);
 				desmosGraphs[element.id].setDefaultState(desmosGraphsDefaultState[element.id]);
-				applyWorldRotation3D(desmosGraphs[element.id], options.worldRotation3D);
+				hookSetGrapherState(desmosGraphs[element.id]);
 
 				if (window.DEBUG && !recreating)
 				{
@@ -805,13 +839,15 @@ function swap3dGraph(oldId, newId)
 	const poolEntry = getPoolEntryForCalculator(calculator);
 	newElement.appendChild(poolEntry.poolElement);
 
+	desmosGraphConfigs[oldId].element.classList.remove("is3d");
+	newElement.classList.add("is3d");
+
 	if (newConfig.defaultState)
 	{
 		// This graph was previously constructed, so we have a clean default
 		// state that includes expressions, bounds, and a zeroed-out camera.
 		// setState() fully resets everything in one call.
 		calculator.setState(newConfig.defaultState);
-		applyWorldRotation3D(calculator, newConfig.options.worldRotation3D);
 	}
 	else
 	{
@@ -863,7 +899,6 @@ function swap3dGraph(oldId, newId)
 
 		// Apply the cleaned state so the calculator actually stops spinning.
 		calculator.setState(newConfig.defaultState);
-		applyWorldRotation3D(calculator, newConfig.options.worldRotation3D);
 	}
 
 	desmosGraphsDefaultState[newId] = newConfig.defaultState;
@@ -1010,8 +1045,8 @@ export async function getDesmosScreenshot(id, forPdf = false)
 	if (is3d)
 	{
 		const state = desmosGraphs[id].getState();
-		console.log(`${id} worldRotation3D:`);
-		console.log(`[${state.graph.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
+		console.log(`${id}`);
+		console.log(`worldRotation3D: [${state.graph.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
 	}
 
 	if (!is3d)

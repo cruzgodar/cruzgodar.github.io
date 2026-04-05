@@ -13,7 +13,11 @@ export default function()
 
 			bounds: { xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1 },
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.8, 0.15, -0.58, -0.12, -0.99, -0.09, -0.58, 0, 0.81]
+			},
 
 			expressions:
 			[
@@ -60,7 +64,10 @@ export default function()
 
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [0.59, -0.79, 0.15, 0.77, 0.61, 0.19, -0.24, 0, 0.97]
+			},
 
 			expressions:
 			[

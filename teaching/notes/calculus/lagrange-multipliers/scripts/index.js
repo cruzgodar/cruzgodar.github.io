@@ -11,7 +11,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.2, -0.98, -0.03, 0.96, -0.2, 0.17, -0.17, 0, 0.98]
+			},
 
 			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.2, zmax: 0.2 },
 
@@ -32,7 +35,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [0.25, -0.97, 0.08, 0.92, 0.26, 0.29, -0.3, 0, 0.95]
+			},
 
 			bounds: { xmin: -6, xmax: 6, ymin: -6, ymax: 6, zmin: -6, zmax: 6 },
 

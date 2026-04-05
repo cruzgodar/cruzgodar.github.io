@@ -111,6 +111,7 @@ export default function()
 			options: {
 				translucentSurfaces: true,
 				showPlane3D: false,
+				worldRotation3D: [0.56, -0.8, 0.21, 0.75, 0.6, 0.27, -0.34, 0, 0.94]
 			},
 
 			expressions:
@@ -196,6 +197,7 @@ export default function()
 			options: {
 				translucentSurfaces: true,
 				showPlane3D: false,
+				worldRotation3D: [0.51, -0.85, 0.13, 0.82, 0.53, 0.21, -0.24, 0, 0.97]
 			},
 
 			expressions:

@@ -11,6 +11,11 @@ export default function()
 		{
 			use3d: true,
 
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.57, -0.82, -0.09, 0.81, -0.58, 0.13, -0.16, 0, 0.99]
+			},
+
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -3.5, zmax: 3.5 },
 
 			expressions:
@@ -34,7 +39,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [0.4, 0.91, 0.13, -0.86, 0.42, -0.29, -0.32, 0, 0.95]
+			},
 
 			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4 },
 

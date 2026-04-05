@@ -23,9 +23,12 @@ export default function()
 		{
 			use3d: true,
 
-			options: { translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true
+			},
 
-			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
 			expressions:
 			[
@@ -43,7 +46,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { translucentSurfaces: true },
+			options: {
+				translucentSurfaces: true,
+				worldRotation3D: [-0.89, -0.35, -0.29, 0.34, -0.93, 0.11, -0.31, 0, 0.95]
+			},
 
 			bounds: { xmin: -2, xmax: 15, ymin: -2, ymax: 15, zmin: -20, zmax: 40 },
 
@@ -79,7 +85,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.58, -0.8, -0.1, 0.79, -0.59, 0.14, -0.17, 0, 0.99]
+			},
 
 			bounds: { xmin: -3.5, xmax: 3.5, ymin: -3.5, ymax: 3.5, zmin: -2, zmax: 12 },
 
@@ -105,12 +115,12 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`x^2 + y^2 - z^2 = 1`, color: desmosColors.purple },
+				{ latex: raw`x^2 + y^2 - z^2 = 1 \{ \left| z \right| \leq 2.5 \}`, color: desmosColors.purple },
 
 				{ latex: raw`x^2 + y^2 - c^2 = 1 \left\{ z = c \right\}`, color: desmosColors.blue },
 				
-				{ latex: raw`0^2 + y^2 - z^2 = 1 \left\{ x = 0 \right\}`, color: desmosColors.red },
-				{ latex: raw`x^2 + 0^2 - z^2 = 1 \left\{ y = 0 \right\}`, color: desmosColors.orange },
+				{ latex: raw`(0, [-1, 1]\sqrt{1 + t^2}, t)`, color: desmosColors.red, parametricDomain: { min: -2.5, max: 2.5 }, secret: true },
+				{ latex: raw`([-1, 1]\sqrt{1 + t^2}, 0, t)`, color: desmosColors.orange, parametricDomain: { min: -2.5, max: 2.5 }, secret: true },
 
 				{ latex: raw`c = [ -2, -1, ..., 2 ]`, },
 			]

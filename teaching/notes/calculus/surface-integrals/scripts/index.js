@@ -129,7 +129,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.67, -0.7, -0.24, 0.66, -0.71, 0.24, -0.34, 0, 0.94]
+			},
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
@@ -147,7 +151,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.17, -0.98, -0.06, 0.92, -0.19, 0.34, -0.35, 0, 0.94]
+			},
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
@@ -271,7 +278,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.26, -0.96, -0.05, 0.95, -0.26, 0.17, -0.18, 0, 0.98]
+			},
 
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
 
@@ -458,7 +469,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.79, -0.57, -0.23, 0.55, -0.82, 0.16, -0.28, 0, 0.96]
+			},
 
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
 
@@ -481,7 +495,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, showAxis3D: false },
+			options: {
+				showPlane3D: false,
+				showAxis3D: false,
+				worldRotation3D: [-0.47, -0.87, -0.1, 0.86, -0.48, 0.18, -0.21, 0, 0.98]
+			},
 
 			bounds: { xmin: -0.9, xmax: 0.9, ymin: -0.9, ymax: 0.9, zmin: -0.9, zmax: 0.9 },
 
@@ -582,7 +600,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.91, -0.09, -0.4, 0.09, -1, 0.04, -0.4, 0, 0.92]
+			},
 
 			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
 
@@ -611,7 +632,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.3, -0.95, -0.07, 0.93, -0.31, 0.21, -0.23, 0, 0.97]
+			},
 
 			bounds: { xmin: -0.5, xmax: 3.5, ymin: -3.5, ymax: 3.5, zmin: -3.5, zmax: 3.5 },
 
@@ -640,7 +665,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.48, -0.88, -0.04, 0.88, -0.48, 0.07, -0.08, 0, 1]
+			},
 
 			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
 
@@ -669,7 +697,10 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.62, 0.7, -0.36, -0.6, -0.72, -0.35, -0.51, 0, 0.86]
+			},
 
 			bounds: { xmin: -0.25, xmax: 1.25, ymin: -0.25, ymax: 1.25, zmin: -0.25, zmax: 1.25 },
 

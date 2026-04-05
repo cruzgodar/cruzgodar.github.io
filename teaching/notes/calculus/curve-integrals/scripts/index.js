@@ -1,14 +1,14 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { createEphemeralApplet, hsvToHex } from "/scripts/applets/applet.js";
 import {
-    createDesmosGraphs, desmosColors,
-    desmosDragModes,
-    desmosGraphs,
-    desmosGraphsLoaded,
-    getDesmosBounds,
-    getDesmosPoint,
-    getDesmosSlider,
-    getParametricCirculationCurve
+	createDesmosGraphs, desmosColors,
+	desmosDragModes,
+	desmosGraphs,
+	desmosGraphsLoaded,
+	getDesmosBounds,
+	getDesmosPoint,
+	getDesmosSlider,
+	getParametricCirculationCurve
 } from "/scripts/src/desmos.js";
 import { $, raw } from "/scripts/src/main.js";
 
@@ -259,7 +259,7 @@ export default function()
 		{
 			use3d: true,
 
-			bounds: { xmin: -1.5, xmax: 1.5, ymin: -0.5, ymax: 2.5, zmin: -0.5, zmax: 2.5 },
+			bounds: { xmin: -0.75, xmax: 1.75, ymin: -0.25, ymax: 2.25, zmin: -0.5, zmax: 2 },
 
 			expressions:
 			[
