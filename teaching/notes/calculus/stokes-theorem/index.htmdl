@@ -398,6 +398,56 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 
 ###
 
+### exc "simplifying a surface integral"
+
+	The surface given by
+
+	$$
+		\vec{s}(u, \v) = \left< u\sin(v),\ \sin^2(2\pi u)\cos^2(u\v\sin(\v)),\ u\cos(\v) \right>
+	$$
+
+	for $u \in [1, 2]$ and $\v \in [0, 2\pi]$ is plotted below and is oriented so that the normal vectors point in the negative $y$-direction. Find the flux of the field
+
+	$$
+		\vec{F}(x, y, z) = \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right>
+	$$
+
+	through $S$.
+
+	### desmos puzzleFeeder
+
+	### solution
+
+	Since $\Gbullet \vec{F} = 0$, we can replace this surface with any other that has the same boundary. If we choose the annulus $A$ parameterized by
+
+	$$
+		\vec{r}(u, \v) = \left< u\sin(v),\ 0,\ u\cos(\v) \right>,
+	$$
+
+	for $u \in [1, 2]$ and $\v \in [0, 2\pi]$, then we'll be able to integrate without too much trouble. We have a normal vector of
+	
+	$$
+		\vec{r}_u \times \vec{r}_{\v} = \left< 0, -1, 0 \right>,
+	$$
+
+	so
+
+	$$
+		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
+
+		&= \int_1^2 \!\! \int_0^{2\pi} \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right> \bullet \left< 0, -1, 0 \right>\d\v\,\d u
+
+		&= \int_1^2 \!\! \int_0^{2\pi} \left( 2z - y + 1 \right)\d\v\,\d u
+
+		&= \int_1^2 \!\! \int_0^{2\pi} \left( 2u\cos(\v) + 1 \right)\d\v\,\d u
+
+		&= \int_1^2 2\pi \,\d u
+
+		&= 2\pi.
+	$$
+
+###
+
 
 
 ### nav-buttons

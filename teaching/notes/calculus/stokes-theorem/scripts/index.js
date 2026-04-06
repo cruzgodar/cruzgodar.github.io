@@ -260,6 +260,24 @@ export default function()
 
 				{ latex: raw`C = \operatorname{rgb}(204R_1(x, y, z) + 40B_1(x, y, z) + 122P_1(x, y, z), 40R_1(x, y, z) + 122B_1(x, y, z) + 40P_1(x, y, z), 40R_1(x, y, z) + 204B_1(x, y, z) + 205P_1(x, y, z))`, secret: true },
 			]
+		},
+
+		puzzleFeeder:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.69, 0.7, -0.18, -0.68, -0.71, -0.18, -0.25, 0, 0.97]
+			},
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`S(u, v) = (u\sin(v + \pi), \sin^2(2\pi u)\cos^2(uv\sin(v)), u\cos(v + \pi))`, secret: true },
+				{ latex: raw`S(u, v)`, parametricDomain3Du: { min: 1, max: 2 }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, color: desmosColors.purple, secret: false },
+			]
 		}
 	});
 }
