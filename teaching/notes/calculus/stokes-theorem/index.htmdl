@@ -327,7 +327,7 @@ This property will serve as our equivalent to conservativity, so let's give it a
 We're using $\operatorname{div} \vec{F}$ rather than $\Gbullet \vec{F}$ since this definition works just as well for 2D fields, but we'll only be using it for 3D ones from here on out. The results we've stated so far tell us that incompressible fields have vector potentials; for example, the field $\vec{F}$ given by
 
 $$
-	\vec{F}(x, y, z) \left< x + 2z,\ -2x - 2y,\ 5y + z \right>
+	\vec{F}(x, y, z) = \left< x + 2z,\ -2x - 2y,\ 5y + z \right>
 $$
 
 from the previous exercise is incompressible, since
@@ -345,6 +345,28 @@ $$
 is one for this field (in general, vector potentials are not unique).
 
 By Stokes' Theorem, the flux of an incompressible field through any surface depends only on its circulation along the surface's boundary. We'll give this property the somewhat clunky name **surface-independence**, and we can use it to reduce complicated surface integrals to simpler ones.
+
+### ex "simplifying a surface integral"
+
+	Find the flux of the field
+
+	$$
+		\vec{F}(x, y, z) = \left< \tan(y),\ e^x + xy,\ y^2 - xz \right>
+	$$
+
+	through the surface $S$ parameterized by
+
+	$$
+		\vec{s}(u, \v) = \left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) + \frac{1}{5}\sin^2\left( \frac{\v}{2} \right) \cos(u)\sin(4u\v) \right>
+	$$
+
+	for $u \in \left[ 0, \frac{\pi}{2} \right]$. The surface is oriented upward and shown below.
+
+	### desmos whorl
+
+	This is a staggeringly complex surface, and even though the boundary is relatively simple, even Stokes' Theorem is of limited help: that field doesn't look pleasant or even possible to integrate around the loop. However, there's hope of solving the surface integral itself: since $\Gbullet \vec{F} = 0 + x - x = 0$, $\vec{F}$ is incompressible. That means we can freely change the surface, so long as it keeps the same boundary, and a great choice is the unit disk: its normal vectors point straight upward
+
+###
 
 
 

@@ -1,6 +1,7 @@
 import {
 	createDesmosGraphs,
-	desmosColors
+	desmosColors,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -198,9 +199,66 @@ export default function()
 				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
 				{ latex: raw`\vector(s(T), s(T) + 0.225\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`P = [(i\cos(j), i\sin(j), \sqrt{1 - i^2}) \for i = [0.25, 0.6, 0.99], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+				{ latex: raw`P = [(i\cos(j), i\sin(j), \sqrt{1 - i^2}) \for i = [0.25, 0.6, 0.99], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
 				{ latex: raw`\vector(0.99P, 0.75P)`, color: desmosColors.red, secret: true },
+			]
+		},
+
+		whorl:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [0.93, -0.16, 0.33, 0.15, 0.99, 0.05, -0.34, 0, 0.94]
+			},
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.25, zmax: 1.75 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: "a = 0",
+					min: 0,
+					max: 1,
+					secret: false,
+				}),
+
+				{ latex: raw`S(u, v) = (\sin(u)\cos(v), \sin(u)\sin(v), (1 - a^5)\cos(u) + (1 - a)\frac{1}{5}\sin^2( \frac{v}{2} ) \cos(u)\sin(4uv) + 0.015a)`, secret: true },
+				{ latex: raw`S(u, v)`, parametricDomain3Du: { min: 0, max: "\\frac{\\pi}{2}" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, colorLatex: "C", secret: false },
+
+
+
+				{ latex: raw`s(t) = (\cos(t), \sin(t), 0.015)`, secret: true },
+				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+
+				{ latex: raw`T = [0 - 0.75, \frac{\pi}{2} - 0.75, \pi - 0.75, \frac{3\pi}{2} - 0.75]`, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.225\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+
+
+				{ latex: raw`P = [(i, j) \for i = [0.25, 0.6, 0.99], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
+
+				{ latex: raw`S_u(u, v) = \frac{d}{du}S(u, v)`, hidden: true, secret: true },
+				{ latex: raw`S_v(u, v) = \frac{d}{dv}S(u, v)`, hidden: true, secret: true },
+
+				{ latex: raw`n = \vector(S(P.x, P.y), S(P.x, P.y) + 0.35\frac{S_u(P.x, P.y) \times S_v(P.x, P.y)}{\left| S_u(P.x, P.y) \times S_v(P.x, P.y) \right|})`, secret: true, hidden: true },
+
+				{ latex: raw`n`, color: desmosColors.red, hidden: true },
+
+
+				
+				// UV coordiates for the point (x, y, z)
+				{ latex: raw`U(x, y) = (\arcsin(\sqrt{x^2+y^2}), \mod(\arctan(y, x), 2\pi))`, secret: true, hidden: true },
+				{ latex: raw`N(x, y) = \frac{S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y)}{\left| S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y) \right|}`, secret: true, hidden: true },
+				{ latex: raw`f(x, y, z) = N(x, y) \cdot (\tan(y), e^x + xy, y^2 - xz)`, secret: true, hidden: true },
+
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \operatorname{rgb}(204R_1(x, y, z) + 40B_1(x, y, z) + 122P_1(x, y, z), 40R_1(x, y, z) + 122B_1(x, y, z) + 40P_1(x, y, z), 40R_1(x, y, z) + 204B_1(x, y, z) + 205P_1(x, y, z))`, secret: true },
 			]
 		}
 	});

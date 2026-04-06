@@ -471,7 +471,7 @@ export default function()
 
 			options: {
 				showPlane3D: false,
-				worldRotation3D: [-0.79, -0.57, -0.23, 0.55, -0.82, 0.16, -0.28, 0, 0.96]
+				worldRotation3D: [-0.81, -0.49, -0.33, 0.45, -0.87, 0.18, -0.37, 0, 0.93]
 			},
 
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
@@ -480,14 +480,14 @@ export default function()
 			[
 				{ latex: raw`(v, \cos(u), \sin(u))`, parametricDomain3Du: { min: 0, max: "2\\pi" }, parametricDomain3Dv: { min: -1, max: 1 }, colorLatex: "C" },
 
-				{ latex: raw`f(x, y, z) = x^2 + z` },
+				{ latex: raw`f(x, y, z) = 1.25(x^2 + z)` },
 
 				// the purple, red, and blue amounts
 				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 			]
 		},
 
@@ -618,7 +618,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -651,7 +651,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -676,14 +676,14 @@ export default function()
 			[
 				{ latex: raw`z = x^2 + y^2 \{z \leq 1\}`, colorLatex: "C", secret: true },
 
-				{ latex: raw`f(x, y, z) = (x, y, z^2) \cdot (\frac{1}{\left| (-2x, -2y, 1) \right|} -2x, -2y, 1)`, secret: true },
+				{ latex: raw`f(x, y, z) = 0.75(x, y, z^2) \cdot (\frac{1}{\left| (-2x, -2y, 1) \right|} -2x, -2y, 1)`, secret: true },
 
 				// the purple, red, and blue amounts
 				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -715,7 +715,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(255R(x, y, z) + 127P(x, y, z), 127B(x, y, z), 255B(x, y, z)+ 255P(x, y, z))`, secret: true },
+				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
