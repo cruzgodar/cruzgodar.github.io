@@ -214,7 +214,7 @@ export default function()
 				worldRotation3D: [0.93, -0.16, 0.33, 0.15, 0.99, 0.05, -0.34, 0, 0.94]
 			},
 
-			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.25, zmax: 1.75 },
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -0.75, zmax: 1.5 },
 
 			expressions:
 			[
@@ -252,7 +252,7 @@ export default function()
 				// UV coordiates for the point (x, y, z)
 				{ latex: raw`U(x, y) = (\arcsin(\sqrt{x^2+y^2}), \mod(\arctan(y, x), 2\pi))`, secret: true, hidden: true },
 				{ latex: raw`N(x, y) = \frac{S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y)}{\left| S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y) \right|}`, secret: true, hidden: true },
-				{ latex: raw`f(x, y, z) = N(x, y) \cdot (\tan(y), e^x + xy, y^2 - xz)`, secret: true, hidden: true },
+				{ latex: raw`f(x, y, z) = N(x, y) \cdot (\frac{1}{2}\tan(y), 2xy - z, y^2 - 2xz)`, secret: false, hidden: true },
 
 				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
 				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },

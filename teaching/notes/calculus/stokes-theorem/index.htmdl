@@ -351,7 +351,7 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 	Find the flux of the field
 
 	$$
-		\vec{F}(x, y, z) = \left< \tan(y),\ e^x + xy,\ y^2 - xz \right>
+		\vec{F}(x, y, z) = \left< \tan(y),\ 2xy - z,\ y^2 - 2xz \right>
 	$$
 
 	through the surface $S$ parameterized by
@@ -360,11 +360,41 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 		\vec{s}(u, \v) = \left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) + \frac{1}{5}\sin^2\left( \frac{\v}{2} \right) \cos(u)\sin(4u\v) \right>
 	$$
 
-	for $u \in \left[ 0, \frac{\pi}{2} \right]$. The surface is oriented upward and shown below.
+	for $u \in \left[ 0, \frac{\pi}{2} \right]$ and $v \in [0, 2\pi]f$. The surface is oriented upward and shown below.
 
 	### desmos whorl
 
-	This is a staggeringly complex surface, and even though the boundary is relatively simple, even Stokes' Theorem is of limited help: that field doesn't look pleasant or even possible to integrate around the loop. However, there's hope of solving the surface integral itself: since $\Gbullet \vec{F} = 0 + x - x = 0$, $\vec{F}$ is incompressible. That means we can freely change the surface, so long as it keeps the same boundary, and a great choice is the unit disk: its normal vectors point straight upward
+	This is a staggeringly complex surface, and even though the boundary is relatively simple, even Stokes' Theorem is of limited help: that field doesn't look pleasant or even possible to integrate around the loop. However, there's hope of solving the surface integral itself: since $\Gbullet \vec{F} = 0 + x - x = 0$, $\vec{F}$ is incompressible. That means we can freely change the surface, so long as it keeps the same boundary. To actually find that boundary explicitly, we could plug in the boundary of the rectangle $\left[ 0, \frac{\pi}{2} \right] \times [0, 2\pi]$ in the $u\v$-plane and remove any doubled edges, but we can also just determine that it's the unit circle in the $xy$-plane from inspection.
+
+	What should we change the surface into? A great choice is the unit disk: its normal vectors point straight upward, so we can interface only with the $z$-component of the field, which is by far the simplest. The $a$ value in graph above shows the surface collapsing to the disk; it's colored throughout by $\vec{F} \bullet \vec{n}$, and the color becomes dramatically simpler by the end, as do the normal vectors (which can also be enabled). At the time of writing, though, actually changing that slider is enough to make the average computer quite unhappy.
+
+	Thankfully, the integral is unburdened by computer performance. We have a new surface $D$ parameterized by
+
+	$$
+		\vec{r}(u, \v) = \left< u\cos(\v),\ u\sin(\v),\ 0 \right>
+	$$
+
+	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. The orientation of $D$ is upward, matching the original surface $S$ and so critically also its oriented boundary. Without that match, Stokes' Theorem wouldn't be able to help.
+
+	With everything prepared, our problem becomes a fairly standard double integral:
+
+	$$
+		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
+
+		&= \int_0^1 \!\! \int_0^{2\pi} \left< \tan(u\sin(\v)),\ 2\left( u\cos(\v) \right)\left( u\sin(\v) \right) - 0,\ \left( u\sin(\v) \right)^2 - 2\left( u\sin(\v) \right)(0) \right> \bullet \left< 0, 0, 1 \right>\d\v\,\d u
+
+		&= \int_0^1 \!\! \int_0^{2\pi} \left( u\sin(\v) \right)^2\d\v\,\d u
+
+		&= \int_0^1 \!\! \int_0^{2\pi} u^2\sin^2(\v)\,\d\v\,\d u
+
+		&= \int_0^1 \!\! \int_0^{2\pi} u^2\left( \frac{1}{2} + \frac{1}{2}\cos(2\v) \right)\,\d\v\,\d u
+
+		&= \int_0^1 \left. \left[ u^2\left( \frac{v}{2} + \frac{1}{4}\sin(2\v) \right) \right] \right|_0^{2\pi}\,\d u
+
+		&= \int_0^1 \pi u^2 \,\d u
+
+		&= \frac{\pi}{3}.
+	$$
 
 ###
 
