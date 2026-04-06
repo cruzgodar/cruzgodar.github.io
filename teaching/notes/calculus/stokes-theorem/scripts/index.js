@@ -252,7 +252,7 @@ export default function()
 				// UV coordiates for the point (x, y, z)
 				{ latex: raw`U(x, y) = (\arcsin(\sqrt{x^2+y^2}), \mod(\arctan(y, x), 2\pi))`, secret: true, hidden: true },
 				{ latex: raw`N(x, y) = \frac{S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y)}{\left| S_u(U(x, y).x, U(x, y).y) \times S_v(U(x, y).x, U(x, y).y) \right|}`, secret: true, hidden: true },
-				{ latex: raw`f(x, y, z) = N(x, y) \cdot (\frac{1}{2}\tan(y), 2xy - z, y^2 - 2xz)`, secret: false, hidden: true },
+				{ latex: raw`f(x, y, z) = N(x, y) \cdot (\tan(y), 2xy - z, y^2 - 2xz)`, secret: true, hidden: true },
 
 				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
 				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
