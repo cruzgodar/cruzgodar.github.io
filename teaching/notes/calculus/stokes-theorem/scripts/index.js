@@ -268,7 +268,7 @@ export default function()
 
 			options: {
 				showPlane3D: false,
-				worldRotation3D: [-0.69, 0.7, -0.18, -0.68, -0.71, -0.18, -0.25, 0, 0.97]
+				worldRotation3D: [-0.69, 0.72, -0.11, -0.71, -0.69, -0.11, -0.15, 0, 0.99]
 			},
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
