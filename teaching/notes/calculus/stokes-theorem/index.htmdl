@@ -10,10 +10,10 @@ $$
 	D = \left\{ (x, y, 0) \in #R#^3 \mid x^2 + y^2 \leq 1 \right\}.
 $$
 
-As an object in $#R#^2$, Green's theorem tells that for any 2D field $\left< f, g \right>$,
+As an object in $#R#^2$, Green's theorem tells us that for any 2D field $\left< f, g \right>$,
 
 $$
-	\int_{\p D} \left< f, g \right> \bullet \d \vec{r} = \iint_D \operatorname{curl} \left< f, g \right> \,\d A = \iint_D \operatorname{curl} \left( g_x - f_y \right) \,\d A
+	\int_{\p D} \left< f, g \right> \bullet \d \vec{r} = \iint_D \operatorname{curl} \left< f, g \right> \,\d A = \iint_D \left( g_x - f_y \right) \,\d A
 $$
 
 where $\p D$ is the unit circle, oriented counterclockwise.
@@ -38,7 +38,7 @@ The last object to consider is the curve integral on the left side. While the in
 
 ### def "oriented boundary of a surface"
 
-	Let $S$ be a smooth, oriented surface in $#R#^3$. The **positively-oriented boundary** of $S$ is the closed curve $\p S$, oriented so that walking along $\p S$ while staying parallel to the normal vector for $S$ keeps $S$ on the left.
+	Let $S$ be a smooth, oriented surface in $#R#^3$. The **positively-oriented boundary** of $S$ is the closed curve $\p S$, oriented so that walking along $\p S$ while standing upright in the direction of the normal vector for $S$ keeps $S$ on the left.
 
 ###
 
@@ -75,7 +75,7 @@ The mathematical way to phrase this definition is that an orientation of the sur
 
 		\vec{r}_{\v} &= \left< 0, 1, -\sin(\v) \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< \cos(u),\ \cos(\v),\ 1 \right>.
+		\vec{r}_u \times \vec{r}_{\v} &= \left< \sin(u),\ \sin(\v),\ 1 \right>.
 	$$
 
 	However, that would always have a nonnegative dot product with the field $\vec{F}$, since $S$ lives on or above the $xy$-plane. Therefore, we need to reverse the orientation of $S$, which we can do by swapping the roles of $u$ and $\v$:
@@ -120,7 +120,7 @@ With all of the pieces translated to 3D, we're ready to state the theorem. Happi
 
 ### thm "Stokes' Theorem"
 
-	Let $S$ be a smooth, oriented surface in $#R#^3$ whose positively-oriented boundary $\p S$ is a path (i.e. a piecewise-smooth closed curve), and let $\vec{F}$ be a vector field whose components have continuous partial derivatives on and around $S$. Then
+	Let $S$ be a smooth, oriented surface in $#R#^3$ with positively-oriented boundary $\p S$, and let $\vec{F}$ be a vector field whose components have continuous partial derivatives on and around $S$. Then
 
 	$$
 		\int_{\p S} \vec{F} \bullet \d\vec{r} = \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}.
@@ -130,7 +130,7 @@ With all of the pieces translated to 3D, we're ready to state the theorem. Happi
 
 ###
 
-Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that that was correct.
+Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that this was correct.
 
 ### ex "Stokes' Theorem"
 
@@ -160,7 +160,7 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 
 	and while it's *possible* to evaluate that integral, it's a lot of work that we could avoid; let's try Stokes' Theorem instead. When we used Green's Theorem to translate curve integrals into double integrals, there was only one choice of region whose oriented boundary was the curve we were given. In $#R#^3$, though, there are infinitely many surfaces whose boundary is any given curve! The simplest possible one we could take here is the filled-in disk, oriented upward --- toggle it on in the Desmos graph to see. However, we could just as well take the surface given by $z = \frac{3}{4}\left( x^2 + y^2 \right)$ for $z \leq 3$ or $x^2 + y^2 + z^2 = 13$ for $z \geq 3$, both oriented upward. Toggle those on to compare; if you're wondering where those constants came from, remember that we want $x^2 + y^2 = 4$ and $z = 3$ to satisfy whatever equation we choose.
 
-	So which surface should we pick? When in doubt, pick the flattest surface possible. It's easier to parameterize and has a simpler normal vector, so unless there's something special about the curl of the field that makes it particularly nice on a portion of a sphere or something similar, flat surfaces are our best bet. In our case, the curl of $\vec{F}$ is
+	So which surface should we pick? When in doubt, pick the flattest surface possible --- it's easier to parameterize and has a simpler normal vector. If the curl of the field would be much simpler to express on a different surface, though, there may be a more optimal choice. In our case, the curl of $\vec{F}$ is
 
 	$$
 		\Gtimes \vec{F} = \left< 0, 0, 3x^2 + 3y^2 \right>,
@@ -179,7 +179,7 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 
 		\vec{r}_{\v} &= \left< -u\sin(\v),\ u\cos(\v),\ 0 \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< 0, 0, u\sin^2(\v) + u^2\cos^2(\v) \right>
+		\vec{r}_u \times \vec{r}_{\v} &= \left< 0, 0, u\sin^2(\v) + u\cos^2(\v) \right>
 
 		&= \left< 0, 0, u \right>,
 	$$
@@ -212,7 +212,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 		\vec{F}(x, y, z) = \left< x + 2z,\ -2x - 2y,\ 5y + z \right>.
 	$$
 
-	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $P$ given by $x + y + z = 2$ in the first octant, oriented counterclockwise when looking at it from the origin.
+	Find the circulation of $\vec{F}$ around the boundary of the portion of the plane $P$ given by $x + y + z = 2$ in the first octant, oriented clockwise when looking at it from outside in the first octant, as shown below.
 
 	### desmos planeTriangle
 
@@ -308,7 +308,7 @@ Now, Stokes' Theorem lets us express the flux of a field $\vec{F}$ through a sur
 
 ###
 
-When we began discussing vector fields with potential functions, we noticed they were conservative, since $\Gtimes \G f = \vec{0}$ for any reasonably well-behaved function $f$ by Clairaut's theorem. Wonderfully, the reverse was true, and for any reasonably well-behaved field $\vec{F}$, knowing it's conservative is enough to guarantee it has a potential function. This time around, there's a very similar story: for any field $\vec{F}$ whose entries all have continuous first partial derivatives, $\Gbullet (\Gtimes f) = 0$, again by Clairaut's theorem, and it's just as wonderful that the converse is true.
+When we began discussing vector fields with potential functions, we noticed they were conservative, since $\Gtimes \G f = \vec{0}$ for any reasonably well-behaved function $f$ by Clairaut's theorem. Wonderfully, the reverse was true, and for any reasonably well-behaved field $\vec{F}$, knowing it's conservative is enough to guarantee it has a potential function. This time around, there's a very similar story: for any field $\vec{F}$ whose entries all have continuous first partial derivatives, $\Gbullet (\Gtimes \vec{F}) = 0$, again by Clairaut's theorem, and it's just as wonderful that the converse is true.
 
 ### thm "divergence-zero fields have vector potentials"
 
@@ -316,7 +316,7 @@ When we began discussing vector fields with potential functions, we noticed they
 
 ###
 
-This property will serve as our equivalent to conservativity, so let's give it a name. *Conservative* came from conservation of energy --- the stereotypical conservative field is gravity --- but the standard name for a divergence-zero field stems from interpreting it as a fluid. If the divergence is zero, then the density of the fluid is constant everywhere: there's just as much flowing into any small region per second as flowing out of it.
+This property will serve as our equivalent to conservativity, so let's give it a name. *Conservative* came from conservation of energy --- the stereotypical conservative field is gravity --- but the standard name for a divergence-zero field stems from interpreting it as a fluid. If the divergence is zero, then there's just as much flowing into any small region per second as flowing out of it.
 
 ### def "incompressible field"
 
@@ -324,7 +324,9 @@ This property will serve as our equivalent to conservativity, so let's give it a
 
 ###
 
-We're using $\operatorname{div} \vec{F}$ rather than $\Gbullet \vec{F}$ since this definition works just as well for 2D fields, but we'll only be using it for 3D ones from here on out. The results we've stated so far tell us that incompressible fields have vector potentials; for example, the field $\vec{F}$ given by
+We're using $\operatorname{div} \vec{F}$ rather than $\Gbullet \vec{F}$ since this definition works just as well for 2D fields, but we'll only be using it for 3D ones from here on out. As an example, a fluid like water is incompressible because it has constant density, which guarantees the divergence is always zero (otherwise positive-divergence pockets would be decreasing in density and vice versa).
+
+The results we've stated so far tell us that incompressible fields have vector potentials; for example, the field $\vec{F}$ given by
 
 $$
 	\vec{F}(x, y, z) = \left< x + 2z,\ -2x - 2y,\ 5y + z \right>
@@ -344,7 +346,7 @@ $$
 
 is one for this field (in general, vector potentials are not unique).
 
-By Stokes' Theorem, the flux of an incompressible field through any surface depends only on its circulation along the surface's boundary. We'll give this property the somewhat clunky name **surface-independence**, and we can use it to reduce complicated surface integrals to simpler ones.
+By Stokes' Theorem, the flux of an incompressible field through any surface depends only on the surface's boundary. We'll give this property the somewhat clunky name **surface-independence**, and we can use it to reduce complicated surface integrals to simpler ones.
 
 ### ex "simplifying a surface integral"
 
@@ -360,11 +362,11 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 		\vec{s}(u, \v) = \left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) + \frac{1}{5}\sin^2\left( \frac{\v}{2} \right) \cos(u)\sin(4u\v) \right>
 	$$
 
-	for $u \in \left[ 0, \frac{\pi}{2} \right]$ and $v \in [0, 2\pi]f$. The surface is oriented upward and shown below.
+	for $u \in \left[ 0, \frac{\pi}{2} \right]$ and $v \in [0, 2\pi]$. The surface is oriented upward and shown below.
 
 	### desmos whorl
 
-	This is a staggeringly complex surface, and even though the boundary is relatively simple, even Stokes' Theorem is of limited help: that field doesn't look pleasant or even possible to integrate around the loop. However, there's hope of solving the surface integral itself: since $\Gbullet \vec{F} = 0 + x - x = 0$, $\vec{F}$ is incompressible. That means we can freely change the surface, so long as it keeps the same boundary. To actually find that boundary explicitly, we could plug in the boundary of the rectangle $\left[ 0, \frac{\pi}{2} \right] \times [0, 2\pi]$ in the $u\v$-plane and remove any doubled edges, but we can also just determine that it's the unit circle in the $xy$-plane from inspection.
+	This is a staggeringly complex surface, and even though the boundary is relatively simple, even Stokes' Theorem is of limited help: that field doesn't look pleasant or even possible to integrate around the loop. However, there's hope of solving the surface integral itself: since $\Gbullet \vec{F} = 0 + 2x - 2x = 0$, $\vec{F}$ is incompressible. That means we can freely change the surface, so long as it keeps the same boundary. To actually find that boundary explicitly, we could plug in the boundary of the rectangle $\left[ 0, \frac{\pi}{2} \right] \times [0, 2\pi]$ in the $u\v$-plane and remove any doubled edges, but we can also just determine that it's the unit circle in the $xy$-plane from inspection.
 
 	What should we change the surface into? A great choice is the unit disk: its normal vectors point straight upward, so we can interface only with the $z$-component of the field, which is by far the simplest. The $a$ value in graph above shows the surface collapsing to the disk; it's colored throughout by $\vec{F} \bullet \vec{n}$, and the color becomes dramatically simpler by the end, as do the normal vectors (which can also be enabled). At the time of writing, though, actually changing that slider is enough to make the average computer quite unhappy.
 
@@ -374,26 +376,32 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 		\vec{r}(u, \v) = \left< u\cos(\v),\ u\sin(\v),\ 0 \right>
 	$$
 
-	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. The orientation of $D$ is upward, matching the original surface $S$ and so critically also its oriented boundary. Without that match, Stokes' Theorem wouldn't be able to help.
+	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. The cross product is
+	
+	$$
+		\vec{r}_u \times \vec{r}_{\v} = \left< 0, 0, u \right>,
+	$$
+
+	so the orientation of $D$ is upward, matching the original surface $S$ and so critically also its oriented boundary. Without that match, Stokes' Theorem wouldn't be able to help.
 
 	With everything prepared, our problem becomes a fairly standard double integral:
 
 	$$
 		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
 
-		&= \int_0^1 \!\! \int_0^{2\pi} \left< \tan(u\sin(\v)),\ 2\left( u\cos(\v) \right)\left( u\sin(\v) \right) - 0,\ \left( u\sin(\v) \right)^2 - 2\left( u\sin(\v) \right)(0) \right> \bullet \left< 0, 0, 1 \right>\d\v\,\d u
+		&= \int_0^1 \!\! \int_0^{2\pi} \left< \tan(u\sin(\v)),\ 2\left( u\cos(\v) \right)\left( u\sin(\v) \right) - 0,\ \left( u\sin(\v) \right)^2 - 2\left( u\sin(\v) \right)(0) \right> \bullet \left< 0, 0, u \right>\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} \left( u\sin(\v) \right)^2\d\v\,\d u
+		&= \int_0^1 \!\! \int_0^{2\pi} \left( u\sin(\v) \right)^2 u\,\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} u^2\sin^2(\v)\,\d\v\,\d u
+		&= \int_0^1 \!\! \int_0^{2\pi} u^3\sin^2(\v)\,\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} u^2\left( \frac{1}{2} + \frac{1}{2}\cos(2\v) \right)\,\d\v\,\d u
+		&= \int_0^1 \!\! \int_0^{2\pi} u^3\left( \frac{1}{2} + \frac{1}{2}\cos(2\v) \right)\,\d\v\,\d u
 
-		&= \int_0^1 \left. \left[ u^2\left( \frac{v}{2} + \frac{1}{4}\sin(2\v) \right) \right] \right|_0^{2\pi}\,\d u
+		&= \int_0^1 \left. \left[ u^3\left( \frac{v}{2} + \frac{1}{4}\sin(2\v) \right) \right] \right|_0^{2\pi}\,\d u
 
-		&= \int_0^1 \pi u^2 \,\d u
+		&= \int_0^1 \pi u^3 \,\d u
 
-		&= \frac{\pi}{3}.
+		&= \frac{\pi}{4}.
 	$$
 
 ###
@@ -409,7 +417,7 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 	for $u \in [1, 2]$ and $\v \in [0, 2\pi]$ is plotted below and is oriented so that the normal vectors point in the negative $y$-direction. Find the flux of the field
 
 	$$
-		\vec{F}(x, y, z) = \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right>
+		\vec{F}(x, y, z) = \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) - z \right>
 	$$
 
 	through $S$.
@@ -427,7 +435,7 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 	for $u \in [1, 2]$ and $\v \in [0, 2\pi]$, then we'll be able to integrate without too much trouble. We have a normal vector of
 	
 	$$
-		\vec{r}_u \times \vec{r}_{\v} = \left< 0, -1, 0 \right>,
+		\vec{r}_u \times \vec{r}_{\v} = \left< 0, -u, 0 \right>,
 	$$
 
 	so
@@ -435,15 +443,17 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 	$$
 		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
 
-		&= \int_1^2 \!\! \int_0^{2\pi} \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right> \bullet \left< 0, -1, 0 \right>\d\v\,\d u
+		&= \int_1^2 \!\! \int_0^{2\pi} \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right> \bullet \left< 0, -u, 0 \right>\d\v\,\d u
 
-		&= \int_1^2 \!\! \int_0^{2\pi} \left( 2z - y + 1 \right)\d\v\,\d u
+		&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2z - y + 1 \right)\d\v\,\d u
 
-		&= \int_1^2 \!\! \int_0^{2\pi} \left( 2u\cos(\v) + 1 \right)\d\v\,\d u
+		&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2u\cos(\v) + 1 \right)\d\v\,\d u
 
-		&= \int_1^2 2\pi \,\d u
+		&= \int_1^2 2\pi u \,\d u
 
-		&= 2\pi.
+		&= 2\pi\left. \left[ \frac{u^2}{2} \right] \right|_1^2
+
+		&= 3\pi.
 	$$
 
 ###
