@@ -215,7 +215,7 @@ $$
 	\vec{l_2}(t) = p + t\left< 0, 1, pf/py(a, b) \right>.
 $$
 
-Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, a + \Delta y \right)$ as
+Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, b + \Delta y \right)$ as
 
 $$
 	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + pf/px(a, b)\Delta x + pf/py(a, b)\Delta y,
