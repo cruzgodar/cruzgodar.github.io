@@ -120,6 +120,7 @@ home Cruz Godar
 			greens-theorem Section 6.4: Green's Theorem
 			surface-integrals Section 6.5: Surface Integrals
 			stokes-theorem Section 6.6: Stokes' Theorem
+			triple-integrals Section 6.7: Triple Integrals
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1.1: Intro to Vectors and Matrices

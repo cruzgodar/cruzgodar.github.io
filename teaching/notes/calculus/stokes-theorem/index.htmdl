@@ -13,7 +13,7 @@ $$
 As an object in $#R#^2$, Green's theorem tells us that for any 2D field $\left< f, g \right>$,
 
 $$
-	\int_{\p D} \left< f, g \right> \bullet \d \vec{r} = \iint_D \operatorname{curl} \left< f, g \right> \,\d A = \iint_D \left( g_x - f_y \right) \,\d A
+	\oint_{\p D} \left< f, g \right> \bullet \d \vec{r} = \iint_D \operatorname{curl} \left< f, g \right> \,\d A = \iint_D \left( g_x - f_y \right) \,\d A
 $$
 
 where $\p D$ is the unit circle, oriented counterclockwise.
@@ -123,7 +123,7 @@ With all of the pieces translated to 3D, we're ready to state the theorem. Happi
 	Let $S$ be a smooth, oriented surface in $#R#^3$ with positively-oriented boundary $\p S$, and let $\vec{F}$ be a vector field whose components have continuous partial derivatives on and around $S$. Then
 
 	$$
-		\int_{\p S} \vec{F} \bullet \d\vec{r} = \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}.
+		\oint_{\p S} \vec{F} \bullet \d\vec{r} = \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}.
 	$$
 
 	In other words, the circulation around the boundary of $S$ is equal to the integral of the curl across $S$.
@@ -150,10 +150,10 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 		\vec{s}(t) = \left< 2\cos(t),\ 2\sin(t),\ 3 \right>
 	$$
 
-	for $t \in [0, 2\pi]$, which results in circulation integral of
+	for $t \in [0, 2\pi]$, which results in a circulation integral of
 
 	$$
-		\int_{C} \vec{F} \bullet \d\vec{s} &= \int_0^{2\pi} \left< -8\sin^3(t),\ 8\cos^3(t),\ 27 \right> \bullet \left< -2\sin(t),\ 2\cos(t),\ 0 \right>\d t
+		\oint_{C} \vec{F} \bullet \d\vec{s} &= \int_0^{2\pi} \left< -8\sin^3(t),\ 8\cos^3(t),\ 27 \right> \bullet \left< -2\sin(t),\ 2\cos(t),\ 0 \right>\d t
 
 		&= \int_0^{2\pi} \left( 16\sin^4(t) + 16\cos^4(t) \right)\d t,
 	$$
@@ -189,7 +189,7 @@ Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dott
 	Back to our problem. We're interested in a vector surface integral, not a scalar one, so we just need the cross product and not its magnitude. If we call the disk $D$, then $\p D = C$, so
 
 	$$
-		\int_C \vec{F} \bullet \d\vec{s} &= \iint_D \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
+		\oint_C \vec{F} \bullet \d\vec{s} &= \iint_D \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
 
 		&= \int_0^{2\pi} \!\! \int_0^2 \left< 0, 0, 3\left( u\cos(\v) \right)^2 + 3\left( u\sin(\v) \right)^2 \right> \bullet \left< 0, 0, u \right>\d u\,\d\v
 
@@ -249,7 +249,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 	which points away from the origin. That would make the orientation of the boundary counterclockwise when viewed from the perspective shown above, which isn't right. Rather than reworking our entire parameterization, though, let's just negate the value of the cross product and therefore the surface integral:
 
 	$$
-		\int_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
+		\oint_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
 
 		&= \iint_T \left< 5, 2, -2 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
 
@@ -281,7 +281,7 @@ We'll return to the idea of being able to choose different surfaces to represent
 	parameterizing the unit circle clockwise, we have
 
 	$$
-		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma} &= \int_{\p S} \vec{G} \bullet \d\vec{r}
+		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma} &= \oint_{\p S} \vec{G} \bullet \d\vec{r}
 
 		&= \int_0^{2\pi} \left< -\sin(-t),\ \cos(-t),\ \cos(-t)\sin(-t) \right> \bullet \left< \sin(-t),\, -\cos(-t),\ 0 \right>\d t
 

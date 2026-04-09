@@ -358,6 +358,8 @@ Having covered curve integrals and double integrals so thoroughly, we're now pre
 
 	where $\d \sigma = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d\v\,\d u$ represents infinitesimal surface area. This is usually written $\d S$, conflicting with the notation for the surface itself; while the sudden use of a Greek letter can be a little startling, I prefer to use $\sigma$, similar to how we used $\d s$ for infinitesimal arc length in curve integrals.
 
+	Just as we used the symbol $\oint$ to denote a curve integral around a closed curve, we'll use $\oiint$ to indicate a surface integral taken around a closed surface (i.e. one with no boundary).
+
 ###
 
 Unlike curve integrals, which we could introduce in $#R#^2$ with functions of two variables, surface integrals only meaningfully live in $#R#^3$. A surface integral in $#R#^2$ is just a double integral: flattening the surface in the previous graph would un-spread the mango-like Riemann sum, and it would become just a Riemann sum for a double integral.
@@ -573,7 +575,7 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 	Onto the integral. We have
 
 	$$
-		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \int_0^\pi \!\!\! \int_0^{2\pi} \vec{F}\left( \vec{r}(u, \v) \right) \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d\v\,\d u
+		\oiint_S \vec{F} \bullet \d\vec{\sigma} &= \int_0^\pi \!\!\! \int_0^{2\pi} \vec{F}\left( \vec{r}(u, \v) \right) \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d\v\,\d u
 
 		&= \int_0^\pi \!\!\! \int_0^{2\pi} 8\left< \sin(u)\cos(\v) \cos^2(u),\ \sin(u)\sin(\v) \cos^2(u),\ \cos^3(u) \right> \bullet 4\left< \cos(\v) \sin^2(u),\ \sin(\v) \sin^2(u),\ \cos(u) \sin(u) \right>\d\v\,\d u
 

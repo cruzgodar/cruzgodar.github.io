@@ -774,7 +774,8 @@ export const sitemap =
 			"/teaching/notes/calculus/curve-integrals",
 			"/teaching/notes/calculus/greens-theorem",
 			"/teaching/notes/calculus/surface-integrals",
-			"/teaching/notes/calculus/stokes-theorem"
+			"/teaching/notes/calculus/stokes-theorem",
+			"/teaching/notes/calculus/triple-integrals"
 		]
 	},
 		
@@ -1404,6 +1405,17 @@ export const sitemap =
 	"/teaching/notes/calculus/stokes-theorem":
 	{
 		"title": "Section 6.6: Stokes' Theorem",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/triple-integrals":
+	{
+		"title": "Section 6.7: Triple Integrals",
 		
 		"parent": "/teaching/notes/calculus",
 		

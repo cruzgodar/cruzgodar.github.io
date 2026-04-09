@@ -1,10 +1,9 @@
 {
 	"compilerOptions":
 	{
-		"baseUrl": ".",
 		"paths":
 		{
-			"/*": ["*"]
+			"/*": ["./*"]
 		}
 	},
 	"exclude": [

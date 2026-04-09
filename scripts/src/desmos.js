@@ -1041,10 +1041,10 @@ export async function getDesmosScreenshot(id, forPdf = false)
 	});
 
 	const is3d = desmosGraphs[id].getState().graph.threeDMode;
+	const state = desmosGraphs[id].getState();
 
-	if (is3d)
+	if (is3d && state?.graph?.worldRotation3D)
 	{
-		const state = desmosGraphs[id].getState();
 		console.log(`${id}`);
 		console.log(`worldRotation3D: [${state.graph.worldRotation3D.map(x => Math.round(x * 100) / 100).join(", ")}]`);
 	}

@@ -129,9 +129,9 @@ At long last, we can add all of those curve integrals by writing the boundary of
 The use of the partial symbol for boundary is potentially a little confusing, but it comes from a part of math upstream from us that has good reason for it. It also won't conflict with any of our current notation, and so we'll go along with it. With this notation, we have
 
 $$
-	\iint_R f_y(x, y)\,\d A &= \int_{-\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+	\iint_R f_y(x, y)\,\d A &= \oint_{-\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
 
-	&= -\int_{\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
+	&= -\oint_{\p R} \left< f(x, y), 0 \right> \bullet \d \vec{r}
 $$
 
 since the way we oriented $C_1$, $C_2$, and $C_3$ was *clockwise* when they were all stitched together. 
@@ -143,15 +143,15 @@ We're almost ready for a proper theorem statement, but first we need to step all
 The resulting statement looks similar, but the roles of $x$ and $y$ are switched, and we've crucially lost the minus sign on the outside since the loop has positive orientation.
 
 $$
-	\iint_R g_x(x, y)\,\d A &= \int_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}
+	\iint_R g_x(x, y)\,\d A &= \oint_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}
 
-	&= \int_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}.
+	&= \oint_{\p R} \left< 0, g(x, y) \right> \bullet \d \vec{r}.
 $$
 
 *Finally*, we can put this together. To begin, there are no conditions on the final vector fields in the curve integral aside from one component being zero, and so we can add them together to merge our two results. We'll also move the negative sign from the clockwise curve integral to the double integral so that the vector field doesn't have anything affecting it.
 
 $$
-	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\,\d A = \int_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
+	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\,\d A = \oint_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
 $$
 
 While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$ --- the magic of the theorem we're about to state is that it's true for a much larger class of regions!
@@ -161,7 +161,7 @@ While all of our logic relied on the region $R$ being the type of region we coul
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g \right>$ be a vector field, where $f$ and $g$ have continuous partial derivatives on and around $R$. Then
 
 	$$
-		\int_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
+		\oint_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
 	$$
 
 ###
@@ -569,9 +569,9 @@ With divergence and curl in hand, we can finally phrase both forms of Green's Th
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g, 0 \right>$ be a vector field restricted to $#R#^2$ whose component functions have continuous partial derivatives on and around $R$. Then
 
 	$$
-		\int_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R \operatorname{curl} \vec{F} \,\d A
+		\oint_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R \operatorname{curl} \vec{F} \,\d A
 
-		\int_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \operatorname{div} \vec{F} \,\d A.
+		\oint_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \operatorname{div} \vec{F} \,\d A.
 	$$
 
 ###
