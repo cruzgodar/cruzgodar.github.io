@@ -313,7 +313,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 	Now we need to integrate the new series term by term. This amounts to just applying the Power Rule:
 	
 	$$
-		\int e^{-x^2}\,\d x &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\,\d x
+		\int e^{-x^2}\,\d x &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\d x
 		
 		&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\,\d x \right) + C
 		

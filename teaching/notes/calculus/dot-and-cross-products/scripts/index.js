@@ -333,9 +333,9 @@ export default function()
 					secret: false,
 				}),
 
-				{ latex: raw`a = \operatorname{vector}((0, 0, 0), (a_1, a_2, a_3))`, color: desmosColors.blue },
+				{ latex: raw`a = \vector((0, 0, 0), (a_1, a_2, a_3))`, color: desmosColors.blue },
 
-				{ latex: raw`b = \operatorname{vector}((0, 0, 0), (b_1, b_2, b_3))`, color: desmosColors.red },
+				{ latex: raw`b = \vector((0, 0, 0), (b_1, b_2, b_3))`, color: desmosColors.red },
 
 				{ latex: raw`n = a \times b`, color: desmosColors.purple },
 			]

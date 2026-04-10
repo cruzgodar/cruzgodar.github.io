@@ -71,7 +71,7 @@ export default function()
 					secret: false
 				}),
 
-				{ latex: raw`C = \operatorname{rgb}(255\left|U(x, y, z)\right|^{1.3151}, 255\left|V(x, y, z)\right|^{1.3151}, 255)`, secret: true },
+				{ latex: raw`C = \rgb(255\left|U(x, y, z)\right|^{1.3151}, 255\left|V(x, y, z)\right|^{1.3151}, 255)`, secret: true },
 			]
 		},
 
@@ -487,7 +487,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 			]
 		},
 
@@ -618,7 +618,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -651,7 +651,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -683,7 +683,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 
@@ -715,7 +715,7 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \operatorname{rgb}(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
 
 
 

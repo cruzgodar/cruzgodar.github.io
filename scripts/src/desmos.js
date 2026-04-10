@@ -387,6 +387,8 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 			expression.latex = expression.latex.replace(/([^\\left])\\\{/g, (match, $1) => raw`${$1}\left\{`);
 			expression.latex = expression.latex.replace(/([^\\right])\\\}/g, (match, $1) => raw`${$1}\right\}`);
 
+			expression.latex = expression.latex.replace(/\\(round|floor|ceil|vector|rgb|for)/g, (match, $1) => raw`\operatorname{${$1}}`);
+
 			if (!is3d)
 			{
 				expression.lineWidth ??= 3.5;

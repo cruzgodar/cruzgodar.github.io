@@ -47,7 +47,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	The intersection occurs when $6 - x = 9 - \left( \frac{x}{2} \right)^2$. This gives $x = -2$ and $x = 6$. Now we can see which function is larger by evaulating them both somewhere in between, say at $0$: $6 - 0 = 6$ and $9 - \left( \frac{0}{2} \right)^2 = 9$. That means that the second one is the larger function, so we have
 	
 	$$
-		\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\,\d x &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\,\d x
+		\int_{-2}^6 \left(9 - \left( \frac{x}{2} \right)^2 - (6 - x)\right)\d x &= \int_{-2}^6 \left(3 + x - \frac{x^2}{4} \right)\d x
 		
 		&= \left. \left[ 3x + \frac{x^2}{2} - \frac{x^3}{12} \right] \right|_{-2}^{6}
 		

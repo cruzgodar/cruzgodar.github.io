@@ -6,9 +6,9 @@ We've reached the halfway point of the course! As we follow the trajectory of si
 
 ### desmos riemannSum
 
-Given a function $f(x)$ on an interval $[a, b]$, we formed a **Riemann sum** $\sum_{i = 1}^n f\left( x_i^* \right) \Delta x$ by first slicing $[a, b]$ into $n$ subintervals of width $\Delta x = \frac{b - a}{n}$ each. By picking $x_i^*$ to be some point in the $i$th subinterval (for example, the left or right endpoint or the value that maximized or minimized $f\left( x_i^* \right)$), we were adding up $n$ rectangles' worth of area approximating the area under the graph of $f$, where area below the $x$-axis counted as negative.
+Given a function $f(x)$ on an interval $[a, b]$, we formed a **Riemann sum** $\sum_{i = 1}^n f\left( x_i \right) \Delta x$ by first slicing $[a, b]$ into $n$ subintervals of width $\Delta x = \frac{b - a}{n}$ each. By picking $x_i$ to be some point in the $i$th subinterval (for example, the left or right endpoint or the value that maximized or minimized $f\left( x_i \right)$), we were adding up $n$ rectangles' worth of area approximating the area under the graph of $f$, where area below the $x$-axis counted as negative.
 
-The **definite integral** $\int_a^b f(x)\,\d x$ is the limit of a Riemann sum as the number of subintervals increases without bound, assuming that limit is the same for all choices of $x_i^*$ (that's what it means for a function to be integrable, in fact). All continuous functions are integrable, and so we frequently restricted our attention to them.
+The **definite integral** $\int_a^b f(x)\,\d x$ is the limit of a Riemann sum as the number of subintervals increases without bound, assuming that limit is the same for all choices of $x_i$ (that's what it means for a function to be integrable, in fact). All continuous functions are integrable, and so we frequently restricted our attention to them.
 
 The Fundamental Theorem of Calculus was how we typically computed integrals. It relates the area measured by a definite integral $\int_a^b f(x)\,\d x$ to an antiderivative $F$ of $f$, and specifically the behavior of $F$ at the endpoints of the interval:
 
@@ -36,10 +36,10 @@ The Cartesian product of two intervals, then, is a rectangle.
 
 ### desmos cartesianProductRectangle
 
-Given a rectangle $R = [a, b] \times [c, d]$, we can now slice $[a, b]$ into $m$ subintervals of width $\Delta x = \frac{b - a}{m}$ each, and $[c, d]$ into $n$ subintervals of width $\Delta y = \frac{d - c}{n}$ each. Picking a point $\left( x_{ij}^*, y_{ij}^* \right)$ in each subrectangle, a Riemann sum to approximate the volume under the graph of $f$ is
+Given a rectangle $R = [a, b] \times [c, d]$, we can now slice $[a, b]$ into $m$ subintervals of width $\Delta x = \frac{b - a}{m}$ each, and $[c, d]$ into $n$ subintervals of width $\Delta y = \frac{d - c}{n}$ each. Picking a point $\left( x_{ij}, y_{ij} \right)$ in each subrectangle, a Riemann sum to approximate the volume under the graph of $f$ is
 
 $$
-	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \, \Delta x.
+	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}, y_{ij} \right) \Delta y \, \Delta x.
 $$
 
 ### desmos riemannSum3d
@@ -51,9 +51,9 @@ Sometimes, we'll rewrite $\Delta y\, \Delta x$ as $\Delta A$ to indicate that it
 	Let $R$ be a rectangle in $#R#^2$. The **double integral** of a function $f(x, y)$ over $R$ is
 
 	$$
-		\iint_R f(x, y)\,\d A &= \iint_R f(x, y)\,\d x\,\d y
+		\iint_R f\,\d A &= \iint_R f(x, y)\,\d x\,\d y
 
-		&= \lim_{:: m \to \infty ; \,n \to \infty ::}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y\, \Delta x.
+		&= \lim_{m, n \to \infty}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}, y_{ij} \right) \Delta y\, \Delta x.
 	$$
 
 ###
