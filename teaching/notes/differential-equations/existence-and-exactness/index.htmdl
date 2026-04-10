@@ -357,7 +357,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	First of all, $p\psi/px = f(x, y)$, so we should integrate that $dx$. Just like partial derivatives, this just means treating $y$ as a constant.
 	
 	$$
-		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\,\d x
+		\psi(x, y) &= \int \left( y\cos(xy) - 2e^{2x + y} + \sec^2(x) \right)\d x
 		
 		&= \sin(xy) - e^{2x + y} + \tan(x) + c_1(y).
 	$$
@@ -365,7 +365,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	The most surprising thing there is $+c_1(y)$ as opposed to just $+c_1$ or $+c$ --- what's up with that? When we differentiate a function of a single variable, we destroy any added constants, so we add back a generic one when integrating. When we differentiate $\psi$ with respect to $x$, though, we destroy anything that that derivative sees as a constant, which is any expression only involving $y$. Therefore, we need to add a generic function of $y$ to our expression. In order to solve for it, we'll come at $\psi$ from the other direction, integrating $g(x, y)$ $dy$.
 	
 	$$
-		\psi(x, y) &= \int \left( x\cos(xy) - e^{2x + y} + 2y \right)\,\d y
+		\psi(x, y) &= \int \left( x\cos(xy) - e^{2x + y} + 2y \right)\d y
 		
 		&= \sin(xy) - e^{2x + y} + y^2 + c_2(x).
 	$$

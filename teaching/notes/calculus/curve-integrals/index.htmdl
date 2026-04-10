@@ -39,14 +39,14 @@ In the limit, a sum of these areas becomes an integral, which we'll want to give
 	Let $z = f(x, y)$ be a function, and let $C$ be a smooth curve in the $xy$-plane --- that is, there is a parameterization by $\vec{r}(t)$ from $t = a$ to $t = b$ that is differentiable, where $\vec{r}'(t)$ is continuous and never zero. The **curve integral** of $f$ along $C$ is
 
 	$$
-		\int_C f(x, y)\,\d s = \int_a^b f(\vec{r}(t))\left| \left| \vec{r}'(t) \right| \right|\,\d t.
+		\int_C f(x, y)\,\d s = \int_a^b f(\vec{r}(t))\left| \left| \vec{r}'(t) \right| \right|\d t.
 	$$
 
 ###
 
 Note that the curve in this definition doesn't need to be oriented. If $C$ is a curve from point $p$ to point $q$ that is parameterized by $\vec{r}(t)$, then reversing the parameterization of $C$ so it runs from $q$ to $p$ negates $\vec{r}'(t)$, but since the integral only deals with $\left| \left| \vec{r}'(t) \right| \right|$, it's unaffected.
 
-The $s$ in the abstract integral on the left in this definition is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\,\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
+The $s$ in the abstract integral on the left in this definition is a stand-in for a function that measures arc length along the curve; that is, $\d s = \left| \left| \vec{r}'(t) \right| \right|\d t$. In practice, we nearly always need to parameterize the curve to take a curve integral, and so we tend to engage with the version on the right as if it is the definition of a curve integral, rather than the Riemann sum version.
 
 ### as "curve integrals, line integrals, and path integrals"
 	
@@ -88,7 +88,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 
 	### desmos pathDependence
 
-	Find $\int_C \left( x + y + z \right)\,\d s$ and $\int_D \left( x + y + z \right)\,\d s$.
+	Find $\int_C \left( x + y + z \right)\d s$ and $\int_D \left( x + y + z \right)\d s$.
 
 	We'll begin by parameterizing both paths. $C$ is given by a circle, so we'd expect a cosine and sine to be present in there somewhere. Since we start from a point with $x = 1$, we can use cosine for the $x$-coordinate and sine for the $z$-coordinate, resulting in
 
@@ -109,7 +109,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 	so our curve integral becomes
 
 	$$
-		\int_C \left( x + y + z \right)\,\d s &= \int_0^{\pi / 2} \left( \cos(t) + 1 + \sin(t) \right) \cdot 1\,\d t
+		\int_C \left( x + y + z \right)\d s &= \int_0^{\pi / 2} \left( \cos(t) + 1 + \sin(t) \right) \cdot 1\,\d t
 
 		&= \left. \left[ \sin(t) + t - \cos(t) \right] \right|_0^{\pi / 2}
 
@@ -135,7 +135,7 @@ Here, $C_1$ is the line from $(0, 0)$ to $(0, -2)$, and $C_2$ is the three-quart
 	and so our integral is
 
 	$$
-		\int_C \left( x + y + z \right)\,\d s &= \int_{C_1} \left( x + y + z \right)\,\d s + \int_{C_2} \left( x + y + z \right)\,\d s
+		\int_C \left( x + y + z \right)\d s &= \int_{C_1} \left( x + y + z \right)\d s + \int_{C_2} \left( x + y + z \right)\d s
 
 		&= \int_0^1 \left( (1 - t) + 1 + 0 \right) \cdot 1\,\d t + \int_0^1 \left( 0 + 1 + t \right) \cdot 1\,\d t
 
@@ -214,12 +214,12 @@ $$
 	\int_C \vec{F} \bullet \vec{T}\,\d s.
 $$
 
-In practice, though, we don't usually need to compute the unit tangent vector itself. That's because the $\d s$ expands to $\left| \left| \vec{r}'(t) \right| \right|\,\d t$, which cancels with $\vec{T}(t)$: if the path $C$ is parameterized by $\vec{r}(t)$ for $a \leq t \leq b$, then
+In practice, though, we don't usually need to compute the unit tangent vector itself. That's because the $\d s$ expands to $\left| \left| \vec{r}'(t) \right| \right|\d t$, which cancels with $\vec{T}(t)$: if the path $C$ is parameterized by $\vec{r}(t)$ for $a \leq t \leq b$, then
 
 $$
-	\int_C \vec{F} \bullet \vec{T}\,\d s &= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \vec{T}(t) \right) \left| \left| \vec{r}'(t) \right| \right|\,\d t
+	\int_C \vec{F} \bullet \vec{T}\,\d s &= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \vec{T}(t) \right) \left| \left| \vec{r}'(t) \right| \right|\d t
 
-	&= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|} \right) \left| \left| \vec{r}'(t) \right| \right|\,\d t
+	&= \int_a^b \left( \vec{F}(\vec{r}(t)) \bullet \frac{\vec{r}'(t)}{\left| \left| \vec{r}'(t) \right| \right|} \right) \left| \left| \vec{r}'(t) \right| \right|\d t
 
 	&= \int_a^b \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
 $$
@@ -281,15 +281,15 @@ The starting point of $\left( 1, -\sqrt{3} \right)$ has an angle of $\arctan\lef
 $$
 	\int_C \vec{F} \bullet \d\vec{r} &= \int_{\pi / 3}^{5 \pi / 3} \vec{F}(\vec{r}(t)) \bullet \vec{r}'(t)\,\d t
 
-	&= \int_{\pi / 3}^{5 \pi / 3} \left< -2\sin(-t), -2\cos(-t) + 2\sin(-t) \right> \bullet \left< 2\sin(-t), -2\cos(-t) \right>\,\d t
+	&= \int_{\pi / 3}^{5 \pi / 3} \left< -2\sin(-t), -2\cos(-t) + 2\sin(-t) \right> \bullet \left< 2\sin(-t), -2\cos(-t) \right>\d t
 
-	&= \int_{\pi / 3}^{5 \pi / 3} \left( -4\sin^2(-t) + 4\cos^2(-t) - 4\sin(-t)\cos(-t) \right)\,\d t.
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( -4\sin^2(-t) + 4\cos^2(-t) - 4\sin(-t)\cos(-t) \right)\d t.
 $$
 
 Be careful not to write $-\sin^2(-t) + \cos^2(-t) = 1$! That's only true when the sine and cosine terms have the same sign. Instead, we can use a trig identity that equates that with $\cos(-2t)$, and a similar one for the remaining term in the integral.
 
 $$
-	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\,\d t
+	&= \int_{\pi / 3}^{5 \pi / 3} \left( 4\cos(-2t) - 2\sin(-2t) \right)\d t
 
 	&= \left. \left[ -2\sin(-2t) - \cos(-2t) \right] \right|_{\pi / 3}^{5 \pi / 3}
 
@@ -331,11 +331,11 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 		&= \int_0^1 \vec{F}(\vec{l}(t)) \bullet \vec{l}'(t)\,\d t
 
-		&= \int_0^1 \left< \left( -1 + 3t \right)^2, -1 + 3t - 2\left( -1 + 3t \right) \right> \bullet \left< 3, 3 \right>\,\d t
+		&= \int_0^1 \left< \left( -1 + 3t \right)^2, -1 + 3t - 2\left( -1 + 3t \right) \right> \bullet \left< 3, 3 \right>\d t
 
-		&= \int_0^1 \left< 1 - 6t + 9t^2, 1 - 3t \right> \bullet \left< 3, 3 \right>\,\d t
+		&= \int_0^1 \left< 1 - 6t + 9t^2, 1 - 3t \right> \bullet \left< 3, 3 \right>\d t
 
-		&= \int_0^1 \left( 6 - 27t + 27t^2 \right)\,\d t
+		&= \int_0^1 \left( 6 - 27t + 27t^2 \right)\d t
 
 		&= \left. \left[ 6t - \frac{27}{2}t^2 + 9t^3 \right] \right|_0^1
 
@@ -355,13 +355,13 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 	$$
 		\int_L \vec{F} \bullet \d\vec{p} &= \int_{-1}^2 \vec{F}(\vec{p}(t)) \bullet \vec{p}'(t)\,\d t
 
-		&= \int_{-1}^2 \left< t^2, t - 2\left( t^2 - 2 \right) \right> \bullet \left< 1, 2t \right>\,\d t
+		&= \int_{-1}^2 \left< t^2, t - 2\left( t^2 - 2 \right) \right> \bullet \left< 1, 2t \right>\d t
 
-		&= \int_{-1}^2 \left< t^2, t - 2t^2 + 4 \right> \bullet \left< 1, 2t \right>\,\d t
+		&= \int_{-1}^2 \left< t^2, t - 2t^2 + 4 \right> \bullet \left< 1, 2t \right>\d t
 
-		&= \int_{-1}^2 \left( t^2 + 2t^2 - 4t^3 + 8t \right)\,\d t
+		&= \int_{-1}^2 \left( t^2 + 2t^2 - 4t^3 + 8t \right)\d t
 
-		&= \int_{-1}^2 \left( 3t^2 - 4t^3 + 8t \right)\,\d t
+		&= \int_{-1}^2 \left( 3t^2 - 4t^3 + 8t \right)\d t
 
 		&= \left. \left[ t^3 - t^4 + 4t^2 \right] \right|_{-1}^2
 
@@ -447,7 +447,7 @@ has gracefully adapted to higher dimensions by substituting a gradient for the o
 We currently need that elegance as means to a very utilitarian end, though. The whole expression we were considering lived inside an integral, and putting it back, we find
 
 $$
-	\int_C \G f \bullet \d\vec{r} &= \int_a^b d/dt \left[ f\left( \vec{r}(t) \right) \right]\,\d t
+	\int_C \G f \bullet \d\vec{r} &= \int_a^b d/dt \left[ f\left( \vec{r}(t) \right) \right]\d t
 
 	&= \left. \left[ f\left( \vec{r}(t) \right) \right] \right|_a^b
 

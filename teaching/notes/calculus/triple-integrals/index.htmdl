@@ -2,7 +2,15 @@
 
 
 
+So far, all of our integration has been done with variations on single or double integrals; even surface integrals, however complicated, resolve to straightforward double integrals once we parameterize. For functions of two variables, that was enough to describe any function's domain, but now that we're squarely operating in $#R#^3$, it no longer quite suffices. We'll need a concept of an integral over an entire solid region of $#R#^3$, but as daunting as that might sound, we've already developed most of the theory we need. We'll construct and compute triple integrals just like double integrals, and there's no need to parameterize regions like we parameterized surfaces in $#R#^3$ or curves in $#R#^2$ and $#R#^3$: since $#R#^3$ only has three dimensions, a triple integral will have enough variables to describe any region. Similarly, regions don't have an associated vector field like curves have tangent vectors or surfaces have normal vectors, so we'll only be considering scalar triple integrals, not vector ones.
 
+Let's dig in, and just like with double integrals, let's start with rectangles. Let
+
+$$
+	B = [x_1, x_2] \times [y_1, y_2] \times [z_1, z_2]
+$$
+
+be a rectangular box in $#R#^3$. By dividing each of those three intervals into $l$, $m$, and $n$ subintervals of width $\Delta x$, $\Delta y$, and $\Delta z$, respectively, and taking points $\left( x_{ijk}, y_{ijk}, z_{ijk} \right)$
 
 
 

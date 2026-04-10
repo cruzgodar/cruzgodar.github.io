@@ -39,12 +39,12 @@ The Cartesian product of two intervals, then, is a rectangle.
 Given a rectangle $R = [a, b] \times [c, d]$, we can now slice $[a, b]$ into $m$ subintervals of width $\Delta x = \frac{b - a}{m}$ each, and $[c, d]$ into $n$ subintervals of width $\Delta y = \frac{d - c}{n}$ each. Picking a point $\left( x_{ij}^*, y_{ij}^* \right)$ in each subrectangle, a Riemann sum to approximate the volume under the graph of $f$ is
 
 $$
-	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \Delta x.
+	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}^*, y_{ij}^* \right) \Delta y \, \Delta x.
 $$
 
 ### desmos riemannSum3d
 
-Sometimes, we'll rewrite $\Delta y \Delta x$ as $\Delta A$ to indicate that it's an area and reduce the need to specify the variables $x$ and $y$, although as we'll see momentarily, we'll often want to keep them specified too. Regardless, we define the limit of this Riemann sum to be the definite integral we expect.
+Sometimes, we'll rewrite $\Delta y\, \Delta x$ as $\Delta A$ to indicate that it's an area and reduce the need to specify the variables $x$ and $y$, although as we'll see momentarily, we'll often want to keep them specified too. Regardless, we define the limit of this Riemann sum to be the definite integral we expect.
 
 ### def "double integral"
 
@@ -67,7 +67,7 @@ But that's exactly what we've been doing with partial derivatives! If we hold $x
 	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a continuous function. Then
 
 	$$
-		\iint_R f(x, y)\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\,\d x.
+		\iint_R f(x, y)\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\d x.
 	$$
 
 	We typically write this without the parentheses, and since we can just as well slice in the $x$-direction first and then the $y$-direction,
@@ -93,9 +93,9 @@ We evaluate nested integrals like these from the inside out; without any further
 
 		&= \int_{-2}^2 \left. \left[ x^2y + \frac{1}{2}xy^2 + \frac{1}{3}xy^3 - y \right] \right|_{-1}^1\,\d x
 
-		&= \int_{-2}^2 \left( \left( x^2 + \frac{1}{2}x + \frac{1}{3}x - 1 \right) - \left( -x^2 + \frac{1}{2}x - \frac{1}{3}x + 1 \right) \right)\,\d x
+		&= \int_{-2}^2 \left( \left( x^2 + \frac{1}{2}x + \frac{1}{3}x - 1 \right) - \left( -x^2 + \frac{1}{2}x - \frac{1}{3}x + 1 \right) \right)\d x
 
-		&= \int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\,\d x
+		&= \int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\d x
 	$$
 
 	That inside function is a function of only $x$ and not $y$, as it well should be! It's the area of the cross-section of the graph in the $y$-direction at a certain $x$-value.
@@ -105,7 +105,7 @@ We evaluate nested integrals like these from the inside out; without any further
 	Graphed in purple here is $f(x, y)$, and the red and blue area below is the $\d y$ integral that we just computed. Changing $x_0$ changes where the slice is taken, and the gray graph nearby plots the area of each slice as a function of $x$ --- and sure enough, it's a parabola, as our computation so far suggested. To finish our the problem, we just need to integrate $\d x$ as we're used to already.
 
 	$$
-		\int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\,\d x &= \left. \left[ \frac{2}{3}x^3 + \frac{1}{3}x^2 - 2x \right] \right|_{-2}^2
+		\int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\d x &= \left. \left[ \frac{2}{3}x^3 + \frac{1}{3}x^2 - 2x \right] \right|_{-2}^2
 
 		&= \frac{8}{3}.
 	$$
@@ -139,13 +139,13 @@ A notion in Calculus II that is occasionally omitted is the **average value** of
 	While neither one of these looks completely appealing, integrating $\d x$ first seems like the better option --- doing $\d y$ first would require integration by parts. Since the area of $R$ is $1$, the average value is just the integral itself:
 
 	$$
-		& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\,\d x\,\d y
+		& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\d x\,\d y
 
 		&= \int_1^2 \left. \left[ -y\cos(\pi xy) \frac{1}{\pi y} + x^3 \right] \right|_{-1}^0\,\d y
 
-		&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\,\d y
+		&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\d y
 
-		&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\,\d y
+		&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\d y
 
 		&= \left. \left[ -\frac{1}{\pi}y + \frac{1}{\pi^2}\sin(\pi y) + y \right] \right|_1^2
 
@@ -211,9 +211,9 @@ In practice, we'll often choose between the two different orders of integration 
 	$$
 		\int_{-\pi / 3}^{\pi / 3} \int_{-\sec(x)}^{\sin(x) + 1} \cos(x)\,\d y\,\d x &= \int_{-\pi / 3}^{\pi / 3} \left. \left[ y\cos(x) \right] \right|_{-\sec(x)}^{\sin(x) + 1}\,\d x
 
-		&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\,\d x
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\d x
 
-		&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\,\d x
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\d x
 
 		&= \left. \left[ -\frac{1}{4}\cos(2x) + \sin(x) + x \right] \right|_{-\pi / 3}^{\pi / 3}
 
@@ -229,7 +229,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 	Let $R$ be the region bounded by $y^4 = x + 4$ and $$y^2 = -\frac{x}{3}$$. Find the integral
 
 	$$
-		\iint_R \left( x + y^2 \right)\,\d A.
+		\iint_R \left( x + y^2 \right)\d A.
 	$$
 
 	Let's begin by sketching the region. These look like pretty strange curves, but if we isolate $x$ (since it's the easier of the two variables to get on its own), then we can identify them as $x = y^4 - 4$ and $x = -3y^2$, both of which are familiar functions if we swap $x$ and $y$. We can plot these functions, then, by flipping the graphs we know across the line $y = x$.
@@ -251,7 +251,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 	and the positive and negative versions of those form the bounds, resulting in the integral
 
 	$$
-		\int_{-4}^{-3} \int_{-\sqrt[4]{x+4}}^{\sqrt[4]{x+4}} \left( x + y^2 \right)\,\d y\,\d x + \int_{-3}^{0} \int_{-\sqrt{-x/3}}^{\sqrt{-x/3}} \left( x + y^2 \right)\,\d y\,\d x.
+		\int_{-4}^{-3} \int_{-\sqrt[4]{x+4}}^{\sqrt[4]{x+4}} \left( x + y^2 \right)\d y\,\d x + \int_{-3}^{0} \int_{-\sqrt{-x/3}}^{\sqrt{-x/3}} \left( x + y^2 \right)\d y\,\d x.
 	$$
 
 	Those bounds end up directly inside the outer integral, so we'd have to integrate them $\d x$, something we're probably not very excited to do.
@@ -279,11 +279,11 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 	Our integral is now
 
 	$$
-		\int_{-1}^1 \int_{y^4 - 4}^{-3y^2} \left( x + y^2 \right)\,\d x\,\d y &= \int_{-1}^1 \left. \left[ \frac{1}{2}x^2 + xy^2 \right] \right|_{y^4 - 4}^{-3y^2} \,\d y
+		\int_{-1}^1 \int_{y^4 - 4}^{-3y^2} \left( x + y^2 \right)\d x\,\d y &= \int_{-1}^1 \left. \left[ \frac{1}{2}x^2 + xy^2 \right] \right|_{y^4 - 4}^{-3y^2} \,\d y
 
-		&= \int_{-1}^1 \left( \frac{1}{2}\left( -3y^2 \right)^2 + \left( -3y^2 \right)y^2 - \frac{1}{2}\left( y^4 - 4 \right)^2 - \left( y^4 - 4 \right)y^2 \right)\,\d y
+		&= \int_{-1}^1 \left( \frac{1}{2}\left( -3y^2 \right)^2 + \left( -3y^2 \right)y^2 - \frac{1}{2}\left( y^4 - 4 \right)^2 - \left( y^4 - 4 \right)y^2 \right)\d y
 
-		&= \int_{-1}^1 \left( -8 + 4 y^2 + \frac{11}{2} y^4 - y^6 - \frac{1}{2}y^8 \right)\,\d y
+		&= \int_{-1}^1 \left( -8 + 4 y^2 + \frac{11}{2} y^4 - y^6 - \frac{1}{2}y^8 \right)\d y
 
 		&= \left. \left[ -8 y + \frac{4}{3} y^3 + \frac{11}{10}y^5 - \frac{1}{7}y^7 - \frac{1}{18}y^9 \right] \right|_{-1}^1
 
@@ -457,7 +457,7 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 	$$
 		\int_{\pi/12}^{5\pi/12} \!\!\! \int_1^{2\sin(2\theta)}\cos(\theta)\,\d r\,\d \theta &= \int_{\pi/12}^{5\pi/12} \left. \left[ r\cos(\theta) \right] \right|_1^{2\sin(2\theta)}\,\d\theta
 
-		&= \int_{\pi/12}^{5\pi/12} \left( 2\sin(2\theta)\cos(\theta) - \cos(\theta) \right)\,\d\theta
+		&= \int_{\pi/12}^{5\pi/12} \left( 2\sin(2\theta)\cos(\theta) - \cos(\theta) \right)\d\theta
 
 		&= \int_{\pi/12}^{5\pi/12} 2\sin(2\theta)\cos(\theta)\,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta)\,\d\theta.
 	$$

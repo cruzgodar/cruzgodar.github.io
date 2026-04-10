@@ -59,7 +59,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 	Since $v'(t) = a(t)$, we integrate $a(t)$ to find
 	
 	$$
-		v(t) = \int \cos\left( \frac{t}{5} \right)\,\d t &= 5\sin\left( \frac{t}{5} \right) + c.
+		v(t) = \int \cos\left( \frac{t}{5} \right)\d t &= 5\sin\left( \frac{t}{5} \right) + c.
 	$$
 	
 ###

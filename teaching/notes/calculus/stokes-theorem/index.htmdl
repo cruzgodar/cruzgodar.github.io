@@ -395,7 +395,7 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 
 		&= \int_0^1 \!\! \int_0^{2\pi} u^3\sin^2(\v)\,\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} u^3\left( \frac{1}{2} + \frac{1}{2}\cos(2\v) \right)\,\d\v\,\d u
+		&= \int_0^1 \!\! \int_0^{2\pi} u^3\left( \frac{1}{2} + \frac{1}{2}\cos(2\v) \right)\d\v\,\d u
 
 		&= \int_0^1 \left. \left[ u^3\left( \frac{v}{2} + \frac{1}{4}\sin(2\v) \right) \right] \right|_0^{2\pi}\,\d u
 

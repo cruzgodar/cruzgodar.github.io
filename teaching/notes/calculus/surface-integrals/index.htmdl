@@ -524,7 +524,7 @@ We'll primarily find the positive orientation of surfaces useful in the next sec
 		\vec{n}(u, \v) = \frac{\vec{r}_u \times \vec{r}_{\v}}{\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|}
 	$$
 
-	and $\d\sigma = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\,\d A$, we can write surface integrals in two other forms, exactly analogous to curve integrals:
+	and $\d\sigma = \left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right|\d A$, we can write surface integrals in two other forms, exactly analogous to curve integrals:
 
 	$$
 		\iint_S \vec{F} \bullet \vec{n}\,\d\sigma &= \iint_S \vec{F} \bullet \d\vec{\sigma}

@@ -75,7 +75,7 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 	$$
 		\int_0^\pi \pi (\sin(x) + 2)^2\,\d x &= \int_0^\pi (\sin^2(x) + 2\sin(x) + 4)\,\d x
 		
-		&= \pi \int_0^\pi \left(\frac{1}{2} - \frac{1}{2}\cos(2x) + 2\sin(x) + 4\right)\,\d x
+		&= \pi \int_0^\pi \left(\frac{1}{2} - \frac{1}{2}\cos(2x) + 2\sin(x) + 4\right)\d x
 		
 		&= \pi \left. \left[ \frac{9}{2}x - \frac{1}{4}\sin(2x) - 2\cos(x) \right] \right|_0^\pi
 		
@@ -147,7 +147,7 @@ The disk method can be extended to work with problems where we're taking the dif
 	In order to find the area of one of those slices, we just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
 	
 	$$
-		\int_0^1 \left( \pi (\sqrt{x})^2 - \pi x^2 \right)\,\d x &= \int_0^1 \left( \pi x - \pi x^2 \right)\,\d x
+		\int_0^1 \left( \pi (\sqrt{x})^2 - \pi x^2 \right)\d x &= \int_0^1 \left( \pi x - \pi x^2 \right)\d x
 		
 		&= \left. \left[ \pi \frac{x^2}{2} - \pi \frac{x^3}{3} \right] \right|_0^1
 		
@@ -167,7 +167,7 @@ The disk method can be extended to work with problems where we're taking the dif
 	Let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
 	
 	$$
-		\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\,\d y &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\,\d y
+		\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\d y &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\d y
 		
 		&= \left. \left[ 4\pi y - \pi \ln(y) \right] \right|_{1/4}^1
 		
@@ -227,7 +227,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
 	
 	$$
-		\int_1^3 2\pi x \left( \frac{1}{x} \right)\,\d x &= \int_1^3 2\pi\,\d x
+		\int_1^3 2\pi x \left( \frac{1}{x} \right)\d x &= \int_1^3 2\pi\,\d x
 		
 		&= 4\pi.
 	$$
@@ -243,7 +243,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	For this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
 	
 	$$
-		2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\,\d x &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2
+		2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\d x &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2
 		
 		&= \frac{8}{3} - \frac{16}{4} + 4.
 	$$
@@ -265,7 +265,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
 	
 	$$
-		\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\,\d x.
+		\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\d x.
 	$$
 	
 	It's good that we don't need to continue with this, because we have no idea how to integrate $(\ln(x))^2$! $u$-sub doesn't work, and we have no other options at the moment. Let's move on to the shell method and see if it's any different.
@@ -275,7 +275,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	Since it integrates $\d y$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that's left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ --- and that's just $\ln(e^2) = 2$. Finally, we now have
 	
 	$$
-		\int_1^2 2\pi y \left( e^2 - e^y \right)\,\d y.
+		\int_1^2 2\pi y \left( e^2 - e^y \right)\d y.
 	$$
 	
 	We also don't know how to handle the integral of $ye^y$! We will soon, though, and for now, setting up the integrals is the bulk of the work.
@@ -291,7 +291,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	For the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
 	
 	$$
-		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\,\d y.
+		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\d y.
 	$$
 	
 	For the shell method, we need to take the other intersection point to find the left $x$-bound: it's when $x^2 = 1$, so $x = 1$. A vertical slice begins at $y = 1$ and ends at $y = x^2$, so we have
@@ -321,7 +321,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in orange the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
 	
 	$$
-		\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\,\d y.
+		\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\d y.
 	$$
 	
 	Notice the role of 6 in the integral: if we were revolving about the $y$-axis, then the circles' radii would just be $\sqrt{y}$ and $4$, since that's their distance from the $y$-axis, but now we need their horizontal distance away from the line $x = 6$.

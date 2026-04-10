@@ -37,7 +37,7 @@ $$
 This looks very nearly like a curve integral of $f$ over the path $C$ given by $\vec{r}(t) = \left< t, \sqrt{t} \right>$, but there's an unfortunate issue --- the curve integral would have an extra factor of $\left| \left| \vec{r}'(t) \right| \right|$ when we parameterize:
 
 $$
-	\int_C f\,\d s = \int_0^1 f\left( \vec{r}(t) \right) \left| \left| \vec{r}'(t) \right| \right|\, \d t.
+	\int_C f\,\d s = \int_0^1 f\left( \vec{r}(t) \right) \left| \left| \vec{r}'(t) \right| \right| \d t.
 $$
 
 That factor is more than a minor annoyance --- it's fundamentally changing the integral. Here, the derivative is equal to
@@ -63,7 +63,7 @@ $$
 
 	&= \int_0^1 \left< f(\vec{r}(t)), 0 \right> \bullet \vec{r}'(t)\,\d t
 
-	&= \int_0^1 \left< f(t, \sqrt{t}), 0 \right> \bullet \left< 1, \frac{1}{2}t^{-1/2} \right>\,\d t
+	&= \int_0^1 \left< f(t, \sqrt{t}), 0 \right> \bullet \left< 1, \frac{1}{2}t^{-1/2} \right>\d t
 
 	&= \int_0^1 f(t, \sqrt{t}) \cdot 1 \,\d t.
 $$
@@ -151,7 +151,7 @@ $$
 *Finally*, we can put this together. To begin, there are no conditions on the final vector fields in the curve integral aside from one component being zero, and so we can add them together to merge our two results. We'll also move the negative sign from the clockwise curve integral to the double integral so that the vector field doesn't have anything affecting it.
 
 $$
-	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\,\d A = \oint_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
+	\iint_R \left( -f_y(x, y) + g_x(x, y) \right)\d A = \oint_{\p R} \left< f(x, y), g(x, y) \right> \bullet \d \vec{r}.
 $$
 
 While all of our logic relied on the region $R$ being the type of region we could integrate in section 6.1 --- integrable both $\d y\, \d x$ and $\d x\, \d y$ --- the magic of the theorem we're about to state is that it's true for a much larger class of regions!
@@ -161,7 +161,7 @@ While all of our logic relied on the region $R$ being the type of region we coul
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g \right>$ be a vector field, where $f$ and $g$ have continuous partial derivatives on and around $R$. Then
 
 	$$
-		\oint_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\,\d A.
+		\oint_{\p R} \vec{F} \bullet \d\vec{r} = \iint_R \left( g_x - f_y \right)\d A.
 	$$
 
 ###
@@ -263,13 +263,13 @@ Let's use this to find the area of something that would have previously proven i
 	$$
 		& \quad \int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}
 
-		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t) \right), 0 \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ 2\pi\sin(2 \pi t) \right>\, \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right>\, \d t
+		&= \int_0^1 \left< -\left( 1 - \cos(2\pi t) \right), 0 \right> \bullet \left< 1 - 2\pi\cos(2 \pi t),\ 2\pi\sin(2 \pi t) \right> \d t + \int_0^1 \left< -0, 0 \right> \bullet \left< -1, 0 \right> \d t
 
-		&= \int_0^1 -\left( 1 - \cos(2\pi t) \right)\left( 1 - 2\pi\cos(2 \pi t) \right)\, \d t + 0
+		&= \int_0^1 -\left( 1 - \cos(2\pi t) \right)\left( 1 - 2\pi\cos(2 \pi t) \right) \d t + 0
 
-		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - 2\pi\cos^2(2\pi t) \right)\, \d t
+		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - 2\pi\cos^2(2\pi t) \right) \d t
 
-		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - \pi - \pi\cos(4\pi t) \right)\, \d t
+		&= \int_0^1 \left( -1 + (1 + 2\pi) \cos(2\pi t) - \pi - \pi\cos(4\pi t) \right) \d t
 
 		&= \left. \left[ -t + \frac{1 + 2\pi}{2\pi}\sin(2 \pi t) - \pi t - \frac{1}{4}\cos(4\pi t) \right] \right|_0^1
 
@@ -305,11 +305,11 @@ Let's use this to find the area of something that would have previously proven i
 	$$
 		|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
 
-		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\,\d t
+		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\d t
 
 		&= \int_0^{2\pi} 6\cos^2(t)\,\d t
 
-		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\,\d t
+		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\d t
 
 		&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
 
@@ -413,9 +413,9 @@ Applying Green's theorem to the field $\left< -g, f \right>$,
 $$
 	\oint_{\p R} \vec{F} \bullet \vec{n}\, \d s &= \oint_{\p R} \left< -g, f \right> \bullet \vec{T}\, \d s
 
-	&= \iint_R \left( f_x - (-g_y) \right)\,\d A
+	&= \iint_R \left( f_x - (-g_y) \right)\d A
 
-	&= \iint_R \left( f_x + g_y \right)\,\d A.
+	&= \iint_R \left( f_x + g_y \right)\d A.
 $$
 
 We'll call this the **flux form of Green's Theorem** and the previous version the **circulation form**; we'll state them together as a single theorem toward the end of this section. For the moment, though, let's look at an example.
@@ -435,15 +435,15 @@ We'll call this the **flux form of Green's Theorem** and the previous version th
 	Applying Green's Theorem, we have
 
 	$$
-		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^3 \right] + p/py \left[ y^3 \right] \right)\,\d A
+		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^3 \right] + p/py \left[ y^3 \right] \right)\d A
 
-		&= \iint_R \left( 3x^2 + 3y^2 \right)\,\d A,
+		&= \iint_R \left( 3x^2 + 3y^2 \right)\d A,
 	$$
 
 	where $R$ is the solid unit disk. That's a great integral to transform into polar coordinates:
 
 	$$
-		\iint_R \left( 3x^2 + 3y^2 \right)\,\d A &= \int_0^{2\pi}\int_0^1 3r^2\,r\,\d r\,\d\theta
+		\iint_R \left( 3x^2 + 3y^2 \right)\d A &= \int_0^{2\pi}\int_0^1 3r^2\,r\,\d r\,\d\theta
 
 		&= 3\int_0^{2\pi}\int_0^1 r^3\,\d r\,\d\theta
 
@@ -463,7 +463,7 @@ Now that we've seen both forms of Green's Theorem, let's dig into those integran
 We can understand these quantities at a point $(a, b)$ by taking a very small disc $D$ around that point. If the field $\vec{F} = \left< f, g \right>$ is made of differentiable functions $f$ and $g$ (which it has to be to talk about both of these quantities in the first place), then $\vec{F}(x, y) \approx \vec{F}(a, b)$ on a small enough disk $D$, and so we have the approximation
 
 $$
-	\oint_{\p D} \vec{F} \bullet \vec{T} \,\d s &= \iint_D \left( g_x - f_y \right)\,\d A
+	\oint_{\p D} \vec{F} \bullet \vec{T} \,\d s &= \iint_D \left( g_x - f_y \right)\d A
 
 	&\approx |D|\left( g_x(a, b) - f_y(a, b) \right),
 $$
@@ -569,9 +569,9 @@ With divergence and curl in hand, we can finally phrase both forms of Green's Th
 	Let $R$ be a region in $#R#^2$ whose boundary $\p R$ is a non-intersecting closed path, and let $\vec{F} = \left< f, g, 0 \right>$ be a vector field restricted to $#R#^2$ whose component functions have continuous partial derivatives on and around $R$. Then
 
 	$$
-		\oint_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\,\d A = \iint_R \operatorname{curl} \vec{F} \,\d A
+		\oint_{\p R} \vec{F} \bullet \vec{T}\,\d s &= \iint_R \left( g_x - f_y \right)\d A = \iint_R \operatorname{curl} \vec{F} \,\d A
 
-		\oint_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\,\d A = \iint_R \operatorname{div} \vec{F} \,\d A.
+		\oint_{\p R} \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( f_x + g_y \right)\d A = \iint_R \operatorname{div} \vec{F} \,\d A.
 	$$
 
 ###

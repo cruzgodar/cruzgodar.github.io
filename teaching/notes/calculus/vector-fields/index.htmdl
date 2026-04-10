@@ -205,9 +205,9 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
 
 	$$
-		\int y^2 \cos\left( xy^2 \right)\,\p x &= y^2\sin\left( xy^2 \right) + c_1(y)
+		\int y^2 \cos\left( xy^2 \right)\p x &= y^2\sin\left( xy^2 \right) + c_1(y)
 
-		\int \left( 1 + 2xy\cos\left( xy^2 \right) \right)\,\p y &= y + \int 2xy\cos\left( xy^2 \right)\,\p y
+		\int \left( 1 + 2xy\cos\left( xy^2 \right) \right)\p y &= y + \int 2xy\cos\left( xy^2 \right)\p y
 
 		&= y + \int x\cos(xu)\,\p u, \quad \text{ where } u = y^2 \text{ and } \d u = 2y\,\d y.
 	$$
@@ -263,9 +263,9 @@ In particular, one region that satisfies all three of these conditions is $#R#^2
 	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
 
 	$$
-		\int -2x \sin\left( x^2 + y \right)\,\p x &= \cos\left( x^2 + y \right) + c_1(y)
+		\int -2x \sin\left( x^2 + y \right)\p x &= \cos\left( x^2 + y \right) + c_1(y)
 
-		\int \left( 1 - \sin(x^2 + y) \right)\,\p y &= y + \cos\left( x^2 + y \right) + c_2(x).
+		\int \left( 1 - \sin(x^2 + y) \right)\p y &= y + \cos\left( x^2 + y \right) + c_2(x).
 	$$
 
 	Merging these two accounts of the potential function $g$ together, we find

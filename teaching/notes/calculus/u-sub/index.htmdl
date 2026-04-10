@@ -237,7 +237,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 	Now we use half-angles **again**, this time on $\cos^2(2t)$.
 	
 	$$
-		\int \cos^2(2t)\,\d t &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\,\d t
+		\int \cos^2(2t)\,\d t &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\d t
 		
 		&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
 	$$
