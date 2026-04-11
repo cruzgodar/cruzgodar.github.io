@@ -25,11 +25,17 @@ Let's dig in. Just like with double integrals, we'll start with a Riemann sum ov
 
 ###
 
-Just like double integrals, we go to great lengths to never use this definition in practice, but it can make for good visualizations. For example,
+Just like double integrals, we'll go to lengths to never use this definition in practice. Similarly, we can define triple integrals over general regions by taking only the boxes that lie within the region. For example, we can take a Riemann sum with $\Delta x = \Delta y = \Delta z$ for the function $f(x, y, z) = x + y + z$ defined on the solid unit ball, where each cube is colored by the function's value, as in the previous sections.
 
 ### desmos voxels
 
-\int_{x_1}^{x_2} \!\!\! \int_{y_1}^{y_2} \!\!\! \int_{z_1}^{z_2} f(x, y, z)\, \d z\,\d y\,\d x
+The way we'll actually compute triple integrals in practice is exactly analogous to double integrals. While it might seem synonymous with the definition at this point, evaluating a double integral as two single integrals is a consequence of Fubini's Theorem, and there's an equivalent statement for triple integrals.
+
+### thm "Fubini's Theorem"
+
+	
+
+###
 
 
 

@@ -205,6 +205,13 @@ export default function()
 				{ latex: raw`f(x, y) = x^2 + xy + xy^2 - 1 \left\{ a \leq x \leq b \right\} \left\{ c \leq y \leq d \right\}`, color: desmosColors.purple },
 
 				...getDesmosSlider({
+					expression: raw`x_0 = 1`,
+					min: "a",
+					max: "b",
+					secret: false,
+				}),
+
+				...getDesmosSlider({
 					expression: raw`a = -2`,
 					min: -5,
 					max: 5,
@@ -226,13 +233,6 @@ export default function()
 					expression: raw`d = 1`,
 					min: "c",
 					max: 5,
-					secret: false,
-				}),
-
-				...getDesmosSlider({
-					expression: raw`x_0 = 1`,
-					min: "a",
-					max: "b",
 					secret: false,
 				}),
 

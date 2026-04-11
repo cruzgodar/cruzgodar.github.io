@@ -13,7 +13,7 @@ export default function()
 
 			options: {
 				showPlane3D: false,
-				worldRotation3D: [-0.61, -0.72, -0.33, 0.63, -0.7, 0.34, -0.48, 0, 0.88]
+				worldRotation3D: [-0.59, -0.71, -0.38, 0.6, -0.7, 0.38, -0.54, 0, 0.84]
 			},
 
 			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -1.25, zmax: 1.25 },
