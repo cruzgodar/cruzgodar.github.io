@@ -3,6 +3,7 @@ import {
 	createDesmosGraphs,
 	desmosColors,
 	getColored3DCurve,
+	getColorLatexExpressions,
 	getDesmosSlider,
 	getDesmosVector
 } from "/scripts/src/desmos.js";
@@ -482,12 +483,7 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 1.25(x^2 + z)` },
 
-				// the purple, red, and blue amounts
-				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
-
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				...getColorLatexExpressions()
 			]
 		},
 
@@ -613,14 +609,7 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = (0.05x, y, z) \cdot (\frac{1}{\sqrt{3}} 1, 1, 1)` },
 
-				// the purple, red, and blue amounts
-				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
-
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
-
-
+				...getColorLatexExpressions(),
 
 				{ latex: raw`Q = [(i, j, 1 - i - j\{1 - i - j \geq 0\}) \for i = [0.1, 0.1 + \frac{1}{6}, ... 0.9], j = [0.1, 0.1 + \frac{1}{6}, ... 0.9]]`, hidden: true, secret: true },
 
@@ -646,14 +635,7 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 0`, secret: true },
 
-				// the purple, red, and blue amounts
-				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
-
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
-
-
+				...getColorLatexExpressions(),
 
 				{ latex: raw`Q = [(i, i\cos(j), i\sin(j)) \for i = [0.5, 1, ..., 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
@@ -678,14 +660,7 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 0.75(x, y, z^2) \cdot (\frac{1}{\left| (-2x, -2y, 1) \right|} -2x, -2y, 1)`, secret: true },
 
-				// the purple, red, and blue amounts
-				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
-
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
-
-
+				...getColorLatexExpressions(),
 
 				{ latex: raw`Q = [(\sqrt{i}\cos(j), \sqrt{i}\sin(j), i) \for i = [0.2, 0.4, 0.6, 0.8], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
@@ -710,14 +685,7 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 0.75((1 + xyz, z^3, x^2 + y^2) \cdot (\frac{1}{\left| (-x, -y, -z) \right|} (-x, -y, -z)))^3`, secret: true },
 
-				// the purple, red, and blue amounts
-				{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-				{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-				{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
-
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
-
-
+				...getColorLatexExpressions(),
 
 				{ latex: raw`Q = [(i, j, \sqrt{1 - i^2 - j^2}) \for i = [0.1, 0.1 + 0.169, ... 0.9], j = [0.1, 0.1 + 0.169, ... 0.9]]`, hidden: true, secret: true },
 

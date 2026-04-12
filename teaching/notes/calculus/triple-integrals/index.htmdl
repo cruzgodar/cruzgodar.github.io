@@ -29,13 +29,111 @@ Just like double integrals, we'll go to lengths to never use this definition in 
 
 ### desmos voxels
 
-The way we'll actually compute triple integrals in practice is exactly analogous to double integrals. While it might seem synonymous with the definition at this point, evaluating a double integral as two single integrals is a consequence of Fubini's Theorem, and there's an equivalent statement for triple integrals.
+The way we'll actually compute triple integrals in practice is exactly analogous to double integrals. While it might seem synonymous with the definition at this point, our ability to evaluate a double integral as two single integrals is the statement of Fubini's Theorem, and there's an equivalent result for triple integrals.
 
 ### thm "Fubini's Theorem"
 
-	
+	Let
+
+	$$
+		B = [x_1, x_2] \times [y_1, y_2] \times [z_1, z_2]
+	$$
+
+	be a rectangular box in $#R#^3$ and let $f(x, y, z)$ be a continuous function. Then
+
+	$$
+		\iiint_R f\,\d A &= \int_{x_1}^{x_2} \!\!\! \int_{y_1}^{y_2} \!\!\! \int_{z_1}^{z_2}f(x, y, z)\,\d z\,\d y\,\d x,
+	$$
+
+	and similarly for any other order of $\d x$, $\d y$, and $\d z$.
 
 ###
+
+Geometrically, we can interpret Fubini's theorem as computing an integral over an area with the inner two integrals, and then adding that up with the outer integral to compute the full integral over a volume.
+
+Most of the complexity of double integrals arose when the regions we integrated over weren't rectangular, and the same is true now. The limits on any integral can include the variables from any integrals further outside; for example, a general integral taken $\d z\,\d y\,\d x$ might look like
+
+$$
+	\int_{x_1}^{x_2} \!\!\! \int_{y_1(x)}^{y_2(x)} \!\!\! \int_{z_1(x, y)}^{z_2(x, y)}f(x, y, z)\,\d z\,\d y\,\d x.
+$$
+
+### ex "a triple integral"
+
+	Find the integral of the function $f(x, y, z) = 2x + 1$ on the region $R$ above $z = x^3 - 1$, below $z = y - x^3$, and with $x \geq 0$ and $y \leq 1$.
+
+	### desmos chunkRegion
+
+	Let's begin with the limits; since we're given $z$ as a function of $x$ and $y$, let's try making the innermost integral be taken $\d z$. It's helpful when setting up a triple integral to imagine the two outer integrals as forming a double integral over a region in the $xy$-plane, and then the $z$ integral on the inside as integrating over a line parallel to the $z$-axis above a single $(x, y)$ point. You can use the 2D graph paper button on the Desmos graph to see this view, but we'll derive the limits from scratch without using the picture to demonstrate how it's done. If we choose the order $\d z\,\d y\,\d x$ for the three integrals, then the outermost one runs from the smallest possible $x$-value to the largest; the smallest is given to us as $x = 0$, but finding the largest requires knowing where the region ends, which is determined by the intersection of the two surfaces.
+
+	When $z = x^3 - 1$ and $z = y - x^3$ at once, we can eliminate $z$ to find $x^3 - 1 = y - x^3$, so $y = 2x^3 - 1$. This is the curve traced out in the $xy$-plane, bounding the region in addition to $x = 0$ and $y = 1$ --- if you view the graph from above and add the expression $y = 2x^3 - 1$, you'll see that it matches exactly! The maximum $x$-value, then, must come from the largest $x$ can get along that curve while keeping $y \leq 1$. Solving for $x$,
+
+	$$
+		x = \sqrt[3]{\frac{1}{2}(y + 1)},
+	$$
+
+	which is an increasing function of $y$, meaning the maximum value is achieved when $y = 1$ and $x = \sqrt[3]{1} = 1$ as well.
+
+	So the $\d x$ integral runs from $x = 0$ to $x = 1$. We've already seen that the maximum $y$-value is $y = 1$, and in terms of $x$, the minimum is the expression $y = 2x^3 - 1$ that we already solved for. If we were only computing a double integral, we could stop now and write
+
+	$$
+	 	\int_0^1 \int_{2x^3 - 1}^1 \square\,\d y\,\d x
+	$$
+
+	for whatever the function $\square$ of $x$ and $y$ we were considering. In our case, however, that function is an entire integral! The $\d z$ integral's bounds are the two functions we were given: $z = x^3 - 1$ on the bottom and $z = y - x^3$ on top. In all, we have
+
+	$$
+		\int_0^1 \int_{2x^3 - 1}^1 \int_{x^3 - 1}^{y - x^3} (2x + 1)\,\d z\,\d y\,\d x,
+	$$
+
+	and now the remainder of the problem is integrating as we're used to.
+
+	$$
+		\int_0^1 \int_{2x^3 - 1}^1 \int_{x^3 - 1}^{y - x^3} (2x + 1)\,\d z\,\d y\,\d x &= \int_0^1 \int_{2x^3 - 1}^1 \left. \left[ (2x + 1)z \right] \right|_{x^3 - 1}^{y - x^3}\,\d y\,\d x
+
+		&= \int_0^1 \int_{2x^3 - 1}^1 (2x + 1)\left( y - 2x^3 + 1 \right)\d y\,\d x
+
+		&= \int_0^1 \left[ (2x + 1)\left( \frac{y^2}{2} - 2x^3y + y \right) \right]_{2x^3 - 1}^1\,\d x
+
+		&= \int_0^1 \left[ (2x + 1)\left( \frac{y^2}{2} - 2x^3y + y \right) \right]_{2x^3 - 1}^1\,\d x
+
+		&= \int_0^1 \left( 2 + 4 x - 4 x^3 - 8 x^4 + 2 x^6 + 4 x^7 \right)\d x
+
+		&= \frac{153}{70}.
+	$$
+
+###
+
+### exc "setting up a triple integral"
+
+	Let $R$ be the region lying above $z = x^2 + y$, below $z = 1$, and with $y \geq 0$. Set up the integral of $f(x, y, z) = z - 2y$ over $R$ in the orders $\d z\,\d y\,\d x$, $\d x\,\d y\,\d z$, and $\d y\,\d z\,\d x$. Which would you prefer to use to evaluate the integral?
+
+	### solution
+
+	### desmos parabolaRegion
+
+	To set up the integral in the order $\d z\,\d y\,\d x$, we'll again handle the outer two integrals first. The $xy$-bounds are given by $y \geq 0$ and the intersection of $z = x^2 + y$ with $z = 1$; that is, $x^2 + y = 1$. Since the outermost integral is taken $\d x$, we need its limits to be constants, and they're given by the intersection of $x^2 + y = 1$ with $y = 0$, resulting in $x = \pm 1$. Then the limits of the $\d y$ integral are given by solving for $y$ in terms of $x$: the lower bound is $y = 0$, and the upper one is $y = 1 - x^2$. Finally, we can express the $z$ bounds in terms of $x$ and $y$ as integrating from $z = x^2 + y$ to $z = 2$, giving us a final integral of
+
+	$$
+		\int_{-1}^1 \int_0^{1 - x^2}\!\! \int_{x^2 + y}^2 (z - 2y)\,\d z\,\d y\,\d x.
+	$$
+
+	For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$, and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
+
+	$$
+		\int_0^1 \!\! \int_0^z \!\! \int_{-\sqrt{z - y}}^{\sqrt{z - y}} (z - 2y)\,\d x\,\d y\,\d z.
+	$$
+
+	Finally, the $\d y\,\d z\,\d x$ integral starts in the $xz$-plane. We already know the $x$ bounds are $-1$ to $1$ from the first integral, and for the $z$ bounds, we also know that the upper one should be $1$. For the lower $z$ bound, we find the smallest $z = x^2 + y$ can be in terms of $x$, which is $x^2$, when $y = 0$. Finally, the $y$-values start at $0$ and end at $y = z - x^2$, so the integral is
+
+	$$
+		\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d x\,\d z.
+	$$
+
+	Of all of these, the first and the last look about equally preferable!
+
+###
+
+
 
 
 

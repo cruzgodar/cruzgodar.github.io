@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	getColorLatexExpressions,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -47,6 +48,48 @@ export default function()
 				{ latex: raw`B(x, y, z) = \{ f_R(x, y, z) \leq 0 : 1 - P(x, y, z), f_R(x, y, z) > 0: 0 \}`, secret: true },
 
 				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+			]
+		},
+
+		chunkRegion:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.72, -0.66, -0.19, 0.64, -0.75, 0.17, -0.26, 0, 0.97]
+			},
+
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -1.25, zmax: 1.25 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y, z) = 1.25(z + x - 0.25)`, hidden: true, secret: true },
+
+				{ latex: raw`x^3 - 1 \leq z \leq y - x^3 \{ x \geq 0 \} \{ y \leq 1 \}`, colorLatex: "C" },
+
+				...getColorLatexExpressions()
+			]
+		},
+
+		parabolaRegion:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.78, -0.54, -0.32, 0.49, -0.84, 0.21, -0.38, 0, 0.92]
+			},
+
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, zmin: -1.25, zmax: 1.25 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y, z) = z - 2y`, hidden: true },
+
+				{ latex: raw`x^2 + y \leq z \leq 1 \{y \geq 0\}`, colorLatex: "C" },
+
+				...getColorLatexExpressions()
 			]
 		}
 	});

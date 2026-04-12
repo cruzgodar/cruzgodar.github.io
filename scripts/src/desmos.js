@@ -1258,3 +1258,16 @@ export function getColored3DCurve({
 		};
 	});
 }
+
+
+
+export function getColorLatexExpressions(expressionName = "C")
+{
+	return [
+		{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+		{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+		{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+		{ latex: raw`${expressionName} = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+	];
+}

@@ -67,7 +67,7 @@ But that's exactly what we've been doing with partial derivatives! If we hold $x
 	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a continuous function. Then
 
 	$$
-		\iint_R f(x, y)\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\d x.
+		\iint_R f\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\d x.
 	$$
 
 	We typically write this without the parentheses, and since we can just as well slice in the $x$-direction first and then the $y$-direction,
