@@ -50,6 +50,12 @@ export function updateBanner(timestamp)
 
 	lastBannerChangeTimestamp = timestamp;
 
+	if (!bannerMaxScroll)
+	{
+		requestAnimationFrame(updateBanner);
+		return;
+	}
+
 	const minPadding = window.innerWidth <= 500 ? 8 : 16;
 
 	const additionalPadding = Math.min(
@@ -239,6 +245,8 @@ export async function loadBanner({
 		}
 	`);
 
+	requestAnimationFrame(updateBanner);
+
 	await new Promise(resolve =>
 	{
 		const imageLoadElement = document.createElement("img");
@@ -249,8 +257,6 @@ export async function loadBanner({
 
 		setTimeout(() => imageLoadElement.src = bannerFilepath + bannerFilename, 0);
 	});
-
-	requestAnimationFrame(updateBanner);
 }
 
 
