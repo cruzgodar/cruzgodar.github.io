@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	desmosColors,
 	getColorLatexExpressions,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -90,6 +91,69 @@ export default function()
 				{ latex: raw`x^2 + y \leq z \leq 1 \{y \geq 0\}`, colorLatex: "C" },
 
 				...getColorLatexExpressions()
+			]
+		},
+
+		slicedCylinder:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.58, -0.81, -0.13, 0.79, -0.59, 0.18, -0.22, 0, 0.98]
+			},
+
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -3.15, zmax: 6.85 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y, z) = \frac{1}{4}(z + y)`, hidden: true, secret: true },
+
+				{ latex: raw`x - 1 \leq z \leq 6 - x^2 - y^2 \{ x^2 + y^2 \leq 4 \}`, colorLatex: "C" },
+
+				...getColorLatexExpressions()
+			]
+		},
+
+		cylindricalCoordinates:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.81, 0.5, -0.29, -0.47, -0.86, -0.17, -0.34, 0, 0.94]
+			},
+
+			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -2, zmax: 2 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: "r_0 = 1",
+					min: 0,
+					max: 2,
+					secret: false,
+				}),
+
+				...getDesmosSlider({
+					expression: "\\theta_0 = 1",
+					min: 0,
+					max: "2\\pi",
+					secret: false,
+				}),
+
+				...getDesmosSlider({
+					expression: "z_0 = 1",
+					min: -2,
+					max: 2,
+					secret: false,
+				}),
+
+				{ latex: raw`(r_0\cos(\theta_0), r_0\sin(\theta_0), z_0)`, color: desmosColors.purple },
+
+				{ latex: raw`(0, 0, 0), (r_0\cos(\theta_0), r_0\sin(\theta_0), 0)`, color: desmosColors.blue, points: false, lines: true, secret: true },
+
+				{ latex: raw`(r_0\cos(\theta_0), r_0\sin(\theta_0), 0), (r_0\cos(\theta_0), r_0\sin(\theta_0), z_0)`, color: desmosColors.red, points: false, lines: true, secret: true },
 			]
 		}
 	});

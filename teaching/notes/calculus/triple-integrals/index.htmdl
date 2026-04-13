@@ -133,7 +133,91 @@ $$
 
 ###
 
+Double integrals computed volume under a surface, but they also let us rather easily compute area of a region $R$ by integrating the function $f(x, y) = 1$ over $R$. Similarly, we can use triple integrals to compute volume.
 
+### thm "computing volume with a triple integral"
+
+	For any region $R$ in $#R#^3$,
+
+	$$
+		\iiint_R 1\,\d V = |R|,
+	$$
+
+	where $|R|$ represents the volume of $R$, so long as that volume is well-defined. Like area, it will be for every region we consider in the course.
+
+###
+
+At the moment, this result isn't the most useful, since we've already been able to find volumes with carefully-constructed double integrals. As we get more comfortable with variations on triple integrals in the later half of this section, though, it will have more utility.
+
+Equally important to this proposition is its implicit reminder: **triple integrals typically do not compute volumes!** When the function $1$ is replaced by a generic function $f(x, y, z)$, the resulting quantity is not the volume of the region $R$, but rather the notion of the "measure under the graph of $f$" throughout the region, where "measure" is a 4-dimensional quantity analogous to volume. Unfortunately, we're already using all the dimensions our human minds can comprehend to just see the domain of $f$, leaving no room to see its graph as physically separate from that domain. That's why all of the examples so far have used heatmap-like colored regions in $#R#^3$: if $f(x, y, z)$ measures heat per unit volume, for example, then $\iiint_R f\,\d V$ is computing total heat over $R$.
+
+
+
+## Cylindrical and Spherical Coordinates
+
+We've made plenty of use of polar coordinates since introducing double integrals --- circular domains show up fairly frequently, and changing of coordinates is a very useful technique for dealing with them. At worst, it makes the integral slightly more convenient, and at best, it's required to integrate at all.
+
+It's not difficult to write down a triple integral that would be nice to change to polar partway through. Let $C$ be the potion of the cylinder with radius $2$ parallel to the $z$-axis that lies in between the surfaces $z = x - 1$ and $z = 5 - x^2 - y^2$, and consider the integral $\iiint_C (z + y)\,\d V$.
+
+### desmos slicedCylinder
+
+Integrating this cylinder with respect to $z$ first sounds like a good idea, since the $xy$-domain is a disk and we're given the $z$ bounds in terms of functions of $x$ and $y$. That settles the inner bounds, but there's a procedural annoyance: since polar coordinates are only defined for double integrals, we need to write the triple integral first in Cartesian coordinates as
+
+$$
+	\int_{-2}^2 \int_{-\sqrt{4 - x^2}}^{\sqrt{4 - x^2}} \int_{x - 1}^{5 - x^2 - y^2} (z + y)\,\d z\,\d y\,\d x,
+$$
+
+then evaluate the innermost integral, and only then do we have a double integral that we can convert to polar coordinates. That's obviously annoying, but the solution is just as obvious: define a coordinate system for three variables that's just polar coordinates in $x$ and $y$ and leaves $z$ unchanged. Since it works well on roughly cylindrical objects like this one, we'll give it an appropriate name.
+
+### def "cylindrical coordinates"
+
+	A point $(x, y, z)$ in **cylindrical coordinates** on $#R#^3$ is a triple $(r, \theta, z)$, where $(r, \theta)$ are the polar coordinates of the point $(x, y)$, and $z$ is left unchanged. An integral taken in cylindrical coordinates has the same extra factor of $r$ as an integral in polar coordinates:
+
+	$$
+		\iiint_R f(x, y, z)\,\d z\,\d y\,\d x = \iiint_R f(r\cos(\theta), r\sin(\theta), z)\,r\,\d z\,\d r\,\d \theta.
+	$$
+
+###
+
+### desmos cylindricalCoordinates
+
+In general, if an integral looks promising to convert to polar coordinates after one integral is complete, it's a good candidate for being expressed in cylindrical coordinates from the outset. Returning to our previous example, we can convert to cylindrical coordinates to make the bounds reasonable from the start. The function $z + y$ becomes $z + r\cos(\theta)$, the outer two integrals' bounds change to $r \in [0, 2]$ and $\theta \in [0, 2\pi]$, and critically, the bounds on the $\d z$ integral need to change too! There can't be any $x$s or $y$s left anywhere.
+
+$$
+	\iiint_C (z + y)\,\d V &= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (z + r\cos(\theta))\,r\,\d z\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (rz + r^2\cos(\theta))\,\d z\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \left. \left[ \frac{r}{2}z^2 + r^2\cos(\theta)z \right] \right|_{r\cos(\theta) - 1}^{5 - r^2}\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \left( -\frac{3}{2} r^3 \cos^2(\theta) - r^4 \cos(\theta) + 7 r^2 \cos(\theta) + \frac{1}{2} r^5 - 5 r^3 + 12 r \right)\d r\,\d \theta
+
+	&= \int_0^{2\pi} \left. \left[ -\frac{3}{8} r^4 \cos^2(\theta) - \frac{1}{5} r^5 \cos(\theta) + \frac{7}{3} r^3 \cos(\theta) + \frac{1}{12} r^6 - \frac{5}{4} r^4 + 6 r^2 \right] \right|_0^2 \,\d \theta
+
+	&= \int_0^{2\pi} \left( \frac{28}{3} + \frac{184}{15} \cos(\theta) - 6 \cos^2(\theta) \right) \d \theta
+
+	&= \int_0^{2\pi} \left( \frac{28}{3} + \frac{184}{15} \cos(\theta) -3 - 3 \cos(2\theta) \right) \d \theta
+
+	&= \int_0^{2\pi} \left( \frac{19}{3} + \frac{184}{15} \cos(\theta) - 3 \cos(2\theta) \right) \d \theta
+
+	&= \left. \left[ \frac{19}{3}\theta + \frac{184}{15} \sin(\theta) - \frac{3}{2} \sin(2\theta) \right] \right|_0^{2\pi}
+
+	&= \frac{38}{3}\pi.
+$$
+
+### exc 
+
+	1. What do the following graphs look like in cylindrical coordinates?
+
+	> a) $r = 3$.
+
+	> b) $\theta = \frac{\pi}{2}$.
+
+	> c) $z = 1$.
+
+	2. Let $R$ be the region bounded 
+
+###
 
 
 

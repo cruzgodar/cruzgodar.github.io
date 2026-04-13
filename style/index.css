@@ -942,7 +942,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	
 	justify-content: center;
 	
-	width: 100%;
+	width: 70%;
+	margin: 0 auto;
 
 	grid-template-columns: repeat(auto-fit, 100px);
 	
@@ -1581,7 +1582,7 @@ option
 
 @media (min-aspect-ratio: 1/1), (max-width: 1000px)
 {
-	.text-boxes, .sliders, .checkboxes
+	.text-boxes, .text-buttons, .sliders, .checkboxes
 	{
 		width: 100%;
 	}
@@ -2487,7 +2488,7 @@ to hide them in that case. */
 /* Re-align with text-buttons not in environments */
 .notes-environment > .text-buttons
 {
-	margin-left: -6px;
+	transform: translateX(-6px);
 }
 
 .notes-def

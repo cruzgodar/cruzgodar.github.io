@@ -348,9 +348,9 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 At this point, we can write down a few useful properties of double integrals --- nothing here is too groundbreaking, but it's good to get our bearings a little.
 
-### prop "properties of double integrals"
+### prop "double integrals add across disjoint regions"
 
-	1. For an integrable function $f(x, y)$,
+	For an integrable function $f(x, y)$,
 
 	$$
 		\iint_{R \cup S} f(x, y)\,\d A = \iint_R f(x, y)\,\d A + \iint_S f(x, y)\,\d A,
@@ -358,7 +358,11 @@ At this point, we can write down a few useful properties of double integrals ---
 
 	so long as $R$ and $S$ overlap either not at all or only on a (1-dimensional) curve.
 
-	2. For any region $R$ in $#R#^2$,
+###
+
+### prop "computing area with a double integral"
+
+	For any region $R$ in $#R#^2$,
 
 	$$
 		\iint_R 1\,\d A = |R|;
