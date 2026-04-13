@@ -155,6 +155,24 @@ export default function()
 
 				{ latex: raw`(r_0\cos(\theta_0), r_0\sin(\theta_0), 0), (r_0\cos(\theta_0), r_0\sin(\theta_0), z_0)`, color: desmosColors.red, points: false, lines: true, secret: true },
 			]
+		},
+
+		cylindricalGraphs:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+			},
+
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`r = 3`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`\arctan(y, x) = \frac{\pi}{4}`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`z = 1`, color: desmosColors.red, hidden: true },
+			]
 		}
 	});
 }

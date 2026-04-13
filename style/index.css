@@ -886,6 +886,22 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	transform: translate3d(0, 0, 0);
 }
 
+body.ios #banner
+{
+	position: sticky;
+	top: 0;
+	/* Collapse the banner's flow height so layout matches position: fixed. */
+	margin-bottom: calc(-100vh - 75px);
+}
+
+body.ios #banner-small,
+body.ios #banner-large
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
 #banner-small
 {
 	z-index: 10;
