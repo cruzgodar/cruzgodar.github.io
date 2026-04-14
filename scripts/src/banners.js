@@ -1,5 +1,4 @@
 import { changeOpacity } from "./animation.js";
-import { browserIsIos } from "./browser.js";
 import { headerElement } from "./header.js";
 import { likelyWindowChromeHeight, pageWidth, viewportHeight } from "./layout.js";
 import {
@@ -217,11 +216,6 @@ export async function loadBanner({
 
 	bannerElement = $("#banner");
 	contentElement = $("#content");
-
-	if (browserIsIos)
-	{
-		document.body.classList.add("ios");
-	}
 
 	if (contentElement?.parentElement)
 	{
