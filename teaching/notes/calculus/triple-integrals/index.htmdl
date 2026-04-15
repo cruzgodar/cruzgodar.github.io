@@ -215,13 +215,139 @@ $$
 
 	> c) $z = 1$.
 
-	2. Let $R$ be the region bounded between $z = x^2 + y^2$ and $z = 4x$. Set up the integral of $f(x, y, z) = x + y + z$ in cylindrical coordinates over $R$, but do not solve it.
+	2. Let $R$ be the region bounded between $z = x^2 + y^2$ and $z = 2x$. Set up the integral of $f(x, y, z) = x + y - \frac{1}{2}z$ in cylindrical coordinates over $R$, but do not solve it.
 
 	### solution
 
 	1. These graphs are shown below --- toggle them on one at a time (checking the Extend to 3D checkbox) to see them! The graphs are a cylinder, half-plane, and full plane, respectively.
 
 	### desmos cylindricalGraphs
+
+	2. Translating the two $z$ bounds into cylindrical coordinates, we find $z = r^2$ and $z = 2r\cos(\theta)$. Their intersection is the entire bound for $r$ and $\theta$, so we need to solve for it. We have
+
+	$$
+		r^2 &= 2r\cos(\theta)
+
+		r^2 - 2r\cos(\theta) &= 0
+
+		r\left(r - 2\cos(\theta) \right) &= 0
+
+		r &= 0, \qquad r = 2\cos(\theta)
+	$$
+
+	That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\theta = 0$, so one way to set up this circle is to integrate from $\theta = \frac{\pi}{2}$ to $\theta = \frac{3\pi}{2}$. The integral then becomes
+
+	$$
+		\int_{\pi / 2}^{3\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
+	$$
+
+	### desmos cylindricalIntegral
+
+###
+
+The change from Cartesian coordinates to polar ones in $#R#^2$ was a profound one, but now that we're comfortable with polar coordinates, moving to cylindrical doesn't feel like as large of a step: it's just replacing two of the three variables with a different coordinate system we're already familiar with. To make an equivalently large jump from Cartesian coordinates on $#R#^3$, we'd need to develop a coordinate system that measured points at least in part by their distance from the origin --- not their distance in the $xy$-plane, like $r$ in cylindrical coordinates, but the full 3D distance. Let's call such a value $\rho$, the Greek letter for $r$. Given a value of $\rho = \sqrt{x^2 + y^2 + z^2}$, we've specified the radius of the sphere that the point $(x, y, z)$ lives on. To pinpoint it, we need to indicate *where* on the sphere it lives, ideally with exactly two more variables so that we have three total. But we've already solved that problem: it's parameterizing a sphere! We found that
+
+$$
+	\left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) \right>
+$$
+
+parameterized the unit sphere, where $u \in [0, \pi]$ was the angle down from the $z$-axis, and $\v \in [0, 2\pi]$ was the longitudinal angle in the $xy$-plane.
+
+We're almost to the full coordinate system. That parameterization was for the unit sphere, but we're on the sphere of radius $\rho$, so all three coordinates will get scaled by that factor. We should also give those parameters better names than $u$ and $\v$; we already have a name for the angle $\v$ measures in the $xy$-plane: it's called $\theta$ in cylindrical coordinates, so let's use the same name now. For $u$, we'll pick a different Greek letter, and the standard choice is $\varphi$. In all, we've developed the following coordinate system.
+
+### def "spherical coordinates"
+
+	A point $p = (x, y, z)$ in **spherical coordinates** on $#R#^3$ is a triple $(\rho, \varphi, \theta)$, where $\rho$ is the distance of $p$ from the origin and $\varphi$ and $\theta$ are the latitudinal angle down from the $z$-axis and the longitudinal angle in the $xy$-plane, respectively. The conversion from spherical to Cartesian coordinates is given by formulas that are functionally identical to the standard parameterization of a sphere:
+
+	$$
+		x &= \rho \sin(\varphi)\cos(\theta)
+
+		y &= \rho \sin(\varphi)\sin(\theta)
+
+		z &= \rho \cos(\varphi).
+	$$
+
+	If we need to convert from Cartesian coordinates to spherical, though, it's often conceptually easier to convert to cylindrical coordinates first:
+
+	$$
+		\rho &= \sqrt{r^2 + z^2} = \sqrt{x^2 + y^2 + z^2}
+
+		\tan(\varphi) &= \frac{r}{z}
+	$$
+
+	and $\theta$ is the same as in cylindrical coordinates (i.e. $\tan(\theta) = \frac{y}{x}$).
+
+###
+
+### desmos sphericalCoordinates
+
+To bring spherical coordinates to integrals, we'll start as usual with a spherical Riemann sum over a product of intervals for $\rho$, $\varphi$, and $\theta$; it looks a lot like a model of the crust of a planet.
+
+### desmos sphericalRiemannSum
+
+The Riemann sum adds up a function value times the volume of each little chunk in this diagram, but just like with Riemann sums for polar double integrals, the volume of each chunk isn't constant. To compute it, let's look at one chunk closely.
+
+### desmos sphericalRiemannSumChunk
+
+Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\Delta \rho$, $\Delta \varphi$, and $\Delta \theta$, indicated with purple, blue, and red edges, respectively. As all three changes approach zero, the region approaches a rectangular box, and so we can approximate the volume by multiplying the three colored edge lengths.
+
+Let's start with the purple edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the blue edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the blue edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small blue angle between the gray lines, and so the blue edge length is $\rho \,\Delta \varphi$.
+
+The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is an the angle in the $xy$-plane, not the angle between the two radii spanning the red arc. In the graph below, $\theta$ is plotted as the small red angle between the two orange lines in the $xy$-plane; if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out.
+
+### desmos sphericalRiemannSumChunkTheta
+
+That purple length is less and less correct as $\varphi$ shrinks, and so we really do need to account for it. To find the actual red length, we can still use the arc length formula, so long as we find the correct radius (i.e. the orange line's length). That orange line lives in a right triangle with hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the orange leg has length $a$, then
+
+$$
+	\cos\left( \frac{\pi}{2} - \varphi \right) = \frac{a}{\rho}.
+$$
+
+Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the red side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
+
+$$
+	\left( \Delta\rho \right)\left( \rho \,\Delta \varphi \right)\left( \rho\sin(\varphi)\,\Delta\theta \right) = \rho^2\sin(\varphi)\,\Delta\rho\,\Delta\varphi\,\Delta\theta.
+$$
+
+That approximation becomes better and better as all three side lengths limit to zero, and so we find the following result for a spherical integral.
+
+### thm "triple integrals in spherical coordinates"
+
+	Let $R$ be a region in spherical coordinates bounded between $\rho_1(\varphi, \theta)$ and $\rho_2(\varphi, \theta)$, where $\varphi$ is bounded between $\varphi_1(\theta)$ and $\varphi_2(\theta)$, and $\theta$ is between $\theta_1$ and $\theta_2$. Then the integral of a function $f(x, y, z)$ over $R$ is given by
+
+	$$
+		\int_{\theta_1}^{\theta_2} \int_{\varphi_1(\theta)}^{\varphi_2(\theta)} \int_{\rho_1(\varphi, \theta)}^{\rho_2(\varphi, \theta)} f\left( \rho \sin(\varphi)\cos(\theta),\ \rho \sin(\varphi)\sin(\theta),\ \rho \cos(\varphi) \right)\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
+	$$
+
+###
+
+### exc "cylindrical coordinates"
+
+	1. What do the following graphs look like in spherical coordinates?
+
+	> a) $\rho = 3$.
+
+	> b) $\varphi = \frac{\pi}{6}$.
+
+	> c) $\theta = \frac{\pi}{4}$.
+
+	2. Let $R$ be the region above $\sqrt{x^2 + y^2 + z^2} + z = 1$ and below $x^2 + y^2 + z^2 = 1$. Set up the integral of $f(x, y, z) = 2x - z$ in spherical coordinates over $R$, but do not solve it.
+
+	3. Find the volume of the region below $x^2 + y^2 + z^2 = 4$, above $z = \sqrt{3x^2 + 3y^2}$, and with $y \geq 0$.
+
+	### solution
+
+	1. These are a sphere, cone, and half plane, respectively. Toggle them all on to see!
+
+	### desmos sphericalGraphs
+
+	3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. We could plug in all three spherical expressions for $x$, $y$, and $z$, we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
+
+	$$
+		\varphi = \arctan\left( \frac{1}{\sqrt{3}} \right) = \frac{\pi}{6}.
+	$$
+
+	Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$.
 
 ###
 
