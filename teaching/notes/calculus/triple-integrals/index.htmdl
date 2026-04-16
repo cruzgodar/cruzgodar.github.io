@@ -2,7 +2,7 @@
 
 
 
-So far, all of our integration has been done with variations on single or double integrals; even surface integrals, however complicated, resolve to straightforward double integrals once we parameterize. For functions of two variables, that was enough to describe any function's domain, but now that we're squarely operating in $#R#^3$, it no longer quite suffices. We'll need a concept of an integral over an entire solid region of $#R#^3$, but as daunting as that might sound, we've already developed most of the theory we need. We'll construct and compute triple integrals just like double integrals, and there's no need to parameterize regions like we parameterized surfaces in $#R#^3$ or curves in $#R#^2$ and $#R#^3$: since $#R#^3$ only has three dimensions, a triple integral will have enough variables to describe any region. Similarly, regions don't have an associated vector field like curves have tangent vectors or surfaces have normal vectors, so we'll only be considering scalar triple integrals, not vector ones.
+So far, all of our integration has been done with variations on single or double integrals; even surface integrals, however complicated, resolve to straightforward double integrals once we parameterize. For surfaces (whether curved or flat), that was enough to describe any function's domain, but now that we're squarely operating in $#R#^3$, it no longer quite suffices. We'll need a concept of an integral over an entire solid region of $#R#^3$, but as daunting as that might sound, we've already developed most of the theory we need. We'll construct and compute triple integrals just like double integrals, and there's no need to parameterize regions like we parameterized surfaces in $#R#^3$ or curves in $#R#^2$ and $#R#^3$: since $#R#^3$ only has three dimensions, a triple integral will have enough variables to describe any region. Similarly, regions don't have any sort of associated vectors like curves have tangent vectors or surfaces have normal vectors, so there isn't a natural vector throughout a region to take a dot product of a vector field with. For that reason, we'll only be considering scalar triple integrals, not vector ones.
 
 Let's dig in. Just like with double integrals, we'll start with a Riemann sum over a rectangular region, but quickly expand beyond that to general regions.
 
@@ -42,14 +42,14 @@ The way we'll actually compute triple integrals in practice is exactly analogous
 	be a rectangular box in $#R#^3$ and let $f(x, y, z)$ be a continuous function. Then
 
 	$$
-		\iiint_R f\,\d A &= \int_{x_1}^{x_2} \!\!\! \int_{y_1}^{y_2} \!\!\! \int_{z_1}^{z_2}f(x, y, z)\,\d z\,\d y\,\d x,
+		\iiint_B f\,\d V &= \int_{x_1}^{x_2} \!\!\! \int_{y_1}^{y_2} \!\!\! \int_{z_1}^{z_2}f(x, y, z)\,\d z\,\d y\,\d x,
 	$$
 
 	and similarly for any other order of $\d x$, $\d y$, and $\d z$.
 
 ###
 
-Geometrically, we can interpret Fubini's theorem as computing an integral over an area with the inner two integrals, and then adding that up with the outer integral to compute the full integral over a volume.
+Geometrically, we can interpret Fubini's theorem as computing an integral over a cross-sectional area with the inner two integrals, and then adding that up with the outer integral to compute the full integral over a solid region.
 
 Most of the complexity of double integrals arose when the regions we integrated over weren't rectangular, and the same is true now. The limits on any integral can include the variables from any integrals further outside; for example, a general integral taken $\d z\,\d y\,\d x$ might look like
 
@@ -94,8 +94,6 @@ $$
 
 		&= \int_0^1 \left[ (2x + 1)\left( \frac{y^2}{2} - 2x^3y + y \right) \right]_{2x^3 - 1}^1\,\d x
 
-		&= \int_0^1 \left[ (2x + 1)\left( \frac{y^2}{2} - 2x^3y + y \right) \right]_{2x^3 - 1}^1\,\d x
-
 		&= \int_0^1 \left( 2 + 4 x - 4 x^3 - 8 x^4 + 2 x^6 + 4 x^7 \right)\d x
 
 		&= \frac{153}{70}.
@@ -117,7 +115,7 @@ $$
 		\int_{-1}^1 \int_0^{1 - x^2}\!\! \int_{x^2 + y}^1 (z - 2y)\,\d z\,\d y\,\d x.
 	$$
 
-	For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$, and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
+	For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$ (since $-x^2$ is maximized at $x = 0$), and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
 
 	$$
 		\int_0^1 \!\! \int_0^z \!\! \int_{-\sqrt{z - y}}^{\sqrt{z - y}} (z - 2y)\,\d x\,\d y\,\d z.
@@ -157,11 +155,11 @@ Equally important to this proposition is its implicit reminder: **triple integra
 
 We've made plenty of use of polar coordinates since introducing double integrals --- circular domains show up fairly frequently, and changing of coordinates is a very useful technique for dealing with them. At worst, it makes the integral slightly more convenient, and at best, it's required to integrate at all.
 
-It's not difficult to write down a triple integral that would be nice to change to polar partway through. Let $C$ be the potion of the cylinder with radius $2$ parallel to the $z$-axis that lies in between the surfaces $z = x - 1$ and $z = 5 - x^2 - y^2$, and consider the integral $\iiint_C (z + y)\,\d V$.
+It's not difficult to write down a triple integral that would be nice to change to polar partway through. Let $C$ be the portion of the cylinder with radius $2$ parallel to the $z$-axis that lies in between the surfaces $z = x - 1$ and $z = 5 - x^2 - y^2$, and consider the integral $\iiint_C (z + x)\,\d V$.
 
 ### desmos slicedCylinder
 
-Integrating this cylinder with respect to $z$ first sounds like a good idea, since the $xy$-domain is a disk and we're given the $z$ bounds in terms of functions of $x$ and $y$. That settles the inner bounds, but there's a procedural annoyance: since polar coordinates are only defined for double integrals, we need to write the triple integral first in Cartesian coordinates as
+Integrating this cylinder with respect to $z$ first sounds like a good idea, since the $xy$-domain is a disk and we're given the $z$ bounds in terms of functions of $x$ and $y$. That settles the inner bounds, but there's a procedural annoyance: since polar coordinates are a 2D coordinate system, so we can't directly use them for the triple integral bounds. We instead need to write the triple integral first in Cartesian coordinates as
 
 $$
 	\int_{-2}^2 \int_{-\sqrt{4 - x^2}}^{\sqrt{4 - x^2}} \int_{x - 1}^{5 - x^2 - y^2} (z + y)\,\d z\,\d y\,\d x,
@@ -181,10 +179,10 @@ then evaluate the innermost integral, and only then do we have a double integral
 
 ### desmos cylindricalCoordinates
 
-In general, if an integral looks promising to convert to polar coordinates after one integral is complete, it's a good candidate for being expressed in cylindrical coordinates from the outset. Returning to our previous example, we can convert to cylindrical coordinates to make the bounds reasonable from the start. The function $z + y$ becomes $z + r\cos(\theta)$, the outer two integrals' bounds change to $r \in [0, 2]$ and $\theta \in [0, 2\pi]$, and critically, the bounds on the $\d z$ integral need to change too! There can't be any $x$s or $y$s left anywhere.
+In general, if an integral looks promising to convert to polar coordinates after one integral is complete, it's a good candidate for being expressed in cylindrical coordinates from the outset. Returning to our previous example, we can convert to cylindrical coordinates to make the bounds reasonable from the start. The function $z + x$ becomes $z + r\cos(\theta)$, the outer two integrals' bounds change to $r \in [0, 2]$ and $\theta \in [0, 2\pi]$, and critically, the bounds on the $\d z$ integral need to change too! There can't be any $x$s or $y$s left anywhere.
 
 $$
-	\iiint_C (z + y)\,\d V &= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (z + r\cos(\theta))\,r\,\d z\,\d r\,\d \theta
+	\iiint_C (z + x)\,\d V &= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (z + r\cos(\theta))\,r\,\d z\,\d r\,\d \theta
 
 	&= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (rz + r^2\cos(\theta))\,\d z\,\d r\,\d \theta
 
@@ -235,17 +233,17 @@ $$
 		r &= 0, \qquad r = 2\cos(\theta)
 	$$
 
-	That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\theta = 0$, so one way to set up this circle is to integrate from $\theta = \frac{\pi}{2}$ to $\theta = \frac{3\pi}{2}$. The integral then becomes
+	That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\cos(\theta) = 0$, so $\theta = \pm \frac{\pi}{2}$ is a nice pair of solutions that ensures the curve is traced out completely in-between, while also ensuring $\cos(\theta)$ is always positive (while $\cos$ is periodic with period $2\pi$, its graph in polar coordinates has period only $\pi$, since it traces over itself when its outputs are negative). Our integral then becomes
 
 	$$
-		\int_{\pi / 2}^{3\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
+		\int_{-\pi / 2}^{\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
 	$$
 
 	### desmos cylindricalIntegral
 
 ###
 
-The change from Cartesian coordinates to polar ones in $#R#^2$ was a profound one, but now that we're comfortable with polar coordinates, moving to cylindrical doesn't feel like as large of a step: it's just replacing two of the three variables with a different coordinate system we're already familiar with. To make an equivalently large jump from Cartesian coordinates on $#R#^3$, we'd need to develop a coordinate system that measured points at least in part by their distance from the origin --- not their distance in the $xy$-plane, like $r$ in cylindrical coordinates, but the full 3D distance. Let's call such a value $\rho$, the Greek letter for $r$. Given a value of $\rho = \sqrt{x^2 + y^2 + z^2}$, we've specified the radius of the sphere that the point $(x, y, z)$ lives on. To pinpoint it, we need to indicate *where* on the sphere it lives, ideally with exactly two more variables so that we have three total. But we've already solved that problem: it's parameterizing a sphere! We found that
+The change from Cartesian coordinates to polar ones in $#R#^2$ was a profound one, but now that we're comfortable with polar coordinates, moving to cylindrical doesn't feel like as large of a step: it's just replacing two of the three variables with a different coordinate system we're already familiar with. To make an equivalently large jump from Cartesian coordinates on $#R#^3$, we'd need to develop a coordinate system that measured points at least in part by their distance from the origin --- not their distance in the $xy$-plane, like $r$ in cylindrical coordinates, but the full 3D distance. Let's call such a value $\rho$, the Greek counterpart of the letter $r$. Given a value of $\rho = \sqrt{x^2 + y^2 + z^2}$, we've specified the radius of the sphere that the point $(x, y, z)$ lives on. To pinpoint it, we need to indicate *where* on the sphere it lives, ideally with exactly two more variables so that we have three total. But we've already solved that problem: it's parameterizing a sphere! We found that
 
 $$
 	\left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) \right>
@@ -257,7 +255,7 @@ We're almost to the full coordinate system. That parameterization was for the un
 
 ### def "spherical coordinates"
 
-	A point $p = (x, y, z)$ in **spherical coordinates** on $#R#^3$ is a triple $(\rho, \varphi, \theta)$, where $\rho$ is the distance of $p$ from the origin and $\varphi$ and $\theta$ are the latitudinal angle down from the $z$-axis and the longitudinal angle in the $xy$-plane, respectively. The conversion from spherical to Cartesian coordinates is given by formulas that are functionally identical to the standard parameterization of a sphere:
+	A point $p = (x, y, z)$ in **spherical coordinates** on $#R#^3$ is a triple $(\rho, \varphi, \theta)$, where $\rho$ is the distance of $p$ from the origin and $\varphi$ and $\theta$ are the angle down from the $z$-axis and the longitudinal angle in the $xy$-plane, respectively. The conversion from spherical to Cartesian coordinates is given by formulas that are functionally identical to the standard parameterization of a sphere:
 
 	$$
 		x &= \rho \sin(\varphi)\cos(\theta)
@@ -293,17 +291,17 @@ Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\De
 
 Let's start with the purple edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the blue edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the blue edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small blue angle between the gray lines, and so the blue edge length is $\rho \,\Delta \varphi$.
 
-The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is an the angle in the $xy$-plane, not the angle between the two radii spanning the red arc. In the graph below, $\theta$ is plotted as the small red angle between the two orange lines in the $xy$-plane; if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out, connected by the blue arcs (since they lie on the sphere of radius $\rho$).
-
 ### desmos sphericalRiemannSumChunkTheta
 
-That purple length is less and less correct as $\varphi$ shrinks, and so we really do need to account for it. To find the actual red length, we can still use the arc length formula, so long as we find the correct radius (i.e. the orange line's length). That orange line lives in a right triangle with hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the orange leg has length $a$, then
+The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is the red angle in the $xy$-plane between the two orange lines, *not* the angle between the two blue radii spanning the red arc. They look similar, but if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out, connected by the blue arcs (since they lie on the sphere of radius $\rho$).
+
+That purple length is less and less accurate as $\varphi$ shrinks, and so we really do need to account for it. To find the actual red length, we could try to solve the angle between the blue radii, but an easier path is to find the orange lines' length instead; then we can still use the arc length formula, since the red arc that the orange lines trace out is exact the same length as the red edge length on the spherical region above it. That orange line lives in a right triangle with blue hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ between the blue and orange sides (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the orange leg has length $a$, then
 
 $$
 	\cos\left( \frac{\pi}{2} - \varphi \right) = \frac{a}{\rho}.
 $$
 
-Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the red side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
+Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi)$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the red side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
 
 $$
 	\left( \Delta\rho \right)\left( \rho \,\Delta \varphi \right)\left( \rho\sin(\varphi)\,\Delta\theta \right) = \rho^2\sin(\varphi)\,\Delta\rho\,\Delta\varphi\,\Delta\theta.
@@ -321,7 +319,7 @@ That approximation becomes better and better as all three side lengths limit to 
 
 ###
 
-### exc "cylindrical coordinates"
+### exc "spherical coordinates"
 
 	1. What do the following graphs look like in spherical coordinates?
 
@@ -385,7 +383,7 @@ That approximation becomes better and better as all three side lengths limit to 
 		&= \frac{8\pi}{3} \left( 1 - \frac{\sqrt{3}}{2} \right).
 	$$
 
-	This surface looks a little like an ice cream cone cut in half!
+	This region looks a little like an ice cream cone cut in half!
 
 	### desmos iceCreamCone
 	

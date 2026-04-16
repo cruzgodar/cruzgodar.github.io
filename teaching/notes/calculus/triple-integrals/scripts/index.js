@@ -309,13 +309,13 @@ export default function()
 				{ latex: raw`A(x, y, z) = \arccos(\max(-1, \min(1, \frac{z}{\sqrt{x^2 + y^2 + z^2}})))`, hidden: true, secret: true },
 
 				// Color rounding: ρ midpoints in [ρ_min, ρ_max]
-				{ latex: raw`N_{rho}(x) = \rho_{min} + \frac{\rho_{max} - \rho_{min}}{n}(\floor(\frac{n(x - \rho_{min})}{\rho_{max} - \rho_{min}}) + \frac{1}{2})`, hidden: true, secret: false },
+				{ latex: raw`N_{rho}(x) = \rho_{min} + \frac{\rho_{max} - \rho_{min}}{n}(\floor(\frac{n(x - \rho_{min})}{\rho_{max} - \rho_{min}}) + \frac{1}{2})`, hidden: true, secret: true },
 
 				// Color rounding: θ midpoints in [θ_min, θ_max]
-				{ latex: raw`N_{theta}(x) = \theta_{min} + \frac{\theta_{max} - \theta_{min}}{n}(\floor(\frac{n(x - \theta_{min})}{\theta_{max} - \theta_{min}}) + \frac{1}{2})`, hidden: true, secret: false },
+				{ latex: raw`N_{theta}(x) = \theta_{min} + \frac{\theta_{max} - \theta_{min}}{n}(\floor(\frac{n(x - \theta_{min})}{\theta_{max} - \theta_{min}}) + \frac{1}{2})`, hidden: true, secret: true },
 
 				// Color rounding: φ midpoints in [φ_min, φ_max]
-				{ latex: raw`N_{phi}(x) = \varphi_{min} + \frac{\varphi_{max} - \varphi_{min}}{n}(\floor(\frac{n(x - \varphi_{min})}{\varphi_{max} - \varphi_{min}}) + \frac{1}{2})`, hidden: true, secret: false },
+				{ latex: raw`N_{phi}(x) = \varphi_{min} + \frac{\varphi_{max} - \varphi_{min}}{n}(\floor(\frac{n(x - \varphi_{min})}{\varphi_{max} - \varphi_{min}}) + \frac{1}{2})`, hidden: true, secret: true },
 
 				{ latex: raw`\rho_{min}^2 \leq x^2 + y^2 + z^2 \leq \rho_{max}^2 \{\theta_{min} \leq T(x, y) \leq \theta_{max}\} \{\varphi_{min} \leq A(x, y, z) \leq \varphi_{max}\}`, colorLatex: "C", secret: true },
 
@@ -431,20 +431,16 @@ export default function()
 
 				{ latex: raw`\rho_0^2 \leq x^2 + y^2 + z^2 \leq \rho_1^2 \{\theta_0 \leq T(x, y) \leq \theta_1\} \{\varphi_0 \leq A(x, y, z) \leq \varphi_1\}`, color: desmosColors.gray, secret: true },
 
-				
-				{ latex: raw`(t\sin(\varphi_1)\cos(\theta_0), t\sin(\varphi_1)\sin(\theta_0), t\cos(\varphi_1))`, color: desmosColors.purple, parametricDomain: { min: "\\rho_0", max: "\\rho_1" }, secret: true },
-
-				{ latex: raw`(\rho_0\sin(t)\cos(\theta_0), \rho_0\sin(t)\sin(\theta_0), \rho_0\cos(t))`, color: desmosColors.blue, parametricDomain: { min: "\\varphi_0", max: "\\varphi_1" }, secret: true },
 
 				{ latex: raw`(\rho_0\sin(\varphi_1)\cos(t), \rho_0\sin(\varphi_1)\sin(t), \rho_0\cos(\varphi_1))`, color: desmosColors.red, parametricDomain: { min: "\\theta_0", max: "\\theta_1" }, secret: true },
 
 
 
-				{ latex: raw`(t\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), t\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), t\cos([\varphi_1, \varphi_1]))`, color: desmosColors.gray, parametricDomain: { min: "0", max: "\\rho_0" }, secret: true },
+				{ latex: raw`(t\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), t\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), t\cos([\varphi_1, \varphi_1]))`, color: desmosColors.blue, parametricDomain: { min: "0", max: "\\rho_0" }, secret: true },
 
 				{ latex: raw`(\rho_0\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), \rho_0\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), t\rho_0\cos([\varphi_1, \varphi_1]))`, color: desmosColors.gray, parametricDomain: { min: "0", max: "1" }, secret: true },
 
-				{ latex: raw`(\rho_0\sin(t)\cos(\theta_0), \rho_0\sin(t)\sin(\theta_0), \rho_0\cos(t))`, color: desmosColors.blue, parametricDomain: { min: "\\min(\\varphi_1, \\frac{\\pi}{2})", max: "\\max(\\varphi_1, \\frac{\\pi}{2})" }, secret: true },
+				{ latex: raw`(\rho_0\sin(t)\cos([\theta_0, \theta_1]), \rho_0\sin(t)\sin([\theta_0, \theta_1]), \rho_0\cos(t))`, color: desmosColors.blue, parametricDomain: { min: "\\min(\\varphi_1, \\frac{\\pi}{2})", max: "\\max(\\varphi_1, \\frac{\\pi}{2})" }, secret: true },
 
 				{ latex: raw`(t\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), t\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), 0)`, color: desmosColors.orange, parametricDomain: { min: "0", max: "\\rho_0" }, secret: true },
 
