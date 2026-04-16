@@ -126,7 +126,7 @@ $$
 	Finally, the $\d y\,\d z\,\d x$ integral starts in the $xz$-plane. We already know the $x$ bounds are $-1$ to $1$ from the first integral, and for the $z$ bounds, we also know that the upper one should be $1$. For the lower $z$ bound, we find the smallest $z = x^2 + y$ can be in terms of $x$, which is $x^2$, when $y = 0$. Finally, the $y$-values start at $0$ and end at $y = z - x^2$, so the integral is
 
 	$$
-		\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d x\,\d z.
+		\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d z\,\d x.
 	$$
 
 	Of all of these, the first and the last look about equally preferable!
@@ -293,7 +293,7 @@ Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\De
 
 Let's start with the purple edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the blue edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the blue edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small blue angle between the gray lines, and so the blue edge length is $\rho \,\Delta \varphi$.
 
-The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is an the angle in the $xy$-plane, not the angle between the two radii spanning the red arc. In the graph below, $\theta$ is plotted as the small red angle between the two orange lines in the $xy$-plane; if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out.
+The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is an the angle in the $xy$-plane, not the angle between the two radii spanning the red arc. In the graph below, $\theta$ is plotted as the small red angle between the two orange lines in the $xy$-plane; if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out, connected by the blue arcs (since they lie on the sphere of radius $\rho$).
 
 ### desmos sphericalRiemannSumChunkTheta
 
@@ -341,14 +341,54 @@ That approximation becomes better and better as all three side lengths limit to 
 
 	### desmos sphericalGraphs
 
-	3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. We could plug in all three spherical expressions for $x$, $y$, and $z$, we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
+	2. The outer region is $\rho^2 = 1$, so $\rho = 1$, and the inner one is $\rho + \rho\cos(\varphi) = 1$. Solving for $\rho$,
+
+	$$
+		\rho = \frac{1}{1 + \cos(\varphi)}.
+	$$
+
+	To find the other bounds, let's look at the surfaces of intersection. Setting the two functions equal to each other,
+
+	$$
+		\frac{1}{1 + \cos(\varphi)} &= 1
+
+		1 + \cos(\varphi) &= 1
+
+		\cos(\varphi) &= 0
+
+		\varphi &= \frac{\pi}{2},
+	$$
+
+	which is the equation of a circle with radius $1$ (since $\rho = 1$) in the $xy$-plane. Since our solid lives above that, we're looking for $0 \leq \varphi \leq \frac{\pi}{2}$, and since there are no restrictions on $\theta$, it runs from $0$ to $2\pi$. In total, the integral is
+
+	$$
+		\int_0^{2\pi} \int_0^{\pi / 2} \int_{1/(1 + \cos(\varphi))}^1 \left( 2\rho\sin(\varphi)\cos(\theta) - \rho\cos(\varphi) \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
+	$$
+
+	3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. Plugging in all three spherical expressions for $x$, $y$, and $z$ would work, but we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
 
 	$$
 		\varphi = \arctan\left( \frac{1}{\sqrt{3}} \right) = \frac{\pi}{6}.
 	$$
 
-	Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$.
+	Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$. Finally, if we want to find the volume, we want to integrate the function $1$. In total, the integral becomes
 
+	$$
+		\int_0^\pi \int_0^{\pi / 6} \int_0^2 1\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta &= \int_0^\pi \int_0^{\pi / 6} \left. \left[ \frac{\rho^3}{3}\sin(\varphi) \right] \right|_0^2\d\varphi\,\d\theta
+
+		&= \int_0^\pi \int_0^{\pi / 6} \frac{8}{3}\sin(\varphi)\,\d\varphi\,\d\theta
+
+		&= \int_0^\pi \left. \left[ -\frac{8}{3}\cos(\varphi) \right] \right|_0^{\pi / 6}\d\theta
+
+		&= \int_0^\pi -\frac{8}{3} \left( \frac{\sqrt{3}}{2} - 1 \right)\d\theta
+
+		&= \frac{8\pi}{3} \left( 1 - \frac{\sqrt{3}}{2} \right).
+	$$
+
+	This surface looks a little like an ice cream cone cut in half!
+
+	### desmos iceCreamCone
+	
 ###
 
 

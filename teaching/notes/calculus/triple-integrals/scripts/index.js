@@ -444,6 +444,8 @@ export default function()
 
 				{ latex: raw`(\rho_0\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), \rho_0\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), t\rho_0\cos([\varphi_1, \varphi_1]))`, color: desmosColors.gray, parametricDomain: { min: "0", max: "1" }, secret: true },
 
+				{ latex: raw`(\rho_0\sin(t)\cos(\theta_0), \rho_0\sin(t)\sin(\theta_0), \rho_0\cos(t))`, color: desmosColors.blue, parametricDomain: { min: "\\min(\\varphi_1, \\frac{\\pi}{2})", max: "\\max(\\varphi_1, \\frac{\\pi}{2})" }, secret: true },
+
 				{ latex: raw`(t\sin([\varphi_1, \varphi_1])\cos([\theta_0, \theta_1]), t\sin([\varphi_1, \varphi_1])\sin([\theta_0, \theta_1]), 0)`, color: desmosColors.orange, parametricDomain: { min: "0", max: "\\rho_0" }, secret: true },
 
 				{ latex: raw`([\min(0.25, \frac{1}{2}\rho_0\sin(\varphi_1)), \rho_0\sin(\varphi_1)]\cos(t), [\min(0.25, \frac{1}{2}\rho_0\sin(\varphi_1)), \rho_0\sin(\varphi_1)]\sin(t), 0)`, parametricDomain: { min: "\\theta_0", max: "\\theta_1" }, color: desmosColors.red, secret: true },
@@ -466,9 +468,26 @@ export default function()
 			expressions:
 			[
 				{ latex: raw`\rho = 3`, color: desmosColors.purple, hidden: true },
-				{ latex: raw`\arccos(\max(-1, \min(1, \frac{z}{\sqrt{x^2 + y^2 + z^2}}))) = \frac{\pi}{3}`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`\arccos(\max(-1, \min(1, \frac{z}{\sqrt{x^2 + y^2 + z^2}}))) = \frac{\pi}{6}`, color: desmosColors.blue, hidden: true },
 				{ latex: raw`\arctan(y, x) = \frac{\pi}{4}`, color: desmosColors.red, hidden: true },
 			]
 		},
+
+		iceCreamCone:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.72, -0.67, -0.17, 0.65, -0.75, 0.16, -0.23, 0, 0.97]
+			},
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`0 \leq \sqrt{x^2 + y^2 + z^2} \leq 2\{y \geq 0\}\{\arccos(\max(-1, \min(1, \frac{z}{\sqrt{x^2 + y^2 + z^2}}))) \leq \frac{\pi}{6}\}`, color: desmosColors.purple },
+			]
+		}
 	});
 }
