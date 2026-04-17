@@ -775,7 +775,8 @@ export const sitemap =
 			"/teaching/notes/calculus/greens-theorem",
 			"/teaching/notes/calculus/surface-integrals",
 			"/teaching/notes/calculus/stokes-theorem",
-			"/teaching/notes/calculus/triple-integrals"
+			"/teaching/notes/calculus/triple-integrals",
+			"/teaching/notes/calculus/divergence-theorem"
 		]
 	},
 		
@@ -1416,6 +1417,17 @@ export const sitemap =
 	"/teaching/notes/calculus/triple-integrals":
 	{
 		"title": "Section 6.7: Triple Integrals",
+		
+		"parent": "/teaching/notes/calculus",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/notes/calculus/divergence-theorem":
+	{
+		"title": "Section 6.8: The Divergence Theorem",
 		
 		"parent": "/teaching/notes/calculus",
 		

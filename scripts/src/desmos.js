@@ -1082,13 +1082,10 @@ export async function getDesmosScreenshot(id, forPdf = false)
 			}, resolve);
 		});
 
-	const img = document.createElement("img");
-	img.width = 3600;
-	img.height = 3600;
-	img.style.width = "50vmin";
-	img.style.height = "50vmin";
-	img.src = imageData;
-	document.body.appendChild(img);
+	const a = document.createElement("a");
+	a.href = imageData;
+	a.download = `${id}.png`;
+	a.click();
 }
 
 let uid = 0;

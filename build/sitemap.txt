@@ -121,6 +121,7 @@ home Cruz Godar
 			surface-integrals Section 6.5: Surface Integrals
 			stokes-theorem Section 6.6: Stokes' Theorem
 			triple-integrals Section 6.7: Triple Integrals
+			divergence-theorem Section 6.8: The Divergence Theorem
 		
 		notes/linear-algebra Linear Algebra
 			vectors-and-matrices Section 1.1: Intro to Vectors and Matrices
