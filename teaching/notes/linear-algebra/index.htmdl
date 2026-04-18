@@ -8,7 +8,7 @@ These notes cover a one-semester matrix algebra course, including row reduction,
 	vector-arithmetic
 	linear-transformations
 	properties-of-transformations
-	the-determinant
+	determinants
 ###
 
 ## Chapter 2: Vector Spaces
@@ -16,7 +16,7 @@ These notes cover a one-semester matrix algebra course, including row reduction,
 ### image-links
 	vector-spaces
 	bases-and-dimension
-	the-fundamental-theorem-of-linear-algebra
+	ftla
 	intro-to-markov-chains
 	chapters-1-and-2-review
 ###
@@ -32,10 +32,10 @@ These notes cover a one-semester matrix algebra course, including row reduction,
 ## Chapter 4: Inner Product Spaces
 
 ### image-links
-	the-dot-product
+	dot-product
 	least-squares
 	inner-product-spaces
-	the-spectral-theorems
+	spectral-theorems
 	jordan-normal-form
 	singular-value-decompositions
 ###

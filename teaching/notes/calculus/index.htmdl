@@ -16,8 +16,8 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	derivative-rules
 	applications-of-derivatives
 	exp-log-and-trig-derivatives
-	the-chain-rule
-	the-inverse-function-theorem
+	chain-rule
+	inverse-function-theorem
 	implicit-differentiation
 	optimization
 	l-hopitals-rule
@@ -72,8 +72,8 @@ These notes cover a standard three-semester calculus sequence, including limits,
 	vector-valued-functions
 	functions-of-multiple-variables
 	partial-derivatives
-	the-multivariable-chain-rule
-	the-gradient
+	multivariable-chain-rule
+	gradients
 	multivariable-optimization
 	boundary-optimization
 	lagrange-multipliers

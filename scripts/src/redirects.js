@@ -10,10 +10,21 @@ export const redirects = {
 	"/teaching/notes/calculus/calc-2-review": "/teaching/notes/calculus/chapter-3-review",
 	"/teaching/notes/calculus/part-3-review": "/teaching/notes/calculus/chapter-3-review",
 
+	"/teaching/notes/calculus/the-chain-rule": "/teaching/notes/calculus/chain-rule",
+	"/teaching/notes/calculus/the-inverse-function-theorem": "/teaching/notes/calculus/inverse-function-theorem",
+	"/teaching/notes/calculus/the-multivariable-chain-rule": "/teaching/notes/calculus/multivariable-chain-rule",
+	"/teaching/notes/calculus/the-gradient": "/teaching/notes/calculus/gradients",
+
 	"/teaching/notes/linear-algebra/linear-algebra-1-review": "/teaching/notes/linear-algebra/chapters-1-and-2-review",
 	"/teaching/notes/linear-algebra/parts-1-and-2-review": "/teaching/notes/linear-algebra/chapters-1-and-2-review",
+	
+	"/teaching/notes/linear-algebra/the-determinant": "/teaching/notes/linear-algebra/determinants",
+	"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra": "/teaching/notes/linear-algebra/ftla",
+	"/teaching/notes/linear-algebra/the-dot-product": "/teaching/notes/linear-algebra/dot-product",
+	"/teaching/notes/linear-algebra/the-spectral-theorems": "/teaching/notes/linear-algebra/spectral-theorems",
 
-	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/the-unit-circle",
+	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/unit-circle",
+	"/teaching/notes/trig/the-unit-circle": "/teaching/notes/trig/unit-circle",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
@@ -25,13 +36,13 @@ export const redirects = {
 	"/teaching/uo/342/notes/3-intro-to-des":
 		"/teaching/notes/linear-algebra/intro-to-des",
 	"/teaching/uo/342/notes/4-the-dot-product":
-		"/teaching/notes/linear-algebra/the-dot-product",
+		"/teaching/notes/linear-algebra/dot-product",
 	"/teaching/uo/342/notes/5-least-squares":
 		"/teaching/notes/linear-algebra/least-squares",
 	"/teaching/uo/342/notes/6-inner-product-spaces":
 		"/teaching/notes/linear-algebra/inner-product-spaces",
 	"/teaching/uo/342/notes/7-the-spectral-theorems":
-		"/teaching/notes/linear-algebra/the-spectral-theorems",
+		"/teaching/notes/linear-algebra/spectral-theorems",
 	"/teaching/uo/342/notes/8-jordan-normal-form":
 		"/teaching/notes/linear-algebra/jordan-normal-form",
 	"/teaching/uo/342/notes/9-singular-value-decompositions":
@@ -55,7 +66,7 @@ export const redirects = {
 	"/teaching/uo/notes/8-bases-and-dimension":
 		"/teaching/notes/linear-algebra/bases-and-dimension",
 	"/teaching/uo/notes/9-the-fundamental-theorem-of-linear-algebra":
-		"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra",
+		"/teaching/notes/linear-algebra/ftla",
 	"/teaching/uo/notes/10-intro-to-markov-chains":
 		"/teaching/notes/linear-algebra/intro-to-markov-chains",
 
@@ -168,9 +179,9 @@ export const redirects = {
 	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives":
 		"/teaching/notes/calculus/exp-log-and-trig-derivatives",
 	"/teaching/uo/251/notes/8-the-chain-rule":
-		"/teaching/notes/calculus/the-chain-rule",
+		"/teaching/notes/calculus/chain-rule",
 	"/teaching/uo/251/notes/9-the-inverse-function-theorem":
-		"/teaching/notes/calculus/the-inverse-function-theorem",
+		"/teaching/notes/calculus/inverse-function-theorem",
 	"/teaching/uo/251/notes/10-implicit-differentiation":
 		"/teaching/notes/calculus/implicit-differentiation",
 	"/teaching/uo/251/notes/11-optimization":
@@ -190,7 +201,7 @@ export const redirects = {
 	"/teaching/uo/112/notes/2-periodic-functions":
 		"/teaching/notes/trig/periodic-functions",
 	"/teaching/uo/112/notes/3-the-unit-circle":
-		"/teaching/notes/trig/the-unit-circle",
+		"/teaching/notes/trig/unit-circle",
 	"/teaching/uo/112/notes/4-sine-and-cosine":
 		"/teaching/notes/trig/sine-and-cosine",
 	"/teaching/uo/112/notes/5-tangent-and-inverses":
@@ -289,8 +300,8 @@ export const redirects = {
 	"/teaching/uo/251/notes/5-derivative-rules/5-derivative-rules.html": "/teaching/notes/calculus/derivative-rules",
 	"/teaching/uo/251/notes/6-applications-of-derivatives/6-applications-of-derivatives.html": "/teaching/notes/calculus/applications-of-derivatives",
 	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/7-exp-log-and-trig-derivatives.html": "/teaching/notes/calculus/exp-log-and-trig-derivatives",
-	"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html": "/teaching/notes/calculus/the-chain-rule",
-	"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html": "/teaching/notes/calculus/the-inverse-function-theorem",
+	"/teaching/uo/251/notes/8-the-chain-rule/8-the-chain-rule.html": "/teaching/notes/calculus/chain-rule",
+	"/teaching/uo/251/notes/9-the-inverse-function-theorem/9-the-inverse-function-theorem.html": "/teaching/notes/calculus/inverse-function-theorem",
 	"/teaching/uo/251/notes/10-implicit-differentiation/10-implicit-differentiation.html": "/teaching/notes/calculus/implicit-differentiation",
 	"/teaching/uo/251/notes/11-optimization/11-optimization.html": "/teaching/notes/calculus/optimization",
 	"/teaching/uo/251/notes/12-l-hopitals-rule/12-l-hopitals-rule.html": "/teaching/notes/calculus/l-hopitals-rule",

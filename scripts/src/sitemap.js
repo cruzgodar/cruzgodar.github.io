@@ -723,8 +723,8 @@ export const sitemap =
 			"/teaching/notes/calculus/derivative-rules",
 			"/teaching/notes/calculus/applications-of-derivatives",
 			"/teaching/notes/calculus/exp-log-and-trig-derivatives",
-			"/teaching/notes/calculus/the-chain-rule",
-			"/teaching/notes/calculus/the-inverse-function-theorem",
+			"/teaching/notes/calculus/chain-rule",
+			"/teaching/notes/calculus/inverse-function-theorem",
 			"/teaching/notes/calculus/implicit-differentiation",
 			"/teaching/notes/calculus/optimization",
 			"/teaching/notes/calculus/l-hopitals-rule",
@@ -764,8 +764,8 @@ export const sitemap =
 			"/teaching/notes/calculus/vector-valued-functions",
 			"/teaching/notes/calculus/functions-of-multiple-variables",
 			"/teaching/notes/calculus/partial-derivatives",
-			"/teaching/notes/calculus/the-multivariable-chain-rule",
-			"/teaching/notes/calculus/the-gradient",
+			"/teaching/notes/calculus/multivariable-chain-rule",
+			"/teaching/notes/calculus/gradients",
 			"/teaching/notes/calculus/multivariable-optimization",
 			"/teaching/notes/calculus/boundary-optimization",
 			"/teaching/notes/calculus/lagrange-multipliers",
@@ -866,7 +866,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/the-chain-rule":
+	"/teaching/notes/calculus/chain-rule":
 	{
 		"title": "Section 2.5: The Chain Rule",
 		
@@ -875,7 +875,7 @@ export const sitemap =
 		"children": []
 	},
 	
-	"/teaching/notes/calculus/the-inverse-function-theorem":
+	"/teaching/notes/calculus/inverse-function-theorem":
 	{
 		"title": "Section 2.6: The Inverse Function Theorem",
 		
@@ -1293,7 +1293,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/the-multivariable-chain-rule":
+	"/teaching/notes/calculus/multivariable-chain-rule":
 	{
 		"title": "Section 5.6: The Multivariable Chain Rule",
 		
@@ -1304,7 +1304,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/calculus/the-gradient":
+	"/teaching/notes/calculus/gradients":
 	{
 		"title": "Section 5.7: The Gradient",
 		
@@ -1449,19 +1449,19 @@ export const sitemap =
 			"/teaching/notes/linear-algebra/vector-arithmetic",
 			"/teaching/notes/linear-algebra/linear-transformations",
 			"/teaching/notes/linear-algebra/properties-of-transformations",
-			"/teaching/notes/linear-algebra/the-determinant",
+			"/teaching/notes/linear-algebra/determinants",
 			"/teaching/notes/linear-algebra/vector-spaces",
 			"/teaching/notes/linear-algebra/bases-and-dimension",
-			"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra",
+			"/teaching/notes/linear-algebra/ftla",
 			"/teaching/notes/linear-algebra/intro-to-markov-chains",
 			"/teaching/notes/linear-algebra/chapters-1-and-2-review",
 			"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
 			"/teaching/notes/linear-algebra/diagonalization",
 			"/teaching/notes/linear-algebra/intro-to-des",
-			"/teaching/notes/linear-algebra/the-dot-product",
+			"/teaching/notes/linear-algebra/dot-product",
 			"/teaching/notes/linear-algebra/least-squares",
 			"/teaching/notes/linear-algebra/inner-product-spaces",
-			"/teaching/notes/linear-algebra/the-spectral-theorems",
+			"/teaching/notes/linear-algebra/spectral-theorems",
 			"/teaching/notes/linear-algebra/jordan-normal-form",
 			"/teaching/notes/linear-algebra/singular-value-decompositions"
 		]
@@ -1518,15 +1518,13 @@ export const sitemap =
 		"children": []
 	},
 	
-	"/teaching/notes/linear-algebra/the-determinant":
+	"/teaching/notes/linear-algebra/determinants":
 	{
 		"title": "Section 1.6: The Determinant",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/teaching/notes/linear-algebra/vector-spaces":
@@ -1549,7 +1547,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/linear-algebra/the-fundamental-theorem-of-linear-algebra":
+	"/teaching/notes/linear-algebra/ftla":
 	{
 		"title": "Section 2.4: The Fundamental Theorem of Linear Algebra",
 		
@@ -1617,7 +1615,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/linear-algebra/the-dot-product":
+	"/teaching/notes/linear-algebra/dot-product":
 	{
 		"title": "Section 4.1: The Dot Product",
 		
@@ -1646,7 +1644,7 @@ export const sitemap =
 		"children": []
 	},
 	
-	"/teaching/notes/linear-algebra/the-spectral-theorems":
+	"/teaching/notes/linear-algebra/spectral-theorems":
 	{
 		"title": "Section 4.4: The Spectral Theorems",
 		
@@ -1849,7 +1847,7 @@ export const sitemap =
 		"children":
 		[
 			"/teaching/notes/trig/transformations",
-			"/teaching/notes/trig/the-unit-circle",
+			"/teaching/notes/trig/unit-circle",
 			"/teaching/notes/trig/sine-and-cosine",
 			"/teaching/notes/trig/tangent-and-inverses",
 			"/teaching/notes/trig/radians-and-equations",
@@ -1869,7 +1867,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/notes/trig/the-unit-circle":
+	"/teaching/notes/trig/unit-circle":
 	{
 		"title": "Section 2: The Unit Circle",
 		
