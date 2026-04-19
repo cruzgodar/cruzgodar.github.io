@@ -2,6 +2,36 @@
 
 
 
+With the language of triple integrals, we can finally state the final main result we'll see in this course. We've come a long way since discussing Green's Theorem, but I'd like to restate its vector forms and the discussion of its generalizations now that we've seen so much beyond it. Given a region $R$ and its positively-oriented boundary $\p R$ with unit tangent and normal vectors $\vec{T}$ and $\vec{n}$, respectively, Green's Theorem states that for any vector field $\vec{F}$ with continuous partial derivatives,
+
+$$
+	\iint_R \operatorname{curl} \vec{F}\,\d A &= \int_{\p R} \vec{F} \bullet \vec{T}\,\d s
+
+	\iint_R \operatorname{div} \vec{F}\,\d A &= \int_{\p R} \vec{F} \bullet \vec{n}\,\d s.
+$$
+
+With the distance we now have from Green's Theorem, it can be easier to recognize that top equation as being identical to Stokes' Theorem, only restricted to surfaces that live in the $xy$-plane. Similarly, now that we've worked with surface integrals for some time, we can see the issue with trying to bring the bottom equation directly into $#R#^3$: curves don't have normal vectors, only tangent vectors. Instead, it's surfaces that have normal vectors and therefore flux integrals, and so if we're trying to find a similar result, the right side will need to change into a surface integral:
+
+$$
+	\iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+$$
+
+Compared to Stokes' Theorem, where we needed to handle changes to nearly every part of Green's theorem to bring it to $#R#^3$, this integral only leaves a few loose ends. If $\p R$ is a surface, then $R$ must be a solid region. Similarly, $\p R$ is supposed to be positively-oriented relative to $R$, but we've already discussed how to define that orientation: it's the choice of normal vectors that point outward from $R$ at each point on the boundary. If $R$ is a solid region, then the object on the left side of the equation should be a triple integral, and divergence in $#R#^3$ is still a scalar like it is in $#R#^2$, so there isn't any additional complexity we'd expect with the integral. In a refreshing display of mathematical structure, the exact result we'd hope for is true, with no additional caveats!
+
+### thm "The Divergence Theorem"
+
+	Let $R$ be a region in $#R#^3$ with positively-oriented boundary surface $\p R$, and let $\vec{F}$ be a vector field with continuous partial derivatives. Then
+
+	$$
+		\iiint_R \Gbullet \vec{F}\,\d V = \iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+	$$
+
+	In other words, the integral of the divergence of $\vec{F}$ throughout $R$ is equal to the flux of $\vec{F}$ through the boundary of $R$.
+
+###
+
+We won't prove the Divergence Theorem, but it is intuitively true for the same reason as the flux form of Green's Theorem: a Riemann sum for the triple integral on the left adds up the divergence on tiny cubes, and since divergence is infinitesimal flux per volume, the Riemann sum is approximately adding up the flux on each cube. But the boundary wall of each cube is shared by its neighboring cube, only oriented the other way. That means the flux cancels out, and the only place where the flux *doesn't* cancel is on the boundary of the region, where there aren't neighboring cubes in the Riemann sum. The result is the flux through the boundary of the region, which is the right side of the equation.
+
 
 
 
