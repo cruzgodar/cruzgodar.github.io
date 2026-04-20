@@ -1,26 +1,38 @@
 import {
 	createDesmosGraphs,
-	desmosColors
+	getColorLatexExpressions,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
 export default function()
 {
 	createDesmosGraphs({
-		iceCreamCone:
+		droplet:
 		{
 			use3d: true,
 
 			options: {
 				showPlane3D: false,
-				worldRotation3D: [-0.72, -0.67, -0.17, 0.65, -0.75, 0.16, -0.23, 0, 0.97]
+				worldRotation3D: [-0.42, -0.9, -0.09, 0.88, -0.43, 0.18, -0.2, 0, 0.98]
 			},
 
-			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+			bounds: { xmin: -1.7, xmax: 1.7, ymin: -1.7, ymax: 1.7, zmin: -1.7, zmax: 1.7 },
 
 			expressions:
 			[
-				{ latex: raw`0 \leq \sqrt{x^2 + y^2 + z^2} \leq 2\{y \geq 0\}\{\arccos(\max(-1, \min(1, \frac{z}{\sqrt{x^2 + y^2 + z^2}}))) \leq \frac{\pi}{6}\}`, color: desmosColors.purple },
+				{ latex: raw`(\sin(u)\cos(v), \sin(u)\sin(v), \cos(u) + a(\sqrt{\sin(u)} - \frac{1}{2}))`, parametricDomain3Du: { min: 0, max: "\\pi + 0.01" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, colorLatex: "C" },
+
+				...getDesmosSlider({
+					expression: "a = 1",
+					min: 0,
+					max: 1,
+					secret: false,
+				}),
+
+				{ latex: raw`f(x, y, z) = 1.25z`, secret: true, hidden: true, },
+
+				...getColorLatexExpressions(),
 			]
 		}
 	});
