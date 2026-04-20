@@ -70,6 +70,8 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 
 	2. Let $R$ be the region in the first octant that is both inside the unit sphere and above the cone $z = \frac{1}{\sqrt{3}} \sqrt{x^2 + y^2}$. Find the flux of $\vec{H}(x, y, z) = \left< x^5, y^5, z^5 \right>$ out of the surface $\p R$.
 
+	### desmos sphereWedge
+
 	3. (Challenge question) Use the Divergence Theorem to compute the volume of the region bounded by
 
 	$$
@@ -100,6 +102,28 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 		&= \left. \left[ 3x^2 - x \right] \right|_0^1
 
 		&= 2.
+	$$
+
+	2. If we did this with a surface integral, we'd have an awful computation ahead of us: we can parameterize that surface into 4 pieces, but then all of those sines and cosines are getting raised to the power of $5$, resulting in an enormous integral. Instead, we can see what the Divergence Theorem has to offer. Let's call the region $R$; the triple integral over $R$ involves spheres and cones, so expressing it in spherical coordinates seems like a good idea. The outer sphere is $\rho = 1$, and the cone can be written as $z = \frac{1}{\sqrt{3}}r$ in cylindrical coordinates, meaning $\tan(\varphi) = \frac{r}{z} = \sqrt{3}$. That results in $\varphi = \frac{\pi}{3}$, and finally, the restriction to the first octant gives us $\theta$ bounds of $0$ and $\frac{\pi}{2}$. The integral then becomes
+
+	$$
+		\iint_{\p R} \vec{F} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{F}\,\d V
+
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \left( x^4 + y^4 + z^4 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^2\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^4\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \frac{1}{5}\sin(\varphi)\,\d\varphi\,\d\theta
+
+		&= \int_0^{\pi / 2} \frac{1}{5} \left. \left[ \cos(\varphi) \right] \right|_0^{\pi / 3}\d\theta
+
+		&= \int_0^{\pi / 2} \frac{1}{5}\left( \frac{1}{2} - 1 \right)\d\theta
+
+		&= \int_0^{\pi / 2} -\frac{1}{10}\,\d\theta
+
+		&= -\frac{\pi}{20}.
 	$$
 
 	3. This is a lot more challenging! Let's begin by writing down the Divergence Theorem for this region. If $R$ is the region whose volume we're trying to compute and $\vec{F}$ is a vector field with continuous first partials, then
@@ -160,7 +184,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 		&= \frac{4\pi}{3}.
 	$$
 
-	Remarkably, this shape has exactly the same volume as the unit sphere! The graph includes a slider to remove the $\sqrt{\sin(u)}$ term, and we can see that the transformation of the sphere into this glass droplet shape does appear to be volume-preserving. Proving that would be a very difficult task without calculus, though!
+	Remarkably, this shape has exactly the same volume as the unit sphere! The graph includes a slider to remove the $\sqrt{\sin(u)}$ term, and we can see that the transformation of the sphere into this glass droplet shape does appear to be volume-preserving. Proving that would be a profoundly difficult task without calculus!
 
 ###
 
