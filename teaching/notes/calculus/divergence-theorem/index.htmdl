@@ -5,15 +5,15 @@
 With the language of triple integrals, we can finally state the last main result we'll see in this course. We've come a long way since discussing Green's Theorem, but I'd like to restate its vector forms and the discussion of its generalizations now that we've seen so much beyond it. Given a region $R$ and its positively-oriented boundary $\p R$ with unit tangent and normal vectors $\vec{T}$ and $\vec{n}$, respectively, Green's Theorem states that for any vector field $\vec{F}$ with continuous partial derivatives,
 
 $$
-	\iint_R \operatorname{curl} \vec{F}\,\d A &= \int_{\p R} \vec{F} \bullet \vec{T}\,\d s
+	\iint_R \operatorname{curl} \vec{F}\,\d A &= \oint_{\p R} \vec{F} \bullet \vec{T}\,\d s
 
-	\iint_R \operatorname{div} \vec{F}\,\d A &= \int_{\p R} \vec{F} \bullet \vec{n}\,\d s.
+	\iint_R \operatorname{div} \vec{F}\,\d A &= \oint_{\p R} \vec{F} \bullet \vec{n}\,\d s.
 $$
 
 With the distance we now have from Green's Theorem, it can be easier to recognize that top equation as being identical to Stokes' Theorem, only restricted to surfaces that live in the $xy$-plane. Similarly, now that we've worked with surface integrals for some time, we can see the issue with trying to bring the bottom equation directly into $#R#^3$: curves in $#R#^3$ don't have unique normal vectors, only tangent vectors. Instead, it's surfaces that have normal vectors and therefore flux integrals, and so if we're trying to find a similar result, the right side will need to change into a surface integral:
 
 $$
-	\iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+	\oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
 $$
 
 Compared to Stokes' Theorem, where we needed to handle changes to nearly every part of Green's Theorem to bring it to $#R#^3$, this integral only leaves a few loose ends. If $\p R$ is a surface, then $R$ must be a solid region. Similarly, $\p R$ is supposed to be positively-oriented relative to $R$, but we've already discussed how to define that orientation: it's the choice of normal vectors that point outward from $R$ at each point on the boundary. If $R$ is a solid region, then the object on the left side of the equation should be a triple integral, and divergence in $#R#^3$ is still a scalar like it is in $#R#^2$, so there isn't any additional complexity we'd expect with the integral. In a great display of mathematical structure, the exact result we'd hope for is true, with no additional caveats!
@@ -23,14 +23,14 @@ Compared to Stokes' Theorem, where we needed to handle changes to nearly every p
 	Let $R$ be a region in $#R#^3$ with positively-oriented boundary surface $\p R$, and let $\vec{F}$ be a vector field with continuous partial derivatives. Then
 
 	$$
-		\iiint_R \Gbullet \vec{F}\,\d V = \iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+		\iiint_R \Gbullet \vec{F}\,\d V = \oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
 	$$
 
 	In other words, the integral of the divergence of $\vec{F}$ throughout $R$ is equal to the flux of $\vec{F}$ through the boundary of $R$.
 
 ###
 
-We won't prove the Divergence Theorem, but it is intuitively true for the same reason as the flux form of Green's Theorem: a Riemann sum for the triple integral on the left adds up the divergence on tiny cubes, and since divergence is infinitesimal flux per volume, the Riemann sum is approximately adding up the flux on each cube. But the boundary wall of each cube is shared by a neighboring cube, only oriented the other way. That means the flux cancels out everywhere two cubes touch, and the only place where that *doesn't* happen is the boundary of the region. The result is the flux through the boundary, which is exactly the right side of the equation.
+We won't prove the Divergence Theorem, but it's intuitively true for the same reason as the flux form of Green's Theorem: a Riemann sum for the triple integral on the left adds up the divergence on tiny cubes, and since divergence is infinitesimal flux per volume, the Riemann sum is approximately adding up the flux on each cube. But the boundary wall of each cube is shared by a neighboring cube, only oriented the other way. That means the flux cancels out everywhere two cubes touch, and the only place where that *doesn't* happen is the boundary of the region. The result is the flux through the boundary, which is exactly the right side of the equation.
 
 ### ex "the Divergence Theorem"
 	
@@ -39,7 +39,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	Doing this directly requires a different surface integral for each of the four faces of the tetrahedron, and the flux integrals themselves don't look particularly pleasant. Instead, we can integrate the divergence of this field through the solid tetrahedron $T$. It lies over the triangle in the $xy$-plane bounded by $x = 0$, $y = 0$, and $y = 1 - x$, and the top face of the tetrahedron is given by the function $z = 1 - x - y$, so the integral becomes
 
 	$$
-		\iint_{\p T} \vec{F} \bullet \d \vec{\sigma} &= \iiint_T \Gbullet \vec{F}\,\d V
+		\oiint_{\p T} \vec{F} \bullet \d \vec{\sigma} &= \iiint_T \Gbullet \vec{F}\,\d V
 
 		&= \int_0^1\int_0^{1 - x}\int_0^{1 - x - y} \left( 4x^3 + 1 + 1 \right)\d z\,\d y\,\d x
 
@@ -87,7 +87,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	1. Doing this directly requires a different surface integral for each face of the cube, and while the parameterizations look doable, the flux integrals themselves don't look pleasant. Instead, we can integrate the divergence of this field through the solid cube $C$:
 
 	$$
-		\iint_{\p C} \vec{G} \bullet \d \vec{\sigma} &= \iiint_C \Gbullet \vec{G}\,\d V
+		\oiint_{\p C} \vec{G} \bullet \d \vec{\sigma} &= \iiint_C \Gbullet \vec{G}\,\d V
 
 		&= \int_0^1\int_0^1\int_0^1 \left( 6x + 0 - \pi y\sin(\pi z) \right)\d z\,\d y\,\d x
 
@@ -107,7 +107,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	2. If we did this with a surface integral, we'd have an awful computation ahead of us: we can parameterize that surface into 4 pieces, but then all of those sines and cosines are getting raised to the power of $5$, resulting in an enormous integral. Instead, we can see what the Divergence Theorem has to offer. The triple integral over $R$ involves spheres and cones, so expressing it in spherical coordinates seems like a good idea. The outer sphere is $\rho = 1$, and the cone can be written as $z = \frac{1}{\sqrt{3}}r$ in cylindrical coordinates, meaning $\tan(\varphi) = \frac{r}{z} = \sqrt{3}$. That results in $\varphi = \frac{\pi}{3}$, and finally, the restriction to the first octant gives us $\theta$ bounds of $0$ and $\frac{\pi}{2}$. The integral then becomes
 
 	$$
-		\iint_{\p R} \vec{H} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{H}\,\d V
+		\oiint_{\p R} \vec{H} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{H}\,\d V
 
 		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\left( x^2 + y^2 + z^2 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
@@ -129,7 +129,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	3. This is a lot more challenging! Let's begin by writing down the Divergence Theorem for this region. If $R$ is the region whose volume we're trying to compute and $\vec{F}$ is a vector field with continuous first partials, then
 
 	$$
-		\iiint_R \Gbullet \vec{F}\,\d V &= \iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+		\iiint_R \Gbullet \vec{F}\,\d V &= \oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
 
 		&= \int_0^\pi \int_0^{2\pi} \vec{F} \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d \v\,\d u.
 	$$
@@ -191,15 +191,15 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 As with the previous theorems, let's take just a moment to place the Divergence Theorem in context with the other results we've established. No other result that we've seen deals with triple integrals, and only one concerns surface integrals: Stokes' Theorem, which only applies to curls of fields. For any oriented surface $S$ with oriented boundary $\p S$,
 
 $$
-	\iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} &= \int_{\p S} \vec{F} \bullet \d\vec{r}.
+	\iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} &= \oint_{\p S} \vec{F} \bullet \d\vec{r}.
 $$
 
 The Divergence Theorem applies to that surface integral, but only if $S$ is a closed surface bounding a region $R$ --- and if that's the case, then there is no boundary of $S$! The result is two different expressions for the surface integral that both equal zero:
 
 $$
-	\iiint_R \Gbullet \left( \Gtimes \vec{F} \right)\, \d V &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\p S} \vec{F} \bullet \d\vec{r}
+	\iiint_R \Gbullet \left( \Gtimes \vec{F} \right)\, \d V &= \oiint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\p S} \vec{F} \bullet \d\vec{r}
 
-	\iiint_R 0\,\d V &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\emptyset} \vec{F} \bullet \d\vec{r}
+	\iiint_R 0\,\d V &= \oiint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\emptyset} \vec{F} \bullet \d\vec{r}
 
 	0 &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = 0.
 $$
@@ -217,7 +217,7 @@ If $S$ weren't closed, though, we could still make the theorem work; let's see t
 	The boundary of $S$ is the blue unit circle plotted above, oriented counterclockwise when viewed from above. To patch the hole and form a closed surface, we can add in the solid unit disk --- since its normal vectors are all vertical and the $z$-component of $\vec{F}$ is particularly simple, that's a great choice. Let's call that disk $D$; since the entire surface needs to have one coherent orientation, $D$ must be oriented *downward* to match the orientation of $S$. If $R$ is the solid hemisphere that $S$ and $D$ jointly enclose, then the Divergence Theorem tells us
 
 	$$
-		\iiint_R \Gbullet \vec{F}\,\d V &= \iint_{\p R} \vec{F} \bullet \d\vec{\sigma}
+		\iiint_R \Gbullet \vec{F}\,\d V &= \oiint_{\p R} \vec{F} \bullet \d\vec{\sigma}
 
 		&= \iint_S \vec{F} \bullet \d\vec{\sigma} + \iint_D \vec{F} \bullet \d\vec{\sigma}.
 	$$
@@ -373,21 +373,21 @@ Now onto the theorems. There are five of them, and each has a similar form: eval
 	3. (Green's Theorem) Let $R$ be a region in $#R#^2$ with positively-oriented boundary $\p R$, and let $\vec{F} : #R#^2 \to #R#^2$ be a vector field. Then
 
 	$$
-		\text{(The circulation form) } & \iint_R \operatorname{curl} \vec{F}\, \d A = \int_{\p R} \vec{F} \bullet \vec{T} \d s
+		\text{(The circulation form) } & \iint_R \operatorname{curl} \vec{F}\, \d A = \oint_{\p R} \vec{F} \bullet \vec{T} \d s
 
-		\text{(The flux form) } \iint_R & \operatorname{div} \vec{F}\, \d A = \int_{\p R} \vec{F} \bullet \vec{n}\,\d s.
+		\text{(The flux form) } & \iint_R \operatorname{div} \vec{F}\, \d A = \oint_{\p R} \vec{F} \bullet \vec{n}\,\d s.
 	$$
 
 	4. (Stokes' Theorem) Let $S$ be an oriented surface in $#R#^3$ parameterized by $\vec{r}(u, \v)$, where $(u, \v) \in R$ for some region $R$ in $#R#^2$, and let $\p S$ be the positively-oriented boundary of $S$. Then for any vector field $\vec{F} : #R#^3 \to #R#^3$,
 
 	$$
-		\iint_S \left( \Gtimes \vec{F} \right) \bullet \vec{n}\,\d\sigma = \int_{\p S} \vec{F} \bullet \vec{T}\,\d s.
+		\iint_S \left( \Gtimes \vec{F} \right) \bullet \vec{n}\,\d\sigma = \oint_{\p S} \vec{F} \bullet \vec{T}\,\d s.
 	$$
 
 	5. (The Divergence Theorem) Let $R$ be a solid region in $#R#^3$ with positively-oriented boundary $\p R$, and let $\vec{F} : #R#^3 \to #R#^3$ be a vector field. Then
 
 	$$
-		\iiint_R \Gbullet \vec{F} \,\d V = \iint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+		\iiint_R \Gbullet \vec{F} \,\d V = \oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
 	$$
 
 ###
