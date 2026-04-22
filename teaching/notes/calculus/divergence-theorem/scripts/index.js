@@ -1,5 +1,6 @@
 import {
 	createDesmosGraphs,
+	desmosColors,
 	getColorLatexExpressions,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
@@ -45,11 +46,11 @@ export default function()
 				worldRotation3D: [-0.42, -0.9, -0.09, 0.88, -0.43, 0.18, -0.2, 0, 0.98]
 			},
 
-			bounds: { xmin: -1.7, xmax: 1.7, ymin: -1.7, ymax: 1.7, zmin: -1.7, zmax: 1.7 },
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
 
 			expressions:
 			[
-				{ latex: raw`(\sin(u)\cos(v), \sin(u)\sin(v), \cos(u) + a(\sqrt{\sin(u)} - \frac{1}{2}))`, parametricDomain3Du: { min: 0, max: "\\pi + 0.01" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, colorLatex: "C" },
+				{ latex: raw`(\sin(u)\cos(v), \sin(u)\sin(v), \cos(u) + a(\sqrt{\sin(u)} - 0.5))`, parametricDomain3Du: { min: 0, max: "\\pi + 0.01" }, parametricDomain3Dv: { min: 0, max: "2\\pi" }, colorLatex: "C" },
 
 				...getDesmosSlider({
 					expression: "a = 1",
@@ -61,6 +62,32 @@ export default function()
 				{ latex: raw`f(x, y, z) = 1.25z`, secret: true, hidden: true, },
 
 				...getColorLatexExpressions(),
+			]
+		},
+
+		closedUpSurface:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.92, 0.25, -0.31, -0.24, -0.97, -0.08, -0.32, 0, 0.95]
+			},
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				{ latex: raw`z = \sqrt{1 - x^2 - y^2}`, color: desmosColors.purple },
+
+				{ latex: raw`s(t) = (\cos(t), \sin(t), 0)`, secret: true },
+				{ latex: raw`s(t)`, color: desmosColors.blue, parametricDomain: { min: 0, max: "2\\pi" }, secret: true },
+
+				{ latex: raw`T = [\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}]`, secret: true },
+				{ latex: raw`\vector(s(T), s(T) + 0.2\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`z = 0 \{ x^2 + y^2 \leq 1 \}`, color: desmosColors.red, hidden: true },
 			]
 		}
 	});

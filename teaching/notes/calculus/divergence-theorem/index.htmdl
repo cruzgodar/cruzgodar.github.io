@@ -39,7 +39,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	Doing this directly requires a different surface integral for each of the four faces of the tetrahedron, and the flux integrals themselves don't look particularly pleasant. Instead, we can integrate the divergence of this field through the solid tetrahedron $T$. It lies over the triangle in the $xy$-plane bounded by $x = 0$, $y = 0$, and $y = 1 - x$, and the top face of the tetrahedron is given by the function $z = 1 - x - y$, so the integral becomes
 
 	$$
-		\iint_{\p T} \vec{F} \bullet \d \vec{\sigma} &= \iiint_T \Gbullet \vec{T}\,\d V
+		\iint_{\p T} \vec{F} \bullet \d \vec{\sigma} &= \iiint_T \Gbullet \vec{F}\,\d V
 
 		&= \int_0^1\int_0^{1 - x}\int_0^{1 - x - y} \left( 4x^3 + 1 + 1 \right)\d z\,\d y\,\d x
 
@@ -68,7 +68,7 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 
 	1. Find the flux of the field $\vec{G}(x, y, z) = \left< 3x^2 + yz, e^x, y\cos(\pi z) \right>$ out of the unit cube $[0, 1]^3$.
 
-	2. Let $R$ be the region in the first octant that is both inside the unit sphere and above the cone $z = \frac{1}{\sqrt{3}} \sqrt{x^2 + y^2}$. Find the flux of $\vec{H}(x, y, z) = \left< x^5, y^5, z^5 \right>$ out of the surface $\p R$.
+	2. Let $R$ be the region in the first octant that is both inside the unit sphere and above the cone $z = \frac{1}{\sqrt{3}} \sqrt{x^2 + y^2}$. Find the flux of $\vec{H}(x, y, z) = \left< x^3, y^3, z^3 \right>$ out of the surface $\p R$.
 
 	### desmos sphereWedge
 
@@ -109,21 +109,21 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	$$
 		\iint_{\p R} \vec{F} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{F}\,\d V
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \left( x^4 + y^4 + z^4 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\left( x^2 + y^2 + z^2 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^2\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\rho^2\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^4\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+		&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^4\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \frac{1}{5}\sin(\varphi)\,\d\varphi\,\d\theta
+		&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \frac{1}{5}\sin(\varphi)\,\d\varphi\,\d\theta
 
-		&= \int_0^{\pi / 2} \frac{1}{5} \left. \left[ \cos(\varphi) \right] \right|_0^{\pi / 3}\d\theta
+		&= 3\int_0^{\pi / 2} \frac{1}{5} \left. \left[ \cos(\varphi) \right] \right|_0^{\pi / 3}\d\theta
 
-		&= \int_0^{\pi / 2} \frac{1}{5}\left( \frac{1}{2} - 1 \right)\d\theta
+		&= 3\int_0^{\pi / 2} \frac{1}{5}\left( \frac{1}{2} - 1 \right)\d\theta
 
-		&= \int_0^{\pi / 2} -\frac{1}{10}\,\d\theta
+		&= 3\int_0^{\pi / 2} -\frac{1}{10}\,\d\theta
 
-		&= -\frac{\pi}{20}.
+		&= -\frac{3\pi}{20}.
 	$$
 
 	3. This is a lot more challenging! Let's begin by writing down the Divergence Theorem for this region. If $R$ is the region whose volume we're trying to compute and $\vec{F}$ is a vector field with continuous first partials, then
@@ -187,6 +187,138 @@ We won't prove the Divergence Theorem, but it is intuitively true for the same r
 	Remarkably, this shape has exactly the same volume as the unit sphere! The graph includes a slider to remove the $\sqrt{\sin(u)}$ term, and we can see that the transformation of the sphere into this glass droplet shape does appear to be volume-preserving. Proving that would be a profoundly difficult task without calculus!
 
 ###
+
+As with the previous theorems, let's take just a moment to place the Divergence Theorem in context with the other results we've established. No other result that we've seen deals with triple integrals, and only one concerns surface integrals: Stokes' Theorem, which only applies to curls of fields. For any oriented surface $S$ with oriented boundary $\p S$,
+
+$$
+	\iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} &= \int_{\p S} \vec{F} \bullet \d\vec{r}.
+$$
+
+The Divergence Theorem applies to that surface integral, but only if $S$ is a closed surface bounding a region $R$ --- and if that's the case, then there is no boundary of $S$! The result is two different expressions for the surface integral that both equal zero:
+
+$$
+	\iiint_R \Gbullet \left( \Gtimes \vec{F} \right)\, \d V &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\p S} \vec{F} \bullet \d\vec{r}
+
+	\iiint_R 0\,\d V &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = \int_{\emptyset} \vec{F} \bullet \d\vec{r}
+
+	0 &= \iint_S \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma} = 0.
+$$
+
+If $S$ weren't closed, though, we could still make the theorem work; let's see this in action in an example.
+
+### ex "closing up a surface"
+
+	Let $\vec{F}(x, y, z) = \left< 3x + y\tan(z),\ y + 1 - e^{xz},\ x^2 \right>$. Find the flux of $\vec{F}$ through the top half of the unit sphere, oriented upward.
+
+	### desmos closedUpSurface
+
+	Let's call that surface $S$. The flux integral would be extraordinary difficult to compute, if not impossible, and the surface isn't closed, so we can't apply the Divergence Theorem. Stokes' Theorem also isn't of much help: the divergence of $\vec{F}$ is $\Gbullet \vec{F} = 3 + 1 + 0 = 4$, so $\vec{F}$ isn't incompressible, and that means we can't freely change the surface while keeping the boundary the same. However, we can do the next-best thing. If we can patch up the hole in the bottom of the sphere, we'll have a closed surface over which we can use the Divergence Theorem; we'll just need to handle the orientation carefully, as always.
+
+	The boundary of $S$ is the blue unit circle plotted above, oriented counterclockwise when viewed from above. To patch the hole and form a closed surface, we can add in the solid unit disk --- since its normal vectors are all vertical and the $z$-component of $\vec{F}$ is particularly simple, that's a great choice. Let's call that disk $D$; since the entire surface needs to have one coherent orientation, $D$ must be oriented *downward* to match the orientation of $S$. If $R$ is the solid hemisphere that $S$ and $D$ jointly enclose, then the Divergence Theorem tells us
+
+	$$
+		\iiint_R \Gbullet \vec{F}\,\d V &= \iint_{\p R} \vec{F} \bullet \d\vec{\sigma}
+
+		&= \iint_S \vec{F} \bullet \d\vec{\sigma} + \iint_D \vec{F} \bullet \d\vec{\sigma}.
+	$$
+
+	Now the triple integral is $\iiint 4\,\d V = 4|R| = \frac{8\pi}{3}$, where $|R| = \frac{1}{2}\left( \frac{4\pi}{3} \right) = \frac{2\pi}{3}$ since it's half of a unit ball. That leaves us with just the flux integral over $D$. We can parameterize it with
+
+	$$
+		\vec{r}(u, \v) = \left< u\cos(\v),\ u\sin(\v),\ 0 \right>,
+	$$
+
+	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$, which gives us
+
+	$$
+		\vec{r}_u \times \vec{r}_{\v} = \left< 0, 0, u \right>;
+	$$
+
+	since we want the downward orientation, though, we'll take $\left< 0, 0, -u \right>$. Then the integral is
+
+	$$
+		\iint_D \vec{F} \bullet \d\vec{\sigma} &= \int_0^1 \int_0^{2\pi} \left< 3x + y\tan(z),\ y + 1 - e^{xz},\ x^2 \right> \bullet \left< 0, 0, -u \right>\d\v\,\d u
+
+		&= \int_0^1 \int_0^{2\pi} x^2(-u)\d\v\,\d u
+
+		&= \int_0^1 \int_0^{2\pi} u^2\cos^2(\v)(-u)\,\d\v\,\d u
+
+		&= \int_0^1 \int_0^{2\pi} -\frac{u^3}{2}\left( 1 + \cos(2\v) \right)\,\d\v\,\d u
+
+		&= \int_0^1 \left. \left[ -\frac{u^3}{2}\left( \v + \frac{1}{2}\sin(2\v) \right) \right] \right|_0^{2\pi}\d u
+
+		&= \int_0^1 -\pi u^3\,\d u
+
+		&= \left. \left[  -\frac{\pi}{4} u^4 \right] \right|_0^1
+
+		&= -\frac{\pi}{4}.
+	$$
+
+	In total, the original flux integral we're after is
+
+	$$
+		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iiint_R \Gbullet \vec{F}\,\d V - \iint_D \vec{F} \bullet \d\vec{\sigma}
+
+		&= \frac{8\pi}{3} - \left( -\frac{\pi}{4} \right)
+
+		&= \frac{35\pi}{12}.
+	$$
+
+###
+
+Let's pause here to carefully note the difference between what we just did and the surface-independence that Stokes' Theorem allowed. When we changed surfaces in <a href="/teaching/notes/calculus/stokes-theorem">Section 6.6</a>, we needed to preserve the boundary *and* its orientation in order to keep the line integral side of Stokes' Theorem constant. In contrast, we need the new surface to have the same boundary, but with the *opposite* orientation, in order to use the Divergence Theorem in this way. That might seem a little contradictory, but we can phrase both of these situations in terms of the Divergence Theorem to straighten things out. In both cases, if we start with a surface $S$ and replace it with a surface $S^*$ that has the same boundary as $S$, but with the opposite orientation, then $S$ and $S^*$ together form an oriented boundary of a region $R$. By the Divergence Theorem,
+
+$$
+	\iiint_R \Gbullet \vec{F}\,\d V &= \iint_S \vec{F} \bullet \d\vec{\sigma} + \iint_{S^*} \vec{F} \bullet \d\vec{\sigma}.
+$$
+
+In the special case where $\vec{F}$ is incompressible and is therefore equal to $\Gtimes \vec{G}$ for some field $\vec{G}$, $\Gbullet \vec{F} = 0$, and so the triple integral is zero; that means
+
+$$
+	\iint_S \vec{F} \bullet \d\vec{\sigma} &= -\iint_{S^*} \vec{F} \bullet \d\vec{\sigma}
+
+	&= \iint_{-S^*} \vec{F} \bullet \d\vec{\sigma}.
+$$
+
+The surface $-S^*$ is the same as $S^*$, but with its orientation reversed; its boundary $\p (-S^*)$ then also has its orientation reversed, so it has the same orientation as $\p S$. That's the version of surface-independence we're already familiar with, and so in effect, the divergence integral measures the difference between different surface integrals with the same boundary --- when it's zero, they're exactly equal.
+
+
+
+## The Fundamental Theorems of Calculus: A Review
+
+We've made it to the very end of the course, and to the end of the calculus sequence as a whole! To close, I'd like to briefly review the types of integrals we've seen and the theorems that relate them, since there are so many that it can get hard to distinguish them.
+
+The most basic type of integral is the one we spent all of Chapter 3 developing: given a function $f : #R# \to #R#$, we can integrate it on the interval $[a, b]$ to get
+
+$$
+	\int_{[a, b]} f(x)\,\d x = \int_a^b f(x)\,\d x,
+$$
+
+which is the area under the graph of $f$ between $x = a$ and $x = b$. By parameterizing a curve $C$ in $#R#^2$ or $#R#^3$ with a function $\vec{r}(t)$ for $t \in [a, b]$, we can extend the notion of an integral to functions of multiple variables; this is a **scalar line integral**
+
+$$
+	\int_C f\,\d s = \int_a^b f\left( \vec{r}(t) \right)\left| \left| \vec{r}'(t) \right| \right|\d t.
+$$
+
+We can integrate a vector field $\vec{F}$ along a curve in $#R#^2$ or $#R#^3$ by dotting it with a unit vector intrinsic to the curve --- that produces a scalar function along the curve, and we just discussed how to integrate those. The vector we typically take to be intrinsic to a curve is the unit tangent vector $\vec{T}(t)$, which results in the **circulation integral**
+
+$$
+	\int_C \vec{F} \bullet \vec{T}\,\d s = \int_C \vec{F} \bullet \d\vec{r} = \int_a^b \vec{F}\left( \vec{r}(t) \right) \bullet \vec{r}'(t)\,\d t.
+$$
+
+In $#R#^2$ specifically, curves also have well-defined normal vectors, and we can form the **flux integral**
+
+$$
+	\int_C \vec{F} \bullet \vec{n}\,\d s \int_a^b \vec{F}\left( \vec{r}(t) \right) \bullet \left< y'(t), -x'(t) \right>\,\d t,
+$$
+
+where $\vec{r}(t) = \left< x(t), y(t) \right>$.
+
+The other major way we generalized the notion of a single-variable integral was to increase the domain itself. For a function of two variables $f : #R#^2 \to #R#$, the volume under the graph of $f$ across a region $R$ in $#R#^2$ is the **double integral**
+
+$$
+	\iint_R f\,\d A = \iint_R f\,\d A
+$$
 
 
 
