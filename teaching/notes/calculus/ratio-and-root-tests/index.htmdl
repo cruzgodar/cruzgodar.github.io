@@ -5,7 +5,7 @@ Our final two tests for convergence have the nice effect of applying to series w
 The Harmonic series diverges because even though its terms shrink to zero, they don't do so fast enough. So far, we haven't had a way to measure what "fast enough" means exactly, but our final two tests will each provide a possible interpretation. One idea we might pursue is looking at the size of terms not only in an absolute sense, but relative to each other as well. For example, when $n$ is very large, the two successive terms $\frac{1}{n}$ and $\frac{1}{n + 1}$ in the Harmonic series are very nearly the same size. The ratio between them is
 
 $$
-	\frac{\frac{1}{n + 1}}{\frac{1}{n}} = \frac{n + 1}{n} \to 1
+	\frac{\frac{1}{n + 1}}{\frac{1}{n}} = \frac{n}{n + 1} \to 1
 $$
 
 as $n \to \infty$. On the other hand, something like the geometric series $\sum_{n = 0}^\infty \frac{1}{2^n}$ has a ratio of successive terms equal to
