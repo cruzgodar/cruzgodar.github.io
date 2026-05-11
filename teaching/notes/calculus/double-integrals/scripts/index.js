@@ -18,7 +18,7 @@ export default function()
 				{ latex: raw`f(x) = 1 + \frac{1}{4}(\sin(x) + \cos(2x)) - \frac{(x+2)^3}{150} - \frac{x^2}{10}`, color: desmosColors.purple },
 				{ latex: raw`a = -5`, sliderBounds: { min: -10, max: "b" } },
 				{ latex: raw`b = 5`, sliderBounds: { min: -10, max: 10 } },
-				{ latex: raw`n = 10`, sliderBounds: { min: 2, max: 100, step: 1 } },
+				{ latex: raw`n = 10`, sliderBounds: { min: 1, max: 100, step: 1 } },
 
 				...getDesmosPoint({
 					point: ["a", "f(a)"],
@@ -37,9 +37,9 @@ export default function()
 				{ latex: raw`\sum_{i = 1}^n s f(R[i])` },
 				
 				{ latex: raw`s = \frac{b - a}{n}`, secret: true },
-				{ latex: raw`X = [a, a + s, ..., b]`, secret: true },
-				{ latex: raw`L = [a, a + s, ..., b - s]`, secret: true },
-				{ latex: raw`R = [a + s, a + 2s, ..., b]`, secret: true },
+				{ latex: raw`X = a + [0, ..., n]s`, secret: true },
+				{ latex: raw`L = a + [0, ..., n - 1]s`, secret: true },
+				{ latex: raw`R = a + [1, ..., n]s`, secret: true },
 
 				{ latex: raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosColors.red, secret: true },
 				{ latex: raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosColors.red, secret: true },
@@ -166,20 +166,20 @@ export default function()
 				{ latex: raw`s_x = \frac{b - a}{m}`, secret: true },
 				{ latex: raw`s_y = \frac{d - c}{n}`, secret: true },
 
-				{ latex: raw`X = [a, a + s_x, ..., b]`, secret: true },
-				{ latex: raw`Y = [c, c + s_y, ..., d]`, secret: true },
+				{ latex: raw`X = a + [0, ..., m]s_x`, secret: true },
+				{ latex: raw`Y = c + [0, ..., n]s_y`, secret: true },
 
-				{ latex: raw`L_x = [a, a + s_x, ..., b - s_x]`, secret: true },
-				{ latex: raw`R_x = [a + s_x, a + 2s_x, ..., b]`, secret: true },
-				{ latex: raw`L_y = [c, c + s_y, ..., d - s_y]`, secret: true },
-				{ latex: raw`R_y = [c + s_y, c + 2s_y, ..., d]`, secret: true },
+				{ latex: raw`L_x = a + [0, ..., m - 1]s_x`, secret: true },
+				{ latex: raw`R_x = a + [1, ..., m]s_x`, secret: true },
+				{ latex: raw`L_y = c + [0, ..., n - 1]s_y`, secret: true },
+				{ latex: raw`R_y = c + [1, ..., n]s_y`, secret: true },
 
-				{ latex: raw`M_x = [a + \frac{s_x}{2}, a + \frac{3s_x}{2}, ..., b - \frac{s_x}{2}]`, secret: true },
-				{ latex: raw`M_y = [c + \frac{s_y}{2}, c + \frac{3s_y}{2}, ..., d - \frac{s_y}{2}]`, secret: true },
+				{ latex: raw`M_x = a + \frac{s_x}{2} + [0, ..., m - 1]s_x`, secret: false },
+				{ latex: raw`M_y = c + \frac{s_y}{2} + [0, ..., n - 1]s_y`, secret: false },
 
 				// construct a 1D array of length m*n that contains all the points in M_x x M_y
 
-				{ latex: raw`L = [0, 1, ... mn - 1]`, secret: true },
+				{ latex: raw`L = [0, ... mn - 1]`, secret: true },
 				{ latex: raw`I = \floor(\frac{L}{n}) + 1`, secret: true },
 				{ latex: raw`J = \mod(L, n) + 1`, secret: true },
 
