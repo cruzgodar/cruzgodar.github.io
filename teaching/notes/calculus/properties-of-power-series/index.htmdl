@@ -370,7 +370,7 @@ This is the main result about multiplying power series --- all that's left is de
 		&= 5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5 + \cdots.
 	$$
 	
-	We know when to the partial sum at the term we did since past that, there are no terms with $x^5$ or lower.
+	We know to stop the partial sum at the term we did, since past that, there are no terms with $x^5$ or lower.
 	
 	It's remarkable that these two sums are equal despite having wildly different descriptions! We'll see more like this on a future homework.
 
