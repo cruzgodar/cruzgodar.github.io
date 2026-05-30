@@ -33,6 +33,7 @@ export class Slider extends CappedInputElement
 	currentlyDragging = false;
 	dragOffset;
 	onInput;
+	onRelease;
 
 	constructor({
 		element,
@@ -45,7 +46,8 @@ export class Slider extends CappedInputElement
 		logarithmic = false,
 		integer = false,
 		persistState = true,
-		onInput = () => {}
+		onInput = () => {},
+		onRelease = () => {}
 	}) {
 		super({
 			element,
@@ -73,6 +75,7 @@ export class Slider extends CappedInputElement
 
 		this.persistState = persistState;
 		this.onInput = onInput;
+		this.onRelease = onRelease;
 
 		// The number of decimal places to round to to get 4 significant figures.
 		this.precision = Math.max(
@@ -307,6 +310,8 @@ export class Slider extends CappedInputElement
 			this.onReleaseThumb();
 
 			this.updatePersistedState();
+
+			this.onRelease();
 		}
 	}
 

@@ -15,7 +15,8 @@ export default function()
 		value: 500,
 		minValue: 100,
 		maxValue: 2000,
-		onEnter: run
+		onInput: () => run(false),
+		onEnter: () => run(true)
 	});
 
 	const computationsPerFrameInput = new Slider({
@@ -25,77 +26,84 @@ export default function()
 		min: 1,
 		max: 50,
 		integer: true,
-		onInput: run
+		onRelease: run
 	});
 
-	const rhoInput = new Slider({
+	const rhoSlider = new Slider({
 		element: $("#rho-slider"),
 		name: "$\\rho$",
 		value: .3673,
 		min: 0,
 		max: 1,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const betaInput = new Slider({
+	const betaSlider = new Slider({
 		element: $("#beta-slider"),
 		name: "$\\beta$",
 		value: 1.1016,
 		min: 0,
 		max: 2,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const alphaInput = new Slider({
+	const alphaSlider = new Slider({
 		element: $("#alpha-slider"),
 		name: "$\\alpha$",
 		value: .4022,
 		min: 0,
 		max: .6,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const thetaInput = new Slider({
+	const thetaSlider = new Slider({
 		element: $("#theta-slider"),
 		name: "$\\theta$",
 		value: .0311,
 		min: 0,
 		max: .05,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const kappaInput = new Slider({
+	const kappaSlider = new Slider({
 		element: $("#kappa-slider"),
 		name: "$\\kappa$",
 		value: .0013,
 		min: -.5,
 		max: .25,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const muInput = new Slider({
+	const muSlider = new Slider({
 		element: $("#mu-slider"),
 		name: "$\\mu$",
 		value: .019,
 		min: -1,
 		max: .1,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
-	const gammaInput = new Slider({
+	const gammaSlider = new Slider({
 		element: $("#gamma-slider"),
 		name: "$\\gamma$",
 		value: .0005,
 		min: -.02,
 		max: 2,
-		onInput: run
+		onInput: () => run(false),
+		onRelease: () => run(true)
 	});
 
 	typesetMath();
 
 	new GenerateButton({
 		element: $("#generate-button"),
-		onClick: run
+		onClick: () => run(true)
 	});
 
 	new Button({
@@ -112,70 +120,76 @@ export default function()
 
 
 
-	function run()
+	function run(animated)
 	{
 		applet.run({
-			resolution: resolutionInput.value,
-			computationsPerFrame: computationsPerFrameInput.value,
-			rho: rhoInput.value,
-			beta: betaInput.value,
-			alpha: alphaInput.value,
-			theta: thetaInput.value,
-			kappa: kappaInput.value,
-			mu: muInput.value,
-			gamma: gammaInput.value
+			animated,
+			resolution: animated
+				? resolutionInput.value
+				: 300,
+			computationsPerFrame: animated
+				? computationsPerFrameInput.value
+				: 500,
+			rho: rhoSlider.value,
+			beta: betaSlider.value,
+			alpha: alphaSlider.value,
+			theta: thetaSlider.value,
+			kappa: kappaSlider.value,
+			mu: muSlider.value,
+			gamma: gammaSlider.value
 		});
 	}
 
 	applet.run({
+		animated: true,
 		resolution: 500,
 		computationsPerFrame: 25,
-		rho: rhoInput.value,
-		beta: betaInput.value,
-		alpha: alphaInput.value,
-		theta: thetaInput.value,
-		kappa: kappaInput.value,
-		mu: muInput.value,
-		gamma: gammaInput.value
+		rho: rhoSlider.value,
+		beta: betaSlider.value,
+		alpha: alphaSlider.value,
+		theta: thetaSlider.value,
+		kappa: kappaSlider.value,
+		mu: muSlider.value,
+		gamma: gammaSlider.value
 	});
 
 	function randomizeParameters()
 	{
-		rhoInput.setValue(
+		rhoSlider.setValue(
 			Math.round((.325 + (.5 - .325) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		betaInput.setValue(
+		betaSlider.setValue(
 			Math.round((.9 + (1.5 - .9) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		alphaInput.setValue(
+		alphaSlider.setValue(
 			Math.round((.2 + (.6 - .2) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		thetaInput.setValue(
+		thetaSlider.setValue(
 			Math.round((.01 + (.05 - .01) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		kappaInput.setValue(
+		kappaSlider.setValue(
 			Math.round((0 + (.01 - 0) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		muInput.setValue(
+		muSlider.setValue(
 			Math.round((0 + (.065 - 0) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		gammaInput.setValue(
+		gammaSlider.setValue(
 			Math.round((0 + (.1 - 0) * Math.random()) * 100000) / 100000,
 			false
 		);
 
-		run();
+		run(true);
 	}
 }

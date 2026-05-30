@@ -4,6 +4,8 @@ import { WilsonGPU } from "/scripts/wilson.js";
 
 export class Snowflakes extends AnimationFrameApplet
 {
+	animated = false;
+
 	resolution = 500;
 
 	computationsPerFrame = 20;
@@ -510,17 +512,19 @@ export class Snowflakes extends AnimationFrameApplet
 
 
 	run({
+		animated = true,
 		resolution = 500,
 		computationsPerFrame = 25,
-		rho = .3673,
-		beta = 1.1016,
-		alpha = .4022,
-		theta = .0311,
-		kappa = .0013,
-		mu = .019,
-		gamma = .0005
+		rho,
+		beta,
+		alpha,
+		theta,
+		kappa,
+		mu,
+		gamma,
 	}) {
-		this.resolution = resolution;
+		this.animated = animated;
+		this.resolution = resolution + (resolution % 2);
 		this.computationsPerFrame = computationsPerFrame;
 
 		this.wilson.setUniforms({
@@ -629,7 +633,7 @@ export class Snowflakes extends AnimationFrameApplet
 			}
 		}
 
-		this.needNewFrame = true;
+		this.needNewFrame = this.animated;
 	}
 
 	switchFullscreen()
