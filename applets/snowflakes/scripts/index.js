@@ -1,5 +1,6 @@
 import { Snowflakes } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -17,73 +18,77 @@ export default function()
 		onEnter: run
 	});
 
-	const computationsPerFrameInput = new TextBox({
-		element: $("#computations-per-frame-input"),
+	const computationsPerFrameInput = new Slider({
+		element: $("#computations-per-frame-slider"),
 		name: "Computation Speed",
 		value: 25,
-		minValue: 1,
-		maxValue: 50,
-		onEnter: run
+		min: 1,
+		max: 50,
+		integer: true,
+		onInput: run
 	});
 
-	const rhoInput = new TextBox({
-		element: $("#rho-input"),
+	const rhoInput = new Slider({
+		element: $("#rho-slider"),
 		name: "$\\rho$",
 		value: .3673,
-		minValue: 0,
-		maxValue: 1,
-		onEnter: run
+		min: 0,
+		max: 1,
+		onInput: run
 	});
 
-	const betaInput = new TextBox({
-		element: $("#beta-input"),
+	const betaInput = new Slider({
+		element: $("#beta-slider"),
 		name: "$\\beta$",
 		value: 1.1016,
-		minValue: 0,
-		maxValue: 2,
-		onEnter: run
+		min: 0,
+		max: 2,
+		onInput: run
 	});
 
-	const alphaInput = new TextBox({
-		element: $("#alpha-input"),
+	const alphaInput = new Slider({
+		element: $("#alpha-slider"),
 		name: "$\\alpha$",
 		value: .4022,
-		minValue: 0,
-		onEnter: run
+		min: 0,
+		max: .6,
+		onInput: run
 	});
 
-	const thetaInput = new TextBox({
-		element: $("#theta-input"),
+	const thetaInput = new Slider({
+		element: $("#theta-slider"),
 		name: "$\\theta$",
 		value: .0311,
-		onEnter: run
+		min: 0,
+		max: .05,
+		onInput: run
 	});
 
-	const kappaInput = new TextBox({
-		element: $("#kappa-input"),
+	const kappaInput = new Slider({
+		element: $("#kappa-slider"),
 		name: "$\\kappa$",
 		value: .0013,
-		minValue: -.5,
-		maxValue: .25,
-		onEnter: run
+		min: -.5,
+		max: .25,
+		onInput: run
 	});
 
-	const muInput = new TextBox({
-		element: $("#mu-input"),
+	const muInput = new Slider({
+		element: $("#mu-slider"),
 		name: "$\\mu$",
 		value: .019,
-		minValue: -1,
-		maxValue: .1,
-		onEnter: run
+		min: -1,
+		max: .1,
+		onInput: run
 	});
 
-	const gammaInput = new TextBox({
-		element: $("#gamma-input"),
+	const gammaInput = new Slider({
+		element: $("#gamma-slider"),
 		name: "$\\gamma$",
 		value: .0005,
-		minValue: -.02,
-		maxValue: 2,
-		onEnter: run
+		min: -.02,
+		max: 2,
+		onInput: run
 	});
 
 	typesetMath();

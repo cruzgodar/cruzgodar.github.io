@@ -18,6 +18,9 @@ $\alpha$, $\theta$, and $\gamma$ affect the process in more complicated ways tha
 
 ### text-boxes
 	resolution
+###
+
+### sliders
 	computations-per-frame
 	rho
 	beta
