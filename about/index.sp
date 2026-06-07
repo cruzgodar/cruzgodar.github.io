@@ -10,7 +10,6 @@
 
 
 
-
 ## Education
 
 **Ph.D. in Mathematics:** University of Oregon (2025; advisor: Benjamin Young)

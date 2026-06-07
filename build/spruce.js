@@ -106,3 +106,49 @@ export function carousel(...blocks)
 		</div>
 	`;
 }
+
+export function clickTap(clickText, tapText)
+{
+	return /* html */`<span class="click-tap"><span>${clickText}</span><span>${tapText}</span></span>`;
+}
+
+// The arguments alternate id, size, id, size...
+export function galleryBlock(...data)
+{
+	if (data.length % 2 !== 0)
+	{
+		throw new Error("Invalid number of arguments");
+	}
+
+	let html = "<div class=\"gallery-block\">";
+
+	for (let i = 0; i < data.length; i += 2)
+	{
+		const id = data[i];
+		const size = data[i + 1];
+
+		html = `${html}
+		<div class="gallery-image-${size}-${size}">
+			<img src="/graphics/general-icons/placeholder.png" data-src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" />
+		</div>`;
+	}
+
+	return /* html */`${html}</div>`;
+}
+
+
+
+export function card(id, name, body)
+{
+	if (name)
+	{
+		return /* html */`<div id="${id}-card" class="card"><h1 class="heading-text">${name}</h1>${body}</div>`;
+	}
+
+	return /* html */`<div id="${id}-card" class="card">${body}</div>`;
+}
+
+export function externalCard(id)
+{
+	return /* html */`<div id="${id}-card" class="card external-card"></div>`;
+}
