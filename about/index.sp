@@ -1,5 +1,6 @@
 @@@
 	await include("/build/spruce.js");
+	import { bannerDocument as document } from "/build/spruce.js";
 @@@
 
 <div class="justify">
