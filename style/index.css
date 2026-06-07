@@ -133,9 +133,9 @@ header
 	margin-top: 8px;
 }
 
-section
+main
 {
-	margin-bottom: 96px;
+	margin-bottom: 100px;
 }
 
 
@@ -261,6 +261,8 @@ img
 	font-size: 125%;
 	color: var(--high-contrast);
 	text-align: center;
+	margin-top: 100px;
+	margin-bottom: 24px;
 }
 
 .body-text

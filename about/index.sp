@@ -1,10 +1,5 @@
 @@@
-	import {
-		bannerDocument as document,
-		heading,
-		paragraph,
-		text
-	} from "/build/spruce.js";
+	await include("/build/spruce.js");
 @@@
 
 <div class="justify">
@@ -42,7 +37,7 @@
 
 **Graduate Educator** (University of Oregon, 2019--2025)
 
-**Instructor of Record**
+Instructor of Record:
 
 - [Elementary Linear Algebra II](/teaching/uo/342) (Spring 2024)
 
@@ -64,7 +59,7 @@
 
 - University Math I (Summer 2020)
 
-**Teaching Assistant**
+Teaching Assistant:
 
 - Business Calculus I (Fall 2020)
 
@@ -127,33 +122,33 @@
 
 **Programming Languages**
 
-> - JavaScript and TypeScript
+- JavaScript and TypeScript
 
-> - C
+- C
 
-> - GLSL
+- GLSL
 
-> - Julia
+- Julia
 
-> - Python and SageMath
+- Python and SageMath
 
 **Tools and Packages**
 
-> - WebGL (examples: [the Mandelbulb](/applets/mandelbulb), [the double pendulum fractal](/applets/double-pendulum-fractal), [Newton's method fractals](/applets/newtons-method))
+- WebGL (examples: [the Mandelbulb](/applets/mandelbulb), [the double pendulum fractal](/applets/double-pendulum-fractal), [Newton's method fractals](/applets/newtons-method))
 
-> - WebAssembly (examples: [Wilson's algorithm](/applets/wilsons-algorithm), [Calcudoku generator](/applets/calcudoku-generator))
+- WebAssembly (examples: [Wilson's algorithm](/applets/wilsons-algorithm), [Calcudoku generator](/applets/calcudoku-generator))
 
-> - CUDA
+- CUDA
 
-> - React and Remix
+- React and Remix
 
-> - Tailwind CSS
+- Tailwind CSS
 
-> - MongoDB
+- MongoDB
 
-> - Gurobi
+- Gurobi
 
-> - Keras and TensorFlow
+- Keras and TensorFlow
 
 
 
@@ -161,24 +156,55 @@
 
 <div class="justify">
 
-carousel
-
-	"Best math class and class in general I have taken at UO, Cruz is the best instructor I have had in my two years here and has made a class about higher level math fun and interesting. Extremely supportive of students, you can tell he wants to see every student succeed and that meant a lot. His teaching style is serious when it needs to be, does not feel like you are punished if you don't know everything first time around, and actually has a personality while teaching that makes the class very engaging and fun to come to. 11/10 teacher would highly highly recommend and I want to see more teachers mirror his style."\n*Intro to Differential Equations, Spring 2023*
-
-	"Cruz Godar is the clearest math teacher I have ever had. I have been able to understand Multivariable calculus this semester better than I ever understood Calculus I or II or even really algebra and trigonometry for that matter.\n*Calculus III, Spring 2026*
+(@carousel
+[[
+	"Best math class and class in general I have taken at UO, Cruz is the best instructor I have had in my two years here and has made a class about higher level math fun and interesting. Extremely supportive of students, you can tell he wants to see every student succeed and that meant a lot. His teaching style is serious when it needs to be, does not feel like you are punished if you don't know everything first time around, and actually has a personality while teaching that makes the class very engaging and fun to come to. 11/10 teacher would highly highly recommend and I want to see more teachers mirror his style."
 	
-	"This is the most organized course that I have taken in my college career. It was clear that the instructor cared about their student[s'] learning and actively worked to increase their understanding of mathematics, not just this course, through the inclusivity and thoroughness with which they created their website. Any additional resources one might need to pass this course was easily found as well as the actual course assignments and notes."\n*Intro to Differential Equations, Fall 2024*
-
-	[Prompt: please give feedback on how the instructor encourages student participation and engagement] "They are FANTASTIC at this! They always stress group work and check in on everyone in the class (which I really, really appreciate, especially when I feel like I am not fully getting the material). They make this class way more engaging than any other Yale math class I have had."\n*Calculus III, Spring 2026*
+	*Intro to Differential Equations, Spring 2023*
+]]
+[[
+	"Cruz Godar is the clearest math teacher I have ever had. I have been able to understand Multivariable calculus this semester better than I ever understood Calculus I or II or even really algebra and trigonometry for that matter."
 	
-	"Cruz has been an absolutely exceptional professor! I've taken a number of math classes at UO and I believe that his teaching style and organization with notes/homework has made a significant improvement in my ability to learn and comprehend the course material. He has outperformed previous teachers by many strides, even professor[s] which have been teaching for a number of years more. Cruz makes class engaging and I've always looked forward to coming to lectures, I could not give high enough praises!"\n*Intro to Differential Equations, Fall 2024*
-
-	"The instructor for this course has genuinely been the most helpful instructor I've had in my entire time at UO. He cares about making sure the students learn and understand the course material, is aware of the things students struggle with, and puts more focus on those things to make sure everyone is on track with the material. Overall, the instructor has been amazing this term."\n*Linear Algebra I, Fall 2023*
-
-	"I like the online notes. I am glad Cruz goes to the trouble to make them for students. He is EXTREMELY receptive to suggestions and feedback. I was often really blunt about things that were/weren't working, or aspects of the course that could be improved/modified/changed to help my learning and ensure everything was as thorough as it could be. He always took my suggestions and ideas, which made me feel heard and supported and respected. In addition, it made me feel like he put my learning as his top priority.\nHe is also very aware of when things need to be modified to fit the capability of the class, which is a very impressive skill as a teacher. He knows when certain things are too much, and communicates with the class to help reconcile. \nAlso, I may have said this before, but his ability to draw straight lines and perfect circles on a chalk board is quite impressive."\n*Calculus II, Winter 2022*
+	*Calculus III, Spring 2026*
+]]
+[[
+	"This is the most organized course that I have taken in my college career. It was clear that the instructor cared about their student[s'] learning and actively worked to increase their understanding of mathematics, not just this course, through the inclusivity and thoroughness with which they created their website. Any additional resources one might need to pass this course was easily found as well as the actual course assignments and notes."
 	
-	"The groupwork in lecture is a fantastic touch point that sets a very high standard for participation (relative to my experience). Overall, I feel very comfortable asking questions or offering answers, and the amount of visualizations we look at is both engaging and helpful."\n*Calculus III, Spring 2026*
-
-	"This is the most well taught math course I have ever taken."\n*Linear Algebra I, Fall 2023*
+	*Intro to Differential Equations, Fall 2024*
+]]
+[[
+	[Prompt: please give feedback on how the instructor encourages student participation and engagement] "They are FANTASTIC at this! They always stress group work and check in on everyone in the class (which I really, really appreciate, especially when I feel like I am not fully getting the material). They make this class way more engaging than any other Yale math class I have had."
+	
+	*Calculus III, Spring 2026*
+]]
+[[
+	"Cruz has been an absolutely exceptional professor! I've taken a number of math classes at UO and I believe that his teaching style and organization with notes/homework has made a significant improvement in my ability to learn and comprehend the course material. He has outperformed previous teachers by many strides, even professor[s] which have been teaching for a number of years more. Cruz makes class engaging and I've always looked forward to coming to lectures, I could not give high enough praises!"
+	
+	*Intro to Differential Equations, Fall 2024*
+]]
+[[
+	"The instructor for this course has genuinely been the most helpful instructor I've had in my entire time at UO. He cares about making sure the students learn and understand the course material, is aware of the things students struggle with, and puts more focus on those things to make sure everyone is on track with the material. Overall, the instructor has been amazing this term."
+	
+	*Linear Algebra I, Fall 2023*
+]]
+[[
+	"I like the online notes. I am glad Cruz goes to the trouble to make them for students. He is EXTREMELY receptive to suggestions and feedback. I was often really blunt about things that were/weren't working, or aspects of the course that could be improved/modified/changed to help my learning and ensure everything was as thorough as it could be. He always took my suggestions and ideas, which made me feel heard and supported and respected. In addition, it made me feel like he put my learning as his top priority.
+	
+	He is also very aware of when things need to be modified to fit the capability of the class, which is a very impressive skill as a teacher. He knows when certain things are too much, and communicates with the class to help reconcile. 
+	
+	Also, I may have said this before, but his ability to draw straight lines and perfect circles on a chalk board is quite impressive."
+	
+	*Calculus II, Winter 2022*
+]]
+[[
+	"The groupwork in lecture is a fantastic touch point that sets a very high standard for participation (relative to my experience). Overall, I feel very comfortable asking questions or offering answers, and the amount of visualizations we look at is both engaging and helpful."
+	
+	*Calculus III, Spring 2026*
+]]
+[[
+	"This is the most well taught math course I have ever taken."
+	
+	*Linear Algebra I, Fall 2023*
+]])
 
 </div>

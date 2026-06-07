@@ -25,9 +25,7 @@ export function document(body, filePath)
 </header>
 
 <main>
-	<section>
 ${body}
-	</section>
 </main>`;
 }
 
@@ -43,6 +41,18 @@ export function bannerDocument(body, filePath)
 		${document(body, filePath)}
 	</div>
 </div>`;
+}
+
+export function unorderedList(...items)
+{
+	const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
+	return `<ul>${itemsHtml}</ul>`;
+}
+
+export function orderedList(...items)
+{
+	const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
+	return `<ol>${itemsHtml}</ol>`;
 }
 
 export function heading(body, headingNumber)
@@ -78,4 +88,21 @@ export function text(body)
 
 		.replaceAll(/---/g, "&mdash;")
 		.replaceAll(/--/g, "&ndash;");
+}
+
+
+
+export function carousel(...blocks)
+{
+	return /* html */`
+		<div class="carousel">
+			<div class="carousel-content">
+				${blocks.map(block => `<div class="carousel-entry">${block}</div>`).join("")}
+			</div>
+
+			<div class="carousel-dots">
+				${"<div class=\"carousel-dot\"><div class=\"fill\"></div></div>".repeat(blocks.length)}
+			</div>
+		</div>
+	`;
 }
