@@ -1,8 +1,8 @@
 import { sitemap } from "/scripts/src/sitemap.js";
 
-export function document(body, filePath)
+export function document(body)
 {
-	const repoPath = filePath.replace(/^.+?cruzgodar\.github\.io/, "");
+	const repoPath = globalThis.filePath.replace(/^.+?cruzgodar\.github\.io/, "");
 	const pageUrl = repoPath.slice(0, repoPath.lastIndexOf("/"));
 
 	if (!sitemap[pageUrl])
@@ -29,7 +29,7 @@ ${body}
 </main>`;
 }
 
-export function bannerDocument(body, filePath)
+export function bannerDocument(body)
 {
 	return /* html */`<div id="banner">
 	<div id="banner-small"></div>
@@ -38,10 +38,12 @@ export function bannerDocument(body, filePath)
 
 <div id="content-container">
 	<div id="content">
-		${document(body, filePath)}
+		${document(body)}
 	</div>
 </div>`;
 }
+
+
 
 export function unorderedList(...items)
 {
@@ -127,13 +129,72 @@ export function galleryBlock(...data)
 		const id = data[i];
 		const size = data[i + 1];
 
-		html = `${html}
+		html = /* html */`${html}
 		<div class="gallery-image-${size}-${size}">
 			<img src="/graphics/general-icons/placeholder.png" data-src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" />
 		</div>`;
 	}
 
 	return /* html */`${html}</div>`;
+}
+
+
+// data is an array of objects of the form
+// {
+//   url,
+//   name,
+//   forCard: boolean,
+//   inNewTab: boolean
+//   // optional override for the default path.
+//   coverPath: string
+// }
+export function imageLinks(data)
+{
+	const html = data.map(item =>
+	{
+		const url = resolveUrl(item.url);
+
+		const idPieces = url.split(".")[0].split("/");
+		const id = idPieces[idPieces.length - 1];
+
+		if (data.name === undefined && sitemap[url] === undefined)
+		{
+			throw new Error(`${url} is not in sitemap!`);
+		}
+
+		const name = data.name ?? sitemap[url].title;
+
+		if (item.forCard)
+		{
+			const slicedUrl = url.slice(0, url.lastIndexOf("/"));
+			const src = `${slicedUrl}/cards/${id}/cover.webp`;
+
+			return /* html */`
+				<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" class="image-link">
+					<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? src}" alt="${name}" tabindex="1" />
+					
+					<p class="image-link-subtext">${name}</p>
+				</a>
+			`;
+		}
+
+		// pdf files, etc.
+		const imgSrc = url.includes(".")
+			? `${url.slice(0, url.lastIndexOf("/"))}/cover.webp`
+			: `${url}/cover.webp`;
+
+		return /* html */`
+			<a href="${url}"${item.inNewTab ? " data-in-new-tab=\"1\"" : ""} class="image-link">
+				<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? imgSrc}" alt="${name}" tabindex="1" />
+				
+				<p class="image-link-subtext">${name}</p>
+			</a>
+		`;
+	}).join("");
+
+	return /* html */`<div style="display: flex; justify-content: center; width: 100%;">
+		<div class="image-links">${html}</div>
+	</div>`;
 }
 
 
@@ -151,4 +212,21 @@ export function card(id, name, body)
 export function externalCard(id)
 {
 	return /* html */`<div id="${id}-card" class="card external-card"></div>`;
+}
+
+
+
+export function debug(body)
+{
+	return /* html */`<div class="DEBUG">${body}</div>`;
+}
+
+
+
+function resolveUrl(url)
+{
+	const repoPath = globalThis.filePath.replace(/^.+?cruzgodar\.github\.io/, "");
+	const pageUrl = repoPath.slice(0, repoPath.lastIndexOf("/"));
+
+	return url[0] === "/" ? url : pageUrl + "/" + url;
 }

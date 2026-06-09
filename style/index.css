@@ -1943,6 +1943,11 @@ option
 	transition: right .3s cubic-bezier(.3, 1, .4, 1), top .3s cubic-bezier(.3, 1, .4, 1);
 }
 
+#accessibility-tooltip .section-text
+{
+	margin-top: 0;
+}
+
 #accessibility-tooltip .checkbox-row
 {
 	justify-content: flex-start;

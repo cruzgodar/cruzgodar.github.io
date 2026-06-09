@@ -2,8 +2,6 @@ import { write } from "../file-io.js";
 import { banner } from "./components/banner.js";
 import { buttons, navButtons } from "./components/buttons.js";
 import { canvas } from "./components/canvas.js";
-import { card } from "./components/card.js";
-import { carousel } from "./components/carousel.js";
 import { center } from "./components/center.js";
 import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
@@ -37,7 +35,6 @@ const manualHeaderPages =
 const singleLineComponents = [
 	"banner",
 	"canvas",
-	"card",
 	"center",
 	"desmos",
 	"dropdown",
@@ -54,8 +51,6 @@ const components = {
 	"banner": banner,
 	"buttons": buttons,
 	"canvas": canvas,
-	"card": card,
-	"carousel": carousel,
 	"center": center,
 	"checkboxes": checkboxes,
 	"desmos": desmos,

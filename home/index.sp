@@ -1,3 +1,12 @@
+@@@
+	await include("/build/spruce.js");
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
 <div id="banner">
 	<div id="banner-small"></div>
 	<div id="banner-large"></div>
@@ -36,20 +45,16 @@
 				</div>
 				
 				<div style="margin-top: 20px">
-					### image-links
-						/gallery
-						
-						/applets
-						
-						/teaching
-						
-						/math
-						
-						/about
-					###
+					(@imageLinks([
+						{ "url": "/gallery" },
+						{ "url": "/applets" },
+						{ "url": "/teaching" },
+						{ "url": "/math" },
+						{ "url": "/about" }
+					]))
 				</div>
 
-				???
+				(@debug[[
 					<div style="margin-top: 64px; display: flex; justify-content: center; width: 100%; column-gap: 32px">
 						<a href="/debug/htmdl-docs">HTMDL Documentation</a>
 
@@ -57,7 +62,7 @@
 
 						<a href="/debug/tests/glsl-test">GLSL Tests</a>
 					</div>
-				???
+				]])
 			</header>
 		</main>
 	</div>
