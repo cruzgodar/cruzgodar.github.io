@@ -1,4 +1,6 @@
 @@@
+	import { unorderedList, orderedList, heading, paragraph, text } from "../scripts/src/spruce.js";
+
 	import { debug, imageLinks } from "../scripts/src/spruce.js";
 
 	function document(body)
@@ -6,7 +8,7 @@
 		return body;
 	}
 @@@
-
+ 
 <div id="banner">
 	<div id="banner-small"></div>
 	<div id="banner-large"></div>

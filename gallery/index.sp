@@ -1,5 +1,6 @@
 @@@
-	await include("/build/spruce.js");
+	import { document, unorderedList, orderedList, heading, paragraph, text } from "../scripts/src/spruce.js";
+	import { card, clickTap, galleryBlock } from "../scripts/src/spruce.js";
 @@@
 
 A selection of generative art, all created with the applets on this site. @clickTap[Click][Tap] on an image to see more details and view or download a high-resolution lossless version.

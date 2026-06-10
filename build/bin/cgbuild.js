@@ -2,10 +2,10 @@
 
 import { spawnSync } from "child_process";
 import { existsSync, readdirSync } from "fs";
-import { compile } from "spruce";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
+import buildHTMLFile from "../htmdl/build.js";
 import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
@@ -189,7 +189,7 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await compile(text, "html", { filePath: root + file });
+			await buildHTMLFile(text, root + file, "/" + file.slice(0, lastSlashIndex - 1));
 		}
 	}
 
@@ -203,11 +203,11 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await compile(text, "html", { filePath: root + file });
+			const parentFolder = file.slice(0, lastSlashIndex - 1);
 
-			const path = file.slice(0, lastSlashIndex - 1);
+			await buildHTMLFile(text, root + file, "/" + parentFolder);
 
-			await prepareTexFromHTML(`${path}/data.html`);
+			await prepareTexFromHTML(`${parentFolder}/data.html`);
 		}
 	}
 
