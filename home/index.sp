@@ -1,5 +1,5 @@
 @@@
-	await include("/build/spruce.js");
+	import { debug, imageLinks } from "../scripts/src/spruce.js";
 
 	function document(body)
 	{
@@ -45,16 +45,16 @@
 				</div>
 				
 				<div style="margin-top: 20px">
-					(@imageLinks([
-						{ "url": "/gallery" },
-						{ "url": "/applets" },
-						{ "url": "/teaching" },
-						{ "url": "/math" },
-						{ "url": "/about" }
-					]))
+					@imageLinks([
+						"/gallery",
+						"/applets",
+						"/teaching",
+						"/math",
+						"/about",
+					])
 				</div>
 
-				(@debug[[
+				@debug[[
 					<div style="margin-top: 64px; display: flex; justify-content: center; width: 100%; column-gap: 32px">
 						<a href="/debug/htmdl-docs">HTMDL Documentation</a>
 
@@ -62,7 +62,7 @@
 
 						<a href="/debug/tests/glsl-test">GLSL Tests</a>
 					</div>
-				]])
+				]]
 			</header>
 		</main>
 	</div>

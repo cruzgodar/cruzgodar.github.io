@@ -1,4 +1,4 @@
-import { sitemap } from "/scripts/src/sitemap.js";
+import { sitemap } from "./sitemap.js";
 
 export function document(body)
 {
@@ -147,11 +147,17 @@ export function galleryBlock(...data)
 //   inNewTab: boolean
 //   // optional override for the default path.
 //   coverPath: string
-// }
+// },
+// or alternately strings, in which case they're just treated as urls.
 export function imageLinks(data)
 {
 	const html = data.map(item =>
 	{
+		if (typeof item === "string")
+		{
+			item = { url: item };
+		}
+
 		const url = resolveUrl(item.url);
 
 		const idPieces = url.split(".")[0].split("/");
@@ -184,17 +190,16 @@ export function imageLinks(data)
 			: `${url}/cover.webp`;
 
 		return /* html */`
-			<a href="${url}"${item.inNewTab ? " data-in-new-tab=\"1\"" : ""} class="image-link">
-				<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? imgSrc}" alt="${name}" tabindex="1" />
-				
-				<p class="image-link-subtext">${name}</p>
-			</a>
-		`;
+		<a href="${url}"${item.inNewTab ? " data-in-new-tab=\"1\"" : ""} class="image-link">
+			<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? imgSrc}" alt="${name}" tabindex="1" />
+			
+			<p class="image-link-subtext">${name}</p>
+		</a>`;
 	}).join("");
 
 	return /* html */`<div style="display: flex; justify-content: center; width: 100%;">
-		<div class="image-links">${html}</div>
-	</div>`;
+	<div class="image-links">${html}</div>
+</div>`;
 }
 
 

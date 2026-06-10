@@ -2,10 +2,10 @@
 
 import { spawnSync } from "child_process";
 import { existsSync, readdirSync } from "fs";
+import { compile } from "spruce";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
-import buildHTMLFile from "../htmdl/build.js";
 import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
@@ -13,7 +13,7 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 const excludeFromBuild =
 [
 	/build.+/,
-	/slides\/.+\/index\.htmdl/,
+	/slides\/.+\/index\.sp/,
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
 	/scripts\/mathjax.+/,
@@ -39,8 +39,6 @@ const courseNames = [
 	[/teaching\/yale\/1120\/.+/, "Math 1120"],
 	[/teaching\/yale\/1180\/.+/, "Math 1180"],
 ];
-
-let sitemap;
 
 // After a non-clean build, find output files (.min.js, .min.css, .html)
 // that are modified according to git but whose source files are not.
@@ -90,7 +88,7 @@ function restoreStaleOutputFiles()
 		else if (file.endsWith("/index.html") || file.endsWith("/data.html"))
 		{
 			const dir = file.slice(0, file.lastIndexOf("/"));
-			sourceFile = dir + "/index.htmdl";
+			sourceFile = dir + "/index.sp";
 		}
 
 		// If the source file is NOT modified, the output is stale --- restore it.
@@ -122,8 +120,6 @@ async function buildSite()
 		console.error("Cannot read sitemap");
 		return;
 	}
-
-	sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
 
 	const proc = spawnSync("git", [
 		"-C",
@@ -185,7 +181,7 @@ async function buildFile(file)
 	const filename = end.slice(0, index);
 	const extension = end.slice(index + 1);
 
-	if (extension === "htmdl" && filename === "index")
+	if (extension === "sp" && filename === "index")
 	{
 		const text = await read(file);
 		
@@ -193,12 +189,12 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+			await compile(text, "html", { filePath: root + file });
 		}
 	}
 
 	else if (
-		extension === "htmdl" && filename === "card"
+		extension === "sp" && filename === "card"
 		&& (!options.clean || (options.clean && options.pdf))
 	) {
 		const text = await read(file);
@@ -207,7 +203,7 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+			await compile(text, "html", { filePath: root + file });
 
 			const path = file.slice(0, lastSlashIndex - 1);
 
@@ -254,7 +250,7 @@ async function buildFile(file)
 	) {
 		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
 
-		if (!(files.some(f => f.endsWith(".htmdl"))))
+		if (!(files.some(f => f.endsWith(".sp"))))
 		{
 			console.log(file);
 
