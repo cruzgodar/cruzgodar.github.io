@@ -163,12 +163,15 @@ export function imageLinks(data)
 		const idPieces = url.split(".")[0].split("/");
 		const id = idPieces[idPieces.length - 1];
 
-		if (data.name === undefined && sitemap[url] === undefined)
-		{
+		if (
+			item.name === undefined
+			&& sitemap[url] === undefined
+			&& item.coverPath === undefined
+		) {
 			throw new Error(`${url} is not in sitemap!`);
 		}
 
-		const name = data.name ?? sitemap[url].title;
+		const name = item.name ?? sitemap[url].title;
 
 		if (item.forCard)
 		{
@@ -228,8 +231,20 @@ export function debug(body)
 
 
 
+export function center(body)
+{
+	return /* html */`<p class="body-text center-if-needed"><span>${body}</span></p>`;
+}
+
+
+
 function resolveUrl(url)
 {
+	if (url.startsWith("http"))
+	{
+		return url;
+	}
+
 	const repoPath = globalThis.filePath.replace(/^.+?cruzgodar\.github\.io/, "");
 	const pageUrl = repoPath.slice(0, repoPath.lastIndexOf("/"));
 

@@ -2133,7 +2133,7 @@ option
 	
 	max-width: calc(175px * 6 + 16px * 5);
 	
-	margin-top: 32px;
+	margin-top: 8px;
 	/* margin-left: calc(-8px - var(--contrast) * 4px);
 	margin-right: calc(8px + var(--contrast) * 4px); */
 }

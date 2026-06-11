@@ -96,13 +96,13 @@ function restoreStaleOutputFiles()
 		{
 			console.log(`Restoring ${file}`);
 
-			spawnSync("git", [
-				"-C",
-				root,
-				"checkout",
-				"--",
-				file
-			]);
+			// spawnSync("git", [
+			// 	"-C",
+			// 	root,
+			// 	"checkout",
+			// 	"--",
+			// 	file
+			// ]);
 		}
 	}
 }
