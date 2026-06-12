@@ -1,5 +1,4 @@
 @@@
-	import { document, unorderedList, orderedList, heading, paragraph, text } from "../scripts/src/spruce.js";
 	import { card, clickTap, galleryBlock } from "../scripts/src/spruce.js";
 @@@
 

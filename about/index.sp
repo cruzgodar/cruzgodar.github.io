@@ -1,6 +1,5 @@
 @@@
-	import { bannerDocument as document, unorderedList, orderedList, heading, paragraph, text } from "../scripts/src/spruce.js";
-	import { carousel } from "../scripts/src/spruce.js";
+	import { bannerDocument as document, carousel } from "../scripts/src/spruce.js";
 @@@
 
 <div class="justify">

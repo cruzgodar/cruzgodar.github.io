@@ -1,4 +1,4 @@
-import { currentNumberedItem } from "../build.js";
+import { currentNumberedItem } from "../../build-spruce.js";
 import { parseLatex } from "./latex.js";
 
 export function parseText(text)

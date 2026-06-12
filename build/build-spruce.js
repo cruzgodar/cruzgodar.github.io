@@ -1,5 +1,5 @@
 import { compile } from "spruce";
-import { write } from "../file-io.js";
+import { write } from "./file-io.js";
 import { sitemap } from "/scripts/src/sitemap.js";
 
 function getIndexHTML(pageTitle, firstParagraphText, parentFolder)
@@ -139,10 +139,17 @@ function getIndexHTML(pageTitle, firstParagraphText, parentFolder)
 
 
 
-export default async function buildHTMLFile(source, absoluteFilePath, parentFolder)
-{
-	const html = (await compile(source, "html", { filePath: absoluteFilePath }))
-		.replaceAll(/[\t\n]/g, "");
+export default async function buildSpruceFile({
+	source,
+	absoluteFilePath,
+	parentFolder,
+	standardLibrary
+}) {
+	const html = (await compile(
+		source,
+		"html",
+		{ filePath: absoluteFilePath, standardLibrary })
+	).replaceAll(/[\t\n]/g, "");
 
 	const matches = html.match(/<p>(.+?)<\/p>/);
 	

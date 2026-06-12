@@ -1,6 +1,4 @@
 @@@
-	import { unorderedList, orderedList, heading, paragraph, text } from "../scripts/src/spruce.js";
-
 	import { debug, imageLinks } from "../scripts/src/spruce.js";
 
 	function document(body)

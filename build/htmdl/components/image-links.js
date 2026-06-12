@@ -1,4 +1,4 @@
-import { parseUrl, splitCommandLine } from "../build.js";
+import { parseUrl, splitCommandLine } from "../../build-spruce.js";
 import { sitemap } from "/scripts/src/sitemap.js";
 
 // Options:

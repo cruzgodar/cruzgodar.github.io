@@ -3,9 +3,9 @@
 import { spawnSync } from "child_process";
 import { existsSync, readdirSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
+import buildSpruceFile from "../build-spruce.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
-import buildHTMLFile from "../htmdl/build.js";
 import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
@@ -189,7 +189,12 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, root + file, "/" + file.slice(0, lastSlashIndex - 1));
+			await buildSpruceFile({
+				source: text,
+				absoluteFilePath: root + file,
+				parentFolder: "/" + file.slice(0, lastSlashIndex - 1),
+				standardLibrary: root + "build/spruceStdlib.js"
+			});
 		}
 	}
 
@@ -205,7 +210,12 @@ async function buildFile(file)
 
 			const parentFolder = file.slice(0, lastSlashIndex - 1);
 
-			await buildHTMLFile(text, root + file, "/" + parentFolder);
+			await buildSpruceFile({
+				source: text,
+				absoluteFilePath: root + file,
+				parentFolder: "/" + parentFolder,
+				standardLibrary: root + "build/spruceStdlib.js"
+			});
 
 			await prepareTexFromHTML(`${parentFolder}/data.html`);
 		}

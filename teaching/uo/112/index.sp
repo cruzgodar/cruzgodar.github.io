@@ -1,6 +1,5 @@
 @@@
-	import { card } from "../../../scripts/src/spruce.js";
-	import { document, heading, imageLinks, orderedList, paragraph, text, unorderedList } from "../scripts/src/spruce.js";
+	import { card, imageLinks } from "../../../scripts/src/spruce.js";
 @@@
 
 Welcome to Math 112! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.

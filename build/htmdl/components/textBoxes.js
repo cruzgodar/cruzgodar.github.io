@@ -1,4 +1,4 @@
-import { splitCommandLine } from "../build.js";
+import { splitCommandLine } from "../../build-spruce.js";
 
 function textBox(id)
 {

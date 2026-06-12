@@ -1,4 +1,4 @@
-import { parseUrl } from "../build.js";
+import { parseUrl } from "../../build-spruce.js";
 
 export function image(options, ...urls)
 {

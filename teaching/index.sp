@@ -1,5 +1,5 @@
 @@@
-	import { document, heading, imageLinks, orderedList, paragraph, text, unorderedList } from "../scripts/src/spruce.js";
+	import { imageLinks } from "../scripts/src/spruce.js";
 @@@
 
 Materials for the courses I'm teaching and have previously taught. Throughout my years of teaching, I've written a substantial amount of detailed and interactive notes, complete with graphs, animations, and applets. I regularly use and update these, and I've been happy to know both students and teachers alike that have made use of them. If you have comments or suggestions on anything here, please don't hesitate to reach out!
