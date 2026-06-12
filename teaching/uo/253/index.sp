@@ -1,63 +1,66 @@
+@@@
+	import { card, externalCard, imageLinks } from "../../../scripts/src/spruce.js";
+@@@
+
 Welcome to Math 253! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
 
 
 
 ## General Resources
 
-### image-links
-	syllabus -c "Syllabus"
-	exams/1/midterm-1.pdf "Practice Midterm 1"
-	exams/2/midterm-2.pdf "Practice Midterm 2"
-	exams/2-solutions/midterm-2-solutions.pdf "Practice Midterm 2 Solutions"
-	exams/final/final.pdf "Practice Final Exam"
-	exams/final-solutions/final-solutions.pdf "Practice Final Exam Solutions"
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+	{ url: "exams/1/midterm-1.pdf", name: "Practice Midterm 1" },
+	{ url: "exams/2/midterm-2.pdf", name: "Practice Midterm 2" },
+	{ url: "exams/2-solutions/midterm-2-solutions.pdf", name: "Practice Midterm 2 Solutions" },
+	{ url: "exams/final/final.pdf", name: "Practice Final Exam" },
+	{ url: "exams/final-solutions/final-solutions.pdf", name: "Practice Final Exam Solutions" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	/teaching/notes/calculus/chapter-3-review
-	/teaching/notes/calculus/sequences
-	/teaching/notes/calculus/series
-	/teaching/notes/calculus/divergence-and-integral-tests
-	/teaching/notes/calculus/comparison-tests
-	/teaching/notes/calculus/alternating-series
-	/teaching/notes/calculus/ratio-and-root-tests
-	/teaching/notes/calculus/power-series
-	/teaching/notes/calculus/properties-of-power-series
-	/teaching/notes/calculus/taylor-series
-	/teaching/notes/calculus/applications-of-taylor-series
-###
+@imageLinks([
+	"/teaching/notes/calculus/chapter-3-review",
+	"/teaching/notes/calculus/sequences",
+	"/teaching/notes/calculus/series",
+	"/teaching/notes/calculus/divergence-and-integral-tests",
+	"/teaching/notes/calculus/comparison-tests",
+	"/teaching/notes/calculus/alternating-series",
+	"/teaching/notes/calculus/ratio-and-root-tests",
+	"/teaching/notes/calculus/power-series",
+	"/teaching/notes/calculus/properties-of-power-series",
+	"/teaching/notes/calculus/taylor-series",
+	"/teaching/notes/calculus/applications-of-taylor-series",
+])
 
 
 
 ## Homework
 
-### image-links
-	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
-###
+@imageLinks([
+	{ url: "homework-1", forCard: true, name: "Homework 1" },
+	{ url: "homework-2", forCard: true, name: "Homework 2" },
+	{ url: "homework-3", forCard: true, name: "Homework 3" },
+	{ url: "homework-4", forCard: true, name: "Homework 4" },
+	{ url: "homework-5", forCard: true, name: "Homework 5" },
+	{ url: "homework-6", forCard: true, name: "Homework 6" },
+	{ url: "homework-7", forCard: true, name: "Homework 7" },
+	{ url: "homework-8", forCard: true, name: "Homework 8" },
+])
 
-### card homework-8 -e
-### card homework-7 -e
-### card homework-6 -e
-### card homework-5 -e
-### card homework-4 -e
-### card homework-3 -e
-### card homework-2 -e
-### card homework-1 -e
+@externalCard{homework-8}
+@externalCard{homework-7}
+@externalCard{homework-6}
+@externalCard{homework-5}
+@externalCard{homework-4}
+@externalCard{homework-3}
+@externalCard{homework-2}
+@externalCard{homework-1}
 
-### card syllabus "Math 253: Calculus III"
-	
-	Instructor: Cruz Godar ([cgodar@uoregon.edu](mailto:cgodar@uoregon.edu))
+@card{syllabus}[Math 253: Calculus III][[
+	Instructor: Cruz Godar ([cgodar@@uoregon.edu](mailto:cgodar@@uoregon.edu))
 
 	Class meetings: 10--10:50 MTWF in Straub 251
 	
@@ -77,13 +80,13 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	> In-class participation: 5%
-	> Reading quizzes: 5%
-	> In-class quizzes: 10%
-	> Homework: 10%
-	> Midterm 1: 20%
-	> Midterm 2: 25%
-	> Final: 25%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- In-class quizzes: 10%
+	- Homework: 10%
+	- Midterm 1: 20%
+	- Midterm 2: 25%
+	- Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -104,6 +107,8 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at [Overleaf](https://www.overleaf.com), and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
 
 	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+
+
 
 	## What about generative AI?
 
@@ -143,24 +148,24 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	
 	We will learn how to:
 	
-	> - Decide if a given sequence converges or not.
-	> - Express an indicated sum using $\Sigma$ notation in closed form.
-	> - Compute partial sums and other finite sums.
-	> - State the precise definition of what it means for a sequence to have a limit.
-	> - State the precise definition of what it means for a series to converge.
-	> - Decide if a given series converges or not, using the Comparison Test, Divergence Test, Root Test, Ratio Test, Integral Test, Limit Comparison Test, Alternating Series Test, or a combination thereof, as appropriate.
-	> - Decide if a given series converges or not using the definition.
-	> - Evaluate the Taylor polynomial for a given function, given a center and a degree, by computing derivatives.
-	> - Compute the Taylor polynomial for a rational function by performing long division.
-	> - Use Taylor polynomials to approximate the values of functions.
-	> - Given an easy sequence that converges to a limit $L$, together with an $\varepsilon$, determine an $N$ such that $|a_n - L| < \varepsilon$ for all $n \geq N$.
-	> - Given an alternating series and an $\varepsilon$, determine how many terms are needed to have the partial sum within $\varepsilon$ of the limit.
-	> - Find the interval of convergence of a given power series.
-	> - Determine if a given series is absolutely convergent.
-	> - Given a function, a center $a$, a degree $d$, and an accuracy level $\varepsilon$, determine an interval about $a$ for which the $d$th Taylor polynomial is within $\varepsilon$ of the function at all points.
-	> - Use Taylor's Inequality to bound the error of a Taylor approximation.
-	> - Given a differential equation, find the general solution as a power series up through a given degree. Also find particular solutions.
-	> - Answer basic conceptual questions involving convergence of sequences and series, and also give examples of related phenomena.
+	- Decide if a given sequence converges or not.
+	- Express an indicated sum using $\Sigma$ notation in closed form.
+	- Compute partial sums and other finite sums.
+	- State the precise definition of what it means for a sequence to have a limit.
+	- State the precise definition of what it means for a series to converge.
+	- Decide if a given series converges or not, using the Comparison Test, Divergence Test, Root Test, Ratio Test, Integral Test, Limit Comparison Test, Alternating Series Test, or a combination thereof, as appropriate.
+	- Decide if a given series converges or not using the definition.
+	- Evaluate the Taylor polynomial for a given function, given a center and a degree, by computing derivatives.
+	- Compute the Taylor polynomial for a rational function by performing long division.
+	- Use Taylor polynomials to approximate the values of functions.
+	- Given an easy sequence that converges to a limit $L$, together with an $\varepsilon$, determine an $N$ such that $|a_n - L| < \varepsilon$ for all $n \geq N$.
+	- Given an alternating series and an $\varepsilon$, determine how many terms are needed to have the partial sum within $\varepsilon$ of the limit.
+	- Find the interval of convergence of a given power series.
+	- Determine if a given series is absolutely convergent.
+	- Given a function, a center $a$, a degree $d$, and an accuracy level $\varepsilon$, determine an interval about $a$ for which the $d$th Taylor polynomial is within $\varepsilon$ of the function at all points.
+	- Use Taylor's Inequality to bound the error of a Taylor approximation.
+	- Given a differential equation, find the general solution as a power series up through a given degree. Also find particular solutions.
+	- Answer basic conceptual questions involving convergence of sequences and series, and also give examples of related phenomena.
 	
 	
 	
@@ -169,5 +174,4 @@ Welcome to Math 253! We'll use this page for all of the homework and any other f
 	Like most graduate students, I am a [designated reporter](https://investigations.uoregon.edu/employee-responsibilities), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
 	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
-	
-###
+]]

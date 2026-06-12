@@ -443,6 +443,20 @@ mjx-container
 	text-align: left;
 }
 
+.card :is(ul, ol)
+{
+	/* Match the body-text box (same max-width, centered) so the list lines up
+	   with the headings and paragraphs, then indent the markers slightly so the
+	   li content is a touch narrower. The border-box sizing makes the padding
+	   come out of the width instead of adding to it. */
+
+	box-sizing: border-box;
+	width: 100%;
+	max-width: var(--text-width);
+	margin: 0 auto 16px;
+	padding-left: 28px;
+}
+
 .card .body-text.numbered-list-item
 {
 	margin-top: 32px;
