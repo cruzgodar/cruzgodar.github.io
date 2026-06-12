@@ -4,7 +4,7 @@
 
 With so much theory developed, let's take this last section to explore one of the most important applications of linear algebra. While one of the most ubiquitous applications in modern technology is in graphics, where the function that maps any triangle in 3D space to its image on a fixed 2D screen is a linear map (called a *projection map*). With very few exceptions, this is the foundation of how every 3D game is implemented.
 
-Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in <a href="https://www.youtube.com/watch?v=LL3kVtc-4vY">Belousov-Zhabotinsky reaction</a>, $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
+Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in [Belousov-Zhabotinsky reaction](https://www.youtube.com/watch?v=LL3kVtc-4vY), $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
 
 ### def "Markov chain"
 

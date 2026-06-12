@@ -90,7 +90,7 @@ A selection of generative art, all created with the applets on this site. @click
 	)
 </div>
 
-(@card{high-res-viewer}[Title][[
+@card{high-res-viewer}[Title][[
 	<div class="center-content" style="margin-bottom: 16px">
 		<img></img>
 	</div>
@@ -99,4 +99,4 @@ A selection of generative art, all created with the applets on this site. @click
 	<p class="body-text center-if-needed"><span id="featured-text">Featured</span></p>
 	<p class="body-text" style="text-align: center"><a id="applet-link">Open applet</a></p>
 	<p class="body-text" style="text-align: center"><a id="full-res-link">Download full resolution</a></p>
-]])
+]]

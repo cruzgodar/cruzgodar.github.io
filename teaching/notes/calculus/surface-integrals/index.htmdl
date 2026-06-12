@@ -130,7 +130,7 @@ This is the parameterization of the sphere that we'll use, where $u \in [0, \pi]
 
 ### desmos sphericalCoordinates
 
-In section <a href="/teaching/notes/calculus/arc-length-and-surface-area">3.10</a>, we computed the surface area of solids of revolution. Let's very briefly look at parameterizing those surfaces to build some intuition from a familiar topic.
+In section [3.10](/teaching/notes/calculus/arc-length-and-surface-area), we computed the surface area of solids of revolution. Let's very briefly look at parameterizing those surfaces to build some intuition from a familiar topic.
 
 Given a function $y = f(x)$, rotating its graph about the $x$-axis produces a shape whose cross-sections orthogonal to the $x$-axis are circles.
 
@@ -214,7 +214,7 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 
 ###
 
-When we developed curve integrals in <a href="/teaching/notes/calculus/curve-integrals">section 6.3</a>, we leaned heavily on the formula for arc length that we found back in <a href="/teaching/notes/calculus/vector-valued-functions">section 5.3</a>. To begin treading the same path for surfaces, let's find a formula for surface area.
+When we developed curve integrals in [section 6.3](/teaching/notes/calculus/curve-integrals), we leaned heavily on the formula for arc length that we found back in [section 5.3](/teaching/notes/calculus/vector-valued-functions). To begin treading the same path for surfaces, let's find a formula for surface area.
 
 For a vector-valued function $\vec{s}(t)$ defined for $t \in [a, b]$, the arc length integral
 

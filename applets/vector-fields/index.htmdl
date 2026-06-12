@@ -150,7 +150,7 @@ Much of the code implementing complex functions was contributed by <a href='http
 	
 	## Number-Theoretic Functions
 
-	`vec2 <strong>theta[1-4]</strong>(vec2 z, vec2 q)`: returns the <a href="https://mathworld.wolfram.com/JacobiThetaFunctions.html">theta function</a> $\vartheta_i(z, q)$.
+	`vec2 <strong>theta[1-4]</strong>(vec2 z, vec2 q)`: returns the [theta function](https://mathworld.wolfram.com/JacobiThetaFunctions.html) $\vartheta_i(z, q)$.
 
 	`vec2 <strong>g2</strong>(vec2 z)`: returns the function $g_2(z) = 60G_4(z)$, where $$G_{2k}(z) = \sum_{(m, n) \in \mathbb{Z}^2 \setminus \left\{ (0, 0) \right\}} \frac{1}{(m + nz)^{2k}}$$.
 

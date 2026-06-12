@@ -1,33 +1,37 @@
+@@@
+	import { card } from "../../../scripts/src/spruce.js";
+	import { document, heading, imageLinks, orderedList, paragraph, text, unorderedList } from "../scripts/src/spruce.js";
+@@@
+
 Welcome to Math 112! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
 
 
 
 ## General Resources
 
-### image-links
-	syllabus -c "Syllabus"
-	extra/final-review-worksheet/final-review-worksheet.pdf "Final Review Worksheet"
-	extra/final-review-worksheet-solutions/final-review-worksheet-solutions.pdf "Final Review Worksheet Solutions"
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+	{ url: "extra/final-review-worksheet/final-review-worksheet.pdf", name: "Final Review Worksheet" },
+	{ url: "extra/final-review-worksheet-solutions/final-review-worksheet-solutions.pdf", name: "Final Review Worksheet Solutions" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	/teaching/notes/trig/transformations
-	/teaching/notes/trig/unit-circle
-	/teaching/notes/trig/sine-and-cosine
-	/teaching/notes/trig/tangent-and-inverses
-	/teaching/notes/trig/radians-and-equations
-	/teaching/notes/trig/non-right-triangles-and-identities
-	/teaching/notes/trig/vectors
-###
+@imageLinks([
+	"/teaching/notes/trig/transformations",
+	"/teaching/notes/trig/unit-circle",
+	"/teaching/notes/trig/sine-and-cosine",
+	"/teaching/notes/trig/tangent-and-inverses",
+	"/teaching/notes/trig/radians-and-equations",
+	"/teaching/notes/trig/non-right-triangles-and-identities",
+	"/teaching/notes/trig/vectors",
+])
 
 
-### card syllabus "Math 112Z: Trigonometry"
-	
-	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
+@card{syllabus}[Math 112Z: Trigonometry][[
+	Instructor: Cruz Godar ([cgodar@@uoregon.edu](mailto:cgodar@@uoregon.edu))
 
 	Class meetings: 11--11:50 MTWF in Straub 254
 	
@@ -39,7 +43,7 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 	
 	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's *Functions, Trigonometry, and Their Applications, version 3.0*, by Dan Raies.
 	
-	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, **no calculators of any sort are allowed.** The quizzes and exams are written so that necessary computations are doable by hand.
+	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online [Desmos scientific calculator](https://www.desmos.com/scientific). On quizzes and exams, **no calculators of any sort are allowed.** The quizzes and exams are written so that necessary computations are doable by hand.
 	
 	
 	
@@ -47,12 +51,12 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	> In-class participation: 5%
-	> Reading quizzes: 5%
-	> In-class quizzes: 10%
-	> Homework: 20%
-	> Midterms: 20% each (40% total)
-	> Final: 20%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- In-class quizzes: 10%
+	- Homework: 20%
+	- Midterms: 20% each (40% total)
+	- Final: 20%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -106,30 +110,29 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> - Identify, apply and analyze transformations of functions
+	- Identify, apply and analyze transformations of functions
 	
-	> - Recognize and construct periodic functions
+	- Recognize and construct periodic functions
 	
-	> - Determine the coordinates of points on the unit circle
+	- Determine the coordinates of points on the unit circle
 	
-	> - Use trigonometric functions to determine lengths and angles of right triangles
+	- Use trigonometric functions to determine lengths and angles of right triangles
 	
-	> - Understand sine, cosine, and tangent as coordinates, ratios, and graphs
+	- Understand sine, cosine, and tangent as coordinates, ratios, and graphs
 	
-	> - Solve trigonometric equations
+	- Solve trigonometric equations
 
-	> - Determine lengths and angles of non-right triangles
+	- Determine lengths and angles of non-right triangles
 
-	> - Apply and analyze vectors to represent velocities and forces
+	- Apply and analyze vectors to represent velocities and forces
 
-	> - Use the dot product to compute work and the angle between vectors
+	- Use the dot product to compute work and the angle between vectors
 	
 	
 	
 	## Is there anything else I should know?
 	
-	Like most graduate students, I am a <a href="https://investigations.uoregon.edu/employee-responsibilities">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
+	Like most graduate students, I am a [designated reporter](https://investigations.uoregon.edu/employee-responsibilities), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
 	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
-	
-###
+]]

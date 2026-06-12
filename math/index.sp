@@ -4,14 +4,12 @@
 
 @center[A collection of the research papers I've written, along with the presentations I've given over time --- all of the latter are built with Lapsa, a library I wrote to make slides elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals.]
 
-
-
 ## Papers
 
 @imageLinks([
 	{
 		url: "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v32i2p51",
-		name: "With Benjamin Young: Bijectivizing the PT&ndash;DT Correspondence. Electronic Journal of Combinatorics, 2025",
+		name: "@[With Benjamin Young: Bijectivizing the PT--DT Correspondence. Electronic Journal of Combinatorics, 2025]",
 		inNewTab: true,
 		coverPath: "/math/graphics/bijectivizing-the-pt-dt-correspondence.webp"
 	},

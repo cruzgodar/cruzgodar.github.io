@@ -94,7 +94,7 @@ function restoreStaleOutputFiles()
 		// If the source file is NOT modified, the output is stale --- restore it.
 		if (sourceFile && existsSync(root + sourceFile) && !modifiedFiles.has(sourceFile))
 		{
-			console.log(`Restoring ${file}`);
+			// console.log(`Restoring ${file}`);
 
 			// spawnSync("git", [
 			// 	"-C",

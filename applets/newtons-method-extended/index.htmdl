@@ -1,4 +1,4 @@
- <a href="/applets/newtons-method">Newton's method</a> is a famous algorithm for finding roots of functions. As explained in that applet, points are colored based on what root they eventually converge to. Since the only functions allowed in that one are polynomials, the roots are known ahead of time, and the colors are predetermined too.
+ [Newton's method](/applets/newtons-method) is a famous algorithm for finding roots of functions. As explained in that applet, points are colored based on what root they eventually converge to. Since the only functions allowed in that one are polynomials, the roots are known ahead of time, and the colors are predetermined too.
 
 This applet aims to draw Newton's method fractals for *any* elementary function, not just a polynomial. There are a number of challenges with this, chief among them making a palette for a large and potentially infinite number of roots. There's also the issue of knowing when the algorithm is near a root without knowing where those roots are ahead of time, and making sure that different points that converge to the same root always get the same color, again without knowing what they're converging to. But all these problems turned out to be solvable --- even the palette generation part, which was my first time working with color science. It turned out better than expected!
 
@@ -141,7 +141,7 @@ The draggable red parameter multiplies the amount added by Newton's method at ea
 	
 	## Number-Theoretic Functions
 
-	`vec2 <strong>theta[1-4]</strong>(vec2 z, vec2 q)`: returns the <a href="https://mathworld.wolfram.com/JacobiThetaFunctions.html">theta function</a> $\vartheta_i(z, q)$.
+	`vec2 <strong>theta[1-4]</strong>(vec2 z, vec2 q)`: returns the [theta function](https://mathworld.wolfram.com/JacobiThetaFunctions.html) $\vartheta_i(z, q)$.
 
 	`vec2 <strong>g2</strong>(vec2 z)`: returns the function $g_2(z) = 60G_4(z)$, where $$G_{2k}(z) = \sum_{(m, n) \in \mathbb{Z}^2 \setminus \left\{ (0, 0) \right\}} \frac{1}{(m + nz)^{2k}}$$.
 
