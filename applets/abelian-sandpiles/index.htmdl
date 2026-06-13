@@ -2,24 +2,20 @@ Draw a grid and start dropping sand grains in the center square. As soon as you 
 
 Important: running this applet with a nonzero amount of surrounding grains can result in a beautiful but quickly flickering image. If you're sensitive to flashing lights, please proceed with caution.
 
-### dropdown palettes
+### controls
+	dropdown palettes
+###
 
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
 
-### text-boxes
-	resolution
-	center-grains
-	surrounding-grains
-###
-
-### buttons
-	generate
-###
-
-### sliders
-	computations-per-frame
+### controls
+	text-box resolution
+	text-box center-grains
+	text-box surrounding-grains
+	button generate
+	slider computations-per-frame
 ###
 
 </div>
@@ -36,8 +32,8 @@ Important: running this applet with a nonzero amount of surrounding grains can r
 
 <div id="canvas-landscape-right">
 
-### buttons
-	download
+### controls
+	button download
 ###
 
 </div>

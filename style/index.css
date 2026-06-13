@@ -484,7 +484,7 @@ mjx-container
 	-webkit-user-select: none;
 }
 
-.card .text-buttons
+.card .applet-controls
 {
 	grid-template-columns: unset !important;
 }
@@ -949,39 +949,32 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 /* Adds support for text buttons and text boxes. */
 
-
-
-.text-boxes, .text-buttons, .sliders
+.applet-controls
 {
 	position: relative;
-	display: grid;
+	display: flex;
 	
 	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
 	
-	width: 70%;
+	width: min(100%, var(--text-width));
 	margin: 0 auto;
-
-	grid-template-columns: repeat(auto-fit, 100px);
 	
-	row-gap: 16px;
-	column-gap: 10px;
+	row-gap: 32px;
+	column-gap: 32px;
 	
 	margin-top: 32px;
 }
 
-.text-buttons.dropdown-holder
+.applet-controls .dropdown-container
 {
-	z-index: 75;
+	margin-top: 0;
 }
 
-.sliders
+.applet-controls .text-field-container
 {
-	grid-template-columns: repeat(auto-fit, 170px);
-}
-
-.text-boxes
-{
-	align-items: start;
+	margin-top: 0;
 }
 
 .contents-button-container
@@ -1018,6 +1011,11 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	-webkit-user-select: none;
 }
 
+.text-button:not(.dropdown)
+{
+	max-width: 100px;
+}
+
 .text-button:not(:hover):focus
 {
 	outline: none;
@@ -1044,6 +1042,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	transition: box-shadow .2s ease-out;
 
 	z-index: 75;
+
+	margin-top: 44px;
 }
 
 .text-button.file-upload
@@ -1097,23 +1097,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	box-shadow: inset 0 0 0 2px var(--contrast-border-color);
 }
 
-
-
-.checkboxes
+.dropdown-holder
 {
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	
-	justify-content: center;
-	align-items: center;
-	
-	width: 100%;
-	margin: 0 auto;
-	column-gap: 32px;
-	row-gap: 32px;
-	
-	margin-top: 32px;
+	z-index: 75;
 }
 
 .checkbox-row
@@ -1243,6 +1229,8 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	align-self: flex-start;
 }
 
 .text-box-subtext
@@ -1387,9 +1375,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	flex-direction: column;
 	align-items: center;
 	
-	margin: 0 auto;
-	
 	margin-top: 32px;
+
+	transform: translateY(14px);
 
 	cursor: text;
 }
@@ -1424,10 +1412,12 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 .slider-container
 {
+	width: 170px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	transform: translateY(22px);
 }
 
 .slider-bar
@@ -1590,18 +1580,6 @@ option
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-}
-
-
-
-
-
-@media (min-aspect-ratio: 1/1), (max-width: 1000px)
-{
-	.text-boxes, .text-buttons, .sliders, .checkboxes
-	{
-		width: 100%;
-	}
 }
 
 
@@ -1973,7 +1951,7 @@ option
 	max-width: calc(100% - 42px);
 }
 
-#accessibility-tooltip .checkboxes
+#accessibility-tooltip .applet-controls
 {
 	margin-top: 16px;
 }

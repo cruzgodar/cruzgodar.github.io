@@ -322,7 +322,7 @@ function packageSolution(solutionElement, showButton = true)
 	}
 
 	const textButtonsElement = document.createElement("div");
-	textButtonsElement.classList.add("text-buttons");
+	textButtonsElement.classList.add("applet-controls");
 	textButtonsElement.style.marginBottom = "16px";
 	solutionElement.parentElement.appendChild(textButtonsElement);
 

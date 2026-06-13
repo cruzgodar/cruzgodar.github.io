@@ -292,11 +292,6 @@ export function initTextButtons()
 // Makes linked text buttons have the same width and height.
 export function equalizeTextButtons()
 {
-	for (const textButton of $$(".text-button"))
-	{
-		textButton.parentNode.style.margin = "0 auto";
-	}
-
 	const heights = [];
 	let maxHeight = 0;
 
