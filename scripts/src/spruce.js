@@ -173,3 +173,137 @@ function resolveUrl(url)
 
 	return url[0] === "/" ? url : pageUrl + "/" + url;
 }
+
+
+
+const controlsFunctions = {
+	slider,
+	textarea,
+	button,
+	navButtons,
+	dropdown,
+	fileUpload,
+	checkbox,
+	textBox
+};
+
+// data is an object whose keys are IDs and whose values are types.
+export function controls(data)
+{
+	let html = "<div class=\"applet-controls\">";
+
+	for (const [id, type] of Object.values(data))
+	{
+		const controlFunction = controlsFunctions[type];
+
+		if (!controlFunction)
+		{
+			throw new Error(`${type} is not a valid control type`);
+		}
+
+		html = `${html}${controlsFunctions[type](id)}`;
+	}
+}
+
+function slider(id)
+{
+	return /* html */`
+		<div class="slider-container">
+			<div class="slider-bar"></div>
+			<div id="${id}Slider" class="slider-thumb"></div>
+			<p class="body-text slider-subtext"></p>
+		</div>
+	`;
+}
+
+function textarea(id)
+{
+	return /* html */`
+		<div class="text-field-container">
+			<div class="textarea-wrapper">
+				<textarea cols="16" rows="4" name="${id}Textarea" id="${id}-textarea" class="text-field" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+				<div class="textarea-overlay"></div>
+			</div>
+			<p class="body-text" style="text-align: center"></p>
+		</div>
+	`;
+}
+
+function button(id)
+{
+	return /* html */`
+		<div class="focus-on-child" tabindex="1">
+			<button class="text-button" type="button" id="${id}Button" tabindex="-1"></button>
+		</div>
+	`;
+}
+
+function navButtons()
+{
+	return /* html */`
+		<div class="applet-controls nav-buttons">
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button previous-nav-button" type="button" tabindex="-1">Previous</button>
+			</div>
+			
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button home-nav-button" type="button" tabindex="-1">Home</button>
+			</div>
+			
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button next-nav-button" type="button" tabindex="-1">Next</button>
+			</div>
+		</div>
+	`;
+}
+
+function dropdown(id)
+{
+	return /* html */`
+		<div class="dropdown-holder">
+			<div class="dropdown-container focus-on-child" tabindex="1">
+				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1"></button>
+				<select id="${id}Dropdown"></select>
+			</div>
+		</div>
+	`;
+}
+
+
+function fileUpload(id, accept, multiple = "")
+{
+	return /* html */`
+		<div class="text-buttons">
+			<div class="focus-on-child dropdown-container" tabindex="1">
+				<button class="text-button file-upload" type="button" id="${id}-upload-button" tabindex="-1"></button>
+				<input type="file" id="${id}Upload" style="display: none" accept="${accept}" ${multiple}>
+			</div>
+		</div>
+	`;
+}
+
+function checkbox(id)
+{
+	return /* html */`
+		<div class="checkbox-row">
+			<div class="checkbox-container" tabindex="1">
+				<input type="checkbox" id="${id}Checkbox">
+				<div class="checkbox"></div>
+			</div>
+			
+			<label for="${id}-checkbox" style="margin-left: 10px">
+				<p class="body-text checkbox-subtext"></p>
+			</label>
+		</div>
+	`;
+}
+
+function textBox(id)
+{
+	return /* html */`
+		<div class="text-box-container">
+			<input id="${id}Input" class="text-box" type="text" value="" tabindex="1">
+			<p class="body-text text-box-subtext"></p>
+		</div>
+	`;
+}
