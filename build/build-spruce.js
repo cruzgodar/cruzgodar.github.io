@@ -161,9 +161,12 @@ export default async function buildSpruceFile({
 		? "Teacher, developer, mathematical illustrator."
 		: matches?.[1];
 
-	const indexHtml = getIndexHTML(title, firstParagraphText, parentFolder);
-
 	await write(`${parentFolder}/data.html`, html);
 
-	await write(`${parentFolder}/index.html`, indexHtml);
+	if (sitemap[parentFolder])
+	{
+		const indexHtml = getIndexHTML(title, firstParagraphText, parentFolder);
+		
+		await write(`${parentFolder}/index.html`, indexHtml);
+	}
 }

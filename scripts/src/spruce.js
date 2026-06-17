@@ -16,6 +16,9 @@ export function bannerDocument(body)
 }
 
 
+export const gap = "<div style=\"height: 32px\"></div>";
+
+
 
 export function carousel(...blocks)
 {
@@ -192,7 +195,7 @@ export function controls(data)
 {
 	let html = "<div class=\"applet-controls\">";
 
-	for (const [id, type] of Object.values(data))
+	for (const [id, type] of Object.entries(data))
 	{
 		const controlFunction = controlsFunctions[type];
 
@@ -203,6 +206,8 @@ export function controls(data)
 
 		html = `${html}${controlsFunctions[type](id)}`;
 	}
+
+	return `${html}</div>`;
 }
 
 function slider(id)
@@ -306,4 +311,32 @@ function textBox(id)
 			<p class="body-text text-box-subtext"></p>
 		</div>
 	`;
+}
+
+
+
+let count = 1;
+
+export function problem(body)
+{
+	const output = `<p class="body-text homework-problem">${count}. ${body}</p>`;
+
+	count++;
+
+	return output;
+}
+
+export function problemNumber(offset)
+{
+	return count + offset;
+}
+
+export function problemNumberRange(startOffset, stopOffset)
+{
+	return `${count + startOffset}&ndash;${count + stopOffset}`;
+}
+
+export function problemNumberNextRange(length)
+{
+	return problemNumberRange(0, length - 1);
 }

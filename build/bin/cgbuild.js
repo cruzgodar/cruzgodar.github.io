@@ -217,7 +217,7 @@ async function buildFile(file)
 				standardLibrary: root + "build/spruceStdlib.js"
 			});
 
-			await prepareTexFromHTML(`${parentFolder}/data.html`);
+			// await prepareTexFromHTML(`${parentFolder}/data.html`);
 		}
 	}
 
