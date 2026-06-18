@@ -340,3 +340,8 @@ export function problemNumberNextRange(length)
 {
 	return problemNumberRange(0, length - 1);
 }
+
+export function problemNumberPreviousRange(length)
+{
+	return problemNumberRange(-length, -1);
+}
