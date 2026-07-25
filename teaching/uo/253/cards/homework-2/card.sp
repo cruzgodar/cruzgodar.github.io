@@ -61,7 +61,9 @@ In problems @next(6), find the value of the series.
 
 @gap
 
-The Koch snowflake is a fractal, an object that is infinitely detailed no matter how far you zoom in. We'll begin with an equilateral triangle with side lengths equal to 1, and remove the middle third of each side, replacing it with two additional sides of equal length. Then repeat this for all 12 sides of the new figure, and so on. The limit of this sequence of figures is the completed Koch snowflake. A diagram of the first four steps is on the next page --- the green lines are what has been most recently removed and are not part of the snowflake.
+The Koch snowflake is a fractal, an object that is infinitely detailed no matter how far you zoom in. We'll begin with an equilateral triangle with side lengths equal to 1, and remove the middle third of each side, replacing it with two additional sides of equal length. Then repeat this for all 12 sides of the new figure, and so on. The limit of this sequence of figures is the completed Koch snowflake. A diagram of the first four steps is below --- the green lines are what has been most recently removed and are not part of the snowflake.
+
+
 
 <img data-src="/teaching/uo/253/cards/homework-2/graphics/koch-snowflake.png" style="width: 100%; border-radius: 16px"></img>
 
