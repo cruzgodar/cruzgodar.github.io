@@ -10,4 +10,4 @@ Kestrel is designed to work entirely on-device. I do not collect, store, transmi
 
 **Life List:** The birds you save are stored only on your device.
 
-**Bird photos.** To show photos of birds, Kestrel downloads images from a public content-delivery network (jsDelivr, serving a collection of creative commons images I have curated). As with loading any image on the internet, these requests reveal your device's IP address to that network. I do not receive or store this information.
+**Bird Photos.** To show photos of birds, Kestrel downloads images from a public content-delivery network (jsDelivr, serving a collection of creative commons images I have curated). As with loading any image on the internet, these requests reveal your device's IP address to that network. I do not receive or store this information.
