@@ -1,0 +1,13 @@
+*Last updated July 25th, 2026*
+
+Kestrel is designed to work entirely on-device. I do not collect, store, transmit, sell, or share any personal information. Kestrel contains no advertising, no analytics, and no third-party tracking software.
+
+**Audio:** Kestrel records audio on iPhone or Apple Watch and analyzes it on the phone. After analysis, it is immediately deleted (usually about three seconds after recording). No audio is stored afterward.
+
+**Location:** Kestrel requires your location while active in order to filter the over 6500 species it can identify to the few hundred present in a particular place. Your location is never stored or transmitted to anyone.
+
+**Health Data:** When you use your Apple Watch to listen for birds, Kestrel saves it to Apple Health as an outdoor walk workout and reads basic walk metrics during the session. This information stays in Apple Health, and Kestrel never sends it to anyone.
+
+**Life List:** The birds you save are stored only on your device.
+
+**Bird photos.** To show photos of birds, Kestrel downloads images from a public content-delivery network (jsDelivr, serving a collection of creative commons images I have curated). As with loading any image on the internet, these requests reveal your device's IP address to that network. I do not receive or store this information.

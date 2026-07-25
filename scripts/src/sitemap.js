@@ -2222,6 +2222,39 @@ export const sitemap =
 		"children": []
 	},
 	
+	"/projects":
+	{
+		"title": "Projects",
+		
+		"parent": "/home",
+		
+		"children":
+		[
+			"/projects/kestrel"
+		]
+	},
+		
+	"/projects/kestrel":
+	{
+		"title": "Kestrel",
+		
+		"parent": "/projects",
+		
+		"children":
+		[
+			"/projects/kestrel/privacy-policy"
+		]
+	},
+		
+	"/projects/kestrel/privacy-policy":
+	{
+		"title": "Kestrel Privacy Policy",
+		
+		"parent": "/projects/kestrel",
+		
+		"children": []
+	},
+	
 	"/math":
 	{
 		"title": "Math",

@@ -207,6 +207,10 @@ home Cruz Godar
 
 		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
+	projects Projects
+		kestrel Kestrel
+			privacy-policy Kestrel Privacy Policy
+	
 	math Math
 		interactivity-fidelity-polish Interactivity, Fidelity, and Polish: Building Modern Math Illustration
 		turing-complete-lines Turing Complete Lines: An Introduction to Lambda Calculus
