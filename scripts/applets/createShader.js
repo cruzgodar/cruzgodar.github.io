@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import { getFloatGlsl, getVectorGlsl } from "./applet.js";
 
 function getComputeShadowIntensityGlsl({
@@ -136,10 +135,10 @@ function getComputeReflectionsGlsl({
 				` : ""}
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
 			}
 
-			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
+			// Unlike in raymarch(), startPos is replacing rayOrigin, and rayDirectionVec is precomputed.
 			vec3 computeReflection(
 				vec3 startPos,
 				vec3 rayDirectionVec,
@@ -229,7 +228,7 @@ function getComputeShadingGlsl({
 
 			${useReflections ? /* glsl */`
 				vec3 reflectedDirection = reflect(
-					normalize(pos - cameraPos) * ${getFloatGlsl(stepFactor)},
+					normalize(pos - rayOrigin) * ${getFloatGlsl(stepFactor)},
 					surfaceNormal
 				);
 
@@ -241,7 +240,7 @@ function getComputeShadingGlsl({
 			` : ""}
 			
 			//Apply fog.
-			return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+			return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
 		}
 	`;
 }
@@ -268,15 +267,21 @@ function getRaymarchGlsl({
 		`;
 
 	return /* glsl */`
-		vec4 raymarch(vec3 startPos)
+		vec4 raymarch()
 		{
-			vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(stepFactor)};
+			vec3 rayDirectionEye = vec3(
+				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
+				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
+				-1.0
+			);
+
+			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye) * ${getFloatGlsl(stepFactor)};
 			
 			float t = 0.0;
 			
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
-				vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+				vec3 pos = ${getGeodesicGlsl("rayOrigin", "rayDirectionVec")};
 				
 				float distanceToScene = distanceEstimator(pos);
 
@@ -331,11 +336,7 @@ function getMainFunctionGlsl({
 	return /* glsl */`${""}
 		void main(void)
 		{
-			gl_FragColor = raymarch(
-				imagePlaneCenterPos
-					+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
-					+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
-			);
+			gl_FragColor = raymarch();
 		}
 	`;
 }
@@ -413,7 +414,7 @@ export function createShader({
 			return pow(
 				(3.0 - distance(
 					normalize(rayDirectionVec),
-					normalize(lightPos - cameraPos)
+					normalize(lightPos - rayOrigin)
 				)) / 2.99,
 				${getFloatGlsl(20 / bloomPower)}
 			);

@@ -204,9 +204,9 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		super.drawFrame();
 
 		const distance = this.distanceEstimator(
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2]
+			this.sceneOrigin[0],
+			this.sceneOrigin[1],
+			this.sceneOrigin[2]
 		);
 
 		// Interpolates from 0 at scale 2 to 3 at scale 1.125.

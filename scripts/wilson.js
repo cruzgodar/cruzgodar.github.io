@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_lastInteractionTimes, _Wilson_lastInteractionTypes, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenCanvasRect, _Wilson_fullscreenInitialWindowInnerWidth, _Wilson_fullscreenInitialWindowInnerHeight, _Wilson_fullscreenFillScreen, _Wilson_externalFullscreenOldFillScreen, _Wilson_externalFullscreenActive, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_useResetButton, _Wilson_resetButton, _Wilson_resetButtonTimeoutId, _Wilson_resetButtonIconPath, _Wilson_defaultWorldCenterX, _Wilson_defaultWorldCenterY, _Wilson_defaultWorldWidth, _Wilson_defaultWorldHeight, _Wilson_defaultDraggableLocations, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_buttonContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_getDefaultWorldSize, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_getPanOverscroll, _Wilson_getZoomOverscroll, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseenter, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_setDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_initResetButton, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_addEnterFullscreenFillScreenTransitionStyle, _Wilson_exitFullscreen, _Wilson_addExitFullscreenFillScreenTransitionStyle, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderPrograms, _WilsonGPU_shaderProgramSources, _WilsonGPU_uniforms, _WilsonGPU_logShaderSource, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_framebuffers, _WilsonGPU_textures, _WilsonGPU_positionBuffers, _WilsonGPU_shaders;
+var _Wilson_instances, _Wilson_destroyed, _Wilson_canvasWidth, _Wilson_canvasHeight, _Wilson_lastCanvasWidth, _Wilson_lastCanvasHeight, _Wilson_canvasAspectRatio, _Wilson_worldWidth, _Wilson_worldHeight, _Wilson_worldCenterX, _Wilson_worldCenterY, _Wilson_nonFullscreenWorldWidth, _Wilson_nonFullscreenWorldHeight, _Wilson_minWorldWidth, _Wilson_maxWorldWidth, _Wilson_minWorldHeight, _Wilson_maxWorldHeight, _Wilson_minWorldX, _Wilson_maxWorldX, _Wilson_minWorldY, _Wilson_maxWorldY, _Wilson_onResizeCanvasCallback, _Wilson_useP3ColorSpace, _Wilson_needDraggablesContainerSizeUpdate, _Wilson_interactionCallbacks, _Wilson_needPanAndZoomUpdate, _Wilson_interactionOnPanAndZoom, _Wilson_lastInteractionTimes, _Wilson_lastInteractionTypes, _Wilson_numPreviousVelocities, _Wilson_lastVelocityFactors, _Wilson_lastPanVelocityX, _Wilson_lastPanVelocityY, _Wilson_lastZoomVelocity, _Wilson_lastPanVelocitiesX, _Wilson_lastPanVelocitiesY, _Wilson_lastZoomVelocities, _Wilson_panVelocityX, _Wilson_panVelocityY, _Wilson_zoomVelocity, _Wilson_panFriction, _Wilson_zoomFriction, _Wilson_panVelocityThreshold, _Wilson_zoomVelocityThreshold, _Wilson_draggablesRadius, _Wilson_draggablesStatic, _Wilson_draggableCallbacks, _Wilson_draggablesContainerWidth, _Wilson_draggablesContainerHeight, _Wilson_draggablesContainerRestrictedWidth, _Wilson_draggablesContainerRestrictedHeight, _Wilson_currentlyFullscreen, _Wilson_fullscreenOldScroll, _Wilson_fullscreenCanvasRect, _Wilson_fullscreenInitialWindowInnerWidth, _Wilson_fullscreenInitialWindowInnerHeight, _Wilson_fullscreenFillScreen, _Wilson_externalFullscreenOldFillScreen, _Wilson_externalFullscreenActive, _Wilson_fullscreenUseButton, _Wilson_fullscreenEnterFullscreenButton, _Wilson_fullscreenExitFullscreenButton, _Wilson_fullscreenEnterFullscreenButtonIconPath, _Wilson_fullscreenExitFullscreenButtonIconPath, _Wilson_draggables, _Wilson_draggableDefaultId, _Wilson_currentMouseDraggableId, _Wilson_useResetButton, _Wilson_resetButton, _Wilson_resetButtonTimeoutId, _Wilson_resetButtonIconPath, _Wilson_defaultWorldCenterX, _Wilson_defaultWorldCenterY, _Wilson_defaultWorldWidth, _Wilson_defaultWorldHeight, _Wilson_defaultDraggableLocations, _Wilson_appletContainer, _Wilson_canvasContainer, _Wilson_draggablesContainer, _Wilson_fullscreenContainer, _Wilson_fullscreenContainerLocation, _Wilson_metaThemeColorElement, _Wilson_oldMetaThemeColor, _Wilson_salt, _Wilson_getDefaultWorldSize, _Wilson_onResizeWindow, _Wilson_handleKeydownEvent, _Wilson_resizeCanvas, _Wilson_zeroVelocities, _Wilson_setLastZoomVelocity, _Wilson_setLastPanVelocity, _Wilson_setZoomVelocity, _Wilson_setPanVelocity, _Wilson_currentlyDragging, _Wilson_currentlyPinching, _Wilson_currentlyWheeling, _Wilson_currentlyWheelingTimeoutId, _Wilson_ignoreTouchendCooldown, _Wilson_atMaxWorldSize, _Wilson_atMinWorldSize, _Wilson_lastInteractionRow, _Wilson_lastInteractionCol, _Wilson_lastInteractionRow2, _Wilson_lastInteractionCol2, _Wilson_clampWorldCoordinates, _Wilson_getPanOverscroll, _Wilson_getZoomOverscroll, _Wilson_onMousedown, _Wilson_onMouseup, _Wilson_onMouseenter, _Wilson_onMouseleave, _Wilson_onMousemove, _Wilson_updateFromPinching, _Wilson_onTouchstart, _Wilson_onTouchend, _Wilson_onTouchmove, _Wilson_zoomFixedPoint, _Wilson_zoomCanvas, _Wilson_onWheel, _Wilson_animationFrameLoopPaused, _Wilson_lastPanAndZoomTimestamp, _Wilson_animationFrameLoop, _Wilson_initInteraction, _Wilson_documentDraggableMousemoveListener, _Wilson_documentDraggableMouseupListener, _Wilson_initDraggables, _Wilson_setDraggables, _Wilson_draggableOnMousedown, _Wilson_draggableOnMouseup, _Wilson_draggableOnMousemove, _Wilson_draggableOnTouchstart, _Wilson_draggableOnTouchend, _Wilson_draggableOnTouchmove, _Wilson_updateDraggablesContainerSize, _Wilson_updateDraggablesLocation, _Wilson_initFullscreen, _Wilson_initResetButton, _Wilson_preventGestures, _Wilson_canvasOldWidth, _Wilson_canvasOldWidthStyle, _Wilson_canvasOldHeightStyle, _Wilson_enterFullscreen, _Wilson_addEnterFullscreenFillScreenTransitionStyle, _Wilson_exitFullscreen, _Wilson_addExitFullscreenFillScreenTransitionStyle, _Wilson_interpolatePageToWorld, _WilsonGPU_instances, _WilsonGPU_useWebGL2, _WilsonGPU_shaderPrograms, _WilsonGPU_shaderProgramSources, _WilsonGPU_uniforms, _WilsonGPU_useXR, _WilsonGPU_useXRButton, _WilsonGPU_xrButtonIconPath, _WilsonGPU_xrButton, _WilsonGPU_xrIsSupportedNow, _WilsonGPU_renderXRFrame, _WilsonGPU_xrData, _WilsonGPU_xrRequiredFeatures, _WilsonGPU_xrOptionalFeatures, _WilsonGPU_xrDepthNear, _WilsonGPU_xrDepthFar, _WilsonGPU_xrFramebufferScaleFactor, _WilsonGPU_xrViewportScale, _WilsonGPU_lastAppliedXRViewportScales, _WilsonGPU_xrTargetFrameRate, _WilsonGPU_lastXRTime, _WilsonGPU_enteringXR, _WilsonGPU_xrFixedFoveation, _WilsonGPU_xrCallbacks, _WilsonGPU_xrViewport, _WilsonGPU_logShaderSource, _WilsonGPU_checkXRSupport, _WilsonGPU_onDeviceChange, _WilsonGPU_initXRButton, _WilsonGPU_numShaders, _WilsonGPU_currentShaderId, _WilsonGPU_currentProgram, _WilsonGPU_useProgram, _WilsonGPU_framebuffers, _WilsonGPU_textures, _WilsonGPU_currentFramebufferId, _WilsonGPU_currentTextureId, _WilsonGPU_positionBuffers, _WilsonGPU_shaders, _WilsonGPU_onXRFrame, _WilsonGPU_onXREnd, _WilsonGPU_clearXRFunctions, _WilsonGPU_applyXRTargetFrameRate;
 const defaultInteractionCallbacks = {
     mousedown: ({ x, y, event }) => { },
     mouseup: ({ x, y, event }) => { },
@@ -128,7 +128,6 @@ class Wilson {
         _Wilson_appletContainer.set(this, void 0);
         _Wilson_canvasContainer.set(this, void 0);
         _Wilson_draggablesContainer.set(this, void 0);
-        _Wilson_buttonContainer.set(this, void 0);
         _Wilson_fullscreenContainer.set(this, void 0);
         _Wilson_fullscreenContainerLocation.set(this, void 0);
         _Wilson_metaThemeColorElement.set(this, document.querySelector("meta[name='theme-color']"));
@@ -180,8 +179,12 @@ class Wilson {
         _Wilson_lastInteractionRow2.set(this, 0);
         _Wilson_lastInteractionCol2.set(this, 0);
         _Wilson_zoomFixedPoint.set(this, [0, 0]);
+        _Wilson_animationFrameLoopPaused.set(this, false);
         _Wilson_lastPanAndZoomTimestamp.set(this, -1);
         _Wilson_animationFrameLoop.set(this, (timestamp) => {
+            if (__classPrivateFieldGet(this, _Wilson_animationFrameLoopPaused, "f") || __classPrivateFieldGet(this, _Wilson_destroyed, "f")) {
+                return;
+            }
             const timeElapsed = timestamp - __classPrivateFieldGet(this, _Wilson_lastPanAndZoomTimestamp, "f");
             __classPrivateFieldSet(this, _Wilson_lastPanAndZoomTimestamp, timestamp, "f");
             if (this.useInteractionForPanAndZoom) {
@@ -197,7 +200,7 @@ class Wilson {
                 // It would seem like we should divide by timeElapsed,
                 // but this is a lag compensation measure --- if we're dropping
                 // frames, we increase the velocity factor so that the inertia effect
-                // isn't halted so quickly
+                // isn't halted so quickly.
                 __classPrivateFieldGet(this, _Wilson_lastVelocityFactors, "f").shift();
                 __classPrivateFieldGet(this, _Wilson_lastVelocityFactors, "f").push(Math.max(timeElapsed / (1000 / 60), 1));
                 __classPrivateFieldSet(this, _Wilson_ignoreTouchendCooldown, Math.max(0, __classPrivateFieldGet(this, _Wilson_ignoreTouchendCooldown, "f") - timeElapsed), "f");
@@ -445,9 +448,9 @@ class Wilson {
         __classPrivateFieldGet(this, _Wilson_draggablesContainer, "f").classList.add("WILSON_draggables-container");
         __classPrivateFieldGet(this, _Wilson_appletContainer, "f").appendChild(__classPrivateFieldGet(this, _Wilson_draggablesContainer, "f"));
         __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_updateDraggablesContainerSize).call(this);
-        __classPrivateFieldSet(this, _Wilson_buttonContainer, document.createElement("div"), "f");
-        __classPrivateFieldGet(this, _Wilson_buttonContainer, "f").classList.add("WILSON_button-container");
-        __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").appendChild(__classPrivateFieldGet(this, _Wilson_buttonContainer, "f"));
+        this.buttonContainer = document.createElement("div");
+        this.buttonContainer.classList.add("WILSON_button-container");
+        __classPrivateFieldGet(this, _Wilson_canvasContainer, "f").appendChild(this.buttonContainer);
         __classPrivateFieldSet(this, _Wilson_fullscreenContainer, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f").classList.add("WILSON_fullscreen-container");
         __classPrivateFieldGet(this, _Wilson_appletContainer, "f").parentElement && __classPrivateFieldGet(this, _Wilson_appletContainer, "f").parentElement.insertBefore(__classPrivateFieldGet(this, _Wilson_fullscreenContainer, "f"), __classPrivateFieldGet(this, _Wilson_appletContainer, "f"));
@@ -736,6 +739,19 @@ class Wilson {
             __classPrivateFieldGet(this, _Wilson_interactionOnPanAndZoom, "f").call(this);
         }
     }
+    set animationFrameLoopPaused(value) {
+        if (value === __classPrivateFieldGet(this, _Wilson_animationFrameLoopPaused, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _Wilson_animationFrameLoopPaused, value, "f");
+        __classPrivateFieldSet(this, _Wilson_lastPanAndZoomTimestamp, -1, "f");
+        if (__classPrivateFieldGet(this, _Wilson_animationFrameLoopPaused, "f")) {
+            __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_zeroVelocities).call(this);
+        }
+        else {
+            requestAnimationFrame(__classPrivateFieldGet(this, _Wilson_animationFrameLoop, "f"));
+        }
+    }
     setDraggables(draggables) {
         let onlyNewDraggables = true;
         for (const id in __classPrivateFieldGet(this, _Wilson_draggables, "f")) {
@@ -984,7 +1000,7 @@ class Wilson {
         ];
     }
 }
-_Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_canvasHeight = new WeakMap(), _Wilson_lastCanvasWidth = new WeakMap(), _Wilson_lastCanvasHeight = new WeakMap(), _Wilson_canvasAspectRatio = new WeakMap(), _Wilson_worldWidth = new WeakMap(), _Wilson_worldHeight = new WeakMap(), _Wilson_worldCenterX = new WeakMap(), _Wilson_worldCenterY = new WeakMap(), _Wilson_nonFullscreenWorldWidth = new WeakMap(), _Wilson_nonFullscreenWorldHeight = new WeakMap(), _Wilson_minWorldWidth = new WeakMap(), _Wilson_maxWorldWidth = new WeakMap(), _Wilson_minWorldHeight = new WeakMap(), _Wilson_maxWorldHeight = new WeakMap(), _Wilson_minWorldX = new WeakMap(), _Wilson_maxWorldX = new WeakMap(), _Wilson_minWorldY = new WeakMap(), _Wilson_maxWorldY = new WeakMap(), _Wilson_onResizeCanvasCallback = new WeakMap(), _Wilson_useP3ColorSpace = new WeakMap(), _Wilson_needDraggablesContainerSizeUpdate = new WeakMap(), _Wilson_interactionCallbacks = new WeakMap(), _Wilson_needPanAndZoomUpdate = new WeakMap(), _Wilson_interactionOnPanAndZoom = new WeakMap(), _Wilson_lastInteractionTimes = new WeakMap(), _Wilson_lastInteractionTypes = new WeakMap(), _Wilson_numPreviousVelocities = new WeakMap(), _Wilson_lastVelocityFactors = new WeakMap(), _Wilson_lastPanVelocityX = new WeakMap(), _Wilson_lastPanVelocityY = new WeakMap(), _Wilson_lastZoomVelocity = new WeakMap(), _Wilson_lastPanVelocitiesX = new WeakMap(), _Wilson_lastPanVelocitiesY = new WeakMap(), _Wilson_lastZoomVelocities = new WeakMap(), _Wilson_panVelocityX = new WeakMap(), _Wilson_panVelocityY = new WeakMap(), _Wilson_zoomVelocity = new WeakMap(), _Wilson_panFriction = new WeakMap(), _Wilson_zoomFriction = new WeakMap(), _Wilson_panVelocityThreshold = new WeakMap(), _Wilson_zoomVelocityThreshold = new WeakMap(), _Wilson_draggablesRadius = new WeakMap(), _Wilson_draggablesStatic = new WeakMap(), _Wilson_draggableCallbacks = new WeakMap(), _Wilson_draggablesContainerWidth = new WeakMap(), _Wilson_draggablesContainerHeight = new WeakMap(), _Wilson_draggablesContainerRestrictedWidth = new WeakMap(), _Wilson_draggablesContainerRestrictedHeight = new WeakMap(), _Wilson_currentlyFullscreen = new WeakMap(), _Wilson_fullscreenOldScroll = new WeakMap(), _Wilson_fullscreenCanvasRect = new WeakMap(), _Wilson_fullscreenInitialWindowInnerWidth = new WeakMap(), _Wilson_fullscreenInitialWindowInnerHeight = new WeakMap(), _Wilson_fullscreenFillScreen = new WeakMap(), _Wilson_externalFullscreenOldFillScreen = new WeakMap(), _Wilson_externalFullscreenActive = new WeakMap(), _Wilson_fullscreenUseButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButton = new WeakMap(), _Wilson_fullscreenExitFullscreenButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButtonIconPath = new WeakMap(), _Wilson_fullscreenExitFullscreenButtonIconPath = new WeakMap(), _Wilson_draggables = new WeakMap(), _Wilson_draggableDefaultId = new WeakMap(), _Wilson_currentMouseDraggableId = new WeakMap(), _Wilson_useResetButton = new WeakMap(), _Wilson_resetButton = new WeakMap(), _Wilson_resetButtonTimeoutId = new WeakMap(), _Wilson_resetButtonIconPath = new WeakMap(), _Wilson_defaultWorldCenterX = new WeakMap(), _Wilson_defaultWorldCenterY = new WeakMap(), _Wilson_defaultWorldWidth = new WeakMap(), _Wilson_defaultWorldHeight = new WeakMap(), _Wilson_defaultDraggableLocations = new WeakMap(), _Wilson_appletContainer = new WeakMap(), _Wilson_canvasContainer = new WeakMap(), _Wilson_draggablesContainer = new WeakMap(), _Wilson_buttonContainer = new WeakMap(), _Wilson_fullscreenContainer = new WeakMap(), _Wilson_fullscreenContainerLocation = new WeakMap(), _Wilson_metaThemeColorElement = new WeakMap(), _Wilson_oldMetaThemeColor = new WeakMap(), _Wilson_salt = new WeakMap(), _Wilson_onResizeWindow = new WeakMap(), _Wilson_handleKeydownEvent = new WeakMap(), _Wilson_currentlyDragging = new WeakMap(), _Wilson_currentlyPinching = new WeakMap(), _Wilson_currentlyWheeling = new WeakMap(), _Wilson_currentlyWheelingTimeoutId = new WeakMap(), _Wilson_ignoreTouchendCooldown = new WeakMap(), _Wilson_atMaxWorldSize = new WeakMap(), _Wilson_atMinWorldSize = new WeakMap(), _Wilson_lastInteractionRow = new WeakMap(), _Wilson_lastInteractionCol = new WeakMap(), _Wilson_lastInteractionRow2 = new WeakMap(), _Wilson_lastInteractionCol2 = new WeakMap(), _Wilson_zoomFixedPoint = new WeakMap(), _Wilson_lastPanAndZoomTimestamp = new WeakMap(), _Wilson_animationFrameLoop = new WeakMap(), _Wilson_documentDraggableMousemoveListener = new WeakMap(), _Wilson_documentDraggableMouseupListener = new WeakMap(), _Wilson_preventGestures = new WeakMap(), _Wilson_canvasOldWidth = new WeakMap(), _Wilson_canvasOldWidthStyle = new WeakMap(), _Wilson_canvasOldHeightStyle = new WeakMap(), _Wilson_instances = new WeakSet(), _Wilson_getDefaultWorldSize = function _Wilson_getDefaultWorldSize() {
+_Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_canvasHeight = new WeakMap(), _Wilson_lastCanvasWidth = new WeakMap(), _Wilson_lastCanvasHeight = new WeakMap(), _Wilson_canvasAspectRatio = new WeakMap(), _Wilson_worldWidth = new WeakMap(), _Wilson_worldHeight = new WeakMap(), _Wilson_worldCenterX = new WeakMap(), _Wilson_worldCenterY = new WeakMap(), _Wilson_nonFullscreenWorldWidth = new WeakMap(), _Wilson_nonFullscreenWorldHeight = new WeakMap(), _Wilson_minWorldWidth = new WeakMap(), _Wilson_maxWorldWidth = new WeakMap(), _Wilson_minWorldHeight = new WeakMap(), _Wilson_maxWorldHeight = new WeakMap(), _Wilson_minWorldX = new WeakMap(), _Wilson_maxWorldX = new WeakMap(), _Wilson_minWorldY = new WeakMap(), _Wilson_maxWorldY = new WeakMap(), _Wilson_onResizeCanvasCallback = new WeakMap(), _Wilson_useP3ColorSpace = new WeakMap(), _Wilson_needDraggablesContainerSizeUpdate = new WeakMap(), _Wilson_interactionCallbacks = new WeakMap(), _Wilson_needPanAndZoomUpdate = new WeakMap(), _Wilson_interactionOnPanAndZoom = new WeakMap(), _Wilson_lastInteractionTimes = new WeakMap(), _Wilson_lastInteractionTypes = new WeakMap(), _Wilson_numPreviousVelocities = new WeakMap(), _Wilson_lastVelocityFactors = new WeakMap(), _Wilson_lastPanVelocityX = new WeakMap(), _Wilson_lastPanVelocityY = new WeakMap(), _Wilson_lastZoomVelocity = new WeakMap(), _Wilson_lastPanVelocitiesX = new WeakMap(), _Wilson_lastPanVelocitiesY = new WeakMap(), _Wilson_lastZoomVelocities = new WeakMap(), _Wilson_panVelocityX = new WeakMap(), _Wilson_panVelocityY = new WeakMap(), _Wilson_zoomVelocity = new WeakMap(), _Wilson_panFriction = new WeakMap(), _Wilson_zoomFriction = new WeakMap(), _Wilson_panVelocityThreshold = new WeakMap(), _Wilson_zoomVelocityThreshold = new WeakMap(), _Wilson_draggablesRadius = new WeakMap(), _Wilson_draggablesStatic = new WeakMap(), _Wilson_draggableCallbacks = new WeakMap(), _Wilson_draggablesContainerWidth = new WeakMap(), _Wilson_draggablesContainerHeight = new WeakMap(), _Wilson_draggablesContainerRestrictedWidth = new WeakMap(), _Wilson_draggablesContainerRestrictedHeight = new WeakMap(), _Wilson_currentlyFullscreen = new WeakMap(), _Wilson_fullscreenOldScroll = new WeakMap(), _Wilson_fullscreenCanvasRect = new WeakMap(), _Wilson_fullscreenInitialWindowInnerWidth = new WeakMap(), _Wilson_fullscreenInitialWindowInnerHeight = new WeakMap(), _Wilson_fullscreenFillScreen = new WeakMap(), _Wilson_externalFullscreenOldFillScreen = new WeakMap(), _Wilson_externalFullscreenActive = new WeakMap(), _Wilson_fullscreenUseButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButton = new WeakMap(), _Wilson_fullscreenExitFullscreenButton = new WeakMap(), _Wilson_fullscreenEnterFullscreenButtonIconPath = new WeakMap(), _Wilson_fullscreenExitFullscreenButtonIconPath = new WeakMap(), _Wilson_draggables = new WeakMap(), _Wilson_draggableDefaultId = new WeakMap(), _Wilson_currentMouseDraggableId = new WeakMap(), _Wilson_useResetButton = new WeakMap(), _Wilson_resetButton = new WeakMap(), _Wilson_resetButtonTimeoutId = new WeakMap(), _Wilson_resetButtonIconPath = new WeakMap(), _Wilson_defaultWorldCenterX = new WeakMap(), _Wilson_defaultWorldCenterY = new WeakMap(), _Wilson_defaultWorldWidth = new WeakMap(), _Wilson_defaultWorldHeight = new WeakMap(), _Wilson_defaultDraggableLocations = new WeakMap(), _Wilson_appletContainer = new WeakMap(), _Wilson_canvasContainer = new WeakMap(), _Wilson_draggablesContainer = new WeakMap(), _Wilson_fullscreenContainer = new WeakMap(), _Wilson_fullscreenContainerLocation = new WeakMap(), _Wilson_metaThemeColorElement = new WeakMap(), _Wilson_oldMetaThemeColor = new WeakMap(), _Wilson_salt = new WeakMap(), _Wilson_onResizeWindow = new WeakMap(), _Wilson_handleKeydownEvent = new WeakMap(), _Wilson_currentlyDragging = new WeakMap(), _Wilson_currentlyPinching = new WeakMap(), _Wilson_currentlyWheeling = new WeakMap(), _Wilson_currentlyWheelingTimeoutId = new WeakMap(), _Wilson_ignoreTouchendCooldown = new WeakMap(), _Wilson_atMaxWorldSize = new WeakMap(), _Wilson_atMinWorldSize = new WeakMap(), _Wilson_lastInteractionRow = new WeakMap(), _Wilson_lastInteractionCol = new WeakMap(), _Wilson_lastInteractionRow2 = new WeakMap(), _Wilson_lastInteractionCol2 = new WeakMap(), _Wilson_zoomFixedPoint = new WeakMap(), _Wilson_animationFrameLoopPaused = new WeakMap(), _Wilson_lastPanAndZoomTimestamp = new WeakMap(), _Wilson_animationFrameLoop = new WeakMap(), _Wilson_documentDraggableMousemoveListener = new WeakMap(), _Wilson_documentDraggableMouseupListener = new WeakMap(), _Wilson_preventGestures = new WeakMap(), _Wilson_canvasOldWidth = new WeakMap(), _Wilson_canvasOldWidthStyle = new WeakMap(), _Wilson_canvasOldHeightStyle = new WeakMap(), _Wilson_instances = new WeakSet(), _Wilson_getDefaultWorldSize = function _Wilson_getDefaultWorldSize() {
     if (__classPrivateFieldGet(this, _Wilson_currentlyFullscreen, "f") && __classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f")) {
         const windowAspectRatio = window.innerWidth / window.innerHeight;
         const aspectRatioChange = windowAspectRatio / __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f");
@@ -1844,7 +1860,8 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     if (__classPrivateFieldGet(this, _Wilson_fullscreenUseButton, "f")) {
         __classPrivateFieldSet(this, _Wilson_fullscreenEnterFullscreenButton, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").classList.add("WILSON_enter-fullscreen-button");
-        __classPrivateFieldGet(this, _Wilson_buttonContainer, "f").appendChild(__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f"));
+        __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").classList.add("WILSON_button");
+        this.buttonContainer.appendChild(__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f"));
         const img = document.createElement("img");
         img.src = __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButtonIconPath, "f");
         __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").appendChild(img);
@@ -1853,7 +1870,8 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
         });
         __classPrivateFieldSet(this, _Wilson_fullscreenExitFullscreenButton, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f").classList.add("WILSON_exit-fullscreen-button");
-        __classPrivateFieldGet(this, _Wilson_buttonContainer, "f").appendChild(__classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f"));
+        __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f").classList.add("WILSON_button");
+        this.buttonContainer.appendChild(__classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f"));
         const img2 = document.createElement("img");
         img2.src = __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButtonIconPath, "f");
         __classPrivateFieldGet(this, _Wilson_fullscreenExitFullscreenButton, "f").appendChild(img2);
@@ -1865,7 +1883,8 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     if (__classPrivateFieldGet(this, _Wilson_useResetButton, "f")) {
         __classPrivateFieldSet(this, _Wilson_resetButton, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Wilson_resetButton, "f").classList.add("WILSON_reset-button");
-        __classPrivateFieldGet(this, _Wilson_buttonContainer, "f").appendChild(__classPrivateFieldGet(this, _Wilson_resetButton, "f"));
+        __classPrivateFieldGet(this, _Wilson_resetButton, "f").classList.add("WILSON_button");
+        this.buttonContainer.appendChild(__classPrivateFieldGet(this, _Wilson_resetButton, "f"));
         const img = document.createElement("img");
         img.src = __classPrivateFieldGet(this, _Wilson_resetButtonIconPath, "f");
         __classPrivateFieldGet(this, _Wilson_resetButton, "f").appendChild(img);
@@ -2235,35 +2254,256 @@ const uniformFunctions = {
     vec4: (gl, location, value) => gl.uniform4fv(location, value),
     intArray: (gl, location, value) => gl.uniform1iv(location, value),
     floatArray: (gl, location, value) => gl.uniform1fv(location, value),
-    vec2Array: (gl, location, value) => gl.uniform2fv(location, value.flat()),
-    vec3Array: (gl, location, value) => gl.uniform3fv(location, value.flat()),
-    vec4Array: (gl, location, value) => gl.uniform4fv(location, value.flat()),
-    mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]),
-    mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]),
-    mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]),
+    vec2Array: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniform2fv(location, value)
+            : gl.uniform2fv(location, value.flat());
+    },
+    vec3Array: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniform3fv(location, value)
+            : gl.uniform3fv(location, value.flat());
+    },
+    vec4Array: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniform4fv(location, value)
+            : gl.uniform4fv(location, value.flat());
+    },
+    mat2: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniformMatrix2fv(location, false, value)
+            : gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]);
+    },
+    mat3: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniformMatrix3fv(location, false, value)
+            : gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]);
+    },
+    mat4: (gl, location, value) => {
+        return value instanceof Float32Array
+            ? gl.uniformMatrix4fv(location, false, value)
+            : gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]);
+    },
 };
+const XR_MODE = "immersive-vr";
+const REFERENCE_SPACE = "local";
 export class WilsonGPU extends Wilson {
+    get xrViewportScale() { return __classPrivateFieldGet(this, _WilsonGPU_xrViewportScale, "f"); }
+    set xrViewportScale(value) {
+        if (value !== null && (value <= 0 || value > 1) && this.verbose) {
+            console.warn("[Wilson] Setting xrViewportScale outside of (0, 1] has no effect.");
+        }
+        __classPrivateFieldSet(this, _WilsonGPU_xrViewportScale, value, "f");
+    }
+    get xrSupportedFrameRates() { var _a; return (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.session.supportedFrameRates; }
+    get xrFrameRate() { var _a; return (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.session.frameRate; }
+    get xrTargetFrameRate() { return __classPrivateFieldGet(this, _WilsonGPU_xrTargetFrameRate, "f"); }
+    set xrTargetFrameRate(value) {
+        __classPrivateFieldSet(this, _WilsonGPU_xrTargetFrameRate, value, "f");
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_applyXRTargetFrameRate).call(this);
+    }
+    get inXR() { return __classPrivateFieldGet(this, _WilsonGPU_xrData, "f") !== undefined; }
+    get xrFramebufferWidth() { var _a; return (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.baseLayer.framebufferWidth; }
+    get xrFramebufferHeight() { var _a; return (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.baseLayer.framebufferHeight; }
+    get xrFixedFoveation() {
+        var _a;
+        // When in an XR session, return the actual foveation value; it may be undefined if
+        // the headset doesn't support it. Outside a session, the base layer doesn't exist,
+        // so return the value that was passed in, if any.
+        if (__classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) {
+            // WebXR declares fixedFoveation as nullable, but the WebXR type is number | undefined,
+            // so this normalizes null away.
+            return (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f").baseLayer.fixedFoveation) !== null && _a !== void 0 ? _a : undefined;
+        }
+        return __classPrivateFieldGet(this, _WilsonGPU_xrFixedFoveation, "f");
+    }
+    set xrFixedFoveation(value) {
+        var _a;
+        __classPrivateFieldSet(this, _WilsonGPU_xrFixedFoveation, value, "f");
+        const baseLayer = (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.baseLayer;
+        if (baseLayer) {
+            baseLayer.fixedFoveation = value;
+        }
+    }
     constructor(canvas, options) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
         super(canvas, options);
         _WilsonGPU_instances.add(this);
         _WilsonGPU_useWebGL2.set(this, void 0);
         _WilsonGPU_shaderPrograms.set(this, {});
         _WilsonGPU_shaderProgramSources.set(this, {});
         _WilsonGPU_uniforms.set(this, {});
+        _WilsonGPU_useXR.set(this, void 0);
+        _WilsonGPU_useXRButton.set(this, false);
+        _WilsonGPU_xrButtonIconPath.set(this, void 0);
+        _WilsonGPU_xrButton.set(this, null);
+        this.xrIsSupported = Promise.resolve(false);
+        _WilsonGPU_xrIsSupportedNow.set(this, null); // Resolves to a boolean once known.
+        _WilsonGPU_renderXRFrame.set(this, () => { });
+        // The single source of truth about the base layer; if that ever gets changed,
+        // this needs to reflect it.
+        _WilsonGPU_xrData.set(this, void 0);
+        _WilsonGPU_xrRequiredFeatures.set(this, []);
+        _WilsonGPU_xrOptionalFeatures.set(this, []);
+        _WilsonGPU_xrDepthNear.set(this, 0.1);
+        _WilsonGPU_xrDepthFar.set(this, 1000);
+        _WilsonGPU_xrFramebufferScaleFactor.set(this, 1);
+        _WilsonGPU_xrViewportScale.set(this, null);
+        _WilsonGPU_lastAppliedXRViewportScales.set(this, []);
+        _WilsonGPU_xrTargetFrameRate.set(this, void 0);
+        _WilsonGPU_lastXRTime.set(this, undefined);
+        _WilsonGPU_enteringXR.set(this, false);
+        _WilsonGPU_xrFixedFoveation.set(this, void 0);
+        _WilsonGPU_xrCallbacks.set(this, {
+            onEnter: () => { },
+            onExit: () => { },
+            onFrameStart: () => { },
+            onVisibilityChange: () => { },
+            onFrameRateChange: () => { }
+        });
+        // Used to restore the eye viewport correctly when switching back to the
+        // headset's framebuffer.
+        _WilsonGPU_xrViewport.set(this, null);
+        // Needs to be an arrow function to maintain its binding when passed to addEventListener
+        _WilsonGPU_onDeviceChange.set(this, () => {
+            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_checkXRSupport).call(this);
+        });
         _WilsonGPU_numShaders.set(this, 0);
         _WilsonGPU_currentShaderId.set(this, "0");
+        _WilsonGPU_currentProgram.set(this, null);
         _WilsonGPU_framebuffers.set(this, {});
         _WilsonGPU_textures.set(this, {});
+        _WilsonGPU_currentFramebufferId.set(this, null);
+        _WilsonGPU_currentTextureId.set(this, null);
         _WilsonGPU_positionBuffers.set(this, []);
         _WilsonGPU_shaders.set(this, []);
         this.resizeCanvasGPU = () => {
             this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
         };
+        _WilsonGPU_onXRFrame.set(this, (time, frame) => {
+            var _a, _b;
+            if (!__classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) {
+                return;
+            }
+            const deltaTime = time - ((_a = __classPrivateFieldGet(this, _WilsonGPU_lastXRTime, "f")) !== null && _a !== void 0 ? _a : time);
+            __classPrivateFieldSet(this, _WilsonGPU_lastXRTime, time, "f");
+            const { session, refSpace, baseLayer } = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f");
+            // Queue the next frame first so an exception mid-render doesn't stall the loop.
+            session.requestAnimationFrame(__classPrivateFieldGet(this, _WilsonGPU_onXRFrame, "f"));
+            if (session.visibilityState === "hidden") {
+                // Treat skipped frames as a discontinuity.
+                __classPrivateFieldSet(this, _WilsonGPU_lastXRTime, undefined, "f");
+                return;
+            }
+            const pose = frame.getViewerPose(refSpace);
+            // Null when tracking is temporarily lost — skip the frame.
+            if (!pose) {
+                __classPrivateFieldSet(this, _WilsonGPU_lastXRTime, undefined, "f");
+                return;
+            }
+            // This binds the framebuffer directly since useFramebuffer() early-returns
+            // if the ID matches the current one, and both the canvas and the XR framebuffer
+            // use null as their ID.
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, baseLayer.framebuffer);
+            __classPrivateFieldSet(this, _WilsonGPU_currentFramebufferId, null, "f");
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+            const { views, emulatedPosition } = pose;
+            // Give the callback a predictable, full-framebuffer viewport; the loop below
+            // sets the per-eye viewport before each view renders.
+            this.gl.viewport(0, 0, baseLayer.framebufferWidth, baseLayer.framebufferHeight);
+            __classPrivateFieldGet(this, _WilsonGPU_xrCallbacks, "f").onFrameStart({
+                time,
+                deltaTime,
+                frame,
+                session,
+                refSpace,
+                pose
+            });
+            try {
+                // One view per eye (two for stereo VR), sharing the framebuffer via side-by-side viewports.
+                for (let viewIndex = 0; viewIndex < views.length; viewIndex++) {
+                    const view = views[viewIndex];
+                    const scale = (_b = __classPrivateFieldGet(this, _WilsonGPU_xrViewportScale, "f")) !== null && _b !== void 0 ? _b : view.recommendedViewportScale;
+                    if (scale && scale !== __classPrivateFieldGet(this, _WilsonGPU_lastAppliedXRViewportScales, "f")[viewIndex]) {
+                        view.requestViewportScale(scale);
+                        __classPrivateFieldGet(this, _WilsonGPU_lastAppliedXRViewportScales, "f")[viewIndex] = scale;
+                    }
+                    const viewport = baseLayer.getViewport(view);
+                    if (!viewport) {
+                        // Skip this eye, not the whole frame
+                        continue;
+                    }
+                    __classPrivateFieldSet(this, _WilsonGPU_xrViewport, viewport, "f");
+                    this.gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
+                    __classPrivateFieldGet(this, _WilsonGPU_renderXRFrame, "f").call(this, {
+                        view,
+                        projectionMatrix: view.projectionMatrix,
+                        cameraToWorld: view.transform.matrix,
+                        eye: view.eye,
+                        viewIndex,
+                        numViews: views.length,
+                        viewport,
+                        time,
+                        deltaTime,
+                        frame,
+                        refSpace,
+                        position: view.transform.position,
+                        emulatedPosition,
+                        session,
+                        pose,
+                    });
+                }
+            }
+            finally {
+                __classPrivateFieldSet(this, _WilsonGPU_xrViewport, null, "f");
+            }
+        });
+        _WilsonGPU_onXREnd.set(this, () => {
+            __classPrivateFieldSet(this, _WilsonGPU_xrData, undefined, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_lastAppliedXRViewportScales, [], "f");
+            __classPrivateFieldSet(this, _WilsonGPU_lastXRTime, undefined, "f");
+            // This binds the framebuffer directly since useFramebuffer() early-returns
+            // if the ID matches the current one, and both the canvas and the XR framebuffer
+            // use null as their ID.
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            __classPrivateFieldSet(this, _WilsonGPU_currentFramebufferId, null, "f");
+            this.resizeCanvasGPU();
+            this.animationFrameLoopPaused = false;
+            __classPrivateFieldGet(this, _WilsonGPU_xrCallbacks, "f").onExit();
+        });
         __classPrivateFieldSet(this, _WilsonGPU_useWebGL2, (_a = options.useWebGL2) !== null && _a !== void 0 ? _a : true, "f");
+        __classPrivateFieldSet(this, _WilsonGPU_useXR, (_b = options.useXR) !== null && _b !== void 0 ? _b : false, "f");
+        if (options.useXR) {
+            __classPrivateFieldSet(this, _WilsonGPU_useXRButton, (_c = options.useXRButton) !== null && _c !== void 0 ? _c : false, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrButtonIconPath, options.useXRButton ? options.xrButtonIconPath : undefined, "f");
+            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_initXRButton).call(this);
+            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_checkXRSupport).call(this);
+            (_d = navigator.xr) === null || _d === void 0 ? void 0 : _d.addEventListener("devicechange", __classPrivateFieldGet(this, _WilsonGPU_onDeviceChange, "f"));
+            __classPrivateFieldSet(this, _WilsonGPU_renderXRFrame, options.renderXRFrame, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrCallbacks, {
+                onEnter: (_e = options.onEnterXR) !== null && _e !== void 0 ? _e : (() => { }),
+                onExit: (_f = options.onExitXR) !== null && _f !== void 0 ? _f : (() => { }),
+                onFrameStart: (_g = options.onXRFrameStart) !== null && _g !== void 0 ? _g : (() => { }),
+                onVisibilityChange: (_h = options.onXRVisibilityChange) !== null && _h !== void 0 ? _h : (() => { }),
+                onFrameRateChange: (_j = options.onXRFrameRateChange) !== null && _j !== void 0 ? _j : (() => { })
+            }, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrRequiredFeatures, (_k = options.xrRequiredFeatures) !== null && _k !== void 0 ? _k : [], "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrOptionalFeatures, (_l = options.xrOptionalFeatures) !== null && _l !== void 0 ? _l : [], "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrDepthNear, (_m = options.xrDepthNear) !== null && _m !== void 0 ? _m : 0.1, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrDepthFar, (_o = options.xrDepthFar) !== null && _o !== void 0 ? _o : 1000, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrFramebufferScaleFactor, (_p = options.xrFramebufferScaleFactor) !== null && _p !== void 0 ? _p : 1, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrViewportScale, (_q = options.xrViewportScale) !== null && _q !== void 0 ? _q : null, "f");
+            // Foveated rendering defaults to on.
+            __classPrivateFieldSet(this, _WilsonGPU_xrFixedFoveation, (_r = options.xrFixedFoveation) !== null && _r !== void 0 ? _r : 0.3, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_xrTargetFrameRate, options.xrTargetFrameRate, "f");
+        }
+        const getContextOptions = {
+            xrCompatible: __classPrivateFieldGet(this, _WilsonGPU_useXR, "f"),
+            powerPreference: "high-performance"
+        };
         const gl = __classPrivateFieldGet(this, _WilsonGPU_useWebGL2, "f")
-            ? (_b = canvas.getContext("webgl2")) !== null && _b !== void 0 ? _b : canvas.getContext("webgl")
-            : canvas.getContext("webgl");
+            ? (_s = canvas.getContext("webgl2", getContextOptions)) !== null && _s !== void 0 ? _s : canvas.getContext("webgl", getContextOptions)
+            : canvas.getContext("webgl", getContextOptions);
         if (!gl) {
             throw new Error("[Wilson] Failed to get WebGL or WebGL2 context.");
         }
@@ -2293,7 +2533,7 @@ export class WilsonGPU extends Wilson {
                 this.loadShader({
                     id,
                     shader,
-                    uniforms: (_c = options.uniforms) === null || _c === void 0 ? void 0 : _c[id],
+                    uniforms: (_t = options.uniforms) === null || _t === void 0 ? void 0 : _t[id],
                 });
             }
         }
@@ -2306,6 +2546,7 @@ export class WilsonGPU extends Wilson {
     }
     loadShader({ id = __classPrivateFieldGet(this, _WilsonGPU_numShaders, "f").toString(), shader, uniforms = {} }) {
         var _a, _b;
+        var _c;
         const vertexShaderSource = /* glsl*/ `
 			attribute vec3 position;
 			varying vec2 uv;
@@ -2330,6 +2571,7 @@ export class WilsonGPU extends Wilson {
         }
         __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id] = shaderProgram;
         __classPrivateFieldGet(this, _WilsonGPU_shaderProgramSources, "f")[id] = shader;
+        __classPrivateFieldSet(this, _WilsonGPU_numShaders, (_c = __classPrivateFieldGet(this, _WilsonGPU_numShaders, "f"), _c++, _c), "f");
         this.gl.attachShader(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], vertexShader);
         this.gl.attachShader(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], fragShader);
         this.gl.shaderSource(vertexShader, vertexShaderSource);
@@ -2409,8 +2651,18 @@ export class WilsonGPU extends Wilson {
             this.setUniforms({ [name]: value });
         }
     }
+    setUniform(name, value, shader = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_useProgram).call(this, __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[shader]);
+        if (__classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name] !== undefined) {
+            const { location, type } = __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name];
+            const uniformFunction = uniformFunctions[type];
+            __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name].value = value;
+            uniformFunction(this.gl, location, value);
+        }
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_useProgram).call(this, __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
+    }
     setUniforms(uniforms, shader = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
-        this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[shader]);
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_useProgram).call(this, __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[shader]);
         for (const [name, value] of Object.entries(uniforms)) {
             if (__classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name] === undefined) {
                 continue;
@@ -2420,13 +2672,29 @@ export class WilsonGPU extends Wilson {
             __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name].value = value;
             uniformFunction(this.gl, location, value);
         }
-        this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_useProgram).call(this, __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")]);
     }
     useShader(id) {
         __classPrivateFieldSet(this, _WilsonGPU_currentShaderId, id, "f");
-        this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_useProgram).call(this, __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
     }
-    createFramebufferTexturePair({ id, width = this.canvasWidth, height = this.canvasHeight, textureType }) {
+    createFramebufferTexturePair({ id, width, height, textureType }) {
+        const currentFramebufferId = __classPrivateFieldGet(this, _WilsonGPU_currentFramebufferId, "f");
+        const currentTextureId = __classPrivateFieldGet(this, _WilsonGPU_currentTextureId, "f");
+        // Delete any existing pair with this ID so they don't leak.
+        this.deleteFramebufferTexturePair(id);
+        // Set default width and height.
+        if (__classPrivateFieldGet(this, _WilsonGPU_useXR, "f") && this.inXR) {
+            width !== null && width !== void 0 ? width : (width = this.xrFramebufferWidth);
+            height !== null && height !== void 0 ? height : (height = this.xrFramebufferHeight);
+            if (width === undefined || height === undefined) {
+                throw new Error("[Wilson] Cannot get XR framebuffer size.");
+            }
+        }
+        else {
+            width !== null && width !== void 0 ? width : (width = this.canvasWidth);
+            height !== null && height !== void 0 ? height : (height = this.canvasHeight);
+        }
         if (textureType !== "unsignedByte" && textureType !== "float") {
             throw new Error(`[Wilson] Invalid texture type "${textureType}".`);
         }
@@ -2439,6 +2707,7 @@ export class WilsonGPU extends Wilson {
             throw new Error(`[Wilson] Couldn't create a texture with id ${id}.`);
         }
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        __classPrivateFieldSet(this, _WilsonGPU_currentTextureId, id, "f");
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (textureType === "float" && this.gl instanceof WebGL2RenderingContext)
             ? this.gl.RGBA32F
             : this.gl.RGBA, width, height, 0, this.gl.RGBA, textureType === "float"
@@ -2448,8 +2717,8 @@ export class WilsonGPU extends Wilson {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-        this.gl.disable(this.gl.DEPTH_TEST);
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
+        __classPrivateFieldSet(this, _WilsonGPU_currentFramebufferId, id, "f");
         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
         __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id] = framebuffer;
         __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id] = {
@@ -2458,15 +2727,58 @@ export class WilsonGPU extends Wilson {
             height,
             type: textureType,
         };
+        this.useFramebuffer(currentFramebufferId);
+        this.useTexture(currentTextureId);
+    }
+    deleteFramebufferTexturePair(id) {
+        if (__classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]) {
+            // Deleting a bound framebuffer makes WebGL revert the binding to the default one,
+            // so the cached ID has to follow.
+            if (__classPrivateFieldGet(this, _WilsonGPU_currentFramebufferId, "f") === id) {
+                __classPrivateFieldSet(this, _WilsonGPU_currentFramebufferId, null, "f");
+            }
+            this.gl.deleteFramebuffer(__classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]);
+            delete __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id];
+        }
+        if (__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id]) {
+            // Likewise, deleting a bound texture reverts the binding to null.
+            if (__classPrivateFieldGet(this, _WilsonGPU_currentTextureId, "f") === id) {
+                __classPrivateFieldSet(this, _WilsonGPU_currentTextureId, null, "f");
+            }
+            this.gl.deleteTexture(__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
+            delete __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id];
+        }
     }
     useFramebuffer(id) {
+        if (id === __classPrivateFieldGet(this, _WilsonGPU_currentFramebufferId, "f")) {
+            return;
+        }
+        if (id !== null && !__classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]) {
+            throw new Error(`[Wilson] No framebuffer with ID ${id}.`);
+        }
+        __classPrivateFieldSet(this, _WilsonGPU_currentFramebufferId, id, "f");
         if (id === null) {
+            if (__classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) {
+                this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, __classPrivateFieldGet(this, _WilsonGPU_xrData, "f").baseLayer.framebuffer);
+                if (__classPrivateFieldGet(this, _WilsonGPU_xrViewport, "f")) {
+                    const { x, y, width, height } = __classPrivateFieldGet(this, _WilsonGPU_xrViewport, "f");
+                    this.gl.viewport(x, y, width, height);
+                }
+                return;
+            }
             this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
             return;
         }
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]);
     }
     useTexture(id) {
+        if (id === __classPrivateFieldGet(this, _WilsonGPU_currentTextureId, "f")) {
+            return;
+        }
+        if (id !== null && !__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id]) {
+            throw new Error(`[Wilson] No texture with ID ${id}.`);
+        }
+        __classPrivateFieldSet(this, _WilsonGPU_currentTextureId, id, "f");
         if (id === null) {
             this.gl.bindTexture(this.gl.TEXTURE_2D, null);
             return;
@@ -2481,7 +2793,8 @@ export class WilsonGPU extends Wilson {
             || (data instanceof Float32Array && __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type !== "float")) {
             throw new Error(`[Wilson] Tried to set a texture with id ${id}, but the data type does not match the texture type (the data type should be a ${__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === 'unsignedByte' ? 'Uint8Array' : 'Float32Array'}).`);
         }
-        this.gl.bindTexture(this.gl.TEXTURE_2D, __classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
+        const oldId = __classPrivateFieldGet(this, _WilsonGPU_currentTextureId, "f");
+        this.useTexture(id);
         if (data === null || data instanceof Uint8Array || data instanceof Float32Array) {
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, (__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].type === "float" && this.gl instanceof WebGL2RenderingContext)
                 ? this.gl.RGBA32F
@@ -2492,6 +2805,7 @@ export class WilsonGPU extends Wilson {
         else {
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
         }
+        this.useTexture(oldId);
     }
     readPixels(options) {
         const defaultOptions = {
@@ -2575,37 +2889,61 @@ export class WilsonGPU extends Wilson {
 					gl,
 					location,
 					value,
-				) => gl.uniform2fv(location, value.flat()),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniform2fv(location, value)
+						: gl.uniform2fv(location, value.flat());
+				},
 
 				vec3Array: (
 					gl,
 					location,
 					value,
-				) => gl.uniform3fv(location, value.flat()),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniform3fv(location, value)
+						: gl.uniform3fv(location, value.flat());
+				},
 				
 				vec4Array: (
 					gl,
 					location,
 					value,
-				) => gl.uniform4fv(location, value.flat()),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniform4fv(location, value)
+						: gl.uniform4fv(location, value.flat());
+				},
 
 				mat2: (
 					gl,
 					location,
 					value,
-				) => gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniformMatrix2fv(location, false, value)
+						: gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]);
+				},
 				
 				mat3: (
 					gl,
 					location,
 					value,
-				) => gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniformMatrix3fv(location, false, value)
+						: gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]);
+				},
 				
 				mat4: (
 					gl,
 					location,
 					value,
-				) => gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]),
+				) => {
+					return value instanceof Float32Array
+						? gl.uniformMatrix4fv(location, false, value)
+						: gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]);
+				},
 			};
 
 			self.addEventListener("message", (event) => 
@@ -2749,8 +3087,6 @@ export class WilsonGPU extends Wilson {
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-				gl.disable(gl.DEPTH_TEST);
-
 				gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 
 				gl.framebufferTexture2D(
@@ -2846,7 +3182,7 @@ export class WilsonGPU extends Wilson {
         canvas.toBlob((blob) => {
             if (!blob) {
                 if (this.verbose) {
-                    console.error("[Wilson] Could not create a canvas blob");
+                    console.error("[Wilson] Could not create a canvas blob.");
                 }
                 return;
             }
@@ -2857,35 +3193,119 @@ export class WilsonGPU extends Wilson {
             link.remove();
         });
     }
+    async enterXR() {
+        if (!__classPrivateFieldGet(this, _WilsonGPU_useXR, "f")) {
+            throw new Error("[Wilson] `useXR` must be `true` in the constructor options in order to call `enterXR`.");
+        }
+        if (this.inXR || __classPrivateFieldGet(this, _WilsonGPU_enteringXR, "f") || __classPrivateFieldGet(this, _WilsonGPU_xrIsSupportedNow, "f") === false) {
+            return false;
+        }
+        __classPrivateFieldSet(this, _WilsonGPU_enteringXR, true, "f");
+        if (!navigator.xr
+            || __classPrivateFieldGet(this, _WilsonGPU_xrIsSupportedNow, "f") !== true && !(await __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_checkXRSupport).call(this))) {
+            __classPrivateFieldSet(this, _WilsonGPU_enteringXR, false, "f");
+            return false;
+        }
+        let session;
+        try {
+            session = await navigator.xr.requestSession(XR_MODE, {
+                requiredFeatures: __classPrivateFieldGet(this, _WilsonGPU_xrRequiredFeatures, "f"),
+                optionalFeatures: __classPrivateFieldGet(this, _WilsonGPU_xrOptionalFeatures, "f"),
+            });
+        }
+        catch (ex) {
+            if (this.verbose) {
+                console.error(`[Wilson] Couldn't create XR session: ${ex}`);
+            }
+            __classPrivateFieldSet(this, _WilsonGPU_enteringXR, false, "f");
+            return false;
+        }
+        try {
+            const baseLayer = new XRWebGLLayer(session, this.gl, {
+                antialias: false,
+                depth: false,
+                stencil: false,
+                alpha: false,
+                // Initialize the framebuffer (both eyes, side-by-side). Headsets can run in a low-res
+                // mode by default for headroom, so the first factor here ensures we're rendering all the
+                // pixels available. The second factor is per-applet and can scale it down for a
+                // construction-time quality cap.
+                framebufferScaleFactor: XRWebGLLayer.getNativeFramebufferScaleFactor(session)
+                    * __classPrivateFieldGet(this, _WilsonGPU_xrFramebufferScaleFactor, "f")
+            });
+            session.updateRenderState({
+                baseLayer,
+                depthNear: __classPrivateFieldGet(this, _WilsonGPU_xrDepthNear, "f"),
+                depthFar: __classPrivateFieldGet(this, _WilsonGPU_xrDepthFar, "f")
+            });
+            const refSpace = await session.requestReferenceSpace(REFERENCE_SPACE);
+            __classPrivateFieldSet(this, _WilsonGPU_xrData, { session, refSpace, baseLayer }, "f");
+            __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_applyXRTargetFrameRate).call(this);
+            // Calls the setter, so it updates on baseLayer.
+            this.xrFixedFoveation = __classPrivateFieldGet(this, _WilsonGPU_xrFixedFoveation, "f");
+            session.addEventListener("visibilitychange", () => {
+                __classPrivateFieldGet(this, _WilsonGPU_xrCallbacks, "f").onVisibilityChange(session.visibilityState);
+            });
+            session.addEventListener("frameratechange", () => {
+                __classPrivateFieldGet(this, _WilsonGPU_xrCallbacks, "f").onFrameRateChange(session.frameRate);
+            });
+            session.addEventListener("end", __classPrivateFieldGet(this, _WilsonGPU_onXREnd, "f"));
+            session.requestAnimationFrame(__classPrivateFieldGet(this, _WilsonGPU_onXRFrame, "f"));
+            __classPrivateFieldSet(this, _WilsonGPU_enteringXR, false, "f");
+            __classPrivateFieldGet(this, _WilsonGPU_xrCallbacks, "f").onEnter();
+            this.animationFrameLoopPaused = true;
+            return true;
+        }
+        catch (ex) {
+            if (this.verbose) {
+                console.error(`[Wilson] Couldn't enter XR: ${ex}`);
+            }
+            __classPrivateFieldSet(this, _WilsonGPU_xrData, undefined, "f");
+            __classPrivateFieldSet(this, _WilsonGPU_enteringXR, false, "f");
+            await session.end().catch(() => { });
+            return false;
+        }
+    }
+    async exitXR() {
+        if (!__classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) {
+            return;
+        }
+        await __classPrivateFieldGet(this, _WilsonGPU_xrData, "f").session.end();
+    }
     destroy() {
+        var _a;
         super.destroy();
-        // Delete all textures
+        __classPrivateFieldGet(this, _WilsonGPU_instances, "m", _WilsonGPU_clearXRFunctions).call(this);
+        this.exitXR().catch(() => { });
+        (_a = navigator.xr) === null || _a === void 0 ? void 0 : _a.removeEventListener("devicechange", __classPrivateFieldGet(this, _WilsonGPU_onDeviceChange, "f"));
+        // Delete all textures.
         for (const id in __classPrivateFieldGet(this, _WilsonGPU_textures, "f")) {
             this.gl.deleteTexture(__classPrivateFieldGet(this, _WilsonGPU_textures, "f")[id].texture);
         }
         __classPrivateFieldSet(this, _WilsonGPU_textures, {}, "f");
-        // Delete all framebuffers
+        // Delete all framebuffers.
         for (const id in __classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")) {
             this.gl.deleteFramebuffer(__classPrivateFieldGet(this, _WilsonGPU_framebuffers, "f")[id]);
         }
         __classPrivateFieldSet(this, _WilsonGPU_framebuffers, {}, "f");
-        // Delete all shader programs (this also detaches shaders)
+        // Delete all shader programs (this also detaches shaders).
         for (const id in __classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")) {
             this.gl.deleteProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
         }
         __classPrivateFieldSet(this, _WilsonGPU_shaderPrograms, {}, "f");
         __classPrivateFieldSet(this, _WilsonGPU_shaderProgramSources, {}, "f");
-        // Delete all buffers
+        __classPrivateFieldSet(this, _WilsonGPU_currentProgram, null, "f");
+        // Delete all buffers.
         for (const buffer of __classPrivateFieldGet(this, _WilsonGPU_positionBuffers, "f")) {
             this.gl.deleteBuffer(buffer);
         }
         __classPrivateFieldSet(this, _WilsonGPU_positionBuffers, [], "f");
-        // Delete all shaders
+        // Delete all shaders.
         for (const shader of __classPrivateFieldGet(this, _WilsonGPU_shaders, "f")) {
             this.gl.deleteShader(shader);
         }
         __classPrivateFieldSet(this, _WilsonGPU_shaders, [], "f");
-        // Clear uniform references
+        // Clear uniform references.
         __classPrivateFieldSet(this, _WilsonGPU_uniforms, {}, "f");
         // Lose the WebGL context to free up the context slot.
         const loseContext = this.gl.getExtension("WEBGL_lose_context");
@@ -2894,7 +3314,7 @@ export class WilsonGPU extends Wilson {
         }
     }
 }
-_WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(), _WilsonGPU_shaderProgramSources = new WeakMap(), _WilsonGPU_uniforms = new WeakMap(), _WilsonGPU_numShaders = new WeakMap(), _WilsonGPU_currentShaderId = new WeakMap(), _WilsonGPU_framebuffers = new WeakMap(), _WilsonGPU_textures = new WeakMap(), _WilsonGPU_positionBuffers = new WeakMap(), _WilsonGPU_shaders = new WeakMap(), _WilsonGPU_instances = new WeakSet(), _WilsonGPU_logShaderSource = function _WilsonGPU_logShaderSource(source, infoLog) {
+_WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(), _WilsonGPU_shaderProgramSources = new WeakMap(), _WilsonGPU_uniforms = new WeakMap(), _WilsonGPU_useXR = new WeakMap(), _WilsonGPU_useXRButton = new WeakMap(), _WilsonGPU_xrButtonIconPath = new WeakMap(), _WilsonGPU_xrButton = new WeakMap(), _WilsonGPU_xrIsSupportedNow = new WeakMap(), _WilsonGPU_renderXRFrame = new WeakMap(), _WilsonGPU_xrData = new WeakMap(), _WilsonGPU_xrRequiredFeatures = new WeakMap(), _WilsonGPU_xrOptionalFeatures = new WeakMap(), _WilsonGPU_xrDepthNear = new WeakMap(), _WilsonGPU_xrDepthFar = new WeakMap(), _WilsonGPU_xrFramebufferScaleFactor = new WeakMap(), _WilsonGPU_xrViewportScale = new WeakMap(), _WilsonGPU_lastAppliedXRViewportScales = new WeakMap(), _WilsonGPU_xrTargetFrameRate = new WeakMap(), _WilsonGPU_lastXRTime = new WeakMap(), _WilsonGPU_enteringXR = new WeakMap(), _WilsonGPU_xrFixedFoveation = new WeakMap(), _WilsonGPU_xrCallbacks = new WeakMap(), _WilsonGPU_xrViewport = new WeakMap(), _WilsonGPU_onDeviceChange = new WeakMap(), _WilsonGPU_numShaders = new WeakMap(), _WilsonGPU_currentShaderId = new WeakMap(), _WilsonGPU_currentProgram = new WeakMap(), _WilsonGPU_framebuffers = new WeakMap(), _WilsonGPU_textures = new WeakMap(), _WilsonGPU_currentFramebufferId = new WeakMap(), _WilsonGPU_currentTextureId = new WeakMap(), _WilsonGPU_positionBuffers = new WeakMap(), _WilsonGPU_shaders = new WeakMap(), _WilsonGPU_onXRFrame = new WeakMap(), _WilsonGPU_onXREnd = new WeakMap(), _WilsonGPU_instances = new WeakSet(), _WilsonGPU_logShaderSource = function _WilsonGPU_logShaderSource(source, infoLog) {
     const match = infoLog.match(/\b0:(\d+)/);
     if (!match) {
         console.log(source);
@@ -2915,4 +3335,73 @@ _WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(),
         styles.push(i + 1 === errorLine ? errorStyle : normalStyle);
     }
     console.log(parts.join("\n"), ...styles);
+}, _WilsonGPU_checkXRSupport = function _WilsonGPU_checkXRSupport() {
+    __classPrivateFieldSet(this, _WilsonGPU_xrIsSupportedNow, null, "f");
+    this.xrIsSupported = (navigator.xr
+        ? navigator.xr.isSessionSupported(XR_MODE)
+        : Promise.resolve(false))
+        .catch(() => false)
+        .then(supported => {
+        __classPrivateFieldSet(this, _WilsonGPU_xrIsSupportedNow, supported, "f");
+        if (__classPrivateFieldGet(this, _WilsonGPU_xrButton, "f")) {
+            __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").style.display = supported ? "block" : "none";
+        }
+        return supported;
+    });
+    return this.xrIsSupported;
+}, _WilsonGPU_initXRButton = function _WilsonGPU_initXRButton() {
+    if (__classPrivateFieldGet(this, _WilsonGPU_useXRButton, "f")) {
+        __classPrivateFieldSet(this, _WilsonGPU_xrButton, document.createElement("div"), "f");
+        __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").classList.add("WILSON_xr-button");
+        __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").classList.add("WILSON_button");
+        // If #xrIsSupportedNow is a boolean already, this will correctly set the style.
+        // If it's still null, it will keep it hidden until #checkXRSupport finishes.
+        __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").style.display = __classPrivateFieldGet(this, _WilsonGPU_xrIsSupportedNow, "f") ? "block" : "none";
+        this.buttonContainer.appendChild(__classPrivateFieldGet(this, _WilsonGPU_xrButton, "f"));
+        const img = document.createElement("img");
+        img.src = __classPrivateFieldGet(this, _WilsonGPU_xrButtonIconPath, "f");
+        __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").appendChild(img);
+        __classPrivateFieldGet(this, _WilsonGPU_xrButton, "f").addEventListener("click", () => this.enterXR());
+    }
+}, _WilsonGPU_useProgram = function _WilsonGPU_useProgram(program) {
+    if (program === __classPrivateFieldGet(this, _WilsonGPU_currentProgram, "f")) {
+        return;
+    }
+    __classPrivateFieldSet(this, _WilsonGPU_currentProgram, program, "f");
+    this.gl.useProgram(program);
+}, _WilsonGPU_clearXRFunctions = function _WilsonGPU_clearXRFunctions() {
+    __classPrivateFieldSet(this, _WilsonGPU_xrCallbacks, {
+        onEnter: () => { },
+        onExit: () => { },
+        onFrameStart: () => { },
+        onVisibilityChange: (state) => { },
+        onFrameRateChange: (frameRate) => { }
+    }, "f");
+    __classPrivateFieldSet(this, _WilsonGPU_renderXRFrame, () => { }, "f");
+}, _WilsonGPU_applyXRTargetFrameRate = function _WilsonGPU_applyXRTargetFrameRate() {
+    var _a;
+    const session = (_a = __classPrivateFieldGet(this, _WilsonGPU_xrData, "f")) === null || _a === void 0 ? void 0 : _a.session;
+    if (!session || __classPrivateFieldGet(this, _WilsonGPU_xrTargetFrameRate, "f") === undefined) {
+        return;
+    }
+    const supportedFrameRates = session.supportedFrameRates;
+    if (!supportedFrameRates || supportedFrameRates.length === 0) {
+        if (this.verbose) {
+            console.warn("[Wilson] This device doesn't support setting the XR frame rate.");
+        }
+        return;
+    }
+    // updateTargetFrameRate rejects on anything not in supportedFrameRates.
+    let closestRate = supportedFrameRates[0];
+    for (const rate of supportedFrameRates) {
+        if (Math.abs(rate - __classPrivateFieldGet(this, _WilsonGPU_xrTargetFrameRate, "f"))
+            < Math.abs(closestRate - __classPrivateFieldGet(this, _WilsonGPU_xrTargetFrameRate, "f"))) {
+            closestRate = rate;
+        }
+    }
+    session.updateTargetFrameRate(closestRate).catch((ex) => {
+        if (this.verbose) {
+            console.warn(`[Wilson] Couldn't set the XR frame rate: ${ex}`);
+        }
+    });
 };

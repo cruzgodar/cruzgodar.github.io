@@ -31,7 +31,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 	maxReflectionMarches;
 	clipDistance;
 
-	imagePlaneCenterPos = [0, 0, 0];
+	projectionMatrix = new Float32Array([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
+	cameraToWorld = new Float32Array([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
+	worldScale = 1;
+
+	clipNear = 0.1;
+	clipFar = 1000;
 
 	forwardVec = [0, 0, 0];
 	rightVec = [0, 0, 0];
@@ -40,8 +45,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// This controls the amount of fish-eye and is a delicate balance.
 	// Changing it also requires upating the camera position.
 	focalLengthFactor;
-	cameraPos;
-	defaultCameraPos;
+
+	sceneOrigin; // Formerly cameraPos
+	defaultSceneOrigin;
+
 	lightPos;
 	lightBrightness;
 	useOppositeLight;
@@ -142,8 +149,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.clipDistance = clipDistance;
 		
 		this.focalLengthFactor = focalLengthFactor;
-		this.cameraPos = cameraPos;
-		this.defaultCameraPos = [...this.cameraPos];
+		this.sceneOrigin = cameraPos;
+		this.defaultCameraPos = [...this.sceneOrigin];
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
@@ -165,12 +172,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useFor3DPrinting = useFor3DPrinting;
 
 		this.uniformsGlsl = /* glsl */`
-			uniform vec2 aspectRatio;
+			precision highp float;
+
+			uniform mat4 projectionMatrix;
+			uniform mat4 cameraToWorld;
+			uniform float worldScale;
+			uniform vec3 rayOrigin;
+
 			uniform float resolution;
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
 			uniform float epsilonScaling;
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
@@ -182,12 +191,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			...(this.useFor3DPrinting
 				? {}
 				: {
-					aspectRatio: [1, 1],
+					projectionMatrix: this.projectionMatrix,
+					cameraToWorld: this.cameraToWorld,
+					worldScale: this.worldScale,
+					rayOrigin: [0, 0, 0],
 					resolution: this.resolution,
-					cameraPos: this.cameraPos,
-					imagePlaneCenterPos: this.imagePlaneCenterPos,
-					rightVec: this.rightVec,
-					upVec: this.upVec,
 					minEpsilon: this.minEpsilon,
 				}
 			),
@@ -224,7 +232,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 		);
 
-		this.distanceFromOrigin = magnitude(this.cameraPos);
+		this.distanceFromOrigin = magnitude(this.sceneOrigin);
 
 		const useableShader = shader ?? this.createShader({
 			distanceEstimatorGlsl,
@@ -466,7 +474,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.lockedOnOrigin)
 		{
-			this.cameraPos = scaleVector(
+			this.sceneOrigin = scaleVector(
 				-this.distanceFromOrigin,
 				this.forwardVec
 			);
@@ -474,9 +482,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.speedFactor = Math.min(
 			this.distanceEstimator(
-				this.cameraPos[0],
-				this.cameraPos[1],
-				this.cameraPos[2]
+				this.sceneOrigin[0],
+				this.sceneOrigin[1],
+				this.sceneOrigin[2]
 			),
 			.5
 		) / 4;
@@ -493,17 +501,39 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.upVec[1] *= this.speedFactor / this.fovFactor;
 		this.upVec[2] *= this.speedFactor / this.fovFactor;
 
-		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.forwardVec[0] * this.focalLengthFactor,
-			this.cameraPos[1] + this.forwardVec[1] * this.focalLengthFactor,
-			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
+
+
+		// Now we convert these into matrices for the shader.
+		const aspectRatio = this.wilson.worldWidth / this.wilson.worldHeight;
+		this.projectionMatrix = new Float32Array([
+			this.fovFactor / aspectRatio, 0, 0, 0,
+			0, this.fovFactor, 0, 0,
+			0, 0, (this.clipFar + this.clipNear) / (this.clipNear - this.clipFar), -1,
+			0, 0, 2 * this.clipFar * this.clipNear / (this.clipNear - this.clipFar), 0
+		]);
+
+		this.cameraToWorld = new Float32Array([
+			this.rightVec[0], this.rightVec[1], this.rightVec[2], 0,
+			this.upVec[0], this.upVec[1], this.upVec[2], 0,
+			-this.forwardVec[0], -this.forwardVec[1], -this.forwardVec[2], 0,
+			this.sceneOrigin[0], this.sceneOrigin[1], this.sceneOrigin[2], 1
+		]);
+
+
+
+		// rayOrigin = sceneOrigin + cameraToWorld[3].xyz * worldScale;
+		const rayOrigin = [
+			this.sceneOrigin[0] + this.cameraToWorld[12] * this.worldScale,
+			this.sceneOrigin[1] + this.cameraToWorld[13] * this.worldScale,
+			this.sceneOrigin[2] + this.cameraToWorld[14] * this.worldScale,
 		];
+		
+
 
 		this.setUniforms({
-			cameraPos: this.cameraPos,
-			imagePlaneCenterPos: this.imagePlaneCenterPos,
-			rightVec: this.rightVec,
-			upVec: this.upVec,
+			projectionMatrix: this.projectionMatrix,
+			cameraToWorld: this.cameraToWorld,
+			rayOrigin,
 		});
 
 		this.needNewFrame = false;
@@ -527,14 +557,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		const duration = 350;
 
-		const oldCameraPos = [...this.cameraPos];
+		const oldCameraPos = [...this.sceneOrigin];
 
 		animate((t) =>
 		{
-			this.cameraPos = [
-				(1 - t) * oldCameraPos[0] + t * this.defaultCameraPos[0],
-				(1 - t) * oldCameraPos[1] + t * this.defaultCameraPos[1],
-				(1 - t) * oldCameraPos[2] + t * this.defaultCameraPos[2]
+			this.sceneOrigin = [
+				(1 - t) * oldCameraPos[0] + t * this.defaultSceneOrigin[0],
+				(1 - t) * oldCameraPos[1] + t * this.defaultSceneOrigin[1],
+				(1 - t) * oldCameraPos[2] + t * this.defaultSceneOrigin[2]
 			];
 
 			this.needNewFrame = true;
@@ -731,10 +761,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[2] * this.speedFactor / 1.5
 			];
 
-			this.cameraPos[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
-			this.cameraPos[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
-			this.cameraPos[2] = this.lockZ
-				?? this.cameraPos[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
+			this.sceneOrigin[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
+			this.sceneOrigin[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
+			this.sceneOrigin[2] = this.lockZ
+				?? this.sceneOrigin[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
 			this.wilson.showResetButton();
 
@@ -823,10 +853,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (value && !this.lockedOnOrigin)
 		{
 			// Convert to spherical coordinates.
-			const r = magnitude(this.cameraPos);
-			const normalizedCameraPos = normalize(this.cameraPos);
-			const phi = Math.acos(this.cameraPos[2] / r);
-			let theta = Math.PI - Math.atan2(this.cameraPos[1], this.cameraPos[0]);
+			const r = magnitude(this.sceneOrigin);
+			const normalizedCameraPos = normalize(this.sceneOrigin);
+			const phi = Math.acos(this.sceneOrigin[2] / r);
+			let theta = Math.PI - Math.atan2(this.sceneOrigin[1], this.sceneOrigin[0]);
 			if (theta > Math.PI)
 			{
 				theta -= 2 * Math.PI;
@@ -866,7 +896,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						showResetButton: false,
 					});
 					
-					this.cameraPos = scaleVector(
+					this.sceneOrigin = scaleVector(
 						dummy.r,
 						normalizedCameraPos
 					);
@@ -891,7 +921,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (this.lockedOnOrigin !== value)
 		{
 			this.wilson.setCurrentStateAsDefault();
-			this.defaultCameraPos = [...this.cameraPos];
+			this.defaultSceneOrigin = [...this.sceneOrigin];
 		}
 
 		this.lockedOnOrigin = value;
