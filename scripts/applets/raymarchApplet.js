@@ -31,8 +31,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	maxReflectionMarches;
 	clipDistance;
 
-	projectionMatrix = new Float32Array([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
-	cameraToWorld = new Float32Array([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
+	projectionMatrix = new Float32Array(16);
+	cameraToWorld = new Float32Array(16);
 	worldScale = 1;
 
 	clipNear = 0.1;
@@ -86,6 +86,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	getReflectivityGlsl;
 	getGeodesicGlsl;
 	addGlsl;
+
+	xrCameraToWorld = new Float32Array(16);
+	xrRayOrigin = [0, 0, 0];
+	headPos = [0, 0, 0];
+	headToScene = new Float32Array(16);
 
 
 
@@ -177,7 +182,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.uniformsGlsl = /* glsl */`
 			uniform mat4 projectionMatrix;
 			uniform mat4 cameraToWorld;
-			uniform float worldScale;
 			uniform vec3 rayOrigin;
 
 			uniform float resolution;
@@ -273,6 +277,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXR: true,
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
+
+			onEnterXR: this.onEnterXR.bind(this),
+			onXRFrameStart: this.onXRFrameStart.bind(this),
+			renderXRFrame: this.renderXRFrame.bind(this),
+			onExitXR: this.onExitXR.bind(this),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -458,39 +467,46 @@ export class RaymarchApplet extends AnimationFrameApplet
 			return;
 		}
 
-		// Here comes the serious math. Theta is the angle in the xy-plane and
-		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		const inXR = this.wilson.inXR;
 
-		this.forwardVec = [
-			Math.cos(this.theta) * Math.sin(this.phi),
-			Math.sin(this.theta) * Math.sin(this.phi),
-			Math.cos(this.phi)
-		];
-
-		// Now the right vector needs to be constrained to the xy-plane,
-		// since otherwise the image will appear tilted. For a vector (a, b, c),
-		// the orthogonal plane that passes through the origin is ax + by + cz = 0,
-		// so we want ax + by = 0. One solution is (b, -a), and that's the one that
-		// goes to the "right" of the forward vector (when looking down).
-		this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
-
-		// Finally, the upward vector is the cross product of the previous two.
-		this.upVec = crossProduct(this.rightVec, this.forwardVec);
-
-		if (this.lockedOnOrigin)
+		// Without a headset, all of the camera orientation is ours to compute.
+		if (!inXR)
 		{
-			this.sceneOrigin = scaleVector(
-				-this.distanceFromOrigin,
-				this.forwardVec
-			);
+			// Here comes the serious math. Theta is the angle in the xy-plane and
+			// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+
+			this.forwardVec = [
+				Math.cos(this.theta) * Math.sin(this.phi),
+				Math.sin(this.theta) * Math.sin(this.phi),
+				Math.cos(this.phi)
+			];
+
+			// Now the right vector needs to be constrained to the xy-plane,
+			// since otherwise the image will appear tilted. For a vector (a, b, c),
+			// the orthogonal plane that passes through the origin is ax + by + cz = 0,
+			// so we want ax + by = 0. One solution is (b, -a), and that's the one that
+			// goes to the "right" of the forward vector (when looking down).
+			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+
+			// Finally, the upward vector is the cross product of the previous two.
+			this.upVec = crossProduct(this.rightVec, this.forwardVec);
+
+			// This also can't be allowed to run in XR since it would try to keep the camera
+			// locked in place.
+			if (this.lockedOnOrigin)
+			{
+				this.sceneOrigin = scaleVector(
+					-this.distanceFromOrigin,
+					this.forwardVec
+				);
+			}
 		}
 
+		// The camera is the head in XR.
+		const cameraPos = inXR ? this.headPos : this.sceneOrigin;
+
 		this.speedFactor = Math.min(
-			this.distanceEstimator(
-				this.sceneOrigin[0],
-				this.sceneOrigin[1],
-				this.sceneOrigin[2]
-			),
+			this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]),
 			.5
 		) / 4;
 
@@ -500,14 +516,22 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.moveForwardScale = this.speedFactor / 1.5;
 		this.moveRightScale = this.speedFactor / this.fovFactor;
 
+
+		// Everything past this point is going to be handed to us by a headset if there is one.
+		if (inXR)
+		{
+			this.needNewFrame = false;
+			return;
+		}
+
+
+
 		// focalLengthFactor and fovFactor combine into one focal length. The two aspect
 		// terms are the old aspectRatio uniform.
 		const focalLength = this.focalLengthFactor * this.fovFactor / 1.5;
 		const aspectRatioX = this.wilson.worldWidth / this.worldSize;
 		const aspectRatioY = this.wilson.worldHeight / this.worldSize;
 
-
-		
 		this.projectionMatrix = new Float32Array([
 			focalLength / aspectRatioX, 0, 0, 0,
 			0, focalLength / aspectRatioY, 0, 0,
@@ -538,10 +562,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.needNewFrame = false;
 	}
 
+
+
 	distanceEstimator()
 	{
 		throw new Error("Distance estimator not implemented!");
 	}
+
+
 
 	prepareFrame(timeElapsed)
 	{
@@ -551,6 +579,53 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.timeSinceLastFrame += timeElapsed;
 	}
+
+
+
+	onEnterXR()
+	{
+		this.pause();
+	}
+
+	onExitXR()
+	{
+		this.wilson.setUniform("resolution", this.resolution, "draw");
+		this.calculateVectors();
+		this.resume();
+	}
+
+	onXRFrameStart({ deltaTime, pose })
+	{
+		xrToScene(pose.transform.matrix, this.headToScene);
+
+		this.headPos[0] = this.sceneOrigin[0] + this.headToScene[12] * this.worldScale;
+		this.headPos[1] = this.sceneOrigin[1] + this.headToScene[13] * this.worldScale;
+		this.headPos[2] = this.sceneOrigin[2] + this.headToScene[14] * this.worldScale;
+
+		// The head replaces theta and phi as the movement basis, so w/a/s/d moves
+		// where the user is looking.
+		this.forwardVec = normalize([
+			-this.headToScene[8],
+			-this.headToScene[9],
+			-this.headToScene[10]
+		]);
+
+		// Constrained to the xy-plane like the desktop path, but here the user really
+		// can look straight up, where that construction degenerates.
+		const horizontal = Math.hypot(this.forwardVec[0], this.forwardVec[1]);
+
+		if (horizontal > 0.001)
+		{
+			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+			this.upVec = crossProduct(this.rightVec, this.forwardVec);
+		}
+
+		this.calculateVectors();
+
+		this.prepareFrame(deltaTime);
+	}
+
+
 
 	onReset()
 	{
@@ -602,6 +677,29 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.wilson.drawFrame();
 		}
 	}
+
+
+
+	renderXRFrame({ projectionMatrix, cameraToWorld, viewport })
+	{
+		xrToScene(cameraToWorld, this.xrCameraToWorld);
+
+		this.xrRayOrigin[0] = this.sceneOrigin[0] + this.xrCameraToWorld[12] * this.worldScale;
+		this.xrRayOrigin[1] = this.sceneOrigin[1] + this.xrCameraToWorld[13] * this.worldScale;
+		this.xrRayOrigin[2] = this.sceneOrigin[2] + this.xrCameraToWorld[14] * this.worldScale;
+
+		// These get set manually instead of with this.setUniforms to avoid unnecessary overhead.
+		this.wilson.setUniform("projectionMatrix", projectionMatrix, "draw");
+		this.wilson.setUniform("cameraToWorld", this.xrCameraToWorld, "draw");
+		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
+
+		// Ensure epsilon scaling is done with the per-eye resolution.
+		this.wilson.setUniform("resolution", Math.sqrt(viewport.width * viewport.height), "draw");
+
+		this.wilson.drawFrame();
+	}
+
+
 
 	downloadHighResFrame(filename, resolution = this.resolution)
 	{
@@ -756,8 +854,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.sceneOrigin[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
 			this.sceneOrigin[2] = this.lockZ
 				?? this.sceneOrigin[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
-
-			this.wilson.showResetButton();
+			
+			if (!this.wilson.inXR)
+			{
+				this.wilson.showResetButton();
+			}
 
 			this.needNewFrame = true;
 		}
@@ -1042,4 +1143,21 @@ export function mat3TimesVector(mat, vec)
 		mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2],
 		mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2]
 	];
+}
+
+// Converts WebXR's y-up internal coorindate system to RaymarchApplet's z-up one;
+// i.e. columns (x, y, z) → (−z, −x, y).
+function xrToScene(matrix, out)
+{
+	for (let column = 0; column < 4; column++)
+	{
+		const i = 4 * column;
+
+		out[i] = -matrix[i + 2];
+		out[i + 1] = -matrix[i];
+		out[i + 2] =  matrix[i + 1];
+		out[i + 3] =  matrix[i + 3];
+	}
+
+	return out;
 }

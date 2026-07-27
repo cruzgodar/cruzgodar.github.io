@@ -3399,6 +3399,9 @@ _WilsonGPU_useWebGL2 = new WeakMap(), _WilsonGPU_shaderPrograms = new WeakMap(),
             closestRate = rate;
         }
     }
+    if (this.verbose) {
+        console.log(`[Wilson] Available XR framerates are ${supportedFrameRates}; using ${closestRate}.`);
+    }
     session.updateTargetFrameRate(closestRate).catch((ex) => {
         if (this.verbose) {
             console.warn(`[Wilson] Couldn't set the XR frame rate: ${ex}`);
