@@ -74,6 +74,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	speedFactor = 2;
 	fovFactor = 1;
 
+	moveForwardScale = 1;
+	moveRightScale = 1;
+
 	lockedOnOrigin;
 	distanceFromOrigin = 1;
 
@@ -113,7 +116,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		clipDistance = 1000,
 		
 		focalLengthFactor = 2.5,
-		cameraPos = [0, 0, 0],
+		sceneOrigin = [0, 0, 0],
 		lockedOnOrigin = true,
 		lockZ,
 
@@ -149,8 +152,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.clipDistance = clipDistance;
 		
 		this.focalLengthFactor = focalLengthFactor;
-		this.sceneOrigin = cameraPos;
-		this.defaultCameraPos = [...this.sceneOrigin];
+		this.sceneOrigin = sceneOrigin;
+		this.defaultSceneOrigin = [...this.sceneOrigin];
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
@@ -172,8 +175,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useFor3DPrinting = useFor3DPrinting;
 
 		this.uniformsGlsl = /* glsl */`
-			precision highp float;
-
 			uniform mat4 projectionMatrix;
 			uniform mat4 cameraToWorld;
 			uniform float worldScale;
@@ -489,51 +490,45 @@ export class RaymarchApplet extends AnimationFrameApplet
 			.5
 		) / 4;
 
-		// The factor we divide by here sets the fov.
-		this.forwardVec[0] *= this.speedFactor / 1.5;
-		this.forwardVec[1] *= this.speedFactor / 1.5;
-		this.forwardVec[2] *= this.speedFactor / 1.5;
+		// The camera basis stays orthonormal instead of also encoding the fov,
+		// which lives in the projection matrix now. These only scale movement,
+		// which used to ride along on the magnitudes.
+		this.moveForwardScale = this.speedFactor / 1.5;
+		this.moveRightScale = this.speedFactor / this.fovFactor;
 
-		this.rightVec[0] *= this.speedFactor / this.fovFactor;
-		this.rightVec[1] *= this.speedFactor / this.fovFactor;
-
-		this.upVec[0] *= this.speedFactor / this.fovFactor;
-		this.upVec[1] *= this.speedFactor / this.fovFactor;
-		this.upVec[2] *= this.speedFactor / this.fovFactor;
-
+		// focalLengthFactor and fovFactor combine into one focal length. The two aspect
+		// terms are the old aspectRatio uniform.
+		const focalLength = this.focalLengthFactor * this.fovFactor / 1.5;
+		const aspectRatioX = this.wilson.worldWidth / this.worldSize;
+		const aspectRatioY = this.wilson.worldHeight / this.worldSize;
 
 
-		// Now we convert these into matrices for the shader.
-		const aspectRatio = this.wilson.worldWidth / this.wilson.worldHeight;
+		
 		this.projectionMatrix = new Float32Array([
-			this.fovFactor / aspectRatio, 0, 0, 0,
-			0, this.fovFactor, 0, 0,
+			focalLength / aspectRatioX, 0, 0, 0,
+			0, focalLength / aspectRatioY, 0, 0,
 			0, 0, (this.clipFar + this.clipNear) / (this.clipNear - this.clipFar), -1,
 			0, 0, 2 * this.clipFar * this.clipNear / (this.clipNear - this.clipFar), 0
 		]);
 
+		// Translation is zero: cameraToWorld maps the eye into the space centered on the
+		// camera, and sceneOrigin places that space in the scene. In XR the headset
+		// supplies the translation instead, and worldScale converts it from meters.
 		this.cameraToWorld = new Float32Array([
 			this.rightVec[0], this.rightVec[1], this.rightVec[2], 0,
 			this.upVec[0], this.upVec[1], this.upVec[2], 0,
 			-this.forwardVec[0], -this.forwardVec[1], -this.forwardVec[2], 0,
-			this.sceneOrigin[0], this.sceneOrigin[1], this.sceneOrigin[2], 1
+			0, 0, 0, 1
 		]);
-
-
-
-		// rayOrigin = sceneOrigin + cameraToWorld[3].xyz * worldScale;
-		const rayOrigin = [
-			this.sceneOrigin[0] + this.cameraToWorld[12] * this.worldScale,
-			this.sceneOrigin[1] + this.cameraToWorld[13] * this.worldScale,
-			this.sceneOrigin[2] + this.cameraToWorld[14] * this.worldScale,
-		];
 		
 
 
 		this.setUniforms({
 			projectionMatrix: this.projectionMatrix,
 			cameraToWorld: this.cameraToWorld,
-			rayOrigin,
+
+			// No accounting for the head position here -- that's only in XR.
+			rayOrigin: this.sceneOrigin,
 		});
 
 		this.needNewFrame = false;
@@ -729,27 +724,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 				|| this.moveVelocity[1] !== 0
 				|| this.moveVelocity[2] !== 0
 		)) {
-			const usableForwardVec = this.lockZ !== undefined
-				? scaleVector(
-					magnitude(this.forwardVec),
-					normalize([
-						this.forwardVec[0],
-						this.forwardVec[1],
-						0
-					]),
-				)
-				: this.forwardVec;
+			const usableForwardVec = scaleVector(
+				this.moveForwardScale,
+				this.lockZ !== undefined
+					? normalize([this.forwardVec[0], this.forwardVec[1], 0])
+					: this.forwardVec
+			);
 
-			const usableRightVec = this.lockZ !== undefined
-				? scaleVector(
-					magnitude(this.rightVec),
-					normalize([
-						this.rightVec[0],
-						this.rightVec[1],
-						0
-					]),
-				)
-				: this.rightVec;
+			const usableRightVec = scaleVector(
+				this.moveRightScale,
+				this.lockZ !== undefined
+					? normalize([this.rightVec[0], this.rightVec[1], 0])
+					: this.rightVec
+			);
 
 			const tangentVec = [
 				this.moveVelocity[0] * usableForwardVec[0]
@@ -797,10 +784,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.setUniforms({
-			aspectRatio: [
-				this.wilson.worldWidth / this.worldSize,
-				this.wilson.worldHeight / this.worldSize
-			],
 			resolution: this.resolution
 		});
 
