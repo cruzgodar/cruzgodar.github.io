@@ -35,7 +35,7 @@ body
 	z-index: 10;
 }
 
-.WILSON_enter-fullscreen-button, .WILSON_reset-button
+.WILSON_button
 {
 	display: none !important;
 }

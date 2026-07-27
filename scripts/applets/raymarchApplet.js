@@ -270,6 +270,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
+			useXR: true,
+			useXRButton: true,
+			xrButtonIconPath: "/graphics/general-icons/xr.png",
+
 			interactionOptions: {
 				useForPanAndZoom: true,
 				disallowZooming: true,
