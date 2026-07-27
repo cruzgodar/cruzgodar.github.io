@@ -92,6 +92,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	headPos = [0, 0, 0];
 	headToScene = new Float32Array(16);
 
+	xrSceneOriginBeforeXR;
+	xrThetaBeforeXR;
+	xrInitialZHeight;
+
 
 
 	constructor({
@@ -140,6 +144,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useReflections = false,
 		useBloom = true,
 		useFor3DPrinting = false,
+
+		xrInitialZHeight = 0.75,
 	}) {
 		super(canvas);
 
@@ -178,6 +184,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
 		this.useFor3DPrinting = useFor3DPrinting;
+
+		this.xrInitialZHeight = xrInitialZHeight;
 
 		this.uniformsGlsl = /* glsl */`
 			uniform mat4 projectionMatrix;
@@ -277,6 +285,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXR: true,
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
+			xrFramebufferScaleFactor: 0.5,
+			xrViewportScale: 1,
+			xrTargetFrameRate: 120,
 
 			onEnterXR: this.onEnterXR.bind(this),
 			onXRFrameStart: this.onXRFrameStart.bind(this),
@@ -585,10 +596,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 	onEnterXR()
 	{
 		this.pause();
+
+		this.xrSceneOriginBeforeXR = [...this.sceneOrigin];
+		this.xrThetaBeforeXR = this.theta;
+		this.lockedOnOrigin = false;
+
+		this.theta = 0;
+		this.sceneOrigin = [-this.distanceFromOrigin, 0, this.xrInitialZHeight];
 	}
 
 	onExitXR()
 	{
+		this.sceneOrigin = this.xrSceneOriginBeforeXR;
+		this.theta = this.xrThetaBeforeXR;
+
 		this.wilson.setUniform("resolution", this.resolution, "draw");
 		this.calculateVectors();
 		this.resume();
