@@ -234,35 +234,33 @@ class H3Geometry extends BaseGeometry
 		]);
 	}
 
-	correctVectors()
+	// Projecting against pos directly rather than getNormalVec(pos), since <pos, pos> = -1 on
+	// the hyperboloid makes the projection fall out with no normalization needed.
+	correctFrame(pos, forward, right, up)
 	{
-		const dotUp = this.dotProduct(
-			this.cameraPos,
-			this.upVec
-		);
+		const dotUp = this.dotProduct(pos, up);
+		const dotRight = this.dotProduct(pos, right);
+		const dotForward = this.dotProduct(pos, forward);
 
-		const dotRight = this.dotProduct(
-			this.cameraPos,
-			this.rightVec
-		);
-
-		const dotForward = this.dotProduct(
-			this.cameraPos,
-			this.forwardVec
-		);
+		const newUp = [];
+		const newRight = [];
+		const newForward = [];
 
 		for (let i = 0; i < 4; i++)
 		{
 			// The signature of the Lorentzian inner product means
 			// we need to add these instead of subtracting them.
-			this.upVec[i] += dotUp * this.cameraPos[i];
-			this.rightVec[i] += dotRight * this.cameraPos[i];
-			this.forwardVec[i] += dotForward * this.cameraPos[i];
+			newUp[i] = up[i] + dotUp * pos[i];
+			newRight[i] = right[i] + dotRight * pos[i];
+			newForward[i] = forward[i] + dotForward * pos[i];
 		}
 
-		this.upVec = this.normalize(this.upVec);
-		this.rightVec = this.normalize(this.rightVec);
-		this.forwardVec = this.normalize(this.forwardVec);
+		return [
+			pos,
+			this.normalize(newForward),
+			this.normalize(newRight),
+			this.normalize(newUp)
+		];
 	}
 
 	baseColorIncreases = [

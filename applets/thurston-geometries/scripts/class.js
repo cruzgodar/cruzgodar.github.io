@@ -167,6 +167,19 @@ export class ThurstonGeometries extends Applet
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
 
+			xrOptions:
+			{
+				useButton: true,
+				buttonIconPath: "/graphics/general-icons/xr.png",
+				targetFrameRate: 72,
+				framebufferScale: 0.5,
+
+				onEnter: this.onEnterXR.bind(this),
+				onFrameStart: this.onXRFrameStart.bind(this),
+				renderFrame: this.renderXRFrame.bind(this),
+				onExit: this.onExitXR.bind(this),
+			},
+
 			verbose: window.DEBUG,
 		};
 
@@ -301,37 +314,154 @@ export class ThurstonGeometries extends Applet
 		]);
 	}
 
+	
+
+	onEnterXR()
+	{
+		this.animationPaused = true;
+
+		// Bake the current pan rotation into the base frame so the view doesn't jump.
+		this.stateBeforeXR = {
+			forwardVec: [...this.geometryData.forwardVec],
+			upVec: [...this.geometryData.upVec],
+			rightVec: [...this.geometryData.rightVec],
+			cameraPos: [...this.geometryData.cameraPos],
+			lockedOnOrigin: this.geometryData.lockedOnOrigin,
+			worldCenterX: this.wilson.worldCenterX,
+			worldCenterY: this.wilson.worldCenterY,
+		};
+
+		this.geometryData.forwardVec = [...this.rotatedForwardVec];
+		this.geometryData.upVec = [...this.rotatedUpVec];
+		this.geometryData.correctVectors();
+		this.wilson.resizeWorld({ centerX: 0, centerY: 0 });
+
+		this.geometryData.lockedOnOrigin = false;
+	}
+
+	onExitXR()
+	{
+		this.geometryData.forwardVec = [...this.stateBeforeXR.forwardVec];
+		this.geometryData.rightVec = [...this.stateBeforeXR.rightVec];
+		this.geometryData.upVec = [...this.stateBeforeXR.upVec];
+		this.geometryData.cameraPos = [...this.stateBeforeXR.cameraPos];
+		this.geometryData.lockedOnOrigin = this.stateBeforeXR.lockedOnOrigin;
+		
+		this.wilson.resizeWorld({
+			centerX: this.stateBeforeXR.worldCenterX,
+			centerY: this.stateBeforeXR.worldCenterY
+		});
+
+		this.geometryData.correctVectors();
+
+		this.resume();
+	}
+
+
+
+	onXRFrameStart({ deltaTime, pose })
+	{
+		const m = pose.transform.matrix;   // column-major, head → tracking space
+
+		// The head's orientation, mapped into the tangent space at cameraPos.
+		// Columns of m are the head's right / up / back axes.
+		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
+			a * this.geometryData.rightVec[i]
+			+ b * this.geometryData.upVec[i]
+			- c * this.geometryData.forwardVec[i]
+		);
+
+		this.headRightVec      = convertToTangentSpace(m[0], m[1],  m[2]);
+		this.headUpVec         = convertToTangentSpace(m[4], m[5],  m[6]);
+		this.rotatedForwardVec = convertToTangentSpace(-m[8], -m[9], -m[10]);
+		this.rotatedUpVec      = this.headUpVec;
+
+		this.headOffset = [
+			m[12] * this.geometryData.xrScale,
+			m[13] * this.geometryData.xrScale,
+			m[14] * this.geometryData.xrScale
+		];
+
+		
+		
+		// Get input from potentially both controllers.
+		const controllerRight = this.wilson.getXRController("right");
+		const controllerLeft = this.wilson.getXRController("left");
+
+		const triggerPressed =
+			(controllerRight?.buttons?.trigger?.pressed
+				|| controllerLeft?.buttons?.trigger?.pressed)
+			?? false;
+
+		const squeezePressed =
+			(controllerRight?.buttons?.squeeze?.pressed
+				|| controllerLeft?.buttons?.squeeze?.pressed)
+			?? false;
+
+		const aPressed =
+			(controllerRight?.buttons?.a?.pressed
+				|| controllerLeft?.buttons?.a?.pressed)
+			?? false;
+
+		const bPressed =
+			(controllerRight?.buttons?.b?.pressed
+				|| controllerLeft?.buttons?.b?.pressed)
+			?? false;
+
+		if (aPressed)
+		{
+			this.movingAmount[0] = 1;
+		}
+
+		else if (bPressed)
+		{
+			this.movingAmount[0] = -1;
+		}
+
+		if (triggerPressed)
+		{
+			this.movingAmount[2] = 1;
+		}
+
+		else if (squeezePressed)
+		{
+			this.movingAmount[2] = -1;
+		}
+
+
+
+		this.updateScene(deltaTime);
+		this.geometryData.drawFrameCallback();
+	}
+
 
 
 	resume()
 	{
+		if (this.wilson.inXR)
+		{
+			return;
+		}
+
 		this.needNewFrame = true;
 		this.animationPaused = false;
 
 		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
-	drawFrame(timestamp)
+	
+
+	updateScene(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
 		this.geometryData.teleportCamera(
 			this.rotatedForwardVec,
-			this.recomputeRotation.bind(this)
+			this.wilson.inXR ? () => {} : this.recomputeRotation.bind(this)
 		);
 
-		const uniforms = this.geometryData.getUpdatedUniforms() ?? {};
-		this.wilson.setUniforms(uniforms, "draw");
+		this.wilson.setUniforms(this.geometryData.getUpdatedUniforms() ?? {}, "draw");
 
 		
-
+		
 		if (this.keysPressed.w || this.numTouches === 2)
 		{
 			this.movingAmount[0] = 1;
@@ -432,11 +562,28 @@ export class ThurstonGeometries extends Applet
 
 		this.geometryData.correctVectors();
 
-		this.handleRotating();
+		
 
-		this.handleRolling(timeElapsed);
+		if (!this.wilson.inXR)
+		{
+			this.handleRotating();
+			this.handleRolling(timeElapsed);
+			this.updateUniforms("draw");
+		}
+	}
 
-		this.updateUniforms("draw");
+
+
+	drawFrame(timestamp)
+	{
+		const timeElapsed = timestamp - this.lastTimestamp;
+
+		this.lastTimestamp = timestamp;
+
+		if (timeElapsed === 0)
+		{
+			return;
+		}
 
 		
 
@@ -452,6 +599,51 @@ export class ThurstonGeometries extends Applet
 		{
 			requestAnimationFrame(this.drawFrame.bind(this));
 		}
+	}
+
+
+
+	renderXRFrame({ projectionMatrix, cameraToWorld })
+	{
+		const m = cameraToWorld;   // column-major, eye → tracking space
+
+		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
+			a * this.geometryData.rightVec[i]
+			+ b * this.geometryData.upVec[i]
+			- c * this.geometryData.forwardVec[i]
+		);
+
+		// The eye's own orientation, still expressed at cameraPos.
+		const eyeRight   = convertToTangentSpace(m[0], m[1],  m[2]);
+		const eyeUp      = convertToTangentSpace(m[4], m[5],  m[6]);
+		const eyeForward = convertToTangentSpace(-m[8], -m[9], -m[10]);
+
+		// Now walk the geodesic to where the eye actually is. The offset is in eye
+		// coordinates relative to the *base* frame, which is what getOffsetFrame expects.
+		const frame = this.geometryData.getOffsetFrame(
+			this.geometryData.cameraPos,
+			eyeForward, eyeRight, eyeUp,
+			[m[12] * this.xrScale, m[13] * this.xrScale, m[14] * this.xrScale]
+		);
+
+		const pos = frame[0];
+		const forwardVec = frame[1];
+		const rightVec = frame[2];
+		const upVec = frame[3];
+		const fiber = frame[4];
+
+		this.wilson.setUniform("projectionMatrix", projectionMatrix, "draw");
+		this.wilson.setUniform("cameraPos", pos, "draw");
+		this.wilson.setUniform("forwardVec", forwardVec, "draw");
+		this.wilson.setUniform("rightVec", rightVec, "draw");
+		this.wilson.setUniform("upVec", upVec, "draw");
+
+		if (fiber !== undefined)
+		{
+			this.wilson.setUniform("cameraFiber", fiber, "draw");
+		}
+
+		this.wilson.drawFrame();
 	}
 
 
@@ -533,7 +725,7 @@ export class ThurstonGeometries extends Applet
 
 	// When teleporting, we often have the issue that teleporting and rotating the forward vector
 	// don't commute, and unfortunately, we want to teleport *then* rotate. To get around this,
-	// we'll comute what the new rotation should be when teleporting.
+	// we'll compute what the new rotation should be when teleporting.
 	recomputeRotation(newRotatedForwardVec)
 	{
 		const normalizedForwardVec = scaleVector(

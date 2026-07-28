@@ -308,17 +308,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
-			useXR: true,
-			useXRButton: true,
-			xrButtonIconPath: "/graphics/general-icons/xr.png",
-			xrTargetFrameRate: 72,
-			xrFramebufferScale: 0.5,
-
-			onEnterXR: this.onEnterXR.bind(this),
-			onXRFrameStart: this.onXRFrameStart.bind(this),
-			renderXRFrame: this.renderXRFrame.bind(this),
-			onExitXR: this.onExitXR.bind(this),
-
 			interactionOptions: {
 				useForPanAndZoom: true,
 				disallowZooming: true,
@@ -340,6 +329,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
+
+			xrOptions:
+			{
+				useButton: true,
+				buttonIconPath: "/graphics/general-icons/xr.png",
+				targetFrameRate: 72,
+				framebufferScale: 0.5,
+
+				onEnter: this.onEnterXR.bind(this),
+				onFrameStart: this.onXRFrameStart.bind(this),
+				renderFrame: this.renderXRFrame.bind(this),
+				onExit: this.onExitXR.bind(this),
 			},
 
 			verbose: window.DEBUG

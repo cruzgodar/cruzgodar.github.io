@@ -58,6 +58,27 @@ export class BaseGeometry
 		];
 	}
 
+	// offset is [x, y, z] in eye coordinates (x right, y up, z back), in scene units.
+	getOffsetFrame(pos, rightVec, upVec, forwardVec, offset)
+	{
+		const distance = Math.hypot(offset[0], offset[1], offset[2]);
+
+		if (distance < 1e-9)
+		{
+			return [pos, forwardVec, rightVec, upVec];
+		}
+
+		// T(offset): the frame is geometry-orthonormal, so the geometry norm of this
+		// equals the Euclidean norm of offset.
+		const direction = this.normalize([0, 1, 2, 3].map(i =>
+			offset[0] * rightVec[i] + offset[1] * upVec[i] - offset[2] * forwardVec[i]
+		));
+
+		const newPos = this.correctPosition(this.followGeodesic(pos, direction, distance));
+
+		return this.correctFrame(newPos, forwardVec, rightVec, upVec);
+	}
+
 	teleportCamera() {}
 
 	getNearestCenter()
@@ -85,33 +106,49 @@ export class BaseGeometry
 	// direction at all.
 	correctVectors()
 	{
-		const dotUp = this.dotProduct(
-			this.normalVec,
-			this.upVec
+		const correctedFrame = this.correctFrame(
+			this.cameraPos,
+			this.forwardVec,
+			this.rightVec,
+			this.upVec,
 		);
 
-		const dotRight = this.dotProduct(
-			this.normalVec,
-			this.rightVec
-		);
+		this.forwardVec = correctedFrame[1];
+		this.rightVec = correctedFrame[2];
+		this.upVec = correctedFrame[3];
+	}
 
-		const dotForward = this.dotProduct(
-			this.normalVec,
-			this.forwardVec
-		);
+	// Not this.normalVec: that's the normal at this.cameraPos, and pos is frequently somewhere
+	// else -- an eye offset half an IPD away from the head, say. Writing into fresh arrays
+	// rather than the arguments matters for the same reason: the caller's frame is often the
+	// one we're offsetting *from*, and it still has to be intact afterward.
+	correctFrame(pos, forward, right, up)
+	{
+		const normalVec = this.getNormalVec(pos);
+
+		const dotUp = this.dotProduct(normalVec, up);
+		const dotRight = this.dotProduct(normalVec, right);
+		const dotForward = this.dotProduct(normalVec, forward);
+
+		const newUp = [];
+		const newRight = [];
+		const newForward = [];
 
 		for (let i = 0; i < 4; i++)
 		{
-			this.upVec[i] -= dotUp * this.normalVec[i];
-			this.rightVec[i] -= dotRight * this.normalVec[i];
-			this.forwardVec[i] -= dotForward * this.normalVec[i];
+			newUp[i] = up[i] - dotUp * normalVec[i];
+			newRight[i] = right[i] - dotRight * normalVec[i];
+			newForward[i] = forward[i] - dotForward * normalVec[i];
 		}
 
-		this.upVec = this.normalize(this.upVec);
-		this.rightVec = this.normalize(this.rightVec);
-		this.forwardVec = this.normalize(this.forwardVec);
+		return [
+			pos,
+			this.normalize(newForward),
+			this.normalize(newRight),
+			this.normalize(newUp)
+		];
 	}
-
+	
 	distanceEstimatorGlsl;
 	getColorGlsl;
 	lightGlsl;
@@ -123,7 +160,7 @@ export class BaseGeometry
 	// of position data, so when this is set to true, every function that takes in position
 	// now also takes a float called fiber.
 	usesFiberComponent = false;
-
+	
 	cameraPos;
 	normalVec;
 	upVec;
@@ -143,6 +180,7 @@ export class BaseGeometry
 	handleMovingCallback() {}
 
 	movingSpeed = 1;
+	xrScale = 1;
 
 	aspectRatio;
 	ignoreAspectRatio = false;

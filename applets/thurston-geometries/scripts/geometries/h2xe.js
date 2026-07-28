@@ -277,7 +277,7 @@ class H2xEGeometry extends BaseGeometry
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 
-	correctVectors()
+	correctFrame(pos, forward, right, up)
 	{
 		function h2DotProduct(vec1, vec2)
 		{
@@ -285,33 +285,31 @@ class H2xEGeometry extends BaseGeometry
 		}
 
 		// Here, we want this weirdo dot product to be 0.
-		const dotUp = h2DotProduct(
-			this.cameraPos,
-			this.upVec
-		);
+		const dotUp = h2DotProduct(pos, up);
+		const dotRight = h2DotProduct(pos, right);
+		const dotForward = h2DotProduct(pos, forward);
 
-		const dotRight = h2DotProduct(
-			this.cameraPos,
-			this.rightVec
-		);
+		const newUp = [...up];
+		const newRight = [...right];
+		const newForward = [...forward];
 
-		const dotForward = h2DotProduct(
-			this.cameraPos,
-			this.forwardVec
-		);
-
+		// Only the H^2 factor gets corrected -- the E factor's w-component is flat,
+		// so it's already tangent no matter where pos is.
 		for (let i = 0; i < 3; i++)
 		{
 			// The signature of the Lorentzian inner product means
 			// we need to add these instead of subtracting them.
-			this.upVec[i] += dotUp * this.cameraPos[i];
-			this.rightVec[i] += dotRight * this.cameraPos[i];
-			this.forwardVec[i] += dotForward * this.cameraPos[i];
+			newUp[i] += dotUp * pos[i];
+			newRight[i] += dotRight * pos[i];
+			newForward[i] += dotForward * pos[i];
 		}
 
-		this.upVec = this.normalize(this.upVec);
-		this.rightVec = this.normalize(this.rightVec);
-		this.forwardVec = this.normalize(this.forwardVec);
+		return [
+			pos,
+			this.normalize(newForward),
+			this.normalize(newRight),
+			this.normalize(newUp)
+		];
 	}
 
 	baseColorIncreases = [
