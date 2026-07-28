@@ -331,6 +331,8 @@ export class ThurstonGeometries extends Applet
 			worldCenterY: this.wilson.worldCenterY,
 		};
 
+		console.log(this.rotatedForwardVec);
+
 		this.geometryData.forwardVec = [...this.rotatedForwardVec];
 		this.geometryData.upVec = [...this.rotatedUpVec];
 		this.geometryData.correctVectors();
@@ -346,7 +348,7 @@ export class ThurstonGeometries extends Applet
 		this.geometryData.upVec = [...this.stateBeforeXR.upVec];
 		this.geometryData.cameraPos = [...this.stateBeforeXR.cameraPos];
 		this.geometryData.lockedOnOrigin = this.stateBeforeXR.lockedOnOrigin;
-		
+
 		this.wilson.resizeWorld({
 			centerX: this.stateBeforeXR.worldCenterX,
 			centerY: this.stateBeforeXR.worldCenterY
@@ -585,7 +587,7 @@ export class ThurstonGeometries extends Applet
 			return;
 		}
 
-		
+		this.updateScene(timeElapsed);
 
 		if (this.needNewFrame)
 		{
@@ -618,19 +620,35 @@ export class ThurstonGeometries extends Applet
 		const eyeUp      = convertToTangentSpace(m[4], m[5],  m[6]);
 		const eyeForward = convertToTangentSpace(-m[8], -m[9], -m[10]);
 
-		// Now walk the geodesic to where the eye actually is. The offset is in eye
-		// coordinates relative to the *base* frame, which is what getOffsetFrame expects.
-		const frame = this.geometryData.getOffsetFrame(
+		// Now walk the geodesic to where the eye actually is. The offset is in tracking space,
+		// and it's the *base* frame that maps tracking space into the manifold, so that's the
+		// frame the geodesic direction has to be built from -- not the rotated one above.
+		// Note the argument order: (pos, right, up, forward), which is not the order it
+		// returns them in.
+		const offsetFrame = this.geometryData.getOffsetFrame(
 			this.geometryData.cameraPos,
-			eyeForward, eyeRight, eyeUp,
-			[m[12] * this.xrScale, m[13] * this.xrScale, m[14] * this.xrScale]
+			this.geometryData.rightVec,
+			this.geometryData.upVec,
+			this.geometryData.forwardVec,
+			[
+				m[12] * this.geometryData.xrScale,
+				m[13] * this.geometryData.xrScale,
+				m[14] * this.geometryData.xrScale
+			]
 		);
 
-		const pos = frame[0];
-		const forwardVec = frame[1];
-		const rightVec = frame[2];
-		const upVec = frame[3];
-		const fiber = frame[4];
+		const pos = offsetFrame[0];
+		const fiber = offsetFrame[4];
+
+		// getOffsetFrame carried the base frame to the eye, but the eye's own rotated frame
+		// still has to make the same trip -- it was built in the tangent space back at
+		// cameraPos, so it isn't tangent here yet.
+		const [, forwardVec, rightVec, upVec] = this.geometryData.correctFrame(
+			pos,
+			eyeForward,
+			eyeRight,
+			eyeUp
+		);
 
 		this.wilson.setUniform("projectionMatrix", projectionMatrix, "draw");
 		this.wilson.setUniform("cameraPos", pos, "draw");

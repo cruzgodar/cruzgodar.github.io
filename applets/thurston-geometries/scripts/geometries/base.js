@@ -59,7 +59,7 @@ export class BaseGeometry
 	}
 
 	// offset is [x, y, z] in eye coordinates (x right, y up, z back), in scene units.
-	getOffsetFrame(pos, rightVec, upVec, forwardVec, offset)
+	getOffsetFrame(pos, forwardVec, rightVec, upVec, offset)
 	{
 		const distance = Math.hypot(offset[0], offset[1], offset[2]);
 

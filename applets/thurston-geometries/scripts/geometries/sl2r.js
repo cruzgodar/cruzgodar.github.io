@@ -753,12 +753,12 @@ class SL2RGeometry extends BaseGeometry
 	// it above is exactly right when the camera is actully moving. This shouldn't offset that,
 	// since it's just a query about a point near the camera. Instead, the fiber that the offset
 	// lands on comes back as a fifth component and the camera's own fiber gets put back.
-	getOffsetFrame(pos, rightVec, upVec, forwardVec, offset)
+	getOffsetFrame(pos, forwardVec, rightVec, upVec, offset)
 	{
 		const cameraFiber = this.cameraFiber;
 
 		// Falls out correctly on the zero-offset path too, where followGeodesic never runs.
-		const frame = super.getOffsetFrame(pos, rightVec, upVec, forwardVec, offset);
+		const frame = super.getOffsetFrame(pos, forwardVec, rightVec, upVec, offset);
 
 		frame[4] = this.cameraFiber;
 
