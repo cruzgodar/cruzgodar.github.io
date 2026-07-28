@@ -284,9 +284,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXR: true,
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
-			xrFramebufferScaleFactor: 1,
-			xrViewportScale: 1,
-			xrTargetFrameRate: 120,
+			xrTargetFrameRate: 72,
 
 			onEnterXR: this.onEnterXR.bind(this),
 			onXRFrameStart: this.onXRFrameStart.bind(this),
@@ -638,6 +636,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 			this.upVec = crossProduct(this.rightVec, this.forwardVec);
+		}
+
+		const controller = this.wilson.getXRController("right");
+
+		if (controller)
+		{
+			console.log(controller.thumbstick);
+			this.moveVelocity[0] = controller.thumbstick[0];
+			this.moveVelocity[1] = controller.thumbstick[1];
 		}
 
 		this.calculateVectors();
