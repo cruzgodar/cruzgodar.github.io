@@ -109,9 +109,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// Time constant of the exponential approach to the target scale, in ms.
 	xrWorldScaleTau = 400;
 
-	// At most one doubling or halving per second, for when the estimator falls off a cliff.
-	xrWorldScaleMaxRate = Math.log(2) / 1000;
-
 	// How far off target the scale has to be, as a ratio, before it chases it at all.
 	xrWorldScaleDeadband = Math.log(1.15);
 
@@ -782,9 +779,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			// Frame-rate independent exponential approach.
 			step = excess * (1 - Math.exp(-deltaTime / this.xrWorldScaleTau));
-
-			const maxStep = this.xrWorldScaleMaxRate * deltaTime;
-			step = Math.min(Math.max(step, -maxStep), maxStep);
 		}
 
 		const newWorldScale = this.worldScale * Math.exp(step);
