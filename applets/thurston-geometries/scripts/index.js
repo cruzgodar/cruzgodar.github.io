@@ -212,6 +212,9 @@ export default function()
 
 			geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		}
+	
+		// The init process breaks for this slider otherwise, since it's not shown for S^2.
+		fovSlider.setValue(fovSlider.value);
 
 		applet.run(geometryData);
 	}

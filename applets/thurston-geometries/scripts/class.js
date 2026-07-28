@@ -249,14 +249,10 @@ export class ThurstonGeometries extends Applet
 		}
 
 		const uniforms = {
-			worldSize: (this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio) ? [
-				Math.max(1, geometryData.aspectRatio),
-				Math.max(1, 1 / geometryData.aspectRatio)
-			] : [1, 1],
 			uvScale: 1,
 			uvCenter: [0, 0],
 			clipDistance: 1000,
-			fov: (this.geometryData.fov ?? this.fov) * this.fovFactor,
+			projectionMatrix: this.buildProjectionMatrix(),
 			cameraPos: this.geometryData.cameraPos,
 			// normalVec: this.geometryData.normalVec,
 			upVec: this.geometryData.upVec,
@@ -283,6 +279,26 @@ export class ThurstonGeometries extends Applet
 		setTimeout(() => window.dispatchEvent(new Event("resize")), 16);
 
 		this.resume();
+	}
+
+
+
+	buildProjectionMatrix()
+	{
+		// These don't actually matter; just there to set up the projection matrix
+		// exactly correctlly.
+		const clipNear = 0.1;
+		const clipFar = 1000;
+
+		const fov = (this.geometryData.fov ?? this.fov) * this.fovFactor;
+		const worldSize = this.getWorldSize();   // the existing onResizeCanvas logic, factored out
+
+		return new Float32Array([
+			1 / (worldSize[0] * fov), 0, 0, 0,
+			0, 1 / (worldSize[1] * fov), 0, 0,
+			0, 0, (clipFar + clipNear) / (clipNear - clipFar), -1,
+			0, 0, 2 * clipFar * clipNear / (clipNear - clipFar), 0
+		]);
 	}
 
 
@@ -448,7 +464,7 @@ export class ThurstonGeometries extends Applet
 			upVec: this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec,
 			rightVec: this.geometryData.rightVec,
 			forwardVec: this.rotatedForwardVec,
-			fov: (this.geometryData.fov ?? this.fov) * this.fovFactor
+			projectionMatrix: this.buildProjectionMatrix(),
 		}, shader);
 	}
 
@@ -662,9 +678,9 @@ export class ThurstonGeometries extends Applet
 		}
 	}
 
-	onResizeCanvas()
+	getWorldSize()
 	{
-		const worldSize = (
+		return (
 			this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio
 		) ? [
 				Math.max(1, this.geometryData.aspectRatio),
@@ -673,8 +689,13 @@ export class ThurstonGeometries extends Applet
 				Math.max(this.wilson.worldWidth / this.wilson.worldHeight, 1),
 				Math.max(this.wilson.worldHeight / this.wilson.worldWidth, 1)
 			];
+	}
 
-		this.wilson.setUniforms({ worldSize }, "draw");
+	onResizeCanvas()
+	{
+		this.wilson.setUniforms({
+			projectionMatrix: this.buildProjectionMatrix(),
+		}, "draw");
 
 		this.needNewFrame = true;
 	}
