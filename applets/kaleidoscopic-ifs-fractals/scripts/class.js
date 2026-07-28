@@ -159,7 +159,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			uniforms,
 			theta,
 			phi,
-			cameraPos: [-2.03816, -0.526988, 0.30503],
+			sceneOrigin: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
 			epsilonScaling,

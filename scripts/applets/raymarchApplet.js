@@ -206,7 +206,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				: {
 					projectionMatrix: this.projectionMatrix,
 					cameraToWorld: this.cameraToWorld,
-					worldScale: this.worldScale,
 					rayOrigin: [0, 0, 0],
 					resolution: this.resolution,
 					minEpsilon: this.minEpsilon,
@@ -285,7 +284,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXR: true,
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
-			xrFramebufferScaleFactor: 0.5,
+			xrFramebufferScaleFactor: 1,
 			xrViewportScale: 1,
 			xrTargetFrameRate: 120,
 
@@ -715,7 +714,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
 
 		// Ensure epsilon scaling is done with the per-eye resolution.
-		this.wilson.setUniform("resolution", Math.sqrt(viewport.width * viewport.height), "draw");
+		this.wilson.setUniform(
+			"resolution",
+			Math.min(Math.sqrt(viewport.width * viewport.height), 1000),
+			"draw"
+		);
 
 		this.wilson.drawFrame();
 	}
