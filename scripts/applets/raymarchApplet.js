@@ -91,6 +91,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	xrRayOrigin = [0, 0, 0];
 	headPos = [0, 0, 0];
 	headToScene = new Float32Array(16);
+	controllerToScene = new Float32Array(16);
 
 	xrSceneOriginBeforeXR;
 	xrThetaBeforeXR;
@@ -640,43 +641,34 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 
 		// Get input from potentially both controllers,
-		// taking the larger absolute thumbstick values...
-		const controller1 = this.wilson.getXRController("right");
-		const controller2 = this.wilson.getXRController("left");
+		// taking the larger thumbstick deflection...
+		const controllerRight = this.wilson.getXRController("right");
+		const controllerLeft = this.wilson.getXRController("left");
 
-		const thumbstickY1 = controller1?.thumbstick?.[1] ?? 0;
-		const thumbstickY2 = controller2?.thumbstick?.[1] ?? 0;
-		const thumbstickY = Math.abs(thumbstickY1) > Math.abs(thumbstickY2)
-			? thumbstickY1
-			: thumbstickY2;
+		const triggerRight = controllerRight?.buttons?.trigger?.pressed ?? false;
+		const triggerLeft = controllerLeft?.buttons?.trigger?.pressed ?? false;
 
-		const thumbstickX1 = controller1?.thumbstick?.[0] ?? 0;
-		const thumbstickX2 = controller2?.thumbstick?.[0] ?? 0;
-		const thumbstickX = Math.abs(thumbstickX1) > Math.abs(thumbstickX2)
-			? thumbstickX1
-			: thumbstickX2;
-
-		const trigger = controller1.buttons.trigger.pressed || controller2.buttons.trigger.pressed;
-		const squeeze = controller1.buttons.squeeze.pressed || controller2.buttons.squeeze.pressed;
+		const squeezeRight = controllerRight?.buttons?.squeeze?.pressed ?? false;
+		const squeezeLeft = controllerLeft?.buttons?.squeeze?.pressed ?? false;
 
 		// ...but only apply those thumbstick values if they're larger than the current velocity,
 		// so that interia can still take effect.
-		if (Math.abs(thumbstickY) >= Math.abs(this.moveVelocity[0]))
+		if (triggerRight)
 		{
-			this.moveVelocity[0] = thumbstickY;
+			this.moveVelocity[0] = 1;
 		}
 
-		if (Math.abs(thumbstickX) >= Math.abs(this.moveVelocity[1]))
+		else if (squeezeRight)
 		{
-			this.moveVelocity[1] = thumbstickX;
+			this.moveVelocity[0] = -1;
 		}
 
-		if (trigger)
+		if (triggerLeft)
 		{
 			this.moveVelocity[2] = 1;
 		}
 
-		else if (squeeze)
+		else if (squeezeLeft)
 		{
 			this.moveVelocity[2] = -1;
 		}
