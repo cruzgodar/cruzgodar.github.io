@@ -285,6 +285,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
 			xrTargetFrameRate: 72,
+			xrViewportScale: 0.5,
 
 			onEnterXR: this.onEnterXR.bind(this),
 			onXRFrameStart: this.onXRFrameStart.bind(this),
@@ -638,13 +639,46 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.upVec = crossProduct(this.rightVec, this.forwardVec);
 		}
 
-		const controller = this.wilson.getXRController("right");
+		// Get input from potentially both controllers,
+		// taking the larger absolute thumbstick values...
+		const controller1 = this.wilson.getXRController("right");
+		const controller2 = this.wilson.getXRController("left");
 
-		if (controller)
+		const thumbstickY1 = controller1?.thumbstick?.[1] ?? 0;
+		const thumbstickY2 = controller2?.thumbstick?.[1] ?? 0;
+		const thumbstickY = Math.abs(thumbstickY1) > Math.abs(thumbstickY2)
+			? thumbstickY1
+			: thumbstickY2;
+
+		const thumbstickX1 = controller1?.thumbstick?.[0] ?? 0;
+		const thumbstickX2 = controller2?.thumbstick?.[0] ?? 0;
+		const thumbstickX = Math.abs(thumbstickX1) > Math.abs(thumbstickX2)
+			? thumbstickX1
+			: thumbstickX2;
+
+		const trigger = controller1.buttons.trigger.pressed || controller2.buttons.trigger.pressed;
+		const squeeze = controller1.buttons.squeeze.pressed || controller2.buttons.squeeze.pressed;
+
+		// ...but only apply those thumbstick values if they're larger than the current velocity,
+		// so that interia can still take effect.
+		if (Math.abs(thumbstickY) >= Math.abs(this.moveVelocity[0]))
 		{
-			console.log(controller.thumbstick);
-			this.moveVelocity[0] = controller.thumbstick[0];
-			this.moveVelocity[1] = controller.thumbstick[1];
+			this.moveVelocity[0] = thumbstickY;
+		}
+
+		if (Math.abs(thumbstickX) >= Math.abs(this.moveVelocity[1]))
+		{
+			this.moveVelocity[1] = thumbstickX;
+		}
+
+		if (trigger)
+		{
+			this.moveVelocity[2] = 1;
+		}
+
+		else if (squeeze)
+		{
+			this.moveVelocity[2] = -1;
 		}
 
 		this.calculateVectors();
