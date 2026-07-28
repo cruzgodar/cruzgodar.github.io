@@ -27,7 +27,7 @@ export class CurvedLight extends RaymarchApplet
 			vec3 geodesic(vec3 pos, vec3 dir, float t)
 			{
 				vec3 returnValue = vec3(0.0);
-				vec3 p = normalize(cross(-dir, rightVec));
+				vec3 p = normalize(cross(-dir, cameraToWorld[0].xyz));
 				vec3 q = normalize(cross(dir, p));
 
 				if (c0 > 0.0)
