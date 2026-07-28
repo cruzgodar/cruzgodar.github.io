@@ -97,6 +97,26 @@ export class RaymarchApplet extends AnimationFrameApplet
 	xrThetaBeforeXR;
 	xrInitialZHeight;
 
+	useDynamicWorldScale;
+	xrComfortDistance;
+	minWorldScale;
+	maxWorldScale;
+
+	// minEpsilon is an absolute floor in scene units, so it has to follow worldScale to stay
+	// the same size in meters. This is the value it'd have at a scale of 1.
+	baseMinEpsilon;
+
+	// Time constant of the exponential approach to the target scale, in ms.
+	xrWorldScaleTau = 400;
+
+	// At most one doubling or halving per second, for when the estimator falls off a cliff.
+	xrWorldScaleMaxRate = Math.log(2) / 1000;
+
+	// How far off target the scale has to be, as a ratio, before it chases it at all.
+	xrWorldScaleDeadband = Math.log(1.15);
+
+	xrWorldScaleNeedsSnap = false;
+
 
 
 	constructor({
@@ -147,6 +167,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useFor3DPrinting = false,
 
 		xrInitialZHeight = 0.75,
+		useDynamicWorldScale = true,
+		xrComfortDistance = 1.25,
+		minWorldScale = 1e-5,
+		maxWorldScale = 1e3,
 	}) {
 		super(canvas);
 
@@ -187,6 +211,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useFor3DPrinting = useFor3DPrinting;
 
 		this.xrInitialZHeight = xrInitialZHeight;
+		this.useDynamicWorldScale = useDynamicWorldScale;
+		this.xrComfortDistance = xrComfortDistance;
+		this.minWorldScale = minWorldScale;
+		this.maxWorldScale = maxWorldScale;
+		this.baseMinEpsilon = minEpsilon;
 
 		this.uniformsGlsl = /* glsl */`
 			uniform mat4 projectionMatrix;
@@ -515,9 +544,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// The camera is the head in XR.
 		const cameraPos = inXR ? this.headPos : this.sceneOrigin;
 
+		// The cap is in scene units, so it has to ride worldScale to stay a fixed speed in
+		// meters; below it, speed is proportional to the estimate and so already tracks the
+		// scale. Outside XR worldScale is 1 and this is what it always was.
 		this.speedFactor = Math.min(
 			this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]),
-			.5
+			.5 * this.worldScale
 		) / 4;
 
 		// The camera basis stays orthonormal instead of also encoding the fov,
@@ -602,12 +634,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.theta = 0;
 		this.sceneOrigin = [-this.distanceFromOrigin, 0, this.xrInitialZHeight];
+
+		// The first frame arrives at whatever scale the last session ended on, and easing
+		// from there would mean starting off uncomfortable.
+		this.xrWorldScaleNeedsSnap = true;
 	}
 
 	onExitXR()
 	{
 		this.sceneOrigin = this.xrSceneOriginBeforeXR;
 		this.theta = this.xrThetaBeforeXR;
+
+		this.worldScale = 1;
+		this.setUniforms({ minEpsilon: this.baseMinEpsilon });
 
 		this.wilson.setUniform("resolution", this.resolution, "draw");
 		this.calculateVectors();
@@ -621,6 +660,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.headPos[0] = this.sceneOrigin[0] + this.headToScene[12] * this.worldScale;
 		this.headPos[1] = this.sceneOrigin[1] + this.headToScene[13] * this.worldScale;
 		this.headPos[2] = this.sceneOrigin[2] + this.headToScene[14] * this.worldScale;
+
+		this.updateWorldScale(deltaTime);
 
 		// The head replaces theta and phi as the movement basis, so w/a/s/d moves
 		// where the user is looking.
@@ -689,6 +730,80 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.calculateVectors();
 
 		this.prepareFrame(deltaTime);
+	}
+
+	// worldScale is meters per scene unit, so a surface at scene distance d sits at
+	// d / worldScale meters as far as the eyes are concerned. Solving that for the distance
+	// that's actually comfortable to converge on keeps the nearest geometry there no matter
+	// how deep into the fractal the user goes.
+	updateWorldScale(deltaTime)
+	{
+		if (!this.useDynamicWorldScale)
+		{
+			return;
+		}
+
+		// Inside a surface the estimate goes to zero or negative, which would blow the scale
+		// up without bound; the clamp below is what keeps that finite.
+		const distance = this.distanceEstimator(
+			this.headPos[0],
+			this.headPos[1],
+			this.headPos[2]
+		);
+
+		const targetScale = Math.min(
+			Math.max(distance / this.xrComfortDistance, this.minWorldScale),
+			this.maxWorldScale
+		);
+
+		// Scale is perceived multiplicatively, so everything is smoothed in log space; a step
+		// of 0.1 is the same felt change whether the world is huge or tiny.
+		const error = Math.log(targetScale) - Math.log(this.worldScale);
+
+		let step;
+
+		if (this.xrWorldScaleNeedsSnap)
+		{
+			step = error;
+			this.xrWorldScaleNeedsSnap = false;
+		}
+
+		else
+		{
+			// Without a deadband the scale tracks every flicker of the estimator, and a world
+			// that breathes in and out is its own kind of nausea. Only the excess past the
+			// deadband is chased, so the response is still continuous at the boundary.
+			if (Math.abs(error) < this.xrWorldScaleDeadband)
+			{
+				return;
+			}
+
+			const excess = error - Math.sign(error) * this.xrWorldScaleDeadband;
+
+			// Frame-rate independent exponential approach.
+			step = excess * (1 - Math.exp(-deltaTime / this.xrWorldScaleTau));
+
+			const maxStep = this.xrWorldScaleMaxRate * deltaTime;
+			step = Math.min(Math.max(step, -maxStep), maxStep);
+		}
+
+		const newWorldScale = this.worldScale * Math.exp(step);
+
+		// The rescale has to pivot about the head. Leaving sceneOrigin alone would dilate
+		// about the tracking-space origin instead, which slides the world sideways by the
+		// distance the user has walked from it — self-motion they didn't ask for, and the
+		// single most nauseating thing this could do. Holding headPos fixed also means the
+		// estimate above is still valid at the new scale, so there's no loop to iterate.
+		this.sceneOrigin[0] = this.headPos[0] - this.headToScene[12] * newWorldScale;
+		this.sceneOrigin[1] = this.headPos[1] - this.headToScene[13] * newWorldScale;
+		this.sceneOrigin[2] = this.headPos[2] - this.headToScene[14] * newWorldScale;
+
+		this.worldScale = newWorldScale;
+
+		// t / (resolution * epsilonScaling) is already scale-invariant, but the floor it's
+		// maxed against isn't, and left alone it starts smearing detail once the world gets
+		// small enough for scene distances to approach it.
+		this.setUniforms({ minEpsilon: this.baseMinEpsilon * newWorldScale });
 	}
 
 
