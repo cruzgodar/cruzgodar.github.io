@@ -286,7 +286,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useXRButton: true,
 			xrButtonIconPath: "/graphics/general-icons/xr.png",
 			xrTargetFrameRate: 72,
-			xrViewportScale: 0.5,
+			xrFramebufferScale: 0.5,
 
 			onEnterXR: this.onEnterXR.bind(this),
 			onXRFrameStart: this.onXRFrameStart.bind(this),
@@ -646,38 +646,42 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const controllerRight = this.wilson.getXRController("right");
 		const controllerLeft = this.wilson.getXRController("left");
 
-		const triggerRight =
-			(controllerRight?.buttons?.trigger?.pressed || controllerRight?.buttons?.a?.pressed)
-			?? false;
-		
-		const triggerLeft =
-			(controllerLeft?.buttons?.trigger?.pressed || controllerLeft?.buttons?.a?.pressed)
+		const triggerPressed =
+			(controllerRight?.buttons?.trigger?.pressed
+				|| controllerLeft?.buttons?.trigger?.pressed)
 			?? false;
 
-		const squeezeRight =
-			(controllerRight?.buttons?.squeeze?.pressed || controllerRight?.buttons?.b?.pressed)
+		const squeezePressed =
+			(controllerRight?.buttons?.squeeze?.pressed
+				|| controllerLeft?.buttons?.squeeze?.pressed)
 			?? false;
 
-		const squeezeLeft =
-			(controllerLeft?.buttons?.squeeze?.pressed || controllerLeft?.buttons?.b?.pressed)
+		const aPressed =
+			(controllerRight?.buttons?.a?.pressed
+				|| controllerLeft?.buttons?.a?.pressed)
 			?? false;
 
-		if (triggerRight)
+		const bPressed =
+			(controllerRight?.buttons?.b?.pressed
+				|| controllerLeft?.buttons?.b?.pressed)
+			?? false;
+
+		if (aPressed)
 		{
 			this.moveVelocity[0] = 1;
 		}
 
-		else if (squeezeRight)
+		else if (bPressed)
 		{
 			this.moveVelocity[0] = -1;
 		}
 
-		if (triggerLeft)
+		if (triggerPressed)
 		{
 			this.moveVelocity[2] = 1;
 		}
 
-		else if (squeezeLeft)
+		else if (squeezePressed)
 		{
 			this.moveVelocity[2] = -1;
 		}
