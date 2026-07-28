@@ -640,19 +640,28 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.upVec = crossProduct(this.rightVec, this.forwardVec);
 		}
 
-		// Get input from potentially both controllers,
-		// taking the larger thumbstick deflection...
+
+
+		// Get input from potentially both controllers.
 		const controllerRight = this.wilson.getXRController("right");
 		const controllerLeft = this.wilson.getXRController("left");
 
-		const triggerRight = controllerRight?.buttons?.trigger?.pressed ?? false;
-		const triggerLeft = controllerLeft?.buttons?.trigger?.pressed ?? false;
+		const triggerRight =
+			(controllerRight?.buttons?.trigger?.pressed || controllerRight?.buttons?.a?.pressed)
+			?? false;
+		
+		const triggerLeft =
+			(controllerLeft?.buttons?.trigger?.pressed || controllerLeft?.buttons?.a?.pressed)
+			?? false;
 
-		const squeezeRight = controllerRight?.buttons?.squeeze?.pressed ?? false;
-		const squeezeLeft = controllerLeft?.buttons?.squeeze?.pressed ?? false;
+		const squeezeRight =
+			(controllerRight?.buttons?.squeeze?.pressed || controllerRight?.buttons?.b?.pressed)
+			?? false;
 
-		// ...but only apply those thumbstick values if they're larger than the current velocity,
-		// so that interia can still take effect.
+		const squeezeLeft =
+			(controllerLeft?.buttons?.squeeze?.pressed || controllerLeft?.buttons?.b?.pressed)
+			?? false;
+
 		if (triggerRight)
 		{
 			this.moveVelocity[0] = 1;
