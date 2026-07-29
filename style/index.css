@@ -720,6 +720,12 @@ mjx-container
 	filter: invert(calc(.25 + var(--theme)* .5657));
 }
 
+.WILSON_button-text
+{
+	filter: invert(calc(.25 + var(--theme)* .5657));
+	font-weight: bold;
+}
+
 .fps-canvas
 {
 	width: 100px;
