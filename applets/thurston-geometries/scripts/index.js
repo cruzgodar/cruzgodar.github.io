@@ -18,10 +18,6 @@ import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
-	const applet = new ThurstonGeometries({
-		canvas: $("#output-canvas"),
-	});
-
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
@@ -57,6 +53,23 @@ export default function()
 		max: 120,
 		snapPoints: [100],
 		onInput: onSliderInput
+	});
+
+	const xrFramebufferScaleSlider = new Slider({
+		element: $("#xr-framebuffer-scale-slider"),
+		name: "VR Quality",
+		value: 3,
+		min: 1,
+		max: 5,
+		integer: true,
+		onInput: onSliderInput
+	});
+
+	xrFramebufferScaleSlider.element.parentElement.style.display = "none";
+
+	const applet = new ThurstonGeometries({
+		canvas: $("#output-canvas"),
+		xrFramebufferScaleSlider,
 	});
 
 	const switchSceneButton = new ToggleButton({
@@ -343,6 +356,8 @@ export default function()
 		applet.geometryData.sliderValues.wallThickness = parseFloat(wallThicknessSlider.value);
 		applet.geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		applet.fov = Math.tan(fovSlider.value / 2 * Math.PI / 180);
+
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value / 5;
 
 		applet.needNewFrame = true;
 	}

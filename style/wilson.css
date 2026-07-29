@@ -234,20 +234,9 @@
 
 .WILSON_xr-button.WILSON_xr-button-loading img
 {
-	animation: WILSON_xr-button-spin 2s linear infinite;
-}
-
-@keyframes WILSON_xr-button-spin
-{
-	from
-	{
-		transform: rotate(0deg);
-	}
-
-	to
-	{
-		transform: rotate(360deg);
-	}
+	animation: opacityPulse 1s ease-in-out;
+    animation-iteration-count: infinite; 
+    opacity: 1;
 }
 
 ::view-transition-old(*)

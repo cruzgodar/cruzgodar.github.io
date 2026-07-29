@@ -123,12 +123,17 @@ export class ThurstonGeometries extends Applet
 
 	needNewFrame = true;
 
+	xrFramebufferScaleSlider;
+
 
 
 	constructor({
 		canvas,
+		xrFramebufferScaleSlider
 	}) {
 		super(canvas);
+
+		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
 		const options =
 		{
@@ -172,12 +177,13 @@ export class ThurstonGeometries extends Applet
 				useButton: true,
 				buttonIconPath: "/graphics/general-icons/xr.png",
 				targetFrameRate: 72,
-				framebufferScale: 0.5,
+				framebufferScale: 1,
 
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
 				renderFrame: this.renderXRFrame.bind(this),
 				onExit: this.onExitXR.bind(this),
+				onAvailabilityChange: this.onXRAvailabilityChange.bind(this),
 			},
 
 			verbose: window.DEBUG,
@@ -364,6 +370,17 @@ export class ThurstonGeometries extends Applet
 		this.geometryData.correctVectors();
 
 		this.resume();
+	}
+
+	onXRAvailabilityChange(isSupported)
+	{
+		console.log(this.xrFramebufferScaleSlider.element);
+		if (this.xrFramebufferScaleSlider)
+		{
+			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported
+				? "flex"
+				: "none";
+		}
 	}
 
 
