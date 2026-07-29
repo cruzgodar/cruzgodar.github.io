@@ -172,7 +172,7 @@ export class ThurstonGeometries extends Applet
 				useButton: true,
 				buttonIconPath: "/graphics/general-icons/xr.png",
 				targetFrameRate: 72,
-				framebufferScale: 0.5,
+				framebufferScale: 1,
 
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
@@ -320,7 +320,6 @@ export class ThurstonGeometries extends Applet
 	{
 		this.animationPaused = true;
 
-		// Bake the current pan rotation into the base frame so the view doesn't jump.
 		this.stateBeforeXR = {
 			forwardVec: [...this.geometryData.forwardVec],
 			upVec: [...this.geometryData.upVec],
@@ -331,11 +330,15 @@ export class ThurstonGeometries extends Applet
 			worldCenterY: this.wilson.worldCenterY,
 		};
 
-		console.log(this.rotatedForwardVec);
-
-		this.geometryData.forwardVec = [...this.rotatedForwardVec];
-		this.geometryData.upVec = [...this.rotatedUpVec];
-		this.geometryData.correctVectors();
+		// Deliberately *not* baking rotatedForwardVec/rotatedUpVec into the base frame.
+		// Those carry the desktop pitch, and pitch is the headset's job now. Baking it would
+		// leave upVec tilted away from the direction real-world up has to map to, which tips
+		// the whole world over: head translation goes off-axis, and pitching swings the yaw
+		// (several degrees, growing with how far you're yawed). geometryData's own frame is
+		// already the unpitched one -- handleRotating only ever bakes yaw, and keeps pitch in
+		// worldCenterY -- so it is exactly the level base frame convertToTangentSpace wants.
+		// The cost is that entering XR while panned up or down snaps the view level, which is
+		// what should happen: the horizon belongs to the headset.
 		this.wilson.resizeWorld({ centerX: 0, centerY: 0 });
 
 		this.geometryData.lockedOnOrigin = false;
@@ -623,13 +626,11 @@ export class ThurstonGeometries extends Applet
 		// Now walk the geodesic to where the eye actually is. The offset is in tracking space,
 		// and it's the *base* frame that maps tracking space into the manifold, so that's the
 		// frame the geodesic direction has to be built from -- not the rotated one above.
-		// Note the argument order: (pos, right, up, forward), which is not the order it
-		// returns them in.
 		const offsetFrame = this.geometryData.getOffsetFrame(
 			this.geometryData.cameraPos,
+			this.geometryData.forwardVec,
 			this.geometryData.rightVec,
 			this.geometryData.upVec,
-			this.geometryData.forwardVec,
 			[
 				m[12] * this.geometryData.xrScale,
 				m[13] * this.geometryData.xrScale,
