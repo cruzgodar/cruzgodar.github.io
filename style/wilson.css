@@ -234,9 +234,14 @@
 
 .WILSON_xr-button.WILSON_xr-button-loading img
 {
-	animation: opacityPulse 1s ease-in-out;
-    animation-iteration-count: infinite; 
-    opacity: 1;
+	animation: opacityPulse 1.75s ease-in-out infinite;
+	opacity: 1;
+}
+
+@keyframes opacityPulse
+{
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0; }
 }
 
 ::view-transition-old(*)
