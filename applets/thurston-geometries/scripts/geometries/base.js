@@ -68,11 +68,17 @@ export class BaseGeometry
 			return [pos, forwardVec, rightVec, upVec];
 		}
 
-		// T(offset): the frame is geometry-orthonormal, so the geometry norm of this
-		// equals the Euclidean norm of offset.
-		const direction = this.normalize([0, 1, 2, 3].map(i =>
-			offset[0] * rightVec[i] + offset[1] * upVec[i] - offset[2] * forwardVec[i]
-		));
+		// T(offset): the frame is geometry-orthonormal, so this already has geometry-norm equal
+		// to the Euclidean norm of offset, and dividing by that *is* the normalization.
+		// Deliberately not this.normalize(). Sol's reads the direction's own z-component as
+		// though it were a height, and Nil's converts from the coordinate basis at cameraPos --
+		// but these components are in the left-invariant frame, so both would rescale the step
+		// by a direction-dependent factor. Sol's reaches 1.27x on a 45-degree direction, which
+		// is enough to make every head movement feel thrown.
+		const direction = [0, 1, 2, 3].map(i =>
+			(offset[0] * rightVec[i] + offset[1] * upVec[i] - offset[2] * forwardVec[i])
+				/ distance
+		);
 
 		const newPos = this.correctPosition(this.followGeodesic(pos, direction, distance));
 

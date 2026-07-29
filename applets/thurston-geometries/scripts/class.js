@@ -368,6 +368,26 @@ export class ThurstonGeometries extends Applet
 
 
 
+	// The head's orientation, mapped into the tangent space at cameraPos -- which tracks the
+	// head, so this is the frame the user is actually looking along. Columns of xrHeadMatrix
+	// are the head's right / up / back axes. Has to be re-run whenever the base frame moves
+	// out from under it, which includes teleporting.
+	updateXRHeadVectors()
+	{
+		const m = this.xrHeadMatrix;
+
+		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
+			a * this.geometryData.rightVec[i]
+			+ b * this.geometryData.upVec[i]
+			- c * this.geometryData.forwardVec[i]
+		);
+
+		this.headRightVec      = convertToTangentSpace(m[0], m[1],  m[2]);
+		this.headUpVec         = convertToTangentSpace(m[4], m[5],  m[6]);
+		this.rotatedForwardVec = convertToTangentSpace(-m[8], -m[9], -m[10]);
+		this.rotatedUpVec      = this.headUpVec;
+	}
+
 	onXRFrameStart({ deltaTime, pose })
 	{
 		const m = pose.transform.matrix;   // column-major, head → tracking space
@@ -415,19 +435,8 @@ export class ThurstonGeometries extends Applet
 			);
 		}
 
-		// The head's orientation, mapped into the tangent space at cameraPos -- which is now
-		// the head's own tangent space, so this is the frame the user is actually looking along.
-		// Columns of m are the head's right / up / back axes.
-		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
-			a * this.geometryData.rightVec[i]
-			+ b * this.geometryData.upVec[i]
-			- c * this.geometryData.forwardVec[i]
-		);
-
-		this.headRightVec      = convertToTangentSpace(m[0], m[1],  m[2]);
-		this.headUpVec         = convertToTangentSpace(m[4], m[5],  m[6]);
-		this.rotatedForwardVec = convertToTangentSpace(-m[8], -m[9], -m[10]);
-		this.rotatedUpVec      = this.headUpVec;
+		this.xrHeadMatrix = m;
+		this.updateXRHeadVectors();
 
 		
 		
@@ -500,9 +509,15 @@ export class ThurstonGeometries extends Applet
 
 	updateScene(timeElapsed)
 	{
+		// H^3 and H^2 x E apply the teleporting isometry to the base frame as well as to
+		// cameraPos, which leaves the head vectors derived from the old frame pointing at
+		// the wrong place. Outside XR that's what recomputeRotation is for; in XR the head
+		// vectors just get rebuilt against the frame the isometry has already moved.
 		this.geometryData.teleportCamera(
 			this.rotatedForwardVec,
-			this.wilson.inXR ? () => {} : this.recomputeRotation.bind(this)
+			this.wilson.inXR
+				? this.updateXRHeadVectors.bind(this)
+				: this.recomputeRotation.bind(this)
 		);
 
 		this.wilson.setUniforms(this.geometryData.getUpdatedUniforms() ?? {}, "draw");
@@ -737,24 +752,27 @@ export class ThurstonGeometries extends Applet
 		for (let i = 0; i < this.movingSubsteps; i++)
 		{
 			const forwardVecToUse = this.rotatedForwardVec;
-			
-			const tangentVec = this.geometryData.normalize([
-				movingAmount[0] * forwardVecToUse[0]
-					+ movingAmount[1] * this.geometryData.rightVec[0]
-					+ movingAmount[2] * this.geometryData.upVec[0],
-				
-				movingAmount[0] * forwardVecToUse[1]
-					+ movingAmount[1] * this.geometryData.rightVec[1]
-					+ movingAmount[2] * this.geometryData.upVec[1],
-				
-				movingAmount[0] * forwardVecToUse[2]
-					+ movingAmount[1] * this.geometryData.rightVec[2]
-					+ movingAmount[2] * this.geometryData.upVec[2],
-				
-				movingAmount[0] * forwardVecToUse[3]
-					+ movingAmount[1] * this.geometryData.rightVec[3]
-					+ movingAmount[2] * this.geometryData.upVec[3],
-			]);
+
+			// Same normalization as getOffsetFrame, and for the same reason: the frame is
+			// orthonormal, so the combination's geometry-norm is just the Euclidean norm of
+			// the coefficients, and dividing by that *is* the normalization. What this
+			// replaces, geometryData.normalize(), measures a coordinate-basis vector, but
+			// these components are in the left-invariant frame -- which made the step length
+			// depend on which way you were facing: 0.63x to 1.38x in Sol, 0.88x to 1.13x in
+			// Nil. Identical for every other geometry, whose normalize is the frame metric.
+			// The || 1 keeps a zero movingAmount from dividing by zero; the combination is
+			// the zero vector there anyway, so the step is a no-op either way.
+			const speed = Math.hypot(
+				movingAmount[0],
+				movingAmount[1],
+				movingAmount[2]
+			) || 1;
+
+			const tangentVec = [0, 1, 2, 3].map(j =>
+				(movingAmount[0] * forwardVecToUse[j]
+					+ movingAmount[1] * this.geometryData.rightVec[j]
+					+ movingAmount[2] * this.geometryData.upVec[j]) / speed
+			);
 
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
 				* this.geometryData.movingSpeed;
