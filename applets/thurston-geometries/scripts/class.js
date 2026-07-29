@@ -380,6 +380,8 @@ export class ThurstonGeometries extends Applet
 			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported
 				? "flex"
 				: "none";
+
+			this.xrFramebufferScaleSlider.setValue(this.xrFramebufferScaleSlider.value);
 		}
 	}
 
