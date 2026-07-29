@@ -172,7 +172,7 @@ export class ThurstonGeometries extends Applet
 				useButton: true,
 				buttonIconPath: "/graphics/general-icons/xr.png",
 				targetFrameRate: 72,
-				framebufferScale: 1,
+				framebufferScale: 0.5,
 
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
@@ -341,6 +341,10 @@ export class ThurstonGeometries extends Applet
 		// what should happen: the horizon belongs to the headset.
 		this.wilson.resizeWorld({ centerX: 0, centerY: 0 });
 
+		// No previous head position yet, so the first frame contributes no motion and
+		// cameraPos starts wherever the geometry put it, under the user's head.
+		this.xrHeadTracking = undefined;
+
 		this.geometryData.lockedOnOrigin = false;
 	}
 
@@ -368,7 +372,51 @@ export class ThurstonGeometries extends Applet
 	{
 		const m = pose.transform.matrix;   // column-major, head → tracking space
 
-		// The head's orientation, mapped into the tangent space at cameraPos.
+		// Walk cameraPos along with the head, one frame's worth at a time, instead of leaving
+		// it at the tracking origin and measuring each eye from there. Every step taken away
+		// from cameraPos is approximate: correctFrame projects the frame onto a tangent space
+		// it doesn't belong to, and Sol's followGeodesic is outright linearized. Those are
+		// harmless at half an IPD and ruinous at a metre -- and at xrScale = 1 in a
+		// curvature-radius-1 space, a metre of real walking *is* a geodesic step of 1.0, where
+		// the frame shear reaches 0.36. Following the head keeps every approximation down to
+		// the eye offset, and keeps the frame the head's orientation is measured against
+		// attached to where the head actually is.
+		const previousHead = this.xrHeadTracking;
+		this.xrHeadTracking = [m[12], m[13], m[14]];
+
+		if (previousHead)
+		{
+			const frame = this.geometryData.getOffsetFrame(
+				this.geometryData.cameraPos,
+				this.geometryData.forwardVec,
+				this.geometryData.rightVec,
+				this.geometryData.upVec,
+				[
+					(this.xrHeadTracking[0] - previousHead[0]) * this.geometryData.xrScale,
+					(this.xrHeadTracking[1] - previousHead[1]) * this.geometryData.xrScale,
+					(this.xrHeadTracking[2] - previousHead[2]) * this.geometryData.xrScale
+				]
+			);
+
+			this.geometryData.cameraPos = frame[0];
+			this.geometryData.forwardVec = frame[1];
+			this.geometryData.rightVec = frame[2];
+			this.geometryData.upVec = frame[3];
+
+			// getOffsetFrame rewinds SL(2, R)'s fiber, since it's normally answering a question
+			// about a nearby point. Here the camera genuinely moved, so it has to stick.
+			if (frame[4] !== undefined)
+			{
+				this.geometryData.cameraFiber = frame[4];
+			}
+
+			this.geometryData.normalVec = this.geometryData.getNormalVec(
+				this.geometryData.cameraPos
+			);
+		}
+
+		// The head's orientation, mapped into the tangent space at cameraPos -- which is now
+		// the head's own tangent space, so this is the frame the user is actually looking along.
 		// Columns of m are the head's right / up / back axes.
 		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
 			a * this.geometryData.rightVec[i]
@@ -380,12 +428,6 @@ export class ThurstonGeometries extends Applet
 		this.headUpVec         = convertToTangentSpace(m[4], m[5],  m[6]);
 		this.rotatedForwardVec = convertToTangentSpace(-m[8], -m[9], -m[10]);
 		this.rotatedUpVec      = this.headUpVec;
-
-		this.headOffset = [
-			m[12] * this.geometryData.xrScale,
-			m[13] * this.geometryData.xrScale,
-			m[14] * this.geometryData.xrScale
-		];
 
 		
 		
@@ -623,18 +665,21 @@ export class ThurstonGeometries extends Applet
 		const eyeUp      = convertToTangentSpace(m[4], m[5],  m[6]);
 		const eyeForward = convertToTangentSpace(-m[8], -m[9], -m[10]);
 
-		// Now walk the geodesic to where the eye actually is. The offset is in tracking space,
-		// and it's the *base* frame that maps tracking space into the manifold, so that's the
-		// frame the geodesic direction has to be built from -- not the rotated one above.
+		// Now walk the geodesic to where the eye actually is. cameraPos already tracks the
+		// head, so this is only the eye's offset *from the head* -- half an IPD, which is
+		// short enough that the approximations inside getOffsetFrame stay invisible. The
+		// offset is in tracking space, and it's the *base* frame that maps tracking space into
+		// the manifold, so that's the frame the geodesic direction is built from, not the
+		// rotated one above.
 		const offsetFrame = this.geometryData.getOffsetFrame(
 			this.geometryData.cameraPos,
 			this.geometryData.forwardVec,
 			this.geometryData.rightVec,
 			this.geometryData.upVec,
 			[
-				m[12] * this.geometryData.xrScale,
-				m[13] * this.geometryData.xrScale,
-				m[14] * this.geometryData.xrScale
+				(m[12] - this.xrHeadTracking[0]) * this.geometryData.xrScale,
+				(m[13] - this.xrHeadTracking[1]) * this.geometryData.xrScale,
+				(m[14] - this.xrHeadTracking[2]) * this.geometryData.xrScale
 			]
 		);
 
