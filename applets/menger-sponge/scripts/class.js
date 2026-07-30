@@ -162,6 +162,7 @@ export class MengerSponge extends RaymarchApplet
 			sceneOrigin: [3.5, 0, 0],
 			theta: 3 * Math.PI / 2,
 			phi: Math.PI / 2,
+			epsilonScaling: 1.25,
 			stepFactor: 0.75,
 			lightBrightness: 1.75,
 			overstepFactor: 1.4
