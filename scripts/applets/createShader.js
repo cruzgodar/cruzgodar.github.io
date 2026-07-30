@@ -149,7 +149,8 @@ function getComputeShadingGlsl({
 
 function getRaymarchGlsl({
 	getGeodesicGlsl,
-	stepFactor
+	stepFactor,
+	overstepFactor
 }) {
 	return /* glsl */`
 		void raymarch(
@@ -163,8 +164,7 @@ function getRaymarchGlsl({
 		) {
 			t = 0.0;
 
-			// Testing; will specify per-applet later
-			float omega = 1.5;
+			float omega = ${getFloatGlsl(overstepFactor)};
 			float stepLength = 0.0;
 			float previousRadius = 0.0;
 			
@@ -177,13 +177,13 @@ function getRaymarchGlsl({
 				// Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
 				// but not if the spheres around the landing point and the starting point don't intersect,
 				// since then we could have stepped all the way through the object.
-				if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
-				{
-					t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
-					previousRadius = 0.0;
-					omega = 1.0;
-					continue;
-				}
+				// if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
+				// {
+				// 	t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
+				// 	previousRadius = 0.0;
+				// 	omega = 1.0;
+				// 	continue;
+				// }
 
 				epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 				
@@ -193,9 +193,9 @@ function getRaymarchGlsl({
 					return;
 				}
 				
-				previousRadius = distanceToScene;
-				stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
-				t += stepLength;
+				// previousRadius = distanceToScene;
+				// stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
+				t += distanceToScene * ${getFloatGlsl(stepFactor)};
 			}
 			
 			// Ensure the catch in main short-circuits to black.
@@ -369,6 +369,7 @@ export function createShader({
 	useBloom,
 	bloomPower,
 	stepFactor,
+	overstepFactor,
 	useFor3DPrinting,
 
 	uniformsGlsl,
@@ -396,7 +397,8 @@ export function createShader({
 
 	const raymarchGlsl = getRaymarchGlsl({
 		getGeodesicGlsl,
-		stepFactor
+		stepFactor,
+		overstepFactor
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({

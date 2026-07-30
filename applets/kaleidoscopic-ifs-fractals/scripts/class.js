@@ -165,6 +165,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			epsilonScaling,
 			minEpsilon,
 			stepFactor: .6,
+			overstepFactor: 1.1
 		});
 
 		this.shape = shape;

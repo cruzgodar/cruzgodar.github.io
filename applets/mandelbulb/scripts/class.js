@@ -132,6 +132,7 @@ export class Mandelbulb extends RaymarchApplet
 			lightPos: [-10, 0, 15],
 			lightBrightness: 1.2,
 			useShadows,
+			overstepFactor: 1.0
 		});
 	}
 

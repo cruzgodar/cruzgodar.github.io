@@ -134,6 +134,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		theta = 0,
 		phi = Math.PI / 2,
 		stepFactor = .99,
+		overstepFactor = 1.0,
 		epsilonScaling = 1.25,
 		minEpsilon = .0000003,
 
@@ -176,6 +177,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.theta = theta;
 		this.phi = phi;
 		this.stepFactor = stepFactor;
+		this.overstepFactor = overstepFactor;
 		this.epsilonScaling = epsilonScaling;
 		this.minEpsilon = minEpsilon;
 
@@ -444,6 +446,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useBloom: this.useBloom,
 			bloomPower: this.bloomPower,
 			stepFactor: this.stepFactor,
+			overstepFactor: this.overstepFactor,
 			useFor3DPrinting: this.useFor3DPrinting,
 
 			uniformsGlsl: this.uniformsGlsl,
