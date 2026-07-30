@@ -4,7 +4,6 @@ function getComputeShadowIntensityGlsl({
 	useShadows,
 	useSoftShadows,
 	getGeodesicGlsl,
-	stepFactor
 }) {
 	if (useShadows && useSoftShadows)
 	{
@@ -18,6 +17,8 @@ function getComputeShadowIntensityGlsl({
 				vec3 rayDirectionVec = normalize(lightDirection);
 
 				float softShadowFactor = 1.0;
+
+				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
 				float t = 5.0 * minEpsilon;
 				float lastDistanceToScene = 1e10;
 
@@ -50,7 +51,8 @@ function getComputeShadowIntensityGlsl({
 						return maxShadowAmount;
 					}
 
-					t += distanceToScene * ${getFloatGlsl(stepFactor)};
+					// Small steps for quality, but only near the surface.
+					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99);
 				}
 
 				return clamp(softShadowFactor, maxShadowAmount, 1.0);
@@ -65,12 +67,12 @@ function getComputeShadowIntensityGlsl({
 			float computeShadowIntensity(
 				vec3 startPos,
 				vec3 lightDirection,
-				float epsilon
+				float startEpsilon
 			) {
-				vec3 rayDirectionVec = normalize(lightDirection) * ${getFloatGlsl(stepFactor)};
+				vec3 rayDirectionVec = normalize(lightDirection);
 
 				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
-				float t = 5.0 * epsilon;
+				float t = 5.0 * minEpsilon;
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
@@ -90,7 +92,8 @@ function getComputeShadowIntensityGlsl({
 						return maxShadowAmount;
 					}
 					
-					t += distanceToScene;
+					// Small steps for quality, but only near the surface.
+					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99);
 				}
 
 				return 1.0;
