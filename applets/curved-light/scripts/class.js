@@ -120,6 +120,7 @@ export class CurvedLight extends RaymarchApplet
 			lightBrightness: 1.25,
 			oppositeLightBrightness: 1,
 			ambientLight: .25,
+			fogScaling: 0.025,
 			useBloom: false,
 			useReflections: true,
 			lockedOnOrigin: false

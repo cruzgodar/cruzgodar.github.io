@@ -113,9 +113,6 @@ function getComputeShadingGlsl({
 	return /* glsl */`
 		vec3 computeShading(
 			vec3 pos,
-			float t,
-			float epsilon,
-			float distanceToScene,
 			int iteration,
 			vec3 lightDirection,
 			vec3 surfaceNormal
@@ -140,8 +137,8 @@ function getComputeShadingGlsl({
 
 
 			
-			//Apply fog.
-			return mix(color, fogColor, 1.0 - exp(-t * fogScaling));
+			//Apply fog. We can't just use t here since curved light has nonlinear geodesics.
+			return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
 		}
 	`;
 }
@@ -179,8 +176,9 @@ function getRaymarchGlsl({
 				
 				t += distanceToScene;
 			}
-
-			finalIteration = maxMarches;
+			
+			// Ensure the catch in main short-circuits to black.
+			t = clipDistance * 2.0;
 		}
 	`;
 }
@@ -217,8 +215,12 @@ function getMainFunctionGlsl({
 		? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))"
 		: "fogColor";
 
+	const reflectionClippedColor = useBloom
+		? "mix(fogColor, vec3(1.0), computeBloom(reflectedDirection))"
+		: "fogColor";
+
 	const reflectionGlsl = useReflections ? /* glsl */`
-		vec3 reflectionStartPos = pos;
+		vec3 reflectionStartPos = pos + surfaceNormal * epsilon * 5.0;
 		vec3 reflectedDirection = reflect(rayDirectionVec, surfaceNormal);
 		vec3 reflectionPos;
 		float reflectionEpsilon;
@@ -240,37 +242,34 @@ function getMainFunctionGlsl({
 
 		if (reflectionT > clipDistance)
 		{
-			reflectionColor = ${clippedColor};
+			reflectionColor = ${reflectionClippedColor};
 		}
 
-		
-		// Using distanceToScene / 2 here means we never step inside the object
-		// which helps to prevent banding.
-		vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionDistanceToScene * 0.5);
-		reflectionPos += (reflectionEpsilon - reflectionDistanceToScene) * reflectionSurfaceNormal;
+		else
+		{		
+			// Using distanceToScene / 2 here means we never step inside the object
+			// which helps to prevent banding.
+			vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionEpsilon * 0.5);
+			reflectionPos += (reflectionEpsilon - reflectionDistanceToScene) * reflectionSurfaceNormal;
 
-		vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
+			vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
 
-		// Run shadows if necessary.
-		${useShadows ? "float reflectionShadowIntensity = computeShadowIntensity(reflectionPos, reflectionLightDirection, reflectionEpsilon);" : ""}
+			// Run shadows if necessary.
+			${useShadows ? "float reflectionShadowIntensity = computeShadowIntensity(reflectionPos, reflectionLightDirection, reflectionEpsilon);" : ""}
 
-		reflectionColor = computeShading(
-			reflectionPos,
-			reflectionT,
-			reflectionEpsilon,
-			reflectionDistanceToScene,
-			reflectionIteration, // Possibly should be + iteration
-			reflectionLightDirection,
-			reflectionSurfaceNormal
-			${useShadows ? ", reflectionShadowIntensity" : ""}
-		);
+			reflectionColor = computeShading(
+				reflectionPos,
+				reflectionIteration + iteration,
+				reflectionLightDirection,
+				reflectionSurfaceNormal
+				${useShadows ? ", reflectionShadowIntensity" : ""}
+			);
+		}
 	` : "";
 
 	return /* glsl */`${""}
 		void main(void)
 		{
-			gl_FragColor = vec4(fogColor, 1.0);
-
 			vec3 rayDirectionEye = vec3(
 				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
 				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
@@ -304,7 +303,7 @@ function getMainFunctionGlsl({
 			
 			// Using distanceToScene / 2 here means we never step inside the object
 			// which helps to prevent banding.
-			vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
+			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
 			pos += (epsilon - distanceToScene) * surfaceNormal;
 
 			vec3 lightDirection = normalize(lightPos - pos);
@@ -314,9 +313,6 @@ function getMainFunctionGlsl({
 
 			vec3 color = computeShading(
 				pos,
-				t,
-				epsilon,
-				distanceToScene,
 				iteration,
 				lightDirection,
 				surfaceNormal
@@ -360,7 +356,6 @@ export function createShader({
 	clipDistance,
 	maxMarches,
 	maxShadowMarches,
-	maxReflectionMarches,
 	fogColor,
 	fogScaling,
 }) {
@@ -379,10 +374,7 @@ export function createShader({
 	});
 
 	const raymarchGlsl = getRaymarchGlsl({
-		includeDepthData,
-		stepFactor,
 		getGeodesicGlsl,
-		useBloom,
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
@@ -421,7 +413,6 @@ export function createShader({
 		const float clipDistance = ${getFloatGlsl(clipDistance)};
 		const int maxMarches = ${maxMarches};
 		const int maxShadowMarches = ${maxShadowMarches};
-		const int maxReflectionMarches = ${maxReflectionMarches};
 		const vec3 fogColor = ${getVectorGlsl(fogColor)};
 		const float fogScaling = ${getFloatGlsl(fogScaling)};
 		const float maxShadowAmount = 0.5;
