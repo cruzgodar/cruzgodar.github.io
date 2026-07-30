@@ -248,67 +248,38 @@ function getComputeShadingGlsl({
 
 
 function getRaymarchGlsl({
-	includeDepthData,
-	stepFactor,
 	getGeodesicGlsl,
-	useBloom
 }) {
-	const alpha = includeDepthData ? "t" : "1.0";
-	
-	const clippedGlsl = useBloom
-		? /* glsl */`
-			return vec4(
-				mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec)),
-				${alpha}
-			);
-		`
-		: /* glsl */`
-			return vec4(fogColor, ${alpha});
-		`;
-
 	return /* glsl */`
-		vec4 raymarch()
-		{
-			vec3 rayDirectionEye = vec3(
-				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
-				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
-				-1.0
-			);
-
-			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye) * ${getFloatGlsl(stepFactor)};
-			
-			float t = 0.0;
+		void raymarch(
+			vec3 rayOrigin,
+			vec3 rayDirectionVec,
+			out vec3 pos,
+			out float epsilon,
+			out float t,
+			out float distanceToScene,
+			out int finalIteration
+		) {
+			t = 0.0;
 			
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
-				vec3 pos = ${getGeodesicGlsl("rayOrigin", "rayDirectionVec")};
+				pos = ${getGeodesicGlsl("rayOrigin", "rayDirectionVec")};
 				
-				float distanceToScene = distanceEstimator(pos);
+				distanceToScene = distanceEstimator(pos);
 
-				float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
+				epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 				
-				if (distanceToScene < epsilon)
+				if (distanceToScene < epsilon || t > clipDistance)
 				{
-					return vec4(
-						computeShading(
-							pos,
-							epsilon,
-							distanceToScene,
-							iteration
-						),
-						${alpha}
-					);
-				}
-				
-				else if (t > clipDistance)
-				{
-					break;
+					finalIteration = iteration;
+					return;
 				}
 				
 				t += distanceToScene;
 			}
-			
-			${clippedGlsl}
+
+			finalIteration = maxMarches;
 		}
 	`;
 }
@@ -316,7 +287,10 @@ function getRaymarchGlsl({
 
 
 function getMainFunctionGlsl({
-	useFor3DPrinting
+	useFor3DPrinting,
+	includeDepthData,
+	useBloom,
+	stepFactor,
 }) {
 	if (useFor3DPrinting)
 	{
@@ -333,10 +307,64 @@ function getMainFunctionGlsl({
 		`;
 	}
 
+
+	const alpha = includeDepthData ? "t" : "1.0";
+
+	const clippedGlsl = useBloom
+		? /* glsl */`
+			gl_FragColor = vec4(
+				mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec)),
+				${alpha}
+			);
+		`
+		: /* glsl */`
+			gl_FragColor = vec4(fogColor, ${alpha});
+		`;
+
 	return /* glsl */`${""}
 		void main(void)
 		{
-			gl_FragColor = raymarch();
+			gl_FragColor = vec4(fogColor, 1.0);
+
+			vec3 rayDirectionEye = vec3(
+				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
+				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
+				-1.0
+			);
+
+			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye) * ${getFloatGlsl(stepFactor)};
+
+			vec3 pos;
+			float epsilon;
+			float t;
+			float distanceToScene;
+			int iteration;
+
+			raymarch(
+				rayOrigin,
+				rayDirectionVec,
+				pos,
+				epsilon,
+				t,
+				distanceToScene,
+				iteration
+			);
+
+			if (t > clipDistance)
+			{
+				${clippedGlsl}
+				return;
+			}
+
+			gl_FragColor = vec4(
+				computeShading(
+					pos,
+					epsilon,
+					distanceToScene,
+					iteration
+				),
+				${alpha}
+			);
 		}
 	`;
 }
@@ -405,7 +433,10 @@ export function createShader({
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
-		useFor3DPrinting
+		useFor3DPrinting,
+		includeDepthData,
+		useBloom,
+		stepFactor,
 	});
 
 	const computeBloomGlsl = useBloom ? /* glsl */`
