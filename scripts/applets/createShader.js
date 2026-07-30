@@ -9,11 +9,16 @@ function getComputeShadowIntensityGlsl({
 	{
 		return /* glsl */`
 			// Nearly identical to raymarching, but it only marches toward the light.
-			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
-			{
+			float computeShadowIntensity(
+				vec3 startPos,
+				vec3 lightDirection,
+				float epsilon
+			) {
 				vec3 rayDirectionVec = normalize(lightDirection) * .25;
 				float softShadowFactor = 1.0;
-				float t = 0.0;
+	
+				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
+				float t = 5.0 * epsilon;
 
 				float lastDistanceToScene = 100000.0;
 
@@ -57,10 +62,15 @@ function getComputeShadowIntensityGlsl({
 	{
 		return /* glsl */`
 			// Nearly identical to raymarching, but it only marches toward the light.
-			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
-			{
+			float computeShadowIntensity(
+				vec3 startPos,
+				vec3 lightDirection,
+				float epsilon
+			) {
 				vec3 rayDirectionVec = normalize(lightDirection) * .25;
-				float t = 0.0;
+
+				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
+				float t = 5.0 * epsilon;
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
@@ -195,15 +205,15 @@ function getComputeShadingGlsl({
 			vec3 pos,
 			float epsilon,
 			float distanceToScene,
-			int iteration
+			int iteration,
+			vec3 lightDirection
+			${useShadows ? ", float shadowIntensity" : ""}
 		) {
 			// Using distanceToScene / 2 here means we never step inside the object
 			// which helps to prevent banding.
 			vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
 			pos += (epsilon - distanceToScene) * surfaceNormal;
 			surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
-			
-			vec3 lightDirection = normalize(lightPos - pos);
 			
 			float dotProduct = dot(surfaceNormal, lightDirection);
 			
@@ -220,11 +230,9 @@ function getComputeShadingGlsl({
 
 			
 
-			${useShadows ? /* glsl */`
-				float shadowIntensity = computeShadowIntensity(pos, lightDirection);
+			${useShadows ? "color *= shadowIntensity;" : ""}
 
-				color *= shadowIntensity;
-			` : ""}
+
 
 			${useReflections ? /* glsl */`
 				vec3 reflectedDirection = reflect(
@@ -290,6 +298,7 @@ function getMainFunctionGlsl({
 	useFor3DPrinting,
 	includeDepthData,
 	useBloom,
+	useShadows,
 	stepFactor,
 }) {
 	if (useFor3DPrinting)
@@ -356,12 +365,21 @@ function getMainFunctionGlsl({
 				return;
 			}
 
+			
+
+			vec3 lightDirection = normalize(lightPos - pos);
+
+			// Run shadows if necessary.
+			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection, epsilon);" : ""}
+
 			gl_FragColor = vec4(
 				computeShading(
 					pos,
 					epsilon,
 					distanceToScene,
-					iteration
+					iteration,
+					lightDirection
+					${useShadows ? ", shadowIntensity" : ""}
 				),
 				${alpha}
 			);
@@ -398,12 +416,12 @@ export function createShader({
 	maxShadowMarches,
 	maxReflectionMarches,
 	fogColor,
-	fogScaling
+	fogScaling,
 }) {
 	const computeShadowIntensityGlsl = getComputeShadowIntensityGlsl({
 		useShadows,
 		useSoftShadows,
-		getGeodesicGlsl
+		getGeodesicGlsl,
 	});
 
 	const computeReflectionGlsl = getComputeReflectionsGlsl({
@@ -413,7 +431,7 @@ export function createShader({
 		ambientLight,
 		getGeodesicGlsl,
 		useBloom,
-		useShadows
+		useShadows,
 	});
 
 	const computeShadingGlsl = getComputeShadingGlsl({
@@ -422,14 +440,14 @@ export function createShader({
 		ambientLight,
 		useShadows,
 		useReflections,
-		stepFactor
+		stepFactor,
 	});
 
 	const raymarchGlsl = getRaymarchGlsl({
 		includeDepthData,
 		stepFactor,
 		getGeodesicGlsl,
-		useBloom
+		useBloom,
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
@@ -437,6 +455,7 @@ export function createShader({
 		includeDepthData,
 		useBloom,
 		stepFactor,
+		useShadows,
 	});
 
 	const computeBloomGlsl = useBloom ? /* glsl */`
