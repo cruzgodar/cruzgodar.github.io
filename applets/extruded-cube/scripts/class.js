@@ -113,6 +113,7 @@ export class ExtrudedCube extends RaymarchApplet
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
 			minEpsilon: .000005,
+			overstepFactor: 1.25
 		});
 	}
 

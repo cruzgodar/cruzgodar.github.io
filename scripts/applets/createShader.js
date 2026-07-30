@@ -177,13 +177,13 @@ function getRaymarchGlsl({
 				// Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
 				// but not if the spheres around the landing point and the starting point don't intersect,
 				// since then we could have stepped all the way through the object.
-				// if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
-				// {
-				// 	t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
-				// 	previousRadius = 0.0;
-				// 	omega = 1.0;
-				// 	continue;
-				// }
+				if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
+				{
+					t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
+					previousRadius = 0.0;
+					omega = 1.0;
+					continue;
+				}
 
 				epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 				
@@ -193,9 +193,9 @@ function getRaymarchGlsl({
 					return;
 				}
 				
-				// previousRadius = distanceToScene;
-				// stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
-				t += distanceToScene * ${getFloatGlsl(stepFactor)};
+				previousRadius = distanceToScene;
+				stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
+				t += stepLength;
 			}
 			
 			// Ensure the catch in main short-circuits to black.

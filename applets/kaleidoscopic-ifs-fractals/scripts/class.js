@@ -164,7 +164,6 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			lightBrightness: 1.25,
 			epsilonScaling,
 			minEpsilon,
-			stepFactor: .6,
 			overstepFactor: 1.1
 		});
 
