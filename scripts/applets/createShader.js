@@ -103,118 +103,23 @@ function getComputeShadowIntensityGlsl({
 
 
 
-function getComputeReflectionsGlsl({
-	useReflections,
-	useOppositeLight,
-	oppositeLightBrightness,
-	ambientLight,
-	getGeodesicGlsl,
-	useBloom,
-	useShadows
-}) {
-	if (useReflections)
-	{
-		return /* glsl */`
-			vec3 computeShadingWithoutReflection(
-				vec3 pos,
-				float epsilon,
-				float distanceToScene,
-				int iteration
-			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
-				pos += (epsilon - distanceToScene) * surfaceNormal;
-				surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
-				
-				vec3 lightDirection = normalize(lightPos - pos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = max(
-					${useOppositeLight ? `lightBrightness * max(dotProduct, -${getFloatGlsl(oppositeLightBrightness)} * dotProduct)` : "lightBrightness * dotProduct"},
-					${getFloatGlsl(ambientLight)}
-				);
-
-				vec3 color = getColor(pos)
-					* lightIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-
-				${useShadows ? /* glsl */`
-					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
-
-					color *= shadowIntensity;
-				` : ""}
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
-			}
-
-			// Unlike in raymarch(), startPos is replacing rayOrigin, and rayDirectionVec is precomputed.
-			vec3 computeReflection(
-				vec3 startPos,
-				vec3 rayDirectionVec,
-				int startIteration
-			) {
-				float t = 0.0;
-				
-				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
-				{
-					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};
-					
-					float distanceToScene = distanceEstimator(pos);
-
-					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
-
-					if (distanceToScene < epsilon)
-					{
-						return computeShadingWithoutReflection(
-							pos,
-							epsilon,
-							distanceToScene,
-							iteration + startIteration
-						);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return ${useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
-					}
-					
-					t += distanceToScene;
-				}
-				
-				return ${useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
-			}
-		`;
-	}
-
-	return "";
-}
-
-
-
 function getComputeShadingGlsl({
 	useOppositeLight,
 	oppositeLightBrightness,
 	ambientLight,
 	useShadows,
-	useReflections,
-	stepFactor
 }) {
 	return /* glsl */`
 		vec3 computeShading(
 			vec3 pos,
+			float t,
 			float epsilon,
 			float distanceToScene,
 			int iteration,
-			vec3 lightDirection
+			vec3 lightDirection,
+			vec3 surfaceNormal
 			${useShadows ? ", float shadowIntensity" : ""}
 		) {
-			// Using distanceToScene / 2 here means we never step inside the object
-			// which helps to prevent banding.
-			vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
-			pos += (epsilon - distanceToScene) * surfaceNormal;
-			surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
-			
 			float dotProduct = dot(surfaceNormal, lightDirection);
 			
 			float lightIntensity = max(
@@ -233,22 +138,9 @@ function getComputeShadingGlsl({
 			${useShadows ? "color *= shadowIntensity;" : ""}
 
 
-
-			${useReflections ? /* glsl */`
-				vec3 reflectedDirection = reflect(
-					normalize(pos - rayOrigin) * ${getFloatGlsl(stepFactor)},
-					surfaceNormal
-				);
-
-				color = mix(
-					color,
-					computeReflection(pos, reflectedDirection, iteration),
-					getReflectivity(pos)
-				);
-			` : ""}
 			
 			//Apply fog.
-			return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
+			return mix(color, fogColor, 1.0 - exp(-t * fogScaling));
 		}
 	`;
 }
@@ -299,6 +191,7 @@ function getMainFunctionGlsl({
 	includeDepthData,
 	useBloom,
 	useShadows,
+	useReflections,
 	stepFactor,
 }) {
 	if (useFor3DPrinting)
@@ -319,16 +212,59 @@ function getMainFunctionGlsl({
 
 	const alpha = includeDepthData ? "t" : "1.0";
 
-	const clippedGlsl = useBloom
-		? /* glsl */`
-			gl_FragColor = vec4(
-				mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec)),
-				${alpha}
-			);
-		`
-		: /* glsl */`
-			gl_FragColor = vec4(fogColor, ${alpha});
-		`;
+	const clippedColor = useBloom
+		? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))"
+		: "fogColor";
+
+	const reflectionGlsl = useReflections ? /* glsl */`
+		vec3 reflectionStartPos = pos;
+		vec3 reflectedDirection = reflect(rayDirectionVec, surfaceNormal);
+		vec3 reflectionPos;
+		float reflectionEpsilon;
+		float reflectionT;
+		float reflectionDistanceToScene;
+		int reflectionIteration;
+
+		raymarch(
+			reflectionStartPos,
+			reflectedDirection,
+			reflectionPos,
+			reflectionEpsilon,
+			reflectionT,
+			reflectionDistanceToScene,
+			reflectionIteration
+		);
+
+		vec3 reflectionColor;
+
+		if (reflectionT > clipDistance)
+		{
+			reflectionColor = ${clippedColor};
+		}
+
+		
+		// Using distanceToScene / 2 here means we never step inside the object
+		// which helps to prevent banding.
+		vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionDistanceToScene * 0.5);
+		reflectionPos += (reflectionEpsilon - reflectionDistanceToScene) * reflectionSurfaceNormal;
+		reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionEpsilon * 0.5);
+
+		vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
+
+		// Run shadows if necessary.
+		${useShadows ? "float reflectionShadowIntensity = computeShadowIntensity(reflectionPos, reflectionLightDirection, reflectionEpsilon);" : ""}
+
+		reflectionColor = computeShading(
+			reflectionPos,
+			reflectionT,
+			reflectionEpsilon,
+			reflectionDistanceToScene,
+			reflectionIteration, // Possibly should be + iteration
+			reflectionLightDirection,
+			reflectionSurfaceNormal
+			${useShadows ? ", reflectionShadowIntensity" : ""}
+		);
+	` : "";
 
 	return /* glsl */`${""}
 		void main(void)
@@ -361,26 +297,37 @@ function getMainFunctionGlsl({
 
 			if (t > clipDistance)
 			{
-				${clippedGlsl}
+				gl_FragColor = vec4(${clippedColor}, ${alpha});
 				return;
 			}
 
 			
+			// Using distanceToScene / 2 here means we never step inside the object
+			// which helps to prevent banding.
+			vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
+			pos += (epsilon - distanceToScene) * surfaceNormal;
+			surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
 
 			vec3 lightDirection = normalize(lightPos - pos);
 
 			// Run shadows if necessary.
 			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection, epsilon);" : ""}
 
+			vec3 color = computeShading(
+				pos,
+				t,
+				epsilon,
+				distanceToScene,
+				iteration,
+				lightDirection,
+				surfaceNormal
+				${useShadows ? ", shadowIntensity" : ""}
+			);
+
+			${reflectionGlsl}
+
 			gl_FragColor = vec4(
-				computeShading(
-					pos,
-					epsilon,
-					distanceToScene,
-					iteration,
-					lightDirection
-					${useShadows ? ", shadowIntensity" : ""}
-				),
+				${useReflections ? "mix(color, reflectionColor, getReflectivity(pos))" : "color"},
 				${alpha}
 			);
 		}
@@ -424,23 +371,11 @@ export function createShader({
 		getGeodesicGlsl,
 	});
 
-	const computeReflectionGlsl = getComputeReflectionsGlsl({
-		useReflections,
-		useOppositeLight,
-		oppositeLightBrightness,
-		ambientLight,
-		getGeodesicGlsl,
-		useBloom,
-		useShadows,
-	});
-
 	const computeShadingGlsl = getComputeShadingGlsl({
 		useOppositeLight,
 		oppositeLightBrightness,
 		ambientLight,
 		useShadows,
-		useReflections,
-		stepFactor,
 	});
 
 	const raymarchGlsl = getRaymarchGlsl({
@@ -456,6 +391,7 @@ export function createShader({
 		useBloom,
 		stepFactor,
 		useShadows,
+		useReflections,
 	});
 
 	const computeBloomGlsl = useBloom ? /* glsl */`
@@ -526,8 +462,6 @@ export function createShader({
 		${computeBloomGlsl}
 
 		${computeShadowIntensityGlsl}
-
-		${computeReflectionGlsl}
 		
 		${computeShadingGlsl}
 
