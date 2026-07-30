@@ -374,7 +374,6 @@ export class ThurstonGeometries extends Applet
 
 	onXRAvailabilityChange(isSupported)
 	{
-		console.log(this.xrFramebufferScaleSlider.element);
 		if (this.xrFramebufferScaleSlider)
 		{
 			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported

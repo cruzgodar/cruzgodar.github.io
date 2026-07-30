@@ -138,7 +138,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		minEpsilon = .0000003,
 
 		maxMarches = 128,
-		maxShadowMarches = 128,
+		maxShadowMarches = 48,
 		maxReflectionMarches = 128,
 		clipDistance = 1000,
 		
@@ -305,6 +305,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useResetButton: true,
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset: this.onReset.bind(this),
+
+			useGpuTiming: true,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -853,6 +855,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.drawFrame();
 		}
+
+		console.log(this.wilson.averageGpuFrameTime);
 	}
 
 

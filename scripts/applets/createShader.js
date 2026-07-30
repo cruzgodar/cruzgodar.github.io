@@ -3,7 +3,8 @@ import { getFloatGlsl, getVectorGlsl } from "./applet.js";
 function getComputeShadowIntensityGlsl({
 	useShadows,
 	useSoftShadows,
-	getGeodesicGlsl
+	getGeodesicGlsl,
+	stepFactor
 }) {
 	if (useShadows && useSoftShadows)
 	{
@@ -14,7 +15,7 @@ function getComputeShadowIntensityGlsl({
 				vec3 lightDirection,
 				float epsilon
 			) {
-				vec3 rayDirectionVec = normalize(lightDirection) * .25;
+				vec3 rayDirectionVec = normalize(lightDirection) * ${getFloatGlsl(stepFactor)};
 				float softShadowFactor = 1.0;
 	
 				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
@@ -67,7 +68,7 @@ function getComputeShadowIntensityGlsl({
 				vec3 lightDirection,
 				float epsilon
 			) {
-				vec3 rayDirectionVec = normalize(lightDirection) * .25;
+				vec3 rayDirectionVec = normalize(lightDirection) * ${getFloatGlsl(stepFactor)};
 
 				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
 				float t = 5.0 * epsilon;
@@ -367,6 +368,7 @@ export function createShader({
 		useShadows,
 		useSoftShadows,
 		getGeodesicGlsl,
+		stepFactor
 	});
 
 	const computeShadingGlsl = getComputeShadingGlsl({
