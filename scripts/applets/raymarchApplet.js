@@ -138,7 +138,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		minEpsilon = .0000003,
 
 		maxMarches = 128,
-		maxShadowMarches = 48,
+		maxShadowMarches = 64,
 		maxReflectionMarches = 128,
 		clipDistance = 1000,
 		

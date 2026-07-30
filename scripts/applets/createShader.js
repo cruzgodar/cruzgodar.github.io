@@ -13,35 +13,34 @@ function getComputeShadowIntensityGlsl({
 			float computeShadowIntensity(
 				vec3 startPos,
 				vec3 lightDirection,
-				float epsilon
+				float startEpsilon
 			) {
-				vec3 rayDirectionVec = normalize(lightDirection) * ${getFloatGlsl(stepFactor)};
-				float softShadowFactor = 1.0;
-	
-				// Start a little bit away from where we hit so we aren't stuck in near-epsilon jail.
-				float t = 5.0 * epsilon;
+				vec3 rayDirectionVec = normalize(lightDirection);
 
-				float lastDistanceToScene = 100000.0;
+				float softShadowFactor = 1.0;
+				float t = 5.0 * minEpsilon;
+				float lastDistanceToScene = 1e10;
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
 					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};
-					
-					// Use Sebastian Aaltonen's improvement to Inigo Quilez's soft shadow algorithm.
-					float distanceToScene = distanceEstimator(pos);
-					float y = distanceToScene * distanceToScene / (2.0 * lastDistanceToScene);
-					float d = sqrt(distanceToScene * distanceToScene - y * y);
 
-					softShadowFactor = min(
-						softShadowFactor,
-						d / (max(t - y, 0.0) * 0.025) 
-					);
+					float distanceToScene = distanceEstimator(pos);
+
+					// Aaltonen's estimate of where the ray passed closest to the surface between this
+					// sample and the last. It assumes the previous step was a full sphere step, and it
+					// goes imaginary the moment the clearance more than doubles -- which full-length
+					// steps do constantly -- so the radicand has to be clamped.
+					float y = distanceToScene * distanceToScene / (2.0 * lastDistanceToScene);
+					float d = sqrt(max(distanceToScene * distanceToScene - y * y, 0.0));
+
+					softShadowFactor = min(softShadowFactor, d / (max(t - y, 0.0) * 0.1));
 
 					lastDistanceToScene = distanceToScene;
 
 					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
-					if (t > clipDistance || dot(pos - lightPos, pos - lightPos) < 0.2*0.2)
+					if (t > clipDistance || dot(pos - lightPos, pos - lightPos) < 0.04)
 					{
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
@@ -50,8 +49,8 @@ function getComputeShadowIntensityGlsl({
 					{
 						return maxShadowAmount;
 					}
-					
-					t += distanceToScene;
+
+					t += distanceToScene * ${getFloatGlsl(stepFactor)};
 				}
 
 				return clamp(softShadowFactor, maxShadowAmount, 1.0);
@@ -147,6 +146,7 @@ function getComputeShadingGlsl({
 
 function getRaymarchGlsl({
 	getGeodesicGlsl,
+	stepFactor
 }) {
 	return /* glsl */`
 		void raymarch(
@@ -159,12 +159,28 @@ function getRaymarchGlsl({
 			out int finalIteration
 		) {
 			t = 0.0;
+
+			// Testing; will specify per-applet later
+			float omega = 1.5;
+			float stepLength = 0.0;
+			float previousRadius = 0.0;
 			
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
 				pos = ${getGeodesicGlsl("rayOrigin", "rayDirectionVec")};
 				
 				distanceToScene = distanceEstimator(pos);
+				
+				// Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
+				// but not if the spheres around the landing point and the starting point don't intersect,
+				// since then we could have stepped all the way through the object.
+				if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
+				{
+					t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
+					previousRadius = 0.0;
+					omega = 1.0;
+					continue;
+				}
 
 				epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 				
@@ -174,7 +190,9 @@ function getRaymarchGlsl({
 					return;
 				}
 				
-				t += distanceToScene;
+				previousRadius = distanceToScene;
+				stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
+				t += stepLength;
 			}
 			
 			// Ensure the catch in main short-circuits to black.
@@ -375,6 +393,7 @@ export function createShader({
 
 	const raymarchGlsl = getRaymarchGlsl({
 		getGeodesicGlsl,
+		stepFactor
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
