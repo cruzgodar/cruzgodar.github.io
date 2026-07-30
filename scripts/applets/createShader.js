@@ -247,7 +247,6 @@ function getMainFunctionGlsl({
 		// which helps to prevent banding.
 		vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionDistanceToScene * 0.5);
 		reflectionPos += (reflectionEpsilon - reflectionDistanceToScene) * reflectionSurfaceNormal;
-		reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionEpsilon * 0.5);
 
 		vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
 
@@ -306,7 +305,6 @@ function getMainFunctionGlsl({
 			// which helps to prevent banding.
 			vec3 surfaceNormal = getSurfaceNormal(pos, distanceToScene * 0.5);
 			pos += (epsilon - distanceToScene) * surfaceNormal;
-			surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
 
 			vec3 lightDirection = normalize(lightPos - pos);
 
