@@ -113,11 +113,36 @@ function getComputeShadingGlsl({
 	useShadows,
 }) {
 	return /* glsl */`
+		// Samples the estimator along the normal. On an unoccluded flat surface the distance
+		// grows exactly as fast as we step away, so anything closer than the step height is
+		// nearby geometry blocking part of the hemisphere.
+		float computeAmbientOcclusion(vec3 pos, vec3 surfaceNormal, float t)
+		{
+			float occlusion = 0.0;
+			float weight = 1.0;
+
+			float radius = t * 0.05;
+
+			for (int i = 1; i <= aoSamples; i++)
+			{
+				float height = radius * float(i) / float(aoSamples);
+
+				occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal));
+
+				weight *= 0.75;
+			}
+
+			// Dividing by the radius keeps aoStrength meaningful when the radius changes.
+			return clamp(1.0 - aoStrength * occlusion / radius, 0.0, 1.0);
+		}
+
+
+
 		vec3 computeShading(
 			vec3 pos,
-			int iteration,
 			vec3 lightDirection,
-			vec3 surfaceNormal
+			vec3 surfaceNormal,
+			float ambientOcclusion
 			${useShadows ? ", float shadowIntensity" : ""}
 		) {
 			float dotProduct = dot(surfaceNormal, lightDirection);
@@ -127,17 +152,9 @@ function getComputeShadingGlsl({
 				${getFloatGlsl(ambientLight)}
 			);
 
-
-
-			vec3 color = getColor(pos)
-				* lightIntensity
-				* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-
-			
+			vec3 color = getColor(pos) * lightIntensity * ambientOcclusion;
 
 			${useShadows ? "color *= shadowIntensity;" : ""}
-
-
 			
 			//Apply fog. We can't just use t here since curved light has nonlinear geodesics.
 			return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
@@ -212,7 +229,6 @@ function getMainFunctionGlsl({
 	useBloom,
 	useShadows,
 	useReflections,
-	stepFactor,
 }) {
 	if (useFor3DPrinting)
 	{
@@ -280,9 +296,9 @@ function getMainFunctionGlsl({
 
 			reflectionColor = computeShading(
 				reflectionPos,
-				reflectionIteration + iteration,
 				reflectionLightDirection,
-				reflectionSurfaceNormal
+				reflectionSurfaceNormal,
+				1.0 // No ambient occlusion
 				${useShadows ? ", reflectionShadowIntensity" : ""}
 			);
 		}
@@ -297,7 +313,7 @@ function getMainFunctionGlsl({
 				-1.0
 			);
 
-			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye) * ${getFloatGlsl(stepFactor)};
+			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye);
 
 			vec3 pos;
 			float epsilon;
@@ -325,18 +341,20 @@ function getMainFunctionGlsl({
 			// Using distanceToScene / 2 here means we never step inside the object
 			// which helps to prevent banding.
 			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
-			pos += (epsilon - distanceToScene) * surfaceNormal;
+			// pos += (epsilon - distanceToScene) * surfaceNormal;
 
 			vec3 lightDirection = normalize(lightPos - pos);
 
 			// Run shadows if necessary.
 			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection, epsilon);" : ""}
 
+			float ambientOcclusion = computeAmbientOcclusion(pos, surfaceNormal, t);
+
 			vec3 color = computeShading(
 				pos,
-				iteration,
 				lightDirection,
-				surfaceNormal
+				surfaceNormal,
+				ambientOcclusion
 				${useShadows ? ", shadowIntensity" : ""}
 			);
 
@@ -371,6 +389,9 @@ export function createShader({
 	stepFactor,
 	overstepFactor,
 	useFor3DPrinting,
+	
+	aoSamples,
+	aoStrength,
 
 	uniformsGlsl,
 	lightPos,
@@ -405,7 +426,6 @@ export function createShader({
 		useFor3DPrinting,
 		includeDepthData,
 		useBloom,
-		stepFactor,
 		useShadows,
 		useReflections,
 	});
@@ -440,6 +460,9 @@ export function createShader({
 		const vec3 fogColor = ${getVectorGlsl(fogColor)};
 		const float fogScaling = ${getFloatGlsl(fogScaling)};
 		const float maxShadowAmount = 0.5;
+
+		const int aoSamples = ${aoSamples};
+		const float aoStrength = ${getFloatGlsl(aoStrength)};
 
 		${addGlsl}
 		

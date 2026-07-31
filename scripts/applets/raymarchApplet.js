@@ -56,6 +56,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	ambientLight;
 	bloomPower;
 
+	aoSamples;
+	aoStrength;
+
 	fogColor;
 	fogScaling;
 	stepFactor;
@@ -155,6 +158,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		ambientLight = 0.25,
 		bloomPower = 1,
 
+		aoSamples = 4,
+		aoStrength = 0.45,
+
 		fogColor = [0, 0, 0],
 		fogScaling = .05,
 
@@ -199,6 +205,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.oppositeLightBrightness = oppositeLightBrightness;
 		this.ambientLight = ambientLight;
 		this.bloomPower = bloomPower;
+
+		this.aoSamples = aoSamples;
+		this.aoStrength = aoStrength;
 
 		this.fogColor = fogColor;
 		this.fogScaling = fogScaling;
@@ -448,6 +457,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			stepFactor: this.stepFactor,
 			overstepFactor: this.overstepFactor,
 			useFor3DPrinting: this.useFor3DPrinting,
+
+			aoSamples: this.aoSamples,
+			aoStrength: this.aoStrength,
 
 			uniformsGlsl: this.uniformsGlsl,
 			lightPos: this.lightPos,

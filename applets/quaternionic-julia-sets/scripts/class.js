@@ -102,7 +102,7 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			phi: 1.9975,
 			sceneOrigin: [-0.736138, -2.75197, 1.29509],
 			lightPos: [-5, -5, 5],
-			lightBrightness: 1.25,
+			lightBrightness: 3.0,
 			overstepFactor: 1.6,
 		});
 	}
