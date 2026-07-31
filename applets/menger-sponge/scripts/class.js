@@ -163,7 +163,7 @@ export class MengerSponge extends RaymarchApplet
 			theta: 3 * Math.PI / 2,
 			phi: Math.PI / 2,
 			epsilonScaling: 1.25,
-			stepFactor: 0.75,
+			stepFactor: 0.5,
 			lightBrightness: 1.75,
 			overstepFactor: 1.4
 		});

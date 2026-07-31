@@ -37,10 +37,10 @@ export default function()
 	const scaleSlider = new Slider({
 		element: $("#scale-slider"),
 		name: "Scale",
-		value: 3,
-		min: 1.1,
-		max: 4,
-		snapPoints: [1.5, 2, 3],
+		value: 2.5,
+		min: 1.25,
+		max: 3,
+		snapPoints: [1.5, 2, 2.5],
 		onInput: onSliderInput
 	});
 

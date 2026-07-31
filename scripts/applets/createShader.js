@@ -116,7 +116,7 @@ function getComputeShadingGlsl({
 		// Samples the estimator along the normal. On an unoccluded flat surface the distance
 		// grows exactly as fast as we step away, so anything closer than the step height is
 		// nearby geometry blocking part of the hemisphere.
-		float computeAmbientOcclusion(vec3 pos, vec3 surfaceNormal, float t)
+		float computeAmbientOcclusion(vec3 pos, vec3 surfaceNormal, float gradientMagnitude, float t)
 		{
 			float occlusion = 0.0;
 			float weight = 1.0;
@@ -127,7 +127,8 @@ function getComputeShadingGlsl({
 			{
 				float height = radius * float(i) / float(aoSamples);
 
-				occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal));
+				occlusion += weight * (height
+					- distanceEstimator(pos + height * surfaceNormal) / max(gradientMagnitude, 0.001));
 
 				weight *= 0.75;
 			}
@@ -286,7 +287,8 @@ function getMainFunctionGlsl({
 		{		
 			// Using distanceToScene / 2 here means we never step inside the object
 			// which helps to prevent banding.
-			vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionEpsilon * 0.5);
+			float gradientMagnitude;
+			vec3 reflectionSurfaceNormal = getSurfaceNormal(reflectionPos, reflectionEpsilon * 0.5, gradientMagnitude);
 			reflectionPos += (reflectionEpsilon - reflectionDistanceToScene) * reflectionSurfaceNormal;
 
 			vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
@@ -340,7 +342,8 @@ function getMainFunctionGlsl({
 			
 			// Using distanceToScene / 2 here means we never step inside the object
 			// which helps to prevent banding.
-			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5);
+			float gradientMagnitude;
+			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5, gradientMagnitude);
 			// pos += (epsilon - distanceToScene) * surfaceNormal;
 
 			vec3 lightDirection = normalize(lightPos - pos);
@@ -348,7 +351,7 @@ function getMainFunctionGlsl({
 			// Run shadows if necessary.
 			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection, epsilon);" : ""}
 
-			float ambientOcclusion = computeAmbientOcclusion(pos, surfaceNormal, t);
+			float ambientOcclusion = computeAmbientOcclusion(pos, surfaceNormal, gradientMagnitude, t);
 
 			vec3 color = computeShading(
 				pos,
@@ -485,16 +488,20 @@ export function createShader({
 		
 		
 		
-		vec3 getSurfaceNormal(vec3 pos, float epsilon)
+		vec3 getSurfaceNormal(vec3 pos, float epsilon, out float gradientMagnitude)
 		{
-			// Tetrahedral offsets - more accurate and potentially faster
 			vec2 e = vec2(1.0, -1.0) * epsilon;
-			return normalize(
-				e.xyy * distanceEstimator(pos + e.xyy)
+
+			vec3 gradient = e.xyy * distanceEstimator(pos + e.xyy)
 				+ e.yyx * distanceEstimator(pos + e.yyx)
 				+ e.yxy * distanceEstimator(pos + e.yxy)
-				+ e.xxx * distanceEstimator(pos + e.xxx)
-			);
+				+ e.xxx * distanceEstimator(pos + e.xxx);
+
+			// The four tetrahedral offsets satisfy sum(eᵢ eᵢᵀ) = 4ε²I, so the sum above is exactly
+			// 4ε² times the gradient -- no extra estimator calls needed to recover its magnitude.
+			gradientMagnitude = length(gradient) / (4.0 * epsilon * epsilon);
+
+			return normalize(gradient);
 		}
 
 		${computeBloomGlsl}
