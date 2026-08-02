@@ -111,7 +111,18 @@ function getComputeShadingGlsl({
 	oppositeLightBrightness,
 	ambientLight,
 	useShadows,
+	useGradientCorrectedOcclusion
 }) {
+	// An experimental fix for DEs like quaternionic julia sets', which overestimate the actual
+	// distance. Try this if the entire scene looks uniformly dim.
+	const occlusionAddition = useGradientCorrectedOcclusion
+		? /* glsl */`
+			occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal)
+				/ max(gradientMagnitude, 0.001));
+		` : /* glsl */`
+			occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal));
+		`;
+
 	return /* glsl */`
 		// Samples the estimator along the normal. On an unoccluded flat surface the distance
 		// grows exactly as fast as we step away, so anything closer than the step height is
@@ -127,8 +138,7 @@ function getComputeShadingGlsl({
 			{
 				float height = radius * float(i) / float(aoSamples);
 
-				occlusion += weight * (height
-					- distanceEstimator(pos + height * surfaceNormal) / max(gradientMagnitude, 0.001));
+				${occlusionAddition}
 
 				weight *= 0.75;
 			}
@@ -344,7 +354,9 @@ function getMainFunctionGlsl({
 			// which helps to prevent banding.
 			float gradientMagnitude;
 			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5, gradientMagnitude);
-			// pos += (epsilon - distanceToScene) * surfaceNormal;
+			pos += (epsilon - distanceToScene) * surfaceNormal;
+			// gl_FragColor = vec4(surfaceNormal * 0.5 + 0.5, 1.0)
+			// return;
 
 			vec3 lightDirection = normalize(lightPos - pos);
 
@@ -385,6 +397,7 @@ export function createShader({
 	useSoftShadows,
 	useReflections,
 	useOppositeLight,
+	useGradientCorrectedOcclusion,
 	oppositeLightBrightness,
 	ambientLight,
 	useBloom,
@@ -417,6 +430,7 @@ export function createShader({
 		oppositeLightBrightness,
 		ambientLight,
 		useShadows,
+		useGradientCorrectedOcclusion,
 	});
 
 	const raymarchGlsl = getRaymarchGlsl({

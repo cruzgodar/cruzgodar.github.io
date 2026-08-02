@@ -104,6 +104,7 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			lightPos: [-5, -5, 5],
 			lightBrightness: 1.2,
 			overstepFactor: 1.6,
+			useGradientCorrectedOcclusion: true,
 		});
 	}
 

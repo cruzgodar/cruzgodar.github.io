@@ -70,6 +70,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	useReflections;
 	useBloom;
 	useFor3DPrinting;
+	useGradientCorrectedOcclusion;
 
 	uniforms = {};
 	lockZ;
@@ -169,6 +170,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useReflections = false,
 		useBloom = true,
 		useFor3DPrinting = false,
+		useGradientCorrectedOcclusion = false,
 
 		xrInitialZHeight = 0.75,
 		useDynamicWorldScale = true,
@@ -217,6 +219,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
 		this.useFor3DPrinting = useFor3DPrinting;
+		this.useGradientCorrectedOcclusion = useGradientCorrectedOcclusion;
 
 		this.xrInitialZHeight = xrInitialZHeight;
 		this.useDynamicWorldScale = useDynamicWorldScale;
@@ -450,6 +453,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useSoftShadows: this.useSoftShadows,
 			useReflections: this.useReflections,
 			useOppositeLight: this.useOppositeLight,
+			useGradientCorrectedOcclusion: this.useGradientCorrectedOcclusion,
 			oppositeLightBrightness: this.oppositeLightBrightness,
 			ambientLight: this.ambientLight,
 			useBloom: this.useBloom,
