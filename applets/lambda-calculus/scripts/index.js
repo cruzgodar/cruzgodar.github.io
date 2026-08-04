@@ -25,7 +25,8 @@ const examples = {
 	iterativeTriangleNumbers: "(λn.n( λg.λa.λb.g (>a) (+ab) ) (λa.λb.b) 1 0) 4",
 	iterativeFactorial: "(λn.n( λg.λa.λb.g (>a) (*ab) ) (λa.λb.b) 1 1) 4",
 	iterativeFibonacci: "(λn.n( λg.λa.λb.g (+ab) a ) (λa.λb.b) 1 0) 4",
-	knuthUpArrows: "(Yλf.λn.λa.λb.(_(<n)(ba)(((<b)(λg.λc.λd.gc(f(<n)cd)))(λc.λd.d)aa)))223"
+	// From Shahaan -- thank you!
+	knuthUpArrows: "(λn.λa.λb.(((n(λp.λa.λb.((b(pa))1)))*)ab))223"
 };
 
 export default function()
