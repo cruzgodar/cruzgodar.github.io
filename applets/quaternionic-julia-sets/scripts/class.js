@@ -5,8 +5,10 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 {
 	showCrossSection = false;
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			vec4 z = vec4(pos, 0.0);
 			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
@@ -97,12 +99,17 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
+			epsilonScalingFactor: 0.65,
+			surfaceNormalEpsilonFactor: 0.5,
 			stepFactor: .75,
-			theta: 1.3094,
-			phi: 1.9975,
-			cameraPos: [-0.736138, -2.75197, 1.29509],
+			theta: 1.269,
+			phi: 1.98,
+			sceneOrigin: [-1.033, -3.316, 1.506],
 			lightPos: [-5, -5, 5],
-			lightBrightness: 1.25,
+			lightBrightness: 1.2,
+			overstepFactor: 1.6,
+			useGradientCorrectedOcclusion: true,
+			xrFramebufferScaleSlider,
 		});
 	}
 

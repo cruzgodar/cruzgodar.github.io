@@ -13,8 +13,9 @@ export class Mandelbulb extends RaymarchApplet
 
 	constructor({
 		canvas,
-		resolution = 400,
+		resolution = 750,
 		useShadows = false,
+		xrFramebufferScaleSlider
 	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			vec3 z = pos;
@@ -126,12 +127,16 @@ export class Mandelbulb extends RaymarchApplet
 			getColorGlsl,
 			uniformsGlsl,
 			uniforms,
-			theta: 4.6601,
-			phi: 2.272,
-			cameraPos: [0.084365, 1.91102, 1.69388],
+			epsilonScalingFactor: 0.4,
+			theta: 5.453,
+			phi: 2.239,
+			sceneOrigin: [-2.262, 1.746, 1.695],
 			lightPos: [-10, 0, 15],
 			lightBrightness: 1.2,
 			useShadows,
+			overstepFactor: 1.15,
+			useGradientCorrectedOcclusion: true,
+			xrFramebufferScaleSlider,
 		});
 	}
 

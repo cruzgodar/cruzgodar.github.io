@@ -314,11 +314,7 @@ export class Applet
 
 			attempts++;
 
-			const buttons = $$(`
-				.WILSON_enter-fullscreen-button,
-				.WILSON_exit-fullscreen-button,
-				.WILSON_reset-button
-			`);
+			const buttons = $$(".WILSON_button");
 
 			for (const button of buttons)
 			{

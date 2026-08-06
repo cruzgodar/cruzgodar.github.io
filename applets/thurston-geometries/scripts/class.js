@@ -123,12 +123,17 @@ export class ThurstonGeometries extends Applet
 
 	needNewFrame = true;
 
+	xrFramebufferScaleSlider;
+
 
 
 	constructor({
 		canvas,
+		xrFramebufferScaleSlider
 	}) {
 		super(canvas);
+
+		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
 		const options =
 		{
@@ -165,6 +170,20 @@ export class ThurstonGeometries extends Applet
 
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
+
+			xrOptions:
+			{
+				useButton: true,
+				buttonIconPath: "/graphics/general-icons/xr.png",
+				targetFrameRate: 72,
+				framebufferScale: 1,
+
+				onEnter: this.onEnterXR.bind(this),
+				onFrameStart: this.onXRFrameStart.bind(this),
+				renderFrame: this.renderXRFrame.bind(this),
+				onExit: this.onExitXR.bind(this),
+				onAvailabilityChange: this.onXRAvailabilityChange.bind(this),
 			},
 
 			verbose: window.DEBUG,
@@ -249,14 +268,10 @@ export class ThurstonGeometries extends Applet
 		}
 
 		const uniforms = {
-			worldSize: (this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio) ? [
-				Math.max(1, geometryData.aspectRatio),
-				Math.max(1, 1 / geometryData.aspectRatio)
-			] : [1, 1],
 			uvScale: 1,
 			uvCenter: [0, 0],
 			clipDistance: 1000,
-			fov: (this.geometryData.fov ?? this.fov) * this.fovFactor,
+			projectionMatrix: this.buildProjectionMatrix(),
 			cameraPos: this.geometryData.cameraPos,
 			// normalVec: this.geometryData.normalVec,
 			upVec: this.geometryData.upVec,
@@ -287,35 +302,246 @@ export class ThurstonGeometries extends Applet
 
 
 
+	buildProjectionMatrix()
+	{
+		// These don't actually matter; just there to set up the projection matrix
+		// exactly correctlly.
+		const clipNear = 0.1;
+		const clipFar = 1000;
+
+		const fov = (this.geometryData.fov ?? this.fov) * this.fovFactor;
+		const worldSize = this.getWorldSize();   // the existing onResizeCanvas logic, factored out
+
+		return new Float32Array([
+			1 / (worldSize[0] * fov), 0, 0, 0,
+			0, 1 / (worldSize[1] * fov), 0, 0,
+			0, 0, (clipFar + clipNear) / (clipNear - clipFar), -1,
+			0, 0, 2 * clipFar * clipNear / (clipNear - clipFar), 0
+		]);
+	}
+
+	
+
+	onEnterXR()
+	{
+		this.animationPaused = true;
+
+		this.stateBeforeXR = {
+			forwardVec: [...this.geometryData.forwardVec],
+			upVec: [...this.geometryData.upVec],
+			rightVec: [...this.geometryData.rightVec],
+			cameraPos: [...this.geometryData.cameraPos],
+			lockedOnOrigin: this.geometryData.lockedOnOrigin,
+			worldCenterX: this.wilson.worldCenterX,
+			worldCenterY: this.wilson.worldCenterY,
+		};
+
+		// Deliberately *not* baking rotatedForwardVec/rotatedUpVec into the base frame.
+		// Those carry the desktop pitch, and pitch is the headset's job now. Baking it would
+		// leave upVec tilted away from the direction real-world up has to map to, which tips
+		// the whole world over: head translation goes off-axis, and pitching swings the yaw
+		// (several degrees, growing with how far you're yawed). geometryData's own frame is
+		// already the unpitched one -- handleRotating only ever bakes yaw, and keeps pitch in
+		// worldCenterY -- so it is exactly the level base frame convertToTangentSpace wants.
+		// The cost is that entering XR while panned up or down snaps the view level, which is
+		// what should happen: the horizon belongs to the headset.
+		this.wilson.resizeWorld({ centerX: 0, centerY: 0 });
+
+		// No previous head position yet, so the first frame contributes no motion and
+		// cameraPos starts wherever the geometry put it, under the user's head.
+		this.xrHeadTracking = undefined;
+
+		this.geometryData.lockedOnOrigin = false;
+	}
+
+	onExitXR()
+	{
+		this.geometryData.forwardVec = [...this.stateBeforeXR.forwardVec];
+		this.geometryData.rightVec = [...this.stateBeforeXR.rightVec];
+		this.geometryData.upVec = [...this.stateBeforeXR.upVec];
+		this.geometryData.cameraPos = [...this.stateBeforeXR.cameraPos];
+		this.geometryData.lockedOnOrigin = this.stateBeforeXR.lockedOnOrigin;
+
+		this.wilson.resizeWorld({
+			centerX: this.stateBeforeXR.worldCenterX,
+			centerY: this.stateBeforeXR.worldCenterY
+		});
+
+		this.geometryData.correctVectors();
+
+		this.resume();
+	}
+
+	onXRAvailabilityChange(isSupported)
+	{
+		if (this.xrFramebufferScaleSlider)
+		{
+			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported
+				? "flex"
+				: "none";
+
+			this.xrFramebufferScaleSlider.setValue(this.xrFramebufferScaleSlider.value);
+		}
+	}
+
+
+
+	// The head's orientation, mapped into the tangent space at cameraPos -- which tracks the
+	// head, so this is the frame the user is actually looking along. Columns of xrHeadMatrix
+	// are the head's right / up / back axes. Has to be re-run whenever the base frame moves
+	// out from under it, which includes teleporting.
+	updateXRHeadVectors()
+	{
+		const m = this.xrHeadMatrix;
+
+		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
+			a * this.geometryData.rightVec[i]
+			+ b * this.geometryData.upVec[i]
+			- c * this.geometryData.forwardVec[i]
+		);
+
+		this.headRightVec      = convertToTangentSpace(m[0], m[1],  m[2]);
+		this.headUpVec         = convertToTangentSpace(m[4], m[5],  m[6]);
+		this.rotatedForwardVec = convertToTangentSpace(-m[8], -m[9], -m[10]);
+		this.rotatedUpVec      = this.headUpVec;
+	}
+
+	onXRFrameStart({ deltaTime, pose })
+	{
+		const m = pose.transform.matrix;   // column-major, head → tracking space
+
+		// Walk cameraPos along with the head, one frame's worth at a time, instead of leaving
+		// it at the tracking origin and measuring each eye from there. Every step taken away
+		// from cameraPos is approximate: correctFrame projects the frame onto a tangent space
+		// it doesn't belong to, and Sol's followGeodesic is outright linearized. Those are
+		// harmless at half an IPD and ruinous at a metre -- and at xrScale = 1 in a
+		// curvature-radius-1 space, a metre of real walking *is* a geodesic step of 1.0, where
+		// the frame shear reaches 0.36. Following the head keeps every approximation down to
+		// the eye offset, and keeps the frame the head's orientation is measured against
+		// attached to where the head actually is.
+		const previousHead = this.xrHeadTracking;
+		this.xrHeadTracking = [m[12], m[13], m[14]];
+
+		if (previousHead)
+		{
+			const frame = this.geometryData.getOffsetFrame(
+				this.geometryData.cameraPos,
+				this.geometryData.forwardVec,
+				this.geometryData.rightVec,
+				this.geometryData.upVec,
+				[
+					(this.xrHeadTracking[0] - previousHead[0]) * this.geometryData.xrScale,
+					(this.xrHeadTracking[1] - previousHead[1]) * this.geometryData.xrScale,
+					(this.xrHeadTracking[2] - previousHead[2]) * this.geometryData.xrScale
+				]
+			);
+
+			this.geometryData.cameraPos = frame[0];
+			this.geometryData.forwardVec = frame[1];
+			this.geometryData.rightVec = frame[2];
+			this.geometryData.upVec = frame[3];
+
+			// getOffsetFrame rewinds SL(2, R)'s fiber, since it's normally answering a question
+			// about a nearby point. Here the camera genuinely moved, so it has to stick.
+			if (frame[4] !== undefined)
+			{
+				this.geometryData.cameraFiber = frame[4];
+			}
+
+			this.geometryData.normalVec = this.geometryData.getNormalVec(
+				this.geometryData.cameraPos
+			);
+		}
+
+		this.xrHeadMatrix = m;
+		this.updateXRHeadVectors();
+
+		
+		
+		// Get input from potentially both controllers.
+		const controllerRight = this.wilson.getXRController("right");
+		const controllerLeft = this.wilson.getXRController("left");
+
+		const triggerPressed =
+			(controllerRight?.buttons?.trigger?.pressed
+				|| controllerLeft?.buttons?.trigger?.pressed)
+			?? false;
+
+		const squeezePressed =
+			(controllerRight?.buttons?.squeeze?.pressed
+				|| controllerLeft?.buttons?.squeeze?.pressed)
+			?? false;
+
+		const aPressed =
+			(controllerRight?.buttons?.a?.pressed
+				|| controllerLeft?.buttons?.a?.pressed)
+			?? false;
+
+		const bPressed =
+			(controllerRight?.buttons?.b?.pressed
+				|| controllerLeft?.buttons?.b?.pressed)
+			?? false;
+
+		if (aPressed)
+		{
+			this.movingAmount[0] = 1;
+		}
+
+		else if (bPressed)
+		{
+			this.movingAmount[0] = -1;
+		}
+
+		if (triggerPressed)
+		{
+			this.movingAmount[2] = 1;
+		}
+
+		else if (squeezePressed)
+		{
+			this.movingAmount[2] = -1;
+		}
+
+
+
+		this.updateScene(deltaTime);
+		this.geometryData.drawFrameCallback();
+	}
+
+
+
 	resume()
 	{
+		if (this.wilson.inXR)
+		{
+			return;
+		}
+
 		this.needNewFrame = true;
 		this.animationPaused = false;
 
 		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
-	drawFrame(timestamp)
+	
+
+	updateScene(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
+		// H^3 and H^2 x E apply the teleporting isometry to the base frame as well as to
+		// cameraPos, which leaves the head vectors derived from the old frame pointing at
+		// the wrong place. Outside XR that's what recomputeRotation is for; in XR the head
+		// vectors just get rebuilt against the frame the isometry has already moved.
 		this.geometryData.teleportCamera(
 			this.rotatedForwardVec,
-			this.recomputeRotation.bind(this)
+			this.wilson.inXR
+				? this.updateXRHeadVectors.bind(this)
+				: this.recomputeRotation.bind(this)
 		);
 
-		const uniforms = this.geometryData.getUpdatedUniforms() ?? {};
-		this.wilson.setUniforms(uniforms, "draw");
+		this.wilson.setUniforms(this.geometryData.getUpdatedUniforms() ?? {}, "draw");
 
 		
-
+		
 		if (this.keysPressed.w || this.numTouches === 2)
 		{
 			this.movingAmount[0] = 1;
@@ -416,13 +642,30 @@ export class ThurstonGeometries extends Applet
 
 		this.geometryData.correctVectors();
 
-		this.handleRotating();
-
-		this.handleRolling(timeElapsed);
-
-		this.updateUniforms("draw");
-
 		
+
+		if (!this.wilson.inXR)
+		{
+			this.handleRotating();
+			this.handleRolling(timeElapsed);
+			this.updateUniforms("draw");
+		}
+	}
+
+
+
+	drawFrame(timestamp)
+	{
+		const timeElapsed = timestamp - this.lastTimestamp;
+
+		this.lastTimestamp = timestamp;
+
+		if (timeElapsed === 0)
+		{
+			return;
+		}
+
+		this.updateScene(timeElapsed);
 
 		if (this.needNewFrame)
 		{
@@ -440,6 +683,68 @@ export class ThurstonGeometries extends Applet
 
 
 
+	renderXRFrame({ projectionMatrix, cameraToWorld })
+	{
+		const m = cameraToWorld;   // column-major, eye → tracking space
+
+		const convertToTangentSpace = (a, b, c) => [0, 1, 2, 3].map(i =>
+			a * this.geometryData.rightVec[i]
+			+ b * this.geometryData.upVec[i]
+			- c * this.geometryData.forwardVec[i]
+		);
+
+		// The eye's own orientation, still expressed at cameraPos.
+		const eyeRight   = convertToTangentSpace(m[0], m[1],  m[2]);
+		const eyeUp      = convertToTangentSpace(m[4], m[5],  m[6]);
+		const eyeForward = convertToTangentSpace(-m[8], -m[9], -m[10]);
+
+		// Now walk the geodesic to where the eye actually is. cameraPos already tracks the
+		// head, so this is only the eye's offset *from the head* -- half an IPD, which is
+		// short enough that the approximations inside getOffsetFrame stay invisible. The
+		// offset is in tracking space, and it's the *base* frame that maps tracking space into
+		// the manifold, so that's the frame the geodesic direction is built from, not the
+		// rotated one above.
+		const offsetFrame = this.geometryData.getOffsetFrame(
+			this.geometryData.cameraPos,
+			this.geometryData.forwardVec,
+			this.geometryData.rightVec,
+			this.geometryData.upVec,
+			[
+				(m[12] - this.xrHeadTracking[0]) * this.geometryData.xrScale,
+				(m[13] - this.xrHeadTracking[1]) * this.geometryData.xrScale,
+				(m[14] - this.xrHeadTracking[2]) * this.geometryData.xrScale
+			]
+		);
+
+		const pos = offsetFrame[0];
+		const fiber = offsetFrame[4];
+
+		// getOffsetFrame carried the base frame to the eye, but the eye's own rotated frame
+		// still has to make the same trip -- it was built in the tangent space back at
+		// cameraPos, so it isn't tangent here yet.
+		const [, forwardVec, rightVec, upVec] = this.geometryData.correctFrame(
+			pos,
+			eyeForward,
+			eyeRight,
+			eyeUp
+		);
+
+		this.wilson.setUniform("projectionMatrix", projectionMatrix, "draw");
+		this.wilson.setUniform("cameraPos", pos, "draw");
+		this.wilson.setUniform("forwardVec", forwardVec, "draw");
+		this.wilson.setUniform("rightVec", rightVec, "draw");
+		this.wilson.setUniform("upVec", upVec, "draw");
+
+		if (fiber !== undefined)
+		{
+			this.wilson.setUniform("cameraFiber", fiber, "draw");
+		}
+
+		this.wilson.drawFrame();
+	}
+
+
+
 	updateUniforms(shader)
 	{
 		this.wilson.setUniforms({
@@ -448,7 +753,7 @@ export class ThurstonGeometries extends Applet
 			upVec: this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec,
 			rightVec: this.geometryData.rightVec,
 			forwardVec: this.rotatedForwardVec,
-			fov: (this.geometryData.fov ?? this.fov) * this.fovFactor
+			projectionMatrix: this.buildProjectionMatrix(),
 		}, shader);
 	}
 
@@ -465,24 +770,27 @@ export class ThurstonGeometries extends Applet
 		for (let i = 0; i < this.movingSubsteps; i++)
 		{
 			const forwardVecToUse = this.rotatedForwardVec;
-			
-			const tangentVec = this.geometryData.normalize([
-				movingAmount[0] * forwardVecToUse[0]
-					+ movingAmount[1] * this.geometryData.rightVec[0]
-					+ movingAmount[2] * this.geometryData.upVec[0],
-				
-				movingAmount[0] * forwardVecToUse[1]
-					+ movingAmount[1] * this.geometryData.rightVec[1]
-					+ movingAmount[2] * this.geometryData.upVec[1],
-				
-				movingAmount[0] * forwardVecToUse[2]
-					+ movingAmount[1] * this.geometryData.rightVec[2]
-					+ movingAmount[2] * this.geometryData.upVec[2],
-				
-				movingAmount[0] * forwardVecToUse[3]
-					+ movingAmount[1] * this.geometryData.rightVec[3]
-					+ movingAmount[2] * this.geometryData.upVec[3],
-			]);
+
+			// Same normalization as getOffsetFrame, and for the same reason: the frame is
+			// orthonormal, so the combination's geometry-norm is just the Euclidean norm of
+			// the coefficients, and dividing by that *is* the normalization. What this
+			// replaces, geometryData.normalize(), measures a coordinate-basis vector, but
+			// these components are in the left-invariant frame -- which made the step length
+			// depend on which way you were facing: 0.63x to 1.38x in Sol, 0.88x to 1.13x in
+			// Nil. Identical for every other geometry, whose normalize is the frame metric.
+			// The || 1 keeps a zero movingAmount from dividing by zero; the combination is
+			// the zero vector there anyway, so the step is a no-op either way.
+			const speed = Math.hypot(
+				movingAmount[0],
+				movingAmount[1],
+				movingAmount[2]
+			) || 1;
+
+			const tangentVec = [0, 1, 2, 3].map(j =>
+				(movingAmount[0] * forwardVecToUse[j]
+					+ movingAmount[1] * this.geometryData.rightVec[j]
+					+ movingAmount[2] * this.geometryData.upVec[j]) / speed
+			);
 
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
 				* this.geometryData.movingSpeed;
@@ -517,7 +825,7 @@ export class ThurstonGeometries extends Applet
 
 	// When teleporting, we often have the issue that teleporting and rotating the forward vector
 	// don't commute, and unfortunately, we want to teleport *then* rotate. To get around this,
-	// we'll comute what the new rotation should be when teleporting.
+	// we'll compute what the new rotation should be when teleporting.
 	recomputeRotation(newRotatedForwardVec)
 	{
 		const normalizedForwardVec = scaleVector(
@@ -662,9 +970,9 @@ export class ThurstonGeometries extends Applet
 		}
 	}
 
-	onResizeCanvas()
+	getWorldSize()
 	{
-		const worldSize = (
+		return (
 			this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio
 		) ? [
 				Math.max(1, this.geometryData.aspectRatio),
@@ -673,8 +981,18 @@ export class ThurstonGeometries extends Applet
 				Math.max(this.wilson.worldWidth / this.wilson.worldHeight, 1),
 				Math.max(this.wilson.worldHeight / this.wilson.worldWidth, 1)
 			];
+	}
 
-		this.wilson.setUniforms({ worldSize }, "draw");
+	onResizeCanvas()
+	{
+		this.wilson.resizeWorld({
+			minY: -Math.PI / 2 + (0.001 - this.wilson.worldHeight / 2),
+			maxY: Math.PI / 2 - (0.001 - this.wilson.worldHeight / 2),
+		});
+
+		this.wilson.setUniforms({
+			projectionMatrix: this.buildProjectionMatrix(),
+		}, "draw");
 
 		this.needNewFrame = true;
 	}
@@ -902,15 +1220,24 @@ export class ThurstonGeometries extends Applet
 		this.run(this.geometryData);
 	}
 
-
+	worldCenterXBeforeFullscreen;
+	worldCenterYBeforeFullscreen;
 
 	switchFullscreen()
 	{
 		this.resume();
+
+		this.wilson.resizeWorld({
+			centerX: this.worldCenterXBeforeFullscreen,
+			centerY: this.worldCenterYBeforeFullscreen,
+		});
 	}
 
 	async beforeSwitchFullscreen()
 	{
+		this.worldCenterXBeforeFullscreen = this.wilson.worldCenterX;
+		this.worldCenterYBeforeFullscreen = this.wilson.worldCenterY;
+
 		this.animationPaused = true;
 
 		await sleep(33);

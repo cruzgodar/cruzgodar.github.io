@@ -18,6 +18,7 @@ The typical Mandelbulb uses a power-8 formula, but any power at least 2 works to
 	c-x
 	c-y
 	c-z
+	xr-framebuffer-scale
 ###
 
 ### checkboxes

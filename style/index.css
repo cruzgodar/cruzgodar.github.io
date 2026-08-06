@@ -709,15 +709,21 @@ mjx-container
 	column-gap: 10px;
 }
 
-.WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button, .WILSON_reset-button
+.WILSON_button
 {
 	background: var(--background);
 	border: 2px solid var(--normal-contrast);
 }
 
-.WILSON_enter-fullscreen-button img, .WILSON_exit-fullscreen-button img, .WILSON_reset-button img
+.WILSON_button img
 {
 	filter: invert(calc(.25 + var(--theme)* .5657));
+}
+
+.WILSON_button-text
+{
+	filter: invert(calc(.25 + var(--theme)* .5657));
+	font-weight: bold;
 }
 
 .fps-canvas

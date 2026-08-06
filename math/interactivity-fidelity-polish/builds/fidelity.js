@@ -32,7 +32,7 @@ function load({ slide })
 
 	applet = new KaleidoscopicIFSFractals({
 		canvas,
-		epsilonScaling: 100,
+		epsilonScalingFactor: 100,
 		minEpsilon: 0.0075,
 	});
 }

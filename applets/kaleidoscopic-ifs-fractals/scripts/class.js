@@ -80,6 +80,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (int iteration = 0; iteration < ${useForGetColor ? 8 : 72}; iteration++)
 		{
+			int maxIterations = 72;
 			if (iteration >= numIterations)
 			{
 				break;
@@ -106,11 +107,12 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 	constructor({
 		canvas,
 		shape = "octahedron",
-		epsilonScaling = 0.75,
+		epsilonScalingFactor = 0.6,
 		minEpsilon,
 		theta = 0.2004,
 		phi = 1.6538,
 		resolution = 500,
+		xrFramebufferScaleSlider,
 	}) {
 		const constantsGlsl = [];
 
@@ -159,12 +161,13 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			uniforms,
 			theta,
 			phi,
-			cameraPos: [-2.03816, -0.526988, 0.30503],
+			sceneOrigin: [-2.702, -0.731, 0.347],
 			lightPos: [-50, -70, 100],
-			lightBrightness: 1.25,
-			epsilonScaling,
+			lightBrightness: 1.4,
+			epsilonScalingFactor,
 			minEpsilon,
-			stepFactor: .6,
+			overstepFactor: 1.1,
+			xrFramebufferScaleSlider
 		});
 
 		this.shape = shape;
@@ -204,9 +207,9 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		super.drawFrame();
 
 		const distance = this.distanceEstimator(
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2]
+			this.sceneOrigin[0],
+			this.sceneOrigin[1],
+			this.sceneOrigin[2]
 		);
 
 		// Interpolates from 0 at scale 2 to 3 at scale 1.125.

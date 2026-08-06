@@ -749,10 +749,31 @@ class SL2RGeometry extends BaseGeometry
 		], eta);
 	}
 
+	// The fiber is as much a part of the position as cameraPos is, so followGeodesic advancing
+	// it above is exactly right when the camera is actully moving. This shouldn't offset that,
+	// since it's just a query about a point near the camera. Instead, the fiber that the offset
+	// lands on comes back as a fifth component and the camera's own fiber gets put back.
+	getOffsetFrame(pos, forwardVec, rightVec, upVec, offset)
+	{
+		const cameraFiber = this.cameraFiber;
+
+		// Falls out correctly on the zero-offset path too, where followGeodesic never runs.
+		const frame = super.getOffsetFrame(pos, forwardVec, rightVec, upVec, offset);
+
+		frame[4] = this.cameraFiber;
+
+		this.cameraFiber = cameraFiber;
+
+		return frame;
+	}
+
 	// Since we're at the origin, we just want all the vectors to be orthogonal to the
 	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
-	correctVectors() {}
+	correctFrame(pos, forward, right, up)
+	{
+		return [pos, forward, right, up];
+	}
 	
 	baseColor = [0, 0, 0];
 

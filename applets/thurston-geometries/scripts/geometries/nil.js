@@ -383,7 +383,12 @@ class NilGeometry extends BaseGeometry
 		return [0, 0, 0, 1];
 	}
 
-	correctVectors() {}
+	// As followGeodesic explains above, the frame is deliberately left in the tangent space at
+	// the origin and translated at use time, so there's no new tangent space to project onto.
+	correctFrame(pos, forward, right, up)
+	{
+		return [pos, forward, right, up];
+	}
 
 	baseColorIncreases = [
 		[1, 0, 0],

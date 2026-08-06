@@ -18,10 +18,6 @@ import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
-	const applet = new ThurstonGeometries({
-		canvas: $("#output-canvas"),
-	});
-
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
@@ -57,6 +53,25 @@ export default function()
 		max: 120,
 		snapPoints: [100],
 		onInput: onSliderInput
+	});
+
+	const xrFramebufferScaleSlider = new Slider({
+		element: $("#xr-framebuffer-scale-slider"),
+		name: "VR Quality",
+		value: 0.5,
+		min: 0.1,
+		max: 1,
+		snapThreshhold: 0.1,
+		snapPoints: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+		percent: true,
+		onInput: onSliderInput
+	});
+
+	xrFramebufferScaleSlider.element.parentElement.style.display = "none";
+
+	const applet = new ThurstonGeometries({
+		canvas: $("#output-canvas"),
+		xrFramebufferScaleSlider,
 	});
 
 	const switchSceneButton = new ToggleButton({
@@ -212,6 +227,9 @@ export default function()
 
 			geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		}
+	
+		// The init process breaks for this slider otherwise, since it's not shown for S^2.
+		fovSlider.setValue(fovSlider.value);
 
 		applet.run(geometryData);
 	}
@@ -340,6 +358,8 @@ export default function()
 		applet.geometryData.sliderValues.wallThickness = parseFloat(wallThicknessSlider.value);
 		applet.geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		applet.fov = Math.tan(fovSlider.value / 2 * Math.PI / 180);
+
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
 		applet.needNewFrame = true;
 	}

@@ -2,8 +2,12 @@ import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class ExtrudedCube extends RaymarchApplet
 {
-	constructor({ canvas })
-	{
+	distanceFromOrigin = 13 * 1 / 2.5;
+
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
 
@@ -98,7 +102,7 @@ export class ExtrudedCube extends RaymarchApplet
 
 		const uniforms = {
 			iterations: 16,
-			scale: 3,
+			scale: 2.5,
 			separation: 1,
 		};
 
@@ -109,10 +113,14 @@ export class ExtrudedCube extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
-			cameraPos: [2.41322, 2.41439, 2.3916],
-			theta: 1.25 * Math.PI,
-			phi: 2.1539,
+			sceneOrigin: [3.645, 3.603, 3.554],
+			theta: 3.921,
+			phi: 2.177,
+			epsilonScalingFactor: 0,
 			minEpsilon: .000005,
+			lightBrightness: 1.35,
+			overstepFactor: 1.25,
+			xrFramebufferScaleSlider
 		});
 	}
 
