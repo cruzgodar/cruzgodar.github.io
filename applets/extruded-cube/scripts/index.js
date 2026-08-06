@@ -112,7 +112,7 @@ export default function()
 			epsilonScaling: applet.computeEpsilonScaling()
 		});
 
-		applet.distanceFromOrigin = 13 * separationSlider.value / scaleSlider.value;
+		applet.distanceFromOrigin = 15.5 * separationSlider.value / scaleSlider.value;
 
 		applet.calculateVectors();
 
