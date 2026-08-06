@@ -985,6 +985,11 @@ export class ThurstonGeometries extends Applet
 
 	onResizeCanvas()
 	{
+		this.wilson.resizeWorld({
+			minY: -Math.PI / 2 + (0.001 - this.wilson.worldHeight / 2),
+			maxY: Math.PI / 2 - (0.001 - this.wilson.worldHeight / 2),
+		});
+
 		this.wilson.setUniforms({
 			projectionMatrix: this.buildProjectionMatrix(),
 		}, "draw");
@@ -1215,15 +1220,24 @@ export class ThurstonGeometries extends Applet
 		this.run(this.geometryData);
 	}
 
-
+	worldCenterXBeforeFullscreen;
+	worldCenterYBeforeFullscreen;
 
 	switchFullscreen()
 	{
 		this.resume();
+
+		this.wilson.resizeWorld({
+			centerX: this.worldCenterXBeforeFullscreen,
+			centerY: this.worldCenterYBeforeFullscreen,
+		});
 	}
 
 	async beforeSwitchFullscreen()
 	{
+		this.worldCenterXBeforeFullscreen = this.wilson.worldCenterX;
+		this.worldCenterYBeforeFullscreen = this.wilson.worldCenterY;
+
 		this.animationPaused = true;
 
 		await sleep(33);

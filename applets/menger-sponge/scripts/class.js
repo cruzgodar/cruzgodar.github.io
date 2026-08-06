@@ -161,7 +161,7 @@ export class MengerSponge extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
-			sceneOrigin: [3.5, 0, 0],
+			sceneOrigin: [4, 0, 0],
 			theta: 3 * Math.PI / 2,
 			phi: Math.PI / 2,
 			epsilonScalingFactor: 0.5,

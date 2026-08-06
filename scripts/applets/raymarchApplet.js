@@ -151,7 +151,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		maxReflectionMarches = 128,
 		clipDistance = 1000,
 		
-		focalLengthFactor = 2.5,
+		focalLengthFactor = 3.5,
 		sceneOrigin = [0, 0, 0],
 		lockedOnOrigin = true,
 		lockZ,
@@ -391,13 +391,26 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.resume();
 	}
 
+
+	// Preserves phi through fullscreen
+	worldCenterXBeforeFullscreen;
+	worldCenterYBeforeFullscreen;
+
 	switchFullscreen()
 	{
 		this.resume();
+
+		this.wilson.resizeWorld({
+			centerX: this.worldCenterXBeforeFullscreen,
+			centerY: this.worldCenterYBeforeFullscreen,
+		});
 	}
 
 	async beforeSwitchFullscreen()
 	{
+		this.worldCenterXBeforeFullscreen = this.wilson.worldCenterX;
+		this.worldCenterYBeforeFullscreen = this.wilson.worldCenterY;
+
 		this.pause();
 
 		await sleep(33);
@@ -592,7 +605,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// which lives in the projection matrix now. These only scale movement,
 		// which used to ride along on the magnitudes.
 		this.moveForwardScale = this.speedFactor / 1.5;
-		this.moveRightScale = this.speedFactor / this.fovFactor;
+		this.moveRightScale = this.speedFactor / 1.5;
 
 
 		// Everything past this point is going to be handed to us by a headset if there is one.
@@ -873,6 +886,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		// console.log(this.sceneOrigin, this.theta, this.phi);
+
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
 			this.wilson.resizeWorld({
