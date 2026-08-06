@@ -13,7 +13,7 @@ export class Mandelbulb extends RaymarchApplet
 
 	constructor({
 		canvas,
-		resolution = 400,
+		resolution = 750,
 		useShadows = false,
 		xrFramebufferScaleSlider
 	}) {
@@ -127,6 +127,7 @@ export class Mandelbulb extends RaymarchApplet
 			getColorGlsl,
 			uniformsGlsl,
 			uniforms,
+			epsilonScalingFactor: 0.4,
 			theta: 4.6601,
 			phi: 2.272,
 			sceneOrigin: [0.084365, 1.91102, 1.69388],

@@ -39,7 +39,7 @@ function getComputeShadowIntensityGlsl({
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
+					float epsilon = max(t * epsilonScaling, minEpsilon);
 
 					if (t > clipDistance || dot(pos - lightPos, pos - lightPos) < 0.04)
 					{
@@ -80,7 +80,7 @@ function getComputeShadowIntensityGlsl({
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
+					float epsilon = max(t * epsilonScaling, minEpsilon);
 
 					if (t > clipDistance)
 					{
@@ -117,10 +117,10 @@ function getComputeShadingGlsl({
 	// distance. Try this if the entire scene looks uniformly dim.
 	const occlusionAddition = useGradientCorrectedOcclusion
 		? /* glsl */`
-			occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal)
+			occlusion += weight * (height - (distanceEstimator(pos + height * surfaceNormal))
 				/ max(gradientMagnitude, 0.001));
 		` : /* glsl */`
-			occlusion += weight * (height - distanceEstimator(pos + height * surfaceNormal));
+			occlusion += weight * (height - (distanceEstimator(pos + height * surfaceNormal)));
 		`;
 
 	return /* glsl */`
@@ -153,6 +153,7 @@ function getComputeShadingGlsl({
 			vec3 pos,
 			vec3 lightDirection,
 			vec3 surfaceNormal,
+			float distanceFromStart,
 			float ambientOcclusion
 			${useShadows ? ", float shadowIntensity" : ""}
 		) {
@@ -167,8 +168,8 @@ function getComputeShadingGlsl({
 
 			${useShadows ? "color *= shadowIntensity;" : ""}
 			
-			//Apply fog. We can't just use t here since curved light has nonlinear geodesics.
-			return mix(color, fogColor, 1.0 - exp(-distance(pos, rayOrigin) * fogScaling));
+			//Apply fog.
+			return mix(color, fogColor, 1.0 - exp(-distanceFromStart * fogScaling));
 		}
 	`;
 }
@@ -213,7 +214,8 @@ function getRaymarchGlsl({
 					continue;
 				}
 
-				epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
+				// The 0.5 accounts for the 2.0 later.
+				epsilon = max(t * epsilonScaling, minEpsilon);
 				
 				if (distanceToScene < epsilon || t > clipDistance)
 				{
@@ -240,6 +242,7 @@ function getMainFunctionGlsl({
 	useBloom,
 	useShadows,
 	useReflections,
+	surfaceNormalEpsilonFactor,
 }) {
 	if (useFor3DPrinting)
 	{
@@ -248,7 +251,7 @@ function getMainFunctionGlsl({
 			{
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-				if (distanceEstimator(vec3(uv.x, uv.y, uvCenter.x) * uvScale) < epsilonScaling)
+				if (distanceEstimator(vec3(uv.x, uv.y, uvCenter.x) * uvScale) < 0.0015)
 				{
 					gl_FragColor = vec4(1.0);
 				}
@@ -268,7 +271,7 @@ function getMainFunctionGlsl({
 		: "fogColor";
 
 	const reflectionGlsl = useReflections ? /* glsl */`
-		vec3 reflectionStartPos = pos + surfaceNormal * epsilon * 5.0;
+		vec3 reflectionStartPos = pos + surfaceNormal * epsilon * 10.0;
 		vec3 reflectedDirection = reflect(rayDirectionVec, surfaceNormal);
 		vec3 reflectionPos;
 		float reflectionEpsilon;
@@ -310,6 +313,7 @@ function getMainFunctionGlsl({
 				reflectionPos,
 				reflectionLightDirection,
 				reflectionSurfaceNormal,
+				distance(reflectionPos, reflectionStartPos) + distanceFromStart,
 				1.0 // No ambient occlusion
 				${useShadows ? ", reflectionShadowIntensity" : ""}
 			);
@@ -350,13 +354,11 @@ function getMainFunctionGlsl({
 			}
 
 			
-			// Using distanceToScene / 2 here means we never step inside the object
-			// which helps to prevent banding.
 			float gradientMagnitude;
-			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * 0.5, gradientMagnitude);
-			pos += (epsilon - distanceToScene) * surfaceNormal;
-			// gl_FragColor = vec4(surfaceNormal * 0.5 + 0.5, 1.0)
-			// return;
+
+			// Making the step size *larger* than epsilon is what
+			// actually prevents brightness banding on flat surfaces.
+			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * ${getFloatGlsl(surfaceNormalEpsilonFactor)}, gradientMagnitude);
 
 			vec3 lightDirection = normalize(lightPos - pos);
 
@@ -365,10 +367,13 @@ function getMainFunctionGlsl({
 
 			float ambientOcclusion = computeAmbientOcclusion(pos, surfaceNormal, gradientMagnitude, t);
 
+			float distanceFromStart = distance(pos, rayOrigin);
+
 			vec3 color = computeShading(
 				pos,
 				lightDirection,
 				surfaceNormal,
+				distanceFromStart,
 				ambientOcclusion
 				${useShadows ? ", shadowIntensity" : ""}
 			);
@@ -404,6 +409,7 @@ export function createShader({
 	bloomPower,
 	stepFactor,
 	overstepFactor,
+	surfaceNormalEpsilonFactor,
 	useFor3DPrinting,
 	
 	aoSamples,
@@ -436,7 +442,7 @@ export function createShader({
 	const raymarchGlsl = getRaymarchGlsl({
 		getGeodesicGlsl,
 		stepFactor,
-		overstepFactor
+		overstepFactor,
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
@@ -445,6 +451,7 @@ export function createShader({
 		useBloom,
 		useShadows,
 		useReflections,
+		surfaceNormalEpsilonFactor,
 	});
 
 	const computeBloomGlsl = useBloom ? /* glsl */`

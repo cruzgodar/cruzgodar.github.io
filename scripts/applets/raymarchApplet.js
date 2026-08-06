@@ -21,7 +21,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	phi = 0;
 	worldSize = 2.5;
 
-	resolution = 500;
+	resolution;
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
@@ -62,7 +62,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	fogColor;
 	fogScaling;
 	stepFactor;
-	epsilonScaling;
+	epsilonScalingFactor;
+	surfaceNormalEpsilonFactor;
 	minEpsilon;
 
 	useShadows;
@@ -126,7 +127,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		canvas,
 		shader,
 
-		resolution = 500,
+		resolution = 750,
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -141,7 +142,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		phi = Math.PI / 2,
 		stepFactor = .99,
 		overstepFactor = 1.0,
-		epsilonScaling = 1.25,
+		epsilonScalingFactor = 1,
+		surfaceNormalEpsilonFactor = 2,
 		minEpsilon = .0000003,
 
 		maxMarches = 128,
@@ -190,7 +192,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.phi = phi;
 		this.stepFactor = stepFactor;
 		this.overstepFactor = overstepFactor;
-		this.epsilonScaling = epsilonScaling;
+		this.epsilonScalingFactor = epsilonScalingFactor;
+		this.surfaceNormalEpsilonFactor = surfaceNormalEpsilonFactor;
 		this.minEpsilon = minEpsilon;
 
 		this.maxMarches = maxMarches;
@@ -239,7 +242,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform mat4 cameraToWorld;
 			uniform vec3 rayOrigin;
 
-			uniform float resolution;
 			uniform float epsilonScaling;
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
@@ -254,12 +256,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 					projectionMatrix: this.projectionMatrix,
 					cameraToWorld: this.cameraToWorld,
 					rayOrigin: [0, 0, 0],
-					resolution: this.resolution,
 					minEpsilon: this.minEpsilon,
 				}
 			),
 			
-			epsilonScaling: this.epsilonScaling,
+			epsilonScaling: this.computeEpsilonScaling(),
 			
 			uvCenter: [0, 0],
 			uvScale: 1,
@@ -281,7 +282,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							+ t * newFactor;
 
 						this.setUniforms({
-							epsilonScaling: this.epsilonScaling *
+							epsilonScaling: this.computeEpsilonScaling() /
 								((1 - t) * oldFactor + t * newFactor)
 						});
 
@@ -404,6 +405,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
+	computeEpsilonScaling(resolution = this.resolution)
+	{
+		return this.epsilonScalingFactor / Math.min(resolution, 4096);
+	}
+
+
+
 	async make3DPrintable()
 	{
 		const preview = true;
@@ -412,7 +420,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.setUniforms({
 			uvScale: 3,
 			uvCenter: [0, 0],
-			epsilonScaling: 0.0015,
+			epsilonScaling: 650,
 		});
 
 		this.wilson.resizeCanvas({ width: resolution });
@@ -466,6 +474,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useBloom: this.useBloom,
 			bloomPower: this.bloomPower,
 			stepFactor: this.stepFactor,
+			surfaceNormalEpsilonFactor: this.surfaceNormalEpsilonFactor,
 			overstepFactor: this.overstepFactor,
 			useFor3DPrinting: this.useFor3DPrinting,
 
@@ -930,7 +939,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			filename,
 			resolution,
 			{
-				resolution: Math.min(resolution, 4096)
+				epsilonScaling: this.computeEpsilonScaling(resolution)
 			}
 		);
 	}
@@ -1112,7 +1121,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.setUniforms({
-			resolution: this.resolution
+			epsilonScaling: this.computeEpsilonScaling()
 		});
 
 		this.needNewFrame = true;

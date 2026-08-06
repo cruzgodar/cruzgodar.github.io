@@ -46,9 +46,9 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 400,
-		minValue: 100,
-		maxValue: 800,
+		value: 750,
+		minValue: 300,
+		maxValue: 1500,
 		onInput: changeResolution
 	});
 
@@ -56,7 +56,7 @@ export default function()
 		element: $("#rho-slider"),
 		name: "$\\rho$",
 		value: .895,
-		min: 0,
+		min: 0.01,
 		max: 1,
 		onInput: onSliderInput
 	});

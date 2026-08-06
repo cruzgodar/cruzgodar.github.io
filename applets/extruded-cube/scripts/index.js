@@ -4,6 +4,7 @@ import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
+import { clamp } from "/scripts/src/utils.js";
 
 export default function()
 {
@@ -33,9 +34,9 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
-		minValue: 100,
-		maxValue: 1000,
+		value: 750,
+		minValue: 300,
+		maxValue: 1500,
 		onInput: changeResolution
 	});
 
@@ -97,10 +98,18 @@ export default function()
 
 	function onSliderInput()
 	{
+		// Use epsilon scaling when there's lots of little isolated pieces,
+		// i.e. when scale decreases or separation increases.
+		applet.epsilonScalingFactor = Math.max(
+			clamp(2.5 - scaleSlider.value, 0, 0.5),
+			clamp(separationSlider.value - 1.0, 0, 0.5)
+		);
+
 		applet.setUniforms({
 			iterations: iterationsSlider.value,
 			scale: scaleSlider.value,
-			separation: separationSlider.value
+			separation: separationSlider.value,
+			epsilonScaling: applet.computeEpsilonScaling()
 		});
 
 		applet.distanceFromOrigin = 13 * separationSlider.value / scaleSlider.value;

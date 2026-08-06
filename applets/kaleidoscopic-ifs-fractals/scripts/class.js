@@ -106,7 +106,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 	constructor({
 		canvas,
 		shape = "octahedron",
-		epsilonScaling = 0.75,
+		epsilonScalingFactor = 0.65,
 		minEpsilon,
 		theta = 0.2004,
 		phi = 1.6538,
@@ -163,7 +163,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			sceneOrigin: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.4,
-			epsilonScaling,
+			epsilonScalingFactor,
 			minEpsilon,
 			overstepFactor: 1.1,
 			xrFramebufferScaleSlider

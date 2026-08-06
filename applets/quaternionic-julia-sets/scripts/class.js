@@ -99,6 +99,8 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
+			epsilonScalingFactor: 0.65,
+			surfaceNormalEpsilonFactor: 0.5,
 			stepFactor: .75,
 			theta: 1.3094,
 			phi: 1.9975,

@@ -116,6 +116,7 @@ export class ExtrudedCube extends RaymarchApplet
 			sceneOrigin: [2.41322, 2.41439, 2.3916],
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
+			epsilonScalingFactor: 0,
 			minEpsilon: .000005,
 			lightBrightness: 1.35,
 			overstepFactor: 1.25,
