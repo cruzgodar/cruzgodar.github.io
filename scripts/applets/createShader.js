@@ -313,7 +313,9 @@ function getMainFunctionGlsl({
 				reflectionPos,
 				reflectionLightDirection,
 				reflectionSurfaceNormal,
-				distance(reflectionPos, reflectionStartPos) + distanceFromStart,
+				// The extra factor of 2 makes reflections fade before objects do, which
+				// keeps distance objects from being noisy.
+				(distance(reflectionPos, reflectionStartPos) + distanceFromStart) * 2.0,
 				1.0 // No ambient occlusion
 				${useShadows ? ", reflectionShadowIntensity" : ""}
 			);
