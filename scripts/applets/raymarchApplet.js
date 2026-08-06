@@ -886,8 +886,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		console.log(this.sceneOrigin, this.theta, this.phi);
-
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
 			this.wilson.resizeWorld({
