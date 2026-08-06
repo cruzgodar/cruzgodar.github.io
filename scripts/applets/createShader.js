@@ -378,7 +378,11 @@ function getMainFunctionGlsl({
 				distanceFromStart,
 				ambientOcclusion
 				${useShadows ? ", shadowIntensity" : ""}
-			);
+			)
+				// This final factor darkens the color if it's within 8 steps of being terminated
+				// for too many marches, which keeps complicated objects from having sharp black
+				// bands around them.
+				* clamp(1.0 - (float(iteration) - float(maxMarches) + 8.0) / 8.0, 0.0, 1.0);
 
 			${reflectionGlsl}
 
