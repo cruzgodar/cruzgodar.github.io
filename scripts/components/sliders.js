@@ -29,6 +29,7 @@ export class Slider extends CappedInputElement
 	precision;
 	logarithmic;
 	integer;
+	percent;
 	persistState;
 	currentlyDragging = false;
 	dragOffset;
@@ -44,6 +45,7 @@ export class Slider extends CappedInputElement
 		snapPoints = [],
 		logarithmic = false,
 		integer = false,
+		percent = false,
 		persistState = true,
 		onInput = () => {}
 	}) {
@@ -61,6 +63,7 @@ export class Slider extends CappedInputElement
 
 		this.logarithmic = logarithmic;
 		this.integer = integer;
+		this.percent = percent;
 
 		this.value = parseFloat(value);
 		this.defaultValue = this.value;
@@ -86,9 +89,7 @@ export class Slider extends CappedInputElement
 			? Math.round(this.value)
 			: this.value;
 
-		this.displayValue = this.integer
-			? this.value
-			: this.value.toFixed(this.precision);
+		this.updateDisplayValue();
 
 		this.subtextElement.textContent = `${name}: `;
 		this.valueElement = document.createElement("span");
@@ -234,6 +235,25 @@ export class Slider extends CappedInputElement
 
 
 
+	updateDisplayValue()
+	{
+		if (this.percent)
+		{
+			this.displayValue =  `${Math.round(this.value * 100)}%`;
+			return;
+		}
+
+		if (this.integer)
+		{
+			this.displayValue = `${this.value}`;
+			return;
+		}
+
+		this.displayValue = this.value.toFixed(this.precision);
+	}
+
+
+
 	addTickMarks()
 	{
 		for (const tick of this.tickElements)
@@ -352,9 +372,7 @@ export class Slider extends CappedInputElement
 			? Math.round(this.value)
 			: this.value;
 
-		this.displayValue = this.integer
-			? this.value
-			: this.value.toFixed(this.precision);
+		this.updateDisplayValue();
 
 		this.valueElement.textContent = this.displayValue;
 
@@ -400,9 +418,9 @@ export class Slider extends CappedInputElement
 		const maxX = trackRect.width - thumbWidth - 2.5 * 2;
 		this.element.style.left = `${clampedSliderProportion * maxX}px`;
 
-		this.displayValue = this.integer
-			? this.value
-			: this.value.toFixed(this.precision);
+		this.updateDisplayValue();
+
+		
 		
 		if (updateValueElement)
 		{

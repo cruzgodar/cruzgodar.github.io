@@ -21,6 +21,7 @@ As interesting as the fractals is the technique used to render them --- <a href=
 	rotation-angle-y
 	rotation-angle-z
 	scale
+	xr-framebuffer-scale
 ###
 
 ### checkboxes

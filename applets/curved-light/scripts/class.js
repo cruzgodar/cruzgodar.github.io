@@ -2,8 +2,10 @@ import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class CurvedLight extends RaymarchApplet
 {
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - .5;
 		`;
@@ -123,7 +125,8 @@ export class CurvedLight extends RaymarchApplet
 			fogScaling: 0.025,
 			useBloom: false,
 			useReflections: true,
-			lockedOnOrigin: false
+			lockedOnOrigin: false,
+			xrFramebufferScaleSlider,
 		});
 	}
 

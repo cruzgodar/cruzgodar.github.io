@@ -68,6 +68,20 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const xrFramebufferScaleSlider = new Slider({
+		element: $("#xr-framebuffer-scale-slider"),
+		name: "VR Quality",
+		value: 0.5,
+		min: 0.1,
+		max: 1,
+		snapThreshhold: 0.1,
+		snapPoints: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+		percent: true,
+		onInput: onSliderInput
+	});
+
+	xrFramebufferScaleSlider.element.parentElement.style.display = "none";
+
 	const lockOnOriginCheckbox = new Checkbox({
 		element: $("#lock-on-origin-checkbox"),
 		name: "Lock on origin",
@@ -84,6 +98,7 @@ export default function()
 	const applet = new KaleidoscopicIFSFractals({
 		canvas: $("#output-canvas"),
 		shape: polyhedraDropdown.value || "octahedron",
+		xrFramebufferScaleSlider
 	});
 
 	new DownloadHighResButton({
@@ -103,6 +118,10 @@ export default function()
 			rotationAngleYSlider.value,
 			rotationAngleZSlider.value
 		);
+
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
+
+		applet.needNewFrame = true;
 	}
 
 	function changeResolution()

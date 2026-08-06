@@ -4,8 +4,10 @@ export class ExtrudedCube extends RaymarchApplet
 {
 	distanceFromOrigin = 13 * 1 / 2.5;
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
 
@@ -116,7 +118,8 @@ export class ExtrudedCube extends RaymarchApplet
 			phi: 2.1539,
 			minEpsilon: .000005,
 			lightBrightness: 1.35,
-			overstepFactor: 1.25
+			overstepFactor: 1.25,
+			xrFramebufferScaleSlider
 		});
 	}
 

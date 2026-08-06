@@ -9,7 +9,22 @@ import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
-	const applet = new MengerSponge({ canvas: $("#output-canvas") });
+	const xrFramebufferScaleSlider = new Slider({
+		element: $("#xr-framebuffer-scale-slider"),
+		name: "VR Quality",
+		value: 0.5,
+		min: 0.1,
+		max: 1,
+		snapThreshhold: 0.1,
+		snapPoints: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+		percent: true,
+		onInput: onSliderInput
+	});
+
+	const applet = new MengerSponge({
+		canvas: $("#output-canvas"),
+		xrFramebufferScaleSlider
+	});
 
 	new DownloadHighResButton({
 		element: $("#download-dropdown"),
@@ -111,6 +126,8 @@ export default function()
 				rotationAngleZSlider.value
 			),
 		});
+
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
 		applet.needNewFrame = true;
 	}

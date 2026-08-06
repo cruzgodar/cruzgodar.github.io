@@ -118,6 +118,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	xrWorldScaleNeedsSnap = false;
 
+	xrFramebufferScaleSlider;
+
 
 
 	constructor({
@@ -177,6 +179,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		xrComfortDistance = 1.25,
 		minWorldScale = 1e-5,
 		maxWorldScale = 1e3,
+
+		xrFramebufferScaleSlider,
 	}) {
 		super(canvas);
 
@@ -227,6 +231,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.minWorldScale = minWorldScale;
 		this.maxWorldScale = maxWorldScale;
 		this.baseMinEpsilon = minEpsilon;
+
+		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
 		this.uniformsGlsl = /* glsl */`
 			uniform mat4 projectionMatrix;
@@ -320,7 +326,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset: this.onReset.bind(this),
 
-			useGpuTiming: true,
+			useGpuTiming: false,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -358,6 +364,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				onFrameStart: this.onXRFrameStart.bind(this),
 				renderFrame: this.renderXRFrame.bind(this),
 				onExit: this.onExitXR.bind(this),
+				onAvailabilityChange: this.onXRAvailabilityChange.bind(this),
 			},
 
 			verbose: window.DEBUG
@@ -642,7 +649,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.timeSinceLastFrame += timeElapsed;
 	}
 
+	
 
+	onXRAvailabilityChange(isSupported)
+	{
+		if (this.xrFramebufferScaleSlider)
+		{
+			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported
+				? "flex"
+				: "none";
+
+			this.xrFramebufferScaleSlider.setValue(this.xrFramebufferScaleSlider.value);
+		}
+	}
 
 	onEnterXR()
 	{
@@ -875,7 +894,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.wilson.drawFrame();
 		}
 
-		console.log(this.wilson.averageGpuFrameTime);
+		// console.log(this.wilson.averageGpuFrameTime);
 	}
 
 

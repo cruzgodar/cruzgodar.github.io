@@ -16,6 +16,7 @@ When the scale is exactly 2, the Sierpinski octahedron returns once again, and w
 	iterations
 	scale
 	separation
+	xr-framebuffer-scale
 ###
 
 ### checkboxes

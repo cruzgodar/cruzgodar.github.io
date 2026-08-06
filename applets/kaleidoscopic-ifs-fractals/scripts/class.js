@@ -111,6 +111,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		theta = 0.2004,
 		phi = 1.6538,
 		resolution = 500,
+		xrFramebufferScaleSlider,
 	}) {
 		const constantsGlsl = [];
 
@@ -164,7 +165,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			lightBrightness: 1.4,
 			epsilonScaling,
 			minEpsilon,
-			overstepFactor: 1.1
+			overstepFactor: 1.1,
+			xrFramebufferScaleSlider
 		});
 
 		this.shape = shape;

@@ -58,10 +58,12 @@ export default function()
 	const xrFramebufferScaleSlider = new Slider({
 		element: $("#xr-framebuffer-scale-slider"),
 		name: "VR Quality",
-		value: 3,
-		min: 1,
-		max: 5,
-		integer: true,
+		value: 0.5,
+		min: 0.1,
+		max: 1,
+		snapThreshhold: 0.1,
+		snapPoints: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+		percent: true,
 		onInput: onSliderInput
 	});
 
@@ -357,7 +359,7 @@ export default function()
 		applet.geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		applet.fov = Math.tan(fovSlider.value / 2 * Math.PI / 180);
 
-		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value / 5;
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
 		applet.needNewFrame = true;
 	}

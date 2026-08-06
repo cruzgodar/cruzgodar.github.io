@@ -16,6 +16,7 @@ There's not too much to say about this one! The Menger Sponge is a famous and si
 	rotation-angle-x
 	rotation-angle-y
 	rotation-angle-z
+	xr-framebuffer-scale
 ###
 
 ### checkboxes

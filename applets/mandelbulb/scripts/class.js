@@ -15,6 +15,7 @@ export class Mandelbulb extends RaymarchApplet
 		canvas,
 		resolution = 400,
 		useShadows = false,
+		xrFramebufferScaleSlider
 	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			vec3 z = pos;
@@ -130,9 +131,11 @@ export class Mandelbulb extends RaymarchApplet
 			phi: 2.272,
 			sceneOrigin: [0.084365, 1.91102, 1.69388],
 			lightPos: [-10, 0, 15],
-			lightBrightness: 1.25,
+			lightBrightness: 1.2,
 			useShadows,
-			overstepFactor: 1.15
+			overstepFactor: 1.15,
+			useGradientCorrectedOcclusion: true,
+			xrFramebufferScaleSlider,
 		});
 	}
 
