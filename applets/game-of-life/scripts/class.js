@@ -262,18 +262,25 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 	// Loads a state paused and draws just the initial frame.
-	run({
+	async run({
 		resolution = 1000,
 		gridSize = 100,
 		state,
 		pauseUpdating = true,
 		onTorus = this.onTorus
 	}) {
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+		]);
+
+		console.log("hi");
+
 		this.gridSize = gridSize;
 		this.resolution = Math.max(resolution, this.gridSize * 2);
 		this.onTorus = onTorus;
 
-		this.pauseUpdating = pauseUpdating;
+		this.pauseUpdating = false;
 
 		this.wilsonHidden.setUniforms({
 			stepSize: 1 / this.gridSize

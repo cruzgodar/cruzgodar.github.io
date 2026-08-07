@@ -219,12 +219,14 @@ export class AbelianSandpiles extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		resolution = 100,
 		density = 0.5,
 		northAmount = 0.5,
 		computationsPerFrame = 1,
 	}) {
+		await this.wilson.allShadersReady();
+		
 		this.resolution = resolution;
 		this.density = density;
 		this.northAmount = northAmount;

@@ -73,9 +73,7 @@ export default function()
 		density: densityInput.value,
 		northAmount: northAmountSlider.value,
 		computationsPerFrame: computationsPerFrameSlider.value,
-	});
-
-	applet.pause();
+	}).then(() => applet.pause());
 
 	function onSliderInput()
 	{
