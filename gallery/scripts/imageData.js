@@ -90,7 +90,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/extruded-cube",
 		
-		driveId: "130jI2YEQehE_VENFUDplZNSZHgbX_GN2"
+		driveId: "1sWaUYIkWLai66IrSOSU6Ds8pXAuVzaAB"
 	},
 	
 	"finite-subdivision":
@@ -185,7 +185,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8",
 
-		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
+		driveId: "1EPrsr9v2EZGj6rgQFnnj0v3Axq3mqOhf"
 	},
 
 	"juliabulb-2":
@@ -196,7 +196,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-y-slider=0.8",
 
-		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
+		driveId: "14D2oZmIp781wXd3KbEzQpowvEMfTskq5"
 	},
 
 	"juliabulb-3":
@@ -207,7 +207,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8",
 
-		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
+		driveId: "1t92cLbIpqxsoaCTgNQ1zKhbeEHtfNN3w"
 	},
 
 	"juliabulb-power-2":
@@ -217,7 +217,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
 
-		driveId: "1PNVXqlPub0RNvj3EpyYj0kiLi3YwnPvj"
+		driveId: "1gs2GSxkg67JKFWEsuHAQu8_v3brb9FvH"
 	},
 
 	"juliabulb-zoom":
@@ -237,7 +237,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0",
 
-		driveId: "1i7jSyoBnkKF0CG-PdrwBFPccIgyzJbFh"
+		driveId: "12MHU6oVM6TBOy4a0PPqXqaP5QYLZ_HnS"
 	},
 
 	"kaleidoscopic-ifs":
@@ -251,7 +251,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679",
 
-		driveId: "17-UW2b0uTMbv-VYDVRstnkge-8D4sdDT"
+		driveId: "1W4utx1SWMXVsAxR82j7p2rHk9kD-c1et"
 	},
 
 	"kaleidoscopic-ifs-2":
@@ -265,7 +265,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046",
 
-		driveId: "1GSG-LNt7oqQjE-pmO8TfsgAvZDQ9wA1_"
+		driveId: "1Sc0b9WiTQaqg6QgjhGclZ5E2ntEf_Xg7"
 	},
 
 	"kaleidoscopic-ifs-3":
@@ -279,7 +279,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299",
 
-		driveId: "1iwHMZWhC1vTKv9IvTNRSVRPfEis3x3dP"
+		driveId: "1MWwi-YhLFE06FrTUk3gfs-oQOKoX9XrC"
 	},
 
 	"kicked-rotator":
@@ -325,7 +325,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/mandelbulb",
 
-		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
+		driveId: "1mAWNCYN6o4YNx8atmR_0sThdzEYI7S58"
 	},
 
 	"maurer-rose":
@@ -357,7 +357,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113",
 
-		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
+		driveId: "1G1e1FEY8y2bRIgWD9mXfyTZ9PTH7Sbok"
 	},
 
 	"menger-sponge-2":
@@ -371,7 +371,7 @@ export const galleryImageData =
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159",
 
-		driveId: "1hRXwXnD7g1DQ7QepwqicbguoFXQRLy4s"
+		driveId: "1NGO48yYB8rhn85DA9pOrZVLi01sQaZPa"
 	},
 
 	"newtons-method":
@@ -423,7 +423,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/quaternionic-julia-sets",
 
-		driveId: "1L2juSwwawdW322PyVNIej1DM0m0vHekk"
+		driveId: "1mLnQuuaEVftdTh4vQDtnOB8-0JkBGazy"
 	},
 		
 	"secant-method":
@@ -476,7 +476,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h2xe&switch-scene-button=1",
 
-		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
+		driveId: "1bTHbbsZ3Jbp8fdLjrPzSyexbBnesS1Gu"
 	},
 
 	"thurston-geometry-h3":
@@ -485,7 +485,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h3&switch-scene-button=1",
 
-		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
+		driveId: "1d_hcQM7Fo0qlKc7fozlNjNdQJvy9aNzA"
 	},
 
 	"thurston-geometry-nil":
@@ -494,7 +494,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=nil&switch-scene-button=1",
 
-		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
+		driveId: "1xRgO1Pc01dHu0RMXoQ2ANlvuE7I17-7h"
 	},
 
 	"thurston-geometry-s2xe":
@@ -512,7 +512,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s3",
 
-		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
+		driveId: "1Rd4FLSTWjiylsaqnOIjUlu3I3Yucy1YX"
 	},
 
 	"thurston-geometry-sl2r":
@@ -530,7 +530,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sol&switch-scene-button=1",
 
-		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
+		driveId: "1XzneH2iE80oHqFpQiZUK1Js5OqZrfV_B"
 	},
 
 	"voronoi-diagram":
