@@ -99,8 +99,12 @@ export class KickedRotator extends AnimationFrameApplet
 
 
 
-	run({ resolution = 1000, k = 0.75 })
+	async run({ resolution = 1000, k = 0.75 })
 	{
+		// A previous run's loop is still going, and everything below -- including the await --
+		// happens while it's free to call drawFrame() on half-rebuilt state.
+		this.pause();
+
 		this.resolution = resolution;
 		this.computeResolution = resolution;
 
@@ -198,9 +202,18 @@ export class KickedRotator extends AnimationFrameApplet
 			data: this.texture
 		});
 
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonUpdate.allShadersReady(),
+		]);
+
+		// Reset the counter only once nothing else can touch it. A stale loop's prepareFrame()
+		// still increments frame while we're awaiting, and its parity is what decides which
+		// half of the ping-pong is read first -- get it wrong and the first frame samples the
+		// empty buffer instead of the seeded one.
 		this.frame = 0;
 		this.numIterations = 100;
-		
+
 		this.resume();
 	}
 
@@ -212,6 +225,13 @@ export class KickedRotator extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		// pause() only stops the loop from scheduling another frame, so a callback that was
+		// already queued still lands here once.
+		if (this.animationPaused)
+		{
+			return;
+		}
+
 		const textureId = this.frame % 2 === 0 ? "update1" : "update2";
 		const framebufferId = this.frame % 2 === 0 ? "update2" : "update1";
 
