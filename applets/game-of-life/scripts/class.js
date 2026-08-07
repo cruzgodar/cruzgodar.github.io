@@ -274,13 +274,11 @@ export class GameOfLife extends AnimationFrameApplet
 			this.wilsonHidden.allShadersReady(),
 		]);
 
-		console.log("hi");
-
 		this.gridSize = gridSize;
 		this.resolution = Math.max(resolution, this.gridSize * 2);
 		this.onTorus = onTorus;
 
-		this.pauseUpdating = false;
+		this.pauseUpdating = pauseUpdating;
 
 		this.wilsonHidden.setUniforms({
 			stepSize: 1 / this.gridSize
