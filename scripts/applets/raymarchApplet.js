@@ -127,7 +127,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		canvas,
 		shader,
 
-		resolution = 750,
+		resolution = 1000,
 
 		distanceEstimatorGlsl,
 		getColorGlsl,

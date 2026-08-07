@@ -60,9 +60,9 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
-		minValue: 100,
-		maxValue: 1000,
+		value: 1000,
+		minValue: 300,
+		maxValue: 2000,
 		onInput: changeResolution
 	});
 

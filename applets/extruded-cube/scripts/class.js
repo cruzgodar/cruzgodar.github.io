@@ -2,7 +2,7 @@ import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class ExtrudedCube extends RaymarchApplet
 {
-	distanceFromOrigin = 13 * 1 / 2.5;
+	distanceFromOrigin = 15.5 * 1 / 2.5;
 
 	constructor({
 		canvas,
