@@ -100,12 +100,6 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const reflectionsCheckbox = new Checkbox({
-		element: $("#reflections-checkbox"),
-		name: "Reflections",
-		onInput: onCheckboxInput
-	});
-
 	typesetMath();
 
 	function changeResolution()
@@ -138,10 +132,8 @@ export default function()
 
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
-			|| applet.useReflections !== reflectionsCheckbox.checked
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
-			applet.useReflections = reflectionsCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

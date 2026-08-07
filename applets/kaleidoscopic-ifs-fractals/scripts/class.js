@@ -111,7 +111,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		minEpsilon,
 		theta = 0.2004,
 		phi = 1.6538,
-		resolution = 500,
+		resolution = 1000,
 		xrFramebufferScaleSlider,
 	}) {
 		const constantsGlsl = [];

@@ -167,7 +167,7 @@ export class MengerSponge extends RaymarchApplet
 			epsilonScalingFactor: 0.5,
 			maxMarches: 256,
 			stepFactor: 0.5,
-			lightBrightness: 2,
+			lightBrightness: 2.5,
 			overstepFactor: 1,
 			xrFramebufferScaleSlider,
 		});
