@@ -105,8 +105,13 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 
 
-	run({ resolution = 1000 })
+	async run({ resolution = 1000 })
 	{
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonUpdate.allShadersReady(),
+		]);
+
 		this.resolution = resolution;
 		this.computeResolution = Math.round(resolution / 4);
 

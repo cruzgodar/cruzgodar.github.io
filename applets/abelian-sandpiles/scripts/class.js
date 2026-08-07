@@ -267,13 +267,18 @@ export class AbelianSandpiles extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		resolution = 100,
 		numGrains = 10000,
 		floodGrains = 0,
 		computationsPerFrame = 25,
 		palette = [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	}) {
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonUpdate.allShadersReady(),
+		]);
+
 		this.resolution = resolution + 1 - (resolution % 2);
 		this.resolutionUpdate = Math.ceil(this.resolution / 2);
 		this.numGrains = numGrains;
@@ -327,6 +332,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 		});
 
 		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("output");
 
 
 

@@ -4,8 +4,6 @@ import { WilsonGPU } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
 {
-	wilsonUpscale;
-
 	gridSize = 100;
 	resolution = 1000;
 
@@ -300,6 +298,8 @@ export class GameOfLife extends AnimationFrameApplet
 			height: this.gridSize,
 			textureType: "unsignedByte"
 		});
+
+		this.wilson.useTexture("draw");
 
 		this.wilsonHidden.createFramebufferTexturePair({
 			id: "0",
