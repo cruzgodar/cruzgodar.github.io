@@ -76,7 +76,7 @@ export class Mandelbulb extends RaymarchApplet
 				
 				float phi = atan(z.y, z.x);
 				
-				dr = pow(r, power - 1.0) * power * dr + 1.0;
+				dr = pow(r, power - 1.0) * power * dr + (1.0 - juliaProportion);
 				
 				theta = power * theta + fountainAmount;
 				
@@ -138,6 +138,10 @@ export class Mandelbulb extends RaymarchApplet
 			overstepFactor: 1.15,
 			useGradientCorrectedOcclusion: true,
 			xrFramebufferScaleSlider,
+
+			// Uncomment to fix the poles.
+			// stepFactor: 0.1,
+			// maxMarches: 128 * 10,
 		});
 	}
 
