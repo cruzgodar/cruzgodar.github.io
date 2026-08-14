@@ -2,7 +2,7 @@
 
 import { Worker } from "worker_threads";
 import { getModifiedDate, read } from "../file-io.js";
-import { galleryImageData } from "/gallery/scripts/imageData.js";
+import { galleryFullResUrl, galleryImageData } from "/gallery/scripts/imageData.js";
 
 const { spawnSync } = require("child_process");
 
@@ -83,8 +83,7 @@ async function validateAllLinks(files)
 			(await Promise.all(files.map(getLinksInFile))).flat()
 		)
 	).concat(
-		Object.values(galleryImageData)
-			.map(item => `https://drive.google.com/uc?id=${item.driveId}&export=download`)
+		Object.keys(galleryImageData).map(galleryFullResUrl)
 	);
 
 	const statuses = await Promise.all(links.map(validateLink));

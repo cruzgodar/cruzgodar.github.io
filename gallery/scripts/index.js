@@ -1,5 +1,5 @@
  
-import { galleryImageData } from "./imageData.js";
+import { galleryFullResUrl, galleryImageData } from "./imageData.js";
 import { openZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -64,7 +64,7 @@ export default function()
 
 		appletLinkElement.setAttribute("href", galleryImageData[id].appletLink);
 
-		fullResLinkElement.setAttribute("href", `https://drive.google.com/uc?id=${galleryImageData[id].driveId}&export=download`);
+		fullResLinkElement.setAttribute("href", galleryFullResUrl(id));
 
 
 
@@ -113,6 +113,6 @@ export default function()
 
 	fullResLinkElement.addEventListener("click", () =>
 	{
-		redirect({ url: `https://drive.google.com/uc?id=${galleryImageData[currentId].driveId}&export=download`, inNewTab: true });
+		redirect({ url: galleryFullResUrl(currentId), inNewTab: true });
 	});
 }
