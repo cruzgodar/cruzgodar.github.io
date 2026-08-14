@@ -243,6 +243,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform vec3 rayOrigin;
 
 			uniform float epsilonScaling;
+			uniform float pixelDiagonalRadius;
+
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
 			uniform float uvScale;
@@ -261,6 +263,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			),
 			
 			epsilonScaling: this.computeEpsilonScaling(),
+			pixelDiagonalRadius: this.computePixelDiagonalRadius(),
 			
 			uvCenter: [0, 0],
 			uvScale: 1,
@@ -327,7 +330,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset: this.onReset.bind(this),
 
-			useGpuTiming: false,
+			useGpuTiming: true,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -421,6 +424,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 	computeEpsilonScaling(resolution = this.resolution)
 	{
 		return this.epsilonScalingFactor / Math.min(resolution, 4096);
+	}
+
+	computePixelDiagonalRadius(resolution = this.canvasWidth)
+	{
+		// TODO: might need to factor in uvScale.
+
+		return Math.sqrt(2) / (this.projectionMatrix[0][0] * resolution);
 	}
 
 
@@ -561,7 +571,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (!inXR)
 		{
 			// Here comes the serious math. Theta is the angle in the xy-plane and
-			// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+			// phi the angle down from the z-axis. We can use them to
+			// get a normalized forward vector:
 
 			this.forwardVec = [
 				Math.cos(this.theta) * Math.sin(this.phi),
@@ -886,6 +897,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		console.log(this.wilson.averageGpuFrameTime);
+
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
 			this.wilson.resizeWorld({
@@ -915,14 +928,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.drawFrame();
 		}
-
-		// console.log(this.wilson.averageGpuFrameTime);
 	}
 
 
 
 	renderXRFrame({ projectionMatrix, cameraToWorld, viewport })
 	{
+		this.projectionMatrix = projectionMatrix;
+
 		xrToScene(cameraToWorld, this.xrCameraToWorld);
 
 		this.xrRayOrigin[0] = this.sceneOrigin[0] + this.xrCameraToWorld[12] * this.worldScale;
@@ -952,7 +965,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			filename,
 			resolution,
 			{
-				epsilonScaling: this.computeEpsilonScaling(resolution)
+				epsilonScaling: this.computeEpsilonScaling(resolution),
+				pixelDiagonalRadius: this.computePixelDiagonalRadius(resolution),
 			}
 		);
 	}
@@ -1134,7 +1148,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.setUniforms({
-			epsilonScaling: this.computeEpsilonScaling()
+			epsilonScaling: this.computeEpsilonScaling(),
+			pixelDiagonalRadius: this.computePixelDiagonalRadius(),
 		});
 
 		this.needNewFrame = true;

@@ -214,7 +214,6 @@ function getRaymarchGlsl({
 					continue;
 				}
 
-				// The 0.5 accounts for the 2.0 later.
 				epsilon = max(t * epsilonScaling, minEpsilon);
 				
 				if (distanceToScene < epsilon || t > clipDistance)
@@ -536,6 +535,125 @@ export function createShader({
 		${computeShadowIntensityGlsl}
 		
 		${computeShadingGlsl}
+
+		${raymarchGlsl}
+		
+		${mainFunctionGlsl}
+	`;
+
+	return shader;
+}
+
+
+
+export function createConeMarchingShader({
+	distanceEstimatorGlsl,
+	addGlsl,
+
+	stepFactor,
+	overstepFactor,
+
+	uniformsGlsl,
+	clipDistance,
+	maxMarches,
+
+	// The side length of the square of pixels each pixel here is responsible for.
+	// For example, a scale of 2 means each pixel covers a 2x2 block.
+	coneMarchingScale
+}) {
+	const raymarchGlsl = /* glsl */`
+		void raymarch(
+			vec3 rayOrigin,
+			vec3 rayDirectionVec,
+			out float t,
+		) {
+			t = 0.0;
+			float epsilon;
+			vec3 pos;
+
+			// float omega = ${getFloatGlsl(overstepFactor)};
+			// float stepLength = 0.0;
+			// float previousRadius = 0.0;
+			
+			for (int iteration = 0; iteration < maxMarches; iteration++)
+			{
+				// Custom geodesics are not supportred for cone marching.
+				pos = rayOrigin + t * rayDirectionVec;
+				
+				distanceToScene = distanceEstimator(pos);
+				
+				// // Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
+				// // but not if the spheres around the landing point and the starting point don't intersect,
+				// // since then we could have stepped all the way through the object.
+				// if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
+				// {
+				// 	t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
+				// 	previousRadius = 0.0;
+				// 	omega = 1.0;
+				// 	continue;
+				// }
+
+				epsilon = max(t * pixelDiagonalRadius * ${getFloatGlsl(coneMarchingScale)}, minEpsilon);
+				
+				if (distanceToScene < epsilon || t > clipDistance)
+				{
+					finalIteration = iteration;
+					return;
+				}
+				
+				// previousRadius = distanceToScene;
+				// stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
+				// t += stepLength;
+
+				t += distanceToScene * ${getFloatGlsl(stepFactor)};
+			}
+			
+			// Ensure the catch in main short-circuits to black.
+			t = clipDistance * 2.0;
+		}
+	`;
+
+	const mainFunctionGlsl = /* glsl */`
+		void main(void)
+		{
+			vec3 rayDirectionEye = vec3(
+				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
+				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
+				-1.0
+			);
+
+			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye);
+
+			float t;
+
+			raymarch(
+				rayOrigin,
+				rayDirectionVec,
+				t,
+			);
+
+			gl_FragColor = vec4(t, 0.0, 0.0, 1.0);
+		}
+	`;
+
+	const shader = /* glsl */`
+		precision highp float;
+		
+		varying vec2 uv;
+
+		${uniformsGlsl}
+		
+		const float clipDistance = ${getFloatGlsl(clipDistance)};
+		const int maxMarches = ${maxMarches};
+
+		${addGlsl}
+		
+		
+		
+		float distanceEstimator(vec3 pos)
+		{
+			${distanceEstimatorGlsl}
+		}
 
 		${raymarchGlsl}
 		
