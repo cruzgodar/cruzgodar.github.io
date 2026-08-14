@@ -1,4 +1,4 @@
-import { getFloatGlsl, getVectorGlsl } from "/scripts/applets/applet.js";
+import { getVectorGlsl } from "/scripts/applets/applet.js";
 import {
 	dotProduct,
 	getRotationMatrix,
@@ -69,36 +69,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 	const numNs = ns[shape].length;
 
-	const scaleCenterNorm = Math.hypot(...scaleCenters[shape]);
-
-	// Every iteration folds (reflections through planes at the origin), scales by `scale`,
-	// translates by -(scale - 1) * scaleCenter, and rotates. Folds and rotations preserve
-	// length, so the translation is the only thing that pulls |pos| away from pure scaling:
-	//
-	//     scale * |pos| - (scale - 1) * |scaleCenter|
-	//         <= |newPos| <= scale * |pos| + (scale - 1) * |scaleCenter|
-	//
-	// The estimate at iteration k is |pos| / scale^k, so one iteration can only move it by
-	// (scale - 1) * |scaleCenter| / scale^(k + 1), and *all* the remaining ones together by
-	//
-	//     sum over j > k of (scale - 1) * |scaleCenter| / scale^j  =  |scaleCenter| / scale^k
-	//
-	// which is |scaleCenter| / |pos| as a fraction of the estimate itself. So once the orbit
-	// escapes past |scaleCenter| / bailoutTolerance, the entire rest of the orbit can't change
-	// the estimate by more than bailoutTolerance of its value, and we can quit right there.
-	// Points on the fractal have bounded orbits and never trigger this, which is exactly the
-	// behavior we want: full iteration count on the surface, an early out everywhere else.
-	const bailoutGlsl = useForGetColor ? "" : /* glsl */`
-		if (dot(pos, pos) > ${getFloatGlsl((scaleCenterNorm / bailoutTolerance) ** 2)})
-		{
-			// Subtracting the bound makes this a guaranteed *under*estimate. Sphere tracing
-			// tolerates undershooting -- it just costs an extra step -- but overshooting
-			// marches through the surface, which is what a raw early return would risk.
-			return (length(pos) - ${getFloatGlsl(scaleCenterNorm)})
-				* pow(1.0 / scale, float(iteration + 1));
-		}
-	`;
-
 	const loopInternals = Array(numNs).fill(0).map((_, i) =>
 	{
 		return /* glsl */`
@@ -116,7 +86,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (int iteration = 0; iteration < ${useForGetColor ? 8 : 72}; iteration++)
 		{
-			int maxIterations = 72;
 			if (iteration >= numIterations)
 			{
 				break;
@@ -130,8 +99,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			pos = rotationMatrix * pos;
 
 			${useForGetColor ? "float r = length(pos); color = mix(color, abs(pos.yxz / r), colorScale); colorScale *= .2;" : ""}
-
-			${bailoutGlsl}
 		}
 		
 		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(numIterations))"};
