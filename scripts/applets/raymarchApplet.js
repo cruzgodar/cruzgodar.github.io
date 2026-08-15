@@ -5,7 +5,7 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	tempShader
 } from "./applet.js";
-import { createShader } from "./createShader.js";
+import { createConeMarchingShader, createShader } from "./createShader.js";
 
 export class RaymarchApplet extends AnimationFrameApplet
 {
@@ -22,6 +22,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	worldSize = 2.5;
 
 	resolution;
+
+	coneMarchingScale;
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
@@ -129,6 +131,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		resolution = 1000,
 
+		coneMarchingScale = 1,
+
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		uniformsGlsl = "",
@@ -187,6 +191,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		super(canvas);
 
 		this.resolution = resolution;
+
+		this.coneMarchingScale = coneMarchingScale;
 
 		this.theta = theta;
 		this.phi = phi;
@@ -248,6 +254,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
 			uniform float uvScale;
+			
+			uniform sampler2D uTexture;
+
 			${uniformsGlsl}
 		`;
 
@@ -263,7 +272,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			),
 			
 			epsilonScaling: this.computeEpsilonScaling(),
-			pixelDiagonalRadius: this.computePixelDiagonalRadius(),
+			pixelDiagonalRadius: 0,
 			
 			uvCenter: [0, 0],
 			uvScale: 1,
@@ -384,6 +393,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
+		if (this.coneMarchingScale > 1)
+		{
+			this.initConeMarching();
+		}
+
+
+
 		if (this.useFor3DPrinting)
 		{
 			this.make3DPrintable();
@@ -395,7 +411,39 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}
 
 
-	// Preserves phi through fullscreen
+
+	initConeMarching()
+	{
+		const shader = createConeMarchingShader({
+			distanceEstimatorGlsl: this.distanceEstimatorGlsl,
+			addGlsl: this.addGlsl,
+			stepFactor: this.stepFactor,
+			overstepFactor: this.overstepFactor,
+			uniformsGlsl: this.uniformsGlsl,
+			clipDistance: this.clipDistance,
+			maxMarches: this.maxMarches,
+			coneMarchingScale: this.coneMarchingScale,
+		});
+
+		this.wilson.loadShader({
+			id: "coneMarch",
+			shader,
+			uniforms: this.uniforms
+		});
+
+		this.wilson.createFramebufferTexturePair({
+			id: "coneMarch",
+			width: Math.ceil(this.wilson.canvasWidth / this.coneMarchingScale),
+			height: Math.ceil(this.wilson.canvasHeight / this.coneMarchingScale),
+			textureType: "float",
+		});
+
+		this.wilson.useTexture("coneMarch");
+	}
+
+
+
+	// Preserves phi through fullscreen.
 	worldCenterXBeforeFullscreen;
 	worldCenterYBeforeFullscreen;
 
@@ -426,11 +474,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		return this.epsilonScalingFactor / Math.min(resolution, 4096);
 	}
 
-	computePixelDiagonalRadius(resolution = this.canvasWidth)
+	updatePixelDiagonalRadius(resolution = this.wilson.canvasWidth)
 	{
-		// TODO: might need to factor in uvScale.
-
-		return Math.sqrt(2) / (this.projectionMatrix[0][0] * resolution);
+		this.wilson.setUniforms({
+			pixelDiagonalRadius: Math.SQRT2 / (
+				Math.sqrt(this.projectionMatrix[0] * this.projectionMatrix[5]) * resolution
+			)
+		}, "coneMarch");
 	}
 
 
@@ -504,6 +554,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			aoSamples: this.aoSamples,
 			aoStrength: this.aoStrength,
 
+			coneMarchingScale: this.coneMarchingScale,
+
 			uniformsGlsl: this.uniformsGlsl,
 			lightPos: this.lightPos,
 			lightBrightness: this.lightBrightness,
@@ -552,6 +604,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		this.wilson.setUniforms(uniforms, "draw");
+		this.wilson.setUniforms(uniforms, "coneMarch");
 
 		this.needNewFrame = true;
 	}
@@ -660,6 +713,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// No accounting for the head position here -- that's only in XR.
 			rayOrigin: this.sceneOrigin,
 		});
+
+
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.updatePixelDiagonalRadius();
+		}
+
+
 
 		this.needNewFrame = false;
 	}
@@ -914,6 +976,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 			: Math.PI - this.wilson.worldCenterY;
 
 		this.calculateVectors();
+		
+
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.useShader("coneMarch");
+			this.wilson.useFramebuffer("coneMarch");
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+		}
 
 		if (this.fpsCap)
 		{
@@ -961,12 +1035,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	downloadHighResFrame(filename, resolution = this.resolution)
 	{
+		this.updatePixelDiagonalRadius(resolution);
+
 		this.wilson.downloadHighResFrame(
 			filename,
 			resolution,
 			{
 				epsilonScaling: this.computeEpsilonScaling(resolution),
-				pixelDiagonalRadius: this.computePixelDiagonalRadius(resolution),
 			}
 		);
 	}
@@ -1149,7 +1224,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.setUniforms({
 			epsilonScaling: this.computeEpsilonScaling(),
-			pixelDiagonalRadius: this.computePixelDiagonalRadius(),
 		});
 
 		this.needNewFrame = true;

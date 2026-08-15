@@ -179,8 +179,15 @@ function getComputeShadingGlsl({
 function getRaymarchGlsl({
 	getGeodesicGlsl,
 	stepFactor,
-	overstepFactor
+	overstepFactor,
+	coneMarchingScale
 }) {
+	const initialT = coneMarchingScale > 1
+		? /* glsl */`
+			texture2D(uTexture, 0.5 * uv + vec2(0.5)).x
+		`
+		: "0.0";
+	
 	return /* glsl */`
 		void raymarch(
 			vec3 rayOrigin,
@@ -191,7 +198,7 @@ function getRaymarchGlsl({
 			out float distanceToScene,
 			out int finalIteration
 		) {
-			t = 0.0;
+			t = ${initialT};
 
 			float omega = ${getFloatGlsl(overstepFactor)};
 			float stepLength = 0.0;
@@ -416,6 +423,8 @@ export function createShader({
 	overstepFactor,
 	surfaceNormalEpsilonFactor,
 	useFor3DPrinting,
+
+	coneMarchingScale,
 	
 	aoSamples,
 	aoStrength,
@@ -448,6 +457,7 @@ export function createShader({
 		getGeodesicGlsl,
 		stepFactor,
 		overstepFactor,
+		coneMarchingScale
 	});
 
 	const mainFunctionGlsl = getMainFunctionGlsl({
@@ -565,11 +575,10 @@ export function createConeMarchingShader({
 		void raymarch(
 			vec3 rayOrigin,
 			vec3 rayDirectionVec,
-			out float t,
+			float coneRadiusFactor,
+			out float t
 		) {
 			t = 0.0;
-			float epsilon;
-			vec3 pos;
 
 			// float omega = ${getFloatGlsl(overstepFactor)};
 			// float stepLength = 0.0;
@@ -578,9 +587,9 @@ export function createConeMarchingShader({
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
 				// Custom geodesics are not supportred for cone marching.
-				pos = rayOrigin + t * rayDirectionVec;
+				vec3 pos = rayOrigin + t * rayDirectionVec;
 				
-				distanceToScene = distanceEstimator(pos);
+				float distanceToScene = distanceEstimator(pos);
 				
 				// // Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
 				// // but not if the spheres around the landing point and the starting point don't intersect,
@@ -593,11 +602,13 @@ export function createConeMarchingShader({
 				// 	continue;
 				// }
 
-				epsilon = max(t * pixelDiagonalRadius * ${getFloatGlsl(coneMarchingScale)}, minEpsilon);
+				float epsilon = max(
+					t * coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)},
+					minEpsilon
+				);
 				
 				if (distanceToScene < epsilon || t > clipDistance)
 				{
-					finalIteration = iteration;
 					return;
 				}
 				
@@ -629,7 +640,8 @@ export function createConeMarchingShader({
 			raymarch(
 				rayOrigin,
 				rayDirectionVec,
-				t,
+				pixelDiagonalRadius / length(rayDirectionEye),
+				t
 			);
 
 			gl_FragColor = vec4(t, 0.0, 0.0, 1.0);
