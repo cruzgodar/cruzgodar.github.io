@@ -437,8 +437,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			height: Math.ceil(this.wilson.canvasHeight / this.coneMarchingScale),
 			textureType: "float",
 		});
-
-		this.wilson.useTexture("coneMarch");
 	}
 
 
@@ -773,6 +771,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// The first frame arrives at whatever scale the last session ended on, and easing
 		// from there would mean starting off uncomfortable.
 		this.xrWorldScaleNeedsSnap = true;
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.createFramebufferTexturePair({
+				id: "coneMarch",
+				width: Math.ceil(this.wilson.canvasWidth / this.coneMarchingScale),
+				height: Math.ceil(this.wilson.canvasHeight / this.coneMarchingScale),
+				textureType: "float",
+			});
+		}
 	}
 
 	onExitXR()
@@ -785,6 +793,17 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.setUniform("resolution", this.resolution, "draw");
 		this.calculateVectors();
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.createFramebufferTexturePair({
+				id: "coneMarch",
+				width: Math.ceil(this.wilson.canvasWidth / this.coneMarchingScale),
+				height: Math.ceil(this.wilson.canvasHeight / this.coneMarchingScale),
+				textureType: "float",
+			});
+		}
+		
 		this.resume();
 	}
 
@@ -1031,6 +1050,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 			"draw"
 		);
 
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.useShader("coneMarch");
+			this.wilson.useFramebuffer("coneMarch");
+			this.wilson.useTexture(null);
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture("coneMarch");
+		}
+
 		this.wilson.drawFrame();
 	}
 
@@ -1228,6 +1259,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.setUniforms({
 			epsilonScaling: this.computeEpsilonScaling(),
 		});
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.createFramebufferTexturePair({
+				id: "coneMarch",
+				width: Math.ceil(this.wilson.canvasWidth / this.coneMarchingScale),
+				height: Math.ceil(this.wilson.canvasHeight / this.coneMarchingScale),
+				textureType: "float",
+			});
+		}
 
 		this.needNewFrame = true;
 	}
