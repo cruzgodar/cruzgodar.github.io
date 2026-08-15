@@ -618,9 +618,6 @@ export function createConeMarchingShader({
 
 				t += distanceToScene * ${getFloatGlsl(stepFactor)};
 			}
-			
-			// Ensure the catch in main short-circuits to black.
-			t = clipDistance * 2.0;
 		}
 	`;
 

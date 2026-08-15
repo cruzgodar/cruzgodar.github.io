@@ -474,8 +474,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		return this.epsilonScalingFactor / Math.min(resolution, 4096);
 	}
 
-	updatePixelDiagonalRadius(resolution = this.wilson.canvasWidth)
-	{
+	updatePixelDiagonalRadius(
+		resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight)
+	) {
 		this.wilson.setUniforms({
 			pixelDiagonalRadius: Math.SQRT2 / (
 				Math.sqrt(this.projectionMatrix[0] * this.projectionMatrix[5]) * resolution
@@ -983,10 +984,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.useShader("coneMarch");
 			this.wilson.useFramebuffer("coneMarch");
+			this.wilson.useTexture(null);
 			this.wilson.drawFrame();
 
 			this.wilson.useShader("draw");
 			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture("coneMarch");
 		}
 
 		if (this.fpsCap)
