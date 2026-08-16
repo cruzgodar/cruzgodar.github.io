@@ -561,7 +561,6 @@ export function createConeMarchingShader({
 	addGlsl,
 
 	stepFactor,
-	overstepFactor,
 
 	uniformsGlsl,
 	clipDistance,
@@ -579,10 +578,6 @@ export function createConeMarchingShader({
 			out float t
 		) {
 			t = 0.0;
-
-			// float omega = ${getFloatGlsl(overstepFactor)};
-			// float stepLength = 0.0;
-			// float previousRadius = 0.0;
 			
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
@@ -590,17 +585,6 @@ export function createConeMarchingShader({
 				vec3 pos = rayOrigin + t * rayDirectionVec;
 				
 				float distanceToScene = distanceEstimator(pos);
-				
-				// // Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
-				// // but not if the spheres around the landing point and the starting point don't intersect,
-				// // since then we could have stepped all the way through the object.
-				// if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
-				// {
-				// 	t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
-				// 	previousRadius = 0.0;
-				// 	omega = 1.0;
-				// 	continue;
-				// }
 
 				float epsilon = max(
 					t * coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)},
@@ -611,10 +595,6 @@ export function createConeMarchingShader({
 				{
 					return;
 				}
-				
-				// previousRadius = distanceToScene;
-				// stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
-				// t += stepLength;
 
 				t += distanceToScene * ${getFloatGlsl(stepFactor)};
 			}

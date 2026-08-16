@@ -420,7 +420,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			distanceEstimatorGlsl: this.distanceEstimatorGlsl,
 			addGlsl: this.addGlsl,
 			stepFactor: this.stepFactor,
-			overstepFactor: this.overstepFactor,
 			uniformsGlsl: this.uniformsGlsl,
 			clipDistance: this.clipDistance,
 			maxMarches: this.maxMarches,
@@ -595,7 +594,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	reloadShader({
+	async reloadShader({
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl,
@@ -615,6 +614,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.calculateVectors();
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.initConeMarching();
+		}
+
+		await this.wilson.allShadersReady();
 
 		this.needNewFrame = true;
 	}
