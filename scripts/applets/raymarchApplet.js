@@ -26,10 +26,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// An array of scales to perform cone marching at, in order.
 	// Recommended: [16, 4], [25, 5], [27, 9, 3], [8]
 	coneMarchingScales;
-
-	// Indexed by the scales themselves.
-	coneMarchingWidths = {};
-	coneMarchingHeights = {};
+	coneMarchingWidths = [];
+	coneMarchingHeights = [];
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
@@ -432,6 +430,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				clipDistance: this.clipDistance,
 				maxMarches: 32,
 				coneMarchingScale: scale,
+				isFirstScale: i === 0,
 			});
 
 			this.wilson.loadShader({
@@ -462,14 +461,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
 			if (
-				width === this.coneMarchingWidths[scale]
-				&& height === this.coneMarchingHeights[scale]
+				width === this.coneMarchingWidths[i]
+				&& height === this.coneMarchingHeights[i]
 			) {
-				return;
+				continue;
 			}
 
-			this.coneMarchingWidths[scale] = width;
-			this.coneMarchingHeights[scale] = height;
+			this.coneMarchingWidths[i] = width;
+			this.coneMarchingHeights[i] = height;
 
 			this.wilson.createFramebufferTexturePair({
 				id: `coneMarch${i}`,

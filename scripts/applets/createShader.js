@@ -571,7 +571,8 @@ export function createConeMarchingShader({
 
 	// The side length of the square of pixels each pixel here is responsible for.
 	// For example, a scale of 2 means each pixel covers a 2x2 block.
-	coneMarchingScale
+	coneMarchingScale,
+	isFirstScale,
 }) {
 	const raymarchGlsl = /* glsl */`
 		void raymarch(
@@ -580,7 +581,7 @@ export function createConeMarchingShader({
 			float coneRadiusFactor,
 			out float t
 		) {
-			t = 0.0;
+			t = ${isFirstScale ? "0.0" : "texture2D(uTexture, 0.5 * uv + vec2(0.5)).x"};;
 			float lastT = 0.0;
 
 			// How fast the cone's radius grows with t. One block of target pixels wide.
