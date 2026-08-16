@@ -1001,7 +1001,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		console.log(this.wilson.averageGpuFrameTime);
+		// console.log(this.wilson.averageGpuFrameTime);
 
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
