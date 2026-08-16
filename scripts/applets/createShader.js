@@ -11,8 +11,7 @@ function getComputeShadowIntensityGlsl({
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(
 				vec3 startPos,
-				vec3 lightDirection,
-				float startEpsilon
+				vec3 lightDirection
 			) {
 				vec3 rayDirectionVec = normalize(lightDirection);
 
@@ -66,8 +65,7 @@ function getComputeShadowIntensityGlsl({
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(
 				vec3 startPos,
-				vec3 lightDirection,
-				float startEpsilon
+				vec3 lightDirection
 			) {
 				vec3 rayDirectionVec = normalize(lightDirection);
 
@@ -313,7 +311,7 @@ function getMainFunctionGlsl({
 			vec3 reflectionLightDirection = normalize(lightPos - reflectionPos);
 
 			// Run shadows if necessary.
-			${useShadows ? "float reflectionShadowIntensity = computeShadowIntensity(reflectionPos, reflectionLightDirection, reflectionEpsilon);" : ""}
+			${useShadows ? "float reflectionShadowIntensity = computeShadowIntensity(reflectionPos, reflectionLightDirection);" : ""}
 
 			reflectionColor = computeShading(
 				reflectionPos,
@@ -368,10 +366,15 @@ function getMainFunctionGlsl({
 			// actually prevents brightness banding on flat surfaces.
 			vec3 surfaceNormal = getSurfaceNormal(pos, epsilon * ${getFloatGlsl(surfaceNormalEpsilonFactor)}, gradientMagnitude);
 
+			// Same nudge the reflection path makes. A march that starts from t = 0 lands a full
+			// step past the surface, but one that starts from a cone can land right on it, and
+			// then the shadow and occlusion rays both start from inside near-epsilon jail.
+			pos += (epsilon - distanceToScene) * surfaceNormal;
+
 			vec3 lightDirection = normalize(lightPos - pos);
 
 			// Run shadows if necessary.
-			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection, epsilon);" : ""}
+			${useShadows ? "float shadowIntensity = computeShadowIntensity(pos, lightDirection);" : ""}
 
 			float ambientOcclusion = computeAmbientOcclusion(pos, surfaceNormal, gradientMagnitude, t);
 
@@ -578,24 +581,32 @@ export function createConeMarchingShader({
 			out float t
 		) {
 			t = 0.0;
-			
+			float lastT = 0.0;
+
+			// How fast the cone's radius grows with t. One block of target pixels wide.
+			float coneSlope = coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)};
+
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
 				// Custom geodesics are not supportred for cone marching.
 				vec3 pos = rayOrigin + t * rayDirectionVec;
-				
+
 				float distanceToScene = distanceEstimator(pos);
 
-				float epsilon = max(
-					t * coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)},
-					minEpsilon
-				);
-				
-				if (distanceToScene < epsilon || t > clipDistance)
+				float epsilon = max(t * coneSlope, minEpsilon);
+
+				if (t > clipDistance)
 				{
 					return;
 				}
 
+				if (distanceToScene < epsilon)
+				{
+					t = lastT;
+					return;
+				}
+
+				lastT = t;
 				t += distanceToScene * ${getFloatGlsl(stepFactor)};
 			}
 		}
