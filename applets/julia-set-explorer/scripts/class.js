@@ -647,6 +647,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		}
 
 
+
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+			this.wilsonPreview.allShadersReady(),
+		]);
+
+
+
 		if (!this.hasRun)
 		{
 			this.wilson.resizeWorld({
@@ -741,6 +750,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				codeInterpolation: 0,
 			},
 		});
+
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+			this.wilsonPreview.allShadersReady(),
+		]);
 
 		await animate((t) =>
 		{
