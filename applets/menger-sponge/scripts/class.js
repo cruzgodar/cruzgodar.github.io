@@ -165,7 +165,7 @@ export class MengerSponge extends RaymarchApplet
 			theta: 3 * Math.PI / 2,
 			phi: Math.PI / 2,
 			epsilonScalingFactor: 0.5,
-			maxMarches: 256,
+			maxMarches: 512,
 			stepFactor: 0.5,
 			lightBrightness: 2.5,
 			overstepFactor: 1,
