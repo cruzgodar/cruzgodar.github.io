@@ -120,6 +120,7 @@ export class ExtrudedCube extends RaymarchApplet
 			minEpsilon: .000005,
 			lightBrightness: 1.8,
 			overstepFactor: 1.25,
+			coneMarchingScale: 8,
 			xrFramebufferScaleSlider
 		});
 	}

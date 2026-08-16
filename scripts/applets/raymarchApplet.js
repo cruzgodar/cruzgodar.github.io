@@ -5,7 +5,7 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	tempShader
 } from "./applet.js";
-import { createShader } from "./createShader.js";
+import { createConeMarchingShader, createShader } from "./createShader.js";
 
 export class RaymarchApplet extends AnimationFrameApplet
 {
@@ -22,6 +22,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	worldSize = 2.5;
 
 	resolution;
+
+	coneMarchingScale;
+	coneMarchingWidth;
+	coneMarchingHeight;
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
@@ -129,6 +133,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		resolution = 1000,
 
+		coneMarchingScale = 1,
+
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		uniformsGlsl = "",
@@ -188,6 +194,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.resolution = resolution;
 
+		this.coneMarchingScale = coneMarchingScale;
+
 		this.theta = theta;
 		this.phi = phi;
 		this.stepFactor = stepFactor;
@@ -243,9 +251,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform vec3 rayOrigin;
 
 			uniform float epsilonScaling;
+			uniform float pixelDiagonalRadius;
+
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
 			uniform float uvScale;
+			
+			uniform sampler2D uTexture;
+
 			${uniformsGlsl}
 		`;
 
@@ -261,6 +274,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			),
 			
 			epsilonScaling: this.computeEpsilonScaling(),
+			pixelDiagonalRadius: 0,
 			
 			uvCenter: [0, 0],
 			uvScale: 1,
@@ -327,7 +341,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset: this.onReset.bind(this),
 
-			useGpuTiming: false,
+			useGpuTiming: window.DEBUG,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -381,6 +395,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
+		if (this.coneMarchingScale > 1)
+		{
+			this.initConeMarching();
+		}
+
+
+
 		if (this.useFor3DPrinting)
 		{
 			this.make3DPrintable();
@@ -392,7 +413,60 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}
 
 
-	// Preserves phi through fullscreen
+
+	initConeMarching()
+	{
+		const shader = createConeMarchingShader({
+			distanceEstimatorGlsl: this.distanceEstimatorGlsl,
+			addGlsl: this.addGlsl,
+			stepFactor: this.stepFactor,
+			uniformsGlsl: this.uniformsGlsl,
+			clipDistance: this.clipDistance,
+			maxMarches: this.maxMarches,
+			coneMarchingScale: this.coneMarchingScale,
+		});
+
+		this.wilson.loadShader({
+			id: "coneMarch",
+			shader,
+			uniforms: this.uniforms
+		});
+
+		this.resizeConeMarchingFramebuffer();
+	}
+
+	// The coarse texture has to be sized from whatever the fine pass is drawing into, which is
+	// the canvas outside XR and a single eye's viewport inside it -- the two are unrelated, and
+	// a texel covering more than coneMarchingScale pixels of the target makes the cone an
+	// underestimate of the block it stands for, which punches holes in the surface.
+	// Taking the ceiling only packs the texels tighter, so the blocks overlap instead of gapping.
+	resizeConeMarchingFramebuffer(
+		targetWidth = this.wilson.canvasWidth,
+		targetHeight = this.wilson.canvasHeight
+	) {
+		const width = Math.ceil(targetWidth / this.coneMarchingScale);
+		const height = Math.ceil(targetHeight / this.coneMarchingScale);
+
+		// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
+		if (width === this.coneMarchingWidth && height === this.coneMarchingHeight)
+		{
+			return;
+		}
+
+		this.coneMarchingWidth = width;
+		this.coneMarchingHeight = height;
+
+		this.wilson.createFramebufferTexturePair({
+			id: "coneMarch",
+			width,
+			height,
+			textureType: "float",
+		});
+	}
+
+
+
+	// Preserves phi through fullscreen.
 	worldCenterXBeforeFullscreen;
 	worldCenterYBeforeFullscreen;
 
@@ -421,6 +495,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 	computeEpsilonScaling(resolution = this.resolution)
 	{
 		return this.epsilonScalingFactor / Math.min(resolution, 4096);
+	}
+
+	updatePixelDiagonalRadius(
+		resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight)
+	) {
+		this.wilson.setUniforms({
+			pixelDiagonalRadius: Math.SQRT2 / (
+				Math.sqrt(this.projectionMatrix[0] * this.projectionMatrix[5]) * resolution
+			)
+		}, "coneMarch");
 	}
 
 
@@ -494,6 +578,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			aoSamples: this.aoSamples,
 			aoStrength: this.aoStrength,
 
+			coneMarchingScale: this.coneMarchingScale,
+
 			uniformsGlsl: this.uniformsGlsl,
 			lightPos: this.lightPos,
 			lightBrightness: this.lightBrightness,
@@ -508,7 +594,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	reloadShader({
+	async reloadShader({
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl,
@@ -529,6 +615,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.calculateVectors();
 
+		if (this.coneMarchingScale > 1)
+		{
+			this.initConeMarching();
+		}
+
+		await this.wilson.allShadersReady();
+
 		this.needNewFrame = true;
 	}
 
@@ -542,6 +635,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		this.wilson.setUniforms(uniforms, "draw");
+		this.wilson.setUniforms(uniforms, "coneMarch");
 
 		this.needNewFrame = true;
 	}
@@ -561,7 +655,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (!inXR)
 		{
 			// Here comes the serious math. Theta is the angle in the xy-plane and
-			// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+			// phi the angle down from the z-axis. We can use them to
+			// get a normalized forward vector:
 
 			this.forwardVec = [
 				Math.cos(this.theta) * Math.sin(this.phi),
@@ -650,6 +745,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 			rayOrigin: this.sceneOrigin,
 		});
 
+
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.updatePixelDiagonalRadius();
+		}
+
+
+
 		this.needNewFrame = false;
 	}
 
@@ -699,6 +803,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// The first frame arrives at whatever scale the last session ended on, and easing
 		// from there would mean starting off uncomfortable.
 		this.xrWorldScaleNeedsSnap = true;
+
+		// The eye viewport isn't known until the first frame arrives, so the resize happens
+		// there instead of here.
 	}
 
 	onExitXR()
@@ -707,10 +814,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.theta = this.xrThetaBeforeXR;
 
 		this.worldScale = 1;
-		this.setUniforms({ minEpsilon: this.baseMinEpsilon });
+		this.setUniforms({
+			minEpsilon: this.baseMinEpsilon,
+			epsilonScaling: this.computeEpsilonScaling(),
+		});
 
-		this.wilson.setUniform("resolution", this.resolution, "draw");
 		this.calculateVectors();
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.resizeConeMarchingFramebuffer();
+		}
+
 		this.resume();
 	}
 
@@ -886,6 +1001,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		// console.log(this.wilson.averageGpuFrameTime);
+
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
 			this.wilson.resizeWorld({
@@ -901,6 +1018,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 			: Math.PI - this.wilson.worldCenterY;
 
 		this.calculateVectors();
+		
+
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.wilson.useShader("coneMarch");
+			this.wilson.useFramebuffer("coneMarch");
+			this.wilson.useTexture(null);
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture("coneMarch");
+		}
 
 		if (this.fpsCap)
 		{
@@ -915,14 +1046,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.drawFrame();
 		}
-
-		// console.log(this.wilson.averageGpuFrameTime);
 	}
 
 
 
 	renderXRFrame({ projectionMatrix, cameraToWorld, viewport })
 	{
+		this.projectionMatrix = projectionMatrix;
+
 		xrToScene(cameraToWorld, this.xrCameraToWorld);
 
 		this.xrRayOrigin[0] = this.sceneOrigin[0] + this.xrCameraToWorld[12] * this.worldScale;
@@ -935,11 +1066,39 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
 
 		// Ensure epsilon scaling is done with the per-eye resolution.
+		const eyeResolution = Math.min(Math.sqrt(viewport.width * viewport.height), 1000);
+
 		this.wilson.setUniform(
-			"resolution",
-			Math.min(Math.sqrt(viewport.width * viewport.height), 1000),
+			"epsilonScaling",
+			this.computeEpsilonScaling(eyeResolution),
 			"draw"
 		);
+
+		if (this.coneMarchingScale > 1)
+		{
+			// calculateVectors() hands off to the headset before it touches any of these, so
+			// the cone pass has to be pointed at the eye here or it marches the last flat camera.
+			this.wilson.setUniform("projectionMatrix", projectionMatrix, "coneMarch");
+			this.wilson.setUniform("cameraToWorld", this.xrCameraToWorld, "coneMarch");
+			this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "coneMarch");
+
+			// The headset can rescale the viewport from frame to frame, and the framebuffer
+			// scale slider rebuilds the layer outright, neither of which reports in anywhere else.
+			this.resizeConeMarchingFramebuffer(viewport.width, viewport.height);
+
+			this.updatePixelDiagonalRadius(
+				Math.sqrt(viewport.width * viewport.height)
+			);
+
+			this.wilson.useShader("coneMarch");
+			this.wilson.useFramebuffer("coneMarch");
+			this.wilson.useTexture(null);
+			this.wilson.drawFrame();
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture("coneMarch");
+		}
 
 		this.wilson.drawFrame();
 	}
@@ -952,7 +1111,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			filename,
 			resolution,
 			{
-				epsilonScaling: this.computeEpsilonScaling(resolution)
+				epsilonScaling: this.computeEpsilonScaling(resolution),
 			}
 		);
 	}
@@ -967,9 +1126,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const { pixels } = await this.wilson.readHighResPixels({
 			resolution,
-			uniforms: {
-				resolution
-			},
 			format: "float"
 		});
 
@@ -1134,8 +1290,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.setUniforms({
-			epsilonScaling: this.computeEpsilonScaling()
+			epsilonScaling: this.computeEpsilonScaling(),
 		});
+
+		if (this.coneMarchingScale > 1)
+		{
+			this.resizeConeMarchingFramebuffer();
+		}
 
 		this.needNewFrame = true;
 	}
