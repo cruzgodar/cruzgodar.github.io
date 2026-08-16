@@ -1046,9 +1046,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		
 		if (this.coneMarchingScales.length)
 		{
-			let i;
-
-			for (i = 0; i < this.coneMarchingScales.length; i++)
+			for (let i = 0; i < this.coneMarchingScales.length; i++)
 			{
 				this.wilson.useShader(`coneMarch${i}`);
 				this.wilson.useFramebuffer(`coneMarch${i}`);
@@ -1060,7 +1058,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.useShader("draw");
 			this.wilson.useFramebuffer(null);
-			this.wilson.useTexture(`coneMarch${i - 1}`);
+			this.wilson.useTexture(`coneMarch${this.coneMarchingScales.length - 1}`);
 		}
 
 
@@ -1125,9 +1123,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			this.resizeConeMarchingFramebuffers(viewport.width, viewport.height);
 
-			let i;
-
-			for (i = 0; i < this.coneMarchingScales.length; i++)
+			for (let i = 0; i < this.coneMarchingScales.length; i++)
 			{
 				this.wilson.useShader(`coneMarch${i}`);
 				this.wilson.useFramebuffer(`coneMarch${i}`);
@@ -1139,7 +1135,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.useShader("draw");
 			this.wilson.useFramebuffer(null);
-			this.wilson.useTexture(`coneMarch${i - 1}`);
+			this.wilson.useTexture(`coneMarch${this.coneMarchingScales.length - 1}`);
 		}
 
 
