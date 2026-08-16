@@ -445,19 +445,37 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	// The coarse texture has to be sized from whatever the fine pass is drawing into, which is
 	// the canvas outside XR and a single eye's viewport inside it -- the two are unrelated, and
-	// a texel covering more than coneMarchingScale pixels of the target makes the cone an
+	// a texel covering more than its scale in pixels of the target makes the cone an
 	// underestimate of the block it stands for, which punches holes in the surface.
 	// Taking the ceiling only packs the texels tighter, so the blocks overlap instead of gapping.
+	//
+	// Every pass after the first reads the one before it with a single nearest tap, so a block
+	// here has to sit entirely inside one texel of the previous pass -- a block straddling two of
+	// them would inherit a t that was only ever validated for the half containing its center, and
+	// at a silhouette the two halves disagree by the whole depth of the scene. Sizing each pass
+	// from the target independently doesn't give that: 1000 pixels wide with [16, 4] lands on 63
+	// and 250 texels, and 250 / 63 is not an integer, so the grids cut across each other. Deriving
+	// each level as a whole multiple of the last one makes them nest exactly. Rounding the ratio up
+	// keeps blocks no wider than their scale even when the scales don't divide each other, at the
+	// cost of a few more texels than strictly necessary.
 	resizeConeMarchingFramebuffers(
 		targetWidth = this.wilson.canvasWidth,
 		targetHeight = this.wilson.canvasHeight
 	) {
+		let width = Math.ceil(targetWidth / this.coneMarchingScales[0]);
+		let height = Math.ceil(targetHeight / this.coneMarchingScales[0]);
+
 		for (let i = 0; i < this.coneMarchingScales.length; i++)
 		{
 			const scale = this.coneMarchingScales[i];
 
-			const width = Math.ceil(targetWidth / scale);
-			const height = Math.ceil(targetHeight / scale);
+			if (i > 0)
+			{
+				const ratio = Math.ceil(this.coneMarchingScales[i - 1] / scale);
+
+				width *= ratio;
+				height *= ratio;
+			}
 
 			// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
 			if (
