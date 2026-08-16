@@ -169,8 +169,10 @@ export class MengerSponge extends RaymarchApplet
 			stepFactor: 0.5,
 			lightBrightness: 2.5,
 			overstepFactor: 1,
-			coneMarchingScale: 8,
 			xrFramebufferScaleSlider,
+
+			coneMarchingScales: [16, 4],
+			coneMarchingMaxMarches: [96, 48],
 		});
 	}
 

@@ -26,6 +26,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// An array of scales to perform cone marching at, in order.
 	// Recommended: [16, 4], [25, 5], [27, 9, 3], [8]
 	coneMarchingScales;
+
+	// Start at [96, 48, 24] and tune from there.
+	coneMarchingMaxMarches;
 	coneMarchingWidths = [];
 	coneMarchingHeights = [];
 
@@ -136,6 +139,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		resolution = 1000,
 
 		coneMarchingScales = [],
+		coneMarchingMaxMarches = [],
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -197,6 +201,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.resolution = resolution;
 
 		this.coneMarchingScales = coneMarchingScales;
+		this.coneMarchingMaxMarches = coneMarchingMaxMarches;
 
 		this.theta = theta;
 		this.phi = phi;
@@ -428,7 +433,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				stepFactor: this.stepFactor,
 				uniformsGlsl: this.uniformsGlsl,
 				clipDistance: this.clipDistance,
-				maxMarches: 32,
+				maxMarches: this.coneMarchingMaxMarches[i],
 				coneMarchingScale: scale,
 				isFirstScale: i === 0,
 			});
@@ -1042,7 +1047,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		console.log(this.wilson.averageGpuFrameTime);
+		// console.log(this.wilson.averageGpuFrameTime);
 
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
@@ -1061,7 +1066,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.calculateVectors();
 
 
-		
+
+		// The cone passes only feed the fine pass in this same frame, so there's nothing to
+		// compute when the cap is going to throw the fine pass away.
+		if (this.fpsCap && this.timeSinceLastFrame < 1000 / this.fpsCap)
+		{
+			return;
+		}
+
+		this.timeSinceLastFrame = 0;
+
+		// Every wilson.drawFrame() opens a timing query of its own, so with cone marching on, the
+		// average is a recency-weighted blend of the individual passes rather than the cost of a
+		// frame -- and at three queries a frame the pending queue overruns and starts dropping
+		// results. Nested timers fold into the outermost one, so opening a timer around the whole
+		// frame measures every pass together and gets the query count back down to one.
+		// this.wilson.beginGpuTimer();
+
 		if (this.coneMarchingScales.length)
 		{
 			for (let i = 0; i < this.coneMarchingScales.length; i++)
@@ -1079,21 +1100,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.wilson.useTexture(`coneMarch${this.coneMarchingScales.length - 1}`);
 		}
 
+		this.wilson.drawFrame();
 
-
-		if (this.fpsCap)
-		{
-			if (this.timeSinceLastFrame >= 1000 / this.fpsCap)
-			{
-				this.timeSinceLastFrame = 0;
-				this.wilson.drawFrame();
-			}
-		}
-
-		else
-		{
-			this.wilson.drawFrame();
-		}
+		// this.wilson.endGpuTimer();
 	}
 
 
@@ -1122,6 +1131,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 			"draw"
 		);
 
+
+		// One timer for the whole eye, for the same reason as in drawFrame(). Wilson drives this
+		// callback once per eye, so the average is per-eye rather than per-frame.
+		this.wilson.beginGpuTimer();
 
 		if (this.coneMarchingScales.length)
 		{
@@ -1159,6 +1172,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 		this.wilson.drawFrame();
+
+		this.wilson.endGpuTimer();
 	}
 
 

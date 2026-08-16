@@ -173,7 +173,10 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			minEpsilon,
 			overstepFactor: 1.1,
 			xrFramebufferScaleSlider,
-			coneMarchingScale: 8
+
+			coneMarchingScales: [16, 4],
+			coneMarchingMaxMarches: [96, 48],
+
 		});
 
 		this.shape = shape;
