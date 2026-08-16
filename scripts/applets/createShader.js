@@ -561,7 +561,6 @@ export function createConeMarchingShader({
 	addGlsl,
 
 	stepFactor,
-	overstepFactor,
 
 	uniformsGlsl,
 	clipDistance,
@@ -569,7 +568,8 @@ export function createConeMarchingShader({
 
 	// The side length of the square of pixels each pixel here is responsible for.
 	// For example, a scale of 2 means each pixel covers a 2x2 block.
-	coneMarchingScale
+	coneMarchingScale,
+	coneMarchingOverstepFactor,
 }) {
 	const raymarchGlsl = /* glsl */`
 		void raymarch(
@@ -579,10 +579,11 @@ export function createConeMarchingShader({
 			out float t
 		) {
 			t = 0.0;
+			float previousT = 0.0;
 
-			// float omega = ${getFloatGlsl(overstepFactor)};
-			// float stepLength = 0.0;
-			// float previousRadius = 0.0;
+			float omega = ${getFloatGlsl(coneMarchingOverstepFactor)};
+			float stepLength = 0.0;
+			float previousRadius = 0.0;
 			
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
@@ -591,16 +592,40 @@ export function createConeMarchingShader({
 				
 				float distanceToScene = distanceEstimator(pos);
 				
-				// // Keinert et al: enhanced sphere tracing. Step by omega * DE (at the end of the loop)
-				// // but not if the spheres around the landing point and the starting point don't intersect,
-				// // since then we could have stepped all the way through the object.
-				// if (omega > 1.0 && distanceToScene + previousRadius < stepLength)
-				// {
-				// 	t += previousRadius * ${getFloatGlsl(stepFactor)} - stepLength;
-				// 	previousRadius = 0.0;
-				// 	omega = 1.0;
-				// 	continue;
-				// }
+				if (omega > 1.0)
+				{
+					// Sphere tracing is much more complicated with cones. The spheres don't just need
+					// to intersect, they need to intersect *enough* that the radius of the intersection
+					// circle still contains the cone.
+
+					// This is t_1 - t_0: the amount we just stepped.
+					float tStep = t - previousT;
+					float previousRadiusSquared = previousRadius;
+
+					// The t distance that the intersection circle is past t_0.
+					float tMidStep = 0.5 * (
+						tStep * tStep - distanceToScene * distanceToScene + previousRadiusSquared
+					) / tStep;
+
+					// The radius of the intersection circle, squared.
+					float yMidSquared = previousRadiusSquared - tMidStep * tMidStep;
+
+					// What's necessary for cone-sphere marching to work is
+					// yMid >= tMid * coneRadiusFactor * coneMarchingScale),
+					// so we square both sides to avoid the root and check if that's
+					// not true, in which case we stop sphere marching.
+
+					float tMid = t + tMidStep;
+					float coneRadiusAtIntersectionT = tMid * coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)};
+					
+					if (yMidSquared < coneRadiusAtIntersectionT * coneRadiusAtIntersectionT)
+					{
+						t = previousT;
+						previousRadius = 0.0;
+						omega = 1.0;
+						continue;
+					}
+				}
 
 				float epsilon = max(
 					t * coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)},
@@ -612,11 +637,10 @@ export function createConeMarchingShader({
 					return;
 				}
 				
-				// previousRadius = distanceToScene;
-				// stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
-				// t += stepLength;
-
-				t += distanceToScene * ${getFloatGlsl(stepFactor)};
+				previousRadius = distanceToScene;
+				previousT = t;
+				stepLength = omega * distanceToScene * ${getFloatGlsl(stepFactor)};
+				t += stepLength;
 			}
 		}
 	`;

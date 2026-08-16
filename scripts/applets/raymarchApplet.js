@@ -26,6 +26,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	coneMarchingScale;
 	coneMarchingWidth;
 	coneMarchingHeight;
+	coneMarchingOverstepFactor;
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
@@ -66,6 +67,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	fogColor;
 	fogScaling;
 	stepFactor;
+	overstepFactor;
 	epsilonScalingFactor;
 	surfaceNormalEpsilonFactor;
 	minEpsilon;
@@ -134,6 +136,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		resolution = 1000,
 
 		coneMarchingScale = 1,
+		coneMarchingOverstepFactor = 1,
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -146,8 +149,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		theta = 0,
 		phi = Math.PI / 2,
-		stepFactor = .99,
-		overstepFactor = 1.0,
+		stepFactor = 1,
+		overstepFactor = 1,
 		epsilonScalingFactor = 1,
 		surfaceNormalEpsilonFactor = 2,
 		minEpsilon = .0000003,
@@ -194,8 +197,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.resolution = resolution;
 
-		this.coneMarchingScale = coneMarchingScale;
-
 		this.theta = theta;
 		this.phi = phi;
 		this.stepFactor = stepFactor;
@@ -203,6 +204,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.epsilonScalingFactor = epsilonScalingFactor;
 		this.surfaceNormalEpsilonFactor = surfaceNormalEpsilonFactor;
 		this.minEpsilon = minEpsilon;
+
+		this.coneMarchingScale = coneMarchingScale;
+		this.coneMarchingOverstepFactor = coneMarchingOverstepFactor;
 
 		this.maxMarches = maxMarches;
 		this.maxShadowMarches = maxShadowMarches;
@@ -580,6 +584,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			aoStrength: this.aoStrength,
 
 			coneMarchingScale: this.coneMarchingScale,
+			coneMarchingOverstepFactor: this.coneMarchingOverstepFactor,
 
 			uniformsGlsl: this.uniformsGlsl,
 			lightPos: this.lightPos,
