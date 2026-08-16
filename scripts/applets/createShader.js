@@ -609,6 +609,8 @@ export function createConeMarchingShader({
 				lastT = t;
 				t += distanceToScene * ${getFloatGlsl(stepFactor)};
 			}
+
+			t = lastT;
 		}
 	`;
 

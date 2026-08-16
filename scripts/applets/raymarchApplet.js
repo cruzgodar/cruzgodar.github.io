@@ -152,7 +152,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		surfaceNormalEpsilonFactor = 2,
 		minEpsilon = .0000003,
 
-		maxMarches = 128,
+		maxMarches = 256,
 		maxShadowMarches = 128,
 		maxReflectionMarches = 128,
 		clipDistance = 1000,
@@ -422,7 +422,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			stepFactor: this.stepFactor,
 			uniformsGlsl: this.uniformsGlsl,
 			clipDistance: this.clipDistance,
-			maxMarches: this.maxMarches,
+			maxMarches: 32,
 			coneMarchingScale: this.coneMarchingScale,
 		});
 

@@ -139,7 +139,7 @@ export class Mandelbulb extends RaymarchApplet
 			useGradientCorrectedOcclusion: true,
 			xrFramebufferScaleSlider,
 
-			coneMarchingScale: 10,
+			coneMarchingScale: 16,
 
 			// Uncomment to fix the poles.
 			// stepFactor: 0.1,
