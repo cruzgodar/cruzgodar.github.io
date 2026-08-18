@@ -98,7 +98,7 @@ export class DownloadHighResButton extends Dropdown
 			"2k": "2K",
 			"4k": "4K",
 			"8k": "8K",
-			"16k": "16K"
+			...(window.DEBUG && { "16k": "16K" })
 		};
 
 		const resolutions = {
@@ -109,17 +109,20 @@ export class DownloadHighResButton extends Dropdown
 			"16k": 16384
 		};
 
-		function onInput()
+		async function onInput()
 		{
 			const resolution = resolutions[this.value];
 
 			if (applet.downloadHighResFrame)
 			{
-				applet.downloadHighResFrame(filename(), resolution);
+				await applet.downloadHighResFrame(filename(), resolution);
 				return;
 			}
 
-			applet.wilson.downloadHighResFrame(filename(), resolution);
+			await applet.wilson.downloadHighResFrame({
+				filename: filename(),
+				resolution
+			});
 		}
 
 		super({
