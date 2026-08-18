@@ -1,7 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { getFloatGlsl } from "/scripts/applets/applet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const moveToHereVecs = {
 	north: "vec2(0.0, stepSize)",
@@ -213,7 +213,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		// this.canvas.style.imageRendering = "pixelated";
 	}
 

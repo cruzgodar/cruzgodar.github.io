@@ -1,13 +1,13 @@
 import {
-	Applet,
-	getMinGlslString,
-	getVectorGlsl,
-	hsvToRgb,
-	tempShader
+    Applet,
+    getMinGlslString,
+    getVectorGlsl,
+    hsvToRgb,
+    tempShader
 } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class VoronoiDiagrams extends Applet
 {
@@ -67,7 +67,7 @@ export class VoronoiDiagrams extends Applet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(this.canvas, options);
+		this.wilson = new WilsonGL(this.canvas, options);
 
 		this.wilson.draggables.point0.element.style.display = "none";
 
@@ -80,7 +80,7 @@ export class VoronoiDiagrams extends Applet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonHidden = new WilsonGPU(this.createHiddenCanvas(), optionsHidden);
+		this.wilsonHidden = new WilsonGL(this.createHiddenCanvas(), optionsHidden);
 	}
 
 

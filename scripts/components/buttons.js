@@ -97,14 +97,16 @@ export class DownloadHighResButton extends Dropdown
 			"1k": "1K",
 			"2k": "2K",
 			"4k": "4K",
-			"8k": "8K"
+			"8k": "8K",
+			"16k": "16K"
 		};
 
 		const resolutions = {
 			"1k": 1024,
 			"2k": 2048,
 			"4k": 4096,
-			"8k": 8128
+			"8k": 8128,
+			"16k": 16384
 		};
 
 		function onInput()
@@ -180,6 +182,8 @@ export class ToggleButton extends Button
 					);
 				}
 			}
+
+			requestAnimationFrame(equalizeTextButtons);
 
 			await changeOpacity({ element: this.element, opacity: 1 });
 
@@ -270,6 +274,8 @@ export class ToggleButton extends Button
 			await changeOpacity({ element: this.element, opacity: 0 });
 			
 			this.element.textContent = this.state ? this.name1 : this.name0;
+
+			requestAnimationFrame(equalizeTextButtons);
 
 			await changeOpacity({ element: this.element, opacity: 1 });
 

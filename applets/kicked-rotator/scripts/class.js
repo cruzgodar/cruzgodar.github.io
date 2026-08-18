@@ -1,7 +1,7 @@
 import { getFloatGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class KickedRotator extends AnimationFrameApplet
 {
@@ -39,7 +39,7 @@ export class KickedRotator extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGL(hiddenCanvas, optionsUpdate);
 
 
 
@@ -94,7 +94,7 @@ export class KickedRotator extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 	}
 
 

@@ -3,13 +3,13 @@ import { openZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import { equalizeAppletColumns } from "../src/layout.js";
 import {
-	$,
-	$$,
-	addTemporaryInterval,
-	addTemporaryListener
+    $,
+    $$,
+    addTemporaryInterval,
+    addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
-import { WilsonCPU, WilsonGPU } from "../wilson.js";
+import { WilsonCPU, WilsonGL } from "../wilson.js";
 
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
@@ -347,7 +347,7 @@ export class Applet
 
 			this.wilsons = Object.values(this).filter(field =>
 			{
-				return field instanceof WilsonCPU || field instanceof WilsonGPU;
+				return field instanceof WilsonCPU || field instanceof WilsonGL;
 			});
 
 			if (this.wilsons.length !== 0)

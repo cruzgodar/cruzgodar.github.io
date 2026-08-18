@@ -4,7 +4,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGL } from "/scripts/wilson.js";
 
 const numLines = 400;
 
@@ -64,7 +64,7 @@ export class FractalSounds extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
+		this.wilsonJulia = new WilsonGL(canvas, optionsJulia);
 
 
 

@@ -1,15 +1,15 @@
 import {
-	getGlslBundle,
-	loadGlsl
+    getGlslBundle,
+    loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import {
-	getFloatGlsl,
-	getMaxGlslString,
-	tempShader
+    getFloatGlsl,
+    getMaxGlslString,
+    tempShader
 } from "/scripts/applets/applet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const edgeChange = 0.2;
 const derivativePrecision = 50;
@@ -99,7 +99,7 @@ export class VectorField extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonUpdate = new WilsonGPU(this.updateCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGL(this.updateCanvas, optionsUpdate);
 
 
 
@@ -161,7 +161,7 @@ export class VectorField extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonPanZoomDim = new WilsonGPU(this.panZoomDimCanvas, optionsPanZoomDim);
+		this.wilsonPanZoomDim = new WilsonGL(this.panZoomDimCanvas, optionsPanZoomDim);
 
 		this.wilsonPanZoomDim.canvas.parentElement.parentElement.parentElement.style.setProperty(
 			"display",
@@ -217,7 +217,7 @@ export class VectorField extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.draggables.draggableArg.element.style.display = "none";
 		this.wilson.draggables.draggableArg2.element.style.display = "none";

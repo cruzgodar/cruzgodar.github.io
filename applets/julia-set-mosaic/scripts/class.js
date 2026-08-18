@@ -1,6 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class JuliaSetMosaic extends AnimationFrameApplet
 {
@@ -112,12 +112,12 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
 		});
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.resume();
 	}

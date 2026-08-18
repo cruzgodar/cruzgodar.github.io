@@ -114,7 +114,7 @@ export class Mandelbulb extends RaymarchApplet
 
 		const uniforms = {
 			power: 8,
-			c: [0, 0, 0],
+			c: [0.8, 0, 0],
 			juliaProportion: 0,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
 			fountainAmount: 0,

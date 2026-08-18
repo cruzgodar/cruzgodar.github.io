@@ -3,7 +3,7 @@ import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { animate, getRandomNonGreenHues, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
 {
@@ -396,9 +396,9 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
 		});

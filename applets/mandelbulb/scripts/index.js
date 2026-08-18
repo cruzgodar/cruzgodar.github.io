@@ -64,7 +64,7 @@ export default function()
 	const cXSlider = new Slider({
 		element: $("#c-x-slider"),
 		name: "$c_x$",
-		value: 0,
+		value: 0.8,
 		min: -1,
 		max: 1,
 		snapPoints: [0],

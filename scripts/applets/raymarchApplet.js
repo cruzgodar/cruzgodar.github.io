@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { animate, sleep } from "../src/utils.js";
-import { WilsonGPU } from "../wilson.js";
+import { WilsonGL } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	tempShader
@@ -392,7 +392,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			verbose: window.DEBUG
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.loadShader({
 			id: "draw",
@@ -586,6 +586,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getReflectivityGlsl = this.getReflectivityGlsl,
 		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
+		maxMarches = this.maxMarches,
+		stepFactor = this.stepFactor,
 		includeDepthData = false,
 	}) {
 		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
@@ -593,6 +595,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.getReflectivityGlsl = getReflectivityGlsl;
 		this.getGeodesicGlsl = getGeodesicGlsl;
 		this.addGlsl = addGlsl;
+		this.maxMarches = maxMarches;
+		this.stepFactor = stepFactor;
 
 		return createShader({
 			distanceEstimatorGlsl,
@@ -601,6 +605,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			getGeodesicGlsl,
 			addGlsl,
 			includeDepthData,
+			maxMarches,
+			stepFactor,
 
 			useShadows: this.useShadows,
 			useSoftShadows: this.useSoftShadows,
@@ -611,7 +617,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			ambientLight: this.ambientLight,
 			useBloom: this.useBloom,
 			bloomPower: this.bloomPower,
-			stepFactor: this.stepFactor,
 			surfaceNormalEpsilonFactor: this.surfaceNormalEpsilonFactor,
 			overstepFactor: this.overstepFactor,
 			useFor3DPrinting: this.useFor3DPrinting,
@@ -626,7 +631,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			lightPos: this.lightPos,
 			lightBrightness: this.lightBrightness,
 			clipDistance: this.clipDistance,
-			maxMarches: this.maxMarches,
 			maxShadowMarches: this.maxShadowMarches,
 			maxReflectionMarches: this.maxReflectionMarches,
 			fogColor: this.fogColor,
@@ -641,7 +645,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getColorGlsl,
 		getReflectivityGlsl,
 		addGlsl,
-		includeDepthData
+		includeDepthData,
+		maxMarches,
+		stepFactor,
 	} = {}) {
 		this.wilson.loadShader({
 			id: "draw",
@@ -651,6 +657,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				getReflectivityGlsl,
 				addGlsl,
 				includeDepthData,
+				maxMarches,
+				stepFactor,
 			}),
 			uniforms: this.uniforms,
 		});
@@ -1178,15 +1186,37 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	downloadHighResFrame(filename, resolution = this.resolution)
+	async downloadHighResFrame(filename, resolution = this.resolution)
 	{
-		this.wilson.downloadHighResFrame(
+		const oldMaxMarches = this.maxMarches;
+		const oldStepFactor = this.stepFactor;
+
+		await this.reloadShader({
+			maxMarches: this.maxMarches * 40,
+			stepFactor: this.stepFactor * 0.1
+		});
+
+		this.needNewFrame = false;
+
+		// Don't trust the last cone marching result; just raymarch from scratch.
+		this.wilson.setTexture({ id: `coneMarch${this.coneMarchingScales.length - 1}`, data: null });
+
+		this.wilson.useShader("draw");
+
+		await this.wilson.downloadHighResFrame({
 			filename,
 			resolution,
-			{
+			uniforms: {
 				epsilonScaling: this.computeEpsilonScaling(resolution),
 			}
-		);
+		});
+
+		await this.reloadShader({
+			maxMarches: oldMaxMarches,
+			stepFactor: oldStepFactor,
+		});
+
+		this.needNewFrame = false;
 	}
 
 	async downloadBokehFrame()
