@@ -98,9 +98,13 @@ export function initHoverEvents()
 	{
 		element.addEventListener("mouseenter", () =>
 		{
-			if (element.href[0] === "/")
+			// Not element.href -- that resolves to an absolute url, so it always
+			// starts with "h" and this check never passed.
+			const href = element.getAttribute("href");
+
+			if (href && href[0] === "/")
 			{
-				prefetchPage(element.href);
+				prefetchPage(href);
 			}
 		});
 	}

@@ -51,7 +51,7 @@ const port = 5500;
 
 async function eslint(files)
 {
-	files.map(lintFile);
+	await Promise.all(files.map(lintFile));
 }
 
 async function lintFile(file)
@@ -164,7 +164,12 @@ async function testPages(files)
 {
 	return new Promise(resolve =>
 	{
-		const threads = 32;
+		// Each thread drives its own headless Chrome, and every page pulls in
+		// ~50 module files. At 32 threads that's on the order of a thousand
+		// requests in flight against Live Server, which is single-threaded ---
+		// it sheds the overflow and the shards report the failures as console
+		// errors. Keep this near the core count.
+		const threads = 8;
 		const chunkSize = Math.ceil(files.length / threads);
 		let workersFinished = 0;
 

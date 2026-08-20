@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { spawnSync } from "child_process";
-import { existsSync, readdirSync } from "fs";
+import { existsSync, readdirSync, rmSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
@@ -267,17 +267,36 @@ async function buildJSFile(file)
 {
 	const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
 
-	spawnSync("uglifyjs", [
+	// Point uglifyjs at a scratch file rather than at outputFile directly. The
+	// dev server may be serving outputFile right now, and this used to write it
+	// twice -- once from uglifyjs and once to patch the import paths -- so there
+	// were two windows where a request could land on a truncated file. Now the
+	// patched result is written once, atomically, by write().
+	const scratchFile = `${outputFile}.build`;
+
+	const proc = spawnSync("uglifyjs", [
 		root + file,
 		"--output",
-		root + outputFile,
+		root + scratchFile,
 		"--compress",
 		"--mangle",
 		"--keep-fargs",
 		"--webkit"
 	]);
-	
-	const js = await read(outputFile);
+
+	const js = proc.status === 0 ? await read(scratchFile) : null;
+
+	rmSync(root + scratchFile, { force: true });
+
+	// Leave the previous output in place if minifying failed --- overwriting it
+	// with an empty file just turns a build error into a mystery syntax error
+	// in the browser.
+	if (js === null)
+	{
+		console.error(`Failed to minify ${file}:\n${proc.stderr.toString()}`);
+
+		return;
+	}
 
 	// The space after the import is very important --
 	// that prevents dynamic imports from getting screwed up.
@@ -287,15 +306,32 @@ async function buildJSFile(file)
 	);
 }
 
-function buildCSSFile(file)
+async function buildCSSFile(file)
 {
 	const outputFile = file.replace(/(\.css)/, (match, $1) => `.min${$1}`);
 
-	spawnSync("uglifycss", [
+	// Same reasoning as buildJSFile --- don't let the dev server catch
+	// outputFile mid-write.
+	const scratchFile = `${outputFile}.build`;
+
+	const proc = spawnSync("uglifycss", [
 		root + file,
 		"--output",
-		root + outputFile
+		root + scratchFile
 	]);
+
+	const css = proc.status === 0 ? await read(scratchFile) : null;
+
+	rmSync(root + scratchFile, { force: true });
+
+	if (css === null)
+	{
+		console.error(`Failed to minify ${file}:\n${proc.stderr.toString()}`);
+
+		return;
+	}
+
+	await write(outputFile, css);
 }
 
 function buildPDFFile(file)

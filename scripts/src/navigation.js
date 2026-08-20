@@ -162,14 +162,48 @@ export async function redirect({
 	}
 
 
-	if (siteSettings.reduceMotion && document.startViewTransition)
+	try
 	{
-		await document.startViewTransition(swapPageContents).finished;
+		if (siteSettings.reduceMotion && document.startViewTransition)
+		{
+			const transition = document.startViewTransition(swapPageContents);
+
+			// A view transition hands back three promises and we only await
+			// .finished. An unobserved rejection on either of the others shows
+			// up as an uncaught error in the console -- .ready rejects with an
+			// InvalidStateError whenever a transition is superseded, and
+			// .updateCallbackDone rejects with whatever swapPageContents threw.
+			// .finished still rejects too, so the catch below is what acts.
+			transition.ready.catch(() => {});
+			transition.updateCallbackDone.catch(() => {});
+
+			await transition.finished;
+		}
+
+		else
+		{
+			await swapPageContents();
+		}
 	}
 
-	else
+	catch(ex)
 	{
-		await swapPageContents();
+		// The new page's html is fetched before anything is torn down, so a
+		// failure here leaves the current page intact -- just faded out. Fade it
+		// back in and release the lock, since otherwise redirect() would return
+		// early forever and every later navigation would silently do nothing.
+		console.error(ex);
+
+		pageElement.style.opacity = 1;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 1;
+		}
+
+		currentlyRedirecting = false;
+
+		return;
 	}
 
 
@@ -485,7 +519,20 @@ export async function prefetchPage(url)
 {
 	url = url.replace(/^https*:\/\/.+?(\/.+)$/, (match, $1) => $1);
 
-	if (urlsFetched.has(url))
+	// Strip any query string or hash, then the trailing slash, so the url
+	// matches the keys in the sitemap.
+	url = url.replace(/[?#].*$/, "");
+
+	if (url[url.length - 1] === "/")
+	{
+		url = url.slice(0, -1);
+	}
+
+	const sitemapEntry = sitemap[url];
+
+	// Anything not in the sitemap has no data.html to prefetch, and asking for
+	// one is a guaranteed 404.
+	if (!sitemapEntry || urlsFetched.has(url))
 	{
 		return;
 	}
@@ -498,22 +545,27 @@ export async function prefetchPage(url)
 	{
 		urlsToFetch.push(`${url}/banners/small.webp`);
 	}
-	
-	const sitemapEntry = sitemap[url];
 
-	if (sitemapEntry?.customScript)
+	if (sitemapEntry.customScript)
 	{
 		urlsToFetch.push(`${url}/scripts/index.min.js`);
 	}
 
-	if (sitemapEntry?.customStyle)
+	if (sitemapEntry.customStyle)
 	{
 		urlsToFetch.push(`${url}/style/index.min.css`);
 	}
 
-	const promise = Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+	try
+	{
+		await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+	}
 
-	promise.catch(() => urlsFetched.delete(url));
-
-	await promise;
+	// eslint-disable-next-line no-unused-vars
+	catch(_ex)
+	{
+		// A prefetch is pure optimization -- if it fails, drop it from the
+		// cache set so the real navigation tries again, and stay quiet.
+		urlsFetched.delete(url);
+	}
 }
