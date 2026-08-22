@@ -1,5 +1,7 @@
 The <a href="/applets/julia-set-explorer">Mandelbrot and Julia sets</a> are defined using the complex numbers, a 2D number system that lends itself to making images. It's natural to ask if there's a 3D Mandelbrot set, but unfortunately there isn't any functional 3-dimensional number system analogous to the complex numbers, and the best we have is the <a href="/applets/mandelbulb">Mandelbulb</a>. If we go up one more dimension, though, we find a 4D number system --- the **quaternions** --- that behaves like the complex numbers. While we can't render four dimensions at once, we can just take a 3D slice, similar to a 2D cross-section of a 3D object. The resulting objects are remarkable, and the underlying Julia sets are even visible within them by taking a particular cross-section.
 
+This applet can run in a VR headset! Attach one to a Windows PC or open this page in a headset's browser to get started.
+
 
 
 <div id="canvas-landscape">
