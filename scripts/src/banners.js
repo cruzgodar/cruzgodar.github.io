@@ -26,7 +26,15 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 
 export let nameTextOpacity = 1;
 
-let lastBannerChangeTimestamp = -1;
+// startBannerLoop() is the only way into the loop, and it no-ops while one is
+// already running. Keeping exactly one loop used to be done by comparing frame
+// timestamps instead, which was subtly wrong: a call arriving in a frame that
+// another call had already claimed returned *without* rescheduling. loadBanner
+// is called twice per navigation, so whenever those landed in the same frame --
+// a warm cache, or a backgrounded tab releasing its queued callbacks at once --
+// both bailed and the loop never started, leaving the banner stuck at full
+// opacity and the content unexpanded for the life of the page.
+let bannerLoopRunning = false;
 
 let lastT = 0;
 
@@ -35,20 +43,28 @@ function easeInOutQuad(x)
 	return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
 }
 
-export function updateBanner(timestamp)
+export function startBannerLoop()
 {
-	if (
-		!bannerElement
-		|| !contentElement
-		|| timestamp === lastBannerChangeTimestamp
-		|| lastBannerChangeTimestamp === -1
-	) {
-		lastBannerChangeTimestamp = timestamp;
-
+	if (bannerLoopRunning)
+	{
 		return;
 	}
 
-	lastBannerChangeTimestamp = timestamp;
+	bannerLoopRunning = true;
+
+	requestAnimationFrame(updateBanner);
+}
+
+function updateBanner()
+{
+	// The banner is gone because we've navigated to a page without one, so let
+	// the loop stop. The next loadBanner() starts it back up.
+	if (!bannerElement || !contentElement)
+	{
+		bannerLoopRunning = false;
+
+		return;
+	}
 
 	if (!bannerMaxScroll)
 	{
@@ -143,8 +159,6 @@ export function updateBanner(timestamp)
 
 	requestAnimationFrame(updateBanner);
 }
-
-requestAnimationFrame(updateBanner);
 
 
 
@@ -245,7 +259,7 @@ export async function loadBanner({
 		}
 	`);
 
-	requestAnimationFrame(updateBanner);
+	startBannerLoop();
 
 	await new Promise(resolve =>
 	{
