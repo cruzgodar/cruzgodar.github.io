@@ -11,7 +11,6 @@ import {
 import {
 	bannerElement,
 	bannerPages,
-	loadBanner,
 	preloadBanner
 } from "./banners.js";
 import { cardIsOpen, closeCard } from "./cards.js";
@@ -127,9 +126,11 @@ export async function redirect({
 			cardIsOpen ? closeCard() : Promise.resolve()
 		]);
 
-		
-
-		loadBanner({ url });
+		// The incoming banner is warm in the cache now thanks to preloadBanner.
+		// initBanner() does the rest once the new html is actually in the dom --
+		// running it here would point bannerElement at the outgoing page's
+		// banner, and everything else it does is either undone by unloadPage()
+		// below or redone by initBanner() a moment later.
 
 		if (url in forceThemePages)
 		{
