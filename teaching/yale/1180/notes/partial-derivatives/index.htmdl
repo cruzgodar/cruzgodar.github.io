@@ -2,8 +2,7 @@
 
 
 
-
-With three sections of visualizing, representing, and graphing in 3D space, we're now ready at last to return to the world of calculus! The major topics in Calculus I were limits, derivatives, and optimization, and over the next handful of sections, we'll be exploring all of those --- just not quite in that order.
+We're now ready at last to return to the world of calculus! The major topics in Calculus I were limits, derivatives, and optimization, and over the next handful of sections, we'll be exploring all of those --- just not quite in that order.
 
 When we say that the limit of a single-variable function $\lim_{x \to a} f(x)$ exists, we mean that two other simpler limits exist and are equal: $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-} f(x)$. That is to say, there are *only two ways to approach $x = a$* --- from the left and from the right. If we have a function $g(x, y)$ of two variables, then there are so many ways to approach any point in the domain. We could approach $(0, 0)$ along the line $x = 0$ or $y = 0$, but also along the line $y = x$, or the curve $y = x^2$. We can begin to get the sense that a limit involving multiple variables will need to be a substantially more robust concept than the one we're used to.
 
@@ -71,7 +70,7 @@ $$
 	&= 0 + 2y + x.
 $$
 
-In fact, this is so accurate to the way that partial derivatives operate that the $\partial$ symbol doesn't actually mean anything different from the $\mathrm{d}$ symbol: it's just there to remind us that the function we're differentiating has more than one input. In programming, symbols and structure that are equivalent to something more long-winded are called *syntactic sugar*; this is more like syntactic sawdust.
+In fact, this is so accurate to the way that partial derivatives operate that the $\p$ symbol doesn't actually mean anything different from the $\d$ symbol: it's just there to remind us that the function we're differentiating has more than one input. In programming, symbols and structure that are equivalent to something more long-winded are called *syntactic sugar*; this is more like syntactic sawdust.
 
 ### exc "partial derivatives"
 
@@ -82,6 +81,8 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 	2. $pf/py$ for $f(x, y) = e^{2x}\tan(y)$.
 
 	3. $g_z(2, 4, 7)$ for $g(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.
+
+	4. Let $C(m, l)$ be the daily operating cost to a factory in dollars when it uses $m$ pounds of materials and $l$ hours of labor. What does it mean if $C_m(100, 24) = 200$?
 
 	### solution
 
@@ -115,15 +116,7 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 		&= \frac{7}{\sqrt{69}}.
 	$$
 
-###
-
-We've seen that partial derivatives measure slopes of tangent lines in various directions just like regular derivatives, and they also have a similar interpretation: they let us approximate how a function's output will change when its input does.
-
-### ex "interpreting partial derivatives"
-
-	Let $C(m, l)$ be the daily operating cost to a factory in dollars when it uses $m$ pounds of materials and $l$ hours of labor. What does it mean for $C_m(100, 24) = 200$?
-
-	This partial derivative is telling us the slope of the graph along the $m$-axis when $l$ is held constant --- so given that the factory is currently using 100 pounds of material and 24 hours of labor (perhaps 3 full-time workers) per day, the additional cost per extra pound of material used per day is *approximately* \$200. It's only approximate, since the actual cost per additional pound of material is the slope of a *secant* line through the points $(100, 24, C(100, 24))$ and $(101, 24, C(101, 24))$, which this only approximates (but probably pretty well!).
+	4. This partial derivative is telling us the slope of the graph along the $m$-axis when $l$ is held constant --- so given that the factory is currently using 100 pounds of material and 24 hours of labor (perhaps 3 full-time workers) per day, the additional cost per extra pound of material used per day is *approximately* \$200. It's only approximate, since the actual cost per additional pound of material is the slope of a *secant* line through the points $(100, 24, C(100, 24))$ and $(101, 24, C(101, 24))$, which this only approximates (but probably pretty well!).
 
 ###
 
@@ -142,7 +135,7 @@ $$
 thinking of the derivatives as stacking up from right to left (in both notations, they stack up from near $f$ to far from it). To simplify this $\partial$ notation in a similar way to $\frac{\p^2}{\p x^2}$, we also write it as
 
 $$
-	f_{xy} = \frac{\p^2}{\p y\, \p x} \left[ f(x, y) \right] = \frac{\p^2 f}{\p y\, \p x}.
+	f_{xy} = \frac{\p^2}{\p y\,\p x} \left[ f(x, y) \right] = \frac{\p^2 f}{\p y\,\p x}.
 $$
 
 We call $f_{xy}$ and $f_{yx}$ **mixed partials**. We'll investigate a bit of their geometric interpretation on the homework, but for now, let's just get our bearings computing them.
@@ -187,7 +180,7 @@ The result is a major hint to a property about partial derivatives!
 
 ###
 
-In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's Theorem as a given. It will set us up well for our future work with derivatives!
+In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's Theorem as a given. It'll set us up well for our future work with derivatives!
 
 
 
@@ -221,7 +214,7 @@ $$
 	\vec{l_2}(t) = p + t\left< 0, 1, pf/py(a, b) \right>.
 $$
 
-Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, a + \Delta y \right)$ as
+Exactly as before, we can use these lines as approximations: if we move $\Delta x$ in the $x$-direction and $\Delta y$ in the $y$-direction, then since $l_1$ doesn't move in the $y$-direction and $l_2$ doesn't move in the $x$-direction, we can approximate the height of the function at $\left( a + \Delta x, b + \Delta y \right)$ as
 
 $$
 	f\left( a + \Delta x, b + \Delta y \right) \approx f(a, b) + pf/px(a, b)\Delta x + pf/py(a, b)\Delta y,
