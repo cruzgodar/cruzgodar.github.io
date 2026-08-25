@@ -1512,7 +1512,9 @@ export const sitemap =
 		
 		"parent": "/teaching/notes/linear-algebra",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/notes/linear-algebra/vector-spaces":
