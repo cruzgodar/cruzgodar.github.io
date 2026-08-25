@@ -1947,7 +1947,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/partial-derivatives",
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
 			"/teaching/yale/1180/notes/gradients",
-			"/teaching/yale/1180/notes/optimization",
+			"/teaching/yale/1180/notes/multivariable-optimization",
 			"/teaching/yale/1180/notes/extreme-value-theorem",
 			"/teaching/yale/1180/notes/lagrange-multipliers",
 			"/teaching/yale/1180/notes/vectors-and-matrices",
@@ -2037,9 +2037,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/optimization":
+	"/teaching/yale/1180/notes/multivariable-optimization":
 	{
-		"title": "Section 7: Optimization",
+		"title": "Section 7: Multivariable Optimization",
 		
 		"parent": "/teaching/yale/1180",
 		

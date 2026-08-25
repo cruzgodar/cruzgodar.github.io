@@ -2,13 +2,13 @@
 
 
 
-At long last, it's time to talk about optimization. This was our main application of derivatives in Calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$, find every point $x = c$ where $f'(x) = 0$ or $f'(x)$ is undefined (called the **critical points**), which are places where there *might* be an extremum. To classify them, we can use one of two methods.
+At long last, it's time to talk about optimization. This was our main application of derivatives in Calculus I, and we can boil it down to a few sentences: to find the maxima and minima of a function $f(x)$ on an interval, we take its derivative $f'(x)$ and find every point $x = c$ where $f'(c) = 0$ or $f'(c)$ is undefined, called the **critical points**. They're the places where there *might* be an extremum, and to classify them, we can use one of two methods.
 
 > - The **first derivative test** has us evaluate $f'(x)$ just to the left and right of $x = c$ --- if it's negative to the left and positive to the right, then there is a local minimum at $x = c$, and if the opposite is true, there is a local maximum. If the derivative has the same sign to both the left and right, then this isn't an extremum at all --- it's a saddle point, like with $y = x^3$ at $x = 0$.
 
 > - The **second derivative test** works by evaluating $f''(x)$ *at* $x = c$, which measures the concavity of $f$. If $f''(c) > 0$, that means the function is concave up at $x = c$, and so $x = c$ is a local minimum, and similarly, if $f''(c) < 0$, then $x = c$ is a local maximum. If $f''(c) = 0$, then the test is inconclusive --- it might be a saddle point, like $f(x) = x^3$ at $x = 0$, or it might be an extremum, like $f(x) = x^4$ at $x = 0$.
 
-With this brief refresher out of the way, let's dig into how this all extends to functions of multiple variables! While our discussion of critical points will work for functions of any number of variables, our later work will focus specifically on functions of two variables --- the theory extends out beyond that, but unfortunately also beyond our class's scope at the same time. I'm happy to talk more about that outside of class at some point, particularly after we've discussed some linear algebra in the second half of the course!
+With this brief refresher out of the way, let's dig into how this all extends to functions of multiple variables! While our discussion of critical points will work for functions of any number of variables, our later work will focus specifically on functions of two variables --- the theory extends out beyond that, but unfortunately also beyond our class's scope at the same time.
 
 
 
@@ -22,7 +22,11 @@ We'll begin with critical points, which generalize nicely to more variables --- 
 
 ###
 
-This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives (and therefore all directional derivatives) are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+
+### desmos criticalPoints
+
+This function has five critical points; two are local maxima, two are local minima, and one (at $(0, 0)$) is neither.
 
 ### exc "critical points"
 
@@ -50,7 +54,7 @@ This is a notationally dense but efficient way to say that critical points are w
 		2y + x &= 0.
 	$$
 
-	We can solve for $ in the first equation and plug it into the second to get
+	We can solve for $y$ in the first equation and plug it into the second to get
 
 	$$
 		-6x^2 + 8x + x &= 0
@@ -106,11 +110,11 @@ Perhaps unsurprisingly, critical points are potential locations for extrema, jus
 
 ###
 
-The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all extrema occur at critical points: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
+The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all critical points are extrema: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
 
 ### desmos saddlePoint
 
-Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much the shape of graphs like these look like saddles.
+Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like with $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much graphs like these resemble saddles.
 
 If we know that $(a, b)$ is a critical point of $f$, how do we determine if it's a local maximum or minimum? Of the two derivatives we mentioned for functions of a single variable, the first derivative test is unfortunately completely broken for functions of multiple variables. It relied on there being only two directions to move from a point at $x = a$: either to the right or left. For a two-variable function, there's now an entire circle of directions we could move in from a critical point $(a, b)$, and so we'd need to verify that the gradient $\G f$ points in a direction more toward $(a, b)$ than away from it for every point in a circle very close to $(a, b)$. It's certainly *possible*, but from that description, it's pretty clear the juice just isn't worth the squeeze. So with that test out, let's turn to the remaining one.
 
@@ -263,7 +267,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 	This one is fairly in-depth. The gradient is
 
 	$$
-		\G g = \left< ye^{-x^2 - y^2} + xye^{-x^2-y^2}(-2x), xe^{-x^2 - y^2} + xye^{-x^2-y^2}(-2y) \right>,
+		\G g = \left< ye^{-x^2 - y^2} + xye^{-x^2-y^2}(-2x), \quad xe^{-x^2 - y^2} + xye^{-x^2-y^2}(-2y) \right>,
 	$$
 
 	and if $\G g = \vec{0}$, then we can thankfully divide by the exponential factor, since it's never zero, leaving us with
@@ -362,6 +366,56 @@ That's a lot of information! One thing that's immediately clear is that the expr
 	### desmos secondDerivativeTest2
 
 	As an aside, the second derivative test is doing fantastic work for us at $(0, 0)$ in particular: both the $x$ and $y$ cross-sections of the graph are constantly zero there, meaning neither has any concavity to speak of.
+
+###
+
+Multivariable optimization has a habit of cropping up all over the place, just like single-variable optimization. Let's take a brief look at one of those places now.
+
+### ex "linear regression"
+
+	Suppose we have three points: $(1, 0)$, $(2, 3)$, and $(4, 3)$. Given a line $y = mx + b$, its **error** for the point $(p, q)$ is $\left| mp + b - q \right|$ (that is, the distance between the $y$-value the line predicts will be there and the actual $y$-value).
+
+	While these three points don't lie in a line, we can still discuss the **best-fit** line to them: one that minimizes the total error to all points. This is called a **linear regression**, and for both theoretical reasons slightly beyond our course and because the absolute value makes the error terms nondifferentiable, we typically try to minimize the sum of the *squares* of the error, rather than their sum outright.
+
+	Now that total squared error is
+
+	$$
+		E &= \left| (m)(1) + b - 0 \right|^2 + \left| (m)(2) + b - 3 \right|^2 + \left| (m)(4) + b - 3 \right|^2
+
+		&= \left( m + b - 0 \right)^2 + \left( 2m + b - 3 \right)^2 + \left( 4m + b - 3 \right)^2
+
+		&= 21 m^2 + 14 b m + 3 b^2 - 36 m - 12 b + 18,
+	$$
+
+	and we can treat $E$ as a function $E(m, b)$: different lines produce different amounts of error. To minimize that error, we need to optimize $E$.
+
+	$$
+		\G E(m, b) = \left< 42m + 14b - 36, \quad 14m + 6b - 12 \right> = \vec{0}.
+	$$
+
+	Solving, $m = \frac{6}{7}$ and $b = 0$, and the second derivative test tells us that it's a local and therefore global minimum, since
+
+	$$
+		E_{mm}E_{bb} - E_{mb}^2 &= 42(6) - 14^2
+
+		&= 56 > 0
+	$$
+
+	and $E_{mm} > 0$.
+
+	Visually, the line does a good job of approximating these points! Drag the red point around to see how the best-fit line changes.
+
+	### desmos bestFitLine
+
+	This process works for any number of points, and we can even do it symbolically for a set of points $\left\{ (x_i, y_i) \in #R#^2 \mid 1 \leq i \leq n \right\}$. If $\overline{x}$ and $\overline{y}$ are the averages of the $x_i$ and $y_i$, then
+
+	$$
+		m &= \frac{\sum_{i = 1}^n \left( x_i - \overline{x} \right)\left( y_i - \overline{y} \right)}{\sum_{i = 1}^n \left( x_i - \overline{x}\right)^2}
+
+		b &= \overline{y} - m\overline{x}.
+	$$
+
+	If you're in any STEM field besides math, you'll encounter best-fit lines like this with remarkable frequency! The process of producing them is called **linear regression**, and it's a core tool of data science and statistics.
 
 ###
 
