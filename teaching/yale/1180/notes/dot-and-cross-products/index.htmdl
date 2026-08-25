@@ -29,11 +29,11 @@ $$
 
 	\left( a - c \right)^2 + \left( b - d \right)^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	a^2 - 2ab + b^2 + c^2 - 2cd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+	a^2 - 2ac + c^2 + b^2 - 2bd + d^2 &= a^2 + b^2 + c^2 + d^2 - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	-2ab -2cd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
+	-2ac -2bd &= - 2\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta)
 
-	ab + cd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
+	ac + bd &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|\cos(\theta).
 $$
 
 That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $\left< c, d \right>$. In fact, we'll want to give it its own name and notation.
@@ -156,15 +156,53 @@ This gives us a second way to find the equation of a plane!
 
 ###
 
-In the case of graphing lines, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
+Sometimes, we might find ourselves interested in the (minimum) distance from a point to a particular plane. If we know that plane's normal vector, then that minimum distance is given by traveling from the point to the plane in the direction of the normal vector --- moving perpendicularly to the plane is the fastest way to reach it.
 
-### desmos planeFromPoints
+### desmos distanceToPlane
 
-We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
+Here, the orange vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the orange point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
+
+### prop "projections"
+
+	Let $\vec{v}$ and $\vec{w}$ be two vectors. Then $\vec{v} = c \cdot \vec{w} + \vec{x}$ for some $c$ and some vector $\vec{x}$ orthogonal to $\vec{w}$. We call $c\vec{w}$ the **projection** of $\vec{v}$ onto $\vec{w}$, and it has a formula of
+
+	$$
+		\proj_{\vec{w}}(\vec{v}) = \frac{\vec{v} \bullet \vec{w}}{\vec{w} \bullet \vec{w}} \vec{w} = \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{w} \right| \right|^2} \vec{w}.
+	$$
+
+###
+
+Let's work through this example to find the distance we're interested in.
+
+### ex "distance from a point to a plane"
+
+	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
+
+	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the purple one above) is
+
+	$$
+		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
+	$$
+
+	which we want to project onto the normal vector $\vec{n}$, resulting in
+
+	$$
+		\vec{v} = \proj_{\vec{n}}(\vec{w}) = \left< \frac{7}{10}, 0, \frac{21}{10} \right>.
+	$$
+
+	We can tell that that's parallel to $\vec{n}$ since the third entry is $3$ times the first and the second component is zero, and its magnitude is $\frac{7}{\sqrt{10}}$, giving us the distance we're looking for.
+
+###
 
 
 
 ## The Cross Product
+
+When we graph lines in 2D, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
+
+### desmos planeFromPoints
+
+We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
 
 From time to time in math, machinery at a high level delivers sudden, broad solutions to lower-level problems like a lightning bolt from the clouds. So it is with the cross product, which originates from <a href="https://en.wikipedia.org/wiki/William_Rowan_Hamilton">William Hamilton's</a> groundbreaking work in <a href="https://en.wikipedia.org/wiki/Quaternion">quaternions</a>, a four-dimensional number system that is analogous to the complex numbers. Quaternions are unreasonably useful considering that we live in only three dimensions, particularly in how they very elegantly express all possible rotations of 3D space. They're relevant to our goals, though, because one of Hamilton's results about multiplying quaternions happens to produce a formula for taking two vectors in $#R#^3$ and producing a new vector orthogonal to them. What this means for us is that we get a clean formula to accomplish what we need, but it won't come along with a particularly generous helping of motivation --- we're the ones being struck by the lightning, not the ones turning the crank on the machine.
 
@@ -178,68 +216,51 @@ From time to time in math, machinery at a high level delivers sudden, broad solu
 
 ###
 
-This is pretty awful! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Later in the term, we'll develop the language to express it in a more natural, concise manner, but for now, we'll have a halfway solution.
+This is pretty rough! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Although it will require us to learn other names and symbols, they'll be useful to know in their own right later in the course!
 
-Start with the vectors $\left< a_1, a_2, a_3 \right>$ and $\left< b_1, b_2, b_3 \right>$ and write their entries in the following manner: the top row contains the entries of $\vec{a}$ and the bottom row the entries of $\vec{b}$. Both rows start at the **second** entry of the vectors and increase, wrapping from the last entry back to the first:
-
-$$
-	\begin{array}{cccc}
-		a_2 & a_3 & a_1 & a_2
-		b_2 & b_3 & b_1 & b_2
-	\end{array}
-$$
-
-There are three ways to take a $2 \times 2$ chunk of this object: the left, middle, and right squares.
+We define a **$**2 \times 2**$ matrix** as a square $2 \times 2$ grid of numbers $$[[ a, b ; c, d ]]$$, and similarly for a $3 \times 3$ matrix. The **determinant** of a $2 \times 2$ matrix is
 
 $$
-	\begin{array}{cccccccccc}
-		a_2 & a_3 & & & a_3 & a_1 & & & a_1 & a_2
-		b_2 & b_3 & & & b_3 & b_1 & & & b_1 & b_2
-	\end{array}
+	\det [[ a, b ; c, d ]] = ad - bc,
 $$
 
-Take each of these chunks and find its top-left entry times its bottom-right one, minus its top-right times its bottom-left. In one of the many cases where symbols do a better job than words, that means to just do the following:
+and for a $3 \times 3$ matrix, we define its determinant in the following way. Take the first row (we can actually choose any row or column, but we'll see momentarily that we'll always want the first row), and say its entries are $a$, $b$, and $c$. For each of those three, cross off the row and column it lives in (the row will always be the first row), and then take the determinant of the $2 \times 2$ matrix that's left. Let's call those $2 \times 2$ determinants $\det A$, $\det B$, and $\det C$; then the determinant of the $3 \times 3$ matrix is
 
 $$
-	\begin{array}{cc}
-		a & b
-		c & d
-	\end{array}\  \longmapsto \, ad - bc.
+	a\det A - b\det B + c\det C.
 $$
 
-The three results, in order, are the three components of $\vec{a} \times \vec{b}$!
+So why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, we have the following fantastically compact result about their cross product!
+
+### thm -m "Method: computing the cross product"
+
+	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$ be vectors in $#R#^3$. Then
+
+	$$
+		\vec{a} \times \vec{b} = \det [[ \vec{i}, \vec{j}, \vec{k} ; a_1, a_2, a_3 ; b_1, b_2, b_3 ]].
+	$$
+
+###
 
 ### ex "the cross product"
 
 	Compute $\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right>$.
 
-	Writing out the components, starting from the second and writing it twice, gives us
+	Writing out the components out into a matrix gives us
 
 	$$
-		\begin{array}{cccc}
-			3 & 2 & -2 & 3
-			0 & -1 & 2 & 0
-		\end{array}
-	$$
+		\vec{a} \times \vec{b} &= \det [[ \vec{i}, \vec{j}, \vec{k} ; -2, 3, 2 ; 2, 0, -1 ]]
 
-	Now the blocks. The leftmost one is
+		&= \vec{i} \det [[ 3, 2 ; 0, -1 ]] - \vec{j} \det [[ -2, 2 ; 2, -1 ]] + \vec{k} \det [[ -2, 3 ; 2, 0 ]]
 
-	$$
-		\begin{array}{cccc}
-			3 & 2
-			0 & -1
-		\end{array},
-	$$
+		&= \left( -3 - 0 \right)\vec{i} - \left( 2 - 4 \right)\vec{j} + \left( 0 - 6 \right)\vec{k}
 
-	and performing our reduction on it turns it into $(3)(-1) - (2)(0) = -3$. Repeating with the other blocks gives us $(2)(2) - (-2)(-1) = 2$ and $(-2)(0) - (3)(2) = -6$, and so
-
-	$$
-		\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right> = \left< -3, 2, -6 \right>.
+		&= \left< -3, 2, -6 \right>.
 	$$
 
 ###
 
-It's high time we stated some properties of the cross product! We'll get the chance to justify this on the homework, for now, we can make use of it for some applications.
+It's high time we stated some properties of the cross product! We'll get the chance to justify these on the homework, for now, we can make use of them for some applications.
 
 ### thm "the magnitude and direction of the cross product"
 
@@ -253,7 +274,7 @@ It's high time we stated some properties of the cross product! We'll get the cha
 
 ###
 
-This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **right-hand rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
+This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **Right-Hand Rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
 
 ### desmos crossProduct
 
@@ -271,6 +292,17 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 
 ###
 
+One additional use of the cross product is a seemingly strange interaction with the dot product. Given three vectors $\vec{a}$, $\vec{b}$, and $\vec{c}$, the so-called **scalar triple product** $\vec{a} \bullet (\vec{b} \times \vec{c})$ is actually a nicer object than we might first expect. If $\vec{b} \times \vec{c} = x \vec{i} + y \vec{j} + z \vec{k}$, then the dot product with $\vec{a} = \left< a_1, a_2, a_3 \right>$ is given by replacing $\vec{i}$ with $a_1$, $\vec{j}$ with $a_2$, and $\vec{k}$ with $a_3$. And we can just do that replacement in the computation of the cross product, resulting in
+
+$$
+	\vec{a} \bullet (\vec{b} \times \vec{c}) = \det [[ a_1, a_2, a_3 ; b_1, b_2, b_3 ; c_1, c_2, c_3 ]].
+$$
+
+A convenient result from linear algebra (a field which is *very* roughly the study of matrices like this) tells us that this determinant's absolute value is the volume of the parallelepiped formed from $\vec{a}$, $\vec{b}$, and $\vec{c}$ --- that's an object like a parallelogram, but in three dimensions instead of two.
+
+### desmos parallelepiped
+
+
 
 ## Equations of Lines
 
@@ -287,6 +319,13 @@ where we're thinking of them as being points --- that is, the line is the set of
 	Let $\vec{r_0} = \left< x_0, y_0, z_0 \right>$ and let $\vec{v}$ be any vector. The parametric equation of the line passing through $(x_0, y_0, z_0)$ and parallel to $\vec{v}$ is given by $\vec{r}(t) = \vec{r_0} + t\vec{v}$.
 
 ###
+
+It might seem pretty strange that we're outputting a vector from this function! After all, shouldn't the output of a line be points? Well, this is our first proper application of position vectors, and it will be far from the last. Because the outputs are vectors, we can write equations like $\vec{r_0} + t\vec{v}$ without worrying about the addition being undefined. And there's more to it than just being pedantic about the type of things we're adding! That vector addition makes geometric sense, not just algebraic.
+
+### desmos vectorValuedLine
+
+Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
+
 
 ### exc "lines in $#R#^3$"
 
