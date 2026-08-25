@@ -2,7 +2,7 @@
 
 
 
-Math 118 is in many ways an unusual course: it's a blend of linear algebra and multivariable calculus, two topics that usually aren't combined, and the multivariable calculus portion comes from a topic that usually isn't split in such a manner. It's also a terminal course in the math department, and it's used primarily as preparation for higher-level courses in economics and statistics. All this means that the course is a unique perspective on two somewhat distinct areas of math that share one main thing in common: they concern functions of multiple variables. In the first half of this course, we'll explore how the ideas and techniques of Calculus I --- specifically optimization --- apply to functions that take more than a single variable as input. In the second half, we'll apply our experience with higher-dimensional space to cover an introduction to linear algebra, exploring how formalizing and structuring methods to solve systems of linear equations results in a surprisingly rich and fully-featured theory that applies to far more than those systems. But before we get started with either of these, let's take our first section to familiarize ourselves with 3D coordinates, a language common to both linear algebra and multivariable calculus.
+Math 1180 is in many ways an unusual course: it's a blend of linear algebra and multivariable calculus, two topics that usually aren't combined, and the multivariable calculus portion comes from a topic that usually isn't split in such a manner. It's also a terminal course in the math department, and it's used primarily as preparation for higher-level courses in economics and statistics. All this means that the course is a unique perspective on two somewhat distinct areas of math that share one main thing in common: they concern functions of multiple variables. In the first half of this course, we'll explore how the ideas and techniques of Calculus I --- specifically optimization --- apply to functions that take more than a single variable as input. In the second half, we'll bring our experience with higher-dimensional spaces to linear algebra, exploring how formalizing and structuring methods to solve systems of linear equations results in a surprisingly rich theory that applies to far more than those systems. But before we get started with either of these, let's take our first section to familiarize ourselves with 3D coordinates, a language common to both linear algebra and multivariable calculus.
 
 We're used to functions of a single variable (which we often just call *functions*) of the form $y = f(x)$. They take in a real number $x$ and output a real number $y$, often according to some rule like $f(x) = x^2$. When we graph functions like these, we plot pairs $(x, y)$, with one $y$-coordinate for every $x$-coordinate we can plug in.
 
@@ -46,17 +46,25 @@ The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-
 
 ### exc "graphing in $#R#^3$"
 
-	Sketch a graph of $y = x^2$ in $#R#^3$.
+	What do the graphs of the following equations look like in $#R#^3$?
+
+	1. $y = 1$.
+
+	2. $z = 1$.
+
+	3. $z = y^2$.
 
 	### solution
 
-	Like the previous graphs, this one looks like the graph of $y = x^2$, but extended vertically parallel to the $z$-axis.
+	Toggle these graphs on one at a time to see!
 
 	### desmos extendTo3d2
 
 ###
 
-One of the learning objectives for this course is being able to sketch basic 3D graphs, but don't worry if that seems like a daunting task --- I'm not here to be overly picky about perspective and detail!
+In this course, you won't need to actually sketch graphs of 3D functions, but you will need to recognize and interpret existing 3D graphs. We'll also occasionally need to plot 3D *points*, which is a much more approachable topic than entire graphs, but it still takes some practice. Since we don't have the luxury of rotating a 3D graph when we draw it on paper, it can be difficult to tell exactly where a plotted point is. To help, we draw dotted lines to the three coordinate planes --- it gives a surprising amount of perspective.
+
+### desmos pointPerspective
 
 We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean Theorem: it's
 
@@ -119,6 +127,8 @@ While vectors are fundamentally different from points, there's definitely a clos
 ### def "components of a vector and the zero vector"
 
 	Let $\vec{v}$ be a vector in $#R#^2$. To write $\vec{v}$ in **component notation**, we denote it $\vec{v} = \left< v_1, v_2 \right>$, where $v_1$ and $v_2$ are the real numbers indicating how much $\vec{v}$ moves parallel to the $x$- and $y$-axes, respectively. Similarly, a vector $\vec{w}$ in $#R#^3$ can be written in component notation as $\vec{w} = \left< w_1, w_2, w_3 \right>$, where $w_1$, $w_2$, and $w_3$ are the amounts $\vec{w}$ moves parallel to the $x$-, $y$-, and $z$-axes.
+
+	The **position vector** for a point $(a, b) \in #R#^2$ is the vector $\left< a, b \right>$ which points to $(a, b)$ when drawn from the origin. For all intents and purposes, a point and a position vector are interchangeable --- one is just written with sharper brackets and has some useful properties. (We'll get to those in a moment!)
 
 	We also define the **zero vector** to be the vector with zero magnitude, which is unique as long as we know what dimension of space we're working in. In practice, that's clear from context, and so we use the same symbol --- $\vec{0}$ --- to represent it, regardless of the space we're in. In $#R#^2$, $\vec{0} = \left< 0, 0 \right>$, in $#R#^3$, $\vec{0} = \left< 0, 0, 0 \right>$, and so on.
 

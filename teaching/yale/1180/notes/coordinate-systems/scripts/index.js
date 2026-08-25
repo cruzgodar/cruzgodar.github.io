@@ -15,6 +15,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
@@ -29,11 +31,34 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
 			[
-				{ latex: raw`y = x^2`, color: desmosColors.purple },
+				{ latex: raw`y = 1`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`z = 1`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`z = y^2`, color: desmosColors.red, hidden: true },
+			]
+		},
+
+		pointPerspective:
+		{
+			use3d: true,
+
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`(a,b,c)`, color: desmosColors.purple },
+				{ latex: raw`a = 1` },
+				{ latex: raw`b = -2` },
+				{ latex: raw`c = 3` },
+
+				{ latex: raw`(a, b, c), (0, b, c), (0, 0, c), (a, 0, c), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, b, c), (a, 0, c), (a, 0, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, b, c), (0, b, c), (0, b, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
 			]
 		},
 
@@ -65,12 +90,14 @@ export default function()
 		{
 			use3d: true,
 
+			options: { showPlane3D: false, translucentSurfaces: true },
+
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
 			expressions:
 			[
 				{ latex: raw`x^2 + y^2 + z^2 = 1`, color: desmosColors.purple },
-				{ latex: raw`x^2 + y^2 = 1`, color: desmosColors.blue },
+				{ latex: raw`x^2 + y^2 = 1 + 0z`, color: desmosColors.blue },
 			]
 		},
 
@@ -204,6 +231,8 @@ export default function()
 		unitVectors3d:
 		{
 			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
 
 			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
 
