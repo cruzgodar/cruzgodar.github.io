@@ -1946,7 +1946,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
 			"/teaching/yale/1180/notes/partial-derivatives",
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
-			"/teaching/yale/1180/notes/the-gradient",
+			"/teaching/yale/1180/notes/gradients",
 			"/teaching/yale/1180/notes/optimization",
 			"/teaching/yale/1180/notes/extreme-value-theorem",
 			"/teaching/yale/1180/notes/lagrange-multipliers",
@@ -2026,7 +2026,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-gradient":
+	"/teaching/yale/1180/notes/gradients":
 	{
 		"title": "Section 6: The Gradient",
 		

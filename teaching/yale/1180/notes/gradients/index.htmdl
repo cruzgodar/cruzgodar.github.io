@@ -142,7 +142,7 @@ That formula for the directional derivative suggests that for a function $f(x, y
 
 ###
 
-The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$. We'll have a *lot* more to say about that in chapter 6, but it's just a useful fact to note for now.
+The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$.
 
 ### ex "the gradient"
 
@@ -217,51 +217,6 @@ since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and
 	Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
 
 ###
-
-We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is orthogonal to the level curve of $f$ at $p$, and that it points in the direction of greatest increase. In just the same way, if $f$ is a function of three variables, then $\G f(p)$ is orthogonal to the level *surface* of $f$ at $p$. We can use that vector to extract an equation for a tangent plane to a level surface!
-
-### ex "a tangent plane to a level surface"
-
-	Find a tangent plane to the graph of
-	
-	$$
-		6x^2+2y^4+z^6+x^4z+xy^5 = 11
-	$$
-
-	at $(1, 1, 1)$.
-
-	### desmos tangentPlaneLevelSurface
-
-	We're not likely to find an explicit formula for that function by solving it for $z$, but we can completely get around the issue by considering the whole thing to be the $w = 11$ level surface of
-
-	$$
-		w = f(x, y, z) = 6x^2 + 2y^4 + z^6 + x^4z + xy^5!
-	$$
-
-	The gradient is then
-
-	$$
-		\G w &= \left< 12x + 4zx^3 + y^5, \quad 8y + 5xy^4, \quad 6z^5 + x^4 \right>
-
-		\G w(1, 1, 1) &= \left< 17, 13, 7 \right>.
-	$$
-
-	Plotted in red above is the normalized gradient, and the tangent plane is in blue.
-
-###
-
-While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< pf/px, pf/py, -1 \right>$. The tangent plane would then be
-
-$$
-	pf/px(x - a) + pf/py(y - b) - 1(z - f(a, b)) &= 0
-
-	pf/px(x - a) + pf/py(y - b) - z + f(a, b) &= 0
-
-	f(a, b) + pf/px(x - a) + pf/py(y - b) &= z,
-$$
-
-and so all is well.
-
 
 
 

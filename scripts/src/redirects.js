@@ -25,6 +25,8 @@ export const redirects = {
 
 	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/unit-circle",
 	"/teaching/notes/trig/the-unit-circle": "/teaching/notes/trig/unit-circle",
+
+	"/teaching/yale/1180/notes/the-gradient": "/teaching/yale/1180/notes/gradients",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
