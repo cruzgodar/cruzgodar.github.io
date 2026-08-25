@@ -49,7 +49,7 @@ export default function()
 
 		boundary1:
 		{
-			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5 },
+			bounds: { xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25 },
 
 			expressions:
 			[
@@ -102,7 +102,13 @@ export default function()
 		{
 			use3d: true,
 
-			bounds: { xmin: -3, xmax: 1, ymin: -3, ymax: 1, zmin: -5, zmax: 1 },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [0.6, -0.8, 0.08, 0.79, 0.6, 0.1, -0.13, 0, 0.99]
+			},
+
+			bounds: { xmin: -3.5, xmax: 1, ymin: -3.5, ymax: 1, zmin: -3.5, zmax: 1 },
 
 			expressions:
 			[
@@ -116,23 +122,17 @@ export default function()
 			]
 		},
 
-		evt2:
+		triangularRegion:
 		{
 			use3d: true,
 
-			options: { showPlane3D: false },
+			options: { showPlane3D: false, },
 
-			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -0.5, zmax: 0.15 },
+			bounds: { xmin: -0.5, xmax: 2.5, ymin: -0.5, ymax: 4.5, zmin: -3, zmax: 0.5 },
 
 			expressions:
 			[
-				{ latex: raw`g(x, y) = -x^2e^{-x^2-y^2}\left\{ x^2 + y^2 \leq 4 \right\}`, color: desmosColors.purple },
-
-				{ latex: raw`([-2, -1, 1, 2], 0, g([-2, -1, 1, 2], 0))`, color: desmosColors.blue },
-
-				{ latex: raw`(2\cos(t), 2\sin(t), g(2\cos(t), 2\sin(t)))`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosColors.red },
-				{ latex: raw`(0, t, g(0, t))`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.orange },
-				{ latex: raw`(0, [-2, 2], g(0, [-2, 2]))`, color: desmosColors.orange },
+				{ latex: raw`f(x, y) = \frac{xy}{2} - x - y \{0 \leq x \leq 2\}\{ 0 \leq y \leq 2x \}`, color: desmosColors.purple },
 			]
 		},
 	});

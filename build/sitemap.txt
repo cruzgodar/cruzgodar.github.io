@@ -186,7 +186,7 @@ home Cruz Godar
 			notes/the-multivariable-chain-rule Section 5: The Multivariable Chain Rule
 			notes/gradients Section 6: The Gradient
 			notes/multivariable-optimization Section 7: Multivariable Optimization
-			notes/extreme-value-theorem Section 8: The Extreme Value Theorem
+			notes/boundary-optimization Section 8: Boundary Optimization
 			notes/lagrange-multipliers Section 9: Lagrange Multipliers
 			notes/vectors-and-matrices Section 10: Vectors and Matrices
 			notes/row-reduction Section 11: Row Reduction

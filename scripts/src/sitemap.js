@@ -1948,7 +1948,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
 			"/teaching/yale/1180/notes/gradients",
 			"/teaching/yale/1180/notes/multivariable-optimization",
-			"/teaching/yale/1180/notes/extreme-value-theorem",
+			"/teaching/yale/1180/notes/boundary-optimization",
 			"/teaching/yale/1180/notes/lagrange-multipliers",
 			"/teaching/yale/1180/notes/vectors-and-matrices",
 			"/teaching/yale/1180/notes/row-reduction",
@@ -2048,9 +2048,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/extreme-value-theorem":
+	"/teaching/yale/1180/notes/boundary-optimization":
 	{
-		"title": "Section 8: The Extreme Value Theorem",
+		"title": "Section 8: Boundary Optimization",
 		
 		"parent": "/teaching/yale/1180",
 		
