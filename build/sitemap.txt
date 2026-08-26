@@ -192,7 +192,7 @@ home Cruz Godar
 			notes/row-reduction Section 11: Row Reduction
 			notes/bases Section 12: Linear Independence and Bases
 			notes/linear-transformations Section 13: Linear Transformations
-			notes/the-determinant Section 14: The Determinant
+			notes/determinants Section 14: The Determinant
 
 		yale/1110 Math 1110
 		

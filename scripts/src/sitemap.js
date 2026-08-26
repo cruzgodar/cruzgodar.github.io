@@ -1954,7 +1954,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/row-reduction",
 			"/teaching/yale/1180/notes/bases",
 			"/teaching/yale/1180/notes/linear-transformations",
-			"/teaching/yale/1180/notes/the-determinant"
+			"/teaching/yale/1180/notes/determinants"
 		],
 
 		"customScript": true
@@ -2112,7 +2112,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-determinant":
+	"/teaching/yale/1180/notes/determinants":
 	{
 		"title": "Section 14: The Determinant",
 		
