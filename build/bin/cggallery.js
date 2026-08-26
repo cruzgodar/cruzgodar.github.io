@@ -28,6 +28,31 @@ function gh(args, stdio)
 	return proc;
 }
 
+// child_process.spawn returns a ChildProcess, not a promise --- awaiting one
+// directly resolves immediately, so wrap it up properly.
+function run(command, args)
+{
+	return new Promise((resolve, reject) =>
+	{
+		const proc = spawn(command, args);
+
+		let stdout = "";
+		let stderr = "";
+
+		proc.stdout.on("data", data => stdout += data.toString());
+		proc.stderr.on("data", data => stderr += data.toString());
+
+		proc.on("error", error => reject(
+			new Error(`Could not run ${command} --- is it installed? (${error.message})`)
+		));
+
+		proc.on("close", status => status === 0
+			? resolve(stdout)
+			: reject(new Error(`${command} failed: ${stderr}`))
+		);
+	});
+}
+
 // Returns a map from asset name to size in bytes, or null if the release
 // doesn't exist yet.
 function getReleaseAssets()
@@ -155,8 +180,8 @@ async function makeGalleryImage(file)
 		throw new Error(`Could not find ${filename} in gallery/index.htmdl`);
 	}
 
-	const [, , proc] = await Promise.all([
-		spawn("cwebp", [
+	await Promise.all([
+		run("cwebp", [
 			root + file,
 			"-q",
 			"85",
@@ -170,7 +195,7 @@ async function makeGalleryImage(file)
 			`${root}gallery/high-res/${filename}.webp`,
 		]),
 
-		spawn("cwebp", [
+		run("cwebp", [
 			root + file,
 			"-q",
 			"85",
@@ -183,24 +208,35 @@ async function makeGalleryImage(file)
 			"-o",
 			`${root}gallery/thumbnails/${filename}.webp`,
 		]),
-
-		spawn("identify", [
-			"-verbose",
-			`${root}gallery/thumbnails/${filename}.webp`,
-		])
 	]);
 
-	proc.stdout.on("data", data =>
-	{
-		const profileLine = data.toString().match(/icc:description:\s(.+)/);
-	
-		if (profileLine && !(profileLine[1].includes("P3")))
-		{
-			console.error(`${filename} is not P3`);
-		}
-	});
+	// Has to happen after the cwebp calls finish, or it reads the last run's
+	// thumbnail and reports stale results.
+	const stdout = await run("identify", [
+		"-verbose",
+		`${root}gallery/thumbnails/${filename}.webp`,
+	]);
+
+	const profileLine = stdout.match(/icc:description:\s(.+)/);
+	const profile = profileLine ? profileLine[1].trim() : null;
 
 	console.log(filename);
+
+	if (!profile)
+	{
+		console.error(`${filename} has no color profile`);
+
+		return false;
+	}
+
+	if (!profile.includes("P3"))
+	{
+		console.error(`${filename} is not P3 (${profile})`);
+
+		return false;
+	}
+
+	return true;
 }
 
 async function testImageData(files, assets)
@@ -266,9 +302,21 @@ export async function buildGallery()
 
 	const files = proc.stdout.toString().split("\n").filter(file => file);
 
-	await Promise.all(
+	const results = await Promise.all(
 		files.map(file => makeGalleryImage(`gallery/full-res/${file}`))
 	);
+
+	// Nothing gets uploaded if any image isn't P3 --- otherwise the release ends
+	// up holding originals that need to be re-rendered and re-uploaded anyway.
+	if (results.includes(false))
+	{
+		const numBad = results.filter(result => !result).length;
+
+		throw new Error(
+			`${numBad} image(s) aren't P3 (listed above) --- nothing was uploaded. `
+				+ "Re-render them in P3 and rerun."
+		);
+	}
 
 	const assets = uploadFullRes(files);
 
