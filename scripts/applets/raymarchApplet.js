@@ -1,4 +1,6 @@
 import anime from "../anime.js";
+import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { animate, sleep } from "../src/utils.js";
 import { WilsonGL } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
@@ -247,6 +249,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.maxWorldScale = maxWorldScale;
 		this.baseMinEpsilon = minEpsilon;
 
+		this.loadPersistedState();
+
 		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
 		this.uniformsGlsl = /* glsl */`
@@ -414,6 +418,73 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.needNewFrame = true;
 
 		this.resume();
+	}
+
+
+
+	loadPersistedState()
+	{
+		const params = new URLSearchParams(window.location.search);
+
+		const theta = params.get("theta");
+		if (theta)
+		{
+			this.theta = parseFloat(decodeURIComponent(theta));
+		}
+		addTemporaryParam("theta");
+
+		const phi = params.get("phi");
+		if (phi)
+		{
+			this.phi = parseFloat(decodeURIComponent(phi));
+		}
+		addTemporaryParam("phi");
+
+		const sceneOriginX = params.get("sceneOriginX");
+		if (sceneOriginX)
+		{
+			this.sceneOrigin[0] = parseFloat(decodeURIComponent(sceneOriginX));
+		}
+		addTemporaryParam("sceneOriginX");
+
+		const sceneOriginY = params.get("sceneOriginY");
+		if (sceneOriginY)
+		{
+			this.sceneOrigin[1] = parseFloat(decodeURIComponent(sceneOriginY));
+		}
+		addTemporaryParam("sceneOriginY");
+
+		const sceneOriginZ = params.get("sceneOriginZ");
+		if (sceneOriginZ)
+		{
+			this.sceneOrigin[2] = parseFloat(decodeURIComponent(sceneOriginZ));
+		}
+		addTemporaryParam("sceneOriginZ");
+	}
+
+	setPersistedStateTimeoutId;
+	setPersistedState()
+	{
+		clearTimeout(this.setPersistedStateTimeoutId);
+
+		this.setPersistedStateTimeoutId = setTimeout(() =>
+		{
+			const theta = this.theta;
+
+			const phi = this.phi;
+			
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				getDisplayUrl({
+					theta,
+					phi,
+					sceneOriginX: this.sceneOrigin[0],
+					sceneOriginY: this.sceneOrigin[1],
+					sceneOriginZ: this.sceneOrigin[2],
+				})
+			);
+		}, 500);
 	}
 
 
@@ -1072,6 +1143,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 			: Math.PI - this.wilson.worldCenterY;
 
 		this.calculateVectors();
+
+
+		// I avoid actually using this in production since it can cause users to get stuck
+		// in a state they don't know how to get out of. It's used primarily for linking
+		// from the gallery.
+		this.setPersistedState();
 
 
 

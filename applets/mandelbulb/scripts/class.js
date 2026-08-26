@@ -256,7 +256,15 @@ export class Mandelbulb extends RaymarchApplet
 
 		else
 		{
-			this.animeLoop.pause();
+			if (this.animeLoop)
+			{
+				this.animeLoop.pause();
+			}
+
+			else
+			{
+				return;
+			}
 
 			const startingFountainAmount = this.uniforms.fountainAmount * this.fountainFactor;
 

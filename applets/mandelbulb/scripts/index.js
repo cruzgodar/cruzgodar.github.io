@@ -171,6 +171,11 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 		) {
+			if (applet.animeLoop)
+			{
+				applet.animeLoop.pause();
+			}
+
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
 		}
