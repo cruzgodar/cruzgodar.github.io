@@ -107,6 +107,7 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			sceneOrigin: [-1.033, -3.316, 1.506],
 			lightPos: [-5, -5, 5],
 			lightBrightness: 1.2,
+			stepFactor: 0.98,
 			overstepFactor: 1.6,
 			useGradientCorrectedOcclusion: true,
 			xrFramebufferScaleSlider,
