@@ -37,7 +37,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	maxMarches;
 	maxShadowMarches;
-	maxReflectionMarches;
 	clipDistance;
 
 	projectionMatrix = new Float32Array(16);
@@ -160,7 +159,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		maxMarches = 256,
 		maxShadowMarches = 128,
-		maxReflectionMarches = 128,
 		clipDistance = 1000,
 		
 		focalLengthFactor = 3.5,
@@ -213,7 +211,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.maxMarches = maxMarches;
 		this.maxShadowMarches = maxShadowMarches;
-		this.maxReflectionMarches = maxReflectionMarches;
 		this.clipDistance = clipDistance;
 		
 		this.focalLengthFactor = focalLengthFactor;
@@ -587,6 +584,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
 		maxMarches = this.maxMarches,
+		maxShadowMarches = this.maxShadowMarches,
 		stepFactor = this.stepFactor,
 		includeDepthData = false,
 	}) {
@@ -596,6 +594,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.getGeodesicGlsl = getGeodesicGlsl;
 		this.addGlsl = addGlsl;
 		this.maxMarches = maxMarches;
+		this.maxShadowMarches = maxShadowMarches;
 		this.stepFactor = stepFactor;
 
 		return createShader({
@@ -606,6 +605,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			addGlsl,
 			includeDepthData,
 			maxMarches,
+			maxShadowMarches,
 			stepFactor,
 
 			useShadows: this.useShadows,
@@ -631,8 +631,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			lightPos: this.lightPos,
 			lightBrightness: this.lightBrightness,
 			clipDistance: this.clipDistance,
-			maxShadowMarches: this.maxShadowMarches,
-			maxReflectionMarches: this.maxReflectionMarches,
 			fogColor: this.fogColor,
 			fogScaling: this.fogScaling
 		});
@@ -647,6 +645,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		addGlsl,
 		includeDepthData,
 		maxMarches,
+		maxShadowMarches,
 		stepFactor,
 	} = {}) {
 		this.wilson.loadShader({
@@ -658,6 +657,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				addGlsl,
 				includeDepthData,
 				maxMarches,
+				maxShadowMarches,
 				stepFactor,
 			}),
 			uniforms: this.uniforms,
@@ -1189,10 +1189,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 	async downloadHighResFrame(filename, resolution = this.resolution)
 	{
 		const oldMaxMarches = this.maxMarches;
+		const oldMaxShadowMarches = this.maxShadowMarches;
 		const oldStepFactor = this.stepFactor;
 
 		await this.reloadShader({
 			maxMarches: this.maxMarches * 40,
+			maxShadowMarches: this.maxShadowMarches * 40,
 			stepFactor: this.stepFactor * 0.1
 		});
 
@@ -1213,6 +1215,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		await this.reloadShader({
 			maxMarches: oldMaxMarches,
+			maxShadowMarches: oldMaxShadowMarches,
 			stepFactor: oldStepFactor,
 		});
 

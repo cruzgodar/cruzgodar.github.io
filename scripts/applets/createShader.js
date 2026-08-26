@@ -4,6 +4,7 @@ function getComputeShadowIntensityGlsl({
 	useShadows,
 	useSoftShadows,
 	getGeodesicGlsl,
+	stepFactor,
 }) {
 	if (useShadows && useSoftShadows)
 	{
@@ -51,7 +52,7 @@ function getComputeShadowIntensityGlsl({
 					}
 
 					// Small steps for quality, but only near the surface.
-					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99);
+					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99) * ${getFloatGlsl(stepFactor)};
 				}
 
 				return clamp(softShadowFactor, maxShadowAmount, 1.0);
@@ -91,7 +92,7 @@ function getComputeShadowIntensityGlsl({
 					}
 					
 					// Small steps for quality, but only near the surface.
-					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99);
+					t += distanceToScene * (t < 5.0 ? 0.25 : 0.99) * ${getFloatGlsl(stepFactor)};
 				}
 
 				return 1.0;
