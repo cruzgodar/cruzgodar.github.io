@@ -1945,7 +1945,7 @@ export const sitemap =
 			"/teaching/yale/1180/notes/dot-and-cross-products",
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
 			"/teaching/yale/1180/notes/partial-derivatives",
-			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
+			"/teaching/yale/1180/notes/multivariable-chain-rule",
 			"/teaching/yale/1180/notes/gradients",
 			"/teaching/yale/1180/notes/multivariable-optimization",
 			"/teaching/yale/1180/notes/boundary-optimization",
@@ -2015,7 +2015,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-multivariable-chain-rule":
+	"/teaching/yale/1180/notes/multivariable-chain-rule":
 	{
 		"title": "Section 5: The Multivariable Chain Rule",
 		

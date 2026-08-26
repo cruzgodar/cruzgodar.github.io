@@ -183,7 +183,7 @@ home Cruz Godar
 			notes/dot-and-cross-products Section 2: The Dot and Cross Products
 			notes/functions-of-multiple-variables Section 3: Functions of Multiple Variables
 			notes/partial-derivatives Section 4: Partial Derivatives
-			notes/the-multivariable-chain-rule Section 5: The Multivariable Chain Rule
+			notes/multivariable-chain-rule Section 5: The Multivariable Chain Rule
 			notes/gradients Section 6: The Gradient
 			notes/multivariable-optimization Section 7: Multivariable Optimization
 			notes/boundary-optimization Section 8: Boundary Optimization

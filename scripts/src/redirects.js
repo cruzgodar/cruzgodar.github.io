@@ -29,6 +29,7 @@ export const redirects = {
 	"/teaching/yale/1180/notes/the-gradient": "/teaching/yale/1180/notes/gradients",
 	"/teaching/yale/1180/notes/optimization": "/teaching/yale/1180/notes/multivariable-optimization",
 	"/teaching/yale/1180/notes/extreme-value-theorem": "/teaching/yale/1180/notes/boundary-optimization",
+	"/teaching/yale/1180/notes/the-multivariable-chain-rule": "/teaching/yale/1180/notes/multivariable-chain-rule",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":
