@@ -179,25 +179,19 @@ function getRaymarchGlsl({
 	getGeodesicGlsl,
 	stepFactor,
 	overstepFactor,
-	coneMarchingScale
 }) {
-	const initialT = coneMarchingScale > 1
-		? /* glsl */`
-			texture2D(uTexture, 0.5 * uv + vec2(0.5)).x
-		`
-		: "0.0";
-	
 	return /* glsl */`
 		void raymarch(
 			vec3 rayOrigin,
 			vec3 rayDirectionVec,
+			float startT,
 			out vec3 pos,
 			out float epsilon,
 			out float t,
 			out float distanceToScene,
 			out int finalIteration
 		) {
-			t = ${initialT};
+			t = startT;
 
 			float omega = ${getFloatGlsl(overstepFactor)};
 			float stepLength = 0.0;
@@ -248,6 +242,7 @@ function getMainFunctionGlsl({
 	useShadows,
 	useReflections,
 	surfaceNormalEpsilonFactor,
+	coneMarchingScale,
 }) {
 	if (useFor3DPrinting)
 	{
@@ -263,6 +258,12 @@ function getMainFunctionGlsl({
 			}
 		`;
 	}
+
+	const coneMarchedT = coneMarchingScale > 1
+		? /* glsl */`
+			texture2D(uTexture, 0.5 * uv + vec2(0.5)).x
+		`
+		: "0.0";
 
 
 	const alpha = includeDepthData ? "t" : "1.0";
@@ -287,6 +288,7 @@ function getMainFunctionGlsl({
 		raymarch(
 			reflectionStartPos,
 			reflectedDirection,
+			0.0,
 			reflectionPos,
 			reflectionEpsilon,
 			reflectionT,
@@ -347,6 +349,7 @@ function getMainFunctionGlsl({
 			raymarch(
 				rayOrigin,
 				rayDirectionVec,
+				${coneMarchedT},
 				pos,
 				epsilon,
 				t,
@@ -471,6 +474,7 @@ export function createShader({
 		useShadows,
 		useReflections,
 		surfaceNormalEpsilonFactor,
+		coneMarchingScale,
 	});
 
 	const computeBloomGlsl = useBloom ? /* glsl */`
