@@ -86,7 +86,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	uniforms = {};
 	lockZ;
 
-	speedFactor = 2;
+	
+	speed = 2;
+	speedFactor = 1;
 	fovFactor = 1;
 
 	moveForwardScale = 1;
@@ -197,14 +199,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 		xrFramebufferScaleSlider,
 	}) {
 		super(canvas);
+		
+		this.theta = theta;
+		this.phi = phi;
+		this.sceneOrigin = sceneOrigin;
+		this.lockedOnOrigin = lockedOnOrigin;
+
+		this.loadPersistedState();
+
+
 
 		this.resolution = resolution;
 
 		this.coneMarchingScales = coneMarchingScales;
 		this.coneMarchingMaxMarches = coneMarchingMaxMarches;
 
-		this.theta = theta;
-		this.phi = phi;
 		this.stepFactor = stepFactor;
 		this.overstepFactor = overstepFactor;
 		this.epsilonScalingFactor = epsilonScalingFactor;
@@ -216,11 +225,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.clipDistance = clipDistance;
 		
 		this.focalLengthFactor = focalLengthFactor;
-		this.sceneOrigin = sceneOrigin;
+		
 		this.defaultSceneOrigin = [...this.sceneOrigin];
-		this.lockedOnOrigin = lockedOnOrigin;
+
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
+
+		this.distanceFromOrigin = magnitude(this.sceneOrigin);
 
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
@@ -248,8 +259,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.minWorldScale = minWorldScale;
 		this.maxWorldScale = maxWorldScale;
 		this.baseMinEpsilon = minEpsilon;
-
-		this.loadPersistedState();
 
 		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
@@ -313,8 +322,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				}
 			}
 		);
-
-		this.distanceFromOrigin = magnitude(this.sceneOrigin);
 
 		const useableShader = shader ?? this.createShader({
 			distanceEstimatorGlsl,
@@ -426,40 +433,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		const params = new URLSearchParams(window.location.search);
 
-		const theta = params.get("theta");
-		if (theta)
+		const persisted = (key, parse) =>
 		{
-			this.theta = parseFloat(decodeURIComponent(theta));
-		}
-		addTemporaryParam("theta");
+			const value = params.get(key);
+			addTemporaryParam(key);
+			return value === null ? undefined : parse(decodeURIComponent(value));
+		};
 
-		const phi = params.get("phi");
-		if (phi)
-		{
-			this.phi = parseFloat(decodeURIComponent(phi));
-		}
-		addTemporaryParam("phi");
+		const number = key => persisted(key, parseFloat);
 
-		const sceneOriginX = params.get("sceneOriginX");
-		if (sceneOriginX)
-		{
-			this.sceneOrigin[0] = parseFloat(decodeURIComponent(sceneOriginX));
-		}
-		addTemporaryParam("sceneOriginX");
-
-		const sceneOriginY = params.get("sceneOriginY");
-		if (sceneOriginY)
-		{
-			this.sceneOrigin[1] = parseFloat(decodeURIComponent(sceneOriginY));
-		}
-		addTemporaryParam("sceneOriginY");
-
-		const sceneOriginZ = params.get("sceneOriginZ");
-		if (sceneOriginZ)
-		{
-			this.sceneOrigin[2] = parseFloat(decodeURIComponent(sceneOriginZ));
-		}
-		addTemporaryParam("sceneOriginZ");
+		this.theta = number("theta") ?? this.theta;
+		this.phi = number("phi") ?? this.phi;
+		this.sceneOrigin = [
+			number("sceneOriginX") ?? this.sceneOrigin[0],
+			number("sceneOriginY") ?? this.sceneOrigin[1],
+			number("sceneOriginZ") ?? this.sceneOrigin[2],
+		];
+		this.lockedOnOrigin = persisted("lockedOnOrigin", v => v === "1") ?? this.lockedOnOrigin;
 	}
 
 	setPersistedStateTimeoutId;
@@ -469,19 +459,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.setPersistedStateTimeoutId = setTimeout(() =>
 		{
-			const theta = this.theta;
-
-			const phi = this.phi;
-			
 			window.history.replaceState(
 				{ url: pageUrl },
 				"",
 				getDisplayUrl({
-					theta,
-					phi,
+					theta: this.theta,
+					phi: this.phi,
 					sceneOriginX: this.sceneOrigin[0],
 					sceneOriginY: this.sceneOrigin[1],
 					sceneOriginZ: this.sceneOrigin[2],
+					lockedOnOrigin: this.lockedOnOrigin ? "1" : "0",
 				})
 			);
 		}, 500);
@@ -816,16 +803,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// The cap is in scene units, so it has to ride worldScale to stay a fixed speed in
 		// meters; below it, speed is proportional to the estimate and so already tracks the
 		// scale. Outside XR worldScale is 1 and this is what it always was.
-		this.speedFactor = Math.min(
+		this.speed = Math.min(
 			this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]),
 			.5 * this.worldScale
-		) / 4;
+		) * 0.125 * this.speedFactor;
 
 		// The camera basis stays orthonormal instead of also encoding the fov,
 		// which lives in the projection matrix now. These only scale movement,
 		// which used to ride along on the magnitudes.
-		this.moveForwardScale = this.speedFactor / 1.5;
-		this.moveRightScale = this.speedFactor / 1.5;
+		this.moveForwardScale = this.speed / 1.5;
+		this.moveRightScale = this.speed / 1.5;
 
 
 		// Everything past this point is going to be handed to us by a headset if there is one.
@@ -1148,7 +1135,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// I avoid actually using this in production since it can cause users to get stuck
 		// in a state they don't know how to get out of. It's used primarily for linking
 		// from the gallery.
-		this.setPersistedState();
+		// this.setPersistedState();
 
 
 
@@ -1431,7 +1418,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[1] * usableRightVec[1],
 				this.moveVelocity[0] * usableForwardVec[2]
 					+ this.moveVelocity[1] * usableRightVec[2]
-					+ this.moveVelocity[2] * this.speedFactor / 1.5
+					+ this.moveVelocity[2] * this.speed / 1.5
 			];
 
 			this.sceneOrigin[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);

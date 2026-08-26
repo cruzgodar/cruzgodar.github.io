@@ -81,7 +81,8 @@ export const galleryImageData =
 	{
 		title: "An Extruded Cube",
 
-		appletLink: "/applets/extruded-cube"
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/extruded-cube/?theta=3.9241853534547277&phi=2.107218909611949&sceneOriginX=3.462665861142383&sceneOriginY=3.4436385444871025&sceneOriginZ=3.184431456540181&lockedOnOrigin=0"
 	},
 	
 	"finite-subdivision":
@@ -173,15 +174,14 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2&theta=5.54689521175957&phi=1.8096373162567312&sceneOriginX=-2.8020626375238793&sceneOriginY=2.5699101173940653&sceneOriginZ=0.9021621311545615&lockedOnOrigin=0"
 	},
 
 	"juliabulb-zoom":
 	{
 		title: "A Juliabulb",
 
-		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8&lock-on-origin-checkbox=0"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8"
 	},
 
 	"juliabulb-zoom-2":
@@ -189,43 +189,31 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&c-x-slider=-0.062753&theta=5.110991077305194&phi=1.7448394653051793&sceneOriginX=-0.3211125051912999&sceneOriginY=0.7626894259938856&sceneOriginZ=0.9637849398839657&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a tetrahedron with scale $1.1679$, $\\theta_x = 1.762$, $\\theta_y = 1.377$, and $\\theta_z = 3.845$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679&theta=1.5414603033487912&phi=2.4831142186943453&sceneOriginX=-0.00721808288618863&sceneOriginY=-1.3808588169478124&sceneOriginZ=1.9211259250737691&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs-2":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a cube with scale $1.2046$, $\\theta_x = 3.438$, $\\theta_y = 0.336$, and $\\theta_z = 2.396$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=0&rotation-angle-y-slider=0.35&rotation-angle-z-slider=5.56&scale-slider=1.2046&theta=2.008202316340604&phi=2.0187573939922068&sceneOriginX=0.9960223208149316&sceneOriginY=-2.145767606463839&sceneOriginZ=1.1123082383545548&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs-3":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a tetrahedron with scale $1.3299$, $\\theta_x = 0.068$, $\\theta_y = 2.468$, and $\\theta_z = 0.448$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.07&rotation-angle-y-slider=2.5&rotation-angle-z-slider=0.47&scale-slider=1.3299&theta=1.4196693931014401&phi=2.0515295881240005&sceneOriginX=-0.1923836126160151&sceneOriginY=-1.7777580453310766&sceneOriginZ=0.9662780802383231&lockedOnOrigin=0"
 	},
 
 	"kicked-rotator":
@@ -284,24 +272,16 @@ export const galleryImageData =
 	{
 		title: "A Menger Sponge",
 
-		parameters: /* html */`
-			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113"
+		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113&theta=4.131498876813254&phi=2.0243384174539027&sceneOriginX=2.160738695287425&sceneOriginY=3.3408324399690414&sceneOriginZ=1.7824745335800725&lockedOnOrigin=0"
 	},
 
 	"menger-sponge-2":
 	{
 		title: "A Menger Sponge",
 
-		parameters: /* html */`
-			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159"
+		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159&theta=4.144203854493263&phi=2.0383847418727608&sceneOriginX=2.0830599284252496&sceneOriginY=3.3236313914181332&sceneOriginZ=1.8545102652101075&lockedOnOrigin=0"
 	},
 
 	"newtons-method":
@@ -339,13 +319,10 @@ export const galleryImageData =
 	{
 		title: "A Quaternionic Julia Set",
 
-		parameters: /* html */`
-			Generated with $c = (-0.54, -0.25, -0.668, 0)$
-		`,
-
 		featured: `A prior version of this image was featured in ${bridges2023}.`,
 
-		appletLink: "/applets/quaternionic-julia-sets"
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/quaternionic-julia-sets/?theta=1.2837540983606566&phi=1.9824590163934426&sceneOriginX=-1.0323235068507797&sceneOriginY=-3.3161100698143398&sceneOriginZ=1.506221491706727&lockedOnOrigin=0"
 	},
 		
 	"secant-method":

@@ -127,7 +127,8 @@ export default function()
 	const lockOnOriginCheckbox = new Checkbox({
 		element: $("#lock-on-origin-checkbox"),
 		name: "Lock on origin",
-		checked: true,
+		checked: applet.lockedOnOrigin,
+		persistState: false,
 		onInput: onCheckboxInput
 	});
 

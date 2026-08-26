@@ -82,13 +82,6 @@ export default function()
 
 	xrFramebufferScaleSlider.element.parentElement.style.display = "none";
 
-	const lockOnOriginCheckbox = new Checkbox({
-		element: $("#lock-on-origin-checkbox"),
-		name: "Lock on origin",
-		checked: true,
-		onInput: onCheckboxInput
-	});
-
 	const shadowsCheckbox = new Checkbox({
 		element: $("#shadows-checkbox"),
 		name: "Shadows",
@@ -99,6 +92,14 @@ export default function()
 		canvas: $("#output-canvas"),
 		shape: polyhedraDropdown.value || "octahedron",
 		xrFramebufferScaleSlider
+	});
+
+	const lockOnOriginCheckbox = new Checkbox({
+		element: $("#lock-on-origin-checkbox"),
+		name: "Lock on origin",
+		checked: applet.lockedOnOrigin,
+		persistState: false,
+		onInput: onCheckboxInput
 	});
 
 	new DownloadHighResButton({
