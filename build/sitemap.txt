@@ -1,6 +1,8 @@
 home Cruz Godar
 	gallery Gallery
 
+	store Store
+
 	applets Applets
 		flagle Flagle
 		boids Boids!
@@ -209,6 +211,8 @@ home Cruz Godar
 	projects Projects
 		kestrel Kestrel
 			privacy-policy Kestrel Privacy Policy
+
+	news News
 	
 	math Math
 		interactivity-fidelity-polish Interactivity, Fidelity, and Polish: Building Modern Math Illustration

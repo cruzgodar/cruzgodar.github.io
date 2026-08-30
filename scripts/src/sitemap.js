@@ -36,6 +36,15 @@ export const sitemap =
 		"customStyle": true
 	},
 	
+	"/store":
+	{
+		"title": "Store",
+		
+		"parent": "/home",
+		
+		"children": []
+	},
+	
 	"/applets":
 	{
 		"title": "Applets",
@@ -2241,6 +2250,15 @@ export const sitemap =
 		"title": "Kestrel Privacy Policy",
 		
 		"parent": "/projects/kestrel",
+		
+		"children": []
+	},
+	
+	"/news":
+	{
+		"title": "News",
+		
+		"parent": "/home",
 		
 		"children": []
 	},
