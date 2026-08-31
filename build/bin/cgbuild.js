@@ -31,6 +31,14 @@ const options =
 	images: process.argv.slice(2).includes("--images"),
 };
 
+// The site's own cards and image links use cover.webp, so it stays at the size
+// they expect; only og:image uses the JPEG, which is why the two sizes differ.
+// The JPEG size is a cap rather than a target --- a cover with a smaller source
+// (or one derived from a committed cover.webp) is left at its own size instead
+// of being upscaled, so no og:image:width/height is written.
+const coverJpgSize = 1500;
+const coverWebpSize = 500;
+
 const courseNames = [
 	[/teaching\/uo\/253\/.+/, "Math 253"],
 	[/teaching\/uo\/256\/.+/, "Math 256"],
@@ -195,6 +203,8 @@ async function buildFile(file)
 			console.log(file);
 
 			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+
+			ensureCoverImage(file);
 		}
 	}
 
@@ -209,6 +219,8 @@ async function buildFile(file)
 			console.log(file);
 
 			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+
+			ensureCoverImage(file);
 
 			const path = file.slice(0, lastSlashIndex - 1);
 
@@ -335,10 +347,57 @@ async function buildCSSFile(file)
 	await write(outputFile, css);
 }
 
-function buildPDFFile(file)
+// The folder a page's cover images live in, with a trailing slash.
+function coverFolder(file)
 {
 	const index = file.lastIndexOf("/");
-	const outputFile = (index === -1 ? file : file.slice(0, index + 1)) + "cover.webp";
+
+	return index === -1 ? "" : file.slice(0, index + 1);
+}
+
+// og:image points at cover.jpg rather than cover.webp: Apple's link-preview
+// fetcher (iMessage, Notes, Safari) can't decode WebP and silently falls back
+// to the page's favicon.
+function ensureCoverImage(file)
+{
+	const folder = coverFolder(file);
+
+	const coverSource = existsSync(`${root}${folder}cover-src.png`)
+		? `${root}${folder}cover-src.png`
+		: null;
+
+	if (!coverSource && !existsSync(`${root}${folder}index.pdf`))
+	{
+		console.warn(`No cover-src.png in ${folder || "/"}`);
+	}
+
+	// Rebuild the JPEG from the best image on hand every time the page is built,
+	// so it can never fall out of step with the WebP or with coverJpgSize.
+	// Pages with a cover-src.png go back to the source; the rest --- including
+	// the ones whose cover.webp was committed without a source --- only have the
+	// WebP to work from, so their JPEG stays at the WebP's size.
+	const input = coverSource ?? `${root}${folder}cover.webp`;
+
+	if (!existsSync(input))
+	{
+		console.warn(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
+
+		return;
+	}
+
+	spawnSync("magick", [
+		input,
+		"-resize",
+		`${coverJpgSize}x${coverJpgSize}>`,
+		"-quality",
+		"85",
+		`${root}${folder}cover.jpg`
+	]);
+}
+
+function buildPDFFile(file)
+{
+	const folder = coverFolder(file);
 
 	spawnSync("magick", [
 		`${root}${file}[0]`,
@@ -354,26 +413,46 @@ function buildPDFFile(file)
 		"-morphology",
 		"Erode",
 		"Diamond",
-		"-resize",
-		"500x500",
 		"-quality",
 		"85",
-		`${root}${outputFile}`
+		// The clone writes the WebP and then drops off the stack, leaving the
+		// full-size render behind for the JPEG --- so the PDF, which is by far
+		// the slowest part of this, is only rendered once.
+		"(",
+		"+clone",
+		"-resize",
+		`${coverWebpSize}x${coverWebpSize}`,
+		"-write",
+		`${root}${folder}cover.webp`,
+		"+delete",
+		")",
+		"-resize",
+		`${coverJpgSize}x${coverJpgSize}>`,
+		`${root}${folder}cover.jpg`
 	]);
 }
 
 function buildCoverImage(file)
 {
-	const index = file.lastIndexOf("/");
-	const outputFile = (index === -1 ? file : file.slice(0, index + 1)) + "cover.webp";
+	const folder = coverFolder(file);
 
 	spawnSync("magick", [
 		`${root}${file}`,
-		"-resize",
-		"500x500",
 		"-quality",
 		"85",
-		`${root}${outputFile}`
+		// As in buildPDFFile --- the clone writes the WebP, then the source
+		// image it was cloned from becomes the JPEG.
+		"(",
+		"+clone",
+		"-resize",
+		`${coverWebpSize}x${coverWebpSize}`,
+		"-write",
+		`${root}${folder}cover.webp`,
+		"+delete",
+		")",
+		"-resize",
+		`${coverJpgSize}x${coverJpgSize}>`,
+		`${root}${folder}cover.jpg`
 	]);
 }
 

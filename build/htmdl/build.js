@@ -503,7 +503,9 @@ function getIndexHTML(pageTitle, firstParagraphText)
 
 	<meta property="og:url" content="https://cruzgodar.com${parentFolder}"/>
 
-	<meta property="og:image" content="https://cruzgodar.com${parentFolder}/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com${parentFolder}/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="${firstParagraphText}">
 
