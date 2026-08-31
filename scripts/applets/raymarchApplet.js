@@ -96,6 +96,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	lockedOnOrigin;
 	distanceFromOrigin = 1;
+	defaultDistanceFromOrigin = 1;
 
 	distanceEstimatorGlsl;
 	getColorGlsl;
@@ -232,6 +233,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.lockZ = lockZ;
 
 		this.distanceFromOrigin = magnitude(this.sceneOrigin);
+		this.defaultDistanceFromOrigin = this.distanceFromOrigin;
 
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
@@ -910,7 +912,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.lockedOnOrigin = false;
 
 		this.theta = 0;
-		this.sceneOrigin = [-this.distanceFromOrigin, 0, this.xrInitialZHeight];
+		this.sceneOrigin = [-this.defaultDistanceFromOrigin, 0, this.xrInitialZHeight];
 
 		// The first frame arrives at whatever scale the last session ended on, and easing
 		// from there would mean starting off uncomfortable.
@@ -1370,33 +1372,43 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[0] = -1;
 		}
 
-		if (this.keysPressed.d)
+		if (this.keysPressed.d && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[1] = 1;
 		}
 
-		else if (this.keysPressed.a)
+		else if (this.keysPressed.a && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[1] = -1;
 		}
 
-		if (this.keysPressed[" "])
+		if (this.keysPressed[" "] && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[2] = 1;
 		}
 
-		else if (this.keysPressed.shift)
+		else if (this.keysPressed.shift && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[2] = -1;
 		}
 
 		const movingSpeed = (this.keysPressed.c ? 0.05 : 1) * this.movingSpeed;
 
-		if (!this.lockedOnOrigin && (
+		if (this.lockedOnOrigin && this.moveVelocity[0] !== 0)
+		{
+			this.distanceFromOrigin -= this.moveForwardScale
+				* movingSpeed
+				* this.moveVelocity[0]
+				* (timeElapsed / 6.944);
+
+			this.needNewFrame = true;
+		}
+
+		else if (
 			this.moveVelocity[0] !== 0
-				|| this.moveVelocity[1] !== 0
-				|| this.moveVelocity[2] !== 0
-		)) {
+			|| this.moveVelocity[1] !== 0
+			|| this.moveVelocity[2] !== 0
+		) {
 			const usableForwardVec = scaleVector(
 				this.moveForwardScale,
 				this.lockZ !== undefined
@@ -1549,7 +1561,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				targets: dummy,
 				theta,
 				phi,
-				r: this.distanceFromOrigin,
+				r: this.defaultDistanceFromOrigin,
 				duration: 500,
 				easing: "easeOutCubic",
 				update: () =>
@@ -1559,6 +1571,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 						centerY: dummy.phi,
 						showResetButton: false,
 					});
+
+					this.distanceFromOrigin = dummy.r;
 					
 					this.sceneOrigin = scaleVector(
 						dummy.r,
