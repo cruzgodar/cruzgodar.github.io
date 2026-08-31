@@ -14,6 +14,7 @@ const excludeFromBuild =
 [
 	/build.+/,
 	/slides\/.+\/index\.htmdl/,
+	/projects\/lapsa\/index\.htmdl/,
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
 	/scripts\/mathjax.+/,
@@ -240,7 +241,7 @@ async function buildFile(file)
 	}
 
 	else if (
-		extension === "png"
+		filename === "cover-src" && extension === "png"
 		&& (!options.clean || (options.clean && options.images))
 	) {
 		console.log(file);

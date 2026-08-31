@@ -209,6 +209,7 @@ home Cruz Godar
 		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
 	projects Projects
+		lapsa Lapsa
 		kestrel Kestrel
 			privacy-policy Kestrel Privacy Policy
 
@@ -222,7 +223,6 @@ home Cruz Godar
 		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
-		lapsa Lapsa
 
 	about About
 	

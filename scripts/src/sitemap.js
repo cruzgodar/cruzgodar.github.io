@@ -2229,10 +2229,20 @@ export const sitemap =
 		
 		"children":
 		[
+			"/projects/lapsa",
 			"/projects/kestrel"
 		]
 	},
 		
+	"/projects/lapsa":
+	{
+		"title": "Lapsa",
+		
+		"parent": "/projects",
+		
+		"children": []
+	},
+	
 	"/projects/kestrel":
 	{
 		"title": "Kestrel",
@@ -2277,8 +2287,7 @@ export const sitemap =
 			"/math/light-shadow-world-of-nails",
 			"/math/marys-3-manifold",
 			"/math/grandmas-recipe",
-			"/math/oral-exam",
-			"/math/lapsa"
+			"/math/oral-exam"
 		]
 	},
 		
@@ -2339,15 +2348,6 @@ export const sitemap =
 	"/math/oral-exam":
 	{
 		"title": "Prelude to an Oral Exam",
-		
-		"parent": "/math",
-		
-		"children": []
-	},
-	
-	"/math/lapsa":
-	{
-		"title": "Lapsa",
 		
 		"parent": "/math",
 		

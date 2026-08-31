@@ -2305,6 +2305,104 @@ img[src="/about/cover.webp"]
 
 
 
+.project
+{
+	margin-top: 96px;
+}
+
+.body-text-with-image-link
+{
+	width: min(100%, var(--text-width));
+
+	margin: 0 auto;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.section-text-with-image-link
+{
+	width: min(100%, var(--text-width));
+
+	margin: 0 auto;
+	margin-bottom: 16px;
+	
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: center;
+	align-items: center;
+}
+
+.project:nth-child(even) .body-text-with-image-link
+{
+	flex-direction: row-reverse;
+}
+
+:is(.body-text-with-image-link, .section-text-with-image-link) .image-link
+{
+	/* Account for the content-box sizing nonsense that .image-links handles for free. */
+	margin: -4px;
+	margin-bottom: -12px;
+
+	/* The width is set in js, so don't let the flex algorithm shrink it. */
+	flex-shrink: 0;
+}
+
+.body-text-with-image-link .body-text
+{
+	flex: 1;
+	min-width: 0;
+
+	margin-bottom: 0;
+	margin-right: 32px;
+}
+
+.project:nth-child(even) .body-text-with-image-link .body-text
+{
+	margin-right: 0;
+	margin-left: 32px;
+}
+
+.section-text-with-image-link .section-text
+{
+	/* No flex-grow: the heading shrink-wraps its text so that it and the image
+	   link are centered together, and the auto margins from .section-text would
+	   otherwise eat all the free space before justify-content ever sees it. */
+	min-width: 0;
+
+	margin: 0;
+	margin-left: 16px;
+}
+
+.section-text-with-image-link .image-link
+{
+	width: 50px;
+	display: none;
+}
+
+@media (max-width: 700px)
+{
+	.body-text-with-image-link .body-text
+	{
+		margin-right: 0 !important;
+		margin-left: 0 !important;
+	}
+
+	.body-text-with-image-link .image-link
+	{
+		display: none;
+	}
+
+	.section-text-with-image-link .image-link
+	{
+		display: unset;
+	}
+}
+
+
+
 .desmos-border
 {
 	margin: 0 auto;

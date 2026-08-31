@@ -124,6 +124,30 @@ function updateImageLinks()
 			imageLinksElement.style.removeProperty("grid-template-columns");
 		}
 	}
+
+	for (const bodyTextWithImageLinkElement of $$(".body-text-with-image-link"))
+	{
+		const imageLinkElement = bodyTextWithImageLinkElement.querySelector(".image-link");
+		const bodyTextElement = bodyTextWithImageLinkElement.querySelector(".body-text");
+
+		// Widening the image narrows the text, which makes the text taller, which
+		// widens the image again, so iterate until the two settle on each other.
+		let width = 0;
+
+		for (let i = 0; i < 8; i++)
+		{
+			imageLinkElement.style.width = `${width}px`;
+
+			const height = bodyTextElement.getBoundingClientRect().height;
+
+			if (width === 200 || Math.abs(height - width) < 1)
+			{
+				break;
+			}
+
+			width = Math.min(height, 200);
+		}
+	}
 }
 
 
