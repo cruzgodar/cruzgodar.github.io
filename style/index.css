@@ -28,29 +28,29 @@
 
 
 
+	/* HSV 120, 23, 92 */
 	--gallery-color: rgb(181, 235, 181);
-	/* --gallery-color: HSV 120, 23, 92 */
 
+	/* HSV 210, 26, 100 */
 	--store-color: rgb(189, 222, 255);
-	/* --store-color: HSV 210, 26, 100 */
 
+	/* HSV 345, 25, 99 */
 	--applets-color: rgb(252, 189, 205);
-	/* --applets-color: HSV 345, 25, 99 */
 
+	/* HSV 40, 25, 99 */
 	--teaching-color: rgb(252, 220, 159);
-	/* --teaching-color: HSV 40, 25, 99 */
 
+	/* HSV 25, 18, 100 */
 	--projects-color: rgb(221, 209, 255);
-	/* --projects-color: HSV 25, 18, 100 */
 
+	/* HSV 28, 30, 100 */
 	--news-color: rgb(255, 214, 179);
-	/* --news-color: HSV 28, 30, 100 */
 
+	/* HSV 188, 24, 95 */
 	--math-color: rgb(184, 234, 242);
-	/* --math-color: HSV 188, 24, 95 */
 
+	/* HSV 280, 18, 100 */
 	--about-color: rgb(236, 205, 250);
-	/* --about-color: HSV 280, 18, 100 */
 
 
 
@@ -2264,48 +2264,6 @@ option
 	color: var(--normal-contrast);
 	text-align: center;
 	font-size: 100%;
-}
-
-
-
-img[src="/gallery/cover.webp"]
-{
-	background-color: var(--gallery-color);
-}
-
-img[src="/store/cover.webp"]
-{
-	background-color: var(--store-color);
-}
-
-img[src="/applets/cover.webp"]
-{
-	background-color: var(--applets-color);
-}
-
-img[src="/teaching/cover.webp"]
-{
-	background-color: var(--teaching-color);
-}
-
-img[src="/projects/cover.webp"]
-{
-	background-color: var(--projects-color);
-}
-
-img[src="/news/cover.webp"]
-{
-	background-color: var(--news-color);
-}
-
-img[src="/math/cover.webp"]
-{
-	background-color: var(--math-color);
-}
-
-img[src="/about/cover.webp"]
-{
-	background-color: var(--about-color);
 }
 
 
