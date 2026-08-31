@@ -26,6 +26,24 @@ const excludeFromBuild =
 	/math\/dissertation\/dissertation\.pdf/,
 ];
 
+// cover-src.png files that are meant to be something other than P3 --- their
+// covers still build, warnIfNotP3 just doesn't second-guess them.
+const excludeFromP3Check =
+[
+];
+
+// Pages that have no cover image and aren't getting one, so there's no point in
+// warnMissingCover bringing them up every build.
+const excludeFromCoverWarning =
+[
+	"404",
+	"applets/raymarching-fundamentals",
+	"debug/glsl-docs",
+	"debug/htmdl-docs",
+	"debug/tests/glsl-test",
+	"teaching/uo/342/extra/eigenfaces-demo",
+];
+
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
@@ -415,11 +433,17 @@ function warnMissingCover(file)
 		return;
 	}
 
-	console.warn(
-		existsSync(`${root}${folder}cover.webp`)
-			? `No cover-src.png in ${folder || "/"}`
-			: `No cover image in ${folder || "/"} --- link previews will fall back to the favicon`
-	);
+	if (existsSync(`${root}${folder}cover.webp`))
+	{
+		console.warn(`No cover-src.png in ${folder || "/"}`);
+
+		return;
+	}
+
+	if (!excludeFromCoverWarning.includes(folder.slice(0, -1)))
+	{
+		console.warn(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
+	}
 }
 
 function buildPDFFile(file)
@@ -459,9 +483,42 @@ function buildPDFFile(file)
 	]);
 }
 
+// The same check cggallery.js runs over the gallery images --- a cover that
+// isn't Display P3 renders washed out next to everything else on the site.
+// Asking for the property outright rather than grepping -verbose output keeps
+// this to a few milliseconds per cover instead of half a second.
+function warnIfNotP3(file)
+{
+	if (excludeFromP3Check.includes(file))
+	{
+		return;
+	}
+
+	// An image with no profile at all prints a warning to stderr and nothing to
+	// stdout, which lands in the same branch as an empty description.
+	const profile = spawnSync("magick", [
+		"identify",
+		"-format",
+		"%[icc:description]",
+		`${root}${file}`
+	]).stdout.toString().trim();
+
+	if (!profile)
+	{
+		console.warn(`${file} has no color profile`);
+	}
+
+	else if (!profile.includes("P3"))
+	{
+		console.warn(`${file} is not P3 (${profile})`);
+	}
+}
+
 function buildCoverImage(file)
 {
 	const folder = coverFolder(file);
+
+	warnIfNotP3(file);
 
 	spawnSync("magick", [
 		`${root}${file}`,
