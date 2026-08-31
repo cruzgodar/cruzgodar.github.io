@@ -66,7 +66,7 @@ export class MaurerRoses extends AnimationFrameApplet
 		this.linesPerFrame = this.animate ? 1 : 360;
 
 		this.curveThickness = Math.max(this.resolution / 500, 1);
-		this.lineThickness = Math.max(this.resolution / 500, 1);
+		this.lineThickness = Math.max(this.resolution / 250, 1);
 		this.wilson.ctx.lineWidth = this.lineThickness;
 
 		this.points = [];

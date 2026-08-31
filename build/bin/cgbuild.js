@@ -58,6 +58,7 @@ const options =
 // of being upscaled, so no og:image:width/height is written.
 const coverJpgSize = 1500;
 const coverWebpSize = 500;
+const minTolerableCoverSrcSize = 1000;
 
 const courseNames = [
 	[/teaching\/uo\/253\/.+/, "Math 253"],
@@ -70,6 +71,50 @@ const courseNames = [
 ];
 
 let sitemap;
+
+// Warnings are collected while the build runs and printed in blocks at the end.
+// Files come back out of Promise.all in whatever order they happen to finish,
+// so a warning printed inline lands somewhere in the middle of the build log
+// instead of next to the others of its kind.
+const warnings =
+{
+	noCover: [],
+	noCoverSource: [],
+	notP3: [],
+	tooSmall: [],
+};
+
+function printWarnings()
+{
+	for (const block of Object.values(warnings))
+	{
+		if (block.length === 0)
+		{
+			continue;
+		}
+
+		// The leading newline is what separates one block from the last.
+		console.warn(`\n${block.sort().join("\n")}`);
+	}
+}
+
+// Scratch files are renamed into place the moment they're written, so any that
+// are still lying around are debris from a build that crashed or was killed.
+function removeScratchFiles()
+{
+	const scratchFiles = readdirSync(root, { recursive: true })
+		.filter(file => file.endsWith(".tmp"));
+
+	for (const file of scratchFiles)
+	{
+		rmSync(root + file, { force: true });
+	}
+
+	if (scratchFiles.length !== 0)
+	{
+		console.log(`Removed ${scratchFiles.length} scratch files left by an earlier build`);
+	}
+}
 
 // After a non-clean build, find output files (.min.js, .min.css, .html)
 // that are modified according to git but whose source files are not.
@@ -170,6 +215,8 @@ async function buildSite()
 
 	const files = proc.stdout.toString().split("\n");
 
+	removeScratchFiles();
+
 	await parseModifiedFiles(files);
 
 	if (!options.clean)
@@ -178,6 +225,8 @@ async function buildSite()
 	}
 
 	await buildXmlSitemap();
+
+	printWarnings();
 
 	process.exit(0);
 }
@@ -435,14 +484,14 @@ function warnMissingCover(file)
 
 	if (existsSync(`${root}${folder}cover.webp`))
 	{
-		console.warn(`No cover-src.png in ${folder || "/"}`);
+		warnings.noCoverSource.push(`No cover-src.png in ${folder || "/"}`);
 
 		return;
 	}
 
 	if (!excludeFromCoverWarning.includes(folder.slice(0, -1)))
 	{
-		console.warn(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
+		warnings.noCover.push(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
 	}
 }
 
@@ -483,34 +532,41 @@ function buildPDFFile(file)
 	]);
 }
 
-// The same check cggallery.js runs over the gallery images --- a cover that
-// isn't Display P3 renders washed out next to everything else on the site.
-// Asking for the property outright rather than grepping -verbose output keeps
-// this to a few milliseconds per cover instead of half a second.
-function warnIfNotP3(file)
+// The P3 check is the same one cggallery.js runs over the gallery images --- a
+// cover that isn't Display P3 renders washed out next to everything else on the
+// site. Asking for the properties outright rather than grepping -verbose output
+// keeps this to a few milliseconds per cover instead of half a second.
+function checkCoverSource(file)
 {
-	if (excludeFromP3Check.includes(file))
-	{
-		return;
-	}
-
-	// An image with no profile at all prints a warning to stderr and nothing to
-	// stdout, which lands in the same branch as an empty description.
-	const profile = spawnSync("magick", [
+	// An image with no profile at all writes a warning to stderr and leaves the
+	// description empty, but the width and height still come through.
+	const [profile, width, height] = spawnSync("magick", [
 		"identify",
 		"-format",
-		"%[icc:description]",
+		"%[icc:description]|%w|%h",
 		`${root}${file}`
-	]).stdout.toString().trim();
+	]).stdout.toString().split("|");
 
-	if (!profile)
+	if (!excludeFromP3Check.includes(file))
 	{
-		console.warn(`${file} has no color profile`);
+		if (!profile)
+		{
+			warnings.notP3.push(`${file} has no color profile`);
+		}
+
+		else if (!profile.includes("P3"))
+		{
+			warnings.notP3.push(`${file} is not P3 (${profile})`);
+		}
 	}
 
-	else if (!profile.includes("P3"))
+	// Anything smaller than this is upscaled by no one --- the JPEG cover just
+	// comes out below coverJpgSize and the link preview is that much smaller.
+	if (Number(width) < minTolerableCoverSrcSize || Number(height) < minTolerableCoverSrcSize)
 	{
-		console.warn(`${file} is not P3 (${profile})`);
+		warnings.tooSmall.push(
+			`${file} is smaller than ${minTolerableCoverSrcSize}x${minTolerableCoverSrcSize} (${width}x${height})`
+		);
 	}
 }
 
@@ -518,7 +574,7 @@ function buildCoverImage(file)
 {
 	const folder = coverFolder(file);
 
-	warnIfNotP3(file);
+	checkCoverSource(file);
 
 	spawnSync("magick", [
 		`${root}${file}`,
