@@ -13,7 +13,7 @@ The wide-ranging (and often niche) hobby projects I've found time for, outside o
 		</a>
 
 		<div class="body-text-with-image-link">
-			<p class="body-text">Wilson is the TypeScript/JavaScript library that powers <a href="/applets">every applet</a> on this site. It handles tasks like panning and zooming, makes parallelized GPU-based applets as easy as writing a shader, provides a robust and customizable fullscreen toolkit, and even lets you easily run 3D applets in a VR headset. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.</p>
+			<p class="body-text">Wilson is the TypeScript library that powers <a href="/applets">every applet</a> on this site. It handles tasks like panning and zooming, makes parallelized GPU-based applets as easy as writing a shader, provides a robust and customizable fullscreen toolkit, and even lets you run 3D applets in a VR headset without hassle. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.</p>
 
 			<a href="https://github.com/cruzgodar/wilson" class="image-link">
 				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/wilson/cover.webp" alt="Wilson" tabindex="1"></img>
@@ -61,7 +61,7 @@ The wide-ranging (and often niche) hobby projects I've found time for, outside o
 		</a>
 
 		<div class="body-text-with-image-link">
-			<p class="body-text">Celeste is <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ&t=1207s&pp=0gcJCRMMAYcqIYzv">one of my favorite games,</a> but it's always bothered me that it&#x2019;s limited to 60 FPS and that the camera can only move in whole-pixel increments, making it look jittery on large monitors. Motion Smoothing is a mod originally created by <a href="https://github.com/FancyFurret">FancyFurret</a> that fixes both: the camera moves smoothly, and the game can run at any framerate without breaking physics. I've been actively developing and maintaining it since 2025 and have built many of its features.</p>
+			<p class="body-text">Celeste is <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ">one of my favorite games,</a> but it's always bothered me that it&#x2019;s limited to 60 FPS and that the camera can only move in whole-pixel increments, making it look jittery on large monitors. Motion Smoothing is a mod originally created by <a href="https://github.com/FancyFurret">FancyFurret</a> that fixes both: the camera moves smoothly, and the game can run at any framerate without breaking physics. I've been actively developing and maintaining it since 2025 and have built many of its features.</p>
 
 			<a href="https://www.youtube.com/watch?v=VOn4d2gQaKg" class="image-link">
 				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/motion-smoothing/cover.webp" alt="Motion Smoothing" tabindex="1"></img>

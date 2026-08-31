@@ -11,6 +11,7 @@ export const sitemap =
 			"/gallery",
 			"/applets",
 			"/teaching",
+			"/projects",
 			"/math",
 			"/about",
 			"/writing",

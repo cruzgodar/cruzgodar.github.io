@@ -3,7 +3,7 @@
 <div class="justify">
 	I grew up in San Luis Obispo, a small town in California almost exactly halfway between San Francisco and Los Angeles. I took to math at an early age --- by the time I was eleven, I was interested in taking a few classes at the local community college, and I was surprised to find it wasn't out of the question. I settled in before too long and transferred to Cal Poly, the local four-year university. After a gap year in Germany, I packed up my life and moved to Eugene, Oregon to attend grad school for the next six years, where I was able to pursue teaching and mathematical illustration along with research, and find an amazing community. In 2025, I had the privilege to begin as a lecturer at Yale, and for the next three years, I'm here to stay.
 
-	In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anything else outside, and I've learned to settle for weightlifting when it's raining. I've occasionally found time to practice creative writing, and some of my short stories are <a href="/writing">hosted on this site</a>. I'm devoted to making this site the best it can be, and in the free time I have left, I love indie games, particularly Celeste. I became the 823rd person in the world to <a href="https://www.youtube.com/watch?v=R3r1k_w88O4">collect every golden strawberry</a> (yes, even <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ">that one</a>), I've <a href="https://www.youtube.com/watch?v=r5WX5uBt_L0">100% completed Strawberry Jam</a>, the largest community-made mod, and I'm the maintainer of <a href="https://gamebanana.com/mods/514173">the mod that lets the camera move smoothly and the game run at any framerate</a>.
+	In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anything else outside, and I've learned to settle for weightlifting when it's raining. I've occasionally found time to practice creative writing, and some of my short stories are <a href="/writing">hosted on this site</a>. I'm devoted to making this site the best it can be, and in the free time I have left, I love indie games, particularly Celeste. I became the 823rd person in the world to <a href="https://www.youtube.com/watch?v=R3r1k_w88O4">collect every golden strawberry</a> (yes, even <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ">that one</a>), I've <a href="https://www.youtube.com/watch?v=r5WX5uBt_L0">100% completed Strawberry Jam</a>, the largest community-made mod, and I'm the maintainer of <a href="https://www.youtube.com/watch?v=VOn4d2gQaKg">the mod that lets the game run at 120 FPS in HD</a>.
 </div>
 
 
@@ -100,11 +100,11 @@
 
 **<a href="/applets/thurston-geometries">Immersive Thurston Geometry Applet</a>** (February 2024). A WebGL renderer to experience the perspective of living inside any possible curved space.
 
-**<a href="/math/lapsa" data-in-new-tab="1">Lapsa</a>** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
+**<a href="/projects">Lapsa</a>** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
 
 **<a href="/teaching">Interactive Class Notes</a>** (January 2022--Present). Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
 
-**<a href="https://github.com/cruzgodar/wilson">Wilson</a>** (August 2021). A JavaScript and TypeScript library for creating interactive and parallelized web applets. Every applet on this site is built using Wilson.
+**<a href="/projects">Wilson</a>** (August 2021). A TypeScript library for creating interactive and parallelized web applets. Every applet on this site is built using Wilson.
 
 **<a href="/applets/kaleidoscopic-ifs-fractals">Kaleidoscopic IFS Fractals Applet</a>** (October 2020). A WebGL renderer to view strikingly complex 3D fractals.
 
@@ -112,7 +112,7 @@
 
 **<a href="/applets">Additional Applets</a>** (January 2019--Present). 40 more mathematical visualization projects ranging across disciplines, formats, and web technologies.
 
-**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present). A website written from scratch without using any large libraries; everything from the single-page site logic to the graphic design was made custom on my own, and the site currently contains a total of over 50000 lines of JavaScript.
+**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present). A website written from scratch without using any large libraries; everything from the single-page site logic to the graphic design was made custom on my own.
 
 
 

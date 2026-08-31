@@ -1988,8 +1988,8 @@ option
 }
 
 
-
-@media (max-width: 700px)
+/* When the text "Cruz Godar" disappears. */
+@media (max-width: 725px)
 {
 	#header-logo span
 	{
@@ -1997,7 +1997,8 @@ option
 	}
 }
 
-@media (max-width: 500px)
+/* When the page names get replaced with icons. */
+@media (max-width: 525px)
 {
 	#header-links a span
 	{
@@ -2033,7 +2034,9 @@ option
 	}
 }
 
-@media (max-width: 350px)
+/* Icon shrink 1 */
+
+@media (max-width: 325px)
 {
 	:root
 	{
@@ -2052,7 +2055,8 @@ option
 	}
 }
 
-@media (max-width: 300px)
+/* Icon shrink 2 */
+@media (max-width: 275px)
 {
 	:root
 	{
@@ -2097,7 +2101,8 @@ option
 	}
 }
 
-@media (max-width: 270px)
+/* Icon shrink 3 */
+@media (max-width: 240px)
 {
 	:root
 	{
