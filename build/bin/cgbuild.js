@@ -13,8 +13,10 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 const excludeFromBuild =
 [
 	/build.+/,
-	/slides\/.+\/index\.htmdl/,
-	/projects\/lapsa\/index\.htmdl/,
+	// The slideshows are hand-written all the way down --- their HTML, JS and
+	// CSS are all maintained by hand, so only their cover images get built.
+	/math\/.+\/index\.(htmdl|js|css)/,
+	/projects\/lapsa\/index\.(htmdl|js|css)/,
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
 	/scripts\/mathjax.+/,
@@ -204,7 +206,7 @@ async function buildFile(file)
 
 			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
 
-			ensureCoverImage(file);
+			warnMissingCover(file);
 		}
 	}
 
@@ -220,7 +222,7 @@ async function buildFile(file)
 
 			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
 
-			ensureCoverImage(file);
+			warnMissingCover(file);
 
 			const path = file.slice(0, lastSlashIndex - 1);
 
@@ -250,6 +252,11 @@ async function buildFile(file)
 
 			await buildCSSFile(file);
 		}
+	}
+
+	else if (filename === "cover" && extension === "webp")
+	{
+		ensureCoverImage(file);
 	}
 
 	else if (
@@ -357,42 +364,62 @@ function coverFolder(file)
 
 // og:image points at cover.jpg rather than cover.webp: Apple's link-preview
 // fetcher (iMessage, Notes, Safari) can't decode WebP and silently falls back
-// to the page's favicon.
+// to the page's favicon. This runs off cover.webp rather than off the page, so
+// that pages built outside the htmdl pipeline --- the hand-written slideshows in
+// /math and /projects/lapsa --- get a JPEG too, and so that the two covers are
+// always rebuilt together.
 function ensureCoverImage(file)
 {
 	const folder = coverFolder(file);
 
-	const coverSource = existsSync(`${root}${folder}cover-src.png`)
-		? `${root}${folder}cover-src.png`
-		: null;
-
-	if (!coverSource && !existsSync(`${root}${folder}index.pdf`))
-	{
-		console.warn(`No cover-src.png in ${folder || "/"}`);
+	// buildCoverImage and buildPDFFile write both covers from the full-size
+	// original, which is a far better JPEG than anything that could be squeezed
+	// out of the WebP --- and racing them to cover.jpg would corrupt it.
+	if (
+		existsSync(`${root}${folder}cover-src.png`)
+		|| existsSync(`${root}${folder}index.pdf`)
+	) {
+		return;
 	}
 
-	// Rebuild the JPEG from the best image on hand every time the page is built,
-	// so it can never fall out of step with the WebP or with coverJpgSize.
-	// Pages with a cover-src.png go back to the source; the rest --- including
-	// the ones whose cover.webp was committed without a source --- only have the
-	// WebP to work from, so their JPEG stays at the WebP's size.
-	const input = coverSource ?? `${root}${folder}cover.webp`;
-
-	if (!existsSync(input))
-	{
-		console.warn(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
-
+	// Plenty of folders keep a cover.webp for a card on some other page without
+	// being a page themselves; those have no og:image to point at a JPEG.
+	if (
+		!existsSync(`${root}${folder}index.html`)
+		&& !existsSync(`${root}${folder}index.htmdl`)
+		&& !existsSync(`${root}${folder}card.htmdl`)
+	) {
 		return;
 	}
 
 	spawnSync("magick", [
-		input,
+		`${root}${file}`,
 		"-resize",
 		`${coverJpgSize}x${coverJpgSize}>`,
 		"-quality",
 		"85",
 		`${root}${folder}cover.jpg`
 	]);
+}
+
+// A cover-src.png is what gets a page a JPEG at coverJpgSize --- one derived
+// from a committed cover.webp can only ever be as big as that WebP.
+function warnMissingCover(file)
+{
+	const folder = coverFolder(file);
+
+	if (
+		existsSync(`${root}${folder}cover-src.png`)
+		|| existsSync(`${root}${folder}index.pdf`)
+	) {
+		return;
+	}
+
+	console.warn(
+		existsSync(`${root}${folder}cover.webp`)
+			? `No cover-src.png in ${folder || "/"}`
+			: `No cover image in ${folder || "/"} --- link previews will fall back to the favicon`
+	);
 }
 
 function buildPDFFile(file)

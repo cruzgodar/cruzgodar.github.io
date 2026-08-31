@@ -153,7 +153,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		resolution,
 		algorithm,
 		dataLength,
@@ -162,6 +162,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		shuffle = true,
 		verify = true,
 	}) {
+		await this.wilson.allShadersReady();
+
 		this.resolution = resolution;
 
 		this.generators = [
@@ -207,6 +209,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			});
 
 			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture("data");
 
 			this.wilson.setUniforms({
 				dataLength: this.dataLength
@@ -656,7 +659,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength / 1000 * this.speedFactor);
 
-		for (let i = 0; i < this.dataLength; i++)
+		for (let i = 0; i < this.dataLength / 3; i++)
 		{
 			let minIndex = -1;
 			let minElement = this.dataLength;
