@@ -42,14 +42,14 @@ export class SimulatedAnnealing extends Applet
 		this.numNodes = numNodes;
 		this.maximumSpeed = maximumSpeed;
 
-		const scalingFactor = resolution / 1000;
+		const scalingFactor = 5 * resolution / 1000;
 
 		this.wilson.resizeCanvas({ width: resolution });
 
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
 
-		this.wilson.ctx.lineWidth = scalingFactor;
+		this.wilson.ctx.lineWidth = scalingFactor * 2.5;
 
 
 

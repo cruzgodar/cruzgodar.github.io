@@ -49,14 +49,13 @@ export default function()
 		name: "Center unstable equilibrium"
 	});
 
-	function run()
+	async function run()
 	{
-		applet.run({
+		await applet.run({
 			resolution: resolutionInput.value,
 			centerUnstableEquilibrium: centerUnstableEquilibriumCheckbox.checked
 		});
 	}
 
-	run();
-	applet.pause();
+	run().then(() => applet.pause());
 }

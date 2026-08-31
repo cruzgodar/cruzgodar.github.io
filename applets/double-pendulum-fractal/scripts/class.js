@@ -213,8 +213,10 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 
 
 
-	run({ resolution, centerUnstableEquilibrium = false })
+	async run({ resolution, centerUnstableEquilibrium = false })
 	{
+		await this.wilson.allShadersReady();
+
 		this.drawnFractal = false;
 		this.drawingFractal = true;
 

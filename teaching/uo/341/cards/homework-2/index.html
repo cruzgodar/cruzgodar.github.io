@@ -10,7 +10,9 @@
 
 	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/341/cards/homework-2"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/341/cards/homework-2/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/341/cards/homework-2/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="Due Wednesday of Week 3 at the start of class">
 
@@ -74,23 +76,12 @@
 	</div>
 
 	<div id="height-measurer"></div>
-
-	<script>
-		window.MathJax =
-		{
-			tex:
-			{
-				inlineMath: [["$", "$"], ["\\(", "\\)"]]
-			}
-		};
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
 	
 	<script type="module">
 		const params = new URLSearchParams(window.location.search);
 
-		window.DEBUG = params.get("debug") === "1";
+		window.OFFLINE = params.get("debug") === "2";
+		window.DEBUG = window.OFFLINE || params.get("debug") === "1";
 
 		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("/teaching/uo/341/cards/homework-2"));
 	</script>
