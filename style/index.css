@@ -2324,12 +2324,14 @@ img[src="/about/cover.webp"]
 
 .section-text-with-image-link
 {
-	width: min(100%, var(--text-width));
+	width: fit-content;
 
 	margin: 0 auto;
 	margin-bottom: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
 	
-	display: flex;
+	display: none;
 	flex-direction: row-reverse;
 	justify-content: center;
 	align-items: center;
@@ -2348,6 +2350,8 @@ img[src="/about/cover.webp"]
 
 	/* The width is set in js, so don't let the flex algorithm shrink it. */
 	flex-shrink: 0;
+
+	width: 175px;
 }
 
 .body-text-with-image-link .body-text
@@ -2371,15 +2375,12 @@ img[src="/about/cover.webp"]
 	   link are centered together, and the auto margins from .section-text would
 	   otherwise eat all the free space before justify-content ever sees it. */
 	min-width: 0;
-
 	margin: 0;
-	margin-left: 16px;
 }
 
 .section-text-with-image-link .image-link
 {
 	width: 50px;
-	display: none;
 }
 
 @media (max-width: 700px)
@@ -2390,14 +2391,24 @@ img[src="/about/cover.webp"]
 		margin-left: 0 !important;
 	}
 
-	.body-text-with-image-link .image-link
+	.section-text-with-image-link .section-text
+	{
+		/* No flex-grow: the heading shrink-wraps its text so that it and the image
+		link are centered together, and the auto margins from .section-text would
+		otherwise eat all the free space before justify-content ever sees it. */
+		min-width: 0;
+
+		margin-left: 16px;
+	}
+
+	.body-text-with-image-link .image-link, .project > .section-text
 	{
 		display: none;
 	}
 
-	.section-text-with-image-link .image-link
+	.section-text-with-image-link
 	{
-		display: unset;
+		display: flex;
 	}
 }
 

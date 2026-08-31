@@ -1,0 +1,5 @@
+.text-buttons
+{
+	margin-top: 16px !important;
+	grid-template-columns: repeat(auto-fit, 150px) !important;
+}

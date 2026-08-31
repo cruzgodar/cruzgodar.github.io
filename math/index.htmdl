@@ -1,4 +1,4 @@
-### center "A collection of the research papers I've written, along with the presentations I've given over time --- all of the latter are built with Lapsa, a library I wrote to make slides elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals."
+### center "A collection of the research papers I've written, along with the presentations I've given over time --- all of the latter are built with <a href="/projects">Lapsa</a>, a library I wrote to make slides elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals."
 
 
 
@@ -21,12 +21,4 @@
 	marys-3-manifold -t
 	grandmas-recipe -t
 	oral-exam -t
-###
-
-
-
-## The Library
-
-### image-links
-	lapsa -t
 ###

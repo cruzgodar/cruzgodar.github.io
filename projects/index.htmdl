@@ -2,38 +2,98 @@ The wide-ranging (and often niche) hobby projects I've found time for, outside o
 
 <div class="projects">
 	<div class="project">
-		<div class="section-text-with-image-link">
+		<h2 class="section-text">Wilson: Applets Made Easy</h2>
+
+		<a href="https://github.com/cruzgodar/wilson" class="section-text-with-image-link">
 			<h2 class="section-text">Wilson: Applets Made Easy</h2>
 
-			<a href="https://github.com/cruzgodar/wilson" class="image-link">
+			<div class="image-link no-scale">
 				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/wilson/cover.webp" alt="Wilson" tabindex="1"></img>
-			</a>
-		</div>
+			</div>
+		</a>
 
 		<div class="body-text-with-image-link">
-			<p class="body-text">Wilson is the TypeScript and JavaScript library that powers <a href="/applets">every applet</a> on this site. It handles tasks like panning and zooming, makes parallelized GPU-based applets as easy as writing a shader, provides a robust and customizable fullscreen toolkit, and even lets you easily run 3D applets in a VR headset. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.</p>
+			<p class="body-text">Wilson is the TypeScript/JavaScript library that powers <a href="/applets">every applet</a> on this site. It handles tasks like panning and zooming, makes parallelized GPU-based applets as easy as writing a shader, provides a robust and customizable fullscreen toolkit, and even lets you easily run 3D applets in a VR headset. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.</p>
 
 			<a href="https://github.com/cruzgodar/wilson" class="image-link">
 				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/wilson/cover.webp" alt="Wilson" tabindex="1"></img>
 			</a>
 		</div>
+
+		### buttons
+			wilson
+		###
 	</div>
 
 	<div class="project">
-		<div class="section-text-with-image-link">
-			<h2 class="section-text">Lapsa: Easy, Elegant Slides</h2>
+		<h2 class="section-text">Kestrel: Background Bird ID</h2>
 
-			<a href="/projects/lapsa" data-in-new-tab="1" class="image-link">
-				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/lapsa/cover.webp" alt="Lapsa" tabindex="1"></img>
-			</a>
-		</div>
+		<a href="https://apps.apple.com/us/app/kestrel-background-bird-id/id6787208717" class="section-text-with-image-link">
+			<h2 class="section-text">Kestrel: Background Bird ID</h2>
+
+			<div class="image-link no-scale">
+				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/kestrel/cover.webp" alt="Kestrel" tabindex="1"></img>
+			</div>
+		</a>
 
 		<div class="body-text-with-image-link">
-			<p class="body-text">Wilson is the TypeScript and JavaScript library that powers <a href="/applets">every applet</a> on this site. It handles tasks like panning and zooming, makes parallelized GPU-based applets as easy as writing a shader, provides a robust and customizable fullscreen toolkit, and even lets you easily run 3D applets in a VR headset. All of this streamlines your work and simplifies your applets, letting you focus on the code that matters.</p>
+			<p class="body-text">Kestrel listens for birds in the background on your iPhone or Apple Watch so you can focus on the nature around you. It uses Cornell Lab's BirdNET model to identify birds by their songs and calls, and when it hears one you've starred in your life list or have never seen before, it notifies you. That lets you keep your focus off your phone, with confidence that you'll know when a bird you care about is nearby. All processing happens on-device, all audio is deleted immediately (i.e. within a few seconds of being recorded), and the source code is <a href="https://github.com/cruzgodar/Kestrel">freely available.</a></p>
+
+			<a href="https://apps.apple.com/us/app/kestrel-background-bird-id/id6787208717" class="image-link">
+				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/kestrel/cover.webp" alt="Kestrel" tabindex="1"></img>
+			</a>
+		</div>
+
+		### buttons
+			kestrel
+		###
+	</div>
+
+	<div class="project">
+		<h2 class="section-text">Motion Smoothing: Celeste at 120 FPS in HD</h2>
+
+		<a href="https://www.youtube.com/watch?v=VOn4d2gQaKg" data-in-new-tab="1" class="section-text-with-image-link">
+			<h2 class="section-text">Motion Smoothing: Celeste at 120 FPS in HD</h2>
+
+			<div class="image-link no-scale">
+				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/motion-smoothing/cover.webp" alt="Motion Smoothing" tabindex="1"></img>
+			</div>
+		</a>
+
+		<div class="body-text-with-image-link">
+			<p class="body-text">Celeste is <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ&t=1207s&pp=0gcJCRMMAYcqIYzv">one of my favorite games,</a> but it's always bothered me that it&#x2019;s limited to 60 FPS and that the camera can only move in whole-pixel increments, making it look jittery on large monitors. Motion Smoothing is a mod originally created by <a href="https://github.com/FancyFurret">FancyFurret</a> that fixes both: the camera moves smoothly, and the game can run at any framerate without breaking physics. I've been actively developing and maintaining it since 2025 and have built many of its features.</p>
+
+			<a href="https://www.youtube.com/watch?v=VOn4d2gQaKg" class="image-link">
+				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/motion-smoothing/cover.webp" alt="Motion Smoothing" tabindex="1"></img>
+			</a>
+		</div>
+
+		### buttons
+			motion-smoothing
+		###
+	</div>
+
+	<div class="project">
+		<h2 class="section-text">Lapsa: Easy, Elegant Slides</h2>
+
+		<a href="/projects/lapsa" data-in-new-tab="1" class="section-text-with-image-link">
+			<h2 class="section-text">Lapsa: Easy, Elegant Slides</h2>
+
+			<div class="image-link no-scale">
+				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/lapsa/cover.webp" alt="Lapsa" tabindex="1"></img>
+			</div>
+		</a>
+
+		<div class="body-text-with-image-link">
+			<p class="body-text">Lapsa is the slideshow engine that powers <a href="/math">all of the presentations</a> on this site. It lets you use HTML and CSS to build beautiful presentations and JavaScript or TypeScript to make them fully interactive, making easy things easy and nearly anything possible.</p>
 
 			<a href="/projects/lapsa" data-in-new-tab="1" class="image-link">
 				<img src="/graphics/general-icons/placeholder.png" data-src="/projects/lapsa/cover.webp" alt="Lapsa" tabindex="1"></img>
 			</a>
 		</div>
+
+		### buttons
+			lapsa
+		###
 	</div>
 </div>

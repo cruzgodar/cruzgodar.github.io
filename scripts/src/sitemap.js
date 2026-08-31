@@ -2231,7 +2231,11 @@ export const sitemap =
 		[
 			"/projects/lapsa",
 			"/projects/kestrel"
-		]
+		],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 		
 	"/projects/lapsa":

@@ -17,12 +17,17 @@ const elementSelectorsWithScale =
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	".image-link:not([data-card-id])": {
+	".image-link:not([data-card-id], .no-scale)": {
 		scale: 1.04,
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	".image-link[data-card-id]": {
+	".image-link[data-card-id]:not(.no-scale)": {
+		scale: 1.04,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: false
+	},
+	".section-text-with-image-link": {
 		scale: 1.04,
 		addBounceOnTouch: () => true,
 		preventScaleWithIncreasedContrast: false
