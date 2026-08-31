@@ -36,15 +36,6 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 
 ### image-links
 	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
-	homework-9 -c "Homework 9"
-	homework-10 -c "Homework 10"
 ###
 
 ### card homework-1 -e
@@ -80,13 +71,13 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	> - In-class participation: 5%
 	> - Reading quizzes: 5%
-	> - Problem sets: 25%
-	> - Exams: 65%
+	> - Problem sets: 15%
+	> - Exams: 75%
 
-	The 65% comprising your exam score breaks down into one of the following, whichever is highest:
-	> - 20% midterm 1 + 20% midterm 2 + 25% final exam
-	> - 10% midterm 1 + 25% midterm 2 + 30% final exam
-	> - 20% midterm 1 + 15% midterm 2 + 30% final exam
+	The 75% comprising your exam score breaks down into one of the following, whichever is highest:
+	> - 25% midterm 1 + 25% midterm 2 + 25% final exam
+	> - 10% midterm 1 + 30% midterm 2 + 35% final exam
+	> - 30% midterm 1 + 15% midterm 2 + 30% final exam
 	
 	More on all of these in the coming sections!
 
@@ -94,7 +85,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 
 	## How should I prepare for class?
 	
-	You'll need to read the day's notes on this website *before* coming to class, since there will be reading quizzes on Canvas. These are intended to check that you've read the notes thoroughly, but not that you've mastered it all! The goal is for class meetings to not be your first time engaging deeply with the material.
+	You'll need to read the day's notes on this website *before* coming to class, since there will be reading quizzes on Canvas. These are intended to check that you've read the notes thoroughly, but not that you've mastered it all! The goal is just for class meetings to not be your first time engaging with the material.
 	
 	
 	
@@ -116,11 +107,13 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	## What will the homework be like?
 	
-	The problem sets are available on this site and are due weekly on Thursday nights (starting in week 2). We may occasionally have shorter problem sets due on the Mondays before exams. All of the questions will be graded on correctness unless otherwise specified.
+	The problem sets are available on this site and are due weekly on Thursday nights (starting in week 2). We will have shorter problem sets due on the Mondays before exams.
+
+	**All homework is graded for completeness; that is, only whether you've given a thorough attempt to each problem, with all of your work and justification shown.** When you submit your homework, you'll also complete a small bit of feedback on how you found the difficulty of the problems, and you'll select three problems that you would like our grader to give you detailed feedback on. The purpose of this policy is to emphasize learning from the homework rather than just arriving at the right answer. 
 
 	All of our homework is submitted through Gradescope. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
 
-	I also highly recommend studying and working on homework in groups. While the final work you submit must be your own, it's both helpful and great practice to work with others --- part of the reason we have group work is to help build those friendships!
+	You are more than welcome studying and working on homework in groups, so long as the final work you submit is your own. It's both helpful and good practice to work with others --- part of the reason we have group work is to help build those friendships!
 
 
 
@@ -128,15 +121,17 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 
 	Modern LLMs (large language models) have the ability to create and solve math problems, including more abstract questions that require complex reasoning. These tools can be profoundly useful, and I sometimes make use of them myself when programming. In the context of a college course, however, it is strikingly easy to undermine your own learning with them. The purpose of working on the homework isn't to do a perfect job on every problem, nor is the homework a perfect reflection of the types of questions that appear on exams. Instead, the homework exists to help you build mathematical fluency, both in this course's specific material and in more broad, transferable ways. Learning math is very much like learning a language, and using LLMs to solve homework problems for you, in whole or in part, is like using Google Translate to complete a language assignment --- the technology has its uses, but in this particular context, its role as a tool that helps you build fluency is narrow. Some ways in which LLMs *can* help include using them to generate practice problems if you're finished with the homework and looking to study more, or having them explain a topic to get a different perspective if the notes, lectures, and my student drop-in hours haven't been quite enough.
 	
-	In terms of both grades and learning outcomes, the homework exists to challenge and prepare you for the exams, which are worth most of the credit. I treat using AI tools to complete the homework equivalently to looking at the homework answers of a student who has already passed the course: the final work you submit must be entirely your own, and submitting answers copied verbatim from an LLM and/or answers inspired by an LLM's output that you don't fully understand is a form of academic misconduct.
+	In terms of both grades and learning outcomes, the homework exists to challenge and prepare you for the exams, which are worth most of the credit. To that end, **the use of AI on the problem sets is prohibited**. It is my belief you will get much more out of the homework if you actively collaborate with your classmates and attend peer tutoring and/or my student drop-in hours.
 	
 	
 	
 	## What should I expect from the exams?
 	
-	Our midterm exams are in weeks 6 and 11 and take up the full 75 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. Calculators are not allowed. I reserve the right to assign seating for the exams.
+	All of our exams are cumulative. The two midterm exams take up the full 75 minutes of class and will have multiple-choice and short-answer portions, as well as longer multi-part questions; I'll provide a practice exam before each one that comes from when I previously taught this course. No calculators are allowed, nor are any note sheets allowed. However, there will be a one-page sheet of formulas on the exam that we decide on collecively as a class. I reserve the right to assign seating for the exams.
 	
-	Our final exam is cumulative and is at a date to be determined.
+	Midterm 1: October 8th, 9--10:15 AM (during class).
+	Midterm 2: November 19th, 9--10:15 AM (during class).
+	Final exam: December 17th, 9 AM--12:30 PM.
 
 
 
