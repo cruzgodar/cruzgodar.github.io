@@ -1,7 +1,11 @@
 /* eslint-disable max-len */
 export const redirects = {
+	// Applets
 	"/applets/the-mandelbulb": "/applets/mandelbulb",
 	"/applets/flag-overlap": "/applets/flagle",
+
+	// Slides
+	"/math/lapsa": "/projects/lapsa",
 
 	// Renamed teaching pages post-extraction
 	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/chapters-1-and-2-review",
