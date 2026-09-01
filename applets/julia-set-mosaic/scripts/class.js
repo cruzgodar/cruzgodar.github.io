@@ -14,7 +14,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 	pastBrightnessScales = [];
 	c = [0, 0];
 
-	resolution = 500;
+	resolution = 1000;
 	resolutionHidden = 50;
 
 

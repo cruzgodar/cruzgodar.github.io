@@ -51,7 +51,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		bailoutRadius = 4,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
-		resolution = 1000,
+		resolution = 500,
 		onClickCanvas = () => {},
 	}) {
 		super(canvas);
@@ -531,6 +531,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -546,6 +547,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				crosshairSize: 0.002,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -559,6 +561,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				c: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -573,6 +576,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 
@@ -587,6 +591,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -602,6 +607,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				crosshairSize: 0.002,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -615,6 +621,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				c: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -629,11 +636,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 
 		if (this.wilsonPreview)
 		{
+			// This one never changes shaders, so we jusrt use it immediately.
 			this.wilsonPreview.loadShader({
 				id: "julia",
 				shader: shaders.julia,
@@ -952,7 +961,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const differentWorldCenter = Math.abs(this.wilson.worldCenterX) > 0.05
+			|| Math.abs(this.wilson.worldCenterY) > 0.05;
+
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200

@@ -42,7 +42,7 @@ export class SimulatedAnnealing extends Applet
 		this.numNodes = numNodes;
 		this.maximumSpeed = maximumSpeed;
 
-		const scalingFactor = 5 * resolution / 1000;
+		const scalingFactor = 3 * resolution / 1000;
 
 		this.wilson.resizeCanvas({ width: resolution });
 

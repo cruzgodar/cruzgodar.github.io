@@ -59,8 +59,6 @@ export default function()
 		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
 		rationalMap: "cadd(csub(cpow(z, 3.0), cmul(.04, cpow(z, -3.0))), c)",
 		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)",
-		// eslint-disable-next-line max-len
-		vertebrae: "cdiv(cadd(cexp(cmul(c, z)), csub(cadd(z, z), cdiv(c, z))), ccos(csin(cdiv(c, vec2(z.y, z.x)))))",
 	};
 
 	const examplesDropdown = new Dropdown({
@@ -74,7 +72,6 @@ export default function()
 			burningShip: "Burning Ship",
 			rationalMap: "Rational Map",
 			mandelbrotDust: "Mandelbrot Dust",
-			vertebrae: "Vertebrae",
 			...(window.DEBUG && { random: "Random" })
 		},
 		onInput: onDropdownInput
@@ -97,7 +94,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 1000,
+		value: 500,
 		minValue: 100,
 		maxValue: 2000,
 		onEnter: run,

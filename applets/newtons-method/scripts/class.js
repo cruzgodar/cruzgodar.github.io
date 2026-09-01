@@ -33,9 +33,9 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	secantProportion = 0;
 
-	pastBrightnessScales = [];
+	pastBrightnessScales = Array(10).fill(16);
 
-	resolution = 500;
+	resolution = 1000;
 	resolutionHidden = 50;
 
 	constructor({
