@@ -42,6 +42,9 @@ const excludeFromCoverWarning =
 	"debug/htmdl-docs",
 	"debug/tests/glsl-test",
 	"teaching/uo/342/extra/eigenfaces-demo",
+	"writing/mist",
+	"writing/desolation-point",
+	"writing",
 ];
 
 const options =
