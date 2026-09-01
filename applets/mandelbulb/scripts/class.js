@@ -273,7 +273,7 @@ export class Mandelbulb extends RaymarchApplet
 				this.setUniforms({
 					fountainAmount: startingFountainAmount * (1 - t) - 2 * Math.PI * t
 				});
-			}, (startingFountainAmount + 2 * Math.PI) * 400, "easeOutQuad");
+			}, (startingFountainAmount + 2 * Math.PI) * 200, "easeOutQuad");
 		}
 	}
 }

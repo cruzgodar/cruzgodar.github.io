@@ -509,7 +509,7 @@ export class Snowflakes extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		resolution = 500,
 		computationsPerFrame = 25,
 		rho = .3673,
@@ -520,6 +520,8 @@ export class Snowflakes extends AnimationFrameApplet
 		mu = .019,
 		gamma = .0005
 	}) {
+		await this.wilson.allShadersReady();
+		
 		this.resolution = resolution;
 		this.computationsPerFrame = computationsPerFrame;
 

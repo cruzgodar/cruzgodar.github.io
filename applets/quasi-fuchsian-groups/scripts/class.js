@@ -591,8 +591,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 	// recipe is "grandma", "riley", or "grandmaSpecial"
-	changeRecipe(recipe)
+	async changeRecipe(recipe)
 	{
+		await this.wilson.allShadersReady();
+		
 		if (recipe === "grandma")
 		{
 			this.bakeCoefficients = this.grandmaCoefficients;

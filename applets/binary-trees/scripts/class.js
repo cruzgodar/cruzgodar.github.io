@@ -308,6 +308,7 @@ export class BinaryTrees extends AnimationFrameApplet
 		if (this.webWorker?.terminate)
 		{
 			this.webWorker.terminate();
+			this.linesToDraw = [];
 		}
 
 		this.wilson.draggables.branch0.element.style.opacity = 1;

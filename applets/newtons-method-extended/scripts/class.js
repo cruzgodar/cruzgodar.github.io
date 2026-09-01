@@ -253,6 +253,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		const worldCenterX = this.wilson.worldCenterX;
 		const worldCenterY = this.wilson.worldCenterY;
 
+		const differentWorldCenter = Math.abs(worldCenterX) > 0.05 || Math.abs(worldCenterY) > 0.05;
+
 		const levelsToZoom = Math.abs(
 			Math.min(
 				Math.log2(worldWidth / this.defaultWorldSize),
@@ -260,7 +262,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200

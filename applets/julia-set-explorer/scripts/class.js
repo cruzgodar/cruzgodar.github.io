@@ -961,8 +961,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			)
 		);
 
-		const differentWorldCenter = Math.abs(this.wilson.worldCenterX) > 0.05
-			|| Math.abs(this.wilson.worldCenterY) > 0.05;
+		const differentWorldCenter = Math.abs(worldCenterX) > 0.05 || Math.abs(worldCenterY) > 0.05;
 
 		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500

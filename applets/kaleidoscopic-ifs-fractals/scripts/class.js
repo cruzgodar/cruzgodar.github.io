@@ -306,7 +306,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(this.shape);
 		const getColorGlsl = getDistanceEstimatorGlsl(this.shape, true);
 
-		this.reloadShader({
+		await this.reloadShader({
 			distanceEstimatorGlsl,
 			getColorGlsl,
 		});

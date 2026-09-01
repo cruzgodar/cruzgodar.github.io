@@ -3,13 +3,36 @@ import { getFloatGlsl, tempShader } from "/scripts/applets/applet.js";
 import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGL } from "/scripts/wilson.js";
 
+function gcd(a, b)
+{
+	while (b)
+	{
+		[a, b] = [b, a % b];
+	}
+
+	return a;
+}
+
+function lcm(a, b)
+{
+	if (a === 0 || b === 0)
+	{
+		return 0;
+	}
+
+	return Math.abs(a) / gcd(Math.abs(a), Math.abs(b)) * Math.abs(b);
+}
+
 export class LyapunovFractals extends AnimationFrameApplet
 {
 	hasRun = false;
-	generatingString = "AB";
+	generatingString;
 
 	resolution = 1000;
 	resolutionHidden = 50;
+
+	doneAnimating = Promise.resolve();
+	currentlyAnimating = false;
 
 
 
@@ -74,26 +97,27 @@ export class LyapunovFractals extends AnimationFrameApplet
 			B: "z.y",
 		};
 
-		const originalGeneratingStringLength = generatingString.length;
-		const originalOldGeneratingStringLength = oldGeneratingString?.length ?? 0;
-
-		const maxLen = Math.max(generatingString.length, oldGeneratingString?.length ?? 0);
-		generatingString = generatingString.padEnd(maxLen, "0");
+		// The interpolation animation looks best when both strings are of equal length,
+		// which means repeating both until the resulting string is the length of their LCM.
+		const lcmLen = oldGeneratingString
+			? lcm(generatingString.length, oldGeneratingString.length)
+			: generatingString.length;
 
 		if (oldGeneratingString)
 		{
-			oldGeneratingString = oldGeneratingString.padEnd(maxLen, "0");
+			generatingString = generatingString.repeat(lcmLen / generatingString.length);
+			oldGeneratingString = oldGeneratingString.repeat(lcmLen / oldGeneratingString.length);
 		}
 
 		let loopInternalsGlsl = "";
 
 		if (oldGeneratingString)
 		{
-			for (let i = 0; i < maxLen; i++)
+			for (let i = 0; i < lcmLen; i++)
 			{
 				const l = generatingString[i];
 				const oldL = oldGeneratingString[i];
-				const zVar = /* glsl */`mix(${zVars[oldL] ?? "0.0"}, ${zVars[l] ?? "0.0"}, codeInterpolation)`;
+				const zVar = /* glsl */`mix(${zVars[oldL] ?? "z.x"}, ${zVars[l] ?? "z.x"}, codeInterpolation)`;
 
 				const colorXAmount = /* glsl */`(codeInterpolation * ${l === "A" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "A" ? "1.0" : "0.0"})`;
 				const colorYAmount = /* glsl */`(codeInterpolation * ${l === "B" ? "1.0" : "0.0"} + (1.0 - codeInterpolation) * ${oldL === "B" ? "1.0" : "0.0"})`;
@@ -115,10 +139,10 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 		else
 		{
-			for (let i = 0; i < maxLen; i++)
+			for (let i = 0; i < generatingString.length; i++)
 			{
 				const l = generatingString[i];
-				const zVar = zVars[l];
+				const zVar = zVars[l] ?? "z.x";
 
 				const colorGlsl = l === "A"
 					? "color.x += abs(z.x) / 40.0;"
@@ -136,8 +160,8 @@ export class LyapunovFractals extends AnimationFrameApplet
 		}
 
 		const brightnessGlsl = oldGeneratingString
-			? /* glsl */`mix(${Math.pow(originalOldGeneratingStringLength, 2) * 0.0375}, ${Math.pow(originalGeneratingStringLength, 2) * 0.0375}, codeInterpolation)`
-			: getFloatGlsl(Math.pow(maxLen, 2) * 0.0375);
+			? getFloatGlsl(Math.pow(lcmLen, 2) * 0.0375)
+			: getFloatGlsl(Math.pow(generatingString.length, 2) * 0.0375);
 
 		const shader = /* glsl */`
 			precision highp float;
@@ -192,7 +216,48 @@ export class LyapunovFractals extends AnimationFrameApplet
 		resolution = this.resolution,
 		instant = false
 	}) {
-		const shader = this.getShader({
+		if (generatingString === this.generatingString)
+		{
+			return;
+		}
+
+		const wasAnimating = this.currentlyAnimating;
+		await this.doneAnimating;
+
+		let resolve;
+		this.doneAnimating = new Promise(r => resolve = r);
+		this.currentlyAnimating = true;
+
+		if (!this.hasRun || wasAnimating || instant)
+		{
+			this.generatingString = generatingString;
+			this.resolution = resolution;
+
+			const shader = this.getShader({
+				generatingString: this.generatingString,
+			});
+
+			this.wilson.loadShader({
+				shader,
+				uniforms: {
+					worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+					worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				},
+			});
+
+			await this.wilson.allShadersReady();
+
+			resolve();
+			this.currentlyAnimating = false;
+			setTimeout(() => this.hasRun = true, 750);
+			this.needNewFrame = true;
+
+			return;
+		}
+
+
+
+		const shaderInterpolate = this.getShader({
 			generatingString,
 			oldGeneratingString: this.hasRun ? this.generatingString : undefined
 		});
@@ -203,7 +268,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.wilson.loadShader({
-			shader,
+			shader: shaderInterpolate,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
@@ -211,30 +276,33 @@ export class LyapunovFractals extends AnimationFrameApplet
 			},
 		});
 
-		if (this.hasRun && !instant)
+		await this.wilson.allShadersReady();
+		
+		await animate((t) =>
 		{
-			await animate((t) =>
-			{
-				this.wilson.setUniforms({
-					codeInterpolation: t
-				});
-
-				this.needNewFrame = true;
-			}, 750, "easeInOutQuad");
-
-			const shader = this.getShader({
-				generatingString,
+			this.wilson.setUniforms({
+				codeInterpolation: t
 			});
 
-			this.wilson.loadShader({
-				shader,
-				uniforms: {
-					worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
-					worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
-				},
-			});
-		}
+			this.needNewFrame = true;
+		}, 750, "easeInOutQuad");
 
+		const shader = this.getShader({
+			generatingString,
+		});
+
+		this.wilson.loadShader({
+			shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			},
+		});
+
+		await this.wilson.allShadersReady();
+
+		resolve();
+		this.currentlyAnimating = false;
 		this.needNewFrame = true;
 
 		// This is an inelegant solution, but it prevents the state-persisting text box
