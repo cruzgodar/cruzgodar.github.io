@@ -36,6 +36,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	resolution;
 	resolutionHidden = 50;
 
+	doneAnimating = Promise.resolve();
+
 
 
 	constructor({
@@ -774,6 +776,11 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	async advanceJuliaMode()
 	{
+		await this.doneAnimating;
+
+		let resolve;
+		this.doneAnimating = new Promise(r => { resolve = r; });
+
 		if (this.juliaMode === "mandelbrot")
 		{
 			this.juliaMode = "juliaPicker";
@@ -923,6 +930,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		{
 			this.switchJuliaModeButton.disabled = this.juliaMode === "juliaPicker";
 		}
+
+		resolve();
 
 		this.needNewFrame = true;
 	}
