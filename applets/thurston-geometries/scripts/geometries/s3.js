@@ -542,7 +542,7 @@ export class S3HopfFibration extends S3Geometry
 	forwardVec = [0.0289, 0.8745, 0.0006, 0.4839];
 
 	uniformGlsl = /* glsl */`
-		uniform float fiberThickness;
+		const float fiberThickness = .0325;
 	`;
 
 	uniformNames = ["fiberThickness"];
