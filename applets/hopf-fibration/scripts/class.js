@@ -9,6 +9,35 @@ import { WilsonGL } from "/scripts/wilson.js";
 
 const fiberThicknessScaleFactor = 1;
 
+const tubularSegments = 256;
+// The tubes are only a few pixels across, so anything past this is invisible, and each
+// vertex is stored twice over --- once projected, once compressed.
+const radialSegments = 16;
+
+// Blends each vertex between the two states the fiber was built in, so that moving between
+// the projected and the compressed fibration is a uniform write rather than new geometry.
+function compressionShader(shader, uniform)
+{
+	shader.uniforms.compression = uniform;
+
+	shader.vertexShader = shader.vertexShader
+		.replace(
+			"#include <common>",
+			`#include <common>
+			uniform float compression;
+			attribute vec3 compressedPosition;
+			attribute vec3 compressedNormal;`
+		)
+		.replace(
+			"#include <beginnormal_vertex>",
+			"vec3 objectNormal = normalize(mix(normal, compressedNormal, compression));"
+		)
+		.replace(
+			"#include <begin_vertex>",
+			"vec3 transformed = mix(position, compressedPosition, compression);"
+		);
+}
+
 function hsvToRgb(h, s, v)
 {
 	function f(n)
@@ -89,6 +118,9 @@ export class HopfFibration extends ThreeApplet
 
 	compression = 0;
 
+	// Shared by every fiber's material --- see createFiber().
+	compressionUniform = { value: 0 };
+
 	// This is in addition to the north and south poles.
 	numLatitudes = 3;
 	numLongitudesPerLatitude = 50;
@@ -155,6 +187,7 @@ export class HopfFibration extends ThreeApplet
 		pointLight2.position.set(750, 1000, 500);
 		this.scene.add(pointLight2);
 
+		this.createAllFibers();
 		this.toggleCompression(true);
 
 		this.resume();
@@ -270,18 +303,48 @@ export class HopfFibration extends ThreeApplet
 			center,
 			s3P: p,
 			s3V: otherP,
-			compression: this.compression
+			compression: 0
 		});
 
-		const tubularSegments = 128;
-		const radialSegments = 64;
-
-		const fiberThickness = fiberThicknessScaleFactor * (
-			(1 - this.compression) * 0.05
-			+ this.compression * (
-				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			)
+		const geometry = new THREE.TubeGeometry(
+			fiber,
+			tubularSegments,
+			this.getFiberThickness(0),
+			radialSegments,
+			false
 		);
+
+		fiber.compression = 1;
+
+		const compressedGeometry = new THREE.TubeGeometry(
+			fiber,
+			tubularSegments,
+			this.getFiberThickness(1),
+			radialSegments,
+			false
+		);
+
+		// Fully projected and fully compressed are the only two shapes a fiber ever takes, so
+		// the compressed one rides along as a second set of attributes for the shader above to
+		// blend towards. Sliding the compression is then one uniform write for the whole scene
+		// rather than rebuilding every tube on the CPU, which at the default settings was over
+		// a second of work per frame.
+		geometry.setAttribute(
+			"compressedPosition",
+			compressedGeometry.attributes.position
+		);
+
+		geometry.setAttribute(
+			"compressedNormal",
+			compressedGeometry.attributes.normal
+		);
+
+		// The mesh is only ever as big as the two states it blends between, but the bounds
+		// come from the projected positions alone, so they have to be widened by hand or the
+		// frustum cull will drop fibers that are on screen.
+		geometry.computeBoundingSphere();
+		compressedGeometry.computeBoundingSphere();
+		geometry.boundingSphere.union(compressedGeometry.boundingSphere);
 
 		const saturation = .2 + .7 * Math.abs(
 			((theta + Math.PI / 2) % Math.PI) - Math.PI / 2) / (Math.PI / 2
@@ -293,19 +356,15 @@ export class HopfFibration extends ThreeApplet
 			1
 		);
 
-		const geometry = new THREE.TubeGeometry(
-			fiber,
-			tubularSegments,
-			fiberThickness,
-			radialSegments,
-			false
-		);
-
 		const material = new THREE.MeshStandardMaterial({
 			color: new THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255)
 		});
 
-		material.transparent = true;
+		// Every fiber points at the same uniform object, so all of them follow a single write.
+		// This has to stay a fixed one-liner, since three keys its program cache on the source
+		// text of onBeforeCompile, and a body that varied per fiber would compile a program
+		// per fiber.
+		material.onBeforeCompile = shader => compressionShader(shader, this.compressionUniform);
 
 		const mesh = new THREE.Mesh(geometry, material);
 
@@ -314,15 +373,27 @@ export class HopfFibration extends ThreeApplet
 		return mesh;
 	}
 
-	createLongitudinalConnector(radius, startAngle, endAngle, addCaps = false)
+	getFiberThickness(compression)
 	{
-		// Create a circular path
-		const fiberThickness = fiberThicknessScaleFactor * (
-			(1 - this.compression) * 0.05
-			+ this.compression * (
+		return fiberThicknessScaleFactor * (
+			(1 - compression) * 0.05
+			+ compression * (
 				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
 			)
 		);
+	}
+
+	setCompression(compression)
+	{
+		this.compression = compression;
+
+		this.compressionUniform.value = compression;
+	}
+
+	createLongitudinalConnector(radius, startAngle, endAngle, addCaps = false)
+	{
+		// Create a circular path
+		const fiberThickness = this.getFiberThickness(this.compression);
 		const segments = 64;
 		const points = [];
 
@@ -384,12 +455,7 @@ export class HopfFibration extends ThreeApplet
 		const straightPath = new THREE.LineCurve3(startPoint, endPoint);
 
 		// Create the tube geometry
-		const fiberThickness = fiberThicknessScaleFactor * (
-			(1 - this.compression) * 0.05
-			+ this.compression * (
-				0.115 / Math.sqrt(this.numLatitudes * this.numLongitudesPerLatitude)
-			)
-		);
+		const fiberThickness = this.getFiberThickness(this.compression);
 		const tubeSegments = 64;   // Number of segments along the tube
 		const tubeGeometry = new THREE.TubeGeometry(
 			straightPath,
@@ -523,7 +589,7 @@ export class HopfFibration extends ThreeApplet
 		];
 
 		await animate((t) => {
-			this.compression = (1 - t) * oldCompression + t * newCompression;
+			this.setCompression((1 - t) * oldCompression + t * newCompression);
 
 			this.cameraPos = [
 				(1 - t) * oldCameraPos[0] + t * newCameraPos[0],
@@ -533,10 +599,8 @@ export class HopfFibration extends ThreeApplet
 
 			this.distanceFromOrigin = magnitude(this.cameraPos);
 
-			this.createAllFibers();
-
 			this.needNewFrame = true;
-		}, instant ? 0 : 750);
+		}, instant ? 0 : 750, newCompression ? "easeOutQuart" : "easeInOutQuad");
 	}
 
 

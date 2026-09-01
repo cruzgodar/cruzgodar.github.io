@@ -235,7 +235,7 @@ export class Boids extends AnimationFrameApplet
 		const theta = Math.atan2(boid.vy, boid.vx);
 		const v2 = boid.vx * boid.vx + boid.vy * boid.vy;
 
-		const size = predator ? 2.5 : 2;
+		const size = predator ? 2.5 : 1.25;
 
 		const h = theta / (2 * Math.PI) + 0.5;
 

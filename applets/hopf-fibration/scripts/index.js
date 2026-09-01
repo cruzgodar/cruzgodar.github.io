@@ -33,7 +33,7 @@ export default function()
 		name: "Latitudes",
 		value: 3,
 		min: 1,
-		max: 10,
+		max: 8,
 		integer: true,
 		onInput: onSliderInput
 	});
@@ -66,18 +66,26 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	new ToggleButton({
+	const toggleProjectionButton = new ToggleButton({
 		element: $("#toggle-compression-button"),
 		name0: "Show Projected Fibration",
 		name1: "Show Compressed Fibration",
-		onClick0: (instant) => setTimeout(
-			() => applet.toggleCompression(instant),
-			instant ? 10 : 0
-		),
-		onClick1: (instant) => setTimeout(
-			() => applet.toggleCompression(instant),
-			instant ? 10 : 0
-		),
+		onClick0: async (instant) =>
+		{
+			toggleProjectionButton.disabled = true;
+
+			await applet.toggleCompression(instant);
+
+			toggleProjectionButton.disabled = false;
+		},
+		onClick1: async (instant) =>
+		{
+			toggleProjectionButton.disabled = true;
+
+			await applet.toggleCompression(instant);
+
+			toggleProjectionButton.disabled = false;
+		}
 	});
 
 	function changeResolution()
