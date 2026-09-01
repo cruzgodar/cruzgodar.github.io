@@ -137,14 +137,17 @@ export class EllipticCurve extends AnimationFrameApplet
 		});
 
 		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("0");
 
 		this.resume();
 	}
 
 
 
-	run({ g2, g3 })
+	async run({ g2, g3 })
 	{
+		await this.wilson.allShadersReady();
+		
 		this.g2 = g2;
 		this.g3 = g3;
 

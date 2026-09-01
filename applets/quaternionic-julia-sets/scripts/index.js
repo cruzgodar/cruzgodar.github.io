@@ -152,7 +152,7 @@ export default function()
 			animate((t) =>
 			{
 				applet.setUniforms({ planeTranslation: applet.showCrossSection ? 1 - t : t });
-			}, 500, "easeOutCubic");
+			}, 500, applet.showCrossSection ? "easeOutQuad" : "easeInQuad");
 		}
 	}
 }

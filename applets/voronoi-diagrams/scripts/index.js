@@ -1,5 +1,5 @@
 import { VoronoiDiagrams } from "./class.js";
-import { DownloadHighResButton, GenerateButton } from "/scripts/components/buttons.js";
+import { Button, DownloadHighResButton, GenerateButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
@@ -23,13 +23,19 @@ export default function()
 		name: "Points",
 		value: 20,
 		minValue: 3,
-		maxValue: 100,
+		maxValue: 50,
 		onEnter: run,
 	});
 
 	new GenerateButton({
 		element: $("#generate-button"),
 		onClick: run
+	});
+
+	new Button({
+		element: $("#randomize-button"),
+		name: "Randomize Points",
+		onClick: () => applet.randomizePoints()
 	});
 
 	new DownloadHighResButton({

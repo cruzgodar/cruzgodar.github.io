@@ -255,6 +255,8 @@ export class FractalSounds extends AnimationFrameApplet
 		const worldCenterX = this.wilson.worldCenterX;
 		const worldCenterY = this.wilson.worldCenterY;
 
+		const differentWorldCenter = Math.abs(worldCenterX) > 0.05 || Math.abs(worldCenterY) > 0.05;
+
 		const levelsToZoom = Math.abs(
 			Math.min(
 				Math.log2(worldWidth / this.defaultWorldSize),
@@ -262,7 +264,7 @@ export class FractalSounds extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200
@@ -303,6 +305,8 @@ export class FractalSounds extends AnimationFrameApplet
 				codeInterpolation: 0,
 			},
 		});
+
+		await this.wilsonJulia.allShadersReady();
 
 		await animate((t) =>
 		{
@@ -347,6 +351,8 @@ export class FractalSounds extends AnimationFrameApplet
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			},
 		});
+
+		await this.wilsonJulia.allShadersReady();
 
 		this.wilson.resizeWorld({
 			width: 4,

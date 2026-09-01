@@ -101,7 +101,6 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			uniforms,
 			epsilonScalingFactor: 0.65,
 			surfaceNormalEpsilonFactor: 0.5,
-			stepFactor: .75,
 			theta: 1.269,
 			phi: 1.98,
 			sceneOrigin: [-1.033, -3.316, 1.506],

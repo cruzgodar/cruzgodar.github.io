@@ -1,12 +1,12 @@
 import {
-    Applet,
-    getMinGlslString,
-    getVectorGlsl,
-    hsvToRgb,
-    tempShader
+	Applet,
+	getMinGlslString,
+	getVectorGlsl,
+	hsvToRgb,
+	tempShader
 } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
-import { sleep } from "/scripts/src/utils.js";
+import { animate, sleep } from "/scripts/src/utils.js";
 import { WilsonGL } from "/scripts/wilson.js";
 
 export class VoronoiDiagrams extends Applet
@@ -35,7 +35,7 @@ export class VoronoiDiagrams extends Applet
 	points;
 	colors;
 
-	cancelAnimaton = () => {};
+	cancelAnimation = () => {};
 
 	constructor({ canvas })
 	{
@@ -107,19 +107,30 @@ export class VoronoiDiagrams extends Applet
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.generatePoints();
+		this.points = this.generatePoints();
+		this.randomizeColors();
 
 		const shaderHidden = this.getShader(true);
 		const shader = this.getShader(false);
+
+		const pointsUniforms = {};
+
+		for (let i = 0; i < this.numPoints; i++)
+		{
+			pointsUniforms[`point${i}`] = this.points[i];
+		}
 
 		this.wilsonHidden.loadShader({
 			shader: shaderHidden,
 			uniforms: {
 				radius: this.radius,
 				metric: this.metric,
+				...pointsUniforms,
 				...(this.useDraggable ? { point0: this.wilson.draggables.point0.location } : {})
 			}
 		});
+
+		await this.wilsonHidden.allShadersReady();
 
 		if (!this.maximumSpeed)
 		{
@@ -137,9 +148,12 @@ export class VoronoiDiagrams extends Applet
 				radius: this.radius,
 				pointOpacity: this.pointOpacity,
 				metric: this.metric,
+				...pointsUniforms,
 				...(this.useDraggable ? { point0: this.wilson.draggables.point0.location } : {})
 			}
 		});
+
+		await this.wilson.allShadersReady();
 
 		this.wilson.draggables.point0.element.style.display = this.useDraggable ? "block" : "none";
 
@@ -150,8 +164,8 @@ export class VoronoiDiagrams extends Applet
 		this.currentlyAnimating = true;
 		let thisAnimationCanceled = false;
 		
-		this.cancelAnimaton();
-		this.cancelAnimaton = () =>
+		this.cancelAnimation();
+		this.cancelAnimation = () =>
 		{
 			this.currentlyAnimating = false;
 			thisAnimationCanceled = true;
@@ -296,15 +310,8 @@ export class VoronoiDiagrams extends Applet
 
 	${this.points.map((point, index) =>
 	{
-		if (index === 0 && this.useDraggable)
-		{
-			return /* glsl */`
-				uniform vec2 point0;
-			`;
-		}
-
 		return /* glsl */`
-			const vec2 point${index} = ${getVectorGlsl(point)};
+			uniform vec2 point${index};
 		`;
 	}).join("")}
 
@@ -377,16 +384,32 @@ export class VoronoiDiagrams extends Applet
 		`;
 	}
 
-	generatePoints()
+	generatePoints(fromCurrentPoints = false)
 	{
-		this.points = new Array(this.numPoints);
+		const points = new Array(this.numPoints);
+		
 
-		for (let i = 0; i < this.numPoints; i++)
+
+		if (fromCurrentPoints)
 		{
-			this.points[i] = [
-				0.9 * (Math.random() - 0.5) * this.wilson.worldWidth,
-				0.9 * (Math.random() - 0.5) * this.wilson.worldHeight,
-			];
+			for (let i = 0; i < this.numPoints; i++)
+			{
+				points[i] = [
+					this.points[i][0] + 0.75 * (Math.random() - 0.5),
+					this.points[i][1] + 0.75 * (Math.random() - 0.5),
+				];
+			}
+		}
+
+		else
+		{
+			for (let i = 0; i < this.numPoints; i++)
+			{
+				points[i] = [
+					0.9 * (Math.random() - 0.5) * this.wilson.worldWidth,
+					0.9 * (Math.random() - 0.5) * this.wilson.worldHeight,
+				];
+			}
 		}
 
 
@@ -407,18 +430,18 @@ export class VoronoiDiagrams extends Applet
 				}
 
 				const distance2 =
-					(this.points[j][0] - this.points[i][0]) ** 2
-					+ (this.points[j][1] - this.points[i][1]) ** 2;
+					(points[j][0] - points[i][0]) ** 2
+					+ (points[j][1] - points[i][1]) ** 2;
 				
-				forces[i][0] += (this.points[i][0] - this.points[j][0]) / distance2;
-				forces[i][1] += (this.points[i][1] - this.points[j][1]) / distance2;
+				forces[i][0] += (points[i][0] - points[j][0]) / distance2;
+				forces[i][1] += (points[i][1] - points[j][1]) / distance2;
 			}
 		}
 
 		for (let i = 0; i < this.numPoints; i++)
 		{
-			this.points[i][0] += forceFactor * forces[i][0];
-			this.points[i][1] += forceFactor * forces[i][1];
+			points[i][0] += forceFactor * forces[i][0];
+			points[i][1] += forceFactor * forces[i][1];
 		}
 
 
@@ -438,22 +461,22 @@ export class VoronoiDiagrams extends Applet
 						continue;
 					}
 
-					const xDistance = Math.abs(this.points[i][0] - this.points[j][0]);
-					const yDistance = Math.abs(this.points[i][1] - this.points[j][1]);
+					const xDistance = Math.abs(points[i][0] - points[j][0]);
+					const yDistance = Math.abs(points[i][1] - points[j][1]);
 
 					if (xDistance < 0.01)
 					{
-						this.points[i][0] += sign * 0.01;
+						points[i][0] += sign * 0.01;
 					}
 
 					if (yDistance < 0.01)
 					{
-						this.points[i][1] += sign * 0.01;
+						points[i][1] += sign * 0.01;
 					}
 
 					if (Math.abs(xDistance - yDistance) < 0.01)
 					{
-						this.points[i][0] += sign * 0.02;
+						points[i][0] += sign * 0.02;
 					}
 				}
 			}
@@ -463,26 +486,30 @@ export class VoronoiDiagrams extends Applet
 		// Make sure everything is in range.
 		for (let i = 0; i < this.numPoints; i++)
 		{
-			this.points[i][0] = Math.min(
+			points[i][0] = Math.min(
 				Math.max(
-					this.points[i][0],
+					points[i][0],
 					-this.wilson.worldWidth / 2
 				),
 				this.wilson.worldWidth / 2
 			);
 
-			this.points[i][1] = Math.min(
+			points[i][1] = Math.min(
 				Math.max(
-					this.points[i][1],
+					points[i][1],
 					-this.wilson.worldHeight / 2
 				),
 				this.wilson.worldHeight / 2
 			);
 		}
 
+		return points;
+	}
 
 
-		// Finally, pick some random colors.
+
+	randomizeColors()
+	{
 		this.colors = new Array(this.numPoints);
 
 		for (let i = 0; i < this.numPoints; i++)
@@ -554,6 +581,46 @@ export class VoronoiDiagrams extends Applet
 
 
 
+	async randomizePoints()
+	{
+		this.currentlyAnimating = true;
+
+		this.wilson.setUniform("radius", 100);
+
+		const newPoints = this.generatePoints(true);
+		const oldPoints = structuredClone(this.points);
+
+		const pointsUniforms = {};
+		for (let i = 0; i < this.numPoints; i++)
+		{
+			pointsUniforms[`point${i}`] = this.points[i];
+		}
+
+		await animate((t) =>
+		{
+			for (let i = 0; i < this.numPoints; i++)
+			{
+				this.points[i][0] = (1 - t) * oldPoints[i][0] + t * newPoints[i][0];
+				this.points[i][1] = (1 - t) * oldPoints[i][1] + t * newPoints[i][1];
+			}
+
+			this.wilson.setUniforms(pointsUniforms);
+
+			if (this.useDraggable)
+			{
+				this.wilson.setDraggables({
+					point0: this.points[0]
+				});
+			}
+
+			this.drawFrame();
+		}, 750, "easeOutQuad");
+
+		this.currentlyAnimating = false;
+	}
+
+
+
 	drawFrame()
 	{
 		this.radius = this.t * this.maxRadius;
@@ -568,7 +635,7 @@ export class VoronoiDiagrams extends Applet
 
 	updateMetric()
 	{
-		this.cancelAnimaton();
+		this.cancelAnimation();
 
 		this.t = 2;
 		this.wilson.setUniforms({ metric: this.metric });
