@@ -18,7 +18,7 @@ async function reset({ slide, duration })
 		slide.appendChild(canvasBundle);
 	}
 
-	applet.changeRecipe("grandma");
+	await applet.changeRecipe("grandma");
 	applet.bakeCoefficients([1.75, -.3719], [1.8638, .2691]);
 
 	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);

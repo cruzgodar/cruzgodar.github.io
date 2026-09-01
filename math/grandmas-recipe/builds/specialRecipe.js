@@ -2,24 +2,18 @@
 import { applet, canvasBundle } from "../index.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
-const resolution = 1500;
-const maxDepth = 250;
-const maxPixelBrightness = 50;
-
 async function reset({ slide, duration })
 {
-	if (slide.contains(canvasBundle))
+	if (!slide.contains(canvasBundle))
 	{
-		return;
+		await changeOpacity({
+			element: canvasBundle,
+			opacity: 0,
+			duration: duration / 2
+		});
+
+		slide.appendChild(canvasBundle);
 	}
-
-	await changeOpacity({
-		element: canvasBundle,
-		opacity: 0,
-		duration: duration / 2
-	});
-
-	slide.appendChild(canvasBundle);
 
 	applet.wilson.setDraggables({
 		ta: [1.737, -0.224],
@@ -27,11 +21,11 @@ async function reset({ slide, duration })
 		tc: [2.329, -1.673]
 	});
 
-	applet.changeRecipe("grandmaSpecial");
-	applet.bakeCoefficients();
+	await applet.changeRecipe("grandmaSpecial");
+	applet.clearFrame();
+	applet.bakeCoefficients([2, 0], [2, 0]);
+	applet.needNewFrame = true;
 
-
-	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 
 	await changeOpacity({
 		element: canvasBundle,

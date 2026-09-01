@@ -7,7 +7,7 @@ export async function addNewArray({
 	index,
 	numbers,
 	keepNumbersCanvasVisible = false,
-	horizontalLegs = true,
+	horizontalLegs = false,
 }) {
 	if (this.currentlyAnimatingCamera)
 	{

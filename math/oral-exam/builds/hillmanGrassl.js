@@ -30,10 +30,7 @@ async function reset({ slide, duration })
 		horizontalLegs: false
 	});
 
-	if (!applet.inExactHexView)
-	{
-		await applet.showHexView();
-	}
+	await applet.showHexView();
 
 	await changeOpacity({
 		element: canvasBundle,

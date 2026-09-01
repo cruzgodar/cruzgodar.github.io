@@ -3,7 +3,7 @@ export function parseArray(data)
 {
 	const splitData = data.split("\n");
 
-	let numRows = splitData.length;
+	const numRows = splitData.length;
 
 	const splitRows = new Array(splitData.length);
 
@@ -21,26 +21,7 @@ export function parseArray(data)
 		}
 	}
 
-	let numCols = splitRows[0].length;
-
-
-
-	if (data.indexOf(">") === -1)
-	{
-		for (let i = 0; i < splitRows.length; i++)
-		{
-			splitRows[i].push("0");
-		}
-
-		numCols++;
-	}
-
-	if (data.indexOf("v") === -1)
-	{
-		splitRows.push(["0"]);
-
-		numRows++;
-	}
+	const numCols = splitRows[0].length;
 
 	const size = Math.max(numRows, numCols);
 

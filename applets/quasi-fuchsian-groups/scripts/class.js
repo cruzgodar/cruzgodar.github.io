@@ -26,6 +26,8 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 	brightness;
 	image;
 
+	initialized;
+
 
 
 	constructor({ canvas })
@@ -622,8 +624,13 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-	drawFrame()
+	async drawFrame()
 	{
+		if (!this.initialized)
+		{
+			await this.onResizeCanvas();
+		}
+
 		this.bakeCoefficients();
 
 		for (let i = 0; i < 4; i++)
@@ -653,6 +660,14 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 		this.renderShaderStack();
+	}
+
+	clearFrame()
+	{
+		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
+		{
+			this.brightness[i] = 0;
+		}
 	}
 
 
@@ -735,15 +750,17 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 				&& col >= 0
 				&& col < this.wilson.canvasWidth
 			) {
+				const index = this.wilson.canvasWidth * row + col;
+
 				if (
-					this.brightness[this.wilson.canvasWidth * row + col] >= this.maxPixelBrightness
+					this.brightness[index] >= this.maxPixelBrightness
 				) {
 					continue;
 				}
 
 				if (depth > 10)
 				{
-					this.brightness[this.wilson.canvasWidth * row + col]++;
+					this.brightness[index]++;
 				}
 			}
 
@@ -816,10 +833,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 	onDragDraggable()
 	{
-		for (let i = 0; i < this.wilson.canvasHeight * this.wilson.canvasWidth; i++)
-		{
-			this.brightness[i] = 0;
-		}
+		this.clearFrame();
 
 		this.needNewFrame = true;
 	}
@@ -871,8 +885,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-	onResizeCanvas()
+	async onResizeCanvas()
 	{
+		await this.wilson.allShadersReady();
+
 		this.wilson.createFramebufferTexturePair({
 			id: "image",
 			textureType: "float"
@@ -901,11 +917,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			]
 		}, "color");
 
-		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
-		{
-			this.brightness[i] = 0;
-		}
+		this.clearFrame();
 
 		this.needNewFrame = true;
+
+		this.initialized = true;
 	}
 }
