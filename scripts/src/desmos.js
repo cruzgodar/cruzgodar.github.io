@@ -1072,14 +1072,14 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		? desmosGraphs[id].screenshot({
 			width: 800,
 			height: 800,
-			targetPixelRatio: 2,
+			targetPixelRatio: 3,
 		})
 		: await new Promise(resolve =>
 		{
 			desmosGraphs[id].asyncScreenshot({
 				width: 800,
 				height: 800,
-				targetPixelRatio: 4,
+				targetPixelRatio: 3,
 				showLabels: forPdf
 			}, resolve);
 		});
