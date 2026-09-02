@@ -1085,9 +1085,63 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		});
 
 	const a = document.createElement("a");
-	a.href = imageData;
+	a.href = await assignP3Profile(imageData);
 	a.download = `${id}.png`;
 	a.click();
+}
+
+// Reinterprets the (sRGB) pixel values as Display P3 rather than converting them,
+// so the downloaded png is tagged with a P3 profile and looks a bit more saturated.
+async function assignP3Profile(imageData)
+{
+	try
+	{
+		const image = new Image();
+
+		await new Promise((resolve, reject) =>
+		{
+			image.onload = resolve;
+			image.onerror = reject;
+			image.src = imageData;
+		});
+
+		const width = image.naturalWidth;
+		const height = image.naturalHeight;
+
+		const srgbCanvas = document.createElement("canvas");
+		srgbCanvas.width = width;
+		srgbCanvas.height = height;
+
+		const srgbCtx = srgbCanvas.getContext("2d", { colorSpace: "srgb" });
+		srgbCtx.drawImage(image, 0, 0);
+
+		const pixels = srgbCtx.getImageData(0, 0, width, height).data;
+
+		const p3Canvas = document.createElement("canvas");
+		p3Canvas.width = width;
+		p3Canvas.height = height;
+
+		const p3Ctx = p3Canvas.getContext("2d", { colorSpace: "display-p3" });
+
+		if (p3Ctx.getContextAttributes().colorSpace !== "display-p3")
+		{
+			return imageData;
+		}
+
+		p3Ctx.putImageData(
+			new ImageData(pixels, width, height, { colorSpace: "display-p3" }),
+			0,
+			0
+		);
+
+		return p3Canvas.toDataURL("image/png");
+	}
+
+	catch(ex)
+	{
+		console.error(ex);
+		return imageData;
+	}
 }
 
 let uid = 0;
