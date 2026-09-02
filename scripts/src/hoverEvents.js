@@ -29,7 +29,7 @@ const elementSelectorsWithScale =
 	},
 	".section-text-with-image-link": {
 		scale: 1.04,
-		addBounceOnTouch: () => true,
+		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
 	".text-button:not(.dropdown, .nav-button)": {
