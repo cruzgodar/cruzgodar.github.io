@@ -260,7 +260,7 @@ With the knowledge of how to add vectors, we can also make sense of **scalar mul
 
 ### exc "finding unit vectors"
 
-	Let $\vec{v}$ be any vector other than the zero vector. What is a formula for *unit vector* in the same direction as $\vec{v}$? Geometrically, why doesn't this formula work for the zero vector?
+	Let $\vec{v}$ be any vector other than the zero vector. What is a formula for a *unit vector* in the same direction as $\vec{v}$? Geometrically, why doesn't this formula work for the zero vector?
 
 	### solution
 
