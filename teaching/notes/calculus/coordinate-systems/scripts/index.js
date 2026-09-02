@@ -1,5 +1,6 @@
 import {
-	createDesmosGraphs, desmosColors,
+	createDesmosGraphs,
+	defaultWorldRotation3D, desmosColors,
 	desmosDragModes,
 	desmosLineStyles,
 	getDesmosPoint,
@@ -47,14 +48,37 @@ export default function()
 		{
 			use3d: true,
 
-			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+			options: { worldRotation3D: defaultWorldRotation3D },
+
+			bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4, zmin: -2, zmax: 4 },
 
 			expressions:
 			[
 				{ latex: raw`(a,b,c)`, color: desmosColors.purple },
-				{ latex: raw`a = 1` },
-				{ latex: raw`b = -2` },
+				{ latex: raw`a = 2` },
+				{ latex: raw`b = 2` },
 				{ latex: raw`c = 3` },
+
+				{ latex: raw`(a, b, c), (0, b, c), (0, 0, c), (a, 0, c), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, b, c), (a, 0, c), (a, 0, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, b, c), (0, b, c), (0, b, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+			]
+		},
+
+		pointPerspective2:
+		{
+			use3d: true,
+
+			options: { worldRotation3D: defaultWorldRotation3D },
+
+			bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4, zmin: -2, zmax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`(a,b,c)`, color: desmosColors.purple },
+				{ latex: raw`a = 3` },
+				{ latex: raw`b = 1` },
+				{ latex: raw`c = 2` },
 
 				{ latex: raw`(a, b, c), (0, b, c), (0, 0, c), (a, 0, c), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
 				{ latex: raw`(a, b, c), (a, 0, c), (a, 0, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
@@ -66,22 +90,24 @@ export default function()
 		{
 			use3d: true,
 
+			options: { worldRotation3D: defaultWorldRotation3D },
+
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
 
 			expressions:
 			[
 				{ latex: raw`(x_1, y_1, z_1)`, color: desmosColors.blue },
-				{ latex: raw`x_1 = 1` },
-				{ latex: raw`y_1 = 2` },
+				{ latex: raw`x_1 = -1` },
+				{ latex: raw`y_1 = 3` },
 				{ latex: raw`z_1 = 0` },
 				{ latex: raw`(x_2, y_2, z_2)`, color: desmosColors.red },
-				{ latex: raw`x_2 = -3` },
-				{ latex: raw`y_2 = -1` },
+				{ latex: raw`x_2 = 2` },
+				{ latex: raw`y_2 = -2` },
 				{ latex: raw`z_2 = 2` },
 
 				{ latex: raw`(x_2, y_2, z_1)`, color: desmosColors.purple },
 
-				{ latex: raw`(x_1, y_1, z_1), (x_2, y_2, 0), (x_2, y_2, z_2), (x_1, y_1, z_1)`, color: desmosColors.gray, points: false, lines: true, secret: true },
+				{ latex: raw`(x_1, y_1, z_1), (x_2, y_2, 0), (x_2, y_2, z_2), (x_1, y_1, z_1)`, color: desmosColors.orange, points: false, lines: true, secret: true },
 				
 			]
 		},
@@ -173,34 +199,10 @@ export default function()
 				}),
 
 				...getDesmosVector({
-					from: ["1", "2"],
-					to: ["1 + 1", "2 - 2"],
+					from: ["1", "1"],
+					to: ["1 + 1", "1 - 2"],
 					color: desmosColors.purple,
 				}),
-
-				...getDesmosVector({
-					from: ["-2", "4"],
-					to: ["-2 + 1", "4 - 2"],
-					color: desmosColors.purple,
-				}),
-
-				...getDesmosVector({
-					from: ["-2", "0"],
-					to: ["-2 + 1", "0 - 2"],
-					color: desmosColors.purple,
-				}),
-			]
-		},
-
-		threeDVector:
-		{
-			use3d: true,
-
-			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
-
-			expressions:
-			[
-				{ latex: raw`\vector((0, 0, 0), (1, -2, 3))`, color: desmosColors.purple },
 			]
 		},
 

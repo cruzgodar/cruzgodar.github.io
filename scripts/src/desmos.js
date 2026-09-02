@@ -7,6 +7,8 @@ import { addTemporaryListener, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { clamp, loadScript } from "./utils.js";
 
+export const defaultWorldRotation3D = [-0.82, 0.48, -0.3, -0.45, -0.88, -0.17, -0.35, 0, 0.94];
+
 export const desmosDragModes = {
 	NONE: "NONE",
 	X: "X",

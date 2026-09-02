@@ -6,7 +6,7 @@ On to multivariable calculus! We'll begin by exploring how the ideas and techniq
 
 We're used to functions of a single variable (which we often just call *functions*) of the form $y = f(x)$. They take in a real number $x$ and output a real number $y$, often according to some rule like $f(x) = x^2$. When we graph functions like these, we plot pairs $(x, y)$, with one $y$-coordinate for every $x$-coordinate we can plug in.
 
-Plenty of real-world functions take in more than one input though --- a fluid has viscosity that is a function of both temperature and pressure, a company producing multiple products that require overlapping resources has profit that is a function of the amounts of each product produced, and maybe most directly, height above sea level is a function of latitude and longitude.
+Plenty of real-world functions take in more than one input though --- a fluid has viscosity that is a function of both temperature and pressure, and a company producing multiple products that require overlapping resources has profit that is a function of the amounts of each product produced.
 
 We could define a brand-new notion of a function of two or more variables and proceed to redevelop many of the same results we already know to be true about single-variable functions, but there's a better way, and a good lesson to learn about math more broadly: whenever reasonable, it pays to leverage notions and language that's already established rather than making something new from scratch. To that end, let's think of a function that takes two inputs in a slightly different way: as a function that takes in a *single* pair of real numbers $(x, y)$ and outputs a real number $z$. That way, most of what we already know about single-variable functions will carry over to these new ones.
 
@@ -30,6 +30,22 @@ The codomain of a function is distinct from its **range**, which is the set of a
 
 Our functions of interest, particularly in the second half of the course, will be functions $f : #R#^n \to #R#$: they take in a list of $n$ real numbers and produce a single one. While we could write something like $f((x, y)) = x + y$ to indicate that a function $f$ takes in a pair $(x, y)$ in $#R#^2$ and sends it to $x + y$, we'll usually omit the awkward double parentheses and just write $f(x, y) = x + y$.
 
+### exc "functions of multiple variables"
+	
+	Find the domain and codomain of the following functions and write them in the form $f : A \to B$.
+
+	1. A function $T$ that outputs temperature at a given point in 3D space.
+
+	2. A function $P$ that outputs the position of a particle moving through space at a given time.
+
+	3. A function $V$ that outputs the speed and direction of wind at a given longitude and latitude.
+
+	### solution
+
+	$T$ takes in a point $(x, y, z)$ in 3D space, so its domain is $#R#^3$. Since temperature is measured by a real number, one choice for its codomain is $#R#$, resulting in $T : #R#^3 \to #R#$. Similarly, $P : #R# \to #R#^3$, since its input is time and its output is a 3D point. Finally, $V : #R#^2 \to #R#^2$, since it takes in both longitude and latitude and outputs both wind speed and direction.
+	
+###
+
 
 
 ## Geometry in $#R#^3$
@@ -40,9 +56,9 @@ Let's start getting our bearings in $#R#^3$ by taking equations whose graphs we'
 
 ### desmos extendTo3d
 
-The results are similar --- plotting a 2D function in 3D results in an object like a paper sheet, potentially warped a bit due to the function. Fundamentally, this is because plotting a graph of any equation just means drawing all of the points where that equation is true, and any equation of the form $y = f(x)$ doesn't involve $z$, so any point $(x, y)$ where $y = f(x)$ will result in us plotting a whole column of points $(x, y, z)$ for *all* values of $z$.
+The results are similar for each: plotting a 2D function in 3D results in an object like a paper sheet that's potentially curved a bit. This is exactly like graphs of vertical lines in $#R#^2$; while we don't think of it in this way very often, graphing an equation like $x = 2$ in $#R#^1$ (i.e. the number line) is just a point, whereas it's an entire vertical line in $#R#^2$. In general, plotting a graph of an equation just means drawing all of the points where that equation is true, and adding a new variable (like $y$ in $#R#^2$ or $z$ in $#R#^3$) without changing the equation means there's an entire line where the equation is true for each point there was before.
 
-The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $#R#$ when we're using it to graph things! Collectively, we call these three planes the **coordinate planes**.
+The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-axes, and we call it the **$\mathbf{yz}$-plane**. Similarly, we call $y = 0$ the **$\mathbf{xz}$-plane**, and $z = 0$ the **$\mathbf{xy}$-plane** --- which is fittingly enough the term we already use for $#R#^2$ when we're using it to graph things! Collectively, we call these three planes the **coordinate planes**.
 
 ### exc "graphing in $#R#^3$"
 
@@ -66,6 +82,18 @@ One of the learning objectives for this course is being able to sketch basic 3D 
 
 ### desmos pointPerspective
 
+This graph also demonstrates something else: the default perspective we use to draw $#R#^3$ has the $x$-axis pointing to the left and the $y$-axis pointing to the right, as if we're looking at the origin *from* the first quadrant. This is a little awkward to get used to, but it helps ensure we're always looking at the region of the graph where all three variables are positive, which is often what we care about most.
+
+### exc "sketching a point"
+	
+	Sketch the point $(3, 1, 2)$ in $#R#^3$, using dashed lines to indicate its position.
+
+	### solution
+
+	### desmos pointPerspective2
+
+###
+
 We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean Theorem: it's
 
 $$
@@ -88,17 +116,25 @@ $$
 
 ### exc "spheres and cylinders"
 
-	What is an equation for a sphere of radius $1$ centered at the origin (i.e. $(0, 0, 0)$) in $#R#^3$? What about a sphere of radius $r$ centered at $(a, b, c)$? How about a vertical cylinder of radius $1$ parallel to the $z$-axis whose center axis contains the origin? Hint: for all of these, start with an equation for the unit circle in $#R#^2$.
+	Find equations for the following objects. For all of these, I recommend starting with an equation for the unit circle in $#R#^2$.
+
+	1. A sphere of radius $1$ centered at the origin (i.e. $(0, 0, 0)$) in $#R#^3$.
+
+	2. A sphere of radius $r$ centered at $(a, b, c)$.
+
+	3. A vertical cylinder of radius $1$ parallel to the $z$-axis whose center axis contains the origin.
 
 	### solution
 
-	Just like the unit circle in $#R#^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $#R#^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
+	1. Just like the unit circle in $#R#^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $#R#^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$.
+
+	2. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
 
 	$$
 		(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
 	$$
 
-	For the cylinder, there are a few different approaches. We could treat it as the set of points in $#R#^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $#R#^3$ --- also $x^2 + y^2 = 1$.
+	3. For the cylinder, there are a few different approaches. We could treat it as the set of points in $#R#^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $#R#^3$ --- also $x^2 + y^2 = 1$.
 
 	### desmos sphereAndCylinder
 
@@ -106,7 +142,7 @@ $$
 
 
 
-## Intro to Vectors
+## Vectors
 
 A natural way to think about points in $#R#^2$ or $#R#^3$ is as locations: a point $p = (a, b, c)$ specifies a specific location in 3D space. But most physical applications of math, particularly physics, often need a closely related concept: that of a *change* in location. Objects that represent a change in location --- called **vectors** --- are similar but in many ways more versatile than points, and we'll have a *lot* to say about them throughout the semester! Let's get started with a definition and some examples.
 
@@ -118,7 +154,7 @@ A natural way to think about points in $#R#^2$ or $#R#^3$ is as locations: a poi
 
 For example, the displacement $\vec{v}$ from Los Angeles to Seattle is a vector, but that vector doesn't have anything to do with Los Angeles or Seattle specifically. In fact, $\vec{v}$ is *also* equal to the displacement from Seattle to somewhere in the Yukon Territories (when treating those locations as being on a 2D map, at least).
 
-The typical way to represent vectors is with arrows, which indicate both their magnitude and direction. As we just saw, though, the tail of the arrow doesn't affect the value of the vector, so in the below example, dragging the red point never changes the vector; only dragging the blue point does.
+We usually draw vectors as arrows, which indicate both their magnitude and direction. As we just saw, though, the tail of the arrow doesn't affect the value of the vector, so in the below example, dragging the red point never changes the vector; only dragging the blue point does.
 
 ### desmos vectors
 
@@ -128,13 +164,13 @@ While vectors are fundamentally different from points, there's definitely a clos
 
 	Let $\vec{v}$ be a vector in $#R#^2$. To write $\vec{v}$ in **component notation**, we denote it $\vec{v} = \left< v_1, v_2 \right>$, where $v_1$ and $v_2$ are the real numbers indicating how much $\vec{v}$ moves parallel to the $x$- and $y$-axes, respectively. Similarly, a vector $\vec{w}$ in $#R#^3$ can be written in component notation as $\vec{w} = \left< w_1, w_2, w_3 \right>$, where $w_1$, $w_2$, and $w_3$ are the amounts $\vec{w}$ moves parallel to the $x$-, $y$-, and $z$-axes.
 
-	The **position vector** for a point $(a, b) \in #R#^2$ is the vector $\left< a, b \right>$ which points to $(a, b)$ when drawn from the origin. For all intents and purposes, a point and a position vector are interchangeable --- one is just written with sharper brackets and has some useful properties. (We'll get to those in a moment!)
+	The **position vector** for a point $(a, b) \in #R#^2$ is the vector $\left< a, b \right>$ which points to $(a, b)$ when drawn from the origin. For our purposes, a point and a position vector are functionally identical --- one is just written with sharper brackets and has some useful properties. (We'll get to those in a moment!)
 
-	We also define the **zero vector** to be the vector with zero magnitude, which is unique as long as we know what dimension of space we're working in. In practice, that's clear from context, and so we use the same symbol --- $\vec{0}$ --- to represent it, regardless of the space we're in. In $#R#^2$, $\vec{0} = \left< 0, 0 \right>$, in $#R#^3$, $\vec{0} = \left< 0, 0, 0 \right>$, and so on.
+	We also define the **zero vector** to be the vector with zero magnitude, which is unique as long as we know what dimension of space we're working in. In practice, that's clear from context, and so we use always use the symbol $\vec{0}$ to represent it, regardless of the space we're in. In $#R#^2$, $\vec{0} = \left< 0, 0 \right>$, in $#R#^3$, $\vec{0} = \left< 0, 0, 0 \right>$, and so on.
 
 ###
 
-Most of our vectors will be in $#R#^2$ and $#R#^3$, but we can just well write $\left< 2 \right>$ for the vector with length $2$ pointing in the positive direction in $#R#$, or $\left< -1, -2, -3, -4 \right>$ for a vector in $#R#^4$ that we can't very well visualize. To avoid our notation becoming clunky and obscuring what we're trying to communicate, we'll stick with $#R#^3$ specifically when presenting most of the results and terminology about vectors, including for this next one.
+Most of our vectors will be in $#R#^2$ and $#R#^3$, but we can just as well write $\left< 2 \right>$ for the vector with length $2$ pointing in the positive direction in $#R#$, or $\left< -1, -2, -3, -4 \right>$ for a vector in $#R#^4$ that we can't very well visualize. To avoid our notation becoming clunky and obscuring what we're trying to communicate, we'll stick with $#R#^3$ specifically when presenting most of the results and terminology about vectors, including for this next one.
 
 ### def "magnitude of a vector and unit vectors"
 
@@ -148,31 +184,29 @@ Most of our vectors will be in $#R#^2$ and $#R#^3$, but we can just well write $
 
 ###
 
-Since vectors are quantities with magnitude and direction, we naturally would want notation for the direction of a vector, too. However, no such standard notation exists. While we can just use a standard angle measure counterclockwise from the positive $x$-axis in $#R#^2$, we then need a combination of angles in $#R#^3$, akin to latitude and longitude. To be clear, such a system exists, and this is a solvable problem in any $#R#^n$. However, it ends up not being useful enough to justify its formalization, at least not at the very start of learning about vectors.
+Since vectors are quantities with magnitude and direction, we might want notation for the direction of a vector, too. However, no such standard notation exists. While we could use a 2D vector's angle measured counterclockwise from the positive $x$-axis, we would need two angles in $#R#^3$, akin to latitude and longitude. Such a system exists, and we'll actually explore it later in the course. However, the complexity only increases in higher-dimensional spaces, and it ends up not being useful enough to justify formalizing it across all $#R#^n$.
 
 ### exc "vectors"
 	
-	1. Sketch the vectors $\vec{v} = \left< 1, -2 \right>$ and $\vec{w} = \left< 1, -2, 3 \right>$ and find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+	1. Sketch the vector $\vec{v} = \left< 1, -2 \right>$ in $#R#^2$ twice: once so that its tail is at $(1, 1)$, and again as a position vector for the point $(1, -2)$.
 
-	2. What does the set of all unit vectors look like in $#R#^2$? What about in $#R#^3$?
+	2. Let $\vec{w} = \left< 1, -2, 3 \right>$. Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
 
-	3. How many unit vectors are there with a first component equal to $\frac{1}{2}$ in $#R#^2$? What about in $#R#^3$?
+	3. What does the set of all unit vectors look like in $#R#^2$? What about in $#R#^3$?
+
+	4. How many unit vectors are there with a first component equal to $\frac{1}{2}$ in $#R#^2$? What about in $#R#^3$?
 
 	### solution
 
-	1. We can draw $\vec{v}$ anywhere in $#R#^2$, as long as it's pointing one unit to the right and $2$ units down --- all of the following vectors are equal to $\vec{v}$!
+	1. These are the two copies of the same vector $\vec{v}$ --- the have the same magnitude and direction, so they're equal. The one that starts at $(0, 0)$ is by definition a position vector.
 
 	### desmos equalVectors
 
-	We can do the same thing with $\vec{w}$, but since 3D graphs get crowded more easily than 2D ones, let's just draw $\vec{w}$ starting at the origin.
+	2. The magnitudes are $\left| \left| \vec{v} \right| \right| = \sqrt{1^2 + (-2)^2} = \sqrt{5}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{14}$.
 
-	### desmos threeDVector
+	3. The set of all unit vectors in $#R#^2$ is the set of all $\left< v_1, v_2 \right>$ with $\sqrt{v_1^2 + v_2^2} = 1$, so if we draw all the vectors starting from the origin, then it's a circle! Similarly, the set of all unit vectors in $#R#^3$ is a sphere.
 
-	The magnitudes are $\left| \left| \vec{v} \right| \right| = \sqrt{1^2 + (-2)^2} = 5$ and $\left| \left| \vec{w} \right| \right| = \sqrt{14}$, and with them both drawn out, we can confirm that that matches our intuition.
-
-	2. The set of all unit vectors in $#R#^2$ is the set of all $\left< v_1, v_2 \right>$ with $\sqrt{v_1^2 + v_2^2} = 1$, so if we draw all the vectors starting from the origin, then it's a circle! Similarly, the set of all unit vectors in $#R#^3$ is a sphere.
-
-	3. If the first component is equal to $\frac{1}{2}$ in $#R#^2$, then we can solve
+	4. If the first component is equal to $\frac{1}{2}$ in $#R#^2$, then we can solve
 
 	$$
 		\sqrt{\left( \frac{1}{2} \right)^2 + v_2^2} &= 1
@@ -202,13 +236,13 @@ Since vectors are quantities with magnitude and direction, we naturally would wa
 
 ###
 
-Going back to our flight example, the notion of vectors as displacements works nicely if we want to add them together: the displacement from Los Angeles to Seattle *combined* with the displacement from Seattle to New York should equal the displacement from Los Angeles to New York. This is exactly the notion of adding vectors geometrically: we place the vectors so that first one ends where the second one starts, and then draw the sum of the two as the vector that stretches from the start of the first to the end of the second.
+Going back to our flight example, the notion of vectors as displacements works nicely if we want to add them together: in a sense, the displacement from Los Angeles to Seattle *combined* with the displacement from Seattle to New York is like taking a two-leg flight, and the total should equal the displacement from Los Angeles to New York. This is exactly the notion of adding vectors geometrically: we place the vectors so that first one ends where the second one starts, and then draw the sum of the two as the vector that stretches from the start of the first to the end of the second.
 
 ### desmos vectorAddition
 
 Here, the sum of the red and blue vectors is the purple one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
 
-Vector addition also plays nicely with components! If $\vec{v} = \left< v_1, v_2, v_3 \right>$ and $\vec{w} = \left< w_1, w_2, w_3 \right>$, then the combination $\vec{v} + \vec{w}$ moves a total of $v_1 + w_1$ in the $x$-direction and so on, meaning
+Vector addition also plays nicely with components. If $\vec{v} = \left< v_1, v_2, v_3 \right>$ and $\vec{w} = \left< w_1, w_2, w_3 \right>$, then the combination $\vec{v} + \vec{w}$ moves a total of $v_1 + w_1$ in the $x$-direction and so on, meaning
 
 $$
 	\vec{v} + \vec{w} = \left< v_1 + w_1, v_2 + w_2, v_3 + w_3 \right>.
@@ -226,11 +260,29 @@ With the knowledge of how to add vectors, we can also make sense of **scalar mul
 
 ### exc "finding unit vectors"
 
-	Let $\vec{v}$ be any vector other than the zero vector. What is a formula in terms of $\vec{v}$ for a *unit vector* in the same direction as $\vec{v}$? Why doesn't this work for the zero vector?
+	Let $\vec{v}$ be any vector other than the zero vector. What is a formula for *unit vector* in the same direction as $\vec{v}$? Geometrically, why doesn't this formula work for the zero vector?
 
 	### solution
 
-	The vectors in the same direction as $\vec{v}$ are the vectors $c\vec{v}$, so if we want one that's a unit vector, we need $\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1$, so $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$. Therefore, $c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}$, and the negative version would point in the opposite direction as $\vec{v}$, so we want the positive one. Since the zero vector has zero magnitude, we'd be dividing by zero! This is the algebraic reflection of the zero vector not having a direction.
+	Any vector in the same direction as $\vec{v}$ has the form $c\vec{v}$ for some positive number $c$, so if we want $c\vec{v}$ to be a unit vector, we need
+
+	$$
+		\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1.
+	$$
+
+	That means $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$ and so
+
+	$$
+		c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}.
+	$$
+
+	The negative version would point in the opposite direction as $\vec{v}$, so we want the positive one; that is, a formula for a unit vector in the same direction as $\vec{v}$ is
+
+	$$
+		\frac{v}{\left| \left| \vec{v} \right| \right|}.
+	$$
+
+	Since the zero vector has zero magnitude, we'd be dividing by zero! Geometrically, the zero vector doesn't have a direction.
 
 ###
 
