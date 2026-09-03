@@ -10,13 +10,13 @@ export default function()
 	createDesmosGraphs({
 		testGraph:
 		{
-			bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
+			bounds: { xmin: -2, xmax: 2, ymin: -1, ymax: 3 },
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosColors.purple },
-				{ latex: raw`a = 0` },
-				{ latex: raw`b = 2` },
+				{ latex: raw`f(x) = 1.5 + \sin(-2x)\{-\frac{\pi}{2} \leq x \leq \frac{\pi}{2}\}`, color: desmosColors.purple },
+				{ latex: raw`a = -\frac{\pi}{2}` },
+				{ latex: raw`b = \frac{\pi}{2}` },
 
 				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosColors.purple, secret: true },
 				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true }
@@ -48,8 +48,8 @@ export default function()
 				{ latex: raw`f(x) = \left\{0 \leq x \leq 1: 2x, 1 < x < 3: \frac{1}{x} + 1, 3 \leq x: -\frac{2}{3} + \frac{2}{3}x\right\}`, color: desmosColors.purple },
 				{ latex: raw`(0, 0)`, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`g(x) = \left\{ 0 \leq x < 1: x - 1, 1 < x < 3: -\frac{1}{x}, 3 \leq x: -\frac{2}{3} \right\}`, color: desmosColors.blue },
-				{ latex: raw`(0, -1), (3, -\frac{2}{3})`, color: desmosColors.blue, secret: true },
+				{ latex: raw`g(x) = \left\{ 0 \leq x < 1: x - 1, 1 < x < 3: -\frac{1}{x}, 3 \leq x: -0.5 \right\}`, color: desmosColors.blue },
+				{ latex: raw`(0, -1), (3, -0.5)`, color: desmosColors.blue, secret: true },
 				{ latex: raw`(1, 0), (1, -1), (3, -\frac{1}{3})`, color: desmosColors.blue, pointStyle: desmosPointStyles.OPEN, secret: true }
 			]
 		},

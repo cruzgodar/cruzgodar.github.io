@@ -36,9 +36,17 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 
 
-### ex "limits"
-	
-	Using the previous graph, find $g(0)$, $g(1)$, $g(3)$, $\lim_{x \to 1^-} g(x)$, $\lim_{x \to 1^+} g(x)$, and $\lim_{x \to 1} g(x)$.
+### exc "limits"
+
+	Using the previous graph, find the following:
+
+	$$
+		g(0) &= \hspace{0.5in} g(1) &= \hspace{0.5in} g(3) &=
+
+		\lim_{x \to 1^-} g(x) &= \hspace{0.5in} \lim_{x \to 1^+} g(x) &= \hspace{0.5in} \lim_{x \to 1} g(x) &=
+
+		\lim_{x \to \infty} g(x) &= \hspace{0.5in} \lim_{x \to -\infty} g(x) &= \hspace{0.5in} \lim_{x \to 0} g(x) &= 
+	$$
 
 	### solution
 	
@@ -48,14 +56,10 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 	
 	$g(1)$ is undefined, since there is no solid point with $x = 1$.
 	
-	$g(3) = -\frac{2}{3}$.
+	$g(3) = -\frac{1}{2}$.
 	
 	For the limits, the superscript plus or minus indicates a direction to approach from. So $\lim_{x \to 1^-} g(x) = 0$, since we only look at the portion of the graph to the left of $x = 1$. Similarly, $\lim_{x \to 1^+} g(x) = -1$. When we remove that superscript, we get $\lim_{x \to 1} g(x)$, which is actually undefined: in order for a limit to exist, the limits from both the left and right have to exist and be equal to one another, and that's not the case here.
-	
-###
 
-### exc "limits"
-	
 	Find $\lim_{x \to \infty} g(x)$, $\lim_{x \to -\infty} g(x)$, and $\lim_{x \to 0} g(x)$. Note: since there isn't any portion of the graph to the left of zero, there's only one way to approach $x = 0$, so
 	
 	$$
@@ -64,7 +68,7 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 	### solution
 
-	As $x$ gets larger and larger, $g(x)$ is eventually constantly equal to $$-\frac{2}{3}$$, and so that's the value of $\lim_{x \to \infty} g(x)$. On the other hand, there is no portion of the graph of $g$ to the left of the $y$-axis, and so it isn't possible to take a limit as $x \to -\infty$. Therefore, $\lim_{x \to -\infty} g(x)$ doesn't exist. Finally, we find the limit as $x$ approaches $0$ by looking at what nearby $y$-values approach as $x$ gets smaller and smaller. They approach $-1$, and so $\lim_{x \to 0} g(x) = -1$. Another way to see that is to note that the graph of $g$ is continuous at $x = 0$ and that $g(0) = -1$.
+	As $x$ gets larger and larger, $g(x)$ is eventually constantly equal to $$-\frac{1}{2}$$, and so that's the value of $\lim_{x \to \infty} g(x)$. On the other hand, there is no portion of the graph of $g$ to the left of the $y$-axis, and so it isn't possible to take a limit as $x \to -\infty$. Therefore, $\lim_{x \to -\infty} g(x)$ doesn't exist. Finally, we find the limit as $x$ approaches $0$ by looking at what nearby $y$-values approach as $x$ gets smaller and smaller. They approach $-1$, and so $\lim_{x \to 0} g(x) = -1$. Another way to see that is to note that the graph of $g$ is continuous at $x = 0$ and that $g(0) = -1$.
 	
 ###
 

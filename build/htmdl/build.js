@@ -205,7 +205,7 @@ function decodeHTMDL(html)
 
 			else
 			{
-				sourceTex = `\\begin{align*}${sourceTex}\\end{align*}`;
+				sourceTex = `\\begin{alignat*}{99}${sourceTex}\\end{alignat*}`;
 			}
 
 
@@ -213,9 +213,9 @@ function decodeHTMDL(html)
 			// Remove the last line break.
 			lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
 
-			lines[i] = "\\end{align*}$$</span></p>";
+			lines[i] = "\\end{alignat*}$$</span></p>";
 
-			lines[startI] = /* html */`<p class="body-text" style="text-align: center; line-height: 0"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
+			lines[startI] = /* html */`<p class="body-text" style="text-align: center; line-height: 0"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{alignat*}{99}`;
 		}
 
 

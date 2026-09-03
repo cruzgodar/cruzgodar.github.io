@@ -257,7 +257,7 @@
 
 			<p class="build">The design <code>(λn.n(λg.λa.λb.g(>a)(*ab))(λa.λb.b)11)4</code> looks bad, but isn't terrible if we explain it in symbols: if we let <code>L := λg.λa.λb.g(>a)(*ab)</code>, then</p>
 
-			<p class="build">$$\begin{align*} L(g) &= (a, b) \mapsto g(a + 1, ab) \\ L(L(g)) &= (a, b) \mapsto L(g)(a + 1, ab) \\ &= (a, b) \mapsto g(a + 2, (a+1)ab) \end{align*}$$</p>
+			<p class="build">$$\begin{alignat*} L(g) &= (a, b) \mapsto g(a + 1, ab) \\ L(L(g)) &= (a, b) \mapsto L(g)(a + 1, ab) \\ &= (a, b) \mapsto g(a + 2, (a+1)ab) \end{alignat*}$$</p>
 		</div>
 
 		<div>
