@@ -41,11 +41,11 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 	Using the previous graph, find the following:
 
 	$$
-		g(0) &= \hspace{0.5in} g(1) &= \hspace{0.5in} g(3) &=
+		g(0) &= & \hspace{1in} g(1) &= & \hspace{1in} g(3) &=
 
-		\lim_{x \to 1^-} g(x) &= \hspace{0.5in} \lim_{x \to 1^+} g(x) &= \hspace{0.5in} \lim_{x \to 1} g(x) &=
+		\lim_{x \to 1^-} g(x) &= & \hspace{1in} \lim_{x \to 1^+} g(x) &= & \hspace{1in} \lim_{x \to 1} g(x) &=
 
-		\lim_{x \to \infty} g(x) &= \hspace{0.5in} \lim_{x \to -\infty} g(x) &= \hspace{0.5in} \lim_{x \to 0} g(x) &= 
+		\lim_{x \to \infty} g(x) &= & \hspace{1in} \lim_{x \to -\infty} g(x) &= & \hspace{1in} \lim_{x \to 0} g(x) &=
 	$$
 
 	### solution

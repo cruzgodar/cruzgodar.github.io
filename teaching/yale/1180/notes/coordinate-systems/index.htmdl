@@ -270,7 +270,7 @@ With the knowledge of how to add vectors, we can also make sense of **scalar mul
 		\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1.
 	$$
 
-	That means $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$ and so
+	That means $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$, and so
 
 	$$
 		c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}.

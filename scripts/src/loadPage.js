@@ -342,7 +342,7 @@ function setLinks()
 
 export function disableLinks()
 {
-	for (const link of $$("a:not(.real-link)"))
+	for (const link of document.body.querySelectorAll("a:not(.real-link)"))
 	{
 		link.addEventListener("click", e => e.preventDefault());
 	}
