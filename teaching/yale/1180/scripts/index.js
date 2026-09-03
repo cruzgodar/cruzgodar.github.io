@@ -2,7 +2,9 @@ import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import {
 	createDesmosGraphs, desmosColors,
+	desmosDragModes,
 	desmosPointStyles,
+	getDesmosPoint,
 	getDesmosSlider,
 	recreateDesmosGraphs
 } from "/scripts/src/desmos.js";
@@ -45,9 +47,27 @@ export default async function load()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \{ x < -2: \frac{x}{2}, -2 < x < 0: -1, 0 < x < 2: \frac{x^2}{2}, 2 < x: \sin(\pi x) \}`, color: desmosColors.purple, secret: true },
-				{ latex: raw`(0, -1)`, color: desmosColors.purple, pointStyle: desmosPointStyles.OPEN },
-				{ latex: raw`(0, 0), (2, 0), (2, 2)`, color: desmosColors.purple },
+				{ latex: raw`f(x) = \{ x < -2: \frac{x}{2}, -2 < x < 0: -1, 0 < x < 2: \frac{x^2}{2}, 2 < x: \sin(\pi x) + 2 \}`, color: desmosColors.purple, secret: true },
+
+				...getDesmosPoint({
+					point: [0, -1],
+					style: desmosPointStyles.OPEN,
+					color: desmosColors.purple,
+					dragMode: desmosDragModes.NONE
+				}),
+
+				...getDesmosPoint({
+					point: [2, 2],
+					style: desmosPointStyles.OPEN,
+					color: desmosColors.purple,
+					dragMode: desmosDragModes.NONE
+				}),
+
+				...getDesmosPoint({
+					point: [0, 0],
+					color: desmosColors.purple,
+					dragMode: desmosDragModes.NONE
+				}),
 			]
 		},
 

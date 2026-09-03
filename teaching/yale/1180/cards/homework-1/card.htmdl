@@ -2,7 +2,7 @@
 	
 	*Due Thursday, September 10th at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
 
 	- - -
 
@@ -10,54 +10,38 @@
 	
 	### desmos limits
 
-	#. Find $f(0)$, $f(2)$, 
+	#. Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.
 
-	#. $$z = 2x + 1$$.
+	#. Find $$\lim_{x \to 0^+} f(x)$$ and $$\lim_{x \to 0^-} f(x)$$.
 
-	#. $$y^2 + z^2 = 2$$.
+	#. Using interval notation, list all of the $x$-values where $f$ is continuous and all of the $x$-values where $f$ is discontinuous.
 
-	#. $$x^2 + \left( \frac{y}{2} \right)^2 + \left( \frac{z}{3} \right)^2 = 1$$ (hint: think about the graph's intersection with the coordinate planes).	
+	#. Find $$\lim_{x \to \infty} f(x)$$ and $$\lim_{x \to -\infty} f(x)$$.
 
-	- - -
-
-	#. What is an equation for the set of points in $#R#^3$ that are distance $3$ from the point $(2, 3, -1)$? What does this shape of this set look like? Check your answer with <a href="https://www.desmos.com/3d">Desmos 3D</a>.
-
-	#. What is an equation for a cylinder in $#R#^3$ parallel to the $y$-axis, with radius $4$, and whose central axis contains the point $(2, 3, 1)$? Check your answer with <a href="https://www.desmos.com/3d">Desmos 3D</a>.
+	#. Using interval notation, list all of the $x$-values where $f$ is differentiable and all of the $x$-values where $f$ is nondifferentiable.
 
 	- - -
 
-	#. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
+	In questions 3#, find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
 
-	> a) Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+	#. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
 
-	> b) Sketch $\vec{v}$ and $\vec{w}$ in $#R#^3$.
+	#. $g(x) = x + \frac{1}{x}$ on $(0, 2]$.
 
-	> c) Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form and sketch them both.
-
-	> d) Find unit vectors in the same direction as $\vec{v}$ and $\vec{w}$, respectively.
+	#. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
 
 	- - -
 
-	#. The sum of the forces acting on an object is called the **net force**, and an object is said to be in static equilibrium if the net force acting on it is $\vec{0}$. Suppose the forces $F_1 = \left< 1, 4, -3 \right>$, $F_2 = \left< 0, 0, 5 \right>$, $F_3 = \left< 4, 5, 0 \right>$, and an unknown force $F_4$ are acting on an object that is in static equilibrium. Find $F_4$.
+	In questions 3#, find the derivative of the given function.
+
+	#. $$p(t) = \frac{\tan(t)}{t^2 + 1}$$.
+
+	#. $$r(z) = \ln\left( z\cos(z) \right)$$.
+
+	#. $$l(k) = \sin(\cos(\tan(k)))$$.
 
 	- - -
 
-	#. For each of the following points $q$, find all $y$-values so that the point $p = (6, y, -8)$ is exactly $5$ units away from $q$, or explain why no such $y$-values exist.
-
-	> a) $q = (5, 1, -5)$.
-
-	> b) $q = (2, -4, -2)$.
-
-	> c) $q = (9, 9, -12)$.
-
-	- - -
-
-	#. Let's try to find the general form of a unit vector in $#R#^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it's sometimes useful to have two parameters we can freely vary instead of three parameters with a restriction.
-
-	> a) Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane. Find a general formula for $\vec{u}$ in terms of its angle $\theta$ counterclockwise from the positive $x$-axis when drawn this way.
-
-	> b) If $u_3 \neq 0$, then we can think of $\vec{u}$ as being rotated up from the $xy$-plane, as in the following graph. If we rotate by some angle $\varphi$, what is the formula for $\vec{u}$? Hint: fix $\theta$ and think of the direction of the vector in the $xy$-plane as a single axis so that the problem becomes 2D again. With this perspective, what is $u_3$ in terms of $\varphi$?
-
-	### desmos unitVectorsSpherical
+	
 
 ###

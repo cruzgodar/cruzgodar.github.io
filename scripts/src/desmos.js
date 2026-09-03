@@ -1159,7 +1159,7 @@ export function getDesmosPoint({
 	dragMode = desmosDragModes.XY,
 	style = desmosPointStyles.POINT,
 	secret = true,
-	size = 9
+	size = 12.5
 }) {
 	return [
 		{ latex: raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret, pointSize: size },
