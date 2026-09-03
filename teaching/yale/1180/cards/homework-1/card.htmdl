@@ -1,19 +1,16 @@
-### card homework-1 "Homework 1"
+### card homework-1 "Problem Set 1"
 	
-	*Due Monday, September 8th at 11:59 PM*
+	*Due Thursday, September 10th at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
-
-	### buttons
-		download-homework-1-pdf
-		download-homework-1-tex
-	###
+	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
 
 	- - -
-	
-	In problems 4#, sketch a graph of the equation in $#R#^3$. Check your answers with <a href="https://www.desmos.com/3d">Desmos 3D</a>.
 
-	#. $$y = x^3$$.
+	Questions 5# concern the following graph of the function $f(x)$.
+	
+	### desmos limits
+
+	#. Find $f(0)$, $f(2)$, 
 
 	#. $$z = 2x + 1$$.
 

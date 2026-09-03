@@ -2,6 +2,7 @@ import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import {
 	createDesmosGraphs, desmosColors,
+	desmosPointStyles,
 	getDesmosSlider,
 	recreateDesmosGraphs
 } from "/scripts/src/desmos.js";
@@ -38,6 +39,18 @@ const filenamesTex = {
 export default async function load()
 {
 	createDesmosGraphs({
+		limits:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \{ x < -2: \frac{x}{2}, -2 < x < 0: -1, 0 < x < 2: \frac{x^2}{2}, 2 < x: \sin(\pi x) \}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`(0, -1)`, color: desmosColors.purple, pointStyle: desmosPointStyles.OPEN },
+				{ latex: raw`(0, 0), (2, 0), (2, 2)`, color: desmosColors.purple },
+			]
+		},
+
 		unitVectorsSpherical:
 		{
 			use3d: true,
@@ -71,6 +84,8 @@ export default async function load()
 
 	setOnLoadExternalCard((card, id) =>
 	{
+		setTimeout(recreateDesmosGraphs, 600);
+
 		const buttons = card.querySelectorAll(".text-button");
 
 		if (buttons.length === 0)
@@ -107,9 +122,5 @@ export default async function load()
 				downloadFile(`${pageUrl}/cards/${id}/${filenamesTex[id]}`);
 			}
 		});
-
-
-
-		setTimeout(recreateDesmosGraphs, 600);
 	});
 }

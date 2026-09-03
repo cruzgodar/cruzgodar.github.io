@@ -1,5 +1,6 @@
 import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
+import { cardContainer } from "./cards.js";
 import { enterFullscreen, exitFullscreen, isFullscreen } from "./fullscreen.js";
 import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
@@ -807,6 +808,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 	addTemporaryListener({
 		object: window,
 		event: "resize",
+		callback: onScroll
+	});
+
+	addTemporaryListener({
+		object: cardContainer,
+		event: "scroll",
 		callback: onScroll
 	});
 
