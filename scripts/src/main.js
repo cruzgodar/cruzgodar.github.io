@@ -1,3 +1,4 @@
+import { initBeacon } from "./beacon.js";
 import { cardContainer, openCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
@@ -107,6 +108,8 @@ export async function loadSite(url = pageUrl)
 	pageElement.classList.add("page");
 
 	document.body.insertBefore(pageElement, document.body.firstChild);
+
+	initBeacon();
 
 	initInteractionListeners();
 
