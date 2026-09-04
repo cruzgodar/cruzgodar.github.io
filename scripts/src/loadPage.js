@@ -370,6 +370,7 @@ function packageSolution(solutionElement, showButton = true)
 
 	const textButtonsElement = document.createElement("div");
 	textButtonsElement.classList.add("text-buttons");
+	textButtonsElement.classList.add("solution-button");
 	textButtonsElement.style.marginBottom = "16px";
 	solutionElement.parentElement.appendChild(textButtonsElement);
 
@@ -457,7 +458,7 @@ function initSolutions()
 		return;
 	}
 
-	for (const e of $$(".notes-exc .solution"))
+	for (const e of $$(".solution"))
 	{
 		packageSolution(e, true);
 	}

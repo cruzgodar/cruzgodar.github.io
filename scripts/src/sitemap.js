@@ -1989,7 +1989,9 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/teaching/yale/1180/notes/dot-and-cross-products":
