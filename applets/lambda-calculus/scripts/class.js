@@ -1341,23 +1341,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 		];
 	}
 
-	findSubstitutionResult(pre, post)
+	// Finds the redex that got reduced, along with the subtree it turned into.
+	findSubstitution(pre, post)
 	{
 		if (pre.type === APPLICATION && pre.function.type === LAMBDA
 			&& (post.type !== APPLICATION || post.function.type !== LAMBDA))
 		{
-			return post;
+			return { redex: pre, result: post };
 		}
 
 		if (pre.type === LAMBDA && post.type === LAMBDA)
 		{
-			return this.findSubstitutionResult(pre.body, post.body);
+			return this.findSubstitution(pre.body, post.body);
 		}
 
 		if (pre.type === APPLICATION && post.type === APPLICATION)
 		{
-			return this.findSubstitutionResult(pre.function, post.function)
-				|| this.findSubstitutionResult(pre.input, post.input);
+			return this.findSubstitution(pre.function, post.function)
+				|| this.findSubstitution(pre.input, post.input);
 		}
 
 		return null;
@@ -1379,15 +1380,18 @@ export class LambdaCalculus extends AnimationFrameApplet
 				&& expression.rectIndex[id].type === LITERAL
 		);
 
-		const substitutionResult = this.findSubstitutionResult(
-			expression, betaReducedExpression
-		);
+		const substitution = this.findSubstitution(expression, betaReducedExpression);
 
 		if (
 			newLiteralRectIds.length === 1
 			&& oldLiteralRectIds.length >= 1
-			&& substitutionResult
-			&& !this.containsApplication(substitutionResult)
+			&& substitution
+			// Only when the argument really is a literal. For anything bigger, the
+			// argument's own rects are the ones that animate into place, and stealing
+			// a literal from them leaves the chunking below with a new rect count
+			// that isn't a multiple of the replacement rect count.
+			&& substitution.redex.input.type === LITERAL
+			&& !this.containsApplication(substitution.result)
 		) {
 			const oldId = oldLiteralRectIds[0];
 			const newId = newLiteralRectIds[0];
@@ -1916,6 +1920,32 @@ export class LambdaCalculus extends AnimationFrameApplet
 			resolve => this.animationFinishedResolve = resolve
 		);
 
+		// The bookkeeping lives out here so that a throw inside the reduction can't
+		// leave animationRunning stuck on -- that would wedge every later run().
+		try
+		{
+			await this.iterateBetaReductions(
+				expression,
+				maxBetaReductions,
+				updateExpressionDuringReduction
+			);
+		}
+
+		finally
+		{
+			this.worker?.terminate?.();
+
+			this.animationRunning = false;
+			this.animationFinishedResolve?.();
+			this.animationFinishedResolve = undefined;
+		}
+	}
+
+	async iterateBetaReductions(
+		expression,
+		maxBetaReductions,
+		updateExpressionDuringReduction
+	) {
 		let expressionString = this.expressionToString({
 			expression,
 			addHtml: false,
@@ -2156,11 +2186,5 @@ export class LambdaCalculus extends AnimationFrameApplet
 				});
 			}
 		}
-
-		this.worker?.terminate?.();
-
-		this.animationRunning = false;
-		this.animationFinishedResolve?.();
-		this.animationFinishedResolve = undefined;
 	}
 }
