@@ -2,6 +2,7 @@
 export const redirects = {
 	// Applets
 	"/applets/the-mandelbulb": "/applets/mandelbulb",
+	"/applets/mandelbrot-set": "/applets/julia-set-explorer",
 	"/applets/flag-overlap": "/applets/flagle",
 
 	// Slides
