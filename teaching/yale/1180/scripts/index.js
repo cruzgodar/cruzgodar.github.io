@@ -47,7 +47,7 @@ export default async function load()
 
 			expressions:
 			[
-				{ latex: raw`f(x) = \{ x < -2: \frac{x}{2}, -2 < x < 0: -1, 0 < x < 2: \frac{x^2}{2}, 2 < x: \sin(\pi x) + 2 \}`, color: desmosColors.purple, secret: true },
+				{ latex: raw`f(x) = \{ x \leq -2: \frac{x}{2}, -2 < x < 0: -1, 0 < x < 2: \frac{x^2}{2}, 2 < x: \sin(\pi x) + 2 \}`, color: desmosColors.purple, secret: true },
 
 				...getDesmosPoint({
 					point: [0, -1],
