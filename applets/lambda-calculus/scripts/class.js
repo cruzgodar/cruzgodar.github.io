@@ -2104,6 +2104,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			if (this.expressionTextarea && updateExpressionDuringReduction)
 			{
+				this.worker?.terminate?.();
+
 				this.worker = this.addTemporaryWorker("/applets/lambda-calculus/scripts/worker.js");
 
 				this.worker.onmessage = e =>
@@ -2137,6 +2139,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 				});
 			}
 		}
+
+		this.worker?.terminate?.();
 
 		if (this.needReload)
 		{
