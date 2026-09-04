@@ -2,7 +2,7 @@
 	
 	*Due Thursday, September 10th at 11:59 PM*
 	
-	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted. I write most of my problems to not require calculators, but you may find some of the problems require them --- that's perfectly fine! All exam problems will be written without the need for calculators.
 
 	- - -
 
@@ -16,32 +16,40 @@
 
 	#. Using interval notation, list all of the $x$-values where $f$ is continuous and all of the $x$-values where $f$ is discontinuous.
 
-	#. Find $$\lim_{x \to \infty} f(x)$$ and $$\lim_{x \to -\infty} f(x)$$.
+	#. Find $$\lim_{x \to \infty} f(x)$$ and $$\lim_{x \to -\infty} f(x)$$. You can zoom out on the graph!
 
 	#. Using interval notation, list all of the $x$-values where $f$ is differentiable and all of the $x$-values where $f$ is nondifferentiable.
 
 	- - -
 
-	In questions 3#, find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
+	In questions 2#, find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
 
 	#. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
-
-	#. $g(x) = x + \frac{1}{x}$ on $(0, 2]$.
 
 	#. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
 
 	- - -
 
-	In questions 3#, find the derivative of the given function.
+	In questions 2#, find the derivative of the given function.
 
 	#. $$p(t) = \frac{\tan(t)}{t^2 + 1}$$.
 
 	#. $$r(z) = \ln\left( z\cos(z) \right)$$.
 
-	#. $$l(k) = \sin(\cos(\tan(k)))$$.
-
 	- - -
 
-	
+	Questions 4# concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the **demand function**.
+
+	#. Find $D'(p)$ and the units in which it is measured. Is it positive or negative in general? Why does that make sense in context?
+
+	#. The **price elasticity of demand** measures how sensitive buyers are to price. It is defined as
+	$$
+		E(p) = -p\frac{D'(p)}{D(p)}
+	$$
+	and measures (percent change in demand) per (percent change in price). Find $E(p)$ for this store, and find the price at which $E(p) = 1$, which is when demand is called **unit elastic**.
+
+	#. The store's weekly revenue is $R(p) = pD(p)$. Optimize $R(p)$ on $[0, \infty)$, and classify it with the second derivative test. What is the store's largest possible weekly revenue?
+
+	#. Compare your answers to questions #-2 and #-1. Then show that $R'(p) = D(p)\left( 1 - E(p) \right)$ for *any* differentiable demand function $D$, and explain what that says about the relationship between revenue and price elasticity of demand.
 
 ###
