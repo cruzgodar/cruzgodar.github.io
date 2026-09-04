@@ -1,6 +1,6 @@
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
-import { addStyle, addTemporaryListener, addTemporaryParam, pageUrl } from "../src/main.js";
-import { getDisplayUrl } from "../src/navigation.js";
+import { addStyle, addTemporaryListener, addTemporaryParam } from "../src/main.js";
+import { setPersistedState } from "../src/navigation.js";
 import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
@@ -334,11 +334,7 @@ export class Slider extends CappedInputElement
 	{
 		if (this.persistState)
 		{
-			window.history.replaceState(
-				{ url: pageUrl },
-				"",
-				getDisplayUrl({ [this.element.id]: this.value })
-			);
+			setPersistedState({ [this.element.id]: this.value });
 		}
 	}
 

@@ -106,6 +106,9 @@ export async function redirect({
 		url = url.slice(0, -1);
 	}
 
+	// Any pending param write belongs to the page we're leaving.
+	flushPersistedState();
+
 	currentlyRedirecting = true;
 
 	const temp = window.scrollY;
@@ -317,6 +320,49 @@ export function getDisplayUrl(additionalQueryParams = {})
 	displayUrl = displayUrl + (queryParams ? `/?${queryParams}` : "");
 
 	return displayUrl;
+}
+
+
+
+// Input components used to call history.replaceState() directly on every input
+// event. A textarea fires one per keystroke, which the Cloudflare Web Analytics
+// beacon logs as a separate pageload --- /applets/lambda-calculus was reporting
+// 70,643 pageloads against 280 real visits because of it.
+//
+// Pending params accumulate instead of replacing each other: getQueryParams()
+// merges into the *current* url, so dropping an intermediate call would lose
+// that component's param entirely rather than just delaying it.
+
+const persistedStateDelay = 500;
+
+let pendingPersistedParams = {};
+let persistedStateTimeoutId;
+
+export function flushPersistedState()
+{
+	clearTimeout(persistedStateTimeoutId);
+
+	persistedStateTimeoutId = undefined;
+
+	if (Object.keys(pendingPersistedParams).length === 0)
+	{
+		return;
+	}
+
+	const params = pendingPersistedParams;
+
+	pendingPersistedParams = {};
+
+	window.history.replaceState({ url: pageUrl }, "", getDisplayUrl(params));
+}
+
+export function setPersistedState(additionalQueryParams = {})
+{
+	Object.assign(pendingPersistedParams, additionalQueryParams);
+
+	clearTimeout(persistedStateTimeoutId);
+
+	persistedStateTimeoutId = setTimeout(flushPersistedState, persistedStateDelay);
 }
 
 

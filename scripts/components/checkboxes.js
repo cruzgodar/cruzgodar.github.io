@@ -1,6 +1,6 @@
 import { changeOpacity } from "../src/animation.js";
-import { addTemporaryParam, pageUrl } from "../src/main.js";
-import { getDisplayUrl } from "../src/navigation.js";
+import { addTemporaryParam } from "../src/main.js";
+import { setPersistedState } from "../src/navigation.js";
 import { InputElement } from "./inputElement.js";
 
 export class Checkbox extends InputElement
@@ -121,11 +121,7 @@ export class Checkbox extends InputElement
 
 		if (this.persistState)
 		{
-			window.history.replaceState(
-				{ url: pageUrl },
-				"",
-				getDisplayUrl({ [this.element.id]: this.checked ? "1" : "0" })
-			);
+			setPersistedState({ [this.element.id]: this.checked ? "1" : "0" });
 		}
 	}
 

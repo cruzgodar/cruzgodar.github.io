@@ -1,5 +1,5 @@
-import { addTemporaryParam, pageUrl } from "../src/main.js";
-import { getDisplayUrl } from "../src/navigation.js";
+import { addTemporaryParam } from "../src/main.js";
+import { setPersistedState } from "../src/navigation.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
 
 
@@ -147,11 +147,7 @@ export class TextBox extends CappedInputElement
 
 		if (this.persistState)
 		{
-			window.history.replaceState(
-				{ url: pageUrl },
-				"",
-				getDisplayUrl({ [this.element.id]: this.value })
-			);
+			setPersistedState({ [this.element.id]: this.value });
 		}
 
 		if (callOnInput)

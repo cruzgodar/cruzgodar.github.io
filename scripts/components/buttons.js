@@ -5,7 +5,7 @@ import {
 	addTemporaryParam,
 	pageUrl
 } from "../src/main.js";
-import { getDisplayUrl, redirect } from "../src/navigation.js";
+import { redirect, setPersistedState } from "../src/navigation.js";
 import { sitemap } from "../src/sitemap.js";
 import { Dropdown } from "./dropdowns.js";
 import { InputElement } from "./inputElement.js";
@@ -178,11 +178,7 @@ export class ToggleButton extends Button
 			{
 				if (this.persistState)
 				{
-					window.history.replaceState(
-						{ url: pageUrl },
-						"",
-						getDisplayUrl({ [this.element.id]: this.state ? "1" : "0" })
-					);
+					setPersistedState({ [this.element.id]: this.state ? "1" : "0" });
 				}
 			}
 
@@ -265,11 +261,7 @@ export class ToggleButton extends Button
 
 			if (this.persistState)
 			{
-				window.history.replaceState(
-					{ url: pageUrl },
-					"",
-					getDisplayUrl({ [this.element.id]: this.state ? "1" : "0" })
-				);
+				setPersistedState({ [this.element.id]: this.state ? "1" : "0" });
 			}
 
 			this.currentlyAnimating = true;
