@@ -90,6 +90,8 @@ function expressionToString({
 			expression: expression.body,
 			addHtml,
 			darkTheme,
+			browserSupportsP3,
+			browserSupportsRec2020,
 		});
 
 		const bodyText = bodyString;
@@ -109,7 +111,9 @@ function expressionToString({
 	const functionStringWithoutHtml = expressionToString({
 		expression: expression.function,
 		addHtml: false,
-		darkTheme
+		darkTheme,
+		browserSupportsP3,
+		browserSupportsRec2020,
 	});
 
 	if (
@@ -123,7 +127,9 @@ function expressionToString({
 	const functionString = expressionToString({
 		expression: expression.function,
 		addHtml,
-		darkTheme
+		darkTheme,
+		browserSupportsP3,
+		browserSupportsRec2020,
 	});
 
 
@@ -131,7 +137,9 @@ function expressionToString({
 	const inputStringWithoutHtml = expressionToString({
 		expression: expression.input,
 		addHtml: false,
-		darkTheme
+		darkTheme,
+		browserSupportsP3,
+		browserSupportsRec2020,
 	});
 
 	if (
@@ -145,7 +153,9 @@ function expressionToString({
 	const inputString = expressionToString({
 		expression: expression.input,
 		addHtml,
-		darkTheme
+		darkTheme,
+		browserSupportsP3,
+		browserSupportsRec2020,
 	});
 
 

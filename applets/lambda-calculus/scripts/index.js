@@ -185,6 +185,14 @@ export default function()
 			);
 		}
 
+		// parseExpression() throws on an empty string, and there's nothing to draw.
+		if (expressionTextarea.value.length === 0)
+		{
+			expressionTextarea.overlayElement.innerHTML = "";
+
+			return;
+		}
+
 		const invalidRange = validateString(expressionTextarea.value);
 
 		if (invalidRange !== -1)

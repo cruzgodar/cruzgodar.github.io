@@ -131,8 +131,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	animationRunning = false;
 	needReload = false;
-	reloaded = Promise.resolve();
-	reloadedResolve;
+	// Resolves when the currently-running reduction loop unwinds.
+	animationFinished = Promise.resolve();
+	animationFinishedResolve;
 
 	expressionTextarea;
 
@@ -171,19 +172,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 		betaReduce = false,
 		maxBetaReductions = Infinity
 	}) {
-		if (this.needReload)
+		// Stop any reduction that's still running and wait for it to unwind before
+		// drawing anything new. Looping here handles several run() calls landing at
+		// once: whichever one resumes last cancels the loop the others started.
+		while (this.animationRunning)
 		{
-			return;
+			this.needReload = true;
+
+			// A paused loop would never reach a point where it can notice needReload.
+			this.animationPaused = false;
+
+			await this.animationFinished;
 		}
 
-		if (this.animationRunning)
-		{
-			this.reloaded = new Promise(resolve => this.reloadedResolve = resolve);
-			this.needReload = true;
-			await this.reloaded;
-			this.needReload = false;
-			this.animationRunning = false;
-		}
+		this.needReload = false;
+
+		// A previous slide or a paused animation may have left this set.
+		this.animationPaused = false;
 
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
@@ -1907,6 +1912,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 		updateExpressionDuringReduction
 	) {
 		this.animationRunning = true;
+		this.animationFinished = new Promise(
+			resolve => this.animationFinishedResolve = resolve
+		);
 
 		let expressionString = this.expressionToString({
 			expression,
@@ -2077,15 +2085,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 				if (this.animationPaused)
 				{
-					await new Promise(resolve => {
-						addTemporaryInterval(setInterval(() =>
+					await new Promise(resolve =>
+					{
+						const intervalId = setInterval(() =>
 						{
-							if (!this.animationPaused)
+							if (!this.animationPaused || this.needReload)
 							{
+								clearInterval(intervalId);
 								resolve();
 							}
-						}), 100);
+						}, 100);
+
+						addTemporaryInterval(intervalId);
 					});
+
+					if (this.needReload)
+					{
+						break outerLoop;
+					}
 				}
 			}
 
@@ -2142,12 +2159,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 		this.worker?.terminate?.();
 
-		if (this.needReload)
-		{
-			this.needReload = false;
-			this.reloadedResolve();
-		}
-
 		this.animationRunning = false;
+		this.animationFinishedResolve?.();
+		this.animationFinishedResolve = undefined;
 	}
 }

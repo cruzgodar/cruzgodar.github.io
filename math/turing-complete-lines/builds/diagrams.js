@@ -6,8 +6,7 @@ async function reset({ slide })
 	slide.appendChild(canvasBundle);
 
 	applet.run({
-		expression: "(λx.xx)(λf.λx.fx)",
-		force: true
+		expression: "(λx.xx)(λf.λx.fx)"
 	});
 }
 
