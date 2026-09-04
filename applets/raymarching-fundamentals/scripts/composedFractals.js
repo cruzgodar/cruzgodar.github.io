@@ -265,7 +265,7 @@ export class ComposedFractals extends RaymarchApplet
 			uniformsGlsl,
 			uniforms,
 			maxMarches: 192,
-			cameraPos: [1, 1, 1],
+			sceneOrigin: [1, 1, 1],
 			theta: 1.25 * Math.PI,
 			phi: Math.PI / 2,
 			lockedOnOrigin: false,
