@@ -1,4 +1,3 @@
-import { initBeacon } from "./beacon.js";
 import { cardContainer, openCard } from "./cards.js";
 import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
@@ -109,7 +108,13 @@ export async function loadSite(url = pageUrl)
 
 	document.body.insertBefore(pageElement, document.body.firstChild);
 
-	initBeacon();
+	// Dynamic, and failures are swallowed on purpose: ad blockers match on
+	// filenames, and a *static* import of a blocked file takes the whole
+	// module graph down with it. Analytics must never be able to break the
+	// site --- worst case it just doesn't report.
+	import(window.DEBUG ? "/scripts/src/cloudflare.js" : "/scripts/src/cloudflare.min.js")
+		.then(module => module.initAnalytics())
+		.catch(() => {});
 
 	initInteractionListeners();
 

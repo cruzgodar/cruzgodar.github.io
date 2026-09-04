@@ -232,8 +232,7 @@
 	
 	<script src="index.js" type="module"></script>
 	<script type="module">
-		import { initBeacon } from "/scripts/src/beacon.min.js";
-		initBeacon();
+		import("/scripts/src/cloudflare.min.js").then(module => module.initAnalytics()).catch(() => {});
 	</script>
 </body>
 
