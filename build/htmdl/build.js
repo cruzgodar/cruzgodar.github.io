@@ -275,14 +275,13 @@ function decodeHTMDL(html)
 		// This is one of the many possible environments.
 		else if (lines[i].slice(0, 3) === "###")
 		{
-			currentNumberedItem = 1;
-
 			if (lines[i] === "###")
 			{
 				// If we find one of these in the wild, we're
 				// in an environment and just need to end it.
 
 				inEnvironment = false;
+				currentNumberedItem = 1;
 
 				lines[i] = "</div>";
 				continue;
@@ -305,6 +304,8 @@ function decodeHTMDL(html)
 
 			else if (words[0] in notesEnvironmentNames)
 			{
+				currentNumberedItem = 1;
+
 				lines[i] = components["notes-environment"](options, ...words);
 
 				inEnvironment = true;
@@ -312,6 +313,8 @@ function decodeHTMDL(html)
 
 			else
 			{
+				currentNumberedItem = 1;
+				
 				const content = [];
 
 				const startI = i;

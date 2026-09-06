@@ -71,31 +71,61 @@ export default async function load()
 			]
 		},
 
+		graphMatching:
+		{
+			use3d: true,
+
+			options: { expressionsCollapsed: false },
+
+			bounds: { xmin: -2.5, xmax: 2.5, ymin: -2.5, ymax: 2.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = \frac{1}{5}(x^3 + y^3)`, secret: true, hidden: true },
+				{ latex: raw`g(x, y) = \sin(x) + \cos(y)`, secret: true, hidden: true },
+				{ latex: raw`h(x, y) = \sqrt{1 - x^2 - (\frac{y}{2})^2}`, secret: true, hidden: true },
+				{ latex: raw`k(x, y) = xy`, secret: true, hidden: true },
+
+				{ latex: raw`f(x, y)`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`g(x, y)`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`h(x, y)`, color: desmosColors.red, hidden: true },
+				{ latex: raw`k(x, y)`, color: desmosColors.orange, hidden: true },
+			]
+		},
+
 		unitVectorsSpherical:
 		{
 			use3d: true,
+
+			options: {
+				worldRotation3D: [0, -1, 0, 0, 0, 1, -1, 0, 0],
+				expressionsCollapsed: false
+			},
 
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
 
 			expressions:
 			[
 				...getDesmosSlider({
-					expression: "t = 1",
+					expression: "\\theta_0 = 1",
 					min: 0,
 					max: "2\\pi",
 					secret: false
 				}),
 
 				...getDesmosSlider({
-					expression: "s = 0.5",
+					expression: "\\varphi_0 = 0",
 					min: raw`\frac{-\pi}{2}`,
 					max: raw`\frac{\pi}{2}`,
 					secret: false
 				}),
 
-				{ latex: raw`\sin(t)x - \cos(t)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(t)x + \sin(t)y \geq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`\sin(\theta_0)x - \cos(\theta_0)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(\theta_0)x + \sin(\theta_0)y \geq 0\}`, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`\vector((0, 0, 0), (\cos(s)\cos(t), \cos(s)\sin(t), \sin(s)))`, color: desmosColors.purple, secret: true },
+
+				{ latex: raw`(0.2\cos(t), 0.2\sin(t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: "a" }, secret: true },
+
+				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0)))`, color: desmosColors.purple, secret: true },
 			]
 		},
 	});
