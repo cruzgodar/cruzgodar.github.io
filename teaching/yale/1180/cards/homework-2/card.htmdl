@@ -36,7 +36,7 @@
 
 	- - -
 
-	In $#R#^2$, two distinct lines are either parallel (if they have the same slope) or they intersect. In $#R#^3$, there is another possibility: two distinct lines can be *parallel* if they have parallel direction vectors, *intersecting* if (of course) they intersect, and *skew* if neither of those is true. In questions 3#, determine whether the given pair of lines is parallel, intersecting, or skew.
+	In $#R#^2$, two distinct lines are either parallel (if they have the same slope) or they intersect. In $#R#^3$, there is a third possibility: nonparallel lines may not intersect, in which case they are called **skew**. In questions 3#, determine whether the given pair of lines is parallel, intersecting, or skew.
 
 	#. $\left< -1 + 2t, 2 + 3t, 7t \right>$ and $\left< 3 - 6t, 1 - 9t, 10 - 21t \right>$.
 
@@ -54,7 +54,7 @@
 
 	- - -
 
-	In questions 3#, determine whether the statements is true or false, where all of the vectors are in $#R#^3$. If the statement is true, briefly justify why. If it is false, provide a demonstrating example.
+	In questions 3#, determine whether the statement is true or false, where all of the vectors are in $#R#^3$. If the statement is true, briefly justify why. If it is false, provide a demonstrating example.
 
 	#. If $\vec{v} \bullet \vec{w} = 0$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
 
@@ -64,12 +64,12 @@
 
 	- - -
 
-	#. Let's try to find the general form of a unit vector in $#R#^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it can be useful to have two parameters that we can freely vary instead of three parameters with a restriction.
+	Let's try to find the general form of a unit vector in $#R#^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it can be useful to have two parameters that we can freely vary instead of three parameters with a restriction. We'll find such a form in the next two questions.
 
-	> a) Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in red, find a general formula for $\vec{u}$ in terms of its angle $\theta$.
+	#. Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in red, find a general formula for $\vec{u}$ in terms of its angle $\theta$.
 
 	### desmos unitVectorsSpherical
 
-	> b) Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to part a) and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
+	#. Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to part a) and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
 
 ###
