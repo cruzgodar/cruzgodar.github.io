@@ -52,7 +52,7 @@ Complete the following problems and submit them as a PDF to Gradescope. You shou
 
 \end{enumerate}
 
-Toggle each on using the expressions in the sidebar and match each function to its graph (you can technically do this by just typing the functions in as new expressions, but the point is to analyze the graphs).
+Toggle each on using the expressions in the sidebar and match each function to its graph (you can technically do this by just typing the functions in as new expressions, but the point is to deduce it by analyzing the graphs).
 
 ~\\
 
@@ -74,39 +74,48 @@ Toggle each on using the expressions in the sidebar and match each function to i
 
 ~\\
 
-In $\mathbb{R}^2$, two distinct lines are either parallel (if they have the same slope) or they intersect. In $\mathbb{R}^3$, there is a third possibility: nonparallel lines may not intersect, in which case they are called \textbf{skew}. In questions 4--6, determine whether the given pair of lines is parallel, intersecting, or skew.
+4. Find an equation of a line passing through the points $(5, 1, 2)$ and $(3, 4, 1)$.
 
-4. $\left< -1 + 2t, 2 + 3t, 7t \right>$ and $\left< 3 - 6t, 1 - 9t, 10 - 21t \right>$.
+5. Find an equation of the plane containing the points $(1, 0, 1)$, $(-3, 1, 1)$, and $(2, 4, 0)$.
 
-5. $\left< 7 + 2t, -10 - t, 2 + t \right>$ and $\left< -8 + 3t, -3 - t, -9 + 5t \right>$.
-
-6. $\left< 1 + t, 2 + t, 3 + t \right>$ and $\left< 4 + t, 5 - t, 7 + 2t \right>$.
+6. Find the intersection of the line from question 4 and the plane from question 5 if it exists, or show they don't intersect.
 
 ~\\
 
-7. Find an equation of a line passing through the points $(5, 1, 2)$ and $(3, 4, 1)$.
+In questions 7--9, determine whether the statement is true or false, where all of the vectors are in $\mathbb{R}^3$. If the statement is true, briefly justify why. If it is false, provide an example to demonstrate.
 
-8. Find an equation of the plane containing the points $(1, 0, 1)$, $(-3, 1, 1)$, and $(2, 4, 0)$.
+7. If $\vec{v} \bullet \vec{w} = 0$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
 
-9. Find the intersection of the line from question 7 and the plane from question 8 if they exist, or show they don't intersect.
+8. If $\vec{v} \times \vec{w} = \vec{0}$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
 
-~\\
-
-In questions 10--12, determine whether the statement is true or false, where all of the vectors are in $\mathbb{R}^3$. If the statement is true, briefly justify why. If it is false, provide a demonstrating example.
-
-10. If $\vec{v} \bullet \vec{w} = 0$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
-
-11. If $\vec{v} \times \vec{w} = \vec{0}$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
-
-12. If $\vec{u} \bullet \left( \vec{v} \times \vec{w} \right) = 0$, then $\vec{u}$ is in the plane containing $\vec{v}$ and $\vec{w}$ when all three are drawn starting from the origin.
+9. If $\vec{u} \bullet \left( \vec{v} \times \vec{w} \right) = 0$, then $\vec{u}$ is in the plane containing $\vec{v}$ and $\vec{w}$ when all three are drawn starting from the origin.
 
 ~\\
 
 Let's try to find the general form of a unit vector in $\mathbb{R}^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it can be useful to have two parameters that we can freely vary instead of three parameters with a restriction. We'll find such a form in the next two questions.
 
-13. Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in red, find a general formula for $\vec{u}$ in terms of its angle $\theta$.
+10. Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in red, find a general formula for $\vec{u}$ in terms of its angle $\theta$.
 
-14. Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to part a) and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
+11. Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to part a) and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
+
+~\\
+
+Questions 12--16 concern the following situation: two companies, Aquilo and Fulgora, each produce steel and computer chips using labor. We can record a company's technology as a vector whose components are the numbers of labor hours needed to produce one unit of each good: Aquilo's is $\vec{a} = \left< 6, 3 \right>$, meaning six hours per unit of steel and three hours per unit of computer chips, and Fulgora's is $\vec{f} = \left< 1, 2 \right>$. A company has an \textbf{absolute advantage} in a good if it can produce a unit of that good in fewer hours. It turns out that a more useful notion is the \textbf{opportunity cost} of a good: the amount of the \textit{other} good a company must give up in order to produce one more unit. We say that a company has a \textbf{comparative advantage} in a good if its opportunity cost for that good is lower than the other company's.
+
+12. Which company has an absolute advantage in each good? Then find each company's opportunity cost of a unit of steel (your answers should be in units of computer chips),  and do the same for computer chips. Which company has a comparative advantage in which good?
+
+13. Now more generally, suppose $\vec{a} = \left< s_a, c_a, 0 \right>$ and $\vec{f} = \left< s_f, c_f, 0 \right>$, where all four of the component variables are positive. Then
+
+\begin{alignat*}{99}
+	\vec{a} \times \vec{f} &= \left< 0,\ 0,\ s_ac_f - c_as_f \right>\\
+	&= \left< 0,\ 0,\ c_fc_a\left( \frac{s_a}{c_a} - \frac{s_f}{c_f} \right) \right>.
+\end{alignat*}
+
+Explain why the quantity in parentheses is the difference between the two companies' opportunity costs of steel. Since $c_fc_a > 0$, what does the \textit{sign} of that quantity tell you? Check that it agrees with your answer to question 13.
+
+14. Question 13 implies that $\vec{a} \times \vec{f} = \vec{0}$ exactly when the two companies have identical opportunity costs, in which case neither company has a comparative advantage in anything. When that is the case, what must be the angle $\theta$ between the two technology vectors?
+
+15. Let's now look at specific numbers. Going back to the original vectors of $\vec{a} = \left< 6, 3 \right>$ and $\vec{f} = \left< 1, 2 \right>$, suppose each company has $12$ labor hours available. First suppose each company splits its hours evenly between the two goods, and find the total world output of each good (assuming no other relevant companies exist). Now suppose Fulgora spends all $12$ of its hours on computer chips, while Aquilo spends only as many hours on computer chips as are needed to keep total world computer chips output unchanged, spending the rest on steel. Find the new world output. Who gained, and by how much?
 
 
 \end{document}
