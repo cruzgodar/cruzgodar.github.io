@@ -59,9 +59,8 @@ export default function()
 				{ latex: raw`b = 2` },
 				{ latex: raw`c = 3` },
 
-				{ latex: raw`(a, b, c), (0, b, c), (0, 0, c), (a, 0, c), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
-				{ latex: raw`(a, b, c), (a, 0, c), (a, 0, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
-				{ latex: raw`(a, b, c), (0, b, c), (0, b, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, 0, 0), (a, b, 0), (0, b, 0)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(0, 0, 0), (a, b, 0), (a, b, c), (0, 0, c)`, color: desmosColors.red, points: false, lines: true },
 			]
 		},
 
@@ -71,18 +70,17 @@ export default function()
 
 			options: { worldRotation3D: defaultWorldRotation3D },
 
-			bounds: { xmin: -2, xmax: 4, ymin: -2, ymax: 4, zmin: -2, zmax: 4 },
+			bounds: { xmin: -1, xmax: 5, ymin: -1, ymax: 5, zmin: -1, zmax: 5 },
 
 			expressions:
 			[
 				{ latex: raw`(a,b,c)`, color: desmosColors.purple },
 				{ latex: raw`a = 3` },
-				{ latex: raw`b = 1` },
+				{ latex: raw`b = 4` },
 				{ latex: raw`c = 2` },
 
-				{ latex: raw`(a, b, c), (0, b, c), (0, 0, c), (a, 0, c), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
-				{ latex: raw`(a, b, c), (a, 0, c), (a, 0, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
-				{ latex: raw`(a, b, c), (0, b, c), (0, b, 0), (a, b, 0), (a, b, c)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(a, 0, 0), (a, b, 0), (0, b, 0)`, color: desmosColors.blue, points: false, lines: true },
+				{ latex: raw`(0, 0, 0), (a, b, 0), (a, b, c), (0, 0, c)`, color: desmosColors.red, points: false, lines: true },
 			]
 		},
 

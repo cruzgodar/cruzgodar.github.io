@@ -1989,9 +1989,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/dot-and-cross-products":
@@ -2002,9 +2000,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/functions-of-multiple-variables":
@@ -2015,9 +2011,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/partial-derivatives":
@@ -2028,9 +2022,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/multivariable-chain-rule":
@@ -2041,9 +2033,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/gradients":
@@ -2054,9 +2044,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/multivariable-optimization":
@@ -2067,9 +2055,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/boundary-optimization":
@@ -2080,9 +2066,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/lagrange-multipliers":
@@ -2093,9 +2077,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/vectors-and-matrices":
@@ -2106,9 +2088,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/row-reduction":
@@ -2117,9 +2097,7 @@ export const sitemap =
 		
 		"parent": "/teaching/yale/1180",
 		
-		"children": [],
-
-		"customStyle": true
+		"children": []
 	},
 	
 	"/teaching/yale/1180/notes/bases":
@@ -2130,9 +2108,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/linear-transformations":
@@ -2143,9 +2119,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1180/notes/determinants":
@@ -2156,9 +2130,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/teaching/yale/1110":

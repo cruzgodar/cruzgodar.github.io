@@ -25,7 +25,7 @@ async function build2({ forward, duration = 500 })
 	await animate((t) =>
 	{
 		applet.setUniforms({ planeTranslation: applet.showCrossSection ? 1 - t : t });
-	}, duration, "easeOutCubic");
+	}, duration, applet.showCrossSection ? "easeOutQuad" : "easeInQuad");
 }
 
 function load({ slide })

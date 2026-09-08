@@ -78,7 +78,7 @@ The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-
 
 ###
 
-In this course, you won't need to actually sketch graphs of 3D functions, but you will need to recognize and interpret existing 3D graphs. We'll also occasionally need to plot 3D *points*, which is a much more approachable topic than entire graphs, but it still takes some practice. Since we don't have the luxury of rotating a 3D graph when we draw it on paper, it can be difficult to tell exactly where a plotted point is. To help, we draw dotted lines to the three coordinate planes --- it gives a surprising amount of perspective.
+In this course, you won't need to actually sketch graphs of 3D functions, but you will need to recognize and interpret existing 3D graphs. We'll also occasionally need to plot 3D *points*, which is a much more approachable topic than entire graphs, but it still takes some practice. Since we don't have the luxury of rotating a 3D graph when we draw it on paper, it can be difficult to tell exactly where a plotted point is. To help, we can draw lines to its shadow in the $xy$-plane and to the $z$-axis, as well as from the shadow to the $x$- and $y$-axes --- it gives a surprising amount of perspective.
 
 ### desmos pointPerspective
 
@@ -86,7 +86,7 @@ This graph also demonstrates something else: the default perspective we use to d
 
 ### exc "sketching a point"
 	
-	Sketch the point $(3, 1, 2)$ in $#R#^3$, using dashed lines to indicate its position.
+	Sketch the point $(3, 4, 2)$ in $#R#^3$, using extra lines to indicate its position.
 
 	### solution
 

@@ -19,7 +19,6 @@ export class FractalSounds extends AnimationFrameApplet
 	wilsonJulia;
 
 	aspectRatio = 1;
-	defaultWorldSize = 4;
 	zoomLevel = 0;
 
 	resolution = 500;
@@ -38,9 +37,14 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	constructor({ canvas, lineDrawerCanvas })
-	{
+	constructor({
+		canvas,
+		lineDrawerCanvas,
+		defaultWorldSize = 4,
+	}) {
 		super(canvas);
+
+		this.defaultWorldSize = defaultWorldSize;
 
 		const optionsJulia =
 		{
@@ -72,7 +76,7 @@ export class FractalSounds extends AnimationFrameApplet
 		{
 			canvasWidth: 1500,
 
-			worldWidth: 4,
+			worldWidth: this.defaultWorldSize,
 
 			minWorldX: -3,
 			maxWorldX: 3,
@@ -355,8 +359,8 @@ export class FractalSounds extends AnimationFrameApplet
 		await this.wilsonJulia.allShadersReady();
 
 		this.wilson.resizeWorld({
-			width: 4,
-			height: 4,
+			width: this.defaultWorldSize,
+			height: this.defaultWorldSize,
 			centerX: 0,
 			centerY: 0
 		});

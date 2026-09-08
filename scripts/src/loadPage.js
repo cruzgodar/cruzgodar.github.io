@@ -458,8 +458,18 @@ function initSolutions()
 		return;
 	}
 
+	// Stopgap until I fix this with Spruce
+
+	const showSolutionsPages1180 = [
+		"/teaching/yale/1180/notes/calc-1-review",
+		"/teaching/yale/1180/notes/coordinate-systems"
+	];
+
 	for (const e of $$(".solution"))
 	{
-		packageSolution(e, true);
+		const showSolutionButton = !pageUrl.includes("1180")
+			|| showSolutionsPages1180.includes(pageUrl);
+
+		packageSolution(e, showSolutionButton);
 	}
 }

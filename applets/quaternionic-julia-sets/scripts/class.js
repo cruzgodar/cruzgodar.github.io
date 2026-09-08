@@ -86,8 +86,8 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 		`;
 
 		const uniforms = {
-			c: [-.54, -.25, -.668],
-			normalVector: [0, -0.9864, 0.1643],
+			c: [-0.5439548649797382, -0.11674042108074509, -0.7010775841165977],
+			normalVector: [0, -0.9864180625901592, 0.16425408912985057],
 			planeTranslation: 1,
 			juliaProportion: 1,
 		};

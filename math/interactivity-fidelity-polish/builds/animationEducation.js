@@ -36,7 +36,7 @@ function load({ slide })
 		canvas,
 	});
 
-	applet.animationTime = 400;
+	applet.animationTime = 500;
 }
 
 function unload()

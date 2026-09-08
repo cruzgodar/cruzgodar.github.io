@@ -116,6 +116,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		minEpsilon,
 		theta = 0.2004,
 		phi = 1.6538,
+		sceneOrigin = [-2.702, -0.731, 0.347],
+		lockedOnOrigin = true,
 		resolution = 1000,
 		xrFramebufferScaleSlider,
 	}) {
@@ -166,7 +168,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			uniforms,
 			theta,
 			phi,
-			sceneOrigin: [-2.702, -0.731, 0.347],
+			sceneOrigin,
+			lockedOnOrigin,
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.4,
 			epsilonScalingFactor,
