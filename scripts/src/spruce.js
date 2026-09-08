@@ -16,6 +16,15 @@ export function bannerDocument(body)
 }
 
 
+
+export function customLink({ displayText, url, inNewTab = false })
+{
+	const inNewTabHtml = inNewTab ? " data-in-new-tab=\"1\"" : "";
+
+	return /* html */`<a href="${url}"${inNewTabHtml}>${displayText}</a>`;
+}
+
+
 export const gap = "<div style=\"height: 32px\"></div>";
 
 

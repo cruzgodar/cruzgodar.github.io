@@ -73,8 +73,6 @@ const courseNames = [
 	[/teaching\/yale\/1180\/.+/, "Math 1180"],
 ];
 
-let sitemap;
-
 // Warnings are collected while the build runs and printed in blocks at the end.
 // Files come back out of Promise.all in whatever order they happen to finish,
 // so a warning printed inline lands somewhere in the middle of the build log

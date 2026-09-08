@@ -1,11 +1,11 @@
 @@@
-	import { bannerDocument as document, carousel } from "../scripts/src/spruce.js";
+	import { bannerDocument as document, carousel, customLink } from "../scripts/src/spruce.js";
 @@@
 
 <div class="justify">
 	I grew up in San Luis Obispo, a small town in California almost exactly halfway between San Francisco and Los Angeles. I took to math at an early age --- by the time I was eleven, I was interested in taking a few classes at the local community college, and I was surprised to find it wasn't out of the question. I settled in before too long and transferred to Cal Poly, the local four-year university. After a gap year in Germany, I packed up my life and moved to Eugene, Oregon to attend grad school for the next six years, where I was able to pursue teaching and mathematical illustration along with research, and find an amazing community. In 2025, I had the privilege to begin as a lecturer at Yale, and for the next three years, I'm here to stay.
 
-	In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anything else outside, and I've learned to settle for weightlifting when it's raining. I'm devoted to making this site the best it can be, and in the free time I have left, I love indie games, particularly Celeste. I became the 822nd person in the world to [collect every golden strawberry](https://www.youtube.com/watch?v=R3r1k_w88O4) (yes, even [that one](https://www.youtube.com/watch?v=ejvRmGgVbcQ)), I've [100% completed Strawberry Jam](https://www.youtube.com/watch?v=r5WX5uBt_L0), the largest community-made mod, and I'm the maintainer of [the mod that lets the camera move smoothly and the game run at any framerate](https://gamebanana.com/mods/514173).
+	In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anything else outside, and I've learned to settle for weightlifting when it's raining. I'm devoted to making this site the best it can be, and in the free time I have left, I love indie games, particularly Celeste. I became the 823rd person in the world to [collect every golden strawberry](https://www.youtube.com/watch?v=R3r1k_w88O4) (yes, even [that one](https://www.youtube.com/watch?v=ejvRmGgVbcQ)), I've [100% completed Strawberry Jam](https://www.youtube.com/watch?v=r5WX5uBt_L0), the largest community-made mod, and I'm the maintainer of [the mod that lets the game run at 120 FPS in HD](https://www.youtube.com/watch?v=VOn4d2gQaKg).
 </div>
 
 
@@ -26,9 +26,9 @@
 
 **Lecturer** (Yale University, 2025--Present)
 
-- [Multivariable Calculus](/teaching/yale/1200) (Spring 2026)
+- [Multivariable Calculus](/teaching/yale/1200) (Spring 2026, Fall 2026)
 
-- [Intro to Functions of Multiple Variables](/teaching/yale/1180) (Fall 2025)
+- [Intro to Functions of Multiple Variables](/teaching/yale/1180) (Fall 2025, Fall 2026)
 
 - [Intro to Functions and Calculus, Part II](/teaching/yale/1110) (Spring 2026)
 
@@ -101,7 +101,7 @@ Teaching Assistant:
 
 **[Immersive Thurston Geometry Applet](/applets/thurston-geometries)** (February 2024). A WebGL renderer to experience the perspective of living inside any possible curved space.
 
-**[Lapsa](/math/lapsa" data-in-new-tab="1)** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
+**@customLink({ displayText: "Lapsa", url: "/projects/lapsa", inNewTab: true })** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
 
 **[Interactive Class Notes](/teaching)** (January 2022--Present). Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
 

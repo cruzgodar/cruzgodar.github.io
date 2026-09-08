@@ -18,7 +18,7 @@ A selection of generative art, all created with the applets on this site. @click
 		{brownian-tree}{1}
 		{chaos-game}{1}
 		{barnsley-fern}{1}
-		{menger-sponge}{2}
+		{menger-sponge-2}{2}
 		{generalized-julia-set-3}{1}
 		{maurer-rose-2}{1}
 	)
@@ -80,7 +80,7 @@ A selection of generative art, all created with the applets on this site. @click
 		{juliabulb}{1}
 		{juliabulb-2}{1}
 		{extruded-cube}{1}
-		{menger-sponge-2}{1}
+		{menger-sponge}{1}
 		{juliabulb-3}{1}
 	)
 

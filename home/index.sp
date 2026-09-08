@@ -1,5 +1,5 @@
 @@@
-	import { debug, imageLinks } from "../scripts/src/spruce.js";
+	import { imageLinks } from "../scripts/src/spruce.js";
 
 	function document(body)
 	{
@@ -45,40 +45,15 @@
 				</div>
 				
 				<div style="margin-top: 20px">
-<<<<<<< HEAD:home/index.sp
 					@imageLinks([
 						"/gallery",
 						"/applets",
 						"/teaching",
+						"/projects",
 						"/math",
 						"/about",
 					])
-=======
-					### image-links
-						/gallery
-						
-						/applets
-						
-						/teaching
-
-						/projects
-						
-						/math
-						
-						/about
-					###
->>>>>>> main:home/index.htmdl
 				</div>
-
-				@debug[[
-					<div style="margin-top: 64px; display: flex; justify-content: center; width: 100%; column-gap: 32px">
-						<a href="/debug/htmdl-docs">HTMDL Documentation</a>
-
-						<a href="/debug/glsl-docs">GLSL Docs</a>
-
-						<a href="/debug/tests/glsl-test">GLSL Tests</a>
-					</div>
-				]]
 			</header>
 		</main>
 	</div>
