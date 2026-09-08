@@ -59,6 +59,8 @@ export default function()
 		{
 			use3d: true,
 
+			options: { worldRotation3D: [-0.92, 0.21, -0.33, -0.2, -0.98, -0.07, -0.34, 0, 0.94] },
+
 			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 150 },
 
 			expressions:
