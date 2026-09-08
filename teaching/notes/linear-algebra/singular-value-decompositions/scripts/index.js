@@ -1,14 +1,14 @@
-import { eigendata, uVectors } from "./data.js";
+import { eigendata, numPixels, numVectors, uAlphas } from "./data.js";
 import { VSingularValues, VU, VW } from "./vData.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { $ } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-export default function()
+export default async function()
 {
 	initValueWilson();
 
-	initEigenfaces();
+	await initEigenfaces();
 
 
 
@@ -86,9 +86,9 @@ export default function()
 		drawTruncatedImage();
 	}
 
-	function initEigenfaces()
+	async function initEigenfaces()
 	{
-		const numCols = 44;
+		const numCols = numVectors;
 
 		const options = {
 			canvasWidth: 100,
@@ -99,6 +99,19 @@ export default function()
 		const wilson = new WilsonCPU($("#eigenface-canvas"), options);
 
 		const dataLength = wilson.canvasHeight * wilson.canvasWidth * 4;
+		const rgbLength = numPixels * 3;
+
+		// data.bin holds every eigenvector's RGB channels back to back as a flat
+		// Float32Array; their constant alpha channels live in data.js.
+		const response = await fetch(new URL("./data.bin", import.meta.url));
+		const rgbData = new Float32Array(await response.arrayBuffer());
+
+		const uVectors = new Array(numCols);
+
+		for (let i = 0; i < numCols; i++)
+		{
+			uVectors[i] = rgbData.subarray(i * rgbLength, (i + 1) * rgbLength);
+		}
 
 		const uMagnitudes = new Array(numCols);
 		
@@ -130,9 +143,9 @@ export default function()
 				const uVectorCeil = uVectors[Math.ceil(indexSlider.value)];
 				const t = indexSlider.value - Math.floor(indexSlider.value);
 	
-				const uVector = new Array(dataLength);
+				const uVector = new Array(rgbLength);
 	
-				for (let i = 0; i < dataLength; i++)
+				for (let i = 0; i < rgbLength; i++)
 				{
 					uVector[i] = (1 - t) * uVectorFloor[i] + t * uVectorCeil[i];
 				}
@@ -147,50 +160,52 @@ export default function()
 
 		setTimeout(() => onSliderInput(), 100);
 		
+		// Takes a vector of RGB triples and draws it as an opaque RGBA image.
 		function drawEigenface(vec)
 		{
-			const u = [...vec];
-
 			let maxValue = 0;
 			let minValue = 0;
 
-			for (let i = 0; i < u.length; i += 4)
+			for (let i = 0; i < rgbLength; i++)
 			{
-				maxValue = Math.max(maxValue, u[i]);
-				maxValue = Math.max(maxValue, u[i + 1]);
-				maxValue = Math.max(maxValue, u[i + 2]);
-
-				minValue = Math.min(minValue, u[i]);
-				minValue = Math.min(minValue, u[i + 1]);
-				minValue = Math.min(minValue, u[i + 2]);
+				maxValue = Math.max(maxValue, vec[i]);
+				minValue = Math.min(minValue, vec[i]);
 			}
 
-			for (let i = 0; i < u.length; i += 4)
+			const imageData = new Uint8ClampedArray(dataLength);
+
+			for (let i = 0; i < numPixels; i++)
 			{
-				u[i] = (u[i] - minValue) / (maxValue - minValue) * 255;
-				u[i + 1] = (u[i + 1] - minValue) / (maxValue - minValue) * 255;
-				u[i + 2] = (u[i + 2] - minValue) / (maxValue - minValue) * 255;
-				u[i + 3] = 255;
+				const index = 4 * i;
+
+				imageData[index] = (vec[3 * i] - minValue) / (maxValue - minValue) * 255;
+				imageData[index + 1] = (vec[3 * i + 1] - minValue) / (maxValue - minValue) * 255;
+				imageData[index + 2] = (vec[3 * i + 2] - minValue) / (maxValue - minValue) * 255;
+				imageData[index + 3] = 255;
 			}
 
-			wilson.drawFrame(new Uint8ClampedArray(u));
+			wilson.drawFrame(imageData);
 		}
 
 		for (let i = 0; i < numCols; i++)
 		{
 			let totalSum = 0;
 
-			for (let j = 0; j < dataLength; j++)
+			for (let j = 0; j < rgbLength; j++)
 			{
 				totalSum += uVectors[i][j] * uVectors[i][j];
 			}
+
+			// The alpha channel is constant within each eigenvector and never
+			// drawn, but it still contributes to the vector's magnitude.
+			totalSum += numPixels * uAlphas[i] * uAlphas[i];
 
 			uMagnitudes[i] = Math.sqrt(totalSum);
 		}
 
 		function drawTruncatedEigenface(index, depth = numCols)
 		{
-			const vec = new Array(dataLength);
+			const vec = new Array(rgbLength);
 
 			const svdCoefficients = new Array(numCols);
 
@@ -214,7 +229,7 @@ export default function()
 			// The coefficients are the roots of the eigenvalues times
 			// the entries of the eigenvectors.
 
-			for (let i = 0; i < dataLength; i++)
+			for (let i = 0; i < rgbLength; i++)
 			{
 				vec[i] = 0;
 

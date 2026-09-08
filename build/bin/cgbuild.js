@@ -21,7 +21,6 @@ const excludeFromBuild =
 	/scripts\/anime\.js/,
 	/scripts\/mathjax.+/,
 	/teaching\/uo\/342\/extra\/eigenfaces-demo\/scripts\/data\.js/,
-	/teaching\/notes\/linear-algebra\/singular-value-decompositions\/scripts\/data\.js/,
 	/teaching\/notes\/linear-algebra\/singular-value-decompositions\/scripts\/vData\.js/,
 	/math\/dissertation\/dissertation\.pdf/,
 ];
