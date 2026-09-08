@@ -355,8 +355,8 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`a = (2, 1, 2)`, hidden: true },
-				{ latex: raw`b = (1, 3, 1)`, hidden: true },
+				{ latex: raw`a = (3, 1, 0)`, hidden: true },
+				{ latex: raw`b = (0, 3, 1)`, hidden: true },
 				{ latex: raw`c = (0, 1, 3)`, hidden: true },
 
 				{ latex: raw`\triangle((0, 0, 0), a, b)`, color: desmosColors.purple },

@@ -50,6 +50,11 @@ export function addHeader()
 						<span>Teaching</span>
 						<img src="/graphics/header-icons/teaching.webp"></img>
 					</a>
+
+					<a id="header-projects-link" href="/projects">
+						<span>Projects</span>
+						<img src="/graphics/header-icons/projects.webp"></img>
+					</a>
 					
 					<a id="header-math-link" href="/math">
 						<span>Math</span>

@@ -22,7 +22,7 @@ async function reset({ lapsa, slide, duration })
 		tc: [2, -2]
 	});
 
-	applet.changeRecipe("grandma");
+	await applet.changeRecipe("grandma");
 
 	applet.resolutionSmall = 500;
 	applet.resolutionLarge = 1500;

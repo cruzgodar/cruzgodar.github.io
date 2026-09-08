@@ -32,7 +32,7 @@ import {
 import { initPageContents } from "./pageContent.js";
 import { siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
-import { animate, asyncFetch } from "./utils.js";
+import { animate, asyncFetch, sleep } from "./utils.js";
 
 export let pageShown = true;
 
@@ -99,17 +99,44 @@ export async function loadPage(noFadeIn = false)
 
 	promises.push(loadCustomScripts());
 
-	
-	
-	await Promise.all(promises);
 
-	resolveLayoutReady();
 
-	await fadeInPage(noFadeIn);
+	try
+	{
+		await Promise.all(promises);
+	}
 
-	siteLoaded = true;
+	catch(ex)
+	{
+		// A page's style or script failing to load leaves the page degraded,
+		// but the alternative is worse: without the finally below, the redirect
+		// lock would stay held and every later navigation would be a no-op.
+		console.error(ex);
+	}
 
-	setCurrentlyRedirecting(false);
+	finally
+	{
+		resolveLayoutReady();
+
+		try
+		{
+			await fadeInPage(noFadeIn);
+		}
+
+		catch(ex)
+		{
+			// The transition is the last thing standing between the user and a
+			// usable page, so it must not be able to take the page down with it:
+			// show the content unanimated and carry on to release the lock.
+			console.error(ex);
+
+			pageElement.style.opacity = 1;
+		}
+
+		siteLoaded = true;
+
+		setCurrentlyRedirecting(false);
+	}
 }
 
 
@@ -144,8 +171,28 @@ async function loadCustomScripts()
 	{
 		return;
 	}
-	
-	const module = await import(`${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`);
+
+	const url = `${pageUrl}/scripts/index.${window.DEBUG ? "js" : "min.js"}`;
+
+	let module;
+
+	try
+	{
+		module = await import(url);
+	}
+
+	catch(ex)
+	{
+		console.error(ex);
+
+		await sleep(200);
+
+		// Browsers remember a failed module in the module map, so importing the
+		// same specifier again just replays the failure. A query param makes it
+		// a distinct specifier and forces a real request. Relative imports
+		// inside the module resolve without it, so this only affects this file.
+		module = await import(`${url}?retry=${Date.now()}`);
+	}
 
 	module.default();
 }
@@ -295,7 +342,7 @@ function setLinks()
 
 export function disableLinks()
 {
-	for (const link of $$("a:not(.real-link)"))
+	for (const link of document.body.querySelectorAll("a:not(.real-link)"))
 	{
 		link.addEventListener("click", e => e.preventDefault());
 	}
@@ -410,8 +457,18 @@ function initSolutions()
 		return;
 	}
 
-	for (const e of $$(".notes-exc .solution"))
+	// Stopgap until I fix this with Spruce
+
+	const showSolutionsPages1180 = [
+		"/teaching/yale/1180/notes/calc-1-review",
+		"/teaching/yale/1180/notes/coordinate-systems"
+	];
+
+	for (const e of $$(".solution"))
 	{
-		packageSolution(e, true);
+		const showSolutionButton = !pageUrl.includes("1180")
+			|| showSolutionsPages1180.includes(pageUrl);
+
+		packageSolution(e, showSolutionButton);
 	}
 }

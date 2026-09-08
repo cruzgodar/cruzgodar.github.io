@@ -45,6 +45,7 @@
 				</div>
 				
 				<div style="margin-top: 20px">
+<<<<<<< HEAD:home/index.sp
 					@imageLinks([
 						"/gallery",
 						"/applets",
@@ -52,6 +53,21 @@
 						"/math",
 						"/about",
 					])
+=======
+					### image-links
+						/gallery
+						
+						/applets
+						
+						/teaching
+
+						/projects
+						
+						/math
+						
+						/about
+					###
+>>>>>>> main:home/index.htmdl
 				</div>
 
 				@debug[[

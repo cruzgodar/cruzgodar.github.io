@@ -15,9 +15,9 @@ function load({ slide })
 	applet = new KaleidoscopicIFSFractals({
 		canvas,
 		shape: "tetrahedron",
-		theta: 6.7483,
-		phi: 2.4012,
-		resolution: 750,
+		theta: 1.5393,
+		phi: 2.4907,
+		sceneOrigin: [-0.0072, -1.3808, 1.9211],
 	});
 	
 	applet.changeScale(1.1679);

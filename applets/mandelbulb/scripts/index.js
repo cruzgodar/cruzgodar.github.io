@@ -9,8 +9,21 @@ import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
+	const xrFramebufferScaleSlider = new Slider({
+		element: $("#xr-framebuffer-scale-slider"),
+		name: "VR Quality",
+		value: 0.5,
+		min: 0.1,
+		max: 1,
+		snapThreshhold: 0.1,
+		snapPoints: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+		percent: true,
+		onInput: onSliderInput
+	});
+	
 	const applet = new Mandelbulb({
 		canvas: $("#output-canvas"),
+		xrFramebufferScaleSlider
 	});
 
 	new ToggleButton({
@@ -32,9 +45,9 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 400,
-		minValue: 100,
-		maxValue: 750,
+		value: 1000,
+		minValue: 300,
+		maxValue: 2000,
 		onInput: changeResolution
 	});
 
@@ -51,7 +64,7 @@ export default function()
 	const cXSlider = new Slider({
 		element: $("#c-x-slider"),
 		name: "$c_x$",
-		value: 0,
+		value: 0.8,
 		min: -1,
 		max: 1,
 		snapPoints: [0],
@@ -114,7 +127,8 @@ export default function()
 	const lockOnOriginCheckbox = new Checkbox({
 		element: $("#lock-on-origin-checkbox"),
 		name: "Lock on origin",
-		checked: true,
+		checked: applet.lockedOnOrigin,
+		persistState: false,
 		onInput: onCheckboxInput
 	});
 
@@ -138,6 +152,10 @@ export default function()
 				rotationAngleZSlider.value
 			)
 		});
+
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
+
+		applet.needNewFrame = true;
 	}
 
 	function changeResolution()
@@ -154,6 +172,11 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 		) {
+			if (applet.animeLoop)
+			{
+				applet.animeLoop.pause();
+			}
+
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
 		}

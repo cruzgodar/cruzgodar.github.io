@@ -1,6 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class AbelianSandpiles extends AnimationFrameApplet
 {
@@ -237,7 +237,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGL(hiddenCanvas, optionsUpdate);
 
 		const options = {
 			shader: shaderDraw,
@@ -261,19 +261,24 @@ export class AbelianSandpiles extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		this.canvas.style.imageRendering = "pixelated";
 	}
 
 
 
-	run({
+	async run({
 		resolution = 100,
 		numGrains = 10000,
 		floodGrains = 0,
 		computationsPerFrame = 25,
 		palette = [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	}) {
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonUpdate.allShadersReady(),
+		]);
+
 		this.resolution = resolution + 1 - (resolution % 2);
 		this.resolutionUpdate = Math.ceil(this.resolution / 2);
 		this.numGrains = numGrains;
@@ -327,6 +332,7 @@ export class AbelianSandpiles extends AnimationFrameApplet
 		});
 
 		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("output");
 
 
 

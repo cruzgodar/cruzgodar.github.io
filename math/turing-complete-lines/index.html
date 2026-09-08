@@ -7,7 +7,8 @@
 	<meta property="og:title" content="Turing Complete Lines: An Introduction to Lambda Calculus"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content="https://cruzgodar.com/math/turing-complete-lines/"/>
-	<meta property="og:image" content="https://cruzgodar.com/math/turing-complete-lines/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/math/turing-complete-lines/cover.jpg"/>
+	<meta property="og:image:type" content="image/jpeg"/>
 	<meta property="og:locale" content="en_US"/>
 	<meta property="og:site_name" content="Cruz Godar"/>
 
@@ -29,6 +30,19 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
 
 	<link rel="stylesheet" type="text/css" href="index.css">
+	<script>
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>
@@ -256,7 +270,7 @@
 
 			<p class="build">The design <code>(λn.n(λg.λa.λb.g(>a)(*ab))(λa.λb.b)11)4</code> looks bad, but isn't terrible if we explain it in symbols: if we let <code>L := λg.λa.λb.g(>a)(*ab)</code>, then</p>
 
-			<p class="build">$$\begin{align*} L(g) &= (a, b) \mapsto g(a + 1, ab) \\ L(L(g)) &= (a, b) \mapsto L(g)(a + 1, ab) \\ &= (a, b) \mapsto g(a + 2, (a+1)ab) \end{align*}$$</p>
+			<p class="build">$$\begin{alignat*} L(g) &= (a, b) \mapsto g(a + 1, ab) \\ L(L(g)) &= (a, b) \mapsto L(g)(a + 1, ab) \\ &= (a, b) \mapsto g(a + 2, (a+1)ab) \end{alignat*}$$</p>
 		</div>
 
 		<div>

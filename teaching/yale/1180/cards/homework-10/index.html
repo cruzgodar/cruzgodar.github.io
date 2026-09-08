@@ -10,7 +10,9 @@
 
 	<meta property="og:url" content="https://cruzgodar.com/teaching/yale/1180/cards/homework-10"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/teaching/yale/1180/cards/homework-10/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/teaching/yale/1180/cards/homework-10/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="Due Sunday, December 7th at 11:59 PM">
 
@@ -60,6 +62,31 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
+	<script>
+		// Cloudflare Web Analytics. Inline, and parsed with the document on
+		// purpose. When this was injected from main.js instead it started
+		// ~1073ms into the page, about 770ms after the load event had already
+		// fired, and reporting collapsed --- / fell from 137 page loads a day
+		// to 8. The beacon has to be there before the page finishes loading.
+		//
+		// Inline rather than a separate file so there is nothing for an ad
+		// blocker to match on, and nothing that can take the module graph down
+		// with it the way scripts/src/beacon.min.js once did.
+		//
+		// spa is off: with it on, the beacon counts every History API change as
+		// a page view, and applet controls rewrite the url constantly.
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>
@@ -74,23 +101,12 @@
 	</div>
 
 	<div id="height-measurer"></div>
-
-	<script>
-		window.MathJax =
-		{
-			tex:
-			{
-				inlineMath: [["$", "$"], ["\\(", "\\)"]]
-			}
-		};
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
 	
 	<script type="module">
 		const params = new URLSearchParams(window.location.search);
 
-		window.DEBUG = params.get("debug") === "1";
+		window.OFFLINE = params.get("debug") === "2";
+		window.DEBUG = window.OFFLINE || params.get("debug") === "1";
 
 		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("/teaching/yale/1180/cards/homework-10"));
 	</script>

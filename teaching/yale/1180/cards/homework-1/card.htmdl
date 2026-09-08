@@ -1,66 +1,71 @@
-### card homework-1 "Homework 1"
+### card homework-1 "Problem Set 1"
 	
-	*Due Monday, September 8th at 11:59 PM*
+	*Due Thursday, September 10th at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
-
-	### buttons
-		download-homework-1-pdf
-		download-homework-1-tex
-	###
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted. I write most of my problems to not require calculators, but you may find some of the problems require them --- that's perfectly fine! All exam problems will be written without the need for calculators.
 
 	- - -
+
+	Questions 5# concern the following graph of the function $f(x)$.
 	
+<<<<<<< HEAD
 	In problems 4#, sketch a graph of the equation in $#R#^3$. Check your answers with [Desmos 3D](https://www.desmos.com/3d).
+=======
+	### desmos limits
+>>>>>>> main
 
-	#. $$y = x^3$$.
+	#. Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.
 
-	#. $$z = 2x + 1$$.
+	#. Find $$\lim_{x \to 0^+} f(x)$$ and $$\lim_{x \to 0^-} f(x)$$.
 
-	#. $$y^2 + z^2 = 2$$.
+	#. Using interval notation, list all of the $x$-values where $f$ is continuous and all of the $x$-values where $f$ is discontinuous.
 
-	#. $$x^2 + \left( \frac{y}{2} \right)^2 + \left( \frac{z}{3} \right)^2 = 1$$ (hint: think about the graph's intersection with the coordinate planes).	
+	#. Find $$\lim_{x \to \infty} f(x)$$ and $$\lim_{x \to -\infty} f(x)$$. You can zoom out on the graph!
+
+	#. Using interval notation, list all of the $x$-values where $f$ is differentiable and all of the $x$-values where $f$ is nondifferentiable.
 
 	- - -
 
+<<<<<<< HEAD
 	#. What is an equation for the set of points in $#R#^3$ that are distance $3$ from the point $(2, 3, -1)$? What does this shape of this set look like? Check your answer with [Desmos 3D](https://www.desmos.com/3d).
 
 	#. What is an equation for a cylinder in $#R#^3$ parallel to the $y$-axis, with radius $4$, and whose central axis contains the point $(2, 3, 1)$? Check your answer with [Desmos 3D](https://www.desmos.com/3d).
+=======
+	In questions 2#, find all of the critical points of the given function on the given interval, and classify them as local maxima, local minima, or inconclusive using the second derivative test. Then find the absolute maximum and minimum of the function.
+
+	#. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
+
+	#. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
+>>>>>>> main
 
 	- - -
 
-	#. Let $\vec{v} = \left< 0, 3, 4 \right>$ and let $\vec{w} = \vec{i} - 2\vec{j} + \vec{k}$.
+	In questions 2#, find the derivative of the given function.
 
-	> a) Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
+	#. $$p(t) = \frac{\tan(t)}{t^2 + 1}$$.
 
-	> b) Sketch $\vec{v}$ and $\vec{w}$ in $#R#^3$.
-
-	> c) Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form and sketch them both.
-
-	> d) Find unit vectors in the same direction as $\vec{v}$ and $\vec{w}$, respectively.
+	#. $$r(z) = \ln\left( z\cos(z) \right)$$.
 
 	- - -
 
-	#. The sum of the forces acting on an object is called the **net force**, and an object is said to be in static equilibrium if the net force acting on it is $\vec{0}$. Suppose the forces $F_1 = \left< 1, 4, -3 \right>$, $F_2 = \left< 0, 0, 5 \right>$, $F_3 = \left< 4, 5, 0 \right>$, and an unknown force $F_4$ are acting on an object that is in static equilibrium. Find $F_4$.
+	Questions 4# concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the **demand function**.
+
+	#. Find $D'(p)$ and the units in which it is measured. Is it positive or negative in general? Why does that make sense in context?
+
+	#. The **price elasticity of demand** measures how sensitive buyers are to price. It is defined as
+	$$
+		E(p) = -p\frac{D'(p)}{D(p)}
+	$$
+	and measures (percent change in demand) per (percent change in price). Find $E(p)$ for this store, and find the price at which $E(p) = 1$, which is when demand is called **unit elastic**.
+
+	#. The store's weekly revenue is $R(p) = pD(p)$. Optimize $R(p)$ on $[0, \infty)$, and classify it with the second derivative test. What is the store's largest possible weekly revenue?
+
+	#. Compare your answers to questions #-2 and #-1. Then show that $R'(p) = D(p)\left( 1 - E(p) \right)$ for *any* differentiable demand function $D$, and explain what that says about the relationship between revenue and price elasticity of demand.
 
 	- - -
 
-	#. For each of the following points $q$, find all $y$-values so that the point $p = (6, y, -8)$ is exactly $5$ units away from $q$, or explain why no such $y$-values exist.
+	#. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
 
-	> a) $q = (5, 1, -5)$.
-
-	> b) $q = (2, -4, -2)$.
-
-	> c) $q = (9, 9, -12)$.
-
-	- - -
-
-	#. Let's try to find the general form of a unit vector in $#R#^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it's sometimes useful to have two parameters we can freely vary instead of three parameters with a restriction.
-
-	> a) Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane. Find a general formula for $\vec{u}$ in terms of its angle $\theta$ counterclockwise from the positive $x$-axis when drawn this way.
-
-	> b) If $u_3 \neq 0$, then we can think of $\vec{u}$ as being rotated up from the $xy$-plane, as in the following graph. If we rotate by some angle $\varphi$, what is the formula for $\vec{u}$? Hint: fix $\theta$ and think of the direction of the vector in the $xy$-plane as a single axis so that the problem becomes 2D again. With this perspective, what is $u_3$ in terms of $\varphi$?
-
-	### desmos unitVectorsSpherical
+	#. Choose up to three questions (and at least one) on which you would like detailed feedback.
 
 ###

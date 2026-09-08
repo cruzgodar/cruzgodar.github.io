@@ -13,6 +13,14 @@ export default function()
 
 	function updateNameTextOpacity()
 	{
+		// Navigating away removes the page element, and with it these two. That's
+		// the loop's cue to stop -- without it, every visit to the homepage would
+		// leave another copy of it running for the life of the tab.
+		if (!cruzTextElement.isConnected)
+		{
+			return;
+		}
+
 		cruzTextElement.parentNode.style.opacity = nameTextOpacity;
 		godarTextElement.parentNode.style.opacity = nameTextOpacity;
 

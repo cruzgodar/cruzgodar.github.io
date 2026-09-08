@@ -1,7 +1,7 @@
 import { getVectorGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const numIterationsByNumVertices = {
 	3: 50,
@@ -16,7 +16,8 @@ const maxBrightnessAdjustByNumVertices = {
 	4: 1,
 	5: .9,
 	6: 1.5,
-	7: 1.3,
+	7: 0.7,
+	8: 0.7
 };
 
 export class ChaosGame extends AnimationFrameApplet
@@ -51,7 +52,7 @@ export class ChaosGame extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGL(hiddenCanvas, optionsUpdate);
 
 
 
@@ -107,13 +108,17 @@ export class ChaosGame extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 	}
 
 
 
-	run({ resolution = 1000, numVertices = 5 })
+	async run({ resolution = 1000, numVertices = 5 })
 	{
+		// A previous run's loop is still going, and everything below -- including the await --
+		// happens while it's free to call drawFrame() on half-rebuilt state.
+		this.pause();
+
 		this.resolution = resolution;
 		this.computeResolution = Math.round(resolution / 2);
 
@@ -245,6 +250,8 @@ export class ChaosGame extends AnimationFrameApplet
 			shader: shaderUpdate,
 		});
 
+		this.wilsonUpdate.useShader("update");
+
 		this.wilsonUpdate.setTexture({
 			id: "update2",
 			data: this.texture
@@ -252,9 +259,18 @@ export class ChaosGame extends AnimationFrameApplet
 
 		
 
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonUpdate.allShadersReady(),
+		]);
+
+		// Reset the counter only once nothing else can touch it. A stale loop's prepareFrame()
+		// still increments frame while we're awaiting, and its parity is what decides which
+		// half of the ping-pong is read first -- get it wrong and the first frame samples the
+		// empty buffer instead of the seeded one.
 		this.frame = 0;
 		this.numIterations = numIterationsByNumVertices[numVertices] ?? 200;
-		
+
 		this.resume();
 	}
 
@@ -266,6 +282,13 @@ export class ChaosGame extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		// pause() only stops the loop from scheduling another frame, so a callback that was
+		// already queued still lands here once.
+		if (this.animationPaused)
+		{
+			return;
+		}
+
 		const textureId = this.frame % 2 === 0 ? "update1" : "update2";
 		const framebufferId = this.frame % 2 === 0 ? "update2" : "update1";
 
@@ -318,8 +341,10 @@ export class ChaosGame extends AnimationFrameApplet
 			data: this.imageData
 		});
 
+		// The vertices input goes up to 8, which has no entry here -- without the fallback
+		// that's a NaN uniform and a black canvas.
 		const maxBrightnessAdjust = Math.min(this.frame / 15, 1)
-			* maxBrightnessAdjustByNumVertices[this.numVertices];
+			* (maxBrightnessAdjustByNumVertices[this.numVertices] ?? 0.5);
 
 		this.wilson.setUniforms({ maxBrightness: this.maxBrightness / maxBrightnessAdjust });
 

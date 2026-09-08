@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class EllipticCurve extends AnimationFrameApplet
 {
@@ -129,7 +129,7 @@ export class EllipticCurve extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.createFramebufferTexturePair({
 			id: "0",
@@ -137,14 +137,17 @@ export class EllipticCurve extends AnimationFrameApplet
 		});
 
 		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("0");
 
 		this.resume();
 	}
 
 
 
-	run({ g2, g3 })
+	async run({ g2, g3 })
 	{
+		await this.wilson.allShadersReady();
+		
 		this.g2 = g2;
 		this.g3 = g3;
 

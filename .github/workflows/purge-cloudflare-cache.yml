@@ -1,0 +1,73 @@
+name: Purge Cloudflare cache
+
+# Cloudflare has no idea when GitHub Pages redeploys, and nothing on this site
+# is content-hashed --- main.min.js is always main.min.js --- so a new build
+# reuses every url and the edge would happily keep serving the old files until
+# the edge TTL lapses. This purges the edge once each deploy actually goes live.
+
+on:
+  # Pages creates a deployment in the github-pages environment on every push to
+  # main. Triggering on its status (rather than on push) means the purge waits
+  # for the build to finish --- purging before that would just refill the cache
+  # from the previous build and make the staleness worse.
+  deployment_status:
+
+  # Manual escape hatch, for when a purge is needed without a deploy.
+  workflow_dispatch:
+
+# Nothing here touches the repo; it only calls the Cloudflare API.
+permissions: {}
+
+concurrency:
+  group: purge-cloudflare-cache
+  cancel-in-progress: false
+
+jobs:
+  purge:
+    # deployment_status fires for every state (queued, in_progress, failure,
+    # ...), so filter down to a Pages deploy that actually succeeded.
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || (github.event.deployment_status.state == 'success'
+          && github.event.deployment.environment == 'github-pages')
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Let GitHub's CDN pick up the new build
+        # Pages sits behind Fastly, which can still serve the previous response
+        # for a moment after the deployment is marked successful. Purging inside
+        # that window would re-cache the old files for a full edge TTL.
+        run: sleep 30
+
+      - name: Purge everything
+        env:
+          ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${ZONE_ID:-}" ] || [ -z "${API_TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_ZONE_ID and CLOUDFLARE_API_TOKEN must both be set as repository secrets."
+            exit 1
+          fi
+
+          status=$(curl -sS -o response.json -w '%{http_code}' \
+            -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+
+          echo "HTTP ${status}"
+          cat response.json
+          echo
+
+          # Fail loudly. A silent purge failure means the edge serves the
+          # previous build until the edge TTL lapses, which is the whole month.
+          if [ "${status}" != "200" ] || ! grep -q '"success":[[:space:]]*true' response.json; then
+            echo "::error::Cloudflare purge failed --- the edge is still serving the previous build."
+            exit 1
+          fi
+
+          echo "Purged. The edge will refill from the new build on the next request to each url."

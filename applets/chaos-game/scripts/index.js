@@ -21,7 +21,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 1500,
+		value: 1000,
 		minValue: 100,
 		maxValue: 3000,
 		onEnter: run,
@@ -30,9 +30,9 @@ export default function()
 	const numVerticesInput = new TextBox({
 		element: $("#num-vertices-input"),
 		name: "Vertices",
-		value: 5,
+		value: 6,
 		minValue: 3,
-		maxValue: 7,
+		maxValue: 8,
 		onEnter: run,
 	});
 
@@ -43,4 +43,6 @@ export default function()
 			numVertices: numVerticesInput.value
 		});
 	}
+
+	run();
 }

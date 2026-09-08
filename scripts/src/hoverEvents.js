@@ -17,14 +17,19 @@ const elementSelectorsWithScale =
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	".image-link:not([data-card-id])": {
+	".image-link:not([data-card-id], .no-scale)": {
 		scale: 1.04,
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	".image-link[data-card-id]": {
+	".image-link[data-card-id]:not(.no-scale)": {
 		scale: 1.04,
 		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: false
+	},
+	".section-text-with-image-link": {
+		scale: 1.04,
+		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
 	".text-button:not(.dropdown, .nav-button)": {
@@ -98,9 +103,13 @@ export function initHoverEvents()
 	{
 		element.addEventListener("mouseenter", () =>
 		{
-			if (element.href[0] === "/")
+			// Not element.href -- that resolves to an absolute url, so it always
+			// starts with "h" and this check never passed.
+			const href = element.getAttribute("href");
+
+			if (href && href[0] === "/")
 			{
-				prefetchPage(element.href);
+				prefetchPage(href);
 			}
 		});
 	}

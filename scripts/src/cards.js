@@ -2,6 +2,7 @@ import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
+import { updateTapClickElements } from "./interaction.js";
 import { $$, pageElement, pageUrl } from "./main.js";
 import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
@@ -105,7 +106,8 @@ export async function openCard({
 		
 		await Promise.all([
 			typesetMath(),
-			loadImages()
+			loadImages(),
+			updateTapClickElements(),
 		]);
 
 		onLoadExternalCard(currentCard, id);

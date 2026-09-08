@@ -131,8 +131,9 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 	animationRunning = false;
 	needReload = false;
-	reloaded = Promise.resolve();
-	reloadedResolve;
+	// Resolves when the currently-running reduction loop unwinds.
+	animationFinished = Promise.resolve();
+	animationFinishedResolve;
 
 	expressionTextarea;
 
@@ -171,19 +172,23 @@ export class LambdaCalculus extends AnimationFrameApplet
 		betaReduce = false,
 		maxBetaReductions = Infinity
 	}) {
-		if (this.needReload)
+		// Stop any reduction that's still running and wait for it to unwind before
+		// drawing anything new. Looping here handles several run() calls landing at
+		// once: whichever one resumes last cancels the loop the others started.
+		while (this.animationRunning)
 		{
-			return;
+			this.needReload = true;
+
+			// A paused loop would never reach a point where it can notice needReload.
+			this.animationPaused = false;
+
+			await this.animationFinished;
 		}
 
-		if (this.animationRunning)
-		{
-			this.reloaded = new Promise(resolve => this.reloadedResolve = resolve);
-			this.needReload = true;
-			await this.reloaded;
-			this.needReload = false;
-			this.animationRunning = false;
-		}
+		this.needReload = false;
+
+		// A previous slide or a paused animation may have left this set.
+		this.animationPaused = false;
 
 		expressionString = expressionString.replaceAll(/[\n\t\s.]/g, "");
 
@@ -1336,23 +1341,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 		];
 	}
 
-	findSubstitutionResult(pre, post)
+	// Finds the redex that got reduced, along with the subtree it turned into.
+	findSubstitution(pre, post)
 	{
 		if (pre.type === APPLICATION && pre.function.type === LAMBDA
 			&& (post.type !== APPLICATION || post.function.type !== LAMBDA))
 		{
-			return post;
+			return { redex: pre, result: post };
 		}
 
 		if (pre.type === LAMBDA && post.type === LAMBDA)
 		{
-			return this.findSubstitutionResult(pre.body, post.body);
+			return this.findSubstitution(pre.body, post.body);
 		}
 
 		if (pre.type === APPLICATION && post.type === APPLICATION)
 		{
-			return this.findSubstitutionResult(pre.function, post.function)
-				|| this.findSubstitutionResult(pre.input, post.input);
+			return this.findSubstitution(pre.function, post.function)
+				|| this.findSubstitution(pre.input, post.input);
 		}
 
 		return null;
@@ -1374,15 +1380,18 @@ export class LambdaCalculus extends AnimationFrameApplet
 				&& expression.rectIndex[id].type === LITERAL
 		);
 
-		const substitutionResult = this.findSubstitutionResult(
-			expression, betaReducedExpression
-		);
+		const substitution = this.findSubstitution(expression, betaReducedExpression);
 
 		if (
 			newLiteralRectIds.length === 1
 			&& oldLiteralRectIds.length >= 1
-			&& substitutionResult
-			&& !this.containsApplication(substitutionResult)
+			&& substitution
+			// Only when the argument really is a literal. For anything bigger, the
+			// argument's own rects are the ones that animate into place, and stealing
+			// a literal from them leaves the chunking below with a new rect count
+			// that isn't a multiple of the replacement rect count.
+			&& substitution.redex.input.type === LITERAL
+			&& !this.containsApplication(substitution.result)
 		) {
 			const oldId = oldLiteralRectIds[0];
 			const newId = newLiteralRectIds[0];
@@ -1907,7 +1916,36 @@ export class LambdaCalculus extends AnimationFrameApplet
 		updateExpressionDuringReduction
 	) {
 		this.animationRunning = true;
+		this.animationFinished = new Promise(
+			resolve => this.animationFinishedResolve = resolve
+		);
 
+		// The bookkeeping lives out here so that a throw inside the reduction can't
+		// leave animationRunning stuck on -- that would wedge every later run().
+		try
+		{
+			await this.iterateBetaReductions(
+				expression,
+				maxBetaReductions,
+				updateExpressionDuringReduction
+			);
+		}
+
+		finally
+		{
+			this.worker?.terminate?.();
+
+			this.animationRunning = false;
+			this.animationFinishedResolve?.();
+			this.animationFinishedResolve = undefined;
+		}
+	}
+
+	async iterateBetaReductions(
+		expression,
+		maxBetaReductions,
+		updateExpressionDuringReduction
+	) {
 		let expressionString = this.expressionToString({
 			expression,
 			addHtml: false,
@@ -2077,15 +2115,24 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 				if (this.animationPaused)
 				{
-					await new Promise(resolve => {
-						addTemporaryInterval(setInterval(() =>
+					await new Promise(resolve =>
+					{
+						const intervalId = setInterval(() =>
 						{
-							if (!this.animationPaused)
+							if (!this.animationPaused || this.needReload)
 							{
+								clearInterval(intervalId);
 								resolve();
 							}
-						}), 100);
+						}, 100);
+
+						addTemporaryInterval(intervalId);
 					});
+
+					if (this.needReload)
+					{
+						break outerLoop;
+					}
 				}
 			}
 
@@ -2104,6 +2151,8 @@ export class LambdaCalculus extends AnimationFrameApplet
 
 			if (this.expressionTextarea && updateExpressionDuringReduction)
 			{
+				this.worker?.terminate?.();
+
 				this.worker = this.addTemporaryWorker("/applets/lambda-calculus/scripts/worker.js");
 
 				this.worker.onmessage = e =>
@@ -2137,13 +2186,5 @@ export class LambdaCalculus extends AnimationFrameApplet
 				});
 			}
 		}
-
-		if (this.needReload)
-		{
-			this.needReload = false;
-			this.reloadedResolve();
-		}
-
-		this.animationRunning = false;
 	}
 }

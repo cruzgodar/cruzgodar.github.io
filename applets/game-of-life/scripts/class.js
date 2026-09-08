@@ -1,11 +1,9 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
 {
-	wilsonUpscale;
-
 	gridSize = 100;
 	resolution = 1000;
 
@@ -167,7 +165,7 @@ export class GameOfLife extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, optionsHidden);
 
 
 		
@@ -256,19 +254,24 @@ export class GameOfLife extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 	}
 
 
 
 	// Loads a state paused and draws just the initial frame.
-	run({
+	async run({
 		resolution = 1000,
 		gridSize = 100,
 		state,
 		pauseUpdating = true,
 		onTorus = this.onTorus
 	}) {
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+		]);
+
 		this.gridSize = gridSize;
 		this.resolution = Math.max(resolution, this.gridSize * 2);
 		this.onTorus = onTorus;
@@ -295,6 +298,8 @@ export class GameOfLife extends AnimationFrameApplet
 			height: this.gridSize,
 			textureType: "unsignedByte"
 		});
+
+		this.wilson.useTexture("draw");
 
 		this.wilsonHidden.createFramebufferTexturePair({
 			id: "0",

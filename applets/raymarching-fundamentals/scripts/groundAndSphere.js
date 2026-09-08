@@ -14,7 +14,7 @@ export class GroundAndSphere extends RaymarchApplet
 			uniform int resolution;
 			uniform float uvScale;
 			uniform vec2 uvCenter;
-			uniform vec3 cameraPos;
+			uniform vec3 sceneOrigin;
 			uniform vec3 imagePlaneCenterPos;
 			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
@@ -172,7 +172,7 @@ export class GroundAndSphere extends RaymarchApplet
 					pow(
 						(3.0 - distance(
 							normalize(rayDirectionVec),
-							normalize(lightPos - cameraPos)
+							normalize(lightPos - sceneOrigin)
 						)) / 2.99,
 						float(20)
 					),
@@ -274,10 +274,10 @@ export class GroundAndSphere extends RaymarchApplet
 				
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, sceneOrigin) * fogScaling * fogAmount));
 			}
 
-			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
+			// Unlike in raymarch(), startPos is replacing sceneOrigin, and rayDirectionVec is precomputed.
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
 				float t = 0.0;
@@ -351,7 +351,7 @@ export class GroundAndSphere extends RaymarchApplet
 				
 
 				
-					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * 0.95, surfaceNormal);
+					vec3 reflectedDirection = reflect(normalize(pos - sceneOrigin) * 0.95, surfaceNormal);
 
 					color = mix(
 						color,
@@ -365,20 +365,20 @@ export class GroundAndSphere extends RaymarchApplet
 				
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, sceneOrigin) * fogScaling * fogAmount));
 			}
 
 
 			
 			vec3 raymarch(vec3 startPos)
 			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * 0.95;
+				vec3 rayDirectionVec = normalize(startPos - sceneOrigin) * 0.95;
 				
 				float t = 0.0;
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = cameraPos + t * rayDirectionVec;
+					vec3 pos = sceneOrigin + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
 
@@ -441,7 +441,7 @@ export class GroundAndSphere extends RaymarchApplet
 			canvas,
 			shader,
 			uniforms,
-			cameraPos: [-0.6568, 1.2449, 1],
+			sceneOrigin: [-0.6568, 1.2449, 1],
 			theta: -1.2209,
 			phi: 1.7904,
 			fogScaling: 0.075,

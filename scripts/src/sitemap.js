@@ -11,6 +11,7 @@ export const sitemap =
 			"/gallery",
 			"/applets",
 			"/teaching",
+			"/projects",
 			"/math",
 			"/about",
 			"/writing",
@@ -36,6 +37,15 @@ export const sitemap =
 		"customStyle": true
 	},
 	
+	"/store":
+	{
+		"title": "Store",
+		
+		"parent": "/home",
+		
+		"children": []
+	},
+	
 	"/applets":
 	{
 		"title": "Applets",
@@ -52,7 +62,6 @@ export const sitemap =
 			"/applets/traffic-model",
 			"/applets/raymarching-fundamentals",
 			"/applets/curved-light",
-			"/applets/hairy-ball-theorem",
 			"/applets/hopf-fibration",
 			"/applets/bernoulli-percolation",
 			"/applets/menger-sponge",
@@ -181,17 +190,6 @@ export const sitemap =
 	"/applets/curved-light":
 	{
 		"title": "Curved Light",
-		
-		"parent": "/applets",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/applets/hairy-ball-theorem":
-	{
-		"title": "The Hairy Ball Theorem",
 		
 		"parent": "/applets",
 		
@@ -1957,16 +1955,16 @@ export const sitemap =
 			"/teaching/yale/1180/notes/dot-and-cross-products",
 			"/teaching/yale/1180/notes/functions-of-multiple-variables",
 			"/teaching/yale/1180/notes/partial-derivatives",
-			"/teaching/yale/1180/notes/the-multivariable-chain-rule",
-			"/teaching/yale/1180/notes/the-gradient",
-			"/teaching/yale/1180/notes/optimization",
-			"/teaching/yale/1180/notes/extreme-value-theorem",
+			"/teaching/yale/1180/notes/multivariable-chain-rule",
+			"/teaching/yale/1180/notes/gradients",
+			"/teaching/yale/1180/notes/multivariable-optimization",
+			"/teaching/yale/1180/notes/boundary-optimization",
 			"/teaching/yale/1180/notes/lagrange-multipliers",
 			"/teaching/yale/1180/notes/vectors-and-matrices",
 			"/teaching/yale/1180/notes/row-reduction",
 			"/teaching/yale/1180/notes/bases",
 			"/teaching/yale/1180/notes/linear-transformations",
-			"/teaching/yale/1180/notes/the-determinant"
+			"/teaching/yale/1180/notes/determinants"
 		],
 
 		"customScript": true
@@ -2027,7 +2025,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-multivariable-chain-rule":
+	"/teaching/yale/1180/notes/multivariable-chain-rule":
 	{
 		"title": "Section 5: The Multivariable Chain Rule",
 		
@@ -2038,7 +2036,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-gradient":
+	"/teaching/yale/1180/notes/gradients":
 	{
 		"title": "Section 6: The Gradient",
 		
@@ -2049,9 +2047,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/optimization":
+	"/teaching/yale/1180/notes/multivariable-optimization":
 	{
-		"title": "Section 7: Optimization",
+		"title": "Section 7: Multivariable Optimization",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2060,9 +2058,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/extreme-value-theorem":
+	"/teaching/yale/1180/notes/boundary-optimization":
 	{
-		"title": "Section 8: The Extreme Value Theorem",
+		"title": "Section 8: Boundary Optimization",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2124,7 +2122,7 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/the-determinant":
+	"/teaching/yale/1180/notes/determinants":
 	{
 		"title": "Section 14: The Determinant",
 		
@@ -2224,6 +2222,62 @@ export const sitemap =
 		"children": []
 	},
 	
+	"/projects":
+	{
+		"title": "Projects",
+		
+		"parent": "/home",
+		
+		"children":
+		[
+			"/projects/lapsa",
+			"/projects/kestrel"
+		],
+
+		"customScript": true,
+
+		"customStyle": true
+	},
+		
+	"/projects/lapsa":
+	{
+		"title": "Lapsa",
+		
+		"parent": "/projects",
+		
+		"children": []
+	},
+	
+	"/projects/kestrel":
+	{
+		"title": "Kestrel",
+		
+		"parent": "/projects",
+		
+		"children":
+		[
+			"/projects/kestrel/privacy-policy"
+		]
+	},
+		
+	"/projects/kestrel/privacy-policy":
+	{
+		"title": "Kestrel Privacy Policy",
+		
+		"parent": "/projects/kestrel",
+		
+		"children": []
+	},
+	
+	"/news":
+	{
+		"title": "News",
+		
+		"parent": "/home",
+		
+		"children": []
+	},
+	
 	"/math":
 	{
 		"title": "Math",
@@ -2238,8 +2292,7 @@ export const sitemap =
 			"/math/light-shadow-world-of-nails",
 			"/math/marys-3-manifold",
 			"/math/grandmas-recipe",
-			"/math/oral-exam",
-			"/math/lapsa"
+			"/math/oral-exam"
 		]
 	},
 		
@@ -2300,15 +2353,6 @@ export const sitemap =
 	"/math/oral-exam":
 	{
 		"title": "Prelude to an Oral Exam",
-		
-		"parent": "/math",
-		
-		"children": []
-	},
-	
-	"/math/lapsa":
-	{
-		"title": "Lapsa",
 		
 		"parent": "/math",
 		

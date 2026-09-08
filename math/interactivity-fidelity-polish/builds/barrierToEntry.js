@@ -32,6 +32,7 @@ function load({ slide })
 
 	applet = new JuliaSetExplorer({
 		canvas,
+		resolution: 1000,
 		generatingCode: "cmul(z, z) + c",
 		worldAdjust: [-0.75, 0]
 	});

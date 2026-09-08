@@ -5,8 +5,10 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 {
 	showCrossSection = false;
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			vec4 z = vec4(pos, 0.0);
 			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
@@ -84,8 +86,8 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 		`;
 
 		const uniforms = {
-			c: [-.54, -.25, -.668],
-			normalVector: [0, -0.9864, 0.1643],
+			c: [-0.5439548649797382, -0.11674042108074509, -0.7010775841165977],
+			normalVector: [0, -0.9864180625901592, 0.16425408912985057],
 			planeTranslation: 1,
 			juliaProportion: 1,
 		};
@@ -97,12 +99,20 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
-			stepFactor: .75,
-			theta: 1.3094,
-			phi: 1.9975,
-			cameraPos: [-0.736138, -2.75197, 1.29509],
+			epsilonScalingFactor: 0.65,
+			surfaceNormalEpsilonFactor: 0.5,
+			theta: 1.269,
+			phi: 1.98,
+			sceneOrigin: [-1.033, -3.316, 1.506],
 			lightPos: [-5, -5, 5],
-			lightBrightness: 1.25,
+			lightBrightness: 1.2,
+			stepFactor: 0.98,
+			overstepFactor: 1.6,
+			useGradientCorrectedOcclusion: true,
+			xrFramebufferScaleSlider,
+
+			coneMarchingScales: [27, 9, 3],
+			coneMarchingMaxMarches: [96, 48, 24],
 		});
 	}
 

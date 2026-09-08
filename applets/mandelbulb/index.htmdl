@@ -2,6 +2,8 @@ The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Tran
 
 The typical Mandelbulb uses a power-8 formula, but any power at least 2 works too. Like the [Kaleidoscopic IFS fractals](/applets/kaleidoscopic-ifs-fractals), we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its [Julias](/applets/julia-set-explorer), every point in space gives rise to a Juliabulb.
 
+This applet can run in a VR headset! Attach one to a Windows PC or open this page in a headset's browser to get started.
+
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
@@ -18,6 +20,7 @@ The typical Mandelbulb uses a power-8 formula, but any power at least 2 works to
 	c-x
 	c-y
 	c-z
+	xr-framebuffer-scale
 ###
 
 ### checkboxes

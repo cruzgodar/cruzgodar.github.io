@@ -2,10 +2,6 @@
 import { applet, canvasBundle } from "../index.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
-const resolution = 1000;
-const maxDepth = 250;
-const maxPixelBrightness = 50;
-
 async function reset({ slide, duration })
 {
 	if (slide.contains(canvasBundle))
@@ -21,11 +17,12 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.changeRecipe("grandma");
-	applet.bakeCoefficients();
+	
 
-
-	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
+	await applet.changeRecipe("grandma");
+	applet.clearFrame();
+	applet.bakeCoefficients([1.25, 0.1], [1.25, -0.1]);
+	applet.needNewFrame = true;
 
 	await changeOpacity({
 		element: canvasBundle,

@@ -28,7 +28,10 @@ async function drawAnnealingGraph()
 	// First, create a bunch of random nodes and draw them.
 	for (let i = 0; i < numNodes; i++)
 	{
-		nodes[i] = [Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)];
+		nodes[i] = [
+			Math.floor((Math.random() * 0.9 + 0.05) * gridSize),
+			Math.floor((Math.random() * 0.9 + 0.05) * gridSize)
+		];
 
 		postMessage([0, nodes[i][1], nodes[i][0], 4, [255, 0, 0]]);
 	}

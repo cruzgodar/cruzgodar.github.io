@@ -4,7 +4,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGL } from "/scripts/wilson.js";
 
 const numLines = 400;
 
@@ -19,7 +19,6 @@ export class FractalSounds extends AnimationFrameApplet
 	wilsonJulia;
 
 	aspectRatio = 1;
-	defaultWorldSize = 4;
 	zoomLevel = 0;
 
 	resolution = 500;
@@ -38,9 +37,14 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	constructor({ canvas, lineDrawerCanvas })
-	{
+	constructor({
+		canvas,
+		lineDrawerCanvas,
+		defaultWorldSize = 4,
+	}) {
 		super(canvas);
+
+		this.defaultWorldSize = defaultWorldSize;
 
 		const optionsJulia =
 		{
@@ -64,7 +68,7 @@ export class FractalSounds extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
+		this.wilsonJulia = new WilsonGL(canvas, optionsJulia);
 
 
 
@@ -72,7 +76,7 @@ export class FractalSounds extends AnimationFrameApplet
 		{
 			canvasWidth: 1500,
 
-			worldWidth: 4,
+			worldWidth: this.defaultWorldSize,
 
 			minWorldX: -3,
 			maxWorldX: 3,
@@ -255,6 +259,8 @@ export class FractalSounds extends AnimationFrameApplet
 		const worldCenterX = this.wilson.worldCenterX;
 		const worldCenterY = this.wilson.worldCenterY;
 
+		const differentWorldCenter = Math.abs(worldCenterX) > 0.05 || Math.abs(worldCenterY) > 0.05;
+
 		const levelsToZoom = Math.abs(
 			Math.min(
 				Math.log2(worldWidth / this.defaultWorldSize),
@@ -262,7 +268,7 @@ export class FractalSounds extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200
@@ -303,6 +309,8 @@ export class FractalSounds extends AnimationFrameApplet
 				codeInterpolation: 0,
 			},
 		});
+
+		await this.wilsonJulia.allShadersReady();
 
 		await animate((t) =>
 		{
@@ -348,9 +356,11 @@ export class FractalSounds extends AnimationFrameApplet
 			},
 		});
 
+		await this.wilsonJulia.allShadersReady();
+
 		this.wilson.resizeWorld({
-			width: 4,
-			height: 4,
+			width: this.defaultWorldSize,
+			height: this.defaultWorldSize,
 			centerX: 0,
 			centerY: 0
 		});

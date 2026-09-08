@@ -7,11 +7,8 @@ export function getExampleBuilds(expression, animationTime = 500)
 	{
 		slide.appendChild(canvasBundle);
 
-		applet.animationRunning = false;
-
 		applet.run({
-			expression,
-			force: true
+			expression
 		});
 	}
 
@@ -26,8 +23,7 @@ export function getExampleBuilds(expression, animationTime = 500)
 
 		applet.run({
 			expression,
-			betaReduce: true,
-			force: true
+			betaReduce: true
 		});
 	}
 

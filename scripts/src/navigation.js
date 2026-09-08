@@ -11,7 +11,6 @@ import {
 import {
 	bannerElement,
 	bannerPages,
-	loadBanner,
 	preloadBanner
 } from "./banners.js";
 import { cardIsOpen, closeCard } from "./cards.js";
@@ -107,6 +106,9 @@ export async function redirect({
 		url = url.slice(0, -1);
 	}
 
+	// Any pending param write belongs to the page we're leaving.
+	flushPersistedState();
+
 	currentlyRedirecting = true;
 
 	const temp = window.scrollY;
@@ -127,9 +129,11 @@ export async function redirect({
 			cardIsOpen ? closeCard() : Promise.resolve()
 		]);
 
-		
-
-		loadBanner({ url });
+		// The incoming banner is warm in the cache now thanks to preloadBanner.
+		// initBanner() does the rest once the new html is actually in the dom --
+		// running it here would point bannerElement at the outgoing page's
+		// banner, and everything else it does is either undone by unloadPage()
+		// below or redone by initBanner() a moment later.
 
 		if (url in forceThemePages)
 		{
@@ -162,14 +166,48 @@ export async function redirect({
 	}
 
 
-	if (siteSettings.reduceMotion && document.startViewTransition)
+	try
 	{
-		await document.startViewTransition(swapPageContents).finished;
+		if (siteSettings.reduceMotion && document.startViewTransition)
+		{
+			const transition = document.startViewTransition(swapPageContents);
+
+			// A view transition hands back three promises and we only await
+			// .finished. An unobserved rejection on either of the others shows
+			// up as an uncaught error in the console -- .ready rejects with an
+			// InvalidStateError whenever a transition is superseded, and
+			// .updateCallbackDone rejects with whatever swapPageContents threw.
+			// .finished still rejects too, so the catch below is what acts.
+			transition.ready.catch(() => {});
+			transition.updateCallbackDone.catch(() => {});
+
+			await transition.finished;
+		}
+
+		else
+		{
+			await swapPageContents();
+		}
 	}
 
-	else
+	catch(ex)
 	{
-		await swapPageContents();
+		// The new page's html is fetched before anything is torn down, so a
+		// failure here leaves the current page intact -- just faded out. Fade it
+		// back in and release the lock, since otherwise redirect() would return
+		// early forever and every later navigation would silently do nothing.
+		console.error(ex);
+
+		pageElement.style.opacity = 1;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 1;
+		}
+
+		currentlyRedirecting = false;
+
+		return;
 	}
 
 
@@ -282,6 +320,49 @@ export function getDisplayUrl(additionalQueryParams = {})
 	displayUrl = displayUrl + (queryParams ? `/?${queryParams}` : "");
 
 	return displayUrl;
+}
+
+
+
+// Input components used to call history.replaceState() directly on every input
+// event. A textarea fires one per keystroke, which the Cloudflare Web Analytics
+// beacon logs as a separate pageload --- /applets/lambda-calculus was reporting
+// 70,643 pageloads against 280 real visits because of it.
+//
+// Pending params accumulate instead of replacing each other: getQueryParams()
+// merges into the *current* url, so dropping an intermediate call would lose
+// that component's param entirely rather than just delaying it.
+
+const persistedStateDelay = 500;
+
+let pendingPersistedParams = {};
+let persistedStateTimeoutId;
+
+export function flushPersistedState()
+{
+	clearTimeout(persistedStateTimeoutId);
+
+	persistedStateTimeoutId = undefined;
+
+	if (Object.keys(pendingPersistedParams).length === 0)
+	{
+		return;
+	}
+
+	const params = pendingPersistedParams;
+
+	pendingPersistedParams = {};
+
+	window.history.replaceState({ url: pageUrl }, "", getDisplayUrl(params));
+}
+
+export function setPersistedState(additionalQueryParams = {})
+{
+	Object.assign(pendingPersistedParams, additionalQueryParams);
+
+	clearTimeout(persistedStateTimeoutId);
+
+	persistedStateTimeoutId = setTimeout(flushPersistedState, persistedStateDelay);
 }
 
 
@@ -485,7 +566,20 @@ export async function prefetchPage(url)
 {
 	url = url.replace(/^https*:\/\/.+?(\/.+)$/, (match, $1) => $1);
 
-	if (urlsFetched.has(url))
+	// Strip any query string or hash, then the trailing slash, so the url
+	// matches the keys in the sitemap.
+	url = url.replace(/[?#].*$/, "");
+
+	if (url[url.length - 1] === "/")
+	{
+		url = url.slice(0, -1);
+	}
+
+	const sitemapEntry = sitemap[url];
+
+	// Anything not in the sitemap has no data.html to prefetch, and asking for
+	// one is a guaranteed 404.
+	if (!sitemapEntry || urlsFetched.has(url))
 	{
 		return;
 	}
@@ -498,22 +592,27 @@ export async function prefetchPage(url)
 	{
 		urlsToFetch.push(`${url}/banners/small.webp`);
 	}
-	
-	const sitemapEntry = sitemap[url];
 
-	if (sitemapEntry?.customScript)
+	if (sitemapEntry.customScript)
 	{
 		urlsToFetch.push(`${url}/scripts/index.min.js`);
 	}
 
-	if (sitemapEntry?.customStyle)
+	if (sitemapEntry.customStyle)
 	{
 		urlsToFetch.push(`${url}/style/index.min.css`);
 	}
 
-	const promise = Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+	try
+	{
+		await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
+	}
 
-	promise.catch(() => urlsFetched.delete(url));
-
-	await promise;
+	// eslint-disable-next-line no-unused-vars
+	catch(_ex)
+	{
+		// A prefetch is pure optimization -- if it fails, drop it from the
+		// cache set so the real navigation tries again, and stay quiet.
+		urlsFetched.delete(url);
+	}
 }

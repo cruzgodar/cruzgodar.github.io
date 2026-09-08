@@ -5,7 +5,7 @@ import {
 	addTemporaryParam,
 	pageUrl
 } from "../src/main.js";
-import { getDisplayUrl, redirect } from "../src/navigation.js";
+import { redirect, setPersistedState } from "../src/navigation.js";
 import { sitemap } from "../src/sitemap.js";
 import { Dropdown } from "./dropdowns.js";
 import { InputElement } from "./inputElement.js";
@@ -97,27 +97,32 @@ export class DownloadHighResButton extends Dropdown
 			"1k": "1K",
 			"2k": "2K",
 			"4k": "4K",
-			"8k": "8K"
+			"8k": "8K",
+			...(window.DEBUG && { "16k": "16K" })
 		};
 
 		const resolutions = {
 			"1k": 1024,
 			"2k": 2048,
 			"4k": 4096,
-			"8k": 8128
+			"8k": 8128,
+			"16k": 16384
 		};
 
-		function onInput()
+		async function onInput()
 		{
 			const resolution = resolutions[this.value];
 
 			if (applet.downloadHighResFrame)
 			{
-				applet.downloadHighResFrame(filename(), resolution);
+				await applet.downloadHighResFrame(filename(), resolution);
 				return;
 			}
 
-			applet.wilson.downloadHighResFrame(filename(), resolution);
+			await applet.wilson.downloadHighResFrame({
+				filename: filename(),
+				resolution
+			});
 		}
 
 		super({
@@ -173,13 +178,11 @@ export class ToggleButton extends Button
 			{
 				if (this.persistState)
 				{
-					window.history.replaceState(
-						{ url: pageUrl },
-						"",
-						getDisplayUrl({ [this.element.id]: this.state ? "1" : "0" })
-					);
+					setPersistedState({ [this.element.id]: this.state ? "1" : "0" });
 				}
 			}
+
+			requestAnimationFrame(equalizeTextButtons);
 
 			await changeOpacity({ element: this.element, opacity: 1 });
 
@@ -258,11 +261,7 @@ export class ToggleButton extends Button
 
 			if (this.persistState)
 			{
-				window.history.replaceState(
-					{ url: pageUrl },
-					"",
-					getDisplayUrl({ [this.element.id]: this.state ? "1" : "0" })
-				);
+				setPersistedState({ [this.element.id]: this.state ? "1" : "0" });
 			}
 
 			this.currentlyAnimating = true;
@@ -270,6 +269,8 @@ export class ToggleButton extends Button
 			await changeOpacity({ element: this.element, opacity: 0 });
 			
 			this.element.textContent = this.state ? this.name1 : this.name0;
+
+			requestAnimationFrame(equalizeTextButtons);
 
 			await changeOpacity({ element: this.element, opacity: 1 });
 

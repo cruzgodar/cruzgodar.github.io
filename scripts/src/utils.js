@@ -88,11 +88,58 @@ export function downloadString(text, filename)
 	URL.revokeObjectURL(url);
 }
 
+// GitHub Pages occasionally sheds burst load with a 5xx, and without a status
+// check the error page's html gets spliced straight into the page as content or
+// as a <style> tag. Check the status and give transient failures a few tries.
+const numFetchAttempts = 3;
+
 export async function asyncFetch(url)
 {
-	const response = await fetch(url);
-	const text = await response.text();
-	return text;
+	let lastError;
+
+	for (let attempt = 0; attempt < numFetchAttempts; attempt++)
+	{
+		if (attempt !== 0)
+		{
+			// 200ms, then 600ms.
+			await sleep(200 * 3 ** (attempt - 1));
+		}
+
+		try
+		{
+			const response = await fetch(url);
+
+			if (!response.ok)
+			{
+				// Nothing on the site is generated on the fly, so a 4xx is a
+				// missing file and will never succeed. Only retry 5xx and 429.
+				if (response.status !== 429 && response.status < 500)
+				{
+					throw new Error(`Failed to fetch ${url}: ${response.status}`);
+				}
+
+				lastError = new Error(`Failed to fetch ${url}: ${response.status}`);
+
+				continue;
+			}
+
+			return await response.text();
+		}
+
+		catch(ex)
+		{
+			// A network-level failure (offline, connection reset) is worth
+			// retrying, but a status we already decided is fatal isn't.
+			if (ex instanceof Error && /: \d{3}$/.test(ex.message))
+			{
+				throw ex;
+			}
+
+			lastError = ex;
+		}
+	}
+
+	throw lastError;
 }
 
 export async function animate(

@@ -87,28 +87,6 @@
 
 
 
-#metric-slider
-{
-	width: 50%;
-	margin-left: -1.5%;
-}
-
-
-
-#beauty .canvas-bundle
-{
-	bottom: calc(-6 * var(--vl));
-	right: calc(-9 * var(--vl));
-}
-
-#beauty .canvas-bundle canvas
-{
-	width: calc(62.5 * var(--vl));
-	height: calc(62.5 * var(--vl));
-}
-
-
-
 #palettes .WILSON_draggable
 {
 	display: none;
@@ -143,4 +121,102 @@ input[type="range"]::-webkit-slider-runnable-track
 	background: #ccc; /* or whatever you want */
 	height: 8px;
 	border-radius: 4px;
+}
+
+.sliders
+{
+	position: relative;
+	display: grid;
+	
+	justify-content: center;
+	
+	width: 70%;
+	margin: 0 auto;
+
+	grid-template-columns: repeat(auto-fit, 170px);
+	
+	row-gap: 16px;
+	column-gap: 10px;
+	
+	margin-top: 32px;
+}
+
+.slider-container
+{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.slider-bar
+{
+	background: rgb(224, 224, 224);
+	width: 100%;
+	height: 2.5px;
+	border-radius: 2.5px;
+
+	transition: background 0.25s ease-out;
+}
+
+.slider-thumb
+{
+	position: absolute;
+	top: calc(-24px / 2 - 2.5px / 2);
+	left: 0;
+
+	background: rgb(0, 0, 0);
+	border-radius: 50%;
+	border: 2.5px solid rgb(224, 224, 224);
+	cursor: pointer;
+	width: 24px;
+	height: 24px;
+
+	z-index: 10;
+	touch-action: none;
+
+	transition: margin-top 0.125s ease-in-out, margin-left 0.125s ease-in-out, width 0.125s ease-in-out, height 0.125s ease-in-out, transform 0.125s ease-in-out, border-color 0.25s ease-out !important;
+}
+
+.slider-thumb:active
+{
+	transform: scale(1.1) !important;
+
+	width: 12px;
+	height: 12px;
+	margin-top: 6px;
+	margin-left: 6px;
+}
+
+.slider-subtext
+{
+	text-align: center !important;
+	margin-top: 16px !important;
+	font-size: 75%;
+	margin-bottom: 0 !important;
+	width: 100% !important;
+	user-select: none;
+	-webkit-user-select: none;
+	color: rgb(224, 224, 224);
+
+	transition: color 0.25s ease-out;
+}
+
+.slider-subtext span
+{
+	text-align: center;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.slider-subtext .slider-value
+{
+	font-family: Menlo, Monaco, Consolas, monospace;
+	cursor: text;
+	text-align: center;
+}
+
+.slider-subtext .cap-triangle
+{
+	display: none;
 }

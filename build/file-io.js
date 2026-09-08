@@ -42,16 +42,38 @@ export function write(filepath, content)
 {
 	const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
 
+	// fs.writeFile truncates before it writes, so writing straight to fullPath
+	// leaves a window where the dev server can hand the browser an empty or
+	// half-written file. Write a scratch file alongside it and rename it into
+	// place instead -- rename within a directory is atomic, so a reader sees
+	// either the old file or the new one and never something in between.
+	const scratchPath =
+		`${fullPath}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
+
 	return new Promise(resolve =>
 	{
-		fs.writeFile(fullPath, content, err =>
+		fs.writeFile(scratchPath, content, writeErr =>
 		{
-			if (err)
+			if (writeErr)
 			{
-				console.error(err);
+				console.error(writeErr);
+
+				resolve();
+
+				return;
 			}
 
-			resolve();
+			fs.rename(scratchPath, fullPath, renameErr =>
+			{
+				if (renameErr)
+				{
+					console.error(renameErr);
+
+					fs.unlink(scratchPath, () => {});
+				}
+
+				resolve();
+			});
 		});
 	});
 }

@@ -1,4 +1,5 @@
 import { VoronoiDiagrams } from "/applets/voronoi-diagrams/scripts/class.js";
+import { Slider } from "/scripts/components/sliders.js";
 
 let applet;
 
@@ -42,17 +43,19 @@ function load({ slide })
 		canvas,
 	});
 
-	const metricSlider = slide.querySelector("#metric-slider");
-	const metricLabel = slide.querySelector("#metric-label");
-
-	metricSlider.addEventListener("input", () =>
-	{
-		const x = metricSlider.value;
-		applet.metric = Math.pow(36, x * x) * Math.pow(2 / 3, x);
-
-		applet.updateMetric();
-
-		metricLabel.textContent = applet.metric.toFixed(1);
+	const metricSlider = new Slider({
+		element: slide.querySelector("#metric-slider"),
+		name: "Metric",
+		value: 2,
+		min: 1,
+		max: 24,
+		logarithmic: true,
+		persistState: false,
+		onInput: () =>
+		{
+			applet.metric = metricSlider.value;
+			applet.updateMetric();
+		}
 	});
 }
 

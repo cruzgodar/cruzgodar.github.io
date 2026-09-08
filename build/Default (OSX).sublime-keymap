@@ -200,13 +200,13 @@
 	},
 
 	// cmd+alt+a inserts an align environment.
-	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{align*}\n\t$0\n\\end{align*}"}, "context":
+	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{alignat*}\n\t$0\n\\end{alignat*}"}, "context":
 		[
 			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
 			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
 		]
 	},
-	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{align*}\n\t${0:$SELECTION}\n\\end{align*}"}, "context":
+	{ "keys": ["super+alt+a"], "command": "insert_snippet", "args": {"contents": "\\begin{alignat*}\n\t${0:$SELECTION}\n\\end{alignat*}"}, "context":
 		[
 			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
 			{ "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }

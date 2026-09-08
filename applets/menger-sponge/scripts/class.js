@@ -131,8 +131,10 @@ export class MengerSponge extends RaymarchApplet
 	rotationAngleY = 0;
 	rotationAngleZ = 0;
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl();
 		const getColorGlsl = getDistanceEstimatorGlsl(true);
 
@@ -159,12 +161,18 @@ export class MengerSponge extends RaymarchApplet
 			addGlsl,
 			uniformsGlsl,
 			uniforms,
-			cameraPos: [3.5, 0, 0],
+			sceneOrigin: [4.5, 0, 0],
 			theta: 3 * Math.PI / 2,
 			phi: Math.PI / 2,
-			stepFactor: .5,
-			epsilonScaling: 1.75,
-			lightBrightness: 1.75
+			epsilonScalingFactor: 0.5,
+			maxMarches: 512,
+			stepFactor: 0.5,
+			lightBrightness: 2.5,
+			overstepFactor: 1,
+			xrFramebufferScaleSlider,
+
+			coneMarchingScales: [16, 4],
+			coneMarchingMaxMarches: [96, 48],
 		});
 	}
 

@@ -8,8 +8,7 @@ async function reset({ slide, forward })
 	slide.appendChild(canvasBundle);
 
 	applet.run({
-		expression: "(λx.xx)(λf.λx.fx)",
-		force: true
+		expression: "(λx.xx)(λf.λx.fx)"
 	});
 
 	if (!forward)
@@ -33,8 +32,7 @@ async function build1({ duration = 2000, forward })
 		applet.animationTime = 10;
 
 		applet.run({
-			expression: "(λx.xx)(λf.λx.fx)",
-			force: true
+			expression: "(λx.xx)(λf.λx.fx)"
 		});
 
 		applet.resume();
@@ -54,8 +52,7 @@ async function build1({ duration = 2000, forward })
 
 	applet.run({
 		expression: "(λx.xx)(λf.λx.fx)",
-		betaReduce: true,
-		force: true
+		betaReduce: true
 	});
 
 	let resolve;
@@ -85,8 +82,7 @@ async function build3({ duration = 2000, forward })
 		applet.run({
 			expression: "(λx.xx)(λf.λx.fx)",
 			betaReduce: true,
-			maxBetaReductions: 1,
-			force: true
+			maxBetaReductions: 1
 		});
 
 		applet.resume();

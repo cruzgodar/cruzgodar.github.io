@@ -10,7 +10,9 @@
 
 	<meta property="og:url" content="https://cruzgodar.com/teaching/uo/253/cards/homework-5"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/cards/homework-5/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/teaching/uo/253/cards/homework-5/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="Due Wednesday of Week 6 at the start of class">
 
@@ -60,6 +62,31 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
+	<script>
+		// Cloudflare Web Analytics. Inline, and parsed with the document on
+		// purpose. When this was injected from main.js instead it started
+		// ~1073ms into the page, about 770ms after the load event had already
+		// fired, and reporting collapsed --- / fell from 137 page loads a day
+		// to 8. The beacon has to be there before the page finishes loading.
+		//
+		// Inline rather than a separate file so there is nothing for an ad
+		// blocker to match on, and nothing that can take the module graph down
+		// with it the way scripts/src/beacon.min.js once did.
+		//
+		// spa is off: with it on, the beacon counts every History API change as
+		// a page view, and applet controls rewrite the url constantly.
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>

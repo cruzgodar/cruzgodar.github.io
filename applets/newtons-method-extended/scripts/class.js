@@ -2,7 +2,7 @@ import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { getFloatGlsl, hsvToRgb, tempShader } from "/scripts/applets/applet.js";
 import { animate, getRandomNonGreenHues, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const derivativePrecision = 20;
 
@@ -88,8 +88,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilson = new WilsonGL(canvas, options);
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			draggableOptions: {},
 			canvasWidth: this.resolutionHidden,
@@ -253,6 +253,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		const worldCenterX = this.wilson.worldCenterX;
 		const worldCenterY = this.wilson.worldCenterY;
 
+		const differentWorldCenter = Math.abs(worldCenterX) > 0.05 || Math.abs(worldCenterY) > 0.05;
+
 		const levelsToZoom = Math.abs(
 			Math.min(
 				Math.log2(worldWidth / this.defaultWorldSize),
@@ -260,7 +262,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200

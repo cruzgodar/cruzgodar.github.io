@@ -1,11 +1,13 @@
 import anime from "../anime.js";
+import { addTemporaryParam, pageUrl } from "../src/main.js";
+import { getDisplayUrl } from "../src/navigation.js";
 import { animate, sleep } from "../src/utils.js";
-import { WilsonGPU } from "../wilson.js";
+import { WilsonGL } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	tempShader
 } from "./applet.js";
-import { createShader } from "./createShader.js";
+import { createConeMarchingShader, createShader } from "./createShader.js";
 
 export class RaymarchApplet extends AnimationFrameApplet
 {
@@ -21,17 +23,30 @@ export class RaymarchApplet extends AnimationFrameApplet
 	phi = 0;
 	worldSize = 2.5;
 
-	resolution = 500;
+	resolution;
+
+	// An array of scales to perform cone marching at, in order.
+	// Recommended: [16, 4], [25, 5], [27, 9, 3], [8]
+	coneMarchingScales;
+
+	// Start at [96, 48, 24] and tune from there.
+	coneMarchingMaxMarches;
+	coneMarchingWidths = [];
+	coneMarchingHeights = [];
 
 	fpsCap;
 	timeSinceLastFrame = Infinity;
 
 	maxMarches;
 	maxShadowMarches;
-	maxReflectionMarches;
 	clipDistance;
 
-	imagePlaneCenterPos = [0, 0, 0];
+	projectionMatrix = new Float32Array(16);
+	cameraToWorld = new Float32Array(16);
+	worldScale = 1;
+
+	clipNear = 0.1;
+	clipFar = 1000;
 
 	forwardVec = [0, 0, 0];
 	rightVec = [0, 0, 0];
@@ -40,8 +55,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// This controls the amount of fish-eye and is a delicate balance.
 	// Changing it also requires upating the camera position.
 	focalLengthFactor;
-	cameraPos;
-	defaultCameraPos;
+
+	sceneOrigin; // Formerly cameraPos
+	defaultSceneOrigin;
+
 	lightPos;
 	lightBrightness;
 	useOppositeLight;
@@ -49,10 +66,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 	ambientLight;
 	bloomPower;
 
+	aoSamples;
+	aoStrength;
+
 	fogColor;
 	fogScaling;
 	stepFactor;
-	epsilonScaling;
+	epsilonScalingFactor;
+	surfaceNormalEpsilonFactor;
 	minEpsilon;
 
 	useShadows;
@@ -60,15 +81,22 @@ export class RaymarchApplet extends AnimationFrameApplet
 	useReflections;
 	useBloom;
 	useFor3DPrinting;
+	useGradientCorrectedOcclusion;
 
 	uniforms = {};
 	lockZ;
 
-	speedFactor = 2;
+	
+	speed = 2;
+	speedFactor = 1;
 	fovFactor = 1;
+
+	moveForwardScale = 1;
+	moveRightScale = 1;
 
 	lockedOnOrigin;
 	distanceFromOrigin = 1;
+	defaultDistanceFromOrigin = 1;
 
 	distanceEstimatorGlsl;
 	getColorGlsl;
@@ -77,13 +105,45 @@ export class RaymarchApplet extends AnimationFrameApplet
 	getGeodesicGlsl;
 	addGlsl;
 
+	xrCameraToWorld = new Float32Array(16);
+	xrRayOrigin = [0, 0, 0];
+	headPos = [0, 0, 0];
+	headToScene = new Float32Array(16);
+	controllerToScene = new Float32Array(16);
+
+	xrSceneOriginBeforeXR;
+	xrThetaBeforeXR;
+	xrInitialZHeight;
+
+	useDynamicWorldScale;
+	xrComfortDistance;
+	minWorldScale;
+	maxWorldScale;
+
+	// minEpsilon is an absolute floor in scene units, so it has to follow worldScale to stay
+	// the same size in meters. This is the value it'd have at a scale of 1.
+	baseMinEpsilon;
+
+	// Time constant of the exponential approach to the target scale, in ms.
+	xrWorldScaleTau = 400;
+
+	// How far off target the scale has to be, as a ratio, before it chases it at all.
+	xrWorldScaleDeadband = Math.log(1.15);
+
+	xrWorldScaleNeedsSnap = false;
+
+	xrFramebufferScaleSlider;
+
 
 
 	constructor({
 		canvas,
 		shader,
 
-		resolution = 500,
+		resolution = 1000,
+
+		coneMarchingScales = [],
+		coneMarchingMaxMarches = [],
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -97,16 +157,17 @@ export class RaymarchApplet extends AnimationFrameApplet
 		theta = 0,
 		phi = Math.PI / 2,
 		stepFactor = .99,
-		epsilonScaling = 1.25,
+		overstepFactor = 1.0,
+		epsilonScalingFactor = 1,
+		surfaceNormalEpsilonFactor = 2,
 		minEpsilon = .0000003,
 
-		maxMarches = 128,
+		maxMarches = 256,
 		maxShadowMarches = 128,
-		maxReflectionMarches = 128,
 		clipDistance = 1000,
 		
-		focalLengthFactor = 2.5,
-		cameraPos = [0, 0, 0],
+		focalLengthFactor = 3.5,
+		sceneOrigin = [0, 0, 0],
 		lockedOnOrigin = true,
 		lockZ,
 
@@ -117,6 +178,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		ambientLight = 0.25,
 		bloomPower = 1,
 
+		aoSamples = 4,
+		aoStrength = 0.45,
+
 		fogColor = [0, 0, 0],
 		fogScaling = .05,
 
@@ -125,28 +189,51 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useReflections = false,
 		useBloom = true,
 		useFor3DPrinting = false,
+		useGradientCorrectedOcclusion = false,
+
+		xrInitialZHeight = 0.75,
+		useDynamicWorldScale = true,
+		xrComfortDistance = 1.25,
+		minWorldScale = 1e-5,
+		maxWorldScale = 1e3,
+
+		xrFramebufferScaleSlider,
 	}) {
 		super(canvas);
+		
+		this.theta = theta;
+		this.phi = phi;
+		this.sceneOrigin = sceneOrigin;
+		this.lockedOnOrigin = lockedOnOrigin;
+
+		this.loadPersistedState();
+
+
 
 		this.resolution = resolution;
 
-		this.theta = theta;
-		this.phi = phi;
+		this.coneMarchingScales = coneMarchingScales;
+		this.coneMarchingMaxMarches = coneMarchingMaxMarches;
+
 		this.stepFactor = stepFactor;
-		this.epsilonScaling = epsilonScaling;
+		this.overstepFactor = overstepFactor;
+		this.epsilonScalingFactor = epsilonScalingFactor;
+		this.surfaceNormalEpsilonFactor = surfaceNormalEpsilonFactor;
 		this.minEpsilon = minEpsilon;
 
 		this.maxMarches = maxMarches;
 		this.maxShadowMarches = maxShadowMarches;
-		this.maxReflectionMarches = maxReflectionMarches;
 		this.clipDistance = clipDistance;
 		
 		this.focalLengthFactor = focalLengthFactor;
-		this.cameraPos = cameraPos;
-		this.defaultCameraPos = [...this.cameraPos];
-		this.lockedOnOrigin = lockedOnOrigin;
+		
+		this.defaultSceneOrigin = [...this.sceneOrigin];
+
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
+
+		this.distanceFromOrigin = magnitude(this.sceneOrigin);
+		this.defaultDistanceFromOrigin = this.distanceFromOrigin;
 
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
@@ -154,6 +241,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.oppositeLightBrightness = oppositeLightBrightness;
 		this.ambientLight = ambientLight;
 		this.bloomPower = bloomPower;
+
+		this.aoSamples = aoSamples;
+		this.aoStrength = aoStrength;
 
 		this.fogColor = fogColor;
 		this.fogScaling = fogScaling;
@@ -163,18 +253,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
 		this.useFor3DPrinting = useFor3DPrinting;
+		this.useGradientCorrectedOcclusion = useGradientCorrectedOcclusion;
+
+		this.xrInitialZHeight = xrInitialZHeight;
+		this.useDynamicWorldScale = useDynamicWorldScale;
+		this.xrComfortDistance = xrComfortDistance;
+		this.minWorldScale = minWorldScale;
+		this.maxWorldScale = maxWorldScale;
+		this.baseMinEpsilon = minEpsilon;
+
+		this.xrFramebufferScaleSlider = xrFramebufferScaleSlider;
 
 		this.uniformsGlsl = /* glsl */`
-			uniform vec2 aspectRatio;
-			uniform float resolution;
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
+			uniform mat4 projectionMatrix;
+			uniform mat4 cameraToWorld;
+			uniform vec3 rayOrigin;
+
 			uniform float epsilonScaling;
+			uniform float pixelDiagonalRadius;
+
 			uniform float minEpsilon;
 			uniform vec2 uvCenter;
 			uniform float uvScale;
+			
+			uniform sampler2D uTexture;
+
 			${uniformsGlsl}
 		`;
 
@@ -182,17 +285,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 			...(this.useFor3DPrinting
 				? {}
 				: {
-					aspectRatio: [1, 1],
-					resolution: this.resolution,
-					cameraPos: this.cameraPos,
-					imagePlaneCenterPos: this.imagePlaneCenterPos,
-					rightVec: this.rightVec,
-					upVec: this.upVec,
+					projectionMatrix: this.projectionMatrix,
+					cameraToWorld: this.cameraToWorld,
+					rayOrigin: [0, 0, 0],
 					minEpsilon: this.minEpsilon,
 				}
 			),
 			
-			epsilonScaling: this.epsilonScaling,
+			epsilonScaling: this.computeEpsilonScaling(),
+			pixelDiagonalRadius: 0,
 			
 			uvCenter: [0, 0],
 			uvScale: 1,
@@ -214,7 +315,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							+ t * newFactor;
 
 						this.setUniforms({
-							epsilonScaling: this.epsilonScaling *
+							epsilonScaling: this.computeEpsilonScaling() /
 								((1 - t) * oldFactor + t * newFactor)
 						});
 
@@ -223,8 +324,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				}
 			}
 		);
-
-		this.distanceFromOrigin = magnitude(this.cameraPos);
 
 		const useableShader = shader ?? this.createShader({
 			distanceEstimatorGlsl,
@@ -259,6 +358,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			resetButtonIconPath: "/graphics/general-icons/reset.png",
 			onReset: this.onReset.bind(this),
 
+			useGpuTiming: window.DEBUG,
+
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			interactionOptions: {
@@ -284,16 +385,37 @@ export class RaymarchApplet extends AnimationFrameApplet
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},
 
+			xrOptions:
+			{
+				useButton: true,
+				buttonIconPath: "/graphics/general-icons/xr.png",
+				targetFrameRate: 72,
+				framebufferScale: 0.5,
+
+				onEnter: this.onEnterXR.bind(this),
+				onFrameStart: this.onXRFrameStart.bind(this),
+				renderFrame: this.renderXRFrame.bind(this),
+				onExit: this.onExitXR.bind(this),
+				onAvailabilityChange: this.onXRAvailabilityChange.bind(this),
+			},
+
 			verbose: window.DEBUG
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 		this.wilson.loadShader({
 			id: "draw",
 			shader: useableShader,
 			uniforms: this.uniforms
 		});
+
+
+
+		if (this.coneMarchingScales.length)
+		{
+			this.initConeMarching();
+		}
 
 
 
@@ -307,16 +429,180 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.resume();
 	}
 
+
+
+	loadPersistedState()
+	{
+		const params = new URLSearchParams(window.location.search);
+
+		const persisted = (key, parse) =>
+		{
+			const value = params.get(key);
+			addTemporaryParam(key);
+			return value === null ? undefined : parse(decodeURIComponent(value));
+		};
+
+		const number = key => persisted(key, parseFloat);
+
+		this.theta = number("theta") ?? this.theta;
+		this.phi = number("phi") ?? this.phi;
+		this.sceneOrigin = [
+			number("sceneOriginX") ?? this.sceneOrigin[0],
+			number("sceneOriginY") ?? this.sceneOrigin[1],
+			number("sceneOriginZ") ?? this.sceneOrigin[2],
+		];
+		this.lockedOnOrigin = persisted("lockedOnOrigin", v => v === "1") ?? this.lockedOnOrigin;
+	}
+
+	setPersistedStateTimeoutId;
+	setPersistedState()
+	{
+		clearTimeout(this.setPersistedStateTimeoutId);
+
+		this.setPersistedStateTimeoutId = setTimeout(() =>
+		{
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				getDisplayUrl({
+					theta: this.theta,
+					phi: this.phi,
+					sceneOriginX: this.sceneOrigin[0],
+					sceneOriginY: this.sceneOrigin[1],
+					sceneOriginZ: this.sceneOrigin[2],
+					lockedOnOrigin: this.lockedOnOrigin ? "1" : "0",
+				})
+			);
+		}, 500);
+	}
+
+
+
+	initConeMarching()
+	{
+		for (let i = 0; i < this.coneMarchingScales.length; i++)
+		{
+			const scale = this.coneMarchingScales[i];
+
+			const shader = createConeMarchingShader({
+				distanceEstimatorGlsl: this.distanceEstimatorGlsl,
+				addGlsl: this.addGlsl,
+				stepFactor: this.stepFactor,
+				uniformsGlsl: this.uniformsGlsl,
+				clipDistance: this.clipDistance,
+				maxMarches: this.coneMarchingMaxMarches[i],
+				coneMarchingScale: scale,
+				isFirstScale: i === 0,
+			});
+
+			this.wilson.loadShader({
+				id: `coneMarch${i}`,
+				shader,
+				uniforms: this.uniforms
+			});
+		}
+
+		this.resizeConeMarchingFramebuffers();
+	}
+
+	// The coarse texture has to be sized from whatever the fine pass is drawing into, which is
+	// the canvas outside XR and a single eye's viewport inside it -- the two are unrelated, and
+	// a texel covering more than its scale in pixels of the target makes the cone an
+	// underestimate of the block it stands for, which punches holes in the surface.
+	// Taking the ceiling only packs the texels tighter, so the blocks overlap instead of gapping.
+	//
+	// Every pass after the first reads the one before it with a single nearest tap, so a block
+	// here has to sit entirely inside one texel of the previous pass -- a block straddling two of
+	// them would inherit a t that was only ever validated for the half containing its center, and
+	// at a silhouette the two halves disagree by the whole depth of the scene. Sizing each pass
+	// from the target independently doesn't give that: 1000 pixels wide with [16, 4] lands on 63
+	// and 250 texels, and 250 / 63 is not an integer, so the grids cut across each other. Deriving
+	// each level as a whole multiple of the last one makes them nest exactly. Rounding the ratio up
+	// keeps blocks no wider than their scale even when the scales don't divide each other, at the
+	// cost of a few more texels than strictly necessary.
+	resizeConeMarchingFramebuffers(
+		targetWidth = this.wilson.canvasWidth,
+		targetHeight = this.wilson.canvasHeight
+	) {
+		let width = Math.ceil(targetWidth / this.coneMarchingScales[0]);
+		let height = Math.ceil(targetHeight / this.coneMarchingScales[0]);
+
+		for (let i = 0; i < this.coneMarchingScales.length; i++)
+		{
+			const scale = this.coneMarchingScales[i];
+
+			if (i > 0)
+			{
+				const ratio = Math.ceil(this.coneMarchingScales[i - 1] / scale);
+
+				width *= ratio;
+				height *= ratio;
+			}
+
+			// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
+			if (
+				width === this.coneMarchingWidths[i]
+				&& height === this.coneMarchingHeights[i]
+			) {
+				continue;
+			}
+
+			this.coneMarchingWidths[i] = width;
+			this.coneMarchingHeights[i] = height;
+
+			this.wilson.createFramebufferTexturePair({
+				id: `coneMarch${i}`,
+				width,
+				height,
+				textureType: "float",
+			});
+		}
+	}
+
+
+
+	// Preserves phi through fullscreen.
+	worldCenterXBeforeFullscreen;
+	worldCenterYBeforeFullscreen;
+
 	switchFullscreen()
 	{
 		this.resume();
+
+		this.wilson.resizeWorld({
+			centerX: this.worldCenterXBeforeFullscreen,
+			centerY: this.worldCenterYBeforeFullscreen,
+		});
 	}
 
 	async beforeSwitchFullscreen()
 	{
+		this.worldCenterXBeforeFullscreen = this.wilson.worldCenterX;
+		this.worldCenterYBeforeFullscreen = this.wilson.worldCenterY;
+
 		this.pause();
 
 		await sleep(33);
+	}
+
+
+
+	computeEpsilonScaling(resolution = this.resolution)
+	{
+		return this.epsilonScalingFactor / Math.min(resolution, 4096);
+	}
+
+	updatePixelDiagonalRadius(
+		resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight)
+	) {
+		for (let i = 0; i < this.coneMarchingScales.length; i++)
+		{
+			this.wilson.setUniforms({
+				pixelDiagonalRadius: Math.SQRT2 / (
+					Math.sqrt(this.projectionMatrix[0] * this.projectionMatrix[5]) * resolution
+				)
+			}, `coneMarch${i}`);
+		}
 	}
 
 
@@ -329,7 +615,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.setUniforms({
 			uvScale: 3,
 			uvCenter: [0, 0],
-			epsilonScaling: 0.0015,
+			epsilonScaling: 650,
 		});
 
 		this.wilson.resizeCanvas({ width: resolution });
@@ -357,6 +643,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getReflectivityGlsl = this.getReflectivityGlsl,
 		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
+		maxMarches = this.maxMarches,
+		maxShadowMarches = this.maxShadowMarches,
+		stepFactor = this.stepFactor,
 		includeDepthData = false,
 	}) {
 		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
@@ -364,6 +653,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.getReflectivityGlsl = getReflectivityGlsl;
 		this.getGeodesicGlsl = getGeodesicGlsl;
 		this.addGlsl = addGlsl;
+		this.maxMarches = maxMarches;
+		this.maxShadowMarches = maxShadowMarches;
+		this.stepFactor = stepFactor;
 
 		return createShader({
 			distanceEstimatorGlsl,
@@ -372,25 +664,33 @@ export class RaymarchApplet extends AnimationFrameApplet
 			getGeodesicGlsl,
 			addGlsl,
 			includeDepthData,
+			maxMarches,
+			maxShadowMarches,
+			stepFactor,
 
 			useShadows: this.useShadows,
 			useSoftShadows: this.useSoftShadows,
 			useReflections: this.useReflections,
 			useOppositeLight: this.useOppositeLight,
+			useGradientCorrectedOcclusion: this.useGradientCorrectedOcclusion,
 			oppositeLightBrightness: this.oppositeLightBrightness,
 			ambientLight: this.ambientLight,
 			useBloom: this.useBloom,
 			bloomPower: this.bloomPower,
-			stepFactor: this.stepFactor,
+			surfaceNormalEpsilonFactor: this.surfaceNormalEpsilonFactor,
+			overstepFactor: this.overstepFactor,
 			useFor3DPrinting: this.useFor3DPrinting,
+
+			aoSamples: this.aoSamples,
+			aoStrength: this.aoStrength,
+
+			// The actual shader gets the very last scale.
+			coneMarchingScale: this.coneMarchingScales[this.coneMarchingScales.length - 1],
 
 			uniformsGlsl: this.uniformsGlsl,
 			lightPos: this.lightPos,
 			lightBrightness: this.lightBrightness,
 			clipDistance: this.clipDistance,
-			maxMarches: this.maxMarches,
-			maxShadowMarches: this.maxShadowMarches,
-			maxReflectionMarches: this.maxReflectionMarches,
 			fogColor: this.fogColor,
 			fogScaling: this.fogScaling
 		});
@@ -398,12 +698,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	reloadShader({
+	async reloadShader({
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl,
 		addGlsl,
-		includeDepthData
+		includeDepthData,
+		maxMarches,
+		maxShadowMarches,
+		stepFactor,
 	} = {}) {
 		this.wilson.loadShader({
 			id: "draw",
@@ -413,11 +716,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 				getReflectivityGlsl,
 				addGlsl,
 				includeDepthData,
+				maxMarches,
+				maxShadowMarches,
+				stepFactor,
 			}),
 			uniforms: this.uniforms,
 		});
 
 		this.calculateVectors();
+
+		if (this.coneMarchingScales.length)
+		{
+			this.initConeMarching();
+		}
+
+		await this.wilson.allShadersReady();
 
 		this.needNewFrame = true;
 	}
@@ -433,6 +746,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.setUniforms(uniforms, "draw");
 
+		for (let i = 0; i < this.coneMarchingScales.length; i++)
+		{
+			this.wilson.setUniforms(uniforms, `coneMarch${i}`);
+		}
+
 		this.needNewFrame = true;
 	}
 
@@ -445,74 +763,122 @@ export class RaymarchApplet extends AnimationFrameApplet
 			return;
 		}
 
-		// Here comes the serious math. Theta is the angle in the xy-plane and
-		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		const inXR = this.wilson.inXR;
 
-		this.forwardVec = [
-			Math.cos(this.theta) * Math.sin(this.phi),
-			Math.sin(this.theta) * Math.sin(this.phi),
-			Math.cos(this.phi)
-		];
-
-		// Now the right vector needs to be constrained to the xy-plane,
-		// since otherwise the image will appear tilted. For a vector (a, b, c),
-		// the orthogonal plane that passes through the origin is ax + by + cz = 0,
-		// so we want ax + by = 0. One solution is (b, -a), and that's the one that
-		// goes to the "right" of the forward vector (when looking down).
-		this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
-
-		// Finally, the upward vector is the cross product of the previous two.
-		this.upVec = crossProduct(this.rightVec, this.forwardVec);
-
-		if (this.lockedOnOrigin)
+		// Without a headset, all of the camera orientation is ours to compute.
+		if (!inXR)
 		{
-			this.cameraPos = scaleVector(
-				-this.distanceFromOrigin,
-				this.forwardVec
-			);
+			// Here comes the serious math. Theta is the angle in the xy-plane and
+			// phi the angle down from the z-axis. We can use them to
+			// get a normalized forward vector:
+
+			this.forwardVec = [
+				Math.cos(this.theta) * Math.sin(this.phi),
+				Math.sin(this.theta) * Math.sin(this.phi),
+				Math.cos(this.phi)
+			];
+
+			// Now the right vector needs to be constrained to the xy-plane,
+			// since otherwise the image will appear tilted. For a vector (a, b, c),
+			// the orthogonal plane that passes through the origin is ax + by + cz = 0,
+			// so we want ax + by = 0. One solution is (b, -a), and that's the one that
+			// goes to the "right" of the forward vector (when looking down).
+			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+
+			// Finally, the upward vector is the cross product of the previous two.
+			this.upVec = crossProduct(this.rightVec, this.forwardVec);
+
+			// This also can't be allowed to run in XR since it would try to keep the camera
+			// locked in place.
+			if (this.lockedOnOrigin)
+			{
+				this.sceneOrigin = scaleVector(
+					-this.distanceFromOrigin,
+					this.forwardVec
+				);
+			}
 		}
 
-		this.speedFactor = Math.min(
-			this.distanceEstimator(
-				this.cameraPos[0],
-				this.cameraPos[1],
-				this.cameraPos[2]
-			),
-			.5
-		) / 4;
+		// The camera is the head in XR.
+		const cameraPos = inXR ? this.headPos : this.sceneOrigin;
 
-		// The factor we divide by here sets the fov.
-		this.forwardVec[0] *= this.speedFactor / 1.5;
-		this.forwardVec[1] *= this.speedFactor / 1.5;
-		this.forwardVec[2] *= this.speedFactor / 1.5;
+		// The cap is in scene units, so it has to ride worldScale to stay a fixed speed in
+		// meters; below it, speed is proportional to the estimate and so already tracks the
+		// scale. Outside XR worldScale is 1 and this is what it always was.
+		this.speed = Math.min(
+			this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]),
+			.5 * this.worldScale
+		) * 0.125 * this.speedFactor;
 
-		this.rightVec[0] *= this.speedFactor / this.fovFactor;
-		this.rightVec[1] *= this.speedFactor / this.fovFactor;
+		// The camera basis stays orthonormal instead of also encoding the fov,
+		// which lives in the projection matrix now. These only scale movement,
+		// which used to ride along on the magnitudes.
+		this.moveForwardScale = this.speed / 1.5;
+		this.moveRightScale = this.speed / 1.5;
 
-		this.upVec[0] *= this.speedFactor / this.fovFactor;
-		this.upVec[1] *= this.speedFactor / this.fovFactor;
-		this.upVec[2] *= this.speedFactor / this.fovFactor;
 
-		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.forwardVec[0] * this.focalLengthFactor,
-			this.cameraPos[1] + this.forwardVec[1] * this.focalLengthFactor,
-			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
-		];
+		// Everything past this point is going to be handed to us by a headset if there is one.
+		if (inXR)
+		{
+			this.needNewFrame = false;
+			return;
+		}
+
+
+
+		// focalLengthFactor and fovFactor combine into one focal length. The two aspect
+		// terms are the old aspectRatio uniform.
+		const focalLength = this.focalLengthFactor * this.fovFactor / 1.5;
+		const aspectRatioX = this.wilson.worldWidth / this.worldSize;
+		const aspectRatioY = this.wilson.worldHeight / this.worldSize;
+
+		this.projectionMatrix = new Float32Array([
+			focalLength / aspectRatioX, 0, 0, 0,
+			0, focalLength / aspectRatioY, 0, 0,
+			0, 0, (this.clipFar + this.clipNear) / (this.clipNear - this.clipFar), -1,
+			0, 0, 2 * this.clipFar * this.clipNear / (this.clipNear - this.clipFar), 0
+		]);
+
+		// Translation is zero: cameraToWorld maps the eye into the space centered on the
+		// camera, and sceneOrigin places that space in the scene. In XR the headset
+		// supplies the translation instead, and worldScale converts it from meters.
+		this.cameraToWorld = new Float32Array([
+			this.rightVec[0], this.rightVec[1], this.rightVec[2], 0,
+			this.upVec[0], this.upVec[1], this.upVec[2], 0,
+			-this.forwardVec[0], -this.forwardVec[1], -this.forwardVec[2], 0,
+			0, 0, 0, 1
+		]);
+		
+
 
 		this.setUniforms({
-			cameraPos: this.cameraPos,
-			imagePlaneCenterPos: this.imagePlaneCenterPos,
-			rightVec: this.rightVec,
-			upVec: this.upVec,
+			projectionMatrix: this.projectionMatrix,
+			cameraToWorld: this.cameraToWorld,
+
+			// No accounting for the head position here -- that's only in XR.
+			rayOrigin: this.sceneOrigin,
 		});
+
+
+
+		if (this.coneMarchingScales.length)
+		{
+			this.updatePixelDiagonalRadius();
+		}
+
+
 
 		this.needNewFrame = false;
 	}
+
+
 
 	distanceEstimator()
 	{
 		throw new Error("Distance estimator not implemented!");
 	}
+
+
 
 	prepareFrame(timeElapsed)
 	{
@@ -523,18 +889,224 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.timeSinceLastFrame += timeElapsed;
 	}
 
+	
+
+	onXRAvailabilityChange(isSupported)
+	{
+		if (this.xrFramebufferScaleSlider)
+		{
+			this.xrFramebufferScaleSlider.element.parentElement.style.display = isSupported
+				? "flex"
+				: "none";
+
+			this.xrFramebufferScaleSlider.setValue(this.xrFramebufferScaleSlider.value);
+		}
+	}
+
+	onEnterXR()
+	{
+		this.pause();
+
+		this.xrSceneOriginBeforeXR = [...this.sceneOrigin];
+		this.xrThetaBeforeXR = this.theta;
+		this.lockedOnOrigin = false;
+
+		this.theta = 0;
+		this.sceneOrigin = [-this.defaultDistanceFromOrigin, 0, this.xrInitialZHeight];
+
+		// The first frame arrives at whatever scale the last session ended on, and easing
+		// from there would mean starting off uncomfortable.
+		this.xrWorldScaleNeedsSnap = true;
+
+		// The eye viewport isn't known until the first frame arrives, so the resize happens
+		// there instead of here.
+	}
+
+	onExitXR()
+	{
+		this.sceneOrigin = this.xrSceneOriginBeforeXR;
+		this.theta = this.xrThetaBeforeXR;
+
+		this.worldScale = 1;
+		this.setUniforms({
+			minEpsilon: this.baseMinEpsilon,
+			epsilonScaling: this.computeEpsilonScaling(),
+		});
+
+		this.calculateVectors();
+
+		if (this.coneMarchingScales.length)
+		{
+			this.resizeConeMarchingFramebuffers();
+		}
+
+		this.resume();
+	}
+
+	onXRFrameStart({ deltaTime, pose })
+	{
+		xrToScene(pose.transform.matrix, this.headToScene);
+
+		this.headPos[0] = this.sceneOrigin[0] + this.headToScene[12] * this.worldScale;
+		this.headPos[1] = this.sceneOrigin[1] + this.headToScene[13] * this.worldScale;
+		this.headPos[2] = this.sceneOrigin[2] + this.headToScene[14] * this.worldScale;
+
+		this.updateWorldScale(deltaTime);
+
+		// The head replaces theta and phi as the movement basis, so w/a/s/d moves
+		// where the user is looking.
+		this.forwardVec = normalize([
+			-this.headToScene[8],
+			-this.headToScene[9],
+			-this.headToScene[10]
+		]);
+
+		// Constrained to the xy-plane like the desktop path, but here the user really
+		// can look straight up, where that construction degenerates.
+		const horizontal = Math.hypot(this.forwardVec[0], this.forwardVec[1]);
+
+		if (horizontal > 0.001)
+		{
+			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+			this.upVec = crossProduct(this.rightVec, this.forwardVec);
+		}
+
+
+
+		// Get input from potentially both controllers.
+		const controllerRight = this.wilson.getXRController("right");
+		const controllerLeft = this.wilson.getXRController("left");
+
+		const triggerPressed =
+			(controllerRight?.buttons?.trigger?.pressed
+				|| controllerLeft?.buttons?.trigger?.pressed)
+			?? false;
+
+		const squeezePressed =
+			(controllerRight?.buttons?.squeeze?.pressed
+				|| controllerLeft?.buttons?.squeeze?.pressed)
+			?? false;
+
+		const aPressed =
+			(controllerRight?.buttons?.a?.pressed
+				|| controllerLeft?.buttons?.a?.pressed)
+			?? false;
+
+		const bPressed =
+			(controllerRight?.buttons?.b?.pressed
+				|| controllerLeft?.buttons?.b?.pressed)
+			?? false;
+
+		if (aPressed)
+		{
+			this.moveVelocity[0] = 1;
+		}
+
+		else if (bPressed)
+		{
+			this.moveVelocity[0] = -1;
+		}
+
+		if (triggerPressed)
+		{
+			this.moveVelocity[2] = 1;
+		}
+
+		else if (squeezePressed)
+		{
+			this.moveVelocity[2] = -1;
+		}
+
+		this.calculateVectors();
+
+		this.prepareFrame(deltaTime);
+	}
+
+	// worldScale is meters per scene unit, so a surface at scene distance d sits at
+	// d / worldScale meters as far as the eyes are concerned. Solving that for the distance
+	// that's actually comfortable to converge on keeps the nearest geometry there no matter
+	// how deep into the fractal the user goes.
+	updateWorldScale(deltaTime)
+	{
+		if (!this.useDynamicWorldScale)
+		{
+			return;
+		}
+
+		// Inside a surface the estimate goes to zero or negative, which would blow the scale
+		// up without bound; the clamp below is what keeps that finite.
+		const distance = this.distanceEstimator(
+			this.headPos[0],
+			this.headPos[1],
+			this.headPos[2]
+		);
+
+		const targetScale = Math.min(
+			Math.max(distance / this.xrComfortDistance, this.minWorldScale),
+			this.maxWorldScale
+		);
+
+		// Scale is perceived multiplicatively, so everything is smoothed in log space; a step
+		// of 0.1 is the same felt change whether the world is huge or tiny.
+		const error = Math.log(targetScale) - Math.log(this.worldScale);
+
+		let step;
+
+		if (this.xrWorldScaleNeedsSnap)
+		{
+			step = error;
+			this.xrWorldScaleNeedsSnap = false;
+		}
+
+		else
+		{
+			// Without a deadband the scale tracks every flicker of the estimator, and a world
+			// that breathes in and out is its own kind of nausea. Only the excess past the
+			// deadband is chased, so the response is still continuous at the boundary.
+			if (Math.abs(error) < this.xrWorldScaleDeadband)
+			{
+				return;
+			}
+
+			const excess = error - Math.sign(error) * this.xrWorldScaleDeadband;
+
+			// Frame-rate independent exponential approach.
+			step = excess * (1 - Math.exp(-deltaTime / this.xrWorldScaleTau));
+		}
+
+		const newWorldScale = this.worldScale * Math.exp(step);
+
+		// The rescale has to pivot about the head. Leaving sceneOrigin alone would dilate
+		// about the tracking-space origin instead, which slides the world sideways by the
+		// distance the user has walked from it — self-motion they didn't ask for, and the
+		// single most nauseating thing this could do. Holding headPos fixed also means the
+		// estimate above is still valid at the new scale, so there's no loop to iterate.
+		this.sceneOrigin[0] = this.headPos[0] - this.headToScene[12] * newWorldScale;
+		this.sceneOrigin[1] = this.headPos[1] - this.headToScene[13] * newWorldScale;
+		this.sceneOrigin[2] = this.headPos[2] - this.headToScene[14] * newWorldScale;
+
+		this.worldScale = newWorldScale;
+
+		// t / (resolution * epsilonScaling) is already scale-invariant, but the floor it's
+		// maxed against isn't, and left alone it starts smearing detail once the world gets
+		// small enough for scene distances to approach it.
+		this.setUniforms({ minEpsilon: this.baseMinEpsilon * newWorldScale });
+	}
+
+
+
 	onReset()
 	{
 		const duration = 350;
 
-		const oldCameraPos = [...this.cameraPos];
+		const oldCameraPos = [...this.sceneOrigin];
 
 		animate((t) =>
 		{
-			this.cameraPos = [
-				(1 - t) * oldCameraPos[0] + t * this.defaultCameraPos[0],
-				(1 - t) * oldCameraPos[1] + t * this.defaultCameraPos[1],
-				(1 - t) * oldCameraPos[2] + t * this.defaultCameraPos[2]
+			this.sceneOrigin = [
+				(1 - t) * oldCameraPos[0] + t * this.defaultSceneOrigin[0],
+				(1 - t) * oldCameraPos[1] + t * this.defaultSceneOrigin[1],
+				(1 - t) * oldCameraPos[2] + t * this.defaultSceneOrigin[2]
 			];
 
 			this.needNewFrame = true;
@@ -543,6 +1115,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		// console.log(this.wilson.averageGpuFrameTime);
+
 		if (this.wilson.worldCenterX < -Math.PI || this.wilson.worldCenterX >= 3 * Math.PI)
 		{
 			this.wilson.resizeWorld({
@@ -559,30 +1133,159 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.calculateVectors();
 
-		if (this.fpsCap)
+
+		// I avoid actually using this in production since it can cause users to get stuck
+		// in a state they don't know how to get out of. It's used primarily for linking
+		// from the gallery.
+		// this.setPersistedState();
+
+
+
+		// The cone passes only feed the fine pass in this same frame, so there's nothing to
+		// compute when the cap is going to throw the fine pass away.
+		if (this.fpsCap && this.timeSinceLastFrame < 1000 / this.fpsCap)
 		{
-			if (this.timeSinceLastFrame >= 1000 / this.fpsCap)
+			return;
+		}
+
+		this.timeSinceLastFrame = 0;
+
+		// Every wilson.drawFrame() opens a timing query of its own, so with cone marching on, the
+		// average is a recency-weighted blend of the individual passes rather than the cost of a
+		// frame -- and at three queries a frame the pending queue overruns and starts dropping
+		// results. Nested timers fold into the outermost one, so opening a timer around the whole
+		// frame measures every pass together and gets the query count back down to one.
+		// this.wilson.beginGpuTimer();
+
+		if (this.coneMarchingScales.length)
+		{
+			for (let i = 0; i < this.coneMarchingScales.length; i++)
 			{
-				this.timeSinceLastFrame = 0;
+				this.wilson.useShader(`coneMarch${i}`);
+				this.wilson.useFramebuffer(`coneMarch${i}`);
+
+				this.wilson.useTexture(i > 0 ? `coneMarch${i - 1}` : null);
+
 				this.wilson.drawFrame();
 			}
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture(`coneMarch${this.coneMarchingScales.length - 1}`);
 		}
 
-		else
-		{
-			this.wilson.drawFrame();
-		}
+		this.wilson.drawFrame();
+
+		// this.wilson.endGpuTimer();
 	}
 
-	downloadHighResFrame(filename, resolution = this.resolution)
+
+
+	renderXRFrame({ projectionMatrix, cameraToWorld, viewport })
 	{
-		this.wilson.downloadHighResFrame(
+		this.projectionMatrix = projectionMatrix;
+
+		xrToScene(cameraToWorld, this.xrCameraToWorld);
+
+		this.xrRayOrigin[0] = this.sceneOrigin[0] + this.xrCameraToWorld[12] * this.worldScale;
+		this.xrRayOrigin[1] = this.sceneOrigin[1] + this.xrCameraToWorld[13] * this.worldScale;
+		this.xrRayOrigin[2] = this.sceneOrigin[2] + this.xrCameraToWorld[14] * this.worldScale;
+
+		// These get set manually instead of with this.setUniforms to avoid unnecessary overhead.
+		this.wilson.setUniform("projectionMatrix", projectionMatrix, "draw");
+		this.wilson.setUniform("cameraToWorld", this.xrCameraToWorld, "draw");
+		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
+
+		// Ensure epsilon scaling is done with the per-eye resolution.
+		const eyeResolution = Math.min(Math.sqrt(viewport.width * viewport.height), 1000);
+
+		this.wilson.setUniform(
+			"epsilonScaling",
+			this.computeEpsilonScaling(eyeResolution),
+			"draw"
+		);
+
+
+		// One timer for the whole eye, for the same reason as in drawFrame(). Wilson drives this
+		// callback once per eye, so the average is per-eye rather than per-frame.
+		this.wilson.beginGpuTimer();
+
+		if (this.coneMarchingScales.length)
+		{
+			for (let i = 0; i < this.coneMarchingScales.length; i++)
+			{
+				// calculateVectors() hands off to the headset before it touches any of these, so
+				// the cone pass has to be pointed at the eye here or it marches the last flat
+				// camera.
+				this.wilson.setUniform("projectionMatrix", projectionMatrix, `coneMarch${i}`);
+				this.wilson.setUniform("cameraToWorld", this.xrCameraToWorld, `coneMarch${i}`);
+				this.wilson.setUniform("rayOrigin", this.xrRayOrigin, `coneMarch${i}`);
+			}
+
+			// The headset can rescale the viewport from frame to frame, and the framebuffer
+			// scale slider rebuilds the layer outright, neither of which reports in anywhere else.
+			this.updatePixelDiagonalRadius(Math.sqrt(viewport.width * viewport.height));
+			
+			this.resizeConeMarchingFramebuffers(viewport.width, viewport.height);
+
+			for (let i = 0; i < this.coneMarchingScales.length; i++)
+			{
+				this.wilson.useShader(`coneMarch${i}`);
+				this.wilson.useFramebuffer(`coneMarch${i}`);
+
+				this.wilson.useTexture(i > 0 ? `coneMarch${i - 1}` : null);
+
+				this.wilson.drawFrame();
+			}
+
+			this.wilson.useShader("draw");
+			this.wilson.useFramebuffer(null);
+			this.wilson.useTexture(`coneMarch${this.coneMarchingScales.length - 1}`);
+		}
+
+
+
+		this.wilson.drawFrame();
+
+		this.wilson.endGpuTimer();
+	}
+
+
+
+	async downloadHighResFrame(filename, resolution = this.resolution)
+	{
+		const oldMaxMarches = this.maxMarches;
+		const oldMaxShadowMarches = this.maxShadowMarches;
+		const oldStepFactor = this.stepFactor;
+
+		await this.reloadShader({
+			maxMarches: this.maxMarches * 40,
+			maxShadowMarches: this.maxShadowMarches * 40,
+			stepFactor: this.stepFactor * 0.1
+		});
+
+		this.needNewFrame = false;
+
+		// Don't trust the last cone marching result; just raymarch from scratch.
+		this.wilson.setTexture({ id: `coneMarch${this.coneMarchingScales.length - 1}`, data: null });
+
+		this.wilson.useShader("draw");
+
+		await this.wilson.downloadHighResFrame({
 			filename,
 			resolution,
-			{
-				resolution: Math.min(resolution, 4096)
+			uniforms: {
+				epsilonScaling: this.computeEpsilonScaling(resolution),
 			}
-		);
+		});
+
+		await this.reloadShader({
+			maxMarches: oldMaxMarches,
+			maxShadowMarches: oldMaxShadowMarches,
+			stepFactor: oldStepFactor,
+		});
+
+		this.needNewFrame = false;
 	}
 
 	async downloadBokehFrame()
@@ -595,9 +1298,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const { pixels } = await this.wilson.readHighResPixels({
 			resolution,
-			uniforms: {
-				resolution
-			},
 			format: "float"
 		});
 
@@ -672,54 +1372,56 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[0] = -1;
 		}
 
-		if (this.keysPressed.d)
+		if (this.keysPressed.d && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[1] = 1;
 		}
 
-		else if (this.keysPressed.a)
+		else if (this.keysPressed.a && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[1] = -1;
 		}
 
-		if (this.keysPressed[" "])
+		if (this.keysPressed[" "] && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[2] = 1;
 		}
 
-		else if (this.keysPressed.shift)
+		else if (this.keysPressed.shift && !this.lockedOnOrigin)
 		{
 			this.moveVelocity[2] = -1;
 		}
 
 		const movingSpeed = (this.keysPressed.c ? 0.05 : 1) * this.movingSpeed;
 
-		if (!this.lockedOnOrigin && (
-			this.moveVelocity[0] !== 0
-				|| this.moveVelocity[1] !== 0
-				|| this.moveVelocity[2] !== 0
-		)) {
-			const usableForwardVec = this.lockZ !== undefined
-				? scaleVector(
-					magnitude(this.forwardVec),
-					normalize([
-						this.forwardVec[0],
-						this.forwardVec[1],
-						0
-					]),
-				)
-				: this.forwardVec;
+		if (this.lockedOnOrigin && this.moveVelocity[0] !== 0)
+		{
+			this.distanceFromOrigin -= this.moveForwardScale
+				* movingSpeed
+				* this.moveVelocity[0]
+				* (timeElapsed / 6.944);
 
-			const usableRightVec = this.lockZ !== undefined
-				? scaleVector(
-					magnitude(this.rightVec),
-					normalize([
-						this.rightVec[0],
-						this.rightVec[1],
-						0
-					]),
-				)
-				: this.rightVec;
+			this.needNewFrame = true;
+		}
+
+		else if (
+			this.moveVelocity[0] !== 0
+			|| this.moveVelocity[1] !== 0
+			|| this.moveVelocity[2] !== 0
+		) {
+			const usableForwardVec = scaleVector(
+				this.moveForwardScale,
+				this.lockZ !== undefined
+					? normalize([this.forwardVec[0], this.forwardVec[1], 0])
+					: this.forwardVec
+			);
+
+			const usableRightVec = scaleVector(
+				this.moveRightScale,
+				this.lockZ !== undefined
+					? normalize([this.rightVec[0], this.rightVec[1], 0])
+					: this.rightVec
+			);
 
 			const tangentVec = [
 				this.moveVelocity[0] * usableForwardVec[0]
@@ -728,15 +1430,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[1] * usableRightVec[1],
 				this.moveVelocity[0] * usableForwardVec[2]
 					+ this.moveVelocity[1] * usableRightVec[2]
-					+ this.moveVelocity[2] * this.speedFactor / 1.5
+					+ this.moveVelocity[2] * this.speed / 1.5
 			];
 
-			this.cameraPos[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
-			this.cameraPos[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
-			this.cameraPos[2] = this.lockZ
-				?? this.cameraPos[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
-
-			this.wilson.showResetButton();
+			this.sceneOrigin[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
+			this.sceneOrigin[1] += movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
+			this.sceneOrigin[2] = this.lockZ
+				?? this.sceneOrigin[2] + movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
+			
+			if (!this.wilson.inXR)
+			{
+				this.wilson.showResetButton();
+			}
 
 			this.needNewFrame = true;
 		}
@@ -767,12 +1472,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.setUniforms({
-			aspectRatio: [
-				this.wilson.worldWidth / this.worldSize,
-				this.wilson.worldHeight / this.worldSize
-			],
-			resolution: this.resolution
+			epsilonScaling: this.computeEpsilonScaling(),
 		});
+
+		if (this.coneMarchingScales.length)
+		{
+			this.resizeConeMarchingFramebuffers();
+		}
 
 		this.needNewFrame = true;
 	}
@@ -823,10 +1529,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (value && !this.lockedOnOrigin)
 		{
 			// Convert to spherical coordinates.
-			const r = magnitude(this.cameraPos);
-			const normalizedCameraPos = normalize(this.cameraPos);
-			const phi = Math.acos(this.cameraPos[2] / r);
-			let theta = Math.PI - Math.atan2(this.cameraPos[1], this.cameraPos[0]);
+			const r = magnitude(this.sceneOrigin);
+			const normalizedCameraPos = normalize(this.sceneOrigin);
+			const phi = Math.acos(this.sceneOrigin[2] / r);
+			let theta = Math.PI - Math.atan2(this.sceneOrigin[1], this.sceneOrigin[0]);
 			if (theta > Math.PI)
 			{
 				theta -= 2 * Math.PI;
@@ -855,7 +1561,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				targets: dummy,
 				theta,
 				phi,
-				r: this.distanceFromOrigin,
+				r: this.defaultDistanceFromOrigin,
 				duration: 500,
 				easing: "easeOutCubic",
 				update: () =>
@@ -865,8 +1571,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 						centerY: dummy.phi,
 						showResetButton: false,
 					});
+
+					this.distanceFromOrigin = dummy.r;
 					
-					this.cameraPos = scaleVector(
+					this.sceneOrigin = scaleVector(
 						dummy.r,
 						normalizedCameraPos
 					);
@@ -891,7 +1599,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (this.lockedOnOrigin !== value)
 		{
 			this.wilson.setCurrentStateAsDefault();
-			this.defaultCameraPos = [...this.cameraPos];
+			this.defaultSceneOrigin = [...this.sceneOrigin];
 		}
 
 		this.lockedOnOrigin = value;
@@ -1025,4 +1733,21 @@ export function mat3TimesVector(mat, vec)
 		mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2],
 		mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2]
 	];
+}
+
+// Converts WebXR's y-up internal coorindate system to RaymarchApplet's z-up one;
+// i.e. columns (x, y, z) → (−z, −x, y).
+function xrToScene(matrix, out)
+{
+	for (let column = 0; column < 4; column++)
+	{
+		const i = 4 * column;
+
+		out[i] = -matrix[i + 2];
+		out[i + 1] = -matrix[i];
+		out[i + 2] =  matrix[i + 1];
+		out[i + 3] =  matrix[i + 3];
+	}
+
+	return out;
 }

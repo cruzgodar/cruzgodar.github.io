@@ -1,7 +1,12 @@
 /* eslint-disable max-len */
 export const redirects = {
+	// Applets
 	"/applets/the-mandelbulb": "/applets/mandelbulb",
+	"/applets/mandelbrot-set": "/applets/julia-set-explorer",
 	"/applets/flag-overlap": "/applets/flagle",
+
+	// Slides
+	"/math/lapsa": "/projects/lapsa",
 
 	// Renamed teaching pages post-extraction
 	"/teaching/notes/calculus/calc-1-review": "/teaching/notes/calculus/chapters-1-and-2-review",
@@ -25,6 +30,12 @@ export const redirects = {
 
 	"/teaching/notes/trig/periodic-functions": "/teaching/notes/trig/unit-circle",
 	"/teaching/notes/trig/the-unit-circle": "/teaching/notes/trig/unit-circle",
+
+	"/teaching/yale/1180/notes/the-gradient": "/teaching/yale/1180/notes/gradients",
+	"/teaching/yale/1180/notes/optimization": "/teaching/yale/1180/notes/multivariable-optimization",
+	"/teaching/yale/1180/notes/extreme-value-theorem": "/teaching/yale/1180/notes/boundary-optimization",
+	"/teaching/yale/1180/notes/the-multivariable-chain-rule": "/teaching/yale/1180/notes/multivariable-chain-rule",
+	"/teaching/yale/1180/notes/the-determinant": "/teaching/yale/1180/notes/determinants",
 	
 	// 342
 	"/teaching/uo/342/notes/0-linear-algebra-1-review":

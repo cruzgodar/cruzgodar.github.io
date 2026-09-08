@@ -46,7 +46,8 @@ function load({ slide })
 
 	applet = new FractalSounds({
 		canvas,
-		lineDrawerCanvas
+		lineDrawerCanvas,
+		defaultWorldSize: 3.5,
 	});
 }
 

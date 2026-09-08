@@ -123,13 +123,13 @@ export function createShader({
 		uniform float uvScale;
 		uniform vec2 uvCenter;
 		
-		uniform vec2 worldSize;
-		
 		uniform vec4 cameraPos;
 		// uniform vec4 normalVec;
 		uniform vec4 upVec;
 		uniform vec4 rightVec;
 		uniform vec4 forwardVec;
+
+		uniform mat4 projectionMatrix;
 		
 		const float pi = ${Math.PI};
 		const float epsilon = 0.00001;
@@ -141,7 +141,6 @@ export function createShader({
 		const float reflectivity = .2;
 
 		uniform float clipDistance;
-		uniform float fov;
 
 		${uniformGlsl ?? ""}
 
@@ -344,11 +343,19 @@ export function createShader({
 		
 		void main(void)
 		{
+			vec2 ndc = uvScale * uv + uvCenter;
+
+			vec3 rayDirectionEye = vec3(
+				(ndc.x + projectionMatrix[2][0]) / projectionMatrix[0][0],
+				(ndc.y + projectionMatrix[2][1]) / projectionMatrix[1][1],
+				-1.0
+			);
+
 			gl_FragColor = raymarch(
 				geometryNormalize(
-					forwardVec
-					+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
-					+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
+					  rightVec   * rayDirectionEye.x
+					+ upVec      * rayDirectionEye.y
+					- forwardVec * rayDirectionEye.z
 				)
 			);
 		}

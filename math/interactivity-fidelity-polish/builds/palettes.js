@@ -8,8 +8,7 @@ const generatingCodeTrig = "csin(z)";
 
 async function reset({ forward })
 {
-	applet.run({
-		// eslint-disable-next-line max-len
+	await applet.run({
 		generatingCode: forward ? generatingCodePalettes : generatingCodeCrosshatch,
 		resolution: 1000
 	});
@@ -17,8 +16,7 @@ async function reset({ forward })
 
 async function build2({ forward })
 {
-	applet.run({
-		// eslint-disable-next-line max-len
+	await applet.run({
 		generatingCode: forward ? generatingCodeTrig : generatingCodePalettes,
 		resolution: 1000
 	});
@@ -26,8 +24,7 @@ async function build2({ forward })
 
 async function build3({ forward })
 {
-	applet.run({
-		// eslint-disable-next-line max-len
+	await applet.run({
 		generatingCode: forward ? generatingCodeCrosshatch : generatingCodeTrig,
 		resolution: 1000
 	});

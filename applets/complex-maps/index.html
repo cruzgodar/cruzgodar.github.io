@@ -10,7 +10,9 @@
 
 	<meta property="og:url" content="https://cruzgodar.com/applets/complex-maps"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/applets/complex-maps/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/applets/complex-maps/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="It's not a coincidence that many of the applets I've made revolve around the complex numbers — a complete two-dimensional number system...">
 
@@ -60,6 +62,19 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
+	<script>
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>

@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[total={6.5in, 8.6in}, heightrounded]{geometry}
+\usepackage{hyperref}
+
+\hypersetup
+{
+	colorlinks = true,
+	allcolors = OliveGreen
+}
+
+\graphicspath{{graphics/}}
+\setenumerate[0]{label=\alph*)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+\setlength\fboxsep{0pt}
+\renewcommand{\baselinestretch}{1.6}
+\titleformat{\section}
+{\normalfont \Large \bfseries \centering}{}{0pt}{}
+
+\newcommand{\s}[1]{{\color{violet} #1}}
+
+
+
+\begin{document}\Large Name: \rule{2in}{0.15mm} \hfill Problem Set 1 | Math 1180 | Cruz Godar \vspace{4pt}  \normalsize
+
+\textit{Due Thursday, September 10th at 11:59 PM}
+
+Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted. I write most of my problems to not require calculators, but you may find some of the problems require them --- that's perfectly fine! All exam problems will be written without the need for calculators.
+
+~\\
+
+Questions 1--5 concern the following graph of the function $f(x)$.
+
+1. Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.
+
+2. Find $\displaystyle \lim_{x \to 0^+} f(x)$ and $\displaystyle \lim_{x \to 0^-} f(x)$.
+
+3. Using interval notation, list all of the $x$-values where $f$ is continuous and all of the $x$-values where $f$ is discontinuous.
+
+4. Find $\displaystyle \lim_{x \to \infty} f(x)$ and $\displaystyle \lim_{x \to -\infty} f(x)$. You can zoom out on the graph!
+
+5. Using interval notation, list all of the $x$-values where $f$ is differentiable and all of the $x$-values where $f$ is nondifferentiable.
+
+~\\
+
+In questions 6--7, find all of the critical points of the given function on the given interval, and classify them as local maxima, local minima, or inconclusive using the second derivative test. Then find the absolute maximum and minimum of the function.
+
+6. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
+
+7. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
+
+~\\
+
+In questions 8--9, find the derivative of the given function.
+
+8. $\displaystyle p(t) = \frac{\tan(t)}{t^2 + 1}$.
+
+9. $\displaystyle r(z) = \ln\left( z\cos(z) \right)$.
+
+~\\
+
+Questions 10--13 concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the \textbf{demand function}.
+
+10. Find $D'(p)$ and the units in which it is measured. Is it positive or negative in general? Why does that make sense in context?
+
+11. The \textbf{price elasticity of demand} measures how sensitive buyers are to price. It is defined as
+
+$$
+	E(p) = -p\frac{D'(p)}{D(p)}
+$$
+
+and measures (percent change in demand) per (percent change in price). Find $E(p)$ for this store, and find the price at which $E(p) = 1$, which is when demand is called \textbf{unit elastic}.
+
+12. The store's weekly revenue is $R(p) = pD(p)$. Optimize $R(p)$ on $[0, \infty)$, and classify it with the second derivative test. What is the store's largest possible weekly revenue?
+
+13. Compare your answers to questions 11 and 12. Then show that $R'(p) = D(p)\left( 1 - E(p) \right)$ for \textit{any} differentiable demand function $D$, and explain what that says about the relationship between revenue and price elasticity of demand.
+
+~\\
+
+14. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
+
+15. Choose up to three questions (and at least one) on which you would like detailed feedback.
+
+
+\end{document}

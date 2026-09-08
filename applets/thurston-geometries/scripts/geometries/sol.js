@@ -936,7 +936,12 @@ class SolGeometry extends BaseGeometry
 		return [0, 0, 0, 1];
 	}
 
-	correctVectors() {}
+	// The frame stays at the origin -- followGeodesic's exp(±pos[2]) factors and the shader's
+	// getUpdatedPos are what translate it -- so there's nothing to project onto.
+	correctFrame(pos, forward, right, up)
+	{
+		return [pos, forward, right, up];
+	}
 
 	baseColorIncreases = [
 		[-1, 0, 0],

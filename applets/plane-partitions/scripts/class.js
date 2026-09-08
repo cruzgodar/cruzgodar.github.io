@@ -54,7 +54,7 @@ import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { sleep } from "/scripts/src/utils.js";
 import * as THREE from "/scripts/three.js";
-import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGL } from "/scripts/wilson.js";
 
 export class PlanePartitions extends AnimationFrameApplet
 {
@@ -168,7 +168,7 @@ export class PlanePartitions extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 
 
@@ -343,6 +343,26 @@ export class PlanePartitions extends AnimationFrameApplet
 		}
 
 		this.renderer.render(this.scene, this.orthographicCamera);
+
+		if (this.needDownload)
+		{
+			this.needDownload = false;
+
+			this.wilson.canvas.toBlob(blob =>
+			{
+				const link = document.createElement("a");
+
+				link.download = "a-plane-partition.png";
+
+				link.href = window.URL.createObjectURL(blob);
+
+				link.click();
+
+				link.remove();
+
+				URL.revokeObjectURL(link.href);
+			});
+		}
 	}
 
 	onSwitchFullscreen(isFullscreen)

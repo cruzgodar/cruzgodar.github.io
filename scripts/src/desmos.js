@@ -1,11 +1,14 @@
 import { hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
+import { cardContainer } from "./cards.js";
 import { enterFullscreen, exitFullscreen, isFullscreen } from "./fullscreen.js";
 import { distinguishColorsCheckboxContainer } from "./header.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { addTemporaryListener, raw } from "./main.js";
 import { siteSettings } from "./settings.js";
 import { clamp, loadScript } from "./utils.js";
+
+export const defaultWorldRotation3D = [-0.82, 0.48, -0.3, -0.45, -0.88, -0.17, -0.35, 0, 0.94];
 
 export const desmosDragModes = {
 	NONE: "NONE",
@@ -808,6 +811,12 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 		callback: onScroll
 	});
 
+	addTemporaryListener({
+		object: cardContainer,
+		event: "scroll",
+		callback: onScroll
+	});
+
 	onScroll();
 }
 
@@ -1070,22 +1079,76 @@ export async function getDesmosScreenshot(id, forPdf = false)
 		? desmosGraphs[id].screenshot({
 			width: 800,
 			height: 800,
-			targetPixelRatio: 2,
+			targetPixelRatio: 3,
 		})
 		: await new Promise(resolve =>
 		{
 			desmosGraphs[id].asyncScreenshot({
 				width: 800,
 				height: 800,
-				targetPixelRatio: 4,
+				targetPixelRatio: 3,
 				showLabels: forPdf
 			}, resolve);
 		});
 
 	const a = document.createElement("a");
-	a.href = imageData;
+	a.href = await assignP3Profile(imageData);
 	a.download = `${id}.png`;
 	a.click();
+}
+
+// Reinterprets the (sRGB) pixel values as Display P3 rather than converting them,
+// so the downloaded png is tagged with a P3 profile and looks a bit more saturated.
+async function assignP3Profile(imageData)
+{
+	try
+	{
+		const image = new Image();
+
+		await new Promise((resolve, reject) =>
+		{
+			image.onload = resolve;
+			image.onerror = reject;
+			image.src = imageData;
+		});
+
+		const width = image.naturalWidth;
+		const height = image.naturalHeight;
+
+		const srgbCanvas = document.createElement("canvas");
+		srgbCanvas.width = width;
+		srgbCanvas.height = height;
+
+		const srgbCtx = srgbCanvas.getContext("2d", { colorSpace: "srgb" });
+		srgbCtx.drawImage(image, 0, 0);
+
+		const pixels = srgbCtx.getImageData(0, 0, width, height).data;
+
+		const p3Canvas = document.createElement("canvas");
+		p3Canvas.width = width;
+		p3Canvas.height = height;
+
+		const p3Ctx = p3Canvas.getContext("2d", { colorSpace: "display-p3" });
+
+		if (p3Ctx.getContextAttributes().colorSpace !== "display-p3")
+		{
+			return imageData;
+		}
+
+		p3Ctx.putImageData(
+			new ImageData(pixels, width, height, { colorSpace: "display-p3" }),
+			0,
+			0
+		);
+
+		return p3Canvas.toDataURL("image/png");
+	}
+
+	catch(ex)
+	{
+		console.error(ex);
+		return imageData;
+	}
 }
 
 let uid = 0;
@@ -1096,7 +1159,7 @@ export function getDesmosPoint({
 	dragMode = desmosDragModes.XY,
 	style = desmosPointStyles.POINT,
 	secret = true,
-	size = 9
+	size = 12.5
 }) {
 	return [
 		{ latex: raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret, pointSize: size },

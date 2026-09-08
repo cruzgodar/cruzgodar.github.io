@@ -4,6 +4,24 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import { crossProduct, magnitude, normalize, scaleVector } from "./raymarchApplet.js";
 import * as THREE from "/scripts/three.js";
 
+// Wilson's own shaders draw a single full-screen quad, so it creates its WebGL context with
+// depth: false and antialias: false. Three.js renders geometry into that same context, where
+// both of those matter: without a depth buffer the depth test silently does nothing and faces
+// are drawn in submission order, and without multisampling every edge is jagged. Context
+// attributes are fixed at creation and Wilson is the one creating it, so the only place to ask
+// for them back is on the canvas, before Wilson gets to it.
+function requestGeometryContext(canvas)
+{
+	const getContext = canvas.getContext.bind(canvas);
+
+	canvas.getContext = (type, options) => getContext(
+		type,
+		type === "webgl" || type === "webgl2"
+			? { ...options, depth: true, antialias: true }
+			: options
+	);
+}
+
 export class ThreeApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
@@ -51,6 +69,8 @@ export class ThreeApplet extends AnimationFrameApplet
 		this.cameraPos = cameraPos;
 		this.defaultCameraPos = [...this.cameraPos];
 		this.distanceFromOrigin = magnitude(this.cameraPos);
+
+		requestGeometryContext(canvas);
 
 		this.listenForKeysPressed(
 			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],

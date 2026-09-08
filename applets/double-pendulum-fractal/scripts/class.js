@@ -3,7 +3,7 @@ import { hsvToRgb } from "/scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { sleep } from "/scripts/src/utils.js";
-import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGL } from "/scripts/wilson.js";
 
 export class DoublePendulumFractal extends AnimationFrameApplet
 {
@@ -169,7 +169,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		this.wilsonForFullscreen = this.wilson;
 
 
@@ -213,8 +213,10 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 
 
 
-	run({ resolution, centerUnstableEquilibrium = false })
+	async run({ resolution, centerUnstableEquilibrium = false })
 	{
+		await this.wilson.allShadersReady();
+
 		this.drawnFractal = false;
 		this.drawingFractal = true;
 

@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const boxSize = 4;
 
@@ -25,6 +25,8 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 	brightness;
 	image;
+
+	initialized;
 
 
 
@@ -185,7 +187,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 
 
 
@@ -591,8 +593,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 	// recipe is "grandma", "riley", or "grandmaSpecial"
-	changeRecipe(recipe)
+	async changeRecipe(recipe)
 	{
+		await this.wilson.allShadersReady();
+		
 		if (recipe === "grandma")
 		{
 			this.bakeCoefficients = this.grandmaCoefficients;
@@ -620,8 +624,13 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-	drawFrame()
+	async drawFrame()
 	{
+		if (!this.initialized)
+		{
+			await this.onResizeCanvas();
+		}
+
 		this.bakeCoefficients();
 
 		for (let i = 0; i < 4; i++)
@@ -651,6 +660,14 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 		this.renderShaderStack();
+	}
+
+	clearFrame()
+	{
+		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
+		{
+			this.brightness[i] = 0;
+		}
 	}
 
 
@@ -733,15 +750,17 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 				&& col >= 0
 				&& col < this.wilson.canvasWidth
 			) {
+				const index = this.wilson.canvasWidth * row + col;
+
 				if (
-					this.brightness[this.wilson.canvasWidth * row + col] >= this.maxPixelBrightness
+					this.brightness[index] >= this.maxPixelBrightness
 				) {
 					continue;
 				}
 
 				if (depth > 10)
 				{
-					this.brightness[this.wilson.canvasWidth * row + col]++;
+					this.brightness[index]++;
 				}
 			}
 
@@ -814,10 +833,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 	onDragDraggable()
 	{
-		for (let i = 0; i < this.wilson.canvasHeight * this.wilson.canvasWidth; i++)
-		{
-			this.brightness[i] = 0;
-		}
+		this.clearFrame();
 
 		this.needNewFrame = true;
 	}
@@ -869,8 +885,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-	onResizeCanvas()
+	async onResizeCanvas()
 	{
+		await this.wilson.allShadersReady();
+
 		this.wilson.createFramebufferTexturePair({
 			id: "image",
 			textureType: "float"
@@ -899,11 +917,10 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			]
 		}, "color");
 
-		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
-		{
-			this.brightness[i] = 0;
-		}
+		this.clearFrame();
 
 		this.needNewFrame = true;
+
+		this.initialized = true;
 	}
 }

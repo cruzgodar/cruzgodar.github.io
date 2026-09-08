@@ -97,32 +97,36 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		const numPixelsToDraw = this.animateMaze && !this.currentlyColoring
-			? Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length)
-			: this.pixels.length;
-
 		if (this.pixels.length === 0)
 		{
 			return;
 		}
 
-		if (
-			!this.currentlyColoring && (
-				this.pixels[0][2][0] !== 255
-				|| this.pixels[0][2][1] !== 255
-				|| this.pixels[0][2][2] !== 255
-			)
-		) {
+		if (!this.currentlyColoring && !isMazePixel(this.pixels[0]))
+		{
 			this.currentlyColoring = true;
 			this.needNewFrame = true;
 			return;
 		}
+
+		const numPixelsToDraw = this.animateMaze && !this.currentlyColoring
+			? Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length)
+			: this.pixels.length;
 
 		const firstDistance = this.pixels[0][3] ?? 0;
 
 		let i;
 		for (i = 0; i < numPixelsToDraw; i++)
 		{
+			// The worker sends the maze and the coloring in one continuous stream,
+			// so a batch can straddle the boundary between them. Stop here and let
+			// the next frame switch to coloring, or else we'd draw part of the
+			// coloring instantly.
+			if (!this.currentlyColoring && !isMazePixel(this.pixels[i]))
+			{
+				break;
+			}
+
 			const index = this.pixels[i][0] * this.resolution + this.pixels[i][1];
 			this.imageData[4 * index] = this.pixels[i][2][0];
 			this.imageData[4 * index + 1] = this.pixels[i][2][1];
@@ -157,4 +161,10 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 		await sleep(33);
 	}
+}
+
+
+function isMazePixel(pixel)
+{
+	return pixel[2][0] === 255 && pixel[2][1] === 255 && pixel[2][2] === 255;
 }

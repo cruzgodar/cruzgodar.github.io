@@ -1,10 +1,9 @@
  
-import { galleryImageData } from "./imageData.js";
+import { galleryFullResUrl, galleryImageData } from "./imageData.js";
 import { openZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
-import { redirect } from "/scripts/src/navigation.js";
 
 export default function()
 {
@@ -14,12 +13,8 @@ export default function()
 	const appletLinkElement = $("#applet-link");
 	const fullResLinkElement = $("#full-res-link");
 
-	let currentId = "";
-
 	function showGalleryCard({ id, fromElement })
 	{
-		currentId = id;
-
 		titleElement.innerHTML = galleryImageData[id].title;
 
 
@@ -64,7 +59,7 @@ export default function()
 
 		appletLinkElement.setAttribute("href", galleryImageData[id].appletLink);
 
-		fullResLinkElement.setAttribute("href", `https://drive.google.com/uc?id=${galleryImageData[id].driveId}&export=download`);
+		fullResLinkElement.setAttribute("href", galleryFullResUrl(id));
 
 
 
@@ -105,14 +100,4 @@ export default function()
 			})
 		);
 	}
-
-	appletLinkElement.addEventListener("click", (e) =>
-	{
-		redirect({ url: galleryImageData[currentId].appletLink, inNewTab: e.metaKey });
-	});
-
-	fullResLinkElement.addEventListener("click", () =>
-	{
-		redirect({ url: `https://drive.google.com/uc?id=${galleryImageData[currentId].driveId}&export=download`, inNewTab: true });
-	});
 }

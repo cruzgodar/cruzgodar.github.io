@@ -2,8 +2,10 @@ import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class CurvedLight extends RaymarchApplet
 {
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		xrFramebufferScaleSlider
+	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - .5;
 		`;
@@ -27,7 +29,7 @@ export class CurvedLight extends RaymarchApplet
 			vec3 geodesic(vec3 pos, vec3 dir, float t)
 			{
 				vec3 returnValue = vec3(0.0);
-				vec3 p = normalize(cross(-dir, rightVec));
+				vec3 p = normalize(cross(-dir, cameraToWorld[0].xyz));
 				vec3 q = normalize(cross(dir, p));
 
 				if (c0 > 0.0)
@@ -114,15 +116,17 @@ export class CurvedLight extends RaymarchApplet
 			uniformsGlsl,
 			uniforms,
 			focalLengthFactor: 2,
-			cameraPos: [2.0842, 2.0852, 2.0637],
+			sceneOrigin: [2.0842, 2.0852, 2.0637],
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
-			lightBrightness: 1.25,
+			lightBrightness: 1.5,
 			oppositeLightBrightness: 1,
 			ambientLight: .25,
+			fogScaling: 0.05,
 			useBloom: false,
 			useReflections: true,
-			lockedOnOrigin: false
+			lockedOnOrigin: false,
+			xrFramebufferScaleSlider,
 		});
 	}
 

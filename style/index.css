@@ -28,20 +28,29 @@
 
 
 
-	--gallery-color: rgb(185, 241, 182);
-	/* --gallery-color: lch(90% 35 140); */
+	/* HSV 120, 23, 92 */
+	--gallery-color: rgb(181, 235, 181);
 
-	--applets-color: rgb(255, 184, 202);
-	/* --applets-color: lch(90% 60 15); */
+	/* HSV 210, 26, 100 */
+	--store-color: rgb(189, 222, 255);
 
-	--teaching-color: rgb(255, 222, 160);
-	/* --teaching-color: lch(90% 35 80); */
+	/* HSV 345, 25, 99 */
+	--applets-color: rgb(252, 189, 205);
 
-	--math-color: rgb(181, 228, 255);
-	/* --math-color: lch(90% 50 270); */
+	/* HSV 40, 25, 99 */
+	--teaching-color: rgb(252, 220, 159);
 
-	--about-color: rgb(223, 202, 255);
-	/* --about-color: lch(90% 100 293); */
+	/* HSV 25, 18, 100 */
+	--projects-color: rgb(221, 209, 255);
+
+	/* HSV 28, 30, 100 */
+	--news-color: rgb(255, 214, 179);
+
+	/* HSV 188, 24, 95 */
+	--math-color: rgb(184, 234, 242);
+
+	/* HSV 280, 18, 100 */
+	--about-color: rgb(236, 205, 250);
 
 
 
@@ -725,15 +734,21 @@ mjx-container
 	column-gap: 10px;
 }
 
-.WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button, .WILSON_reset-button
+.WILSON_button
 {
 	background: var(--background);
 	border: 2px solid var(--normal-contrast);
 }
 
-.WILSON_enter-fullscreen-button img, .WILSON_exit-fullscreen-button img, .WILSON_reset-button img
+.WILSON_button img
 {
 	filter: invert(calc(.25 + var(--theme)* .5657));
+}
+
+.WILSON_button-text
+{
+	filter: invert(calc(.25 + var(--theme)* .5657));
+	font-weight: bold;
 }
 
 .fps-canvas
@@ -1841,6 +1856,11 @@ option
 	background-color: var(--gallery-color);
 }
 
+#header-store-link.hover
+{
+	background-color: var(--store-color);
+}
+
 #header-applets-link.hover
 {
 	background-color: var(--applets-color);
@@ -1849,6 +1869,16 @@ option
 #header-teaching-link.hover
 {
 	background-color: var(--teaching-color);
+}
+
+#header-projects-link.hover
+{
+	background-color: var(--projects-color);
+}
+
+#header-news-link.hover
+{
+	background-color: var(--news-color);
 }
 
 #header-math-link.hover
@@ -1957,8 +1987,8 @@ option
 }
 
 
-
-@media (max-width: 700px)
+/* When the text "Cruz Godar" disappears. */
+@media (max-width: 725px)
 {
 	#header-logo span
 	{
@@ -1966,7 +1996,8 @@ option
 	}
 }
 
-@media (max-width: 500px)
+/* When the page names get replaced with icons. */
+@media (max-width: 525px)
 {
 	#header-links a span
 	{
@@ -2002,7 +2033,9 @@ option
 	}
 }
 
-@media (max-width: 350px)
+/* Icon shrink 1 */
+
+@media (max-width: 325px)
 {
 	:root
 	{
@@ -2021,7 +2054,8 @@ option
 	}
 }
 
-@media (max-width: 300px)
+/* Icon shrink 2 */
+@media (max-width: 275px)
 {
 	:root
 	{
@@ -2066,7 +2100,8 @@ option
 	}
 }
 
-@media (max-width: 270px)
+/* Icon shrink 3 */
+@media (max-width: 240px)
 {
 	:root
 	{
@@ -2232,29 +2267,111 @@ option
 
 
 
-img[src="/gallery/cover.webp"]
+.project
 {
-	background-color: var(--gallery-color);
+	margin-top: 96px;
 }
 
-img[src="/applets/cover.webp"]
+.body-text-with-image-link
 {
-	background-color: var(--applets-color);
+	width: min(100%, var(--text-width));
+
+	margin: 0 auto;
+	
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
 }
 
-img[src="/teaching/cover.webp"]
+.section-text-with-image-link
 {
-	background-color: var(--teaching-color);
+	width: fit-content;
+
+	margin: 0 auto;
+	margin-bottom: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
+	
+	display: none;
+	flex-direction: row-reverse;
+	justify-content: center;
+	align-items: center;
 }
 
-img[src="/math/cover.webp"]
+.project:nth-child(even) .body-text-with-image-link
 {
-	background-color: var(--math-color);
+	flex-direction: row-reverse;
 }
 
-img[src="/about/cover.webp"]
+:is(.body-text-with-image-link, .section-text-with-image-link) .image-link
 {
-	background-color: var(--about-color);
+	/* Account for the content-box sizing nonsense that .image-links handles for free. */
+	margin: -4px;
+	margin-bottom: -12px;
+
+	/* The width is set in js, so don't let the flex algorithm shrink it. */
+	flex-shrink: 0;
+
+	width: 175px;
+}
+
+.body-text-with-image-link .body-text
+{
+	flex: 1;
+	min-width: 0;
+
+	margin-bottom: 0;
+	margin-right: 32px;
+}
+
+.project:nth-child(even) .body-text-with-image-link .body-text
+{
+	margin-right: 0;
+	margin-left: 32px;
+}
+
+.section-text-with-image-link .section-text
+{
+	/* No flex-grow: the heading shrink-wraps its text so that it and the image
+	   link are centered together, and the auto margins from .section-text would
+	   otherwise eat all the free space before justify-content ever sees it. */
+	min-width: 0;
+	margin: 0;
+}
+
+.section-text-with-image-link .image-link
+{
+	width: 50px;
+}
+
+@media (max-width: 700px)
+{
+	.body-text-with-image-link .body-text
+	{
+		margin-right: 0 !important;
+		margin-left: 0 !important;
+	}
+
+	.section-text-with-image-link .section-text
+	{
+		/* No flex-grow: the heading shrink-wraps its text so that it and the image
+		link are centered together, and the auto margins from .section-text would
+		otherwise eat all the free space before justify-content ever sees it. */
+		min-width: 0;
+
+		margin-left: 16px;
+	}
+
+	.body-text-with-image-link .image-link, .project > .section-text
+	{
+		display: none;
+	}
+
+	.section-text-with-image-link
+	{
+		display: flex;
+	}
 }
 
 

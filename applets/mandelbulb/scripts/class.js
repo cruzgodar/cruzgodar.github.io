@@ -13,8 +13,9 @@ export class Mandelbulb extends RaymarchApplet
 
 	constructor({
 		canvas,
-		resolution = 400,
+		resolution = 1000,
 		useShadows = false,
+		xrFramebufferScaleSlider
 	}) {
 		const distanceEstimatorGlsl = /* glsl */`
 			vec3 z = pos;
@@ -75,7 +76,7 @@ export class Mandelbulb extends RaymarchApplet
 				
 				float phi = atan(z.y, z.x);
 				
-				dr = pow(r, power - 1.0) * power * dr + 1.0;
+				dr = pow(r, power - 1.0) * power * dr + (1.0 - juliaProportion);
 				
 				theta = power * theta + fountainAmount;
 				
@@ -113,7 +114,7 @@ export class Mandelbulb extends RaymarchApplet
 
 		const uniforms = {
 			power: 8,
-			c: [0, 0, 0],
+			c: [0.8, 0, 0],
 			juliaProportion: 0,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
 			fountainAmount: 0,
@@ -126,12 +127,24 @@ export class Mandelbulb extends RaymarchApplet
 			getColorGlsl,
 			uniformsGlsl,
 			uniforms,
-			theta: 4.6601,
-			phi: 2.272,
-			cameraPos: [0.084365, 1.91102, 1.69388],
+			epsilonScalingFactor: 0.4,
+			surfaceNormalEpsilonFactor: 0.5,
+			theta: 5.627,
+			phi: 2.158,
+			sceneOrigin: [-2.262, 1.746, 1.695],
 			lightPos: [-10, 0, 15],
 			lightBrightness: 1.2,
 			useShadows,
+			overstepFactor: 1.15,
+			useGradientCorrectedOcclusion: true,
+			xrFramebufferScaleSlider,
+
+			coneMarchingScales: [16, 4],
+			coneMarchingMaxMarches: [96, 48],
+
+			// Uncomment to fix the poles.
+			// stepFactor: 0.1,
+			// maxMarches: 128 * 10,
 		});
 	}
 
@@ -243,7 +256,15 @@ export class Mandelbulb extends RaymarchApplet
 
 		else
 		{
-			this.animeLoop.pause();
+			if (this.animeLoop)
+			{
+				this.animeLoop.pause();
+			}
+
+			else
+			{
+				return;
+			}
 
 			const startingFountainAmount = this.uniforms.fountainAmount * this.fountainFactor;
 
@@ -252,7 +273,7 @@ export class Mandelbulb extends RaymarchApplet
 				this.setUniforms({
 					fountainAmount: startingFountainAmount * (1 - t) - 2 * Math.PI * t
 				});
-			}, (startingFountainAmount + 2 * Math.PI) * 400, "easeOutQuad");
+			}, (startingFountainAmount + 2 * Math.PI) * 200, "easeOutQuad");
 		}
 	}
 }

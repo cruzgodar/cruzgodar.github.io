@@ -1,6 +1,8 @@
 home Cruz Godar
 	gallery Gallery
 
+	store Store
+
 	applets Applets
 		flagle Flagle
 		boids Boids!
@@ -10,7 +12,6 @@ home Cruz Godar
 		traffic-model The Biham-Middleton-Levine Traffic Model
 		raymarching-fundamentals Raymarching Fundamentals
 		curved-light Curved Light
-		hairy-ball-theorem The Hairy Ball Theorem
 		hopf-fibration The Hopf Fibration
 		bernoulli-percolation Bernoulli Percolation
 		menger-sponge The Menger Sponge
@@ -184,16 +185,16 @@ home Cruz Godar
 			notes/dot-and-cross-products Section 2: The Dot and Cross Products
 			notes/functions-of-multiple-variables Section 3: Functions of Multiple Variables
 			notes/partial-derivatives Section 4: Partial Derivatives
-			notes/the-multivariable-chain-rule Section 5: The Multivariable Chain Rule
-			notes/the-gradient Section 6: The Gradient
-			notes/optimization Section 7: Optimization
-			notes/extreme-value-theorem Section 8: The Extreme Value Theorem
+			notes/multivariable-chain-rule Section 5: The Multivariable Chain Rule
+			notes/gradients Section 6: The Gradient
+			notes/multivariable-optimization Section 7: Multivariable Optimization
+			notes/boundary-optimization Section 8: Boundary Optimization
 			notes/lagrange-multipliers Section 9: Lagrange Multipliers
 			notes/vectors-and-matrices Section 10: Vectors and Matrices
 			notes/row-reduction Section 11: Row Reduction
 			notes/bases Section 12: Linear Independence and Bases
 			notes/linear-transformations Section 13: Linear Transformations
-			notes/the-determinant Section 14: The Determinant
+			notes/determinants Section 14: The Determinant
 
 		yale/1110 Math 1110
 		
@@ -207,6 +208,13 @@ home Cruz Godar
 
 		extra/polar-double-integrals Double Integrals in Polar Coordinates
 	
+	projects Projects
+		lapsa Lapsa
+		kestrel Kestrel
+			privacy-policy Kestrel Privacy Policy
+
+	news News
+	
 	math Math
 		interactivity-fidelity-polish Interactivity, Fidelity, and Polish: Building Modern Math Illustration
 		turing-complete-lines Turing Complete Lines: An Introduction to Lambda Calculus
@@ -215,7 +223,6 @@ home Cruz Godar
 		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
-		lapsa Lapsa
 
 	about About
 	

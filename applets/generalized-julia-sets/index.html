@@ -10,7 +10,9 @@
 
 	<meta property="og:url" content="https://cruzgodar.com/applets/generalized-julia-sets"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/applets/generalized-julia-sets/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/applets/generalized-julia-sets/cover.jpg"/>
+
+	<meta property="og:image:type" content="image/jpeg"/>
 
 	<meta property="og:description" content="This one's been a long time coming. The first applet I ever made for the site was a Julia set explorer, and although it took me months to...">
 
@@ -60,6 +62,19 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
+	<script>
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>

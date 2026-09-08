@@ -4,7 +4,7 @@ import { changeOpacity } from "/scripts/src/animation.js";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { animate, sleep } from "/scripts/src/utils.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 const bubbleRadius = 1;
 
@@ -36,6 +36,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	resolution;
 	resolutionHidden = 50;
 
+	doneAnimating = Promise.resolve();
+
 
 
 	constructor({
@@ -49,7 +51,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		bailoutRadius = 4,
 		juliaMode = "mandelbrot",
 		c = [0, 0],
-		resolution = 1000,
+		resolution = 500,
 		onClickCanvas = () => {},
 	}) {
 		super(canvas);
@@ -113,13 +115,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			verbose: window.DEBUG,
 		};
 
-		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson = new WilsonGL(canvas, options);
 		
 
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+		this.wilsonHidden = new WilsonGL(hiddenCanvas, {
 			...options,
 			canvasWidth: this.resolutionHidden,
 			draggableOptions: {},
@@ -150,7 +152,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				previewCanvas
 			);
 
-			this.wilsonPreview = new WilsonGPU(previewCanvas, optionsPreview);
+			this.wilsonPreview = new WilsonGL(previewCanvas, optionsPreview);
 		}
 
 
@@ -529,6 +531,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -544,6 +547,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				crosshairSize: 0.002,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -557,6 +561,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				c: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilson.loadShader({
@@ -571,6 +576,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 
@@ -585,6 +591,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				brightnessScale: 10,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -600,6 +607,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				crosshairSize: 0.002,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -613,6 +621,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				c: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 		this.wilsonHidden.loadShader({
@@ -627,11 +636,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				juliaC: this.c,
 				draggableArg: this.wilson.draggables.draggableArg.location,
 			},
+			use: false,
 		});
 
 
 		if (this.wilsonPreview)
 		{
+			// This one never changes shaders, so we jusrt use it immediately.
 			this.wilsonPreview.loadShader({
 				id: "julia",
 				shader: shaders.julia,
@@ -645,6 +656,15 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				},
 			});
 		}
+
+
+
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+			this.wilsonPreview?.allShadersReady?.() ?? Promise.resolve(),
+		]);
+
 
 
 		if (!this.hasRun)
@@ -742,6 +762,12 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			},
 		});
 
+		await Promise.all([
+			this.wilson.allShadersReady(),
+			this.wilsonHidden.allShadersReady(),
+			this.wilsonPreview?.allShadersReady?.() ?? Promise.resolve(),
+		]);
+
 		await animate((t) =>
 		{
 			this.wilson.setUniforms({
@@ -759,6 +785,11 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 	async advanceJuliaMode()
 	{
+		await this.doneAnimating;
+
+		let resolve;
+		this.doneAnimating = new Promise(r => { resolve = r; });
+
 		if (this.juliaMode === "mandelbrot")
 		{
 			this.juliaMode = "juliaPicker";
@@ -909,6 +940,8 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			this.switchJuliaModeButton.disabled = this.juliaMode === "juliaPicker";
 		}
 
+		resolve();
+
 		this.needNewFrame = true;
 	}
 
@@ -928,7 +961,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			)
 		);
 
-		const animationTime = levelsToZoom > 1
+		const differentWorldCenter = Math.abs(worldCenterX + this.worldAdjust[0]) > 0.05
+			|| Math.abs(worldCenterY + this.worldAdjust[1]) > 0.05;
+
+		const animationTime = levelsToZoom > 1 || differentWorldCenter
 			? 500
 			: levelsToZoom > 0
 				? 200

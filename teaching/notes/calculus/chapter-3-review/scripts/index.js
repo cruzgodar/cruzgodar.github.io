@@ -9,13 +9,13 @@ export default function()
 	createDesmosGraphs({
 		testGraph:
 		{
-			bounds: { xmin: -1, xmax: 3, ymin: -1, ymax: 3 },
+			bounds: { xmin: -2, xmax: 2, ymin: -1, ymax: 3 },
 
 			expressions:
 			[
-				{ latex: raw`f(x) = x^3 - 2x^2 + 2`, color: desmosColors.purple },
-				{ latex: raw`a = 0` },
-				{ latex: raw`b = 2` },
+				{ latex: raw`f(x) = 1.5 + \sin(-2x)\{-\frac{\pi}{2} \leq x \leq \frac{\pi}{2}\}`, color: desmosColors.purple },
+				{ latex: raw`a = -\frac{\pi}{2}` },
+				{ latex: raw`b = \frac{\pi}{2}` },
 
 				{ latex: raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosColors.purple, secret: true },
 				{ latex: raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosColors.purple, secret: true }

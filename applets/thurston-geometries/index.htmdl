@@ -4,6 +4,8 @@ Stated in 1982 and first proven in the early 2000s, William Thurston's [geometri
 
 This applet was a mathematically and computationally grueling project that spanned six months and many hundreds of hours, and I'm grateful to the many people that helped --- particularly [Andy Huchala](https://ahuchala.com) and [Arya Yae](https://linktr.ee/aryayae), who put up with my incessant topology questions throughout the process and helped me avoid some of the most common pitfalls. Endless thanks go to [Re&#769;mi Coulon](https://rcoulon.perso.math.cnrs.fr), [Elisabetta Matsumoto](https://physics.gatech.edu/user/elisabetta-matsumoto), [Henry Segerman](http://www.segerman.org), and [Steve Trettel](https://stevejtrettel.site) for their paper on [raymarching the Thurston geometries](https://arxiv.org/abs/2010.15801), which was an excellent starting point for the applet I wanted to make and the current state of the art on rendering noneuclidean geometries.
 
+For better or worse, this applet can run in a VR headset! Attach one to a Windows PC or open this page in a headset's browser to get started.
+
 ### dropdown geometries
 
 
@@ -19,6 +21,7 @@ This applet was a mathematically and computationally grueling project that spann
 	wall-thickness
 	clip-distance
 	fov
+	xr-framebuffer-scale
 ###
 
 ### buttons

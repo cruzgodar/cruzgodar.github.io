@@ -1,7 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../../scripts/src/complexGlsl.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { $ } from "/scripts/src/main.js";
-import { WilsonGPU } from "/scripts/wilson.js";
+import { WilsonGL } from "/scripts/wilson.js";
 
 export default async function()
 {
@@ -162,7 +162,7 @@ export default async function()
 		verbose: window.DEBUG,
 	};
 
-	const wilson = new WilsonGPU($("#output-canvas"), options);
+	const wilson = new WilsonGL($("#output-canvas"), options);
 	
 	function wrapShader(shader)
 	{

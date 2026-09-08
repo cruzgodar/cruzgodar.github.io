@@ -7,7 +7,8 @@
 	<meta property="og:title" content="Mary&#x2019;s 3-Manifold: The Value of Mathematical Visualization"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content="https://cruzgodar.com/math/marys-3-manifold/"/>
-	<meta property="og:image" content="https://cruzgodar.com/math/marys-3-manifold/cover.webp"/>
+	<meta property="og:image" content="https://cruzgodar.com/math/marys-3-manifold/cover.jpg"/>
+	<meta property="og:image:type" content="image/jpeg"/>
 	<meta property="og:locale" content="en_US"/>
 	<meta property="og:site_name" content="Cruz Godar"/>
 
@@ -51,6 +52,19 @@
 			color: rgb(255, 255, 255) !important;
 		}
 	</style>
+	<script>
+		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
+		{
+			const beacon = document.createElement("script");
+
+			beacon.type = "module";
+			beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+			beacon.setAttribute("data-cf-beacon", '{"token": "cea85decd2f24b3fade40166c66cff45", "spa": false}');
+
+			document.head.appendChild(beacon);
+		}
+	</script>
+
 </head>
 
 <body>	

@@ -49,13 +49,13 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 	The result is the equation of an ellipse in $#R#^2$, which we can parameterize as
 
 	$$
-		\left( -2 + \frac{1}{\sqrt{2}} \cos(t), \sin(t) \right).
+		\left( -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t),\ \right).
 	$$
 
 	This is effectively the shadow that the red circle casts on the $xy$-plane. To lift it up to where it lives in $#R#^3$, we just need to put back in the $z$-coordinate, which is $x + 4$:
 
 	$$
-		\vec{r}(t) = \left< -2 + \frac{1}{\sqrt{2}} \cos(t), \sin(t), 2 + \frac{1}{\sqrt{2}} \cos(t) \right>.
+		\vec{r}(t) = \left< -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t),\ 2 + \frac{1}{\sqrt{2}} \cos(t) \right>.
 	$$
 
 ###
@@ -67,14 +67,14 @@ The components of vector-valued functions are largely independent from one anoth
 	Let $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$. Then
 
 	$$
-		\lim_{t \to a} \vec{r}(t) = \left< \lim_{t \to a} x(t), \lim_{t \to a} y(t), \lim_{t \to a} z(t) \right>,
+		\lim_{t \to a} \vec{r}(t) = \left< \lim_{t \to a} x(t),\ \lim_{t \to a} y(t),\ \lim_{t \to a} z(t) \right>,
 	$$
 
 	assuming those limits exist. Consequently, $\vec{r}(t)$ is continuous at a value of $t$ if and only if its component functions are continuous there.
 
 ###
 
-As in Calculus I, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, its derivative is defined to be
+As in Calculus I, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t),\, y(t),\, z(t) \right>$, its derivative is defined to be
 
 $$
 	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r}(t)}{h}
@@ -87,7 +87,7 @@ $$
 
 	&= \left< \lim_{h \to 0} \frac{x(t + h) - x(t)}{h},\ \lim_{h \to 0} \frac{y(t + h) - y(t)}{h},\ \lim_{h \to 0} \frac{z(t + h) - z(t)}{h} \right>
 
-	&= \left< x'(t), y'(t), z'(t) \right>,
+	&= \left< x'(t),\, y'(t),\, z'(t) \right>,
 $$
 
 assuming those exist.
@@ -98,7 +98,7 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	1. Let $\vec{p}(t)$ be your position in three-dimensional space. What is your current value of $\vec{p}'(t)$?
 
-	2. Let $\vec{r}(t) = \left< 2\cos(t), \sin(t), t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
+	2. Let $\vec{r}(t) = \left< 2\cos(t),\ \sin(t),\ t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
 
 	3. Once again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
 
@@ -147,7 +147,7 @@ If we're given a vector-valued function that is already a derivative, though, li
 	A satellite orbiting the Earth isn't doing so well. Its acceleration $t$ days after we begin measuring is given by
 
 	$$
-		\vec{a}(t) = \left< \frac{6}{(1 + t)^4}, \frac{2}{(1 + t)^3}, \frac{2}{(1 + t)^3} \right>
+		\vec{a}(t) = \left< \frac{6}{(1 + t)^4},\, \frac{2}{(1 + t)^3},\, \frac{2}{(1 + t)^3} \right>
 	$$
 
 	in hundred thousand miles per day per day. When we begin measuring, the velocity of the satellite is $\left< -2, -1, -1 \right>$ in hundred thousand miles per day, and the position is $\left< 1, 1, 1 \right>$ in hundred thousand miles. At some point, the satellite will burn up harmlessly in the earth's atmosphere. Find the position $\vec{r}(t)$ of the position of the satellite after $t$ days.
@@ -184,14 +184,20 @@ For a small number of segments, our approximation is pretty poor, like a too-str
 
 ### exc "arc length"
 
-	Find the arc length of the function graphed above --- $\vec{r}(t) = \left< \cos(t), \sin(t), \frac{2}{3}t^{3/2} \right>$ --- between $t = 0$ and $t = 35$.
+	Find the arc length of
+	
+	$$
+		\vec{r}(t) = \left< \cos(t),\ \sin(t),\ \frac{2}{3}t^{3/2} \right>
+	$$
+	
+	between $t = 0$ and $t = 35$.
 
 	### solution
 
 	The derivative is
 
 	$$
-		\vec{r}'(t) = \left< -\sin(t), \cos(t), t^{1/2} \right>,
+		\vec{r}'(t) = \left< -\sin(t),\, \cos(t),\, t^{1/2} \right>,
 	$$
 
 	and its magnitude is

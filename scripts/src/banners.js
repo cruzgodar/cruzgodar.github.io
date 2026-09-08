@@ -26,7 +26,15 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 
 export let nameTextOpacity = 1;
 
-let lastBannerChangeTimestamp = -1;
+// startBannerLoop() is the only way into the loop, and it no-ops while one is
+// already running. Keeping exactly one loop used to be done by comparing frame
+// timestamps instead, which was subtly wrong: a call arriving in a frame that
+// another call had already claimed returned *without* rescheduling. loadBanner
+// is called twice per navigation, so whenever those landed in the same frame --
+// a warm cache, or a backgrounded tab releasing its queued callbacks at once --
+// both bailed and the loop never started, leaving the banner stuck at full
+// opacity and the content unexpanded for the life of the page.
+let bannerLoopRunning = false;
 
 let lastT = 0;
 
@@ -35,20 +43,28 @@ function easeInOutQuad(x)
 	return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
 }
 
-export function updateBanner(timestamp)
+export function startBannerLoop()
 {
-	if (
-		!bannerElement
-		|| !contentElement
-		|| timestamp === lastBannerChangeTimestamp
-		|| lastBannerChangeTimestamp === -1
-	) {
-		lastBannerChangeTimestamp = timestamp;
-
+	if (bannerLoopRunning)
+	{
 		return;
 	}
 
-	lastBannerChangeTimestamp = timestamp;
+	bannerLoopRunning = true;
+
+	requestAnimationFrame(updateBanner);
+}
+
+function updateBanner()
+{
+	// The banner is gone because we've navigated to a page without one, so let
+	// the loop stop. The next loadBanner() starts it back up.
+	if (!bannerElement || !contentElement)
+	{
+		bannerLoopRunning = false;
+
+		return;
+	}
 
 	if (!bannerMaxScroll)
 	{
@@ -144,8 +160,6 @@ export function updateBanner(timestamp)
 	requestAnimationFrame(updateBanner);
 }
 
-requestAnimationFrame(updateBanner);
-
 
 
 let bannerFilename = "";
@@ -174,22 +188,20 @@ export const multibannerPages =
 
 
 
-export async function preloadBanner(url)
+function setBannerFilepath(url, large = false)
 {
-	if (!(bannerPages.includes(url)))
-	{
-		return;
-	}
-
-	bannerFilename = "small.webp";
+	bannerFilename = `${large ? "large" : "small"}.webp`;
 	bannerFilepath = url + "/banners/";
 
 	if (url in multibannerPages)
 	{
 		bannerFilepath += multibannerPages[url].currentBanner + "/";
 	}
+}
 
-	await new Promise(resolve =>
+function loadBannerImage()
+{
+	return new Promise(resolve =>
 	{
 		const imageLoadElement = document.createElement("img");
 		imageLoadElement.onload = () =>
@@ -203,7 +215,21 @@ export async function preloadBanner(url)
 
 
 
-export async function loadBanner({
+export async function preloadBanner(url)
+{
+	if (!(bannerPages.includes(url)))
+	{
+		return;
+	}
+
+	setBannerFilepath(url);
+
+	await loadBannerImage();
+}
+
+
+
+async function loadBanner({
 	url,
 	large = false
 }) {
@@ -211,6 +237,8 @@ export async function loadBanner({
 	if (!(bannerPages.includes(url)))
 	{
 		bannerElement = null;
+		contentElement = null;
+
 		return;
 	}
 
@@ -223,13 +251,7 @@ export async function loadBanner({
 			= `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
 	}
 
-	bannerFilename = `${large ? "large" : "small"}.webp`;
-	bannerFilepath = url + "/banners/";
-
-	if (url in multibannerPages)
-	{
-		bannerFilepath += multibannerPages[url].currentBanner + "/";
-	}
+	setBannerFilepath(url, large);
 
 	addStyle(`
 		#banner-small
@@ -237,7 +259,7 @@ export async function loadBanner({
 			background: url(${bannerFilepath}small.webp) no-repeat center center;
 			background-size: cover;
 		}
-		
+
 		#banner-large
 		{
 			background: url(${bannerFilepath}large.webp) no-repeat center center;
@@ -245,18 +267,9 @@ export async function loadBanner({
 		}
 	`);
 
-	requestAnimationFrame(updateBanner);
+	startBannerLoop();
 
-	await new Promise(resolve =>
-	{
-		const imageLoadElement = document.createElement("img");
-		imageLoadElement.onload = () =>
-		{
-			resolve();
-		};
-
-		setTimeout(() => imageLoadElement.src = bannerFilepath + bannerFilename, 0);
-	});
+	await loadBannerImage();
 }
 
 
@@ -264,17 +277,27 @@ export async function loadBanner({
 // The function called by pageLoad to load a small banner that fades into a large one when ready.
 export function initBanner()
 {
-	if (bannerPages.includes(pageUrl))
+	// This page has no banner, so drop the outgoing page's elements -- they've
+	// just been removed from the dom -- and let the loop stop. This has to
+	// happen here rather than at the start of the transition: fadeOutPage still
+	// needs bannerElement to fade the outgoing banner, and the error path in
+	// redirect() needs it to fade that banner back in if the swap throws.
+	if (!bannerPages.includes(pageUrl))
 	{
-		loadBanner({ url: pageUrl, large: true })
-			.then(() =>
-			{
-				changeOpacity({
-					element: $("#banner-small"),
-					opacity: 0,
-					duration: 700
-				})
-					.then(() => $("#banner-small").remove());
-			});
+		bannerElement = null;
+		contentElement = null;
+
+		return;
 	}
+
+	loadBanner({ url: pageUrl, large: true })
+		.then(() =>
+		{
+			changeOpacity({
+				element: $("#banner-small"),
+				opacity: 0,
+				duration: 700
+			})
+				.then(() => $("#banner-small").remove());
+		});
 }

@@ -33,6 +33,12 @@ export default function()
 
 	function run(instant = false)
 	{
+		generatingStringInput.setValue(
+			generatingStringInput.value.replaceAll(/a/g, "A")
+				.replaceAll(/b/g, "B").replaceAll(/[^AB]/g, ""),
+			false,
+		);
+
 		applet.run({
 			generatingString: generatingStringInput.value.toUpperCase(),
 			instant

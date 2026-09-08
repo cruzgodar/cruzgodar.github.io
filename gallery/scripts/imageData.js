@@ -8,6 +8,13 @@ const emu = /* html */`<a href="https://www.facebook.com/visualartsteam/videos/4
 const researchAsArt = /* html */`<a href="https://www.artscioregon.com/2020-gallery">UO&#x2019;s 2020 Research as Art Competition</a>`;
 const girlsAngle = /* html */`the <a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls&#x2019; Angle Bulletin magazine</a>`;
 
+// Full-res images live as assets on a GitHub release rather than in the repo,
+// since they're far too big to commit. Their urls are determined by their ids,
+// so there's nothing to store here --- see buildGallery() in build/bin/cggallery.js.
+export const galleryFullResTag = "gallery-full-res";
+
+export const galleryFullResUrl = id => `https://github.com/cruzgodar/cruzgodar.github.io/releases/download/${galleryFullResTag}/${id}.png`;
+
 export const galleryImageData =
 {
 	"abelian-sandpile":
@@ -19,18 +26,14 @@ export const galleryImageData =
 
 		parameters: /* html */`
 			Generated with 4000000 center grains, 2 surrounding grains, and a grid size of 3001.
-		`,
-
-		driveId: "1YKzPisfXzOYcovQFJgB4XYR7gMVVHNpz"
+		`
 	},
 
 	"aztec-diamond":
 	{
 		title: "An Aztec Diamond",
 
-		appletLink: "/applets/domino-shuffling",
-
-		driveId: "1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH"
+		appletLink: "/applets/domino-shuffling"
 	},
 
 	"barnsley-fern":
@@ -39,9 +42,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${jsma} and ${girlsAngle}`,
 
-		appletLink: "/applets/barnsley-fern",
-
-		driveId: "1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA"
+		appletLink: "/applets/barnsley-fern"
 	},
 
 	"brownian-tree":
@@ -50,18 +51,14 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/brownian-trees",
-
-		driveId: "1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh"
+		appletLink: "/applets/brownian-trees"
 	},
 
 	"chaos-game":
 	{
 		title: "A Chaos Game",
 
-		appletLink: "/applets/chaos-game/?num-vertices-input=6",
-
-		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
+		appletLink: "/applets/chaos-game/?num-vertices-input=6"
 	},
 
 	"double-pendulum-fractal":
@@ -70,27 +67,22 @@ export const galleryImageData =
 
 		appletLink: "/applets/double-pendulum-fractal",
 
-		featured: `Featured in ${bridges2024}`,
-
-		driveId: "1HO44mUVDz0A-A6xeY-uzUBahzwrNAdik"
+		featured: `Featured in ${bridges2024}`
 	},
 
 	"double-pendulum-fractal-2":
 	{
 		title: "A Double Pendulum Fractal",
 
-		appletLink: "/applets/double-pendulum-fractal/?center-unstable-equilibrium-checkbox=1",
-
-		driveId: "1VGx8gfIrp2gfKms7KOgWNdLeCEwfE0XE"
+		appletLink: "/applets/double-pendulum-fractal/?center-unstable-equilibrium-checkbox=1"
 	},
 
 	"extruded-cube":
 	{
 		title: "An Extruded Cube",
 
-		appletLink: "/applets/extruded-cube",
-		
-		driveId: "130jI2YEQehE_VENFUDplZNSZHgbX_GN2"
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/extruded-cube/?theta=3.9241853534547277&phi=2.1164985755439756&sceneOriginX=3.462665861142383&sceneOriginY=3.4436385444871025&sceneOriginZ=3.184431456540181&lockedOnOrigin=0"
 	},
 	
 	"finite-subdivision":
@@ -101,24 +93,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/finite-subdivisions/?num-iterations-input=6",
-
-		driveId: "1ohpmOx1bVGszGolKGxphW4qc15fghyIc"
-	},
-
-	"generalized-julia-set":
-	{
-		title: "A Generalized Julia Set",
-
-		parameters: /* html */`
-			Generated from $\\sin(cz)$
-		`,
-
-		featured: `Featured in ${emu}`,
-
-		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=trig",
-
-		driveId: "1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu"
+		appletLink: "/applets/finite-subdivisions/?num-iterations-input=6"
 	},
 
 	"generalized-julia-set-2":
@@ -131,9 +106,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=rationalMap",
-
-		driveId: "16LcsF7n7w329sO4T-IwWb-p7ykpglNQO"
+		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=rationalMap"
 	},
 
 	"generalized-julia-set-3":
@@ -144,18 +117,14 @@ export const galleryImageData =
 			Generated from $\\left( \\left| \\operatorname{Re} z \\right| - \\left| \\operatorname{Im} z \\right| \\right)^2 + c$
 		`,
 
-		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=burningShip",
-
-		driveId: "1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3"
+		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=burningShip"
 	},
 
 	"hitomezashi-pattern":
 	{
 		title: "A Hitomezashi Pattern",
 
-		appletLink: "/applets/hitomezashi-patterns",
-
-		driveId: "1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8"
+		appletLink: "/applets/hitomezashi-patterns"
 	},
 
 	"hopf-fibration":
@@ -163,18 +132,14 @@ export const galleryImageData =
 		title: "The Hopf Fibration",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/hopf-fibration/?latitudes-slider=4.947382&toggle-compression-button=1&core-slider=0.75&longitudes-slider=94.195608",
-
-		driveId: "1h8kmCtONHyUEX28IF2JzFNL-Qgn-TFEX"
+		appletLink: "/applets/hopf-fibration/?latitudes-slider=4.947382&toggle-compression-button=1&core-slider=0.75&longitudes-slider=94.195608"
 	},
 
 	"julia-set":
 	{
 		title: "A Julia Set",
 
-		appletLink: "/applets/julia-set-explorer",
-
-		driveId: "1She5ljhYilPIXpiSN80QyZEspWbnz6mu"
+		appletLink: "/applets/julia-set-explorer"
 	},
 
 	"juliabulb":
@@ -183,9 +148,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8",
-
-		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8"
 	},
 
 	"juliabulb-2":
@@ -194,9 +157,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-y-slider=0.8",
-
-		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-y-slider=0.8"
 	},
 
 	"juliabulb-3":
@@ -205,9 +166,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8",
-
-		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8"
 	},
 
 	"juliabulb-power-2":
@@ -215,19 +174,14 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
-
-		driveId: "1PNVXqlPub0RNvj3EpyYj0kiLi3YwnPvj"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2&theta=5.54689521175957&phi=1.8096373162567312&sceneOriginX=-2.8020626375238793&sceneOriginY=2.5699101173940653&sceneOriginZ=0.9021621311545615&lockedOnOrigin=0"
 	},
 
 	"juliabulb-zoom":
 	{
 		title: "A Juliabulb",
 
-		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8&lock-on-origin-checkbox=0",
-
-		driveId: "1AAENn9-QgCVjTYaFP_HcPcDjakM0pBYc"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=0.8"
 	},
 
 	"juliabulb-zoom-2":
@@ -235,51 +189,31 @@ export const galleryImageData =
 		title: "A Juliabulb",
 
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0",
-
-		driveId: "1i7jSyoBnkKF0CG-PdrwBFPccIgyzJbFh"
+		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&c-x-slider=-0.062753&theta=5.1044&phi=1.6650343382897483&sceneOriginX=-0.3772727&sceneOriginY=0.9090909&sceneOriginZ=0.95&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a tetrahedron with scale $1.1679$, $\\theta_x = 1.762$, $\\theta_y = 1.377$, and $\\theta_z = 3.845$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679",
-
-		driveId: "17-UW2b0uTMbv-VYDVRstnkge-8D4sdDT"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679&theta=1.5393780444851997&phi=2.490764277117155&sceneOriginX=-0.00721808288618863&sceneOriginY=-1.3808588169478124&sceneOriginZ=1.9211259250737691&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs-2":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a cube with scale $1.2046$, $\\theta_x = 3.438$, $\\theta_y = 0.336$, and $\\theta_z = 2.396$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046",
-
-		driveId: "1GSG-LNt7oqQjE-pmO8TfsgAvZDQ9wA1_"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=0&rotation-angle-y-slider=0.35&rotation-angle-z-slider=5.56&scale-slider=1.2046&theta=2.0082023163406033&phi=1.9389522669767796&sceneOriginX=0.9960223208149316&sceneOriginY=-2.145767606463839&sceneOriginZ=0.8778053679876568&lockedOnOrigin=0"
 	},
 
 	"kaleidoscopic-ifs-3":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
-		parameters: /* html */`
-			Generated from a tetrahedron with scale $1.3299$, $\\theta_x = 0.068$, $\\theta_y = 2.468$, and $\\theta_z = 0.448$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299",
-
-		driveId: "1iwHMZWhC1vTKv9IvTNRSVRPfEis3x3dP"
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.07&rotation-angle-y-slider=2.5&rotation-angle-z-slider=0.47&scale-slider=1.3299&theta=1.423381259474251&phi=2.0533855213104055&sceneOriginX=-0.1923836126160151&sceneOriginY=-1.7777580453310766&sceneOriginZ=0.9662780802383231&lockedOnOrigin=0"
 	},
 
 	"kicked-rotator":
@@ -292,9 +226,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}. The current version was featured in ${emu}.`,
 
-		appletLink: "/applets/kicked-rotator",
-
-		driveId: "1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66"
+		appletLink: "/applets/kicked-rotator"
 	},
 
 	"lyapunov-fractal":
@@ -303,18 +235,14 @@ export const galleryImageData =
 
 		parameters: "Generating string <code>AABB</code>",
 
-		appletLink: "/applets/lyapunov-fractals/?generating-string-input=AABB",
-
-		driveId: "1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80"
+		appletLink: "/applets/lyapunov-fractals/?generating-string-input=AABB"
 	},
 
 	"magic-carpet":
 	{
 		title: "A Magic Carpet",
 
-		appletLink: "/applets/magic-carpets",
-
-		driveId: "1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98"
+		appletLink: "/applets/magic-carpets"
 	},
 
 	"mandelbulb":
@@ -323,55 +251,37 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}, ${researchAsArt}, and ${bridges2022}. It is currently on display at the Eugene airport.`,
 
-		appletLink: "/applets/mandelbulb",
-
-		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
+		appletLink: "/applets/mandelbulb"
 	},
 
 	"maurer-rose":
 	{
 		title: "A Maurer Rose",
 
-		appletLink: "/applets/maurer-roses",
-
-		driveId: "1RolPnj-o5o1havy0jii4XPIa_iw9JID-"
+		appletLink: "/applets/maurer-roses"
 	},
 
 	"maurer-rose-2":
 	{
 		title: "A Maurer Rose",
 
-		appletLink: "/applets/maurer-roses",
-
-		driveId: "1J9qEixnXoO-JgoS0hYVvLLUiDU0hVQ16"
+		appletLink: "/applets/maurer-roses"
 	},
 
 	"menger-sponge":
 	{
 		title: "A Menger Sponge",
 
-		parameters: /* html */`
-			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113",
-
-		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
+		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113&theta=4.131498876813254&phi=2.0280502838267136&sceneOriginX=2.160738695287425&sceneOriginY=3.3408324399690414&sceneOriginZ=1.7824745335800725&lockedOnOrigin=0"
 	},
 
 	"menger-sponge-2":
 	{
 		title: "A Menger Sponge",
 
-		parameters: /* html */`
-			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
-		`,
-
 		// eslint-disable-next-line max-len
-		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159",
-
-		driveId: "1hRXwXnD7g1DQ7QepwqicbguoFXQRLy4s"
+		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159&theta=4.144203854493263&phi=2.0383847418727608&sceneOriginX=2.0830599284252496&sceneOriginY=3.3236313914181332&sceneOriginZ=1.8545102652101075&lockedOnOrigin=0"
 	},
 
 	"newtons-method":
@@ -382,9 +292,7 @@ export const galleryImageData =
 			Roots at $(\\pm 1, 0), (0, \\pm 1.5), (\\pm 1.5, \\pm 1.5)$
 		`,
 
-		appletLink: "/applets/newtons-method",
-
-		driveId: "1RlX0QW3PeGd-ec3jAHKZsZChaiwJpF6-"
+		appletLink: "/applets/newtons-method"
 	},
 
 	"newtons-method-extended":
@@ -395,9 +303,7 @@ export const galleryImageData =
 			Generated from $\\sin(z)\\left( -\\sin\\left( \\operatorname{Im}(z) \\right) + i\\sin \\left( \\operatorname{Re} z \\right) \\right)$
 		`,
 
-		appletLink: "/applets/newtons-method-extended",
-
-		driveId: "1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B"
+		appletLink: "/applets/newtons-method-extended"
 	},
 
 	"quasi-fuchsian-group":
@@ -406,24 +312,17 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/quasi-fuchsian-groups",
-
-		driveId: "1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ"
+		appletLink: "/applets/quasi-fuchsian-groups"
 	},
 
 	"quaternionic-julia-set":
 	{
 		title: "A Quaternionic Julia Set",
 
-		parameters: /* html */`
-			Generated with $c = (-0.54, -0.25, -0.668, 0)$
-		`,
-
 		featured: `A prior version of this image was featured in ${bridges2023}.`,
 
-		appletLink: "/applets/quaternionic-julia-sets",
-
-		driveId: "1L2juSwwawdW322PyVNIej1DM0m0vHekk"
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/quaternionic-julia-sets/?theta=1.289321897919872&phi=1.9861708827662528&sceneOriginX=-1.0323235068507797&sceneOriginY=-3.3161100698143398&sceneOriginZ=1.506221491706727&lockedOnOrigin=0"
 	},
 		
 	"secant-method":
@@ -436,9 +335,7 @@ export const galleryImageData =
 
 		appletLink: "/applets/newtons-method/?switch-method-button=1",
 
-		featured: `A prior version of this image was featured in ${emu}.`,
-
-		driveId: "1V5EYzz_CjgNRAx2zVd1Jeb2hsO9bGBqI"
+		featured: `A prior version of this image was featured in ${emu}.`
 	},
 
 	"snowflake":
@@ -447,90 +344,63 @@ export const galleryImageData =
 
 		appletLink: "/applets/snowflakes",
 
-		featured: `A prior version of this image was featured in ${emu}.`,
-
-		driveId: "1G4GWlWJvQWlP04IxWpNGmVCfwj0RZnX0"
-	},
-
-	"strange-attractor":
-	{
-		title: "A Lorenz Attractor",
-
-		appletLink: "/applets/strange-attractors",
-
-		driveId: "1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ"
+		featured: `A prior version of this image was featured in ${emu}.`
 	},
 
 	"thurston-geometry-e3":
 	{
 		title: "The Thurston Geometry $\\mathbb{E}^3$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=e3",
-
-		driveId: "1XqXEVoe82btwYcTolWTKT3tlsWz_98c0"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=e3"
 	},
 
 	"thurston-geometry-h2xe":
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^2 \\times \\mathbb{E}$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h2xe&switch-scene-button=1",
-
-		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h2xe&switch-scene-button=1"
 	},
 
 	"thurston-geometry-h3":
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^3$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h3&switch-scene-button=1",
-
-		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h3&switch-scene-button=1"
 	},
 
 	"thurston-geometry-nil":
 	{
 		title: "The Thurston Geometry Nil",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=nil&switch-scene-button=1",
-
-		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=nil&switch-scene-button=1"
 	},
 
 	"thurston-geometry-s2xe":
 	{
 		title: "The Thurston Geometry $S^2 \\times \\mathbb{E}$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s2xe&switch-scene-button=1",
-
-		driveId: "1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s2xe&switch-scene-button=1"
 	},
 
 	"thurston-geometry-s3":
 	{
 		title: "The Hopf Fibration in $S^3$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s3",
-
-		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s3"
 	},
 
 	"thurston-geometry-sl2r":
 	{
 		title: "The Thurston Geometry $\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sl2r",
-
-		driveId: "1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sl2r"
 	},
 
 	"thurston-geometry-sol":
 	{
 		title: "The Thurston Geometry Sol",
 
-		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sol&switch-scene-button=1",
-
-		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sol&switch-scene-button=1"
 	},
 
 	"voronoi-diagram":
@@ -541,9 +411,7 @@ export const galleryImageData =
 			Generated with metric $1$
 		`,
 
-		appletLink: "/applets/voronoi-diagrams/?metric-slider=0",
-
-		driveId: "1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA"
+		appletLink: "/applets/voronoi-diagrams/?metric-slider=0"
 	},
 
 	"wilsons-algorithm":
@@ -552,8 +420,6 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma} and ${girlsAngle}. This version was featured in ${emu} and ${bridges2024}.`,
 
-		appletLink: "/applets/wilsons-algorithm",
-
-		driveId: "1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ"
+		appletLink: "/applets/wilsons-algorithm"
 	},
 };

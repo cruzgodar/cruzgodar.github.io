@@ -1,4 +1,4 @@
-The interactive coding projects that I've made and thought others might enjoy. Have a look at the [code](https://github.com/cruzgodar/cruzgodar.github.io/tree/main/applets) if you're interested in how these work. Everything here was made with [Wilson](https://github.com/cruzgodar/wilson), a library I wrote to make polished, interactive, parallized web applets easier to create.
+The interactive coding projects that I've made and thought others might enjoy. Have a look at the [code](https://github.com/cruzgodar/cruzgodar.github.io/tree/main/applets) if you're interested in how these work. Everything here was made with [Wilson](/projects), a library I wrote to make polished, interactive, parallized web applets easier to create.
 	
 Stills and animations from these applets have been featured in the [2022](https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference), [2023](https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference), and [2024](https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art) Bridges conferences, the [Jordan Schnitzer Museum of Art](https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885), the [Erb Memorial Union](https://www.facebook.com/visualartsteam/videos/4909794042367446), the [2020 UO Research as Art Competition](https://www.artscioregon.com/2020-gallery), and the [Girls' Angle Bulletin magazine](https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf).
 
@@ -29,7 +29,6 @@ Stills and animations from these applets have been featured in the [2022](https:
 
 ### image-links
 	curved-light
-	hairy-ball-theorem
 	hopf-fibration
 	bernoulli-percolation
 	menger-sponge
@@ -96,10 +95,4 @@ Stills and animations from these applets have been featured in the [2022](https:
 	abelian-sandpiles
 	wilsons-algorithm
 	julia-set-explorer
-###
-
-## The Library
-
-### image-links
-	https://github.com/cruzgodar/wilson -e "Wilson" /graphics/general-icons/wilson.webp
 ###

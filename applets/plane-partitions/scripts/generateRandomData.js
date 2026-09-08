@@ -42,12 +42,6 @@ export function generateRandomPlanePartition()
 		}
 	}
 
-	for (let i = 0; i < sideLength; i++)
-	{
-		planePartition[sideLength - 1][i] = 0;
-		planePartition[i][sideLength - 1] = 0;
-	}
-
 
 	return planePartition;
 }

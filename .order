@@ -8,6 +8,7 @@ gallery
 graphics
 home
 math
+projects
 scripts
 style
 
@@ -125,16 +126,16 @@ teaching/yale/1180/notes/coordinate-systems
 teaching/yale/1180/notes/dot-and-cross-products
 teaching/yale/1180/notes/functions-of-multiple-variables
 teaching/yale/1180/notes/partial-derivatives
-teaching/yale/1180/notes/the-multivariable-chain-rule
-teaching/yale/1180/notes/the-gradient
-teaching/yale/1180/notes/optimization
-teaching/yale/1180/notes/extreme-value-theorem
+teaching/yale/1180/notes/multivariable-chain-rule
+teaching/yale/1180/notes/gradients
+teaching/yale/1180/notes/multivariable-optimization
+teaching/yale/1180/notes/boundary-optimization
 teaching/yale/1180/notes/lagrange-multipliers
 teaching/yale/1180/notes/vectors-and-matrices
 teaching/yale/1180/notes/row-reduction
 teaching/yale/1180/notes/bases
 teaching/yale/1180/notes/linear-transformations
-teaching/yale/1180/notes/the-determinant
+teaching/yale/1180/notes/determinants
 
 teaching/yale/1110
 
