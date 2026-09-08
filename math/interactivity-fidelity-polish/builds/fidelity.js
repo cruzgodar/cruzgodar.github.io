@@ -5,7 +5,7 @@ let applet;
 async function reset({ forward })
 {
 	applet.wilson.resizeCanvas({
-		width: forward ? 100 : 500
+		width: forward ? 100 : 1000
 	});
 
 	applet.fpsCap = forward ? 15 : undefined;
@@ -14,7 +14,7 @@ async function reset({ forward })
 async function build2({ forward })
 {
 	applet.wilson.resizeCanvas({
-		width: forward ? 500 : 100
+		width: forward ? 1000 : 100
 	});
 
 	applet.fpsCap = forward ? undefined : 15;
@@ -32,8 +32,8 @@ function load({ slide })
 
 	applet = new KaleidoscopicIFSFractals({
 		canvas,
-		epsilonScalingFactor: 100,
-		minEpsilon: 0.0075,
+		epsilonScalingFactor: 0.3,
+		// minEpsilon: 0.0075,
 	});
 }
 

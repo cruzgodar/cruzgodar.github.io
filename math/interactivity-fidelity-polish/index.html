@@ -29,18 +29,6 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<script>
-		// Cloudflare Web Analytics. Inline, and parsed with the document on
-		// purpose. When this was injected from main.js instead it started
-		// ~1073ms into the page, about 770ms after the load event had already
-		// fired, and reporting collapsed --- / fell from 137 page loads a day
-		// to 8. The beacon has to be there before the page finishes loading.
-		//
-		// Inline rather than a separate file so there is nothing for an ad
-		// blocker to match on, and nothing that can take the module graph down
-		// with it the way scripts/src/beacon.min.js once did.
-		//
-		// spa is off: with it on, the beacon counts every History API change as
-		// a page view, and applet controls rewrite the url constantly.
 		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
 		{
 			const beacon = document.createElement("script");
@@ -108,7 +96,7 @@
 			
 			<p class="build left-text">Code performance matters to all audiences!</p>
 
-			<p class="build left-text">Visual threshold between something feeling like a rendering and actually manipulating an object (important when those objects don't have physical analogues)</p>
+			<p class="build left-text">Threshold between feeling like a rendering and actually manipulating an object (important when those objects don't have physical analogues)</p>
 
 			<p data-build="3" class="left-text">Use the GPU whenever possible. On the web, this looks like WebGL or (eventually) WebGPU</p>
 
@@ -161,7 +149,7 @@
 
 			<p class="build left-text">Eventually, HDR will be one of these items (WebGPU supports it now)</p>
 
-			<p class="build left-text">Consider leting users write small amounts of code to customize behavior</p>
+			<p class="build left-text">Consider leting users write small amounts of code</p>
 
 			<div class="canvas-bundle">
 				<canvas></canvas>
@@ -176,9 +164,12 @@
 			<div data-build="2" class="left-text">
 				<p>When that's impractical, realtime and direct controls like sliders are better than indirect ones like text fields</p>
 
-				<div style="width: 100%; display: flex; align-items: center; flex-direction: column">
-					<input id="metric-slider" type="range" min="0" max="1" value="0.5" step="0.0001">
-					<p style="width: 100%; text-align: center; margin-top: var(--vl)">Metric: <span id="metric-label">2.0</span></p>
+				<div class="sliders">
+					<div class="slider-container">
+						<div class="slider-bar"></div>
+						<div id="metric-slider" class="slider-thumb"></div>
+						<p class="body-text slider-subtext"></p>
+					</div>
 				</div>
 			</div>
 

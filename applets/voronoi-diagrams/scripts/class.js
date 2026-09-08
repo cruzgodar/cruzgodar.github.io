@@ -208,8 +208,10 @@ export class VoronoiDiagrams extends Applet
 					return;
 				}
 
-				this.anime = null;
+				this.maxRadius = 8;
+				this.drawFrame();
 
+				this.anime = null;
 				this.currentlyAnimating = false;
 			}
 		});

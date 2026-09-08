@@ -30,18 +30,6 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-light.css">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<script>
-		// Cloudflare Web Analytics. Inline, and parsed with the document on
-		// purpose. When this was injected from main.js instead it started
-		// ~1073ms into the page, about 770ms after the load event had already
-		// fired, and reporting collapsed --- / fell from 137 page loads a day
-		// to 8. The beacon has to be there before the page finishes loading.
-		//
-		// Inline rather than a separate file so there is nothing for an ad
-		// blocker to match on, and nothing that can take the module graph down
-		// with it the way scripts/src/beacon.min.js once did.
-		//
-		// spa is off: with it on, the beacon counts every History API change as
-		// a page view, and applet controls rewrite the url constantly.
 		if (location.hostname === "cruzgodar.com" || location.hostname === "www.cruzgodar.com")
 		{
 			const beacon = document.createElement("script");

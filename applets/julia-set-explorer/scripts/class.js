@@ -662,7 +662,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		await Promise.all([
 			this.wilson.allShadersReady(),
 			this.wilsonHidden.allShadersReady(),
-			this.wilsonPreview.allShadersReady(),
+			this.wilsonPreview?.allShadersReady?.() ?? Promise.resolve(),
 		]);
 
 
@@ -765,7 +765,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 		await Promise.all([
 			this.wilson.allShadersReady(),
 			this.wilsonHidden.allShadersReady(),
-			this.wilsonPreview.allShadersReady(),
+			this.wilsonPreview?.allShadersReady?.() ?? Promise.resolve(),
 		]);
 
 		await animate((t) =>
