@@ -55,6 +55,26 @@ export default function()
 			]
 		},
 
+		parameterizedIntersection:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.7, 0.61, -0.37, -0.54, -0.79, -0.28, -0.47, 0, 0.88]
+			},
+
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 + 4y^2 = 16 + 0z`, color: desmosColors.purple },
+				{ latex: raw`z = \sin(x) + \cos(y)`, color: desmosColors.blue },
+				{ latex: raw`z = \sin(x) + \cos(y) \left\{ x^2 + 4y^2 = 16 \right\}`, color: desmosColors.red },
+			]
+		},
+
 		arcLength:
 		{
 			use3d: true,

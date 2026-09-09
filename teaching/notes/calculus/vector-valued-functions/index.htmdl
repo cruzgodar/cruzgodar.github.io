@@ -49,7 +49,7 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 	The result is the equation of an ellipse in $#R#^2$, which we can parameterize as
 
 	$$
-		\left( -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t),\ \right).
+		\left( -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t) \right).
 	$$
 
 	This is effectively the shadow that the red circle casts on the $xy$-plane. To lift it up to where it lives in $#R#^3$, we just need to put back in the $z$-coordinate, which is $x + 4$:
@@ -57,6 +57,32 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 	$$
 		\vec{r}(t) = \left< -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t),\ 2 + \frac{1}{\sqrt{2}} \cos(t) \right>.
 	$$
+
+###
+
+### exc "parameterizing a surface intersection"
+	
+	Find the a vector-valued function $\vec{r}(t)$ for the intersection between $x^2 + 4y^2 + 16$ and $z = \sin(x) + \cos(y)$.
+
+	### desmos parameterizedIntersection
+
+	### solution
+
+	Since the curve lies on the cylinder, its $xy$-coordinates can be parameterized as
+
+	$$
+		\left< x, y \right> = \left< 4\cos(t),\, 2\sin(t) \right>
+	$$
+
+	for $0 \leq t \leq 2\pi$.
+
+	On the graph of the function, $z = \sin(x) + \cos(y)$ by definition, making the final parameterization
+
+	$$
+		\vec{r}(t) = \left< 4\cos(t),\, 2\sin(t),\, \sin(4\cos(t)) + \cos(2\sin(t)) \right>
+	$$
+
+	for $0 \leq t \leq 2\pi$.
 
 ###
 
