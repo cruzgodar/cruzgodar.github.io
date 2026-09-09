@@ -3,9 +3,9 @@
 import { spawnSync } from "child_process";
 import { existsSync, readdirSync, rmSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
+import buildSpruceFile from "../build-spruce.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
-import buildHTMLFile from "../htmdl/build.js";
 import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
@@ -16,7 +16,7 @@ const excludeFromBuild =
 	// The slideshows are hand-written all the way down --- their HTML, JS and
 	// CSS are all maintained by hand, so only their cover images get built.
 	/math\/.+\/index\.(htmdl|js|css)/,
-	/projects\/lapsa\/index\.(htmdl|js|css)/,
+	/projects\/lapsa\/index\.(sp|js|css)/,
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
 	/scripts\/mathjax.+/,
@@ -71,8 +71,6 @@ const courseNames = [
 	[/teaching\/yale\/1120\/.+/, "Math 1120"],
 	[/teaching\/yale\/1180\/.+/, "Math 1180"],
 ];
-
-let sitemap;
 
 // Warnings are collected while the build runs and printed in blocks at the end.
 // Files come back out of Promise.all in whatever order they happen to finish,
@@ -166,21 +164,21 @@ function restoreStaleOutputFiles()
 		else if (file.endsWith("/index.html") || file.endsWith("/data.html"))
 		{
 			const dir = file.slice(0, file.lastIndexOf("/"));
-			sourceFile = dir + "/index.htmdl";
+			sourceFile = dir + "/index.sp";
 		}
 
 		// If the source file is NOT modified, the output is stale --- restore it.
 		if (sourceFile && existsSync(root + sourceFile) && !modifiedFiles.has(sourceFile))
 		{
-			console.log(`Restoring ${file}`);
+			// console.log(`Restoring ${file}`);
 
-			spawnSync("git", [
-				"-C",
-				root,
-				"checkout",
-				"--",
-				file
-			]);
+			// spawnSync("git", [
+			// 	"-C",
+			// 	root,
+			// 	"checkout",
+			// 	"--",
+			// 	file
+			// ]);
 		}
 	}
 }
@@ -198,8 +196,6 @@ async function buildSite()
 		console.error("Cannot read sitemap");
 		return;
 	}
-
-	sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
 
 	const proc = spawnSync("git", [
 		"-C",
@@ -265,7 +261,7 @@ async function buildFile(file)
 	const filename = end.slice(0, index);
 	const extension = end.slice(index + 1);
 
-	if (extension === "htmdl" && filename === "index")
+	if (extension === "sp" && filename === "index")
 	{
 		const text = await read(file);
 		
@@ -273,14 +269,19 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+			await buildSpruceFile({
+				source: text,
+				absoluteFilePath: root + file,
+				parentFolder: "/" + file.slice(0, lastSlashIndex - 1),
+				standardLibrary: root + "build/spruceStdlib.js"
+			});
 
 			warnMissingCover(file);
 		}
 	}
 
 	else if (
-		extension === "htmdl" && filename === "card"
+		extension === "sp" && filename === "card"
 		&& (!options.clean || (options.clean && options.pdf))
 	) {
 		const text = await read(file);
@@ -289,13 +290,16 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex - 1), sitemap);
+			await buildSpruceFile({
+				source: text,
+				absoluteFilePath: root + file,
+				parentFolder:  "/" + file.slice(0, lastSlashIndex - 1),
+				standardLibrary: root + "build/spruceStdlib.js"
+			});
 
 			warnMissingCover(file);
 
-			const path = file.slice(0, lastSlashIndex - 1);
-
-			await prepareTexFromHTML(`${path}/data.html`);
+			// await prepareTexFromHTML(`${parentFolder}/data.html`);
 		}
 	}
 
@@ -343,7 +347,7 @@ async function buildFile(file)
 	) {
 		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);
 
-		if (!(files.some(f => f.endsWith(".htmdl"))))
+		if (!(files.some(f => f.endsWith(".sp"))))
 		{
 			console.log(file);
 

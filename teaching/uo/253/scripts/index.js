@@ -32,36 +32,21 @@ export default async function load()
 {
 	setOnLoadExternalCard((card, id) =>
 	{
-		const buttons = card.querySelectorAll(".text-button");
+		const button = card.querySelector(".text-button");
 
-		if (buttons.length === 0)
+		if (!button)
 		{
 			return;
 		}
 
 		addHoverEventWithScale({
-			element: buttons[0],
-			scale: 1.05,
-			addBounceOnTouch: () => true,
-		});
-		
-		addHoverEventWithScale({
-			element: buttons[1],
+			element: button,
 			scale: 1.05,
 			addBounceOnTouch: () => true,
 		});
 
 		new Button({
-			element: buttons[0],
-			name: "Download PDF Version",
-			onClick: async () =>
-			{
-				downloadFile(`${pageUrl}/cards/${id}/${filenamesPDF[id]}`);
-			}
-		});
-
-		new Button({
-			element: buttons[1],
+			element: button,
 			name: "Download Tex Source",
 			onClick: async () =>
 			{

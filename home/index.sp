@@ -1,3 +1,12 @@
+@@@
+	import { imageLinks } from "../scripts/src/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+ 
 <div id="banner">
 	<div id="banner-small"></div>
 	<div id="banner-large"></div>
@@ -36,30 +45,15 @@
 				</div>
 				
 				<div style="margin-top: 20px">
-					### image-links
-						/gallery
-						
-						/applets
-						
-						/teaching
-
-						/projects
-						
-						/math
-						
-						/about
-					###
+					@imageLinks([
+						"/gallery",
+						"/applets",
+						"/teaching",
+						"/projects",
+						"/math",
+						"/about",
+					])
 				</div>
-
-				???
-					<div style="margin-top: 64px; display: flex; justify-content: center; width: 100%; column-gap: 32px">
-						<a href="/debug/htmdl-docs">HTMDL Documentation</a>
-
-						<a href="/debug/glsl-docs">GLSL Docs</a>
-
-						<a href="/debug/tests/glsl-test">GLSL Tests</a>
-					</div>
-				???
 			</header>
 		</main>
 	</div>

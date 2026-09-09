@@ -4,7 +4,7 @@
 	
 	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
 
-	On this homework, please do row reduction by hand. However, please do check your answers with technology for all of the problems! I recommend <a href="https://www.wolframalpha.com/">Wolfram Alpha</a> for this purpose, where you can ask questions of the form "Row reduce {{1, 2, 3}, {4, 5, 6}}" to row reduce the matrix
+	On this homework, please do row reduction by hand. However, please do check your answers with technology for all of the problems! I recommend [Wolfram Alpha](https://www.wolframalpha.com/) for this purpose, where you can ask questions of the form "Row reduce {{1, 2, 3}, {4, 5, 6}}" to row reduce the matrix
 
 	$$
 		[[ 1, 2, 3 ; 4, 5, 6 ]].

@@ -8,7 +8,11 @@
 
 	Questions 5# concern the following graph of the function $f(x)$.
 	
+<<<<<<< HEAD
+	In problems 4#, sketch a graph of the equation in $#R#^3$. Check your answers with [Desmos 3D](https://www.desmos.com/3d).
+=======
 	### desmos limits
+>>>>>>> main
 
 	#. Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.
 
@@ -22,11 +26,17 @@
 
 	- - -
 
+<<<<<<< HEAD
+	#. What is an equation for the set of points in $#R#^3$ that are distance $3$ from the point $(2, 3, -1)$? What does this shape of this set look like? Check your answer with [Desmos 3D](https://www.desmos.com/3d).
+
+	#. What is an equation for a cylinder in $#R#^3$ parallel to the $y$-axis, with radius $4$, and whose central axis contains the point $(2, 3, 1)$? Check your answer with [Desmos 3D](https://www.desmos.com/3d).
+=======
 	In questions 2#, find all of the critical points of the given function on the given interval, and classify them as local maxima, local minima, or inconclusive using the second derivative test. Then find the absolute maximum and minimum of the function.
 
 	#. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
 
 	#. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
+>>>>>>> main
 
 	- - -
 

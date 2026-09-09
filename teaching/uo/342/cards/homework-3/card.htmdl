@@ -77,7 +77,7 @@
 	
 	> f) $\lambda_1 = i, \quad \lambda_2 = -i$.
 	
-	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields">vector fields applet</a> --- for example, to plot
+	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the [vector fields applet](/applets/vector-fields) --- for example, to plot
 	
 	$$
 		x' &= 2x - y

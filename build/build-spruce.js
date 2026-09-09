@@ -1,20 +1,67 @@
+import { compile } from "spruce";
+import { write } from "./file-io.js";
+import { sitemap } from "/scripts/src/sitemap.js";
 
+function getIndexHTML(pageTitle, firstParagraphText, parentFolder)
+{
+	if (!pageTitle)
+	{
+		pageTitle = "Cruz Godar";
+	}
+
+	firstParagraphText ??= "Teacher, developer, mathematical illustrator.";
+
+	// strip all tags from the text.
+	firstParagraphText = firstParagraphText.replaceAll(/<[^>]*>/g, "");
+
+	// strip dollar signs and asterisks
+	firstParagraphText = firstParagraphText.replaceAll(/[$*]/g, "");
+
+	// replace \times with x.
+	firstParagraphText = firstParagraphText.replaceAll(/\\times/g, "x");
+
+	// replace --- with em dashes.
+	firstParagraphText = firstParagraphText.replaceAll(/&mdash;/g, "—");
+	firstParagraphText = firstParagraphText.replaceAll(/&ndash;/g, "–");
+
+	firstParagraphText = firstParagraphText.replaceAll(/&#x201C;/g, "\"");
+	firstParagraphText = firstParagraphText.replaceAll(/&#x201D;/g, "\"");
+
+	firstParagraphText = firstParagraphText.replaceAll(/&#x2018;/g, "'");
+	firstParagraphText = firstParagraphText.replaceAll(/&#x2019;/g, "'");
+
+	const length = firstParagraphText.length;
+
+	if (length >= 137)
+	{
+		// Find the last space before the 137th character.
+		let lastSpace = firstParagraphText.lastIndexOf(" ", 137);
+
+		if (lastSpace === -1)
+		{
+			lastSpace = 137;
+		}
+
+		firstParagraphText = firstParagraphText.slice(0, lastSpace) + "...";
+	}
+
+
+	
+	return /* html */`
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Desolation Point</title>
+	<title>${pageTitle}</title>
 
-	<meta property="og:title" content="Desolation Point"/>
+	<meta property="og:title" content="${pageTitle}"/>
 
 	<meta property="og:type" content="website"/>
 
-	<meta property="og:url" content="https://cruzgodar.com/writing/desolation-point"/>
+	<meta property="og:url" content="https://cruzgodar.com${parentFolder}"/>
 
-	<meta property="og:image" content="https://cruzgodar.com/writing/desolation-point/cover.jpg"/>
+	<meta property="og:image" content="https://cruzgodar.com${parentFolder}/cover.webp"/>
 
-	<meta property="og:image:type" content="image/jpeg"/>
-
-	<meta property="og:description" content="David drifted to the surface of sleep, lingering at the border. The steady thrum sounded just beyond, drawing him closer with its...">
+	<meta property="og:description" content="${firstParagraphText}">
 
 	<meta property="og:locale" content="en_US"/>
 
@@ -22,7 +69,7 @@
 
 	<meta name="keywords" content="cruz,godar,cruzgodar,math,teaching,blog,notes,applet">
 	<meta name="author" content="Cruz Godar">
-	<meta name="description" content="David drifted to the surface of sleep, lingering at the border. The steady thrum sounded just beyond, drawing him closer with its...">
+	<meta name="description" content="${firstParagraphText}">
 
 	<meta charset="utf-8"/>
 
@@ -96,7 +143,43 @@
 		window.OFFLINE = params.get("debug") === "2";
 		window.DEBUG = window.OFFLINE || params.get("debug") === "1";
 
-		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("/writing/desolation-point"));
+		import(window.DEBUG ? "/scripts/src/main.js" : "/scripts/src/main.min.js").then(module => module.loadSite("${parentFolder}"));
 	</script>
 </body>
 </html>
+`;
+}
+
+
+
+export default async function buildSpruceFile({
+	source,
+	absoluteFilePath,
+	parentFolder,
+	standardLibrary
+}) {
+	const html = (await compile(
+		source,
+		"html",
+		{ filePath: absoluteFilePath, standardLibrary })
+	).replaceAll(/[\t\n]/g, "");
+
+	const matches = html.match(/<p>(.+?)<\/p>/);
+	
+	const title = parentFolder === "/home"
+		? "Cruz Godar"
+		: sitemap[parentFolder]?.title;
+
+	const firstParagraphText = parentFolder === "/home"
+		? "Teacher, developer, mathematical illustrator."
+		: matches?.[1];
+
+	await write(`${parentFolder}/data.html`, html);
+
+	if (sitemap[parentFolder])
+	{
+		const indexHtml = getIndexHTML(title, firstParagraphText, parentFolder);
+		
+		await write(`${parentFolder}/index.html`, indexHtml);
+	}
+}
