@@ -162,6 +162,16 @@ export async function loadSite(url = pageUrl)
 		addStyle(".DEBUG {display: none;}", false);
 	}
 
+	if (location.hostname === "stage.cruzgodar.com")
+	{
+		addStyle(/* css */`
+			#header
+			{
+				border: 4px solid rgb(150, 0, 250) !important;
+			}
+		`, false);
+	}
+
 	addHeader();
 
 	pageUrl = "";
