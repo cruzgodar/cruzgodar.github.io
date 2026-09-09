@@ -1181,8 +1181,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	renderXRFrame({ projectionMatrix, cameraToWorld, viewport })
+	renderXRFrame({ projectionMatrix, cameraToWorld })
 	{
+		// Wilson no longer hands the viewport to the callback; it exposes the eye currently being
+		// rendered instead, which is only non-null for the duration of this call.
+		const viewport = this.wilson.xrViewport;
+
 		this.projectionMatrix = projectionMatrix;
 
 		xrToScene(cameraToWorld, this.xrCameraToWorld);
