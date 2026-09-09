@@ -109,7 +109,11 @@ export default function()
 		{
 			use3d: true,
 
-			options: { showPlane3D: false, translucentSurfaces: true },
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.81, 0.57, -0.16, -0.56, -0.82, -0.11, -0.19, 0, 0.98]
+			},
 
 			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
 
