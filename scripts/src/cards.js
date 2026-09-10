@@ -25,7 +25,7 @@ const closeButton = document.querySelector("#card-close-button");
 
 if (closeButton)
 {
-	addHoverEvent({ element: closeButton, addBounceOnTouch: () =>true });
+	addHoverEvent({ element: closeButton, addBounceOnTouch: () => true });
 
 	closeButton.addEventListener("click", () => closeCard());
 
