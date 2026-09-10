@@ -530,6 +530,45 @@ mjx-container
 	margin-bottom: 1.35px;
 }
 
+/* Debug-only --- the button that exports a card as a pdf. */
+#card-debug-button
+{
+	position: absolute;
+	
+	top: 0;
+	right: 44px;
+	
+	font-size: 24px;
+	color: var(--high-contrast);
+	
+	cursor: pointer;
+	
+	border-radius: 10px;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	background-color: var(--background);
+	
+	width: 38px;
+	height: 38px;
+	
+	margin: 6px;
+	
+	z-index: 1001;
+
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+#card-debug-button.hover
+{
+	background-color: var(--neutral-hover);
+
+	box-shadow: inset 0 0 0 2px var(--contrast-border-color);
+}
+
 
 #contents-indicator
 {

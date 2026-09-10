@@ -75,9 +75,8 @@ export function downloadFile(filename)
 	link.remove();
 }
 
-export function downloadString(text, filename)
+export function downloadBlob(blob, filename)
 {
-	const blob = new Blob([text], { type: "text/plain" });
 	const url = URL.createObjectURL(blob);
 	
 	const anchor = document.createElement("a");
@@ -86,6 +85,11 @@ export function downloadString(text, filename)
 	anchor.click();
 	
 	URL.revokeObjectURL(url);
+}
+
+export function downloadString(text, filename)
+{
+	downloadBlob(new Blob([text], { type: "text/plain" }), filename);
 }
 
 // GitHub Pages occasionally sheds burst load with a 5xx, and without a status

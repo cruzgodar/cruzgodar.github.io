@@ -31,6 +31,35 @@ if (closeButton)
 
 }
 
+// A debug-only button next to the close button that exports the open card as a
+// pdf. The export wrecks the page on its way out, so it's a click-then-refresh
+// affair. Imported on click so that nothing else has to pay for it.
+const debugButton = cardContainer && window.DEBUG ? createDebugButton() : null;
+
+function createDebugButton()
+{
+	const button = document.createElement("div");
+	button.id = "card-debug-button";
+	button.innerHTML = "<span>&#x2193;</span>";
+
+	addHoverEvent({ element: button, addBounceOnTouch: () => true });
+
+	button.addEventListener("click", async () =>
+	{
+		const { downloadCardPdf } = await import("./cardScreenshot.js");
+
+		await downloadCardPdf({
+			card: currentCard,
+			name: currentCard.querySelector(".heading-text")?.textContent.trim()
+				|| siteSettings.card
+		});
+	});
+
+	cardContainer.appendChild(button);
+
+	return button;
+}
+
 export let scrollBeforeCard = 0;
 
 
@@ -124,6 +153,11 @@ export async function openCard({
 
 	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
+
+	if (debugButton)
+	{
+		currentCard.insertBefore(debugButton, currentCard.firstElementChild);
+	}
 
 	cardContainer.scroll(0, 0);
 
@@ -340,6 +374,11 @@ export async function closeCard(animationTime = cardAnimationTime)
 
 	cardContainer.appendChild(closeButton);
 
+	if (debugButton)
+	{
+		cardContainer.appendChild(debugButton);
+	}
+
 	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
 	document.documentElement.removeEventListener("pointerup", handlePointerUpEvent);
 
@@ -431,6 +470,11 @@ export async function openZoomCard({
 
 	cardContainer.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
+
+	if (debugButton)
+	{
+		currentCard.insertBefore(debugButton, currentCard.firstElementChild);
+	}
 
 	cardContainer.scroll(0, 0);
 
@@ -634,6 +678,11 @@ export async function closeZoomCard(animationTime = cardAnimationTime * .75)
 	pageElement.appendChild(currentCard);
 
 	cardContainer.appendChild(closeButton);
+
+	if (debugButton)
+	{
+		cardContainer.appendChild(debugButton);
+	}
 
 	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
 	document.documentElement.removeEventListener("pointerup", handlePointerUpEventZoom);
