@@ -126,7 +126,9 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	2. Let $\vec{r}(t) = \left< 2\cos(t),\ \sin(t),\ t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
 
-	3. Once again, let $\vec{s}(t)$ be the position function given by your position. Consider $\vec{s}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{s}'(a)$ point relative to the graph? What about $\vec{s}''(a)$?
+	### solution
+
+	1. 
 
 ###
 
@@ -148,7 +150,7 @@ meaning that each component of $\vec{v}$ measures how fast the corresponding com
 
 	1. Let $\vec{s_1}(t) = \left< \cos(t), \sin(t) \right>$ be the position of a car driving on a racetrack at time $t$. Sketch the path of the car, including the direction of motion with an arrow.
 
-	2. Sketch the car's velocity and acceleration vectors at $t = 0$, $t = \frac{\pi}{4}$, and $t = \frac{\pi}$. What do you notice about their directions and magnitudes? What properties do you think will generalize to any position function?
+	2. Sketch the car's velocity and acceleration vectors at $t = 0$, $t = \frac{\pi}{4}$, and $t = \frac{\pi}{2}$. What do you notice about their directions and magnitudes? What properties do you think will generalize to any position function?
 
 	3. Another car has the position function $\vec{s_2}(t) = \left< \cos\left( \frac{4}{\pi} t^2 \right), \sin\left( \frac{4}{\pi} t^2 \right) \right>$. Repeat the previous two parts for this car. How do you think the experience of riding in the two cars would differ?
 

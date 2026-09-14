@@ -18,7 +18,7 @@
 		f(-2) &= -1
 		f(0) &= 0
 		f(2) &\text{ is undefined.}
-		f(4) &= -1
+		f(4) &= 2
 	$$
 
 	#. Find $$\lim_{x \to 0^+} f(x)$$ and $$\lim_{x \to 0^-} f(x)$$.
