@@ -128,20 +128,48 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	### solution
 
-	1. 
+	1. This depends on your frame of reference, but it's reasonable to say $\vec{s}'(t) = \vec{0}$ if you're sitting at a desk, since $\vec{s}'(t)$ is your current velocity!
+
+	2. Differentiating,
+
+	$$
+		\vec{r}'(t) = \left< -2\sin(t),\ \cos(t),\ 2t \right>
+	$$
+
+	so
+
+	$$
+		\vec{r}'(\pi) = \left< 0, -1, 2\pi \right>.
+	$$
+
+	That's the direction vector for the line we're after, and a point it passes through is $\vec{r}(\pi)$ (since it's tangent to that point on the graph). The result is the line
+
+	$$
+		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)t
+
+		&= \left< -2, 0, \pi^2 \right> + \left< 0, -1, 2\pi \right>t.
+	$$
+
+	Often, though, we want a tangent line to serve as a **linear approximation**, which would mean $\vec{l}(t) \approx \vec{r}(t)$ for $t$ near $\pi$. We currently get $\vec{r}(\pi)$ as an output from $\vec{l}(t)$ when we plug in $t = 0$, not $t = \pi$, so we can change the formula to
+
+	$$
+		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)(t - \pi),
+	$$
+
+	which also looks reminiscent of the Calculus I formula.
 
 ###
 
 When we're given a vector-valued function $\vec{s}(t)$ that gives an object's position at time $t$, its derivative is the velocity function $\vec{v}(t)$, just like in single-variable calculus. However, velocity is now *also* a vector-valued function. Specifically, if
 
 $$
-	\vec{s}(t) = \left< x(t), y(t), z(t) \right>,
+	\vec{s}(t) = \left< x(t),\, y(t),\, z(t) \right>,
 $$
 
 then
 
 $$
-	\vec{v}(t) = \vec{s}'(t) = \left< x'(t), y'(t), z'(t) \right>,
+	\vec{v}(t) = \vec{s}'(t) = \left< x'(t),\, y'(t),\, z'(t) \right>,
 $$
 
 meaning that each component of $\vec{v}$ measures how fast the corresponding component of $\vec{s}$ is changing.
