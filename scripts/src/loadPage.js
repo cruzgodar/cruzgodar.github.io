@@ -462,7 +462,8 @@ function initSolutions()
 
 	const showSolutionsPages1180 = [
 		"/teaching/yale/1180/notes/calc-1-review",
-		"/teaching/yale/1180/notes/coordinate-systems"
+		"/teaching/yale/1180/notes/coordinate-systems",
+		"/teaching/yale/1180/notes/dot-and-cross-products",
 	];
 
 	for (const e of $$(".solution"))
