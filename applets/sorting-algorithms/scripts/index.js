@@ -68,6 +68,7 @@ export default function()
 			msdRadix: "MSD Radix Sort",
 			lsdRadix: "LSD Radix Sort",
 			gravity: "Gravity Sort",
+			iCantBelieveItCan: "I Can't Believe It Can Sort",
 		},
 		onInput: onDropdownInput
 	});
