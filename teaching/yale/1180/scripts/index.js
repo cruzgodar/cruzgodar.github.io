@@ -123,7 +123,7 @@ export default async function load()
 				{ latex: raw`\sin(\theta_0)x - \cos(\theta_0)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(\theta_0)x + \sin(\theta_0)y \geq 0\}`, color: desmosColors.blue, secret: true },
 
 
-				{ latex: raw`(0.2\cos(t), 0.2\sin(t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: "a" }, secret: true },
+				{ latex: raw`(0.2\cos(t), 0.2\sin(t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: "\\theta_0" }, secret: true },
 
 				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0)))`, color: desmosColors.purple, secret: true },
 			]
