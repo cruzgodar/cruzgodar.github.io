@@ -105,6 +105,39 @@ export default function()
 			]
 		},
 
+		hyperbolas:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 - 2y^2 = c`, color: desmosColors.blue },
+
+				{ latex: raw`c = [ -2, -1, 0, 1, 2 ]`, },
+			]
+		},
+
+		hyperbolicParabolid:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`z = x^2 - \frac{y^2}{4}\left\{ \left| z \right| \leq 3 \right\}`, color: desmosColors.purple, hidden: true },
+
+				{ latex: raw`x^2 = \frac{y^2}{4} + c \left\{ z = c \right\}`, color: desmosColors.blue, secret: true },
+				
+				{ latex: raw`(t, 0, t^2)`, color: desmosColors.red, parametricDomain: { min: "-\\sqrt{3}", max: "\\sqrt{3}" }, secret: true },
+				{ latex: raw`(0, t, -\frac{t^2}{4})`, color: desmosColors.orange, parametricDomain: { min: "-2\\sqrt{3}", max: "2\\sqrt{3}" }, secret: true },
+
+				{ latex: raw`c = [ -2, -1, ..., 2 ]`, secret: true },
+			]
+		},
+
 		possibleGraphs:
 		{
 			use3d: true,
