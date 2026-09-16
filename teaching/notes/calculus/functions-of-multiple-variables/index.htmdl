@@ -68,7 +68,7 @@ Let's dig into functions of the form $f(x, y)$. Like functions of one variable, 
 
 ### exc "sketching a graph"
 
-	A birding store's monthly profit in thousands of dollars is given by $f(x, y) = 25 - (x - 1)^2 - (y - 2)^2$, where $x$ is the number of hundreds of birdfeeders sold per month, and $y$ is the number of hundreds of pairs of binoculars sold per month. Find the practical domain of $f$ (i.e. the inputs to $f$ that make sense), and sketch a graph of $f$. Where do you think $f$ is maximized?
+	A birding store's monthly profit in thousands of dollars is given by $f(x, y) = 25 - (x - 1)^2 - (y - 2)^2$, where $x$ is the number of hundreds of birdfeeders sold per month, and $y$ is the number of hundreds of pairs of binoculars sold per month. Find the practical domain of $f$ (i.e. the inputs to $f$ that make sense). Where do you think $f$ is maximized?
 
 	### solution
 
