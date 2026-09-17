@@ -190,6 +190,43 @@ export default async function load()
 				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0)))`, color: desmosColors.purple, secret: true },
 			]
 		},
+
+		returnsToScale:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				expressionsCollapsed: false
+			},
+
+			bounds: { xmin: 0, xmax: 40, ymin: 0, ymax: 200, zmin: 0, zmax: 550 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: "b = 0.25",
+					min: 0,
+					max: 1.5,
+					step: 0.05,
+					secret: false
+				}),
+				...getDesmosSlider({
+					expression: "c = 0.75",
+					min: 0,
+					max: 1.5,
+					step: 0.05,
+					secret: false
+				}),
+
+				{ latex: raw`Y(x, y) = 4x^{b}y^{c}`, color: desmosColors.purple },
+
+				{ latex: raw`(16t, 81t, Y(16t, 81t))`, parametricDomain: { min: 0, max: 2.4 }, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`(16, 81, Y(16, 81))`, color: desmosColors.red, secret: true },
+			]
+		},
 	});
 
 
