@@ -95,6 +95,49 @@ export default function()
 			]
 		},
 
+		clairautsTheorem:
+		{
+			use3d: true,
+
+			bounds: { xmin: -1, xmax: 1, ymin: -1, ymax: 1, zmin: -1, zmax: 1 },
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [0.33, 0.94, 0.13, -0.87, 0.35, -0.35, -0.37, 0, 0.93]
+			},
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = \frac{1}{2}(x^2 - y^3 - x^3y)`, color: desmosColors.gray },
+
+				...getDesmosSlider({
+					expression: "a = -0.4",
+					min: -5,
+					max: 5,
+					secret: false,
+				}),
+				...getDesmosSlider({
+					expression: "b = -0.6",
+					min: -5,
+					max: 5,
+					secret: false,
+				}),
+
+				{ latex: raw`(a, b, f(a, b))`, color: desmosColors.orange },
+
+				{ latex: raw`(a + 1, b, f(a + 1, b)), (a, b + 1, f(a, b + 1))`, color: desmosColors.purple },
+
+				{ latex: raw`(a + 1, b + 1, f(a + 1, b + 1))`, color: desmosColors.purple },
+
+				{ latex: raw`(a, b, f(a, b)), (a + 1, b, f(a + 1, b))`, color: desmosColors.red, secret: true, points: false, lines: true },
+				{ latex: raw`(a, b + 1, f(a, b + 1)), (a + 1, b + 1, f(a + 1, b + 1))`, color: desmosColors.red, secret: true, points: false, lines: true },
+
+				{ latex: raw`(a, b, f(a, b)), (a, b + 1, f(a, b + 1))`, color: desmosColors.blue, secret: true, points: false, lines: true },
+				{ latex: raw`(a + 1, b, f(a + 1, b)), (a + 1, b + 1, f(a + 1, b + 1))`, color: desmosColors.blue, secret: true, points: false, lines: true },
+			]
+		},
+
 		tangentPlane:
 		{
 			use3d: true,

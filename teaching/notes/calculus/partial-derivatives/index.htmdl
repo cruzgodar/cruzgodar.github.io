@@ -181,7 +181,35 @@ The result is a major hint to a property about partial derivatives!
 
 ###
 
-In practice, essentially all of our functions satisfy this condition everywhere they're defined, and so in our class, we will freely use Clairaut's Theorem as a given. It'll set us up well for our future work with derivatives!
+An intuitive understanding of Clairaut's Theorem is a little harder to reach than many of our results. To get at it, let's begin with $f_{xy}(a, b) = \left( f_x \right)_y(a, b)$, which is approximately equal to
+
+$$
+	f_x(a, b + 1) - f_x(a, b).
+$$
+
+Using the same approximation for $f_x$,
+
+$$
+	f_{xy}(a, b) \approx \left( f(a + 1, b + 1) - f(a, b + 1) \right) - \left( f(a + 1, b) - f(a, b) \right).
+$$
+
+Now we can regroup the terms to product the same approximation for $f_{yx}$:
+
+$$
+	f_{xy}(a, b) &\approx \left( f(a + 1, b + 1) - f(a + 1, b + 1) \right) - \left( f(a, b + 1) - f(a, b) \right)
+	
+	&\approx f_{yx}(a, b).
+$$
+
+Making this intuitive explanation precise means introducing limits instead of these approximations, and at some point changing the order of the limits from $x$ first to $y$ first, which is allowed exactly when the conditions of Clairaut's Theorem are satisfied.
+
+This approximation is useful for geometric intuition, though. Drawing the four relevant points, we can produce a quadrilateral, and the two expressions are the change in slope between same-colored lines (red for $f_{xy}$ and blue for $f_{yx}$).
+
+### desmos clairautsTheorem
+
+With this picture, we can see that both $f_{xy}$ and $f_{yx}$ are measuring the amount the graph twists, just in different directions. What Clairaut's theorem tells us is that these are actually the same measurement!
+
+In practice, essentially all of our functions satisfy the condition of Clairaut's Theorem everywhere they're defined, and so in our class, we will freely use Clairaut's Theorem as a given. It will set us up well for our future work with derivatives!
 
 
 
@@ -201,7 +229,7 @@ $$
 	\sqrt{1.1} \approx 1 + \frac{1}{2}(1.1 - 1) = 1.05.
 $$
 
-The actual value is about $1.0488$, so this isn't bad!
+The actual value is $\sqrt{17} \approx 1.0488$, so this isn't bad!
 
 To apply this idea of linear approximation to a function of two variables, let's return to the tangent lines from partial derivatives that we talked about before. We can think of $z = f(x, y)$ at the point $p = (a, b, f(a, b))$ first as a function of $x$ only, giving us a line that passes through $p$ with a slope of $pf/px(a, b)$ and does not move in the $y$-direction. In parametric form, we can write that as
 
