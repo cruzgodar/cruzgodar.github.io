@@ -66,20 +66,6 @@ Let's dig into functions of the form $f(x, y)$. Like functions of one variable, 
 
 ###
 
-On the one hand, graphing a function $z = f(x, y)$ is no more difficult than graphing $y = f(x)$: we just plug in points $(x, y)$ and plot the point $(x, y, f(x, y))$ in $#R#^3$. On the other hand, graphing anything at all in 3D is much more challenging than graphs in $#R#^2$, and there's just a lot more than can be going on with a function of multiple variables. Let's start by sketching a few graphs by hand, and then we'll develop a tool that will help us draw and think about graphs in a more systematic manner.
-
-### ex "sketching a graph"
-
-	Let $f(x, y) = \sqrt{4 - x^2 - y^2}$. Sketch a graph of $f$.
-
-	There are a number of a ways we could approach drawing this graph, but one that will consistently be useful for us is to think about its intersection with the $yz$- and $xz$-planes. That just means setting $x = 0$ and $y = 0$ in turn to produce $z = \sqrt{4 - x^2}$ and $z = \sqrt{4 - y^2}$. As a function of one variable, both have the same graph: a half-circle of radius $2$. We can therefore draw a sort of wireframe of the graph on those two planes. We can even add one more wire by finding the intersection with the $xy$-plane. That's a little bit different: we solve $f(x, y) = 0$ to find $\sqrt{4 - x^2 - y^2} = 0$, so $x^2 + y^2 = 4$.
-
-	### desmos wireframe
-
-	With this, the overall shape of the graph becomes clearer: it's the top half of a sphere of radius $2$. Toggle it on in the Desmos graph to see! We could also see this by squaring both sides to get $x^2 + y^2 + z^2 = 4$, and remembering that squaring both sides adds potentially extraneous solutions when $z$ is negative; but since we won't know what most graphs look like so intuitively, this is more useful to check our work.
-
-###
-
 ### exc "sketching a graph"
 
 	A birding store's monthly profit in thousands of dollars is given by $f(x, y) = 25 - (x - 1)^2 - (y - 2)^2$, where $x$ is the number of hundreds of birdfeeders sold per month, and $y$ is the number of hundreds of pairs of binoculars sold per month. Find the practical domain of $f$ (i.e. the inputs to $f$ that make sense), and sketch a graph of $f$. Where do you think $f$ is maximized?
@@ -105,6 +91,24 @@ On the one hand, graphing a function $z = f(x, y)$ is no more difficult than gra
 	The result here is a little bit harder to visualize! It's a 3D parabola-like figure whose horizontal slices are circles. The maximum is when the terms $(x-1)^2$ and $(y-2)^2$ are minimized, so at $(1, 2, 25)$.
 
 ###
+
+On the one hand, graphing a function $z = f(x, y)$ is no more difficult than graphing $y = f(x)$: we just plug in points $(x, y)$ and plot the point $(x, y, f(x, y))$ in $#R#^3$. On the other hand, graphing anything at all in 3D is much more challenging than graphs in $#R#^2$, and there's just a lot more that can be going on with a function of multiple variables. We'll quickly want to develop a tool to help us draw and think about graphs in a more systematic manner.
+
+### ex "sketching a graph"
+
+	Let $f(x, y) = \sqrt{4 - x^2 - y}$. Sketch the intersections of the graph of $f$ with the planes $z = 0$, $x = 0$, and $y = 0$. Based on this information, what does the graph of $f$ look like?
+
+	To intersect with the plane $z = 0$, we solve $f(x, y) = 0$, meaning $4 - x^2 - y = 0$. That's the same as $y = 4 - x^2$, which is a parabola opening downward.
+
+	For the intersections with $x = 0$ and $y = 0$, we have $z = \sqrt{4 - x^2}$ and $z = \sqrt{4 - y}$. The first is the top half of the circle $x^2 + z^2 = 4$, and the second is a square root function. Plotting them all out, we have the following graph.
+
+	### desmos wireframe
+
+	With this, the overall shape of the graph becomes clearer: it's a parabola-like object with circular cross-sections. While you won't be required to actually sketch graphs like this, this method of intersecting with planes lets you interpret which graphs are which.
+
+###
+
+
 
 That example and especially the exercise indicate we'd do well to develop a better way to graph and visualize functions like this! The way we intersected the graph with the horizontal plane $z = 0$ is particularly useful here, and we'll be able to generalize and strengthen it to be much more useful.
 
@@ -136,9 +140,9 @@ This map of Cone Peak in the Big Sur wilderness in California conveys the incred
 
 Topo maps let hikers carry the data of terrain and elevation along with them in a 2D form, and we can repurpose the idea to let us more easily graph functions of multiple variables. When we found the intersection of a graph with $z = 0$, there was nothing particularly special about $0$. Repeating that process for $z = c$ lets us define a whole family of intersections:
 
-### def "level curve"
+### def "level curve and trace"
 
-	Let $f(x, y)$ be a function of two variables. The **level curve** of $f$ at $z = c$ is the intersection of the graph of $z = f(x, y)$ with the plane $z = c$.
+	Let $f(x, y)$ be a function of two variables. A **level curve** of $f$ at $z = c$ is the intersection of the graph of $z = f(x, y)$ with the plane $z = c$. A **trace** of $f$ is the intersection of the graph of $z = f(x, y)$ with the plane $x = c$ or $y = c$.
 
 ###
 
@@ -150,9 +154,27 @@ Let's take a look at the function $z = x^2 + y^2$. To find its level curves, we 
 
 Here we can really see what the level curves are doing --- although the closeness of the outer circles might make it seem like the height is leveling off, it's actually indicating that that's as steep as it gets. The 3D view lets us check that this is correct --- try <span class="click-tap"><span>clicking</span><span>tapping</span></span> the 2D graph paper icon in the top right --- but it's valuable to be able to intuit facts about a graph from the level curves alone. For example, we can see that the graph is circular when sliced in this manner, and that it's steepest far away from the origin.
 
+### ex "level curves and traces"
+
+	Sketch level curves for $z = x^2 - \frac{y^2}{4}$ for $z \in \left\{ -2, -1, 0, 1, 2 \right\}$, as well as traces at $x = 0$ and $y = 0$, and use them to predict the shape of the graph.
+
+	### solution
+
+	The level curves $c = x^2 - \frac{y^2}{4}$ are hyperbolas, opening horizontally when $c < 0$ and vertically when $c > 0$. When $c = 0$, the level curve is $x^2 = \frac{y^2}{4}$, meaning $y = \pm 2x$.
+
+	### desmos hyperbolas
+
+	The traces are $z = x^2$ and $z = -\frac{y^2}{4}$, both of which are parabolas. Putting them together, we have the following wireframe, and the graph that fits it is the shape of a saddle.
+
+	### desmos hyperbolicParabolid
+
+###
+
 ### exc "level curves and traces"
 
-	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of the graph with the planes $x = 0$ and $y = 0$. Use this information to sketch a rough 3D graph.
+	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of the graph with the planes $x = c$ and $y = c$. Use this information to pick which graph is correct.
+
+	### desmos possibleGraphs
 
 	### solution
 

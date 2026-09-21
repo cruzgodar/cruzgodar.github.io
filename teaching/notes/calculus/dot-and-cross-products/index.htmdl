@@ -361,6 +361,54 @@ Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange v
 
 ###
 
+### ex "intersecting lines"
+
+	Find the intersection of the lines $\vec{l_1}$ and $\vec{l_2}$ given by
+
+	$$
+		\vec{l_1}(t) &= \left< 1 + t,\ 2 - t,\ 1 + 2t \right>
+
+		\vec{l_2}(t) &= \left< -2 + 2t,\ -1 + t,\ 5 - t \right>
+	$$
+
+	or show they don't intersect.
+
+	Finding the intersection of two lines is a little bit more complicated than finding if a given point on the line. While we might be tempted to solve the system of equations
+
+	$$
+		1 + t &= -2 + 2t
+
+		2 - t &= -1 + t
+
+		1 + 2t &= 5 - t
+	$$
+
+	given by equating each component of the two lines, that would only have an solution if the two lines happened to intersect at a point where they both had the same $t$-value. If $\vec{l_1}$ and $\vec{l_2}$ are the trajectories of two different particles at time $t$, then that system of equations is equivalent to requiring that the *particles themselves* collide, not their trajectories. Instead, we can relax the requirement by allowing the $t$-values on either side of the equation to be different:
+
+	$$
+		1 + t_1 &= -2 + 2t_2
+
+		2 - t_1 &= -1 + t_2
+
+		1 + 2t_1 &= 5 - t_2.
+	$$
+
+	Now, the second equation becomes $t_1 = 3 - t_2$, so the first and the third are
+
+	$$
+		4 - t_2 &= -2 + 2t_2
+
+		7 - 2t_2 &= 5 - t_2,
+	$$
+
+	both of which result in $t_2 = 2$, and so $t_1 = 1$. That means these lines do actually intersect, even though they do so at different $t$-values! To find the point of intersection, we can plug either $t$-value into its corresponding function:
+
+	$$
+		\vec{l_1}(1) = \vec{l_2}(2) = \left< 2, 1, 3 \right>.
+	$$
+
+###
+
 
 
 ### nav-buttons

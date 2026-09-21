@@ -1,21 +1,20 @@
-### card homework-3 "Homework 3"
+### card homework-3 "Problem Set 3"
 	
-	*Due Monday, September 22nd at 11:59 PM*
+	*Due Thursday, September 24th at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
-
-	### buttons
-		download-homework-3-pdf
-		download-homework-3-tex
-	###
-
-	- - -
-	
-	#. Compute $p/px \left[ (2x + y)^3 \right]$ with the limit definition.
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
 
 	- - -
 
-	In problems 4#, do the following.
+	#. Find an equation of a line passing through the points $(5, 1, 2)$ and $(3, 4, 1)$.
+
+	#. Find an equation of the plane containing the points $(1, 7, 0)$, $(-3, 1, 1)$, and $(2, 4, 0)$.
+
+	#. Find the intersection of the line from question #-2 and the plane from question #-1 if it exists, or show they don't intersect.
+
+	- - -
+
+	In problems 3#, do the following.
 
 		> a) Compute $f_x(x, y)$ and $f_y(x, y)$.
 
@@ -25,26 +24,40 @@
 
 		> d) Compute $f_{xy}(x, y)$.
 
-	#. $f(x, y) = \sin\left( \frac{\pi}{2} x \right) + \cos(\pi y)$.
+	#. $$f(x, y) = \sin\left( \frac{\pi}{2} x \right) + \cos(\pi y)$$.
 
-	#. $f(x, y) = e^{x\tan(\pi y)}$.
+	#. $$f(x, y) = x\tan(\pi y)$$.
 
-	#. $f(x, y) = \ln(xy^2)$.
-
-	#. $f(x, y) = \frac{x + 1}{y + 2}$.
+	#. $$f(x, y) = \ln(xy^2)$$.
 
 	- - -
 
-	#. Give an example of a function $g(x, y)$ which is not differentiable at $(0, 0)$.
+	#. Give an example of a function $g(x, y)$ whose domain is all of $#R#^2$, but which is not differentiable at $(0, 0)$.
 
 	#. Give an example of a function $h(x, y)$ which is not differentiable at $(0, 0)$, but whose partial derivative $ph/px$ is defined and continuous everywhere.
 
 	- - -
 
-	#. In a cubic room, let $T(x, y, z)$ be the temperature at the point $(x, y, z)$, where $x$ and $y$ are the distance from the southwestmost corner of the room in meters and $z$ is the distance up from the floor. What is the physical interpretation of $T_x(1, 1, 0)$? Do you expect $T_z(1, 1, 0)$ to be positive or negative? Explain.
+	Problems 4# concern the following situation. A **production function** $Y(K, L)$ gives the value of everything a company produces in a year when it uses $K$ units of **capital** (i.e. equipment, buildings, etc) and $L$ units of labor. The partial derivatives $Y_K$ and $Y_L$ are called the **marginal products** of capital and labor. Suppose a factory's production function is
+
+	$$
+		Y(K, L) = 4K^{1/4}L^{3/4},
+	$$
+
+	where $Y$ is measured in hundreds of thousands of dollars, $K$ in millions of dollars of equipment, and $L$ in tens of thousands of hours of labor.
+	
+	#. Compute $Y(16, 81)$, $Y_K(16, 81)$, and $Y_L(16, 81)$, and interpret all three in context, including units. Based on your answers, about how much value does a single additional hour of labor produce?
+
+	#. Compute $Y_{KK}$, $Y_{LL}$, and $Y_{KL}$. Show that $Y_{KK}$ and $Y_{LL}$ are always negative; this is called **diminishing marginal returns**: explain what it means and why a factory might experience it. Explain what $Y_{KL}$ means --- particularly whether it is positive or negative.
+
+	#. A production function has **constant returns to scale** if multiplying all the inputs by $t$ multiplies the output by $t$ --- for example, doubling **both** the equipment and the workforce doubles the output. If it multiplies the output by more than $t$, it has **increasing returns to scale**, and if it multiplies it by less than $t$, it has **decreasing returns to scale**. Does this production function have constant, increasing, or decreasing returns to scale?
+	
+	#. In general, a function of the form $Y(K, L) = AK^bL^c$ for positive constants $A$, $b$, and $c$ is called a **Cobb-Douglas** production function. Compute $Y(tK, tL)$ for a general Cobb-Douglas function, and use it to determine the type of returns to scale (increasing, decreasing, or constant) depending on $b$ and $c$.
 
 	- - -
 
-	#. Let $Y(K, L)$ be a function describing the economic output of a factory (i.e. the dollar value of everything it produces in a year), given the value $K$ of all its equipment and the number of person-hours $L$ of labor over the course of a year. The **Cobb-Douglas** model for this function describes it as $Y(K, L) = aK^bL^c$ for constants $a$, $b$, and $c$. If $a = 100$, $b = 0.25$, and $c = 0.75$, and $K$ and $L$ are measured in thousands, find $Y_K(200, 10)$ and $Y_L(200, 10)$ and interpret both of them. What does this say about the factory?
+	#. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
+
+	#. Choose up to three questions (and at least one) on which you would like detailed feedback.
 
 ###

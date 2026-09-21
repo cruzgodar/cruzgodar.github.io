@@ -62,7 +62,7 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 
 ### exc "parameterizing a surface intersection"
 	
-	Find the a vector-valued function $\vec{r}(t)$ for the intersection between $x^2 + 4y^2 + 16$ and $z = \sin(x) + \cos(y)$.
+	Find a vector-valued function $\vec{r}(t)$ that parameterizes the intersection between the graphs of $x^2 + 4y^2 = 16$ and $z = \sin(x) + \cos(y)$.
 
 	### desmos parameterizedIntersection
 
@@ -100,7 +100,7 @@ The components of vector-valued functions are largely independent from one anoth
 
 ###
 
-As in Calculus I, our next target is derivatives! The limit definition is our friend here: for a $\vec{r}(t) = \left< x(t),\, y(t),\, z(t) \right>$, its derivative is defined to be
+As in Calculus I, our next target is derivatives! The limit definition is our friend here: for a function $\vec{r}(t) = \left< x(t),\, y(t),\, z(t) \right>$, its derivative is defined to be
 
 $$
 	\vec{r}'(t) &= \lim_{h \to 0} \frac{\vec{r}(t + h) - \vec{r}(t)}{h}
@@ -122,15 +122,71 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 ### exc "the derivative of a vector-valued function"
 
-	1. Let $\vec{p}(t)$ be your position in three-dimensional space. What is your current value of $\vec{p}'(t)$?
+	1. Let $\vec{s}(t)$ be your position in three-dimensional space. What is your current value of $\vec{s}'(t)$?
 
 	2. Let $\vec{r}(t) = \left< 2\cos(t),\ \sin(t),\ t^2 \right>$. Find an equation for the tangent line to the graph of $\vec{r}(t)$ at $t = \pi$.
 
-	3. Once again, let $\vec{p}(t)$ be the position function given by your position. Consider $\vec{p}(t)$ over the course of your walk to campus. What does it look like? At a time $t = a$, what direction does $\vec{p}'(a)$ point relative to the graph? What about $\vec{p}''(a)$?
+	### solution
+
+	1. This depends on your frame of reference, but it's reasonable to say $\vec{s}'(t) = \vec{0}$ if you're sitting at a desk, since $\vec{s}'(t)$ is your current velocity!
+
+	2. Differentiating,
+
+	$$
+		\vec{r}'(t) = \left< -2\sin(t),\ \cos(t),\ 2t \right>
+	$$
+
+	so
+
+	$$
+		\vec{r}'(\pi) = \left< 0, -1, 2\pi \right>.
+	$$
+
+	That's the direction vector for the line we're after, and a point it passes through is $\vec{r}(\pi)$ (since it's tangent to that point on the graph). The result is the line
+
+	$$
+		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)t
+
+		&= \left< -2, 0, \pi^2 \right> + \left< 0, -1, 2\pi \right>t.
+	$$
+
+	Often, though, we want a tangent line to serve as a **linear approximation**, which would mean $\vec{l}(t) \approx \vec{r}(t)$ for $t$ near $\pi$. We currently get $\vec{r}(\pi)$ as an output from $\vec{l}(t)$ when we plug in $t = 0$, not $t = \pi$, so we can change the formula to
+
+	$$
+		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)(t - \pi),
+	$$
+
+	which also looks reminiscent of the Calculus I formula.
 
 ###
 
-We can use the fact that the derivative vector is tangent to the curve to find a formula for a tangent line, but a slight annoyance with the derivative is that its magnitude can vary substantially. To address that problem and make many future formulas more convenient, we define a magnitude-normalized version:
+When we're given a vector-valued function $\vec{s}(t)$ that gives an object's position at time $t$, its derivative is the velocity function $\vec{v}(t)$, just like in single-variable calculus. However, velocity is now *also* a vector-valued function. Specifically, if
+
+$$
+	\vec{s}(t) = \left< x(t),\, y(t),\, z(t) \right>,
+$$
+
+then
+
+$$
+	\vec{v}(t) = \vec{s}'(t) = \left< x'(t),\, y'(t),\, z'(t) \right>,
+$$
+
+meaning that each component of $\vec{v}$ measures how fast the corresponding component of $\vec{s}$ is changing.
+
+### exc "position, velocity, and acceleration"
+
+	1. Let $\vec{s_1}(t) = \left< \cos(t), \sin(t) \right>$ be the position of a car driving on a racetrack at time $t$. Sketch the path of the car, including the direction of motion with an arrow.
+
+	2. Sketch the car's velocity and acceleration vectors at $t = 0$, $t = \frac{\pi}{4}$, and $t = \frac{\pi}{2}$. What do you notice about their directions and magnitudes? What properties do you think will generalize to any position function?
+
+	3. Another car has the position function $\vec{s_2}(t) = \left< \cos\left( \frac{4}{\pi} t^2 \right), \sin\left( \frac{4}{\pi} t^2 \right) \right>$. Repeat the previous two parts for this car. How do you think the experience of riding in the two cars would differ?
+
+###
+
+It can be tempting to say that the acceleration vector is always orthogonal to the velocity vector; while this is generally true for circular paths, it isn't the case in general. For example, a particle traveling along the graph of $y = x^2$ in $#R#^2$ might have a position function given by $\vec{s}(t) = \left< t, t^2 \right>$, and therefore velocity $\vec{v}(t) = \left< 1, 2t \right>$, but its acceleration is then $\vec{a}(t) = \left< 0, 2 \right>$. The acceleration vector, just like in single variable calculus, is the rate of change of velocity, meaning it points in such a direction that *adding* a small amount of it to the velocity vector at a point produces approximately the velocity vector at a point in the close future.
+
+We can use the fact that the derivative of a vector-valued function is tangent to the function's graph to find a formula for a tangent line, but a slight annoyance with the derivative is that its magnitude can vary substantially. To address that problem and make many future formulas more convenient, we define a magnitude-normalized version:
 
 ### def "unit tangent vector"
 
@@ -166,7 +222,7 @@ $$
 
 for $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$, where $\vec{c}$ is a constant *vector*. While it's nice to have the ability to integrate vector-valued functions, we don't typically find ourselves doing so very often, since vector-valued functions typically represent position, which doesn't have a very meaningful antiderivative.
 
-If we're given a vector-valued function that is already a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant. Let's collect a bit of what we know about these functions: if $\vec{p}(t)$ gives the position of an object over time, then $\vec{p}'(t) = \vec{v}(t)$ is its velocity, which is tangent to the graph of $\vec{p}(t)$, and $\left| \left| \vec{v}(t) \right| \right|$ is the magnitude of the velocity, also called **speed**. The second derivative $\vec{p}''(t)$ is the acceleration $\vec{a}(t)$ --- also a vector. We can integrate the velocity and acceleration functions to recover the position and velocity ones, respectively, up to a constant.
+If we're given a vector-valued function that is *already* a derivative, though, like a velocity function $\vec{v}(t)$, then we can integrate it to find something meaningful: in this case, the position function, up to an integration constant.
 
 ### exc "integrating a vector-valued function"
 
@@ -251,7 +307,6 @@ For a small number of segments, our approximation is pretty poor, like a too-str
 	$$
 
 ###
-
 
 
 

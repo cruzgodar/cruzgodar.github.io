@@ -30,6 +30,8 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 
 <p class="body-text info-text" id="gravity-info">Possibly the strangest algorithm on the list, gravity sort simulates placing the list entries as rows of beads on a vertical abacus, and then letting them fall. The resulting rows at the bottom will be the sorted list. If this is somehow physically simulated, then it will run in $O(\sqrt{n})$ time, since the $n$ rows will all fall at once, and the time for a falling object to hit the ground is proportional to the square root of its starting height. This would crush every other sorting algorithm, but it unfortunately isn&#x2019;t possible to implement in a computer &mdash; the best we can do is moving every bead in a row in a single operation by parallelizing the process, which makes it $O(n)$. The non-parallel version is implemented here, which moves one bead at a time and takes $O(n^2)$ time. Sadly, even with the parallel version, the algorithm requires $O(n^2)$ <strong>memory space</strong> to store the square abacus, and this is prohibitively expensive for large lists.</p>
 
+<p class="body-text info-text" id="iCantBelieveItCan-info">As a fun bonus, I've included <a href="https://arxiv.org/pdf/2110.01111">I Can't Believe It Can Sort</a>, a sorting algorithm that seems like it shouldn't be able to sort at all. It compares pairs of entries like bubble sort, but it looks at <em>every</em> pair, not just adjacent ones, and it swaps only if the elements are already in the correct order relative to one another. Amazingly, this successfully sorts the list!</p>
+
 
 
 <div id="canvas-landscape">

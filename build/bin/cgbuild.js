@@ -6,7 +6,6 @@ import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import buildSpruceFile from "../build-spruce.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
 import { read, write } from "../file-io.js";
-import { convertHtmlToTex } from "/scripts/src/convertHtmlToTex.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -62,15 +61,6 @@ const coverJpgSize = 1500;
 const coverWebpSize = 500;
 const minTolerableCoverSrcSize = 1000;
 
-const courseNames = [
-	[/teaching\/uo\/253\/.+/, "Math 253"],
-	[/teaching\/uo\/256\/.+/, "Math 256"],
-	[/teaching\/uo\/341\/.+/, "Math 341"],
-	[/teaching\/uo\/342\/.+/, "Math 342"],
-
-	[/teaching\/yale\/1120\/.+/, "Math 1120"],
-	[/teaching\/yale\/1180\/.+/, "Math 1180"],
-];
 
 // Warnings are collected while the build runs and printed in blocks at the end.
 // Files come back out of Promise.all in whatever order they happen to finish,
@@ -261,7 +251,7 @@ async function buildFile(file)
 	const filename = end.slice(0, index);
 	const extension = end.slice(index + 1);
 
-	if (extension === "sp" && filename === "index")
+	if (extension === "sp")
 	{
 		const text = await read(file);
 		
@@ -277,29 +267,6 @@ async function buildFile(file)
 			});
 
 			warnMissingCover(file);
-		}
-	}
-
-	else if (
-		extension === "sp" && filename === "card"
-		&& (!options.clean || (options.clean && options.pdf))
-	) {
-		const text = await read(file);
-		
-		if (text)
-		{
-			console.log(file);
-
-			await buildSpruceFile({
-				source: text,
-				absoluteFilePath: root + file,
-				parentFolder:  "/" + file.slice(0, lastSlashIndex - 1),
-				standardLibrary: root + "build/spruceStdlib.js"
-			});
-
-			warnMissingCover(file);
-
-			// await prepareTexFromHTML(`${parentFolder}/data.html`);
 		}
 	}
 
@@ -601,100 +568,6 @@ function buildCoverImage(file)
 		`${root}${folder}cover.jpg`
 	]);
 }
-
-
-
-async function prepareTexFromHTML(file)
-{
-	let courseName;
-
-	for (const [regex, name] of courseNames)
-	{
-		if (regex.test(file))
-		{
-			courseName = name;
-			break;
-		}
-	}
-
-	if (!courseName)
-	{
-		throw new Error(`No course name found! File: ${file}`);
-	}
-
-	const path = file.slice(0, file.lastIndexOf("/"));
-
-	const result = await convertHtmlToTex({
-		html: await read(file),
-		course: courseName,
-		pageUrl: `/${path}`
-	});
-
-	// Write a standard tex file.
-	await write(
-		`${path}/${result[1]}.tex`,
-		result[0]
-	);
-
-	console.log(`${path}/${result[1]}.tex`);
-
-	if (result[2])
-	{
-		// Zip the tex file and the graphics directory.
-		spawnSync("zip", [
-			"-r",
-			`${result[1]}.zip`,
-			`${result[1]}.tex`,
-			"graphics"
-		], { cwd: `${root}/${path}` });
-	}
-
-	const proc = spawnSync(
-		"pdflatex",
-		[`${result[1]}.tex`, "-interaction=nonstopmode"],
-		{ cwd: `${root}/${path}` }
-	);
-
-	parseTexErrors(proc.stdout.toString());
-
-	// Remove the auxiliary files.
-	spawnSync(
-		"rm",
-		["-f", `${result[1]}.aux`, `${result[1]}.log`, `${result[1]}.out`],
-		{ cwd: `${root}/${path}` }
-	);
-}
-
-
-
-function parseTexErrors(stdout)
-{
-	const lines = stdout.toString().split("\n");
-	const errorThings = [/error/i, /undefined/i];
-
-	outerloop: for (let i = 0; i < lines.length; i++)
-	{
-		if (lines[i] === "Package biblatex Warning: Using fall-back bibtex backend:")
-		{
-			continue;
-		}
-		
-		for (const badThing of errorThings)
-		{
-			if (badThing.test(lines[i]))
-			{
-				let error = lines[i];
-				for (let j = i; j < Math.min(i + 5, lines.length); j++)
-				{
-					error = `${error}\n${lines[j]}`;
-				}
-				console.error(error + "\n");
-				continue outerloop;
-			}
-		}
-	}
-}
-
 
 
 buildSite();

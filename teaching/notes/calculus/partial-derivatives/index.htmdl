@@ -250,7 +250,7 @@ That's much nicer! It also looks quite a bit like the single-variable formula fo
 	$$
 		f_x(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-2x)
 
-		f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-3y),
+		f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-6y),
 	$$
 
 	so we have
@@ -260,13 +260,13 @@ That's much nicer! It also looks quite a bit like the single-variable formula fo
 
 		f_x(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-2) = -\frac{1}{4}
 
-		f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-3) = -\frac{3}{8}.
+		f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-6) = -\frac{3}{4}.
 	$$
 
 	The tangent plane is then given by
 
 	$$
-		z = 4 - \frac{1}{4}(x - 1) - \frac{3}{8}(y - 1).
+		z = 4 - \frac{1}{4}(x - 1) - \frac{3}{4}(y - 1).
 	$$
 
 	### desmos tangentPlane
@@ -274,7 +274,7 @@ That's much nicer! It also looks quite a bit like the single-variable formula fo
 	To approximate $f(1.5, 0.5) = \sqrt{17}$, we evaluate
 
 	$$
-		4 - \frac{1}{4}(1.5 - 1) - \frac{3}{8}(0.5 - 1) = 4.0625.
+		4 - \frac{1}{4}(1.5 - 1) - \frac{3}{4}(0.5 - 1) = 4.25.
 	$$
 
 	The actual value is about $4.123$, so that's not too far off!

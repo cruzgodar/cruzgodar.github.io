@@ -42,21 +42,64 @@ Questions 1--5 concern the following graph of the function $f(x)$.
 
 1. Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.
 
+\textbf{Solution:} All of these can be read directly off the graph --- try <span class="click-tap"><span>clicking</span><span>tapping</span></span> the points!
+
+\begin{alignat*}{99}
+	f(-4) &= -2\\
+	f(-2) &= -1\\
+	f(0) &= 0\\
+	f(2) &\text{ is undefined.}\\
+	f(4) &= 2
+\end{alignat*}
+
 2. Find $\displaystyle \lim_{x \to 0^+} f(x)$ and $\displaystyle \lim_{x \to 0^-} f(x)$.
+
+\textbf{Solution:} Approaching from the left, the graph is $-1$ until it reaches the hole, so $\displaystyle \lim_{x \to 0^-} f(x) = -1.$ From the right, the graph slides down the parabola toward the origin, so $\displaystyle \lim_{x \to 0^+} f(x) = 0.$ Since the two one-sided limits disagree, $\displaystyle \lim_{x \to 0} f(x)$ doesn't exist.
 
 3. Using interval notation, list all of the $x$-values where $f$ is continuous and all of the $x$-values where $f$ is discontinuous.
 
+\textbf{Solution:} There are only two discontinuities. We just found one at $x = 0$, and at $x = 2$, the limit is $2$, but $f(2)$ is undefined, so there's nothing for the limit to be equal to. So $f$ is continuous on $(-\infty, 0) \cup (0, 2) \cup (2, \infty)$, and discontinuous at $x = 0$ and $x = 2$.
+
 4. Find $\displaystyle \lim_{x \to \infty} f(x)$ and $\displaystyle \lim_{x \to -\infty} f(x)$. You can zoom out on the graph!
+
+\textbf{Solution:} The graph follows $\frac{x}{2}$ forever, so $\displaystyle \lim_{x \to -\infty} f(x) = -\infty$ doesn't exist. To the right, the graph oscillates forever, so $\displaystyle \lim_{x \to \infty} f(x)$ doesn't exist.
 
 5. Using interval notation, list all of the $x$-values where $f$ is differentiable and all of the $x$-values where $f$ is nondifferentiable.
 
+\textbf{Solution:} Differentiability is a stronger requirement than continuity, so the graph is not differentiable at $x = 0$ or $x = 2$. At $x = -2$, the graph is continuous but has a sharp corner, so it isn't differentiable. Therefore, $f$ is differentiable on $(-\infty, -2) \cup (-2, 0) \cup (0, 2) \cup (2, \infty)$ and nondifferentiable at $x = -2$, $x = 0$, and $x = 2$.
+
 ~\\
 
-In questions 6--7, find all of the critical points of the given function on the given interval, and classify them as local maxima, local minima, or inconclusive using the second derivative test. Then find the absolute maximum and minimum of the function.
+In questions 6--7, find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
 
 6. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
 
+\textbf{Solution:} The critical points are where $f'(x) = 0$:
+
+\begin{alignat*}{99}
+	f'(x) &= 6x^2 - 6x - 12\\
+	&= 6(x - 2)(x + 1),
+\end{alignat*}
+
+so $x = -1$ and $x = 2$, both of which are in $[-2, 3]$. The second derivative is $f''(x) = 12x - 6$, so $f''(-1) = -18 < 0$ and $f''(2) = 18 > 0$. That makes $x = -1$ a local maximum and $x = 2$ a local minimum. We also need to consider the endpoints, which aren't critical points, so the second derivative test doesn't apply to them.
+
+\begin{alignat*}{99}
+	f(-2) &= -3\\
+	f(-1) &= 8\\
+	f(2) &= -19\\
+	f(3) &= -8.
+\end{alignat*}
+
+So the absolute maximum is $8$ at $x = -1$ and the absolute minimum is $-19$ at $x = 2$.
+
 7. $h(x) = \sin(x) + x$ on $[-2\pi, 2\pi]$.
+
+\textbf{Solution:} Here $h'(x) = \cos(x) + 1$, which is zero exactly when $\cos(x) = -1$. On $[-2\pi, 2\pi]$, that happens at $x = -\pi$ and $x = \pi$. Now $h''(x) = -\sin(x)$, and $h''(-\pi) = h''(\pi) = 0$, so the test is inconclusive for both. Checking the critical points and the endpoints, the absolute minimum is at the left endpoint and the absolute maximum at the right one:
+
+\begin{alignat*}{99}
+	h(-2\pi) &= \sin(-2\pi) - 2\pi = -2\pi\\
+	h(2\pi) &= \sin(2\pi) + 2\pi = 2\pi.
+\end{alignat*}
 
 ~\\
 
@@ -64,13 +107,37 @@ In questions 8--9, find the derivative of the given function.
 
 8. $\displaystyle p(t) = \frac{\tan(t)}{t^2 + 1}$.
 
+\textbf{Solution:}
+
+\begin{alignat*}{99}
+	p'(t) &= \frac{\frac{\mathrm{d}}{\mathrm{d}t}[\tan(t)] \left( t^2 + 1 \right) - \tan(t) \frac{\mathrm{d}}{\mathrm{d}t}[t^2 + 1]}{\left( t^2 + 1 \right)^2}\\
+	&= \frac{\sec^2(t) \left( t^2 + 1 \right) - 2t\tan(t)}{\left( t^2 + 1 \right)^2}.
+\end{alignat*}
+
 9. $\displaystyle r(z) = \ln\left( z\cos(z) \right)$.
+
+\textbf{Solution:}
+
+\begin{alignat*}{99}
+	r'(z) &= \frac{1}{z\cos(z)} \frac{\mathrm{d}}{\mathrm{d}z}[z\cos(z)]\\
+	&= \frac{\cos(z) - z\sin(z)}{z\cos(z)}.
+\end{alignat*}
 
 ~\\
 
 Questions 10--13 concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the \textbf{demand function}.
 
 10. Find $D'(p)$ and the units in which it is measured. Is it positive or negative in general? Why does that make sense in context?
+
+\textbf{Solution:}
+
+$$
+	D'(p) = 400e^{-p/10} \left( -\frac{1}{10} \right) = -40e^{-p/10}.
+$$
+
+Since $D$ is measured in units per week and $p$ is measured in dollars, $D'$ is measured in units per week, per dollar. As with any derivative, it's approximately the change in the output caused by increasing the input by one: $D'(p)$ is about how many more units per week the store sells if it raises the price by a dollar.
+
+An exponential is always positive, so $D'(p)$ is always negative. That makes sense: raising a price loses customers, so the number of \textit{additional} units sold is negative.
 
 11. The \textbf{price elasticity of demand} measures how sensitive buyers are to price. It is defined as
 
@@ -80,11 +147,50 @@ $$
 
 and measures (percent change in demand) per (percent change in price). Find $E(p)$ for this store, and find the price at which $E(p) = 1$, which is when demand is called \textbf{unit elastic}.
 
+\textbf{Solution:}
+
+\begin{alignat*}{99}
+	E(p) &= -p \frac{-40e^{-p/10}}{400e^{-p/10}}\\
+	&= \frac{40p}{400}\\
+	&= \frac{p}{10}.
+\end{alignat*}
+
+Setting $E(p) = 1$ gives $p = 10$, so demand is unit elastic at a price of $\$10$: near that price, raising the price by $1\%$ costs the store about $1\%$ of its sales.
+
+Notice that $E$ has no units. That's the whole point of measuring sensitivity in percentages instead of in raw slopes: $D'(p)$ would be different if we measured sales per month or prices in cents, but $E(p)$ wouldn't change.
+
 12. The store's weekly revenue is $R(p) = pD(p)$. Optimize $R(p)$ on $[0, \infty)$, and classify it with the second derivative test. What is the store's largest possible weekly revenue?
+
+\textbf{Solution:} $R(p) = 400pe^{-p/10}$, so
+
+\begin{alignat*}{99}
+	R'(p) &= 400e^{-p/10} + 400p \left( -\frac{1}{10} \right) e^{-p/10}\\
+	&= 40e^{-p/10}(10 - p).
+\end{alignat*}
+
+An exponential is never zero, so the only critical point is $p = 10$. Then $R''(p) = 4e^{-p/10}(p - 20)$, so $R''(10) = -\frac{40}{e} < 0$ and $p = 10$ is a local maximum. It's also the absolute maximum: the only endpoint is $p = 0$, where $R(0) = 0$. The largest possible weekly revenue is therefore
+
+$$
+	R(10) = 4000e^{-1} \approx \$1471.52.
+$$
 
 13. Compare your answers to questions 11 and 12. Then show that $R'(p) = D(p)\left( 1 - E(p) \right)$ for \textit{any} differentiable demand function $D$, and explain what that says about the relationship between revenue and price elasticity of demand.
 
-~\\
+\textbf{Solution:} Both questions gave $p = 10$. Since $R(p) = pD(p)$ is a product,
+
+\begin{alignat*}{99}
+	R'(p) &= D(p) + pD'(p)\\
+	&= D(p) \left( 1 + p\frac{D'(p)}{D(p)} \right)\\
+	&= D(p) \left( 1 - E(p) \right).
+\end{alignat*}
+
+Since demand is positive, the sign of $R'(p)$ is entirely determined by $1 - E(p)$:
+
+<span style="width: 32px"></span>\textbf{&#8226;} If $E(p) < 1$ (demand is \textbf{inelastic}), then $R'(p) > 0$, and the store should raise its price. It loses proportionally fewer customers than the dollars per sale it gains.
+
+<span style="width: 32px"></span>\textbf{&#8226;} If $E(p) > 1$ (demand is \textbf{elastic}), then $R'(p) < 0$, and the store should lower its price, since each price increase drives away proportionally more customers than it's worth.
+
+Revenue is therefore maximized exactly where demand is unit elastic, which is why both questions gave $p = 10$. This is a general fact about revenue, regardless of the particular demand function.
 
 14. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
 

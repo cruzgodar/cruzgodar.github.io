@@ -32,6 +32,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 		msdRadix: this.msdRadixSort,
 		lsdRadix: this.lsdRadixSort,
 		gravity: this.gravitySort,
+		iCantBelieveItCan: this.iCantBelieveItCanSort,
 	};
 
 	generators = [this.shuffleArray, null, this.verifyArray];
@@ -1462,6 +1463,35 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 			this.numWrites--;
 			this.inFrameOperations--;
+		}
+
+		this.advanceGenerator();
+	}
+
+
+	* iCantBelieveItCanSort()
+	{
+		this.operationsPerFrame = Math.ceil(
+			this.dataLength * this.dataLength / 7000 * this.speedFactor
+		);
+
+		for (let i = 0; i < this.dataLength; i++)
+		{
+			for (let j = 0; j < this.dataLength; j++)
+			{
+				this.readFromPosition(i);
+				this.readFromPosition(j);
+
+				if (this.data[i] < this.data[j])
+				{
+					const temp = this.data[i];
+					this.data[i] = this.data[j];
+					this.data[j] = temp;
+
+					if (this.writeToPosition(i)) {yield;}
+					if (this.writeToPosition(j)) {yield;}
+				}
+			}
 		}
 
 		this.advanceGenerator();

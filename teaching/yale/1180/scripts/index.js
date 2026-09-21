@@ -1,7 +1,8 @@
 import { Button } from "/scripts/components/buttons.js";
 import { setOnLoadExternalCard } from "/scripts/src/cards.js";
 import {
-	createDesmosGraphs, desmosColors,
+	createDesmosGraphs,
+	defaultWorldRotation3D, desmosColors,
 	desmosDragModes,
 	desmosPointStyles,
 	getDesmosPoint,
@@ -93,6 +94,26 @@ export default async function load()
 			]
 		},
 
+		cylinderSolution:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: defaultWorldRotation3D
+			},
+
+			bounds: { xmin: -5, xmax: 8, ymin: -5, ymax: 8, zmin: -5, zmax: 8 },
+
+			expressions:
+			[
+				{ latex: raw`(x - 2)^2 + (z - 1)^2 = 16 + 0y`, color: desmosColors.blue },
+				{ latex: raw`(2, t, 1)`, color: desmosColors.purple, parametricDomain: { min: -5, max: 8 }, secret: true },
+				{ latex: raw`(2, 3, 1)`, color: desmosColors.orange, secret: true },
+			]
+		},
+
 		unitVectorsSpherical:
 		{
 			use3d: true,
@@ -123,9 +144,87 @@ export default async function load()
 				{ latex: raw`\sin(\theta_0)x - \cos(\theta_0)y + 0z = 0 \{x^2 + y^2 + z^2 \leq 1\} \{\cos(\theta_0)x + \sin(\theta_0)y \geq 0\}`, color: desmosColors.blue, secret: true },
 
 
-				{ latex: raw`(0.2\cos(t), 0.2\sin(t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: "a" }, secret: true },
+				{ latex: raw`(0.2\cos(t), 0.2\sin(t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: "\\theta_0" }, secret: true },
 
 				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0)))`, color: desmosColors.purple, secret: true },
+			]
+		},
+
+		unitVectorsSphericalSolution:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				expressionsCollapsed: false
+			},
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -1.5, zmax: 1.5 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: "\\theta_0 = 1",
+					min: 0,
+					max: "2\\pi",
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "\\varphi_0 = 0.6",
+					min: raw`\frac{-\pi}{2}`,
+					max: raw`\frac{\pi}{2}`,
+					secret: false
+				}),
+
+				{ latex: raw`(\cos(t), \sin(t), 0)`, color: desmosColors.gray, parametricDomain: { min: 0, max: 2 * Math.PI }, secret: true },
+
+				{ latex: raw`(0.2\cos(\theta_0 t), 0.2\sin(\theta_0 t), 0)`, color: desmosColors.red, parametricDomain: { min: 0, max: 1 }, secret: true },
+
+				{ latex: raw`(0.3\cos(\varphi_0 t)\cos(\theta_0), 0.3\cos(\varphi_0 t)\sin(\theta_0), 0.3\sin(\varphi_0 t))`, color: desmosColors.blue, parametricDomain: { min: 0, max: 1 }, secret: true },
+
+				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), 0))`, color: desmosColors.orange, secret: true },
+
+				{ latex: raw`(\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0))`, color: desmosColors.gray, points: false, lines: true, secret: true },
+
+				{ latex: raw`\vector((0, 0, 0), (\cos(\varphi_0)\cos(\theta_0), \cos(\varphi_0)\sin(\theta_0), \sin(\varphi_0)))`, color: desmosColors.purple, secret: true },
+			]
+		},
+
+		returnsToScale:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				expressionsCollapsed: false
+			},
+
+			bounds: { xmin: 0, xmax: 40, ymin: 0, ymax: 200, zmin: 0, zmax: 550 },
+
+			expressions:
+			[
+				...getDesmosSlider({
+					expression: "b = 0.25",
+					min: 0,
+					max: 1.5,
+					step: 0.05,
+					secret: false
+				}),
+				...getDesmosSlider({
+					expression: "c = 0.75",
+					min: 0,
+					max: 1.5,
+					step: 0.05,
+					secret: false
+				}),
+
+				{ latex: raw`Y(x, y) = 4x^{b}y^{c}`, color: desmosColors.purple },
+
+				{ latex: raw`(16t, 81t, Y(16t, 81t))`, parametricDomain: { min: 0, max: 2.4 }, color: desmosColors.blue, secret: true },
+
+				{ latex: raw`(16, 81, Y(16, 81))`, color: desmosColors.red, secret: true },
 			]
 		},
 	});

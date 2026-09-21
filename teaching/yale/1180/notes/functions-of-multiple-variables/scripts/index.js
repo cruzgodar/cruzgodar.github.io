@@ -32,13 +32,13 @@ export default function()
 
 			expressions:
 			[
-				{ latex: raw`(t, 0, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
+				{ latex: raw`(t, 0, \sqrt{4 - t^2})`, parametricDomain: { min: -10, max: 10 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(0, t, \sqrt{4 - t^2})`, parametricDomain: { min: -2, max: 2 }, color: desmosColors.purple, secret: true },
+				{ latex: raw`(0, t, \sqrt{4 - t})`, parametricDomain: { min: -10, max: 10 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`(2\cos(t), 2\sin(t), 0)`, parametricDomain: { min: 0, max: 2 * Math.PI }, color: desmosColors.purple, secret: true },
+				{ latex: raw`(t, 4 - t^2, 0)`, parametricDomain: { min: -10, max: 10 }, color: desmosColors.purple, secret: true },
 
-				{ latex: raw`f(x, y) = \sqrt{4 - x^2 - y^2}`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`f(x, y) = \sqrt{4 - x^2 - y}`, color: desmosColors.blue, hidden: true },
 			]
 		},
 
@@ -102,6 +102,64 @@ export default function()
 				{ latex: raw`c = [ 0, 1, ..., 10 ]`, },
 
 				{ latex: raw`(0, 0, 0)`, color: desmosColors.blue, secret: true },
+			]
+		},
+
+		hyperbolas:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`x^2 - 2y^2 = c`, color: desmosColors.blue },
+
+				{ latex: raw`c = [ -2, -1, 0, 1, 2 ]`, },
+			]
+		},
+
+		hyperbolicParabolid:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`z = x^2 - \frac{y^2}{4}\left\{ \left| z \right| \leq 3 \right\}`, color: desmosColors.purple, hidden: true },
+
+				{ latex: raw`x^2 = \frac{y^2}{4} + c \left\{ z = c \right\}`, color: desmosColors.blue, secret: true },
+				
+				{ latex: raw`(t, 0, t^2)`, color: desmosColors.red, parametricDomain: { min: "-\\sqrt{3}", max: "\\sqrt{3}" }, secret: true },
+				{ latex: raw`(0, t, -\frac{t^2}{4})`, color: desmosColors.orange, parametricDomain: { min: "-2\\sqrt{3}", max: "2\\sqrt{3}" }, secret: true },
+
+				{ latex: raw`c = [ -2, -1, ..., 2 ]`, secret: true },
+			]
+		},
+
+		possibleGraphs:
+		{
+			use3d: true,
+
+			options: { showPlane3D: false, translucentSurfaces: true },
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y, z) = x^2 + y^2 + z^2 - 1`, hidden: true, secret: true },
+				{ latex: raw`g(x, y, z) = x^2 + y^2 - z^2 - 1`, hidden: true, secret: true },
+				{ latex: raw`h(x, y, z) = x^2 - y^2 + z^2 - 1`, hidden: true, secret: true },
+				{ latex: raw`k(x, y, z) = x^2 + y^2 - z^2 + 1`, hidden: true, secret: true },
+
+				{ latex: raw`0 = f(x, y, z) \{ \left| z \right| \leq 2.5 \}`, color: desmosColors.purple, hidden: true },
+
+				{ latex: raw`0 = g(x, y, z) \{ \left| z \right| \leq 2.5 \}`, color: desmosColors.blue, hidden: true },
+
+				{ latex: raw`0 = h(x, y, z) \{ \left| y \right| \leq 2.5 \}`, color: desmosColors.red, hidden: true },
+				
+				{ latex: raw`0 = k(x, y, z) \{ \left| z \right| \leq 2.5 \}`, color: desmosColors.orange, hidden: true },
 			]
 		},
 
