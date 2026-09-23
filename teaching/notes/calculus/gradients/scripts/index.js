@@ -78,5 +78,31 @@ export default function()
 				{ latex: raw`17(x - 1) + 13(y - 1) + 7(z - 1) = 0`, color: desmosColors.blue },
 			]
 		},
+
+		tangentPlaneLevelSurface2:
+		{
+			use3d: true,
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-1, 0.06, -0.06, -0.06, -1, 0, -0.06, 0, 1]
+			},
+
+			expressions:
+			[
+				{ latex: raw`x^4 + y^4 + z^4 = x^2 + y^2 + z^2 - cxyz`, color: desmosColors.purple },
+
+				...getDesmosSlider({
+					expression: "c = 6",
+					min: -10,
+					max: 10,
+					secret: false,
+				}),
+
+				{ latex: raw`(2, -1, 2)`, color: desmosColors.blue },
+			]
+		},
 	});
 }
