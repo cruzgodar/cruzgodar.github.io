@@ -232,7 +232,7 @@ We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is o
 
 	### desmos tangentPlaneLevelSurface
 
-	We're not likely to find an explicit formula for that function by solving it for $z$, but we can completely get around the issue by considering the whole thing to be the $w = 11$ level surface of
+	We're not likely to find an explicit formula for that function by solving it for $z$. Instead, we can completely sidestep the issue by considering the whole thing to be the $w = 11$ level surface of
 
 	$$
 		w = f(x, y, z) = 6x^2 + 2y^4 + z^6 + x^4z + xy^5!
@@ -250,6 +250,36 @@ We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is o
 
 ###
 
+### exc "a tangent plane to a level surface"
+
+	Find a tangent plane to the graph of
+	
+	$$
+		x^4 + y^4 + z^4 = x^2 + y^2 + z^2 - 6xyz
+	$$
+
+	at $(2, -1, 2)$.
+
+	### solution
+
+	### desmos tangentPlaneLevelSurface2
+
+	Viewing this as the $w = 0$ level surface of
+
+	$$
+		w = f(x, y, z) = x^4 + y^4 + z^4 - x^2 - y^2 - z^2 + 6xyz,
+	$$
+
+	the gradient is
+
+	$$
+		\G w &= \left< 4x^3 - 2x + 6yz,\ 4y^3 - 2y + 6xz,\ 4z^3 - 2z + 6xy \right>
+
+		\G w(2, -1, 2) &= \left< 16, 22, 16 \right>.
+	$$
+
+###
+
 While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< pf/px, pf/py, -1 \right>$. The tangent plane would then be
 
 $$
@@ -261,7 +291,6 @@ $$
 $$
 
 and so all is well.
-
 
 
 

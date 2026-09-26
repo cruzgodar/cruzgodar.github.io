@@ -1,7 +1,7 @@
 ### card homework-2 "Problem Set 2"
-	
+
 	*Due Thursday, September 17th at 11:59 PM*
-	
+
 	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted. I write most of my problems to not require calculators, but you may find some of the problems require them --- that's perfectly fine! All exam problems will be written without the need for calculators.
 
 	- - -
@@ -20,9 +20,27 @@
 
 	Toggle each on using the expressions in the sidebar and match each function to its graph (you can technically do this by just typing the functions in as new expressions, but the point is to deduce it by analyzing the graphs).
 
+	**Solution:**
+
+	> a) Purple
+
+	> b) Orange
+
+	> c) Blue
+
+	> d) Red
+
 	- - -
 
 	#. Find an equation for a cylinder in $#R#^3$ parallel to the $y$-axis, with radius $4$, and whose central axis contains the point $(2, 3, 1)$.
+
+	**Solution:** Just like $x^2 + y^2 = 1$ from the notes is parallel to the $z$-axis because it doesn't involve $z$, this equation shouldn't involve $y$. Its central axis is the line through $(2, 3, 1)$ parallel to the $y$-axis, so every cross-section of the cylinder at a fixed $y$ is a circle of radius $4$ centered at $x = 2$ and $z = 1$, and the equation is
+
+	$$
+		(x - 2)^2 + (z - 1)^2 = 16.
+	$$
+
+	### desmos cylinderSolution
 
 	- - -
 
@@ -30,17 +48,79 @@
 
 	> a) Find $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{w} \right| \right|$.
 
-	> b) Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form and sketch them both.
+	> b) Find $\vec{v} + \vec{w}$ and $2\vec{v} - \vec{w}$ in component form.
 
 	> c) Find unit vectors in the same direction as $\vec{v}$ and $\vec{w}$, respectively.
+
+	**Solution:**
+
+	> a)
+
+	$$
+		\left| \left| \vec{v} \right| \right| &= \sqrt{0^2 + 3^2 + 4^2} = \sqrt{25} = 5
+
+		\left| \left| \vec{w} \right| \right| &= \sqrt{1^2 + (-2)^2 + 1^2} = \sqrt{6}.
+	$$
+
+	> b)
+
+	$$
+		\vec{v} + \vec{w} &= \left< 0 + 1, 3 - 2, 4 + 1 \right> = \left< 1, 1, 5 \right>
+
+		2\vec{v} - \vec{w} &= \left< 0, 6, 8 \right> - \left< 1, -2, 1 \right> = \left< -1, 8, 7 \right>.
+	$$
+
+	> c) Dividing a vector by its magnitude normalizes it to have length $1$, so:
+
+	$$
+		\frac{\vec{v}}{\left| \left| \vec{v} \right| \right|} &= \left< 0, \frac{3}{5}, \frac{4}{5} \right>
+
+		\frac{\vec{w}}{\left| \left| \vec{w} \right| \right|} &= \left< \frac{1}{\sqrt{6}}, -\frac{2}{\sqrt{6}}, \frac{1}{\sqrt{6}} \right>.
+	$$
 
 	- - -
 
 	#. Find an equation for a plane with normal vector $\left< 1, -2, 0 \right>$ that passes through the point $\left< 2, 3, -8 \right>$.
 
+	**Solution:** With $\vec{n} = \left< 1, -2, 0 \right>$ and $\vec{r_0} = \left< 2, 3, -8 \right>$, the equation $\vec{n} \bullet \left( \vec{r} - \vec{r_0} \right) = 0$ becomes
+
+	$$
+		\left< 1, -2, 0 \right> \bullet \left< x - 2, y - 3, z + 8 \right> &= 0
+
+		(x - 2) - 2(y - 3) &= 0,
+	$$
+
+	Or equivalently, $x - 2y = -4$. There is no $z$ in the equation at all, since the plane itself is parallel to the $z$-axis.
+
 	#. Find an equation for a plane that passes through $\left( 0, 1, 1 \right)$, $\left( -3, 1, 2 \right)$, and $\left( 1, 0, 2 \right)$.
 
+	**Solution:** To find a normal vector, we first find two vectors in the plane. The vector from $(0, 1, 1)$ to $(-3, 1, 2)$ is $\vec{v} = \left< -3, 0, 1 \right>$, and the vector from $(0, 1, 1)$ to $(1, 0, 2)$ is $\vec{w} = \left< 1, -1, 1 \right>$. Then
+
+	$$
+		\vec{v} \times \vec{w} = \left< 1, 4, 3 \right>.
+	$$
+
+	Now using the point $(0, 1, 1)$, the equation of the plane is
+
+	$$
+		x + 4(y - 1) + 3(z - 1) = 0.
+	$$
+
 	#. Find an equation for a plane that passes through $\left( 1, 2, 3 \right)$ and $\left(2, 2, 4 \right)$ and is parallel to the $y$-axis.
+
+	**Solution:** Two points aren't enough on their own, but they give us one vector in the plane: $\vec{v} = \left< 2, 2, 4 \right> - \left< 1, 2, 3 \right> = \left< 1, 0, 1 \right>$. Since the plane is parallel to the $y$-axis, $\vec{j} = \left< 0, 1, 0 \right>$ also lies in the plane. Crossing $\vec{v}$ and $\vec{j}$ produces a normal vector:
+
+	$$
+		\vec{v} \times \vec{j} = \left< -1, 0, 1 \right>.
+	$$
+
+	Using the point $(1, 2, 3)$, the equation of the plane is
+
+	$$
+		-(x - 1) + (z - 3) = 0,
+	$$
+
+	or $z = x + 2$. Just like in question #-2, the variable missing from the equation is exactly the axis the plane is parallel to.
 
 	- - -
 
@@ -48,9 +128,15 @@
 
 	#. If $\vec{v} \bullet \vec{w} = 0$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
 
+	**Solution:** False. The dot product is zero for any two orthogonal vectors, including nonzero ones: for example, $\vec{i} \bullet \vec{j} = 0$.
+
 	#. If $\vec{v} \times \vec{w} = \vec{0}$, then either $\vec{v} = \vec{0}$ or $\vec{w} = \vec{0}$.
 
-	#. If $\vec{u} \bullet \left( \vec{v} \times \vec{w} \right) = 0$, then $\vec{u}$ is in the plane containing $\vec{v}$ and $\vec{w}$ when all three are drawn starting from the origin.
+	**Solution:** False. Since $\left| \left| \vec{v} \times \vec{w} \right| \right| = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \sin(\theta)$, the cross product is zero whenever the angle between the vectors is $0$ or $\pi$ (i.e. when they point in the same or opposite direction). For example, any vector crossed with itself is zero.
+
+	#. If $\vec{u} \bullet \left( \vec{v} \times \vec{w} \right) = 0$ and $\vec{v}$ and $\vec{w}$ are not parallel, then $\vec{u}$ is in the plane containing $\vec{v}$ and $\vec{w}$ when all three are drawn starting from the origin.
+
+	**Solution:** True. If $\vec{v}$ and $\vec{w}$ aren't parallel, then $\vec{v} \times \vec{w}$ is a nonzero vector orthogonal to both of them, so it's a normal vector to the plane containing them. If $\vec{u} \bullet \left( \vec{v} \times \vec{w} \right) = 0$, then $\vec{u}$ is orthogonal to that normal vector, which means it lies in the plane.
 
 	- - -
 
@@ -60,13 +146,49 @@
 
 	### desmos unitVectorsSpherical
 
-	#. Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to part a) and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
+	**Solution:** Since $\vec{u}$ is a unit vector with its tail at the origin, its tip is on the unit circle in the $xy$-plane. The point on the unit circle at an angle of $\theta$ counterclockwise from the positive $x$-axis is $(\cos(\theta), \sin(\theta))$, so
+
+	$$
+		\vec{u} = \left< \cos(\theta), \sin(\theta), 0 \right>.
+	$$
+
+	#. Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to question #-1 and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.
+
+	**Solution:** Looking at the half-disk from the side, $\vec{u}$ is the hypotenuse of a right triangle with length $1$ and an angle of $\varphi$ with the $xy$-plane. ($\vec{u}$ is drawn in purple.) The gray vertical leg of that triangle has length $\sin(\varphi)$, and the orange horizontal leg --- the shadow of $\vec{u}$ in the $xy$-plane --- has length $\cos(\varphi)$.
+
+	### desmos unitVectorsSphericalSolution
+
+	That shadow points in the direction of the angle $\theta$ and has length $\cos(\varphi)$, so using question #-1, it's $\cos(\varphi)$ times $\left< \cos(\theta), \sin(\theta), 0 \right>$. To get from the shadow to $\vec{u}$, we then move $\sin(\varphi)$ upward, so
+
+	$$
+		\vec{u} &= \cos(\varphi) \left< \cos(\theta), \sin(\theta), 0 \right>\ +\ \left< 0, 0, \sin(\varphi) \right>
+
+		&= \left< \cos(\varphi)\cos(\theta), \cos(\varphi)\sin(\theta), \sin(\varphi) \right>.
+	$$
+
+	This is exactly the longitude-latitude system mentioned briefly in the notes: $\theta$ plays the role of longitude and $\varphi$ the role of latitude, and every unit vector in $#R#^3$ comes from some $\theta$ in $[0, 2\pi)$ and $\varphi$ in $\left[ -\frac{\pi}{2}, \frac{\pi}{2} \right]$.
 
 	- - -
 
 	Questions 4# concern the following situation: two companies, Aquilo and Fulgora, each produce steel and computer chips using labor. We can record a company's technology as a vector whose components are the numbers of labor hours needed to produce one unit of each good: Aquilo's is $\vec{a} = \left< 6, 3 \right>$, meaning six hours per unit of steel and three hours per unit of computer chips, and Fulgora's is $\vec{f} = \left< 1, 2 \right>$. A company has an **absolute advantage** in a good if it can produce a unit of that good in fewer hours. It turns out that a more useful notion is the **opportunity cost** of a good: the amount of the *other* good a company must give up in order to produce one more unit. We say that a company has a **comparative advantage** in a good if its opportunity cost for that good is lower than the other company's.
 
 	#. Which company has an absolute advantage in each good? Then find each company's opportunity cost of a unit of steel (your answers should be in units of computer chips),  and do the same for computer chips. Which company has a comparative advantage in which good?
+
+	**Solution:** Fulgora needs fewer hours for both goods, so it has an absolute advantage in both.
+
+	For Aquilo, one unit of steel takes $6$ hours, and those same $6$ hours could have produced $\frac{6}{3} = 2$ computer chips. For Fulgora, one unit of steel takes $1$ hour, which could have produced $\frac{1}{2}$ of a computer chip. In the other direction, one computer chip takes Aquilo $3$ hours, which could have produced $\frac{3}{6} = \frac{1}{2}$ of a unit of steel, and it takes Fulgora $2$ hours, which could have produced $2$ units of steel. In summary,
+
+	$$
+		\text{Aquilo's opportunity cost of steel} &= 2 \text{ chips}
+
+		\text{Fulgora's opportunity cost of steel} &= \frac{1}{2} \text{ chip}
+
+		\text{Aquilo's opportunity cost of chips} &= \frac{1}{2} \text{ steel}
+
+		\text{Fulgora's opportunity cost of chips} &= 2 \text{ steel}.
+	$$
+
+	Fulgora gives up less to produce steel, so it has a comparative advantage in steel, while Aquilo has a comparative advantage in computer chips. Notice that even though Aquilo is worse at producing *everything*, it still has a comparative advantage in something!
 
 	#. Now more generally, suppose $\vec{a} = \left< s_a, c_a, 0 \right>$ and $\vec{f} = \left< s_f, c_f, 0 \right>$, where all four of the component variables are positive. Then
 
@@ -78,9 +200,41 @@
 
 	Explain why the quantity in parentheses is the difference between the two companies' opportunity costs of steel. Since $c_fc_a > 0$, what does the *sign* of that quantity tell you? Check that it agrees with your answer to question #-1.
 
+	**Solution:** The quantity $s_a$ is measured in hours per unit of steel, and $c_a$ is measured in hours per chip, so $\frac{s_a}{c_a}$ is measured in chips per unit of steel and is Aquilo's opportunity cost of steel. Similarly, $\frac{s_f}{c_f}$ is Fulgora's opportunity cost of steel, so the quantity in parentheses is Aquilo's opportunity cost minus Fulgora's.
+	
+	Since $c_fc_a > 0$, the $z$-component of $\vec{a} \times \vec{f}$ has the same sign as that difference. If it's positive, then steel is more expensive for Aquilo, so Fulgora has a comparative advantage in steel. If it's negative, then Aquilo has a comparative advantage in steel instead.
+
+	With $\vec{a} = \left< 6, 3, 0 \right>$ and $\vec{f} = \left< 1, 2, 0 \right>$, the $z$-component is $(6)(2) - (3)(1) = 9$, or equivalently $(2)(3)\left( 2 - \frac{1}{2} \right) = 9$. That's positive, so Fulgora has a comparative advantage in steel, which agrees with question #-1.
+
 	#. Question #-1 implies that $\vec{a} \times \vec{f} = \vec{0}$ exactly when the two companies have identical opportunity costs, in which case neither company has a comparative advantage in anything. When that is the case, what must be the angle $\theta$ between the two technology vectors?
 
+	**Solution:** We know that
+
+	$$
+		\left| \left| \vec{a} \times \vec{f} \right| \right| = \left| \left| \vec{a} \right| \right| \cdot \left| \left| \vec{f} \right| \right| \sin(\theta).
+	$$
+
+	All the components of $\vec{a}$ and $\vec{f}$ are positive, so neither vector is zero, and the only way for the cross product to be $\vec{0}$ is if $\sin(\theta) = 0$. That means $\theta = 0$ or $\theta = \pi$. But since both vectors have positive components, they both point into the first quadrant of the $xy$-plane, so the angle between them is less than $\frac{\pi}{2}$. Therefore, $\theta = 0$. That means $\vec{f}$ is a positive scalar multiple of $\vec{a}$, so one company is more efficient than the other by the *same* factor in both goods, and so neither has anything to gain by specializing.
+
 	#. Let's now look at specific numbers. Going back to the original vectors of $\vec{a} = \left< 6, 3 \right>$ and $\vec{f} = \left< 1, 2 \right>$, suppose each company has $12$ labor hours available. First suppose each company splits its hours evenly between the two goods, and find the total world output of each good (assuming no other relevant companies exist). Now suppose Aquilo spends all $12$ of its hours on computer chips, while Fulgora spends only as many hours on computer chips as are needed to keep total world computer chips output unchanged, spending the rest on steel. Find the new world output. Who gained, and by how much?
+
+	**Solution:** When each company spends $6$ hours on each good, Aquilo produces 1 unit of steel and 2 chips, and Fulgora produces 6 units of steel and 3 chips. The total world output is therefore
+
+	$$
+		\text{steel} &= 1 + 6 = 7
+
+		\text{chips} &= 2 + 3 = 5.
+	$$
+
+	Now each company specializes according to its comparative advantage. Aquilo spends all $12$ of its hours on chips, producing $\frac{12}{3} = 4$ of them. To keep world chip output at $5$, Fulgora only needs to make $1$ chip, which takes $2$ hours, and it spends the remaining $10$ hours on steel. The new world output is then
+
+	$$
+		\text{steel} &= 0 + 10 = 10
+
+		\text{chips} &= 4 + 1 = 5.
+	$$
+
+	Now the world as a whole gained $3$ units of steel without losing any chips. Even though Fulgora is better at producing both goods, the two companies together produce strictly more when each focuses on the good it gives up the least to make, and by trading, both can end up better off.
 
 	- - -
 

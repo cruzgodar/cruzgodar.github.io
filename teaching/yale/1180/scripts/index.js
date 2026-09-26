@@ -191,6 +191,66 @@ export default async function load()
 			]
 		},
 
+		tangentLine1:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+
+			options: {
+				expressionsCollapsed: false
+			},
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \sin(\frac{\pi}{2}x) + 1`, color: desmosColors.purple },
+				{ latex: raw`y = f(1) + f'(1)(x - 1)`, color: desmosColors.blue },
+				{ latex: raw`(1, f(1))`, color: desmosColors.red },
+
+				{ latex: raw`g(x) = \cos(\pi x) - 1`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`y = g(4) + g'(4)(x - 4)`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`(4, g(4))`, color: desmosColors.red, hidden: true },
+			]
+		},
+
+		tangentLine2:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -20, ymax: 20 },
+
+			options: {
+				expressionsCollapsed: false
+			},
+
+			expressions:
+			[
+				{ latex: raw`f(x) = 0`, color: desmosColors.purple },
+				{ latex: raw`y = f(1) + f'(1)(x - 1)`, color: desmosColors.blue },
+				{ latex: raw`(1, f(1))`, color: desmosColors.red },
+
+				{ latex: raw`g(x) = 3\tan(\pi x)`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`y = g(4) + g'(4)(x - 4)`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`(4, g(4))`, color: desmosColors.red, hidden: true },
+			]
+		},
+
+		tangentLine3:
+		{
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
+
+			options: {
+				expressionsCollapsed: false
+			},
+
+			expressions:
+			[
+				{ latex: raw`f(x) = \ln(4x)`, color: desmosColors.purple },
+				{ latex: raw`y = f(1) + f'(1)(x - 1)`, color: desmosColors.blue },
+				{ latex: raw`(1, f(1))`, color: desmosColors.red },
+
+				{ latex: raw`g(x) = \ln(3x^2)`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`y = g(4) + g'(4)(x - 4)`, color: desmosColors.blue, hidden: true },
+				{ latex: raw`(4, g(4))`, color: desmosColors.red, hidden: true },
+			]
+		},
+
 		returnsToScale:
 		{
 			use3d: true,
