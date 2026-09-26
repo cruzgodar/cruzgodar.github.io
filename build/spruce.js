@@ -1,5 +1,5 @@
-import { document } from "../../build/spruceStdlib.js";
-import { sitemap } from "./sitemap.js";
+import { sitemap } from "../scripts/src/sitemap.js";
+import { document } from "./spruceStdlib.js";
 
 export function bannerDocument(body)
 {

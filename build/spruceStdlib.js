@@ -62,6 +62,11 @@ export function paragraph(body)
 	return /* html */`<p class="body-text">${body}</p>`;
 }
 
+export function displayMath(body)
+{
+	return String.raw/* html */`<p class="body-text" style="text-align: center; line-height: 0"><span>$$\begin{alignat*}{99}${body}\end{alignat*}$$</span></p>`;
+}
+
 export function text(body)
 {
 	return body

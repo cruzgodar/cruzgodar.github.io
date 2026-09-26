@@ -1,5 +1,5 @@
 @@@
-	import { bannerDocument as document, carousel, customLink } from "../scripts/src/spruce.js";
+	import { bannerDocument as document, carousel, customLink } from "../build/spruce.js";
 @@@
 
 <div class="justify">

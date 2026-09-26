@@ -1,5 +1,5 @@
 @@@
-	import { controls, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../scripts/src/spruce.js";
+	import { controls, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
 
 	function document(body)
 	{
@@ -67,7 +67,7 @@ The Koch snowflake is a fractal, an object that is infinitely detailed no matter
 
 @p[Let $p_n$ be the perimeter of the snowflake at step $n$. Using your answer to question #-1, find an explicit formula for $p_n$. Then find the perimeter of the completed snowflake by taking the limit of the sequence $(p_n)$.]
 
-@p[Let $A$ be the area of the completed Koch snowflake and let $a_n$ be the amount the area increases at step $n$, where $n \geq 1$. For example, step 1 is going from the original triangle to the six-pointed star. That adds three triangles, each of area $\dfrac{\sqrt{3}}{36}$. Therefore, $a_1 = \dfrac{\sqrt{3}}{12}$. Using your answer to question #-2, find an explicit formula for $a_n$. The area of the original triangle is $\dfrac{\sqrt{3}}{4}$, and so the total area $A$ of the completed snowflake is ]
+@p[Let $A$ be the area of the completed Koch snowflake and let $a_n$ be the amount the area increases at step $n$, where $n \geq 1$. For example, step 1 is going from the original triangle to the six-pointed star. That adds three triangles, each of area $\dfrac{\sqrt{3}}{36}$. Therefore, $a_1 = \dfrac{\sqrt{3}}{12}$. Using your answer to question #-2, find an explicit formula for $a_n$. The area of the original triangle is $\dfrac{\sqrt{3}}{4}$, and so the total area $A$ of the completed snowflake is]
 
 $$
 	A = \frac{\sqrt{3}}{4} + \sum_{n = 1}^\infty a_n.

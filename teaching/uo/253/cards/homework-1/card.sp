@@ -1,5 +1,5 @@
 @@@
-	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../scripts/src/spruce.js";
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
 
 	function document(body)
 	{

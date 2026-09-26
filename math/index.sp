@@ -1,5 +1,5 @@
 @@@
-	import { center, imageLinks } from "../scripts/src/spruce.js";
+	import { center, imageLinks } from "../build/spruce.js";
 @@@
 
 @center[A collection of the presentations I've given and papers I've written. All of the former are built with [Lapsa](/projects), a library I wrote to make slides elegant and easy to create, while also supporting sophisticated features like using applets as interactive visuals.]

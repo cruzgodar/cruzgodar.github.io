@@ -1,5 +1,5 @@
 @@@
-	import { imageLinks } from "../scripts/src/spruce.js";
+	import { imageLinks } from "../build/spruce.js";
 
 	function document(body)
 	{

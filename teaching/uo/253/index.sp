@@ -1,5 +1,5 @@
 @@@
-	import { card, externalCard, imageLinks } from "../../../scripts/src/spruce.js";
+	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
 @@@
 
 Welcome to Math 253! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
