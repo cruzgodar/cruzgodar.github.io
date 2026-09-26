@@ -1,9 +1,8 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { spawnSync } from "child_process";
 import { watch } from "fs";
-
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
+import { root } from "../file-io.js";
 
 let debounceTimer = null;
 let building = false;
@@ -20,7 +19,7 @@ function runBuild()
 
 	building = true;
 	console.clear();
-	spawnSync("bun", [root + "build/bin/cgbuild.js"], { stdio: "inherit" });
+	spawnSync("node", [root + "build/bin/cgbuild.js"], { stdio: "inherit" });
 	building = false;
 
 	// After a build finishes, the OS may still deliver fs.watch events

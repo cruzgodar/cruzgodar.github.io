@@ -1,11 +1,9 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { spawn, spawnSync } from "child_process";
 import { statSync } from "fs";
-import { getModifiedDate, read } from "../file-io.js";
-import { galleryFullResTag, galleryImageData } from "/gallery/scripts/imageData.js";
-
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
+import { getModifiedDate, read, root } from "../file-io.js";
+import { galleryFullResTag, galleryImageData } from "../../gallery/scripts/imageData.js";
 
 const repo = "cruzgodar/cruzgodar.github.io";
 

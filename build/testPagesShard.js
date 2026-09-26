@@ -1,6 +1,7 @@
 "use strict";
 
 import { launch } from "puppeteer";
+import { parentPort } from "worker_threads";
 
 const ignorePatterns = [
 	// eslint-disable-next-line max-len
@@ -11,12 +12,12 @@ const ignorePatterns = [
 	/Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true\. See: https:\/\/html.spec.whatwg.org\/multipage\/canvas.html#concept-canvas-will-read-frequently/
 ];
 
-onmessage = async function(e)
+parentPort.on("message", async (data) =>
 {
-	const [ip, port, fileChunk] = e.data;
+	const [ip, port, fileChunk] = data;
 	await testFiles(ip, port, fileChunk);
-	postMessage(["done"]);
-};
+	parentPort.postMessage(["done"]);
+});
 
 async function testFiles(ip, port, files)
 {
@@ -49,7 +50,7 @@ async function testFiles(ip, port, files)
 		currentFile = file;
 
 		
-		postMessage(["progress"]);
+		parentPort.postMessage(["progress"]);
 		await page.goto(`http://${ip}:${port}/${file}`);
 		await new Promise(resolve => setTimeout(resolve, 4000));
 	}

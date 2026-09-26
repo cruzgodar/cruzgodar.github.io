@@ -1,6 +1,6 @@
 import { compile } from "spruce";
 import { write } from "./file-io.js";
-import { sitemap } from "/scripts/src/sitemap.js";
+import { sitemap } from "../scripts/src/sitemap.js";
 
 function getIndexHTML(pageTitle, firstParagraphText, parentFolder)
 {

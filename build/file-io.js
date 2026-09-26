@@ -1,6 +1,9 @@
 import fs from "fs";
+import { fileURLToPath } from "url";
 
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
+// Resolved from this file rather than from process.argv[1], which is the
+// /usr/local/bin symlink when the scripts are run as commands.
+export const root = fileURLToPath(new URL("../", import.meta.url));
 
 export async function read(filepath)
 {

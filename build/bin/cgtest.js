@@ -1,10 +1,10 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
+import { spawnSync } from "child_process";
+import { networkInterfaces } from "os";
 import { Worker } from "worker_threads";
-import { getModifiedDate, read } from "../file-io.js";
-import { galleryFullResUrl, galleryImageData } from "/gallery/scripts/imageData.js";
-
-const { spawnSync } = require("child_process");
+import { getModifiedDate, read, root } from "../file-io.js";
+import { galleryFullResUrl, galleryImageData } from "../../gallery/scripts/imageData.js";
 
 const excludeFiles =
 [
@@ -15,8 +15,6 @@ const excludeFiles =
 	"teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js"
 ];
 
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
-
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
@@ -25,7 +23,6 @@ const options =
 
 
 // Get the IP address for Puppeteer.
-const { networkInterfaces } = require("os");
 const nets = networkInterfaces();
 const results = Object.create(null);
 

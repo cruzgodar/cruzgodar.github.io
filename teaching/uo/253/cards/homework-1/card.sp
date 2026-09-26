@@ -1,5 +1,5 @@
 @@@
-	import { controls, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../scripts/src/spruce.js";
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../scripts/src/spruce.js";
 
 	function document(body)
 	{
@@ -11,11 +11,7 @@
 
 *Due Wednesday of Week 2 at the start of class*
 
-Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers. 
-
-@controls({
-	downloadHomework1Tex: "button"
-})
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
 
 @gap
 

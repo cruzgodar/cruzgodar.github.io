@@ -15,7 +15,7 @@
 // history rather than in the working tree:
 //
 //     git show <rev>:$PAGE/scripts/data.js > /tmp/data.mjs
-//     bun build/convert-svd-data.js /tmp/data.mjs
+//     node build/convert-svd-data.js /tmp/data.mjs
 //
 // where $PAGE is the page directory named below.
 

@@ -13,10 +13,6 @@
 
 Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
 
-@controls({
-	downloadHomework2Tex: "button"
-})
-
 @gap
 
 In problems @next(6), write the first four terms of the series and the first four partial sums.

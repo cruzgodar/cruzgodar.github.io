@@ -1,5 +1,5 @@
 import { parseUrl, splitCommandLine } from "../../build-spruce.js";
-import { sitemap } from "/scripts/src/sitemap.js";
+import { sitemap } from "../../../scripts/src/sitemap.js";
 
 // Options:
 // -c: A card. Pulls its cover from /cards/<id>/cover.webp and opens a card with its id.

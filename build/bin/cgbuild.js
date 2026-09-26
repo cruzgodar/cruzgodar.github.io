@@ -1,13 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 
 import { spawnSync } from "child_process";
 import { existsSync, readdirSync, rmSync } from "fs";
 import { buildSitemap, sitemapPath } from "../build-sitemap.js";
 import buildSpruceFile from "../build-spruce.js";
 import { buildXmlSitemap } from "../build-xml-sitemap.js";
-import { read, write } from "../file-io.js";
-
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
+import { read, root, write } from "../file-io.js";
 
 const excludeFromBuild =
 [
