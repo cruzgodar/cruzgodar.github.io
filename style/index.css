@@ -183,18 +183,23 @@ p, h1, h2
 	font-weight: normal;
 }
 
+:is(ul, ol)
+{
+	padding-left: 16px;
+}
+
 @counter-style paren-alpha
 {
 	system: extends lower-alpha;
 	suffix: ") ";
 }
 
-ol.paren-alpha
+:is(.card, .notes-ex, .notes-exc) ol
 {
 	list-style-type: paren-alpha;
 }
 
-ol.paren-alpha > li::marker
+:is(.card, .notes-ex, .notes-exc) ol > li::marker
 {
 	font-variant-numeric: normal;
 }

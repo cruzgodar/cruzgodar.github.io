@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Up to this point in your experience with math, most topics and problems have probably revolved around functions. You can evaluate a function at a number, or solve for when a function is zero, or create a function to model a certain quantity. The more we use functions, though, the more certain limitations become clear. For example, if we have a function $s(t)$ that measures your position after $t$ seconds, then how do we determine your velocity $v(t)$? Knowing exactly where you are at all times $t$, we really ought to be able to tell how fast you're moving at any given time, but we don't have the tools to do that quite yet.
@@ -122,8 +126,6 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	
 	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$ with a table.
 
-	@solution[[
-	
 	We can't plug in $x = 0$, since $\sin(0) = 0$ and so we'd get $\frac{0}{0}$, but that's okay --- the limit doesn't have anything to do with what the function actually does at $0$, only very close to it.
 	
 	Let's plug in some values for $x$ that get closer and closer to zero. We need to do this from both above and below, but let's just start with above. That means positive numbers getting smaller and smaller --- let's try $.1$, $.01$, and $.001$.
@@ -153,7 +155,6 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	@desmos{limitExample}
 	
 	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn't make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite --- and often because of --- the function being undefined.
-	
 ]]
 
 @exc[calculating a limit with a table][[
@@ -176,12 +177,9 @@ In this next example, let's start with the graph.
 	
 	@desmos{limitExample2}
 
-	@solution[[
-	
 	At $x = 1$, the hole and filled-in dot indicate that $g(1) = 2$. However, $\lim_{x \to 1} g(x)$ is determined only by what the points on the graph right next to $x = 1$ are doing. From both sides, the $y$-values get closer and closer to $y = 0$, so the limit is $\lim_{x \to 1} g(x) = 0$. In this sense, the limit is what you would expect a function's value to be, without actually knowing what that value is. Knowing everything about $g(x)$ except what $g(1)$ is, our best guess is $g(1) = 0$, since that's what the values near $x = 1$ indicate.
 	
 	As for $\lim_{x \to -1} g(x)$, the exact same process tells us that $\lim_{x \to -1} g(x) = 0$. It's also true that $g(-1) = 0$, but that doesn't affect our reasoning at all --- the only thing that matters is that values around $x = -1$ have $y$-values close to $y = 0$.
-	
 ]]
 
 
@@ -206,8 +204,6 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	
 	Find $$\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$$.
 
-	@solution[[
-	
 	Without a graph to go on, let's plug in a handful of values.
 	
 	$$f(.1) \approx -.544021$$
@@ -233,7 +229,6 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	@desmos{dneLimit}
 	
 	As $x \to 0$ even just from the right, the $y$-values never settle down to anything --- in fact, they just get more and more chaotic. Using the previous example's metaphor, there isn't any $y$-value that it would make sense to expect the graph to have at $x = 0$.
-	
 ]]
 
 @exc[another limit that doesn't exist][[
@@ -241,27 +236,26 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	Find $$\lim_{x \to 2} \frac{|x - 2|}{x - 2}$$.
 
 	@solution[[
-	
-	As usual, let's plug in some values. Calling the function $f(x)$, we have
-	
-	$$f(2.1) = \frac{|.1|}{.1} = 1$$
-	
-	$$f(2.01) = \frac{|.01|}{.01} = 1$$
-	
-	$$f(2.001) = \frac{|.001|}{.001} = 1$$
-	
-	So approaching $x = 2$ from above tells us that the limit is probably $1$. Let's try approaching from below.
-	
-	$$f(1.9) = \frac{|-.1|}{-.1} = -1$$
-	
-	$$f(1.99) = \frac{|-.01|}{-.01} = -1$$
-	
-	$$f(1.999) = \frac{|-.001|}{-.001} = -1$$
-	
-	These values tell a different story --- that the limit really ought to be $-1$. So what do we do? The limit can't be two values at once, so we just say it doesn't exist. But look at this graph --- it's so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
-	
-	@desmos{dneLimit2}
-	
+		As usual, let's plug in some values. Calling the function $f(x)$, we have
+		
+		$$f(2.1) = \frac{|.1|}{.1} = 1$$
+		
+		$$f(2.01) = \frac{|.01|}{.01} = 1$$
+		
+		$$f(2.001) = \frac{|.001|}{.001} = 1$$
+		
+		So approaching $x = 2$ from above tells us that the limit is probably $1$. Let's try approaching from below.
+		
+		$$f(1.9) = \frac{|-.1|}{-.1} = -1$$
+		
+		$$f(1.99) = \frac{|-.01|}{-.01} = -1$$
+		
+		$$f(1.999) = \frac{|-.001|}{-.001} = -1$$
+		
+		These values tell a different story --- that the limit really ought to be $-1$. So what do we do? The limit can't be two values at once, so we just say it doesn't exist. But look at this graph --- it's so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
+		
+		@desmos{dneLimit2}
+	]]
 ]]
 
 
@@ -327,8 +321,6 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 	Find $$\lim_{x \to 0} f(x)$$, where $$f(x) = \frac{1}{x^2}$$.
 
-	@solution[[
-	
 	Plugging in values, we have
 	
 	$$f(.1) = \frac{1}{.1^2} = 100$$
@@ -348,7 +340,6 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	Similarly, $\lim_{x \to 0^-} f(x) = \infty$. Since the limits from above and below agree, we have that $\lim_{x \to 0} f(x) = \infty$. Graphically, limits equalling $\pm \infty$ correspond to vertical asymptotes in the graph.
 	
 	@desmos{infiniteLimit}
-	
 ]]
 
 @exc[a lot of limits][[

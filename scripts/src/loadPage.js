@@ -350,11 +350,6 @@ export function disableLinks()
 
 function packageSolution(solutionElement, showButton = true)
 {
-	while (solutionElement.nextElementSibling)
-	{
-		solutionElement.appendChild(solutionElement.nextElementSibling);
-	}
-
 	solutionElement.style.position = "absolute";
 	// This prevents canvases in the solutions from thinking
 	// they're onscreen.
@@ -447,11 +442,7 @@ function packageSolution(solutionElement, showButton = true)
 
 function initSolutions()
 {
-	for (const e of $$(".notes-ex .solution"))
-	{
-		e.remove();
-	}
-
+	// Show solutions automatically in debug.
 	if (window.DEBUG)
 	{
 		return;
@@ -462,6 +453,10 @@ function initSolutions()
 	const showSolutionsPages1180 = [
 		"/teaching/yale/1180/notes/calc-1-review",
 		"/teaching/yale/1180/notes/coordinate-systems",
+		"/teaching/yale/1180/notes/dot-and-cross-products",
+		"/teaching/yale/1180/notes/functions-of-multiple-variables",
+		"/teaching/yale/1180/notes/partial-derivatives",
+		"/teaching/yale/1180/notes/multivariable-chain-rule",
 		"/teaching/yale/1180/notes/dot-and-cross-products",
 	];
 

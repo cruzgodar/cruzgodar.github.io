@@ -1,11 +1,15 @@
+@@@
+	import { imageLinks } from "../../../build/spruce.js";
+@@@
+
 These notes cover a half-semester trigonometry course, including function transformations, trigonometric functions, and an intro to vectors. As with all of my notes, please feel free to use these as either a student or teacher, and let me know if there is anything that could be improved!
 
-### image-links
-	transformations
-	unit-circle
-	sine-and-cosine
-	tangent-and-inverses
-	radians-and-equations
-	non-right-triangles-and-identities
-	vectors
-###
+@imageLinks([
+	"transformations",
+	"unit-circle",
+	"sine-and-cosine",
+	"tangent-and-inverses",
+	"radians-and-equations",
+	"non-right-triangles-and-identities",
+	"vectors",
+])

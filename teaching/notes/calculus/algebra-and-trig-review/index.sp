@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons } from "../../../../build/spruce.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -40,13 +40,13 @@ Try sliding the value of $t$ (representing $\theta$) around. Since radians run f
 
 Also present in the graph are $\tan(x)$, $\csc(x)$, $\sec(x)$, and $\cot(x)$, which are defined in the following ways:
 
-1. $\tan(x) = \dfrac{\sin(x)}{\cos(x)}$
+- $\tan(x) = \dfrac{\sin(x)}{\cos(x)}$
 
-2. $\csc(x) = \dfrac{1}{\sin(x)}$
+- $\csc(x) = \dfrac{1}{\sin(x)}$
 
-3. $\sec(x) = \dfrac{1}{\cos(x)}$
+- $\sec(x) = \dfrac{1}{\cos(x)}$
 
-4. $\cot(x) = \dfrac{1}{\tan(x)}$
+- $\cot(x) = \dfrac{1}{\tan(x)}$
 
 Along with sine and cosine, these make up the six main trig functions.
 
