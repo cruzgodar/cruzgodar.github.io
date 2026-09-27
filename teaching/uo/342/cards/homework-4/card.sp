@@ -1,0 +1,52 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 4
+
+*Due Wednesday of Week 5 at the start of class*
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+## Section 4
+
+In problems @next(3), compute $\vec{v} \bullet \vec{w}$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, the distance between $\vec{v}$ and $\vec{w}$, and the angle between them (in radians).
+
+@p[$\vec{v} = [[ 1 ; 2 ]]$ and $\vec{w} = [[ -3 ; 2 ]]$.]
+
+@p[$\vec{v} = [[ -7 ; 2 ; 0 ]]$ and $\vec{w} = [[ -1 ; 1 ; 1 ]]$.]
+
+@p[$\vec{v} = [[ 1 ; 2 ; 4 ; 3 ]]$ and $\vec{w} = [[ 2 ; -1 ; 3 ; -4 ]]$.]
+
+@gap
+
+@p[Let $X = \span \left\{ [[ 1 ; 1 ; 1 ]] \right\}$. Find a basis for $X^\perp$.]
+
+@p[Let $X = \span \left\{ [[ 1 ; 2 ; 1 ; 1 ]], [[ 2 ; 3 ; 0 ; -1 ]] \right\}$. Find a basis for $X^\perp$.]
+
+@p[Let $X$ be a subspace of $#R#^n$. Show that $\dim X + \dim X^\perp = n$ by constructing a linear map whose kernel is exactly $X^\perp$. You may find it useful to recall that a matrix's image has dimension equal to the number of linearly independent rows.]
+
+@gap
+
+In problems @next(3), show that the set of vectors is orthogonal and then normalize them all to produce an orthonormal basis. Then express the given vector $\vec{v}$ in that basis.
+
+@p[$\vec{v_1} = [[ 1 ; 2 ]]$, $\vec{v_2} = [[ -6 ; 3 ]]$, and $\vec{v} = [[ 4 ; 0 ]]$.]
+
+@p[$\vec{v_1} = [[ 2 ; 3 ; 1 ]]$, $\vec{v_2} = [[ -1 ; 2 ; -4 ]]$, $\vec{v_3} = [[ -2 ; 1 ; 1 ]]$, and $\vec{v} = [[ 1 ; 1 ; 2 ]]$.]
+
+@p[$\vec{v_1} = [[ 1 ; 2 ; 0 ; -1 ]]$, $\vec{v_2} = [[ 1 ; 2 ; -6 ; 5 ]]$, $\vec{v_3} = [[ -2 ; 7 ; 12 ; 12 ]]$, $\vec{v_4} = [[ 5 ; -2 ; 1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 1 ; 2 ; 1 ]]$.]
+
+@gap
+
+@p[Let $A$ and $B$ be $n \times n$ unitary matrices. Is $AB$ always unitary? If so, explain why, and if not, give a brief counterexample.]
+
+@p[Let $A$ be a matrix whose columns are orthogonal (but not necessarily orthonormal). Does $A$ still preserve lengths? If so, explain why, and if not, give a brief counterexample.]
+
+@p[Continuing with the idea from the previous problem, let $A$ be a matrix whose columns are orthogonal, but not necessarily orthonormal. Is $A$ still necessarily invertible? If so, explain why, and if not, give a brief counterexample.]

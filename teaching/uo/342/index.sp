@@ -1,63 +1,62 @@
+@@@
+	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
+@@@
+
 Welcome to Math 342! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
 
 
 
 ## General Resources
 
-### image-links
-	
-	syllabus -c "Syllabus"
-	
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	/teaching/notes/linear-algebra/chapters-1-and-2-review
-	/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues
-	/teaching/notes/linear-algebra/diagonalization
-	/teaching/notes/linear-algebra/intro-to-des
-	/teaching/notes/linear-algebra/dot-product
-	/teaching/notes/linear-algebra/least-squares
-	/teaching/notes/linear-algebra/inner-product-spaces
-	/teaching/notes/linear-algebra/spectral-theorems
-	/teaching/notes/linear-algebra/jordan-normal-form
-	/teaching/notes/linear-algebra/singular-value-decompositions
-###
+@imageLinks([
+	"/teaching/notes/linear-algebra/chapters-1-and-2-review",
+	"/teaching/notes/linear-algebra/eigenvectors-and-eigenvalues",
+	"/teaching/notes/linear-algebra/diagonalization",
+	"/teaching/notes/linear-algebra/intro-to-des",
+	"/teaching/notes/linear-algebra/dot-product",
+	"/teaching/notes/linear-algebra/least-squares",
+	"/teaching/notes/linear-algebra/inner-product-spaces",
+	"/teaching/notes/linear-algebra/spectral-theorems",
+	"/teaching/notes/linear-algebra/jordan-normal-form",
+	"/teaching/notes/linear-algebra/singular-value-decompositions",
+])
 
 
 
 ## Homework
 
-### image-links
-	
-	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
-	
-###
+@imageLinks([
+	{ url: "homework-1", forCard: true, name: "Homework 1" },
+	{ url: "homework-2", forCard: true, name: "Homework 2" },
+	{ url: "homework-3", forCard: true, name: "Homework 3" },
+	{ url: "homework-4", forCard: true, name: "Homework 4" },
+	{ url: "homework-5", forCard: true, name: "Homework 5" },
+	{ url: "homework-6", forCard: true, name: "Homework 6" },
+	{ url: "homework-7", forCard: true, name: "Homework 7" },
+	{ url: "homework-8", forCard: true, name: "Homework 8" },
+])
 
-### card homework-1 -e
-### card homework-2 -e
-### card homework-3 -e
-### card homework-4 -e
-### card homework-5 -e
-### card homework-6 -e
-### card homework-7 -e
-### card homework-8 -e
+@externalCard{homework-8}
+@externalCard{homework-7}
+@externalCard{homework-6}
+@externalCard{homework-5}
+@externalCard{homework-4}
+@externalCard{homework-3}
+@externalCard{homework-2}
+@externalCard{homework-1}
 
 
 
-### card syllabus "Math 342: Elementary Linear Algebra"
-	
-	Instructor: Cruz Godar ([cgodar@uoregon.edu](mailto:cgodar@uoregon.edu))
+@card{syllabus}[Math 342: Elementary Linear Algebra][[
+	Instructor: Cruz Godar ([cgodar@@uoregon.edu](mailto:cgodar@@uoregon.edu))
 
 	Class meetings: 9--9:50 MTWF in Peterson 107
 	
@@ -77,12 +76,12 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your scores on a number of different assignments, weighted as follows:
 	
-	> - In-class participation: 5%
-	> - Reading quizzes: 5%
-	> - In-class quizzes: 10%
-	> - Homework: 15%
-	> - Midterms: 20% each (40% total)
-	> - Final: 25%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- In-class quizzes: 10%
+	- Homework: 15%
+	- Midterms: 20% each (40% total)
+	- Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -141,21 +140,14 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> - Find and apply change-of-basis matrices
-	
-	> - Find eigenvectors, eigenvalues, and eigenspaces of matrices
-	
-	> - Diagonalize matrices and use the process to solve systems of equations
-	
-	> - Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
-	
-	> - Understand and generate orthonormal bases for vector spaces
-	
-	> - Apply and understand the Real Spectral Theorem
-
-	> - Apply and understand the singular value decomposition of a matrix
-
-	> - Apply and understand the Complex Spectral Theorem (if time permits)
+	- Find and apply change-of-basis matrices
+	- Find eigenvectors, eigenvalues, and eigenspaces of matrices
+	- Diagonalize matrices and use the process to solve systems of equations
+	- Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
+	- Understand and generate orthonormal bases for vector spaces
+	- Apply and understand the Real Spectral Theore
+	- Apply and understand the singular value decomposition of a matri
+	- Apply and understand the Complex Spectral Theorem (if time permits)
 	
 	
 	
@@ -163,6 +155,5 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	Like most graduate students, I am a [designated reporter](https://titleix.uoregon.edu/employee-reporting-obligations), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
-	
-###
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.	
+]]

@@ -99,11 +99,11 @@ In problems @next(5), invert the matrix.
 
 @p[Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:]
 
-> a) A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
++ A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
 
-> b) A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
++ A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
 
-> c) A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
++ A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
 
 @gap
 

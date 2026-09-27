@@ -1,0 +1,44 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 2
+
+*Due Wednesday of Week 3 at the start of class*
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+## Section 1
+
+@p[Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time?]
+
+
+
+## Section 2
+
+In problems @next(6), find the eigenvalues and eigenvectors of $A$ and the algebraic and geometric multiplicity of the eigenvalues. Then diagonalize $A$ if possible, using block diagonalization with at most $2 \times 2$ blocks if necessary.
+
+@p[$A = [[ -8, 10 ; -5, 7 ]]$.]
+
+@p[$A = [[ -1, -1 ; 10, 5 ]]$.]
+
+@p[$A = [[ -4, -6, 12 ; 9, 11, -18 ; 3, 3, -4 ]]$.]
+
+@p[$A = [[ -10, 4, -4 ; -13, 4, -10 ; 1, 0, 2 ]]$]
+
+@p[$A = [[ 11, -6, -4, -8 ; -4, 1, -12, -4 ; -12, 6, 3, 8 ; 20, -10, 0, -11 ]]$.]
+
+@p[$A = [[ 10, 6, -7, 12 ; -4, -3, 4, -12 ; 7, 6, -4, 12 ; -1, 0, 1, 3 ]]$.]
+
+@gap
+
+@p[Let $A = BDB^{-1}$ be a diagonalized $n \times n$ matrix, so that the columns of $B$ are eigenvectors of $A$. Use this factorization to describe the eigenvectors of $A^T$ (remember that transposing a product reverses the order of the factors).]
+
+@p[Give an example of an invertible $3 \times 3$ matrix that is not diagonalizable, and an example of a diagonalizable $3 \times 3$ matrix that is not invertible.]
