@@ -1,76 +1,74 @@
+@@@
+	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
+@@@
+
 Welcome to Math 256! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
 
 
 
 ## General Resources
 
-### image-links
-	
-	syllabus -c "Syllabus"
-	extra/practice-midterm-1/practice-midterm-1.pdf "Practice Midterm 1"
-	extra/practice-midterm-1-solutions/practice-midterm-1.pdf "Practice Midterm 1 Solutions"
-	extra/practice-midterm-2/practice-midterm-2.pdf "Practice Midterm 2"
-	extra/practice-midterm-2-solutions/practice-midterm-2.pdf "Practice Midterm 2 Solutions"
-	extra/practice-final/practice-final.pdf "Practice Final Exam"
-	
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+	{ url: "extra/practice-midterm-1/practice-midterm-1.pdf", name: "Practice Midterm 1" },
+	{ url: "extra/practice-midterm-1-solutions/practice-midterm-1.pdf", name: "Practice Midterm 1 Solutions" },
+	{ url: "extra/practice-midterm-2/practice-midterm-2.pdf", name: "Practice Midterm 2" },
+	{ url: "extra/practice-midterm-2-solutions/practice-midterm-2.pdf", name: "Practice Midterm 2 Solutions" },
+	{ url: "extra/practice-final/practice-final.pdf", name: "Practice Final Exam" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	/teaching/notes/differential-equations/calc-review
-	/teaching/notes/differential-equations/intro-to-des
-	/teaching/notes/differential-equations/if-and-sep
-	/teaching/notes/differential-equations/existence-and-exactness
-	/teaching/notes/differential-equations/intro-to-second-order-linear
-	/teaching/notes/differential-equations/complex-and-repeated-roots
-	/teaching/notes/differential-equations/nonhomogeneous-second-order-des
-	/teaching/notes/differential-equations/higher-order-des
-	/teaching/notes/differential-equations/intro-to-linear-algebra
-	/teaching/notes/differential-equations/systems-and-inverses
-	/teaching/notes/differential-equations/determinants-and-eigenthings
-	/teaching/notes/differential-equations/intro-to-systems
-	/teaching/notes/differential-equations/complex-and-repeated-eigenvectors
-	/teaching/notes/differential-equations/phase-portraits-and-stability
-###
+@imageLinks([
+	"/teaching/notes/differential-equations/calc-review",
+	"/teaching/notes/differential-equations/intro-to-des",
+	"/teaching/notes/differential-equations/if-and-sep",
+	"/teaching/notes/differential-equations/existence-and-exactness",
+	"/teaching/notes/differential-equations/intro-to-second-order-linear",
+	"/teaching/notes/differential-equations/complex-and-repeated-roots",
+	"/teaching/notes/differential-equations/nonhomogeneous-second-order-des",
+	"/teaching/notes/differential-equations/higher-order-des",
+	"/teaching/notes/differential-equations/intro-to-linear-algebra",
+	"/teaching/notes/differential-equations/systems-and-inverses",
+	"/teaching/notes/differential-equations/determinants-and-eigenthings",
+	"/teaching/notes/differential-equations/intro-to-systems",
+	"/teaching/notes/differential-equations/complex-and-repeated-eigenvectors",
+	"/teaching/notes/differential-equations/phase-portraits-and-stability",
+])
 
 
 
 ## Homework
 
-### image-links
-	
-	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
-	homework-9 -c "Homework 9"
-
-###
+@imageLinks([
+	{ url: "homework-1", forCard: true, name: "Homework 1" },
+	{ url: "homework-2", forCard: true, name: "Homework 2" },
+	{ url: "homework-3", forCard: true, name: "Homework 3" },
+	{ url: "homework-4", forCard: true, name: "Homework 4" },
+	{ url: "homework-5", forCard: true, name: "Homework 5" },
+	{ url: "homework-6", forCard: true, name: "Homework 6" },
+	{ url: "homework-7", forCard: true, name: "Homework 7" },
+	{ url: "homework-8", forCard: true, name: "Homework 8" },
+	{ url: "homework-9", forCard: true, name: "Homework 9" },
+])
 
 
-
-### card homework-1 -e
-### card homework-2 -e
-### card homework-3 -e
-### card homework-4 -e
-### card homework-5 -e
-### card homework-6 -e
-### card homework-7 -e
-### card homework-8 -e
-### card homework-9 -e
+@externalCard{homework-9}
+@externalCard{homework-8}
+@externalCard{homework-7}
+@externalCard{homework-6}
+@externalCard{homework-5}
+@externalCard{homework-4}
+@externalCard{homework-3}
+@externalCard{homework-2}
+@externalCard{homework-1}
 
 
 
-### card syllabus "Math 256: Intro to Ordinary Differential Equations"
-	
-	Instructor: Cruz Godar ([cgodar@uoregon.edu](mailto:cgodar@uoregon.edu))
+@card{syllabus}[Math 256: Intro to Ordinary Differential Equations][[
+	Instructor: Cruz Godar ([cgodar@@uoregon.edu](mailto:cgodar@@uoregon.edu))
 
 	Class meetings: 11--11:50 MTWF in Peterson 105
 	
@@ -90,12 +88,12 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	> In-class participation: 5%
-	> Reading quizzes: 5%
-	> In-class quizzes: 10%
-	> Homework: 20%
-	> Midterms: 20% each (40% total)
-	> Final: 20%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- In-class quizzes: 10%
+	- Homework: 20%
+	- Midterms: 20% each (40% total)
+	- Final: 20%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -151,17 +149,17 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> - Recognize ODEs
+	- Recognize ODEs
 	
-	> - Solve many types of them
+	- Solve many types of them
 	
-	> - Identify when they can and can't be solved uniquely
+	- Identify when they can and can't be solved uniquely
 	
-	> - Use linear algebra to solve systems of first-order ODEs
+	- Use linear algebra to solve systems of first-order ODEs
 	
-	> - Analyze the stability and limiting behavior of solutions
+	- Analyze the stability and limiting behavior of solutions
 	
-	> - Use ODEs to model and predict the behavior of physical systems
+	- Use ODEs to model and predict the behavior of physical systems
 	
 	
 	
@@ -170,5 +168,4 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	Like most graduate students, I am a [designated reporter](https://investigations.uoregon.edu/employee-responsibilities), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
 	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
-	
-###
+]]

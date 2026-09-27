@@ -11,7 +11,7 @@
 
 	- - -
 
-	In problems 5#, do the following:
+	In problems @next(5), do the following:
 
 	> a) Find the eigenvalues of $A$.
 
@@ -35,7 +35,7 @@
 
 	- - -
 
-	In problems 3#, do the following:
+	In problems @next(3), do the following:
 
 	> a) Find a singular value decomposition $A = U \Sigma V^T$.
 
@@ -51,7 +51,7 @@
 
 	- - -
 
-	In problems 4#, do the following:
+	In problems @next(4), do the following:
 
 	> a) Find an orthonormal basis for the given inner product space $X$, and then extend it to an orthonormal basis for $V$.
 

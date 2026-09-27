@@ -23,7 +23,7 @@
 
 	## Course Review Exercises (also required)
 
-	In problems 5#, do the following:
+	In problems @next(5), do the following:
 
 	> a) Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
 
@@ -88,7 +88,7 @@
 
 	- - -
 
-	In problems 5#, do the following:
+	In problems @next(5), do the following:
 	
 	> a) The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
 	

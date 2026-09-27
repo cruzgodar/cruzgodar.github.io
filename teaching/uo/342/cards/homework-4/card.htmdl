@@ -13,7 +13,7 @@
 
 	## Section 4
 
-	In problems 3#, compute $\vec{v} \bullet \vec{w}$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, the distance between $\vec{v}$ and $\vec{w}$, and the angle between them (in radians).
+	In problems @next(3), compute $\vec{v} \bullet \vec{w}$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, the distance between $\vec{v}$ and $\vec{w}$, and the angle between them (in radians).
 	
 	#. $\vec{v} = [[ 1 ; 2 ]]$ and $\vec{w} = [[ -3 ; 2 ]]$.
 	
@@ -31,7 +31,7 @@
 
 	- - -
 
-	In problems 3#, show that the set of vectors is orthogonal and then normalize them all to produce an orthonormal basis. Then express the given vector $\vec{v}$ in that basis.
+	In problems @next(3), show that the set of vectors is orthogonal and then normalize them all to produce an orthonormal basis. Then express the given vector $\vec{v}$ in that basis.
 
 	#. $\vec{v_1} = [[ 1 ; 2 ]]$, $\vec{v_2} = [[ -6 ; 3 ]]$, and $\vec{v} = [[ 4 ; 0 ]]$.
 

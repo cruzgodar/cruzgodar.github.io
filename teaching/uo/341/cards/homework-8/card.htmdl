@@ -11,7 +11,7 @@
 
 	## Section 9
 	
-	In problems 3#, find the change of basis matrix $B$ that converts from the basis $\mathcal{B}$for the vector space $V$ to the standard basis, and use it to find $[\vec{v}]_\mathcal{B}$ for the given vector $\vec{v}$.
+	In problems @next(3), find the change of basis matrix $B$ that converts from the basis $\mathcal{B}$for the vector space $V$ to the standard basis, and use it to find $[\vec{v}]_\mathcal{B}$ for the given vector $\vec{v}$.
 
 	#. $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, $\mathcal{B} = \{1, x + x^2 + x^3, x^3 - x, x^3 + 2x^2\}$, and $\vec{v} = 2 + 7x - x^2$.
 
@@ -33,7 +33,7 @@
 
 	- - -
 
-	In problems 3#, find bases for $V$, $\ker T$ and $\image T$, and verify that the Fundamental Theorem of Linear Algebra correctly relates the three.
+	In problems @next(3), find bases for $V$, $\ker T$ and $\image T$, and verify that the Fundamental Theorem of Linear Algebra correctly relates the three.
 
 	#. $T : V \to #R#$, where $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, is defined by $T(a + bx + cx^2 + dx^3) = d - c$.
 

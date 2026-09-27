@@ -11,7 +11,7 @@
 
 	- - -
 
-	In problems 3#, write the system in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and vector $\vec{b}$ of constants and a vector $\vec{x}$ of variables.
+	In problems @next(3), write the system in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and vector $\vec{b}$ of constants and a vector $\vec{x}$ of variables.
 
 	#.
 
@@ -43,7 +43,7 @@
 
 	- - -
 	
-	In problems 5#, evaluate the product.
+	In problems @next(5), evaluate the product.
 
 	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
 	
@@ -99,7 +99,7 @@
 
 	- - -
 
-	In problems 3#, we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
+	In problems @next(3), we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
 
 	#. With real numbers $x$ and $y$, it must be the case that $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
 

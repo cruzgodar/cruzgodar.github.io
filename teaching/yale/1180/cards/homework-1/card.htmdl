@@ -6,7 +6,7 @@
 
 	- - -
 
-	Questions 5# concern the following graph of the function $f(x)$.
+	Questions @next(5) concern the following graph of the function $f(x)$.
 	
 	### desmos limits
 
@@ -39,7 +39,7 @@
 
 	- - -
 
-	In questions 2#, find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
+	In questions @next(2), find all of the critical points of the given function on the given interval, and classify them using the second derivative test. Then find the absolute maximum and minimum of the function.
 
 	#. $f(x) = 2x^3 - 3x^2 - 12x + 1$ on $[-2, 3]$.
 
@@ -73,7 +73,7 @@
 
 	- - -
 
-	In questions 2#, find the derivative of the given function.
+	In questions @next(2), find the derivative of the given function.
 
 	#. $$p(t) = \frac{\tan(t)}{t^2 + 1}$$.
 
@@ -97,7 +97,7 @@
 
 	- - -
 
-	Questions 4# concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the **demand function**.
+	Questions @next(4) concern the following situation: a store finds that when it sets the price of a product at $p$ dollars, it sells $D(p) = 400e^{-p/10}$ units per week. The function $D$ is called the **demand function**.
 
 	#. Find $D'(p)$ and the units in which it is measured. Is it positive or negative in general? Why does that make sense in context?
 

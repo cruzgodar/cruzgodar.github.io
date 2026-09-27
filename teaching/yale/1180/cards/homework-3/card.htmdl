@@ -14,7 +14,7 @@
 
 	- - -
 
-	In problems 3#, do the following.
+	In problems @next(3), do the following.
 
 		> a) Compute $f_x(x, y)$ and $f_y(x, y)$.
 
@@ -38,7 +38,7 @@
 
 	- - -
 
-	Problems 4# concern the following situation. A **production function** $Y(K, L)$ gives the value of everything a company produces in a year when it uses $K$ units of **capital** (i.e. equipment, buildings, etc) and $L$ units of labor. The partial derivatives $Y_K$ and $Y_L$ are called the **marginal products** of capital and labor. Suppose a factory's production function is
+	Problems @next(4) concern the following situation. A **production function** $Y(K, L)$ gives the value of everything a company produces in a year when it uses $K$ units of **capital** (i.e. equipment, buildings, etc) and $L$ units of labor. The partial derivatives $Y_K$ and $Y_L$ are called the **marginal products** of capital and labor. Suppose a factory's production function is
 
 	$$
 		Y(K, L) = 4K^{1/4}L^{3/4},

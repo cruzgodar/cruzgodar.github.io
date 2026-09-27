@@ -11,7 +11,7 @@
 
 	## Section 8
 	
-	In problems 6#, find **two different** bases $\mathcal{B}$ and $\mathcal{C}$ for the vector space $V$ and use them to find $\dim V$. Then with the given vector $\vec{v}$, find $[\vec{v}]_\mathcal{C}$.
+	In problems @next(6), find **two different** bases $\mathcal{B}$ and $\mathcal{C}$ for the vector space $V$ and use them to find $\dim V$. Then with the given vector $\vec{v}$, find $[\vec{v}]_\mathcal{C}$.
 
 	#. $V = #R#^3$, and $\vec{v} = [[ 1 ; 2 ; 3 ]]$.
 	
@@ -27,7 +27,7 @@
 
 	- - -
 
-	In problems 3#, find a matrix for the linear transformation $T : V \to W$ by choosing bases $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$. Then use the matrix to evaluate $T(\vec{v})$ for the given vector $v$.
+	In problems @next(3), find a matrix for the linear transformation $T : V \to W$ by choosing bases $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$. Then use the matrix to evaluate $T(\vec{v})$ for the given vector $v$.
 
 	#. $V = #R#^3$ and $W = #R#$, $T: V \to W$ is a transformation for which
 

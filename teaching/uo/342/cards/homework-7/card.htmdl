@@ -23,7 +23,7 @@
 
 	## Section 8
 
-	In problems 3#, write the matrix as $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+	In problems @next(3), write the matrix as $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
 
 	#. $A = [[ 0, -5, -2 ; 2, 6, 1 ; -2, -3, 2 ]]$.
 

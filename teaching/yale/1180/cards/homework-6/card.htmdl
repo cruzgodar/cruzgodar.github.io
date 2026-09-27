@@ -11,7 +11,7 @@
 
 	- - -
 
-	In problems 6#, find the boundary of the given set and state whether it is closed, bounded, and/or compact.
+	In problems @next(6), find the boundary of the given set and state whether it is closed, bounded, and/or compact.
 
 	#. $A = \left\{ (x, y) \in #R#^2 \mid x \leq y \right\}$.
 
@@ -27,7 +27,7 @@
 
 	- - -
 
-	In problems 3#, give an example of a set $A$ in $#R#^2$ with the following properties or briefly explain why it is impossible.
+	In problems @next(3), give an example of a set $A$ in $#R#^2$ with the following properties or briefly explain why it is impossible.
 
 	#. $A$ is compact and contains infinitely many points.
 
@@ -37,7 +37,7 @@
 
 	- - -
 
-	In problems 4#, find the global minimum and maximum of the function on the given domain.
+	In problems @next(4), find the global minimum and maximum of the function on the given domain.
 
 	#. $f(x, y) = x^2 + y^2 - 4x - 6y$ on $\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 5 \text{ and } 0 \leq y \leq 7 \right\}$.
 

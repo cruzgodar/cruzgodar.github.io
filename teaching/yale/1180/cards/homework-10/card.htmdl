@@ -11,7 +11,7 @@
 
 	- - -
 	
-	In problems 6#, determine if the linear transformation $T$ is one-to-one, if it is onto, and if it is invertible. If it is invertible, find the inverse transformation.
+	In problems @next(6), determine if the linear transformation $T$ is one-to-one, if it is onto, and if it is invertible. If it is invertible, find the inverse transformation.
 
 	#. $T: #R#^2 \to #R#^2$ defined by $T\left([[ x ; y ]]\right) = [[ 2x + y ; x + 2y]]$.
 
@@ -54,7 +54,7 @@
 
 	- - -
 
-	In problems 5#, compute the determinant of the given matrix.
+	In problems @next(5), compute the determinant of the given matrix.
 
 	#. $$A = [[ 2, 3 ; -3, 1 ]]$$.
 

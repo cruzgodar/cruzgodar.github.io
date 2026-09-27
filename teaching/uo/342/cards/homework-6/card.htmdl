@@ -13,7 +13,7 @@
 
 	## Section 5
 
-	In problems 4#, find the least-squares solution $\vec{x}'$ to the matrix equation $A\vec{x} = \vec{b}$ and the distance between $A\vec{x}'$ and $\vec{b}$. Also determine if that least-squares solution is unique.
+	In problems @next(4), find the least-squares solution $\vec{x}'$ to the matrix equation $A\vec{x} = \vec{b}$ and the distance between $A\vec{x}'$ and $\vec{b}$. Also determine if that least-squares solution is unique.
 
 	#. $[[ 1, 1 ; 2, 3 ; 0, 2 ]]\vec{x} = [[ 1 ; 0 ; 2 ]]$.
 
@@ -31,7 +31,7 @@
 
 	## Section 6
 
-	In problems 3#, compute $\left< \vec{v}, \vec{w} \right>$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, and the angle between $\vec{v}$ and $\vec{w}$ for the given inner product $V$.
+	In problems @next(3), compute $\left< \vec{v}, \vec{w} \right>$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, and the angle between $\vec{v}$ and $\vec{w}$ for the given inner product $V$.
 
 	#. $\vec{v} = 1 + 2x$ and $\vec{w} = 2x + x^2 - x^3$ for $V = \span\left\{ 1, x, x^2, x^3 \right\}$ with the inner product
 

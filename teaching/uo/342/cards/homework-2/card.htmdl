@@ -19,7 +19,7 @@
 
 	## Section 2
 
-	In problems 6#, find the eigenvalues and eigenvectors of $A$ and the algebraic and geometric multiplicity of the eigenvalues. Then diagonalize $A$ if possible, using block diagonalization with at most $2 \times 2$ blocks if necessary.
+	In problems @next(6), find the eigenvalues and eigenvectors of $A$ and the algebraic and geometric multiplicity of the eigenvalues. Then diagonalize $A$ if possible, using block diagonalization with at most $2 \times 2$ blocks if necessary.
 
 	#. $A = [[ -8, 10 ; -5, 7 ]]$.
 

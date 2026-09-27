@@ -15,7 +15,7 @@
 
 	At this point, please feel free to do row reduction with technology --- note that you should still be doing the setup and all the rest of the problem on your own.
 
-	In problems 3#, determine if the vectors are linearly dependent or independent. If they are dependent, find a nontrivial linear combination (meaning not all the coefficients are zero) equal to $\vec{0}$.
+	In problems @next(3), determine if the vectors are linearly dependent or independent. If they are dependent, find a nontrivial linear combination (meaning not all the coefficients are zero) equal to $\vec{0}$.
 
 	#. $\vec{v_1} = [[ 1 ; 2 ; 3 ]]$, $\vec{v_2} = [[ 1 ; 0 ; 2 ]]$, $\vec{v_3} = [[ 1 ; 4 ; 4 ]]$.
 
@@ -27,7 +27,7 @@
 
 	- - -
 
-	In problems 2#, express $\vec{v}$ as a linear combination of the $\vec{u}_i$ or show it's impossible.
+	In problems @next(2), express $\vec{v}$ as a linear combination of the $\vec{u}_i$ or show it's impossible.
 
 	#. $\vec{v} = [[ 1 ; 2 ; 3 ]]$, $\quad \vec{u_1} = [[ 1 ; 2 ; 2 ]]$, $\vec{u_2} = [[ 2 ; -1 ; 0 ]]$, $\vec{u_3} = [[ 3 ; 1 ; 1 ]]$.
 
@@ -54,7 +54,7 @@
 
 	- - -
 
-	In problems 3#, find the matrix for the linear transformation $T$ and use it to evaluate $T(\vec{v})$.
+	In problems @next(3), find the matrix for the linear transformation $T$ and use it to evaluate $T(\vec{v})$.
 
 	#. $T\left( [[ 1 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 3 ; 4 ]]$, $T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 3 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ; 2 ]]$.
 

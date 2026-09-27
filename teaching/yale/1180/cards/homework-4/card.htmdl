@@ -32,7 +32,7 @@
 
 	- - -
 
-	Problems 4# concern the following situation. Steep cafe finds that the number of cups of cold brew it sells per week is
+	Problems @next(4) concern the following situation. Steep cafe finds that the number of cups of cold brew it sells per week is
 
 	$$
 		C(p, l, s) = \frac{900\sqrt{l}}{p + s},
