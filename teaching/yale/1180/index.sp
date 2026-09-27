@@ -1,60 +1,65 @@
+@@@
+	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
+@@@
+
 Welcome to Math 1180! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
 
 
 
 ## General Resources
 
-### image-links
-	syllabus -c "Syllabus"
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	notes/calc-1-review
-	notes/coordinate-systems
-	notes/dot-and-cross-products
-	notes/functions-of-multiple-variables
-	notes/partial-derivatives
-	notes/multivariable-chain-rule
-	notes/gradients
-	notes/multivariable-optimization
-	notes/boundary-optimization
-	notes/lagrange-multipliers
-	notes/vectors-and-matrices
-	notes/row-reduction
-	notes/bases
-	notes/linear-transformations
-	notes/determinants
-###
+@imageLinks([
+	"notes/calc-1-review",
+	"notes/coordinate-systems",
+	"notes/dot-and-cross-products",
+	"notes/functions-of-multiple-variables",
+	"notes/partial-derivatives",
+	"notes/multivariable-chain-rule",
+	"notes/gradients",
+	"notes/multivariable-optimization",
+	"notes/boundary-optimization",
+	"notes/lagrange-multipliers",
+	"notes/vectors-and-matrices",
+	"notes/row-reduction",
+	"notes/bases",
+	"notes/linear-transformations",
+	"notes/determinants",
+])
 
 
 
 ## Homework
 
-### image-links
-	homework-1 -c "Problem Set 1"
-	homework-2 -c "Problem Set 2"
-	homework-3 -c "Problem Set 3"
-	homework-4 -c "Problem Set 4"
-###
+@imageLinks([
+	{ url: "homework-1", forCard: true, name: "Homework 1" },
+	{ url: "homework-2", forCard: true, name: "Homework 2" },
+	{ url: "homework-3", forCard: true, name: "Homework 3" },
+	{ url: "homework-4", forCard: true, name: "Homework 4" },
+])
 
-### card homework-1 -e
-### card homework-2 -e
-### card homework-3 -e
-### card homework-4 -e
-### card homework-5 -e
-### card homework-6 -e
-### card homework-7 -e
-### card homework-8 -e
-### card homework-9 -e
-### card homework-10 -e
+@externalCard{homework-10}
+@externalCard{homework-9}
+@externalCard{homework-8}
+@externalCard{homework-7}
+@externalCard{homework-6}
+@externalCard{homework-5}
+@externalCard{homework-4}
+@externalCard{homework-3}
+@externalCard{homework-2}
+@externalCard{homework-1}
 
-### card syllabus "Math 1180: Introduction to Functions of Several Variables"
-	
-	Instructor: Cruz Godar ([cruz.godar@yale.edu](mailto:cruz.godar@yale.edu))
+
+
+@card{syllabus}[Math 1180: Introduction to Functions of Several Variables][[
+	Instructor: Cruz Godar ([cruz.godar@@yale.edu](mailto:cruz.godar@@yale.edu))
 
 	Class meetings: 9--10:15 AM Tuesdays and Thursdays in WTS A30
 	
@@ -72,15 +77,16 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	> - In-class participation: 5%
-	> - Reading quizzes: 5%
-	> - Problem sets: 15%
-	> - Exams: 75%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- Problem sets: 15%
+	- Exams: 75%
 
 	The 75% comprising your exam score breaks down into one of the following, whichever is highest:
-	> - 25% midterm 1 + 25% midterm 2 + 25% final exam
-	> - 10% midterm 1 + 30% midterm 2 + 35% final exam
-	> - 30% midterm 1 + 15% midterm 2 + 30% final exam
+
+	- 25% midterm 1 + 25% midterm 2 + 25% final exam
+	- 10% midterm 1 + 30% midterm 2 + 35% final exam
+	- 30% midterm 1 + 15% midterm 2 + 30% final exam
 	
 	More on all of these in the coming sections!
 
@@ -144,23 +150,23 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you'll have the opportunity to practice:
 
-	> - Thinking critically about novel situations in the context of the mathematics we learn.
-	> - Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
-	> - Developing metacognitive thinking to evaluate your own learning practices and study strategies.
+	- Thinking critically about novel situations in the context of the mathematics we learn.
+	- Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
+	- Developing metacognitive thinking to evaluate your own learning practices and study strategies.
 
 	Regarding specific mathematical goals, we will learn how to:
 	
-	> - Understand and interact with representations of 3D space.
-	> - Understand and apply the dot and cross products to vectors in 3D space.
-	> - Plot and interpret functions of multiple variables.
-	> - Evaluate and interpret partial derivatives, including with the multivariable Chain Rule.
-	> - Optimize functions of multiple variables, including with the method of Lagrange multipliers.
+	- Understand and interact with representations of 3D space.
+	- Understand and apply the dot and cross products to vectors in 3D space.
+	- Plot and interpret functions of multiple variables.
+	- Evaluate and interpret partial derivatives, including with the multivariable Chain Rule.
+	- Optimize functions of multiple variables, including with the method of Lagrange multipliers.
 
-	> - Represent systems of linear equations as matrices.
-	> - Understand how and when such systems can be solved.
-	> - Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
-	> - Compute and interpret determinants of square matrices.
-	> - Approximate matrix equations by using the method of least squares (if time permits).
+	- Represent systems of linear equations as matrices.
+	- Understand how and when such systems can be solved.
+	- Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
+	- Compute and interpret determinants of square matrices.
+	- Approximate matrix equations by using the method of least squares (if time permits).
 
 	Success is absolutely not limited to your performance in the course, however. Please take care of your mental, physical and emotional health; it's both far more important than and necessary for your academic success. Yale offers many resources to support you in these ways --- a good place to start is [Yale Well](https://yalewell.yale.edu).
 
@@ -188,6 +194,5 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	Like all instructors, I am a [designated reporter](https://oiea.yale.edu/reporting-requirements), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on exams, etc. --- will not be tolerated.
-	
-###
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on exams, etc. --- will not be tolerated.	
+]]

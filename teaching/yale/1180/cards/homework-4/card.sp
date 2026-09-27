@@ -1,0 +1,64 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 4
+
+*Due Thursday, October 1st at 11:59 PM*
+
+Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+
+@gap
+
+@p[Let $f(x, y) = \dfrac{e^{x - y}}{y}$. Compute $\G f$ and $D_{\vec{u}}f(3, 1)$, where $\vec{u} = \left< \dfrac{2}{\sqrt{5}}, -\dfrac{1}{\sqrt{5}} \right>$.]
+
+@p[Let $g(x, y, z) = x^2 + x^y + \sin(xyz)$. Compute $\G g$ and $D_{\vec{u}}g(3, 2, 0)$, where $\vec{u}$ points in the direction of $\left< 1, 1, 1 \right>$.]
+
+@gap
+
+@p[Let $f(x, y)$ be a function so that $D_{\vec{u}}f(4, 5) = 5$ and $D_{\vec{v}}f(4, 5) = 11$, where $\vec{u}$ points in the same direction as $\left< 5, 12 \right>$ and $\vec{v} = \left< \frac{3}{5}, \frac{4}{5} \right>$. What is $\G f (4, 5)$?]
+
+@gap
+
+@p[Let $$f(x, y) = 2(y - 2x)^{3/2}$$. Find the equation for the tangent line to the graph of $f$ at $(2, 6)$ in the direction $\left< -1, -1 \right>$.]
+
+@gap
+
+@p[Let $f(x, y)$ be a function differentiable at $(a, b)$, and let $\vec{g} = \left< 1, 1, f_x(a, b) + f_y(a, b) \right>$. Show that $\vec{g}$ is parallel to the tangent plane to $f$ at $(a, b)$. (Hint: how can you rephrase that in terms of the normal vector to the tangent plane?)]
+
+@gap
+
+@p[A variable $w$ is given by $w = f(x, y, z)$, where $x = x(a)$, $y = y(a, b, c)$, and $z = z(x, a, c)$.]
+
++ Express $pw/pa$ using the multivariable Chain Rule.
+
++ If $pw/pc = 2$, $pw/py = 1$, $pw/pz = 3$, and $pz/pc = -4$, what is $py/pc$?
+
+@gap
+
+Problems @next(4) concern the following situation. Steep cafe finds that the number of cups of cold brew it sells per week is
+
+$$
+	C(p, l, s) = \frac{900\sqrt{l}}{p + s},
+$$
+
+where $p$ is Steep's price for a cup of cold brew, $s$ is its price for a scone, and $l$ is the price of a canned latte from the nearby cooler, all in dollars. Right now, $p = 4$, $l = 4$, and $s = 2$. Two goods are called **substitutes** if raising the price of one increases the demand for the other, and **complements** if raising the price of one decreases the demand for the other (we explored this briefly in past problem sets).
+
+@p[Compute $C$ and all of its partial derivatives at these current prices, including units. Are canned lattes and cold brew substitutes or complements? What about scones and cold brew?]
+
+@p[Suppose all three prices are changing: the price of a cup of cold brew is increasing at $\$0.10$ per month, the price of a canned latte is increasing at $\$0.40$ per month (sadly), and the price of a scone is decreasing at $\$0.05$ per month. How fast is Steep's weekly sales of cold brew increasing? Why is it increasing even though cold brew is getting more expensive?]
+
+@p[Both the cold brew and scones use milk, so Steep sets their prices based on the wholesale price $m$ of a gallon of milk: $p = 2 + m$ and $s = 1 + \frac{m}{2}$. Currently, $m = 2$. Draw a tree diagram for $C$ as a function of $m$ and $l$, and use it to compute $pC/pm$. Interpret the meaning of $pC/pm$ in a sentence.]
+
+@p[On average, Steep sells one scone for every two cups of cold brew, so it sells $S = \frac{C}{2}$ scones per week, and its total weekly revenue is $R = pC + sS$. First, express $R$ as a function of $p$, $l$, and $s$. Then compute $pR/ps$ at the current prices. Stores sometimes deliberately set a low price on one item to bring in customers; that item is called a **loss leader**. Should Steep consider making its scones a loss leader?]
+
+@gap
+
+@p[How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?]
+
+@p[Choose up to three questions (and at least one) on which you would like detailed feedback.]

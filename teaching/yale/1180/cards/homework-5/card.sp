@@ -1,0 +1,40 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 5
+
+*Due Monday, October 6th at 11:59 PM*
+
+Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
+
+@gap
+
+In problems @next(4), find and classify the critical points of the function $f$ as local minima, local maxima, or saddle points.
+
+@p[$f(x, y) = x^3y + 27x^2 - 27y$.]
+
+@p[$f(x, y) = x^2 + y^2 - \frac{1}{xy}$.]
+
+@p[$f(x, y) = -x^4 + e^{-y^{2}}$.]
+
+@p[$f(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.]
+
+@gap
+
+@p[Give examples of the following functions:]
+
++ A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local maximum, but for which the second derivative test is inconclusive.
+
++ A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local minimum, but for which the second derivative test is inconclusive.
+
++ A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a saddle point, but for which the second derivative test is inconclusive.
+
+@gap
+
+@p[Suppose $(0, 0, 1)$ is a critical point of the function $f(x, y)$. What does the level curve at $z = 1$ look like near $(0, 0)$ if $(0, 0, 1)$ is a local min or max? What if it is a saddle point?]

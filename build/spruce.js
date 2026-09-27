@@ -173,6 +173,13 @@ export function center(body)
 
 
 
+export function desmos(id)
+{
+	return /* html */`<div class="desmos-border"><div id="${id}" class="desmos-container"></div></div>`;
+}
+
+
+
 function resolveUrl(url)
 {
 	if (url.startsWith("http"))

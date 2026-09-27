@@ -1,0 +1,70 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 3
+
+*Due Thursday, September 24th at 11:59 PM*
+
+Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+
+@gap
+
+@p[Find an equation of a line passing through the points $(5, 1, 2)$ and $(3, 4, 1)$.]
+
+@p[Find an equation of the plane containing the points $(1, 7, 0)$, $(-3, 1, 1)$, and $(2, 4, 0)$.]
+
+@p[Find the intersection of the line from question #-2 and the plane from question #-1 if it exists, or show they don't intersect.]
+
+@gap
+
+In problems @next(3), do the following.
+
++ Compute $f_x(x, y)$ and $f_y(x, y)$.
+
++ Compute $f_x(1, 2)$ and $f_y(3, 4)$ and draw a (2D) sketch of the tangent line whose slope you just computed and the graph to which it is tangent.
+
++ Find an equation for the tangent plane at $(1, 1)$ and use it to approximate $f(1.5, 1.5)$.
+
++ Compute $f_{xy}(x, y)$.
+
+@p[$$f(x, y) = \sin\left( \frac{\pi}{2} x \right) + \cos(\pi y)$$.]
+
+@p[$$f(x, y) = x\tan(\pi y)$$.]
+
+@p[$$f(x, y) = \ln(xy^2)$$.]
+
+@gap
+
+@p[Give an example of a function $g(x, y)$ whose domain is all of $#R#^2$, but which is not differentiable at $(0, 0)$.]
+
+@p[Give an example of a function $h(x, y)$ which is not differentiable at $(0, 0)$, but whose partial derivative $ph/px$ is defined and continuous everywhere.]
+
+@gap
+
+Problems @next(4) concern the following situation. A **production function** $Y(K, L)$ gives the value of everything a company produces in a year when it uses $K$ units of **capital** (i.e. equipment, buildings, etc) and $L$ units of labor. The partial derivatives $Y_K$ and $Y_L$ are called the **marginal products** of capital and labor. Suppose a factory's production function is
+
+$$
+	Y(K, L) = 4K^{1/4}L^{3/4},
+$$
+
+where $Y$ is measured in hundreds of thousands of dollars, $K$ in millions of dollars of equipment, and $L$ in tens of thousands of hours of labor.
+
+@p[Compute $Y(16, 81)$, $Y_K(16, 81)$, and $Y_L(16, 81)$, and interpret all three in context, including units. Based on your answers, about how much value does a single additional hour of labor produce?]
+
+@p[Compute $Y_{KK}$, $Y_{LL}$, and $Y_{KL}$. Show that $Y_{KK}$ and $Y_{LL}$ are always negative; this is called **diminishing marginal returns**: explain what it means and why a factory might experience it. Explain what $Y_{KL}$ means --- particularly whether it is positive or negative.]
+
+@p[A production function has **constant returns to scale** if multiplying all the inputs by $t$ multiplies the output by $t$ --- for example, doubling **both** the equipment and the workforce doubles the output. If it multiplies the output by more than $t$, it has **increasing returns to scale**, and if it multiplies it by less than $t$, it has **decreasing returns to scale**. Does this production function have constant, increasing, or decreasing returns to scale?]
+
+@p[In general, a function of the form $Y(K, L) = AK^bL^c$ for positive constants $A$, $b$, and $c$ is called a **Cobb-Douglas** production function. Compute $Y(tK, tL)$ for a general Cobb-Douglas function, and use it to determine the type of returns to scale (increasing, decreasing, or constant) depending on $b$ and $c$.]
+
+@gap
+
+@p[How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?]
+
+@p[Choose up to three questions (and at least one) on which you would like detailed feedback.]
