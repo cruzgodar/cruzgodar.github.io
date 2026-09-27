@@ -183,6 +183,22 @@ p, h1, h2
 	font-weight: normal;
 }
 
+@counter-style paren-alpha
+{
+	system: extends lower-alpha;
+	suffix: ") ";
+}
+
+ol.paren-alpha
+{
+	list-style-type: paren-alpha;
+}
+
+ol.paren-alpha > li::marker
+{
+	font-variant-numeric: normal;
+}
+
 q
 {
 	font-style: italic;

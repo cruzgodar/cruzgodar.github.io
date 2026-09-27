@@ -47,11 +47,11 @@ The ratio and root tests look pretty similar to one another --- let's see if we 
 
 @p[Let $$\sum_{n = 1}^\infty a_n$$ be a series with positive terms that converges via the ratio test: i.e. $$\lim_{n \to \infty} \frac{a_{n + 1}}{a_n} < 1$$. Therefore, there is a value $r < 1$ so that whenever $n \geq N$ for some $N$, $\frac{a_{n + 1}}{a_n} \leq r$.]
 
-> a) Show that when $n \geq N$, $a_n \leq a_N r^{n - N}$.
++ Show that when $n \geq N$, $a_n \leq a_N r^{n - N}$.
 
-> b) Raise both sides of the inequality to the power of $\frac{1}{n}$ to get $a_n^{1/n} \leq a_N^{1/n} r^{1 - \frac{N}{n}}$. Now take the limit of both sides as $n \to \infty$.
++ Raise both sides of the inequality to the power of $\frac{1}{n}$ to get $a_n^{1/n} \leq a_N^{1/n} r^{1 - \frac{N}{n}}$. Now take the limit of both sides as $n \to \infty$.
 
-> c) What can we conclude about the relationship between the ratio test and the root test?
++ What can we conclude about the relationship between the ratio test and the root test?
 
 @p[Let $$a_n = \frac{1}{2^{n + (-1)^{n + 1}}}$$ and consider the sum]
 
@@ -59,8 +59,8 @@ $$
 	\sum_{n = 1}^\infty a_n = \frac{1}{2^1} + \frac{1}{2^0} + \frac{1}{2^3} + \frac{1}{2^2} + \frac{1}{2^5} + \frac{1}{2^4} + \frac{1}{2^7} + \frac{1}{2^6} + \cdots.
 $$
 
-> a) What does the ratio test say about this series? (Hint: treat the cases when $n$ is even and odd separately.)
++ What does the ratio test say about this series? (Hint: treat the cases when $n$ is even and odd separately.)
 
-> b) What does the root test say?
++ What does the root test say?
 
-> c) What can we conclude about the relationship between ratio test and the root test?
++ What can we conclude about the relationship between the ratio test and the root test?

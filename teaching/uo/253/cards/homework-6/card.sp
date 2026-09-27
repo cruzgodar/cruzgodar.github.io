@@ -1,0 +1,66 @@
+@@@
+	import { controls, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 6
+
+*Due Friday of Week 7 at the start of class*
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+@gap
+
+In problems @next(6), find the interval and radius of convergence of the power series.
+
+@p[$$\sum_{n = 1}^\infty \frac{x^n}{n}$$.]
+
+@p[$$\sum_{n = 1}^\infty \frac{x^n}{n^2}$$.]
+
+@p[$$\sum_{n = 1}^\infty nx^n$$.]
+
+@p[$$\sum_{n = 1}^\infty \frac{x^n}{2^n}$$.]
+
+@p[$$\sum_{n = 1}^\infty \frac{2^n x^n}{n!}$$.]
+
+@p[$$\sum_{n = 2}^\infty \frac{x^n}{\ln(n)}$$.]
+
+@gap
+	
+@p[Find the radius of convergence of $$\sum_{n = 0}^\infty \frac{(n!)^3 x^n}{(3n)!}$$, but not the interval (i.e. you don't need to check the endpoints).]
+
+@gap
+
+In problems @next(8), expand each function $f(x)$ as a power series and find its interval and radius of convergence.
+
+@p[$$\frac{1}{1 - x}$$.]
+
+@p[$$\frac{1}{1 - x^3}$$.]
+
+@p[$$\frac{1}{1 - 2x}$$.]
+
+@p[$$\frac{x^4}{1 - x^2}$$.]
+
+@p[$$\frac{1}{2 - x}$$.]
+
+@p[$$\frac{1}{x}$$.]
+
+@p[$$\frac{x}{1 - (1 - x)}$$. Does your result make sense?]
+
+@gap
+
+@p[Give examples of power series with intervals of convergence of]
+
++ $(-1, 1]$.
+
++ $[-4, 0]$.
+
++ Only $x = 5$ and no other numbers.
+
+@p[If a power series converges at $x = 1$, does it also have to converge at $x = 0$? Why or why not?]
+
+@p[Is it possible to express a function as a power series in more than one way? For example, can we express $$\frac{1}{1 - x}$$ as a power series centered at $x = \frac{1}{2}$? What happens to the interval of convergence if so? What about as a series centered at $x = 1$?]

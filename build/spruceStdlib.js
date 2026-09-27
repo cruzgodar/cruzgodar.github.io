@@ -39,7 +39,7 @@ export function unorderedList(...items)
 export function orderedList(...items)
 {
 	const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
-	return `<ol>${itemsHtml}</ol>`;
+	return `<ol class="paren-alpha">${itemsHtml}</ol>`;
 }
 
 export function heading(body, headingNumber)
