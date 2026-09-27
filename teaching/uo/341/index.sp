@@ -1,65 +1,64 @@
+@@@
+	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
+@@@
+
 Welcome to Math 341! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
 
 
 
 ## General Resources
 
-### image-links
-	
-	syllabus -c "Syllabus"
-	
-###
+@imageLinks([
+	{ url: "syllabus", forCard: true, name: "Syllabus" },
+])
 
 
 
 ## Interactive Notes
 
-### image-links
-	/teaching/notes/linear-algebra/vectors-and-matrices
-	/teaching/notes/linear-algebra/row-reduction
-	/teaching/notes/linear-algebra/vector-arithmetic
-	/teaching/notes/linear-algebra/linear-transformations
-	/teaching/notes/linear-algebra/properties-of-transformations
-	/teaching/notes/linear-algebra/determinants
-	/teaching/notes/linear-algebra/vector-spaces
-	/teaching/notes/linear-algebra/bases-and-dimension
-	/teaching/notes/linear-algebra/ftla
-	/teaching/notes/linear-algebra/intro-to-markov-chains
-###
+@imageLinks([
+	"/teaching/notes/linear-algebra/vectors-and-matrices",
+	"/teaching/notes/linear-algebra/row-reduction",
+	"/teaching/notes/linear-algebra/vector-arithmetic",
+	"/teaching/notes/linear-algebra/linear-transformations",
+	"/teaching/notes/linear-algebra/properties-of-transformations",
+	"/teaching/notes/linear-algebra/determinants",
+	"/teaching/notes/linear-algebra/vector-spaces",
+	"/teaching/notes/linear-algebra/bases-and-dimension",
+	"/teaching/notes/linear-algebra/ftla",
+	"/teaching/notes/linear-algebra/intro-to-markov-chains",
+])
 
 
 
 ## Homework
 
-### image-links
-	
-	homework-1 -c "Homework 1"
-	homework-2 -c "Homework 2"
-	homework-3 -c "Homework 3"
-	homework-4 -c "Homework 4"
-	homework-5 -c "Homework 5"
-	homework-6 -c "Homework 6"
-	homework-7 -c "Homework 7"
-	homework-8 -c "Homework 8"
-	homework-9 -c "Homework 9"
-	
-###
+@imageLinks([
+	{ url: "homework-1", forCard: true, name: "Homework 1" },
+	{ url: "homework-2", forCard: true, name: "Homework 2" },
+	{ url: "homework-3", forCard: true, name: "Homework 3" },
+	{ url: "homework-4", forCard: true, name: "Homework 4" },
+	{ url: "homework-5", forCard: true, name: "Homework 5" },
+	{ url: "homework-6", forCard: true, name: "Homework 6" },
+	{ url: "homework-7", forCard: true, name: "Homework 7" },
+	{ url: "homework-8", forCard: true, name: "Homework 8" },
+	{ url: "homework-9", forCard: true, name: "Homework 9" },
+])
 
-### card homework-1 -e
-### card homework-2 -e
-### card homework-3 -e
-### card homework-4 -e
-### card homework-5 -e
-### card homework-6 -e
-### card homework-7 -e
-### card homework-8 -e
-### card homework-9 -e
+@externalCard{homework-9}
+@externalCard{homework-8}
+@externalCard{homework-7}
+@externalCard{homework-6}
+@externalCard{homework-5}
+@externalCard{homework-4}
+@externalCard{homework-3}
+@externalCard{homework-2}
+@externalCard{homework-1}
 
 
 
-### card syllabus "Math 341: Elementary Linear Algebra"
-	
-	Instructor: Cruz Godar ([cgodar@uoregon.edu](mailto:cgodar@uoregon.edu))
+@card{syllabus}[Math 341: Elementary Linear Algebra][[
+	Instructor: Cruz Godar ([cgodar@@uoregon.edu](mailto:cgodar@@uoregon.edu))
 
 	Class meetings: 9--9:50 MTWF in Eslinger 107
 	
@@ -79,12 +78,12 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your scores on a number of different assignments, weighted as follows:
 	
-	> - In-class participation: 5%
-	> - Reading quizzes: 5%
-	> - In-class quizzes: 10%
-	> - Homework: 15%
-	> - Midterms: 20% each (40% total)
-	> - Final: 25%
+	- In-class participation: 5%
+	- Reading quizzes: 5%
+	- In-class quizzes: 10%
+	- Homework: 15%
+	- Midterms: 20% each (40% total)
+	- Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -139,24 +138,16 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> - Solve a linear system with matrices and row reduction
-	
-	> - Determine linear dependence or independence of a set of vectors
-	
-	> - Find the determinant and inverse of a matrix
-	
-	> - Understand the definitions of a vector space, subspace, basis, and dimension
-	
-	> - Express a vector in terms of a basis
-	
-	> - Find the kernel and image of a linear transformation
-	
-	
+	- Solve a linear system with matrices and row reduction.
+	- Determine linear dependence or independence of a set of vectors.
+	- Find the determinant and inverse of a matrix.
+	- Understand the definitions of a vector space, subspace, basis, and dimension.
+	- Express a vector in terms of a basis.
+	- Find the kernel and image of a linear transformation.
 	
 	## Is there anything else I should know?
 	
 	Like most graduate students, I am a [designated reporter](https://titleix.uoregon.edu/employee-reporting-obligations), which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
-	
-###
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.	
+]]

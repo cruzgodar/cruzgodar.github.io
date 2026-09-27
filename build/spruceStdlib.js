@@ -97,7 +97,6 @@ function parseMath(body)
 	body = body
 		.replaceAll(/\n\s*\n/g, "\n")
 		.replaceAll(/\n/g, "\\\\\n");
-		console.log(body);
 
 	return body
 		// \pe, \me, \te

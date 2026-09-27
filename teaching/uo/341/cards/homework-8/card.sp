@@ -1,0 +1,58 @@
+@@@
+	import { gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+
+	function document(body)
+	{
+		return body;
+	}
+@@@
+
+# Homework 8
+
+*Due Wednesday of Week 9 at the start of class*
+
+Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+## Section 9
+
+In problems @next(3), find the change of basis matrix $B$ that converts from the basis $\mathcal{B}$for the vector space $V$ to the standard basis, and use it to find $[\vec{v}]_\mathcal{B}$ for the given vector $\vec{v}$.
+
+@p[$V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, $\mathcal{B} = \{1, x + x^2 + x^3, x^3 - x, x^3 + 2x^2\}$, and $\vec{v} = 2 + 7x - x^2$.]
+
+@p[$V = M_{2 \times 2}(#R#)$,]
+
+$$
+	\mathcal{B} = \left\{ [[ 1, 0 ; 0, 1 ]], [[ 0, 1 ; -1, 0 ]], [[ 0, 1 ; 1, 0 ]], [[ 1, 0 ; 0, -1 ]] \right\},
+$$
+
+and $\vec{v} = [[ 1, 2 ; -1, 3 ]]$.
+
+@p[$V = \mathcal{L}(#R#^4, #R#)$, $\mathcal{B} = \{T_1, T_2, T_3, T_4\}$, where]
+
+$$
+	T_1\left([[ x ; y ; z ; w ]]\right) = 2x + y - z \qquad T_2\left([[ x ; y ; z ; w ]]\right) = x - w \qquad T_3\left([[ x ; y ; z ; w ]]\right) = y + z \qquad T_4\left([[ x ; y ; z ; w ]]\right) = x + y + z + w,
+$$
+
+and $\vec{v} : #R#^4 \to #R#$ is defined by $\vec{v}\left([[ x ; y ; z ; w ]]\right) = 2x - 2y + 4z + 2w$.
+
+@gap
+
+In problems @next(3), find bases for $V$, $\ker T$ and $\image T$, and verify that the Fundamental Theorem of Linear Algebra correctly relates the three.
+
+@p[$T : V \to #R#$, where $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $3$, is defined by $T(a + bx + cx^2 + dx^3) = d - c$.]
+
+@p[$T : M_{2 \times 3}(#R#) \to #R#^3$ is defined by]
+
+$$
+	T\left( [[ a, b, c ; d, e, f ]] \right) = [[ a ; b ; c ]].
+$$
+
+@p[$T : #R#^2 \to \mathcal{L}(#R#^2, #R#^2)$ is defined by $T\left([[ x ; y ]]\right) = S_{x, y}$, where]
+
+$$
+	S_{x, y}\left( [[ 1 ; 0 ]] \right) &= [[ x - y ; 0 ]]
+
+	S_{x, y}\left( [[ 0 ; 1 ]] \right) &= [[ 0 ; y - x ]].
+$$
