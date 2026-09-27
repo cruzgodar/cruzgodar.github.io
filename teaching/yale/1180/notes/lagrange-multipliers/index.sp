@@ -1,0 +1,239 @@
+@navButtons
+
+
+
+We're nearly done with multivariable optimization! It's this section that will largely serve as the bridge between the theoretical foundations we've built and the real-world settings they apply to.
+
+We opened the last section by thinking about a function $f(x, y) = 2x + xy + 5y$ giving the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month, subject to the constraint $10x + 5y \leq 100$. To get at a different method of optimization that doesn't require boundary parameterization, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
+
+@desmos{levelCurves}
+
+Immediately, we can see that we need to pick a small enough value of $c$ that the level curve $2x + xy + 5y = c$ actually intersects $10x + 5y = 100$; otherwise, there won't be any point in the intersection. But on the other hand, we *want $c$ to be as large as possible*, because crucially, $c$ is the output of $f(x, y)$ --- it's the thing we're trying to maximize. We therefore are looking for a value of $c$ where the level curve just barely touches the line $10x + 5y = 100$, or in other words, where the two are tangent.
+
+Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve is tangent to the boundary.
+
+Let's begin by giving the function defining the constraint a name: $g(x, y)$. And to handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. Then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either the graph of $f(x, y)$ or $g(x, y)$ --- in other words, that there's a single direction orthogonal to both $\G f$ and $\G g$. That happens when $\G f$ and $\G g$ point in the same direction or in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple by the Greek letter $\lambda$ (pronounced "lambda"), and call is a **Lagrange multiplier** when we occasionally have need for a name.
+
+Let's see how this applies to our example. Given the profit function $f(x, y)$ that we're trying to maximize and the constraint $g(x, y)$, we set up two equations:
+
+$$
+	\G f(x, y) &= \lambda \G g(x, y)
+
+	g(x, y) &= 0
+$$
+
+While this might seem like two equations and three unknowns, it's not! Let's expand it out and see why.
+
+$$
+	\left< 2 + y, x + 5 \right> &= \lambda \left< 10, 5 \right>
+
+	10x + 5y - 100 &= 0.
+$$
+
+The two equations are actually three, since in the first one, both the first and second components of the vector must be equal. Therefore,
+
+$$
+	2 + y &= 10\lambda
+
+	x + 5 &= 5\lambda
+
+	10x + 5y - 100 &= 0.
+$$
+
+It's generally a good strategy to eliminate $\lambda$ from these equations; here, we have
+
+$$
+	\lambda &= \frac{2 + y}{10}
+
+	\lambda &= \frac{x + 5}{5}
+
+	\frac{2 + y}{10} &= \frac{x + 5}{5}
+
+	(2 + y)(5) &= (x + 5)(10)
+
+	10 + 5y &= 10x + 50
+
+	2 + y &= 2x + 10
+
+	y &= 2x + 8.
+$$
+
+Plugging this back into the constraint equation,
+
+$$
+	10x + 5(2x + 8) - 100 &= 0
+
+	20x &= 60
+
+	x &= 3
+
+	y &= 2(3) + 8
+
+	&= 14.
+$$
+
+We only found one critical point! Normally, we'd expect at least two, since there should be an absolute minimum and maximum on any compact domain. However, the set on which we're optimizing this function is a line, which isn't compact since it's not bounded! The Extreme Value Theorem therefore doesn't apply. Determining whether this one point is a maximum, minimum, or saddle point can be a little delicate --- checking nearby points on the line $g(x, y) = 0$ tells us that their $z$-values are less than $118$, though, so this is in fact a maximum. Although it's an oversimplified example, this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
+
+Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
+
+### thm -m "Method: Lagrange multipliers"
+
+	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
+
+	1. Solve the system of equations
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+	$$
+
+	to find potential critical points $(x, y)$. Also consider the points where $\G g(x, y)$ is undefined.
+
+	2. Of all the points $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
+
+###
+
+@exc[Lagrange multipliers][[
+
+	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} = 1 \right\}$. Find the absolute maximum and minimum of $f$.
+
+	@solution[[
+
+	We have $f(x, y) = xy$ and $g(x, y) = x^{2/3} + y^{2/3} - 1$, and so our system of equations is
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+
+		~
+
+		\left< y, x \right> &= \lambda\left< \frac{2}{3}x^{-1/3}, \frac{2}{3}y^{-1/3} \right>
+
+		x^{2/3} + y^{2/3} - 1 &= 0
+
+		~
+
+		y &= \frac{2}{3}\lambda x^{-1/3}
+
+		x &= \frac{2}{3}\lambda y^{-1/3}
+
+		x^{2/3} + y^{2/3} - 1 &= 0.
+	$$
+
+	Eliminating $\lambda$,
+
+	$$
+		\frac{3}{2} y x^{1/3} &= \lambda
+
+		\frac{3}{2} x y^{1/3} &= \lambda
+
+		\frac{3}{2} y x^{1/3} &= \frac{3}{2} x y^{1/3}
+
+		x^{2/3} &= y^{2/3}
+	$$
+
+	While can can very well solve this completely for $x$ or $y$, we can also just plug it back into the constraint equation $g(x, y) = 0$:
+
+	$$
+		x^{2/3} + y^{2/3} - 1 &= 0
+
+		x^{2/3} + x^{2/3} - 1 &= 0
+
+		2x^{2/3} &= 1
+
+		x^{2/3} &= \frac{1}{2}
+
+		x^2 &= \frac{1}{8}
+
+		x &= \pm \sqrt{\frac{1}{8}}
+
+		&= \pm \left( \frac{\sqrt{2}}{2} \right)^3,
+	$$
+
+	as before. Solving for $y$, we can cube both sides of $x^{2/3} = y^{2/3}$ to get $x^2 = y^2$, so $y = \pm \left( \frac{\sqrt{2}}{2} \right)^3$ for both $x$-values. Notably, we missed the points $(\pm 1, 0)$ and $(0, \pm 1)$ --- those are the points where $\G g(x, y)$ is undefined, so we also need to consider them. Once we've added those in, though, we've successfully recovered the same points that we saw in the example earlier in this section! From here, the same logic applies --- we plug them all in and find the largest and smallest.
+
+]]
+
+@ex[Lagrange multipliers][[
+
+	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$2$ per square foot, while the other two sides and base will be made out of wood, costing $\$1$ per square foot. You have a budget of $\$24$ --- how large of a box can you build?
+
+	@solution[[
+
+	With $f(x, y, z) = xyz$ and
+
+	$$
+		g(x, y, z) = xy + 4yz + 2xz - 24 = 0
+	$$
+
+	(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
+
+	$$
+		\G f &= \lambda G g
+
+		\left< yz, xz, xy \right> &= \lambda \left< y + 2z, x + 4z, 4y + 2x \right>
+
+		~
+
+		yz &= \lambda(y + 2z)
+
+		xz &= \lambda(x + 4z)
+
+		xy &= \lambda(4y + 2x).
+	$$
+
+	We can eliminate $\lambda$ from the first two equations:
+
+	$$
+		\frac{yz}{y + 2z} &= \frac{xz}{x + 4z}
+
+		yz(x + 4z) &= xz(y + 2z)
+
+		xyz + 4yz^2 &= xyz + 2xz^2
+
+		2y &= x.
+	$$
+
+	Now eliminating $\lambda$ from the first and third equations,
+
+	$$
+		\frac{yz}{y + 2z} &= \frac{xy}{4y + 2x}
+
+		yz(4y + 2x) &= xy(y + 2z)
+
+		4y^2z + 2xyz &= xy^2 + 2xyz
+
+		4y^2z &= xy^2
+
+		4y^2z &= (2y)y^2
+
+		2y^2z &= y^3
+
+		y^3 - 2y^2z &= 0
+
+		y^2(y - 2z) &= 0,
+	$$
+
+	so either $y = 0$, which isn't so good for box-building, or $y = 2z$, meaning $x = 4z$. Now in the constraint equation,
+
+	$$
+		xy + 4yz + 2xz &= 24
+
+		(4z)(2z) + 4(2z)z + 2(4z)z &= 24
+
+		8z^2 + 8z^2 + 8z^2 &= 24
+
+		z^2 &= 1
+
+		z &= \pm 1.
+	$$
+
+	We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
+
+]]
+
+
+
+@navButtons

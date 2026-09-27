@@ -732,12 +732,12 @@ mjx-container
 	margin-top: 48px;
 }
 
-#contents > .notes-pf-title, #contents > .notes-thm-title + .notes-cor-title, #contents > .notes-prop-title + .notes-cor-title, #contents > .notes-pf-title + .notes-cor-title, #contents > .notes-lem-title
+#contents > .notes-proof-title, #contents > .notes-thm-title + .notes-cor-title, #contents > .notes-prop-title + .notes-cor-title, #contents > .notes-proof-title + .notes-cor-title, #contents > .notes-lem-title
 {
 	margin-left: 16px;
 }
 
-#contents > .notes-lem-title + .notes-pf-title
+#contents > .notes-lem-title + .notes-proof-title
 {
 	margin-left: 32px;
 }
@@ -2686,7 +2686,7 @@ to hide them in that case. */
 	border-color: lch(50% 70 60);
 }
 
-.notes-pf
+.notes-proof
 {
 	border-color: rgb(55.46% 29.75% 77.56%);
 	border-color: lch(45% 70 310);
@@ -2704,13 +2704,13 @@ to hide them in that case. */
 	border-color: lch(60% 100 80);
 }
 
-.notes-ax
+.notes-axiom
 {
 	border-color: rgb(73.89% 0% 1.62%);
 	border-color: lch(40% 90 40);
 }
 
-.notes-as
+.notes-aside
 {
 	border-color: rgb(87.18% 41.03% 57.63%);
 	border-color: lch(60% 50 360);
@@ -2763,7 +2763,7 @@ to hide them in that case. */
 	background-color: lch(50% 70 60);
 }
 
-.notes-pf-title
+.notes-proof-title
 {
 	background-color: rgb(55.46% 29.75% 77.56%);
 	background-color: lch(45% 70 310);
@@ -2781,13 +2781,13 @@ to hide them in that case. */
 	background-color: lch(60% 100 80);
 }
 
-.notes-ax-title
+.notes-axiom-title
 {
 	background-color: rgb(73.89% 0% 1.62%);
 	background-color: lch(40% 90 40);
 }
 
-.notes-as-title
+.notes-aside-title
 {
 	background-color: rgb(87.18% 41.03% 57.63%);
 	background-color: lch(60% 50 360);

@@ -1,0 +1,285 @@
+@navButtons
+
+
+
+We began chapter 5 by expanding geometry and calculus to functions that mapped $#R# \to #R#^n$: that is, functions that took in a single number and outputted multiple. In the second half of chapter 5, we looked instead to functions with a single output variable and multiple inputs: those that mapped $#R#^n \to #R#$. While both required us to venture out of the assumptions that single-variable calculus made both implicitly and explicitly, both halves were reminiscent of it in their own way. In this final part, though, we'll be exploring functions that both take in *and* give out multiple numbers --- functions $#R#^m \to #R#^n$ --- and we'll find that this is a new and rather alien world. We'll see symbols we recognize and make use of calculus techniques we understand, and at times we'll crest hills and make remarkable connections that recontextualize things we learned long ago, but much of this journey will be into properly unexplored territory for us.
+
+Even the simplest example of a function $\vec{F} : #R#^m \to #R#^n$ for $m = n = 2$ eludes traditional visualization: we can't plot 4 orthogonal axes of input and output, so we'll have to understand functions like this in a different way. However, we can leverage our terminology and understanding in chapter 5 to consider them as *vector-valued functions of multiple variables*.
+
+Let's begin by focusing on the function $\vec{F} : #R#^2 \to #R#^2$ given by
+
+$$
+	\vec{F}(x, y) = \left< x + 3y, 4x + 2y \right>.
+$$
+
+It takes in a point $(x, y)$ and outputs a 2D vector, and we can plot that relationship by selecting some points in $#R#^2$ and drawing the vector $\vec{F}(x, y)$ (typically scaled down by a constant factor so all the vectors don't overlap too much) at each point $(x, y)$.
+
+@desmos{vectorField}
+
+We call this object, and by extension $\vec{F}$ itself, a **vector field**. We're drawing the vectors $\vec{F}(x, y)$ starting at their positions $(x, y)$ out of necessity, since if we tried to put them all at the origin it would be an unreadable mess. But we don't need to let that get in the way of our understanding! This is just an opportunity to learn a useful lesson about math and science more broadly: when a new situation is confusing, lean into perspectives on it that you understand. Here, there's one context in particular where we've been drawing vectors at positions not at the origin: derivatives of vector valued functions, and those that measure position in particular. Then the derivative is a velocity vector, and those naturally live *at* the position of the object whose velocity they're measuring.
+
+With this in mind, then, we can try to interpret this vector field as a collection of velocities. There's not just one curve of possible positions, though! An object could be *anywhere* in the field and still have a velocity assigned to it. A direct physical analogue is wind speed! In a flat open area, the wind velocity can vary between every possible position.
+
+Unfortunately, wind is famously not so easy to see. The way we typically *do* see wind is by its effects on other things that are easily moved by it, like leaves. Following that analogy, let's try visualizing a vector field as if it's giving us wind speed: we'll scatter a few thousand tiny particles in a 2D area and give them a velocity based on the vector field at their current position (so the velocity of each particle is constantly changing as it moves).
+
+### canvas vectorField
+
+This applet visualizes vector fields in exactly this way. A particle's color is based on its current direction (i.e. the angle of the vector field there), and its saturation is based on its velocity, so slow particles are paler. While drawing vector fields as grids of vectors is important for studying them precisely, I find these visualizations to be incredibly useful for getting a general impression of a field. We'll also lean heavily on this interpretation in later sections! I highly suggest visualizing vector fields like this whenever working with them; you can plot any fields you like with the applet itself.
+
+### image-links
+
+	/applets/vector-fields
+
+###
+
+@exc[sketching vector fields][[
+
+	1. The vector field $\vec{G}(x, y) = \left< x, -y \right>$ is reminiscent of a saddle point of a function of two variables.
+
+	]] canvas vectorField2
+
+	Do you expect $\vec{H}(x, y) = \left< -y, x \right>$ to look qualitatively similar to $\vec{G}$?
+
+	2. Sketch both on $\left[ -2, 2 \right] \times \left[ -2, 2 \right]$. Were you right?
+
+	@solution[[
+	
+	$\vec{H}$ looks like a series of concentric circles --- completely different from $\vec{G}$!
+
+	### canvas vectorField3
+
+###
+
+We can also draw vector fields whose domain or codomain is $#R#^3$, although as soon as either one is larger than $#R#^2$, we lose the ability to meaningfully draw it in the $xy$-plane. We also can't really use particle visualizations like this, since the density of particles leaves no room for depth in the image. Even the arrow diagrams are a lot less useful than we'd like.
+
+@desmos{vectorField3d}
+
+3D vector fields are, in my opinion, a topic best understood by analogy: even if we can technically draw them, we can often get much further with 2D fields if they demonstrate the same behavior. With that in mind, we'll focus almost exclusively on 2D fields in these notes unless we're discussing topics exclusive to 3D ones.
+
+Let's return to the fields in the previous exercise. We made an offhand comment about how the field $\vec{G} = \left< x, -y \right>$ looked like a saddle point of a function of two variables, and that's a good bit of intuition to run with. Specifically, there's one place in the course where we've already seen a function that takes in and outputs multiple variables: the gradient! The function $\G f : #R#^2 \to #R#^2$ *is* a vector field, and so one way to understand more about vector fields is to express them as the gradient of a function of multiple variables. Let's give that concept a name and then investigate this one a little bit further.
+
+@def[conservative vector field][[
+
+	A continuous vector field $\vec{F} : #R#^2 \to #R#^2$ is called **conservative** if $\vec{F} = \G f$ for some function $f : #R#^2 \to #R#$, called a **potential function** for $\vec{F}$. We define conservative vector fields similarly for $#R#^3$ and higher. Not all vector fields are conservative!
+
+]]
+
+Later, we'll talk very briefly about how to extend the notion of conservativity to fields that aren't continuous and defined on all of $#R#^2$, but it will take a little bit of care. For now, let's take a closer look at our field $\vec{G} = \left< x, -y \right>$. We'll develop more heuristics to tell whether a field is conservative soon, but we can get a start now by writing down the facts we would need to know about a potential function $g(x, y)$ for it:
+
+$$
+	pg/px &= x
+
+	pg/py &= -y
+$$
+
+To solve those for a formula for $g$, we need to undo the differentiation --- that's what integration is for! For the first one, we have
+
+$$
+	g = \int x\,\partial x.
+$$
+
+But what's that partial symbol doing in the integral? We haven't had the need to undo partial differentiation up to this point, but just like partial derivatives themselves, this notion of **partial integration** will fit our intuition well.
+
+A typical integral $\int f(x)\,\d x$ solves for an antiderivative $F$ of $f$, but it does so up to a constant $c$. That's because starting with any antiderivative $F$ and adding $c$ produces another antiderivative of $f$, since
+
+$$
+	d/dx\left[ F(x) + c \right] = f(x) + d/dx[c] = f(x).
+$$
+
+In effect, constants aren't seen by integrals, since derivatives zero them out. When we move to partial integrals, though, the integral loses even more precision. Evaluating the integral $\int f(x, y)\,\partial x$, means finding a function $F(x, y)$ whose partial derivative $p/px\left[ F(x, y) \right] = f(x, y)$, and that partial derivative zeros out not just constants, but any term containing only $y$. To account for the integral's inability to see entire functions of $y$ alone, we add on not just a constant $c$, but an entire function $c(y)$. The same is true in reverse for the integral $\partial y$, and since we're usually considering both at once, we'll typically subscript the $c$ function. Finally returning to our example,
+
+$$
+	g &= \int x\,\p x = \frac{x^2}{2} + c_1(y)
+
+	g &= \int -y\,\p y = -\frac{y^2}{2} + c_2(x).
+$$
+
+To form a single expression of $g$, we need to do the work that the integrals cannot by combining these two formulas into one. It's a lot like the way modern cameras take HDR photos by capturing multiple frames at different exposures and merging them: high exposures can capture details in dark areas but leave bright lights blown out, and vice versa for low exposures. Here, $c_1(y)$ must be $-\frac{y^2}{2}$ and $c_2(x)$ must be $\frac{x^2}{2}$; in general, as long as the terms involving both $x$ and $y$ agree across both expressions of $g$, then we can add those to the pure-$x$ terms from the $\partial x$ integral and the pure-$y$ terms from the $\partial y$ one. In total, $g(x, y) = \frac{x^2}{2} - \frac{y^2}{2} + c$ for any constant $c$. Don't forget that final $+c$; since *neither* the $\p x$ nor the $\p y$ integral can see constants, we have to add it back in the end.
+
+We have multiple avenues for visualizing this function $g$. First, the gradient points in the direction of steepest increase, with its magnitude being that steepness, so we can plot the 2D vector field $\vec{G}$ lifted up onto the surface $g(x, y)$, and the flow is always from the lowest areas to the highest. For convenience, we'll just take $c = 0$ in this plot, but any other value would just shift the graph vertically, and the field would still apply.
+
+@desmos{conservativeVectorField1}
+
+@aside[gradients and slopes][[
+
+	A mild implementation detail in this graph: since we want the $x$- and $y$-components of the vectors to be $\G g(x, y) = \left< g_x(x, y), g_y(x, y) \right>$, they each move a total of $\left| \left| \G g(x, y) \right| \right|$ in the $xy$-plane. Since $\left| \left| \G g(x, y) \right| \right|$ is *also* the slope (i.e. the rise in $z$ divided by the run in $x$ and $y$), the full vector needs to be
+
+	$$
+		\left< g_x(x, y), g_y(x, y), \left| \left| \G g(x, y) \right| \right| \cdot \left| \left| \G g(x, y) \right| \right| \right> &= \left< g_x(x, y), g_y(x, y), g_x(x, y)^2 + g_y(x, y)^2 \right>.
+	$$
+
+]]
+
+The other defining characteristic of the gradient is that it's orthogonal to level curves. Drawing a few for this function $g$ (again with $c = 0$), we can see that the flow is always orthogonal to the level curves! And once again, changing $c$ would just offset the level curves without changing the property of orthogonality to the field.
+
+### melded-desmos conservativeVectorField2
+
+@exc[conservative vector fields][[
+
+	1. In the previous vector field, why is the flow faster across lines spaced more closely together?
+
+	2. Going back to $\vec{H} = \left< -y, x \right>$, how could you draw white lines through the field so that the flow was always orthogonal to them? Interpreting these as level curves of a function, do you think the field is conservative?
+
+	3. Integrate the field and check for yourself!
+
+	@solution[[
+
+	1. Since the closely-spaced lines are where the function is steepest, that's very literally where the magnitude of the field is largest!
+
+	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But this doesn't sit well with me: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct.
+
+	3. We have
+	
+	$$
+		h(x, y) &= \int -y\,\partial x = -xy + c_1(y)
+
+		h(x, y) &= \int x\,\partial y = xy + c_2(x).
+	$$
+
+	There are no pure-$x$ or -$y$ terms, so we can remove the $c_1$ and $c_2$, but the disagreement on the mixed term isn't great. One of these wants $h(x, y) = -xy$ and one wants $h(x, y) = xy$, and there just isn't any reconciling the two. We can draw these curves on a graph and see that the field is very much not crossing orthogonally.
+
+	]] melded-desmos conservativeVectorField3
+
+	There is an interesting subtlety worth noting here. Each partial integral produced a function satisfying one of the derivative conditions but not the other, so at each crossing, one of the two components of the field will match the gradient. For example, with $h(x, y) = xy$, the level curve $c = 1$ is the curve $y = \frac{1}{x}$. At the point $(1, 1)$, the gradient is $\left< 1, 1 \right>$, drawn as the upper-right vector, and we can see that although the flow doesn't follow that vector, the $y$-component still matches. That's true for any half-correct potential function we produce in this way, but what's unusual about this one is how the other candidate for a potential function that we produced was $h(x, y) = -xy$, whose level curves coincide with the other possible value of $h$. The $c = -1$ level curve of $h(x, y) = -xy$ is once again $y = \frac{1}{x}$, but this time, the gradient is $\left< -1, -1 \right>$ (the other white vector). Sure enough, the $x$-component of the field matches there, but not $y$.
+
+###
+
+While we were able to take a vector field $\vec{F}(x, y)$ and determine whether it was conservative by evaluating partial integrals of each component, it's reasonable to want a better method for determining whether a field is conservative without going to all the trouble of integrating it. If we knew the field $\vec{F}(x, y)$ was conservative, then $\vec{F} = \G f$ for some function $f(x, y)$, and so
+
+$$
+	\vec{F}(x, y) = \left< pf/px, pf/py \right>.
+$$
+
+If we can think of a fact about the components of $\vec{F}$ that's necessarily true, maybe we'll get lucky and find that it's also *sufficient* to show a field is conservative in the first place. One of the only leads we have to relate those two partial derivatives is Clairaut's Theorem, so long as the potential function $f$ isn't too poorly behaved:
+
+$$
+	p/py\left[ pf/px \right] = p/px\left[ pf/py \right].
+$$
+
+Miraculously, this is indeed a sufficient condition, as long as we add the necessary hypotheses for Clairaut's Theorem and also prevent the region we consider from possibly harboring problematic areas in hidden points.
+
+@thm[conservativity of 2D vector fields][[
+
+	Let $\vec{F}(x, y) = \left< a(x, y),\ b(x, y) \right>$. If $a$ and $b$ are differentiable with continuous partial derivatives, and
+
+	$$
+		pa/py = pb/px
+	$$
+
+	everywhere in an open and connected set $U$ with no holes (the technical term is **simply connected**), then $\vec{F}$ is conservative. If $pa/py \neq pb/px$, then $\vec{F}$ cannot be conservative, regardless of the region $U$.
+
+]]
+
+Just like with Clairaut's Theorem, vector fields that satisfy the partial derivative equivalence but fail at the region are strange enough that we tend to recognize something might be up with them from the outset. For completeness, though, let's briefly state what those properties about the set $U$ mean:
+
+> - Open: around every point in $U$, we can draw a circle of a small radius that's still entirely contained within $U$ (intuitively, there are no hard boundaries).
+
+> - Connected: for any two points in $U$, we can draw a path from one point to the other that never leaves $U$ (intuitively, $U$ is a single object, not split into multiple disparate pieces).
+
+> - Simply connected: any closed loop in $U$ can be contracted down to a point while staying in $U$ the entire time (intuitively, there aren't any holes or even any missing points inside of $U$.)
+
+In particular, one region that satisfies all three of these conditions is $#R#^2$ itself! Therefore, if we're trying to show that a 2D vector field is conservative and it's defined for all of $#R#^2$, then we can just check the previous theorem without worrying about the shape of the domain.
+
+@ex[the conservativity of 2D vector fields][[
+
+	Determine if the vector field
+
+	$$
+		\vec{G}(x, y) = \left< y^2 \cos\left( xy^2 \right),\ 1 + 2xy\cos(xy^2) \right>
+	$$
+
+	is conservative and find a potential function for it if so.
+
+	Differentiating,
+
+	$$
+		p/py \left[ y^2 \cos\left( xy^2 \right) \right] &= 2y\cos\left( xy^2 \right) - y^2\sin\cos\left( xy^2 \right)(2xy)
+
+		&= 2y\cos\left( xy^2 \right) - 2xy^3\sin\cos\left( xy^2 \right)
+
+		p/px \left[ 1 + 2xy\cos(xy^2) \right] &= 2y\cos(xy^2) - 2xy\sin(xy^2)\left( y^2 \right)
+
+		&= 2y\cos\left( xy^2 \right) - 2xy^3\sin\cos\left( xy^2 \right).
+	$$
+
+	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
+
+	$$
+		\int y^2 \cos\left( xy^2 \right)\p x &= y^2\sin\left( xy^2 \right) + c_1(y)
+
+		\int \left( 1 + 2xy\cos\left( xy^2 \right) \right)\p y &= y + \int 2xy\cos\left( xy^2 \right)\p y
+
+		&= y + \int x\cos(xu)\,\p u, \quad \text{ where } u = y^2 \text{ and } \d u = 2y\,\d y.
+	$$
+
+	If we're being maximally pedantic, then since the integral contains $\p y$ and not $\d y$, we should be evaluating $pu/py$ in a $u$-sub, meaning we ought to treat $u$ as a function of two variables $x$ and $y$.  The outcome is exactly the same if we think of it as a function of a single variable, though, and there's little sense in adding $x$ into the definition of $u$, since the integral treats it as a constant. Continuing,
+
+	$$
+		y + \int x\cos(xu)\,\p u &= y + \sin(xu) + c_2(x)
+
+		&= y + \sin(xu) + c_2(x)
+
+		&= y + \sin\left( xy^2 \right) + c_2(x).
+	$$
+
+	Merging these two accounts of the potential function $g$ together, we find
+
+	$$
+		g(x, y) = \sin\left( xy^2 \right) + y + c.
+	$$
+
+	Remember that final $+c$! Since we were only asked to find a single potential function, it's fine to just take $c = 0$, but it's healthy to remember that it's there in general.
+
+]]
+
+@exc[the conservativity of 2D vector fields][[
+
+	Determine if the following vector fields are conservative and find a potential function for each one that is.
+
+	1. $\vec{F}(x, y) = \left< 3x^2 - 2xy,\ -x^3 + 2y^2 \right>$.
+
+	2. $\vec{G}(x, y) = \left< -2x \sin\left( x^2 + y \right),\ 1 - \sin\left( x^2 + y \right) \right>$.
+
+	@solution[[
+
+	1. Differentiating,
+
+	$$
+		p/py \left[ 3x^2 - 2xy \right] &= -2x
+
+		p/px \left[ -x^3 + 2y^2 \right] &= -3x^2.
+	$$
+
+	Those aren't the same, and so the field is not conservative.
+
+	2. This time,
+
+	$$
+		p/py \left[ -2x \sin\left( x^2 + y \right) \right] &= -2x\cos\left( x^2 + y \right)
+
+		p/px \left[ 1 - \sin(x^2 + y) \right] &= -\cos\left( x^2 + y \right)(2x).
+	$$
+
+	Sure enough, those are the same! We can construct a potential function by partially integrating both components of the field with respect to different variables.
+
+	$$
+		\int -2x \sin\left( x^2 + y \right)\p x &= \cos\left( x^2 + y \right) + c_1(y)
+
+		\int \left( 1 - \sin(x^2 + y) \right)\p y &= y + \cos\left( x^2 + y \right) + c_2(x).
+	$$
+
+	Merging these two accounts of the potential function $g$ together, we find
+
+	$$
+		g(x, y) = \cos\left( x^2 + y \right) + y + c,
+	$$
+
+	and sure enough, those level curves are orthogonal to the field!
+
+	]] melded-desmos conservativeVectorField4
+
+###
+
+
+
+@navButtons

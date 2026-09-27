@@ -1,0 +1,303 @@
+@navButtons
+
+When we discussed the Chain Rule, we found the derivative of $\ln\left( x^3 \right)$ in two different ways: by the Chain Rule, since we knew the derivative of both $\ln(x)$ and $x^3$, and also by using a log rule to bring the exponent of $3$ down in front to form $3\ln(x)$. Let's take just a moment to review that rule and others, starting with just what a log is in the first place.
+
+When we write $2^3 = 8$, we're writing a relationship between three numbers. With the way the $3$ is physically written above and to the right of the $2$, we can write them on two points of a triangle, with the 8 on the third point.
+
+$$
+	\begin{array}{ccc}
+		& 3 &
+		& &
+		2 & & 8
+	\end{array}
+$$
+
+Written this way, we can see an equivalent relationship to $2^3 = 8$: that is, $\sqrt[3]{8} = 2$. The way we draw the numbers even lines up with the position of the $3$ and $8$ in the triangle!
+
+Given the two numbers on the left or right side of the triangle, then, we can find the remaining number. But what about if we're given the bottom two numbers and asked to find the top? Rather than $\sqrt[3]{8}$, which finds the number that when cubed is equal to $8$, we're asking for the *exponent* on $2$ that produces $8$. This exponent-finding operation is a log, and we write $\log_2(8) = 3$. Delightfully, the $2$ and $8$ are even (mostly) written horizontally from one another, just like in the triangle. This triangle idea comes directly from the unmatched [3Blue1Brown](https://www.youtube.com/watch?v=sULa9Lc4pck), and I highly encourage you to watch the full video if you're interested!
+
+Returning to $\ln\left( x^3 \right)$, the **natural log** $\ln$ is the function $\log_e$ whose base is $e$, so $\ln\left( x^3 \right)$ finds the exponent we raise $e$ to in order to get $x^3$. If $\ln(x) = a$, then $e^a = x$, and so $\left( e^a \right)^3 = e^{3a} = x^3$. In other words, $\ln\left( x^3 \right) = 3a = 3\ln(x)$. In general, the exponent rules we already know translate into very similar log rules:
+
+$$
+	\log_b(xy) &= \log_b(x) + \log_b(y)
+
+	\log_b\left( \frac{x}{y} \right) &= \log_b(x) - \log_b(y)
+
+	\log_b{x^c} &= c\log_b(x)
+$$
+
+@exc[logarithm rules][[
+
+	1. Find $$\log_4(16)$$, $$\log_{16}(4)$$, $$\ln(1)$$, and $$\log_2\left( \frac{1}{8} \right)$$.
+
+	2. Rewrite $$\ln\left( x^5(x+3)^{-2} \right)$$ using log rules so that the inside of the logarithms are as simple as possible.
+
+]]
+
+Let's now focus in on the $\ln\left( x^3 \right)$ example. The Chain Rule was certainly helpful to find the derivative, but we had to know the derivative of $x^3$ to find it. What if the function inside the log was more complicated, like $x^x$? Neither the Power Rule nor the formula for the derivative of an exponential function helps to find its derivative, since it doesn't have a constant base or a constant exponent. For that reason, the Chain Rule is out, but we can *still use log rules*. Specifically,
+
+$$
+	d/dx \left[ \ln\left( x^x \right) \right] &= d/dx \left[ x\ln\left( x \right) \right]
+
+	&= \ln(x) + x\left( \frac{1}{x} \right)
+
+	&= \ln(x) + 1
+$$
+
+Interesting! The magic of this idea, though, comes from *also* considering the Chain Rule, even though it looks like a dead end.
+
+$$
+	d/dx \left[ \ln\left( x^x \right) \right] &= \frac{1}{x^x} d/dx \left[ x^x \right].
+$$
+
+Even though we can't proceed any further like this, we now have two different expressions for $d/dx \left[ \ln\left( x^x \right) \right]$, and by setting them equal, we can solve the the derivative we don't know.
+
+$$
+	\frac{1}{x^x} d/dx \left[ x^x \right] &= \ln(x) + 1
+
+	d/dx \left[ x^x \right] &= x^x \ln(x) + x^x.
+$$
+
+That worked like magic! This technique applies to functions of the form $y = f(x)^{g(x)}$ more broadly: by taking $\ln$ of it and then taking the derivative in two different ways, we can solve for its derivative indirectly. Let's introduce a more general, structured way to solve for the derivative that will carry into the next topic.
+
+### thm -m "Method: Logarithmic Differentiation"
+
+	To differentiate a function of the form $y = f(x)^{g(x)}$, we follow these steps:
+
+	1. Take $\ln$ of both sides and use log rules to bring down the exponent:
+
+	$$
+		\ln(y) = \ln\left( f(x)^{g(x)} \right) = g(x) \ln(f(x)).
+	$$
+
+	2. Differentiate both sides with respect to $x$. Be careful on the left side, though! Since $y$ is an entire function of $x$, we have to use the Chain Rule. The right side will be a Product Rule, and also a Chain Rule with the log, and it will vary enough problem-to-problem that we won't solve it symbolically here.
+
+	$$
+		d/dx \left[ \ln(y) \right] &= d/dx \left[ g(x) \ln(f(x)) \right]
+
+		\frac{1}{y} \cdot dy/dx &= d/dx \left[ g(x) \ln(f(x)) \right].
+	$$
+
+	Now $dy/dx$ is what we're trying to solve for! Since $y = f(x)^{g(x)}$, it's the derivative we set out to find in the first place.
+
+	3. So we multiply both sides by $y$, and then substitute back for $x$.
+
+	$$
+		dy/dx = f(x)^{g(x)} \cdot d/dx \left[ g(x) \ln(f(x)) \right].
+	$$
+
+###
+
+This method of using $y$ to represent a function of $x$ symbolically probably seems a little strange! It'll get much more comfortable soon, and logarithmic differentiation is a great place to practice getting used to it before we bring it to other more general contexts.
+
+@exc[logarithmic differentiation][[
+	
+	1. Find $$d/dt\left[ {\ln(t)}^{\ln(t)} \right]$$.
+
+	2. Let $$f(y) = (y)^{(e^y)}$$. Find $f'(y)$.
+	
+]]
+
+Logarithmic differentiation also lets us finally handle the derivative of $x^n$, where $n$ is not just a rational number, but *any real number*. And thankfully, it's exactly what we'd like it to be, and we can even very briefly prove it!
+
+@thm[the derivative of $x^n$ for any real $n$][[
+	
+	Let $n$ be a real number. Then $$d/dx[x^n] = nx^{n-1}$$.
+	
+]]
+
+### pf
+	
+	With $y = x^n$, write
+	
+	$$
+		\ln(y) = \ln(x^n) = n\ln(x).
+	$$
+	
+	Then
+	
+	$$
+		\frac{1}{y} \cdot dy/dx = \frac{n}{x},
+	$$
+	
+	so
+	
+	$$
+		dy/dx = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
+	$$	
+	
+###
+
+
+
+## Implicit Functions
+
+Typically, and for nearly all of this course so far, we define functions **explicitly**. All that means is that $y$ is written as a function of $x$, so that we have an equation of the form $y = f(x)$. The plot of this function is all of the $(x, y)$-pairs that satisfy the equation, and since $y$ is on its own, we can just plug in a bunch of $x$-values to $f$ and get the corresponding $y$-values directly.
+
+It's possible to write down relationships between variables $x$ and $y$ without forcing $y$ to be alone on one side, though. For example, the equation $x^2 + y^2 = 1$ defines a circle: its points are given by all the $x$ and $y$ with $x^2 + y^2 = 1$. It's not possible to solve for $y$ explicitly here, since we'd have to take a square root, which results in $y = \pm \sqrt{1 - x^2}$. Visually, this means the curve doesn't pass the vertical line test, which means it's not a function --- effectively, its graph is formed by gluing together the graphs of two other functions.
+
+@desmos{circle}
+
+We can still talk about slopes of tangent lines, though --- all we need for those to be well-defined is for the limit of slopes of secant lines to exist, or equivalently, for there to be a well-defined change in $y$ relative to a small change in $x$. Pictured above is a graph of $x^2 + y^2 = 1$, along with the points $\left( \frac{1}{2}, \pm \frac{\sqrt{3}}{2} \right)$ and their tangent lines. We'll encounter a number of curves defined in this indirect manner, and it will help to give them a name.
+
+@def[implicit equation and differentiation][[
+
+	An **implicit equation** of $x$ and $y$ is an equation involving the two, where potentially neither variable can be isolated. The process of finding the slopes of tangent lines to the graph of an implicit equation is called **implicit differentiation**.
+
+]]
+
+Implicit differentiation can take a second to get used to, because it usually involves heavy use of the Chain Rule in situations where it might not seem to apply at first glance.
+
+Let's use $x^2 + y^2 = 1$ as our introductory example. Like we saw in the previous graph, there can be multiple $y$-values for a given $x$-value, and they can have tangent lines with different slopes. We'd therefore expect the derivative $dy/dx$ to also be defined in terms of both $x$ and $y$. While we could theoretically compute the slope of a tangent line by taking limits of slopes of secant lines, we've spent the past few weeks developing more convenient methods for computing derivatives, and so we owe it to ourselves to use that theory as much as possible. While $y$ isn't a function of $x$, there is a famous result (that's infamously complicated to prove) called the *Implicit Function Theorem* that can help us quite a bit here.
+
+@thm[The Implicit Function Theorem][[
+
+	Suppose $(a, b)$ is a point on the graph of an implicit equation at which the graph is differentiable --- that is, the tangent line at $(a, b)$ is well-defined and not vertical. Then there is an *explicit* function $y = f(x)$ and a neighborhood surrounding $(a, b)$ in which $y = f(x)$ has exactly the same graph as our implicit equation.
+
+]]
+
+As a concrete example, if $(a, b)$ is a point on the graph of $x^2 + y^2 = 1$ with $b > 0$, then $y = \sqrt{1 - x^2}$ is an explicitly-defined and differentiable function that agrees with $x^2 + y^2 = 1$ on a (possibly very tiny) region containing $(a, b)$. If $b = 0$, any neighborhood of $(a, b)$ will fail the vertical line test, and so no such explicit function exists --- while the Implicit Function Theorem doesn't guarantee that we can't find an explicit defined function if the derivative isn't defined like this, it's nice to see exactly how things could go wrong. Implicit equations for which the Implicit Function Theorem applies are often called **implicit functions** --- that can be a slightly confusing moniker, since they often aren't functions globally, but the meaning of the term is that they are equal to functions locally.
+
+With a fixed point $(a, b)$ and the explicit function $f(x)$ in hand, we can replace every instance of $y$ with $f(x)$ in the equation. Continuing with our circle example, that looks like $x^2 + f(x)^2 = 1$. And at this point, even if we don't have a formula for $f$, we can differentiate both sides of the equation with respect to $x$ by using the Chain Rule! We have
+
+$$
+	x^2 + f(x)^2 &= 1
+	
+	d/dx[x^2 + f(x)^2] &= d/dx[1]
+	
+	d/dx[x^2] + d/dx[f(x)^2] &= 0
+	
+	2x + 2f(x)f'(x) &= 0
+	
+	f'(x) &= -\frac{2x}{2f(x)}
+
+	&= -\frac{x}{f(x)}.
+$$
+
+Incredibly, we don't need to know a formula for $f$, nor do we even need to know $a$ and $b$ ahead of time! By rewriting this as
+
+$$
+	dy/dx = -\frac{x}{y},
+$$
+
+we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1$ for any point $(x, y)$ on the curve. Let's double-check that it seems reasonable: when $x = 0$ and $y = \pm 1$, $dy/dx = 0$, which makes sense since the tangent line is flat at $(0, \pm 1)$. When $x = y$, $dy/dx = -1$, and that looks about right --- the two points on the intersection of $y = x$ and $x^2 + y^2 = 1$ appear to have tangent lines with slope $-1$. And at $(\pm 1, 0)$, the derivative is undefined, as we'd hope!
+
+One of the most striking results of this example is that we differentiated an implicit function, but our final formula is in terms of $x$ and $y$ only. Even though we needed at least two different formulas for $f$ to cover every possible point --- for example, $\sqrt{1 - x^2}$ and $-\sqrt{1 - x^2}$ --- the end result works for all points $(x, y)$ with $x^2 + y^2 = 1$ that have a well-defined tangent line. In fact, we can completely omit $f$ from the outset! Let's write down a better version of this process that works in general and improves the notation.
+
+### thm -m "Method: implicit differentiation"
+	
+	To find the derivative $dy/dx$ of a function defined implicitly in terms of $x$ and $y$:
+	
+	1. Take $d/dx$ of both sides. While derivatives of $x$ work normally, we treat $y$ as if it were an explicit function of $x$, so we need to use the Chain Rule: we rewrite $d/dx[y]$ as $dy/dx$, so for example, $d/dx[\tan(y)] = \sec^2(y) \cdot dy/dx$.
+	
+	2. Move all the terms containing $dy/dx$ to one side of the equation and all the other terms to the other side.
+	
+	3. Factor out $dy/dx$ and divide by whatever is left over.
+	
+###
+
+Returning to our original example, we can solve it with quite a bit less overhead:
+
+$$
+	x^2 + y^2 &= 1
+
+	d/dx[x^2 + y^2] &= d/dx[1]
+
+	2x + 2y dy/dx &= 0
+	
+	f'(x) &= -\frac{2x}{2y}
+
+	&= -\frac{x}{y}.
+$$
+
+And so the slope of the tangent line at $\left( \frac{1}{2}, \frac{\sqrt{3}}{2} \right)$, the top point in the original graph, is $-\frac{1/2}{\sqrt{3}/2} = -\frac{1}{\sqrt{3}}$.
+
+@exc[an ellipse][[
+	
+	Consider the implicit equation $x^2 - xy + y^2 = 3$.
+
+	1. Find $$dy/dx$$ in terms of $x$ and $y$.
+
+	2. Show that $(-1, 1)$ is on the graph, and then find an equation for the tangent line to the graph at $(-1, 1)$.
+
+	3. Find all the points on the graph with a horizontal tangent line.
+
+	4. Find all the points on the graph with a vertical tangent line.
+
+	@solution[[
+
+	@desmos{ellipse}
+	
+]]
+
+@exc[braids][[
+	
+	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
+	
+	@desmos{braids}
+	
+	1. Does this graph make sense? You might find it helpful to first sketch a graph of $\sin(y) = x$, and then think about how applying cosine to both sides affects the result.
+
+	2. Find $dy/dx$ by differentiating implicitly.
+
+	3. Is your formula for $dy/dx$ always defined for any values of $x$ and $y$ on the graph? If not, where are the problem points, and why are they problems? Do different types of problems on the graph correspond to different issues with your formula for $dy/dx$?
+	
+]]
+
+Implicit functions do appear experimentally, though perhaps somewhat less often than explicit ones. One classic example comes from orbital mechanics, which is one of the major motivators of modern mathematics in the first place. To briefly introduce the setup, planets typically orbit stars in **ellipses**, which are oval-like shapes defined similarly to circles --- rather than the distance to a center being constant, though, the sum of distances to two points called **foci** is constant, and the star occupies one of these two foci. Around the year 850 CE, the Persian astronomer Habash al-Hasib introduced an equation for the position of a planet orbiting in an ellipse, and in 1609, the German astronomer Johannes Kepler independently discovered the same equation; as is frequently and frustratingly the case in mathematics, it is now known as **Kepler's equation**. Two angles $M$ and $E$, somewhat confusingly called the mean anomaly and eccentric anomaly, are related by the equation $E - e \sin(E) = M$, where $e$ is a parameter called the **eccentricity** that determines how elliptical the orbit is. Typically, $M$ is relatively easy to calculate, but $E$ is computed from $M$, and so Kepler's equation describes $E$ as an implicit function of $M$. On the homework, you'll get the chance to dig in much deeper to this equation and use implicit differentiation to compute velocities of the Earth and Moon.
+
+Let's approach one more complicated example before moving on.
+
+@ex[implicit differentiation][[
+	
+	Given the implicit equation $x\sin(y) = y$, find $dy/dx$.
+	
+	@desmos{sinThing}
+
+	@solution[[
+	
+	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the Product Rule, and then the Chain Rule (since we're differentiating implicitly). We have
+	
+	$$
+		x\sin(xy) &= y
+		
+		d/dx[x\sin(y)] &= d/dx[y]
+		
+		d/dx[x] \cdot \sin(y) + x \cdot d/dx[\sin(y)] &= dy/dx
+		
+		\sin(y) + x \cos(y) \cdot dy/dx &= dy/dx
+	$$
+
+	Now we're nearly done! All that's left is to group the terms containing $dy/dx$ together on the left side, factor it out, and then divide by what's left.
+
+	$$	
+		x \cos(y) dy/dx - dy/dx &= -\sin(y)
+
+		\left( x \cos(y) - 1 \right) dy/dx &= -\sin(y)
+
+		dy/dx &= \frac{-\sin(y)}{x \cos(y) - 1}.
+	$$
+
+	There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
+	
+]]
+
+@exc[a more complicated implicit function][[
+	
+	Consider the implicit equation $$\ln\left( x^2 + y^2 \right) + 2^x - y^3 = 0$$.
+
+	1. Find $$dy/dx$$ in terms of $x$ and $y$.
+
+	2. Find $$dx/dy$$ in terms of $x$ and $y$.
+
+	3. (Bonus) The function $dy/dx$ only makes sense as a derivative when we plug in values of $x$ and $y$ on the curve. Is there a way to make sense of plugging in values that aren't on the curve? (Hint: how could we change the right side of the equation without changing $dy/dx$?)
+
+	@solution[[
+
+	@desmos{implicitLogEquation}
+	
+]]
+
+
+
+@navButtons

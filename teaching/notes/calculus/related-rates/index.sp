@@ -1,0 +1,176 @@
+@navButtons
+
+One of the most widely used applications of implicit differentiation is to relate multiple quantities that are changing at once. Let's start from something familiar to get our bearings.
+
+@exc[the area of a square][[
+
+	A farm has a fenced-in **square** pasture for livestock to graze. Over time, as the number of animals increases, the area (and therefore amount of fence used) expands. Let $A(t)$ be the area of the pasture after $t$ years.
+
+	1. Let $f(t)$ be the length of one side of the fence after $t$ years, measured in feet. What is $A(t)$ when $f(t) = 8$?
+
+	2. How much more area is enclosed when $f(t) = 9$ than when $f(t) = 8$? What about from $f(t) = 9$ to $f(t) = 10$?
+
+	3. Write a sentence explaining what the following quantities represent: $$df/dt$$, $$dA/dt$$, and $$dA/df$$.
+
+	4. Using your two answers in part 2, do you think $$dA/dt$$ depends only on $$df/dt$$, or does it also depend on $f$? (Very briefly) explain.
+
+	5. Write down a formula for $A$ in terms of $f$, and then use implicit differentiation to solve for $$dA/dt$$ to check your answer in the previous part.
+
+]]
+
+When two related quantities, like side length and area, are both changing over time, we can use implicit differentiation to relate their derivatives. Problems like these are called **related rates**, and they'll give us plenty of chances to work with implicit differentiation.
+
+@ex[related rates][[
+
+	The area of a circle is increasing at a rate of $4\,\frac{\text{in}^2}{s}$. When the circumference is $2\,\text{in}$, how fast is it increasing?
+
+	We'll start problems like these in the same way: writing down equations for the two functions that can relate them. Here, the area of a circle $A$ and its circumference $C$ are related since they're both a function of radius; specifically, $A(r) = \pi r^2$ and $C(r) = 2\pi r$. It's particularly nice if we can express one function in terms of another --- here, for example, we could solve for $r$ in one function and plug it into the other --- but it's not necessary, and we can take this example as an opportunity to show how to handle these sorts of problems in general. First of all, we have to get a derivative into these equations somehow, since the information we're given involves both rates of change and function values: we know $dA/dt = 4$ and $C = 2$, and we're trying to find $dC/dt$. To make those derivatives show up, we can differentiate both sides of both equations with respect to $t$ --- implicitly, since area, circumference, and radius are all changing over time and therefore functions of $t$.
+
+	$$
+		dA/dt &= 2 \pi r dr/dt
+
+		dC/dt &= 2 \pi dr/dt
+	$$
+
+	So if we can just find $dr/dt$, then the second equation will let us find $dC/dt$! We'll need to find $dr/dt$ from the first equation, meaning we need to know both $dA/dt$ (which is $4$), and the current value of $r$. We have $C = 2\pi r = 2$, so $r = \frac{2}{2\pi} = \frac{1}{\pi}$. Now
+
+	$$
+		dA/dt &= 2 \pi r dr/dt
+
+		4 &= 2 dr/dt
+
+		dr/dt &= 2,
+	$$
+
+	and so $dC/dt = 4\pi\,\frac{\text{in}}{s}$.
+
+]]
+
+The technology behind related rates is just implicit differentiation, but it can look a little different than what we're used to. Typically, the implicit differentiation we need will have more than one variable that depends on the one we're differentiating with respect to. Previously, we had $y$ dependent on $x$, and only $y$ had to be handled differently. In the previous example, though, $A$, $C$, and $r$ all depend on $t$, and so they all effectively become Chain Rule problems.
+
+
+@exc[related rates][[
+	
+	A bird is flying 30 feet off the ground at 10 feet per second horizontally. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that moment. When $s = 50$, how fast is $s$ increasing?
+
+	@solution[[
+	
+	It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 30, so we'll fix the bird's $y$-coordinate at 30. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
+	
+	So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean Theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
+	
+	$$
+		s = \sqrt{x^2 + 30^2}.
+	$$
+	
+	@desmos{relatedRates}
+	
+	Now we can differentiate both sides implicitly:
+	
+	$$
+		ds/dt = \frac{1}{2} (x^2 + 30^2)^{-1/2} \cdot 2x \cdot dx/dt
+	$$
+	
+	We're being asked to find $ds/dt$ when $s = 50$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
+	
+	$$
+		s &= \sqrt{x^2 + 30^2}
+		
+		50 &= \sqrt{x^2 + 900}
+		
+		2500 &= x^2 + 900
+		
+		1600 &= x^2
+		
+		x &= \sqrt{1600}
+		
+		x &= 40
+	$$
+	
+	Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $dx/dt = 10$. Therefore,
+	
+	$$
+		ds/dt &= \frac{1}{2} (40^2 + 30^2)^{-1/2} \cdot 2(40) \cdot 10
+
+		&= 8
+	$$
+	
+	This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.
+	
+]]
+
+@exc[related rates][[
+	
+	All winter, you've been training for the national beach ball inflating contest, and now your day has finally come. The beach ball you're tasked with inflating is spherical, and as it fills up with air, the pressure makes it harder to inflate: after $t$ seconds, you're managing to increase the volume at a rate of $32 \cdot 2^{-t}$ cubic inches per second. After 4 seconds, there are $36 \pi$ cubic centimeters of air inside the beach ball. How fast is its surface area increasing at that point in time?
+
+	@solution[[
+
+	Let's begin by getting equations for the relevant quantities in terms of similar variables. Both volume and surface area are functions of radius:
+
+	$$
+		V(r) &= \frac{4}{3}\pi r^3
+
+		S(r) &= 4\pi r^2.
+	$$
+
+	Differentiating with respect to $t$,
+
+	$$
+		dV/dt &= 4\pi r^2 dr/dt
+
+		dS/dt &= 8\pi r dr/dt.
+	$$
+
+	We're trying to solve for $dS/dt$ when $t = 4$, so we need to find both $r$ and $dr/dt$. We can find that
+	
+	$$
+		\left. dV/dt \right|_{t = 4} = 32 \cdot 2^{-4} = 2,
+	$$
+
+	and we also know that $V(4) = 36\pi$, which lets us find $r$:
+
+	$$
+		\frac{4}{3}\pi r^3 &= 36\pi
+
+		\pi r^3 &= 27\pi
+
+		r &= 3.
+	$$
+
+	Plugging this back into our equation, we have
+
+	$$
+		dV/dt &= 4\pi r^2 dr/dt
+
+		2 &= 4\pi \cdot 9 \cdot dr/dt
+
+		dr/dt &= \frac{1}{18\pi},
+	$$
+
+	and so
+
+	$$
+		dS/dt &= 8\pi r dr/dt
+
+		&= 8\pi \cdot 3 \cdot \frac{1}{18\pi}
+
+		&= \frac{4}{3}.
+	$$
+
+	Therefore, the surface area is increasing at a rate of $$\frac{4}{3}\,\frac{\text{in}^2}{\text{s}}$$.
+	
+]]
+
+Related rates can also handle relationships between very different types of quantities, like distances and angles!
+
+@exc[related rates and angles][[
+
+	A bird is flying at a height of $10\sqrt{3}$ feet above the ground at 5 feet per second horizontally. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that moment. As you watch it fly away from you, you're looking up from the ground at angle $\theta$, which decreases over time as the bird gets closer to the horizon. When $s = 20$, how fast is $\theta$ decreasing?
+
+	Bonus: do you think $$\frac{\d^2\theta}{\d t}$$ at this moment in time is positive, negative, or zero? Why?
+
+]]
+
+
+
+@navButtons

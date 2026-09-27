@@ -1,0 +1,297 @@
+@navButtons
+
+
+
+Now that we've discussed partial derivatives and some of their most important properties, let's see if we can return to the problem of finding a complete derivative replacement for functions of multiple variables.
+
+
+
+## Directional Derivatives
+
+For $z = f(x, y)$, the partial derivatives $pf/px(a, b)$ and $pf/py(a, b)$ tell us the slopes of the graph of $f$ at $(a, b)$ in the $x$ and $y$ directions; or equivalently, the slopes of the lines given by intersecting the tangent plane to the graph at $(a, b)$ with the planes $y = b$ and $x = a$. But what about if we wanted to move in a different direction than just parallel to one of the axes? Let's return to the limit definition to find out.
+
+The partial derivative $pf/px$ is defined by
+
+$$
+	pf/px(a, b) = \lim_{h \to 0} \frac{f(a + h, b) - f(a, b)}{h},
+$$
+
+which is the usual slope of a secant line, where we fix the first point at $(a, b, f(a, b))$ and the second at $(a + h, b, f(a + h, b))$ --- that is, distance $h$ away in the $xy$-plane, where that distance is entirely in the $x$-direction. To move that point in a direction other than parallel to the $x$- or $y$-axis, we need to change *both* $x$ and $y$, and to ensure we're still calculating a slope correctly, the new point needs to be exactly distance $h$ from $(a, b)$ in the $xy$-plane. Focusing only on direction for a moment, we're looking for a point of the form $(a + \cos(\theta), b + \sin(\theta))$ for some angle $\theta$. That point would be distance $1$ from $(a, b)$, and so to find a point that's distance $h$ away, we can modify it to $(a + h\cos(\theta), b + h\sin(\theta))$. With that in mind, let's define our generalization of a partial derivative.
+
+@def[directional derivative of a function of two variables][[
+
+	Let $f(x, y)$ be differentiable at $(a, b)$. The **directional derivative** of $f$ at $(a, b)$ in the direction $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$ is
+
+	$$
+		D_{\vec{u}}f(a, b) = \lim_{h \to 0} \frac{f(a + h\cos(\theta), b + h\sin(\theta)) - f(a, b)}{h}.
+	$$
+
+]]
+
+Ideally, everything we develop will also be useful for functions of more than two variables, though, and so defining everything in terms of $\theta$ isn't the best idea when we've already seen on the homework how much more complicated that would become for even a function of three variables. Instead, let's leverage the terminology of unit vectors that we've already developed.
+
+@def[directional derivative][[
+
+	Let $\vec{p} \in #R#^n$ be a point, let $\vec{u} \in #R#^n$ be a unit vector, and let $f : #R#^n \to #R#$ be a function of $n$ variables that is differentiable at $\vec{p}$. The **directional derivative** of $f$ at $\vec{p}$ in the direction of $\vec{u}$ is
+
+	$$
+		D_{\vec{u}}f(\vec{p}) = \lim_{h \to 0} \frac{f(\vec{p} + h\vec{u}) - f(\vec{p})}{h}.
+	$$
+
+]]
+
+That's a very dense definition, but the moral is that it's *really no different than a partial derivative*. All a directional derivative does is measure the slope of a tangent line in a specific direction, not necessarily locked to a direction parallel to the $x$- or $y$-axis.
+
+In fact, directional derivatives are related to partial derivatives even more closely than the definition might suggest. Let's take a function $f(x, y)$ of two variables, a point $(a, b)$ where it's differentiable, and a unit vector $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$.
+
+@desmos{directionalDerivative}
+
+Take some time to interact with this graph. The red point lives on the purple surface $z = f(x, y)$, and by changing $s$, we change the direction of the gray plane that intersects it. The result is the orange cross-sectional graph, and just like with partial derivatives, we can find its tangent line (the first hidden equation at the bottom of the list --- @clickTap[click][tap] the empty circle to show it). The slope of that line is the directional derivative $D_{\vec{u}}f(a, b)$, where $\vec{u}$ points in the direction of the tangent plane (that is, $D_{\vec{u}}f(a, b)$ is positive if the tangent line slopes upward in the direction of $\vec{u}$ and negative if it slopes downward).
+
+Since the orange curve is the graph of $z = f(x, y)$, if we parameterize the path that just $x$ and $y$ take along it, we can solve for $z$. Luckily, that $xy$-path is just a straight line from $(a, b)$ in the direction of $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$, so we have the line 
+
+$$
+	\left< a, b \right> + t\left< \cos(\theta), \sin(\theta) \right> = \left< a + t\cos(\theta),\quad b + t\sin(\theta) \right>,
+$$
+
+and therefore the orange curve $\vec{r}(t)$ given by
+
+$$
+	\vec{r}(t) = \left< a + t\cos(\theta),\quad b + t\sin(\theta),\quad f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right>.
+$$
+
+That may not look too nice, but we can do this! We're interested in the tangent line to this curve at $(a, b)$, and the direction vector for that line is $\vec{r}'(0)$ (since $\vec{r}(0) = \left< a, b, f(a, b) \right>$). The derivatives of the first two components are $\cos(\theta)$ and $\sin(\theta)$, but the third is more tricky: it requires taking the derivative of a variable inside both arguments of a function. But we just figured out how to do this in the previous section --- the multivariable Chain Rule! We have
+
+$$
+	\left. d/dt \left[ f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right] \right|_{t = 0} &= f_x(a, b) \left. d/dt \left[ a + t\cos(\theta) \right]\right|_{t = 0} + f_y(a, b) \left. d/dt \left[ b + t\sin(\theta) \right]\right|_{t = 0}
+
+	&= f_x(a, b) \cdot \cos(\theta) + f_y(a, b) \cdot \sin(\theta).
+$$
+
+The slope of this line is its rise over its run --- that is, the change in $z$ divided by the total change in the $xy$-plane. Here, that $xy$-change is
+
+$$
+	\left| \left| \left< \cos(\theta), \sin(\theta) \right> \right| \right| = 1,
+$$
+
+making the slope $f_x(a, b) \cdot \cos(\theta) + f_y(a, b) \cdot \sin(\theta)$. However, that slope is by definition the directional derivative $D_{\vec{u}}f(a, b)$! It's also *very* nicely expressible in terms of $\vec{u}$ itself as
+
+$$
+	D_{\vec{u}}f(a, b) = \left< f_x(a, b), f_y(a, b) \right> \bullet \vec{u}.
+$$
+
+In functionally every case, this is how we'll prefer to compute directional derivatives, since it only requires taking two partial derivatives (which we can do without the limit definition) and a dot product.
+
+@exc[a directional derivative][[
+
+	Let $$f(x, y) = 2x + y^2 + \sin\left( \frac{\pi}{2}xy \right)$$. Find $D_{\vec{u}}f(2, 1)$ for $$\vec{u} = \left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$$ and $\vec{u} = \left< 2, -3 \right>$.
+
+	@solution[[
+
+	For both of these, we need to start by finding the partial derivatives. We have
+
+	$$
+		&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
+
+		&pf/px(2, 1) = 2 - \frac{\pi}{2}
+
+		&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
+
+		&pf/py(2, 1) = 2 - \pi.
+	$$
+
+	The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
+
+	$$
+		D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
+	$$
+
+	The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
+
+	$$
+		\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
+
+		&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
+	$$
+
+	Now
+
+	$$
+		D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
+	$$
+
+]]
+
+
+
+## The Gradient
+
+That formula for the directional derivative suggests that for a function $f(x, y)$, the vector $\left< pf/px, pf/py \right>$ is particularly important: it contains all the information we need to compute any directional derivative. Let's give it a name, define it more generally, and explore some of its other properties.
+
+@def[gradient][[
+
+	Let $f : #R#^n \to #R#$ be a function of $n$ variables $f(x_1, x_2, ..., x_n)$. The **gradient** of $f$, written $\G f$, is
+
+	$$
+		\G f = \left< pf/px_1, pf/px_2, ..., pf/px_n \right>.
+	$$
+
+	For a two-variable function $f(x, y)$, that means $\G f = \left< pf/px, pf/py \right>$, and for a three-variable function $f(x, y, z)$, $\G f = \left< pf/px, pf/py, pf/pz \right>$.
+
+	The symbol $\nabla$ is pronounced **nabla** --- as a derivative, it's somewhat fitting that it's so similar to the delta symbol $\Delta$ that indicates a change in a variable. The name nabla comes from the Greek word for harp, which are often $\nabla$-shaped; in practice, though, it's often frustratingly read as "del", particularly when applied to a variable: $\G f$ is frequently pronounced "del f".
+
+]]
+
+The gradient is itself a function $\G f : #R#^n \to #R#^n$! When we plug in a point, we get out an entire vector in $#R#^n$. We'll have a *lot* more to say about that in chapter 6, but it's just a useful fact to note for now.
+
+@ex[the gradient][[
+
+	Let $f(x, y) = x^2 + 3y^4 + e^{x + y}$. Compute $\G f(2, -1)$.
+
+	We first compute $\G f$ by taking both partials:
+
+	$$
+		\G f &= \left< f_x(x, y), f_y(x, y) \right>
+		
+		&= \left< 2x + e^{x + y}, 12y^3 + e^{x + y} \right>.
+	$$
+
+	Now we can plug in $(2, -1)$:
+
+	$$
+		\G f(2, -1) &= \left< 4 + e, -12 + e \right>.
+	$$
+
+]]
+
+Let's return to our motivation for the gradient: it lets us very concisely represent the formula for a directional derivative.
+
+@prop[directional derivatives from the gradient][[
+
+	Let $f : #R#^n \to #R#$ and let $\vec{u} \in #R#^n$ be a unit vector. Then
+
+	$$
+		D_{\vec{u}}f = \G f \bullet \vec{u}.
+	$$
+
+	Note that this formula only works if $\vec{u}$ is a unit vector! If we want to compute the directional derivative in the direction of a vector whose magnitude isn't $1$, then we need to normalize it first.
+
+]]
+
+This proposition is actually more than just a different way of writing a directional derivative: it lets us leverage properties of the dot product. Specifically,
+
+$$
+	D_{\vec{u}}f &= \G f \bullet \vec{u}
+
+	&= \left| \left| \G f \right| \right| \cdot \left| \left| \vec{u} \right| \right| \cdot \cos(\theta)
+
+	&= \left| \left| \G f \right| \right| \cos(\theta),
+$$
+
+since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and $\vec{u}$. From this fairly simple expression, we can determine some very nice geometric properties of the gradient. When $\theta = 0$ (i.e. $\vec{u}$ points in the same direction as $\G f$), this tells us that $D_{\vec{u}}f$ is maximized: in other words, **the gradient points in the direction of maximum increase**. Let's summarize that and a related property in a proper theorem statement.
+
+@thm[properties of the gradient][[
+
+	Let $f : #R#^n \to #R#$ be differentiable at $p \in #R#^n$. Then
+
+	1. $\G f(p)$ points in the direction of the steepest increase from $p$, and the slope in that direction is $\left| \left| \G f(p) \right| \right|$.
+
+	2. In any direction $\vec{u}$ orthogonal to $\G f(p)$, $D_{\vec{u}}f(p) = 0$.
+
+]]
+
+@exc[the gradient][[
+
+	Let $f(x, y) = 2\sin(x) + 5\cos(y)$. At $$p = \left( \frac{\pi}{2}, \frac{\pi}{2} \right)$$, in which direction is the steepest increase? How steep is it? What about the steepest decrease? In what directions could you walk along to stay on the level curve $f(x, y) = 1$?
+
+	@solution[[
+
+	We can solve all of this with the gradient! We have
+
+	$$
+		\G f &= \left< 2\cos(x), -5\sin(y) \right>
+
+		\G f(p) &= \left< 0, -5 \right>.
+	$$
+
+	Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
+
+]]
+
+We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is orthogonal to the level curve of $f$ at $p$, and that it points in the direction of greatest increase. In just the same way, if $f$ is a function of three variables, then $\G f(p)$ is orthogonal to the level *surface* of $f$ at $p$. We can use that vector to extract an equation for a tangent plane to a level surface!
+
+@ex[a tangent plane to a level surface][[
+
+	Find a tangent plane to the graph of
+	
+	$$
+		6x^2+2y^4+z^6+x^4z+xy^5 = 11
+	$$
+
+	at $(1, 1, 1)$.
+
+	@desmos{tangentPlaneLevelSurface}
+
+	We're not likely to find an explicit formula for that function by solving it for $z$. Instead, we can completely sidestep the issue by considering the whole thing to be the $w = 11$ level surface of
+
+	$$
+		w = f(x, y, z) = 6x^2 + 2y^4 + z^6 + x^4z + xy^5!
+	$$
+
+	The gradient is then
+
+	$$
+		\G w &= \left< 12x + 4zx^3 + y^5, \quad 8y + 5xy^4, \quad 6z^5 + x^4 \right>
+
+		\G w(1, 1, 1) &= \left< 17, 13, 7 \right>.
+	$$
+
+	Plotted in red above is the normalized gradient, and the tangent plane is in blue.
+
+]]
+
+@exc[a tangent plane to a level surface][[
+
+	Find a tangent plane to the graph of
+	
+	$$
+		x^4 + y^4 + z^4 = x^2 + y^2 + z^2 - 6xyz
+	$$
+
+	at $(2, -1, 2)$.
+
+	@solution[[
+
+	@desmos{tangentPlaneLevelSurface2}
+
+	Viewing this as the $w = 0$ level surface of
+
+	$$
+		w = f(x, y, z) = x^4 + y^4 + z^4 - x^2 - y^2 - z^2 + 6xyz,
+	$$
+
+	the gradient is
+
+	$$
+		\G w &= \left< 4x^3 - 2x + 6yz,\ 4y^3 - 2y + 6xz,\ 4z^3 - 2z + 6xy \right>
+
+		\G w(2, -1, 2) &= \left< 16, 22, 16 \right>.
+	$$
+
+]]
+
+While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< pf/px, pf/py, -1 \right>$. The tangent plane would then be
+
+$$
+	pf/px(x - a) + pf/py(y - b) - 1(z - f(a, b)) &= 0
+
+	pf/px(x - a) + pf/py(y - b) - z + f(a, b) &= 0
+
+	f(a, b) + pf/px(x - a) + pf/py(y - b) &= z,
+$$
+
+and so all is well.
+
+
+
+@navButtons

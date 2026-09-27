@@ -1,0 +1,557 @@
+@navButtons
+
+
+
+We've reached the halfway point of the course! As we follow the trajectory of single-variable calculus and move from derivatives to integrals, let's first look back at how we developed integrals of single-variable functions.
+
+@desmos{riemannSum}
+
+Given a function $f(x)$ on an interval $[a, b]$, we formed a **Riemann sum** $\sum_{i = 1}^n f\left( x_i \right) \Delta x$ by first slicing $[a, b]$ into $n$ subintervals of width $\Delta x = \frac{b - a}{n}$ each. By picking $x_i$ to be some point in the $i$th subinterval (for example, the left or right endpoint or the value that maximized or minimized $f\left( x_i \right)$), we were adding up $n$ rectangles' worth of area approximating the area under the graph of $f$, where area below the $x$-axis counted as negative.
+
+The **definite integral** $\int_a^b f(x)\,\d x$ is the limit of a Riemann sum as the number of subintervals increases without bound, assuming that limit is the same for all choices of $x_i$ (that's what it means for a function to be integrable, in fact). All continuous functions are integrable, and so we frequently restricted our attention to them.
+
+The Fundamental Theorem of Calculus was how we typically computed integrals. It relates the area measured by a definite integral $\int_a^b f(x)\,\d x$ to an antiderivative $F$ of $f$, and specifically the behavior of $F$ at the endpoints of the interval:
+
+$$
+	\int_a^b f(x)\,\d x &= F(b) - F(a).
+$$
+
+While we typically remember the Fundamental Theorem as a computational tool like this, its statement as a theoretical result is equally important: it tells us that the antiderivative $F$ not only sees the entire area under the graph of $f$ on any interval $[a, b]$, but that it is able to encode that area in two points' worth of data: $F(a)$ and $F(b)$. We'll have many opportunities over the rest of the semester to return to this notion of antiderivatives encoding information like this in a smaller set than the one they're measuring, but we'll just need the familiar version of the FTC for now.
+
+Given a continuous function $z = f(x, y)$, we can begin the same story of computing a Riemann sum, but for it to make sense in this context, it will need to measure volume under a surface instead of area under a curve.
+
+Right away, we're faced with a challenge that wasn't present in single-variable Riemann sums: what *shape* is the region under which we're finding the volume of $f$? Before, declaring that we wanted to slice up the interval $[a, b]$ into $n$ equally sized pieces was enough to completely determine what those pieces looked like, but the same can't be said for a general region $R$ in $#R#^2$. Let's delay our handling of a completely general region $R$, then, and focus on the simplest type of region to begin with: a rectangle $[a, b] \times [c, d]$. That product of sets is called a **Cartesian product**, and it is defined in a fairly sensible way:
+
+@def[Cartesian product][[
+
+	Let $A$ and $B$ be sets in $#R#$. The **Cartesian product** of $A$ and $B$ is
+
+	$$
+		A \times B = \left\{ (x, y) \in #R#^2 \mid x \in A \text{ and } y \in B \right\}.
+	$$
+
+]]
+
+The Cartesian product of two intervals, then, is a rectangle.
+
+@desmos{cartesianProductRectangle}
+
+Given a rectangle $R = [a, b] \times [c, d]$, we can now slice $[a, b]$ into $m$ subintervals of width $\Delta x = \frac{b - a}{m}$ each, and $[c, d]$ into $n$ subintervals of width $\Delta y = \frac{d - c}{n}$ each. Picking a point $\left( x_{ij}, y_{ij} \right)$ in each subrectangle, a Riemann sum to approximate the volume under the graph of $f$ is
+
+$$
+	\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}, y_{ij} \right) \Delta y \, \Delta x.
+$$
+
+@desmos{riemannSum3d}
+
+Sometimes, we'll rewrite $\Delta y\, \Delta x$ as $\Delta A$ to indicate that it's an area and reduce the need to specify the variables $x$ and $y$, although as we'll see momentarily, we'll often want to keep them specified too. Regardless, we define the limit of this Riemann sum to be the definite integral we expect.
+
+@def[double integral][[
+
+	Let $R$ be a rectangle in $#R#^2$. The **double integral** of a function $f(x, y)$ over $R$ is
+
+	$$
+		\iint_R f\,\d A &= \iint_R f(x, y)\,\d x\,\d y
+
+		&= \lim_{m, n \to \infty}\sum_{i = 1}^m \sum_{j = 1}^n f\left( x_{ij}, y_{ij} \right) \Delta y\, \Delta x.
+	$$
+
+]]
+
+If you've had the experience of calculating a definite integral directly from the sum, then you probably aren't eager to repeat it. Directly taking the limit of a Riemann sum is a particularly difficult process that requires rewriting the sum itself to be a closed-form expression (that is, without a summation symbol at all), and we'd do well to avoid that path. Instead, this is a great application of a mathematical principle that isn't often explicitly taught: whenever possible, examine new ideas through the lens of theory that you're already familiar with. In our case, we can phrase this new double integral in the language of single integrals that we understand, so long as we can find a meaningful way to relate $f(x, y)$ to single-variable functions.
+
+But that's exactly what we've been doing with partial derivatives! If we hold $x$ constant at $x_0$ and let $y$ vary, then $f(x_0, y)$ is a single-variable function, and its integral $\int_c^d f(x_0, y)\,\d y$ is something we're familiar with. The presence of $\d y$ means those limits of integration apply to $y$, and the total area measured is the area of the cross-section of the graph of $z = f(x, y)$ with the plane $x = x_0$. To use these areas to find the total volume, we can *form a Riemann sum out of these areas*: multiply each by a small $\Delta x$ and add them all up, then limit $\Delta x \to 0$. The result is a formula to calculate a double integral by taking two successive single integrals: effectively slicing the graph first in one direction and computing the areas of each slice, then adding those areas up by slicing in the other direction.
+
+@thm[Fubini's Theorem][[
+
+	Let $R = [a, b] \times [c, d]$ be a rectangle in $#R#^2$ and let $f(x, y)$ be a continuous function. Then
+
+	$$
+		\iint_R f\,\d A &= \int_a^b \left( \int_c^d f(x, y)\,\d y \right)\d x.
+	$$
+
+	We typically write this without the parentheses, and since we can just as well slice in the $x$-direction first and then the $y$-direction,
+
+	$$
+		\iint_R f(x, y)\,\d A &= \int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x = \int_c^d \!\!\! \int_a^b f(x, y)\,\d x\,\d y.
+	$$
+
+	More generally, Fubini's Theorem tells us that we can slice a region $R$ in either the $x$- or $y$-direction first in order to integrate it, so long as the function is continuous.
+
+]]
+
+We evaluate nested integrals like these from the inside out; without any further theory, let's get to an example to see how this all works.
+
+@ex[multiple integrals][[
+
+	Find the area under the graph of $f(x, y) = x^2 + xy + xy^2 - 1$ on the rectangle $R = [-2, 2] \times [-1, 1]$.
+
+	Let's find this area by slicing up the $y$-axis first, which we'll refer to as *integrating $\d y\,\d x$*, like an adjective. We have
+
+	$$
+		\iint_R f(x, y)\,\d y\,\d x &= \int_{-2}^2 \int_{-1}^1 (x^2 + xy + xy^2 - 1)\,\d y\,\d x
+
+		&= \int_{-2}^2 \left. \left[ x^2y + \frac{1}{2}xy^2 + \frac{1}{3}xy^3 - y \right] \right|_{-1}^1\,\d x
+
+		&= \int_{-2}^2 \left( \left( x^2 + \frac{1}{2}x + \frac{1}{3}x - 1 \right) - \left( -x^2 + \frac{1}{2}x - \frac{1}{3}x + 1 \right) \right)\d x
+
+		&= \int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\d x
+	$$
+
+	That inside function is a function of only $x$ and not $y$, as it well should be! It's the area of the cross-section of the graph in the $y$-direction at a certain $x$-value.
+
+	@desmos{areaCrosssections}
+
+	Graphed in purple here is $f(x, y)$, and the red and blue area below is the $\d y$ integral that we just computed. Changing $x_0$ changes where the slice is taken, and the gray graph nearby plots the area of each slice as a function of $x$ --- and sure enough, it's a parabola, as our computation so far suggested. To finish our the problem, we just need to integrate $\d x$ as we're used to already.
+
+	$$
+		\int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\d x &= \left. \left[ \frac{2}{3}x^3 + \frac{1}{3}x^2 - 2x \right] \right|_{-2}^2
+
+		&= \frac{8}{3}.
+	$$
+
+]]
+
+A notion in Calculus II that is occasionally omitted is the **average value** of a function $f(x)$. We compute the average of a list of numbers by adding them all up and dividing by the number of numbers, and when we do the same thing for a function, "adding them all up" gets replaced with integration. Here, we can define the average value of a function over a region.
+
+@def[average value][[
+
+	The **average value** of an integrable function $f(x, y)$ on a region $R$ is
+
+	$$
+		\frac{1}{|R|}\iint_R f(x, y)\,\d A,
+	$$
+
+	where $|R|$ is the area of $R$.
+
+]]
+
+@exc[multiple integrals][[
+	
+	Let $$f(x, y) = y\sin(\pi xy) + 3x^2$$ be defined on $R = [-1, 0] \times [1, 2]$.
+
+	1. Would you rather find the average value of $f$ on $R$ by integrating $\d x\,\d y$ or $\d y\,\d x$?
+
+	2. With your chosen method from part 1, find the average value.
+
+	@solution[[
+
+	While neither one of these looks completely appealing, integrating $\d x$ first seems like the better option --- doing $\d y$ first would require integration by parts. Since the area of $R$ is $1$, the average value is just the integral itself:
+
+	$$
+		& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\d x\,\d y
+
+		&= \int_1^2 \left. \left[ -y\cos(\pi xy) \frac{1}{\pi y} + x^3 \right] \right|_{-1}^0\,\d y
+
+		&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\d y
+
+		&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\d y
+
+		&= \left. \left[ -\frac{1}{\pi}y + \frac{1}{\pi^2}\sin(\pi y) + y \right] \right|_1^2
+
+		&= -\frac{2}{\pi} + \frac{1}{\pi^2}\sin(2\pi) + 2 + \frac{1}{\pi} - \frac{1}{\pi^2}\sin(\pi) - 1
+
+		&= 1 - \frac{1}{\pi}.
+	$$
+
+]]
+
+
+
+## Non-Rectangular Regions
+
+How about integrals over regions that aren't rectangles? This is often a topic that gets introduced after rectangles as something related, just different and more complicated. I'm much more fond of an intuitive explanation that builds on what we already know about rectangles, though, and simply extends them in one of the only ways we can.
+
+When we evaluate the double integral
+
+$$
+	\int_a^b \!\!\! \int_c^d f(x, y)\,\d y\,\d x
+$$
+
+of $f(x, y)$ on $R = [a, b] \times [c, d]$, we're taking slices of $f$ parallel to the $y$-axis and finding their area, then adding up those slices' area to find the volume. We've seen the complex 3D picture of those slices and their area, but let's just focus on the rectangle itself, as if we're looking down on $R$ from above.
+
+@desmos{regions2d}
+
+We're lightly shading the whole rectangle here, but the areas of focus are the colored line segments. When we change $x_0$, we're moving the purple slice --- it represents a single cross-sectional area under the graph of $f$. The inner integral (the $\d y$ one) computes that area in terms of $x$, and then the outer $\d x$ integral adds those areas up to find the volume.
+
+As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in Calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the blue lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the blue lines left and right, but we can't change the fact that they're straight.
+
+On the other hand, the red lines are only lines because every integral we take $\d y$ has *exactly the same bounds*. We take a different integral for every different value of $x$, but every one runs from $y = c$ to $y = d$. And here's the one degree of freedom available to us: we can't change the fact that we're integrating a cross-section of the graph between two $y$-values, but we can pick different $y$-values depending on the $x$-value.
+
+Picking different $y$-values depending on the $x$-value is a very long-winded way of saying we can make the limits of integration functions of $x$, say $c(x)$ and $d(x)$, to form the double integral
+
+$$
+	\int_a^b \!\!\! \int_{c(x)}^{d(x)} f(x, y)\,\d y\,\d x.
+$$
+
+Try setting $c(x) = -1 + \sin(x)$ and $d(x) = 1 + \frac{1}{2}x^2$ in the previous graph to see this in action.
+
+It's a little limiting that this only lets us modify a rectangular region by making the top and bottom edges wobbly, but exactly the same idea works if we slice the other way, making the double integral
+
+$$
+	\int_c^d \!\!\! \int_{a(y)}^{b(y)} f(x, y)\,\d x\,\d y.
+$$
+
+In practice, we'll often choose between the two different orders of integration and pick the computationally simpler one. When approaching problems like these, it can be invaluable to sketch a complete picture of the 2D region you're integrating over and draw the vertical or horizontal lines indicating the slices made by the inner integral --- parallel to the $y$ axis if it's taken $\d y$ and to the $x$-axis if it's taken $\d x$.
+
+@exc[a double integral over a general region][[
+
+	Find the signed volume under the graph of $$z = \cos(x)$$ on the region bounded by $$x = -\frac{\pi}{3}$$, $$x = \frac{\pi}{3}$$, $y = \sin(x) + 1$, and $y = -\sec(x)$.
+
+	@solution[[
+
+	Let's begin as usual by sketching the region.
+
+	@desmos{regions2dExc}
+
+	While we *could* try to set this integral up $\d x\,\d y$, that is an abominable prospect. Drawing horizontal lines shows us that we'd need four regions total since the bounds change so much: two for the two halves below the $x$-axis, one for the top region (bounded by $x = \arcsin(y - 1)$ and $x = \frac{\pi}{2}$), and one more for the middle segment. Those functions --- particularly the $\arcsin$ --- are bad enough that that integral is probably not even solvable! Let's try $\d y\,\d x$ instead.
+
+	This time, the top and bottom bounds are given by $\sin(x) + 1$ and $-x^2$, and the left and right bounds by $x = -\frac{\pi}{2}$ and $x = \frac{\pi}{2}$. In total, the volume is
+
+	$$
+		\int_{-\pi / 3}^{\pi / 3} \int_{-\sec(x)}^{\sin(x) + 1} \cos(x)\,\d y\,\d x &= \int_{-\pi / 3}^{\pi / 3} \left. \left[ y\cos(x) \right] \right|_{-\sec(x)}^{\sin(x) + 1}\,\d x
+
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\d x
+
+		&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\d x
+
+		&= \left. \left[ -\frac{1}{4}\cos(2x) + \sin(x) + x \right] \right|_{-\pi / 3}^{\pi / 3}
+
+		&= \sqrt{3} + \frac{2\pi}{3}.
+	$$
+
+]]
+
+Sometimes, we'll want to or need to change the order of integration ourselves!
+
+@ex[changing the order of integration][[
+
+	Let $R$ be the region bounded by $y^4 = x + 4$ and $$y^2 = -\frac{x}{3}$$. Find the integral
+
+	$$
+		\iint_R \left( x + y^2 \right)\d A.
+	$$
+
+	Let's begin by sketching the region. These look like pretty strange curves, but if we isolate $x$ (since it's the easier of the two variables to get on its own), then we can identify them as $x = y^4 - 4$ and $x = -3y^2$, both of which are familiar functions if we swap $x$ and $y$. We can plot these functions, then, by flipping the graphs we know across the line $y = x$.
+
+	@desmos{regions2d2}
+
+	As it currently stands, this is a little bit of a mess. The region bounded by the two functions is the egg-shaped region in the center, and we need to figure out how to slice it in order to integrate over it.
+
+	Let's be clear: we absolutely have a choice in the matter! We could integrate $\d y\,\d x$ or $\d x\,\d y$, and both will get us to the correct answer, but in many cases, one will be much more convenient than the other. If we integrated $\d y\,\d x$, then we'd be slicing this region *vertically*: the outside $\d x$ integral would select a specific $x$-value, and then the inside $\d y$ integral would find that slice's area over an interval of $y$-values. Integrating in this way would have some issues, though. While it's somewhat clear from the graph that $x$ would have to range across the interval $[-4, 0]$, the bounds on the inside $\d y$ integral depend on the functions --- **of $\mathbf{x}$** --- that bound that vertical slice.
+
+	Now, those aren't very nice bounds. For one, they switch partway through, seemingly at $x = -3$, and so we'd have no choice but to split up the integral into two. Also, the bounds themselves are gross: solving for $y$ gives
+
+	$$
+		y &= \pm \sqrt[4]{x+4}
+
+		y &= \pm \sqrt{-\frac{x}{3}},
+	$$
+
+	and the positive and negative versions of those form the bounds, resulting in the integral
+
+	$$
+		\int_{-4}^{-3} \int_{-\sqrt[4]{x+4}}^{\sqrt[4]{x+4}} \left( x + y^2 \right)\d y\,\d x + \int_{-3}^{0} \int_{-\sqrt{-x/3}}^{\sqrt{-x/3}} \left( x + y^2 \right)\d y\,\d x.
+	$$
+
+	Those bounds end up directly inside the outer integral, so we'd have to integrate them $\d x$, something we're probably not very excited to do.
+
+	In contrast to all of this, integrating $\d x\,\d y$ is a broadly pleasant time. First, the functions are simpler to integrate when $x$ is a function of $y$ than the other way around: $y^4 - 4$ is much nicer than $\sqrt[4]{x+4}$. Second, the region can be handled in a single integral, so we can do a little less computation. In general, the first of these criteria will take priority over the second, since having bounds that are expressed in a gross manner can result in an integral that is impossible to compute. Some regions just can't be integrated in a particular direction at all if we can't isolate that variable!
+
+	With all of this discussion behind us, let's now actually discuss how to take this integral $\d x\,\d y$. First of all, we were able to read off the intersection points from the graph, but we really ought to find those ourselves, in case the graph was imprecise and to practice not having a graph around. We set the two curves equal to find
+
+	$$
+		y^4 - 4 &= -3y^2
+
+		\left( y^2 \right)^2 + 3y^2 - 4 &= 0
+
+		\left( y^2 + 4 \right) \left( y^2 - 1 \right) &= 0
+
+		y^2 = -4 \qquad y^2 &= 1
+
+		y &= \pm 1
+	$$
+
+	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, due to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the blue horizontal lines?
+
+	Well, they're there, but when we take our bounds to be the points of intersection, they conveniently have length zero. Set $c = -1$ and $d = 1$ in the Desmos graph to see!
+
+	Our integral is now
+
+	$$
+		\int_{-1}^1 \int_{y^4 - 4}^{-3y^2} \left( x + y^2 \right)\d x\,\d y &= \int_{-1}^1 \left. \left[ \frac{1}{2}x^2 + xy^2 \right] \right|_{y^4 - 4}^{-3y^2} \,\d y
+
+		&= \int_{-1}^1 \left( \frac{1}{2}\left( -3y^2 \right)^2 + \left( -3y^2 \right)y^2 - \frac{1}{2}\left( y^4 - 4 \right)^2 - \left( y^4 - 4 \right)y^2 \right)\d y
+
+		&= \int_{-1}^1 \left( -8 + 4 y^2 + \frac{11}{2} y^4 - y^6 - \frac{1}{2}y^8 \right)\d y
+
+		&= \left. \left[ -8 y + \frac{4}{3} y^3 + \frac{11}{10}y^5 - \frac{1}{7}y^7 - \frac{1}{18}y^9 \right] \right|_{-1}^1
+
+		&= -\frac{3632}{315}.
+	$$
+
+]]
+
+@exc[changing the order of integration][[
+
+	1. The curves $y = x^3$ and $y = 8 - (x - 2)^2$ intersect at $(-1, -1)$ and $(2, 8)$. Write
+
+	$$
+		\int_{-1}^2 \int_{x^3}^{8 - (x - 2)^2} f(x, y)\,\d y\,\d x
+	$$
+
+	as an integral $\d x\,\d y$.
+
+	@solution[[
+
+	Let's begin by sketching the region --- that's generally a good way to approach any problem involving double integrals.
+
+	@desmos{swappingOrder}
+
+	To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the red function to the blue one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
+
+	$$
+		x &= \sqrt[3]{y}
+
+		(x - 2)^2 &= 8 - y
+
+		x &= 2 \pm \sqrt{8 - y}.
+	$$
+
+	We want the negative version, since this graph is extending out toward negative $x$-values. In total, our new integral is
+
+	$$
+		\int_{-1}^8 \int_{\sqrt[3]{y}}^{2 - \sqrt{8 - y}} f(x, y)\,\d x\,\d y
+	$$
+]]
+
+@exc[changing the order of integration][[
+
+	Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two iterated integrals: one $\d y\,\d x$ and one $\d x\,\d y$.
+
+	@desmos{nastyRegion}
+
+	@solution[[
+
+	Similarly to the previous exercise, we can start with the intersection points. We have $(0, 0)$, $(1, 1)$, and $(2, 2)$; $y = \frac{x^2}{2}$ is always the bottom function, but the top function switches at $x = 1$, and so in total we have
+
+	$$
+		\int_0^1 \int_{x^2 / 2}^{\tan\left( \frac{\pi}{4} x \right)} xy\,\d y\,\d x + \int_1^2 \int_{x^2 / 2}^{x} xy\,\d y\,\d x.
+	$$
+
+	To express the same volume as an integral $\d x\,\d y$, we need to express all the bounds as $x$ given by a function of $y$. The only one of those that poses some extra difficulty is $y = \frac{x^2}{2}$: when we solve for $x$, we get $x = \pm\sqrt{2y}$, and we want the positive branch since $x$ is positive (and more importantly, becoming larger over time). Now we have
+
+	$$
+		\int_0^1 \int_{(4/\pi)\arctan(y)}^{\sqrt{2y}} xy\,\d y\,\d x + \int_1^2 \int_y^{\sqrt{2y}} xy\,\d y\,\d x.
+	$$
+]]
+
+At this point, we can write down a few useful properties of double integrals --- nothing here is too groundbreaking, but it's good to get our bearings a little.
+
+@prop[double integrals add across disjoint regions][[
+
+	For an integrable function $f(x, y)$,
+
+	$$
+		\iint_{R \cup S} f(x, y)\,\d A = \iint_R f(x, y)\,\d A + \iint_S f(x, y)\,\d A,
+	$$
+
+	so long as $R$ and $S$ overlap either not at all or only on a (1-dimensional) curve.
+
+]]
+
+@prop[computing area with a double integral][[
+
+	For any region $R$ in $#R#^2$,
+
+	$$
+		\iint_R 1\,\d A = |R|;
+	$$
+
+	that is, the area of $R$, so long as that area is well-defined (it will be for every region we consider in our class).
+
+]]
+
+
+
+## Polar Regions
+
+There's one more way we slice up a region $R$ in order to make integrating over it an easier task: rather than integrating either $\d y\,\d x$ or $\d x\,\d y$, we can use different variables entirely; specifically, polar coordinates.
+
+As a brief refresher, when we label a point $(x, y)$ in the plane, we mean that to reach it, we move $x$ units horizontally from the origin, and then $y$ units vertically, which results in labeling every point uniquely. That system is called **Cartesian** coordinates, but we could just as well label points with any number of different ordered pairs that give instructions on how to reach them. The most common system other than Cartesian is called **polar coordinates**, and works by labeling points $(r, \theta)$, where $r$ is the point's distance from the origin and $\theta$ is its angle in radians counterclockwise from the positive $x$-axis.
+
+@desmos{polarCoordinates}
+
+The graph paper alone probably does more work than the movable point here!
+
+To convert between Cartesian and polar coordinates, we can use trigonometry:
+
+$$
+	x &= r \cos(\theta) &\qquad r &= \sqrt{x^2 + y^2}
+
+	y &= r \sin(\theta) &\qquad \tan(\theta) &= \frac{y}{x}
+$$
+
+The formula for $\theta$ is just slightly awkward to write in a form where $\theta$ is completely isolated, since the $\arctan$ function will only output values in $\left( -\frac{\pi}{2}, \frac{\pi}{2} \right)$. However, as long as we know the quadrant that a given pair $(x, y)$ lives in, this formula will do just fine to find $\theta$ from $x$ and $y$.
+
+Our primary use for polar coordinates, though, is to draw regions with them and slice them up so that we can integrate functions on those regions. Just like with Cartesian coordinates, we'll start with rectangles.
+
+@desmos{polarRectangle}
+
+Here, we can see a so-called **polar rectangle** --- and before you object to the name, have a look at all four of its angles --- and a slice taken by holding $\theta$ fixed and varying $r$. Increase $m$ and $n$ to see the result of slicing up the region into many tiny polar rectangles. But here we need to pause, because there's a problem that we didn't have to deal with when we were slicing up Cartesian rectangles: those little chunks don't have constant area! We can see that changing $\theta$ leaves the area constant, but the farther we are away from the origin, the larger the area of each little rectangle, even though each one has the same total change in $r$ and $\theta$.
+
+While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those red circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its red side length times its blue side length. The blue side length is just $\Delta r$, but the red side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the red side length is $r_0\Delta \theta$, and so the entire rectangle's area is *approximately* $r_0 \Delta r \Delta \theta$. That approximation gets better and better as $\Delta \theta \to 0$, though, and so to integrate a function of $r$ and $\theta$ over a polar region $R$, we find the following result:
+
+@thm[double integrals in polar coordinates][[
+ 
+ 	Let $f(r, \theta)$ be a function in polar coordinates, and let $R$ be the polar rectangle with $a \leq \theta \leq b$ and $c \leq r \leq d$. Then
+
+	$$
+		\iint_R f(r, \theta)\,\d A = \int_a^b \!\!\! \int_c^d f(r, \theta)\,r\,\d r\,\d \theta.
+	$$
+
+]]
+
+That factor of $r$ definitely looks out of place --- as if we're modifying the function $f$ that we're integrating --- but it really belongs with the $\d r\,\d \theta$. In fact, it's something of a crime that we have to write it $r\,\d r\,\d \theta$ and not $\d r\,(r\,\d \theta)$, which more closely represents how the area is actually computed. But we need the $r$ to be inside the $\d r$ integral, since it's changing over the course of that integral.
+
+In general, we'll prefer using polar coordinates whenever the regions we're integrating over are polar rectangles, or bounded by curves given by $r$ as a function of $\theta$.
+
+@ex[a double integral in polar coordinates][[
+
+	Find the signed volume under the graph of $f(x, y) = \frac{x}{x^2 + y^2}$ on the region in the first quadrant bounded by $r = 1$ and $r = 2\sin(2\theta)$, as shown.
+
+	@desmos{polarRegion}
+
+	We have our work cut out for us! It's a good idea as always to drag around the sliders in the sidebar on this one --- we can see that $r$ is bounded below by $1$ and above by $2\sin(2\theta)$, and that we need to find those two points of intersection to find the bounds on $\theta$. Solving for them, we have
+
+	$$
+		2\sin(2\theta) &= 1
+
+		\sin(2\theta) &= \frac{1}{2}
+
+		2\theta &= \frac{\pi}{6} + 2\pi k \quad \text{or} \quad 2\theta = \frac{5\pi}{6} + 2\pi k,
+	$$
+
+	for any integer $k$. Isolating $\theta$ and selecting only the values of $\theta$ in $\left[ 0, \frac{\pi}{2} \right]$ (the first quadrant),
+
+	$$
+		\theta &= \frac{\pi}{12} + \pi k \quad \text{or} \quad \theta = \frac{5\pi}{12} + \pi k
+
+		\theta &= \frac{\pi}{12} \quad \text{or} \quad \theta = \frac{5\pi}{12}.
+	$$
+
+	Those now serve as the bounds on the $\d\theta$ integral, giving us
+
+	$$
+		\int_{\pi/12}^{5\pi/12} \!\!\! \int_1^{2\sin(2\theta)}f(x, y)\,r\,\d r\,\d \theta.
+	$$
+
+	But we can't just evaluate this integral yet! Just like long ago in the days of $u$-sub, we need to convert the variables $x$ and $y$ to match the variables we're integrating with respect to. Here, we have
+
+	$$
+		f(x, y) &= \frac{x}{x^2 + y^2}
+
+		&= \frac{r\cos(\theta)}{r^2}
+
+		&= \frac{\cos(\theta)}{r}
+	$$
+
+	and so our integral is
+
+	$$
+		\int_{\pi/12}^{5\pi/12} \!\!\! \int_1^{2\sin(2\theta)}\cos(\theta)\,\d r\,\d \theta &= \int_{\pi/12}^{5\pi/12} \left. \left[ r\cos(\theta) \right] \right|_1^{2\sin(2\theta)}\,\d\theta
+
+		&= \int_{\pi/12}^{5\pi/12} \left( 2\sin(2\theta)\cos(\theta) - \cos(\theta) \right)\d\theta
+
+		&= \int_{\pi/12}^{5\pi/12} 2\sin(2\theta)\cos(\theta)\,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta)\,\d\theta.
+	$$
+
+	We can apply a trig formula often used in Calculus II to split up the $\sin(2\theta)$ so it's more like the rest of the integral:
+
+	$$
+		&= \int_{\pi/12}^{5\pi/12} 2\left( 2\sin(\theta)\cos(\theta) \right)\cos(\theta)\,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta) \,\d\theta
+
+		&= 4\int_{\pi/12}^{5\pi/12} \sin(\theta)\cos^2(\theta) \,\d\theta - \int_{\pi/12}^{5\pi/12} \cos(\theta) \,\d\theta
+
+		&= -4\int_{\pi/12}^{5\pi/12} u^2 \,\d u - \int_{\pi/12}^{5\pi/12} \cos(\theta) \,\d\theta,
+	$$
+
+	where $u = \cos(\theta)$ and $\d u = -\sin(\theta)\,\d\theta$. Continuing,
+		
+	$$
+		&= -4\left. \left[ \frac{u^3}{3} \right] \right|_{\pi/12}^{5\pi/12} - \left. \left[ \sin(\theta) \right] \right|_{\pi/12}^{5\pi/12}
+
+		&= -\frac{4}{3}\left. \left[ \cos^3(\theta) \right] \right|_{\pi/12}^{5\pi/12} - \left. \left[ \sin(\theta) \right] \right|_{\pi/12}^{5\pi/12}.
+	$$
+
+	Somewhat surprisingly, this reduces down to just $\frac{\sqrt{2}}{3}$, although the formulas to evaluate $\sin$ and $\cos$ at these angles are a bit too far in the weeds to write all the way out here.
+ 
+]]
+
+@exc[setting up double integrals in polar coordinates][[
+
+	Set up each of the following as polar integrals and sketch the regions over which you're integrating. Simplify the integrands if possible, but don't evaluate the integrals.
+
+	1. The signed volume under the graph of $g(x, y) = x^3y + xy^3$ on the region with $$\frac{\pi}{3} \leq \theta \leq \frac{7\pi}{6}$$ and $2 \leq r \leq 3$.
+
+	2. The area of the region bounded by $r = \sin(\theta)$ and $r = \cos(\theta)$.
+
+	3. The integral $\iint_R h(x, y)\,\d A$, where $h(x, y) = \frac{x^2 - y^2}{x^2 + y^2}$ and $R$ is the region in quadrants I and II bounded by $r = \theta$ and $r = \pi$.
+
+	@solution[[
+
+	1. This region is a polar rectangle:
+	
+	@desmos{polarIntegral1}
+
+	We can directly translate those bounds into integral limits, but the function itself takes a bit more work. By factoring out an $xy$, we find
+
+	$$
+		(xy)\left( x^2 + y^2 \right) &= r\cos(\theta)\,r\sin(\theta)r^2
+
+		&= r^4\cos(\theta)\sin(\theta)
+		
+		&= \frac{1}{2}r^4\sin(2\theta).
+	$$
+
+	The integral is then
+
+	$$
+		\int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^4\sin(2\theta)\,r\,\d r\,\d \theta = \int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^5\sin(2\theta)\,\d r\,\d \theta.
+	$$
+
+	2. This time around, the region is an intersection of two circles.
+
+	@desmos{polarIntegral2}
+
+	They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the red circle $r = \sin(\theta)$ as an upper limit until then, followed by the blue circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
+
+	$$
+		\int_{0}^{\pi/4} \int_0^{\sin(\theta)} r\,\d r\,\d \theta + \int_{\pi/4}^{\pi/2} \int_0^{\cos(\theta)} r\,\d r\,\d \theta.
+	$$
+
+	3. This region is a little bizarre!
+
+	@desmos{polarIntegral3}
+
+	For each angle $\theta$, we want to integrate from $r = \theta$ to $r = \pi$, and $\theta$ should be between $0$ and $\pi$. As far as the integrand goes, we have
+
+	$$
+		\frac{x^2 - y^2}{x^2 + y^2} &= \frac{r^2\cos^2(\theta) - r^2\sin^2(\theta)}{r^2}
+
+		&= \cos^2(\theta) - \sin^2(\theta)
+
+		&= \cos(2\theta),
+	$$
+
+	so the entire integral is
+
+	$$
+		\int_0^{\pi} \int_\theta^\pi \cos(2\theta)\,r\,\d r\,\d \theta
+	$$
+
+]]
+
+
+
+@navButtons

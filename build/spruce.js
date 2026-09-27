@@ -199,7 +199,6 @@ const controlsFunctions = {
 	slider,
 	textarea,
 	button,
-	navButtons,
 	dropdown,
 	fileUpload,
 	checkbox,
@@ -259,25 +258,6 @@ function button(id)
 	`;
 }
 
-function navButtons()
-{
-	return /* html */`
-		<div class="applet-controls nav-buttons">
-			<div class="focus-on-child" tabindex="1">
-				<button class="text-button linked-text-button nav-button previous-nav-button" type="button" tabindex="-1">Previous</button>
-			</div>
-			
-			<div class="focus-on-child" tabindex="1">
-				<button class="text-button linked-text-button nav-button home-nav-button" type="button" tabindex="-1">Home</button>
-			</div>
-			
-			<div class="focus-on-child" tabindex="1">
-				<button class="text-button linked-text-button nav-button next-nav-button" type="button" tabindex="-1">Next</button>
-			</div>
-		</div>
-	`;
-}
-
 function dropdown(id)
 {
 	return /* html */`
@@ -289,7 +269,6 @@ function dropdown(id)
 		</div>
 	`;
 }
-
 
 function fileUpload(id, accept, multiple = "")
 {
@@ -329,6 +308,25 @@ function textBox(id)
 	`;
 }
 
+export function navButtons()
+{
+	return /* html */`
+		<div class="applet-controls nav-buttons">
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button previous-nav-button" type="button" tabindex="-1">Previous</button>
+			</div>
+			
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button home-nav-button" type="button" tabindex="-1">Home</button>
+			</div>
+			
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button nav-button next-nav-button" type="button" tabindex="-1">Next</button>
+			</div>
+		</div>
+	`;
+}
+
 
 
 let count = 1;
@@ -360,4 +358,50 @@ export function problemNumberNextRange(length)
 export function problemNumberPreviousRange(length)
 {
 	return problemNumberRange(-length, -1);
+}
+
+
+const notesEnvironmentNames =
+{
+	ex: "Example",
+	exc: "Exercise",
+	def: "Definition",
+	prop: "Proposition",
+	thm: "Theorem",
+	cor: "Corollary",
+	lem: "Lemma",
+	proof: "Proof",
+	axiom: "Axiom",
+	aside: "Aside"
+};
+
+function notesEnvironment(type, title, body)
+{
+	// Avoids awkward things like Theorem: The Fundamental Theorem.
+
+	if (
+		title.toLowerCase().includes(notesEnvironmentNames[type].toLowerCase())
+	) {
+		return /* html */`<div class="notes-${type} notes-environment"><div class="notes-${type}-title notes-title">${title}</div>${body}</div>`;
+	}
+
+	return /* html */`<div class="notes-${type} notes-environment"><div class="notes-${type}-title notes-title">${notesEnvironmentNames[type]}: ${title}</div>${body}</div>`;
+}
+
+export const ex = (title, body) => notesEnvironment("ex", title, body);
+export const exc = (title, body) => notesEnvironment("exc", title, body);
+export const def = (title, body) => notesEnvironment("def", title, body);
+export const prop = (title, body) => notesEnvironment("prop", title, body);
+export const thm = (title, body) => notesEnvironment("thm", title, body);
+export const cor = (title, body) => notesEnvironment("cor", title, body);
+export const lem = (title, body) => notesEnvironment("lem", title, body);
+export const proof = (title, body) => notesEnvironment("proof", title, body);
+export const axiom = (title, body) => notesEnvironment("axiom", title, body);
+export const aside = (title, body) => notesEnvironment("aside", title, body);
+
+
+
+export function solution(body)
+{
+	return /* html */`<div class="solution">${body}</div>`;
 }

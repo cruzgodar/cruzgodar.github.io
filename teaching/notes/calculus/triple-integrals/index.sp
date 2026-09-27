@@ -1,0 +1,394 @@
+@navButtons
+
+
+
+So far, all of our integration has been done with variations on single or double integrals; even surface integrals, however complicated, resolve to straightforward double integrals once we parameterize. For surfaces (whether curved or flat), that was enough to describe any function's domain, but now that we're squarely operating in $#R#^3$, it no longer quite suffices. We'll need a concept of an integral over an entire solid region of $#R#^3$, but as daunting as that might sound, we've already developed most of the theory we need. We'll construct and compute triple integrals just like double integrals, and there's no need to parameterize regions like we parameterized surfaces in $#R#^3$ or curves in $#R#^2$ and $#R#^3$: since $#R#^3$ only has three dimensions, a triple integral will have enough variables to describe any region. Similarly, regions don't have any sort of associated vectors like curves have tangent vectors or surfaces have normal vectors, so there isn't a natural vector throughout a region to take a dot product of a vector field with. For that reason, we'll only be considering scalar triple integrals, not vector ones.
+
+Let's dig in. Just like with double integrals, we'll start with a Riemann sum over a rectangular region, but quickly expand beyond that to general regions.
+
+@def[triple integral][[
+
+	Let $f$ be a function of three variables and let
+
+	$$
+		B = [x_1, x_2] \times [y_1, y_2] \times [z_1, z_2]
+	$$
+
+	be a rectangular box in $#R#^3$. The **triple integral** of $f$ over $B$ is the limit of the Riemann sum
+
+	$$
+		
+		\iiint_B f\,\d V &= \lim_{l, m, n \to \infty} \sum_{i = 1}^l \sum_{j = 1}^m \sum_{k = 1}^n f\left( x_{ijk}, y_{ijk}, z_{ijk} \right) \Delta x \, \Delta y \, \Delta z
+	$$
+
+	given by dividing each of the three intervals into $l$, $m$, and $n$ subintervals of width $\Delta x$, $\Delta y$, and $\Delta z$, respectively, and taking points $\left( x_{ijk}, y_{ijk}, z_{ijk} \right)$ in each $\Delta x \times \Delta y \times \Delta z$ sub-box.
+
+]]
+
+Just like double integrals, we'll go to lengths to never use this definition in practice. Similarly, we can define triple integrals over general regions by taking only the boxes that lie within the region. For example, we can take a Riemann sum with $\Delta x = \Delta y = \Delta z$ for the function $f(x, y, z) = x + y + z$ defined on the solid unit ball, where each cube is colored by the function's value, as in the previous sections.
+
+@desmos{voxels}
+
+The way we'll actually compute triple integrals in practice is exactly analogous to double integrals. While it might seem synonymous with the definition at this point, our ability to evaluate a double integral as two single integrals is the statement of Fubini's Theorem, and there's an equivalent result for triple integrals.
+
+@thm[Fubini's Theorem][[
+
+	Let
+
+	$$
+		B = [x_1, x_2] \times [y_1, y_2] \times [z_1, z_2]
+	$$
+
+	be a rectangular box in $#R#^3$ and let $f(x, y, z)$ be a continuous function. Then
+
+	$$
+		\iiint_B f\,\d V &= \int_{x_1}^{x_2} \!\!\! \int_{y_1}^{y_2} \!\!\! \int_{z_1}^{z_2}f(x, y, z)\,\d z\,\d y\,\d x,
+	$$
+
+	and similarly for any other order of $\d x$, $\d y$, and $\d z$.
+
+]]
+
+Geometrically, we can interpret Fubini's theorem as computing an integral over a cross-sectional area with the inner two integrals, and then adding that up with the outer integral to compute the full integral over a solid region.
+
+Most of the complexity of double integrals arose when the regions we integrated over weren't rectangular, and the same is true now. The limits on any integral can include the variables from any integrals further outside; for example, a general integral taken $\d z\,\d y\,\d x$ might look like
+
+$$
+	\int_{x_1}^{x_2} \!\!\! \int_{y_1(x)}^{y_2(x)} \!\!\! \int_{z_1(x, y)}^{z_2(x, y)}f(x, y, z)\,\d z\,\d y\,\d x.
+$$
+
+@ex[a triple integral][[
+
+	Find the integral of the function $f(x, y, z) = 2x + 1$ on the region $R$ above $z = x^3 - 1$, below $z = y - x^3$, and with $x \geq 0$ and $y \leq 1$.
+
+	@desmos{chunkRegion}
+
+	Let's begin with the limits; since we're given $z$ as a function of $x$ and $y$, let's try making the innermost integral be taken $\d z$. It's helpful when setting up a triple integral to imagine the two outer integrals as forming a double integral over a region in the $xy$-plane, and then the $z$ integral on the inside as integrating over a line parallel to the $z$-axis above a single $(x, y)$ point. You can use the 2D graph paper button on the Desmos graph to see this view, but we'll derive the limits from scratch without using the picture to demonstrate how it's done. If we choose the order $\d z\,\d y\,\d x$ for the three integrals, then the outermost one runs from the smallest possible $x$-value to the largest; the smallest is given to us as $x = 0$, but finding the largest requires knowing where the region ends, which is determined by the intersection of the two surfaces.
+
+	When $z = x^3 - 1$ and $z = y - x^3$ at once, we can eliminate $z$ to find $x^3 - 1 = y - x^3$, so $y = 2x^3 - 1$. This is the curve traced out in the $xy$-plane, bounding the region in addition to $x = 0$ and $y = 1$ --- if you view the graph from above and add the expression $y = 2x^3 - 1$, you'll see that it matches exactly! The maximum $x$-value, then, must come from the largest $x$ can get along that curve while keeping $y \leq 1$. Solving for $x$,
+
+	$$
+		x = \sqrt[3]{\frac{1}{2}(y + 1)},
+	$$
+
+	which is an increasing function of $y$, meaning the maximum value is achieved when $y = 1$ and $x = \sqrt[3]{1} = 1$ as well.
+
+	So the $\d x$ integral runs from $x = 0$ to $x = 1$. We've already seen that the maximum $y$-value is $y = 1$, and in terms of $x$, the minimum is the expression $y = 2x^3 - 1$ that we already solved for. If we were only computing a double integral, we could stop now and write
+
+	$$
+	 	\int_0^1 \int_{2x^3 - 1}^1 \square\,\d y\,\d x
+	$$
+
+	for whatever the function $\square$ of $x$ and $y$ we were considering. In our case, however, that function is an entire integral! The $\d z$ integral's bounds are the two functions we were given: $z = x^3 - 1$ on the bottom and $z = y - x^3$ on top. In all, we have
+
+	$$
+		\int_0^1 \int_{2x^3 - 1}^1 \int_{x^3 - 1}^{y - x^3} (2x + 1)\,\d z\,\d y\,\d x,
+	$$
+
+	and now the remainder of the problem is integrating as we're used to.
+
+	$$
+		\int_0^1 \int_{2x^3 - 1}^1 \int_{x^3 - 1}^{y - x^3} (2x + 1)\,\d z\,\d y\,\d x &= \int_0^1 \int_{2x^3 - 1}^1 \left. \left[ (2x + 1)z \right] \right|_{x^3 - 1}^{y - x^3}\,\d y\,\d x
+
+		&= \int_0^1 \int_{2x^3 - 1}^1 (2x + 1)\left( y - 2x^3 + 1 \right)\d y\,\d x
+
+		&= \int_0^1 \left[ (2x + 1)\left( \frac{y^2}{2} - 2x^3y + y \right) \right]_{2x^3 - 1}^1\,\d x
+
+		&= \int_0^1 \left( 2 + 4 x - 4 x^3 - 8 x^4 + 2 x^6 + 4 x^7 \right)\d x
+
+		&= \frac{153}{70}.
+	$$
+
+]]
+
+@exc[setting up a triple integral][[
+
+	Let $R$ be the region lying above $z = x^2 + y$, below $z = 1$, and with $y \geq 0$. Set up the integral of $f(x, y, z) = z - 2y$ over $R$ in the orders $\d z\,\d y\,\d x$, $\d x\,\d y\,\d z$, and $\d y\,\d z\,\d x$. Which would you prefer to use to evaluate the integral?
+
+	@solution[[
+
+	@desmos{parabolaRegion}
+
+	To set up the integral in the order $\d z\,\d y\,\d x$, we'll again handle the outer two integrals first. The $xy$-bounds are given by $y \geq 0$ and the intersection of $z = x^2 + y$ with $z = 1$; that is, $x^2 + y = 1$. Since the outermost integral is taken $\d x$, we need its limits to be constants, and they're given by the intersection of $x^2 + y = 1$ with $y = 0$, resulting in $x = \pm 1$. Then the limits of the $\d y$ integral are given by solving for $y$ in terms of $x$: the lower bound is $y = 0$, and the upper one is $y = 1 - x^2$. Finally, we can express the $z$ bounds in terms of $x$ and $y$ as integrating from $z = x^2 + y$ to $z = 1$, giving us a final integral of
+
+	$$
+		\int_{-1}^1 \int_0^{1 - x^2}\!\! \int_{x^2 + y}^1 (z - 2y)\,\d z\,\d y\,\d x.
+	$$
+
+	For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$ (since $-x^2$ is maximized at $x = 0$), and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
+
+	$$
+		\int_0^1 \!\! \int_0^z \!\! \int_{-\sqrt{z - y}}^{\sqrt{z - y}} (z - 2y)\,\d x\,\d y\,\d z.
+	$$
+
+	Finally, the $\d y\,\d z\,\d x$ integral starts in the $xz$-plane. We already know the $x$ bounds are $-1$ to $1$ from the first integral, and for the $z$ bounds, we also know that the upper one should be $1$. For the lower $z$ bound, we find the smallest $z = x^2 + y$ can be in terms of $x$, which is $x^2$, when $y = 0$. Finally, the $y$-values start at $0$ and end at $y = z - x^2$, so the integral is
+
+	$$
+		\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d z\,\d x.
+	$$
+
+	Of all of these, the first and the last look about equally preferable!
+
+]]
+
+Double integrals computed volume under a surface, but they also let us rather easily compute area of a region $R$ by integrating the function $f(x, y) = 1$ over $R$. Similarly, we can use triple integrals to compute volume.
+
+@thm[computing volume with a triple integral][[
+
+	For any region $R$ in $#R#^3$,
+
+	$$
+		\iiint_R 1\,\d V = |R|,
+	$$
+
+	where $|R|$ represents the volume of $R$, so long as that volume is well-defined. Like area, it will be for every region we consider in the course.
+
+]]
+
+At the moment, this result isn't the most useful, since we've already been able to find volumes with carefully-constructed double integrals. As we get more comfortable with variations on triple integrals in the later half of this section, though, it will have more utility.
+
+Equally important to this proposition is its implicit reminder: **triple integrals typically do not compute volumes!** When the function $1$ is replaced by a generic function $f(x, y, z)$, the resulting quantity is not the volume of the region $R$, but rather the notion of the "measure under the graph of $f$" throughout the region, where "measure" is a 4-dimensional quantity analogous to volume. Unfortunately, we're already using all the dimensions our human minds can comprehend to just see the domain of $f$, leaving no room to see its graph as physically separate from that domain. That's why all of the examples so far have used heatmap-like colored regions in $#R#^3$: if $f(x, y, z)$ measures heat per unit volume, for example, then $\iiint_R f\,\d V$ is computing total heat over $R$.
+
+
+
+## Cylindrical and Spherical Coordinates
+
+We've made plenty of use of polar coordinates since introducing double integrals --- circular domains show up fairly frequently, and changing of coordinates is a very useful technique for dealing with them. At worst, it makes the integral slightly more convenient, and at best, it's required to integrate at all.
+
+It's not difficult to write down a triple integral that would be nice to change to polar partway through. Let $C$ be the portion of the cylinder with radius $2$ parallel to the $z$-axis that lies in between the surfaces $z = x - 1$ and $z = 5 - x^2 - y^2$, and consider the integral $\iiint_C (z + x)\,\d V$.
+
+@desmos{slicedCylinder}
+
+Integrating this cylinder with respect to $z$ first sounds like a good idea, since the $xy$-domain is a disk and we're given the $z$ bounds in terms of functions of $x$ and $y$. That settles the inner bounds, but there's a procedural annoyance: since polar coordinates are a 2D coordinate system, so we can't directly use them for the triple integral bounds. We instead need to write the triple integral first in Cartesian coordinates as
+
+$$
+	\int_{-2}^2 \int_{-\sqrt{4 - x^2}}^{\sqrt{4 - x^2}} \int_{x - 1}^{5 - x^2 - y^2} (z + y)\,\d z\,\d y\,\d x,
+$$
+
+then evaluate the innermost integral, and only then do we have a double integral that we can convert to polar coordinates. That's obviously annoying, but the solution is just as obvious: define a coordinate system for three variables that's just polar coordinates in $x$ and $y$ and leaves $z$ unchanged. Since it works well on roughly cylindrical objects like this one, we'll give it an appropriate name.
+
+@def[cylindrical coordinates][[
+
+	A point $(x, y, z)$ in **cylindrical coordinates** on $#R#^3$ is a triple $(r, \theta, z)$, where $(r, \theta)$ are the polar coordinates of the point $(x, y)$, and $z$ is left unchanged. An integral taken in cylindrical coordinates has the same extra factor of $r$ as an integral in polar coordinates:
+
+	$$
+		\iiint_R f(x, y, z)\,\d z\,\d y\,\d x = \iiint_R f(r\cos(\theta), r\sin(\theta), z)\,r\,\d z\,\d r\,\d \theta.
+	$$
+
+]]
+
+@desmos{cylindricalCoordinates}
+
+In general, if an integral looks promising to convert to polar coordinates after one integral is complete, it's a good candidate for being expressed in cylindrical coordinates from the outset. Returning to our previous example, we can convert to cylindrical coordinates to make the bounds reasonable from the start. The function $z + x$ becomes $z + r\cos(\theta)$, the outer two integrals' bounds change to $r \in [0, 2]$ and $\theta \in [0, 2\pi]$, and critically, the bounds on the $\d z$ integral need to change too! There can't be any $x$s or $y$s left anywhere.
+
+$$
+	\iiint_C (z + x)\,\d V &= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (z + r\cos(\theta))\,r\,\d z\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \int_{r\cos(\theta) - 1}^{5 - r^2} (rz + r^2\cos(\theta))\,\d z\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \left. \left[ \frac{r}{2}z^2 + r^2\cos(\theta)z \right] \right|_{r\cos(\theta) - 1}^{5 - r^2}\,\d r\,\d \theta
+
+	&= \int_0^{2\pi} \int_0^2 \left( -\frac{3}{2} r^3 \cos^2(\theta) - r^4 \cos(\theta) + 7 r^2 \cos(\theta) + \frac{1}{2} r^5 - 5 r^3 + 12 r \right)\d r\,\d \theta
+
+	&= \int_0^{2\pi} \left. \left[ -\frac{3}{8} r^4 \cos^2(\theta) - \frac{1}{5} r^5 \cos(\theta) + \frac{7}{3} r^3 \cos(\theta) + \frac{1}{12} r^6 - \frac{5}{4} r^4 + 6 r^2 \right] \right|_0^2 \,\d \theta
+
+	&= \int_0^{2\pi} \left( \frac{28}{3} + \frac{184}{15} \cos(\theta) - 6 \cos^2(\theta) \right) \d \theta
+
+	&= \int_0^{2\pi} \left( \frac{28}{3} + \frac{184}{15} \cos(\theta) -3 - 3 \cos(2\theta) \right) \d \theta
+
+	&= \int_0^{2\pi} \left( \frac{19}{3} + \frac{184}{15} \cos(\theta) - 3 \cos(2\theta) \right) \d \theta
+
+	&= \left. \left[ \frac{19}{3}\theta + \frac{184}{15} \sin(\theta) - \frac{3}{2} \sin(2\theta) \right] \right|_0^{2\pi}
+
+	&= \frac{38}{3}\pi.
+$$
+
+@exc[cylindrical coordinates][[
+
+	1. What do the following graphs look like in cylindrical coordinates?
+
+	> a) $r = 3$.
+
+	> b) $\theta = \frac{\pi}{4}$.
+
+	> c) $z = 1$.
+
+	2. Let $R$ be the region bounded between $z = x^2 + y^2$ and $z = 2x$. Set up the integral of $f(x, y, z) = x + y - \frac{1}{2}z$ in cylindrical coordinates over $R$, but do not solve it.
+
+	@solution[[
+
+	1. These graphs are shown below --- toggle them on one at a time (checking the Extend to 3D checkbox) to see them! The graphs are a cylinder, half-plane, and full plane, respectively.
+
+	@desmos{cylindricalGraphs}
+
+	2. Translating the two $z$ bounds into cylindrical coordinates, we find $z = r^2$ and $z = 2r\cos(\theta)$. Their intersection is the entire bound for $r$ and $\theta$, so we need to solve for it. We have
+
+	$$
+		r^2 &= 2r\cos(\theta)
+
+		r^2 - 2r\cos(\theta) &= 0
+
+		r\left(r - 2\cos(\theta) \right) &= 0
+
+		r &= 0, \qquad r = 2\cos(\theta)
+	$$
+
+	That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\cos(\theta) = 0$, so $\theta = \pm \frac{\pi}{2}$ is a nice pair of solutions that ensures the curve is traced out completely in-between, while also ensuring $\cos(\theta)$ is always positive (while $\cos$ is periodic with period $2\pi$, its graph in polar coordinates has period only $\pi$, since it traces over itself when its outputs are negative). Our integral then becomes
+
+	$$
+		\int_{-\pi / 2}^{\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
+	$$
+
+	@desmos{cylindricalIntegral}
+
+]]
+
+The change from Cartesian coordinates to polar ones in $#R#^2$ was a profound one, but now that we're comfortable with polar coordinates, moving to cylindrical doesn't feel like as large of a step: it's just replacing two of the three variables with a different coordinate system we're already familiar with. To make an equivalently large jump from Cartesian coordinates on $#R#^3$, we'd need to develop a coordinate system that measured points at least in part by their distance from the origin --- not their distance in the $xy$-plane, like $r$ in cylindrical coordinates, but the full 3D distance. Let's call such a value $\rho$, the Greek counterpart of the letter $r$. Given a value of $\rho = \sqrt{x^2 + y^2 + z^2}$, we've specified the radius of the sphere that the point $(x, y, z)$ lives on. To pinpoint it, we need to indicate *where* on the sphere it lives, ideally with exactly two more variables so that we have three total. But we've already solved that problem: it's parameterizing a sphere! We found that
+
+$$
+	\left< \sin(u)\cos(\v),\ \sin(u)\sin(\v),\ \cos(u) \right>
+$$
+
+parameterized the unit sphere, where $u \in [0, \pi]$ was the angle down from the $z$-axis, and $\v \in [0, 2\pi]$ was the longitudinal angle in the $xy$-plane.
+
+We're almost to the full coordinate system. That parameterization was for the unit sphere, but we're on the sphere of radius $\rho$, so all three coordinates will get scaled by that factor. We should also give those parameters better names than $u$ and $\v$; we already have a name for the angle $\v$ measures in the $xy$-plane: it's called $\theta$ in cylindrical coordinates, so let's use the same name now. For $u$, we'll pick a different Greek letter, and the standard choice is $\varphi$. In all, we've developed the following coordinate system.
+
+@def[spherical coordinates][[
+
+	A point $p = (x, y, z)$ in **spherical coordinates** on $#R#^3$ is a triple $(\rho, \varphi, \theta)$, where $\rho$ is the distance of $p$ from the origin and $\varphi$ and $\theta$ are the angle down from the $z$-axis and the longitudinal angle in the $xy$-plane, respectively. The conversion from spherical to Cartesian coordinates is given by formulas that are functionally identical to the standard parameterization of a sphere:
+
+	$$
+		x &= \rho \sin(\varphi)\cos(\theta)
+
+		y &= \rho \sin(\varphi)\sin(\theta)
+
+		z &= \rho \cos(\varphi).
+	$$
+
+	If we need to convert from Cartesian coordinates to spherical, though, it's often conceptually easier to convert to cylindrical coordinates first:
+
+	$$
+		\rho &= \sqrt{r^2 + z^2} = \sqrt{x^2 + y^2 + z^2}
+
+		\tan(\varphi) &= \frac{r}{z}
+	$$
+
+	and $\theta$ is the same as in cylindrical coordinates (i.e. $\tan(\theta) = \frac{y}{x}$).
+
+]]
+
+@desmos{sphericalCoordinates}
+
+To bring spherical coordinates to integrals, we'll start as usual with a spherical Riemann sum over a product of intervals for $\rho$, $\varphi$, and $\theta$; it looks a lot like a model of the crust of a planet.
+
+@desmos{sphericalRiemannSum}
+
+The Riemann sum adds up a function value times the volume of each little chunk in this diagram, but just like with Riemann sums for polar double integrals, the volume of each chunk isn't constant. To compute it, let's look at one chunk closely.
+
+@desmos{sphericalRiemannSumChunk}
+
+Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\Delta \rho$, $\Delta \varphi$, and $\Delta \theta$, indicated with purple, blue, and red edges, respectively. As all three changes approach zero, the region approaches a rectangular box, and so we can approximate the volume by multiplying the three colored edge lengths.
+
+Let's start with the purple edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the blue edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the blue edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small blue angle between the gray lines, and so the blue edge length is $\rho \,\Delta \varphi$.
+
+@desmos{sphericalRiemannSumChunkTheta}
+
+The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is the red angle in the $xy$-plane between the two orange lines, *not* the angle between the two blue radii spanning the red arc. They look similar, but if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out, connected by the blue arcs (since they lie on the sphere of radius $\rho$).
+
+That purple length is less and less accurate as $\varphi$ shrinks, and so we really do need to account for it. To find the actual red length, we could try to solve the angle between the blue radii, but an easier path is to find the orange lines' length instead; then we can still use the arc length formula, since the red arc that the orange lines trace out is exact the same length as the red edge length on the spherical region above it. That orange line lives in a right triangle with blue hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ between the blue and orange sides (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the orange leg has length $a$, then
+
+$$
+	\cos\left( \frac{\pi}{2} - \varphi \right) = \frac{a}{\rho}.
+$$
+
+Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi)$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the red side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
+
+$$
+	\left( \Delta\rho \right)\left( \rho \,\Delta \varphi \right)\left( \rho\sin(\varphi)\,\Delta\theta \right) = \rho^2\sin(\varphi)\,\Delta\rho\,\Delta\varphi\,\Delta\theta.
+$$
+
+That approximation becomes better and better as all three side lengths limit to zero, and so we find the following result for a spherical integral.
+
+@thm[triple integrals in spherical coordinates][[
+
+	Let $R$ be a region in spherical coordinates bounded between $\rho_1(\varphi, \theta)$ and $\rho_2(\varphi, \theta)$, where $\varphi$ is bounded between $\varphi_1(\theta)$ and $\varphi_2(\theta)$, and $\theta$ is between $\theta_1$ and $\theta_2$. Then the integral of a function $f(x, y, z)$ over $R$ is given by
+
+	$$
+		\int_{\theta_1}^{\theta_2} \int_{\varphi_1(\theta)}^{\varphi_2(\theta)} \int_{\rho_1(\varphi, \theta)}^{\rho_2(\varphi, \theta)} f\left( \rho \sin(\varphi)\cos(\theta),\ \rho \sin(\varphi)\sin(\theta),\ \rho \cos(\varphi) \right)\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
+	$$
+
+]]
+
+@exc[spherical coordinates][[
+
+	1. What do the following graphs look like in spherical coordinates?
+
+	> a) $\rho = 3$.
+
+	> b) $\varphi = \frac{\pi}{6}$.
+
+	> c) $\theta = \frac{\pi}{4}$.
+
+	2. Let $R$ be the region above $\sqrt{x^2 + y^2 + z^2} + z = 1$ and below $x^2 + y^2 + z^2 = 1$. Set up the integral of $f(x, y, z) = 2x - z$ in spherical coordinates over $R$, but do not solve it.
+
+	3. Find the volume of the region below $x^2 + y^2 + z^2 = 4$, above $z = \sqrt{3x^2 + 3y^2}$, and with $y \geq 0$.
+
+	@solution[[
+
+	1. These are a sphere, cone, and half plane, respectively. Toggle them all on to see!
+
+	@desmos{sphericalGraphs}
+
+	2. The outer region is $\rho^2 = 1$, so $\rho = 1$, and the inner one is $\rho + \rho\cos(\varphi) = 1$. Solving for $\rho$,
+
+	$$
+		\rho = \frac{1}{1 + \cos(\varphi)}.
+	$$
+
+	To find the other bounds, let's look at the surfaces of intersection. Setting the two functions equal to each other,
+
+	$$
+		\frac{1}{1 + \cos(\varphi)} &= 1
+
+		1 + \cos(\varphi) &= 1
+
+		\cos(\varphi) &= 0
+
+		\varphi &= \frac{\pi}{2},
+	$$
+
+	which is the equation of a circle with radius $1$ (since $\rho = 1$) in the $xy$-plane. Since our solid lives above that, we're looking for $0 \leq \varphi \leq \frac{\pi}{2}$, and since there are no restrictions on $\theta$, it runs from $0$ to $2\pi$. In total, the integral is
+
+	$$
+		\int_0^{2\pi} \int_0^{\pi / 2} \int_{1/(1 + \cos(\varphi))}^1 \left( 2\rho\sin(\varphi)\cos(\theta) - \rho\cos(\varphi) \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
+	$$
+
+	3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. Plugging in all three spherical expressions for $x$, $y$, and $z$ would work, but we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
+
+	$$
+		\varphi = \arctan\left( \frac{1}{\sqrt{3}} \right) = \frac{\pi}{6}.
+	$$
+
+	Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$. Finally, if we want to find the volume, we want to integrate the function $1$. In total, the integral becomes
+
+	$$
+		\int_0^\pi \int_0^{\pi / 6} \int_0^2 1\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta &= \int_0^\pi \int_0^{\pi / 6} \left. \left[ \frac{\rho^3}{3}\sin(\varphi) \right] \right|_0^2\d\varphi\,\d\theta
+
+		&= \int_0^\pi \int_0^{\pi / 6} \frac{8}{3}\sin(\varphi)\,\d\varphi\,\d\theta
+
+		&= \int_0^\pi \left. \left[ -\frac{8}{3}\cos(\varphi) \right] \right|_0^{\pi / 6}\d\theta
+
+		&= \int_0^\pi -\frac{8}{3} \left( \frac{\sqrt{3}}{2} - 1 \right)\d\theta
+
+		&= \frac{8\pi}{3} \left( 1 - \frac{\sqrt{3}}{2} \right).
+	$$
+
+	This region looks a little like an ice cream cone cut in half!
+
+	@desmos{iceCreamCone}
+	
+]]
+
+
+
+@navButtons

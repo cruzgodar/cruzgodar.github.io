@@ -21,7 +21,7 @@ Questions @next(5) concern the following graph of the function $f(x)$.
 
 @p[Find $f(-4)$, $f(-2)$, $f(0)$, $f(2)$, and $f(4)$.]
 
-**Solution:** All of these can be read directly off the graph --- try <span class="click-tap"><span>clicking</span><span>tapping</span></span> the points!
+**Solution:** All of these can be read directly off the graph --- try @clickTap[clicking][tapping] the points!
 $$
 	f(-4) &= -2
 	f(-2) &= -1

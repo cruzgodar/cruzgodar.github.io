@@ -1,0 +1,321 @@
+@navButtons
+
+
+
+With row reduction in hand, we can begin to examine more properties of matrices and vectors. In the context of linear algebra, our primary use for vectors is to represent systems of equations with many equations and unknowns, and a critical feature of those systems is that they don't always have just one solution. For example, let's look at the system
+
+$$
+	x_1 - x_2 &= 3
+
+	-2x_1 + 2x_2 &= -6.
+$$
+
+To solve this system, we'll put it into a matrix and row reduce it.
+
+$$
+	[[ 1, -1 | 3 ; -2, 2 | -6 ]] & 
+
+	[[ 1, -1 | 3 ; 0, 0 | 0 ]] & \qquad \vec{r_2} \to \vec{r_2} + 2\vec{r_1}.
+$$
+
+The system is now in reduced row echelon form: that row of all zeros prevents us from clearing the $-1$ in the first row. The best we can do is convert this back to a system of equations, which gives us $x_1 - x_2 = 3$. The second equation is just $0 = 0$, which is useless to us since it's always true and doesn't contain any variables.
+
+When we have more unknowns than equations like this, we get a solution involving **free parameters**. If $x_2 = t$ for *any* value of $t$, then $x_1 = 3 + t$ is a solution. We can write a vector solution as
+
+$$
+	\vec{x} = [[ 3 + t ; t ]].
+$$
+
+Generally speaking, encountering rows of all zeros while row reducing a square matrix means that we'll have one or more free parameters in our solution. But it sure seems like we could identify the problem upstream: those first two equations weren't very different from one another. Since the second equation was $-2$ times the first, it didn't contribute any new information to the system. Put another way, $-2$ times the first row plus $1$ times the second row equals the zero vector, and it's this situation --- and generalizations of it when there are more than two vectors --- that's exactly what we'll want to understand.
+
+@def[linear combination][[
+
+	Let $\vec{v_1}, ..., \vec{v_k} \in #R#^n$. A **linear combination** of the $\vec{v_i}$ is a vector of the form
+
+	$$
+		c_1\vec{v_1} + \cdots + c_k\vec{v_k}
+	$$
+
+	for any scalars $c_i \in #R#$.
+
+]]
+
+For example, the linear combination in question from the previous question was
+
+$$
+	-2[[ 1 ; -1 ; 3 ]] + [[ -2 ; 2 ; -6 ]] = [[ 0 ; 0 ; 0 ]].
+$$
+
+Here, we've written the vectors as columns to be consistent and make it easier to parse, but the equation works just as well with row vectors too (i.e. the way they appear in the augmented matrix):
+
+$$
+	-2[[ 1, -1, 3 ]] + [[ -2, 2, -6 ]] = [[ 0, 0, 0 ]].
+$$
+
+A linear combination that equals the zero vector is of the most interest to us: it's what determines whether a system of equations has a solution involving free parameters. We'll be talking about that situation quite a bit, so let's give it a name.
+
+@def[linear independence][[
+
+	A collection of vectors $v_1, ..., v_k \in #R#^n$ is **linearly dependent** if there is a linear combination of the $v_i$ that is equal to the zero vector (other than the linear combination with every coefficient being $0$). If a collection of vectors is not linearly dependent, we say it's **linearly independent**.
+
+]]
+
+@ex[linear independence][[
+
+	Are the vectors $$\vec{v_1} = [[ 1 ; 2 ; -1 ]]$$, $$\vec{v_2} = [[ 2 ; 0 ; 4 ]]$$, and $$\vec{v_3} = [[ 0 ; 2 ; -3 ]]$$ linearly independent? Why or why not?
+
+	@solution[[
+
+	For the vectors to be linearly *dependent*, we would need scalars $c_1$, $c_2$, and $c_3$ so that
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + c_3\vec{v_3} = \vec{0}
+	$$
+
+	and not all the $c_i$ are zero. A great lesson in math is to use existing theory whenever possible, and this is a great example: this is just a system of linear equations in the $c_i$! Specifically, it corresponds to the augmented matrix
+
+	$$
+		[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]].
+	$$
+
+	Take a moment to really dig into that and convince yourself of why this is the case. If it doesn't become clear, it's absolutely worth starting with the vectors, multiplying them each by their respective constant, and then adding them together.
+
+	Now that we have the system as a matrix, we can row-reduce it to solve for the $c_i$:
+
+	$$
+		[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]] & 
+
+		[[ 1, 2, 0 | 0 ; 0, -4, 2 | 0 ; 0, 6, -3 | 0 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 2\vec{r_1} \\ \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
+
+		[[ 1, 2, 0 | 0 ; 0, 2, -1 | 0 ; 0, 2, -1 | 0 ]] & \qquad :: \vec{r_2} \to -\frac{1}{2}\vec{r_2} \\ \vec{r_3} \to \frac{1}{3}\vec{r_3} ::
+
+		[[ 1, 0, 1 | 0 ; 0, 2, -1 | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} \\ \vec{r_1} \to \vec{r_1} - \vec{r_2} ::
+	$$
+
+	Letting $c_3 = t$, we have $c_1 = -t$, $c_2 = \frac{1}{2}t$, and $c_3 = t$. Taking $t = 1$ for example, we have a linear combination that produces $\vec{0}$, so these vectors are linearly dependent. As a gut check, we expect there to be at least one free parameter whenever vectors are linearly dependent, since if we take any linear combination of $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$, we can multiply every coefficient by any number $t$ to produce another linear combination equaling $\vec{0}$. If we had instead been able to row-reduce all the way to the identity matrix, then we would have found that $c_1 = c_2 = c_3 = 0$, meaning that was the only way to make a linear combination equal to $\vec{0}$ --- and so the vectors would be linearly independent.
+
+]]
+
+@exc[linear independence][[
+
+	Are the vectors $$\vec{w_1} = [[ 2 ; 0 ; 1 ]]$$, $$\vec{w_2} = [[ -1 ; -1 ; 1 ]]$$, and $$\vec{w_3} = [[ 0 ; 1 ; 0 ]]$$ linearly independent? Why or why not?
+
+	@solution[[
+
+	We set up the matrix as before, placing these vectors as columns, and then row reduce.
+
+	$$
+		[[ 2, -1, 0 ; 0, -1, 1 ; 1, 1, 0 ]] & 
+
+		[[ 1, 1, 0 ; 0, 1, -1 ; 2, -1, 0 ]] & \qquad :: \vec{r_1} \leftrightarrow \vec{r_3} ; \vec{r_2} \to -\vec{r_2} ::
+
+		[[ 1, 1, 0 ; 0, 1, -1 ; 0, -3, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - 2\vec{r_1}
+
+		[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, -3 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
+
+		[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_3} \to -\frac{1}{3}\vec{r_3}
+
+		[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - \vec{r_2}
+	$$
+
+	These vectors are linearly independent! The only solution for the coefficients $c_i$ is $c_1 = c_2 = c_3 = 0$, so there is no nonzero linear combination of the $c_i$ that makes the zero vector.
+
+]]
+
+We'll have a lot to say about linear combinations --- most notably, they're a valuable alternate perspective on matrix multiplication. For an example, let's look at the product
+
+$$
+	[[ a, b ; c, d ]] [[ 4 ; 2 ]] = [[ 4a + 2b ; 4c + 2d ]] = 4 [[ a ; c ]] + 2 [[ b ; d ]].
+$$
+
+Here we can see a property we'll reference for the remainder of the course: **a matrix times a vector is a linear combination of the columns of the matrix, with coefficients given by the entries of the vector**.
+
+That may be long, but it will more than make up for it in usefulness. As a first application, the **range** of the matrix (i.e. its set of possible outputs) is given by *all* linear combinations of the columns of the matrix, and so we'd do well to give that concept a name. We'll return to the concept of the range of a matrix in the future, but for now, we'll focus on the set of linear combinations.
+
+@def[span][[
+
+	The **span** of vectors $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ is the set of *all* linear combinations of them, denoted
+
+	$$
+		\span\{v_1, ..., v_k\} = \left\{ c_1\vec{v_1} + \cdots + c_k\vec{v_k} \in #R#^n \mid c_1, ..., c_k \in #R# \right\}.
+	$$
+
+]]
+
+@exc[span][[
+
+	1. What does the span of a single nonzero vector look like in $#R#^2$? What about $#R#^3$? Does this match what we already know?
+
+	2. What is the span of the zero vector?
+
+	3. What does the span of two nonzero vectors look like in $#R#^3$? What about $#R#^2$?
+
+	@solution[[
+
+	1. This is the line through the origin parallel to the vector, which tracks with the formula we already have for lines in $#R#^3$!
+
+	2. The span of the zero vector is just the zero vector, and more generally, adding the zero vector to any set of vectors doesn't change its span.
+
+	3. In $#R#^3$, the span of two *linearly independent* vectors is the plane containing them. The span of two linearly dependent vectors is the line containing them both! The same goes in $#R#^2$ --- the span is either all of $#R#^2$ or a line through the origin.
+
+]]
+
+When a collection of vectors $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ has at least $n$ linearly independent ones, then $\span\{\vec{v_1}, ..., \vec{v_k}\} = #R#^n$: that's because we can take just the $n$ linearly independent vectors and row reduce them as rows in a matrix to get to the identity matrix, so all the vectors $\vec{e_i}$ that are all zero except for a one in the $i$th position are expressible as linear combinations of the $\vec{v_j}$, and every vector in $#R#^n$ is expressible as a linear combination of the $\vec{e_i}$.
+
+Similarly, when a collection of vectors $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ has $k > n$, so there are more vectors than entries per vector, then the vectors have to be linearly dependent. To see this, place them all as rows in a matrix to produce one that's taller than it is wide, and then row reduce it. At least one of the rows has to be all zero in the end, so the vectors must be linearly dependent. Let's summarize these results properly.
+
+@prop[conditions for linear independence and spanning][[
+
+	Let $\vec{v_1}, ..., \vec{v_k} \in #R#^n$.
+
+	1. If $k > n$, then the vectors cannot be linearly independent. Equivalently, if the vectors are linearly independent, then $k \leq n$.
+
+	2. If $k < n$, then the vectors cannot span $#R#^n$. Equivalently, if the vectors do span $#R#^n$, then $k \geq n$.
+
+	3. If there are at least $n$ different linearly independent vectors among the $\vec{v_i}$, then $\span\left\{ \vec{v_1}, ..., \vec{v_k} \right\} = #R#^n$.
+
+]]
+
+
+
+## Bases
+
+When we take a vector $\vec{v}$ in the span of some linearly independent vectors $\vec{v_1}, ..., \vec{v_k} \in #R#^n$, it's not only a linear combination, but it's also unique: if there were two different ways to write
+
+$$
+	\vec{v} = c_1\vec{v_1} + \cdots + c_k\vec{v_k} = d_1\vec{v_1} + \cdots + d_k\vec{v_k},
+$$
+
+then subtracting,
+
+$$
+	c_1\vec{v_1} + \cdots + c_k\vec{v_k} - \left( d_1\vec{v_1} + \cdots + d_k\vec{v_k} \right) &= \vec{0}
+
+	(c_1 - d_1) \vec{v_1} + \cdots + (c_k - d_k)\vec{v_k} = \vec{0}.
+$$
+
+But since the $\vec{v_i}$ were linearly independent, the only linear combination that equals the zero vector is when all of the coefficients are zero, meaning $c_i - d_i = 0$ for all $i$. The result is that $c_i = d_i$ for all $i$, and so there wasn't a different way to write $\vec{v}$ after all!
+
+This uniqueness of expression is a valuable consequence of linear independence, and it's even nicer when the vectors span all of $#R#^n$, so that *every* vector in $#R#^n$ can be expressed uniquely as a linear combination. Let's give that case a name!
+
+@def[basis for $#R#^n$][[
+
+	A **basis** for $#R#^n$ is a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in #R#^n$ that is linearly independent and spans $#R#^n$. Given a basis and any vector $\vec{v} \in #R#^n$, there is a **unique** linear combination
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + \cdots + c_n\vec{v_n} = \vec{v}.
+	$$
+
+]]
+
+The previous proposition tells us that any basis for $#R#^n$ must have exactly $n$ vectors: it can't have more, since then the vectors couldn't be linearly independent, and it can't have less, since then they couldn't span $#R#^n$. Moreover, if we're interested in checking if a collection of vectors is a basis, then we can just check if they're linearly independent and have the right number of vectors, since then they'll be guaranteed to span the space too.
+
+@ex[a basis for $#R#^n$][[
+
+	The primordial example of a basis is the vectors
+
+	$$
+		\vec{e_1} = [[ 1 ; 0 ; 0 ; \vdots ; 0 ]], \vec{e_2} = [[ 0 ; 1 ; 0 ; \vdots ; 0 ]], ..., \vec{e_n} = [[ 0 ; 0 ; \vdots ; 0 ; 1 ]] \in #R#^n.
+	$$
+
+	The $\vec{e_i}$ are linearly independent since they're already the rows of the identity matrix, and they certainly span $#R#^n$: given a vector $\vec{v} \in #R#^n$, we can immediately express $\vec{v}$ as a linear combination of the $\vec{e_i}$ by just using the entries of $\vec{v}$ as coefficients.
+
+]]
+
+This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
+
+@ex[another basis for $#R#^n$][[
+
+	Show that the vectors
+
+	$$
+		\vec{v_1} = [[ 3 ; 1 ; 2 ]], \qquad \vec{v_2} = [[ 1 ; 0 ; 1 ]], \qquad \vec{v_3} = [[ 0 ; 2 ; 1 ]]
+	$$
+
+	form a basis for $#R#^3$ and express the vector
+
+	$$
+		\vec{v} = [[ 4 ; 1 ; 0 ]]
+	$$
+
+	in this basis.
+	
+	While this is nominally a new kind of task, it just comes down to more row reduction: we know that there is the correct number of vectors for a basis (three) and so we can just check linear independence. As a small extra, let's row reduce these by rows instead of columns: that's perfectly fine to do for showing linear independence, and for interesting reasons that we'll have a chance to explore on the homework.
+	
+	$$
+		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 2, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 3\vec{r_2}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 3 ]] & \qquad \vec{r_3} \to \vec{r_3} - 2\vec{r_1}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad \vec{r_3} \to \frac{1}{3}\vec{r_3}
+
+		[[ 0, 1, 0 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_3} ; \vec{r_1} \to \vec{r_1} + \vec{r_3} ::,
+	$$
+
+	and so all of the vectors are linearly independent and therefore span $#R#^3$.
+
+	To express $\vec{v}$ in the basis, we're just trying to find a linear combination of the basis vectors that equals $\vec{v}$. We've already solved that type of problem: it's just row reduction once again, this time with the $\vec{v_i}$ as columns.
+
+	$$
+		[[ 3, 1, 0 | 4 ; 1, 0, 2 | 1 ; 2, 1, 1 | 0 ]] & 
+
+		[[ 1, 0, 2 | 1 ; 3, 1, 0 | 4 ; 2, 1, 1 | 0 ]] & \qquad \vec{r_1} \leftrightarrow \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 1, -3 | -2 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 2\vec{r_1} ::
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 0, 3 | -3 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_3} \to \frac{1}{3}\vec{r_3}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 6\vec{r_3}
+
+		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_3}.
+	$$
+
+	In total, our linear combination is $\vec{v} = 3\vec{v_1} - 5\vec{v_2} - \vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(3, -5, -1)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
+
+]]
+
+Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point. 
+
+@desmos{coordinateSystems}
+
+Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
+
+@exc[another basis for $#R#^n$][[
+	
+	Show that the vectors
+	
+	$$
+		\vec{v_1} = [[ 1 ; 2 ]], \qquad \vec{v_2} = [[ 0 ; -1 ]]
+	$$
+	
+	form a basis for $#R#^2$, and express the vector
+	
+	$$
+		\vec{v} = [[ 3 ; 8 ]]
+	$$
+
+	in this basis.
+
+	@solution[[
+
+	We can actually do both in one step! By arranging $\vec{v_1}$ and $\vec{v_2}$ as columns, augmenting with $\vec{v}$, and row reducing, we can show that the left side row reduces to the identity matrix and get the coefficients to express $\vec{v}$ in this basis at the same time.
+
+	$$
+		[[ 1, 0 | 3 ; 2, -1 | 8 ]] &
+
+		[[ 1, 0 | 3 ; 0, -1 | 2 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
+
+		[[ 1, 0 | 3 ; 0, 1 | -2 ]] & \qquad \vec{r_2} \to -\vec{r_2}
+	$$
+
+	We therefore have that $\left\{ \vec{v_1}, \vec{v_2} \right\}$ is a basis, and that $\vec{v} = 3\vec{v_1} - 2\vec{v_2}$.
+	
+]]
+
+
+
+@navButtons

@@ -1,0 +1,119 @@
+@navButtons
+
+It's the last section of differentiation! We're going to talk about yet another application of derivatives: finding roots of functions.
+
+Let $f(x)$ be a differentiable function. The **roots** of $f$ are the $x$-values that make $f(x) = 0$. For example, the roots of $f(x) = x^2 - 2x - 3$ are $x = -3$ and $x = 1$, and the roots of $f(x) = x^2 + 1$ are $x = \pm i$. While we haven't talked about complex numbers in this class, and they won't be required for any problems you'll be doing, it will be nice if you've seen them before for some of the topics we talk about at the end of the section.
+
+Okay, so how do we find roots? Well, that's just as complicated of a question as asking how we solve equations, since we can move everything to one side of the equals sign and wind up with a complicated expression equaling zero --- the only difference here is that we're assuming the expression is differentiable.
+
+As we've explored for so many sections, though, differentiable functions are well-approximated by lines! Near $x = a$, $f(x) \approx f(a) + f'(a)(x - a)$ --- just the equation of the tangent line. That approximation usually gets pretty bad pretty quickly, but let's see if we can make it work for our purposes. We would like to know when $f(x) = 0$, so starting from $x = a$, we solve $0 = f(a) + f'(a)(x - a)$. We have
+
+$$
+	f(a) + f'(a)(x - a) &= 0
+	
+	f'(a)(x - a) &= -f(a)
+	
+	x - a &= -\frac{f(a)}{f'(a)}
+	
+	x &= a -\frac{f(a)}{f'(a)}.
+$$
+
+That solution almost certainly isn't a root, but it's probably a better guess than $x = a$! Let's make it our new $x$-value value and try again, and over time, we'll hopefully get close to an actual root.
+
+This process is called **Newton's method**, named after the same Newton that discovered most of the rest of calculus. Let's try it in an actual example: computing an approximate value of the square root of two.
+
+
+
+@ex[Newton's method][[
+	
+	Approximate $\sqrt{2}$ using three iterations of Newton's method.
+
+	@solution[[
+	
+	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we'll  index these with subscripts starting at zero; let's start with $x_0 = 1$. To use Newton's method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. So we have
+	
+	$$
+		x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}
+		
+		&= 1 - \frac{-1}{2}
+		
+		&= \frac{3}{2}
+		
+		&= 1.5.
+	$$
+	
+	That's definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
+	
+	$$
+		x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}
+		
+		&= \frac{3}{2} - \frac{1/4}{3}
+		
+		&= \frac{17}{12}
+		
+		&\approx 1.41667.
+	$$
+	
+	And now for our third and last iteration.
+	
+	$$
+		x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}
+		
+		&= \frac{17}{12} - \frac{1/144}{17/6}
+		
+		&= \frac{577}{408}
+		
+		&\approx 1.41423.
+	$$
+	
+	After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
+	
+	Here's what this process actually looks like --- drag the blue point to change the initial guess.
+	
+	@desmos{newtonsMethod}
+	
+	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots --- here, that means near zero. This will come up a little bit later, and it's an important caveat of Newton's method: it doesn't always work or work well (i.e. converge to a root quickly).
+	
+]]
+
+@exc[Newton's method][[
+	
+	Approximate a solution to $\cos(x) = x$ using four iterations of Newton's method.
+	
+]]
+
+
+
+## Newton Fractals
+
+I'd be remiss if I didn't mention one of the most beautiful pictures math can produce. Take a function, say $f(x) = x^3 - 1$, draw a number line, and color its points based on how well they do as an initial guess to Newton's method. For example, $x_0 = 1$ does extremely well as a guess, since it's already at a root, while $x_0 = 0$ does terribly: since $f(0) = 0$, we have
+
+$$
+	x_1 &= x_0 - \frac{f(0)}{f'(0)}
+	
+	&= 0 - \frac{1}{0},
+$$
+
+so the process fails to converge to anything at all. We'll give numbers a brightness based on how well they do as a starting guess --- bright means a point converges quickly, like $x = 1$, and dark means it converges slowly or not at all.
+
+### image graphics/newtons-method-line.png
+
+That's not very intuitive! This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don't. To actually understand what's going on here, we need to look at the bigger picture: there are actually three roots of $x^3 - 1$: there's $x = 1$ but also $x = -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i$. since some of the roots of $x^3 - 1$ are complex, let's consider complex initial guesses too. Without going into too much detail, Newton's method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the guesses go. We'll still use brightness to indicate how fast a guess converges, but now we'll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to.
+
+### canvas newtons-method
+
+What results is a pretty remarkable fractal: the bubble-like pattern repeats however far we zoom in or out. We'd expect Newton's method to take an initial guess and always send it to the closest root, but this picture shows us that's not the case: the points in the bubbles on the left are initial guesses that converge to $x = 1$ despite one of the other two roots being closer.
+
+That image is actually taken from an interactive applet I created and worked on over the last few years. You can pan and zoom, and dragging the white dots changes the roots of the polynomial. Have a look!
+
+
+
+### image-links
+	/applets/newtons-method
+###
+
+<div style="height: 64px"></div>
+
+
+
+@navButtons

@@ -1,0 +1,197 @@
+@navButtons
+
+
+
+## Periodic Functions
+
+In the last section, we introduced even and odd functions as those whose graphs didn't change after applying different types of reflections. We might also wonder if there are functions that are preserved by other kinds of transformations, like shifts and stretches --- let's investigate!
+
+@exc[functions unchanged by transformations][[
+
+	1. Let $f$ be a function so that $f(x) = f(3x)$ for all $x$; in other words, $f$ is unchanged after a horizontal stretch by a factor of $\frac{1}{3}$. What kind of a function does $f$ have to be? Is this an interesting type of function to study? What if we change the $3$ to a different number?
+
+	2. What about for vertical stretches instead of horizontal ones?
+
+	3. How about vertical shifts? Horizontal shifts?
+
+]]
+
+With some intuition from that exercise in mind, let's focus our attention for the first part of this section on that final type of function: those that are preserved by particular horizontal shifts. If $f$ is a function whose graph is the same as when it's shifted to the left by $2$ units, then the graph needs to exactly line up with itself $2$ units over.
+
+@desmos{periodicFunction}
+
+Let's define a few terms so that these functions are a bit easier to talk about.
+
+@def[periodic function][[
+
+	A function $f$ is **periodic** if for some value $a$, called the **period** of $f$, $f(x + a) = f(x)$ for $x$ where $f(x)$ and $f(x + a)$ are defined. We usually take $a$ to be the minimum possible positive value --- for example, if $f$ is periodic with period $3$, then it is also periodic with period $6$, since $f(x + 6) = f(x + 3) = f(x)$ for all $x$, but it carries more information to say the period is $3$.
+
+]]
+
+In the previous graph, $f$ is periodic with period $2$. We can tell that by looking at the graph and noticing that it repeats every $2$ units on the $x$-axis, but we can also go the other way, and sketch a complete graph of a periodic function given its period and a portion of its graph.
+
+@exc[graphing a periodic function][[
+
+	1. The function $g$ is periodic with period $3$, and a portion of it is graphed below. Sketch a complete graph of it.
+
+	@desmos{periodicFunction2}
+
+	2. Similarly, The function $h$ is periodic with period $2$, and a portion of it is graphed below. Sketch a complete graph.
+
+	@desmos{periodicFunction3}
+
+	3. Sketch a graph of a function that is periodic with period $1$.
+
+]]
+
+We'll have a lot more to say about particular periodic functions in the next section, but for now, let's look at a few examples of some of them.
+
+@ex[a car engine][[
+
+	An idling car has an engine whose noise $N(t)$ in decibels after $t$ seconds is given by
+	$$
+		N(t) = \begin{cases} 20 + 12000t, & 0 \leq t \leq \frac{1}{1200} \\ 40 - 12000t, & \frac{1}{1200} \leq t \leq \frac{1}{600} \end{cases},
+	$$
+	where $N$ is periodic with period $\frac{1}{600}$.
+
+	1. Sketch a graph of $N$ for $t \geq 0$.
+
+	2. What is a physical interpretation of the period of this graph?
+
+	@solution[[
+
+	The numbers in this example are somewhat extreme, but we can sketch a graph as long as we take care to draw the $t$-axis quite small.
+
+	@desmos{carEngine}
+
+	Since the function is periodic with a period equal to the width of this interval, we can extend it to produce a graph of the entire function (graphed in blue). To address the physical meaning, this is a car engine whose noise level is repeating 600 times a second --- that's reasonable for the rate at which an engine rotates, particularly at idle! It's fair to say that this function is periodic because the physical state of the engine is periodic.
+
+]]
+
+As one final set of terms, let's say just a bit more about properties of periodic functions.
+
+@def[midline and amplitude][[
+
+	Let $f(x)$ be a periodic function, and suppose that its maximum $y$-value is $M$ and its minimum $y$-value is $m$. The **midline** of $f$ (occasionally called its **balance value**) is the average of these two values, i.e. $\frac{M + m}{2}$, and the **amplitude** of $f$ is the distance from the midline to either the max or min, i.e. $\frac{M - m}{2}$.
+
+]]
+
+For example, the periodic function in the previous example has a midline of $\frac{30 + 20}{2} = 25$ and an amplitude of $\frac{30 - 20}{2} = 5$, since its minimum $y$-value is $20$ and its maximum is $30$.
+
+With a good handle on periodic functions, we're ready to dig into trigonometry proper. We'll start by reviewing a few terms and concepts from geometry before examining the unit circle as our main object of study.
+
+
+
+## A Geometry Review
+
+When two lines meet at a point, they form an **angle**. We usually measure the size of those angles in units of **degrees**, written as a small superscript circle. $360^\circ$ is defined to be a full circle, so an angle of $180^\circ$ is a straight line, and doesn't look like much of an angle at all. On the other hand, $90^\circ$ is the angle found in any corner of a rectangle, and we call it a **right** angle (indicated with a small square in the angle instead of a small arc). Instead of Latin letters like $x$ and $y$, we usually denote angles with Greek letters like $\theta$ (theta) or $\varphi$ (phi), which can help us recognize them in expressions.
+
+@desmos{angles}
+
+Angles with measure between $0^\circ$ and $90^\circ$ (not including $0^\circ$ or $90^\circ$ themselves) are called **acute**, and those with measure between $90^\circ$ and $180^\circ$ (also not inclusive) are called **obtuse**. This terminology can also apply neatly to triangles, and so we sometimes use these angle names to refer to them.
+
+@def[acute, obtuse, and right triangles][[
+
+	A triangle is **acute** if all of three its angles are less than $90^\circ$, **obtuse** if one of its angles is larger than $90^\circ$, and **right** if one of its angles is exactly $90^\circ$. In a right triangle, the two sides bordering the right angle are called **legs**, and the other side is called the **hypotenuse**.
+
+	@desmos{rightTriangle}
+
+]]
+
+This seems to imply that at most one angle of a triangle can be at least $90^\circ$, and that's the case! It's a consequence of the following (very useful) fact:
+
+@thm[the sum of angles of a triangle][[
+
+	In any triangle, the three angles sum to $180^\circ$.
+
+]]
+
+@exc[the sum of angles of a triangle][[
+
+	Draw a diagram that shows that the previous theorem is true. Hint: one way to show that three angles sum to $180^\circ$ is to show that if you line them up side-by-side, they form a straight line. Try drawing a triangle with three different sides, then drawing two more copies of that triangle so that matching sides touch one another, and see if you can find all three angles of the triangle forming a straight line.
+
+]]
+
+While this theorem applies to all triangles, right triangles in particular have an extra very special (and very famous) property.
+
+@thm[The Pythagorean Theorem][[
+
+	In a right triangle with legs $a$ and $b$ and hypotenuse $c$, $a^2 + b^2 = c^2$.
+
+]]
+
+### pf
+
+	We don't get many chances to prove things in this course, so let's take this one! There are an incredible number of ways to prove the Pythagorean Theorem, but my personal favorite to see as a first proof works by rearranging triangles.
+
+	@desmos{pythagoreanTheorem}
+
+	Here, we have a right triangle with legs $a$ and $b$ (colored red and blue, respectively), and a purple hypotenuse $c$. By drawing three more rotated copies of the triangle, we can surround the purple square. Its side length is $c$, so its area must be $c^2$. But if we rearrange the triangles (drag the $s$ slider in the expressions list) then we can instead fill exactly the same area with two smaller squares with areas $a^2$ and $b^2$, respectively. Since both versions of the diagram have four copies of the triangle, the non-triangle area must be the same: in other words, $a^2 + b^2 = c^2$.
+
+###
+
+@exc[the Pythagorean Theorem][[
+
+	1. If a right triangle has legs of length $5$ and $12$, how long must its hypotenuse be?
+
+	2. Suppose a right triangle has two sides of lengths $3$ and $4$. How long could the third side be?
+
+]]
+
+One last geometric notion we'll need to recall is that of **similar triangles**, which is a term used to describe two triangles of the same shape, where we can transform one into the other by rotating and scaling. Two similar triangles have the same angles, and if two corresponding sides have a ratio of lengths equal to $a$, then any other pair of corresponding sides has the same ratio of lengths.
+
+@desmos{similarTriangles}
+
+In this graph, the purple and blue triangles are similar, since we can rotate one $180^\circ$ and scale it to match the other. Doing that makes the two horizontal sides lie on top of one another, and so they're corresponding sides. Before rotating and scaling, the purple side is twice as long as the blue one, and so every other purple side must be exactly twice as long as its corresponding blue side.
+
+@exc[similar triangles][[
+
+	Are all right triangles similar? What about all right triangles whose hypotenuse has a length of exactly $6$?
+
+]]
+
+
+
+## The Unit Circle
+
+We're now ready to investigate the **unit circle**, which is a circle of radius $1$ centered at $(0, 0)$.
+
+@desmos{unitCircle}
+
+We'll have much, much more to say about the unit circle in the next section, but let's start with an equation for it. Any point $(x, y)$ on the unit circle forms a triangle with side lengths $|x|$ and $|y|$ (if $x$ and $y$ are both positive, then that's just $x$ and $y$). The hypotenuse is the radius of the circle, which is $1$ by definition, so by the Pythagorean Theorem, $x^2 + y^2 = 1$.
+
+@exc[the unit circle][[
+
+	1. Is $(1, 1)$ on the unit circle? What about $$\left( \frac{\sqrt{3}}{2}, -\frac{1}{2} \right)$$?
+
+	2. How many points on the unit circle have $y$-coordinate $$\frac{1}{5}$$? How about $y$-coordinate $-1$? $1.5$?
+
+	3. For each point on the unit circle you found in the previous question, find its $x$-coordinate.
+
+]]
+
+These types of questions let us convert $x$-coordinates to $y$-coordinates and vice versa, but it doesn't let us connect the points with the angles they make. For example, the purple point in the previous graph makes an angle of $30^\circ$ with the positive $x$-axis, and its $y$-coordinate is $\frac{1}{2}$, but there isn't an obvious way to go back and forth. All sorts of physical phenomena can be modeled at least in part with circles and angles, and so having a way to convert between the angle of a point and its $x$- and $y$-coordinates would be useful. Let's define two of our core functions now that will help us do just that, and then explore a little bit about them.
+
+@def[cosine and sine][[
+
+	Let $\theta$ be an angle. The **cosine** of $\theta$, written $\cos(\theta)$, is the $x$-coordinate of the point on the unit circle with angle $\theta$ measured counterclockwise from the positive $x$-axis, and the **sine** of $\theta$, written $\sin(\theta)$, is the $y$-coordinate of the point on the unit circle with angle $\theta$, measured in the same way. In other words, a point on the unit circle with angle $\theta$ has coordinates $(\cos(\theta), \sin(\theta))$.
+
+]]
+
+That's a lot to digest! Let's begin by focusing on how points' angles are measured in the first place. The previous Desmos graph has a slider for the angle $a$ in degrees, ranging from $0^\circ$ to $360^\circ$. Since the angle is measured counterclockwise, increasing $a$ first makes the point rise up, until it's at the very top of the circle at $a = 90^\circ$, and then it falls, finally reaching the leftmost point of the circle at $a = 180^\circ$.
+
+@exc[cosine and sine][[
+
+	1. Draw a unit circle and plot the points on it with angles $0^\circ$, $45^\circ$, $270^\circ$, and $360^\circ$ (measured counterclockwise from the positive $x$-axis, as we'll always take to be the case). You don't need to find their coordinates.
+
+	2. What are $\cos(0^\circ)$ and $\sin(0^\circ)$? What about $\cos(90^\circ)$, $\cos(180^\circ)$, and $\sin(270^\circ)$?
+
+	3. Suppose a point on the unit circle with angle $\theta$ has $$\sin(\theta) = \frac{\sqrt{24}}{5}$$. What could $\cos(\theta)$ be?
+
+]]
+
+This is a good place to start! We'll have much, *much* more to say about sine and cosine in the next section, including exploring angles less than $0^\circ$ or larger than $360^\circ$, graphing both functions, and interpreting transformations of them.
+
+
+
+@navButtons

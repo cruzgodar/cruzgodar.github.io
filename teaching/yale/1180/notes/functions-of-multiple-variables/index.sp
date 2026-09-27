@@ -1,0 +1,201 @@
+@navButtons
+
+
+
+After getting our bearings in 3D space and graphing objects like lines, planes, and spheres, let's start dipping our toes into graphing proper functions of multiple variables. We already explored the notation $z = f(x, y)$ back in section 1, but we haven't been able to turn something like $z = \sin(x) + \cos(y)$ into a graph.
+
+
+
+## Set Builder Notation
+
+This section will see us interfacing with sets of numbers and points that are a little more complicated than ones we've seen in the past. In single-variable calculus, **interval notation** largely suffices to describe the sets of real numbers we need to deal with: for example, $[-1, 3)$ is the set of all numbers $x$ such that $-1 \leq x < 3$. We also sometimes use the union symbol $\cup$ to "add" two sets together, as in $(-\infty, -5] \cup [5, \infty)$ for the set of real numbers $x$ with $|x| \geq 5$. When we're working with sets in $#R#^2$ and higher, though, intervals aren't quite enough to describe all of the sets we're interested in. When we find ourselves describing the unit sphere as "the set of points $(x, y, z)$ in $#R#^3$ with $x^2 + y^2 + z^2 = 1$", we're pushing up against the limitations of how long a sentence can be before it's too clunky to use. To reduce some of that pressure, we'll introduce a notation for turning a long sentence like that into a more dense but more routinely parsable sequence of symbols.
+
+Rather than give a formal definition, we'll introduce set builder notation by way of example. Let's start with the unit sphere example from before: it's given by
+
+$$
+	\left\{ (x, y, z) \in #R#^3 \mid x^2 + y^2 + z^2 = 1 \right\}.
+$$
+
+Let's take this one symbol at a time. Set builder notation uses braces, as do sets when they're presented as lists of numbers, like $\left\{ 1, 2, 3 \right\}$ for the set containing $1$, $2$, and $3$. Within those braces, every set builder expression has a left part and a right part, separated by the vertical bar $\mid$, which we read as "such that".
+
+On the left, we write the general form an element from the set takes (i.e $(x, y, z)$), and where it lives. The symbol $\in$ means "element of", and we usually just read it as "in". All in all, $(x, y, z) \in #R#^3$ means "all points $(x, y, z)$ in $#R#^3$". To the right of the separator bar, we list conditions that the points have to satisfy to be in the set. In this case, that's the condition $x^2 + y^2 + z^2 = 1$, and so the set itself is the unit sphere in $#R#^3$. Set builder notation is more concise than writing things in words, and it also makes us start by giving the general form of elements of the set and a familiar set in which they live, both of which help contextualize the set we're talking about.
+
+@exc[set builder notation][[
+
+	1. Let $A$ be the **solid** cylinder of radius $2$ parallel to the $y$-axis, whose center axis passes through the origin. Write $A$ in set builder notation.
+
+	2. Sketch the set $\left\{ (x, y) \in #R#^2 \mid y \geq |x|, x^2 + y^2 \leq 1 \right\}$.
+
+	@solution[[
+
+	1. We're describing a set in $#R#^3$, so we should begin with $\left\{ (x, y, z) \in #R#^3 \right.$. To be in this solid cylinder, we need the distance to the $y$-axis to be no more than $2$, so $x^2 + z^2 \leq 2^2$. In all, we have
+
+	$$
+		\left\{ (x, y, z) \in #R#^3 \mid x^2 + z^2 \leq 4 \right\}.
+	$$
+
+	2. This is a filled-in region that is both above the graph of $y = |x|$ and within the unit circle. Both of those conditions need to be true at once, and so we get an overlap (i.e. intersection) of regions:
+
+	@desmos{intersectingRegion}
+
+]]
+
+
+
+## Functions of Two Variables
+
+Let's dig into functions of the form $f(x, y)$. Like functions of one variable, they have domains and ranges: the domain is the set of values that we're allowed to plug into $f$, and the range is the set of possible outputs $z = f(x, y)$ that actually appear as an output for some input $(x, y)$.
+
+@ex[domain and range][[
+
+	Let $f(x, y) = \sqrt{4 - x^2 - y^2}$. What is the domain and range of $f$?
+
+	Let's look at domain first --- how could we break this function by plugging things into it? The only potential issue is the root: we need $4 - x^2 - y^2 \geq 0$, so $x^2 + y^2 \leq 4$ The domain is a set in $#R#^2$, since the function takes in points $(x, y)$, and so we can write it in set builder notation as
+	
+	$$
+		\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 \leq 4 \right\}.
+	$$
+
+	That is, $f$ is defined only on the solid disk of radius $2$ centered at the origin.
+
+	What about the range? Square roots only ever produce positive numbers, so $f(x, y) \geq 0$. Also, the farther either $x$ or $y$ is away from $0$, the smaller $f$ gets, and so the largest output is $f(0, 0) = 2$. Since we can find an output of every number in between, the range is
+
+	$$
+		[0, 2] = \left\{ x \in #R# \mid 0 \leq x \leq 2 \right\}.
+	$$
+
+]]
+
+@exc[sketching a graph][[
+
+	A birding store's monthly profit in thousands of dollars is given by $f(x, y) = 25 - (x - 1)^2 - (y - 2)^2$, where $x$ is the number of hundreds of birdfeeders sold per month, and $y$ is the number of hundreds of pairs of binoculars sold per month. Find the practical domain of $f$ (i.e. the inputs to $f$ that make sense), and sketch a graph of $f$. Where do you think $f$ is maximized?
+
+	@solution[[
+
+	We can't exactly sell a negative number of birdfeeders, so a reasonable practical domain is $\left\{ (x, y) \in #R#^2 \mid x \geq 0, y \geq 0 \right\}$. We can sketch the wireframes as before, although this time they're a little bit more complicated. The vertical ones are
+
+	$$
+		z = 25 - (x-1)^2 - (-2)^2 = 21 - (x-1)^2,
+	$$
+
+	which is a parabola opening downward with a vertex at $(1, 21)$, and the very similar graph of
+
+	$$
+		z = 25 - (-1)^2 - (y-2)^2 = 24 - (y-2)^2.
+	$$
+
+	Careful not to just drop the entire $x$ and $y$ terms, but to actually set each variable to zero! The intersection with $z = 0$ is $(x - 1)^2 + (y - 2)^2 = 25$, which is a circle of radius $5$ centered at $(1, 2)$.
+
+	@desmos{wireframe2}
+
+	The result here is a little bit harder to visualize! It's a 3D parabola-like figure whose horizontal slices are circles. The maximum is when the terms $(x-1)^2$ and $(y-2)^2$ are minimized, so at $(1, 2, 25)$.
+
+]]
+
+On the one hand, graphing a function $z = f(x, y)$ is no more difficult than graphing $y = f(x)$: we just plug in points $(x, y)$ and plot the point $(x, y, f(x, y))$ in $#R#^3$. On the other hand, graphing anything at all in 3D is much more challenging than graphs in $#R#^2$, and there's just a lot more that can be going on with a function of multiple variables. We'll quickly want to develop a tool to help us draw and think about graphs in a more systematic manner.
+
+@ex[sketching a graph][[
+
+	Let $f(x, y) = \sqrt{4 - x^2 - y}$. Sketch the intersections of the graph of $f$ with the planes $z = 0$, $x = 0$, and $y = 0$. Based on this information, what does the graph of $f$ look like?
+
+	To intersect with the plane $z = 0$, we solve $f(x, y) = 0$, meaning $4 - x^2 - y = 0$. That's the same as $y = 4 - x^2$, which is a parabola opening downward.
+
+	For the intersections with $x = 0$ and $y = 0$, we have $z = \sqrt{4 - x^2}$ and $z = \sqrt{4 - y}$. The first is the top half of the circle $x^2 + z^2 = 4$, and the second is a square root function. Plotting them all out, we have the following graph.
+
+	@desmos{wireframe}
+
+	With this, the overall shape of the graph becomes clearer: it's a parabola-like object with circular cross-sections. While you won't be required to actually sketch graphs like this, this method of intersecting with planes lets you interpret which graphs are which.
+
+]]
+
+
+
+That example and especially the exercise indicate we'd do well to develop a better way to graph and visualize functions like this! The way we intersected the graph with the horizontal plane $z = 0$ is particularly useful here, and we'll be able to generalize and strengthen it to be much more useful.
+
+
+
+## Level Curves
+
+The theory of functions of multiple variables has been around longer than the computers and applications we use to graph them. And as humans, we've dealt with them less formally a *whole* lot longer than we've had the terminology of functions. How did we go about representing 3D data in 2D forms previously --- for example, the height of terrain on a map?
+
+Well, there's one common way that's still very much in use today: **topographical maps**, or just topo maps for short. They work by drawing lines on a 2D map that indicate paths of *constant height*: if you walk along any line in a topo map, you'll be staying at exactly the same height above sea level.
+
+### image graphics/topo.webp graphics/satellite.webp
+
+This map of Cone Peak in the Big Sur wilderness in California conveys the incredible steepness of the summit: every line crossed is another 100 feet of elevation gained, so the tighter the lines are bunched together, the steeper the slope there is.
+
+@exc[topo maps][[
+
+	1. Using the topo map, what do you think the area around the blue river looks like near the summit? What about the area around the river near the bottom of the map?
+
+	2. Pick any point on the map. In which direction do you need to travel to make your path as steep as possible? How do you know?
+
+	@solution[[
+
+	1. The area near the top is likely much steeper, since the river is passing through more lines more quickly, and there is also not much of a valley formed by the river, since the lines don't bend toward the river nearly at all. The opposite is true near the bottom!
+
+	2. Traveling at a right angle to the topo lines is a good bet! If traveling parallel to them keeps us at the same altitude, then traveling orthogonally should make us move uphill/downhill as quickly as possible.
+ 
+]]
+
+Topo maps let hikers carry the data of terrain and elevation along with them in a 2D form, and we can repurpose the idea to let us more easily graph functions of multiple variables. When we found the intersection of a graph with $z = 0$, there was nothing particularly special about $0$. Repeating that process for $z = c$ lets us define a whole family of intersections:
+
+@def[level curve and trace][[
+
+	Let $f(x, y)$ be a function of two variables. A **level curve** of $f$ at $z = c$ is the intersection of the graph of $z = f(x, y)$ with the plane $z = c$. A **trace** of $f$ is the intersection of the graph of $z = f(x, y)$ with the plane $x = c$ or $y = c$.
+
+]]
+
+Let's take a look at the function $z = x^2 + y^2$. To find its level curves, we just replace $z$ with $c$ to find $x^2 + y^2 = c$. That's the equation of a circle with radius $\sqrt{c}$, and so the level curves are circles with that radius. Let's draw the level curves for $c$ between $0$ and $10$ in the $xy$-plane to get a sense of the graph's shape.
+
+@desmos{levelCurves}
+
+@desmos{levelCurves3d}
+
+Here we can really see what the level curves are doing --- although the closeness of the outer circles might make it seem like the height is leveling off, it's actually indicating that that's as steep as it gets. The 3D view lets us check that this is correct --- try @clickTap[clicking][tapping] the 2D graph paper icon in the top right --- but it's valuable to be able to intuit facts about a graph from the level curves alone. For example, we can see that the graph is circular when sliced in this manner, and that it's steepest far away from the origin.
+
+@ex[level curves and traces][[
+
+	Sketch level curves for $z = x^2 - \frac{y^2}{4}$ for $z \in \left\{ -2, -1, 0, 1, 2 \right\}$, as well as traces at $x = 0$ and $y = 0$, and use them to predict the shape of the graph.
+
+	@solution[[
+
+	The level curves $c = x^2 - \frac{y^2}{4}$ are hyperbolas, opening horizontally when $c < 0$ and vertically when $c > 0$. When $c = 0$, the level curve is $x^2 = \frac{y^2}{4}$, meaning $y = \pm 2x$.
+
+	@desmos{hyperbolas}
+
+	The traces are $z = x^2$ and $z = -\frac{y^2}{4}$, both of which are parabolas. Putting them together, we have the following wireframe, and the graph that fits it is the shape of a saddle.
+
+	@desmos{hyperbolicParabolid}
+
+]]
+
+@exc[level curves and traces][[
+
+	Sketch level curves for $x^2 + y^2 - z^2 = 1$ for $c \in \left\{ -2, -1, 0, 1, 2 \right\}$. Also sketch the intersections of the graph with the planes $x = c$ and $y = c$. Use this information to pick which graph is correct.
+
+	@desmos{possibleGraphs}
+
+	@solution[[
+
+	@desmos{hyperboloid}
+
+]]
+
+As a note, these intersections with constant-$x$ and -$y$ planes are called **traces**. The information they provide is just as useful for sketching surfaces in $#R#^3$, but we don't often draw a collection of them together like we do for level curves --- that's because if $z = f(x, y)$ is a function, then plotting $f(x, y) = c$ produces a curve that generally doesn't cross other nearby level curves, but traces can and do intersect each other often, so a plot of a number of them together isn't so useful.
+
+Level curves are a useful tool for visualizing a surface in $#R#^3$, but they aren't strictly necessary if we have access to nice 3D graphing. If we extend the notion to a function of three variables, though, convenience is replaced with necessity, because we can't visualize the graph of $w = f(x, y, z)$ in $#R#^4$ at all! The best we can do is take intersections with the space $w = c$ and plot the resulting surfaces in $#R#^3$. We call these **level surfaces**, fittingly enough, and they can be useful to understand the structure of a function of three variables. It's important to remember that they aren't actually the graph of that function, though. The graph of a function $f(x, y, z)$ is as far removed from its level surfaces as the graph of $g(x, y)$ is from its level curves.
+
+@ex[level surfaces][[
+
+	The level surfaces of $f(x, y, z) = x^2 + y^4 + z^6$ are boxes that are sharper in some corners than others. The boxes for small values of $c$ look strangely familiar!
+
+	@desmos{levelSurfaces}
+
+]]
+
+
+
+
+
+@navButtons
