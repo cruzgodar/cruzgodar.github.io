@@ -125,6 +125,26 @@ export default function()
 				{ latex: raw`f(x, y) = xye^{-x^2 - y^2}`, color: desmosColors.purple },
 			]
 		},
+
+		inconclusiveSecondDerivative:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				expressionsCollapsed: false,
+			},
+
+			bounds: { xmin: -1.5, xmax: 1.5, ymin: -1.5, ymax: 1.5, zmin: -2.5, zmax: 2.5 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = x^4 + y^4 \{ x^4 + y^4 \leq 2 \}`, color: desmosColors.purple, hidden: true },
+				{ latex: raw`f(x, y) = -x^4 - y^4 \{ x^4 + y^4 \leq 2 \} `, color: desmosColors.blue, hidden: true },
+				{ latex: raw`f(x, y) = x^4 - y^4 \{ \left| x^4 - y^4 \right| \leq 2 \}\{ x^4 + y^4 \leq 2 \} `, color: desmosColors.red, hidden: true },
+				{ latex: raw`(0, 0, 0) `, color: desmosColors.orange },
+			]
+		},
 	
 		bestFitLine:
 		{
