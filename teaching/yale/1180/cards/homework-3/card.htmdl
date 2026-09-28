@@ -8,13 +8,69 @@
 
 	#. Find an equation of a line passing through the points $(5, 1, 2)$ and $(3, 4, 1)$.
 
+	**Solution:** We subtract one point from the other to find the direction vector:
+
+	$$
+		\vec{v} = \left< 3 - 5,\ 4 - 1,\ 1 - 2 \right> = \left< -2, 3, -1 \right>.
+	$$
+
+	Taking $(5, 1, 2)$ as the point (either one works!), the line is
+
+	$$
+		\vec{r}(t) = \left< 5, 1, 2 \right> + t\left< -2, 3, -1 \right> = \left< 5 - 2t,\ 1 + 3t,\ 2 - t \right>.
+	$$
+
+	We can check that $\vec{r}(0) = \left< 5, 1, 2 \right>$ and $\vec{r}(1) = \left< 3, 4, 1 \right>$, so both points really are on the line.
+
 	#. Find an equation of the plane containing the points $(1, 7, 0)$, $(-3, 1, 1)$, and $(2, 4, 0)$.
+
+	**Solution:** The vectors from $(1, 7, 0)$ to the other two points are
+
+	$$
+		\vec{v} &= \left< -3 - 1,\ 1 - 7,\ 1 - 0 \right> = \left< -4, -6, 1 \right>
+
+		\vec{w} &= \left< 2 - 1,\ 4 - 7,\ 0 - 0 \right> = \left< 1, -3, 0 \right>,
+	$$
+
+	both of which lie in the plane. Their cross product is a normal vector:
+
+	$$
+		\vec{n} = \vec{v} \times \vec{w} &= \left< 3, 1, 18 \right>
+	$$
+
+	Then the plane equation is
+
+	$$
+		3(x - 1) - (y - 7) + 18z = 0,
+	$$
+
+	or equivalently $3x - y + 18z = -4$.
 
 	#. Find the intersection of the line from question #-2 and the plane from question #-1 if it exists, or show they don't intersect.
 
+	**Solution:** To attempt to find the point, we plug the components of the line into the equation of the plane and solve for the $t$ that lands us there:
+
+	$$
+		3(5 - 2t) - (1 + 3t) + 18(2 - t) &= -4
+
+		15 - 6t - 1 - 3t + 36 - 18t &= -4
+
+		-27t &= -54
+
+		t &= 2.
+	$$
+
+	Plugging that back into $\vec{r}(t)$ gives the point of intersection:
+
+	$$
+		\vec{r}\left( 2 \right) = \left< 1, 7, 0 \right>,
+	$$
+
+	which we already know is on the plane!
+
 	- - -
 
-	In problems 3#, do the following.
+	In problems 4#, do the following.
 
 		> a) Compute $f_x(x, y)$ and $f_y(x, y)$.
 
@@ -26,15 +82,137 @@
 
 	#. $$f(x, y) = \sin\left( \frac{\pi}{2} x \right) + \cos(\pi y)$$.
 
+	**Solution:**
+
+	> a) We have
+
+	$$
+		f_x(x, y) &= \frac{\pi}{2}\cos\left( \frac{\pi}{2} x \right)
+
+		f_y(x, y) &= -\pi\sin(\pi y).
+	$$
+
+	> b) $$f_x(1, 2) = \frac{\pi}{2}\cos\left( \frac{\pi}{2} \right) = 0$$ and $$f_y(3, 4) = -\pi\sin(4\pi) = 0.$$ The graph that $f_x(1, 2)$ is a slope on is the trace at $y = 2$, which is the 2D graph of
+
+	$$
+		z = \sin\left( \frac{\pi}{2} x \right) + \cos(2\pi) = \sin\left( \frac{\pi}{2} x \right) + 1.
+	$$
+
+	Similarly, $f_y(3, 4)$ is a slope on the trace at $x = 3$, which is
+
+	$$
+		z = \sin\left( \frac{3\pi}{2} \right) + \cos(\pi y) = \cos(\pi y) - 1.
+	$$
+
+	### desmos tangentLine1
+
+	> c) We have
+
+	$$
+		f(1, 1) &= \sin\left( \frac{\pi}{2} \right) + \cos(\pi) = 1 - 1 = 0
+
+		f_x(1, 1) &= \frac{\pi}{2}\cos\left( \frac{\pi}{2} \right) = 0
+
+		f_y(1, 1) &= -\pi\sin(\pi) = 0,
+	$$
+
+	so the tangent plane is the completely flat plane $z = 0$, and the approximation is $f(1.5, 1.5) \approx 0$. The true value is
+
+	$$
+		f(1.5, 1.5) = \sin\left( \frac{3\pi}{4} \right) + \cos\left( \frac{3\pi}{2} \right) = \frac{\sqrt{2}}{2} \approx 0.707,
+	$$
+
+	so this is a fairly bad approximation.
+
+	> d) $f_{xy}(x, y) = 0$.
+
 	#. $$f(x, y) = x\tan(\pi y)$$.
 
+	**Solution:**
+
+	> a) We have
+
+	$$
+		f_x(x, y) &= \tan(\pi y)
+
+		f_y(x, y) &= \pi x\sec^2(\pi y).
+	$$
+
+	> b) $f_x(1, 2) = 0$ and $f_y(3, 4) = 3\pi$. Note that the graph for $f_x$ is $z = x\tan(2\pi) = 0$. 
+
+	### desmos tangentLine2
+
+	> c)
+
+	$$
+		f(1, 1) &= 0
+
+		f_x(1, 1) &= 0
+
+		f_y(1, 1) &= 1
+	$$
+
+	and so the tangent plane is $z = 1 + (y - 1) = y$. It predicts
+
+	$$
+		f(1.5, 1.5) \approx 1.5.
+	$$
+
+	However, $\tan\left( \frac{3\pi}{2} \right)$ is undefined, so $f(1.5, 1.5)$ doesn't exist in the first place! This is a good reminder of the limitations of linear approximations.
+
+	> d)
+
+	$$
+		f_{xy}(x, y) &= \pi\sec^2(\pi y).
+	$$
+
 	#. $$f(x, y) = \ln(xy^2)$$.
+
+	**Solution:**
+
+	> a)
+
+	$$
+		f_x(x, y) &= \frac{1}{xy^2} p/px\left[ xy^2 \right] = \frac{y^2}{xy^2} = \frac{1}{x}
+
+		f_y(x, y) &= \frac{1}{xy^2} p/py\left[ xy^2 \right] = \frac{2xy}{xy^2} = \frac{2}{y}.
+	$$
+
+	> b) $$f_x(1, 2) = 1$$ and $$f_y(3, 4) = \frac{1}{2}$$.
+
+	### desmos tangentLine3
+
+	> c) We have $f(1, 1) = \ln(1) = 0$, $f_x(1, 1) = 1$, and $f_y(1, 1) = 2$, so the tangent plane is
+
+	$$
+		z = (x - 1) + 2(y - 1),
+	$$
+
+	and the approximation is
+
+	$$
+		f(1.5, 1.5) \approx \frac{1}{2} + 2\left( \frac{1}{2} \right) = \frac{3}{2}.
+	$$
+
+	The actual value is $\ln\left( (1.5)(1.5)^2 \right) = \ln(3.375) \approx 1.216$, so that's not too bad.
+
+	> d) $f_{xy}(x, y) = 0$.
 
 	- - -
 
 	#. Give an example of a function $g(x, y)$ whose domain is all of $#R#^2$, but which is not differentiable at $(0, 0)$.
 
+	**Solution:** Many options here, but the easiest is
+
+	$$
+		g(x, y) = \sqrt{x^2 + y^2},
+	$$
+
+	whose graph is a cone with its sharp point at the origin.
+
 	#. Give an example of a function $h(x, y)$ which is not differentiable at $(0, 0)$, but whose partial derivative $ph/px$ is defined and continuous everywhere.
+
+	**Solution:** The simplest way to find one of these is to use a function with no $x$, like $h(x, y) = |y|$. Since $h$ doesn't involve $x$ at all, $h_x(x, y) = 0$ everywhere, which is defined and continuous. But $h_y(0, 0)$ is undefined since the absolute value function has a sharp corner at $0$.
 
 	- - -
 
@@ -48,11 +226,107 @@
 	
 	#. Compute $Y(16, 81)$, $Y_K(16, 81)$, and $Y_L(16, 81)$, and interpret all three in context, including units. Based on your answers, about how much value does a single additional hour of labor produce?
 
-	#. Compute $Y_{KK}$, $Y_{LL}$, and $Y_{KL}$. Show that $Y_{KK}$ and $Y_{LL}$ are always negative; this is called **diminishing marginal returns**: explain what it means and why a factory might experience it. Explain what $Y_{KL}$ means --- particularly whether it is positive or negative.
+	**Solution:** We have
+
+	$$
+		Y_K(K, L) &= 4\left( \frac{1}{4} \right)K^{-3/4}L^{3/4} = \left( \frac{L}{K} \right)^{3/4}
+
+		Y_L(K, L) &= 4\left( \frac{3}{4} \right)K^{1/4}L^{-1/4} = 3\left( \frac{K}{L} \right)^{1/4},
+	$$
+
+	so
+
+	$$
+		Y(16, 81) &= 4(2)(27) &= 216
+
+		Y_K(16, 81) &= \left( \frac{81}{16} \right)^{3/4} = \left( \frac{3}{2} \right)^3 = \frac{27}{8} = 3.375
+
+		Y_L(16, 81) &= 3\left( \frac{16}{81} \right)^{1/4} = 3\left( \frac{2}{3} \right) = 2.
+	$$
+
+	> - $Y(16, 81) = 216$ is measured in hundreds of thousands of dollars, so a factory with $\$16$ million of equipment and $810{,}000$ hours of labor produces $\$21{,}600{,}000$ of value per year.
+
+	> - $Y_K$ is a rate of output per input, so it's measured in hundreds of thousands of dollars *per million dollars of equipment*. So $Y_K(16, 81) = 3.375$ means one more million dollars of equipment (the 17th) would produce approximately $3.375 \times \$100{,}000 = \$337{,}500$ more value per year.
+
+	> - Similarly, $Y_L$ is measured in hundreds of thousands of dollars per ten thousand hours of labor, so $Y_L(16, 81) = 2$ means another ten thousand hours of labor would produce about $2 \times \$100{,}000 = \$200{,}000$ more value per year.
+
+	For the last question, we just need to divide that last figure across the hours it came from:
+
+	$$
+		\frac{\$200{,}000}{10{,}000 \text{ hours}} = \$20 \text{ per hour}.
+	$$
+
+	So an additional hour of labor produces about $\$20$ of value. Note that this is a statement about what the factory gains, not what it pays, so if it can hire for less than $\$20$ an hour, it should keep hiring.
+
+	#. Compute $Y_{KK}$, $Y_{LL}$, and $Y_{KL}$. Show that $Y_{KK}$ and $Y_{LL}$ are always negative; this is called **diminishing marginal returns**: explain what it means and why a factory might experience it. Explain what the sign of $Y_{KL}$ means.
+
+	**Solution:** Starting from the first partials we found above,
+
+	$$
+		Y_{KK} &= p/pK\left[ K^{-3/4}L^{3/4} \right] = -\frac{3}{4}K^{-7/4}L^{3/4}
+
+		Y_{LL} &= p/pL\left[ 3K^{1/4}L^{-1/4} \right] = -\frac{3}{4}K^{1/4}L^{-5/4}
+
+		Y_{KL} &= p/pL\left[ K^{-3/4}L^{3/4} \right] = \frac{3}{4}K^{-3/4}L^{-1/4}.
+	$$
+
+	Capital and labor can't be negative, so $K > 0$ and $L > 0$, which means $Y_{KK}$ and $Y_{LL}$ are always negative, and $Y_{KL}$ is always positive.
+
+	$Y_{KK} < 0$ means $Y_K$ is *decreasing* in $K$, so each additional million dollars of equipment produces less extra value than the million before it did. That makes sense in context, since with labor hours held constant, the first few machines get used constantly, but the twentieth machine mostly sits idle because there's nobody free to run it. The same is true with capital held constant and labor changing.
+
+	On the other hand, since $Y_{KL} = p/pL\left[ Y_K \right]$, the fact that it's positive says the marginal product of capital *increases* with labor, so additional equipment adds *more* value the more labor a factory already has.
+	
+	A side note: by Clairaut's Theorem, $Y_{LK} = Y_{KL}$, so the reverse is also true. The relevant term here is that capital and labor are **complements**: each makes the other more productive. A negative mixed partial would have meant the opposite: that the two inputs substitute for each other.
 
 	#. A production function has **constant returns to scale** if multiplying all the inputs by $t$ multiplies the output by $t$ --- for example, doubling **both** the equipment and the workforce doubles the output. If it multiplies the output by more than $t$, it has **increasing returns to scale**, and if it multiplies it by less than $t$, it has **decreasing returns to scale**. Does this production function have constant, increasing, or decreasing returns to scale?
+
+	**Solution:** We compute $Y(tK, tL)$ directly and see what comes out:
+
+	$$
+		Y(tK, tL) &= 4(tK)^{1/4}(tL)^{3/4}
+
+		&= 4t^{1/4}K^{1/4}t^{3/4}L^{3/4}
+
+		&= t^{1/4 + 3/4}\left( 4K^{1/4}L^{3/4} \right)
+
+		&= tY(K, L).
+	$$
+
+	The exponents to add to $1$, so this function has **constant returns to scale**: doubling both the equipment and the workforce exactly doubles the output.
 	
-	#. In general, a function of the form $Y(K, L) = AK^bL^c$ for positive constants $A$, $b$, and $c$ is called a **Cobb-Douglas** production function. Compute $Y(tK, tL)$ for a general Cobb-Douglas function, and use it to determine the type of returns to scale (increasing, decreasing, or constant) depending on $b$ and $c$.
+	#. In general, a function of the form $Y(K, L) = AK^bL^c$ for positive constants $A$, $b$, and $c$ is called a **Cobb-Douglas** production function. Compute $Y(tK, tL)$ for a general Cobb-Douglas function, and use it to determine the type of returns to scale in terms of $b$ and $c$. Then give values of $b$ and $c$ for which the function has diminishing marginal returns to both capital and labor but *increasing* returns to scale, and explain in words how both can possibly be true at once.
+
+	**Solution:** The computation is the same as before, just without the specific numbers:
+
+	$$
+		Y(tK, tL) &= A(tK)^b(tL)^c
+
+		&= At^bK^bt^cL^c
+
+		&= t^{b + c}\left( AK^bL^c \right)
+
+		&= t^{b + c}Y(K, L).
+	$$
+
+	So the returns to scale depend on the value of $b + c$:
+
+	> - If $b + c = 1$, the function has constant returns to scale.
+
+	> - If $b + c > 1$, it has increasing returns to scale.
+
+	> - If $b + c < 1$, it has decreasing returns to scale.
+
+	For the second part, we need the second partials in general. Repeating the work from before,
+
+	$$
+		Y_{KK} &= Ab(b - 1)K^{b - 2}L^c
+
+		Y_{LL} &= Ac(c - 1)K^bL^{c - 2}.
+	$$
+
+	Since $A$, $K$, $L$, $b$, and $c$ are all positive, $Y_{KK} < 0$ requires $b < 1$ and $Y_{LL} < 0$ requires $c < 1$. That means diminishing marginal returns to both inputs means $0 < b < 1$ and $0 < c < 1$, and increasing returns to scale means $b + c > 1$. Those conditions don't conflict; for example, $b = c = \frac{3}{4}$ satisfies all three.
+
+	How can a factory get worse returns from each input and better returns from both at once? Diminishing returns come from bottlenecks when one variable is held fixed, but that bottleneck doesn't exist when we're measuring returns to scale, since we're increasing both capital and labor at once.
 
 	- - -
 
