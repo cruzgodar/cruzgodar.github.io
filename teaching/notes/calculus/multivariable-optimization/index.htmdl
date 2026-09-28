@@ -14,7 +14,11 @@ With this brief refresher out of the way, let's dig into how this all extends to
 
 ## Critical Points
 
-We'll begin with critical points, which generalize nicely to more variables --- rather than a flat tangent line, we'll effectively be looking for points with a flat tangent plane.
+We'll begin with critical points, which generalize nicely to more variables. While it might be tempting to say that a critical point is one where at least one partical derivative is zero, rather than both, that doesn't quite work: for example, $f(x, y) = x^2 + y$ has $f_x(x, y) = 0$ whenever $x = 0$, but $f_y = 1$, so none of those points is a critical point.
+
+### desmos notCriticalPoints
+
+Instead, we'll define critical points are those where *all* partials are zero --- points with a flat tangent plane.
 
 ### def "critical point"
 
@@ -22,7 +26,7 @@ We'll begin with critical points, which generalize nicely to more variables --- 
 
 ###
 
-This is a notationally dense but efficient way to say that critical points are where *all* of the partial derivatives (and therefore all directional derivatives) are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
+This is a notationally dense but efficient way to say that critical points are where all of the partial derivatives (and therefore all directional derivatives) are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need. 
 
 ### desmos criticalPoints
 
@@ -218,9 +222,45 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 ###
 
+### ex
+
+	Find and classify the critical points of $f(x, y) = x^3y + 9x^2 - 27y$.
+
+	The gradient is
+
+	$$
+		\G f = \left< 3x^2y + 18x,\ x^3 - 27 \right>.
+	$$
+
+	The second component is zero when $x = 3$, so $27y + 54 = 0$, and so $y = -2$. That means the only critical point is $(3, -2)$, and now we can classify it. The second partial derivatives are
+
+	$$
+		f_{xx}(x, y) &= 6xy + 18
+
+		f_{xy}(x, y) &= 3x^2
+
+		f_{yy}(x, y) &= 27.
+	$$
+
+	At $(3, -2)$,
+
+	$$
+		f_{xx}(3, -2) &= -36 + 18 = -18
+
+		f_{xy}(3, -2) &= 3(9) = 27
+
+		f_{yy}(3, -2) &= 27
+
+		D &= (-18)(27) - 27^2 = -1215 < 0.
+	$$
+
+	Since the discriminant is negative, the point is a saddle point.
+
+###
+
 ### exc "the second derivative test"
 
-	Find and classify the critical points of $f(x, y) = x^3 - y^2 + 2xy$.
+	Find and classify the critical points of $g(x, y) = x^3 - y^2 + 2xy$.
 
 	### solution
 
@@ -366,6 +406,32 @@ That's a lot of information! One thing that's immediately clear is that the expr
 	### desmos secondDerivativeTest2
 
 	As an aside, the second derivative test is doing fantastic work for us at $(0, 0)$ in particular: both the $x$ and $y$ cross-sections of the graph are constantly zero there, meaning neither has any concavity to speak of.
+
+###
+
+### exc
+
+	1. Let $f$, $g$, and $h$ be the following functions:
+	
+	$$
+		f(x, y) &= x^4 + y^4
+
+		g(x, y) &= -x^4 - y^4
+
+		h(x, y) &= x^4 - y^4
+	$$
+
+	All of these functions have the same single critical point. What is it?
+	
+	2. What does the second derivative test say about that critical point for each of the three functions?
+
+	3. One of the critical points is a local maximum, one is a local minimum, and one is a saddle point. Which is which?
+
+###
+
+### exc
+
+	Suppose $(0, 0, 1)$ is a critical point of the function $f(x, y)$, and $f$. What does the level curve at $z = 1$ look like near $(0, 0)$ if $(0, 0, 1)$ is a local min? What about a local max? What if it's a saddle point?
 
 ###
 

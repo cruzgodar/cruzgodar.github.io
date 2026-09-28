@@ -8,6 +8,25 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
+		notCriticalPoints:
+		{
+			use3d: true,
+
+			options: {
+				translucentSurfaces: true,
+				showPlane3D: false,
+				worldRotation3D: [0.77, -0.62, 0.16, 0.6, 0.79, 0.12, -0.2, 0, 0.98]
+			},
+
+			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2, zmin: -4, zmax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = x^2 + y`, color: desmosColors.purple },
+				{ latex: raw`f(x, y) = x^2 + y\{x = 0\}`, color: desmosColors.blue },
+			]
+		},
+
 		criticalPoints:
 		{
 			use3d: true,
