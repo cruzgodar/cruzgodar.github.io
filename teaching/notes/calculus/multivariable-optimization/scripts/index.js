@@ -1,7 +1,8 @@
 import {
 	createDesmosGraphs, desmosColors,
 	desmosDragModes,
-	getDesmosPoint
+	getDesmosPoint,
+	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
 
@@ -145,6 +146,54 @@ export default function()
 				{ latex: raw`(X[I], Y[I])`, color: desmosColors.purple, pointSize: 12, secret: true },
 				{ latex: raw`Y \sim mX + b`, color: desmosColors.blue },
 			]
-		}
+		},
+
+		meanValueTheorem:
+		{
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`f(x) = 3x - x^3`, color: desmosColors.purple },
+				{ latex: raw`c = 1` },
+				{ latex: raw`a = -2` },
+				{ latex: raw`b = -1` },
+				{ latex: raw`(c, f(c))`, color: desmosColors.blue, dragMode: desmosDragModes.NONE },
+				{ latex: raw`(a, f(a))`, color: desmosColors.red, dragMode: desmosDragModes.NONE },
+				{ latex: raw`(b, f(b))`, color: desmosColors.orange, dragMode: desmosDragModes.NONE },
+			]
+		},
+
+		misleadingCriticalPoint:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				worldRotation3D: [-0.62, 0.77, -0.14, -0.75, -0.64, -0.16, -0.21, 0, 0.98]
+			},
+
+			bounds: { xmin: -3, xmax: 3, ymin: -3, ymax: 3, zmin: -3, zmax: 3 },
+
+			expressions:
+			[
+				{ latex: raw`f(x, y) = 3xe^y - x^3 - e^{3y}`, colorLatex: "C" },
+				{ latex: raw`(1, 0, f(1, 0)), (-2.15, 0, f(-2.15, 0))`, color: desmosColors.blue },
+				{ latex: raw`(t, b, f(t, b))`, parametricDomain: { min: -2.15, max: 1 }, color: desmosColors.orange },
+
+				...getDesmosSlider({
+					expression: "b = 0",
+					min: -3,
+					max: 0,
+					secret: false,
+				}),
+
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y) \geq 0 : 1 - P_1(x, y, z), f(x, y) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y) \leq 0 : 1 - P_1(x, y, z), f(x, y) > 0: 0 \}`, secret: true },
+
+				{ latex: raw`C = \rgb(204R_1(x, y, z) + 40B_1(x, y, z) + 122P_1(x, y, z), 40R_1(x, y, z) + 122B_1(x, y, z) + 40P_1(x, y, z), 40R_1(x, y, z) + 204B_1(x, y, z) + 205P_1(x, y, z))`, secret: true },
+			]
+		},
 	});
 }

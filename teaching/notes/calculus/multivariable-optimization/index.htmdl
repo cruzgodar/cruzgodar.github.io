@@ -120,7 +120,7 @@ The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn'
 
 Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be points nearby that are both above and below it, just like with $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much graphs like these resemble saddles.
 
-If we know that $(a, b)$ is a critical point of $f$, how do we determine if it's a local maximum or minimum? Of the two derivatives we mentioned for functions of a single variable, the first derivative test is unfortunately completely broken for functions of multiple variables. It relied on there being only two directions to move from a point at $x = a$: either to the right or left. For a two-variable function, there's now an entire circle of directions we could move in from a critical point $(a, b)$, and so we'd need to verify that the gradient $\G f$ points in a direction more toward $(a, b)$ than away from it for every point in a circle very close to $(a, b)$. It's certainly *possible*, but from that description, it's pretty clear the juice just isn't worth the squeeze. So with that test out, let's turn to the remaining one.
+If we know that $(a, b)$ is a critical point of $f$, how do we determine if it's a local maximum or minimum? Of the two derivatives we mentioned for functions of a single variable, the first derivative test is unfortunately completely broken for functions of multiple variables. It relied on there being only two directions to move from a point at $x = a$: either to the right or left. For a two-variable function, there's now an entire circle of directions we could move from a critical point $(a, b)$. That means in order to verify that $f$ has a local maximum at $(a, b)$, we'd need to show that the gradient $\G f$ points in a direction more toward $(a, b)$ than away from it for every point in a circle close to $(a, b)$. It's certainly *possible*, but from that description, it's pretty clear the juice just isn't worth the squeeze. So with that test out, let's turn to the remaining one.
 
 
 
@@ -202,11 +202,11 @@ $$
 
 and as long as $B = f_{xy}(a, b)$ is nonzero, there will *always* be values of $c$ and $d$ that make this sometimes positive and sometimes negative (whether $c$ and $d$ have the same or opposite signs). That agrees with our previous result, since $B^2 - AC = B^2$ will always be positive in this case. Finally, if $B = 0$ too, meaning all mixed partials are zero, then $D_{\vec{u}}D_{\vec{u}} f(a, b) = 0$ for any unit vector $\vec{u}$, and so we can't determine anything about concavity --- again, that agrees with the previous result, since $B^2 - AC = 0$.
 
-That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math! It's called a **discriminant**, and the only difference is that it's reversed in sign (i.e. $AC - B^2$) compared to what we have. We also need to distinguish between a local maximum and local minimum once we know that a critical point is one of the two. We can do that by recognizing that in that case, all cross-sectional graphs have the same concavity (either positive or negative), and so we can just check one, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
+That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math: it's called a **discriminant**. We also need to distinguish between a local maximum and local minimum once we know that a critical point is one of the two. We can do that by recognizing that in that case, all cross-sectional graphs have the same concavity (either positive or negative), and so we can just check one, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
 
 ### thm -m "The second derivative test for a function of two variables"
 
-	Let $f(x, y)$ be a function of two variables that is continuous and differentiable, and whose first-order partial derivatives $f_x$ and $f_y$ are continuous near a point $(a, b)$ where $\G f = \vec{0}$ (we need the second condition so that we can apply Clairaut's Theorem). The **discriminant** of $f$ is
+	Let $f(x, y)$ be a differentiable function of two variables and whose second-order partial derivatives all exist and are continuous near a point $(a, b)$ where $\G f = \vec{0}$ (we need the second condition so that we can apply Clairaut's Theorem). The **discriminant** of $f$ is
 
 	$$
 		D(x, y) = f_{xx}(x, y)f_{yy}(x, y) - f_{xy}(x, y)^2.
@@ -239,7 +239,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 		f_{xy}(x, y) &= 3x^2
 
-		f_{yy}(x, y) &= 27.
+		f_{yy}(x, y) &= 0.
 	$$
 
 	At $(3, -2)$,
@@ -249,9 +249,9 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 		f_{xy}(3, -2) &= 3(9) = 27
 
-		f_{yy}(3, -2) &= 27
+		f_{yy}(3, -2) &= 0
 
-		D &= (-18)(27) - 27^2 = -1215 < 0.
+		D &= (-18)(0) - 27^2 = -729 < 0.
 	$$
 
 	Since the discriminant is negative, the point is a saddle point.
@@ -300,116 +300,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 ###
 
-### ex "the second derivative test"
-
-	Find and classify the critical points of $g(x, y) = xye^{-x^2-y^2}$.
-
-	This one is fairly in-depth. The gradient is
-
-	$$
-		\G g = \left< ye^{-x^2 - y^2} + xye^{-x^2-y^2}(-2x), \quad xe^{-x^2 - y^2} + xye^{-x^2-y^2}(-2y) \right>,
-	$$
-
-	and if $\G g = \vec{0}$, then we can thankfully divide by the exponential factor, since it's never zero, leaving us with
-
-	$$
-		y - 2x^2 y &= 0
-
-		x - 2x y^2 &= 0.
-	$$
-
-	This requires a little care. The first equation simplifies to $y\left( 1 - 2x^2 \right) = 0$, so either $y = 0$ *or* $x^2 = \frac{1}{2}$, meaning $x = \pm \frac{1}{\sqrt{2}}$. These are all independent conditions, so rather than pair them up in points $\left( \pm \frac{1}{\sqrt{2}}, \pm \frac{1}{\sqrt{2}} \right)$, which probably wouldn't satisfy the second equation, we take all three possibilities and plug them *each* into the second equation. We can first simplify it to $x\left( 1 - 2y^2 \right) = 0$, and then plug in our values, resulting in
-
-	$$
-		y = 0: \quad x\left( 1 - 2(0)^2 \right) &= 0
-
-		x &= 0
-
-		~
-
-		x = \frac{1}{\sqrt{2}}: \quad \frac{1}{\sqrt{2}}\left( 1 - 2y^2 \right) &= 0
-
-		1 - 2 y^2 &= 0
-
-		y &= \pm \frac{1}{\sqrt{2}}
-
-		~
-
-		x = -\frac{1}{\sqrt{2}}: \quad -\frac{1}{\sqrt{2}}\left( 1 - 2y^2 \right) &= 0
-
-		1 - 2 y^2 &= 0
-
-		y &= \pm \frac{1}{\sqrt{2}}
-	$$
-
-	The nearly overwhelming result is that there are *five* critical points in total! We have $(0, 0)$, and then $\left( \pm \frac{1}{\sqrt{2}}, \pm \frac{1}{\sqrt{2}} \right)$ for any combination of signs. To classify them, let's use the discriminant.
-
-	$$
-		f_{xx}(x, y) &= p/px \left[ \left( y - 2x^2 y \right)e^{-x^2 - y^2} \right]
-
-		&= -4xye^{-x^2 - y^2} + \left( y - 2x^2 y \right) e^{-x^2 - y^2} (-2x)
-
-		&= e^{-x^2 - y^2}\left( -6xy + 4x^3 y \right).
-
-		~
-
-		f_{xy}(x, y) &= p/py \left[ \left( y - 2x^2 y \right)e^{-x^2 - y^2} \right]
-
-		&= \left( 1 - 2x^2 \right)e^{-x^2 - y^2} + \left( y - 2x^2 y \right) e^{-x^2 - y^2} (-2y)
-
-		&= e^{-x^2 - y^2}\left( 1 - 2x^2 - 2y^2 + 4x^2y^2 \right).
-
-		~
-
-		f_{yy}(x, y) &= p/py \left[ \left( x - 2x y^2 \right)e^{-x^2 - y^2} \right]
-
-		&= -4xye^{-x^2 - y^2} + \left( x - 2x y^2 \right) e^{-x^2 - y^2} (-2y)
-
-		&= e^{-x^2 - y^2}\left( -6xy + 4x y^3 \right).
-
-		~
-
-		D(x, y) &= \left( e^{-x^2 - y^2} \right)^2 \left( \left( -6xy + 4x^3 y \right) \left( -6xy + 4x y^3 \right) - \left( 1 - 2x^2 - 2y^2 + 4x^2y^2 \right)^2 \right).
-	$$
-
-	In the interest of time, let's just cut straight to the simplified form:
-
-	$$
-		D(x, y) &= e^{-2x^2 - 2y^2} \left( -1 + 4x^2 + 4y^2 - 4x^4 + 20x^2y^2 - 4y^4 - 8x^4y^2 - 8x^2y^4 \right).
-
-	$$
-
-	Now $D(0, 0) = -1 < 0$, and conveniently for us, all of the powers on $x$ and $y$ are even, and so whether we plug in $\frac{1}{\sqrt{2}}$ or $-\frac{1}{\sqrt{2}}$ for either, the result is the same!
-
-	$$
-		D\left( \pm \frac{1}{\sqrt{2}}, \pm \frac{1}{\sqrt{2}} \right) &= e^{-2} \left( -1 + 2 + 2 - 1 + 5 - 1 - 1 - 1 \right)
-
-		&= 4e^{-2} > 0.
-	$$
-
-	Almost done! We can now check $f_{xx}$ at each of these four points to determine its sign.
-
-	$$
-		f_{xx}\left( \frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}} \right) = f_{xx}\left( -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}} \right) &= e^{-1}\left( -6xy + 4x^3 y \right)
-
-		&= e^{-1}\left( -3 + 1 \right) < 0
-
-		~
-
-		f_{xx}\left( -\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}} \right) = f_{xx}\left( \frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}} \right) &= e^{-1}\left( -6xy + 4x^3 y \right)
-
-		&= e^{-1}\left( 3 - 1 \right) > 0.
-	$$
-
-	In all, $(0, 0)$ is a saddle point, $\left( \frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}} \right)$ and $\left( -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}} \right)$ are local maxima, and $\left( \frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}} \right)$ and $\left( -\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}} \right)$ are local minima.
-
-	### desmos secondDerivativeTest2
-
-	As an aside, the second derivative test is doing fantastic work for us at $(0, 0)$ in particular: both the $x$ and $y$ cross-sections of the graph are constantly zero there, meaning neither has any concavity to speak of.
-
-###
-
-### exc
+### exc "shortcomings of the second derivative test"
 
 	1. Let $f$, $g$, and $h$ be the following functions:
 	
@@ -429,9 +320,17 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 ###
 
-### exc
+### exc "critical points and level curves"
 
-	Suppose $(0, 0, 1)$ is a critical point of the function $f(x, y)$, and $f$. What does the level curve at $z = 1$ look like near $(0, 0)$ if $(0, 0, 1)$ is a local min? What about a local max? What if it's a saddle point?
+	Suppose $f(x, y)$ has a critical point at $(0, 0)$ and $f(0, 0) = 2$.
+	
+	1. Suppose $f$ has a local min at $(0, 0)$. For values of $c$ close to $2$, what do the level curves $f(x, y) = c$ look like near $(0, 0)$?
+	
+	2. Now suppose $f$ has a local **max** at $(0, 0)$. Now what do the level curves $f(x, y) = c$ look like near $(0, 0)$?
+
+	3. Finally, suppose $f$ has a saddle point at $(0, 0)$. How do the level curves change?
+
+	4. (Bonus, if you have time) Are there any types of critical points that the previous cases don't cover? What would the level curves look like in that case?
 
 ###
 
@@ -459,7 +358,7 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 		\G E(m, b) = \left< 42m + 14b - 36, \quad 14m + 6b - 12 \right> = \vec{0}.
 	$$
 
-	Solving, $m = \frac{6}{7}$ and $b = 0$, and the second derivative test tells us that it's a local and therefore global minimum, since
+	Solving, $m = \frac{6}{7}$ and $b = 0$. The second derivative test tells us
 
 	$$
 		E_{mm}E_{bb} - E_{mb}^2 &= 42(6) - 14^2
@@ -467,7 +366,9 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 		&= 56 > 0
 	$$
 
-	and $E_{mm} > 0$.
+	and $E_{mm} > 0$,
+
+	so $\left( \frac{6}{7}, 0 \right)$ is a local minimum. In general, a function having a single local minimum is *not enough* to conclude that it's the global minimum in general (we'll discuss this in the next exercise), but since $E$ is a quadratic, we can confidently conclude that this critical point is indeed the global minimum.
 
 	Visually, the line does a good job of approximating these points! Drag the red point around to see how the best-fit line changes.
 
@@ -484,6 +385,66 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 	If you're in any STEM field besides math, you'll encounter best-fit lines like this with remarkable frequency! The process of producing them is called **linear regression**, and it's a core tool of data science and statistics.
 
 ###
+
+Let's dig in more to that example's remark about local and global extrema. Let $y = f(x)$ be a differentiable single-variable function defined on all of $#R#$, and suppose $f$ has a single critical point at $x = c$ that is a local maximum. Then $(c, f(c))$ must also be the global maximum; if it weren't, then there would be some point $x = x_0$ with $f(x_0) \geq f(c)$. Since $f$ is continuous, that means there is also a point $x = a$ with $f(a) = f(c)$, and then the Mean Value Theorem guarantees a point $b$ between $a$ and $c$ with $f'(a) = 0$, contradicting the hypothesis that $f$ had only one critical point.
+
+### desmos meanValueTheorem
+
+Here, the blue point is at the local max of $c = 1$, but the red point at the same $y$-value guarantees a critical point somewhere in between; here, the orange point. In effect, if a differentiable function has a local max, then having any part of its graph lie *above* that local max requires another critical point where the graph turns around. For a function of two variables, however, this isn't true!
+
+### exc "functions of two variables and critical points"
+
+	Let $f(x, y)$ be defined by
+
+	$$
+		f(x, y) = 3xe^y - x^3 - e^{3y}.
+	$$
+
+	1. Show that $f$ has only a single critical point at $(1, 0)$ and that it has a local maximum there.
+
+	2. Show that despite this, $f(-3, 0) > f(1, 0)$.
+
+	### solution
+
+	1. Taking the partials,
+
+	$$
+		f_x(x, y) &= 3e^y - 3x^2 = 0
+
+		f_y(x, y) &= 3xe^y - 3e^{3y} = 0.
+	$$
+
+	The first equation reduces to $x^2 = e^y$, and the second to $x = e^{2y}$. That means $e^{4y} = e^y$, so $4y = y$ and therefore $y = 0$. In all, $(1, 0)$ is our only critical point.
+
+	To classify it, we find the second partials as usual:
+
+	$$
+		f_{xx}(x, y) &= -6x
+
+		f_{xy}(x, y) &= 3e^y
+
+		f_{yy}(x, y) &= -9e^{3y}
+
+		D(1, 0) &= (-6)(-9) - 3^2 = 45 > 0.
+	$$
+
+	Since $f_{xx}(1, 0) = -6 < 0$, $f$ has a local maximum at $(1, 0)$.
+
+	2. This is a direct calulation:
+	
+	$$
+		f(1, 0) &= 3 - 1 - 1 = 1
+
+		f(-3, 0) &= -9 - (-27) - 1 = 17.
+	$$
+
+###
+
+To see what's happening here, let's look at the graph.
+
+### desmos misleadingCriticalPoint
+
+The local maximum is the blue point on the left, and the point higher than it is on the right. Here we can see that our single-variable logic fails in two places: first, while the Mean Value Theorem guarantees that the orange curve connecting the two points has a critical point somewhere in the middle, that does *not* imply a critical point of $f(x, y)$; only that $f_x$ is zero there. Second, while we might still feel a critical point must be lurking somewhere else, we can see that this function has found a way to hide it: while the partial derivatives *limit* to zero along the $y$-axis as $y \to -\infty$, they never actually reach zero. In effect, the extra room in two dimensions allows functions to push the additional critical points infinitely far away.
 
 We've gone a long way toward bringing the second derivative test to $#R#^3$! In the next section, we'll finish the job by generalizing the notion of optimizing a function on a particular interval, and in the one after that, we'll conclude our discussion of multivariable calculus by considering more complicated interactions a function can have with the edge of its domain.
 
