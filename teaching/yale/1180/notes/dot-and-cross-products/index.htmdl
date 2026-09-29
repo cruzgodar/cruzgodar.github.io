@@ -156,44 +156,6 @@ This gives us a second way to find the equation of a plane!
 
 ###
 
-Sometimes, we might find ourselves interested in the (minimum) distance from a point to a particular plane. If we know that plane's normal vector, then that minimum distance is given by traveling from the point to the plane in the direction of the normal vector --- moving perpendicularly to the plane is the fastest way to reach it.
-
-### desmos distanceToPlane
-
-Here, the orange vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the orange point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
-
-### prop "projections"
-
-	Let $\vec{v}$ and $\vec{w}$ be two vectors. Then $\vec{v} = c \cdot \vec{w} + \vec{x}$ for some $c$ and some vector $\vec{x}$ orthogonal to $\vec{w}$. We call $c\vec{w}$ the **projection** of $\vec{v}$ onto $\vec{w}$, and it has a formula of
-
-	$$
-		\proj_{\vec{w}}(\vec{v}) = \frac{\vec{v} \bullet \vec{w}}{\vec{w} \bullet \vec{w}} \vec{w} = \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{w} \right| \right|^2} \vec{w}.
-	$$
-
-###
-
-Let's work through this example to find the distance we're interested in.
-
-### ex "distance from a point to a plane"
-
-	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
-
-	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the purple one above) is
-
-	$$
-		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
-	$$
-
-	which we want to project onto the normal vector $\vec{n}$, resulting in
-
-	$$
-		\vec{v} = \proj_{\vec{n}}(\vec{w}) = \left< \frac{7}{10}, 0, \frac{21}{10} \right>.
-	$$
-
-	We can tell that that's parallel to $\vec{n}$ since the third entry is $3$ times the first and the second component is zero, and its magnitude is $\frac{7}{\sqrt{10}}$, giving us the distance we're looking for.
-
-###
-
 
 
 ## The Cross Product
