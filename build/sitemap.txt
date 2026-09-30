@@ -113,7 +113,6 @@ home Cruz Godar
 			gradients Section 5.7: The Gradient
 			multivariable-optimization Section 5.8: Multivariable Optimization
 			boundary-optimization Section 5.9: Boundary Optimization
-			lagrange-multipliers Section 5.10: Lagrange Multipliers
 			
 			double-integrals Section 6.1: Double Integrals
 			vector-fields Section 6.2: Vector Fields
@@ -189,12 +188,11 @@ home Cruz Godar
 			notes/gradients Section 6: The Gradient
 			notes/multivariable-optimization Section 7: Multivariable Optimization
 			notes/boundary-optimization Section 8: Boundary Optimization
-			notes/lagrange-multipliers Section 9: Lagrange Multipliers
-			notes/vectors-and-matrices Section 10: Vectors and Matrices
-			notes/row-reduction Section 11: Row Reduction
-			notes/bases Section 12: Linear Independence and Bases
-			notes/linear-transformations Section 13: Linear Transformations
-			notes/determinants Section 14: The Determinant
+			notes/vectors-and-matrices Section 9: Vectors and Matrices
+			notes/row-reduction Section 10: Row Reduction
+			notes/bases Section 11: Linear Independence and Bases
+			notes/linear-transformations Section 12: Linear Transformations
+			notes/determinants Section 13: The Determinant
 
 		yale/1110 Math 1110
 		

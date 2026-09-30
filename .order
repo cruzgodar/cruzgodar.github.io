@@ -65,7 +65,6 @@ teaching/notes/calculus/multivariable-chain-rule
 teaching/notes/calculus/gradients
 teaching/notes/calculus/multivariable-optimization
 teaching/notes/calculus/boundary-optimization
-teaching/notes/calculus/lagrange-multipliers
 teaching/notes/calculus/double-integrals
 teaching/notes/calculus/vector-fields
 teaching/notes/calculus/curve-integrals
@@ -130,7 +129,6 @@ teaching/yale/1180/notes/multivariable-chain-rule
 teaching/yale/1180/notes/gradients
 teaching/yale/1180/notes/multivariable-optimization
 teaching/yale/1180/notes/boundary-optimization
-teaching/yale/1180/notes/lagrange-multipliers
 teaching/yale/1180/notes/vectors-and-matrices
 teaching/yale/1180/notes/row-reduction
 teaching/yale/1180/notes/bases
