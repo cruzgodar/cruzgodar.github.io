@@ -1,38 +1,52 @@
 ### card homework-5 "Homework 5"
 	
-	*Due Monday, October 6th at 11:59 PM*
+	*Due Tuesday, October 7th at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
-
-	### buttons
-		download-homework-5-pdf
-		download-homework-5-tex
-	###
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
 
 	- - -
 
-	In problems 4#, find and classify the critical points of the function $f$ as local minima, local maxima, or saddle points.
+	#. Find and classify the critical points of
 
-	#. $f(x, y) = x^3y + 9x^2 - 27y$.
+	$$
+		f(x, y) = x^2 + y^2 - \frac{2}{xy}
+	$$
 
-	#. $f(x, y) = x^2 + y^2 - \frac{1}{xy}$.
-
-	#. $f(x, y) = -x^4 + e^{-y^{2}}$.
-
-	#. $f(x, y, z) = \sqrt{x^2 + y^2 + z^2}$.
+	as local minima, local maxima, or saddle points.
 
 	- - -
 
-	#. Give examples of the following functions:
+	In problems 2#, find the global minimum and maximum of the function on the given domain.
 
-	> a) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local maximum, but for which the second derivative test is inconclusive.
+	#. $g(x, y)$ defined by
+	$$
+		g(x, y) = x^2 + 2xy + 2y^2 - 6x - 8y
+	$$
+	on
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 5 \text{ and } 0 \leq y \leq 5 - x \right\}
+	$$.
 
-	> b) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a local minimum, but for which the second derivative test is inconclusive.
-
-	> c) A function $f(x, y)$ that has a critical point at $(0, 0)$ that is a saddle point, but for which the second derivative test is inconclusive.
+	#. $h(x, y) = x^2 - xy + y^2$ on $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 = 2 \right\}$.
 
 	- - -
 
-	#. Suppose $(0, 0, 1)$ is a critical point of the function $f(x, y)$. What does the level curve at $z = 1$ look like near $(0, 0)$ if $(0, 0, 1)$ is a local min or max? What if it is a saddle point?
+	Problems 2# concern the following situation. You've just inherited your grandfather's old farm plot and have begun planting potatoes and parsnips. When you plant $x$ acres of potatoes and $y$ acres of parsnips, you earn a yearly profit of
+
+	$$
+		\pi(x, y) = 60x - x^2 + 80y - 2y^2
+	$$
+
+	in hundreds of dollars. The squared terms are due to you planting the best-suited land first, so each additional acre of a crop is slightly less profitable than the last. You have $L$ acres and plant all of them, so $x + y = L$.
+
+	#. Suppose $L = 35$. Use Lagrange multipliers to find how many acres of potatoes and parsnips you should plant, the resulting profit, and the value of $\lambda$.
+
+	#. Your neighbor Robin offers to rent you an extra acre of land for $\$1500$ per year. Find the maximum profit when $L = 36$ to determine if should you take her up on it. compare the increase in profit between $L = 35$ and $L = 36$ to $\lambda$.
+
+	- - -
+
+	#. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
+
+	#. Choose up to three questions (and at least one) on which you would like detailed feedback.
 
 ###
