@@ -304,12 +304,7 @@ class H2xEGeometry extends BaseGeometry
 			newForward[i] += dotForward * pos[i];
 		}
 
-		return [
-			pos,
-			this.normalize(newForward),
-			this.normalize(newRight),
-			this.normalize(newUp)
-		];
+		return [pos, ...this.orthonormalizeFrame(newForward, newRight, newUp)];
 	}
 
 	baseColorIncreases = [

@@ -147,14 +147,39 @@ export class BaseGeometry
 			newForward[i] = forward[i] - dotForward * normalVec[i];
 		}
 
-		return [
-			pos,
-			this.normalize(newForward),
-			this.normalize(newRight),
-			this.normalize(newUp)
-		];
+		return [pos, ...this.orthonormalizeFrame(newForward, newRight, newUp)];
 	}
-	
+
+	// Projecting each vector onto the new tangent space makes them tangent and normalizing makes
+	// them unit, but neither keeps them orthogonal to *each other*. Moving along a direction
+	// that mixes two frame vectors -- walking forward while pitched, say, which moves along
+	// cos(pitch) forward + sin(pitch) up -- skews that pair by sinh^2(step) cos(pitch) sin(pitch)
+	// every substep, and it's always the same sign, so it accumulates instead of averaging out.
+	// It's slow -- about 7 degrees of shear per 10 rooms in H^3 -- but nothing ever undoes it,
+	// and teleporting carries it along intact. Gram-Schmidt in the geometry's own metric,
+	// keeping forward fixed since that's where the user is looking.
+	orthonormalizeFrame(forward, right, up)
+	{
+		const newForward = this.normalize(forward);
+
+		const upDotForward = this.dotProduct(up, newForward);
+
+		const newUp = this.normalize(
+			[0, 1, 2, 3].map(i => up[i] - upDotForward * newForward[i])
+		);
+
+		const rightDotForward = this.dotProduct(right, newForward);
+		const rightDotUp = this.dotProduct(right, newUp);
+
+		const newRight = this.normalize(
+			[0, 1, 2, 3].map(i => right[i]
+				- rightDotForward * newForward[i]
+				- rightDotUp * newUp[i])
+		);
+
+		return [newForward, newRight, newUp];
+	}
+
 	distanceEstimatorGlsl;
 	getColorGlsl;
 	lightGlsl;
