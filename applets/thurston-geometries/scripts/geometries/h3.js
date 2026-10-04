@@ -258,6 +258,46 @@ class H3Geometry extends BaseGeometry
 		return [pos, ...this.orthonormalizeFrame(newForward, newRight, newUp)];
 	}
 
+	// The teleportation cube is |x|, |y|, |z| < w / sqrt(3), whose corners sit at Klein radius 1:
+	// they're ideal points, and each one is the end of a cusp that teleporting can never get you
+	// out of, since the face pairings just hand you from one corner's cusp to another's. Walking
+	// into one grows w like e^distance. By w ~ 75 (distance 5) the shader's float32 positions
+	// are too coarse for its 1e-5 epsilon and nothing renders in any direction, and by w ~ 3e7
+	// (about five seconds later) <pos, pos> = -1 is gone even in float64, normalize divides by
+	// zero, and the NaN that comes out never leaves -- a black screen until the page reloads.
+	maxCameraDistance = 8;
+
+	// Pulls cameraPos back along the geodesic to the origin rather than refusing the step, so
+	// pushing into the limit slides along it instead of stopping dead.
+	keepCameraInBounds()
+	{
+		const maxW = Math.cosh(this.maxCameraDistance);
+
+		if (this.cameraPos[3] <= maxW)
+		{
+			return;
+		}
+
+		const spatialMagnitude = Math.hypot(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
+
+		const scale = Math.sinh(this.maxCameraDistance) / spatialMagnitude;
+
+		this.cameraPos = [
+			this.cameraPos[0] * scale,
+			this.cameraPos[1] * scale,
+			this.cameraPos[2] * scale,
+			maxW
+		];
+
+		this.normalVec = this.getNormalVec(this.cameraPos);
+
+		this.correctVectors();
+	}
+
 	baseColorIncreases = [
 		[1, 0, 0],
 		[-1, 0, 0],
@@ -310,6 +350,14 @@ class H3Geometry extends BaseGeometry
 			]
 		];
 
+		// Near a corner the camera can be past two faces at once, so this can teleport more than
+		// once per call -- and the rotated forward vector has to ride along through every one of
+		// them. Transforming the original argument each time instead hands recomputeRotation a
+		// vector from a different frame than the one it's measuring against, the asin there gets
+		// an argument outside [-1, 1], and the NaN pitch it returns poisons every vector after it.
+		let newRotatedForwardVec = rotatedForwardVec;
+		let teleported = false;
+
 		for (let i = 0; i < teleportMatrices.length; i++)
 		{
 			if (dotProduct(this.cameraPos, teleportVectors[i]) < 0)
@@ -334,17 +382,22 @@ class H3Geometry extends BaseGeometry
 					this.upVec
 				);
 
-				const newRotatedForwardVec = mat4TimesVector(
+				newRotatedForwardVec = mat4TimesVector(
 					teleportMatrices[i],
-					rotatedForwardVec
+					newRotatedForwardVec
 				);
-
-				recomputeRotation(newRotatedForwardVec);
 
 				this.baseColor[0] += this.baseColorIncreases[i][0];
 				this.baseColor[1] += this.baseColorIncreases[i][1];
 				this.baseColor[2] += this.baseColorIncreases[i][2];
+
+				teleported = true;
 			}
+		}
+
+		if (teleported)
+		{
+			recomputeRotation(newRotatedForwardVec);
 		}
 	}
 }

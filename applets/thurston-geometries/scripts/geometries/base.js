@@ -87,6 +87,8 @@ export class BaseGeometry
 
 	teleportCamera() {}
 
+	keepCameraInBounds() {}
+
 	getNearestCenter()
 	{
 		return [...this.cameraPos];
