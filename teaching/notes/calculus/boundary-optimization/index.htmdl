@@ -518,4 +518,68 @@ Let's now return to the astroid example to see the improvement.
 
 
 
+Now that we've gotten more comfortable with the process of Lagrange multipliers, we can examine the one part that we haven't looked closely at: what does $\lambda$ mean? Let's start with
+
+$$
+	\G f &= \lambda \G g,
+
+	g(x, y) &= c,
+$$
+
+where $c$ is the value of the constraint (for example, the budget of a company). We're leaving it as a variable like this, rather than lumping it into $g$, since it'll be more helpful later. Now we can write the constraint as $g(x, y) - c = 0$, and then rewrite the gradient equation as
+
+$$
+	\G f - \lambda\G g &= \vec{0}
+
+	\G f - \G (\lambda g) &= \vec{0}
+
+	\G (f - \lambda g) &= \vec{0}.
+$$
+
+Written like this, we can recover the equation $g(x, y) = c$ from the function $f - \lambda g$ by taking its derivative with respect to $\lambda$. In other words, if we define a new function
+
+$$
+	\mathcal{L}(x, y, \lambda) = f(x, y) - \lambda (g(x, y) - c),
+$$
+
+(typically called the **Lagrangian**), then
+
+$$
+	\G \mathcal{L} &= \left< \frac{\p \mathcal{L}}{\p x}, \frac{\p \mathcal{L}}{\p y}, \frac{\p \mathcal{L}}{\p \lambda} \right>
+
+	&= \left< pf/px - \lambda pg/px,\quad pf/py - \lambda pg/py,\quad g(x, y) - c \right>,
+$$
+
+and so then the system of equations for Lagrange multipliers is equivalent to
+
+$$
+	\G \mathcal{L} &= \vec{0}.
+$$
+
+With this presentation of Lagrange multipliers, we're prepared to understand $\lambda$. Returning to the Lagrangian, we can extract $\lambda$ by differentiating it *with respect to $c$*:
+
+$$
+	p/pc \mathcal{L}(x, y, \lambda) = \lambda.
+$$
+
+That means $\lambda = \frac{\p \mathcal{L}}{\p c}$, so increasing $c$ by $1$ increases the value of $\mathcal{L}$ approximately $\lambda$. That means we've reduced the problem to understanding what the value of $\mathcal{L}$ actually means!
+
+To understand $mathcal{L}$, let's begin by thinking about a solution to the system $\G \mathcal{L} = \vec{0}$, say $(x^*, y^*)$. That solution depends on $c$ (for example, as a budget changes, so does the optimal way to spend it), so let's write $(x^*(c), y^*(c))$. Plugging it into $\mathcal{L}$, we have
+
+$$
+	\mathcal{L}(x^*(c), y^*(c), \lambda) &= f(x^*(c), y^*(c)) - \lambda (g(x^*(c), y^*(c)) - c)
+
+	&= f(x^*(c), y^*(c)),
+$$
+
+since $(x^*(c), y^*(c))$ is a solution to $\G \mathcal{L} = \vec{0}$, and so
+
+$$
+	g(x^*(c), y^*(c)) = c.
+$$
+
+That means that the value of $\mathcal{L}$ *is* the optimal value of $f$! We can finally conclude with our interpretation of $\lambda$: it's the rate of increase of the optimal value of $f$, relative to the constrant value $c$. If $f$ gives the profit to a company and $g(x, y) = c$ is its budget, both in dollars, then $\lambda$ is approximately the additional profit per additional dollar in the budget.
+
+
+
 ### nav-buttons
