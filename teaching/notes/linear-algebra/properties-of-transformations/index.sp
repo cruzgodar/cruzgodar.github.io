@@ -20,7 +20,7 @@ This first definition of one-to-one is unfortunately a little too clunky to work
 
 ]]
 
-### pf
+@proof[[
 
 	Let's very briefly sketch the reasoning behind this proposition. First of all, if $T$ sends a vector $\vec{v} \neq \vec{0}$ to $\vec{0}$, then $T(\vec{v}) = \vec{0} = T(\vec{0})$, so $T$ isn't one-to-one. On the other hand, if the only vector $T$ sends to $\vec{0}$ is $\vec{0}$, then whenever we have $T(\vec{v}) = T(\vec{w})$, we can rearrange it to get
 
@@ -30,7 +30,7 @@ This first definition of one-to-one is unfortunately a little too clunky to work
 
 	And under the assumption, that means $\vec{v} - \vec{w} = \vec{0}$, so $\vec{v} = \vec{w}$, meaning $T$ is one-to-one.
 
-###
+]]
 
 It's important to note that this alternate definition works *only* with linear transformations, not functions in general. For example, $f(x) = x^2$ isn't one-to-one, since $f(1) = f(-1)$, but the only $x$ with $f(x) = 0$ is $x = 0$.
 

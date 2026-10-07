@@ -252,11 +252,11 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	
 ]]
 
-### pf
+@proof[[
 	
 	It's worth saying a bit about why this process works. All three types of elementary row operations can actually be expressed as matrix multiplication. If we define $**S**_{i, j}$ as the $n \times n$ matrix that is $**I**$ but with rows $i$ and $j$ swapped, then it's not too hard to verify that for any $n \times n$ matrix $**A**$, $**S**_{i, j}**A**$ is equal to $**A**$, but with rows $i$ and $j$ swapped. Similarly, there are matrices for multiplying a row by a constant and adding a multiple of one row to another. So if $**A**$ is row-reducible to $**I**$, then there's a long sequence of matrices we can multiply $A$ by in order to get to $**I**$ --- collecting them all up, that's exactly what it means to be $**A**^{-1}$. On the other side of the augmented matrix, we're multiplying by all the same matrices, but now we *start* with $**I**$, so what results is just $**A**^{-1}$.
 	
-###
+]]
 
 
 

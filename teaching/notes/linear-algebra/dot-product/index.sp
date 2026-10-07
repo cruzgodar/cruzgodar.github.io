@@ -242,7 +242,7 @@ Another point of convenience is that any collection of nonzero orthonormal vecto
 
 ]]
 
-### pf
+@proof[[
 
 	Suppose $c_1\vec{v_1} + \cdots + c_k\vec{v_k} = \vec{0}$. Dotting both sides by $\vec{v_i}$ results in
 
@@ -252,7 +252,7 @@ Another point of convenience is that any collection of nonzero orthonormal vecto
 
 	and since $\vec{v_i} \neq 0$, $\vec{v_i} \bullet \vec{v_i} \neq 0$, meaning $c_i = 0$. In total, every $c_i = 0$, and so the $\vec{v_i}$ are linearly independent.
 
-###
+]]
 
 @exc[expression in an orthonormal basis][[
 
@@ -294,7 +294,7 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 
 ]]
 
-### pf
+@proof[[
 
 	We'll show that $A$ preserves distances. Let
 
@@ -314,7 +314,7 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 		&= \left| \left| \vec{v} \right| \right|^2.
 	$$
 
-###
+]]
 
 @exc[properties of unitary matrices][[
 
@@ -346,7 +346,7 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 
 ###
 
-### pf
+@proof[[
 
 	As with many results about orthogonality, this amounts to a long-winded computation, and we'll show it one vector at a time. To show $\vec{y_1}$ and $\vec{y_2}$ are orthogonal, we can just compute
 
@@ -372,7 +372,7 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 
 	As in past sections, you might recognize this as a proof by induction or just as a convincing argument, but either way, it shows that all the $\vec{y_i}$ are mutually orthogonal. That means they're linearly independent, and they're all still in $X$ since they're just linear combinations of the $\vec{x_i}$, and so they must form a basis.
 
-###
+]]
 
 Intuitively, every step of the Gram-Schmidt process begins with $\vec{x_i}$ and removes any component of the previous vectors, leaving behind a vector that's orthogonal to every one that came before.
 
@@ -482,7 +482,7 @@ Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about the
 
 ]]
 
-### pf
+@proof[[
 
 	This is a great example of how useful orthonormal bases can be --- not only in computations, but also in proofs. Let $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ be an orthonormal basis for $X$ (which exists via the Gram-Schmidt process), and extend it to a basis
 
@@ -504,7 +504,7 @@ Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about the
 		\vec{x}' &= c_{k + 1}\vec{x_{k + 1}} + \cdots + c_n \vec{x_n}.
 	$$
 
-###
+]]
 
 @ex[orthogonal decomposition][[
 

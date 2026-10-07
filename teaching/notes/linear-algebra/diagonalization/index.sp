@@ -214,7 +214,7 @@ is $\chi_A(\lambda) = \lambda^2 + 1$, whose roots are $\pm i$ --- complex number
 
 ]]
 
-### pf
+@proof[[
 
 	Since $A\vec{v} = \lambda_1\vec{v}$, conjugating both sides results in $\overline{A\vec{v}} = \overline{\lambda_1\vec{v}}$. Now conjugation splits over addition and multiplication of complex numbers --- it's easy but not particularly interesting to check that
 
@@ -251,7 +251,7 @@ is $\chi_A(\lambda) = \lambda^2 + 1$, whose roots are $\pm i$ --- complex number
 
 	In total, $A\overline{\vec{v}} = \lambda_2 \overline{\vec{v}}$, as required.
 
-###
+]]
 
 Although it's a little frustrating that we'll have to work with complex numbers even when our matrices have all real entries, the good news is that linear algebra works just as well over $#C#$ as over $#R#$, so there won't be too much trouble. Let's start by finding some complex eigenvalues and eigenvectors and then see what insights we can draw.
 
@@ -389,7 +389,7 @@ $$
 
 then the resulting expression $BDB^{-1}$ is both all real and still equals $A$.
 
-### pf
+@proof[[
 
 	To show this result, let $A$ be a diagonalizable $n \times n$ matrix with all real entries and suppose $a + bi$ is an eigenvalue with algebraic multiplicity $k$. Then $a - bi$ is also an eigenvalue with algebraic multiplicity $k$, and since $A$ is diagonalizable, the geometric multiplicities of both are also $k$. Let's call their eigenspaces $E_1$ and $E_2$, respectively; if $\{\vec{v_1}, ..., \vec{v_k}\}$ is a basis for $E_1$, then $\{\overline{\vec{v_1}}, ..., \overline{\vec{v_k}}\}$ is a basis for $E_2$. Now since $A$ is diagonalizable, all $2k$ of these vectors are linearly independent, and so is the collection of linearly transformed vectors
 
@@ -428,7 +428,7 @@ then the resulting expression $BDB^{-1}$ is both all real and still equals $A$.
 
 	showing the result.
 
-###
+]]
 
 @exc[block diagonalization][[
 

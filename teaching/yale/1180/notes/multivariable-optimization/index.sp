@@ -1,4 +1,4 @@
-### nav-buttons
+@navButtons
 
 
 
@@ -16,23 +16,23 @@ With this brief refresher out of the way, let's dig into how this all extends to
 
 We'll begin with critical points, which generalize nicely to more variables. While it might be tempting to say that a critical point is one where at least one partial derivative is zero, rather than all of them, that doesn't quite work: for example, $f(x, y) = x^2 + y$ has $f_x(x, y) = 0$ whenever $x = 0$, but $f_y = 1$, so none of those points is a critical point.
 
-### desmos notCriticalPoints
+@desmos{notCriticalPoints}
 
 Instead, we'll define critical points as those where *all* partials are zero --- points with a flat tangent plane, assuming $f$ is differentiable.
 
-### def "critical point"
+@def[critical point][[
 
 	Let $f : #R#^n \to #R#$ be a function of $n$ variables. A **critical point** of $f$ is a point $p$ in the domain of $f$ with $\G f(p) = \vec{0}$ or where $\G f(p)$ is undefined.
 
-###
+]]
 
 This is a notationally dense but efficient way to say that critical points are where all of the partial derivatives (and therefore all directional derivatives, assuming $f$ is differentiable) are zero at once. We do this so that the tangent plane (for a function of two variables) is flat at $(x, y) = p$, which is the generalization of critical point that we need.
 
-### desmos criticalPoints
+@desmos{criticalPoints}
 
 This function has five critical points; two are local maxima, two are local minima, and one (at $(0, 0)$) is neither.
 
-### exc "critical points"
+@exc[critical points][[
 
 	Find the critical points of the following functions.
 
@@ -42,7 +42,7 @@ This function has five critical points; two are local maxima, two are local mini
 
 	3. $h(x, y, z) = xyz$.
 
-	### solution
+	@solution[[
 
 	1. Let's start by finding the gradient. We have
 
@@ -92,31 +92,32 @@ This function has five critical points; two are local maxima, two are local mini
 
 	This is a little more complicated to think through: we need all of those to be zero, but each component only requires one of its factors to be zero. Therefore, we can get away with having $x = y = 0$ but not $z$, or any other combination of two variables. The critical points are exactly the three coordinate axes!
 
-###
+	]]
+]]
 
 
 
 With critical points extended to $#R#^n$, the next missing piece is extrema. These work identically to functions of a single variable! For clarity, we'll state the definition in terms of a function of two variables, but it works just as well for any function $f : #R#^n \to #R#$.
 
-### def "extrema"
+@def[extrema][[
 
 	Let $f(x, y)$ be a function of two variables that is defined on an open disk containing $(a, b)$ (i.e. nearby the point $(a, b)$). We say $f$ has a **local maximum** at $(a, b)$ if $f(x, y) \leq f(a, b)$ for all $(x, y)$ near $(a, b)$. Similarly, $f$ has a **local minimum** at $(a, b)$ if $f(x, y) \geq f(a, b)$ for all $(x, y)$ near $(a, b)$. We collectively call these **local extrema**.
 
 	We say that $f$ has a **global** or **absolute maximum** at $(a, b)$ if $f(x, y) \leq f(a, b)$ for all $(x, y)$ in the domain of $f$, and similarly, $f$ has a **global** or **absolute minimum** at $(a, b)$ if $f(x, y) \geq f(a, b)$ for all $(x, y)$ in the domain of $f$. We collectively call these **global** or **absolute extrema**.
 
-###
+]]
 
 Perhaps unsurprisingly, critical points are potential locations for extrema, just like in single-variable calculus!
 
-### thm "Fermat's Theorem"
+@thm[Fermat's Theorem][[
 
 	Let $f : #R#^n \to #R#$ be a function of $n$ variables, and suppose $f$ has a local extremum at an interior point $p$ of its domain (i.e. not on the boundary). Then $p$ is a critical point.
 
-###
+]]
 
 The converse of this theorem (i.e. reversing the hypothesis and conclusion) isn't true! Just like with functions of a single variable, not all critical points are extrema: for example, $f(x, y) = x^2 - y^2$ has a critical point at $(0, 0)$ that is neither a local maximum nor a minimum.
 
-### desmos saddlePoint
+@desmos{saddlePoint}
 
 Critical points like this one are interesting to focus in on. Since the point isn't a local max or min, we know there must be some nearby points above it and other below it, just like with $y = x^3$. We use the same term --- **saddle point** --- to describe critical points like this, and the name is even more apt with how much graphs like these resemble saddles.
 
@@ -132,7 +133,7 @@ Let's now focus in on a function $f(x, y)$ with a critical point at $(a, b)$ and
 
 The saddle point of $f(x, y) = x^2 - y^2$ was effectively due to the graph having different concavity in the $x$- and $y$-directions. We might hope we could just check the signs of both $f_{xx}(a, b)$ *and* $f_{yy}(a, b)$ to produce an analogue to the second derivative test, but the reality is more complicated: for example, $f(x, y) = x^2 + y^2 - 3xy$ has $f_{xx}(0, 0) = f_{yy}(0, 0) = 2$, making $(0, 0)$ look like a local min, but the concave down part of the graph is just in a different direction.
 
-### desmos secretSaddle
+@desmos{secretSaddle}
 
 This counterexample gives us a hint, though: we could verify that $(0, 0)$ was a local minimum not if the concavity in just the $x$- and $y$-directions were positive, but if the concavity in *all* directions were positive. Specifically, let's take what we might call a *second directional derivative* and see what we can determine.
 
@@ -258,11 +259,11 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 ###
 
-### exc "the second derivative test"
+@exc[the second derivative test][[
 
 	Find and classify the critical points of $g(x, y) = x^3 - y^2 + 2xy$.
 
-	### solution
+	@solution[[
 
 	We'll start by finding the critical points, so we need the gradient.
 
@@ -296,11 +297,12 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	So $D(0, 0) = -4 < 0$ and $D\left( -\frac{2}{3}, -\frac{2}{3} \right) = 4 > 0$, which tells us that $(0, 0)$ is a saddle point and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ is a local max, since $g_{yy}\left( -\frac{2}{3}, -\frac{2}{3} \right) = -2$ is negative. Not bad!
 
-	### desmos secondDerivativeTest1
+	@desmos{secondDerivativeTest1}
 
-###
+	]]
+]]
 
-### exc "shortcomings of the second derivative test"
+@exc[shortcomings of the second derivative test][[
 
 	Let $f$, $g$, and $h$ be the following functions:
 	
@@ -318,7 +320,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	3. For one of these functions, the critical point is a local maximum. For another, it's a local minimum, and for a third, it's a saddle point. Which is which? (Hint: think about the traces.)
 
-	### solution
+	@solution[[
 
 	1. Each functions has a gradient of
 
@@ -344,11 +346,12 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	3. Much like $z = x^2 + y^2$, $f(x, y) = x^4 + y^4$ has a local minimum at $(0, 0)$, $g$ has a local maximum, and $h$ has a saddle point. The result here is that a discriminant of zero really doesn't tell us anything about the critical point!
 
-	### desmos inconclusiveSecondDerivative
+	@desmos{inconclusiveSecondDerivative}
 
-###
+	]]
+]]
 
-### exc "critical points and level curves"
+@exc[critical points and level curves][[
 
 	Suppose $f(x, y)$ has a critical point at $(0, 0)$ and $f(0, 0) = 2$.
 	
@@ -360,11 +363,11 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	4. (Bonus, if you have time) Are there any types of critical points that the previous cases don't cover? What would the level curves look like in that case?
 
-###
+]]
 
 Multivariable optimization has a habit of cropping up all over the place, just like single-variable optimization. Let's take a brief look at one of those places now.
 
-### ex "linear regression"
+@ex[linear regression][[
 
 	Suppose we have three points: $(1, 0)$, $(2, 3)$, and $(4, 3)$. Given a line $y = mx + b$, its **error** for the point $(p, q)$ is $\left| mp + b - q \right|$ (that is, the difference between the $y$-value the line predicts will be there and the actual $y$-value).
 
@@ -400,7 +403,7 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 
 	Visually, the line does a good job of approximating these points! Drag the red point around to see how the best-fit line changes.
 
-	### desmos bestFitLine
+	@desmos{bestFitLine}
 
 	This process works for any number of points, and we can even do it symbolically for a set of points $\left\{ (x_i, y_i) \in #R#^2 \mid 1 \leq i \leq n \right\}$. If $\overline{x}$ and $\overline{y}$ are the averages of the $x_i$ and $y_i$, then
 
@@ -412,15 +415,15 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 
 	If you're in any STEM field besides math, you'll encounter best-fit lines like this with remarkable frequency! The process of producing them is called **linear regression**, and it's a core tool of data science and statistics.
 
-###
+]]
 
 Let's dig in more to that example's remark about local and global extrema. Let $y = f(x)$ be a differentiable single-variable function defined on all of $#R#$, and suppose $f$ has a single critical point at $x = c$ that is a local maximum. Then $(c, f(c))$ must also be the global maximum; if it weren't, then there would be some point $x = x_0$ with $f(x_0) \geq f(c)$. Since $f$ is continuous, that means there is also a point $x = a$ with $f(a) = f(c)$, and then the Mean Value Theorem guarantees a point $b$ between $a$ and $c$ with $f'(a) = 0$, contradicting the hypothesis that $f$ had only one critical point.
 
-### desmos meanValueTheorem
+@desmos{meanValueTheorem}
 
 Here, the blue point is at the local max of $c = 1$, but the red point at the same $y$-value guarantees a critical point somewhere in between; here, the orange point. In effect, if a differentiable function has a local max, then having any part of its graph lie *above* that local max requires another critical point where the graph turns around. For a function of two variables, however, this isn't true!
 
-### exc "functions of two variables and critical points"
+@exc[functions of two variables and critical points][[
 
 	Let $f(x, y)$ be defined by
 
@@ -432,7 +435,7 @@ Here, the blue point is at the local max of $c = 1$, but the red point at the sa
 
 	2. Show that despite this, $f(-3, 0) > f(1, 0)$.
 
-	### solution
+	@solution[[
 
 	1. Taking the partials,
 
@@ -466,14 +469,15 @@ Here, the blue point is at the local max of $c = 1$, but the red point at the sa
 		f(-3, 0) &= -9 - (-27) - 1 = 17.
 	$$
 
-###
+	]]
+]]
 
 To see what's happening here, let's look at the graph.
 
-### desmos misleadingCriticalPoint
+@desmos{misleadingCriticalPoint}
 
 The local maximum is the blue point on the left, and the point higher than it is on the right. Here we can see that our single-variable logic fails in two places: first, while the Mean Value Theorem guarantees that the orange curve connecting the two points has a critical point somewhere in the middle, that does *not* imply a critical point of $f(x, y)$; only that $f_x$ is zero there. Second, while we might still feel a critical point must be lurking somewhere else, we can see that this function has found a way to hide it: while the partial derivatives *limit* to zero along the $y$-axis as $y \to -\infty$, they never actually reach zero. In effect, the extra room of a $2$-dimensional domain allows functions to push an additional critical point infinitely far away.
 
 We've gone a long way toward bringing the second derivative test to functions of multiple variables! In the next section, we'll finish the job by finding an analogue to optimizing a function on a closed interval, and in the one after that, we'll conclude our discussion of multivariable calculus by considering more complicated constraints a function can have that bound its domain.
 
-### nav-buttons
+@navButtons

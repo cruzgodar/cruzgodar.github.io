@@ -132,7 +132,7 @@ This last theorem earns its name: it provides a fundamental relation between lin
 	
 ]]
 
-### pf
+@proof[[
 	
 	Although we won't pin down every detail, this proof will be appropriately rigorous for the level of our class. To begin, $\ker T$ is a subspace of $V$ as we've previously mentioned, since it's closed under addition and scalar multiplication and contains the zero vector. It therefore has a basis $\{\vec{v_1}, ..., \vec{v_k}\}$ (the basis must have only finitely many elements since we required $V$ to be finite-dimensional). If we let $n = \dim V$, then $n \geq k$, and in fact we can extend our basis for $\ker T$ to a basis for $V$: just choose any basis for $V$ and select just the vectors linearly independent from $\{\vec{v_1}, ..., \vec{v_k}\}$. If we label those linearly independent basis vectors $\vec{v_{k+1}}, ..., \vec{v_n}$, then
 	
@@ -198,7 +198,7 @@ This last theorem earns its name: it provides a fundamental relation between lin
 	
 	as required.
 	
-###
+]]
 
 This result is also called the **Rank-Nullity Theorem** --- when we associate $T$ with a matrix $A$, $\dim \image T$ is called the **rank** of $A$, and $\dim \ker T$ is called the **nullity**. The theorem therefore says that the rank plus the nullity is equal to the number of columns of $A$.
 

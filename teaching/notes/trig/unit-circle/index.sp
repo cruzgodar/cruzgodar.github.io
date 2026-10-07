@@ -120,7 +120,7 @@ While this theorem applies to all triangles, right triangles in particular have 
 
 ]]
 
-### pf
+@proof[[
 
 	We don't get many chances to prove things in this course, so let's take this one! There are an incredible number of ways to prove the Pythagorean Theorem, but my personal favorite to see as a first proof works by rearranging triangles.
 
@@ -128,7 +128,7 @@ While this theorem applies to all triangles, right triangles in particular have 
 
 	Here, we have a right triangle with legs $a$ and $b$ (colored red and blue, respectively), and a purple hypotenuse $c$. By drawing three more rotated copies of the triangle, we can surround the purple square. Its side length is $c$, so its area must be $c^2$. But if we rearrange the triangles (drag the $s$ slider in the expressions list) then we can instead fill exactly the same area with two smaller squares with areas $a^2$ and $b^2$, respectively. Since both versions of the diagram have four copies of the triangle, the non-triangle area must be the same: in other words, $a^2 + b^2 = c^2$.
 
-###
+]]
 
 @exc[the Pythagorean Theorem][[
 

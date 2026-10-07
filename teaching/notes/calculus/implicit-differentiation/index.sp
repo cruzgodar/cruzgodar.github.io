@@ -106,7 +106,7 @@ Logarithmic differentiation also lets us finally handle the derivative of $x^n$,
 	
 ]]
 
-### pf
+@proof[[
 	
 	With $y = x^n$, write
 	
@@ -126,7 +126,7 @@ Logarithmic differentiation also lets us finally handle the derivative of $x^n$,
 		dy/dx = y\frac{n}{x} = \frac{nx^n}{x} = nx^{n-1}.
 	$$	
 	
-###
+]]
 
 
 

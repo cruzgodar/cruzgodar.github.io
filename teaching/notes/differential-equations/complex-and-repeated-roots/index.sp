@@ -30,7 +30,7 @@ so our real question is how to deal with $e^{i\theta}$ for a real value of $\the
 	
 ]]
 
-### pf
+@proof[[
 	
 	We don't get many opportunities for proofs in this class, so let's take this one! The Taylor series for $e^x$ centered at $x = 0$ is
 	
@@ -59,7 +59,7 @@ so our real question is how to deal with $e^{i\theta}$ for a real value of $\the
 		&= \cos(\theta) + i\sin(\theta).
 	$$
 	
-###
+]]
 
 
 

@@ -197,7 +197,7 @@ As is becoming increasingly clear, we'd always like a *basis* of eigenvectors fo
 
 ]]
 
-### pf
+@proof[[
 
 	We'll often get the chance to prove our results in this course, and it's worth taking it whenever we can. While this course isn't proof-based, it's good preparation for future ones that are, and there's usually value in seeing *why* results are true regardless.
 
@@ -227,7 +227,7 @@ As is becoming increasingly clear, we'd always like a *basis* of eigenvectors fo
 
 	This process continues to work: if we know $\vec{v_1}, ..., \vec{v_k}$ are linearly independent, then we can show $\vec{v_1}, ..., \vec{v_{k + 1}}$ are. That must mean that $\vec{v_1}, ..., \vec{v_n}$ are linearly independent --- intuitively, it's because we can repeat the process until we reach all $n$ vectors, but if you've taken a proofs class, you'll recognize this as an example of mathematical induction. Regardless, $\{\vec{v_1}, ..., \vec{v_n}\}$ is a basis for $#R#^n$.
 
-###
+]]
 
 One way to quickly put these ideas to use is with *dynamical systems*, a fancy term that just means a system whose state changes over time. When that change is characterized by a linear map, we can analyze its long-term behavior most easily by finding a basis of eigenvectors.
 

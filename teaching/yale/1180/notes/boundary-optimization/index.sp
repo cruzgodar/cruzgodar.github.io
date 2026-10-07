@@ -1,4 +1,4 @@
-### nav-buttons
+@navButtons
 
 
 
@@ -6,7 +6,7 @@ When we optimize a function $f(x, y)$ --- for example, if $f(x, y) = 2x + xy + 5
 
 With a constraint like that, the problem makes much more sense: maximize $f(x, y)$ *given* $ax + by \leq c$. For this problem, let's say that our constraint is $10x + 5y \leq 100$, and implicitly also that $x \geq 0$ and $y \geq 0$. The techniques of the previous section might let us find where the critical points of the function are, but they don't have much to say about the boundary of the region. This is a direct analogue of the story of single-variable optimization: when we optimize a function of one variable $f(x)$ that's defined on a closed interval $[a, b]$, we have to consider not just its critical points, but also the endpoints $a$ and $b$ of the interval: the function might have local maxima or minima there. In fact, it very often does!
 
-### desmos endpoints
+@desmos{endpoints}
 
 Functions like this one are great examples of the **Extreme Value Theorem** for functions of a single variable, which says that a continuous function $f(x)$ on a closed interval always has a global maximum and a global minimum. In the previous graph, defining $f$ on all of $#R#$ or ditching the endpoints by defining it on $(a, b)$ results in a function with no global max or min. There are largely two relevant properties of $[a, b]$ that are not shared by $(a, b)$, $[a, \infty)$, or $(-\infty, \infty)$: first, $[a, b]$ contains the endpoints $a$ and $b$, which is necessary so that $x$ can't approach $a$ or $b$ without reaching it and thereby keep $f$ from having a global extremum. Second, $[a, b]$ doesn't extend infinitely far in either direction, meaning $f$ can't increase or decrease forever and avoid having a global extremum that way.
 
@@ -48,13 +48,13 @@ To be clear, both of these are informal and imprecise definitions. They'll do we
 
 The Extreme Value Theorem in single-variable calculus told us about functions defined on closed and bounded intervals, and those same two conditions will be relevant to functions of multiple variables; let's give it a name.
 
-### def "compact set"
+@def[compact set][[
 
 	A set $K$ in $#R#^n$ is **compact** if it is closed and bounded.
 
-###
+]]
 
-### exc "compact sets"
+@exc[compact sets][[
 
 	Consider the following four sets in $#R#^2$.
 
@@ -70,7 +70,7 @@ The Extreme Value Theorem in single-variable calculus told us about functions de
 
 	Determine whether $A$, $B$, $C$, and $D$ are closed and whether they are bounded. Are any of them compact?
 
-###
+]]
 
 
 
@@ -78,15 +78,15 @@ The Extreme Value Theorem in single-variable calculus told us about functions de
 
 With compact sets defined and explored, let's return to the matter at hand and apply them.
 
-### thm "The Extreme Value Theorem"
+@thm[The Extreme Value Theorem][[
 
 	Let $f : #R#^n \to #R#$ be a continuous function of $n$ variables defined on a compact set $K$ (i.e. $f: K \to #R#$). Then $f$ must attain a global maximum and minimum on $K$.
 
-###
+]]
 
 We apply the EVT the same way that we did in single-variable calculus: first, we optimize a function by finding all of its critical points. Then, if it's defined on a compact set, we also evaluate it at every point in the boundary and compare those values to one another and to the critical points' values. The smallest is the global min, and the largest is the global max.
 
-### ex "optimizing a function"
+@ex[optimizing a function][[
 
 	Let $f(x, y) = x^3 - y^2 + 2xy$ be defined on the rectangle
 
@@ -96,7 +96,7 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 	Find the global extrema of $f$.
 
-	### solution
+	@solution[[
 
 	We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
 
@@ -142,11 +142,12 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
 
-	### desmos evt
+	@desmos{evt}
 
-###
+	]]
+]]
 
-### exc "optimizing a function"
+@exc[optimizing a function][[
 
 	Find the global maximum and minimum of the function $f(x, y) = xy - x - y$ on the region
 
@@ -154,7 +155,7 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 2 \text{ and } 0 \leq y \leq 2x \right\}.
 	$$
 
-###
+]]
 
 
 
@@ -162,7 +163,7 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 We opened the section by thinking about a function $f(x, y) = 2x + xy + 5y$ giving the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month, subject to the constraint $10x + 5y \leq 100$. To get at a different method of optimization that doesn't require boundary parameterization, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
 
-### desmos levelCurves
+@desmos{levelCurves}
 
 Immediately, we can see that we need to pick a small enough value of $c$ that the level curve $2x + xy + 5y = c$ actually intersects $10x + 5y = 100$; otherwise, there won't be any point in the intersection. But on the other hand, we *want $c$ to be as large as possible*, because crucially, $c$ is the output of $f(x, y)$ --- it's the thing we're trying to maximize. We therefore are looking for a value of $c$ where the level curve just barely touches the line $10x + 5y = 100$, or in other words, where the two are tangent.
 
@@ -250,11 +251,11 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 ###
 
-### exc "Lagrange multipliers"
+@exc[Lagrange multipliers][[
 
 	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} = 1 \right\}$. Find the absolute maximum and minimum of $f$.
 
-	### solution
+	@solution[[
 
 	We have $f(x, y) = xy$ and $g(x, y) = x^{2/3} + y^{2/3} - 1$, and so our system of equations is
 
@@ -310,13 +311,14 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 	as before. Solving for $y$, we can cube both sides of $x^{2/3} = y^{2/3}$ to get $x^2 = y^2$, so $y = \pm \left( \frac{\sqrt{2}}{2} \right)^3$ for both $x$-values. Notably, we missed the points $(\pm 1, 0)$ and $(0, \pm 1)$ --- those are the points where $\G g(x, y)$ is undefined, so we also need to consider them. Once we've added those in, though, we've successfully recovered the same points that we saw in the example earlier in this section! From here, the same logic applies --- we plug them all in and find the largest and smallest.
 
-###
+	]]
+]]
 
-### ex "Lagrange multipliers"
+@ex[Lagrange multipliers][[
 
 	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$2$ per square foot, while the other two sides and base will be made out of wood, costing $\$1$ per square foot. You have a budget of $\$24$ --- how large of a box can you build?
 
-	### solution
+	@solution[[
 
 	With $f(x, y, z) = xyz$ and
 
@@ -388,8 +390,9 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 	We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
 
-###
+	]]
+]]
 
 
 
-### nav-buttons
+@navButtons

@@ -213,7 +213,7 @@ In addition to these new functions, there are a number of relationships between 
 
 ###
 
-### pf
+@proof[[
 
 	Let's take just a moment to justify *why* these are true! We've seen the first Pythagorean identity already, and the other two are just from dividing both sides by $\sin^2(\theta)$ and $\cos^2(\theta)$. For the others, let's start from the sum formulas.
 
@@ -235,7 +235,7 @@ In addition to these new functions, there are a number of relationships between 
 
 	And now all the other formulas follow from these! By plugging in $-\beta$ for $\beta$ and using the fact that $\sin$ is odd and $\cos$ is even, we can produce the difference formulas. By setting $\alpha = \beta$ in the sum formulas, we get the double-angle formulas, and by solving those for $\sin(\theta)$ and $\cos(\theta)$, we can produce the half-angle formulas.
 
-###
+]]
 
 @ex[trig identities][[
 

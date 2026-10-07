@@ -100,7 +100,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 	
 ]]
 
-### pf
+@proof[[
 	
 	We can actually do the proof of this one! We don't get too many chances to present them, so let's take this one. Since $n$ is rational, we can write it as $n = \frac{a}{b}$, where $a$ and $b$ are integers. Then
 	
@@ -136,7 +136,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 		&= nx^{n - 1}.
 	$$
 	
-###
+]]
 
 
 
