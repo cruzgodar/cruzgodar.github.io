@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 So far, we know how to find antiderivatives of functions which are derivatives of common functions, and we can also sometimes find antiderivatives of compositions by using $u$-sub. In this section, we'll talk about a few more common integrals, and then we'll end with a summary of all the ones we know so far.
@@ -10,44 +14,44 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 
 	@solution[[
 	
-	Let's let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is finding $N(t)$ in general. This is an antiderivative of $N'$, and so we have
-	
-	$$
-		N(t) &= \int N'(t)\,\d t
+		Let's let $N(t)$ be the number of total bacteria after $t$ hours. Then $N(0) = 0$ and $N'(t) = 3^t$, since the $3^t$ is the rate of growth of $N$. We want to find $N(6)$, so a good place to start is finding $N(t)$ in general. This is an antiderivative of $N'$, and so we have
 		
-		&= \int 3^t\,\d t.
-	$$
-	
-	Since
-	
-	$$
-		d/dt [3^t] = 3^t \ln(3),
-	$$
-	
-	we can divide both sides by $\ln(3)$ to find that
-	
-	$$
-		N(t) = \int 3^t\,\d t = \frac{1}{\ln(3)} 3^t + C.
-	$$
-	
-	Since $N(0) = 100$, we have that
-	
-	$$
-		100 = \frac{1}{\ln(3)} 3^0 + C,
-	$$
-	
-	so
-	
-	$$
-		C = 100 - \frac{1}{\ln(3)} \approx 99.09.
-	$$
-	
-	Therefore,
-	
-	$$
-		N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7.
-	$$
-	
+		$$
+			N(t) &= \int N'(t)\,\d t
+			
+			&= \int 3^t\,\d t.
+		$$
+		
+		Since
+		
+		$$
+			d/dt [3^t] = 3^t \ln(3),
+		$$
+		
+		we can divide both sides by $\ln(3)$ to find that
+		
+		$$
+			N(t) = \int 3^t\,\d t = \frac{1}{\ln(3)} 3^t + C.
+		$$
+		
+		Since $N(0) = 100$, we have that
+		
+		$$
+			100 = \frac{1}{\ln(3)} 3^0 + C,
+		$$
+		
+		so
+		
+		$$
+			C = 100 - \frac{1}{\ln(3)} \approx 99.09.
+		$$
+		
+		Therefore,
+		
+		$$
+			N(6) = \frac{3^6}{\ln(3)} + 99.09 = 762.7.
+		$$
+	]]
 ]]
 
 @exc[an integral involving an exponential function][[
@@ -56,18 +60,18 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 	
 	@solution[[
 	
-	If $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
-	
-	$$
-		m(t) &= \int -.0953 \cdot .91^t\,\d t
+		If $m(t)$ is the mass of the substance after $t$ years, then $m'(t) = -.0953 \cdot 1.1^{-t} = $ and $m(0) = 1$. Thus
 		
-		&= -.0953 \frac{1}{\ln(.91)} .91^t + C
+		$$
+			m(t) &= \int -.0953 \cdot .91^t\,\d t
+			
+			&= -.0953 \frac{1}{\ln(.91)} .91^t + C
+			
+			&= 1.0105 \cdot .91^t + C.
+		$$
 		
-		&= 1.0105 \cdot .91^t + C.
-	$$
-	
-	Then $m(0) = 1 = 1.0105 \cdot .91^0 + C = 1.0105 + C$, so $C = -.0105$. In total, $m(t) = 1.0105 \cdot .91^t - .0105$.
-	
+		Then $m(0) = 1 = 1.0105 \cdot .91^0 + C = 1.0105 + C$, so $C = -.0105$. In total, $m(t) = 1.0105 \cdot .91^t - .0105$.
+	]]
 ]]
 
 
@@ -78,14 +82,14 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 
 	@solution[[
 	
-	This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn't really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\,\d x$, which lines up nicely: the integral becomes
-	
-	$$
-		-\int 2^u\,\d u &= -\frac{1}{\ln(2)} 2^u + C
+		This is way too complicated to evaluate directly, so we have to try $u$-sub. If we set $u = x^2$, then the exponential becomes $2^{1/\sqrt{u}}$, which isn't really helpful. Instead, we can try $u = \frac{1}{x}$. Then $du = -\frac{1}{x^2}\,\d x$, which lines up nicely: the integral becomes
 		
-		&= -\frac{1}{\ln(2)} 2^{1/x} + C.
-	$$
-	
+		$$
+			-\int 2^u\,\d u &= -\frac{1}{\ln(2)} 2^u + C
+			
+			&= -\frac{1}{\ln(2)} 2^{1/x} + C.
+		$$
+	]]
 ]]
 
 
@@ -120,8 +124,8 @@ but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$
 
 	@solution[[
 	
-	The Product Rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
-	
+		The Product Rule gives that the derivative is $\ln(x) + 1 - 1 = \ln(x)$.
+	]]
 ]]
 
 
@@ -142,28 +146,28 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 
 	@solution[[
 	
-	First, we'll turn this log into a natural log.
-	
-	$$
-		\int_2^3 \log_2(5x)\,\d x = \int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x.
-	$$
-	
-	Now since $\ln(2)$ is a constant, we can factor it out of the integral and use $u$-sub to handle the rest.
-	
-	$$
-		\int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\,\d x
+		First, we'll turn this log into a natural log.
 		
-		& u = 5x,\,\d u = 5dx
+		$$
+			\int_2^3 \log_2(5x)\,\d x = \int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x.
+		$$
 		
-		&= \frac{1}{\ln(2)} \int_2^3 \ln(u)\ \frac{1}{5}du
+		Now since $\ln(2)$ is a constant, we can factor it out of the integral and use $u$-sub to handle the rest.
 		
-		&= \frac{1}{5\ln(2)} \left. \left[ u \ln(u) - u \right] \right|_2^3
-		
-		&= \frac{1}{5\ln(2)} \left. \left[ 5x \ln(5x) - 5x \right] \right|_2^3
-		
-		&= \frac{1}{5\ln(2)} \left( \left( 15 \ln(15) - 15 \right) - \left( 10 \ln(10) - 10 \right) \right).
-	$$
-	
+		$$
+			\int_2^3 \frac{\ln(5x)}{\ln(2)}\,\d x &= \frac{1}{\ln(2)} \int_2^3 \ln(5x)\,\d x
+			
+			& u = 5x,\,\d u = 5dx
+			
+			&= \frac{1}{\ln(2)} \int_2^3 \ln(u)\ \frac{1}{5}du
+			
+			&= \frac{1}{5\ln(2)} \left. \left[ u \ln(u) - u \right] \right|_2^3
+			
+			&= \frac{1}{5\ln(2)} \left. \left[ 5x \ln(5x) - 5x \right] \right|_2^3
+			
+			&= \frac{1}{5\ln(2)} \left( \left( 15 \ln(15) - 15 \right) - \left( 10 \ln(10) - 10 \right) \right).
+		$$
+	]]
 ]]
 
 @exc[a logarithmic integral][[
@@ -172,22 +176,22 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 
 	@solution[[
 	
-	Since we have a composition, we should try $u$-sub. Let $u = x^2$ --- then $du = 2x\,\d x$, so we have
-	
-	$$
-		\int_1^2 \frac{1}{2} \log_3(u)\,\d u &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\,\d u
+		Since we have a composition, we should try $u$-sub. Let $u = x^2$ --- then $du = 2x\,\d x$, so we have
 		
-		&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\,\d u
-		
-		&= \frac{1}{2\ln(3)} \left. \left[ u \ln(u) - u \right] \right|_1^2
-		
-		&= \frac{1}{2\ln(3)} \left. \left[ x^2 \ln(x^2) - x^2 \right] \right|_1^2
-		
-		&= \frac{1}{2\ln(3)} \left( 4 \ln(4) - 4 - \ln(1) + 1 \right)
-		
-		&= \frac{1}{2\ln(3)} \left( 4 \ln(4) - 3 \right)
-	$$
-	
+		$$
+			\int_1^2 \frac{1}{2} \log_3(u)\,\d u &= \int_1^2 \frac{1}{2} \frac{\ln(u)}{\ln(3)}\,\d u
+			
+			&= \frac{1}{2\ln(3)} \int_1^2 \ln(u)\,\d u
+			
+			&= \frac{1}{2\ln(3)} \left. \left[ u \ln(u) - u \right] \right|_1^2
+			
+			&= \frac{1}{2\ln(3)} \left. \left[ x^2 \ln(x^2) - x^2 \right] \right|_1^2
+			
+			&= \frac{1}{2\ln(3)} \left( 4 \ln(4) - 4 - \ln(1) + 1 \right)
+			
+			&= \frac{1}{2\ln(3)} \left( 4 \ln(4) - 3 \right)
+		$$
+	]]
 ]]
 
 
@@ -220,20 +224,20 @@ It might look like that last one is a $u$-sub problem, but it's actually not, si
 
 	@solution[[
 	
-	This resembles the first integral in the previous proposition, but we need to remove the $9$ from the $x^2$. This can be done with $u$-sub:
-	
-	$$
-		\int \frac{1}{\sqrt{4 - 9x^2}}\,\d x &= \int \frac{1}{\sqrt{4 - (3x)^2}}\,\d x
+		This resembles the first integral in the previous proposition, but we need to remove the $9$ from the $x^2$. This can be done with $u$-sub:
 		
-		& u = 3x,\,\d u = 3\,\d x
-		
-		&= \int \frac{1}{\sqrt{4 - u^2}}\ \frac{1}{3}du
-		
-		&= \frac{1}{3} \sin^{-1} \left( \frac{u}{2} \right) + C
-		
-		&= \frac{1}{3} \sin^{-1} \left( \frac{3x}{2} \right) + C
-	$$
-	
+		$$
+			\int \frac{1}{\sqrt{4 - 9x^2}}\,\d x &= \int \frac{1}{\sqrt{4 - (3x)^2}}\,\d x
+			
+			& u = 3x,\,\d u = 3\,\d x
+			
+			&= \int \frac{1}{\sqrt{4 - u^2}}\ \frac{1}{3}du
+			
+			&= \frac{1}{3} \sin^{-1} \left( \frac{u}{2} \right) + C
+			
+			&= \frac{1}{3} \sin^{-1} \left( \frac{3x}{2} \right) + C
+		$$
+	]]
 ]]
 
 @exc[an inverse trig integral][[
@@ -242,12 +246,12 @@ It might look like that last one is a $u$-sub problem, but it's actually not, si
 
 	@solution[[
 	
-	First we need to factor out a $4$. Then we have
-	
-	$$
-		\int \frac{1}{2x\sqrt{x^2 - 1}}\,\d x = \frac{1}{2} \sec^{-1}(x).
-	$$
-	
+		First we need to factor out a $4$. Then we have
+		
+		$$
+			\int \frac{1}{2x\sqrt{x^2 - 1}}\,\d x = \frac{1}{2} \sec^{-1}(x).
+		$$
+	]]
 ]]
 
 
@@ -274,18 +278,18 @@ This isn't particularly relevant to this course's material, and your calculator 
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,\d x &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2
+		We have
 		
-		&= \sin^{-1} \left( \frac{1}{2} \right) - \sin^{-1}(0)
-		
-		&= \frac{\pi}{6} - 0
-		
-		&= \frac{\pi}{6}.
-	$$
-	
+		$$
+			\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,\d x &= \left. \left[ \sin^{-1} \left( \frac{x}{4} \right) \right] \right|_0^2
+			
+			&= \sin^{-1} \left( \frac{1}{2} \right) - \sin^{-1}(0)
+			
+			&= \frac{\pi}{6} - 0
+			
+			&= \frac{\pi}{6}.
+		$$
+	]]
 ]]
 
 @exc[a definite inverse trig integral][[
@@ -294,14 +298,14 @@ This isn't particularly relevant to this course's material, and your calculator 
 
 	@solution[[
 	
-	This is
-	
-	$$
-		\left. \left[ \tan^{-1}(x) \right] \right|_{\sqrt{3}/3}^{\sqrt{3}} &= \frac{\pi}{3} - \frac{\pi}{6}
+		This is
 		
-		&= \frac{\pi}{6}.
-	$$
-	
+		$$
+			\left. \left[ \tan^{-1}(x) \right] \right|_{\sqrt{3}/3}^{\sqrt{3}} &= \frac{\pi}{3} - \frac{\pi}{6}
+			
+			&= \frac{\pi}{6}.
+		$$
+	]]
 ]]
 
 

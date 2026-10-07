@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 At the moment, the only reasonable way we can calculate definite integrals is with the Fundamental Theorem of Calculus, which requires taking an antiderivative. In Calculus I, there were some derivatives we had to memorize, like $d/dx[\sin(x)] = \cos(x)$, and a few rules like the product and Chain Rules that let us differentiate more complicated functions. We already have the first part done for antiderivatives, since we can just run all the regular derivatives backward: for example,
@@ -38,22 +42,22 @@ This really is just the Chain Rule backward: since $F' = f$, we have $d/dx[F(g(x
 
 	@solution[[
 	
-	We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
-	
-	$$
-		d/dx \left[ 3x^2 + 4 \right] = 6x,
-	$$
-	
-	we set $u = 3x^2 + 4$ and $du = 6x\,\d x$. Then we have
-	
-	$$
-		\int 6x(3x^2 + 4)^4\,\d x &= \int u^4\,\d u + C
+		We could foil out $(3x^2 + 4)^4$, but that's much more work than is necessary. Instead, we can think of it as a composition of two functions, where the outside function is $x^4$ and the inside one is $3x^2 + 4$. Since
 		
-		&= \frac{u^5}{5} + C
+		$$
+			d/dx \left[ 3x^2 + 4 \right] = 6x,
+		$$
 		
-		&= \frac{(3x^2 + 4)^5}{5} + C.
-	$$
-	
+		we set $u = 3x^2 + 4$ and $du = 6x\,\d x$. Then we have
+		
+		$$
+			\int 6x(3x^2 + 4)^4\,\d x &= \int u^4\,\d u + C
+			
+			&= \frac{u^5}{5} + C
+			
+			&= \frac{(3x^2 + 4)^5}{5} + C.
+		$$
+	]]
 ]]
 
 @exc[$u$-sub][[
@@ -62,14 +66,14 @@ This really is just the Chain Rule backward: since $F' = f$, we have $d/dx[F(g(x
 
 	@solution[[
 	
-	Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the Chain Rule, and so the integral becomes
-	
-	$$
-		\int u^3\,\d u &= \frac{u^4}{4} + C
+		Let $u = \sin(2x)$. (Another possible value is $u = 2x$, but that won't advance the problem forward --- if you don't see why, try it!) Then $\d u = 2\cos(2x)\,\d x$ by the Chain Rule, and so the integral becomes
 		
-		&= \frac{1}{4} \sin^4(2x) + C.
-	$$
-	
+		$$
+			\int u^3\,\d u &= \frac{u^4}{4} + C
+			
+			&= \frac{1}{4} \sin^4(2x) + C.
+		$$
+	]]
 ]]
 
 
@@ -84,26 +88,26 @@ While the Chain Rule works for all compositions, $u$-sub works only in the parti
 
 	@solution[[
 	
-	If we try to set $u = 3x^2 + 4$ again, we get that $\d u = 6x\,\d x$, as before. The integral then becomes
-	
-	$$
-		\int xu^4\,\d u,
-	$$
-	
-	and that's a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
-	
-	$$
-		x = \sqrt{\frac{1}{3} (u - 4)}.
-	$$
-	
-	But the integral is then
-	
-	$$
-		\int u^4\sqrt{\frac{1}{3} (u - 4)}\,\d u,
-	$$
-	
-	and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we'll talk about a different strategy to handle this kind of integral, but that's still some time away.
-	
+		If we try to set $u = 3x^2 + 4$ again, we get that $\d u = 6x\,\d x$, as before. The integral then becomes
+		
+		$$
+			\int xu^4\,\d u,
+		$$
+		
+		and that's a dead end, because the integral contains more than just $u$. The only way to possibly make it work is to solve for $x$ in terms of $u$, which gives
+		
+		$$
+			x = \sqrt{\frac{1}{3} (u - 4)}.
+		$$
+		
+		But the integral is then
+		
+		$$
+			\int u^4\sqrt{\frac{1}{3} (u - 4)}\,\d u,
+		$$
+		
+		and this is significantly worse than what we started with. Unfortunately, there is simply no way to make $u$-sub helpful on this problem. Eventually, we'll talk about a different strategy to handle this kind of integral, but that's still some time away.
+	]]
 ]]
 
 @ex[$u$-sub][[
@@ -112,36 +116,36 @@ While the Chain Rule works for all compositions, $u$-sub works only in the parti
 
 	@solution[[
 	
-	When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
-	
-	$$
-		u &= z^2 - 5
+		When using $u$-sub on a definite integral, we need to be careful. The $3$ and $4$ are things to plug in for $z$, not $u$, so we'll need to remember to backsubstitute before plugging in the limits.
 		
-		du &= 2z\,\d z
-	$$
-	
-	At this point, $\d u$ isn't exactly present in the integral: it's $2z\,\d z$ and we only have $z\,\d z$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
-	
-	$$
-		\frac{1}{2} du &= z\,\d z
+		$$
+			u &= z^2 - 5
+			
+			du &= 2z\,\d z
+		$$
 		
-		\int_3^4 z\sqrt{z^2 - 5}\,\d z &= \int_3^4 \frac{1}{2} \sqrt{u}\,\d u
+		At this point, $\d u$ isn't exactly present in the integral: it's $2z\,\d z$ and we only have $z\,\d z$. However, since we're only off by a constant multiple, we can just divide by it on both sides to make the expression fit what we have.
 		
-		&= \int_3^4 \frac{1}{2} u^{1/2}\,\d u
+		$$
+			\frac{1}{2} du &= z\,\d z
+			
+			\int_3^4 z\sqrt{z^2 - 5}\,\d z &= \int_3^4 \frac{1}{2} \sqrt{u}\,\d u
+			
+			&= \int_3^4 \frac{1}{2} u^{1/2}\,\d u
+			
+			&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4
+			
+			&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4
+		$$
 		
-		&= \left. \left[ \frac{1}{2} \frac{u^{3/2}}{3/2} \right] \right|_3^4
+		Now we need to backsubstitute before plugging in the limits.
 		
-		&= \left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4
-	$$
-	
-	Now we need to backsubstitute before plugging in the limits.
-	
-	$$
-		\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4
-		
-		&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
-	$$
-	
+		$$
+			\left. \left[ \frac{1}{3} u^{3/2} \right] \right|_3^4 &= \left. \left[ \frac{1}{3} (z^2 - 5)^{3/2} \right] \right|_3^4
+			
+			&= \frac{1}{3} 11^{3/2} - \frac{1}{3} 4^{3/2}.
+		$$
+	]]
 ]]
 
 @exc[$u$-sub][[
@@ -150,16 +154,16 @@ While the Chain Rule works for all compositions, $u$-sub works only in the parti
 
 	@solution[[
 	
-	Let $u = 4t^3 + 3$. Then $\d u = 12t^2\,\d t$, but we have $2t^2\,\d t$, so we solve for $2t^2\,\d t$ to get $2t^2\,\d t = \frac{1}{6}\,\d u$. Now we have
-	
-	$$
-		\int 2t^2 e^{4t^3 + 3}\,\d t &= \int \frac{1}{6} e^u\,\d u
+		Let $u = 4t^3 + 3$. Then $\d u = 12t^2\,\d t$, but we have $2t^2\,\d t$, so we solve for $2t^2\,\d t$ to get $2t^2\,\d t = \frac{1}{6}\,\d u$. Now we have
 		
-		&= \frac{1}{6}e^u + C
-		
-		&= \frac{1}{6}e^{4t^3 + 3} + C.
-	$$
-	
+		$$
+			\int 2t^2 e^{4t^3 + 3}\,\d t &= \int \frac{1}{6} e^u\,\d u
+			
+			&= \frac{1}{6}e^u + C
+			
+			&= \frac{1}{6}e^{4t^3 + 3} + C.
+		$$
+	]]
 ]]
 
 
@@ -190,30 +194,30 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 	@solution[[
 	
-	First, we need to apply the half-angle formula:
-	
-	$$
-		\int 3\cos^2(x)\,\d x &= 3\int \cos^2(x)\,\d x
+		First, we need to apply the half-angle formula:
 		
-		&= 3\int \frac{1 + \cos(2x)}{2}\,\d x
+		$$
+			\int 3\cos^2(x)\,\d x &= 3\int \cos^2(x)\,\d x
+			
+			&= 3\int \frac{1 + \cos(2x)}{2}\,\d x
+			
+			&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,\d x
+			
+			&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x
+		$$
 		
-		&= 3\int \frac{1}{2} + \frac{1}{2}\cos(2x)\,\d x
+		To integrate $\cos(2x)$, we set $u = 2x$ and $\d u = 2\,\d x$, so $dx = \frac{1}{2}\,\d u$. Now
 		
-		&= \frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x
-	$$
-	
-	To integrate $\cos(2x)$, we set $u = 2x$ and $\d u = 2\,\d x$, so $dx = \frac{1}{2}\,\d u$. Now
-	
-	$$
-		\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,\d u
+		$$
+			\frac{3}{2}x + C + 3\int \frac{1}{2}\cos(2x)\,\d x &= \frac{3}{2}x + C + \frac{3}{4}\int \cos(u)\,\d u
+			
+			&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)
+			
+			&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
+		$$
 		
-		&= \frac{3}{2}x + C + \frac{3}{4}\sin(u)
-		
-		&= \frac{3}{2}x + \frac{3}{4}\sin(2x) + C.
-	$$
-	
-	Although we have two integrals, we only need one $C$, since it can take on any numerical value.
-	
+		Although we have two integrals, we only need one $C$, since it can take on any numerical value.
+	]]
 ]]
 
 @exc[the half-angle formulas][[
@@ -222,32 +226,32 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 	@solution[[
 	
-	Using the half-angle formula, we have
-	
-	$$
-		\int \sin^4(t)\,\d t &= \int (\sin^2(t))^2\,\d t
+		Using the half-angle formula, we have
 		
-		&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,\d t
+		$$
+			\int \sin^4(t)\,\d t &= \int (\sin^2(t))^2\,\d t
+			
+			&= \int \left( \frac{1}{2} - \frac{1}{2} \cos(2t) \right)^2\,\d t
+			
+			&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,\d t
+			
+			&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,\d t
+		$$
 		
-		&= \int (\frac{1}{4} - \frac{1}{2} \cos(2t) + \frac{1}{4} \cos^2(2t))\,\d t
+		Now we use half-angles **again**, this time on $\cos^2(2t)$.
 		
-		&= \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \int \cos^2(2t)\,\d t
-	$$
-	
-	Now we use half-angles **again**, this time on $\cos^2(2t)$.
-	
-	$$
-		\int \cos^2(2t)\,\d t &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\d t
+		$$
+			\int \cos^2(2t)\,\d t &= \int \left( \frac{1}{2} + \frac{1}{2} \cos(4t) \right)\d t
+			
+			&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
+		$$
 		
-		&= \frac{1}{2} t + \frac{1}{8} \cos(4t) + C.
-	$$
-	
-	In total, we have
-	
-	$$
-		\int \sin^4(t)\,\d t = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
-	$$
-	
+		In total, we have
+		
+		$$
+			\int \sin^4(t)\,\d t = \frac{1}{4} t - \frac{1}{4} \sin(2t) + \frac{1}{4} \left(\frac{1}{2} t + \frac{1}{8} \cos(4t)\right) + C.
+		$$
+	]]
 ]]
 
 
@@ -260,26 +264,26 @@ A different type of $u$-sub problem to explore is where the substitution doesn't
 
 	@solution[[
 	
-	The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $\d u = \d x$, and so we have
-	
-	$$
-		\int \frac{x}{\sqrt{x - 1}}\,\d x = \int \frac{x}{\sqrt{u}}\,\d u.
-	$$
-	
-	The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
-	
-	$$
-		\int \frac{u + 1}{\sqrt{u}}\,\d u &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,\d u
+		The complicated part here is the $\sqrt{x - 1}$, so let's try setting $u$ to be the inside function. If $u = x - 1$, then $\d u = \d x$, and so we have
 		
-		&= \int \frac{u}{\sqrt{u}}\,\d u + \int \frac{1}{\sqrt{u}}\,\d u
+		$$
+			\int \frac{x}{\sqrt{x - 1}}\,\d x = \int \frac{x}{\sqrt{u}}\,\d u.
+		$$
 		
-		&= \int u^{1/2}\,\d u + \int u^{-1/2}\,\d u
+		The only way to get rid of the $x$ left over is to solve for $x$ in terms of $u$: $x = u + 1$. Now we have
 		
-		&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C
-		
-		&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
-	$$
-	
+		$$
+			\int \frac{u + 1}{\sqrt{u}}\,\d u &= \int \frac{u}{\sqrt{u}} + \frac{1}{\sqrt{u}}\,\d u
+			
+			&= \int \frac{u}{\sqrt{u}}\,\d u + \int \frac{1}{\sqrt{u}}\,\d u
+			
+			&= \int u^{1/2}\,\d u + \int u^{-1/2}\,\d u
+			
+			&= \frac{2}{3} u^{3/2} + 2u^{1/2} + C
+			
+			&= \frac{2}{3} (x - 1)^{3/2} + 2(x - 1)^{1/2} + C.
+		$$
+	]]
 ]]
 
 @exc[a more complicated $u$-sub][[
@@ -288,20 +292,20 @@ A different type of $u$-sub problem to explore is where the substitution doesn't
 
 	@solution[[
 	
-	With $u = x + 1$, we have $\d u = 1\,\d x$, so
-	
-	$$
-		\int \frac{x}{x + 1}\,\d x &= \int \frac{x}{u}\,\d u
+		With $u = x + 1$, we have $\d u = 1\,\d x$, so
+		
+		$$
+			\int \frac{x}{x + 1}\,\d x &= \int \frac{x}{u}\,\d u
 
-		&= \int \frac{u - 1}{u}\,\d u
+			&= \int \frac{u - 1}{u}\,\d u
 
-		&= \int \left( u - \frac{1}{u} \right)\d u
+			&= \int \left( u - \frac{1}{u} \right)\d u
 
-		&= \frac{u^2}{2} - \ln(u) + C
+			&= \frac{u^2}{2} - \ln(u) + C
 
-		&= \frac{(x + 1)^2}{2} - \ln(x + 1) + C.
-	$$
-	
+			&= \frac{(x + 1)^2}{2} - \ln(x + 1) + C.
+		$$
+	]]
 ]]
 
 To close, let's use $u$-sub to evaluate a more complicated integral that we haven't been able to approach so far.

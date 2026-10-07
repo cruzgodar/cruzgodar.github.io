@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Let's get right to it! We have Riemann sums, which approximate the area under the graph of nonnegative functions, and we can choose the points $x_i^*$ within the subintervals however we like (left, right, upper and lower sums are all examples of that choice). For well-behaved functions, it won't end up mattering, though. As the number of subintervals limits to infinity, the total area of the rectangles will approach the actual area under the curve.
@@ -42,18 +46,18 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 	@solution[[
 	
-	Especially with integrals, it's always a good idea to draw a picture of what's going on before digging into the equations.
-	
-	@desmos{geometricIntegral}
-	
-	The integral we're trying to calculate is by definition the area of the shaded region. That region consists of two triangles --- the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
-	
-	$$
-		\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
-	$$
-	
-	In total, $\int_{-1}^3 |x|\,\d x = 5$.
-
+		Especially with integrals, it's always a good idea to draw a picture of what's going on before digging into the equations.
+		
+		@desmos{geometricIntegral}
+		
+		The integral we're trying to calculate is by definition the area of the shaded region. That region consists of two triangles --- the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
+		
+		$$
+			\frac{1}{2} \cdot 1 \cdot 1 + \frac{1}{2} \cdot 3 \cdot 3 = 5.
+		$$
+		
+		In total, $\int_{-1}^3 |x|\,\d x = 5$.
+	]]
 ]]
 
 @exc[computing an integral geometrically][[
@@ -62,12 +66,12 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 	@solution[[
 	
-	The area in question looks like the following:
-	
-	@desmos{geometricIntegral2}
-	
-	This can be split into a square with side length $2$ and a triangle with base $2$ and height $4$. In total, the area is therefore $4 + \frac{1}{2} \cdot 2 \cdot 4 = 8$.
-	
+		The area in question looks like the following:
+		
+		@desmos{geometricIntegral2}
+		
+		This can be split into a square with side length $2$ and a triangle with base $2$ and height $4$. In total, the area is therefore $4 + \frac{1}{2} \cdot 2 \cdot 4 = 8$.
+	]]
 ]]
 
 
@@ -78,46 +82,46 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 	@solution[[
 	
-	It's not always as easy as the previous example. That was a lot like computing the derivative of a straight line --- we don't need the heavy machinery of derivatives to find its slope. Similarly, we don't need integrals to find the area of a triangle, although it's a good example to get our bearings. This time around, what we have is a parabola, and we don't know a simple formula for the shaded area. There's no getting around it --- we need to use the definition of the integral.
-	
-	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it's integrable, so it doesn't matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let's choose to use one of them. Since we're eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we're dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
-	
-	@desmos{integralFromLimitDef}
-	
-	In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That's because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We're trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
-	
-	$$
-		f\left( \frac{2}{n} i \right) = \left( \frac{2}{n} i \right)^2 = \frac{4}{n^2} i^2,
-	$$
-	
-	so in total, our Riemann sum becomes
-	
-	$$
-		\sum_{i = 1}^n \left( \frac{4}{n^2} i^2 \right) \left( \frac{2}{n} \right) = \sum_{i = 1}^n \frac{8}{n^3} i^2.
-	$$
-	
-	This is looking pretty rough, but remember --- that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what's left.
-	
-	$$
-		\sum_{i = 1}^n \frac{8}{n^3} i^2 &= \frac{8}{n^3} \sum_{i = 1}^n i^2
+		It's not always as easy as the previous example. That was a lot like computing the derivative of a straight line --- we don't need the heavy machinery of derivatives to find its slope. Similarly, we don't need integrals to find the area of a triangle, although it's a good example to get our bearings. This time around, what we have is a parabola, and we don't know a simple formula for the shaded area. There's no getting around it --- we need to use the definition of the integral.
 		
-		&= \frac{8}{n^3} \cdot \frac{n(n + 1)(2n + 1)}{6}
+		We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it's integrable, so it doesn't matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let's choose to use one of them. Since we're eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we're dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
 		
-		&= \frac{8(2n^3 + 3n^2 + n)}{6n^3}.
-	$$
-	
-	Almost there! The integral we're trying to find is the limit of this as $n \to \infty$. It's a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
-	
-	$$
-		\int_0^2 t^2\,\d t &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}
+		@desmos{integralFromLimitDef}
 		
-		&= \lim_{n \to \infty} \frac{16n^3}{6n^3}
+		In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That's because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We're trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
 		
-		&= \frac{8}{3}.
-	$$
-	
-	We did it! And along the way we learned that we **really** need a better way to do this. Unlike derivatives, though, the rules for integration won't come easily.
-
+		$$
+			f\left( \frac{2}{n} i \right) = \left( \frac{2}{n} i \right)^2 = \frac{4}{n^2} i^2,
+		$$
+		
+		so in total, our Riemann sum becomes
+		
+		$$
+			\sum_{i = 1}^n \left( \frac{4}{n^2} i^2 \right) \left( \frac{2}{n} \right) = \sum_{i = 1}^n \frac{8}{n^3} i^2.
+		$$
+		
+		This is looking pretty rough, but remember --- that $\frac{8}{n^3}$ is a constant as far as the sum is concerned. That means we can pull it out, and then we know how to handle what's left.
+		
+		$$
+			\sum_{i = 1}^n \frac{8}{n^3} i^2 &= \frac{8}{n^3} \sum_{i = 1}^n i^2
+			
+			&= \frac{8}{n^3} \cdot \frac{n(n + 1)(2n + 1)}{6}
+			
+			&= \frac{8(2n^3 + 3n^2 + n)}{6n^3}.
+		$$
+		
+		Almost there! The integral we're trying to find is the limit of this as $n \to \infty$. It's a rational function, so we can consider only the highest-degree terms: $16n^3$ on top and $6n^3$ on bottom. Therefore,
+		
+		$$
+			\int_0^2 t^2\,\d t &= \lim_{n \to \infty} \frac{8(2n^3 + 3n^2 + n)}{6n^3}
+			
+			&= \lim_{n \to \infty} \frac{16n^3}{6n^3}
+			
+			&= \frac{8}{3}.
+		$$
+		
+		We did it! And along the way we learned that we **really** need a better way to do this. Unlike derivatives, though, the rules for integration won't come easily.
+	]]
 ]]
 
 @ex[computing an integral from the limit definition][[
@@ -126,22 +130,22 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 	@solution[[
 	
-	Split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
-	
-	$$
-		\sum_{i = 1}^n f \left( \frac{3}{n} i \right) \left( \frac{3}{n} \right) &= \sum_{i = 1}^n \left( \frac{27}{n^3} i^3 \right) \left( \frac{3}{n} \right)
+		Split $[0, 3]$ into $n$ subintervals. The width of each is therefore $\frac{3}{n}$, and the coordinate of the right endpoint of the $i$th subinterval is $\frac{3}{n}i$. Therefore, the Riemann sum becomes 
 		
-		&= \sum_{i = 1}^n \frac{81}{n^4} i^3
+		$$
+			\sum_{i = 1}^n f \left( \frac{3}{n} i \right) \left( \frac{3}{n} \right) &= \sum_{i = 1}^n \left( \frac{27}{n^3} i^3 \right) \left( \frac{3}{n} \right)
+			
+			&= \sum_{i = 1}^n \frac{81}{n^4} i^3
+			
+			&= \frac{81}{n^4} \sum_{i = 1}^n i^3
+			
+			&= \frac{81}{n^4} \cdot \frac{n^2(n+1)^2}{4}
+			
+			&= \frac{81n^4 + 162n^3 + 81n^2}{4n^4}.
+		$$
 		
-		&= \frac{81}{n^4} \sum_{i = 1}^n i^3
-		
-		&= \frac{81}{n^4} \cdot \frac{n^2(n+1)^2}{4}
-		
-		&= \frac{81n^4 + 162n^3 + 81n^2}{4n^4}.
-	$$
-	
-	Now taking the limit as $n \to \infty$ by only considering the leading terms, we get $\frac{81n^4}{4n^4} = \frac{81}{4}$.
-	
+		Now taking the limit as $n \to \infty$ by only considering the leading terms, we get $\frac{81n^4}{4n^4} = \frac{81}{4}$.
+	]]
 ]]
 
 
@@ -156,12 +160,12 @@ Let's look at one more type of integral that we can handle geometrically, and th
 
 	@solution[[
 	
-	As always, it's good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
-	
-	@desmos{geometricIntegral3}
-	
-	The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it's $\frac{1}{4} \cdot 9\pi$.
-	
+		As always, it's good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
+		
+		@desmos{geometricIntegral3}
+		
+		The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it's $\frac{1}{4} \cdot 9\pi$.
+	]]
 ]]
 
 
@@ -268,8 +272,8 @@ This is a reasonable definition, since the integral is adding up the values of $
 
 	@solution[[
 	
-	Using the previous value of $\frac{81}{4}$, we get $\frac{1}{3} \cdot \frac{81}{4} = \frac{27}{4}$.
-	
+		Using the previous value of $\frac{81}{4}$, we get $\frac{1}{3} \cdot \frac{81}{4} = \frac{27}{4}$.
+	]]
 ]]
 
 

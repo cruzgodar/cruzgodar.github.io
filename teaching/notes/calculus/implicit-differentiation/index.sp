@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 When we discussed the Chain Rule, we found the derivative of $\ln\left( x^3 \right)$ in two different ways: by the Chain Rule, since we knew the derivative of both $\ln(x)$ and $x^3$, and also by using a log rule to bring the exponent of $3$ down in front to form $3\ln(x)$. Let's take just a moment to review that rule and others, starting with just what a log is in the first place.
@@ -225,9 +229,8 @@ And so the slope of the tangent line at $\left( \frac{1}{2}, \frac{\sqrt{3}}{2} 
 	4. Find all the points on the graph with a vertical tangent line.
 
 	@solution[[
-
-	@desmos{ellipse}
-	
+		@desmos{ellipse}
+	]]
 ]]
 
 @exc[braids][[
@@ -256,30 +259,30 @@ Let's approach one more complicated example before moving on.
 
 	@solution[[
 	
-	We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the Product Rule, and then the Chain Rule (since we're differentiating implicitly). We have
-	
-	$$
-		x\sin(xy) &= y
+		We'll start by differentiating both sides --- the right side becomes $dy/dx$, but the left side requires the Product Rule, and then the Chain Rule (since we're differentiating implicitly). We have
 		
-		d/dx[x\sin(y)] &= d/dx[y]
-		
-		d/dx[x] \cdot \sin(y) + x \cdot d/dx[\sin(y)] &= dy/dx
-		
-		\sin(y) + x \cos(y) \cdot dy/dx &= dy/dx
-	$$
+		$$
+			x\sin(xy) &= y
+			
+			d/dx[x\sin(y)] &= d/dx[y]
+			
+			d/dx[x] \cdot \sin(y) + x \cdot d/dx[\sin(y)] &= dy/dx
+			
+			\sin(y) + x \cos(y) \cdot dy/dx &= dy/dx
+		$$
 
-	Now we're nearly done! All that's left is to group the terms containing $dy/dx$ together on the left side, factor it out, and then divide by what's left.
+		Now we're nearly done! All that's left is to group the terms containing $dy/dx$ together on the left side, factor it out, and then divide by what's left.
 
-	$$	
-		x \cos(y) dy/dx - dy/dx &= -\sin(y)
+		$$	
+			x \cos(y) dy/dx - dy/dx &= -\sin(y)
 
-		\left( x \cos(y) - 1 \right) dy/dx &= -\sin(y)
+			\left( x \cos(y) - 1 \right) dy/dx &= -\sin(y)
 
-		dy/dx &= \frac{-\sin(y)}{x \cos(y) - 1}.
-	$$
+			dy/dx &= \frac{-\sin(y)}{x \cos(y) - 1}.
+		$$
 
-	There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
-	
+		There's a lot to say about this answer! One of the more peculiar aspects of this graph is the way the points of the spindles seem to form a diagonal line of increasing density and sharpness. On the homework, you'll investigate in more detail how this comes to be, exactly what that diagonal line is, and whether the increasing sharpness leads to an issue with the derivative.
+	]]
 ]]
 
 @exc[a more complicated implicit function][[
@@ -293,9 +296,8 @@ Let's approach one more complicated example before moving on.
 	3. (Bonus) The function $dy/dx$ only makes sense as a derivative when we plug in values of $x$ and $y$ on the curve. Is there a way to make sense of plugging in values that aren't on the curve? (Hint: how could we change the right side of the equation without changing $dy/dx$?)
 
 	@solution[[
-
-	@desmos{implicitLogEquation}
-	
+		@desmos{implicitLogEquation}
+	]]
 ]]
 
 

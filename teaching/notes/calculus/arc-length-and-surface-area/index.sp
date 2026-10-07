@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We're going to take a welcome break from 3D objects to talk about a simpler application of integrals... and then we'll get right back to the 3D stuff later in this section. Let's open with what arc length means, and then we'll see how to compute it.
@@ -66,23 +70,24 @@ and $\Delta x \to dx$. Since we're adding up all of these shrinking segment leng
 
 	@solution[[
 	
-	We have $f'(x) = 3x^{1/2}$, so $f'(x)^2 = 9x$. Therefore, the arc length is
-	
-	$$
-		& \int_0^1 \sqrt{1 + 9x}\,\d x
+		We have $f'(x) = 3x^{1/2}$, so $f'(x)^2 = 9x$. Therefore, the arc length is
 		
-		& u = 1 + 9x, du = 9\,\d x
-		
-		&= \frac{1}{9} \int_0^1 \sqrt{u}\,\d u
-		
-		&= \frac{1}{9} \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^1
-		
-		&= \frac{1}{9} \left. \left[ \frac{2}{3} (1 + 9x)^{3/2} \right] \right|_0^1
-		
-		&= \frac{2}{27} \left( (10)^{3/2} - 1 \right)
-		
-		&\approx 2.27.
-	$$
+		$$
+			& \int_0^1 \sqrt{1 + 9x}\,\d x
+			
+			& u = 1 + 9x, du = 9\,\d x
+			
+			&= \frac{1}{9} \int_0^1 \sqrt{u}\,\d u
+			
+			&= \frac{1}{9} \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^1
+			
+			&= \frac{1}{9} \left. \left[ \frac{2}{3} (1 + 9x)^{3/2} \right] \right|_0^1
+			
+			&= \frac{2}{27} \left( (10)^{3/2} - 1 \right)
+			
+			&\approx 2.27.
+		$$
+	]]
 	
 ]]
 
@@ -92,21 +97,22 @@ and $\Delta x \to dx$. Since we're adding up all of these shrinking segment leng
 	
 	@solution[[
 	
-	As a function of $y$, we have $x = y^{3/2}$, and the interval runs from $y = 0^{3/2} = 0$ to $y = 2^{3/2} = \sqrt{8}$. As before, we have $f'(y) = 3y^{1/2}$, so $f'(y)^2 = 9y$. Then the arc length is
-	
-	$$
-		& \int_0^{\sqrt{8}} \sqrt{1 + 9y}\,\d y
+		As a function of $y$, we have $x = y^{3/2}$, and the interval runs from $y = 0^{3/2} = 0$ to $y = 2^{3/2} = \sqrt{8}$. As before, we have $f'(y) = 3y^{1/2}$, so $f'(y)^2 = 9y$. Then the arc length is
 		
-		& u = 1 + 9y, du = 9\,\d y
-		
-		&= \frac{1}{9} \int_0^{\sqrt{8}} \sqrt{u}\,\d u
-		
-		&= \frac{1}{9} \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{\sqrt{8}}
-		
-		&= \frac{1}{9} \left. \left[ \frac{2}{3} (1 + 9x)^{3/2} \right] \right|_0^{\sqrt{8}}
-		
-		&= \frac{2}{27} \left( (1 + 9\sqrt{8})^{3/2} - 1 \right).
-	$$
+		$$
+			& \int_0^{\sqrt{8}} \sqrt{1 + 9y}\,\d y
+			
+			& u = 1 + 9y, du = 9\,\d y
+			
+			&= \frac{1}{9} \int_0^{\sqrt{8}} \sqrt{u}\,\d u
+			
+			&= \frac{1}{9} \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{\sqrt{8}}
+			
+			&= \frac{1}{9} \left. \left[ \frac{2}{3} (1 + 9x)^{3/2} \right] \right|_0^{\sqrt{8}}
+			
+			&= \frac{2}{27} \left( (1 + 9\sqrt{8})^{3/2} - 1 \right).
+		$$
+	]]
 	
 ]]
 
@@ -138,23 +144,24 @@ By know, we know how to find the volume of a solid of revolution, but what about
 
 	@solution[[
 	
-	Unlike volume, where we have a choice between integrating with respect to either variable (i.e. using the disk vs. shell methods), here we only have a theorem that can be used when we integrate with respect to the same variable whose axis we revolved about. In this case, that's the $y$-axis, so we need to get everything in terms of $y$. $y = x^2$ gets rewritten as $x = \sqrt{y}$, and $x = 0$ to $x = 6$ corresponds to $y = 0$ to $y = 36$. Then we have $f'(y) = \frac{1}{2} y^{-1/2}$, so the surface area is
-	
-	$$
-		\int_0^{36} 2 \pi \sqrt{y} \sqrt{1 + \frac{1}{4} y^{-1}}\,\d y &= 2\pi \int_0^{36} \sqrt{y + \frac{1}{4}}\,\d y
+		Unlike volume, where we have a choice between integrating with respect to either variable (i.e. using the disk vs. shell methods), here we only have a theorem that can be used when we integrate with respect to the same variable whose axis we revolved about. In this case, that's the $y$-axis, so we need to get everything in terms of $y$. $y = x^2$ gets rewritten as $x = \sqrt{y}$, and $x = 0$ to $x = 6$ corresponds to $y = 0$ to $y = 36$. Then we have $f'(y) = \frac{1}{2} y^{-1/2}$, so the surface area is
 		
-		& u = y + \frac{1}{4}, du = dy
-		
-		&= 2\pi \int_0^{36} \sqrt{u}\,\d u
-		
-		&= 2\pi \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{36}
-		
-		&= 2\pi \left. \left[ \frac{2}{3} \left( y + \frac{1}{4} \right)^{3/2} \right] \right|_0^{36}
-		
-		&= \frac{4\pi}{3} \left( \left( 36 + \frac{1}{4} \right)^{3/2} - \left( \frac{1}{4} \right)^{3/2} \right)
-		
-		&\approx 913.7.
-	$$
+		$$
+			\int_0^{36} 2 \pi \sqrt{y} \sqrt{1 + \frac{1}{4} y^{-1}}\,\d y &= 2\pi \int_0^{36} \sqrt{y + \frac{1}{4}}\,\d y
+			
+			& u = y + \frac{1}{4}, du = dy
+			
+			&= 2\pi \int_0^{36} \sqrt{u}\,\d u
+			
+			&= 2\pi \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{36}
+			
+			&= 2\pi \left. \left[ \frac{2}{3} \left( y + \frac{1}{4} \right)^{3/2} \right] \right|_0^{36}
+			
+			&= \frac{4\pi}{3} \left( \left( 36 + \frac{1}{4} \right)^{3/2} - \left( \frac{1}{4} \right)^{3/2} \right)
+			
+			&\approx 913.7.
+		$$
+	]]
 	
 ]]
 
@@ -164,11 +171,12 @@ By know, we know how to find the volume of a solid of revolution, but what about
 	
 	@solution[[
 	
-	We have $f'(x) = 1$, so $(f'(x))^2 = 1$. Then the integral becomes
-	
-	$$
-		\int_1^3 2\pi x \sqrt{2}\,\d x = 2\pi\sqrt{2}\left( \frac{9}{2} - \frac{1}{2} \right).
-	$$
+		We have $f'(x) = 1$, so $(f'(x))^2 = 1$. Then the integral becomes
+		
+		$$
+			\int_1^3 2\pi x \sqrt{2}\,\d x = 2\pi\sqrt{2}\left( \frac{9}{2} - \frac{1}{2} \right).
+		$$
+	]]
 	
 ]]
 

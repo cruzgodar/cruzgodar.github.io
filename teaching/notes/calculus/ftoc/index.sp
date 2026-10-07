@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -42,14 +46,14 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 	@solution[[
 	
-	Applying the theorem, we just take the inside function and plug in $x$ for $t$:
-	
-	$$
-		d/dx \int_1^x \frac{1}{t^3 + t}\,\d t = \frac{1}{x^3 + x}.
-	$$
-	
-	It might seem a little strange that the lower limit of $1$ doesn't appear in the final answer, but that's because the derivative is measuring the rate of change of the integral at $x$, and so the area of the function before then is irrelevant.
-	
+		Applying the theorem, we just take the inside function and plug in $x$ for $t$:
+		
+		$$
+			d/dx \int_1^x \frac{1}{t^3 + t}\,\d t = \frac{1}{x^3 + x}.
+		$$
+		
+		It might seem a little strange that the lower limit of $1$ doesn't appear in the final answer, but that's because the derivative is measuring the rate of change of the integral at $x$, and so the area of the function before then is irrelevant.
+	]]
 ]]
 
 
@@ -60,22 +64,22 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 	@solution[[
 	
-	This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it's a *function* of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
-	
-	$$
-		F(x) = \int_2^x \frac{1}{t^3 + t}\,\d t.
-	$$
-	
-	Now we can rewrite the question as finding $d/dx F(\sin(x))$. And we know how to handle this: it's a Chain Rule problem! We have
-	
-	$$
-		d/dx F(\sin(x)) &= F'(\sin(x))\cos(x)
+		This one is a little more involved. FTC Part I only tells us what to do when the upper limit is $x$, and here it's a *function* of $x$. The way to approach problems like this is to first get back to the case we understand by defining a function $F$ as follows:
 		
-		&= \frac{1}{\sin^3(x) + \sin(x)} \cdot \cos(x).
-	$$
-	
-	Remember that $\sin^3(x)$ is how we write $(\sin(x))^3$ to avoid confusion.
-	
+		$$
+			F(x) = \int_2^x \frac{1}{t^3 + t}\,\d t.
+		$$
+		
+		Now we can rewrite the question as finding $d/dx F(\sin(x))$. And we know how to handle this: it's a Chain Rule problem! We have
+		
+		$$
+			d/dx F(\sin(x)) &= F'(\sin(x))\cos(x)
+			
+			&= \frac{1}{\sin^3(x) + \sin(x)} \cdot \cos(x).
+		$$
+		
+		Remember that $\sin^3(x)$ is how we write $(\sin(x))^3$ to avoid confusion.
+	]]
 ]]
 
 
@@ -86,14 +90,14 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 	@solution[[
 	
-	The roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,\d x$. We're trying to find $d/dt [F(\sqrt{t})]$, which by the Chain Rule is
-	
-	$$
-		F'(\sqrt{t}) \cdot \frac{1}{2\sqrt{t}} &= \left. \left[ \sin(x) \right] \right|_{\sqrt{t}} \cdot \frac{1}{2\sqrt{t}}
+		The roles of $t$ and $x$ are reversed from the previous exmaple. First, write $F(t) = \int_2^t \sin(x)\,\d x$. We're trying to find $d/dt [F(\sqrt{t})]$, which by the Chain Rule is
 		
-		&= \sin(\sqrt{t}) \cdot \frac{1}{2\sqrt{t}}
-	$$
-	
+		$$
+			F'(\sqrt{t}) \cdot \frac{1}{2\sqrt{t}} &= \left. \left[ \sin(x) \right] \right|_{\sqrt{t}} \cdot \frac{1}{2\sqrt{t}}
+			
+			&= \sin(\sqrt{t}) \cdot \frac{1}{2\sqrt{t}}
+		$$
+	]]
 ]]
 
 
@@ -142,20 +146,20 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 
 	@solution[[
 	
-	In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,\d t$. This is a function $F(t)$ whose derivative is $t^2$ --- a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That's the hard part out of the way --- now we can apply the Fundamental Theorem.
-	
-	$$
-		\int_0^2 t^2\,\d t &= \left. \left[ \int t^2\,\d t \right] \right|_0^2
+		In order to find the definite integral, the Fundamental Theorem tells us to first find $\int t^2\,\d t$. This is a function $F(t)$ whose derivative is $t^2$ --- a good first guess is $t^3 + C$, since its derivative is $3t^2$, which is only off by a factor of $3$. Since constant multiplication factors through derivatives, we can just divide $t^3$ by $3$ to fix the issue: $F(t) = \frac{t^3}{3} + C$ has derivative $\frac{3t^2}{3} = t^2$. That's the hard part out of the way --- now we can apply the Fundamental Theorem.
 		
-		&= \left. \left[ \frac{t^3}{3} + C \right] \right|_0^2
+		$$
+			\int_0^2 t^2\,\d t &= \left. \left[ \int t^2\,\d t \right] \right|_0^2
+			
+			&= \left. \left[ \frac{t^3}{3} + C \right] \right|_0^2
+			
+			&= \left(\frac{2^3}{3} + C\right) - \left(\frac{0^3}{3} + C\right)
+			
+			&= \frac{8}{3}.
+		$$
 		
-		&= \left(\frac{2^3}{3} + C\right) - \left(\frac{0^3}{3} + C\right)
-		
-		&= \frac{8}{3}.
-	$$
-	
-	This agrees with the answer we got before, and was so much easier to calculate!
-	
+		This agrees with the answer we got before, and was so much easier to calculate!
+	]]
 ]]
 
 @exc[FTC, Part II][[
@@ -164,20 +168,20 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 
 	@solution[[
 	
-	First, find $\int \sin(\theta)\,\d \theta = -\cos(\theta)$. We've dropped the $C$ because we're about to evaluate it:
-	
-	$$
-		\int_{-\pi}^\pi \sin(\theta)\,\d \theta &= \left. \left[ -\cos(\theta) \right] \right|_{-\pi}^\pi
+		First, find $\int \sin(\theta)\,\d \theta = -\cos(\theta)$. We've dropped the $C$ because we're about to evaluate it:
 		
-		&= -\cos(\pi) - (-\cos(-\pi))
-		
-		&= -(-1) - (-(-1))
-		
-		&= 1 - 1
-		
-		&= 0.
-	$$
-	
+		$$
+			\int_{-\pi}^\pi \sin(\theta)\,\d \theta &= \left. \left[ -\cos(\theta) \right] \right|_{-\pi}^\pi
+			
+			&= -\cos(\pi) - (-\cos(-\pi))
+			
+			&= -(-1) - (-(-1))
+			
+			&= 1 - 1
+			
+			&= 0.
+		$$
+	]]
 ]]
 
 
@@ -200,36 +204,36 @@ Let's wrap this section up with one more example.
 
 	@solution[[
 	
-	This function is too complicated to take an antiderivative directly --- we don't know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
-	
-	$$
-		\int \frac{x - 1}{\sqrt{x}}\,\d x &= \int \frac{x}{\sqrt{x}} - \frac{1}{\sqrt{x}}\,\d x
+		This function is too complicated to take an antiderivative directly --- we don't know a function off the top of my head whose derivative is $\frac{x - 1}{\sqrt{x}}$. But we can split the fraction over the minus sign, and each of the resulting parts is easier to handle.
 		
-		&= \int \frac{x}{\sqrt{x}}\,\d x - \int \frac{1}{\sqrt{x}}\,\d x
+		$$
+			\int \frac{x - 1}{\sqrt{x}}\,\d x &= \int \frac{x}{\sqrt{x}} - \frac{1}{\sqrt{x}}\,\d x
+			
+			&= \int \frac{x}{\sqrt{x}}\,\d x - \int \frac{1}{\sqrt{x}}\,\d x
+			
+			&= \int \frac{x}{x^{1/2}}\,\d x - \int \frac{1}{x^{1/2}}\,\d x
+			
+			&= \int x^{1/2}\,\d x - \int x^{-1/2}\,\d x
+			
+			&= \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2}.
+		$$
 		
-		&= \int \frac{x}{x^{1/2}}\,\d x - \int \frac{1}{x^{1/2}}\,\d x
+		We've dropped the $C$, but only because we're about to use this in a definite integral.
 		
-		&= \int x^{1/2}\,\d x - \int x^{-1/2}\,\d x
-		
-		&= \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2}.
-	$$
-	
-	We've dropped the $C$, but only because we're about to use this in a definite integral.
-	
-	$$
-		\int_1^9 \frac{x - 1}{\sqrt{x}}\,\d x &= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9
-		
-		&= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9
-		
-		&= \left( \frac{9^{3/2}}{3/2} - \frac{1^{3/2}}{3/2} \right) - \left( \frac{9^{1/2}}{1/2} - \frac{1^{1/2}}{1/2} \right)
-		
-		&= \left( 27 \cdot \frac{2}{3} - \frac{2}{3} \right) - \left( 3 \cdot \frac{2}{1} - \frac{2}{1} \right)
-		
-		&= 14 - \frac{2}{3}
-		
-		&= \frac{40}{3}.
-	$$
-	
+		$$
+			\int_1^9 \frac{x - 1}{\sqrt{x}}\,\d x &= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9
+			
+			&= \left. \left[ \frac{x^{3/2}}{3/2} - \frac{x^{1/2}}{1/2} \right] \right|_1^9
+			
+			&= \left( \frac{9^{3/2}}{3/2} - \frac{1^{3/2}}{3/2} \right) - \left( \frac{9^{1/2}}{1/2} - \frac{1^{1/2}}{1/2} \right)
+			
+			&= \left( 27 \cdot \frac{2}{3} - \frac{2}{3} \right) - \left( 3 \cdot \frac{2}{1} - \frac{2}{1} \right)
+			
+			&= 14 - \frac{2}{3}
+			
+			&= \frac{40}{3}.
+		$$
+	]]
 ]]
 
 

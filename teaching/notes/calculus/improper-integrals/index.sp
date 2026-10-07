@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In this penultimate section, we'll expand our definition of the integral to handle two cases that we previously couldn't, both involving infinity.
@@ -56,24 +60,24 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_1^\infty \frac{1}{x^2}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,\d x
+		We have
 		
-		&= \lim_{b \to \infty} \left. \left[ -\frac{1}{x} \right] \right|_1^b
+		$$
+			\int_1^\infty \frac{1}{x^2}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,\d x
+			
+			&= \lim_{b \to \infty} \left. \left[ -\frac{1}{x} \right] \right|_1^b
+			
+			&= \lim_{b \to \infty} \left( -\frac{1}{b} + 1 \right)
+			
+			&= 0 + 1
+			
+			&= 1.
+		$$
 		
-		&= \lim_{b \to \infty} \left( -\frac{1}{b} + 1 \right)
+		Therefore, although the area we're computing extends infinitely to the right, it's shrinking so quickly that there's actually only a finite total amount.
 		
-		&= 0 + 1
-		
-		&= 1.
-	$$
-	
-	Therefore, although the area we're computing extends infinitely to the right, it's shrinking so quickly that there's actually only a finite total amount.
-	
-	@desmos{improperIntegral}
-	
+		@desmos{improperIntegral}
+	]]
 ]]
 
 
@@ -84,22 +88,22 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_{-\infty}^{-1} \frac{1}{x}\,\d x &= \lim_{a \to -\infty} \int_a^{-1}\frac{1}{x}\,\d x
+		We have
 		
-		&= \lim_{a \to -\infty} \left. \left[ -\ln|x| \right] \right|_a^{-1}
+		$$
+			\int_{-\infty}^{-1} \frac{1}{x}\,\d x &= \lim_{a \to -\infty} \int_a^{-1}\frac{1}{x}\,\d x
+			
+			&= \lim_{a \to -\infty} \left. \left[ -\ln|x| \right] \right|_a^{-1}
+			
+			&= \lim_{a \to -\infty} \left( 0 + \ln|a| \right)
+			
+			&= \infty.
+		$$
 		
-		&= \lim_{a \to -\infty} \left( 0 + \ln|a| \right)
+		So the integral diverges --- there's enough area to the left that it adds up to infinity, even though it slopes to zero.
 		
-		&= \infty.
-	$$
-	
-	So the integral diverges --- there's enough area to the left that it adds up to infinity, even though it slopes to zero.
-	
-	@desmos{improperIntegral2}
-	
+		@desmos{improperIntegral2}
+	]]
 ]]
 
 
@@ -132,28 +136,28 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 
 	@solution[[
 	
-	Let's focus on finding the antiderivative first. We can just integrate directly to get $\tan^{-1}(x)$, but let's do trig sub to see how it would work. We let $x = \tan(\theta)$, so $\d x = \sec^2(\theta)\,\d \theta$. Then we get
-	
-	$$
-		\int \frac{1}{x^2 + 1}\,\d x &= \int \frac{1}{\tan^2(\theta) + 1} \sec^2(\theta)\,\d \theta
+		Let's focus on finding the antiderivative first. We can just integrate directly to get $\tan^{-1}(x)$, but let's do trig sub to see how it would work. We let $x = \tan(\theta)$, so $\d x = \sec^2(\theta)\,\d \theta$. Then we get
 		
-		&= \int \frac{1}{\sec^2(\theta)} \sec^2(\theta)\,\d \theta
+		$$
+			\int \frac{1}{x^2 + 1}\,\d x &= \int \frac{1}{\tan^2(\theta) + 1} \sec^2(\theta)\,\d \theta
+			
+			&= \int \frac{1}{\sec^2(\theta)} \sec^2(\theta)\,\d \theta
+			
+			&= \int 1\,\d \theta
+			
+			&= \theta
+			
+			&= \tan^{-1}(x).
+		$$
 		
-		&= \int 1\,\d \theta
+		Now the improper integral becomes
 		
-		&= \theta
+		$$
+			\lim_{a \to -\infty} \left. \left[ \tan^{-1}(x) \right] \right|_a^0 + \lim_{b \to \infty} \left. \left[ \tan^{-1}(x) \right] \right|_0^b = -\lim_{a \to -\infty} (\tan^{-1}(a)) + \lim_{b \to \infty} (\tan^{-1}(b)).
+		$$
 		
-		&= \tan^{-1}(x).
-	$$
-	
-	Now the improper integral becomes
-	
-	$$
-		\lim_{a \to -\infty} \left. \left[ \tan^{-1}(x) \right] \right|_a^0 + \lim_{b \to \infty} \left. \left[ \tan^{-1}(x) \right] \right|_0^b = -\lim_{a \to -\infty} (\tan^{-1}(a)) + \lim_{b \to \infty} (\tan^{-1}(b)).
-	$$
-	
-	Now what is the limit of $\tan^{-1}(x)$? Well, we're looking for angles in radians that make tangent approach $\infty$ or $-\infty$. Those values are $\frac{\pi}{2}$ and $-\frac{\pi}{2}$, respectively, so in total, the answer is $\frac{pi}{2} + \frac{\pi}{2} = \pi$.
-	
+		Now what is the limit of $\tan^{-1}(x)$? Well, we're looking for angles in radians that make tangent approach $\infty$ or $-\infty$. Those values are $\frac{\pi}{2}$ and $-\frac{\pi}{2}$, respectively, so in total, the answer is $\frac{pi}{2} + \frac{\pi}{2} = \pi$.
+	]]
 ]]
 
 
@@ -196,32 +200,32 @@ The second kind of improper integral is an integral in which the function spikes
 
 	@solution[[
 	
-	This is an improper integral, because in the range $[0, 4]$, $x = 4$ causes a division by $0$. Because of that, we write the integral as
-	
-	$$
-		\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,\d x.
-	$$
-	
-	Now we can handle this as usual --- with $u$-sub. Let $u = 4 - x$. Then $\d u = -dx$, and we get
-	
-	$$
-		\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,\d x &= \lim_{b \to 4} \int_0^b -\frac{1}{\sqrt{u}}\,\d u
+		This is an improper integral, because in the range $[0, 4]$, $x = 4$ causes a division by $0$. Because of that, we write the integral as
 		
-		&= \lim_{b \to 4} \int_0^b -u^{-1/2}\,\d u
+		$$
+			\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,\d x.
+		$$
 		
-		&= \lim_{b \to 4} \left. \left[ -2 u^{1/2} \right] \right|_0^b
+		Now we can handle this as usual --- with $u$-sub. Let $u = 4 - x$. Then $\d u = -dx$, and we get
 		
-		&= \lim_{b \to 4} \left. \left[ -2 (4 - b)^{1/2} + 2(4)^{1/2} \right] \right|_0^b
+		$$
+			\lim_{b \to 4} \int_0^b \frac{1}{\sqrt{4-x}}\,\d x &= \lim_{b \to 4} \int_0^b -\frac{1}{\sqrt{u}}\,\d u
+			
+			&= \lim_{b \to 4} \int_0^b -u^{-1/2}\,\d u
+			
+			&= \lim_{b \to 4} \left. \left[ -2 u^{1/2} \right] \right|_0^b
+			
+			&= \lim_{b \to 4} \left. \left[ -2 (4 - b)^{1/2} + 2(4)^{1/2} \right] \right|_0^b
+			
+			&= 2(4)^{1/2}
+			
+			&= 4.
+		$$
 		
-		&= 2(4)^{1/2}
+		So even though the function spikes to infinity, it does so fast enough that there's only a finite amount of area.
 		
-		&= 4.
-	$$
-	
-	So even though the function spikes to infinity, it does so fast enough that there's only a finite amount of area.
-	
-	@desmos{improperIntegral3}
-	
+		@desmos{improperIntegral3}
+	]]
 ]]
 
 
@@ -232,22 +236,22 @@ The second kind of improper integral is an integral in which the function spikes
 
 	@solution[[
 	
-	Since $\frac{1}{t^3}$ spikes when $t = 0$, we have to split the interval $[-1, 1]$ into $[-1, 0]$ and $[0, 1]$. Therefore, we have
-	
-	$$
-		\int_{-1}^1 \frac{1}{t^3}\,\d t &= \lim_{b \to 0} \int_{-1}^b t^{-3}\,\d t + \lim_{a \to 0} \int_a^1 t^{-3}\,\d t
+		Since $\frac{1}{t^3}$ spikes when $t = 0$, we have to split the interval $[-1, 1]$ into $[-1, 0]$ and $[0, 1]$. Therefore, we have
 		
-		&= \lim_{b \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_{-1}^b + \lim_{a \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_a^1
+		$$
+			\int_{-1}^1 \frac{1}{t^3}\,\d t &= \lim_{b \to 0} \int_{-1}^b t^{-3}\,\d t + \lim_{a \to 0} \int_a^1 t^{-3}\,\d t
+			
+			&= \lim_{b \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_{-1}^b + \lim_{a \to 0} \left. \left[ -\frac{1}{2} t^{-2} \right] \right|_a^1
+			
+			&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right) + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right)
+			
+			&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right) + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right).
+		$$
 		
-		&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right) + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right)
+		The first limit is $-\infty$, so the entire integral diverges. Now it's true that the second limit is $\infty$, so the entire integral could be written as $\infty - \infty$, but it is not equal to $0$, since the limits are taken individually, and not at the same time.
 		
-		&= \lim_{b \to 0} \left( -\frac{1}{2} b^{-2} + \frac{1}{2}(-1)^{-2} \right) + \lim_{a \to 0} \left( -\frac{1}{2} 1^{-2} + \frac{1}{2} a^{-2} \right).
-	$$
-	
-	The first limit is $-\infty$, so the entire integral diverges. Now it's true that the second limit is $\infty$, so the entire integral could be written as $\infty - \infty$, but it is not equal to $0$, since the limits are taken individually, and not at the same time.
-	
-	@desmos{improperIntegral4}
-	
+		@desmos{improperIntegral4}
+	]]
 ]]
 
 @exc[the second type of improper integral][[
@@ -256,20 +260,20 @@ The second kind of improper integral is an integral in which the function spikes
 
 	@solution[[
 	
-	The problem (division by zero) occurs when $t = 0$, so we have
-	
-	$$
-		\int_0^1 \frac{1}{\sqrt[3]{t}}\,\d t &= \lim_{c \to 0} \int_c^1 \frac{1}{\sqrt[3]{t}}
+		The problem (division by zero) occurs when $t = 0$, so we have
 		
-		&= \lim_{c \to 0} \int_c^1 t^{-1/3}\,\d t
-		
-		&= \lim_{c \to 0} \left. \left[ \frac{3}{2} t^{2/3} \right] \right|_c^1
-		
-		&= \lim_{c \to 0} \left( \frac{3}{2} - \frac{3}{2} c^{2/3} \right)
-		
-		&= \frac{3}{2}.
-	$$
-	
+		$$
+			\int_0^1 \frac{1}{\sqrt[3]{t}}\,\d t &= \lim_{c \to 0} \int_c^1 \frac{1}{\sqrt[3]{t}}
+			
+			&= \lim_{c \to 0} \int_c^1 t^{-1/3}\,\d t
+			
+			&= \lim_{c \to 0} \left. \left[ \frac{3}{2} t^{2/3} \right] \right|_c^1
+			
+			&= \lim_{c \to 0} \left( \frac{3}{2} - \frac{3}{2} c^{2/3} \right)
+			
+			&= \frac{3}{2}.
+		$$
+	]]
 ]]
 
 

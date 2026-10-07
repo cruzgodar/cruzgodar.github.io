@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 A few sections ago, we learned how to optimize functions. The process is straightforward enough, if a little time-consuming: first find the critical points, then use the second derivative test to classify them and the first derivative test whenever that doesn't work. Then if you're on a closed interval, take the largest local max and the smallest local min to find the global max and min, respectively.
@@ -12,22 +16,22 @@ In a real-world senario, you won't usually be given the function to optimize out
 
 	@solution[[
 	
-	If the premise isn't quite clear, here are a couple of examples. You could make the side opposite the wall 18 feet and the other two sides 1 foot each, for a total of 18 square feet, or you could make all three non-wall sides $\frac{20}{3} \approx 6.67$ feet each, resulting in an area of about 44.44 square feet. In the graph below, you can drag the indicated point up and down to change the vertical side length.
-	
-	@desmos{walledGarden}
-	
-	Since we're trying to optimize area, we need to write it as a function. The challenge of these applied optimization problems is often integrating the constraint (here, the limit of 20 feet of fencing) into that function. The simplest strategy is just to make every value its own variable and then to use the constraint to relate some of them.
-	
-	Let's say that we use $a$ feet of fencing opposite the wall and $b$ feet each on the two sides touching the wall. Then the area of the garden is $A = ab$. But we can't optimize $A$ yet, because it is a function of two variables. We also don't have the 20 foot constraint present anywhere in the equation. So --- what does that constraint look like as an equation? Well, we use a total of $a + b + b$ feet of fencing total, so $a + 2b = 20$. Therefore, $a = 20 - 2b$. Plugging this into our area function, we have
-	
-	$$
-		A = (20 - 2b)(b) = 20b - 2b^2.
-	$$
-	
-	Now this is something we can work with --- we have a function $A(b)$ defined in terms of only one variable, and it's also defined on a closed interval: $b$ must be between $0$ and $10$, since we can't have $b$ be negative or use more than 20 feet total.
-	
-	Let's actually optimize $A$. First we differentiate to get $A'(b) = 20 - 4b$. Solving $A'(b) = 0$ gives $b = 5$, the endpoints of the interval are $b = 0$ and $b = 10$, and there are no points where the derivative is undefined. Now we can use the second derivative test. We have $A''(b) = -4$, so $A''(5) = -4 < 0$, making $-4$ a local maximum. Since the second derivative test doesn't work on endpoints, we turn to the first derivative test. We need a point between 0 and 5 and another between 5 and 10 --- let's use 1 and 6. We have $A'(1) = 16$ and $A'(6) = -4$, and sketching a picture tells us that both $b = 0$ and $b = 10$ are local minima. There's only one possibility for the global max, and that's $b = 5$. Our ultimate goal here is to actually find the area --- since $b = 5$, $a = 20 - 2 \cdot 5 = 10$, so $A = 50$ square feet.
-	
+		If the premise isn't quite clear, here are a couple of examples. You could make the side opposite the wall 18 feet and the other two sides 1 foot each, for a total of 18 square feet, or you could make all three non-wall sides $\frac{20}{3} \approx 6.67$ feet each, resulting in an area of about 44.44 square feet. In the graph below, you can drag the indicated point up and down to change the vertical side length.
+		
+		@desmos{walledGarden}
+		
+		Since we're trying to optimize area, we need to write it as a function. The challenge of these applied optimization problems is often integrating the constraint (here, the limit of 20 feet of fencing) into that function. The simplest strategy is just to make every value its own variable and then to use the constraint to relate some of them.
+		
+		Let's say that we use $a$ feet of fencing opposite the wall and $b$ feet each on the two sides touching the wall. Then the area of the garden is $A = ab$. But we can't optimize $A$ yet, because it is a function of two variables. We also don't have the 20 foot constraint present anywhere in the equation. So --- what does that constraint look like as an equation? Well, we use a total of $a + b + b$ feet of fencing total, so $a + 2b = 20$. Therefore, $a = 20 - 2b$. Plugging this into our area function, we have
+		
+		$$
+			A = (20 - 2b)(b) = 20b - 2b^2.
+		$$
+		
+		Now this is something we can work with --- we have a function $A(b)$ defined in terms of only one variable, and it's also defined on a closed interval: $b$ must be between $0$ and $10$, since we can't have $b$ be negative or use more than 20 feet total.
+		
+		Let's actually optimize $A$. First we differentiate to get $A'(b) = 20 - 4b$. Solving $A'(b) = 0$ gives $b = 5$, the endpoints of the interval are $b = 0$ and $b = 10$, and there are no points where the derivative is undefined. Now we can use the second derivative test. We have $A''(b) = -4$, so $A''(5) = -4 < 0$, making $-4$ a local maximum. Since the second derivative test doesn't work on endpoints, we turn to the first derivative test. We need a point between 0 and 5 and another between 5 and 10 --- let's use 1 and 6. We have $A'(1) = 16$ and $A'(6) = -4$, and sketching a picture tells us that both $b = 0$ and $b = 10$ are local minima. There's only one possibility for the global max, and that's $b = 5$. Our ultimate goal here is to actually find the area --- since $b = 5$, $a = 20 - 2 \cdot 5 = 10$, so $A = 50$ square feet.
+	]]
 ]]
 
 @exc[a cut string][[
@@ -55,73 +59,73 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 	@desmos{ellipse}
 
 	@solution[[
-	
-	As before, let's start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes --- in other words, the rectangle is defined by a single corner. Let's say one corner is at $(a, b)$, and let's just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9\left(1 - \frac{a^2}{4} \right)}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
-	
-	Now it really helps to have this picture: the largest that $a$ can be is $2$, and the smallest is $0$. Therefore, our goal is to maximize
-	
-	$$
-		A(a) = 4a\sqrt{9\left( 1 - \frac{a^2}{4} \right)}
-	$$
-	
-	on the interval $[0, 2]$.
-	
-	As always, we start by differentiating. Through a Product and Chain Rule, we have
-	
-	$$
-		A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}
 		
-		A'(a) &= d/da[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) d/da\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]
+		As before, let's start by giving names to relevant quantities. Once we know a single corner of the rectangle, the other three corners are symmetric about the $x$- and $y$-axes --- in other words, the rectangle is defined by a single corner. Let's say one corner is at $(a, b)$, and let's just assume this is the top-right corner so all of our numbers are positive. Then the width of the rectangle is $2a$ and its height is $2b$, so the area is $A = 4ab$. The constraint is just that $(a, b)$ is actually on the ellipse, so $\frac{a^2}{4} + \frac{b^2}{9} = 1$, or in other words, $b = \sqrt{9\left(1 - \frac{a^2}{4} \right)}$. (We can ignore any issues of negative square roots or a $\pm$ on the outside because everything is positive).
 		
-		&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)
+		Now it really helps to have this picture: the largest that $a$ can be is $2$, and the smallest is $0$. Therefore, our goal is to maximize
 		
-		&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}.
-	$$
-	
-	Setting this equal to zero and solving is a little bit tricky, but not all that bad.
-	
-	$$
-		4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2} &= 0
+		$$
+			A(a) = 4a\sqrt{9\left( 1 - \frac{a^2}{4} \right)}
+		$$
 		
-		4 \left(9 - \frac{9}{4} a^2\right)^{1/2} &= 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}
+		on the interval $[0, 2]$.
 		
-		4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2
+		As always, we start by differentiating. Through a Product and Chain Rule, we have
 		
-		36 - 9a^2 &= 9a^2
+		$$
+			A(a) &= 4a\left(9 - \frac{9}{4}a^2\right)^{1/2}
+			
+			A'(a) &= d/da[4a] \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) d/da\left[\left(9 - \frac{9}{4} a^2\right)^{1/2}\right]
+			
+			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} + (4a) \frac{1}{2}\left(9 - \frac{9}{4} a^2\right)^{-1/2} \cdot \left(-\frac{9}{2} a\right)
+			
+			&= 4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}.
+		$$
 		
-		36 &= 18a^2
+		Setting this equal to zero and solving is a little bit tricky, but not all that bad.
 		
-		a^2 &= 2
+		$$
+			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} - 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2} &= 0
+			
+			4 \left(9 - \frac{9}{4} a^2\right)^{1/2} &= 9a^2 \left(9 - \frac{9}{4} a^2\right)^{-1/2}
+			
+			4 \left(9 - \frac{9}{4} a^2\right) &= 9a^2
+			
+			36 - 9a^2 &= 9a^2
+			
+			36 &= 18a^2
+			
+			a^2 &= 2
+			
+			a &= \pm \sqrt{2}.
+		$$
 		
-		a &= \pm \sqrt{2}.
-	$$
-	
-	Since we're only looking in the interval $[0, 2]$, we just want $a = \sqrt{2}$.
-	
-	This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative, but just starting that computation looks incredibly bad. The first derivative test always works, though, so we can just use that --- since $\sqrt{2} \approx 1.41$, let's use $a = 1$ and $a = 1.5$ as test points. We have
-	
-	$$
-		A'(1) &= 4 \left(9 - \frac{9}{4} 1^2\right)^{1/2} - 9 \cdot 1^2 \left(9 - \frac{9}{4} 1^2\right)^{-1/2} &&= 4\sqrt{3}
+		Since we're only looking in the interval $[0, 2]$, we just want $a = \sqrt{2}$.
 		
-		A'(1.5) &= 4 \left(9 - \frac{9}{4} 1.5^2\right)^{1/2} - 9 \cdot 1.5^2 \left(9 - \frac{9}{4} 1.5^2\right)^{-1/2} &&\approx -2.268.
-	$$
-	
-	Therefore, both $a = 0$ and $a = 2$ are local minima, and $a = \sqrt{2}$ is a local maximum. It's also the global max, since it's the only local max. Plugging this back into the original area function, we get
-	
-	$$
-		A(\sqrt{2}) &= 4\sqrt{2}\left(9 - \frac{9}{4}(\sqrt{2})^2\right)^{1/2}
+		This is one of our critical points. The others come from the endpoints as usual, so we throw in $0$ and $2$. Next up is finding the second derivative, but just starting that computation looks incredibly bad. The first derivative test always works, though, so we can just use that --- since $\sqrt{2} \approx 1.41$, let's use $a = 1$ and $a = 1.5$ as test points. We have
 		
-		&= 4\sqrt{2}\left(9 - \frac{9}{2}\right)^{1/2}
+		$$
+			A'(1) &= 4 \left(9 - \frac{9}{4} 1^2\right)^{1/2} - 9 \cdot 1^2 \left(9 - \frac{9}{4} 1^2\right)^{-1/2} &&= 4\sqrt{3}
+			
+			A'(1.5) &= 4 \left(9 - \frac{9}{4} 1.5^2\right)^{1/2} - 9 \cdot 1.5^2 \left(9 - \frac{9}{4} 1.5^2\right)^{-1/2} &&\approx -2.268.
+		$$
 		
-		&= 4\sqrt{2}\sqrt{\frac{9}{2}}
+		Therefore, both $a = 0$ and $a = 2$ are local minima, and $a = \sqrt{2}$ is a local maximum. It's also the global max, since it's the only local max. Plugging this back into the original area function, we get
 		
-		&= 4\sqrt{9}
+		$$
+			A(\sqrt{2}) &= 4\sqrt{2}\left(9 - \frac{9}{4}(\sqrt{2})^2\right)^{1/2}
+			
+			&= 4\sqrt{2}\left(9 - \frac{9}{2}\right)^{1/2}
+			
+			&= 4\sqrt{2}\sqrt{\frac{9}{2}}
+			
+			&= 4\sqrt{9}
+			
+			&= 12.
+		$$
 		
-		&= 12.
-	$$
-	
-	Therefore, the largest possible rectangle has area 12.
-	
+		Therefore, the largest possible rectangle has area 12.
+	]]
 ]]
 
 @exc[a circular lake][[
@@ -142,26 +146,26 @@ This pattern of optimizing with respect to a constant applies to all sorts of pr
 
 	@solution[[
 
-	Let's begin by finding a function we can optimize. If we jump in after $x$ feet, then we spend $x$ feet at $5$ feet per second, taking $\frac{x}{5}$ seconds. Then the straight line path in the water has length
-	
-	$$
-		\sqrt{(480 - x)^2 + 60^2} = \sqrt{x^2 - 960x + 234000},
-	$$
+		Let's begin by finding a function we can optimize. If we jump in after $x$ feet, then we spend $x$ feet at $5$ feet per second, taking $\frac{x}{5}$ seconds. Then the straight line path in the water has length
+		
+		$$
+			\sqrt{(480 - x)^2 + 60^2} = \sqrt{x^2 - 960x + 234000},
+		$$
 
-	so the time we spend in the water is $\frac{1}{4} \sqrt{x^2 - 960x + 234000}$. The total time is then
+		so the time we spend in the water is $\frac{1}{4} \sqrt{x^2 - 960x + 234000}$. The total time is then
 
-	$$
-		T(x) = \frac{1}{5}x + \frac{1}{4} \sqrt{x^2 - 1000x + 260000},
-	$$
+		$$
+			T(x) = \frac{1}{5}x + \frac{1}{4} \sqrt{x^2 - 1000x + 260000},
+		$$
 
-	and so we can optimize this function. We have
+		and so we can optimize this function. We have
 
-	$$
-		T'(x) &= \frac{1}{10} + \frac{1}{8} \left( x^2 - 1000x + 260000 \right)^{-1/2} \left( 2x - 1000 \right),
-	$$
+		$$
+			T'(x) &= \frac{1}{10} + \frac{1}{8} \left( x^2 - 1000x + 260000 \right)^{-1/2} \left( 2x - 1000 \right),
+		$$
 
-	and while this looks intense, it's not so bad!
-	
+		and while this looks intense, it's not so bad!
+	]]
 ]]
 
 

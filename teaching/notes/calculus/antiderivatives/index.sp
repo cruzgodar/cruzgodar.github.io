@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We need to take a brief deviation from definite integrals to work on something different. It'll seem completely unrelated at first, but in the next section, we'll connect it back to our main goal.
@@ -78,12 +82,12 @@ So the only notational difference between the definite integral that measures ar
 	
 	@solution[[
 	
-	1. $-\frac{1}{t} + C$.
-	
-	2. $\tan(y) + C$.
-	
-	3. $\frac{m}{2}x^2 + bx + C$.
-	
+		1. $-\frac{1}{t} + C$.
+		
+		2. $\tan(y) + C$.
+		
+		3. $\frac{m}{2}x^2 + bx + C$.
+	]]
 ]]
 
 
@@ -120,18 +124,18 @@ The idea is that we can solve for $y$ by integrating $f(x)$, but that will leave
 
 	@solution[[
 	
-	Since $v'(t) = s(t)$, we have that
-	
-	$$
-		s(t) = \int v(t)\,\d t = \frac{3}{2}t^2 + 2t + C.
-	$$
-	
-	Now since $s(1) = 2$, we can solve for $C$: $\frac{3}{2} + 2 + C = 2$, so $C = -\frac{3}{2}$. In total,
-	
-	$$
-		s(t) = \frac{3}{2}t^2 + 2t - \frac{3}{2}.
-	$$
-	
+		Since $v'(t) = s(t)$, we have that
+		
+		$$
+			s(t) = \int v(t)\,\d t = \frac{3}{2}t^2 + 2t + C.
+		$$
+		
+		Now since $s(1) = 2$, we can solve for $C$: $\frac{3}{2} + 2 + C = 2$, so $C = -\frac{3}{2}$. In total,
+		
+		$$
+			s(t) = \frac{3}{2}t^2 + 2t - \frac{3}{2}.
+		$$
+	]]
 ]]
 
 @exc[an initial value problem][[
@@ -140,14 +144,14 @@ The idea is that we can solve for $y$ by integrating $f(x)$, but that will leave
 	
 	@solution[[
 	
-	We have $h(0) = 1$ and $v(0) = 4$. Now $v(t) = \int a(t)\,\d t = -9.81t + C$, so $v(0) = C = 4$. And
-	
-	$$
-		h(t) = \int v(t)\,\d t = \int (-9.81t + 4)\,\d t = -4.905t^2 + 4t + C,
-	$$
-	
-	so $h(0) = C = 1$. Therefore, $h(t) = -4.905t^2 + 4t + 1$.
-	
+		We have $h(0) = 1$ and $v(0) = 4$. Now $v(t) = \int a(t)\,\d t = -9.81t + C$, so $v(0) = C = 4$. And
+		
+		$$
+			h(t) = \int v(t)\,\d t = \int (-9.81t + 4)\,\d t = -4.905t^2 + 4t + C,
+		$$
+		
+		so $h(0) = C = 1$. Therefore, $h(t) = -4.905t^2 + 4t + 1$.
+	]]
 ]]
 
 

@@ -1,3 +1,8 @@
+@@@
+	import { imageLinks } from "../../../../build/htmdl/components/image-links.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Welcome! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before each lecture. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
@@ -42,16 +47,16 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 	@solution[[
 	
-	The first three can be read directly off the graph. Try @clickTap[clicking][tapping] the relevant points!
-	
-	$g(0) = -1$.
-	
-	$g(1)$ is undefined, since there is no solid point with $x = 1$.
-	
-	$g(3) = -\frac{2}{3}$.
-	
-	For the limits, the superscript plus or minus indicates a direction to approach from. So $\lim_{x \to 1^-} g(x) = 0$, since we only look at the portion of the graph to the left of $x = 1$. Similarly, $\lim_{x \to 1^+} g(x) = -1$. When we remove that superscript, we get $\lim_{x \to 1} g(x)$, which is actually undefined: in order for a limit to exist, the limits from both the left and right have to exist and be equal to one another, and that's not the case here.
-	
+		The first three can be read directly off the graph. Try @clickTap[clicking][tapping] the relevant points!
+		
+		$g(0) = -1$.
+		
+		$g(1)$ is undefined, since there is no solid point with $x = 1$.
+		
+		$g(3) = -\frac{2}{3}$.
+		
+		For the limits, the superscript plus or minus indicates a direction to approach from. So $\lim_{x \to 1^-} g(x) = 0$, since we only look at the portion of the graph to the left of $x = 1$. Similarly, $\lim_{x \to 1^+} g(x) = -1$. When we remove that superscript, we get $\lim_{x \to 1} g(x)$, which is actually undefined: in order for a limit to exist, the limits from both the left and right have to exist and be equal to one another, and that's not the case here.
+	]]
 ]]
 
 @exc[limits][[
@@ -64,8 +69,8 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 	@solution[[
 
-	As $x$ gets larger and larger, $g(x)$ is eventually constantly equal to $$-\frac{2}{3}$$, and so that's the value of $\lim_{x \to \infty} g(x)$. On the other hand, there is no portion of the graph of $g$ to the left of the $y$-axis, and so it isn't possible to take a limit as $x \to -\infty$. Therefore, $\lim_{x \to -\infty} g(x)$ doesn't exist. Finally, we find the limit as $x$ approaches $0$ by looking at what nearby $y$-values approach as $x$ gets smaller and smaller. They approach $-1$, and so $\lim_{x \to 0} g(x) = -1$. Another way to see that is to note that the graph of $g$ is continuous at $x = 0$ and that $g(0) = -1$.
-	
+		As $x$ gets larger and larger, $g(x)$ is eventually constantly equal to $$-\frac{2}{3}$$, and so that's the value of $\lim_{x \to \infty} g(x)$. On the other hand, there is no portion of the graph of $g$ to the left of the $y$-axis, and so it isn't possible to take a limit as $x \to -\infty$. Therefore, $\lim_{x \to -\infty} g(x)$ doesn't exist. Finally, we find the limit as $x$ approaches $0$ by looking at what nearby $y$-values approach as $x$ gets smaller and smaller. They approach $-1$, and so $\lim_{x \to 0} g(x) = -1$. Another way to see that is to note that the graph of $g$ is continuous at $x = 0$ and that $g(0) = -1$.
+	]]
 ]]
 
 
@@ -148,14 +153,14 @@ The Chain Rule is a common stumbling point, so let's take a moment to work throu
 
 	@solution[[
 	
-	The structure of $\sin(x^3)$ is a composition: the $x^3$ is being plugged into $\sin(x)$. The chain tells us how to differentiate the entire function in terms of the derivatives of the two pieces: first, we differentiate the outer function (in our case, $\sin(x)$) and plug the inner function ($x^3$) into the result. Then we multiply that by the derivative of the inner function. In symbols, that looks like
-	
-	$$
-		d/dx [\sin(x^3)] &= \left( d/dx [\sin(x)]|_{x^3} \right) \left( d/dx [x^3] \right)
+		The structure of $\sin(x^3)$ is a composition: the $x^3$ is being plugged into $\sin(x)$. The chain tells us how to differentiate the entire function in terms of the derivatives of the two pieces: first, we differentiate the outer function (in our case, $\sin(x)$) and plug the inner function ($x^3$) into the result. Then we multiply that by the derivative of the inner function. In symbols, that looks like
 		
-		&= 3x^2 \cos(x^3).
-	$$
-	
+		$$
+			d/dx [\sin(x^3)] &= \left( d/dx [\sin(x)]|_{x^3} \right) \left( d/dx [x^3] \right)
+			
+			&= 3x^2 \cos(x^3).
+		$$
+	]]
 ]]
 
 @exc[the Chain Rule][[
@@ -164,16 +169,16 @@ The Chain Rule is a common stumbling point, so let's take a moment to work throu
 
 	@solution[[
 
-	This is a longer product and Chain Rule problem: first of all, this is a product of two functions, so we'll start with the Product Rule. Differentiating $\ln(\cos(x^2))$ requires a lot of use of the Chain Rule, since it's a nested composition of functions.
+		This is a longer product and Chain Rule problem: first of all, this is a product of two functions, so we'll start with the Product Rule. Differentiating $\ln(\cos(x^2))$ requires a lot of use of the Chain Rule, since it's a nested composition of functions.
 
-	$$
-		d/dx \left[ \tan(x) \ln(\cos(x^2)) \right] &= d/dx \left[ \tan(x) \right] \ln(\cos(x^2)) + \tan(x) d/dx \left[ \ln(\cos(x^2)) \right]
+		$$
+			d/dx \left[ \tan(x) \ln(\cos(x^2)) \right] &= d/dx \left[ \tan(x) \right] \ln(\cos(x^2)) + \tan(x) d/dx \left[ \ln(\cos(x^2)) \right]
 
-		&= \sec^2(x) \ln(\cos(x^2)) + \tan(x) \frac{1}{\cos(x^2)} d/dx \left[ \cos(x^2) \right]
+			&= \sec^2(x) \ln(\cos(x^2)) + \tan(x) \frac{1}{\cos(x^2)} d/dx \left[ \cos(x^2) \right]
 
-		&= \sec^2(x) \ln(\cos(x^2)) - \tan(x) \frac{1}{\cos(x^2)} \sin(x^2) (2x).
-	$$
-	
+			&= \sec^2(x) \ln(\cos(x^2)) - \tan(x) \frac{1}{\cos(x^2)} \sin(x^2) (2x).
+		$$
+	]]
 ]]
 
 
@@ -220,35 +225,35 @@ You can @clickTap[click][tap] the colored circles next to functions in the menu 
 
 	@solution[[
 
-	Let's start with the critical points. The derivative is $g'(x) = 3x^2 - 4x + 1$, and we need to find when it's zero.
+		Let's start with the critical points. The derivative is $g'(x) = 3x^2 - 4x + 1$, and we need to find when it's zero.
 
-	$$
-		3x^2 - 4x + 1 &= 0
+		$$
+			3x^2 - 4x + 1 &= 0
 
-		(3x - 1)(x - 1) &= 0
+			(3x - 1)(x - 1) &= 0
 
-		x = \frac{1}{3}, \quad x &= 1
-	$$
+			x = \frac{1}{3}, \quad x &= 1
+		$$
 
-	To determine whether these are maxima or minima, we can begin by using the second derivative test. That second derivative is $g''(x) = 6x - 4$, so $g''\left( \frac{1}{3} \right) = -2$ and $g''\left( 1 \right) = 2$. Therefore, $x = \frac{1}{3}$ is the location of a local maximum and $x = 1$ is a local minimum.
+		To determine whether these are maxima or minima, we can begin by using the second derivative test. That second derivative is $g''(x) = 6x - 4$, so $g''\left( \frac{1}{3} \right) = -2$ and $g''\left( 1 \right) = 2$. Therefore, $x = \frac{1}{3}$ is the location of a local maximum and $x = 1$ is a local minimum.
 
-	We also need to throw in the endpoints of the interval that $g$ is defined on, since those could be (and very often are) extrema. To determine whether $x = -1$ and $x = 2$ are local maxima or minima, we can't use the second derivative test, since they aren't critical points. Instead, we can just use the first derivative to see if the graph around these points is sloping upward or downward. We have $g'(-1) = 8$ and $g'(2) = 5$, so *both* endpoints have upward slope. Therefore, $x = -1$ is a local minimum, since moving to the right means moving up, and $x = 2$ is a local maximum, since moving to the left means moving down.
+		We also need to throw in the endpoints of the interval that $g$ is defined on, since those could be (and very often are) extrema. To determine whether $x = -1$ and $x = 2$ are local maxima or minima, we can't use the second derivative test, since they aren't critical points. Instead, we can just use the first derivative to see if the graph around these points is sloping upward or downward. We have $g'(-1) = 8$ and $g'(2) = 5$, so *both* endpoints have upward slope. Therefore, $x = -1$ is a local minimum, since moving to the right means moving up, and $x = 2$ is a local maximum, since moving to the left means moving down.
 
-	To find the *global* max and mins, we can just find the $y$-values:
+		To find the *global* max and mins, we can just find the $y$-values:
 
-	$$
-		g(-1) &= -4
-		g\left( \frac{1}{3} \right) &\approx 0.148
-		g(1) &= 0
-		g(2) &= 2.
-	$$
+		$$
+			g(-1) &= -4
+			g\left( \frac{1}{3} \right) &\approx 0.148
+			g(1) &= 0
+			g(2) &= 2.
+		$$
 
-	Therefore, $(-1, 4)$ is the global minimum and $(2, 2)$ is the global maximum.
+		Therefore, $(-1, 4)$ is the global minimum and $(2, 2)$ is the global maximum.
 
-	Finding the concavity and inflection points is usually a simpler task. Starting with the inflection points, we solve $g''(x) = 0$ to find $x = \frac{2}{3}$. To determine the concavity, we need to know where the sign of $g(x)$ is positive and where it's negative. However, since $g''$ is continuous, the only time it could change sign from positive to negative is by crossing through $0$, meaning on $[-1, 0)$ and $(0, 2]$, its sign is constant. So we can just plug in any point in those intervals to check, but we've already done that when we used the second derivative test! We have that $g''(x) < 0$ (so $g$ is concave down) on $[-1, 0)$ and $g''(x) > 0$ (so $g$ is concave up) on $(0, 2]$.
+		Finding the concavity and inflection points is usually a simpler task. Starting with the inflection points, we solve $g''(x) = 0$ to find $x = \frac{2}{3}$. To determine the concavity, we need to know where the sign of $g(x)$ is positive and where it's negative. However, since $g''$ is continuous, the only time it could change sign from positive to negative is by crossing through $0$, meaning on $[-1, 0)$ and $(0, 2]$, its sign is constant. So we can just plug in any point in those intervals to check, but we've already done that when we used the second derivative test! We have that $g''(x) < 0$ (so $g$ is concave down) on $[-1, 0)$ and $g''(x) > 0$ (so $g$ is concave up) on $(0, 2]$.
 
-	@desmos{secondDerivativeTest2}
-
+		@desmos{secondDerivativeTest2}
+	]]
 ]]
 
 This is just about everything we'll need from Calculus I! The last bit is **L'H&#x00F4;pital's rule**, which lets us calculate difficult limits with derivatives.
@@ -281,18 +286,18 @@ This is just about everything we'll need from Calculus I! The last bit is **L'H&
 
 	@solution[[
 	
-	Trying to treat the top and bottom separately gives us
-	
-	$$
-		\lim_{x \to \infty} \frac{x}{x^2 + 1} = \frac{\infty}{\infty},
-	$$
-	
-	so we need to use L'H&#x00F4;pital. Differentiating the top and bottom gives us
-	
-	$$
-		\lim_{x \to \infty} \frac{x}{x^2 + 1} = \lim_{x \to \infty} \frac{1}{2x} = 0.
-	$$
-	
+		Trying to treat the top and bottom separately gives us
+		
+		$$
+			\lim_{x \to \infty} \frac{x}{x^2 + 1} = \frac{\infty}{\infty},
+		$$
+		
+		so we need to use L'H&#x00F4;pital. Differentiating the top and bottom gives us
+		
+		$$
+			\lim_{x \to \infty} \frac{x}{x^2 + 1} = \lim_{x \to \infty} \frac{1}{2x} = 0.
+		$$
+	]]
 ]]
 
 @exc[L'H&#x00F4;pital's rule][[
@@ -301,16 +306,16 @@ This is just about everything we'll need from Calculus I! The last bit is **L'H&
 
 	@solution[[
 
-	Both $\sin(x)$ and $x$ approach $0$ as $x \to 0$, so we need to use L'H&#x00F4;pital's rule:
+		Both $\sin(x)$ and $x$ approach $0$ as $x \to 0$, so we need to use L'H&#x00F4;pital's rule:
 
-	$$
-		\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{\cos(x)}{1}
+		$$
+			\lim_{x \to 0} \frac{\sin(x)}{x} &= \lim_{x \to 0} \frac{\cos(x)}{1}
 
-		&= \cos(0)
+			&= \cos(0)
 
-		&= 1.
-	$$
-	
+			&= 1.
+		$$
+	]]
 ]]
 
 
@@ -318,11 +323,7 @@ This is just about everything we'll need from Calculus I! The last bit is **L'H&
 That's it! If some or most of this feels unfamiliar, I have a full set of Calculus I notes that I highly recommend you take a look at.
 
 
-### image-links
-	
-	/teaching/uo/251 "Calculus I Notes"
-	
-###
+@imageLinks(["/teaching/notes/calculus"])
 
 <div style="height: 64px"></div>
 

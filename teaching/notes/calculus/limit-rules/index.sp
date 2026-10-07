@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 A common trend in calculus is the introduction of a new operator --- like limits --- that's annoying or difficult to compute manually. The first thing we usually do is develop shortcuts and rules for working with it so we don't spend so much time working through slow and difficult computations. The only way we can calculate limits at the moment is pretty much by making a table of values and guessing --- that's sloppy and time-consuming. Instead, let's look at some rules that make the process simpler in some special cases.
@@ -29,23 +33,23 @@ All this says is that we can move limits inside powers and split them up across 
 
 
 @ex[basic limit rules][[
-	
+
 	Evaluate $$\lim_{x \to -3} (4x + 2)$$.
 
 	@solution[[
-	
-	Let's take this one step at a time.
-	
-	$$
-		\lim_{x \to -3} (4x + 2) &= 4\lim_{x \to -3} (x) + \lim_{x \to -3} (2)
+		Let's take this one step at a time.
 		
-		&= 4(-3) + 2
+		$$
+			\lim_{x \to -3} (4x + 2) &= 4\lim_{x \to -3} (x) + \lim_{x \to -3} (2)
+			
+			&= 4(-3) + 2
+			
+			&= -10.
+		$$
 		
-		&= -10.
-	$$
-	
-	Remember from last section that $\lim_{x \to a} x = a$ and $\lim_{x \to a} c = c$.
-	
+		Remember from last section that $\lim_{x \to a} x = a$ and $\lim_{x \to a} c = c$.
+	]]
+
 ]]
 
 
@@ -79,15 +83,14 @@ Two common types of functions are polynomials and rational functions (which are 
 	Find $$\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$$.
 
 	@solution[[
-	
-	Since plugging in $3$ for $x$ doesn't make the denominator zero, we have
-	
-	$$
-		\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4} &= \frac{2(3)^2 - 3(3) + 1}{5(3) + 4}
+		Since plugging in $3$ for $x$ doesn't make the denominator zero, we have
 		
-		&= \frac{10}{19}.
-	$$
-	
+		$$
+			\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4} &= \frac{2(3)^2 - 3(3) + 1}{5(3) + 4}
+			
+			&= \frac{10}{19}.
+		$$
+	]]
 ]]
 
 @exc[limits of polynomials and rational functions][[
@@ -107,23 +110,22 @@ The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- i
 	Find $$\lim_{x \to 1} \frac{x^2 - 1}{x - 1}$$.
 
 	@solution[[
-	
-	First of all,
-	
-	$$
-		\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1}.
-	$$
-	
-	The limit as $x$ approaches $1$ of a function does **not** depend on what the function actually does at $x = 1$. Since that's the only time we're not allowed to cancel the factors of $x - 1$, we're good to go ahead and cancel the factors.
-	
-	$$
-		\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} (x + 1).
-	$$
-	
-	Now this is just a polynomial, so we can just plug in $x = 1$ to get that the limit is $2$.
-	
-	@desmos{limitExample}
-	
+		First of all,
+		
+		$$
+			\frac{x^2 - 1}{x - 1} = \frac{(x - 1)(x + 1)}{x - 1}.
+		$$
+		
+		The limit as $x$ approaches $1$ of a function does **not** depend on what the function actually does at $x = 1$. Since that's the only time we're not allowed to cancel the factors of $x - 1$, we're good to go ahead and cancel the factors.
+		
+		$$
+			\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} (x + 1).
+		$$
+		
+		Now this is just a polynomial, so we can just plug in $x = 1$ to get that the limit is $2$.
+		
+		@desmos{limitExample}
+	]]	
 ]]
 
 @exc[a limit of a rational function with a common factor][[
@@ -143,27 +145,26 @@ It's a little harder when there is a square root in the numerator or denominator
 	Find $$\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$$.
 
 	@solution[[
-	
-	This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we're not allowed to do that. Instead, let's try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
-	
-	$$
-		\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1} &= \lim_{x \to -1} \left( \frac{\sqrt{x + 2} - 1}{x + 1} \cdot \frac{-\sqrt{x + 2} - 1}{-\sqrt{x + 2} - 1} \right)
+		This is an expression involving only arithmetic, powers, and roots, so it seems like we could try just plugging in $x = -1$, but since that makes the denominator (and numerator) zero, we're not allowed to do that. Instead, let's try multiplying both top and bottom by the conjugate of $\sqrt{x + 2} - 1$, which is just $-\sqrt{x + 2} - 1$. Then the result is
 		
-		&= \lim_{x \to -1} \frac{-(x + 2) - \sqrt{x + 2} + \sqrt{x + 2} + 1}{(x + 1)(-\sqrt{x + 2} - 1)}
+		$$
+			\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1} &= \lim_{x \to -1} \left( \frac{\sqrt{x + 2} - 1}{x + 1} \cdot \frac{-\sqrt{x + 2} - 1}{-\sqrt{x + 2} - 1} \right)
+			
+			&= \lim_{x \to -1} \frac{-(x + 2) - \sqrt{x + 2} + \sqrt{x + 2} + 1}{(x + 1)(-\sqrt{x + 2} - 1)}
+			
+			&= \lim_{x \to -1} \frac{-x - 1}{(x + 1)(-\sqrt{x + 2} - 1)}
+			
+			&= \lim_{x \to -1} \frac{-1}{(-\sqrt{x + 2} - 1)}
+			
+			&= \lim_{x \to -1} \frac{1}{\sqrt{x + 2} + 1}
+			
+			&= \frac{1}{\sqrt{-1 + 2} + 1}
+			
+			&= \frac{1}{2}.
+		$$
 		
-		&= \lim_{x \to -1} \frac{-x - 1}{(x + 1)(-\sqrt{x + 2} - 1)}
-		
-		&= \lim_{x \to -1} \frac{-1}{(-\sqrt{x + 2} - 1)}
-		
-		&= \lim_{x \to -1} \frac{1}{\sqrt{x + 2} + 1}
-		
-		&= \frac{1}{\sqrt{-1 + 2} + 1}
-		
-		&= \frac{1}{2}.
-	$$
-	
-	Notice that we were careful *not* to multiply out the denominator, since we expect to be able to cancel a factor of $x + 1$.
-	
+		Notice that we were careful *not* to multiply out the denominator, since we expect to be able to cancel a factor of $x + 1$.
+	]]
 ]]
 
 @exc[a limit of a rational function with a square root][[
@@ -184,18 +185,18 @@ Another example that arises involves getting a common denominator for rational f
 
 	@solution[[
 	
-	Both terms divide by zero when we plug in $y = 0$, so we can't directly evaluate them like that. Instead, let's try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials --- here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
-	
-	$$
-		\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right) &= \lim_{y \to 0} \left( \frac{y - 5}{y(y - 5)} + \frac{5}{y(y - 5)} \right)
+		Both terms divide by zero when we plug in $y = 0$, so we can't directly evaluate them like that. Instead, let's try adding the fractions together, and maybe things will work out better then. Just like with regular integers, we can find common denominators of polynomials --- here, the common denominator of $y$ and $y(y - 5)$ is $y(y - 5)$, since both denominators divide into it. Then the limit becomes
 		
-		&= \lim_{y \to 0} \frac{y - 5 + 5}{y(y - 5)}
+		$$
+			\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right) &= \lim_{y \to 0} \left( \frac{y - 5}{y(y - 5)} + \frac{5}{y(y - 5)} \right)
+			
+			&= \lim_{y \to 0} \frac{y - 5 + 5}{y(y - 5)}
+			
+			&= \lim_{y \to 0} \frac{y}{y(y - 5)}.
+		$$
 		
-		&= \lim_{y \to 0} \frac{y}{y(y - 5)}.
-	$$
-	
-	Now we're allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit is equal to $-\frac{1}{5}$.
-	
+		Now we're allowed to cancel the factors of $y$ and plug in $y = 0$ to get that the limit is equal to $-\frac{1}{5}$.
+	]]
 ]]
 
 
@@ -206,12 +207,12 @@ Another example that arises involves getting a common denominator for rational f
 
 	@solution[[
 	
-	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we're trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there's no way to approach.
-	
-	@desmos{limitExample2}
-	
-	On the other hand, the limit $\lim_{t \to 2^+} \sqrt{t - 2}$ exists and is equal to zero. Since this function is only defined from one direction near $t = 2$, we write $\lim_{t \to 2} \sqrt{t - 2}$ to mean $\lim_{t \to 2^+} \sqrt{t - 2}$, so the total limit exists and is equal to $2$.
-	
+		This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we're trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there's no way to approach.
+		
+		@desmos{limitExample2}
+		
+		On the other hand, the limit $\lim_{t \to 2^+} \sqrt{t - 2}$ exists and is equal to zero. Since this function is only defined from one direction near $t = 2$, we write $\lim_{t \to 2} \sqrt{t - 2}$ to mean $\lim_{t \to 2^+} \sqrt{t - 2}$, so the total limit exists and is equal to $2$.
+	]]
 ]]
 
 
@@ -226,32 +227,32 @@ What about infinite limits? They can be a little trickier to calculate.
 
 	@solution[[
 	
-	Plugging in $x = 2$ gives us $\frac{-1}{0}$ --- division by zero that's not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it's best to isolate the bit that's dividing by zero from the rest. First, let's factor the denominator.
-	
-	$$
-		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} &= \lim_{x \to 2^-} \frac{x - 3}{x(x - 2)}
+		Plugging in $x = 2$ gives us $\frac{-1}{0}$ --- division by zero that's not of the form $\frac{0}{0}$ indicates that the function is spiking to $\pm \infty$. To figure out which one, it's best to isolate the bit that's dividing by zero from the rest. First, let's factor the denominator.
 		
-		&= \lim_{x \to 2^-} \frac{x - 3}{x} \cdot \frac{1}{x - 2}.
-	$$
-	
-	Now since limits split over multiplication, we can just plug in $x = 2$ into the first part.
-	
-	$$
-		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = -\frac{1}{2} \lim_{x \to 2^-} \frac{1}{x - 2}.
-	$$
-	
-	As $x \to 2$ from the left, $x - 2$ is always negative, but it's getting closer and closer to zero. Therefore, $\frac{1}{x - 2}$ is getting bigger and bigger, but is always negative, so
-	
-	$$
-		\lim_{x \to 2^-} \frac{1}{x - 2} = -\infty.
-	$$
-	
-	In total, the minus signs cancel to give
-	
-	$$
-		\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = \infty.
-	$$
-	
+		$$
+			\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} &= \lim_{x \to 2^-} \frac{x - 3}{x(x - 2)}
+			
+			&= \lim_{x \to 2^-} \frac{x - 3}{x} \cdot \frac{1}{x - 2}.
+		$$
+		
+		Now since limits split over multiplication, we can just plug in $x = 2$ into the first part.
+		
+		$$
+			\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = -\frac{1}{2} \lim_{x \to 2^-} \frac{1}{x - 2}.
+		$$
+		
+		As $x \to 2$ from the left, $x - 2$ is always negative, but it's getting closer and closer to zero. Therefore, $\frac{1}{x - 2}$ is getting bigger and bigger, but is always negative, so
+		
+		$$
+			\lim_{x \to 2^-} \frac{1}{x - 2} = -\infty.
+		$$
+		
+		In total, the minus signs cancel to give
+		
+		$$
+			\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x} = \infty.
+		$$
+	]]
 ]]
 
 
@@ -292,24 +293,24 @@ The Squeeze Theorem is a little complicated to state, but it's a straightforward
 
 	@solution[[
 	
-	Even though there's no division by zero, we can't just plug in $x = 0$, since our limit rules don't talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so
-	
-	$$
-		-|x| \leq x\sin(x) \leq |x|.
-	$$
-	
-	We need to have the absolute value because otherwise the signs will be switched when $x$ is negative. Graphing the functions, we can see $x\sin(x)$ being squeezed between the other two functions.
-	
-	@desmos{squeezeTheorem}
-	
-	Since $\lim_{x \to 0} |x| = 0$ and $\lim_{x \to 0} -|x| = 0$, we must have that
-	
-	$$
-		\lim_{x \to 0} x\sin(x) = 0
-	$$
-	
-	too. In general, you won't be asked to come up with Squeeze Theorem bounds on timed exams or quizzes, but on homework, it's fair game. Try to find functions that meet at the point you're limiting to and that bound the complicated function from above and below.
-	
+		Even though there's no division by zero, we can't just plug in $x = 0$, since our limit rules don't talk about trig functions. Instead, remember that $-1 \leq \sin(x) \leq 1$, since sine measures a $y$-coordinate on the unit circle, and so
+		
+		$$
+			-|x| \leq x\sin(x) \leq |x|.
+		$$
+		
+		We need to have the absolute value because otherwise the signs will be switched when $x$ is negative. Graphing the functions, we can see $x\sin(x)$ being squeezed between the other two functions.
+		
+		@desmos{squeezeTheorem}
+		
+		Since $\lim_{x \to 0} |x| = 0$ and $\lim_{x \to 0} -|x| = 0$, we must have that
+		
+		$$
+			\lim_{x \to 0} x\sin(x) = 0
+		$$
+		
+		too. In general, you won't be asked to come up with Squeeze Theorem bounds on timed exams or quizzes, but on homework, it's fair game. Try to find functions that meet at the point you're limiting to and that bound the complicated function from above and below.
+	]]
 ]]
 
 

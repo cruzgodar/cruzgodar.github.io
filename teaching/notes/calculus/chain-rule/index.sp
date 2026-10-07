@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 It's worth prefacing this section with a small warning: this is a section students often find particularly difficult. When I first took this course, the Chain Rule took me a while to digest. Actually applying the rule isn't usually too hard, but recognizing when and how to use it can be tricky.
@@ -38,14 +42,14 @@ Sometimes, functions can only tell part of a story that we're trying to understa
 
 	@solution[[
 	
-	Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
-	
-	1. Here, the multiplication by $5$ is the closest thing to $x$, so $g(x) = 5x$. What's happening to $5x$ is an exponentiation by $2$, so $f(x) = 2^x$. It might be easier to see what $f$ should be by starting with $2^{5x}$ and replacing $5x$ with $x$.
-	
-	2. Here, $g(x) = \ln(x)$ and $f(x) = x^3$.
-	
-	3. This is a little harder. The thing happening right next to $x$ is $x + 7$, so $g(x) = x + 7$. Crunching $x + 7$ down to $x$, we get $f(x) = xe^x$.
-	
+		Let's take these one-by-one. For each, we can identify $g(x)$ by the operation that's closest to $x$. Then $f(x)$ comes from the operation that's happening to $g(x)$. This can be tricky to figure out, but it gets easier with practice.
+		
+		1. Here, the multiplication by $5$ is the closest thing to $x$, so $g(x) = 5x$. What's happening to $5x$ is an exponentiation by $2$, so $f(x) = 2^x$. It might be easier to see what $f$ should be by starting with $2^{5x}$ and replacing $5x$ with $x$.
+		
+		2. Here, $g(x) = \ln(x)$ and $f(x) = x^3$.
+		
+		3. This is a little harder. The thing happening right next to $x$ is $x + 7$, so $g(x) = x + 7$. Crunching $x + 7$ down to $x$, we get $f(x) = xe^x$.
+	]]
 ]]
 
 @exc[compositions in practice][[
@@ -132,7 +136,7 @@ Okay, let's walk through that one. To differentiate a composition, first identif
 
 @exc[the Chain Rule][[
 	
-	1. Find the derivative of $$f(x) = \ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the Chain Rule --- see if you can find them both!)
+	1. Find the derivative of $$f(x) = \ln\left( x^3 \right)$$. There's a way to find this derivative both with and without using the Chain Rule --- see if you can find them both!
 	
 	2. Let $$g(x) = \ln^3(x) = \left( \ln(x) \right)^3$$. Find $g'(x)$.
 
@@ -164,24 +168,24 @@ Just like we can use the Chain Rule with the product and Quotient Rules, we can 
 
 	@solution[[
 	
-	Okay, so what does the Chain Rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
-	
-	$$
-		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) d/dx[\cos(\tan(x))].
-	$$
-	
-	Now we need to do the same thing to find that second derivative. The outer function is $\cos(x)$, and its derivative is $-\sin(x)$, so we get
-	
-	$$
-		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) d/dx[\tan(x)].
-	$$
-	
-	Finally, we can handle $\tan(x)$ on its own.
-	
-	$$
-		d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \sec^2(x).
-	$$
-	
+		Okay, so what does the Chain Rule say? We take the outer function, differentiate it and plug in the inner function, then multiply that by the derivative of the inner function. Let's run that through here. The outermost function is $\sin(x)$, and its derivative is $\cos(x)$. So we have
+		
+		$$
+			d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) d/dx[\cos(\tan(x))].
+		$$
+		
+		Now we need to do the same thing to find that second derivative. The outer function is $\cos(x)$, and its derivative is $-\sin(x)$, so we get
+		
+		$$
+			d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) d/dx[\tan(x)].
+		$$
+		
+		Finally, we can handle $\tan(x)$ on its own.
+		
+		$$
+			d/dx[\sin(\cos(\tan(x)))] = \cos(\cos(\tan(x))) (-\sin(\tan(x)) \sec^2(x).
+		$$
+	]]
 ]]
 
 @ex[a composition of three functions][[
@@ -190,26 +194,26 @@ Just like we can use the Chain Rule with the product and Quotient Rules, we can 
 
 	@solution[[
 	
-	This time, the outermost function is $\sqrt{x}$, and its derivative is $\frac{1}{2}x^{-1/2}$, so we can start by removing that outer layer:
-	
-	$$
-		d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2} d/dx \left[ e^{x^3+2} + 1 \right].
-	$$
-	
-	Now we can handle that inner function. The constant $1$ differentiates to zero, but the exponential is another Chain Rule derivative.
-	
-	$$
-		d/dx \left[ e^{x^3+2} + 1 \right] &= e^{x^3+2} d/dx \left[ x^3 + 2 \right]
+		This time, the outermost function is $\sqrt{x}$, and its derivative is $\frac{1}{2}x^{-1/2}$, so we can start by removing that outer layer:
+		
+		$$
+			d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2} d/dx \left[ e^{x^3+2} + 1 \right].
+		$$
+		
+		Now we can handle that inner function. The constant $1$ differentiates to zero, but the exponential is another Chain Rule derivative.
+		
+		$$
+			d/dx \left[ e^{x^3+2} + 1 \right] &= e^{x^3+2} d/dx \left[ x^3 + 2 \right]
 
-		&= e^{x^3+2} \left( 3x^2 \right).
-	$$
+			&= e^{x^3+2} \left( 3x^2 \right).
+		$$
 
-	When we put it all together, we find
-	
-	$$
-		d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2}\left( e^{x^3+2} \right) \left( 3x^2 \right).
-	$$
-	
+		When we put it all together, we find
+		
+		$$
+			d/dx\left[ \sqrt{e^{x^3+2} + 1} \right] = \frac{1}{2} \left( e^{x^3+2} + 1 \right)^{-1/2}\left( e^{x^3+2} \right) \left( 3x^2 \right).
+		$$
+	]]
 ]]
 
 @exc[a composition of three functions][[

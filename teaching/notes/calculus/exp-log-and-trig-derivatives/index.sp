@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 So far, we've defined derivatives with a cumbersome limit definition, and then found a cleaner formula for polynomials. We also know how to take derivatives of functions made by adding, subtracting, multiplying, or dividing other functions. There's two major things left for us to do before we have a solid bedrock of derivatives: we need to know how to take derivatives of other basic functions, like $\sin(x)$, $\cos(x)$, $\ln(x)$, and $e^x$, and we also need to know how to differentiate functions made by combining others via composition: for example, $\cos\left( x^5 \right)$ or $(\cos(x))^5$.
@@ -63,13 +67,13 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 	Find $$d/dx[x^2\cos(x)]$$.
 
 	@solution[[
-	
-	This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
-	
-	$$
-		d/dx[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
-	$$
-	
+		
+		This is a product of two functions we know how to differentiate: $x^2$ and $\cos(x)$. In total, we get
+		
+		$$
+			d/dx[x^2\cos(x)] = 2x\cos(x) + x^2(-\sin(x)).
+		$$
+	]]
 ]]
 
 @exc[derivatives of trig functions][[
@@ -92,24 +96,24 @@ While we've seen it from the limit definition, I think there's still room to bel
 
 	@solution[[
 	
-	This seems pretty tricky on first glance, but it's actually not so bad. Let's write out the first few derivatives and see if we can spot a pattern.
-	
-	$$d/dx[\cos(x)] = -\sin(x)$$.
-	
-	$$\frac{\d ^2}{\d x^2}[\cos(x)] = -\cos(x)$$.
-	
-	$$\frac{d^3}{dx^3}[\cos(x)] = \sin(x)$$.
-	
-	$$\frac{d^4}{dx^4}[\cos(x)] = \cos(x)$$.
-	
-	Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won't matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
-	
-	$$
-		\frac{d^{74}}{dx^{74}}[\cos(x)] &= \frac{\d ^2}{\d x^2}[\cos(x)]
+		This seems pretty tricky on first glance, but it's actually not so bad. Let's write out the first few derivatives and see if we can spot a pattern.
 		
-		&= -\cos(x).
-	$$
-	
+		$$d/dx[\cos(x)] = -\sin(x)$$.
+		
+		$$\frac{\d ^2}{\d x^2}[\cos(x)] = -\cos(x)$$.
+		
+		$$\frac{d^3}{dx^3}[\cos(x)] = \sin(x)$$.
+		
+		$$\frac{d^4}{dx^4}[\cos(x)] = \cos(x)$$.
+		
+		Since the fourth derivative is just $\cos(x)$ again, every four derivatives we take won't matter. Therefore, instead of taking the 74th derivative, we can take the 70th, or 66th, or 62nd, and so on. The largest multiple of 4 less than 74 is $72 = 4 * 18$, so
+		
+		$$
+			\frac{d^{74}}{dx^{74}}[\cos(x)] &= \frac{\d ^2}{\d x^2}[\cos(x)]
+			
+			&= -\cos(x).
+		$$
+	]]
 ]]
 
 @exc[a higher-order trig derivative][[
@@ -157,13 +161,13 @@ This is one reason why we care so much about the number $e$: derivatives involvi
 	Find the equation of the tangent line to $f(x) = x^2e^x$ at $x = 2$.
 
 	@solution[[
-	
-	First of all, we need to find $f'(x)$. This is a Product Rule computation: $f'(x) = 2xe^x + x^2e^x$. For $x = 2$, $f(2) = 4e^2$ and $f'(2) = 8e^2$. Therefore, the equation of the tangent line is
-	
-	$$
-		y = 4e^2 + 8e^2(x - 2).
-	$$
-	
+		
+		First of all, we need to find $f'(x)$. This is a Product Rule computation: $f'(x) = 2xe^x + x^2e^x$. For $x = 2$, $f(2) = 4e^2$ and $f'(2) = 8e^2$. Therefore, the equation of the tangent line is
+		
+		$$
+			y = 4e^2 + 8e^2(x - 2).
+		$$
+	]]
 ]]
 
 @exc[the derivatives of exponential and logarithmic functions][[

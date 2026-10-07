@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 With the Chain Rule under our belt, we can differentiate any combination of two differentiable functions. There is one more way we can construct new functions --- rather than putting two functions together, it starts from a single function. What we're talking about here is function inversion, and it's often a point of confusion in algebra, just like composition. So, just like composition, let's review.
@@ -73,17 +77,17 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 	Find $$d/dx [\sqrt{x}]$$.
 
 	@solution[[
-	
-	To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one --- everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
-	
-	Now $f'(x) = 2x$, so $f'(f^{-1}(x)) = 2\sqrt{x}$. Then we have
-	
-	$$
-		d/dx [\sqrt{x}] = \frac{1}{2\sqrt{x}} = \frac{1}{2} x^{-1/2}.
-	$$
-	
-	Hey, that's what we would have expected to get! It seems like the pattern of $d/dx[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
-	
+		
+		To apply the IFT, the left side needs to be the inverse function, which means we need to find a function $f(x)$ so that $f^{-1}(x) = \sqrt{x}$. But since inverting a function twice gives back the original function, we can do this by just inverting $y = \sqrt{x}$, which just means solving for $x$. That gives us $x = y^2$, so we want to define $f(x) = x^2$. Then $f^{-1}(x) = \sqrt{x}$. (There is a minor problem with being one-to-one --- everything is fine, but it can be a little tricky to parse out why. Feel free to ignore it.)
+		
+		Now $f'(x) = 2x$, so $f'(f^{-1}(x)) = 2\sqrt{x}$. Then we have
+		
+		$$
+			d/dx [\sqrt{x}] = \frac{1}{2\sqrt{x}} = \frac{1}{2} x^{-1/2}.
+		$$
+		
+		That's what we would have expected to get! It seems like the pattern of $d/dx[x^n] = nx^{n-1}$ might work for more than if $n$ is just an integer.
+	]]
 ]]
 
 @exc[the Inverse Function Theorem][[
@@ -170,12 +174,12 @@ Somewhat strangely, the derivatives of the inverse trig functions are not other 
 
 	@solution[[
 	
-	By the Chain Rule, we have
-	
-	$$
-		d/dx[\tan^{-1}(x^3)] = \frac{1}{1 + (x^3)^2} \cdot 3x^2 = \frac{3x^2}{1 + x^6}.
-	$$	
-	
+		By the Chain Rule, we have
+		
+		$$
+			d/dx[\tan^{-1}(x^3)] = \frac{1}{1 + (x^3)^2} \cdot 3x^2 = \frac{3x^2}{1 + x^6}.
+		$$
+	]]
 ]]
 
 @exc[an inverse trig derivative][[

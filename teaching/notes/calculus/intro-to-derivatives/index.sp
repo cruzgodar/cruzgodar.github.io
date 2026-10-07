@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Now that we've talked about limits, let's return to the idea we discussed in section 1: the slopes of curves. As a reminder, the slope of a curve at $x = a$ is the slope of the tangent line to the curve at $x = a$. In order to calculate this slope, we first find the slope of secant lines, which is just rise over run. If one point of the line is taken at $x = a$ and the other is taken at $x = a + h$, then the run is $h$ and the rise is $f(a + h) - f(a)$, so the slope is just
@@ -30,30 +34,30 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 
 	@solution[[
 	
-	By the definition, we have that the slope is
-	
-	$$
-		\lim_{h \to 0} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}
+		By the definition, we have that the slope is
 		
-		&= \lim_{h \to 0} \frac{(1 + 2h + h^2) - 1}{h}
+		$$
+			\lim_{h \to 0} \frac{f(1 + h) - f(1)}{h} &= \lim_{h \to 0^+} \frac{(1 + h)^2 - (1)^2}{h}
+			
+			&= \lim_{h \to 0} \frac{(1 + 2h + h^2) - 1}{h}
+			
+			&= \lim_{h \to 0} \frac{2h + h^2}{h}
+			
+			&= \lim_{h \to 0} (2 + h).
+		$$
 		
-		&= \lim_{h \to 0} \frac{2h + h^2}{h}
+		That last line is justified, since we can cancel common factors in limits. Finishing up, we have
 		
-		&= \lim_{h \to 0} (2 + h).
-	$$
-	
-	That last line is justified, since we can cancel common factors in limits. Finishing up, we have
-	
-	$$
-		\lim_{h \to 0} (2 + h) &= 2 + 0
+		$$
+			\lim_{h \to 0} (2 + h) &= 2 + 0
+			
+			&= 2.
+		$$
 		
-		&= 2.
-	$$
-	
-	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
-	
-	@desmos{tangentLines}
-	
+		This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
+		
+		@desmos{tangentLines}
+	]]
 ]]
 
 @exc[slope of a graph][[
@@ -92,30 +96,30 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 	@solution[[
 	
-	By definition, this is
-	
-	$$
-		d/dx[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}
+		By definition, this is
 		
-		&= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}
+		$$
+			d/dx[x^2] &= \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}
+			
+			&= \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h}
+			
+			&= \lim_{h \to 0} \frac{2xh + h^2}{h}
+			
+			&= \lim_{h \to 0} \frac{h(2x + h)}{h}
+			
+			&= \lim_{h \to 0} (2x + h)
+			
+			&= 2x.
+		$$
 		
-		&= \lim_{h \to 0} \frac{2xh + h^2}{h}
+		Therefore, $d/dx[x^2] = 2x$.
 		
-		&= \lim_{h \to 0} \frac{h(2x + h)}{h}
+		Let's sketch a graph of these two.
 		
-		&= \lim_{h \to 0} (2x + h)
+		@desmos{derivativeExample}
 		
-		&= 2x.
-	$$
-	
-	Therefore, $d/dx[x^2] = 2x$.
-	
-	Let's sketch a graph of these two.
-	
-	@desmos{derivativeExample}
-	
-	Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
-	
+		Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
+	]]
 ]]
 
 @exc[computing a derivative][[
@@ -133,9 +137,9 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	@desmos{derivativeExample2}
 
 	@solution[[
-	
-	Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (@clickTap[click][tap] the circle next to $f'(x)$ to see it).
-	
+		
+		Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (@clickTap[click][tap] the circle next to $f'(x)$ to see it).
+	]]	
 ]]
 
 @exc[computing a derivative from a graph][[
@@ -224,38 +228,38 @@ We'll talk about what visual feature of a graph the second derivative measures a
 
 	@solution[[
 	
-	This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
-	
-	$$
-		d/dx[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}
+		This is a long calculation, but it's not too bad in the end. First, let's find the first derivative.
 		
-		&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}
+		$$
+			d/dx[2x^2 - x] &= \lim_{h \to 0} \frac{(2(x + h)^2 - (x + h)) - (2x^2 - x)}{h}
+			
+			&= \lim_{h \to 0} \frac{2(x^2 + 2xh + h^2) - (x + h) - 2x^2 + x}{h}
+			
+			&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}
+			
+			&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}
+			
+			&= \lim_{h \to 0} (4x + 2h - 1)
+			
+			&= 4x - 1.
+		$$
 		
-		&= \lim_{h \to 0} \frac{2x^2 + 4xh + 2h^2 - x - h - 2x^2 + x}{h}
+		Now we'll take the derivative of this function to get the second derivative.
 		
-		&= \lim_{h \to 0} \frac{4xh + 2h^2 - h}{h}
+		$$
+			d/dx[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}
+			
+			&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}
+			
+			&= \lim_{h \to 0} \frac{4h}{h}
+			
+			&= \lim_{h \to 0} 4
+			
+			&= 4.
+		$$
 		
-		&= \lim_{h \to 0} (4x + 2h - 1)
-		
-		&= 4x - 1.
-	$$
-	
-	Now we'll take the derivative of this function to get the second derivative.
-	
-	$$
-		d/dx[4x - 1] &= \lim_{h \to 0} \frac{(4(x + h) - 1) - (4x - 1)}{h}
-		
-		&= \lim_{h \to 0} \frac{4x + 4h - 1 - 4x + 1}{h}
-		
-		&= \lim_{h \to 0} \frac{4h}{h}
-		
-		&= \lim_{h \to 0} 4
-		
-		&= 4.
-	$$
-	
-	In total, $\frac{\d ^2}{\d x^2}[2x^2 - x] = 4$.
-	
+		In total, $\frac{\d ^2}{\d x^2}[2x^2 - x] = 4$.
+	]]
 ]]
 
 @exc[acceleration][[

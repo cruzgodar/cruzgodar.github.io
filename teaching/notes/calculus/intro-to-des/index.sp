@@ -1,3 +1,8 @@
+@@@
+	import { imageLinks } from "../../../../build/htmdl/components/image-links.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 It's the final section! We'll depart from the previous topics to examine a common application of integration: differential equations. This is a deep enough topic that whole courses are dedicated to it, but we'll just be taking a brief overview, split into three parts: what are differential equations, how do we visualize them, and how can we solve them?
@@ -66,10 +71,10 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 
 	@solution[[
 	
-	We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
-	
-	@desmos{directionField}
-	
+		We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
+		
+		@desmos{directionField}
+	]]
 ]]
 
 @exc[direction field][[
@@ -112,10 +117,10 @@ By definition, a solution to the DE is a function whose slope matches the direct
 
 	@solution[[
 	
-	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
-	
-	@desmos{directionField3}
-	
+		If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
+		
+		@desmos{directionField3}
+	]]
 ]]
 
 
@@ -202,54 +207,54 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 
 	@solution[[
 	
-	We have
-	
-	$$
-		dy/dx = (x-2)(y-3).
-	$$
-	
-	We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get
-	
-	$$
-		\frac{1}{y-3}\,\d y = (x-2)\,\d x.
-	$$
-	
-	Then we integrate both sides:
-	
-	$$
-		\int \frac{1}{y-3}\,\d y &= \int (x-2)\,\d x
+		We have
 		
-		\ln |y - 3| &= \frac{x^2}{2} - 2x + C.
-	$$
-	
-	Now it's time to solve for $y$.
-	
-	$$
-		\ln |y - 3| &= \frac{x^2}{2} - 2x + C
+		$$
+			dy/dx = (x-2)(y-3).
+		$$
 		
-		y - 3 &= e^{\frac{x^2}{2} - 2x + C}
+		We then divide by the $y$ stuff (i.e. $y-3$) and multiply by $dx$ to get
 		
-		y &= e^{\frac{x^2}{2} - 2x + C} + 3.
-	$$
-	
-	Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
-	
-	$$
-		5 &= e^{\frac{0^2}{2} - 2(0) + C} + 3
+		$$
+			\frac{1}{y-3}\,\d y = (x-2)\,\d x.
+		$$
 		
-		2 &= e^C
+		Then we integrate both sides:
 		
-		\ln(2) &= C.
-	$$
-	
-	Therefore, this solution becomes
-	
-	$$
-		y = e^{\frac{x^2}{2} - 2x + \ln(2)} + 3.
-	$$
-	
-	Finally, we'll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn't solve for this solution is because it required dividing by $y - 3$, so that's exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
-	
+		$$
+			\int \frac{1}{y-3}\,\d y &= \int (x-2)\,\d x
+			
+			\ln |y - 3| &= \frac{x^2}{2} - 2x + C.
+		$$
+		
+		Now it's time to solve for $y$.
+		
+		$$
+			\ln |y - 3| &= \frac{x^2}{2} - 2x + C
+			
+			y - 3 &= e^{\frac{x^2}{2} - 2x + C}
+			
+			y &= e^{\frac{x^2}{2} - 2x + C} + 3.
+		$$
+		
+		Now to get rid of $C$, we need to use the initial value: $y(0) = 5$. That gives us
+		
+		$$
+			5 &= e^{\frac{0^2}{2} - 2(0) + C} + 3
+			
+			2 &= e^C
+			
+			\ln(2) &= C.
+		$$
+		
+		Therefore, this solution becomes
+		
+		$$
+			y = e^{\frac{x^2}{2} - 2x + \ln(2)} + 3.
+		$$
+		
+		Finally, we'll solve for the equilibrium solutions by solving $y - 3 = 0$, so $y = 3$. The reason why the previous method didn't solve for this solution is because it required dividing by $y - 3$, so that's exactly the solution we missed. However, it does not satisfy the initial condition, since $y(0) = 3 \neq 3$. Therefore, only the previous solution is correct.
+	]]
 ]]
 
 @exc[separation of variables][[
@@ -258,38 +263,38 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 
 	@solution[[
 	
-	Separating and integrating, we have
-	
-	$$
-		\frac{1}{y}\,\d y &= \ln(x)\,\d x
+		Separating and integrating, we have
 		
-		\int \frac{1}{y}\,\d y &= \int \ln(x)\,\d x
+		$$
+			\frac{1}{y}\,\d y &= \ln(x)\,\d x
+			
+			\int \frac{1}{y}\,\d y &= \int \ln(x)\,\d x
+			
+			\ln|y| &= x\ln(x) - x + C
+			
+			y &= e^{x\ln(x) - x + C}.
+		$$
 		
-		\ln|y| &= x\ln(x) - x + C
+		Since $y(1) = 1$,
 		
-		y &= e^{x\ln(x) - x + C}.
-	$$
-	
-	Since $y(1) = 1$,
-	
-	$$
-		1 &= e^{1\ln(1) - 1 + C}
+		$$
+			1 &= e^{1\ln(1) - 1 + C}
+			
+			1 &= e^{C - 1}
+			
+			\ln(1) &= C - 1
+			
+			0 &= C - 1
+			
+			C &= 1.
+		$$
 		
-		1 &= e^{C - 1}
+		Our final answer is then
 		
-		\ln(1) &= C - 1
-		
-		0 &= C - 1
-		
-		C &= 1.
-	$$
-	
-	Our final answer is then
-	
-	$$
-		y = e^{x\ln(x) - x + 1}.
-	$$
-	
+		$$
+			y = e^{x\ln(x) - x + 1}.
+		$$
+	]]
 ]]
 
 
@@ -318,66 +323,66 @@ As one final application, let's talk about temperature.
 
 	@solution[[
 	
-	We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
-	
-	$$
-		dT/dt &= k(T - 75)
+		We have $S = 75$, $T(0) = 350$, and $T(5) = 300$. Newton's Law of Cooling says that $T' = k(T - 75)$, so by separation, we have
 		
-		\frac{1}{T - 75} &= k\,\d t
+		$$
+			dT/dt &= k(T - 75)
+			
+			\frac{1}{T - 75} &= k\,\d t
+			
+			\int \frac{1}{T - 75} &= \int k\,\d t
+			
+			\ln |T - 75| &= kt + C
+			
+			T - 75 &= e^{kt + C}
+			
+			T &= e^{kt + C} + 75.
+		$$
 		
-		\int \frac{1}{T - 75} &= \int k\,\d t
+		Now we have $T(0) = 350$, so
 		
-		\ln |T - 75| &= kt + C
+		$$
+			350 &= e^C + 75
+			
+			275 &= e^C
+			
+			C &= \ln(275).
+		$$
 		
-		T - 75 &= e^{kt + C}
+		Next, $T(5) = 300$. That means
 		
-		T &= e^{kt + C} + 75.
-	$$
-	
-	Now we have $T(0) = 350$, so
-	
-	$$
-		350 &= e^C + 75
+		$$
+			300 &= e^{5k + \ln(275)} + 75
+			
+			225 &= e^{5k}e^{\ln(275)}
+			
+			225 &= 275e^{5k}
+			
+			\frac{225}{275} &= e^{5k}
+			
+			5k &= \ln\left(\frac{225}{275}\right)
+			
+			k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)
+			
+			&\approx -.0401.
+		$$
 		
-		275 &= e^C
+		In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we're trying to solve is $T(t) = 200$, so we have
 		
-		C &= \ln(275).
-	$$
-	
-	Next, $T(5) = 300$. That means
-	
-	$$
-		300 &= e^{5k + \ln(275)} + 75
+		$$
+			200 &= e^{-.0401t + \ln(275)} + 75
+			
+			125 &= 275e^{-.0401t}
+			
+			\frac{125}{275} &= e^{-.0401t}
+			
+			\ln\left(\frac{125}{275}\right) &= -.0401t
+			
+			t &\approx 19.66.
+		$$
 		
-		225 &= e^{5k}e^{\ln(275)}
-		
-		225 &= 275e^{5k}
-		
-		\frac{225}{275} &= e^{5k}
-		
-		5k &= \ln\left(\frac{225}{275}\right)
-		
-		k &= \frac{1}{5} \ln\left(\frac{225}{275}\right)
-		
-		&\approx -.0401.
-	$$
-	
-	In total, we have $T(t) = e^{-.0401t + \ln(275)} + 75$. What we're trying to solve is $T(t) = 200$, so we have
-	
-	$$
-		200 &= e^{-.0401t + \ln(275)} + 75
-		
-		125 &= 275e^{-.0401t}
-		
-		\frac{125}{275} &= e^{-.0401t}
-		
-		\ln\left(\frac{125}{275}\right) &= -.0401t
-		
-		t &\approx 19.66.
-	$$
-	
-	Therefore, it will take just under $20$ minutes for the pizza to cool to $200^\circ F$.
-	
+		Therefore, it will take just under $20$ minutes for the pizza to cool to $200^\circ F$.
+	]]
 ]]
 
 @exc[Newton's Law of Cooling][[
@@ -386,48 +391,48 @@ As one final application, let's talk about temperature.
 
 	@solution[[
 	
-	We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
-	
-	$$
-		400 &= e^C + 75
+		We have $T' = k(T - 75)$, so following the same procedure as in the above example, we get $T = e^{kt + C} + 75$. Since $T(0) = 400$, we have
 		
-		325 &= e^C
+		$$
+			400 &= e^C + 75
+			
+			325 &= e^C
+			
+			C &= \ln(325).
+		$$
 		
-		C &= \ln(325).
-	$$
-	
-	Since $T(10) = 300$,
-	
-	$$
-		300 &= e^{10k + \ln(325)} + 75
+		Since $T(10) = 300$,
 		
-		225 &= e^{10k}e^{\ln(325)}
+		$$
+			300 &= e^{10k + \ln(325)} + 75
+			
+			225 &= e^{10k}e^{\ln(325)}
+			
+			225 &= 325e^{10k}
+			
+			\frac{225}{325} &= e^{10k}
+			
+			10k &= \ln\left(\frac{225}{325}\right)
+			
+			k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)
+			
+			&\approx -.0368.
+		$$
 		
-		225 &= 325e^{10k}
+		In total, we have $T(t) = e^{-.0368t + \ln(325)} + 75$, and we want to solve
 		
-		\frac{225}{325} &= e^{10k}
-		
-		10k &= \ln\left(\frac{225}{325}\right)
-		
-		k &= \frac{1}{10} \ln\left(\frac{225}{325}\right)
-		
-		&\approx -.0368.
-	$$
-	
-	In total, we have $T(t) = e^{-.0368t + \ln(325)} + 75$, and we want to solve
-	
-	$$
-		100 &= e^{-.0368t + \ln(325)} + 75
-		
-		25 &= 325e^{-.0368t}
-		
-		\frac{25}{325} &= e^{-.0368t}
-		
-		\ln\left(\frac{25}{325}\right) &= -.0368t
-		
-		t &\approx 70.
-	$$
-	
+		$$
+			100 &= e^{-.0368t + \ln(325)} + 75
+			
+			25 &= 325e^{-.0368t}
+			
+			\frac{25}{325} &= e^{-.0368t}
+			
+			\ln\left(\frac{25}{325}\right) &= -.0368t
+			
+			t &\approx 70.
+		$$
+	]]
 ]]
 
 
@@ -436,15 +441,13 @@ Let's end the course on a high note. When we say that direction fields show the 
 
 @desmos{directionField4}
 
-### canvas vector-field
+@canvas{vector-field}
 
 You can pan and zoom on that canvas by dragging, pinching, and scrolling, and the button in the top right opens it in fullscreen. Give it a try!
 
 While direction fields are restricted to always pushing particles to the right, we can extend the idea to what are called **vector fields**, which can freely move particles in any direction. You'll see a lot more of them if you stick around to calculus V, but if you'd like to explore more now, the applet that drew the above field can also draw any vector field you like --- have a look!
 
-### image-links
-	/applets/vector-fields
-###
+@imageLinks(["/applets/vector-fields"])
 
 <div style="height: 64px"></div>
 

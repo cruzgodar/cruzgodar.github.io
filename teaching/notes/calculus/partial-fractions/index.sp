@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We're ready for our final integration technique. This one will let us handle complicated rational functions, which are just functions that are one polynomial divided by another. Compared to the first three techniques, which tell us substitutions we can make to simplify the integral, this one just splits one complicated function into many simple ones, each of which we can then integrate separately.
@@ -64,60 +68,60 @@ There's a lot to deal with here, but it's not so bad in practice. Let's start wi
 
 	@solution[[
 	
-	Let's go down the checklist. We can't use $u$-sub, because nothing in the denominator has a derivative matching something in the numerator. We can't integrate by parts, because we don't know how to integrate $\frac{1}{x^3 - x^2 - 2x}$ and differentiating it just makes it worse. Trig sub is a non-starter because there are no patterns matching it. Instead, since this is one polynomial divided by another and the degree of the top (1) is less than the degree of the bottom (3), we can use partial fractions. The first step is to factor the denominator. First we can take an $x$ out: $x(x^2 - x - 2)$. Next we can factor the remaining quadratic as $(x+1)(x-2)$, so the total polynomial becomes $x(x+1)(x-2)$. Now each of these is a linear factor (since there's no $x^2$), so partial fractions says that the whole function decomposes as
-	
-	$$
-		\frac{3x + 2}{x(x+1)(x-2)} = \frac{A}{x} + \frac{B}{x + 1} + \frac{C}{x - 2}.
-	$$
-	
-	The next thing it tells us to do is multiply both sides by $x(x+1)(x-2)$. That gives us the equation
-	
-	$$
-		3x + 2 = A(x+1)(x-2) + B(x)(x-2) + C(x)(x+1).
-	$$
-	
-	Now we're supposed to foil everything out.
-	
-	$$
-		3x + 2 = Ax^2 - Ax - 2A + Bx^2 - 2Bx + Cx^2 + Cx.
-	$$
-	
-	Next we need to group like terms.
-	
-	$$
-		3x + 2 = (A + B + C)x^2 + (-A - 2B + C)x - 2A.
-	$$
-	
-	For these polynomials to be equal, the coefficients on $x$ must be the same, and so must the coefficients on $x^2$, and so on. That means
-	
-	$$
-		0 &= A + B + C
+		Let's go down the checklist. We can't use $u$-sub, because nothing in the denominator has a derivative matching something in the numerator. We can't integrate by parts, because we don't know how to integrate $\frac{1}{x^3 - x^2 - 2x}$ and differentiating it just makes it worse. Trig sub is a non-starter because there are no patterns matching it. Instead, since this is one polynomial divided by another and the degree of the top (1) is less than the degree of the bottom (3), we can use partial fractions. The first step is to factor the denominator. First we can take an $x$ out: $x(x^2 - x - 2)$. Next we can factor the remaining quadratic as $(x+1)(x-2)$, so the total polynomial becomes $x(x+1)(x-2)$. Now each of these is a linear factor (since there's no $x^2$), so partial fractions says that the whole function decomposes as
 		
-		3 &= -A - 2B + C
+		$$
+			\frac{3x + 2}{x(x+1)(x-2)} = \frac{A}{x} + \frac{B}{x + 1} + \frac{C}{x - 2}.
+		$$
 		
-		2 &= -2A
-	$$
-	
-	Now we can go through and solve for $A$, $B$, and $C$. The third equation tells us that $A = -1$. Plugging that into the other two, we get
-	
-	$$
-		0 &= -1 + B + C
+		The next thing it tells us to do is multiply both sides by $x(x+1)(x-2)$. That gives us the equation
 		
-		3 &= 1 - 2B + C
-	$$
-	
-	We can solve this by substitution. Solving the first equation for $B$ gives us $B = 1 - C$, so the second one becomes $C = 2 + 2B = 2 + 2 - 2C$. Then $3C = 4$, so $C = \frac{4}{3}$. Finally, $B = 1 - \frac{4}{3} = -\frac{1}{3}$. Therefore, we have
-	
-	$$
-		\frac{3x + 2}{x(x+1)(x-2)} = -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2}.
-	$$
-	
-	Finally, we can integrate each of these separately.
-	
-	$$
-		\int \left( -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2} \right)\d x = -\ln|x| - \frac{1}{3} \ln|x + 1| + \frac{4}{3} \ln|x - 2| + C.
-	$$
-	
+		$$
+			3x + 2 = A(x+1)(x-2) + B(x)(x-2) + C(x)(x+1).
+		$$
+		
+		Now we're supposed to foil everything out.
+		
+		$$
+			3x + 2 = Ax^2 - Ax - 2A + Bx^2 - 2Bx + Cx^2 + Cx.
+		$$
+		
+		Next we need to group like terms.
+		
+		$$
+			3x + 2 = (A + B + C)x^2 + (-A - 2B + C)x - 2A.
+		$$
+		
+		For these polynomials to be equal, the coefficients on $x$ must be the same, and so must the coefficients on $x^2$, and so on. That means
+		
+		$$
+			0 &= A + B + C
+			
+			3 &= -A - 2B + C
+			
+			2 &= -2A
+		$$
+		
+		Now we can go through and solve for $A$, $B$, and $C$. The third equation tells us that $A = -1$. Plugging that into the other two, we get
+		
+		$$
+			0 &= -1 + B + C
+			
+			3 &= 1 - 2B + C
+		$$
+		
+		We can solve this by substitution. Solving the first equation for $B$ gives us $B = 1 - C$, so the second one becomes $C = 2 + 2B = 2 + 2 - 2C$. Then $3C = 4$, so $C = \frac{4}{3}$. Finally, $B = 1 - \frac{4}{3} = -\frac{1}{3}$. Therefore, we have
+		
+		$$
+			\frac{3x + 2}{x(x+1)(x-2)} = -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2}.
+		$$
+		
+		Finally, we can integrate each of these separately.
+		
+		$$
+			\int \left( -\frac{1}{x} - \frac{1/3}{x + 1} + \frac{4/3}{x - 2} \right)\d x = -\ln|x| - \frac{1}{3} \ln|x + 1| + \frac{4}{3} \ln|x - 2| + C.
+		$$
+	]]
 ]]
 
 @exc[partial fractions][[
@@ -126,24 +130,24 @@ There's a lot to deal with here, but it's not so bad in practice. Let's start wi
 
 	@solution[[
 	
-	By partial fractions, this becomes
-	
-	$$
-		\frac{x - 2}{(x - 1)(2x - 1)} &= \frac{A}{x - 1} + \frac{B}{2x - 1}
+		By partial fractions, this becomes
 		
-		x - 2 &= A(2x - 1) + B(x - 1)
+		$$
+			\frac{x - 2}{(x - 1)(2x - 1)} &= \frac{A}{x - 1} + \frac{B}{2x - 1}
+			
+			x - 2 &= A(2x - 1) + B(x - 1)
+			
+			x - 2 &= (2A + B)x + (-A - B),
+		$$
 		
-		x - 2 &= (2A + B)x + (-A - B),
-	$$
-	
-	and so we have $1 = 2A + B$ and $-2 = -A - B$. The solution is $A = -1$ and $B = 3$, so the integral is
-	
-	$$
-		\int \left( -\frac{1}{x - 1} + \frac{3}{2x - 1} \right)\d x = -\ln|x - 1| + \frac{1}{2}\ln|2x - 1| + C
-	$$
-	
-	via a $u$-sub.
-	
+		and so we have $1 = 2A + B$ and $-2 = -A - B$. The solution is $A = -1$ and $B = 3$, so the integral is
+		
+		$$
+			\int \left( -\frac{1}{x - 1} + \frac{3}{2x - 1} \right)\d x = -\ln|x - 1| + \frac{1}{2}\ln|2x - 1| + C
+		$$
+		
+		via a $u$-sub.
+	]]
 ]]
 
 
@@ -158,64 +162,64 @@ The next most complicated type of example involves linear factors raised to a po
 
 	@solution[[
 	
-	By partial fractions, we have
-	
-	$$
-		\frac{8x}{(x-1)(x+1)^3} &= \frac{A}{x - 1} + \frac{B}{x + 1} + \frac{C}{(x + 1)^2} + \frac{D}{(x + 1)^3}
+		By partial fractions, we have
 		
-		8x &= A(x+1)^3 + B(x-1)(x+1)^2 + C(x-1)(x+1) + D(x-1)
+		$$
+			\frac{8x}{(x-1)(x+1)^3} &= \frac{A}{x - 1} + \frac{B}{x + 1} + \frac{C}{(x + 1)^2} + \frac{D}{(x + 1)^3}
+			
+			8x &= A(x+1)^3 + B(x-1)(x+1)^2 + C(x-1)(x+1) + D(x-1)
+			
+			8x &= A(x^3 + 3x^2 + 3x + 1) + B(x^3 + x^2 - x - 1) + C(x^2 - 1) + D(x - 1)
+			
+			8x &= (A + B)x^3 + (3A + B + C)x^2 + (3A - B + D)x + (A - B - C - D),
+		$$
 		
-		8x &= A(x^3 + 3x^2 + 3x + 1) + B(x^3 + x^2 - x - 1) + C(x^2 - 1) + D(x - 1)
+		which turns into
 		
-		8x &= (A + B)x^3 + (3A + B + C)x^2 + (3A - B + D)x + (A - B - C - D),
-	$$
-	
-	which turns into
-	
-	$$
-		0 &= A + B
+		$$
+			0 &= A + B
+			
+			0 &= 3A + B + C
+			
+			8 &= 3A - B + D
+			
+			0 &= A - B - C - D.
+		$$
 		
-		0 &= 3A + B + C
+		The first equation becomes $A = -B$, so we get
 		
-		8 &= 3A - B + D
+		$$
+			0 &= -2B + C
+			
+			8 &= -4B + D
+			
+			0 &= -2B - C - D.
+		$$
 		
-		0 &= A - B - C - D.
-	$$
-	
-	The first equation becomes $A = -B$, so we get
-	
-	$$
-		0 &= -2B + C
+		Then $B = \frac{1}{2} C$, so
 		
-		8 &= -4B + D
+		$$
+			8 &= -2C + D
+			
+			0 &= -2C - D.
+		$$
 		
-		0 &= -2B - C - D.
-	$$
-	
-	Then $B = \frac{1}{2} C$, so
-	
-	$$
-		8 &= -2C + D
+		The last equation says that $D = -2C$, so finally, we have
 		
-		0 &= -2C - D.
-	$$
-	
-	The last equation says that $D = -2C$, so finally, we have
-	
-	$$
-		8 = -4C.
-	$$
-	
-	Therefore, $C = -2$, so $D = 4$, $B = -1$, and $A = 1$. Putting it all back together, we get
-	
-	$$
-		\frac{8x}{(x-1)(x+1)^3} &= \frac{1}{x - 1} - \frac{1}{x + 1} - \frac{2}{(x + 1)^2} + \frac{4}{(x + 1)^3}
+		$$
+			8 = -4C.
+		$$
 		
-		\int \frac{8x}{(x-1)(x+1)^3}\,\d x &= \int \left( \frac{1}{x - 1} - \frac{1}{x + 1} - 2(x + 1)^{-2} + 4(x + 1)^{-3} \right)
+		Therefore, $C = -2$, so $D = 4$, $B = -1$, and $A = 1$. Putting it all back together, we get
 		
-		&= \ln |x - 1| - \ln |x + 1| + 2(x + 1)^{-1} - 2(x + 1)^{-2} + C.
-	$$
-	
+		$$
+			\frac{8x}{(x-1)(x+1)^3} &= \frac{1}{x - 1} - \frac{1}{x + 1} - \frac{2}{(x + 1)^2} + \frac{4}{(x + 1)^3}
+			
+			\int \frac{8x}{(x-1)(x+1)^3}\,\d x &= \int \left( \frac{1}{x - 1} - \frac{1}{x + 1} - 2(x + 1)^{-2} + 4(x + 1)^{-3} \right)
+			
+			&= \ln |x - 1| - \ln |x + 1| + 2(x + 1)^{-1} - 2(x + 1)^{-2} + C.
+		$$
+	]]
 ]]
 
 @exc[partial fractions with a linear factor to a power][[
@@ -224,25 +228,26 @@ The next most complicated type of example involves linear factors raised to a po
 
 	@solution[[
 	
-	Partial fractions tells us that
-	
-	$$
-		\frac{27x^2}{(x+1)(x-2)^2} &= \frac{A}{x + 1} + \frac{B}{x - 2} + \frac{C}{(x - 2)^2}
+		Partial fractions tells us that
 		
-		27x^2 &= A(x - 2)^2 + B(x-1)(x-2) + C(x-1)
+		$$
+			\frac{27x^2}{(x+1)(x-2)^2} &= \frac{A}{x + 1} + \frac{B}{x - 2} + \frac{C}{(x - 2)^2}
+			
+			27x^2 &= A(x - 2)^2 + B(x-1)(x-2) + C(x-1)
+			
+			27x^2 &= A(x^2 - 4x + 4) + B(x^2 - 3x + 2) + C(x-1)
+			
+			27x^2 &= (A + B)x^2 + (-4A - 3B + C)x + (4A + 2B - C),
+		$$
 		
-		27x^2 &= A(x^2 - 4x + 4) + B(x^2 - 3x + 2) + C(x-1)
+		so $A + B = 27$, $-4A - 3B + C = 0$, and $4A + 2B - C = 0$. Solving this gives us $A = 27$, $B = 0$, and $C = 108$. Then the integral becomes
 		
-		27x^2 &= (A + B)x^2 + (-4A - 3B + C)x + (4A + 2B - C),
-	$$
-	
-	so $A + B = 27$, $-4A - 3B + C = 0$, and $4A + 2B - C = 0$. Solving this gives us $A = 27$, $B = 0$, and $C = 108$. Then the integral becomes
-	
-	$$
-		\int \left( \frac{27}{x + 1} \frac{108}{(x - 2)^2} \right)\d x = 27\ln|x + 1| - 108(x-2)^{-1}
-	$$
-	
-	via two $u$-subs.
+		$$
+			\int \left( \frac{27}{x + 1} \frac{108}{(x - 2)^2} \right)\d x = 27\ln|x + 1| - 108(x-2)^{-1}
+		$$
+		
+		via two $u$-subs.
+	]]
 	
 ]]
 
@@ -256,76 +261,76 @@ The final thing to deal with is when there is an irreducible quadratic factor, l
 
 	@solution[[
 	
-	By partial fractions, we have
-	
-	$$
-		\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{Ax + B}{x^2 + 2} + \frac{C}{x + 1} + \frac{D}{(x + 1)^2}
+		By partial fractions, we have
 		
-		9 &= (Ax + B)(x+1)^2 + C(x^2 + 2)(x+1) + D(x^2 + 2)
+		$$
+			\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{Ax + B}{x^2 + 2} + \frac{C}{x + 1} + \frac{D}{(x + 1)^2}
+			
+			9 &= (Ax + B)(x+1)^2 + C(x^2 + 2)(x+1) + D(x^2 + 2)
+			
+			9 &= (Ax + B)(x^2 + 2x + 1) + C(x^3 + x^2 + 2x + 2) + D(x^2 + 2)
+			
+			9 &= (A + C)x^3 + (2A + B + C + D)x^2 + (A + 2B + 2C)x + (B + 2C + 2D),
+		$$
 		
-		9 &= (Ax + B)(x^2 + 2x + 1) + C(x^3 + x^2 + 2x + 2) + D(x^2 + 2)
+		which turns into
 		
-		9 &= (A + C)x^3 + (2A + B + C + D)x^2 + (A + 2B + 2C)x + (B + 2C + 2D),
-	$$
-	
-	which turns into
-	
-	$$
-		0 &= A + C
+		$$
+			0 &= A + C
+			
+			0 &= 2A + B + C + D
+			
+			0 &= A + 2B + 2C
+			
+			9 &= B + 2C + 2D.
+		$$
 		
-		0 &= 2A + B + C + D
+		The first equation becomes $A = -C$, so we get
 		
-		0 &= A + 2B + 2C
+		$$
+			0 &= B - C + D
+			
+			0 &= 2B + C
+			
+			9 &= B + 2C + 2D.
+		$$
 		
-		9 &= B + 2C + 2D.
-	$$
-	
-	The first equation becomes $A = -C$, so we get
-	
-	$$
-		0 &= B - C + D
+		Then $C = -2B$, so
 		
-		0 &= 2B + C
+		$$
+			0 &= 3B + D
+			
+			9 &= -3B + 2D.
+		$$
 		
-		9 &= B + 2C + 2D.
-	$$
-	
-	Then $C = -2B$, so
-	
-	$$
-		0 &= 3B + D
+		And since $D = -3B$, we finally have
 		
-		9 &= -3B + 2D.
-	$$
-	
-	And since $D = -3B$, we finally have
-	
-	$$
-		9 = -9B.
-	$$
-	
-	Therefore, $B = -1$, so $D = 3$, $C = 2$, and $A = -2$. Putting it all back together, we get
-	
-	$$
-		\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{-2x - 1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}
+		$$
+			9 = -9B.
+		$$
 		
-		\frac{9}{(x^2 + 2)(x+1)^2} &= -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}
+		Therefore, $B = -1$, so $D = 3$, $C = 2$, and $A = -2$. Putting it all back together, we get
 		
-		\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= \int \left( -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2} \right)\d x
+		$$
+			\frac{9}{(x^2 + 2)(x+1)^2} &= \frac{-2x - 1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}
+			
+			\frac{9}{(x^2 + 2)(x+1)^2} &= -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2}
+			
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= \int \left( -\frac{2x}{x^2 + 2} - \frac{1}{x^2 + 2} + \frac{2}{x + 1} + \frac{3}{(x + 1)^2} \right)\d x
+			
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= -\int \frac{2x}{x^2 + 2}\,\d x - \int \frac{1}{x^2 + 2}\,\d x + \int \frac{2}{x + 1}\,\d x + \int 3(x + 1)^{-2}\,\d x.
+		$$
 		
-		\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= -\int \frac{2x}{x^2 + 2}\,\d x - \int \frac{1}{x^2 + 2}\,\d x + \int \frac{2}{x + 1}\,\d x + \int 3(x + 1)^{-2}\,\d x.
-	$$
-	
-	The first term is a $u$-sub. Let $u = x^2 + 2$ so that $\d u = 2x\,\d x$. Now we have
-	
-	$$
-		\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= -\int \frac{1}{u}\,\d u - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C
+		The first term is a $u$-sub. Let $u = x^2 + 2$ so that $\d u = 2x\,\d x$. Now we have
 		
-		&= -\ln|u| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C
-		
-		&= -\ln|x^2 + 2| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C.
-	$$
-	
+		$$
+			\int \frac{9}{(x^2 + 2)(x+1)^2}\,\d x &= -\int \frac{1}{u}\,\d u - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C
+			
+			&= -\ln|u| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C
+			
+			&= -\ln|x^2 + 2| - \frac{1}{\sqrt{2}} \tan^{-1} \left( \frac{x}{\sqrt{2}} \right) + 2\ln |x+1| - (x + 1)^{-1} + C.
+		$$
+	]]
 ]]
 
 @exc[partial fractions with an irreducible quadratic factor][[
@@ -334,24 +339,24 @@ The final thing to deal with is when there is an irreducible quadratic factor, l
 
 	@solution[[
 	
-	The partial fraction expansion of this is
-	
-	$$
-		\frac{16}{x(x^2 + 4)^2} &= \frac{A}{x} + \frac{Bx + C}{x^2 + 4} + \frac{Dx + E}{(x^2 + 4)^2}
+		The partial fraction expansion of this is
 		
-		16 &= A(x^2 + 4)^2 + (Bx + C)(x)(x^2 + 4) + (Dx + E)(x)
+		$$
+			\frac{16}{x(x^2 + 4)^2} &= \frac{A}{x} + \frac{Bx + C}{x^2 + 4} + \frac{Dx + E}{(x^2 + 4)^2}
+			
+			16 &= A(x^2 + 4)^2 + (Bx + C)(x)(x^2 + 4) + (Dx + E)(x)
+			
+			16 &= (A + B)x^4 + Cx^3 + (8A + 4B + D)x^2 + (4C + E)x + 16A.
+		$$
 		
-		16 &= (A + B)x^4 + Cx^3 + (8A + 4B + D)x^2 + (4C + E)x + 16A.
-	$$
-	
-	This looks bad, but it's actually not that hard to solve. We end up with $A = 1$, $B = -1$, $C = 0$, $D = -4$, and $E = 0$. In total, the integral then becomes
-	
-	$$
-		\int \left( \frac{1}{x} - \frac{x}{x^2 + 4} - \frac{4x}{(x^2 + 4)^2} \right)\d x = \ln|x| - \frac{1}{2} \ln|x^2 + 4| + \frac{2}{x^2 + 4} + C,
-	$$
-	
-	using $u = x^2 + 4$.
-	
+		This looks bad, but it's actually not that hard to solve. We end up with $A = 1$, $B = -1$, $C = 0$, $D = -4$, and $E = 0$. In total, the integral then becomes
+		
+		$$
+			\int \left( \frac{1}{x} - \frac{x}{x^2 + 4} - \frac{4x}{(x^2 + 4)^2} \right)\d x = \ln|x| - \frac{1}{2} \ln|x^2 + 4| + \frac{2}{x^2 + 4} + C,
+		$$
+		
+		using $u = x^2 + 4$.
+	]]
 ]]
 
 

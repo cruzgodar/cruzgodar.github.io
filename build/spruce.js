@@ -405,3 +405,34 @@ export function solution(body)
 {
 	return /* html */`<div class="solution">${body}</div>`;
 }
+
+
+
+export function image(urls, invertible = false)
+{
+	const invertibleString = invertible ? " invertible" : "";
+
+	const imgString = urls.map(url =>
+	{
+		return /* html */`
+		<div class="notes-image${invertibleString}">
+			<img src="/graphics/general-icons/placeholder.png" data-src="${resolveUrl(url)}"></img>
+		</div>
+		`;
+	}).join("");
+
+	return /* html */`<div class="notes-images">${imgString}</div>`;
+}
+
+export function canvas(id)
+{
+	if (id)
+	{
+		return /* html */`<div class="desmos-border canvas-container"><canvas id="${id}-canvas" class="output-canvas"></canvas></div>`;
+	}
+
+	else
+	{
+		return "<canvas id=\"output-canvas\" class=\"output-canvas\"></canvas>";
+	}
+}

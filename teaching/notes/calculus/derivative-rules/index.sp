@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In section 1, we introduced limits, but the way we calculated them was often tedious or difficult. In sections 2 and 3, we introduced limit rules and continuous functions, both of which gave us tools to more easily and quickly calculate limits. After introducing derivatives in the previous section, it's time to improve on the initial way we calculate them (called the **limit definition of the derivative**). We'll build up a series of rules and techniques that let us differentiate many functions that were much too difficult with the limit definition.
@@ -37,9 +41,9 @@ In other words, to differentiate a function of the form $x^n$, bring down the po
 	Find $$d/dx[x^6]$$.
 
 	@solution[[
-	
-	To find this, we bring down the $6$ and decrease it by one into a $5$, to get $d/dx[x^6] = 6x^5$.
-	
+		
+		To find this, we bring down the $6$ and decrease it by one into a $5$, to get $d/dx[x^6] = 6x^5$.
+	]]
 ]]
 
 @exc[the derivative of $x^n$][[
@@ -80,34 +84,34 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 	@solution[[
 	
-	As before, we'll handle one derivative at a time.
-	
-	$$
-		d/dx[2x^2 - x] &= d/dx[2x^2] - d/dx[x]
+		As before, we'll handle one derivative at a time.
 		
-		&= 2d/dx[x^2] - d/dx[x]
+		$$
+			d/dx[2x^2 - x] &= d/dx[2x^2] - d/dx[x]
+			
+			&= 2d/dx[x^2] - d/dx[x]
+			
+			&= 2(2x^1) - (1x^0)
+			
+			&= 2(2x) - (1)
+			
+			&= 4x - 1.
+		$$
 		
-		&= 2(2x^1) - (1x^0)
+		Now we need to find the derivative of $4x - 1$.
 		
-		&= 2(2x) - (1)
+		$$
+			d/dx[4x - 1] &= d/dx[4x] - d/dx[1]
+			
+			&= 4d/dx[x] - d/dx[1]
+			
+			&= 4(1) - 0
+			
+			&= 4.
+		$$
 		
-		&= 4x - 1.
-	$$
-	
-	Now we need to find the derivative of $4x - 1$.
-	
-	$$
-		d/dx[4x - 1] &= d/dx[4x] - d/dx[1]
-		
-		&= 4d/dx[x] - d/dx[1]
-		
-		&= 4(1) - 0
-		
-		&= 4.
-	$$
-	
-	That was a whole lot easier than it was with the limit definition!
-	
+		That was a whole lot easier than it was with the limit definition!
+	]]
 ]]
 
 @exc[the Sum, Difference, and Constant Multiple Rules][[
@@ -147,25 +151,25 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 	what is the rate of change of the population after $t$ years?
 
 	@solution[[
-	
-	The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and Product Rules, we have
-	
-	$$
-		P'(t) &= d/dt[ 3000(3t^2 + 1)(t + 2) ]
 		
-		&= 3000 d/dt[ (3t^2 + 1)(t + 2) ]
+		The rate of change is just the derivative, so we want $P'(t)$. Using the constant multiple and Product Rules, we have
 		
-		&= 3000 \left( d/dt[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) d/dt[ (t + 2) ] \right)
+		$$
+			P'(t) &= d/dt[ 3000(3t^2 + 1)(t + 2) ]
+			
+			&= 3000 d/dt[ (3t^2 + 1)(t + 2) ]
+			
+			&= 3000 \left( d/dt[ (3t^2 + 1) ] (t + 2) + (3t^2 + 1) d/dt[ (t + 2) ] \right)
+			
+			&= 3000 \left( (6t)(t + 2) + (3t^2 + 1)(1) \right)
+			
+			&= 3000 \left( 6t^2 + 12t + 3t^2 + 1 \right)
+			
+			&= 3000 \left( 9t^2 + 12t + 1 \right).
+		$$
 		
-		&= 3000 \left( (6t)(t + 2) + (3t^2 + 1)(1) \right)
-		
-		&= 3000 \left( 6t^2 + 12t + 3t^2 + 1 \right)
-		
-		&= 3000 \left( 9t^2 + 12t + 1 \right).
-	$$
-	
-	While we could also have foiled out the initial expression, this is a nice demonstration of the Product Rule.
-	
+		While we could also have foiled out the initial expression, this is a nice demonstration of the Product Rule.
+	]]
 ]]
 
 @exc[the Product Rule][[
@@ -204,16 +208,16 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 
 	@solution[[
 	
-	The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
-	
-	$$
-		d/dx \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}
+		The derivative of the top (i.e. $2x^2$) is $2 \cdot 2x = 4x$, and the derivative of the bottom is $0 - 1 = -1$. Putting it all together, we get
 		
-		&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}
-		
-		&= \frac{4x - 2x^2}{(1-x)^2}.
-	$$
-	
+		$$
+			d/dx \left[\frac{2x^2}{1 - x}\right] &= \frac{(4x)(1-x) - (2x^2)(-1)}{(1-x)^2}
+			
+			&= \frac{4x - 4x^2 + 2x^2}{(1-x)^2}
+			
+			&= \frac{4x - 2x^2}{(1-x)^2}.
+		$$
+	]]
 ]]
 
 @exc[the Quotient Rule][[

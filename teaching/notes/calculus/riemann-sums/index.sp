@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 The concepts of Calculus I that we just reviewed --- limits and derivatives --- are incredibly useful, with wide-ranging applications across all areas of science. The derivative in particular is a tool that lets us compute the rate of change of a function; for example, the velocity of an object given its position. Frequently, though, we want to go the other way. How could we compute position from velocity?
@@ -142,48 +146,48 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 
 	@solution[[
 	
-	1. For this series, we can evaluate
-	
-	$$
-		1 + 2 + 3 + \cdots + 100 &= \sum_{i = 1}^{100} i
+		1. For this series, we can evaluate
 		
-		&= \frac{100(101)}{2}
+		$$
+			1 + 2 + 3 + \cdots + 100 &= \sum_{i = 1}^{100} i
+			
+			&= \frac{100(101)}{2}
+			
+			&= 5050.
+		$$
 		
-		&= 5050.
-	$$
-	
-	This is pretty impressive! Without this formula, we'd be stuck adding up 1 through 100 by hand.
-	
-	2. There is a slightly more complicated situation, but we can still take advantage of these formulas. Intuition says that we should try to use the one for the sum of squares, but that only works when we start at $1$ and go up from there. To figure out how to use it, we first need to write the sum in sigma notation.
-	
-	$$
-		-50^2 - 49^2 - 48^2 - \cdots - 20^2 = \sum_{i = 20}^{50} -i^2.
-	$$
-	
-	Since the sum of squares formula doesn't have a minus sign inside the sum, let's factor it out.
-	
-	$$
-		\sum_{i = 20}^{50} -i^2 = -\sum_{i = 20}^{50} i^2.
-	$$
-	
-	Now the trickiest step: we have a sum that starts at $20$, but we only have a formula for a sum that starts at $1$. But there's a way to place our sum in an equation that only involves sums that start at $1$.
-	
-	$$
-		\sum_{i = 1}^{19} i^2 + \sum_{i = 20}^{50} i^2 = \sum_{i = 1}^{50} i^2.
-	$$
-	
-	Now we can apply the formula to the first and third sums.
-	
-	$$
-		\frac{19(20)(39)}{6} + \sum_{i = 20}^{50} i^2 &= \frac{50(51)(101)}{6}
+		This is pretty impressive! Without this formula, we'd be stuck adding up 1 through 100 by hand.
 		
-		2470 + \sum_{i = 20}^{50} i^2 &= 42925
+		2. There is a slightly more complicated situation, but we can still take advantage of these formulas. Intuition says that we should try to use the one for the sum of squares, but that only works when we start at $1$ and go up from there. To figure out how to use it, we first need to write the sum in sigma notation.
 		
-		\sum_{i = 20}^{50} i^2 &= 40455.
-	$$
-	
-	We still have a minus sign to apply, so in total, $-50^2 - 49^2 - 48^2 - \cdots - 20^2 = -40455.$
-	
+		$$
+			-50^2 - 49^2 - 48^2 - \cdots - 20^2 = \sum_{i = 20}^{50} -i^2.
+		$$
+		
+		Since the sum of squares formula doesn't have a minus sign inside the sum, let's factor it out.
+		
+		$$
+			\sum_{i = 20}^{50} -i^2 = -\sum_{i = 20}^{50} i^2.
+		$$
+		
+		Now the trickiest step: we have a sum that starts at $20$, but we only have a formula for a sum that starts at $1$. But there's a way to place our sum in an equation that only involves sums that start at $1$.
+		
+		$$
+			\sum_{i = 1}^{19} i^2 + \sum_{i = 20}^{50} i^2 = \sum_{i = 1}^{50} i^2.
+		$$
+		
+		Now we can apply the formula to the first and third sums.
+		
+		$$
+			\frac{19(20)(39)}{6} + \sum_{i = 20}^{50} i^2 &= \frac{50(51)(101)}{6}
+			
+			2470 + \sum_{i = 20}^{50} i^2 &= 42925
+			
+			\sum_{i = 20}^{50} i^2 &= 40455.
+		$$
+		
+		We still have a minus sign to apply, so in total, $-50^2 - 49^2 - 48^2 - \cdots - 20^2 = -40455.$
+	]]
 ]]
 
 @exc[some special sums][[
@@ -192,24 +196,24 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 
 	@solution[[
 	
-	First, write this as a sum: $\sum_{i = 10}^{25} 2 i^3$. Factor out the $2$ to get $2\sum_{i = 10}^{25} i^3$ and place the remaining sum in an equation with sums starting at $1$:
-	
-	$$
-		\sum_{i = 1}^9 i^3 + \sum_{i = 10}^{25} i^3 = \sum_{i = 1}^{25} i^3.
-	$$
-	
-	Now use the formula for the sum of cubes.
-	
-	$$
-		\frac{9^2 \cdot 10^2}{4} + \sum_{i = 10}^{25} i^3 &= \frac{25^2 \cdot 26^2}{4}
+		First, write this as a sum: $\sum_{i = 10}^{25} 2 i^3$. Factor out the $2$ to get $2\sum_{i = 10}^{25} i^3$ and place the remaining sum in an equation with sums starting at $1$:
 		
-		2025 + \sum_{i = 10}^{25} i^3 &= 105625
+		$$
+			\sum_{i = 1}^9 i^3 + \sum_{i = 10}^{25} i^3 = \sum_{i = 1}^{25} i^3.
+		$$
 		
-		\sum_{i = 10}^{25} i^3 &= 103600
-	$$
-	
-	Now we just need to multiply this by $2$ to get $207200$.
-	
+		Now use the formula for the sum of cubes.
+		
+		$$
+			\frac{9^2 \cdot 10^2}{4} + \sum_{i = 10}^{25} i^3 &= \frac{25^2 \cdot 26^2}{4}
+			
+			2025 + \sum_{i = 10}^{25} i^3 &= 105625
+			
+			\sum_{i = 10}^{25} i^3 &= 103600
+		$$
+		
+		Now we just need to multiply this by $2$ to get $207200$.
+	]]
 ]]
 
 
@@ -267,19 +271,19 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 	Compute the upper Riemann sum with $5$ intervals for the function $g(t) = t^2$ on the interval $[-5, 5]$.
 
 	@solution[[
-	
-	If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we're doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
-	
-	@desmos{riemannSum2}
-	
-	The base of every rectangle is $\Delta t = 2$, so in total, the sum is
-	
-	$$
-		g(-5) \cdot 2 + g(-3) \cdot 2 + g(-1) \cdot 2 + g(3) \cdot 2 + g(5) \cdot 2 &= 50 + 18 + 2 + 18 + 50
 		
-		&= 138.
-	$$
-	
+		If we want to split $[-5, 5]$ into five equal subintervals, we need the partition $\{-5, -3, -1, 1, 3, 5\}$. Now we're doing an upper sum, so for each of the five subintervals, we need to find the $t$-value that maximizes the function. Working this through, we find that the points are $-5, -3, -1, 3, 5$. The $-1$ could also be taken to be $t = 1$, since they both have $g(t) = 1$.
+		
+		@desmos{riemannSum2}
+		
+		The base of every rectangle is $\Delta t = 2$, so in total, the sum is
+		
+		$$
+			g(-5) \cdot 2 + g(-3) \cdot 2 + g(-1) \cdot 2 + g(3) \cdot 2 + g(5) \cdot 2 &= 50 + 18 + 2 + 18 + 50
+			
+			&= 138.
+		$$
+	]]	
 ]]
 
 @exc[Riemann sum][[
@@ -288,12 +292,12 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 
 	@solution[[
 	
-	The partition is the same as the previous example, and the $x_i^*$ are the left endpoints, which are $-5, -3, -1, 1, 3$. Therefore, we want
-	
-	$$
-		(-5)^4 \cdot 2 + (-3)^4 \cdot 2 + (-1)^4 \cdot 2 + 1^4 \cdot 2 + 3^4 \cdot 2 = 1578.
-	$$
-	
+		The partition is the same as the previous example, and the $x_i^*$ are the left endpoints, which are $-5, -3, -1, 1, 3$. Therefore, we want
+		
+		$$
+			(-5)^4 \cdot 2 + (-3)^4 \cdot 2 + (-1)^4 \cdot 2 + 1^4 \cdot 2 + 3^4 \cdot 2 = 1578.
+		$$
+	]]
 ]]
 
 

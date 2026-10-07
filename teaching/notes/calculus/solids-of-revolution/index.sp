@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Fundamentally, definite integrals calculate area under curves. If you stick around to Calculus IV, you'll learn how to use integrals to calculate volume under surfaces too, which turns out to be the natural way to extend them to three dimensions. But right now, we can use the kind of integrals we've already developed to calculate certain volumes, ones called **solids of revolution**.
@@ -52,16 +56,16 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 
 	@solution[[
 	
-	This solid is plotted in the previous graph. Applying the disk method, we have
-	
-	$$
-		\int_1^5 \pi \left( \frac{3}{x} \right)^2\,\d x &= \int_1^5 \frac{9\pi}{x^2}\,\d x
+		This solid is plotted in the previous graph. Applying the disk method, we have
 		
-		&= \left. \left[ -\frac{9\pi}{x} \right] \right|_1^5
-		
-		&= -\frac{9\pi}{5} + 9\pi.
-	$$
-	
+		$$
+			\int_1^5 \pi \left( \frac{3}{x} \right)^2\,\d x &= \int_1^5 \frac{9\pi}{x^2}\,\d x
+			
+			&= \left. \left[ -\frac{9\pi}{x} \right] \right|_1^5
+			
+			&= -\frac{9\pi}{5} + 9\pi.
+		$$
+	]]	
 ]]
 
 @exc[the disk method][[
@@ -69,19 +73,19 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
 
 	@solution[[
-	
-	We have
-	
-	$$
-		\int_0^\pi \pi (\sin(x) + 2)^2\,\d x &= \int_0^\pi (\sin^2(x) + 2\sin(x) + 4)\,\d x
 		
-		&= \pi \int_0^\pi \left(\frac{1}{2} - \frac{1}{2}\cos(2x) + 2\sin(x) + 4\right)\d x
+		We have
 		
-		&= \pi \left. \left[ \frac{9}{2}x - \frac{1}{4}\sin(2x) - 2\cos(x) \right] \right|_0^\pi
-		
-		&= 2\pi + \frac{9\pi^2}{2} + 2\pi.
-	$$
-	
+		$$
+			\int_0^\pi \pi (\sin(x) + 2)^2\,\d x &= \int_0^\pi (\sin^2(x) + 2\sin(x) + 4)\,\d x
+			
+			&= \pi \int_0^\pi \left(\frac{1}{2} - \frac{1}{2}\cos(2x) + 2\sin(x) + 4\right)\d x
+			
+			&= \pi \left. \left[ \frac{9}{2}x - \frac{1}{4}\sin(2x) - 2\cos(x) \right] \right|_0^\pi
+			
+			&= 2\pi + \frac{9\pi^2}{2} + 2\pi.
+		$$
+	]]
 ]]
 
 
@@ -96,18 +100,18 @@ That wasn't so bad! We can also use the same method for functions revolved about
 
 	@solution[[
 	
-	First, we need to rewrite this as a function of $y$: $x = y^{1/3}$. Then we have
-	
-	$$
-		\int_0^2 \pi \left( y^{1/3} \right)^2\,\d y &= \int_0^2 \pi y^{2/3}\,\d y
+		First, we need to rewrite this as a function of $y$: $x = y^{1/3}$. Then we have
 		
-		&= \left. \left[ \pi \frac{y^{5/3}}{5/3} \right] \right|_0^2
+		$$
+			\int_0^2 \pi \left( y^{1/3} \right)^2\,\d y &= \int_0^2 \pi y^{2/3}\,\d y
+			
+			&= \left. \left[ \pi \frac{y^{5/3}}{5/3} \right] \right|_0^2
+			
+			&= \pi \frac{2^{5/3}}{5/3}.
+		$$
 		
-		&= \pi \frac{2^{5/3}}{5/3}.
-	$$
-	
-	@desmos{diskMethodYAxis}
-	
+		@desmos{diskMethodYAxis}
+	]]
 ]]
 
 @exc[the disk method, again][[
@@ -116,14 +120,14 @@ That wasn't so bad! We can also use the same method for functions revolved about
 
 	@solution[[
 	
-	To use the disk method, we integrate $\d y$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
-	
-	$$
-		\int_1^2 \pi \left( \frac{1}{y} \right)^2\,\d y &= \left. \left[ -\pi \frac{1}{y} \right] \right|_1^2
+		To use the disk method, we integrate $\d y$, so first we rewrite $y = \frac{1}{x}$ as $x = \frac{1}{y}$. Then the right side of the region is given by $x = \frac{1}{y}$ and the left side by $x = 0$, so in total, we have
 		
-		&= \frac{\pi}{2}.
-	$$
-	
+		$$
+			\int_1^2 \pi \left( \frac{1}{y} \right)^2\,\d y &= \left. \left[ -\pi \frac{1}{y} \right] \right|_1^2
+			
+			&= \frac{\pi}{2}.
+		$$
+	]]
 ]]
 
 
@@ -138,24 +142,24 @@ The disk method can be extended to work with problems where we're taking the dif
 
 	@solution[[
 	
-	Let's visualize what's going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that's going to be rotated.
-	
-	So what does this look like when it's revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
-	
-	@desmos{diskMethodXAxis3}
-	
-	In order to find the area of one of those slices, we just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
-	
-	$$
-		\int_0^1 \left( \pi (\sqrt{x})^2 - \pi x^2 \right)\d x &= \int_0^1 \left( \pi x - \pi x^2 \right)\d x
+		Let's visualize what's going on here. Just like in the previous section, we set the two functions equal to get $x = 0$ or $x = 1$, and drawing a 2D plot, we can see the area that's going to be rotated.
 		
-		&= \left. \left[ \pi \frac{x^2}{2} - \pi \frac{x^3}{3} \right] \right|_0^1
+		So what does this look like when it's revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
 		
-		&= \frac{\pi}{2} - \frac{\pi}{3}
+		@desmos{diskMethodXAxis3}
 		
-		&= \frac{\pi}{6}.
-	$$
-	
+		In order to find the area of one of those slices, we just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
+		
+		$$
+			\int_0^1 \left( \pi (\sqrt{x})^2 - \pi x^2 \right)\d x &= \int_0^1 \left( \pi x - \pi x^2 \right)\d x
+			
+			&= \left. \left[ \pi \frac{x^2}{2} - \pi \frac{x^3}{3} \right] \right|_0^1
+			
+			&= \frac{\pi}{2} - \frac{\pi}{3}
+			
+			&= \frac{\pi}{6}.
+		$$
+	]]
 ]]
 
 @exc[the disk method with a hole][[
@@ -164,16 +168,16 @@ The disk method can be extended to work with problems where we're taking the dif
 
 	@solution[[
 	
-	Let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
-	
-	$$
-		\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\d y &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\d y
+		Let's first rewrite this in terms of $y$: $x = \frac{1}{\sqrt{y}}$. Then the region is bounded on the right by $x = 2$ and on the left by $x = \frac{1}{\sqrt{y}}$. Those two meet when $\frac{1}{\sqrt{y}} = 2$, so $y = \sqrt{\frac{1}{2}} = \frac{1}{4}$. Then the integral becomes
 		
-		&= \left. \left[ 4\pi y - \pi \ln(y) \right] \right|_{1/4}^1
-		
-		&= 3\pi + \pi\ln\left(\frac{1}{4}\right).
-	$$
-	
+		$$
+			\int_{1/4}^1 \left( \pi (2)^2 - \pi \left(\frac{1}{\sqrt{y}}\right)^2 \right)\d y &= \int_{1/4}^1 \left( 4\pi - \frac{\pi}{y} \right)\d y
+			
+			&= \left. \left[ 4\pi y - \pi \ln(y) \right] \right|_{1/4}^1
+			
+			&= 3\pi + \pi\ln\left(\frac{1}{4}\right).
+		$$
+	]]
 ]]
 
 
@@ -220,18 +224,18 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 	@solution[[
 	
-	Following the previous instructions, the first step is to notice that we're revolving about the $y$-axis, so the disk method will integrate $\d y$ and the shell method will integrate $\d x$. Since our function is currently a function of $x$, we'll try the shell method first.
-	
-	@desmos{shellMethodYAxis2}
-	
-	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
-	
-	$$
-		\int_1^3 2\pi x \left( \frac{1}{x} \right)\d x &= \int_1^3 2\pi\,\d x
+		Following the previous instructions, the first step is to notice that we're revolving about the $y$-axis, so the disk method will integrate $\d y$ and the shell method will integrate $\d x$. Since our function is currently a function of $x$, we'll try the shell method first.
 		
-		&= 4\pi.
-	$$
-	
+		@desmos{shellMethodYAxis2}
+		
+		To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
+		
+		$$
+			\int_1^3 2\pi x \left( \frac{1}{x} \right)\d x &= \int_1^3 2\pi\,\d x
+			
+			&= 4\pi.
+		$$
+	]]
 ]]
 
 @exc[the shell method][[
@@ -240,14 +244,14 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 	@solution[[
 	
-	For this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
-	
-	$$
-		2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\d x &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2
+		For this one, we look to the intersection of $2x - x^2 + 2$ and $x$ to find the limits on $x$: it gives $x = 2$, so we want to integrate from $0$ to $2$. Now a vertical line drawn in the region goes from $y = x$ up to $y = 2x - x^2 + 2$, so its height is $2x - x^2 + 2 - x = x - x^2 + 2$. Therefore, the area of a shell at radius $x$ is $2\pi x (x - x^2 + 2)$. Our integral then becomes
 		
-		&= \frac{8}{3} - \frac{16}{4} + 4.
-	$$
-	
+		$$
+			2\pi \int_0^2 \left( x^2 - x^3 + 2x \right)\d x &= \left. \left[ \frac{x^3}{3} - \frac{x^4}{4} + x^2 \right] \right|_0^2
+			
+			&= \frac{8}{3} - \frac{16}{4} + 4.
+		$$
+	]]
 ]]
 
 
@@ -258,28 +262,28 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 	@solution[[
 	
-	Since we're revolving about the $x$-axis, the disk method with integrate $\d x$ and the shell method $\d y$. Our functions are in terms of $x$, so let's do the disk method first --- it'll be easier to set up.
-	
-	@desmos{diskMethodXAxis4}
-	
-	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
-	
-	$$
-		\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\d x.
-	$$
-	
-	It's good that we don't need to continue with this, because we have no idea how to integrate $(\ln(x))^2$! $u$-sub doesn't work, and we have no other options at the moment. Let's move on to the shell method and see if it's any different.
-	
-	@desmos{shellMethodXAxis}
-	
-	Since it integrates $\d y$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that's left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ --- and that's just $\ln(e^2) = 2$. Finally, we now have
-	
-	$$
-		\int_1^2 2\pi y \left( e^2 - e^y \right)\d y.
-	$$
-	
-	We also don't know how to handle the integral of $ye^y$! We will soon, though, and for now, setting up the integrals is the bulk of the work.
-	
+		Since we're revolving about the $x$-axis, the disk method with integrate $\d x$ and the shell method $\d y$. Our functions are in terms of $x$, so let's do the disk method first --- it'll be easier to set up.
+		
+		@desmos{diskMethodXAxis4}
+		
+		We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
+		
+		$$
+			\int_e^{e^2} \pi \left( (\ln(x))^2 - 1 \right)\d x.
+		$$
+		
+		It's good that we don't need to continue with this, because we have no idea how to integrate $(\ln(x))^2$! $u$-sub doesn't work, and we have no other options at the moment. Let's move on to the shell method and see if it's any different.
+		
+		@desmos{shellMethodXAxis}
+		
+		Since it integrates $\d y$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that's left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ --- and that's just $\ln(e^2) = 2$. Finally, we now have
+		
+		$$
+			\int_1^2 2\pi y \left( e^2 - e^y \right)\d y.
+		$$
+		
+		We also don't know how to handle the integral of $ye^y$! We will soon, though, and for now, setting up the integrals is the bulk of the work.
+	]]
 ]]
 
 @exc[the shell method, again][[
@@ -288,18 +292,18 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 	@solution[[
 	
-	For the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
-	
-	$$
-		\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\d y.
-	$$
-	
-	For the shell method, we need to take the other intersection point to find the left $x$-bound: it's when $x^2 = 1$, so $x = 1$. A vertical slice begins at $y = 1$ and ends at $y = x^2$, so we have
-	
-	$$
-		\int_1^2 2\pi x (x^2 - 1)\,\d x.
-	$$
-	
+		For the disk method, we need to get everything in terms of $y$: $x = \sqrt{y}$. Then the region is bounded to the right by $x = 2$ and to the left by $x = \sqrt{y}$, and the top $y$-coordinate is given by the intersection of $\sqrt{y}$ and $2$, so $y = 4$. Then the integral becomes
+		
+		$$
+			\int_1^4 \left( \pi (2^2) - \pi (\sqrt{y})^2 \right)\d y.
+		$$
+		
+		For the shell method, we need to take the other intersection point to find the left $x$-bound: it's when $x^2 = 1$, so $x = 1$. A vertical slice begins at $y = 1$ and ends at $y = x^2$, so we have
+		
+		$$
+			\int_1^2 2\pi x (x^2 - 1)\,\d x.
+		$$
+	]]
 ]]
 
 
@@ -314,34 +318,34 @@ As one final example, let's take a look at a solid of revolution about a line th
 
 	@solution[[
 	
-	The key observation is that revolving about the line $x = 6$ is extremely similar to revolving about $x = 0$, i.e. the $y$-axis. The disk method will still produce a vertical stack of pancakes and the shell method a sequence of nested vertical cylinders. The only difference is where they're centered, and therefore their radii.
-	
-	@desmos{aDifferentAxis1}
-	
-	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in orange the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
-	
-	$$
-		\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\d y.
-	$$
-	
-	Notice the role of 6 in the integral: if we were revolving about the $y$-axis, then the circles' radii would just be $\sqrt{y}$ and $4$, since that's their distance from the $y$-axis, but now we need their horizontal distance away from the line $x = 6$.
-	
-	The shell method also functions a lot like usual: we're taking slices $\d x$, which are vertical lines.
-	
-	@desmos{aDifferentAxis2}
-	
-	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the orange one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
-	
-	$$
-		2\pi(6 - x)(x^2),
-	$$
-	
-	and since our $x$-values range from $0$ to $4$, the shell method integral becomes
-	
-	$$
-		\int_0^4 2\pi(6 - x)(x^2)\,\d x.
-	$$
-	
+		The key observation is that revolving about the line $x = 6$ is extremely similar to revolving about $x = 0$, i.e. the $y$-axis. The disk method will still produce a vertical stack of pancakes and the shell method a sequence of nested vertical cylinders. The only difference is where they're centered, and therefore their radii.
+		
+		@desmos{aDifferentAxis1}
+		
+		Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in orange the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
+		
+		$$
+			\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\d y.
+		$$
+		
+		Notice the role of 6 in the integral: if we were revolving about the $y$-axis, then the circles' radii would just be $\sqrt{y}$ and $4$, since that's their distance from the $y$-axis, but now we need their horizontal distance away from the line $x = 6$.
+		
+		The shell method also functions a lot like usual: we're taking slices $\d x$, which are vertical lines.
+		
+		@desmos{aDifferentAxis2}
+		
+		These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the orange one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
+		
+		$$
+			2\pi(6 - x)(x^2),
+		$$
+		
+		and since our $x$-values range from $0$ to $4$, the shell method integral becomes
+		
+		$$
+			\int_0^4 2\pi(6 - x)(x^2)\,\d x.
+		$$
+	]]
 ]]
 
 

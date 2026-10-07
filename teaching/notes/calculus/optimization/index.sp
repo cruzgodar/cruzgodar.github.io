@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 With implicit differentiation behind us, we can move on to the applications of differentiation: not just what they can do in terms of slopes, but also other graph features. We'll begin with arguably the most useful thing derivatives are used for: optimizing functions.
@@ -56,38 +60,38 @@ All local extrema occur at critical points, but not all critical points are extr
 
 	@solution[[
 	
-	Let's start by differentiating: $f'(x) = 5x^4 - 9x^2 + 1$. The first kind of critical point is when $f'(x) = 0$, so let's solve that equation. It might have been a little while since you've solved something quite like this, but the idea is that when there are no $x^3$ or $x$ terms, we can use the quadratic formula on $x^2$:
-	
-	$$
-		5x^4 - 9x^2 + 1 &= 5(x^2)^2 - 9x^2 + 1
+		Let's start by differentiating: $f'(x) = 5x^4 - 9x^2 + 1$. The first kind of critical point is when $f'(x) = 0$, so let's solve that equation. It might have been a little while since you've solved something quite like this, but the idea is that when there are no $x^3$ or $x$ terms, we can use the quadratic formula on $x^2$:
 		
-		x^2 &= \frac{9 \pm \sqrt{81 - 20}}{10} \approx 1.681, .119
+		$$
+			5x^4 - 9x^2 + 1 &= 5(x^2)^2 - 9x^2 + 1
+			
+			x^2 &= \frac{9 \pm \sqrt{81 - 20}}{10} \approx 1.681, .119
+			
+			x &\approx \pm \sqrt{1.681}, \pm \sqrt{.119}
+			
+			&\approx \pm 1.297, \pm .345.
+		$$
 		
-		x &\approx \pm \sqrt{1.681}, \pm \sqrt{.119}
+		On top of these, we need to add in any points where the derivative doesn't exist --- things like dividing by zero, taking the square root of a negative number, or taking the log of a nonpositive number. Since this derivative is just a polynomial, there are no points where it's undefined. The last thing to take into account is the endpoints of the interval --- i.e. $-2$ and $1.5$.
 		
-		&\approx \pm 1.297, \pm .345.
-	$$
-	
-	On top of these, we need to add in any points where the derivative doesn't exist --- things like dividing by zero, taking the square root of a negative number, or taking the log of a nonpositive number. Since this derivative is just a polynomial, there are no points where it's undefined. The last thing to take into account is the endpoints of the interval --- i.e. $-2$ and $1.5$.
-	
-	At the moment, we don't have a way of differentiating maxima from minima from saddle points. Let's look at all the critical values and select the largest and smallest --- these are good candidates for the global max and min.
-	
-	$$f(-2) = -10$$
-	
-	$$f(-1.297) = 1.578$$
-	
-	$$f(-.345) = -.227$$
-	
-	$$f(.345) = .227$$
-	
-	$$f(1.297) = -1.578$$
-	
-	$$f(1.5) = 1.031$$.
-	
-	Assuming the function has a global max and min, the max is at $x = -1.297$ and the min is at $x = -2$. Looking at the graph backs this up.
-	
-	@desmos{criticalPoints}
-	
+		At the moment, we don't have a way of differentiating maxima from minima from saddle points. Let's look at all the critical values and select the largest and smallest --- these are good candidates for the global max and min.
+		
+		$$f(-2) = -10$$
+		
+		$$f(-1.297) = 1.578$$
+		
+		$$f(-.345) = -.227$$
+		
+		$$f(.345) = .227$$
+		
+		$$f(1.297) = -1.578$$
+		
+		$$f(1.5) = 1.031$$.
+		
+		Assuming the function has a global max and min, the max is at $x = -1.297$ and the min is at $x = -2$. Looking at the graph backs this up.
+		
+		@desmos{criticalPoints}
+	]]
 ]]
 
 @exc[critical points][[
@@ -146,24 +150,24 @@ Knowing the concavity of the graph helps us classify critical points: intuitivel
 
 	@solution[[
 	
-	The second derivative is
-	
-	$$
-		d/dx[5x^4 - 9x^2 + 1] = 20x^3 - 18x.
-	$$
-	
-	The second derivative test only works on the critical points where $f'(x) = 0$, so only $x = \pm 1.297$ and $x = \pm .345$. Plugging in our critical points from before, we have
-	
-	$$f''(-1.297) = -20.291$$
-	
-	$$f''(-.345) = 5.389$$
-	
-	$$f''(.345) = -5.389$$
-	
-	$$f''(1.297) = 20.291$$
-	
-	Therefore, the first and third are local maxima and the second and fourth are local minima.
-	
+		The second derivative is
+		
+		$$
+			d/dx[5x^4 - 9x^2 + 1] = 20x^3 - 18x.
+		$$
+		
+		The second derivative test only works on the critical points where $f'(x) = 0$, so only $x = \pm 1.297$ and $x = \pm .345$. Plugging in our critical points from before, we have
+		
+		$$f''(-1.297) = -20.291$$
+		
+		$$f''(-.345) = 5.389$$
+		
+		$$f''(.345) = -5.389$$
+		
+		$$f''(1.297) = 20.291$$
+		
+		Therefore, the first and third are local maxima and the second and fourth are local minima.
+	]]
 ]]
 
 
@@ -200,20 +204,20 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 
 	@solution[[
 	
-	To find candidates for extrema, we first find the critical points. That means $g'(t) = 6t^5 - 4t^3 = 0$, so $2t^3(3t^2 - 2)$. Therefore, we have $t = 0$ and $t = \pm \sqrt{2 / 3}$. There are no places where the derivative is undefined and the function is defined on all real numbers, so there is no boundary to take critical points from.
-	
-	The simplest way to classify critical points is with the second derivative test. We have $g''(t) = 30t^4 - 12t^2$, so $g''(0) = 0$ and
-	
-	$$
-		g\left(\sqrt{\frac{2}{3}}\right) = \left(-\sqrt{\frac{2}{3}}\right) = \frac{16}{3}.
-	$$
-	
-	We can immediately classify those second two as local minima, since the graph is concave up there. On the other hand, the second derivative test is inconclusive at $t = 0$.
-	
-	In order to figure out what's going on there, we can use the first derivative test. Since $\sqrt{2/3} \approx .816$, we just need to pick points in between $0$ and $.816$ and between $0$ and $-.816$. Let's just take $\pm .5$. Evaluating $g'$ there, we have $g'(-.5) = .3125$ and $g'(.5) = -.3125$. Since the derivative is positive before $t = 0$ and negative after, $t = 0$ must be a local maximum of $g$.
-	
-	@desmos{firstDerivativeTest}
-	
+		To find candidates for extrema, we first find the critical points. That means $g'(t) = 6t^5 - 4t^3 = 0$, so $2t^3(3t^2 - 2)$. Therefore, we have $t = 0$ and $t = \pm \sqrt{2 / 3}$. There are no places where the derivative is undefined and the function is defined on all real numbers, so there is no boundary to take critical points from.
+		
+		The simplest way to classify critical points is with the second derivative test. We have $g''(t) = 30t^4 - 12t^2$, so $g''(0) = 0$ and
+		
+		$$
+			g\left(\sqrt{\frac{2}{3}}\right) = \left(-\sqrt{\frac{2}{3}}\right) = \frac{16}{3}.
+		$$
+		
+		We can immediately classify those second two as local minima, since the graph is concave up there. On the other hand, the second derivative test is inconclusive at $t = 0$.
+		
+		In order to figure out what's going on there, we can use the first derivative test. Since $\sqrt{2/3} \approx .816$, we just need to pick points in between $0$ and $.816$ and between $0$ and $-.816$. Let's just take $\pm .5$. Evaluating $g'$ there, we have $g'(-.5) = .3125$ and $g'(.5) = -.3125$. Since the derivative is positive before $t = 0$ and negative after, $t = 0$ must be a local maximum of $g$.
+		
+		@desmos{firstDerivativeTest}
+	]]
 ]]
 
 @exc[critical points][[

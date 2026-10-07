@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 One of the most widely used applications of implicit differentiation is to relate multiple quantities that are changing at once. Let's start from something familiar to get our bearings.
@@ -55,48 +59,48 @@ The technology behind related rates is just implicit differentiation, but it can
 
 	@solution[[
 	
-	It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 30, so we'll fix the bird's $y$-coordinate at 30. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
-	
-	So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean Theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
-	
-	$$
-		s = \sqrt{x^2 + 30^2}.
-	$$
-	
-	@desmos{relatedRates}
-	
-	Now we can differentiate both sides implicitly:
-	
-	$$
-		ds/dt = \frac{1}{2} (x^2 + 30^2)^{-1/2} \cdot 2x \cdot dx/dt
-	$$
-	
-	We're being asked to find $ds/dt$ when $s = 50$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
-	
-	$$
-		s &= \sqrt{x^2 + 30^2}
+		It's helpful to draw a picture for almost all related rates problems. Since we're measuring from your position, let's just call that $(0, 0)$. The bird is always at height 30, so we'll fix the bird's $y$-coordinate at 30. Since it's flying forward at 10 feet per second, the $x$-coordinate is $x(t) = 10t$, $t$ seconds after it passes overhead.
 		
-		50 &= \sqrt{x^2 + 900}
+		So how do we find $s(t)$? To find the distance between two points in general, we just use the Pythagorean Theorem. These points, along with $(x(t), 0)$, form a right triangle, so the distance $s$ is
 		
-		2500 &= x^2 + 900
+		$$
+			s = \sqrt{x^2 + 30^2}.
+		$$
 		
-		1600 &= x^2
+		@desmos{relatedRates}
 		
-		x &= \sqrt{1600}
+		Now we can differentiate both sides implicitly:
 		
-		x &= 40
-	$$
-	
-	Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $dx/dt = 10$. Therefore,
-	
-	$$
-		ds/dt &= \frac{1}{2} (40^2 + 30^2)^{-1/2} \cdot 2(40) \cdot 10
+		$$
+			ds/dt = \frac{1}{2} (x^2 + 30^2)^{-1/2} \cdot 2x \cdot dx/dt
+		$$
+		
+		We're being asked to find $ds/dt$ when $s = 50$. Unfortunately, we need to know $x$ to find that, but since we have an equation for $s$ in terms of $x$, we can solve for it.
+		
+		$$
+			s &= \sqrt{x^2 + 30^2}
+			
+			50 &= \sqrt{x^2 + 900}
+			
+			2500 &= x^2 + 900
+			
+			1600 &= x^2
+			
+			x &= \sqrt{1600}
+			
+			x &= 40
+		$$
+		
+		Now we can substitute back into the derivative formula. Since the bird is always moving horizontally at 10 feet per second, $dx/dt = 10$. Therefore,
+		
+		$$
+			ds/dt &= \frac{1}{2} (40^2 + 30^2)^{-1/2} \cdot 2(40) \cdot 10
 
-		&= 8
-	$$
-	
-	This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.
-	
+			&= 8
+		$$
+		
+		This is a pretty reasonable answer! The diagonal distance should never be increasing faster than the horizontal distance, but the farther away the bird is, the more those two rates should approach one another.
+	]]
 ]]
 
 @exc[related rates][[
@@ -105,60 +109,60 @@ The technology behind related rates is just implicit differentiation, but it can
 
 	@solution[[
 
-	Let's begin by getting equations for the relevant quantities in terms of similar variables. Both volume and surface area are functions of radius:
+		Let's begin by getting equations for the relevant quantities in terms of similar variables. Both volume and surface area are functions of radius:
 
-	$$
-		V(r) &= \frac{4}{3}\pi r^3
+		$$
+			V(r) &= \frac{4}{3}\pi r^3
 
-		S(r) &= 4\pi r^2.
-	$$
+			S(r) &= 4\pi r^2.
+		$$
 
-	Differentiating with respect to $t$,
+		Differentiating with respect to $t$,
 
-	$$
-		dV/dt &= 4\pi r^2 dr/dt
+		$$
+			dV/dt &= 4\pi r^2 dr/dt
 
-		dS/dt &= 8\pi r dr/dt.
-	$$
+			dS/dt &= 8\pi r dr/dt.
+		$$
 
-	We're trying to solve for $dS/dt$ when $t = 4$, so we need to find both $r$ and $dr/dt$. We can find that
-	
-	$$
-		\left. dV/dt \right|_{t = 4} = 32 \cdot 2^{-4} = 2,
-	$$
+		We're trying to solve for $dS/dt$ when $t = 4$, so we need to find both $r$ and $dr/dt$. We can find that
+		
+		$$
+			\left. dV/dt \right|_{t = 4} = 32 \cdot 2^{-4} = 2,
+		$$
 
-	and we also know that $V(4) = 36\pi$, which lets us find $r$:
+		and we also know that $V(4) = 36\pi$, which lets us find $r$:
 
-	$$
-		\frac{4}{3}\pi r^3 &= 36\pi
+		$$
+			\frac{4}{3}\pi r^3 &= 36\pi
 
-		\pi r^3 &= 27\pi
+			\pi r^3 &= 27\pi
 
-		r &= 3.
-	$$
+			r &= 3.
+		$$
 
-	Plugging this back into our equation, we have
+		Plugging this back into our equation, we have
 
-	$$
-		dV/dt &= 4\pi r^2 dr/dt
+		$$
+			dV/dt &= 4\pi r^2 dr/dt
 
-		2 &= 4\pi \cdot 9 \cdot dr/dt
+			2 &= 4\pi \cdot 9 \cdot dr/dt
 
-		dr/dt &= \frac{1}{18\pi},
-	$$
+			dr/dt &= \frac{1}{18\pi},
+		$$
 
-	and so
+		and so
 
-	$$
-		dS/dt &= 8\pi r dr/dt
+		$$
+			dS/dt &= 8\pi r dr/dt
 
-		&= 8\pi \cdot 3 \cdot \frac{1}{18\pi}
+			&= 8\pi \cdot 3 \cdot \frac{1}{18\pi}
 
-		&= \frac{4}{3}.
-	$$
+			&= \frac{4}{3}.
+		$$
 
-	Therefore, the surface area is increasing at a rate of $$\frac{4}{3}\,\frac{\text{in}^2}{\text{s}}$$.
-	
+		Therefore, the surface area is increasing at a rate of $$\frac{4}{3}\,\frac{\text{in}^2}{\text{s}}$$.
+	]]
 ]]
 
 Related rates can also handle relationships between very different types of quantities, like distances and angles!

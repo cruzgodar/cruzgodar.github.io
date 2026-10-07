@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We've informally defined $\lim_{x \to a} f(x)$ as being the value we would expect $f(a)$ to be, regardless of what $f(a)$ actually is, or even if it's defined at all. When the value we expect to be there is what's actually there, we have a special term for the function.
@@ -29,9 +33,9 @@ The simplest way to describe continuous functions is that they're the ones whose
 	@desmos{continuityExample}
 
 	@solution[[
-	
-	This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to -3} f(x)$ DNE, so it's not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it's not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it's not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
-
+		
+		This function has three kinds of discontinuities: at $x = -3$, $f(-3) = -1$ but $\lim_{x \to -3} f(x)$ DNE, so it's not continuous there. At $x = 0$, $f(0) = 1$, but $\lim_{x \to 0} f(x) = 0$, so it's not continuous there either. Finally, at $x = 4$, $f(4)$ is undefined, and $\lim_{x \to 4} f(x) = \infty$, so it's not continuous there. In total, $f$ is continuous everywhere except for $x = -3$, $x = 0$, and $x = 4$.
+	]]
 ]]
 
 @exc[continuity][[
@@ -135,20 +139,20 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 
 	@solution[[
 	
-	Since all of the functions present are continuous --- including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
-	
-	$$
-		\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} &= \frac{\cos(0^2) - 0}{2 - \tan(0)}
+		Since all of the functions present are continuous --- including the compositions like $\cos(x^2)$, we can just plug in $x = 0$:
 		
-		&= \frac{1 - 0}{2 - 0}
+		$$
+			\lim_{x \to 0} \frac{\cos(x^2) - x}{2 - \tan(x)} &= \frac{\cos(0^2) - 0}{2 - \tan(0)}
+			
+			&= \frac{1 - 0}{2 - 0}
+			
+			&= \frac{1}{2}.
+		$$
 		
-		&= \frac{1}{2}.
-	$$
-	
-	@desmos{continuityLimit}
-	
-	This is a really complicated-looking function, and it's nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can't plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
-
+		@desmos{continuityLimit}
+		
+		This is a really complicated-looking function, and it's nice to be able to calculate a limit of it without making a table or writing out long-winded limit rules. The only place we can't plug in a value of $x$ to take a limit is when it would make the denominator zero, since then the entire function is undefined and therefore not continuous.
+	]]
 ]]
 
 
@@ -194,11 +198,11 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 	Show that $f(x) = x - \cos(x)$ has at least one zero.
 
 	@solution[[
-	
-	This is a pretty interesting question --- how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don't. Rather than find a particular value that works, we'll use the IVT to show that one must exist, even if we can't say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let's try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, the IVT guarantees an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
-	
-	@desmos{ivtExample2}
-	
+		
+		This is a pretty interesting question --- how are you supposed to find a value of $x$ that makes $x = \cos(x)$? The answer is... you don't. Rather than find a particular value that works, we'll use the IVT to show that one must exist, even if we can't say exactly what it is. Looking back at the theorem statement, we want to pick two points, one with a $y$-value larger than $0$, and the other with a $y$-value less than $0$. Then the IVT will guarantee a point in-between them with $y$-value equal to zero. Let's try some sample values. $x = 0$ gives us $0 - \cos(0) = -1$, and $x = \frac{\pi}{2}$, the next value that produces a simple output from cosine, gives us $\frac{\pi}{2} - \cos\left(\frac{\pi}{2}\right) = \frac{\pi}{2}$. Since $0$ is a $y$-value in-between those, the IVT guarantees an $x$-value between $0$ and $\frac{\pi}{2}$ with $x - \cos(x) = 0$.
+		
+		@desmos{ivtExample2}
+	]]
 ]]
 
 @exc[the Intermediate Value Theorem][[
@@ -230,9 +234,9 @@ $$
 	Find $\lim_{x \to \infty} x^2$.
 
 	@solution[[
-	
-	As $x$ gets larger and larger, so does $x^2$, so $\lim_{x \to \infty} x^2 = \infty$.
-	
+		
+		As $x$ gets larger and larger, so does $x^2$, so $\lim_{x \to \infty} x^2 = \infty$.
+	]]
 ]]
 
 @exc[a limit to infinity][[
@@ -240,9 +244,9 @@ $$
 	Find $\lim_{x \to -\infty} \sin(x)$.
 
 	@solution[[
-	
-	As $x$ gets more and more and negative, $\sin(x)$ oscillates between $1$ and $-1$ faster and faster, so it never converges to a single value. Therefore, $\lim_{x \to -\infty} \sin(x)$ DNE.
-	
+		
+		As $x$ gets more and more and negative, $\sin(x)$ oscillates between $1$ and $-1$ faster and faster, so it never converges to a single value. Therefore, $\lim_{x \to -\infty} \sin(x)$ DNE.
+	]]
 ]]
 
 
@@ -287,12 +291,12 @@ In the specific case of rational functions, we know the behavior of limits to in
 
 	@solution[[
 	
-	Since this is a rational function being limited to infinity, we can drop everything but the leading terms:
-	
-	$$
-		\lim_{x \to \infty} \frac{2x^3}{-3x} = \lim_{x \to \infty} \frac{2x^2}{-3} = -\infty.
-	$$	
-	
+		Since this is a rational function being limited to infinity, we can drop everything but the leading terms:
+		
+		$$
+			\lim_{x \to \infty} \frac{2x^3}{-3x} = \lim_{x \to \infty} \frac{2x^2}{-3} = -\infty.
+		$$
+	]]
 ]]
 
 @exc[limits of rational functions to infinity][[

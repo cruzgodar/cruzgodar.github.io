@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 After building a wide-ranging understanding of derivatives, let's take a brief detour to return to the world of limits; some of them that were difficult to calculate before have very easy solutions with a single rule in terms of derivatives.
@@ -66,22 +70,22 @@ In other words, if we get $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out of a limi
 
 	@solution[[
 	
-	We've already seen that this has the form $\frac{0}{0}$, so we can apply L'H&#244;pital's Rule:
+		We've already seen that this has the form $\frac{0}{0}$, so we can apply L'H&#244;pital's Rule:
 
-	$$
-		\lim_{x \to 1} \frac{-\sin(\pi x)}{\ln(x)} &= \lim_{x \to 1} \frac{d/dx\left[ -\sin(\pi x) \right]}{d/dx\left[ \ln(x) \right]}
+		$$
+			\lim_{x \to 1} \frac{-\sin(\pi x)}{\ln(x)} &= \lim_{x \to 1} \frac{d/dx\left[ -\sin(\pi x) \right]}{d/dx\left[ \ln(x) \right]}
+			
+			&= \lim_{x \to 1} \frac{-\cos(\pi x)\cdot \pi}{1/x}
+
+			&= \lim_{x \to 1} \left( -\pi x \cos(\pi x) \right)
+
+			&= -\pi \cos(\pi)
+
+			&= \pi.
+		$$
 		
-		&= \lim_{x \to 1} \frac{-\cos(\pi x)\cdot \pi}{1/x}
-
-		&= \lim_{x \to 1} \left( -\pi x \cos(\pi x) \right)
-
-		&= -\pi \cos(\pi)
-
-		&= \pi.
-	$$
-	
-	Much easier than this process used to be!
-	
+		Much easier than this process used to be!
+	]]
 ]]
 
 To say just a bit about why this process works (at least in the $\frac{0}{0}$ case), let's look at those two functions near $x = 1$.
@@ -235,56 +239,56 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 
 	@solution[[
 	
-	Since $e^{-x} \to 0$ and $x \to \infty$, this thing is of the form $1^\infty$. So let's set $y = (1 + e^{-x})^{x}$ and take a natural log to get $\ln(y) = x\ln(1 + e^{-x})$. Now since $\ln(1) = 0$ and $\ln$ is continuous, $\ln(1 + e^{-x}) \to 0$, so the whole limit is now of the form $\infty \cdot 0$. We'll tackle this just like we did before. We learned our lesson about putting the $\ln$ in the denominator, so let's try the $x$ first this time. We get
-	
-	$$
-		\lim_{x \to \infty} x\ln(1 + e^{-x}) = \lim_{x \to \infty} \frac{\ln(1 + e^{-x})}{1/x}.
-	$$
-	
-	Since this is of the form $\frac{0}{0}$, we can differentiate top and bottom to get 
-	
-	$$
-		\lim_{x \to \infty} x\ln(1 + e^{-x}) &= \lim_{x \to \infty} \frac{\frac{-1}{1 + e^{-x}} \cdot e^{-x}}{-\frac{1}{x^2}}
+		Since $e^{-x} \to 0$ and $x \to \infty$, this thing is of the form $1^\infty$. So let's set $y = (1 + e^{-x})^{x}$ and take a natural log to get $\ln(y) = x\ln(1 + e^{-x})$. Now since $\ln(1) = 0$ and $\ln$ is continuous, $\ln(1 + e^{-x}) \to 0$, so the whole limit is now of the form $\infty \cdot 0$. We'll tackle this just like we did before. We learned our lesson about putting the $\ln$ in the denominator, so let's try the $x$ first this time. We get
 		
-		&= \lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}}.
-	$$
-	
-	Unfortunately, we're not quite done yet. While the denominator limits to $1$, the numerator is another case of $0 \cdot \infty$, since $x^2 \to \infty$ and $e^{-x} \to 0$. The easiest way to rewrite this as something that L'H&#244;pital's Rule can handle is to move the $e^{-x}$ to the denominator to make it have a positive exponent:
-	
-	$$
-		\lim_{x \to \infty} x^2e^{-x} = \lim_{x \to \infty} \frac{x^2}{e^x}.
-	$$
-	
-	Now this is of the form $\frac{\infty}{\infty}$, so we can differentiate top and bottom as usual.
-	
-	$$
-		\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2x}{e^x}.
-	$$
-	
-	Still $\frac{\infty}{\infty}$, so let's use L'H&#244;pital's Rule again.
-	
-	$$
-		\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2}{e^x}.
-	$$
-	
-	At long last, this is just $0$, since $e^x \to \infty$. Therefore, we have
-	
-	$$
-		\lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}} = \frac{0}{1} = 0,
-	$$
-	
-	and so
-	
-	$$
-		\lim_{x \to \infty} \ln(y) = \lim_{x \to \infty} x\ln(1 + e^{-x}) = 0.
-	$$
-	
-	As mentioned, we can move the limit on the left inside the $\ln$ and then exponentiate both sides to finally get that
-	
-	$$
-		\lim_{x \to \infty} (1 + e^{-x})^{x} = \lim_{x \to \infty} y = e^0 = 1.
-	$$
-	
+		$$
+			\lim_{x \to \infty} x\ln(1 + e^{-x}) = \lim_{x \to \infty} \frac{\ln(1 + e^{-x})}{1/x}.
+		$$
+		
+		Since this is of the form $\frac{0}{0}$, we can differentiate top and bottom to get 
+		
+		$$
+			\lim_{x \to \infty} x\ln(1 + e^{-x}) &= \lim_{x \to \infty} \frac{\frac{-1}{1 + e^{-x}} \cdot e^{-x}}{-\frac{1}{x^2}}
+			
+			&= \lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}}.
+		$$
+		
+		Unfortunately, we're not quite done yet. While the denominator limits to $1$, the numerator is another case of $0 \cdot \infty$, since $x^2 \to \infty$ and $e^{-x} \to 0$. The easiest way to rewrite this as something that L'H&#244;pital's Rule can handle is to move the $e^{-x}$ to the denominator to make it have a positive exponent:
+		
+		$$
+			\lim_{x \to \infty} x^2e^{-x} = \lim_{x \to \infty} \frac{x^2}{e^x}.
+		$$
+		
+		Now this is of the form $\frac{\infty}{\infty}$, so we can differentiate top and bottom as usual.
+		
+		$$
+			\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2x}{e^x}.
+		$$
+		
+		Still $\frac{\infty}{\infty}$, so let's use L'H&#244;pital's Rule again.
+		
+		$$
+			\lim_{x \to \infty} \frac{x^2}{e^x} = \lim_{x \to \infty} \frac{2}{e^x}.
+		$$
+		
+		At long last, this is just $0$, since $e^x \to \infty$. Therefore, we have
+		
+		$$
+			\lim_{x \to \infty} \frac{x^2e^{-x}}{1 + e^{-x}} = \frac{0}{1} = 0,
+		$$
+		
+		and so
+		
+		$$
+			\lim_{x \to \infty} \ln(y) = \lim_{x \to \infty} x\ln(1 + e^{-x}) = 0.
+		$$
+		
+		As mentioned, we can move the limit on the left inside the $\ln$ and then exponentiate both sides to finally get that
+		
+		$$
+			\lim_{x \to \infty} (1 + e^{-x})^{x} = \lim_{x \to \infty} y = e^0 = 1.
+		$$
+	]]
 ]]
 
 @exc[L'H&#244;pital's Rule in the case $0^0$][[

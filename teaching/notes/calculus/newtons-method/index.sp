@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 It's the last section of differentiation! We're going to talk about yet another application of derivatives: finding roots of functions.
@@ -30,50 +34,50 @@ This process is called **Newton's method**, named after the same Newton that dis
 
 	@solution[[
 	
-	First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we'll  index these with subscripts starting at zero; let's start with $x_0 = 1$. To use Newton's method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. So we have
-	
-	$$
-		x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}
+		First of all, we need to find a function that has $\sqrt{2}$ as a root. Any one will do, but the simplest is definitely $f(x) = x^2 - 2$. We also need an $x$-value to start with. To keep notation reasonable, we'll  index these with subscripts starting at zero; let's start with $x_0 = 1$. To use Newton's method, we need to know $f(1)$ and $f'(1)$, which are $-1$ and $2$, respectively. So we have
 		
-		&= 1 - \frac{-1}{2}
+		$$
+			x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)}
+			
+			&= 1 - \frac{-1}{2}
+			
+			&= \frac{3}{2}
+			
+			&= 1.5.
+		$$
 		
-		&= \frac{3}{2}
+		That's definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
 		
-		&= 1.5.
-	$$
-	
-	That's definitely closer than $x = 1$! Now we just repeat with this new $x$-value.
-	
-	$$
-		x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}
+		$$
+			x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)}
+			
+			&= \frac{3}{2} - \frac{1/4}{3}
+			
+			&= \frac{17}{12}
+			
+			&\approx 1.41667.
+		$$
 		
-		&= \frac{3}{2} - \frac{1/4}{3}
+		And now for our third and last iteration.
 		
-		&= \frac{17}{12}
+		$$
+			x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}
+			
+			&= \frac{17}{12} - \frac{1/144}{17/6}
+			
+			&= \frac{577}{408}
+			
+			&\approx 1.41423.
+		$$
 		
-		&\approx 1.41667.
-	$$
-	
-	And now for our third and last iteration.
-	
-	$$
-		x_3 &= x_2 - \frac{f(x_2)}{f'(x_2)}
+		After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
 		
-		&= \frac{17}{12} - \frac{1/144}{17/6}
+		Here's what this process actually looks like --- drag the blue point to change the initial guess.
 		
-		&= \frac{577}{408}
+		@desmos{newtonsMethod}
 		
-		&\approx 1.41423.
-	$$
-	
-	After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
-	
-	Here's what this process actually looks like --- drag the blue point to change the initial guess.
-	
-	@desmos{newtonsMethod}
-	
-	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots --- here, that means near zero. This will come up a little bit later, and it's an important caveat of Newton's method: it doesn't always work or work well (i.e. converge to a root quickly).
-	
+		One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots --- here, that means near zero. This will come up a little bit later, and it's an important caveat of Newton's method: it doesn't always work or work well (i.e. converge to a root quickly).
+	]]
 ]]
 
 @exc[Newton's method][[

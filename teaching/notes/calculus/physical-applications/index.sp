@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In the final (thankfully!) section of applications of integration, we'll talk about a few miscellaneous topics that arean't large enough to get their own sections: work, mass, and tanks.
@@ -24,13 +28,14 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_0^5 x^2\,\d x &= \left. \left[ \frac{x^3}{3} \right] \right|_0^5
+		We have
 		
-		&= \frac{125}{3}\ Nm.
-	$$
+		$$
+			\int_0^5 x^2\,\d x &= \left. \left[ \frac{x^3}{3} \right] \right|_0^5
+			
+			&= \frac{125}{3}\ Nm.
+		$$
+	]]
 	
 ]]
 
@@ -40,13 +45,14 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 
 	@solution[[
 	
-	The integral is
-	
-	$$
-		\int_0^3 -x\,\d x &= \left. \left[ -\frac{x^2}{2} \right] \right|_0^3
+		The integral is
 		
-		&= -\frac{9}{2}.
-	$$
+		$$
+			\int_0^3 -x\,\d x &= \left. \left[ -\frac{x^2}{2} \right] \right|_0^3
+			
+			&= -\frac{9}{2}.
+		$$
+	]]
 	
 ]]
 
@@ -70,21 +76,22 @@ Moving on to other work problems, let's look at springs. We can do this using so
 
 	@solution[[
 	
-	The work done to compress the spring is
-	
-	$$
-		\int_0^{.2} kx\,\d x &= \frac{.2^2}{2}k
+		The work done to compress the spring is
 		
-		&= .02k.
-	$$
-	
-	Since this is equal to $10$, we have that $k = 500$. Now in order to stretch the spring $.5\ m$, the work done is
-	
-	$$
-		\int_0^{.5} 500x\,\d x &= 500 \cdot \frac{.5^2}{2}
+		$$
+			\int_0^{.2} kx\,\d x &= \frac{.2^2}{2}k
+			
+			&= .02k.
+		$$
 		
-		&= 62.5\ Nm.
-	$$
+		Since this is equal to $10$, we have that $k = 500$. Now in order to stretch the spring $.5\ m$, the work done is
+		
+		$$
+			\int_0^{.5} 500x\,\d x &= 500 \cdot \frac{.5^2}{2}
+			
+			&= 62.5\ Nm.
+		$$
+	]]
 	
 ]]
 
@@ -94,13 +101,14 @@ Moving on to other work problems, let's look at springs. We can do this using so
 
 	@solution[[
 	
-	Since the force is given by $F(x) = kx$ and $F(1) = 5$, we have that $k = 5$. We now want to find the work, which is
-	
-	$$
-		\int_0^{.1} 5x\,\d x &= \left. \left[ \frac{5x^2}{2} \right] \right|_0^{.1}
+		Since the force is given by $F(x) = kx$ and $F(1) = 5$, we have that $k = 5$. We now want to find the work, which is
 		
-		&= .025\ Nm.
-	$$
+		$$
+			\int_0^{.1} 5x\,\d x &= \left. \left[ \frac{5x^2}{2} \right] \right|_0^{.1}
+			
+			&= .025\ Nm.
+		$$
+	]]
 	
 ]]
 
@@ -130,14 +138,14 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 	@solution[[
 	
-	This is just
-	
-	$$
-		\int_{\frac{\pi}{2}}^\pi \sin(x)\,\d x &= -\cos(\pi) + \cos\left(\frac{\pi}{2}\right)
+		This is just
 		
-		&= 1.
-	$$
-	
+		$$
+			\int_{\frac{\pi}{2}}^\pi \sin(x)\,\d x &= -\cos(\pi) + \cos\left(\frac{\pi}{2}\right)
+			
+			&= 1.
+		$$
+	]]
 ]]
 
 @exc[mass of a bar][[
@@ -146,16 +154,16 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_1^e \ln(x)\,\d x &= \left. \left[ x\ln(x) - x \right] \right|_1^e
+		We have
 		
-		&= (e - e) - (-1)
-		
-		&= 1.
-	$$
-	
+		$$
+			\int_1^e \ln(x)\,\d x &= \left. \left[ x\ln(x) - x \right] \right|_1^e
+			
+			&= (e - e) - (-1)
+			
+			&= 1.
+		$$
+	]]	
 ]]
 
 
@@ -178,16 +186,16 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_0^4 2\pi r \sqrt{r}\,\d r &= \left. \left[ 2\pi \frac{r^{5/2}}{5/2} \right] \right|_0^4
+		We have
 		
-		&= \frac{4\pi}{5} \left( 32 - 0 \right)
-		
-		&= \frac{128\pi}{5}.
-	$$
-	
+		$$
+			\int_0^4 2\pi r \sqrt{r}\,\d r &= \left. \left[ 2\pi \frac{r^{5/2}}{5/2} \right] \right|_0^4
+			
+			&= \frac{4\pi}{5} \left( 32 - 0 \right)
+			
+			&= \frac{128\pi}{5}.
+		$$
+	]]
 ]]
 
 @exc[mass of a washer][[
@@ -196,14 +204,14 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 	@solution[[
 	
-	We have
-	
-	$$
-		\int_2^4 2\pi r \frac{1}{r^2}\,\d r &= \left. \left[ 2\pi \ln(r) \right] \right|_2^4
+		We have
 		
-		&= 2\pi(\ln(4) - \ln(2)).
-	$$
-	
+		$$
+			\int_2^4 2\pi r \frac{1}{r^2}\,\d r &= \left. \left[ 2\pi \ln(r) \right] \right|_2^4
+			
+			&= 2\pi(\ln(4) - \ln(2)).
+		$$
+	]]
 ]]
 
 
@@ -218,23 +226,24 @@ The last type of problem we'll explore in this section has to do with the work d
 	
 	A tank in the shape of a cylinder has radius $4$ meters. It's $10$ meters tall and is filled with water up to $8$ meters, and the weight density of water is $9800\,\frac{N}{m^3}$. Find the work done by pumping out all the water out over the top of the tank.
 	
-	]] image graphics/cylindrical-tank.png
+	@image(["graphics/cylindrical-tank.png"])
 
 	@solution[[
 	
-	Like we said before, we just need to find the work done by lifting each slice out of the tank, and then integrate that work over all the slices. Taking a cross-section at height $y$ off the ground, we have a circle with radius $4$. Its area is then $16\pi$, so the force applied to it is $9800 \cdot 16\pi$. The distance it needs to travel is $10 - y$, since it needs to go up to the top of the tank. Therefore, our integral becomes
-	
-	$$
-		\int_0^8 (9800)(16\pi)(10 - y)\,\d y &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8
+		Like we said before, we just need to find the work done by lifting each slice out of the tank, and then integrate that work over all the slices. Taking a cross-section at height $y$ off the ground, we have a circle with radius $4$. Its area is then $16\pi$, so the force applied to it is $9800 \cdot 16\pi$. The distance it needs to travel is $10 - y$, since it needs to go up to the top of the tank. Therefore, our integral becomes
 		
-		&= (9800)(16\pi) \left(80 - 32\right)
+		$$
+			\int_0^8 (9800)(16\pi)(10 - y)\,\d y &= \left. \left[ (9800)(16\pi) \left(10y - \frac{y^2}{2}\right) \right] \right|_0^8
+			
+			&= (9800)(16\pi) \left(80 - 32\right)
+			
+			&= 7526400\pi.
+		$$
 		
-		&= 7526400\pi.
-	$$
+		The amount of work done is pretty massive, but that makes sense --- you're emptying an entire water tower's worth of liquid.
+	]]
 	
-	The amount of work done is pretty massive, but that makes sense --- you're emptying an entire water tower's worth of liquid.
-	
-###
+]]
 
 
 
@@ -242,27 +251,27 @@ The last type of problem we'll explore in this section has to do with the work d
 	
 	A tank in the shape of a square pyramid has height $6$ and a base with side length $5$, and it's completely full of a liquid with weight density $1000\,\frac{N}{m^3}$. Find the work done by pumping it all out.
 	
-	]] image graphics/pyramid-tank.png
+	@image(["graphics/pyramid-tank.png"])
 
 	@solution[[
 
-	This time, the cross-sections are squares, and their area changes as we move up the tank. To figure out how that size depends on the slice location, let's look at this thing from the side.
-	
-	### image graphics/pyramid-cross-section.png
-	
-	If we take a slice at height $y$, then we cut the triangle and create a smaller triangle at the bottom. Since these two triangles have the same angles, they're **similar.** That means the ratios of corresponding sides are the same: specifically, $\frac{y}{6} = \frac{b}{5}$. Therefore, $b = \frac{5}{6} y$, and $b$ is the side length of the square cross-section, so the area is $b^2 = \frac{25}{36} y^2$. Now the integral takes the same form as before:
-	
-	$$
-		\int_0^6 (1000)\left(\frac{25}{36}y^2\right)(6 - y)\,\d y &= (1000) \left(\frac{25}{36}\right) \int_0^6 (6y^2 - y^3)\,\d y
+		This time, the cross-sections are squares, and their area changes as we move up the tank. To figure out how that size depends on the slice location, let's look at this thing from the side.
 		
-		&= (1000) \left(\frac{25}{36}\right) \left. \left[ 2y^3 - \frac{1}{4}y^4 \right] \right|_0^6
+		@image(["graphics/pyramid-cross-section.png"])
 		
-		&= (1000) \left(\frac{25}{36}\right) \left( 432 - 324 \right)
+		If we take a slice at height $y$, then we cut the triangle and create a smaller triangle at the bottom. Since these two triangles have the same angles, they're **similar.** That means the ratios of corresponding sides are the same: specifically, $\frac{y}{6} = \frac{b}{5}$. Therefore, $b = \frac{5}{6} y$, and $b$ is the side length of the square cross-section, so the area is $b^2 = \frac{25}{36} y^2$. Now the integral takes the same form as before:
 		
-		&= 75000.
-	$$
-	
-###
+		$$
+			\int_0^6 (1000)\left(\frac{25}{36}y^2\right)(6 - y)\,\d y &= (1000) \left(\frac{25}{36}\right) \int_0^6 (6y^2 - y^3)\,\d y
+			
+			&= (1000) \left(\frac{25}{36}\right) \left. \left[ 2y^3 - \frac{1}{4}y^4 \right] \right|_0^6
+			
+			&= (1000) \left(\frac{25}{36}\right) \left( 432 - 324 \right)
+			
+			&= 75000.
+		$$
+	]]
+]]
 
 
 

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -85,32 +89,32 @@ which is the cost to us to acquire the fifth item.
 
 	@solution[[
 	
-	The total cost to us to get $x$ markers is $0.05$ dollars per marker times $x$ markers, so $C(x) = .05x$. Similarly,
-	
-	$$
-		R(x) = x \cdot p(x) = x - .01x^2,
-	$$
-	
-	so
-	
-	$$
-		P(x) = R(x) - C(x) = .95x - .01x^2.
-	$$
-	
-	Now we need to compute
-	
-	$$
-		MP(x) = P'(x) = .95 - .02x.
-	$$
-	
-	Therefore, the profit from item 20 is
-	
-	$$
-		MP(19) = .95 - .38 = .57,
-	$$
-	
-	so we make a profit of $57$ cents from that particular marker.
-
+		The total cost to us to get $x$ markers is $0.05$ dollars per marker times $x$ markers, so $C(x) = .05x$. Similarly,
+		
+		$$
+			R(x) = x \cdot p(x) = x - .01x^2,
+		$$
+		
+		so
+		
+		$$
+			P(x) = R(x) - C(x) = .95x - .01x^2.
+		$$
+		
+		Now we need to compute
+		
+		$$
+			MP(x) = P'(x) = .95 - .02x.
+		$$
+		
+		Therefore, the profit from item 20 is
+		
+		$$
+			MP(19) = .95 - .38 = .57,
+		$$
+		
+		so we make a profit of $57$ cents from that particular marker.
+	]]
 ]]
 
 

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 The only technique we have to compute integrals at the moment is $u$-sub, which is an analogue of the Chain Rule. What we'll introduce in this section is an analogue of the Product Rule. As before, it will look different in practice, but we'll see that it's really just the same thing in the end.
@@ -50,22 +54,22 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 	@solution[[
 	
-	We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $\d v = \sin(x)\,\d x$. Then $\d u = \d x$ and
-	
-	$$
-		v = \int \sin(x)\,\d x = -\cos(x)
-	$$
-	
-	(we drop the $+C$ until the end of the problem to keep things simple). Our integral now becomes
-	
-	$$
-		\int x\sin(x)\,\d x &= uv - \int v\,\d u
+		We can't do this directly, since we (probably) don't know a function whose derivative is $x\sin(x)$. There's also no composition here, so all we have left is integration by parts. The two parts are $x$ and $\sin(x)$, and we're going to differentiate one and integrate the other. If we integrate $x$, we're going to get $\frac{x^2}{2}$, and that's **more complicated**, which means it's probably a bad idea. Instead, let's try differentiating it. That means letting $u = x$ and $\d v = \sin(x)\,\d x$. Then $\d u = \d x$ and
 		
-		&= -x\cos(x) - \int -\cos(x)\,\d x
+		$$
+			v = \int \sin(x)\,\d x = -\cos(x)
+		$$
 		
-		&= -x\cos(x) + \sin(x) + C.
-	$$
-	
+		(we drop the $+C$ until the end of the problem to keep things simple). Our integral now becomes
+		
+		$$
+			\int x\sin(x)\,\d x &= uv - \int v\,\d u
+			
+			&= -x\cos(x) - \int -\cos(x)\,\d x
+			
+			&= -x\cos(x) + \sin(x) + C.
+		$$
+	]]
 ]]
 
 @exc[integration by parts][[
@@ -74,12 +78,12 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 	@solution[[
 	
-	Just like in the last example, let $u = y$ and $\d v = e^y\,\d y$. Then $\d u = \d y$ and $v = e^y$, so we get
-	
-	$$
-		ye^y - \int e^y\,\d y = ye^y - e^y + C.
-	$$
-	
+		Just like in the last example, let $u = y$ and $\d v = e^y\,\d y$. Then $\d u = \d y$ and $v = e^y$, so we get
+		
+		$$
+			ye^y - \int e^y\,\d y = ye^y - e^y + C.
+		$$
+	]]
 ]]
 
 
@@ -90,28 +94,28 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 	@solution[[
 	
-	There are lots of choices for $u$ and $\d v$ --- here are just a few:
-	
-	$$
-		u = \ln(t),\,\d v = \frac{1}{t^2}\,\d t
-	$$
-	
-	$$
-		u = \frac{\ln(t)}{t^2},\,\d v = dt
-	$$
-	
-	$$
-		u = \frac{1}{t},\,\d v = \frac{\ln(t)}{t}\,\d t
-	$$
-	
-	In general, we want to choose $u$ and $\d v$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $\d v$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $\d v = \frac{1}{t^2}\,\d t$ --- let's see how that goes. We have $\d u = \frac{1}{t}\,\d t$ and $v = -\frac{1}{t}$, so we get
-	
-	$$
-		\int \frac{\ln(t)}{t^2}\,\d t &= -\frac{\ln(t)}{t} - \int -\frac{1}{t^2}\,\d t
+		There are lots of choices for $u$ and $\d v$ --- here are just a few:
 		
-		&= -\frac{\ln(t)}{t} - \frac{1}{t} + C.
-	$$
-	
+		$$
+			u = \ln(t),\,\d v = \frac{1}{t^2}\,\d t
+		$$
+		
+		$$
+			u = \frac{\ln(t)}{t^2},\,\d v = dt
+		$$
+		
+		$$
+			u = \frac{1}{t},\,\d v = \frac{\ln(t)}{t}\,\d t
+		$$
+		
+		In general, we want to choose $u$ and $\d v$ such that the resulting integral is as simple as possible. For example, since the derivative of $\ln(t)$ is $\frac{1}{t}$ but the integral is $t\ln(t) - t + C$, we almost certainly want $\ln(t)$ to be part of $u$ instead of $\d v$ so that it gets differentiated. The simplest way to do that is just to take $u = \ln(t)$ and $\d v = \frac{1}{t^2}\,\d t$ --- let's see how that goes. We have $\d u = \frac{1}{t}\,\d t$ and $v = -\frac{1}{t}$, so we get
+		
+		$$
+			\int \frac{\ln(t)}{t^2}\,\d t &= -\frac{\ln(t)}{t} - \int -\frac{1}{t^2}\,\d t
+			
+			&= -\frac{\ln(t)}{t} - \frac{1}{t} + C.
+		$$
+	]]
 ]]
 
 
@@ -126,22 +130,22 @@ Sometimes, we'll need to apply integration by parts more than once.
 
 	@solution[[
 	
-	We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $\d v = e^{3x}\,\d x$. Then $\d u = 2x\,\d x$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
-	
-	$$
-		\int x^2 e^{3x}\,\d x = \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,\d x.
-	$$
-	
-	To evaluate this integral, we need to do integration by parts again. It works almost exactly the same as before: $u = \frac{2}{3} x$ and $\d v = e^{3x}\,\d x$. Then $\d u = \frac{2}{3}\,\d x$ and $v = \frac{1}{3}e^{3x}$ once again, so we have
-	
-	$$
-		\int x^2 e^{3x}\,\d x &= \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,\d x
+		We know that $x^2$ gets simpler when we differentiate it, and $e^{3x}$ stays as complicated when integrated, so let's try $u = x^2$ and $\d v = e^{3x}\,\d x$. Then $\d u = 2x\,\d x$ and $v = \frac{1}{3}e^{3x}$. Now the integral becomes
 		
-		&= \frac{1}{3} x^2 e^{3x} - \left( \frac{2}{9} xe^{3x} - \int \frac{2}{9} e^{3x}\,\d x \right)
+		$$
+			\int x^2 e^{3x}\,\d x = \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,\d x.
+		$$
 		
-		&= \frac{1}{3} x^2 e^{3x} - \frac{2}{9} x e^{3x} + \frac{2}{27} e^{3x} + C.
-	$$
-	
+		To evaluate this integral, we need to do integration by parts again. It works almost exactly the same as before: $u = \frac{2}{3} x$ and $\d v = e^{3x}\,\d x$. Then $\d u = \frac{2}{3}\,\d x$ and $v = \frac{1}{3}e^{3x}$ once again, so we have
+		
+		$$
+			\int x^2 e^{3x}\,\d x &= \frac{1}{3} x^2 e^{3x} - \int \frac{2}{3} x e^{3x}\,\d x
+			
+			&= \frac{1}{3} x^2 e^{3x} - \left( \frac{2}{9} xe^{3x} - \int \frac{2}{9} e^{3x}\,\d x \right)
+			
+			&= \frac{1}{3} x^2 e^{3x} - \frac{2}{9} x e^{3x} + \frac{2}{27} e^{3x} + C.
+		$$
+	]]
 ]]
 
 @exc[integration by parts twice][[
@@ -150,18 +154,18 @@ Sometimes, we'll need to apply integration by parts more than once.
 
 	@solution[[
 	
-	By the same logic, let $u = t^2$ and $\d v = \cos(2t)\,\d t$. Then $\d u = 2t\,\d t$ and $v = \frac{1}{2} \sin(2t)\,\d t$, so the integral becomes
-	
-	$$
-		\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,\d t = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,\d t.
-	$$
-	
-	This is similar to the previous examples we've done: let $u = t$ and $\d v = \sin(2t)\,\d t$. Then $\d u = \d t$ and $v = -\frac{1}{2} \cos(2t)$, so we get
-	
-	$$
-		\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\,\d t \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
-	$$
-	
+		By the same logic, let $u = t^2$ and $\d v = \cos(2t)\,\d t$. Then $\d u = 2t\,\d t$ and $v = \frac{1}{2} \sin(2t)\,\d t$, so the integral becomes
+		
+		$$
+			\frac{1}{2}t^2\sin(2t) - \int \frac{1}{2} \sin(2t) (2t)\,\d t = \frac{1}{2}t^2\sin(2t) - \int t \sin(2t)\,\d t.
+		$$
+		
+		This is similar to the previous examples we've done: let $u = t$ and $\d v = \sin(2t)\,\d t$. Then $\d u = \d t$ and $v = -\frac{1}{2} \cos(2t)$, so we get
+		
+		$$
+			\frac{1}{2}t^2\sin(2t) - \left(-\frac{1}{2} t \cos(2t) - \int -\frac{1}{2} \cos(2t)\,\d t \right) = \frac{1}{2}t^2\sin(2t) + \frac{1}{2} t \cos(2t) - \frac{1}{4} \sin(2t) + C.
+		$$
+	]]
 ]]
 
 
@@ -176,24 +180,24 @@ Things can get a little more complicated when multiple integration strategies ar
 
 	@solution[[
 	
-	Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $\d u = 2y\,\d y$, which gives us
-	
-	$$
-		\int \frac{1}{2} ue^u\,\d u.
-	$$
-	
-	Now we have an integration by parts problem, since there is no composition in this integral and it's a product we don't know how to integrate. Normally we use $u$ and $v$ for variables, but now we've already used $u$, so let's pick another variable --- say $w$. Therefore, $w = \frac{1}{2} u$, $\d v = e^u\,\d u$, and so $\d w = \frac{1}{2}\,\d u$ and $v = e^u$. Now we get
-	
-	$$
-		u e^u - \int \frac{1}{2} e^u\,\d u = u e^u - \frac{1}{2} e^u + C.
-	$$
-	
-	Finally, we can back-substitute for $y$:
-	
-	$$
-		y^2 e^{y^2} - \frac{1}{2} e^{y^2} + C.
-	$$
-	
+		Let's follow the instructions above and try $u$-sub first. The only option is to let $u = y^2$ and $\d u = 2y\,\d y$, which gives us
+		
+		$$
+			\int \frac{1}{2} ue^u\,\d u.
+		$$
+		
+		Now we have an integration by parts problem, since there is no composition in this integral and it's a product we don't know how to integrate. Normally we use $u$ and $v$ for variables, but now we've already used $u$, so let's pick another variable --- say $w$. Therefore, $w = \frac{1}{2} u$, $\d v = e^u\,\d u$, and so $\d w = \frac{1}{2}\,\d u$ and $v = e^u$. Now we get
+		
+		$$
+			u e^u - \int \frac{1}{2} e^u\,\d u = u e^u - \frac{1}{2} e^u + C.
+		$$
+		
+		Finally, we can back-substitute for $y$:
+		
+		$$
+			y^2 e^{y^2} - \frac{1}{2} e^{y^2} + C.
+		$$
+	]]
 ]]
 
 
@@ -204,22 +208,22 @@ Things can get a little more complicated when multiple integration strategies ar
 
 	@solution[[
 	
-	Since we're revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
-	
-	$$
-		\int_0^{\pi / 2} 2\pi x\cos(x)\,\d x.
-	$$
-	
-	Now we need to apply integration by parts to this. As usual, $u = 2\pi x$ and $\d v = \cos(x)\,\d x$, so $\d u = 2\pi\,\d x$ and $v = \sin(x)$, but this example is different in that we have a definite integral. To handle that, we apply integration by parts and evaluate the entire expression.
-	
-	$$
-		\int_0^{\pi / 2} 2\pi x\cos(x)\,\d x &= \left. \left[ 2\pi x\sin(x) - \int 2\pi \sin(x)\,\d x \right] \right|_0^{\pi / 2}
+		Since we're revolving about the $y$-axis and have a function given in terms of $x$, we should try the shell method first. The intersection of $\cos(x)$ with $y = 0$ gives $x = \frac{\pi}{2}$, so the integral comes out to
 		
-		&= \left. \left[ 2\pi x\sin(x) + 2\pi \cos(x) \right] \right|_0^{\pi / 2}
+		$$
+			\int_0^{\pi / 2} 2\pi x\cos(x)\,\d x.
+		$$
 		
-		&= \pi^2 - 2\pi.
-	$$
-	
+		Now we need to apply integration by parts to this. As usual, $u = 2\pi x$ and $\d v = \cos(x)\,\d x$, so $\d u = 2\pi\,\d x$ and $v = \sin(x)$, but this example is different in that we have a definite integral. To handle that, we apply integration by parts and evaluate the entire expression.
+		
+		$$
+			\int_0^{\pi / 2} 2\pi x\cos(x)\,\d x &= \left. \left[ 2\pi x\sin(x) - \int 2\pi \sin(x)\,\d x \right] \right|_0^{\pi / 2}
+			
+			&= \left. \left[ 2\pi x\sin(x) + 2\pi \cos(x) \right] \right|_0^{\pi / 2}
+			
+			&= \pi^2 - 2\pi.
+		$$
+	]]
 ]]
 
 @exc[integration by parts on definite integrals][[
@@ -228,30 +232,30 @@ Things can get a little more complicated when multiple integration strategies ar
 
 	@solution[[
 	
-	We see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $\d u = 2x\,\d x$. Then $\frac{1}{2}\,\d u = x\,\d x$, so the integral becomes
-	
-	$$
-		\int_1^3 \frac{1}{2} u \sin(u)\,\d u.
-	$$
-	
-	Now there's nothing left to do but integrate by parts. We're already using $u$ as a variable, so let's set $w = \frac{1}{2}u$ and $\d v = \sin(u)\,\d u$. Then we have $\d w = \frac{1}{2}\,\d u$ and $v = -\cos(u)$, so the integral becomes
-	
-	$$
-		-\frac{1}{2} u \cos(u) + \int \frac{1}{2} \cos(u)\,\d u = -\frac{1}{2} u \cos(u) + \frac{1}{2} \sin(u).
-	$$
-	
-	Now it's time to back-substitute for $u$.
-	
-	$$
-		-\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2).
-	$$
-	
-	Finally, we can evaluate the integral limits.
-	
-	$$
-		\left. \left[ -\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2) \right] \right|_1^3 = \frac{1}{2} (\sin(9) - 9\cos(9) - \sin(1) + \cos(1)).
-	$$
-	
+		We see a composition ($\sin(x^2)$), so we should try $u$-sub before integrating by parts. Let $u = x^2$, so that $\d u = 2x\,\d x$. Then $\frac{1}{2}\,\d u = x\,\d x$, so the integral becomes
+		
+		$$
+			\int_1^3 \frac{1}{2} u \sin(u)\,\d u.
+		$$
+		
+		Now there's nothing left to do but integrate by parts. We're already using $u$ as a variable, so let's set $w = \frac{1}{2}u$ and $\d v = \sin(u)\,\d u$. Then we have $\d w = \frac{1}{2}\,\d u$ and $v = -\cos(u)$, so the integral becomes
+		
+		$$
+			-\frac{1}{2} u \cos(u) + \int \frac{1}{2} \cos(u)\,\d u = -\frac{1}{2} u \cos(u) + \frac{1}{2} \sin(u).
+		$$
+		
+		Now it's time to back-substitute for $u$.
+		
+		$$
+			-\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2).
+		$$
+		
+		Finally, we can evaluate the integral limits.
+		
+		$$
+			\left. \left[ -\frac{1}{2} x^2 \cos(x^2) + \frac{1}{2} \sin(x^2) \right] \right|_1^3 = \frac{1}{2} (\sin(9) - 9\cos(9) - \sin(1) + \cos(1)).
+		$$
+	]]	
 ]]
 
 
