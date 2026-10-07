@@ -120,8 +120,7 @@ export default function()
 			rotationAngleZSlider.value
 		);
 
-		// applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
-		applet.wilson.xrFoveation = xrFramebufferScaleSlider.value * 3;
+		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
 		applet.needNewFrame = true;
 	}
