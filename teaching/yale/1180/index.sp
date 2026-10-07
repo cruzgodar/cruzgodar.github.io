@@ -1,65 +1,70 @@
-@@@
-	import { card, externalCard, imageLinks } from "../../../build/spruce.js";
-@@@
-
 Welcome to Math 1180! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
 
 
 
 ## General Resources
 
-@imageLinks([
-	{ url: "syllabus", forCard: true, name: "Syllabus" },
-])
+### image-links
+	syllabus -c "Syllabus"
+###
 
 
 
 ## Interactive Notes
 
-@imageLinks([
-	"notes/calc-1-review",
-	"notes/coordinate-systems",
-	"notes/dot-and-cross-products",
-	"notes/functions-of-multiple-variables",
-	"notes/partial-derivatives",
-	"notes/multivariable-chain-rule",
-	"notes/gradients",
-	"notes/multivariable-optimization",
-	"notes/boundary-optimization",
-	"notes/lagrange-multipliers",
-	"notes/vectors-and-matrices",
-	"notes/row-reduction",
-	"notes/bases",
-	"notes/linear-transformations",
-	"notes/determinants",
-])
+### image-links
+	notes/calc-1-review
+	notes/coordinate-systems
+	notes/dot-and-cross-products
+	notes/functions-of-multiple-variables
+	notes/partial-derivatives
+	notes/multivariable-chain-rule
+	notes/gradients
+	notes/multivariable-optimization
+	notes/boundary-optimization
+	notes/vectors-and-matrices
+	notes/row-reduction
+	notes/bases
+	notes/linear-transformations
+	notes/determinants
+###
 
 
 
 ## Homework
 
-@imageLinks([
-	{ url: "homework-1", forCard: true, name: "Homework 1" },
-	{ url: "homework-2", forCard: true, name: "Homework 2" },
-	{ url: "homework-3", forCard: true, name: "Homework 3" },
-	{ url: "homework-4", forCard: true, name: "Homework 4" },
-])
-
-@externalCard{homework-10}
-@externalCard{homework-9}
-@externalCard{homework-8}
-@externalCard{homework-7}
-@externalCard{homework-6}
-@externalCard{homework-5}
-@externalCard{homework-4}
-@externalCard{homework-3}
-@externalCard{homework-2}
-@externalCard{homework-1}
+### image-links
+	homework-1 -c "Problem Set 1"
+	homework-2 -c "Problem Set 2"
+	homework-3 -c "Problem Set 3"
+	homework-4 -c "Problem Set 4"
+	homework-5 -c "Problem Set 5"
+###
 
 
 
-@card{syllabus}[Math 1180: Introduction to Functions of Several Variables][[
-	Instructor: Cruz Godar ([cruz.godar@@yale.edu](mailto:cruz.godar@@yale.edu))
+## Exam Materials
+
+### image-links
+	exams/midterm-1-note-sheet/midterm-1-note-sheet.pdf "Midterm 1 Formula Sheet"
+	exams/practice-midterm-1/practice-midterm-1.pdf "Practice Midterm 1"
+	exams/practice-midterm-1-solutions/practice-midterm-1-solutions.pdf "Practice Midterm 1 Solutions"
+###
+
+### card homework-1 -e
+### card homework-2 -e
+### card homework-3 -e
+### card homework-4 -e
+### card homework-5 -e
+### card homework-6 -e
+### card homework-7 -e
+### card homework-8 -e
+### card homework-9 -e
+### card homework-10 -e
+
+### card syllabus "Math 1180: Introduction to Functions of Several Variables"
+	
+	Instructor: Cruz Godar (<a href="mailto:cruz.godar@yale.edu">cruz.godar@yale.edu</a>)
 
 	Class meetings: 9--10:15 AM Tuesdays and Thursdays in WTS A30
 	
@@ -69,7 +74,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	## What materials will I need?
 	
-	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything a textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available [Calculus Volume 3](https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf) by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, [3Blue1Brown's video series](https://www.3blue1brown.com/topics/linear-algebra) is a fantastic expository resource. For a more traditional textbook experience, [Linear Algebra with Applications](https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf) by Nicholson is free and will do nicely.
+	Not many! While we have textbooks for this class, they are completely optional. Between the notes and homework on the website, we have everything a textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like books regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, the freely-available <a href="https://assets.openstax.org/oscms-prodcms/media/documents/Calculus_Volume_3_-_WEB.pdf">Calculus Volume 3</a> by Herman and Strang is a good resource for the calculus portion of the course. For the linear algebra portion, <a href="https://www.3blue1brown.com/topics/linear-algebra">3Blue1Brown's video series</a> is a fantastic expository resource. For a more traditional textbook experience, <a href="https://math.sci.ccny.cuny.edu/document/Nicholson-Linear+Algebra+with+Applications2018.pdf">Linear Algebra with Applications</a> by Nicholson is free and will do nicely.
 	
 	
 	
@@ -77,16 +82,15 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
 	
-	- In-class participation: 5%
-	- Reading quizzes: 5%
-	- Problem sets: 15%
-	- Exams: 75%
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - Problem sets: 15%
+	> - Exams: 75%
 
 	The 75% comprising your exam score breaks down into one of the following, whichever is highest:
-
-	- 25% midterm 1 + 25% midterm 2 + 25% final exam
-	- 10% midterm 1 + 30% midterm 2 + 35% final exam
-	- 30% midterm 1 + 15% midterm 2 + 30% final exam
+	> - 25% midterm 1 + 25% midterm 2 + 25% final exam
+	> - 10% midterm 1 + 30% midterm 2 + 35% final exam
+	> - 30% midterm 1 + 15% midterm 2 + 30% final exam
 	
 	More on all of these in the coming sections!
 
@@ -122,7 +126,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 
 	Math 1180 is an economics-focused course, and while I am not trained in economics, I am endeavoring to add small portions of economics-related questions to each homework. These never assume prior economics knowlege, and you are not responsible for learning the economics on them for the exams, only the calculus. If an economics problem (or any other field) appears on an exam as an applied problem, the necessary background will always be provided, like on the homework.
 
-	All of our homework is submitted through Gradescope. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at [Overleaf](https://www.overleaf.com), and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	All of our homework is submitted through Gradescope. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
 
 	You are more than welcome studying and working on homework in groups, so long as the final work you submit is your own. It's both helpful and good practice to work with others --- part of the reason we have group work is to help build those friendships!
 
@@ -150,25 +154,25 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	As a first-year college course, we have a wide range of learning goals! Over the course of the semester, you'll have the opportunity to practice:
 
-	- Thinking critically about novel situations in the context of the mathematics we learn.
-	- Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
-	- Developing metacognitive thinking to evaluate your own learning practices and study strategies.
+	> - Thinking critically about novel situations in the context of the mathematics we learn.
+	> - Applying multivariable calculus and linear algebra to real-world situations and contexts, including those relevant to your personal experiences, past and future.
+	> - Developing metacognitive thinking to evaluate your own learning practices and study strategies.
 
 	Regarding specific mathematical goals, we will learn how to:
 	
-	- Understand and interact with representations of 3D space.
-	- Understand and apply the dot and cross products to vectors in 3D space.
-	- Plot and interpret functions of multiple variables.
-	- Evaluate and interpret partial derivatives, including with the multivariable Chain Rule.
-	- Optimize functions of multiple variables, including with the method of Lagrange multipliers.
+	> - Understand and interact with representations of 3D space.
+	> - Understand and apply the dot and cross products to vectors in 3D space.
+	> - Plot and interpret functions of multiple variables.
+	> - Evaluate and interpret partial derivatives, including with the multivariable Chain Rule.
+	> - Optimize functions of multiple variables, including with the method of Lagrange multipliers.
 
-	- Represent systems of linear equations as matrices.
-	- Understand how and when such systems can be solved.
-	- Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
-	- Compute and interpret determinants of square matrices.
-	- Approximate matrix equations by using the method of least squares (if time permits).
+	> - Represent systems of linear equations as matrices.
+	> - Understand how and when such systems can be solved.
+	> - Understand linear transformations, their inverses, and their null and column spaces through the lenses of functions and matrices.
+	> - Compute and interpret determinants of square matrices.
+	> - Approximate matrix equations by using the method of least squares (if time permits).
 
-	Success is absolutely not limited to your performance in the course, however. Please take care of your mental, physical and emotional health; it's both far more important than and necessary for your academic success. Yale offers many resources to support you in these ways --- a good place to start is [Yale Well](https://yalewell.yale.edu).
+	Success is absolutely not limited to your performance in the course, however. Please take care of your mental, physical and emotional health; it's both far more important than and necessary for your academic success. Yale offers many resources to support you in these ways --- a good place to start is <a href="https://yalewell.yale.edu">Yale Well</a>.
 
 
 	
@@ -180,7 +184,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 
 	Our course is also fortunate to have Nathan Mak as a peer tutor! Nathan will hold drop-in peer tutoring every Monday and Thursday from 7 to 9 PM in WLH 205, beginning on September 10th. I highly encourage attending!
 
-	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please [reach out to them](https://sas.yale.edu/students/accommodations/exams)! It can take a little while before everything goes through, so the sooner the better.
+	Student Accessibility Services is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with SAS, please forward your accommodation letter to me as soon as possible, ideally in week 1. If you think SAS could be a benefit to you, please <a href="https://sas.yale.edu/students/accommodations/exams">reach out to them</a>! It can take a little while before everything goes through, so the sooner the better.
 	
 	
 	
@@ -192,7 +196,8 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	
 	## Is there anything else I should know?
 	
-	Like all instructors, I am a [designated reporter](https://oiea.yale.edu/reporting-requirements), which means I am required to report many types of sensitive information. Please see the link for more details.
+	Like all instructors, I am a <a href="https://oiea.yale.edu/reporting-requirements">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on exams, etc. --- will not be tolerated.	
-]]
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting work copied from others (human or otherwise) as your own, submitting work technically written by you but whose substance is taken from others and you don't understand it, using prohibited materials on exams, etc. --- will not be tolerated.
+	
+###

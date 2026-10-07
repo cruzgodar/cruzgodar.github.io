@@ -640,6 +640,8 @@ export class ThurstonGeometries extends Applet
 			this.movingAmount = [0, 0, 0];
 		}
 
+		this.geometryData.keepCameraInBounds();
+
 		this.geometryData.correctVectors();
 
 		

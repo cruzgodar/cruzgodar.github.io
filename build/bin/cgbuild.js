@@ -307,7 +307,7 @@ async function buildFile(file)
 	}
 
 	else if (
-		filename === "index" && extension === "pdf"
+		extension === "pdf"
 		&& (!options.clean || (options.clean && options.pdf))
 	) {
 		const files = readdirSync(`${root}/${file.slice(0, lastSlashIndex - 1)}`);

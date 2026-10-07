@@ -766,7 +766,6 @@ export const sitemap =
 			"/teaching/notes/calculus/gradients",
 			"/teaching/notes/calculus/multivariable-optimization",
 			"/teaching/notes/calculus/boundary-optimization",
-			"/teaching/notes/calculus/lagrange-multipliers",
 			"/teaching/notes/calculus/double-integrals",
 			"/teaching/notes/calculus/vector-fields",
 			"/teaching/notes/calculus/curve-integrals",
@@ -1327,17 +1326,6 @@ export const sitemap =
 	"/teaching/notes/calculus/boundary-optimization":
 	{
 		"title": "Section 5.9: Boundary Optimization",
-		
-		"parent": "/teaching/notes/calculus",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/notes/calculus/lagrange-multipliers":
-	{
-		"title": "Section 5.10: Lagrange Multipliers",
 		
 		"parent": "/teaching/notes/calculus",
 		
@@ -1959,7 +1947,6 @@ export const sitemap =
 			"/teaching/yale/1180/notes/gradients",
 			"/teaching/yale/1180/notes/multivariable-optimization",
 			"/teaching/yale/1180/notes/boundary-optimization",
-			"/teaching/yale/1180/notes/lagrange-multipliers",
 			"/teaching/yale/1180/notes/vectors-and-matrices",
 			"/teaching/yale/1180/notes/row-reduction",
 			"/teaching/yale/1180/notes/bases",
@@ -2069,20 +2056,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/yale/1180/notes/lagrange-multipliers":
-	{
-		"title": "Section 9: Lagrange Multipliers",
-		
-		"parent": "/teaching/yale/1180",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
 	"/teaching/yale/1180/notes/vectors-and-matrices":
 	{
-		"title": "Section 10: Vectors and Matrices",
+		"title": "Section 9: Vectors and Matrices",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2093,7 +2069,7 @@ export const sitemap =
 	
 	"/teaching/yale/1180/notes/row-reduction":
 	{
-		"title": "Section 11: Row Reduction",
+		"title": "Section 10: Row Reduction",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2102,7 +2078,7 @@ export const sitemap =
 	
 	"/teaching/yale/1180/notes/bases":
 	{
-		"title": "Section 12: Linear Independence and Bases",
+		"title": "Section 11: Linear Independence and Bases",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2113,7 +2089,7 @@ export const sitemap =
 	
 	"/teaching/yale/1180/notes/linear-transformations":
 	{
-		"title": "Section 13: Linear Transformations",
+		"title": "Section 12: Linear Transformations",
 		
 		"parent": "/teaching/yale/1180",
 		
@@ -2124,7 +2100,7 @@ export const sitemap =
 	
 	"/teaching/yale/1180/notes/determinants":
 	{
-		"title": "Section 14: The Determinant",
+		"title": "Section 13: The Determinant",
 		
 		"parent": "/teaching/yale/1180",
 		

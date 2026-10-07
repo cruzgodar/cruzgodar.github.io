@@ -304,12 +304,7 @@ class H2xEGeometry extends BaseGeometry
 			newForward[i] += dotForward * pos[i];
 		}
 
-		return [
-			pos,
-			this.normalize(newForward),
-			this.normalize(newRight),
-			this.normalize(newUp)
-		];
+		return [pos, ...this.orthonormalizeFrame(newForward, newRight, newUp)];
 	}
 
 	baseColorIncreases = [
@@ -323,6 +318,14 @@ class H2xEGeometry extends BaseGeometry
 
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
+		// Near a corner the camera can be past two faces at once, so this can teleport more than
+		// once per call -- and the rotated forward vector has to ride along through every one of
+		// them. Transforming the original argument each time instead hands recomputeRotation a
+		// vector from a different frame than the one it's measuring against, the asin there gets
+		// an argument outside [-1, 1], and the NaN pitch it returns poisons every vector after it.
+		let newRotatedForwardVec = rotatedForwardVec;
+		let teleported = false;
+
 		for (let i = 0; i < teleportations.length; i++)
 		{
 			if (dotProduct(this.cameraPos, teleportations[i][0]) < 0)
@@ -347,17 +350,22 @@ class H2xEGeometry extends BaseGeometry
 					this.upVec
 				);
 
-				const newRotatedForwardVec = mat4TimesVector(
+				newRotatedForwardVec = mat4TimesVector(
 					teleportations[i][1],
-					rotatedForwardVec
+					newRotatedForwardVec
 				);
-
-				recomputeRotation(newRotatedForwardVec);
 
 				this.baseColor[0] += this.baseColorIncreases[i][0];
 				this.baseColor[1] += this.baseColorIncreases[i][1];
 				this.baseColor[2] += this.baseColorIncreases[i][2];
+
+				teleported = true;
 			}
+		}
+
+		if (teleported)
+		{
+			recomputeRotation(newRotatedForwardVec);
 		}
 	}
 }

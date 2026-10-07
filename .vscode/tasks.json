@@ -7,7 +7,12 @@
 			"label": "build",
 			"type": "shell",
 			"command": "cgbuild",
-			"problemMatcher": []
+			"problemMatcher": [],
+			"group": { "kind": "build", "isDefault": true },
+			"presentation": {
+				"reveal": "silent",
+				"close": true
+			}
 		}
 	]
 }

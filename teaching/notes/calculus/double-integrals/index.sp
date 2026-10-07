@@ -86,7 +86,7 @@ We evaluate nested integrals like these from the inside out; without any further
 
 	Find the area under the graph of $f(x, y) = x^2 + xy + xy^2 - 1$ on the rectangle $R = [-2, 2] \times [-1, 1]$.
 
-	Let's find this area by slicing up the $y$-axis first, which we'll refer to as *integrating $\d y\,\d x$*, like an adjective. We have
+	Let's find this area by slicing up the $y$-axis first, which we'll refer to as *integrating $\d y\,\d x$*, like an adverb. We have
 
 	$$
 		\iint_R f(x, y)\,\d y\,\d x &= \int_{-2}^2 \int_{-1}^1 (x^2 + xy + xy^2 - 1)\,\d y\,\d x
@@ -294,13 +294,13 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 @exc[changing the order of integration][[
 
-	1. The curves $y = x^3$ and $y = 8 - (x - 2)^2$ intersect at $(-1, -1)$ and $(2, 8)$. Write
+	The curves $y = x^3$ and $y = 8 - (x - 2)^2$ intersect at $x = -1$ and $x = 2$. Write
 
 	$$
 		\int_{-1}^2 \int_{x^3}^{8 - (x - 2)^2} f(x, y)\,\d y\,\d x
 	$$
 
-	as an integral $\d x\,\d y$.
+	as an integral $\d x\,\d y$, but don't compute it.
 
 	@solution[[
 
@@ -327,7 +327,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 @exc[changing the order of integration][[
 
-	Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two iterated integrals: one $\d y\,\d x$ and one $\d x\,\d y$.
+	Let $R$ be the region bounded by $y = x$, $$y = \frac{x^2}{2}$$, and $$y = \tan\left( \frac{\pi}{4} x \right)$$, as shown. Write the signed volume under the graph of $z = xy$ on $R$ as two iterated integrals: one $\d y\,\d x$ and one $\d x\,\d y$. Don't compute either.
 
 	@desmos{nastyRegion}
 

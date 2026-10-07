@@ -1,4 +1,4 @@
-@navButtons
+### nav-buttons
 
 
 
@@ -8,11 +8,11 @@ With an understanding of 3D space and vectors, we can start examining some usefu
 
 The angle *between* two vectors is a concept that can take a moment to get used to. In $#R#^2$, it's a straightforward notion: two vectors placed so that their tails are at the same point form an angle (two angles, really, but we're interested in the one that's at most $180^\circ$). In $#R#^3$ and higher, it's very similar: any two vectors with their tails at the same point lie in a plane, and when viewed in that plane, there is a well-defined notion of angle between them.
 
-@desmos{angleBetweenVectors}
+### desmos angleBetweenVectors
 
 To figure out how to compute that angle with the minimum possible notational burden, let's just stick with $#R#^2$ for now. If $\vec{v} = \left< a, b \right>$ and $\vec{w} = \left< c, d \right>$, then $\left| \left| \vec{v} \right| \right| = \sqrt{a^2 + b^2}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{c^2 + d^2}$. We can form a triangle with sides consisting of $\vec{v}$ and $\vec{w}$ and a third side of $\vec{v} - \vec{w}$ (since adding it to $\vec{w}$ should produce $\vec{v}$):
 
-@desmos{dotProductMotivation}
+### desmos dotProductMotivation
 
 Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
 
@@ -38,17 +38,17 @@ $$
 
 That left side is surprisingly simple! What we've come upon is the idea that $ac + bd$ is an important quantity relating the vectors $\left< a, b \right>$ and $\left< c, d \right>$. In fact, we'll want to give it its own name and notation.
 
-@def[the dot product][[
+### def "the dot product"
 
 	Let $\vec{v} = \left< a, b \right>$ and $\vec{w} = \left< c, d \right>$. The **dot product** of $\vec{v}$ and $\vec{w}$ is $\vec{v} \bullet \vec{w} = ac + bd$. Notably, this is a *scalar*, not a vector.
 
 	The dot product is defined for higher-dimensional vectors, too: if $\vec{v} = \left< a, b, c \right>$ and $\vec{w} = \left< d, e, f \right>$ are vectors in $#R#^3$, then $\vec{v} \bullet \vec{w} = ad + be + cf$. More generally, if $\vec{v} = \left< v_1, v_2, ..., v_n \right>$ and $\vec{w} = \left< w_1, w_2, ..., w_n \right>$ are vectors in $#R#^n$, then $\vec{v} \bullet \vec{w} = v_1w_1 + v_2w_2 + \cdots + v_nw_n$. However, we *only define the dot product between two vectors of the same dimension*. If $\vec{v}$ and $\vec{w}$ live in different dimensional spaces, then $\vec{v} \bullet \vec{w}$ is completely undefined.
 
-]]
+###
 
 *Product* is a slightly strange name for this thing, since it isn't a vector despite taking in two vectors, but it does satisfy a lot of multiplication-like properties:
 
-@prop[properties of the dot product][[
+### prop "properties of the dot product"
 
 	For any vectors $\vec{u}$, $\vec{v}$, and $\vec{w}$ of the same dimension,
 
@@ -60,17 +60,17 @@ That left side is surprisingly simple! What we've come upon is the idea that $ac
 
 	4. If the angle between $\vec{v}$ and $\vec{w}$ is $\theta$, then $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$.
 
-]]
+###
 
 The dot product measures both the magnitudes of its factors and the angle between them. If $\vec{v}$ and $\vec{w}$ have an angle $\theta$ between them with $0^\circ \leq \theta < 90^\circ$, then $\vec{v} \bullet \vec{w}$ is positive, and if $\theta > 90^\circ$, then $\vec{v} \bullet \vec{w}$ is negative. If $\theta = 90^\circ$, then $\vec{v} \bullet \vec{w} = 0$, and almost the same is true in reverse: if both $\vec{v}$ and $\vec{w}$ are nonzero and $\vec{v} \bullet \vec{w} = 0$, then $\cos(\theta)$ must be zero, since both $\left| \left| \vec{v} \right| \right|$ and $\left| \left| \vec{v} \right| \right|$ are nonzero --- and the only angle $\theta$ between two vectors with $\cos(\theta) = 0$ is $\theta = 90^\circ$. This is an important enough idea that it will warrant its own name.
 
-@def[orthogonality][[
+### def "orthogonality"
 
 	Two vectors $\vec{v}$ and $\vec{w}$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
 
-]]
+###
 
-@exc[the dot product][[
+### exc "the dot product"
 
 	Let $\vec{v} = \left< 1, 5, 4 \right>$ and $\vec{w} = 8\vec{i} - 2\vec{j} - 10\vec{k}$.
 
@@ -78,7 +78,7 @@ The dot product measures both the magnitudes of its factors and the angle betwee
 
 	2. Find all points $(x, y, z)$ so that the vector $\left< x, y, z \right>$ is orthogonal to $\vec{v}$. What shape is that set of points? How would the shape change if $\vec{v}$ were different?
 
-	@solution[[
+	### solution
 
 	1. We can compute the dot product directly from the formula, since both $\vec{v}$ and $\vec{w}$ are in component form (albeit presented slightly differently):
 
@@ -112,19 +112,19 @@ The dot product measures both the magnitudes of its factors and the angle betwee
 
 	2. For this one, we can solve $\left< x, y, z \right> \bullet \left< 1, 5, 4 \right> = 0$, which gives $x + 5y + 4z = 0$. The shape of this object is best determined geometrically: the points orthogonal to $\vec{v}$ is the plane that $\vec{v}$ makes a right angle to:
 
-	@desmos{orthogonalPlane}
+	### desmos orthogonalPlane
 
-]]
+###
 
 
 
 Continuing with the idea of this exercise, let's relate planes and vectors with some more convenient language.
 
-@def[normal vector][[
+### def "normal vector"
 
 	Given a plane in $#R#^3$, a **normal vector** to the plane is a vector $\vec{n}$ that is orthogonal to every vector in the plane (i.e. every vector that can be drawn so that both its tip and tail are in the plane).
 
-]]
+###
 
 Generally speaking, we'll prefer to graph all planes in this course by finding their normal vectors. This probably seems a little weird at the outset --- after all, we very often present the equation of a line as $y = mx + b$, not $ax + by = c$. Why shouldn't we present planes as $z = ax + by + c$? Well, an advantage of that alternate line presentation is that it can account for lines parallel to the $y$-axis like $x = 3$, whereas insisting that $y$ have a coefficient of $1$ prevents us from doing so. That's only a small collection of lines that we're missing, but the problem is larger in $#R#^3$, where any plane containing a vector parallel to the $z$-axis --- like the $xz$- and $yz$-planes --- wouldn't fall under the formula $z = ax + by + c$.
 
@@ -140,7 +140,7 @@ $$
 
 This gives us a second way to find the equation of a plane!
 
-@ex[planes][[
+### ex "planes"
 
 	Find the equation of a plane with normal vector $\vec{n} = \left< 4, 1, 0 \right>$ passing through the point $(1, 0, 1)$.
 
@@ -154,45 +154,7 @@ This gives us a second way to find the equation of a plane!
 
 	If we want, we can also present this as $4x + y = 4$.
 
-]]
-
-Sometimes, we might find ourselves interested in the (minimum) distance from a point to a particular plane. If we know that plane's normal vector, then that minimum distance is given by traveling from the point to the plane in the direction of the normal vector --- moving perpendicularly to the plane is the fastest way to reach it.
-
-@desmos{distanceToPlane}
-
-Here, the orange vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the orange point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
-
-@prop[projections][[
-
-	Let $\vec{v}$ and $\vec{w}$ be two vectors. Then $\vec{v} = c \cdot \vec{w} + \vec{x}$ for some $c$ and some vector $\vec{x}$ orthogonal to $\vec{w}$. We call $c\vec{w}$ the **projection** of $\vec{v}$ onto $\vec{w}$, and it has a formula of
-
-	$$
-		\proj_{\vec{w}}(\vec{v}) = \frac{\vec{v} \bullet \vec{w}}{\vec{w} \bullet \vec{w}} \vec{w} = \frac{\vec{v} \bullet \vec{w}}{\left| \left| \vec{w} \right| \right|^2} \vec{w}.
-	$$
-
-]]
-
-Let's work through this example to find the distance we're interested in.
-
-@ex[distance from a point to a plane][[
-
-	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
-
-	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the purple one above) is
-
-	$$
-		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
-	$$
-
-	which we want to project onto the normal vector $\vec{n}$, resulting in
-
-	$$
-		\vec{v} = \proj_{\vec{n}}(\vec{w}) = \left< \frac{7}{10}, 0, \frac{21}{10} \right>.
-	$$
-
-	We can tell that that's parallel to $\vec{n}$ since the third entry is $3$ times the first and the second component is zero, and its magnitude is $\frac{7}{\sqrt{10}}$, giving us the distance we're looking for.
-
-]]
+###
 
 
 
@@ -200,13 +162,13 @@ Let's work through this example to find the distance we're interested in.
 
 When we graph lines in 2D, there's one more way we can present the data required: instead of a slope and an intercept, or a slope and a point, we can graph a line by knowing two points that it passes through. With a plane, though, that's not quite so simple. First of all, knowing two points that a plane passes through isn't enough: that effectively forms an axis about which the plane can spin. It takes a *third* point, not in line with the other two, to pin down the exact plane. But even if we have three non-collinear points (i.e. three not in a single line), how do we find a normal vector to that plane? Taking one point as the center, we can draw vectors to the other two, which are then two different vectors in the plane. What we need is a way to take those two vectors and produce a third one that's orthogonal to both.
 
-@desmos{planeFromPoints}
+### desmos planeFromPoints
 
 We'll find that the very tool we need is a *different* way to multiply vectors --- one that's unique to three-dimensional space.
 
 From time to time in math, machinery at a high level delivers sudden, broad solutions to lower-level problems like a lightning bolt from the clouds. So it is with the cross product, which originates from <a href="https://en.wikipedia.org/wiki/William_Rowan_Hamilton">William Hamilton's</a> groundbreaking work in <a href="https://en.wikipedia.org/wiki/Quaternion">quaternions</a>, a four-dimensional number system that is analogous to the complex numbers. Quaternions are unreasonably useful considering that we live in only three dimensions, particularly in how they very elegantly express all possible rotations of 3D space. They're relevant to our goals, though, because one of Hamilton's results about multiplying quaternions happens to produce a formula for taking two vectors in $#R#^3$ and producing a new vector orthogonal to them. What this means for us is that we get a clean formula to accomplish what we need, but it won't come along with a particularly generous helping of motivation --- we're the ones being struck by the lightning, not the ones turning the crank on the machine.
 
-@def[the cross product][[
+### def "the cross product"
 
 	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$. The **cross product** of $\vec{a}$ and $\vec{b}$, written $\vec{a} \times \vec{b}$, is the vector
 
@@ -214,7 +176,7 @@ From time to time in math, machinery at a high level delivers sudden, broad solu
 		\vec{a} \times \vec{b} = \left< a_2b_3 - a_3b_2,\ \ a_3b_1 - a_1b_3,\ \ a_1b_2 - a_2b_1 \right>.
 	$$
 
-]]
+###
 
 This is pretty rough! Before we talk at all about what properties this vector has, let's start with how to remember this formula in a better way than this sprawling mess of symbols. Although it will require us to learn other names and symbols, they'll be useful to know in their own right later in the course!
 
@@ -242,7 +204,7 @@ So why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, 
 
 ###
 
-@ex[the cross product][[
+### ex "the cross product"
 
 	Compute $\left< -2, 3, 2 \right> \times \left< 2, 0, -1 \right>$.
 
@@ -258,11 +220,11 @@ So why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, 
 		&= \left< -3, 2, -6 \right>.
 	$$
 
-]]
+###
 
 It's high time we stated some properties of the cross product! We'll get the chance to justify these on the homework, for now, we can make use of them for some applications.
 
-@thm[the magnitude and direction of the cross product][[
+### thm "the magnitude and direction of the cross product"
 
 	Let $\vec{a}$ and $\vec{b}$ be vectors in $#R#^3$. Then
 
@@ -272,17 +234,17 @@ It's high time we stated some properties of the cross product! We'll get the cha
 
 	3. If $\vec{a}$ and $\vec{b}$ have angle $\theta$ between them, then $\left| \left| \vec{a} \times \vec{b} \right| \right| = \left| \left| \vec{a} \right| \right| \cdot \left| \left| \vec{b} \right| \right|\sin(\theta)$.
 
-]]
+###
 
 This *almost* completely determines everything about $\vec{a} \times \vec{b}$, but you might notice one tiny problem: if $\vec{a}$ and $\vec{b}$ aren't parallel, then there are exactly two vectors of a given magnitude orthogonal to both $\vec{a}$ and $\vec{b}$: one points up, and another down. Which one is the cross product? To solve this problem, we use a very convenient technique called the **Right-Hand Rule**: sketch $\vec{a}$ and $\vec{b}$ so their tails are at the same point, and orient your right hand so that your four fingers are parallel to $\vec{a}$. Now curl your fingers toward $\vec{b}$, and then stick out your thumb. It points in the direction of $\vec{a} \times \vec{b}$! If your hand had been upside down, you wouldn't have been able to curl your fingers in the right direction.
 
-@desmos{crossProduct}
+### desmos crossProduct
 
-@exc[finding the equation of a plane through three points][[
+### exc "finding the equation of a plane through three points"
 
 	Find the equation of a plane containing the points $p = (3, -6, 1)$, $q = (0, 7, 3)$, and $r = (-1, 0, -2)$.
 
-	@solution[[
+	### solution
 
 	We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, 6, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -51, -17, 34 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
 
@@ -290,7 +252,7 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 		-51(x - 3) - 17(y - 13) + 34(z - 1) = 0.
 	$$
 
-]]
+###
 
 One additional use of the cross product is a seemingly strange interaction with the dot product. Given three vectors $\vec{a}$, $\vec{b}$, and $\vec{c}$, the so-called **scalar triple product** $\vec{a} \bullet (\vec{b} \times \vec{c})$ is actually a nicer object than we might first expect. If $\vec{b} \times \vec{c} = x \vec{i} + y \vec{j} + z \vec{k}$, then the dot product with $\vec{a} = \left< a_1, a_2, a_3 \right>$ is given by replacing $\vec{i}$ with $a_1$, $\vec{j}$ with $a_2$, and $\vec{k}$ with $a_3$. And we can just do that replacement in the computation of the cross product, resulting in
 
@@ -300,7 +262,7 @@ $$
 
 A convenient result from linear algebra (a field which is *very* roughly the study of matrices like this) tells us that this determinant's absolute value is the volume of the parallelepiped formed from $\vec{a}$, $\vec{b}$, and $\vec{c}$ --- that's an object like a parallelogram, but in three dimensions instead of two.
 
-@desmos{parallelepiped}
+### desmos parallelepiped
 
 
 
@@ -314,24 +276,24 @@ $$
 
 where we're thinking of them as being points --- that is, the line is the set of points $(1 + t, 2 + 4t)$ for all real values $t$. The same approach works in $#R#^3$!
 
-@prop[equation of a line in $#R#^3$][[
+### prop "equation of a line in $#R#^3$"
 
 	Let $\vec{r_0} = \left< x_0, y_0, z_0 \right>$ and let $\vec{v}$ be any vector. The parametric equation of the line passing through $(x_0, y_0, z_0)$ and parallel to $\vec{v}$ is given by $\vec{r}(t) = \vec{r_0} + t\vec{v}$.
 
-]]
+###
 
 It might seem pretty strange that we're outputting a vector from this function! After all, shouldn't the output of a line be points? Well, this is our first proper application of position vectors, and it will be far from the last. Because the outputs are vectors, we can write equations like $\vec{r_0} + t\vec{v}$ without worrying about the addition being undefined. And there's more to it than just being pedantic about the type of things we're adding! That vector addition makes geometric sense, not just algebraic.
 
-@desmos{vectorValuedLine}
+### desmos vectorValuedLine
 
 Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
 
 
-@exc[lines in $#R#^3$][[
+### exc "lines in $#R#^3$"
 
 	Find the equation of the line passing through the points $(1, 4, 3)$ and $(-1, -1, -1)$. Is the point $(-3, -5, -5)$ on the line?
 
-	@solution[[
+	### solution
 
 	We can find the direction vector by subtracting one point from the other: $\vec{v} = \left< -2, -5, -4 \right>$. The line is then given by
 
@@ -359,9 +321,9 @@ Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange v
 
 	The first equation results in $t = 2$, but plugging that into the other two doesn't work: only the third equation is true, not the second. Therefore, we can't solve all three equations at once, and so there is no $t$ that works --- the point is not on the line.
 
-]]
+###
 
-@ex[intersecting lines][[
+### ex "intersecting lines"
 
 	Find the intersection of the lines $\vec{l_1}$ and $\vec{l_2}$ given by
 
@@ -407,8 +369,8 @@ Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange v
 		\vec{l_1}(1) = \vec{l_2}(2) = \left< 2, 1, 3 \right>.
 	$$
 
-]]
+###
 
 
 
-@navButtons
+### nav-buttons

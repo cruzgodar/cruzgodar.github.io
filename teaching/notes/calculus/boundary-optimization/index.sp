@@ -1,4 +1,4 @@
-@navButtons
+### nav-buttons
 
 
 
@@ -6,33 +6,39 @@ When we optimize a function $f(x, y)$ --- for example, if $f(x, y) = 2x + xy + 5
 
 With a constraint like that, the problem makes much more sense: maximize $f(x, y)$ *given* $ax + by \leq c$. For this problem, let's say that our constraint is $10x + 5y \leq 100$, and implicitly also that $x \geq 0$ and $y \geq 0$. The techniques of the previous section might let us find where the critical points of the function are, but they don't have much to say about the boundary of the region. This is a direct analogue of the story of single-variable optimization: when we optimize a function of one variable $f(x)$ that's defined on a closed interval $[a, b]$, we have to consider not just its critical points, but also the endpoints $a$ and $b$ of the interval: the function might have local maxima or minima there. In fact, it very often does!
 
-@desmos{endpoints}
+### desmos endpoints
 
 Functions like this one are great examples of the **Extreme Value Theorem** for functions of a single variable, which says that a continuous function $f(x)$ on a closed interval always has a global maximum and a global minimum. In the previous graph, defining $f$ on all of $#R#$ or ditching the endpoints by defining it on $(a, b)$ results in a function with no global max or min. There are largely two relevant properties of $[a, b]$ that are not shared by $(a, b)$, $[a, \infty)$, or $(-\infty, \infty)$: first, $[a, b]$ contains the endpoints $a$ and $b$, which is necessary so that $x$ can't approach $a$ or $b$ without reaching it and thereby keep $f$ from having a global extremum. Second, $[a, b]$ doesn't extend infinitely far in either direction, meaning $f$ can't increase or decrease forever and avoid having a global extremum that way.
 
-If we'd like to bring the Extreme Value Theorem and this surrounding discussion to functions $f(x, y)$, then we need to extend the concept of a closed interval to $#R#^2$ by pinning down both of these properties. Let's give it a shot, starting with the simpler of the two: not extending infinitely in any direction.
+If we'd like to bring the Extreme Value Theorem and this surrounding discussion to functions $f(x, y)$, then we need to extend the concept of a closed interval to $#R#^2$ by pinning down both of these properties.
 
-@def[bounded set][[
+
+
+## Compact Sets
+
+Let's start by formalizing the simpler of the two properties of a closed interval: not extending infinitely in any direction.
+
+### def "bounded set"
 
 	Let $B$ be a set of points in $#R#^n$. We say that $B$ is **bounded** if there is some $r$ so that every point $b \in B$ is distance at most $r$ from the origin --- that is, $B$ is contained in some finite-radius ball centered at the origin.
 
-]]
+###
 
 This is as good of a definition as any --- it just says no part of $B$ can extend infinitely far away for it to be bounded. The other property is a bit more subtle, and requires a preliminary definition.
 
-@def[boundary of a set][[
+### def "boundary of a set"
 
 	Let $A$ be a set of points in $#R#^n$. The **boundary** of $A$ is the set of all points $a \in #R#^n$ (*not necessarily in $A$!*) for which a ball of any radius centered at $a$ contains some points in $A$ and some points not in $A$.
 
-]]
+###
 
 While we'll see that this agrees exactly with our intuition, this really demands some examples! Let's take a closer look.
 
-@ex[boundary of a set][[
+### ex "boundary of a set"
 
 	1. The boundary of the unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 \leq 1 \right\}$ is the unit circle $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 = 1 \right\}$: if we draw a circle of *any* radius around a point on the circle, it contains points in the disk and points not in it. Any other point is either completely inside or outside the set, since a sufficiently small circle will be contained in the set or outside it.
 
-	@desmos{boundary1}
+	### desmos boundary1
 
 	2. The boundary of the open unit disk $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 < 1 \right\}$ is *also* the unit circle. In just the same way that limits don't depend of a function's value at the point being approached, a point being inside or outside the boundary of a set is unrelated to whether it's in the set itself.
 
@@ -40,21 +46,19 @@ While we'll see that this agrees exactly with our intuition, this really demands
 
 	4. The boundary of a half-infinite interval $[a, \infty)$ is just the singleton set $\left\{ a \right\}$: there isn't any point greater than $a$ on the boundary, since the set continues out forever to the right.
 
-]]
+###
 
 Those last two examples hints at where we're going: the Extreme Value Theorem tells us about functions defined on intervals that contain their boundary. We already call them closed intervals, and so that's a great name to give to such sets more broadly.
 
-@def[closed and compact sets][[
+### def "closed and compact sets"
 
 	A set $C$ in $#R#^n$ is **closed** if it contains its boundary, and a set $K$ in $#R#^n$ is **compact** if it is closed and bounded.
 
-]]
+###
 
 The closed unit disk is closed, and the open unit disk is not --- the former contains its boundary while the latter doesn't. Intuitively, a set is closed if there's no way to approach a point not in the set by taking a path through the set. Note that we haven't defined what it means for a general set to be open; nor will we. There is a perfectly fine definition that correctly categorizes $(a, b)$ as open, $[a, b]$ as closed, and $[a, b)$ and $(a, b]$ as neither, but it's slightly out of our scope. For our purposes, we'll stick to saying $[a, b]$ is closed and the other three types of interval simply aren't closed.
 
-
-
-@exc[compact sets][[
+### exc "compact sets"
 
 	Consider the following four sets in $#R#^2$.
 
@@ -70,19 +74,23 @@ The closed unit disk is closed, and the open unit disk is not --- the former con
 
 	Determine whether $A$, $B$, $C$, and $D$ are closed and whether they are bounded. Are any of them compact?
 
-]]
+###
+
+
+
+## Optimizing on Simple Boundaries
 
 With compact sets defined and explored, let's return to the matter at hand and apply them.
 
-@thm[The Extreme Value Theorem][[
+### thm "The Extreme Value Theorem"
 
 	Let $f : #R#^n \to #R#$ be a continuous function of $n$ variables defined on a compact set $K$ (i.e. $f: K \to #R#$). Then $f$ must attain a global maximum and minimum on $K$.
 
-]]
+###
 
 We apply the EVT the same way that we did in single-variable calculus: first, we optimize a function by finding all of its critical points. Then, if it's defined on a compact set, we also evaluate it at every point in the boundary and compare those values to one another and to the critical points' values. The smallest is the global min, and the largest is the global max.
 
-@ex[optimizing a function][[
+### ex "optimizing a function"
 
 	Let $f(x, y) = x^3 - y^2 + 2xy$ be defined on the rectangle
 
@@ -92,7 +100,7 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 	Find the global extrema of $f$.
 
-	@solution[[
+	### solution
 
 	We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
 
@@ -138,11 +146,11 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
 
-	@desmos{evt}
+	### desmos evt
 
-]]
+###
 
-@exc[optimizing a function][[
+### exc "optimizing a function"
 
 	Find the global maximum and minimum of the function $f(x, y) = xy - x - y$ on the region
 
@@ -150,8 +158,428 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 2 \text{ and } 0 \leq y \leq 2x \right\}.
 	$$
 
-]]
+###
 
 
 
-@navButtons
+## Parameterizing Boundaries
+
+We'd often like to optimize a function $f(x, y)$ over a region whose boundary is composed not just of explicit functions like lines; while we handled those by plugging each function into $f$ to construct various functions of one variable, then optimizing each of those with the techniques of Calculus I, that technique doesn't generalize well. If the boundary is a more complicated curve like a circle or ellipse --- or worse, an implicit equation of $x$ and $y$ where neither variable can be isolated at all --- then we have a more difficult task ahead. Let's take a look at how to handle a problem like this.
+
+### ex "a complicated boundary"
+
+	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} \leq 1 \right\}$. Find the absolute maximum and minimum of $f$.
+
+	That's a strange domain! We'll start by setting $\G f = \left< y, x \right> = \vec{0}$, which tells us the only critical point of this function is at $(0, 0)$. That's inside the region, so we do want to consider it; the discriminant here is $D(0, 0) = -1$, so the second derivative test tells us it's a saddle point.
+
+	Now we can focus entirely on the boundary of the region, which is given by $x^{2/3} + y^{2/3} = 1$. It's not so easy to isolate one variable in terms of another, but we can still write the boundary in terms of a single variable by parameterizing it. That equation looks a lot like a circle: if we can write $x$ and $y$ as functions of $t$ so that $x^{2/3} = \cos^2(t)$ and $y^{2/3} = \sin^2(t)$, then we'll have defined our region. Solving, we wind up with
+
+	$$
+		x(t) &= \cos^3(t)
+
+		y(t) &= \sin^3(t),
+	$$
+
+	where $0 \leq t \leq 2\pi$.
+
+	Now we're trying to optimize the function
+
+	$$
+		f(x(t), y(t)) &= \cos^3(t)\sin^3(t)
+
+		&= \left( \cos(t)\sin(t) \right)^3.
+	$$
+	
+	Written that way, we have a shot at recognizing the interior as $\frac{1}{2}\sin(2t)$, making the whole expression
+
+	$$
+		f(x(t), y(t)) &= \frac{1}{8}\sin^3(2t).
+	$$
+
+	To optimize that function, we set $df/dt = 0$ as usual:
+
+	$$
+		d/dt\left[ \frac{1}{8}\sin^3(2t) \right] &= 0
+
+		\frac{3}{8}\sin^2(2t)\cos(2t)(2) &= 0
+
+		\sin^2(2t)\cos(2t) &= 0
+
+		\sin(2t) = 0 \text{ or } \cos(2t) &= 0.
+	$$
+
+	That's a complicated way of saying that $2t$ is an integer multiple of $\frac{\pi}{2}$, which is when one of the coordinates on the unit circle is zero. Solving for $t$, we find $t = \frac{k\pi}{4}$ for any integer $k$. Since $0 \leq t \leq 2\pi$, the result is the four coordinate points $(\pm 1, 0)$ and $(0, \pm 1)$ (when $t$ is a multiple of $\frac{\pi}{2}$), along with the additional four points
+
+	$$
+		\left( \left( \pm \frac{\sqrt{2}}{2} \right)^3, \left( \pm \frac{\sqrt{2}}{2} \right)^3 \right).
+	$$
+
+	Now we can check each of these eight to find the largest and smallest values of $f(x, y)$. Immediately, we can determine that the four points with a coordinate of zero will make $f(x, y) = xy = 0$. Each of the remaining points will have an absolute value of
+	
+	$$
+		\left( \frac{\sqrt{2}}{2} \right)^3 \left( \frac{\sqrt{2}}{2} \right)^3 &= \frac{1}{8},
+	$$
+
+	with $f(x, y) = +\frac{1}{8}$ when the $x$- and $y$-coordinates have the same sign, and $f(x, y) = -\frac{1}{8}$ when they have opposite signs. In total, the points
+
+	$$
+		\left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right), \left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right)
+	$$
+
+	are tied for the global maximum, and
+
+	$$
+		\left( \left( -\frac{\sqrt{2}}{2} \right)^3, \left( \frac{\sqrt{2}}{2} \right)^3 \right), \left( \left( \frac{\sqrt{2}}{2} \right)^3, \left( -\frac{\sqrt{2}}{2} \right)^3 \right)
+	$$
+
+	are tied for the global minimum.
+
+	### desmos astroid
+
+###
+
+### exc "parameterizing a boundary"
+
+	Find the absolute minimum and maximum of the function $f(x, y) = 2x - 2y$ on the solid circle $x^2 + y^2 \leq 4$ by parameterizing the boundary.
+
+	### solution
+
+	Starting with the critical points, we have
+
+	$$
+		\G f = \left< 2, -2 \right> = \vec{0},
+	$$
+
+	so there are none (which makes some sense; this is a plane, and those don't have any critical points unless they're flat). The boundary of our set is given by the equation $x^2 + y^2 = 4$, and while we could solve for one variable and plug it into the equation to get a function of one variable, that would result in two separate functions to consider because of the $\pm$ that would appear on the square root. Instead, let's parameterize the boundary like in the previous example. It's given by
+
+	$$
+		\vec{r}(t) = \left< 2\cos(t), 2\sin(t) \right>, \quad 0 \leq t \leq 2\pi,
+	$$
+
+	and so we can optimize the function by plugging these values in for $x$ and $y$ and solving for critical points in $t$:
+
+	$$
+		f\left( \vec{r}(t) \right) &= 2(2\cos(t)) - 2(2\sin(t))
+
+		&= 4\cos(t) - 4\sin(t)
+
+		d/dt \left[ 4\cos(t) - 4\sin(t) \right] &= -4\sin(t) - 4\cos(t) = 0
+
+		\sin(t) &= -\cos(t)
+
+		\tan(t) &= -1
+
+		t &= \frac{3\pi}{4} \text{ or } t = \frac{7\pi}{4},
+	$$
+
+	meaning the critical points of our function on the boundary lie at $\vec{r}\left( \frac{3\pi}{4} \right) = \left( -\sqrt{2}, \sqrt{2} \right)$ and $\vec{r}\left( \frac{7\pi}{4} \right) = \left( \sqrt{2}, -\sqrt{2} \right)$. Checking their values, the first is a minimum and a second one a maximum.
+
+	### desmos tiltedCircle
+
+###
+
+
+
+## Lagrange Multipliers
+
+While boundary parameterization was certainly doable in these examples, we'd really like a better approach --- it's not hard to imagine the complexity of a boundary spiraling well beyond our ability to parameterize it, and even these examples weren't all that easy. With this goal in mind, let's take a step back and approach the challenge of boundary parameterization from a different, slightly more applied perspective.
+
+We opened the section by thinking about a function $f(x, y) = 2x + xy + 5y$ giving the monthly profit to a birding store selling $x$ pairs of binoculars and $y$ birdhouses per month, subject to the constraint $10x + 5y \leq 100$. To get at a different method of optimization that doesn't require boundary parameterization, let's think about level curves. The maximum $(a, b)$ that we're looking for will occur at a point on some level curve of $f$, and also on the line $10x + 5y = 100$; let's draw both.
+
+### desmos levelCurves
+
+Immediately, we can see that we need to pick a small enough value of $c$ that the level curve $2x + xy + 5y = c$ actually intersects $10x + 5y = 100$; otherwise, there won't be any point in the intersection. But on the other hand, we *want $c$ to be as large as possible*, because crucially, $c$ is the output of $f(x, y)$ --- it's the thing we're trying to maximize. We therefore are looking for a value of $c$ where the level curve just barely touches the line $10x + 5y = 100$, or in other words, where the two are tangent.
+
+Finding that $c$-value might be easy if the boundary is a line, but what if it's a more complicated curve? We owe it to ourselves to find a more general solution to finding a $c$-value whose level curve is tangent to the boundary.
+
+Let's begin by giving the function defining the constraint a name: $g(x, y)$. And to handle more general boundary conditions, let's just insist that the boundary is given by $g(x, y) = 0$, so in this example, $g(x, y) = 10x + 5y - 100$. The magic comes from writing $g$ as a function of multiple variables, so that we can think of $g(x, y) = 0$ as being a level curve of $g$. Then these two curves being tangent is equivalent to saying that we can move in the same direction and not increase in height on either the graph of $f(x, y)$ or $g(x, y)$ --- in other words, that there's a single direction orthogonal to both $\G f$ and $\G g$. That happens when $\G f$ and $\G g$ point in the same direction or in opposite directions, and we can account for both cases by simply saying that $\G f$ is a constant multiple (possibly negative) of $\G g$. In the typical notation of this method, we'll denote that constant multiple by the Greek letter $\lambda$ (pronounced "lambda"), and call it a **Lagrange multiplier** when we occasionally have need for a name.
+
+Let's see how this applies to our example. Given the profit function $f(x, y)$ that we're trying to maximize and the constraint $g(x, y)$, we set up two equations:
+
+$$
+	\G f(x, y) &= \lambda \G g(x, y)
+
+	g(x, y) &= 0
+$$
+
+While this might seem like two equations and three unknowns, it's not! Let's expand it out and see why.
+
+$$
+	\left< 2 + y, x + 5 \right> &= \lambda \left< 10, 5 \right>
+
+	10x + 5y - 100 &= 0.
+$$
+
+The two equations are actually three, since in the first one, both the first and second components of the vector must be equal. Therefore,
+
+$$
+	2 + y &= 10\lambda
+
+	x + 5 &= 5\lambda
+
+	10x + 5y - 100 &= 0.
+$$
+
+It's generally a good strategy to eliminate $\lambda$ from these equations; here, we have
+
+$$
+	\lambda &= \frac{2 + y}{10}
+
+	\lambda &= \frac{x + 5}{5}
+
+	\frac{2 + y}{10} &= \frac{x + 5}{5}
+
+	(2 + y)(5) &= (x + 5)(10)
+
+	10 + 5y &= 10x + 50
+
+	2 + y &= 2x + 10
+
+	y &= 2x + 8.
+$$
+
+Plugging this back into the constraint equation,
+
+$$
+	10x + 5(2x + 8) - 100 &= 0
+
+	20x &= 60
+
+	x &= 3
+
+	y &= 2(3) + 8
+
+	&= 14.
+$$
+
+We only found one critical point! Normally, we'd expect at least two, since there should be an absolute minimum and maximum on any compact domain. However, the set on which we're optimizing this function is a line, which isn't compact since it's not bounded! The Extreme Value Theorem therefore doesn't apply. Determining whether this one point is a maximum, minimum, or saddle point can be a little delicate --- checking nearby points on the line $g(x, y) = 0$ tells us that their $z$-values are less than $118$, though, so this is in fact a maximum. Although it's an oversimplified example, this method genuinely gave us an output to inform how we should allocate our spending on products to maximize profit!
+
+Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
+
+### thm -m "Method: Lagrange multipliers"
+
+	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
+
+	1. Solve the system of equations
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+	$$
+
+	to find potential critical points $(x, y)$. Also consider the points where $\G g(x, y)$ is undefined.
+
+	2. Of all the points $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
+
+###
+
+Let's now return to the astroid example to see the improvement.
+
+### exc "Lagrange multipliers"
+
+	Let $f(x, y) = xy$ be defined on the astroid $\left\{ (x, y) \in #R#^2 \mid x^{2/3} + y^{2/3} = 1 \right\}$ (i.e. just on the boundary this time). Find the absolute maximum and minimum of $f$.
+
+	### solution
+
+	Instead of parameterizing the boundary in terms of $t$, let's use Lagrange multipliers. We have $f(x, y) = xy$ and $g(x, y) = x^{2/3} + y^{2/3} - 1$, and so our system of equations is
+
+	$$
+		\G f(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+
+		~
+
+		\left< y, x \right> &= \lambda\left< \frac{2}{3}x^{-1/3}, \frac{2}{3}y^{-1/3} \right>
+
+		x^{2/3} + y^{2/3} - 1 &= 0
+
+		~
+
+		y &= \frac{2}{3}\lambda x^{-1/3}
+
+		x &= \frac{2}{3}\lambda y^{-1/3}
+
+		x^{2/3} + y^{2/3} - 1 &= 0.
+	$$
+
+	Eliminating $\lambda$,
+
+	$$
+		\frac{3}{2} y x^{1/3} &= \lambda
+
+		\frac{3}{2} x y^{1/3} &= \lambda
+
+		\frac{3}{2} y x^{1/3} &= \frac{3}{2} x y^{1/3}
+
+		x^{2/3} &= y^{2/3}
+	$$
+
+	While can can very well solve this completely for $x$ or $y$, we can also just plug it back into the constraint equation $g(x, y) = 0$:
+
+	$$
+		x^{2/3} + y^{2/3} - 1 &= 0
+
+		x^{2/3} + x^{2/3} - 1 &= 0
+
+		2x^{2/3} &= 1
+
+		x^{2/3} &= \frac{1}{2}
+
+		x^2 &= \frac{1}{8}
+
+		x &= \pm \sqrt{\frac{1}{8}}
+
+		&= \pm \left( \frac{\sqrt{2}}{2} \right)^3,
+	$$
+
+	as before. Solving for $y$, we can cube both sides of $x^{2/3} = y^{2/3}$ to get $x^2 = y^2$, so $y = \pm \left( \frac{\sqrt{2}}{2} \right)^3$ for both $x$-values. Notably, we missed the points $(\pm 1, 0)$ and $(0, \pm 1)$ --- those are the points where $\G g(x, y)$ is undefined, so we also need to consider them. Once we've added those in, though, we've successfully recovered the same points that we saw in the example earlier in this section! From here, the same logic applies --- we plug them all in and find the largest and smallest.
+
+###
+
+### exc "Lagrange multipliers"
+
+	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$2$ per square foot, while the other two sides and base will be made out of wood, costing $\$1$ per square foot. You have a budget of $\$24$ --- how large of a box can you build?
+
+	### solution
+
+	With $f(x, y, z) = xyz$ and
+
+	$$
+		g(x, y, z) = xy + 4yz + 2xz - 24 = 0
+	$$
+
+	(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
+
+	$$
+		\G f &= \lambda G g
+
+		\left< yz, xz, xy \right> &= \lambda \left< y + 2z, x + 4z, 4y + 2x \right>
+
+		~
+
+		yz &= \lambda(y + 2z)
+
+		xz &= \lambda(x + 4z)
+
+		xy &= \lambda(4y + 2x).
+	$$
+
+	We can eliminate $\lambda$ from the first two equations:
+
+	$$
+		\frac{yz}{y + 2z} &= \frac{xz}{x + 4z}
+
+		yz(x + 4z) &= xz(y + 2z)
+
+		xyz + 4yz^2 &= xyz + 2xz^2
+
+		2y &= x.
+	$$
+
+	Now eliminating $\lambda$ from the first and third equations,
+
+	$$
+		\frac{yz}{y + 2z} &= \frac{xy}{4y + 2x}
+
+		yz(4y + 2x) &= xy(y + 2z)
+
+		4y^2z + 2xyz &= xy^2 + 2xyz
+
+		4y^2z &= xy^2
+
+		4y^2z &= (2y)y^2
+
+		2y^2z &= y^3
+
+		y^3 - 2y^2z &= 0
+
+		y^2(y - 2z) &= 0,
+	$$
+
+	so either $y = 0$, which isn't so good for box-building, or $y = 2z$, meaning $x = 4z$. Now in the constraint equation,
+
+	$$
+		xy + 4yz + 2xz &= 24
+
+		(4z)(2z) + 4(2z)z + 2(4z)z &= 24
+
+		8z^2 + 8z^2 + 8z^2 &= 24
+
+		z^2 &= 1
+
+		z &= \pm 1.
+	$$
+
+	We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
+
+###
+
+
+
+Now that we've gotten more comfortable with the process of Lagrange multipliers, we can examine the one part that we haven't looked closely at: what does $\lambda$ mean? Let's start with
+
+$$
+	\G f &= \lambda \G g,
+
+	g(x, y) &= c,
+$$
+
+where $c$ is the value of the constraint (for example, the budget of a company). We're leaving it as a variable like this, rather than lumping it into $g$, since it'll be more helpful later. Now we can write the constraint as $g(x, y) - c = 0$, and then rewrite the gradient equation as
+
+$$
+	\G f - \lambda\G g &= \vec{0}
+
+	\G f - \G (\lambda g) &= \vec{0}
+
+	\G (f - \lambda g) &= \vec{0}.
+$$
+
+Written like this, we can recover the equation $g(x, y) = c$ from the function $f - \lambda g$ by taking its derivative with respect to $\lambda$. In other words, if we define a new function
+
+$$
+	\mathcal{L}(x, y, \lambda) = f(x, y) - \lambda (g(x, y) - c),
+$$
+
+(typically called the **Lagrangian**), then
+
+$$
+	\G \mathcal{L} &= \left< \frac{\p \mathcal{L}}{\p x}, \frac{\p \mathcal{L}}{\p y}, \frac{\p \mathcal{L}}{\p \lambda} \right>
+
+	&= \left< pf/px - \lambda pg/px,\quad pf/py - \lambda pg/py,\quad g(x, y) - c \right>,
+$$
+
+and so then the system of equations for Lagrange multipliers is equivalent to
+
+$$
+	\G \mathcal{L} &= \vec{0}.
+$$
+
+With this presentation of Lagrange multipliers, we're prepared to understand $\lambda$. Returning to the Lagrangian, we can extract $\lambda$ by differentiating it *with respect to $c$*:
+
+$$
+	p/pc \mathcal{L}(x, y, \lambda) = \lambda.
+$$
+
+That means $\lambda = \frac{\p \mathcal{L}}{\p c}$, so increasing $c$ by $1$ increases the value of $\mathcal{L}$ approximately $\lambda$. That means we've reduced the problem to understanding what the value of $\mathcal{L}$ actually means!
+
+To understand $mathcal{L}$, let's begin by thinking about a solution to the system $\G \mathcal{L} = \vec{0}$, say $(x^*, y^*)$. That solution depends on $c$ (for example, as a budget changes, so does the optimal way to spend it), so let's write $(x^*(c), y^*(c))$. Plugging it into $\mathcal{L}$, we have
+
+$$
+	\mathcal{L}(x^*(c), y^*(c), \lambda) &= f(x^*(c), y^*(c)) - \lambda (g(x^*(c), y^*(c)) - c)
+
+	&= f(x^*(c), y^*(c)),
+$$
+
+since $(x^*(c), y^*(c))$ is a solution to $\G \mathcal{L} = \vec{0}$, and so
+
+$$
+	g(x^*(c), y^*(c)) = c.
+$$
+
+That means that the value of $\mathcal{L}$ *is* the optimal value of $f$! We can finally conclude with our interpretation of $\lambda$: it's the rate of increase of the optimal value of $f$, relative to the constrant value $c$. If $f$ gives the profit to a company and $g(x, y) = c$ is its budget, both in dollars, then $\lambda$ is approximately the additional profit per additional dollar in the budget.
+
+
+
+### nav-buttons

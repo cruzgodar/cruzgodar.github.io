@@ -111,6 +111,17 @@ export class RaymarchApplet extends AnimationFrameApplet
 	headToScene = new Float32Array(16);
 	controllerToScene = new Float32Array(16);
 
+	// The thumbsticks orbit the tracking space about the scene origin, and this is how far it's
+	// turned so far: a column-major 3x3 whose columns are where the tracking-space axes point in
+	// the scene. Rotating the whole tracking space rather than locking the camera leaves the
+	// headset free to move inside it.
+	xrOrbitRotation = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+
+	// In radians per second at full deflection.
+	xrOrbitSpeed = 1;
+
+	xrThumbstickDeadzone = 0.15;
+
 	xrSceneOriginBeforeXR;
 	xrThetaBeforeXR;
 	xrInitialZHeight;
@@ -392,6 +403,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				targetFrameRate: 72,
 				framebufferScale: 0.5,
 
+				foveation: 2,
+
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
 				renderFrame: this.renderXRFrame.bind(this),
@@ -482,8 +495,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		for (let i = 0; i < this.coneMarchingScales.length; i++)
 		{
-			const scale = this.coneMarchingScales[i];
-
 			const shader = createConeMarchingShader({
 				distanceEstimatorGlsl: this.distanceEstimatorGlsl,
 				addGlsl: this.addGlsl,
@@ -491,14 +502,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 				uniformsGlsl: this.uniformsGlsl,
 				clipDistance: this.clipDistance,
 				maxMarches: this.coneMarchingMaxMarches[i],
-				coneMarchingScale: scale,
 				isFirstScale: i === 0,
 			});
 
 			this.wilson.loadShader({
 				id: `coneMarch${i}`,
 				shader,
-				uniforms: this.uniforms
+				uniforms: {
+					...this.uniforms,
+					passResolution: [1, 1]
+				},
 			});
 		}
 
@@ -538,6 +551,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				width *= ratio;
 				height *= ratio;
 			}
+
+			// Set even when the size hasn't changed, since reloaded cone shaders start back at
+			// their initial value.
+			this.wilson.setUniform("passResolution", [width, height], `coneMarch${i}`);
 
 			// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
 			if (
@@ -913,6 +930,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.theta = 0;
 		this.sceneOrigin = [-this.defaultDistanceFromOrigin, 0, this.xrInitialZHeight];
+		this.xrOrbitRotation = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
 		// The first frame arrives at whatever scale the last session ended on, and easing
 		// from there would mean starting off uncomfortable.
@@ -947,6 +965,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		xrToScene(pose.transform.matrix, this.headToScene);
 
+		// This needs the head while it's still in tracking space, since the orbit axes are
+		// relative to the user's physical frame.
+		this.updateXROrbit(deltaTime);
+
+		applyRotation(this.xrOrbitRotation, this.headToScene);
+
 		this.headPos[0] = this.sceneOrigin[0] + this.headToScene[12] * this.worldScale;
 		this.headPos[1] = this.sceneOrigin[1] + this.headToScene[13] * this.worldScale;
 		this.headPos[2] = this.sceneOrigin[2] + this.headToScene[14] * this.worldScale;
@@ -961,13 +985,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 			-this.headToScene[10]
 		]);
 
-		// Constrained to the xy-plane like the desktop path, but here the user really
-		// can look straight up, where that construction degenerates.
-		const horizontal = Math.hypot(this.forwardVec[0], this.forwardVec[1]);
+		// Constrained to the user's horizontal plane like the desktop path is to the xy-plane,
+		// but here the user really can look straight up, where that construction degenerates.
+		// Orbiting can tilt the user's up away from the scene's, so it has to be the former.
+		const orbitUp = this.xrOrbitRotation.slice(6, 9);
+		const rightVec = crossProduct(this.forwardVec, orbitUp);
 
-		if (horizontal > 0.001)
+		if (magnitude(rightVec) > 0.001)
 		{
-			this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+			this.rightVec = normalize(rightVec);
 			this.upVec = crossProduct(this.rightVec, this.forwardVec);
 		}
 
@@ -1020,6 +1046,84 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.calculateVectors();
 
 		this.prepareFrame(deltaTime);
+	}
+
+	// The thumbsticks turn the whole tracking space about the scene origin, which reads as the
+	// scene turning in front of the user, the same as dragging does when locked on the origin.
+	// The head's offset inside the tracking space is left alone, so its distance from the origin
+	// is preserved exactly while the user is still free to move around. Expects headToScene to
+	// still be in tracking space.
+	updateXROrbit(deltaTime)
+	{
+		let stickX = 0;
+		let stickY = 0;
+
+		for (const controller of this.wilson.xrControllers)
+		{
+			stickX += controller.thumbstick[0];
+			stickY += controller.thumbstick[1];
+		}
+
+		stickX = applyDeadzone(stickX, this.xrThumbstickDeadzone);
+		stickY = applyDeadzone(stickY, this.xrThumbstickDeadzone);
+
+		if (stickX === 0 && stickY === 0)
+		{
+			return;
+		}
+
+		const angleScale = this.xrOrbitSpeed * deltaTime / 1000;
+		const rotation = this.xrOrbitRotation;
+
+		// Both axes are the user's physical ones carried into the scene, so the turntable stays
+		// level with the floor they're standing on no matter how far it's been turned.
+		const up = rotation.slice(6, 9);
+		const rotations = [[up, -stickX * angleScale]];
+
+		const forwardX = -this.headToScene[8];
+		const forwardY = -this.headToScene[9];
+		const horizontal = Math.hypot(forwardX, forwardY);
+
+		// Looking straight up or down, there's no horizontal right to tilt about.
+		if (horizontal > 0.001)
+		{
+			const rightX = forwardY / horizontal;
+			const rightY = -forwardX / horizontal;
+
+			const right = [
+				rotation[0] * rightX + rotation[3] * rightY,
+				rotation[1] * rightX + rotation[4] * rightY,
+				rotation[2] * rightX + rotation[5] * rightY
+			];
+
+			rotations.push([right, stickY * angleScale]);
+		}
+
+		for (const [axis, angle] of rotations)
+		{
+			if (angle === 0)
+			{
+				continue;
+			}
+
+			this.sceneOrigin = rotateAboutAxis(this.sceneOrigin, axis, angle);
+
+			for (let i = 0; i < 9; i += 3)
+			{
+				const column = rotateAboutAxis(rotation.slice(i, i + 3), axis, angle);
+
+				rotation[i] = column[0];
+				rotation[i + 1] = column[1];
+				rotation[i + 2] = column[2];
+			}
+		}
+
+		// Gram-Schmidt, so the rotation doesn't drift into a shear over a long session.
+		const x = normalize(rotation.slice(0, 3));
+		const z = normalize(crossProduct(x, rotation.slice(3, 6)));
+		const y = crossProduct(z, x);
+
+		this.xrOrbitRotation = [...x, ...y, ...z];
 	}
 
 	// worldScale is meters per scene unit, so a surface at scene distance d sits at
@@ -1185,11 +1289,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		// Wilson no longer hands the viewport to the callback; it exposes the eye currently being
 		// rendered instead, which is only non-null for the duration of this call.
-		const viewport = this.wilson.xrViewport;
 
 		this.projectionMatrix = projectionMatrix;
 
 		xrToScene(cameraToWorld, this.xrCameraToWorld);
+		applyRotation(this.xrOrbitRotation, this.xrCameraToWorld);
 
 		this.xrRayOrigin[0] = this.sceneOrigin[0] + this.xrCameraToWorld[12] * this.worldScale;
 		this.xrRayOrigin[1] = this.sceneOrigin[1] + this.xrCameraToWorld[13] * this.worldScale;
@@ -1201,7 +1305,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
 
 		// Ensure epsilon scaling is done with the per-eye resolution.
-		const eyeResolution = Math.min(Math.sqrt(viewport.width * viewport.height), 1000);
+		const eyeResolution = Math.min(
+			Math.sqrt(this.wilson.xrEyeWidth * this.wilson.xrEyeHeight),
+			1000
+		);
 
 		this.wilson.setUniform(
 			"epsilonScaling",
@@ -1228,9 +1335,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			// The headset can rescale the viewport from frame to frame, and the framebuffer
 			// scale slider rebuilds the layer outright, neither of which reports in anywhere else.
-			this.updatePixelDiagonalRadius(Math.sqrt(viewport.width * viewport.height));
+			this.updatePixelDiagonalRadius(
+				Math.sqrt(this.wilson.xrEyeWidth * this.wilson.xrEyeHeight)
+			);
 			
-			this.resizeConeMarchingFramebuffers(viewport.width, viewport.height);
+			this.resizeConeMarchingFramebuffers(this.wilson.xrEyeWidth, this.wilson.xrEyeHeight);
 
 			for (let i = 0; i < this.coneMarchingScales.length; i++)
 			{
@@ -1427,14 +1536,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 					: this.rightVec
 			);
 
+			// Orbiting in XR can tilt the user's up away from the scene's, and vertical movement
+			// should follow the former.
+			const usableUpVec = scaleVector(
+				this.speed / 1.5,
+				this.wilson.inXR ? this.xrOrbitRotation.slice(6, 9) : [0, 0, 1]
+			);
+
 			const tangentVec = [
 				this.moveVelocity[0] * usableForwardVec[0]
-					+ this.moveVelocity[1] * usableRightVec[0],
+					+ this.moveVelocity[1] * usableRightVec[0]
+					+ this.moveVelocity[2] * usableUpVec[0],
 				this.moveVelocity[0] * usableForwardVec[1]
-					+ this.moveVelocity[1] * usableRightVec[1],
+					+ this.moveVelocity[1] * usableRightVec[1]
+					+ this.moveVelocity[2] * usableUpVec[1],
 				this.moveVelocity[0] * usableForwardVec[2]
 					+ this.moveVelocity[1] * usableRightVec[2]
-					+ this.moveVelocity[2] * this.speed / 1.5
+					+ this.moveVelocity[2] * usableUpVec[2]
 			];
 
 			this.sceneOrigin[0] += movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
@@ -1754,4 +1872,52 @@ function xrToScene(matrix, out)
 	}
 
 	return out;
+}
+
+// Applies a column-major 3x3 rotation to the basis and translation of a column-major 4x4
+// in place.
+function applyRotation(rotation, matrix)
+{
+	for (let column = 0; column < 4; column++)
+	{
+		const i = 4 * column;
+
+		const x = matrix[i];
+		const y = matrix[i + 1];
+		const z = matrix[i + 2];
+
+		matrix[i] = rotation[0] * x + rotation[3] * y + rotation[6] * z;
+		matrix[i + 1] = rotation[1] * x + rotation[4] * y + rotation[7] * z;
+		matrix[i + 2] = rotation[2] * x + rotation[5] * y + rotation[8] * z;
+	}
+
+	return matrix;
+}
+
+// Rodrigues' formula. The axis has to be a unit vector.
+function rotateAboutAxis(vec, axis, angle)
+{
+	const c = Math.cos(angle);
+	const s = Math.sin(angle);
+	const cross = crossProduct(axis, vec);
+	const dot = dotProduct(axis, vec) * (1 - c);
+
+	return [
+		vec[0] * c + cross[0] * s + axis[0] * dot,
+		vec[1] * c + cross[1] * s + axis[1] * dot,
+		vec[2] * c + cross[2] * s + axis[2] * dot
+	];
+}
+
+// Rescales so the response starts from zero at the edge of the deadzone rather than jumping.
+function applyDeadzone(value, deadzone)
+{
+	const clamped = Math.min(Math.max(value, -1), 1);
+
+	if (Math.abs(clamped) < deadzone)
+	{
+		return 0;
+	}
+
+	return Math.sign(clamped) * (Math.abs(clamped) - deadzone) / (1 - deadzone);
 }

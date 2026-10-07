@@ -1,0 +1,222 @@
+### card homework-5 "Homework 5"
+	
+	*Due Tuesday, October 7th at 11:59 PM*
+	
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+
+	- - -
+
+	#. Find and classify the critical points of
+
+	$$
+		f(x, y) = x^2 + y^2 - \frac{2}{xy}
+	$$
+
+	as local minima, local maxima, or saddle points.
+
+	**Solution:** The gradient is
+
+	$$
+		\G f = \left< 2x + \frac{2}{x^2y},\ 2y + \frac{2}{xy^2} \right>,
+	$$
+
+	which is undefined when $x = 0$ or $y = 0$, but so is $f$, so those points aren't in the domain and can't be critical points. Setting both components equal to zero and simplifying,
+
+	$$
+		x^3y &= -1
+
+		xy^3 &= -1,
+	$$
+
+	so
+
+	$$
+		x^3y &= xy^3
+
+		xy\left( x^2 - y^2 \right) &= 0,
+	$$
+
+	and since $xy \neq 0$, we must have $y = \pm x$. If $y = x$, then $x^4 = -1$, which has no solutions. If $y = -x$, then $-x^4 = -1$, so $x^4 = 1$ and $x = \pm 1$. The two critical points are then
+
+	$$
+		(1, -1) \quad \text{and} \quad (-1, 1).
+	$$
+
+	The second partials are
+
+	$$
+		f_{xx}(x, y) &= 2 - \frac{4}{x^3y}
+
+		f_{xy}(x, y) &= -\frac{2}{x^2y^2}
+
+		f_{yy}(x, y) &= 2 - \frac{4}{xy^3}.
+	$$
+
+	At both critical points, $y = -x$, so $x^3y = xy^3 = -x^4 = -1$ and $x^2y^2 = x^4 = 1$. That means at both points,
+
+	$$
+		f_{xx} &= 2 + 4 = 6
+
+		f_{xy} &= -2
+
+		f_{yy} &= 2 + 4 = 6
+
+		~
+
+		D &= (6)(6) - (-2)^2 = 32 > 0.
+	$$
+
+	Since $D > 0$ and $f_{xx} > 0$, both critical points are local minima, each with a $z$-value of $1 + 1 - \frac{2}{-1} = 4$.
+
+	- - -
+
+	In problems 2#, find the global minimum and maximum of the function on the given domain.
+
+	#. $g(x, y)$ defined by
+	$$
+		g(x, y) = x^2 + 2xy + 2y^2 - 6x - 8y
+	$$
+	on
+	$$
+		\left\{ (x, y) \in #R#^2 \mid 0 \leq x \leq 5 \text{ and } 0 \leq y \leq 5 - x \right\}
+	$$.
+
+	**Solution:** This region is the triangle with vertices $(0, 0)$, $(5, 0)$, and $(0, 5)$. The gradient is
+
+	$$
+		\G g = \left< 2x + 2y - 6,\ 2x + 4y - 8 \right>,
+	$$
+
+	which is zero when $x + y = 3$ and $x + 2y = 4$. Subtracting the first equation from the second gives $y = 1$, and then $x = 2$. Since $2 + 1 = 3 < 5$, the point $(2, 1)$ is inside the triangle, so it's a candidate. The boundary consists of three line segments.
+
+	$y = 0$: $g(x, 0) = x^2 - 6x$ for $x \in [0, 5]$. The derivative is $2x - 6$, which is zero at $x = 3$, so the candidates are $(0, 0)$, $(3, 0)$, and $(5, 0)$.
+
+	$x = 0$: $g(0, y) = 2y^2 - 8y$ for $y \in [0, 5]$. The derivative is $4y - 8$, which is zero at $y = 2$, so the candidates are $(0, 0)$, $(0, 2)$, and $(0, 5)$.
+
+	$y = 5 - x$: plugging in for $y$,
+
+	$$
+		g(x, 5 - x) &= x^2 + 2x(5 - x) + 2(5 - x)^2 - 6x - 8(5 - x)
+
+		&= x^2 + 10x - 2x^2 + 50 - 20x + 2x^2 - 6x - 40 + 8x
+
+		&= x^2 - 8x + 10
+	$$
+
+	for $x \in [0, 5]$. The derivative is $2x - 8$, which is zero at $x = 4$, and then $y = 5 - 4 = 1$. The candidates are $(5, 0)$, $(4, 1)$, and $(0, 5)$.
+
+	Evaluating $g$ at every candidate,
+
+	$$
+		g(2, 1) &= 4 + 4 + 2 - 12 - 8 = -10
+
+		g(0, 0) &= 0
+
+		g(3, 0) &= 9 - 18 = -9
+
+		g(5, 0) &= 25 - 30 = -5
+
+		g(0, 2) &= 8 - 16 = -8
+
+		g(0, 5) &= 50 - 40 = 10
+
+		g(4, 1) &= 16 + 8 + 2 - 24 - 8 = -6.
+	$$
+
+	The global max is $10$ at $(0, 5)$, and the global min is $-10$ at $(2, 1)$.
+
+	#. $h(x, y) = x^2 - xy + y^2$ on $\left\{ (x, y) \in #R#^2 \mid x^2 + y^2 = 2 \right\}$.
+
+	**Solution:** This domain is a circle, so we can use Lagrange multipliers with $g(x, y) = x^2 + y^2 - 2$. The system is
+
+	$$
+		\G h(x, y) &= \lambda \G g(x, y)
+
+		g(x, y) &= 0
+
+		~
+
+		\left< 2x - y,\ 2y - x \right> &= \lambda \left< 2x,\ 2y \right>
+
+		x^2 + y^2 - 2 &= 0
+
+		~
+
+		2x - y &= 2\lambda x
+
+		2y - x &= 2\lambda y
+
+		x^2 + y^2 &= 2.
+	$$
+
+	To eliminate $\lambda$ without dividing by something that might be zero, we can multiply the first equation by $y$ and the second by $x$, so that both right sides are $2\lambda xy$:
+
+	$$
+		(2x - y)y &= (2y - x)x
+
+		2xy - y^2 &= 2xy - x^2
+
+		x^2 &= y^2.
+	$$
+
+	Plugging this into the constraint gives $2x^2 = 2$, so $x = \pm 1$, and $y = \pm 1$ for each $x$-value. Since $\G g = \left< 2x, 2y \right>$ is never undefined, there are no other points to consider, and our candidates are $(1, 1)$, $(-1, -1)$, $(1, -1)$, and $(-1, 1)$. Evaluating $h$ at each,
+
+	$$
+		h(1, 1) &= 1 - 1 + 1 = 1
+
+		h(-1, -1) &= 1 - 1 + 1 = 1
+
+		h(1, -1) &= 1 + 1 + 1 = 3
+
+		h(-1, 1) &= 1 + 1 + 1 = 3.
+	$$
+
+	The global max is $3$, at both $(1, -1)$ and $(-1, 1)$, and the global min is $1$, at both $(1, 1)$ and $(-1, -1)$. As a check, on this circle we have $h(x, y) = \left( x^2 + y^2 \right) - xy = 2 - xy$, so $h$ is largest when $xy$ is as negative as possible and smallest when $xy$ is as positive as possible, which is exactly what we found.
+
+	- - -
+
+	Problems 2# concern the following situation. You've just inherited your grandfather's old farm plot and have begun planting potatoes and parsnips. When you plant $x$ acres of potatoes and $y$ acres of parsnips, you earn a yearly profit of
+
+	$$
+		\pi(x, y) = 60x - x^2 + 80y - 2y^2
+	$$
+
+	in hundreds of dollars. The squared terms are due to you planting the best-suited land first, so each additional acre of a crop is slightly less profitable than the last. You have $L$ acres and plant all of them, so $x + y = L$.
+
+	#. Suppose $L = 35$. Use Lagrange multipliers to find how many acres of potatoes and parsnips you should plant, the resulting profit, and the value of $\lambda$.
+
+	**Solution:** With $g(x, y) = x + y - L$, the system is
+
+	$$
+		\left< 60 - 2x,\ 80 - 4y \right> &= \lambda \left< 1, 1 \right>
+
+		x + y - L &= 0
+
+		~
+
+		60 - 2x &= \lambda
+
+		80 - 4y &= \lambda
+
+		x + y &= L.
+	$$
+
+	Eliminating $\lambda$ gives $60 - 2x = 80 - 4y$, so $x = 2y - 10$. With $L = 35$, $3y - 10 = 35$, so $y = 15$, $x = 20$, and $\lambda = 60 - 40 = 20$. The profit is
+
+	$$
+		\pi(20, 15) = 1200 - 400 + 1200 - 450 = 1550,
+	$$
+
+	or $\$155{,}000$. This is the only candidate, and another point on the line such as $(35, 0)$ gives $\pi = 875 < 1550$, so it's the maximum.
+	
+	#. Your neighbor Robin offers to rent you an extra acre of land for $\$1500$ per year. Find the maximum profit when $L = 36$ to determine if should you take her up on it. compare the increase in profit between $L = 35$ and $L = 36$ to $\lambda$.
+
+	**Solution:** With $L = 36$, $3y - 10 = 36$, so $y = \frac{46}{3}$ and $x = \frac{62}{3}$, and
+
+	$$
+		\pi\left( \frac{62}{3}, \frac{46}{3} \right) = \frac{4708}{3} \approx 1569.33.
+	$$
+
+	The profit rose by about $19.33$, very close to $\lambda = 20$. That makes $\lambda$ the approximate value of one more acre: about $\$2000$ of extra profit per year. That's more than $\$1500$, so you should take Robin up on her offer!
+
+###
