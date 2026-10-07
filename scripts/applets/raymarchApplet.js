@@ -403,6 +403,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				targetFrameRate: 72,
 				framebufferScale: 0.5,
 
+				foveation: 2,
+
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
 				renderFrame: this.renderXRFrame.bind(this),
@@ -493,8 +495,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		for (let i = 0; i < this.coneMarchingScales.length; i++)
 		{
-			const scale = this.coneMarchingScales[i];
-
 			const shader = createConeMarchingShader({
 				distanceEstimatorGlsl: this.distanceEstimatorGlsl,
 				addGlsl: this.addGlsl,
@@ -502,14 +502,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 				uniformsGlsl: this.uniformsGlsl,
 				clipDistance: this.clipDistance,
 				maxMarches: this.coneMarchingMaxMarches[i],
-				coneMarchingScale: scale,
 				isFirstScale: i === 0,
 			});
 
 			this.wilson.loadShader({
 				id: `coneMarch${i}`,
 				shader,
-				uniforms: this.uniforms
+				uniforms: {
+					...this.uniforms,
+					passResolution: [1, 1]
+				},
 			});
 		}
 
@@ -549,6 +551,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				width *= ratio;
 				height *= ratio;
 			}
+
+			// Set even when the size hasn't changed, since reloaded cone shaders start back at
+			// their initial value.
+			this.wilson.setUniform("passResolution", [width, height], `coneMarch${i}`);
 
 			// Reallocating costs a frame, and XR calls this every frame to catch viewport scaling.
 			if (
@@ -1283,7 +1289,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		// Wilson no longer hands the viewport to the callback; it exposes the eye currently being
 		// rendered instead, which is only non-null for the duration of this call.
-		const viewport = this.wilson.xrViewport;
 
 		this.projectionMatrix = projectionMatrix;
 
@@ -1300,7 +1305,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.setUniform("rayOrigin", this.xrRayOrigin, "draw");
 
 		// Ensure epsilon scaling is done with the per-eye resolution.
-		const eyeResolution = Math.min(Math.sqrt(viewport.width * viewport.height), 1000);
+		const eyeResolution = Math.min(
+			Math.sqrt(this.wilson.xrEyeWidth * this.wilson.xrEyeHeight),
+			1000
+		);
 
 		this.wilson.setUniform(
 			"epsilonScaling",
@@ -1327,9 +1335,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			// The headset can rescale the viewport from frame to frame, and the framebuffer
 			// scale slider rebuilds the layer outright, neither of which reports in anywhere else.
-			this.updatePixelDiagonalRadius(Math.sqrt(viewport.width * viewport.height));
+			this.updatePixelDiagonalRadius(
+				Math.sqrt(this.wilson.xrEyeWidth * this.wilson.xrEyeHeight)
+			);
 			
-			this.resizeConeMarchingFramebuffers(viewport.width, viewport.height);
+			this.resizeConeMarchingFramebuffers(this.wilson.xrEyeWidth, this.wilson.xrEyeHeight);
 
 			for (let i = 0; i < this.coneMarchingScales.length; i++)
 			{

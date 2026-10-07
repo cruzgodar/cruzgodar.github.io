@@ -261,7 +261,7 @@ function getMainFunctionGlsl({
 
 	const coneMarchedT = coneMarchingScale > 1
 		? /* glsl */`
-			texture2D(uTexture, 0.5 * uv + vec2(0.5)).x
+			texture2D(uTexture, 0.5 * uvTile + vec2(0.5)).x
 		`
 		: "0.0";
 
@@ -495,6 +495,10 @@ export function createShader({
 		
 		varying vec2 uv;
 
+		// The framebuffers the cone passes write are indexed by uvTile, not uv: with foveation on,
+		// uv is the warped point on screen, while uvTile is the position in the framebuffer.
+		varying vec2 uvTile;
+
 		${uniformsGlsl}
 		
 		const vec3 lightPos = ${getVectorGlsl(lightPos)};
@@ -573,10 +577,6 @@ export function createConeMarchingShader({
 	uniformsGlsl,
 	clipDistance,
 	maxMarches,
-
-	// The side length of the square of pixels each pixel here is responsible for.
-	// For example, a scale of 2 means each pixel covers a 2x2 block.
-	coneMarchingScale,
 	isFirstScale,
 }) {
 	const raymarchGlsl = /* glsl */`
@@ -586,11 +586,12 @@ export function createConeMarchingShader({
 			float coneRadiusFactor,
 			out float t
 		) {
-			t = ${isFirstScale ? "0.0" : "texture2D(uTexture, 0.5 * uv + vec2(0.5)).x"};;
+			t = ${isFirstScale ? "0.0" : "texture2D(uTexture, 0.5 * uvTile + vec2(0.5)).x"};
 			float lastT = 0.0;
 
-			// How fast the cone's radius grows with t. One block of target pixels wide.
-			float coneSlope = coneRadiusFactor * ${getFloatGlsl(coneMarchingScale)};
+			// How fast the cone's radius grows with t. texelConeTan already covers this texel's
+			// whole block of target pixels.
+			float coneSlope = coneRadiusFactor;
 
 			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
@@ -623,20 +624,15 @@ export function createConeMarchingShader({
 	const mainFunctionGlsl = /* glsl */`
 		void main(void)
 		{
-			vec3 rayDirectionEye = vec3(
-				((uvScale * uv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
-				((uvScale * uv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
-				-1.0
-			);
-
-			vec3 rayDirectionVec = normalize(mat3(cameraToWorld) * rayDirectionEye);
+			// Through the same function as the cone's corners, so the two can't drift apart.
+			vec3 rayDirectionVec = rayDir(uv);
 
 			float t;
 
 			raymarch(
 				rayOrigin,
 				rayDirectionVec,
-				pixelDiagonalRadius / length(rayDirectionEye),
+				texelConeTan(rayDirectionVec),
 				t
 			);
 
@@ -649,12 +645,47 @@ export function createConeMarchingShader({
 		
 		varying vec2 uv;
 
+		// The framebuffers the cone passes write are indexed by uvTile, not uv: with foveation on,
+		// uv is the warped point on screen, while uvTile is the position in the framebuffer.
+		varying vec2 uvTile;
+
 		${uniformsGlsl}
 		
 		const float clipDistance = ${getFloatGlsl(clipDistance)};
 		const int maxMarches = ${maxMarches};
 
 		${addGlsl}
+
+
+
+		uniform vec2 passResolution;   // size in pixels of the framebuffer this pass draws into
+
+		// The world-space direction of the ray through a point in uv.
+		vec3 rayDir(vec2 screenUv)
+		{
+			vec3 rayDirectionEye = vec3(
+				((uvScale * screenUv.x + uvCenter.x) + projectionMatrix[2][0]) / projectionMatrix[0][0],
+				((uvScale * screenUv.y + uvCenter.y) + projectionMatrix[2][1]) / projectionMatrix[1][1],
+				-1.0
+			);
+
+			return normalize(mat3(cameraToWorld) * rayDirectionEye);
+		}
+
+		// tan of the half-angle of the cone that covers this whole texel.
+		float texelConeTan(vec3 centerDir)
+		{
+			vec2 h = 1.0 / passResolution;   // half a texel, in [-1, 1] buffer coordinates
+
+			float c = min(
+				min(dot(centerDir, rayDir(wilsonUv(wilsonUvLinear + vec2(-h.x, -h.y)))),
+					dot(centerDir, rayDir(wilsonUv(wilsonUvLinear + vec2( h.x, -h.y))))),
+				min(dot(centerDir, rayDir(wilsonUv(wilsonUvLinear + vec2(-h.x,  h.y)))),
+					dot(centerDir, rayDir(wilsonUv(wilsonUvLinear + vec2( h.x,  h.y)))))
+			);
+
+			return sqrt(1.0 - c * c) / c;
+		}
 		
 		
 		
