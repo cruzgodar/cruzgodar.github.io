@@ -71,7 +71,7 @@ export default function()
 	const xrFramebufferScaleSlider = new Slider({
 		element: $("#xr-framebuffer-scale-slider"),
 		name: "VR Quality",
-		value: 0.5,
+		value: 1,
 		min: 0.1,
 		max: 1,
 		snapThreshhold: 0.1,

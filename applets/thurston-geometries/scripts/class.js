@@ -176,7 +176,7 @@ export class ThurstonGeometries extends Applet
 			{
 				useButton: true,
 				buttonIconPath: "/graphics/general-icons/xr.png",
-				targetFrameRate: 72,
+				targetFrameRate: 120,
 				framebufferScale: 1,
 
 				onEnter: this.onEnterXR.bind(this),
