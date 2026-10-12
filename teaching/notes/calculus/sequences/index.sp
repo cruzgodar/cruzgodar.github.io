@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 When learning math, it's nice to have an idea of the big picture whenever we can. The definitions and theorems and examples can feel a little like slogging through tall grass, and without a clear picture of where we're going and why, it can all seem a little pointless. To that end, let's start by running down what we'll be building in this course.
@@ -42,36 +46,36 @@ To talk about the complex behavior of the polynomials we just saw, we need to bu
 
 	@solution[[
 
-	Let's start with $(a_n)$. Unless otherwise specified, sequences start with $n = 1$, so the first term is $a_1 = 2 \cdot 1 = 2$. Plugging in $n = 2$ through $n = 5$, we find that
-	
-	$$
-		(a_n) = (2, 4, 6, 8, 10, ...).
-	$$
-	
-	Similarly, we have
-	
-	$$
-		(b_n) = (2, 5, 10, 17, 26, ...).
-	$$
-	
-	Now let's look at $(c_n)$. That exclamation point is a **factorial**: to take the factorial of a positive integer $n$, we multiply together all the integers less than or equal to $n$. For example,
-	
-	$$
-		1! &= 1.
+		Let's start with $(a_n)$. Unless otherwise specified, sequences start with $n = 1$, so the first term is $a_1 = 2 \cdot 1 = 2$. Plugging in $n = 2$ through $n = 5$, we find that
 		
-		2! &= 2 \cdot 1 = 2.
+		$$
+			(a_n) = (2, 4, 6, 8, 10, ...).
+		$$
 		
-		3! &= 3 \cdot 2 \cdot 1 = 6.
+		Similarly, we have
 		
-		4! &= 4 \cdot 3 \cdot 2 \cdot 1 = 24.
-	$$
-	
-	We also define $0! = 1$. That might seem a little weird, but we'll be making heavy use of factorials later in the course, and we'll really want it to be defined that way. Putting everything together, we have
-	
-	$$
-		(c_n) = (1, 1, 2, 6, 24, ...).
-	$$
-	
+		$$
+			(b_n) = (2, 5, 10, 17, 26, ...).
+		$$
+		
+		Now let's look at $(c_n)$. That exclamation point is a **factorial**: to take the factorial of a positive integer $n$, we multiply together all the integers less than or equal to $n$. For example,
+		
+		$$
+			1! &= 1.
+			
+			2! &= 2 \cdot 1 = 2.
+			
+			3! &= 3 \cdot 2 \cdot 1 = 6.
+			
+			4! &= 4 \cdot 3 \cdot 2 \cdot 1 = 24.
+		$$
+		
+		We also define $0! = 1$. That might seem a little weird, but we'll be making heavy use of factorials later in the course, and we'll really want it to be defined that way. Putting everything together, we have
+		
+		$$
+			(c_n) = (1, 1, 2, 6, 24, ...).
+		$$
+	]]
 ]]
 
 
@@ -85,39 +89,39 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	Let $a_1 = 1$ and $a_n = 2a_{n - 1}$ for $n \geq 2$. Write out the first five terms of $(a_n)$ and find an explicit formula for it.
 
 	@solution[[
-	
-	Whenever a sequence is defined recursively, there must be at least one term that's given exactly, so that we have a place to start from; here, that's $a_1 = 1$. Now we can use the recursion to find $a_2$. Plugging in $n = 2$ to $a_n = 2a_{n - 1}$,
-	
-	$$
-		a_2 = 2a_1 = 2 \cdot 1 = 2.
-	$$
-	
-	Now with $n = 3$, we have
-	
-	$$
-		a_3 = 2a_2 = 2 \cdot 2 = 4.
-	$$
-	
-	Continuing in this way,
-	
-	$$
-		(a_n) = (1, 2, 4, 8, 16, ...).
-	$$
-	
-	To write this as an explicit formula, we need to know what $a_n$ is in terms of only $n$, and not any previous $a_i$. Here, that's not too bad: each term is a power of $2$. It's tempting to say that the formula is $a_n = 2^n$, but let's check that idea: with $n = 1$, we get $a_1 = 2^1 = 2$ and $a_2 = 2^2 = 4$. The pattern matches, but the power is one too high on each. To fix that, we'll just take one off to get $a_n = 2^{n - 1}$.
-	
-	To check our answer, let's plug it into the recurrence. We have $a_1 = 2^{1 - 1} = 1$ and
-	
-	$$
-		a_n &= 2a_{n - 2}
 		
-		&= 2\left( 2^{n - 2} \right)
+		Whenever a sequence is defined recursively, there must be at least one term that's given exactly, so that we have a place to start from; here, that's $a_1 = 1$. Now we can use the recursion to find $a_2$. Plugging in $n = 2$ to $a_n = 2a_{n - 1}$,
 		
-		&= 2^{n - 1},
-	$$
-	
-	which is exactly correct!
-	
+		$$
+			a_2 = 2a_1 = 2 \cdot 1 = 2.
+		$$
+		
+		Now with $n = 3$, we have
+		
+		$$
+			a_3 = 2a_2 = 2 \cdot 2 = 4.
+		$$
+		
+		Continuing in this way,
+		
+		$$
+			(a_n) = (1, 2, 4, 8, 16, ...).
+		$$
+		
+		To write this as an explicit formula, we need to know what $a_n$ is in terms of only $n$, and not any previous $a_i$. Here, that's not too bad: each term is a power of $2$. It's tempting to say that the formula is $a_n = 2^n$, but let's check that idea: with $n = 1$, we get $a_1 = 2^1 = 2$ and $a_2 = 2^2 = 4$. The pattern matches, but the power is one too high on each. To fix that, we'll just take one off to get $a_n = 2^{n - 1}$.
+		
+		To check our answer, let's plug it into the recurrence. We have $a_1 = 2^{1 - 1} = 1$ and
+		
+		$$
+			a_n &= 2a_{n - 2}
+			
+			&= 2\left( 2^{n - 2} \right)
+			
+			&= 2^{n - 1},
+		$$
+		
+		which is exactly correct!
+	]]	
 ]]
 
 @exc[sequences][[
@@ -130,80 +134,80 @@ A formula in terms of $n$ that defines a sequence --- like all three in the prev
 	
 	@solution[[
 
-	1. Since every $F_n$ is the sum of the previous two, $F_n = F_{n - 1} + F_{n - 2}$. A full recursive formula is
-	
-	$$
-		F_1 = 1, F_2 = 1, F_n = F_{n - 1} + F_{n - 2}.
-	$$
-	
-	2. Every $a_n$ is obtained from the previous by adding $2$. Therefore, we have
-	
-	$$
-		a_1 = 2, a_n = a_{n - 1} + 2.
-	$$
-	
-	The $b_n$ are a little more complicated. Looking at the differences between successive terms, we have
-	
-	$$
-		5 - 2 &= 3
+		1. Since every $F_n$ is the sum of the previous two, $F_n = F_{n - 1} + F_{n - 2}$. A full recursive formula is
 		
-		10 - 5 &= 5
+		$$
+			F_1 = 1, F_2 = 1, F_n = F_{n - 1} + F_{n - 2}.
+		$$
 		
-		17 - 10 &= 7
+		2. Every $a_n$ is obtained from the previous by adding $2$. Therefore, we have
 		
-		26 - 17 &= 9.
-	$$
-	
-	We seem to be adding $2$ more every time, starting with $2$. So $b_2 = 2\cdot 1 + 1 + b_1$, $b_3 = 2\cdot 2 + 1 + b_2$, and so on. The pattern winds up looking like
-	
-	$$
-		b_1 = 2, b_n = 2(n - 1) + 1 + b_{n-1}.
-	$$
-	
-	An alternative way to arrive at the same solution is to look at $b_n - b_{n - 1}$. Using the explicit formula, this becomes
-	
-	$$
-		n^2 + 1 - ((n-1)^2 + 1) &= n^2 - (n-1)^2
+		$$
+			a_1 = 2, a_n = a_{n - 1} + 2.
+		$$
 		
-		&= n^2 - (n^2 - 2n + 1)
+		The $b_n$ are a little more complicated. Looking at the differences between successive terms, we have
 		
-		&= 2n - 1.
-	$$
-	
-	Therefore, $b_n = b_{n - 1} + 2n - 1$.
-	
-	With $c_n$, rather than adding terms, we're multiplying to get from one to the next. For example, the change from $3!$ to $4!$ is multiplication by $4$. We wind up with the formula
-	
-	$$
-		c_1 = 1, c_n = (n-1)c_{n - 1}.
-	$$
-	
-	3. Let's write out the first five terms and see if we can find a pattern.
-	
-	$$
-		(d_n) = \left(0, \frac{1}{4}, \frac{3}{8}, \frac{7}{16}, \frac{15}{32}, ...\right).
-	$$
-	
-	At every step, we seem to be multiplying the denominator by $2$, and the numerator is always one less than would be necessary for the fraction to equal $\frac{1}{2}$; in other words, it's $2^{n-1} - 1$. We might guess that the explicit formula comes out to
-	
-	$$
-		d_n = \frac{2^{n - 1} - 1}{2^n}.
-	$$
-	
-	Let's verify this. We have $d_1 = \frac{2^0}{2^1} = 0$, which is correct, and
-	
-	$$
-		d_{n - 1} + \frac{1}{2^n} &= \frac{2^{n - 2} - 1}{2^{n - 1}} + \frac{1}{2^n}
+		$$
+			5 - 2 &= 3
+			
+			10 - 5 &= 5
+			
+			17 - 10 &= 7
+			
+			26 - 17 &= 9.
+		$$
 		
-		&= \frac{2^{n - 1} - 2}{2^n} + \frac{1}{2^n}
+		We seem to be adding $2$ more every time, starting with $2$. So $b_2 = 2\cdot 1 + 1 + b_1$, $b_3 = 2\cdot 2 + 1 + b_2$, and so on. The pattern winds up looking like
 		
-		&= \frac{2^{n - 1} - 1}{2^n}
+		$$
+			b_1 = 2, b_n = 2(n - 1) + 1 + b_{n-1}.
+		$$
 		
-		&= d_n,
-	$$
-	
-	which is also exactly what we wanted.
-	
+		An alternative way to arrive at the same solution is to look at $b_n - b_{n - 1}$. Using the explicit formula, this becomes
+		
+		$$
+			n^2 + 1 - ((n-1)^2 + 1) &= n^2 - (n-1)^2
+			
+			&= n^2 - (n^2 - 2n + 1)
+			
+			&= 2n - 1.
+		$$
+		
+		Therefore, $b_n = b_{n - 1} + 2n - 1$.
+		
+		With $c_n$, rather than adding terms, we're multiplying to get from one to the next. For example, the change from $3!$ to $4!$ is multiplication by $4$. We wind up with the formula
+		
+		$$
+			c_1 = 1, c_n = (n-1)c_{n - 1}.
+		$$
+		
+		3. Let's write out the first five terms and see if we can find a pattern.
+		
+		$$
+			(d_n) = \left(0, \frac{1}{4}, \frac{3}{8}, \frac{7}{16}, \frac{15}{32}, ...\right).
+		$$
+		
+		At every step, we seem to be multiplying the denominator by $2$, and the numerator is always one less than would be necessary for the fraction to equal $\frac{1}{2}$; in other words, it's $2^{n-1} - 1$. We might guess that the explicit formula comes out to
+		
+		$$
+			d_n = \frac{2^{n - 1} - 1}{2^n}.
+		$$
+		
+		Let's verify this. We have $d_1 = \frac{2^0}{2^1} = 0$, which is correct, and
+		
+		$$
+			d_{n - 1} + \frac{1}{2^n} &= \frac{2^{n - 2} - 1}{2^{n - 1}} + \frac{1}{2^n}
+			
+			&= \frac{2^{n - 1} - 2}{2^n} + \frac{1}{2^n}
+			
+			&= \frac{2^{n - 1} - 1}{2^n}
+			
+			&= d_n,
+		$$
+		
+		which is also exactly what we wanted.
+	]]
 ]]
 
 
@@ -246,32 +250,32 @@ There are two particular types of sequences that crop up often, and it'll help t
 	
 	@solution[[
 
-	We have
-	
-	$$
-		a_1 &= 1
+		We have
 		
-		a_2 &= 1 - 3
+		$$
+			a_1 &= 1
+			
+			a_2 &= 1 - 3
+			
+			a_3 &= 1 - 3 - 3
+			
+			a_4 &= 1 - 3 - 3 - 3.
+		$$
 		
-		a_3 &= 1 - 3 - 3
+		Every $a_n$ begins with a $1$ and then subtracts $n - 1$ $3$s, so an explicit formula is $a_n = 1 - 3(n-1)$. Similarly, every $b_n$ begins with a $3$ and then multiplies $n - 1$ $2$s, so we get $b_n = 2(3^{n - 1})$.
 		
-		a_4 &= 1 - 3 - 3 - 3.
-	$$
-	
-	Every $a_n$ begins with a $1$ and then subtracts $n - 1$ $3$s, so an explicit formula is $a_n = 1 - 3(n-1)$. Similarly, every $b_n$ begins with a $3$ and then multiplies $n - 1$ $2$s, so we get $b_n = 2(3^{n - 1})$.
-	
-	To check that these formulas are correct, we verify the initial conditions and the recurrence. For $a_n$, $a_1 = 1 - 3(0) = 0$, which is correct, and
-	
-	$$
-		a_{n - 1} - 3 &= 1 - 3((n-1) - 1) - 3
+		To check that these formulas are correct, we verify the initial conditions and the recurrence. For $a_n$, $a_1 = 1 - 3(0) = 0$, which is correct, and
 		
-		&= 1 - 3(n - 1)
+		$$
+			a_{n - 1} - 3 &= 1 - 3((n-1) - 1) - 3
+			
+			&= 1 - 3(n - 1)
+			
+			&= a_n.
+		$$
 		
-		&= a_n.
-	$$
-	
-	Similarly, $b_1 = 2$ and $b_n = 2b_{n - 1}$.
-	
+		Similarly, $b_1 = 2$ and $b_n = 2b_{n - 1}$.
+	]]	
 ]]
 
 
@@ -328,28 +332,28 @@ Let's unpack this carefully. First, we start with a candidate $a$ that we think 
 
 	@solution[[
 
-	Let's take a look at that inequality. We have
-	
-	$$
-		|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|
+		Let's take a look at that inequality. We have
 		
-		&= \left| \left(-\frac{1}{2}\right)^n\right|
+		$$
+			|a_n - 1| &= \left| 1 + \left(-\frac{1}{2}\right)^n - 1 \right|
+			
+			&= \left| \left(-\frac{1}{2}\right)^n\right|
+			
+			&= \left(\frac{1}{2}\right)^n
+			
+			&= \frac{1}{2^n}.
+		$$
 		
-		&= \left(\frac{1}{2}\right)^n
+		Therefore, when $\varepsilon = 1$, we need to find an $N$ so that whenever $n \geq N$, $\frac{1}{2^n} < 1$. Since $\frac{1}{2^n}$ decreases as $n$ increases and $\frac{1}{2^1} = \frac{1}{2}$, we can just take $N = 1$.
 		
-		&= \frac{1}{2^n}.
-	$$
-	
-	Therefore, when $\varepsilon = 1$, we need to find an $N$ so that whenever $n \geq N$, $\frac{1}{2^n} < 1$. Since $\frac{1}{2^n}$ decreases as $n$ increases and $\frac{1}{2^1} = \frac{1}{2}$, we can just take $N = 1$.
-	
-	For $\varepsilon = .1$, we need to figure out when $\frac{1}{2^n} < .1$. Plugging in a few values of $n$ tells us the first time that happens is when $n = 4$, and since larger values of $n$ only make $\frac{1}{2^n}$ even smaller, we can take $N = 4$.
-	
-	Finally, the first $n$ that makes $\frac{1}{2^n} < .001$ is $n = 10$, so we take $N = 10$.
-	
-	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
-	
-	@desmos{epsilonDefinitionOfConvergence}
-	
+		For $\varepsilon = .1$, we need to figure out when $\frac{1}{2^n} < .1$. Plugging in a few values of $n$ tells us the first time that happens is when $n = 4$, and since larger values of $n$ only make $\frac{1}{2^n}$ even smaller, we can take $N = 4$.
+		
+		Finally, the first $n$ that makes $\frac{1}{2^n} < .001$ is $n = 10$, so we take $N = 10$.
+		
+		If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
+		
+		@desmos{epsilonDefinitionOfConvergence}
+	]]	
 ]]
 
 @exc[the formal definition of a limit][[
@@ -364,28 +368,28 @@ Let's unpack this carefully. First, we start with a candidate $a$ that we think 
 
 	@solution[[
 
-	The first few terms of $(b_n)$ are $\left( 1, \frac{1}{2}, \frac{1}{3}, ... \right)$. Those get smaller and smaller while always staying positive, and so $\lim(b_n) = 0$. Now when $\varepsilon = 1$, the equation becomes
-	
-	$$
-		\left| \frac{1}{n} \right| < 1.
-	$$
-	
-	Since $\frac{1}{n} > 0$, the absolute value disappears, and so we find that
-	
-	$$
-		\frac{1}{n} &< 1
+		The first few terms of $(b_n)$ are $\left( 1, \frac{1}{2}, \frac{1}{3}, ... \right)$. Those get smaller and smaller while always staying positive, and so $\lim(b_n) = 0$. Now when $\varepsilon = 1$, the equation becomes
 		
-		n &> 1.
-	$$
-	
-	Therefore, we can take $N = 2$. When $\varepsilon = .1$, the solution becomes
-	
-	$$
-		n > \frac{1}{.1} = 10,
-	$$
-	
-	so a solution is $N = 11$. Similarly, with $\varepsilon = .001$, a solution is $N = 1001$.
-
+		$$
+			\left| \frac{1}{n} \right| < 1.
+		$$
+		
+		Since $\frac{1}{n} > 0$, the absolute value disappears, and so we find that
+		
+		$$
+			\frac{1}{n} &< 1
+			
+			n &> 1.
+		$$
+		
+		Therefore, we can take $N = 2$. When $\varepsilon = .1$, the solution becomes
+		
+		$$
+			n > \frac{1}{.1} = 10,
+		$$
+		
+		so a solution is $N = 11$. Similarly, with $\varepsilon = .001$, a solution is $N = 1001$.
+	]]
 ]]
 
 
@@ -434,17 +438,18 @@ Many of the rules of limits for functions also apply to sequences, so we can oft
 	
 	@solution[[
 
-	1. As $n \to \infty$, $n!$ becomes very large very fast --- increasing $n$ by just $1$ increases the term by a factor of $n$! Therefore, $(n!) \to \infty$.
-	
-	2. This sequence is matched by the function $1 - \frac{1}{x}$. As $x \to \infty$, $\frac{1}{x} \to 0$, so $1 - \frac{1}{x} \to 1$. Since this function converges to $1$, so much the sequence.
-	
-	3. We can use the same strategy as the previous question, but this time we need to apply L'H&#244;pital's Rule. Handling the inside of the $\sin$ function first, we have
-	
-	$$
-		\lim_{x \to \infty} \frac{x}{2^x} = \lim_{x \to \infty} \frac{1}{2^x \ln(2)} = 0,
-	$$
-	
-	and so the limit of the total sequence is $\sin(0) = 0$.
+		1. As $n \to \infty$, $n!$ becomes very large very fast --- increasing $n$ by just $1$ increases the term by a factor of $n$! Therefore, $(n!) \to \infty$.
+		
+		2. This sequence is matched by the function $1 - \frac{1}{x}$. As $x \to \infty$, $\frac{1}{x} \to 0$, so $1 - \frac{1}{x} \to 1$. Since this function converges to $1$, so much the sequence.
+		
+		3. We can use the same strategy as the previous question, but this time we need to apply L'H&#244;pital's Rule. Handling the inside of the $\sin$ function first, we have
+		
+		$$
+			\lim_{x \to \infty} \frac{x}{2^x} = \lim_{x \to \infty} \frac{1}{2^x \ln(2)} = 0,
+		$$
+		
+		and so the limit of the total sequence is $\sin(0) = 0$.
+	]]
 ]]
 
 
@@ -467,16 +472,16 @@ Just like with functions, there's a Squeeze Theorem for sequences. While the fun
 
 	@solution[[
 	
-	It's not immediately clear that this converges at all. To start, remember that $-1 \leq \cos(n) \leq 1$, so
-	
-	$$
-		-\frac{1}{n} \leq \frac{\cos(n)}{n} \leq \frac{1}{n}.
-	$$
-	
-	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze Theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
-	
-	@desmos{squeezeTheorem}
-	
+		It's not immediately clear that this converges at all. To start, remember that $-1 \leq \cos(n) \leq 1$, so
+		
+		$$
+			-\frac{1}{n} \leq \frac{\cos(n)}{n} \leq \frac{1}{n}.
+		$$
+		
+		Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze Theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
+		
+		@desmos{squeezeTheorem}
+	]]
 ]]
 
 
@@ -487,18 +492,18 @@ Just like with functions, there's a Squeeze Theorem for sequences. While the fun
 
 	@solution[[
 
-	When $r < 0$, $r^n$ is positive for even $n$ and negative for odd $n$. To make our notation a little simpler, let's let $r > 0$ and consider the sequence $(-r)^n$. When $0 < r < 1$, we can squeeze $(-r)^n$ in the following manner:
-	
-	$$
-		-(r^n) \leq (-r)^n \leq r^n.
-	$$
-	
-	Since both outer terms limit to zero, so does $(-r)^n$.
-	
-	We already know how the sequence $(-1)^n$ behaves: it flip-flops between $1$ and $-1$, never settling down and therefore not converging. Finally, for $(-r)^n$ when $r > 1$, it alternates between $r^n$ and $-(r^n)$. Neither of those converges, so $(-r)^n$ cannot converge either.
-	
-	In total, the series $(r^n)$ converges to zero when $-1 < r < 1$, converges to one when $r = 1$, and diverges otherwise.
-	
+		When $r < 0$, $r^n$ is positive for even $n$ and negative for odd $n$. To make our notation a little simpler, let's let $r > 0$ and consider the sequence $(-r)^n$. When $0 < r < 1$, we can squeeze $(-r)^n$ in the following manner:
+		
+		$$
+			-(r^n) \leq (-r)^n \leq r^n.
+		$$
+		
+		Since both outer terms limit to zero, so does $(-r)^n$.
+		
+		We already know how the sequence $(-1)^n$ behaves: it flip-flops between $1$ and $-1$, never settling down and therefore not converging. Finally, for $(-r)^n$ when $r > 1$, it alternates between $r^n$ and $-(r^n)$. Neither of those converges, so $(-r)^n$ cannot converge either.
+		
+		In total, the series $(r^n)$ converges to zero when $-1 < r < 1$, converges to one when $r = 1$, and diverges otherwise.
+	]]
 ]]
 
 
@@ -551,70 +556,70 @@ If a sequence is monotone increasing and bounded above, then its behavior is ver
 	
 	@solution[[
 	
-	We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
-	
-	$$
-		a_2 &= \frac{2}{2} + \frac{1}{4} = \frac{5}{4}
+		We want to show that $a_n$ is either bounded above and increasing or bounded below and decreasing. Plugging in a few values of $n$, we get
 		
-		a_3 &= \frac{5/4}{2} + \frac{1}{5/2} = \frac{5}{8} + \frac{2}{5} = \frac{41}{40}.
+		$$
+			a_2 &= \frac{2}{2} + \frac{1}{4} = \frac{5}{4}
+			
+			a_3 &= \frac{5/4}{2} + \frac{1}{5/2} = \frac{5}{8} + \frac{2}{5} = \frac{41}{40}.
+			
+			a_4 &= \frac{41/40}{2} + \frac{1}{41/20} = \frac{41}{80} + \frac{20}{41} = \frac{3281}{3280}.
+		$$
 		
-		a_4 &= \frac{41/40}{2} + \frac{1}{41/20} = \frac{41}{80} + \frac{20}{41} = \frac{3281}{3280}.
-	$$
-	
-	So far all the terms are decreasing --- hopefully, the sequence is always decreasing and also bounded below. Let's start with bounded --- it certainly seems to be bounded below by $1$, so let's see if we can show that. We'll solve the inequality $a_n \geq 1$ and hope to find that it's always true.
-	
-	$$
-		a_n &\geq 1
+		So far all the terms are decreasing --- hopefully, the sequence is always decreasing and also bounded below. Let's start with bounded --- it certainly seems to be bounded below by $1$, so let's see if we can show that. We'll solve the inequality $a_n \geq 1$ and hope to find that it's always true.
 		
-		\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \geq 1
+		$$
+			a_n &\geq 1
+			
+			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \geq 1
+			
+			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \geq 1
+			
+			a_{n - 1}^2 + 1 & \geq 2a_{n - 1}
+			
+			a_{n - 1}^2 - 2a_{n - 1} + 1 & \geq 0
+			
+			\left( a_{n - 1} - 1 \right)^2 & \geq 0.
+		$$
 		
-		\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \geq 1
+		Since any number squared is positive, this is always true. Now let's show that the sequence is decreasing, which amounts to showing that $a_n \leq a_{n - 1}$. Expanding, we have
 		
-		a_{n - 1}^2 + 1 & \geq 2a_{n - 1}
+		$$
+			a_n & \leq a_{n - 1}
+			
+			\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \leq a_{n - 1}
+			
+			\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \leq a_{n - 1}
+			
+			a_{n - 1}^2 + 1 & \leq 2a_{n - 1}^2
+			
+			1 & \leq a_{n - 1}^2
+			
+			a_{n - 1} & \geq 1 \text{ or } a_{n - 1} \leq -1.
+		$$
 		
-		a_{n - 1}^2 - 2a_{n - 1} + 1 & \geq 0
+		Since $a_{n - 1} \geq 1$, this is always the case. Therefore, the MCT applies, the the sequence converges.
 		
-		\left( a_{n - 1} - 1 \right)^2 & \geq 0.
-	$$
-	
-	Since any number squared is positive, this is always true. Now let's show that the sequence is decreasing, which amounts to showing that $a_n \leq a_{n - 1}$. Expanding, we have
-	
-	$$
-		a_n & \leq a_{n - 1}
+		To find the limit, let's follow the hint and take the limit of both sides. If $\lim_{n \to \infty} a_n = a$, then
 		
-		\frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} & \leq a_{n - 1}
+		$$
+			a_n &= \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}
+			
+			\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left( \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} \right)
+			
+			a &= \frac{a}{2} + \frac{1}{2a}
+			
+			a &= \frac{a^2 + 1}{2a}
+			
+			2a^2 &= a^2 + 1
+			
+			a^2 &= 1
+			
+			a &= \pm 1.
+		$$
 		
-		\frac{a_{n - 1}^2 + 1}{2a_{n - 1}} & \leq a_{n - 1}
-		
-		a_{n - 1}^2 + 1 & \leq 2a_{n - 1}^2
-		
-		1 & \leq a_{n - 1}^2
-		
-		a_{n - 1} & \geq 1 \text{ or } a_{n - 1} \leq -1.
-	$$
-	
-	Since $a_{n - 1} \geq 1$, this is always the case. Therefore, the MCT applies, the the sequence converges.
-	
-	To find the limit, let's follow the hint and take the limit of both sides. If $\lim_{n \to \infty} a_n = a$, then
-	
-	$$
-		a_n &= \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}}
-		
-		\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left( \frac{a_{n - 1}}{2} + \frac{1}{2a_{n - 1}} \right)
-		
-		a &= \frac{a}{2} + \frac{1}{2a}
-		
-		a &= \frac{a^2 + 1}{2a}
-		
-		2a^2 &= a^2 + 1
-		
-		a^2 &= 1
-		
-		a &= \pm 1.
-	$$
-	
-	Since $a_n \geq 1$ for all $n$, we must have that $a \geq 1$, so $a = 1$.
-	
+		Since $a_n \geq 1$ for all $n$, we must have that $a \geq 1$, so $a = 1$.
+	]]
 ]]
 
 

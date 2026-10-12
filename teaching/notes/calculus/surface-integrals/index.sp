@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -88,30 +92,30 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 
 	@solution[[
 
-	1. The graph of $\vec{r}(u, \v)$ is a plane passing through $(0, 0, 1)$ that is parallel to both $\left< -1, -2, 1 \right>$ and $\left< 1, 0, -1 \right>$, and that therefore has a normal vector of
+		1. The graph of $\vec{r}(u, \v)$ is a plane passing through $(0, 0, 1)$ that is parallel to both $\left< -1, -2, 1 \right>$ and $\left< 1, 0, -1 \right>$, and that therefore has a normal vector of
 
-	$$
-		\left< -1, -2, 1 \right> \times \left< 1, 0, -1 \right> = \left< 2, 0, 2 \right>.
-	$$
+		$$
+			\left< -1, -2, 1 \right> \times \left< 1, 0, -1 \right> = \left< 2, 0, 2 \right>.
+		$$
 
-	@desmos{parametricPlane}
+		@desmos{parametricPlane}
 
-	The graph of $\vec{s}$ is identical to the cylinder we graphed before, but the extra term of $\sin\left(\frac{\pi}{2} \v \right)$ makes the $z$-coordinate oscillate by a sine function as the $x$-coordinate changes.
+		The graph of $\vec{s}$ is identical to the cylinder we graphed before, but the extra term of $\sin\left(\frac{\pi}{2} \v \right)$ makes the $z$-coordinate oscillate by a sine function as the $x$-coordinate changes.
 
-	@desmos{wigglyCylinder}
+		@desmos{wigglyCylinder}
 
-	2. One way to parameterize this surface is to begin with a parameterization of a cylinder and modify its radius to be equal to the $z$-coordinate:
+		2. One way to parameterize this surface is to begin with a parameterization of a cylinder and modify its radius to be equal to the $z$-coordinate:
 
-	$$
-		\vec{r}(u, \v) &= \left< \v\cos(u),\ \v\sin(u),\ \v \right>, \quad 0 \leq u \leq 2\pi,\ -2 \leq \v \leq 2
-	$$
+		$$
+			\vec{r}(u, \v) &= \left< \v\cos(u),\ \v\sin(u),\ \v \right>, \quad 0 \leq u \leq 2\pi,\ -2 \leq \v \leq 2
+		$$
 
-	3. Just like we can parameterize the graph of a single-variable function $y = f(x)$ by setting $x = t$ and $y = f(t)$, we can do the same for a function of two variables $z = f(x, y)$ by setting $x = u$, $y = \v$, and $z = f(u, \v)$. Here, the parameterization is
+		3. Just like we can parameterize the graph of a single-variable function $y = f(x)$ by setting $x = t$ and $y = f(t)$, we can do the same for a function of two variables $z = f(x, y)$ by setting $x = u$, $y = \v$, and $z = f(u, \v)$. Here, the parameterization is
 
-	$$
-		\vec{r}(u, \v) &= \left< u,\ \v,\ u\cos(\v) \right>, \quad 0 \leq u \leq \pi,\ 0 \leq \v \leq \pi.
-	$$
-
+		$$
+			\vec{r}(u, \v) &= \left< u,\ \v,\ u\cos(\v) \right>, \quad 0 \leq u \leq \pi,\ 0 \leq \v \leq \pi.
+		$$
+	]]
 ]]
 
 What about a sphere? We could try to leverage the equation $x^2 + y^2 + z^2 = 1$, but just like the unit circle equation $x^2 + y^2 = 1$ wasn't very helpful in finding the parametric equation $\left< \cos(t), \sin(t) \right>$, we'll want to take a different approach when parameterizing a sphere.
@@ -176,42 +180,42 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 
 	@solution[[
 
-	The derivatives are
+		The derivatives are
 
-	$$
-		\vec{s}_u &= \left< \cos(u + 2\v),\ \cos(u),\ 0 \right>
-		\vec{s}_{\v} &= \left< 2\cos(u + \v),\ 0,\ -\sin(\v) \right>,
-	$$
+		$$
+			\vec{s}_u &= \left< \cos(u + 2\v),\ \cos(u),\ 0 \right>
+			\vec{s}_{\v} &= \left< 2\cos(u + \v),\ 0,\ -\sin(\v) \right>,
+		$$
 
-	which at the given points are
+		which at the given points are
 
-	$$
-		\vec{s}_u(0, 0) &= \left< 1, 1, 0 \right>
-		\vec{s}_{\v}(0, 0) &= \left< 2, 0, 0 \right>
+		$$
+			\vec{s}_u(0, 0) &= \left< 1, 1, 0 \right>
+			\vec{s}_{\v}(0, 0) &= \left< 2, 0, 0 \right>
 
-		~
+			~
 
-		\vec{s}_u\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
-		\vec{s}_{\v}\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+			\vec{s}_u\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+			\vec{s}_{\v}\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
 
-		~
+			~
 
-		\vec{s}_u\left( 0, \frac{\pi}{2} \right) &= \left< -1, 1, 0 \right>
-		\vec{s}_{\v}\left( 0, \frac{\pi}{2} \right) &= \left< -2, 0, -1 \right>.
-	$$
+			\vec{s}_u\left( 0, \frac{\pi}{2} \right) &= \left< -1, 1, 0 \right>
+			\vec{s}_{\v}\left( 0, \frac{\pi}{2} \right) &= \left< -2, 0, -1 \right>.
+		$$
 
-	The cross products are
+		The cross products are
 
-	$$
-		\left( \vec{s}_u \times \vec{s}_{\v} \right)(0, 0) &= \left< 0, 0, -2 \right>
+		$$
+			\left( \vec{s}_u \times \vec{s}_{\v} \right)(0, 0) &= \left< 0, 0, -2 \right>
 
-		\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
+			\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( \frac{\pi}{2}, 0 \right) &= \left< 0, 0, 0 \right>
 
-		\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -1, 2 \right>.
-	$$
+			\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -1, 2 \right>.
+		$$
 
-	The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, \v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of the tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
-
+		The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, \v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of the tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
+	]]
 ]]
 
 When we developed curve integrals in [section 6.3](/teaching/notes/calculus/curve-integrals), we leaned heavily on the formula for arc length that we found back in [section 5.3](/teaching/notes/calculus/vector-valued-functions). To begin treading the same path for surfaces, let's find a formula for surface area.
@@ -250,32 +254,32 @@ and so we can fashion a formula for surface area.
 
 	@solution[[
 
-	We can parameterize this cylinder by
+		We can parameterize this cylinder by
 
-	$$
-		\vec{c}(u, \v) = \left< r\cos(u),\ r\sin(u),\ \v \right>,
-	$$
+		$$
+			\vec{c}(u, \v) = \left< r\cos(u),\ r\sin(u),\ \v \right>,
+		$$
 
-	where $u \in [0, 2\pi]$ and $\v \in [0, h]$. Now
+		where $u \in [0, 2\pi]$ and $\v \in [0, h]$. Now
 
-	$$
-		\vec{c}_u &= \left< -r\sin(u),\ r\cos(u),\ 0 \right>
+		$$
+			\vec{c}_u &= \left< -r\sin(u),\ r\cos(u),\ 0 \right>
 
-		\vec{c}_{\v} &= \left< 0, 0, 1 \right>
+			\vec{c}_{\v} &= \left< 0, 0, 1 \right>
 
-		\vec{c}_u \times \vec{c}_{\v} &= \left< r\cos(u),\ r\sin(u),\ 0 \right>
+			\vec{c}_u \times \vec{c}_{\v} &= \left< r\cos(u),\ r\sin(u),\ 0 \right>
 
-		\left| \left| \vec{c}_u \times \vec{c}_{\v} \right| \right| &= r.
-	$$
+			\left| \left| \vec{c}_u \times \vec{c}_{\v} \right| \right| &= r.
+		$$
 
-	the surface area is then
+		the surface area is then
 
-	$$
-		\int_0^{2\pi} \int_0^h r\,\d\v\,\d u = 2\pi r h,
-	$$
+		$$
+			\int_0^{2\pi} \int_0^h r\,\d\v\,\d u = 2\pi r h,
+		$$
 
-	which matches what we know!
-
+		which matches what we know!
+	]]
 ]]
 
 If we're looking to find the surface area of the graph of a function $z = f(x, y)$ on a region $R$, then we can parameterize it by $\vec{r}(u, \v) = \left< u, \v, f(u, \v) \right>$. Then
@@ -302,40 +306,40 @@ $$
 
 	@solution[[
 
-	Let's use the previous formula, which asks us to integrate
+		Let's use the previous formula, which asks us to integrate
 
-	$$
-	 	\sqrt{(-4x)^2 + (-4y)^2 + 1} &= \sqrt{16(x^2 + y^2) + 1}.
-	$$
+		$$
+			\sqrt{(-4x)^2 + (-4y)^2 + 1} &= \sqrt{16(x^2 + y^2) + 1}.
+		$$
 
-	We also need to know the region we're integrating over, which is given by the intersection of the function with $z = 0$:
+		We also need to know the region we're integrating over, which is given by the intersection of the function with $z = 0$:
 
-	$$
-		2x^2 + 2y^2 &= 8
+		$$
+			2x^2 + 2y^2 &= 8
 
-		x^2 + y^2 &= 4,
-	$$
+			x^2 + y^2 &= 4,
+		$$
 
-	so it's a circle of radius $2$ centered at the origin. That's most easily handled with polar coordinates!
+		so it's a circle of radius $2$ centered at the origin. That's most easily handled with polar coordinates!
 
-	$$
-		\int_0^{2\pi}\int_0^2 \sqrt{16r^2 + 1}\,r\,\d r\,\d\theta &= \int_0^{2\pi}\int_0^2 \frac{1}{32}\sqrt{w}\,\d w,
-	$$
+		$$
+			\int_0^{2\pi}\int_0^2 \sqrt{16r^2 + 1}\,r\,\d r\,\d\theta &= \int_0^{2\pi}\int_0^2 \frac{1}{32}\sqrt{w}\,\d w,
+		$$
 
-	where $w = 16r^2 + 1$ and $\d w = 32r\,\d r$ (this is just a $u$-sub, but I'm avoiding using $u$ for clarity). Continuing,
+		where $w = 16r^2 + 1$ and $\d w = 32r\,\d r$ (this is just a $u$-sub, but I'm avoiding using $u$ for clarity). Continuing,
 
-	$$
-		\int_0^{2\pi} \int_0^2 \frac{1}{32}\sqrt{w}\,\d w &= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{w^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
+		$$
+			\int_0^{2\pi} \int_0^2 \frac{1}{32}\sqrt{w}\,\d w &= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{w^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
 
-		&= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{\left( 16r^2 + 1 \right)^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
+			&= \frac{1}{32} \int_0^{2\pi} \left. \left[ \frac{\left( 16r^2 + 1 \right)^{3/2}}{3/2} \right] \right|_0^2\,\d\theta
 
-		&= \frac{1}{32} \int_0^{2\pi} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)\d\theta
+			&= \frac{1}{32} \int_0^{2\pi} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)\d\theta
 
-		&= \frac{\pi}{16} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)
+			&= \frac{\pi}{16} \left( \frac{65^{3/2}}{3/2} - \frac{1}{3/2} \right)
 
-		&\approx 68.467.
-	$$
-
+			&\approx 68.467.
+		$$
+	]]
 ]]
 
 
@@ -416,58 +420,58 @@ Unlike curve integrals, which we could introduce in $#R#^2$ with functions of tw
 
 	@solution[[
 
-	Let's begin by parameterizing the surface: 
-	
-	$$
-		\vec{r}(u, \v) = \left< u,\ u^2\cos(\v),\ u^2\sin(\v) \right>
-	$$
+		Let's begin by parameterizing the surface: 
+		
+		$$
+			\vec{r}(u, \v) = \left< u,\ u^2\cos(\v),\ u^2\sin(\v) \right>
+		$$
 
-	for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. Then
+		for $u \in [0, 1]$ and $\v \in [0, 2\pi]$. Then
 
-	$$
-		\vec{r}_u &= \left< 1,\, 2u\cos(\v),\, 2u\sin(\v) \right>
+		$$
+			\vec{r}_u &= \left< 1,\, 2u\cos(\v),\, 2u\sin(\v) \right>
 
-		\vec{r}_{\v} &= \left< 0,\, -u^2\sin(\v),\, u^2\cos(\v) \right>
+			\vec{r}_{\v} &= \left< 0,\, -u^2\sin(\v),\, u^2\cos(\v) \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< 2u^3 \cos^2(\v) + 2u^3 \sin^2(\v),\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
+			\vec{r}_u \times \vec{r}_{\v} &= \left< 2u^3 \cos^2(\v) + 2u^3 \sin^2(\v),\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
 
-		&= \left< 2u^3,\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
+			&= \left< 2u^3,\, -u^2\cos(\v),\, -u^2\sin(\v) \right>
 
-		\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= \sqrt{4u^6 + u^4}
+			\left| \left| \vec{r}_u \times \vec{r}_{\v} \right| \right| &= \sqrt{4u^6 + u^4}
 
-		&= u^2\sqrt{4u^2 + 1}.
-	$$
+			&= u^2\sqrt{4u^2 + 1}.
+		$$
 
-	Now we're ready to set up the integral!
+		Now we're ready to set up the integral!
 
-	$$
-		\iint_S f\,\d\sigma &= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} \sqrt{u^4\cos^2(\v) + u^4\sin^2(\v)} u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
+		$$
+			\iint_S f\,\d\sigma &= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} \sqrt{u^4\cos^2(\v) + u^4\sin^2(\v)} u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} u^2 u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
+			&= \int_0^1 \!\! \int_0^{2\pi} \frac{1}{u} u^2 u^2\sqrt{4u^2 + 1}\,\d\v\,\d u
 
-		&= \int_0^1 \!\! \int_0^{2\pi} u^3\sqrt{4u^2 + 1}\,\d\v\,\d u
+			&= \int_0^1 \!\! \int_0^{2\pi} u^3\sqrt{4u^2 + 1}\,\d\v\,\d u
 
-		&= 2\pi\int_0^1 \!\! u^3\sqrt{4u^2 + 1}\,\d u
-	$$
+			&= 2\pi\int_0^1 \!\! u^3\sqrt{4u^2 + 1}\,\d u
+		$$
 
-	With $w = 4u^2 + 1$ and $\d w = 8u\,\d u$,
+		With $w = 4u^2 + 1$ and $\d w = 8u\,\d u$,
 
-	$$
-		2\pi\int_0^1 u^3\sqrt{4u^2 + 1}\,\d u &= \frac{\pi}{4}\int_0^1 u^2w^{1/2}\,\d w
+		$$
+			2\pi\int_0^1 u^3\sqrt{4u^2 + 1}\,\d u &= \frac{\pi}{4}\int_0^1 u^2w^{1/2}\,\d w
 
-		&= \frac{\pi}{4}\int_0^1 \frac{1}{4}(w - 1)w^{1/2}\,\d w
+			&= \frac{\pi}{4}\int_0^1 \frac{1}{4}(w - 1)w^{1/2}\,\d w
 
-		&= \frac{\pi}{16}\int_0^1 \left( w^{3/2} - w^{1/2} \right)\d w
+			&= \frac{\pi}{16}\int_0^1 \left( w^{3/2} - w^{1/2} \right)\d w
 
-		&= \frac{\pi}{16} \left. \left[ \frac{2}{5}w^{5/2} - \frac{2}{3}w^{3/2} \right] \right|_0^1
+			&= \frac{\pi}{16} \left. \left[ \frac{2}{5}w^{5/2} - \frac{2}{3}w^{3/2} \right] \right|_0^1
 
-		&= \frac{\pi}{16} \left. \left[ \frac{2}{5}\left( 4u^2 + 1 \right)^{5/2} - \frac{2}{3}\left( 4u^2 + 1 \right)^{3/2} \right] \right|_0^1
+			&= \frac{\pi}{16} \left. \left[ \frac{2}{5}\left( 4u^2 + 1 \right)^{5/2} - \frac{2}{3}\left( 4u^2 + 1 \right)^{3/2} \right] \right|_0^1
 
-		&= \frac{\pi}{16} \left( \frac{2}{5}(5)^{5/2} - \frac{2}{3}(5)^{3/2} - \frac{2}{5} + \frac{2}{3} \right)
+			&= \frac{\pi}{16} \left( \frac{2}{5}(5)^{5/2} - \frac{2}{3}(5)^{3/2} - \frac{2}{5} + \frac{2}{3} \right)
 
-		&\approx 2.979.
-	$$
-
+			&\approx 2.979.
+		$$
+	]]
 ]]
 
 
@@ -622,90 +626,90 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 
 	@solution[[
 
-	1. Let's start with the surface. We can parameterize that plane in a number of ways, but the simplest is probably
+		1. Let's start with the surface. We can parameterize that plane in a number of ways, but the simplest is probably
 
-	$$
-		\vec{r}(u, \v) = \left< u,\ \v,\ 1 - u - \v \right>
-	$$
+		$$
+			\vec{r}(u, \v) = \left< u,\ \v,\ 1 - u - \v \right>
+		$$
 
-	for $u$ and $\v$ in the triangle $T$ with vertices at $(0, 0)$, $(1, 0)$, and $(0, 1)$. Then
+		for $u$ and $\v$ in the triangle $T$ with vertices at $(0, 0)$, $(1, 0)$, and $(0, 1)$. Then
 
-	$$
-		\vec{r}_u &= \left< 1, 0, -1 \right>
+		$$
+			\vec{r}_u &= \left< 1, 0, -1 \right>
 
-		\vec{r}_{\v} &= \left< 0, 1, -1 \right>
+			\vec{r}_{\v} &= \left< 0, 1, -1 \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< 1, 1, 1 \right>.
-	$$
+			\vec{r}_u \times \vec{r}_{\v} &= \left< 1, 1, 1 \right>.
+		$$
 
-	That matches the orientation we're asked for, so this parameterization works. Just like with circulation integrals, we don't need to compute the magnitude of the cross product! We just have
+		That matches the orientation we're asked for, so this parameterization works. Just like with circulation integrals, we don't need to compute the magnitude of the cross product! We just have
 
-	$$
-		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_T \vec{F}\left( u,\ \v,\ 1 - u - \v \right) \bullet \left< 1, 1, 1 \right>\d A
+		$$
+			\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_T \vec{F}\left( u,\ \v,\ 1 - u - \v \right) \bullet \left< 1, 1, 1 \right>\d A
 
-		&= \iint_T \left< 2u,\ \v,\ 1 - u - \v \right> \bullet \left< 1, 1, 1 \right>\d A
+			&= \iint_T \left< 2u,\ \v,\ 1 - u - \v \right> \bullet \left< 1, 1, 1 \right>\d A
 
-		&= \iint_T \left( u + 1 \right)\d A
+			&= \iint_T \left( u + 1 \right)\d A
 
-		&= \int_0^1 \!\!\! \int_0^{1 - u} \left( u + 1 \right)\d\v\,\d u
+			&= \int_0^1 \!\!\! \int_0^{1 - u} \left( u + 1 \right)\d\v\,\d u
 
-		&= \int_0^1 \left( u + 1 \right)\left( 1 - u \right) \d u
+			&= \int_0^1 \left( u + 1 \right)\left( 1 - u \right) \d u
 
-		&= \frac{2}{3}.
-	$$
+			&= \frac{2}{3}.
+		$$
 
-	We can color the surface by the dot product (i.e. the quantity we're eventually integrating) and superimpose the field on it.
+		We can color the surface by the dot product (i.e. the quantity we're eventually integrating) and superimpose the field on it.
 
-	@desmos{surfaceIntegralThroughVectorField}
+		@desmos{surfaceIntegralThroughVectorField}
 
-	2. Here, the flux is zero! The field is always parallel to the surface, and so the orientation doesn't matter either.
+		2. Here, the flux is zero! The field is always parallel to the surface, and so the orientation doesn't matter either.
 
-	@desmos{surfaceIntegralThroughVectorField2}
+		@desmos{surfaceIntegralThroughVectorField2}
 
-	3. Starting as usual with the parameterization, let's take
+		3. Starting as usual with the parameterization, let's take
 
-	$$
-		\vec{r}(u, \v) = \left< u,\, \v,\, u^2 + \v^2 \right>
-	$$
+		$$
+			\vec{r}(u, \v) = \left< u,\, \v,\, u^2 + \v^2 \right>
+		$$
 
-	for $u$ and $\v$ in the solid unit disk $D$, from which we can find
+		for $u$ and $\v$ in the solid unit disk $D$, from which we can find
 
-	$$
-		\vec{r}_u &= \left< 1, 0, 2u \right>
+		$$
+			\vec{r}_u &= \left< 1, 0, 2u \right>
 
-		\vec{r}_{\v} &= \left< 0, 1, 2\v \right>
+			\vec{r}_{\v} &= \left< 0, 1, 2\v \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< -2u, -2\v, 1 \right>.
-	$$
+			\vec{r}_u \times \vec{r}_{\v} &= \left< -2u, -2\v, 1 \right>.
+		$$
 
-	At the origin, when $u = \v = 0$, this vector is $\left< 0, 0, 1 \right>$, which points in the wrong direction. To fix this, we could reverse the roles of $u$ and $\v$ in $\vec{r}$. That would keep the partials are the same, only with reversed variables, and the cross product would has reversed factors too, making it negative. In practice, however, we don't need to go to such trouble. Reversing the orientation just negates the cross product factor in the integral, making the whole thing negative. We have
+		At the origin, when $u = \v = 0$, this vector is $\left< 0, 0, 1 \right>$, which points in the wrong direction. To fix this, we could reverse the roles of $u$ and $\v$ in $\vec{r}$. That would keep the partials are the same, only with reversed variables, and the cross product would has reversed factors too, making it negative. In practice, however, we don't need to go to such trouble. Reversing the orientation just negates the cross product factor in the integral, making the whole thing negative. We have
 
-	$$
-		\iint_S \vec{H} \bullet \d\vec{\sigma} &= \iint_D \vec{H}\left( u,\, \v,\, u^2 + \v^2 \right) \bullet (-\left< -2u, -2\v, 1 \right>)\d A
+		$$
+			\iint_S \vec{H} \bullet \d\vec{\sigma} &= \iint_D \vec{H}\left( u,\, \v,\, u^2 + \v^2 \right) \bullet (-\left< -2u, -2\v, 1 \right>)\d A
 
-		&= -\iint_D \left< u,\, \v,\, \left( u^2 + \v^2 \right)^2 \right> \bullet \left< -2u, -2\v, 1 \right>\d A
+			&= -\iint_D \left< u,\, \v,\, \left( u^2 + \v^2 \right)^2 \right> \bullet \left< -2u, -2\v, 1 \right>\d A
 
-		&= -\iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A.
-	$$
+			&= -\iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A.
+		$$
 
-	That's about as polar as an integral can look, so let's change coordinates:
+		That's about as polar as an integral can look, so let's change coordinates:
 
-	$$
-		-\iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A &= -\int_0^{2\pi} \!\! \int_0^1 \left( -2r^2 + r^4 \right)r\,\d r\d\theta
+		$$
+			-\iint_D \left( -2u^2 - 2\v^2 + \left( u^2 + \v^2 \right)^2 \right)\d A &= -\int_0^{2\pi} \!\! \int_0^1 \left( -2r^2 + r^4 \right)r\,\d r\d\theta
 
-		&= -\int_0^{2\pi} \!\! \int_0^1 \left( -2r^3 + r^5 \right)\d r\d\theta
+			&= -\int_0^{2\pi} \!\! \int_0^1 \left( -2r^3 + r^5 \right)\d r\d\theta
 
-		&= -\int_0^{2\pi} \left( -\frac{1}{2} + \frac{1}{6} \right)\d\theta
+			&= -\int_0^{2\pi} \left( -\frac{1}{2} + \frac{1}{6} \right)\d\theta
 
-		&= \frac{2\pi}{3}.
-	$$
+			&= \frac{2\pi}{3}.
+		$$
 
-	@desmos{surfaceIntegralThroughVectorField3}
+		@desmos{surfaceIntegralThroughVectorField3}
 
-	4. This flux is negative: the field always has positive components in the first octant, but the surface's normal vectors always point toward the origin, meaning every dot product is negative.
+		4. This flux is negative: the field always has positive components in the first octant, but the surface's normal vectors always point toward the origin, meaning every dot product is negative.
 
-	@desmos{surfaceIntegralThroughVectorField4}
-
+		@desmos{surfaceIntegralThroughVectorField4}
+	]]
 ]]
 
 We've developed a solid theory of surfaces and integrals through them! We're now well prepared for the first generalization of Green's Theorem in the next section, relating flux integrals over a surface to curve integrals along its boundary.

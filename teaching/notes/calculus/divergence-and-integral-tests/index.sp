@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 As we've mentioned and begun to see, this course revolves around series. The later sections will be devoted to Taylor series, the application we'll come to care about the most, but there's an important question we need to address before then: how do we know if a series converges? Unfortunately, the answer turns out to be substantially more complicated than we might like, similarly to the question of *how do we integrate functions* that took a whole part of the course to answer. That answer took the form of a handful of piecemeal integration strategies that operated very differently from one another and could each only address certain kinds of integrals. In much the same way, our answer to the question of convergence will be a collection of different strategies that each handle many situations, but not all. We'll start with the simplest in this section and work our way up from there.
@@ -46,12 +50,12 @@ There are two important things to note here: first, the divergence test says not
 	
 	@solution[[
 	
-	1. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so the divergence test tells us nothing --- the series might converge, or it might diverge.
-	
-	2. Since $\lim_{j \to \infty} \ln(j) = \infty \neq 0$, the divergence test tells us that the series must diverge.
-	
-	3. Here, the numerator stays bounded between $-1$ and $1$, while the denominator runs off to $\infty$, so the limit $\lim_{i \to \infty} \frac{1}{i + 1} \cos(i) = 0$. The divergence test therefore tells us nothing.
-	
+		1. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so the divergence test tells us nothing --- the series might converge, or it might diverge.
+		
+		2. Since $\lim_{j \to \infty} \ln(j) = \infty \neq 0$, the divergence test tells us that the series must diverge.
+		
+		3. Here, the numerator stays bounded between $-1$ and $1$, while the denominator runs off to $\infty$, so the limit $\lim_{i \to \infty} \frac{1}{i + 1} \cos(i) = 0$. The divergence test therefore tells us nothing.
+	]]
 ]]
 
 
@@ -164,42 +168,42 @@ The divergence test is much easier to apply than the integral test, so we'll alm
 	
 	@solution[[
 	
-	1. Let's try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it's inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing --- and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it's always positive. The integral test asks us to consider
-	
-	$$
-		\int_1^\infty \frac{1}{x^2}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,\d x
+		1. Let's try the divergence test first. We have $\lim_{n \to \infty} \frac{1}{n^2} = 0$, so it's inconclusive. To apply the integral test, we need to verify that the terms are positive and decreasing --- and they are. As $n$ increases, $\frac{1}{n^2}$ decreases, and it's always positive. The integral test asks us to consider
 		
-		&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b
+		$$
+			\int_1^\infty \frac{1}{x^2}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{x^2}\,\d x
+			
+			&= \lim_{b \to \infty} \left[ -x^{-1} \right]_1^b
+			
+			&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)
+			
+			&= 1.
+		$$
 		
-		&= \lim_{b \to \infty} \left( -b^{-1} + 1 \right)
+		Since the integral converges, so does the series. We don't know what value the series converges to (it's actually $\frac{\pi^2}{6}$, which is very different than $1$), but we do know it's guaranteed to converge to *something*.
 		
-		&= 1.
-	$$
-	
-	Since the integral converges, so does the series. We don't know what value the series converges to (it's actually $\frac{\pi^2}{6}$, which is very different than $1$), but we do know it's guaranteed to converge to *something*.
-	
-	2. The divergence test rules this one out from the start: $\lim_{j \to \infty} \sin(j)$ doesn't exist, so the series must diverge.
-	
-	3. The divergence test fails on this, since $\lim_{n \to \infty} \frac{1}{\sqrt{n + 1}} = 0$. But since $\frac{1}{\sqrt{n + 1}}$ is positive and decreasing, we can apply the integral test. We have
-	
-	$$
-		\int_1^\infty \frac{1}{\sqrt{x + 1}}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,\d x
+		2. The divergence test rules this one out from the start: $\lim_{j \to \infty} \sin(j)$ doesn't exist, so the series must diverge.
 		
-		u &= x + 1,\,\d u = dx
+		3. The divergence test fails on this, since $\lim_{n \to \infty} \frac{1}{\sqrt{n + 1}} = 0$. But since $\frac{1}{\sqrt{n + 1}}$ is positive and decreasing, we can apply the integral test. We have
 		
-		&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,\d u
+		$$
+			\int_1^\infty \frac{1}{\sqrt{x + 1}}\,\d x &= \lim_{b \to \infty} \int_1^b \frac{1}{\sqrt{x + 1}}\,\d x
+			
+			u &= x + 1,\,\d u = dx
+			
+			&= \lim_{b \to \infty} \int_1^b u^{-1/2}\,\d u
+			
+			&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b
+			
+			&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b
+			
+			&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)
+			
+			&= \infty.
+		$$
 		
-		&= \lim_{b \to \infty} \left[ 2u^{1/2} \right]_1^b
-		
-		&= \lim_{b \to \infty} \left[ 2(x + 1)^{1/2} \right]_1^b
-		
-		&= \lim_{b \to \infty} \left( 2(b + 1)^{1/2} - 2\sqrt{2} \right)
-		
-		&= \infty.
-	$$
-	
-	Since the integral diverges, so does the series.
-
+		Since the integral diverges, so does the series.
+	]]
 ]]
 
 
@@ -316,42 +320,42 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 	@solution[[
 	
-	First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
-	
-	$$
-		R_N < \int_N^\infty \frac{1}{x^3}\,\d x &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty
+		First, we need to make sure this series is compatible with the integral test. We have $f(x) = \frac{1}{x^3}$, which is positive, decreasing, and integrable on $[1, \infty)$. For a positive integer $N$, the $N$th partial sum $S_N$ will produce an approximation with a remainder $R_N$ satisfying
 		
-		&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)
+		$$
+			R_N < \int_N^\infty \frac{1}{x^3}\,\d x &= \left. \left[ -\frac{1}{2} x^{-2} \right] \right|_N^\infty
+			
+			&= \lim_{b \to \infty} \left( \frac{1}{2} N^{-2} - \frac{1}{2} b^{-2} \right)
+			
+			&= \frac{1}{2} N^{-2}.
+		$$
 		
-		&= \frac{1}{2} N^{-2}.
-	$$
-	
-	Now we want that upper bound to be below $.01$, which means
-	
-	$$
-		\frac{1}{2} N^{-2} &< .01
+		Now we want that upper bound to be below $.01$, which means
 		
-		\frac{1}{N^2} &< .02
+		$$
+			\frac{1}{2} N^{-2} &< .01
+			
+			\frac{1}{N^2} &< .02
+			
+			1 &< .02N^2
+			
+			50 &< N^2
+			
+			N &> \sqrt{50} \approx 7.07
+		$$
 		
-		1 &< .02N^2
+		Therefore, let's choose $N = 8$. It's in our best interest to keep $N$ as small as possible so that the next step doesn't get too annoying --- we now need to find $S_{8}$.
 		
-		50 &< N^2
+		$$
+			S_8 &= \sum_{n = 1}^8 \frac{1}{n^3}
+			
+			&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}
+			
+			&\approx 1.195.
+		$$
 		
-		N &> \sqrt{50} \approx 7.07
-	$$
-	
-	Therefore, let's choose $N = 8$. It's in our best interest to keep $N$ as small as possible so that the next step doesn't get too annoying --- we now need to find $S_{8}$.
-	
-	$$
-		S_8 &= \sum_{n = 1}^8 \frac{1}{n^3}
-		
-		&= 1 + \frac{1}{8} + \frac{1}{27} + \cdots + \frac{1}{512}
-		
-		&\approx 1.195.
-	$$
-	
-	The actual value of the series is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly --- in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we'll talk about later, the value of the power-3 $p$-series is only known approximately.
-
+		The actual value of the series is about $1.201$, which is in fact within $.01$ of our approximation. As an interesting sidenote, the value of this series is actually not known exactly --- in contrast to series like $\sum_{n = 1}^\infty \frac{1}{n^2}$, which has a very interesting exact value that we'll talk about later, the value of the power-3 $p$-series is only known approximately.
+	]]
 ]]
 
 
@@ -362,44 +366,44 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 	
 	@solution[[
 	
-	First of all, the terms are positive and decreasing, so we can use the integral test. We have
-	
-	$$
-		R_N &\leq \int_N^\infty \frac{1}{x^5}\,\d x
+		First of all, the terms are positive and decreasing, so we can use the integral test. We have
 		
-		&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,\d x
+		$$
+			R_N &\leq \int_N^\infty \frac{1}{x^5}\,\d x
+			
+			&= \lim_{b \to \infty} \int_N^b \frac{1}{x^5}\,\d x
+			
+			&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b
+			
+			&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)
+			
+			&= 0 + \frac{N^{-4}}{4}
+			
+			&= \frac{N^{-4}}{4}.
+		$$
 		
-		&= \lim_{b \to \infty} \left[ \frac{x^{-4}}{-4} \right]_N^b
+		We want this to be less than $.01$, so
 		
-		&= \lim_{b \to \infty} \left( -\frac{b^{-4}}{4} + \frac{N^{-4}}{4} \right)
+		$$
+			\frac{N^{-4}}{4} &< .01
+			
+			N^{-4} &< .04
+			
+			N^4 &> \frac{1}{.04}
+			
+			N^4 &> 25
+			
+			N &> \sqrt{5}
+			
+			N &> 2.236
+		$$
 		
-		&= 0 + \frac{N^{-4}}{4}
+		Since $N$ needs to be an integer, we'll take $N = 3$. Therefore, our approximation is
 		
-		&= \frac{N^{-4}}{4}.
-	$$
-	
-	We want this to be less than $.01$, so
-	
-	$$
-		\frac{N^{-4}}{4} &< .01
-		
-		N^{-4} &< .04
-		
-		N^4 &> \frac{1}{.04}
-		
-		N^4 &> 25
-		
-		N &> \sqrt{5}
-		
-		N &> 2.236
-	$$
-	
-	Since $N$ needs to be an integer, we'll take $N = 3$. Therefore, our approximation is
-	
-	$$
-		\sum_{n = 1}^3 \frac{1}{n^5} = 1 + \frac{1}{32} + \frac{1}{243} \approx 1.035.
-	$$
-
+		$$
+			\sum_{n = 1}^3 \frac{1}{n^5} = 1 + \frac{1}{32} + \frac{1}{243} \approx 1.035.
+		$$
+	]]
 ]]
 
 

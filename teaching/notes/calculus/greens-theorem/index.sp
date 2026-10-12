@@ -1,3 +1,8 @@
+@@@
+	import { controls } from "../../../../build/htmdl/components/applet-controls.js";
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -116,13 +121,14 @@ At long last, we can add all of those curve integrals by writing the boundary of
 
 	@solution[[
 
-	1. The unit disk, for example, has a boundary that's counterclockwise, since that keeps the disk on the left the entire way.
+		1. The unit disk, for example, has a boundary that's counterclockwise, since that keeps the disk on the left the entire way.
 
-	@desmos{unitDiskBoundary}
+		@desmos{unitDiskBoundary}
 
-	3. This one is a little weird! The outside boundary circle is still oriented counterclockwise, but the inner one is clockwise --- being on the inside effectively reverses which direction is considered positive. It's a good reminder not to rely too heavily on positive orientation always being counterclockwise!
+		3. This one is a little weird! The outside boundary circle is still oriented counterclockwise, but the inner one is clockwise --- being on the inside effectively reverses which direction is considered positive. It's a good reminder not to rely too heavily on positive orientation always being counterclockwise!
 
-	@desmos{clockwiseBoundary}
+		@desmos{clockwiseBoundary}
+	]]
 
 ]]
 
@@ -190,34 +196,34 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 
 	@solution[[
 
-	As a curve integral, this looks absolutely horrid, since we'd have to deal with both of those integrands. Instead, though, we can apply Green's Theorem on this triangle! If $R$ is the filled-in triangle with the vertices as given, then $T = -\p R$, since it's oriented clockwise and is on the outside of the region. The integrand in Green's Theorem is
+		As a curve integral, this looks absolutely horrid, since we'd have to deal with both of those integrands. Instead, though, we can apply Green's Theorem on this triangle! If $R$ is the filled-in triangle with the vertices as given, then $T = -\p R$, since it's oriented clockwise and is on the outside of the region. The integrand in Green's Theorem is
 
-	$$
-		p/px \left[ 2x + \sin\left( y^2 \right) \right] - p/py \left[ \sqrt{x^3 + 1} \right] &= 2,
-	$$
+		$$
+			p/px \left[ 2x + \sin\left( y^2 \right) \right] - p/py \left[ \sqrt{x^3 + 1} \right] &= 2,
+		$$
 
-	and so the whole integral becomes
+		and so the whole integral becomes
 
-	$$
-		\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r} &= \oint_{-\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
-		
-		&= -\oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
+		$$
+			\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r} &= \oint_{-\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
+			
+			&= -\oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
 
-		&= -\iint_R 2\,\d A
+			&= -\iint_R 2\,\d A
 
-		&= -\int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
+			&= -\int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
 
-		&= -\int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
+			&= -\int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
 
-		&= -\int_0^1 \left( 2-2x \right) \,\d x
+			&= -\int_0^1 \left( 2-2x \right) \,\d x
 
-		&= -\left. \left[ 2x - x^2 \right] \right|_0^1
+			&= -\left. \left[ 2x - x^2 \right] \right|_0^1
 
-		&= -(2 - 1)
+			&= -(2 - 1)
 
-		&= -1.
-	$$
-
+			&= -1.
+		$$
+	]]
 ]]
 
 While Green's Theorem primarily simplifies circulation integrals into double integrals, it can also work the other way. If we can write the argument $h(x, y)$ of a double integral as $h(x, y) = g_x - f_y$ for some functions $f$ and $g$, then we can transform the double integral into a circulation integral, and those are very occasionally easier to solve. One rather strange result comes from taking $h(x, y) = 1$; for a region $R$, $\iint_R 1\,\d A$ is the area of $R$, so *any* functions $f$ and $g$ with $g_x - f_y = 1$ will work. We could take $f(x, y) = 0$ and $g(x, y) = x$, or $f = -y$ and $g = 0$, or any other combination $f = ay$ and $g = bx$ with $b - a = 1$.
@@ -294,50 +300,50 @@ Let's use this to find the area of something that would have previously proven i
 
 	@solution[[
 
-	1. Let's begin by parameterizing the boundary:
+		1. Let's begin by parameterizing the boundary:
 
-	$$
-		\vec{r}(t) = \left< 3\cos(t), 2\sin(t) \right>,\quad t \in [0, 2\pi].
-	$$
+		$$
+			\vec{r}(t) = \left< 3\cos(t), 2\sin(t) \right>,\quad t \in [0, 2\pi].
+		$$
 
-	Now we can set up the area integral in terms of Green's Theorem, which should hopefully be more pleasant than the double integral. None of the forms of the area integral look more pleasant than any other, so let's just use the first one. We have
+		Now we can set up the area integral in terms of Green's Theorem, which should hopefully be more pleasant than the double integral. None of the forms of the area integral look more pleasant than any other, so let's just use the first one. We have
 
-	$$
-		|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
+		$$
+			|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
 
-		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\d t
+			&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\d t
 
-		&= \int_0^{2\pi} 6\cos^2(t)\,\d t
+			&= \int_0^{2\pi} 6\cos^2(t)\,\d t
 
-		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\d t
+			&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\d t
 
-		&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
+			&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
 
-		&= 6\pi + \frac{3}{2}\sin(4\pi)
+			&= 6\pi + \frac{3}{2}\sin(4\pi)
 
-		&= 6\pi.
-	$$
+			&= 6\pi.
+		$$
 
-	2. While we could try evaluate that curve integral, it would be full of high powers on trig functions and also a $\sin(t)$ inside of an exponential, which is something we'd really like to avoid. Let's try Green's Theorem instead:
+		2. While we could try evaluate that curve integral, it would be full of high powers on trig functions and also a $\sin(t)$ inside of an exponential, which is something we'd really like to avoid. Let's try Green's Theorem instead:
 
-	$$
-		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r} = \iint_{D} \left( 3x^2 + 3y^2 \right)\d A,
-	$$
+		$$
+			\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r} = \iint_{D} \left( 3x^2 + 3y^2 \right)\d A,
+		$$
 
-	where $D$ is the solid semicircle whose boundary is $C$. Now that disk is not particularly nice to integrate over... unless we switch to polar coordinates! That disk is given by $0 \leq r \leq 1$ for $0 \leq \theta \leq \pi$, and so we have
+		where $D$ is the solid semicircle whose boundary is $C$. Now that disk is not particularly nice to integrate over... unless we switch to polar coordinates! That disk is given by $0 \leq r \leq 1$ for $0 \leq \theta \leq \pi$, and so we have
 
-	$$
-		\iint_{D} \left( 3x^2 + 3y^2 \right)\d A &= \int_0^\pi \!\!\! \int_0^1 3r^2\,r\,\d r\,\d \theta
+		$$
+			\iint_{D} \left( 3x^2 + 3y^2 \right)\d A &= \int_0^\pi \!\!\! \int_0^1 3r^2\,r\,\d r\,\d \theta
 
-		&= \int_0^\pi \left. \left[ \frac{3}{4}r^4 \right] \right|_0^1 \d \theta
+			&= \int_0^\pi \left. \left[ \frac{3}{4}r^4 \right] \right|_0^1 \d \theta
 
-		&= \int_0^\pi \frac{3}{4}\, \d \theta
+			&= \int_0^\pi \frac{3}{4}\, \d \theta
 
-		&= \int_0^\pi \frac{3}{4}\, \d \theta
+			&= \int_0^\pi \frac{3}{4}\, \d \theta
 
-		&= \frac{3}{4}\pi.
-	$$
-
+			&= \frac{3}{4}\pi.
+		$$
+	]]
 ]]
 
 Let's reflect on Green's Theorem just a bit now that we've gotten our bearings with it. First of all, we *just* talked about another theorem involving curve integrals in the previous section, and so we should clarify how the two theorems interact. And... they effectively don't! The Fundamental Theorem of Curve Integrals only applies to conservative vector fields (in both $#R#^2$ and $#R#^3$), and Green's Theorem applies to any vector field in $#R#^2$ that's integrated along a closed path. The overlap between these two theorems is conservative fields in $#R#^2$, which are those of the form $\left< f, g \right>$ with $g_x = f_y$. But that means the double integral in Green's Theorem is integrating $g_x - f_y = 0$! In other words, Green's Theorem just gives us a second way to verify that the integral of a conservative vector field around a closed loop in $#R#^2$ is zero, and so these theorems have effectively no meaningful interaction.
@@ -352,7 +358,7 @@ When we introduced circulation integrals in the previous section, we chose to ex
 
 It's not the only choice we could make, though. Our motivating question in the previous section was asking how much a river current helped or hindered a swim, which led us to the notion of circulation, but let's ask a different question: how much water flows through a net suspended in the river per second?
 
-### melded-desmos flux
+@meldedDesmos{flux}
 
 To head some concerns off at the pass, this is a fully 2D picture and situation; our goal is just to measure the amount of field flowing across the curve per unit time. This quantity is still computable with a curve integral, but rather than take a dot product of the field with the unit tangent vector at each point on the curve, we want a unit vector that's *orthogonal* to the curve.
 
@@ -432,26 +438,26 @@ We'll call this the **flux form of Green's Theorem** and the previous version th
 
 	@solution[[
 
-	Applying Green's Theorem, we have
+		Applying Green's Theorem, we have
 
-	$$
-		\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^3 \right] + p/py \left[ y^3 \right] \right)\d A
+		$$
+			\oint_C \vec{F} \bullet \vec{n}\,\d s &= \iint_R \left( p/px \left[ x^3 \right] + p/py \left[ y^3 \right] \right)\d A
 
-		&= \iint_R \left( 3x^2 + 3y^2 \right)\d A,
-	$$
+			&= \iint_R \left( 3x^2 + 3y^2 \right)\d A,
+		$$
 
-	where $R$ is the solid unit disk. That's a great integral to transform into polar coordinates:
+		where $R$ is the solid unit disk. That's a great integral to transform into polar coordinates:
 
-	$$
-		\iint_R \left( 3x^2 + 3y^2 \right)\d A &= \int_0^{2\pi}\int_0^1 3r^2\,r\,\d r\,\d\theta
+		$$
+			\iint_R \left( 3x^2 + 3y^2 \right)\d A &= \int_0^{2\pi}\int_0^1 3r^2\,r\,\d r\,\d\theta
 
-		&= 3\int_0^{2\pi}\int_0^1 r^3\,\d r\,\d\theta
+			&= 3\int_0^{2\pi}\int_0^1 r^3\,\d r\,\d\theta
 
-		&= 3\int_0^{2\pi} \frac{1}{4}\,\d\theta
+			&= 3\int_0^{2\pi} \frac{1}{4}\,\d\theta
 
-		&= \frac{3\pi}{2}.
-	$$
-
+			&= \frac{3\pi}{2}.
+		$$
+	]]
 ]]
 
 
@@ -500,9 +506,11 @@ We're now going to define these properly and give them names, but in keeping wit
 
 It can be a little overwhelming to keep the notions of circulation, flux, curl, and divergence distinct; to disambiguate them, circulation and curl measure rotational motion, while flux and divergence measure expanding motion. Most importantly, though, circulation and flux are only defined relative to paths (or surfaces, as we'll see later) through a vector field, whereas *curl and divergence are properties of the field itself*. To hit this home, we've been coloring curves through a field by their circulation and flux, but let's now color fields themselves by their curl and divergence.
 
-### dropdown divergence-curl
+@controls({
+	"divergence-curl": "dropdown"
+})
 
-### canvas divergence-curl
+@canvas{divergence-curl}
 
 Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and purple negative ones. The curl is positive at points about which the field is rotating counterclockwise, negative at points where the rotation is clockwise, and zero where there is no total rotation. Similarly, divergence is positive where the field is expanding, negative where it's being compressed, and zero where its area is remaining constant.
 
@@ -516,30 +524,30 @@ Use the dropdown to color this vector field by (the $z$-component of) its curl a
 	
 	@solution[[
 
-	1. The divergence is
+		1. The divergence is
 
-	$$
-		\Gbullet \left< 2x^2 + y,\ z - \sin(y),\ z \right> &= p/px \left[ 2x^2 + y \right] + p/py \left[ z - \sin(y) \right] + p/pz \left[ z \right]
+		$$
+			\Gbullet \left< 2x^2 + y,\ z - \sin(y),\ z \right> &= p/px \left[ 2x^2 + y \right] + p/py \left[ z - \sin(y) \right] + p/pz \left[ z \right]
 
-		&= 4x - \cos(y) + 1.
-	$$
+			&= 4x - \cos(y) + 1.
+		$$
 
-	2. We have
+		2. We have
 
-	$$
-		\Gtimes \G f &= \Gtimes \left< 3y,\ 3x + 2\sin(z),\ 2y\cos(z) + 2z \right>
+		$$
+			\Gtimes \G f &= \Gtimes \left< 3y,\ 3x + 2\sin(z),\ 2y\cos(z) + 2z \right>
 
-		&= \det [[ \vec{i}, \vec{j}, \vec{k} ; p/px, p/py, p/pz ; 3y, 3x + 2\sin(z), 2y\cos(z) + 2z ]]
+			&= \det [[ \vec{i}, \vec{j}, \vec{k} ; p/px, p/py, p/pz ; 3y, 3x + 2\sin(z), 2y\cos(z) + 2z ]]
 
-		&= \left< p/py\left[ 2y\cos(z) + 2z \right] - p/pz \left[ 3x + 2\sin(z) \right],\ p/pz \left[ 3y \right] - p/px\left[ 2y\cos(z) + 2z \right],\ p/px \left[ 3x + 2\sin(z) \right] - p/py \left[ 3y \right] \right>
+			&= \left< p/py\left[ 2y\cos(z) + 2z \right] - p/pz \left[ 3x + 2\sin(z) \right],\ p/pz \left[ 3y \right] - p/px\left[ 2y\cos(z) + 2z \right],\ p/px \left[ 3x + 2\sin(z) \right] - p/py \left[ 3y \right] \right>
 
-		&= \left< 2\cos(z) - 2\cos(z),\ 0 - 0,\ 3 - 3 \right>
+			&= \left< 2\cos(z) - 2\cos(z),\ 0 - 0,\ 3 - 3 \right>
 
-		&= \vec{0}.
-	$$
+			&= \vec{0}.
+		$$
 
-	3. An example of the first type of field is $\vec{G} = \left< x, y \right>$, since then both partials in the curl are zero. Similarly, $\vec{H} = \left< -y, x \right>$ or something similar will work for the second.
-
+		3. An example of the first type of field is $\vec{G} = \left< x, y \right>$, since then both partials in the curl are zero. Similarly, $\vec{H} = \left< -y, x \right>$ or something similar will work for the second.
+	]]
 ]]
 
 That second question was suggestive of something more general: in $#R#^2$, conservative vector fields have the form $\vec{F} = \left< f, g \right>$ where $f_y = g_x$, or in other words $g_x - f_y = 0$. That's now only one component of three of the curl of a field in $#R#^3$, but the generalization we would hope holds absolutely does!

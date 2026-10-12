@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -12,9 +16,10 @@ A general vector-valued function in $#R#^3$ is of the form $\vec{r}(t) = \left< 
 
 	@solution[[
 
-	The former is the unit circle in the plane $z = 1$. The latter is essentially the same, but it is continually moving up through $z$-planes. The result is a helix!
+		The former is the unit circle in the plane $z = 1$. The latter is essentially the same, but it is continually moving up through $z$-planes. The result is a helix!
 
-	@desmos{helix}
+		@desmos{helix}
+	]]
 
 ]]
 
@@ -68,22 +73,22 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 
 	@solution[[
 
-	Since the curve lies on the cylinder, its $xy$-coordinates can be parameterized as
+		Since the curve lies on the cylinder, its $xy$-coordinates can be parameterized as
 
-	$$
-		\left< x, y \right> = \left< 4\cos(t),\, 2\sin(t) \right>
-	$$
+		$$
+			\left< x, y \right> = \left< 4\cos(t),\, 2\sin(t) \right>
+		$$
 
-	for $0 \leq t \leq 2\pi$.
+		for $0 \leq t \leq 2\pi$.
 
-	On the graph of the function, $z = \sin(x) + \cos(y)$ by definition, making the final parameterization
+		On the graph of the function, $z = \sin(x) + \cos(y)$ by definition, making the final parameterization
 
-	$$
-		\vec{r}(t) = \left< 4\cos(t),\, 2\sin(t),\, \sin(4\cos(t)) + \cos(2\sin(t)) \right>
-	$$
+		$$
+			\vec{r}(t) = \left< 4\cos(t),\, 2\sin(t),\, \sin(4\cos(t)) + \cos(2\sin(t)) \right>
+		$$
 
-	for $0 \leq t \leq 2\pi$.
-
+		for $0 \leq t \leq 2\pi$.
+	]]
 ]]
 
 The components of vector-valued functions are largely independent from one another, and so limits of them are mercifully simple. If $x(t)$, $y(t)$, and $z(t)$ are approaching values $x_0$, $y_0$, and $z_0$ respectively as $t \to a$, then $\vec{r}(t) = \left< x(t), y(t), z(t) \right>$ is approaching $\left< x_0, y_0, z_0 \right>$. That is,
@@ -128,36 +133,36 @@ What a ride! We used just about every property of vectors and vector-valued func
 
 	@solution[[
 
-	1. This depends on your frame of reference, but it's reasonable to say $\vec{s}'(t) = \vec{0}$ if you're sitting at a desk, since $\vec{s}'(t)$ is your current velocity!
+		1. This depends on your frame of reference, but it's reasonable to say $\vec{s}'(t) = \vec{0}$ if you're sitting at a desk, since $\vec{s}'(t)$ is your current velocity!
 
-	2. Differentiating,
+		2. Differentiating,
 
-	$$
-		\vec{r}'(t) = \left< -2\sin(t),\ \cos(t),\ 2t \right>
-	$$
+		$$
+			\vec{r}'(t) = \left< -2\sin(t),\ \cos(t),\ 2t \right>
+		$$
 
-	so
+		so
 
-	$$
-		\vec{r}'(\pi) = \left< 0, -1, 2\pi \right>.
-	$$
+		$$
+			\vec{r}'(\pi) = \left< 0, -1, 2\pi \right>.
+		$$
 
-	That's the direction vector for the line we're after, and a point it passes through is $\vec{r}(\pi)$ (since it's tangent to that point on the graph). The result is the line
+		That's the direction vector for the line we're after, and a point it passes through is $\vec{r}(\pi)$ (since it's tangent to that point on the graph). The result is the line
 
-	$$
-		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)t
+		$$
+			\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)t
 
-		&= \left< -2, 0, \pi^2 \right> + \left< 0, -1, 2\pi \right>t.
-	$$
+			&= \left< -2, 0, \pi^2 \right> + \left< 0, -1, 2\pi \right>t.
+		$$
 
-	Often, though, we want a tangent line to serve as a **linear approximation**, which would mean $\vec{l}(t) \approx \vec{r}(t)$ for $t$ near $\pi$. We currently get $\vec{r}(\pi)$ as an output from $\vec{l}(t)$ when we plug in $t = 0$, not $t = \pi$, so we can change the formula to
+		Often, though, we want a tangent line to serve as a **linear approximation**, which would mean $\vec{l}(t) \approx \vec{r}(t)$ for $t$ near $\pi$. We currently get $\vec{r}(\pi)$ as an output from $\vec{l}(t)$ when we plug in $t = 0$, not $t = \pi$, so we can change the formula to
 
-	$$
-		\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)(t - \pi),
-	$$
+		$$
+			\vec{l}(t) &= \vec{r}(\pi) + \vec{r}'(\pi)(t - \pi),
+		$$
 
-	which also looks reminiscent of the Calculus I formula.
-
+		which also looks reminiscent of the Calculus I formula.
+	]]
 ]]
 
 When we're given a vector-valued function $\vec{s}(t)$ that gives an object's position at time $t$, its derivative is the velocity function $\vec{v}(t)$, just like in single-variable calculus. However, velocity is now *also* a vector-valued function. Specifically, if
@@ -276,36 +281,36 @@ For a small number of segments, our approximation is pretty poor, like a too-str
 
 	@solution[[
 
-	The derivative is
+		The derivative is
 
-	$$
-		\vec{r}'(t) = \left< -\sin(t),\, \cos(t),\, t^{1/2} \right>,
-	$$
+		$$
+			\vec{r}'(t) = \left< -\sin(t),\, \cos(t),\, t^{1/2} \right>,
+		$$
 
-	and its magnitude is
+		and its magnitude is
 
-	$$
-		\left| \left| \vec{r}'(t) \right| \right| &= \sqrt{\sin^2(t) + \cos^2(t) + t}
+		$$
+			\left| \left| \vec{r}'(t) \right| \right| &= \sqrt{\sin^2(t) + \cos^2(t) + t}
 
-		&= \sqrt{1 + t}.
-	$$
+			&= \sqrt{1 + t}.
+		$$
 
-	Integrating that, we can do a $u$-sub with $u = 1 + t$ and $\d u = \d t$ to find
+		Integrating that, we can do a $u$-sub with $u = 1 + t$ and $\d u = \d t$ to find
 
-	$$
-		\int_0^{35} \sqrt{1 + t}\,\d t &= \int_0^{35} \sqrt{u}\,\d u
+		$$
+			\int_0^{35} \sqrt{1 + t}\,\d t &= \int_0^{35} \sqrt{u}\,\d u
 
-		&= \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{35}
+			&= \left. \left[ \frac{2}{3} u^{3/2} \right] \right|_0^{35}
 
-		&= \left. \left[ \frac{2}{3} \left( 1 + t \right)^{3/2} \right] \right|_0^{35}
+			&= \left. \left[ \frac{2}{3} \left( 1 + t \right)^{3/2} \right] \right|_0^{35}
 
-		&= \frac{2}{3} \left( 36 \right)^{3/2} - \frac{2}{3} \left( 1 \right)^{3/2}
+			&= \frac{2}{3} \left( 36 \right)^{3/2} - \frac{2}{3} \left( 1 \right)^{3/2}
 
-		&= \frac{2}{3} \left( 216 - 1 \right)
+			&= \frac{2}{3} \left( 216 - 1 \right)
 
-		&= \frac{430}{3}.
-	$$
-
+			&= \frac{430}{3}.
+		$$
+	]]
 ]]
 
 

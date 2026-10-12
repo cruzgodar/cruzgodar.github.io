@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In this section, we'll fundamentally change the way we look at and work with series. The change seems innocent enough at first, but its effects will be surprisingly profound.
@@ -130,58 +134,58 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 	
 	@solution[[
 	
-	1. With all the exponents (and no $n$s in the bases), let's try the ratio test. We have
-	
-	$$
-		r &= \lim_{n \to \infty} \left| \frac{\frac{(x + 1)^{n + 1}}{2^{n + 1}(n + 2)}}{\frac{(x + 1)^n}{2^n(n + 1)}} \right|
+		1. With all the exponents (and no $n$s in the bases), let's try the ratio test. We have
 		
-		&= \lim_{n \to \infty} \left| \frac{(x + 1)^{n + 1}2^n(n + 1)}{(x + 1)^n 2^{n + 1}(n + 2)} \right|
+		$$
+			r &= \lim_{n \to \infty} \left| \frac{\frac{(x + 1)^{n + 1}}{2^{n + 1}(n + 2)}}{\frac{(x + 1)^n}{2^n(n + 1)}} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{(x + 1)^{n + 1}2^n(n + 1)}{(x + 1)^n 2^{n + 1}(n + 2)} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{(x + 1)(n + 1)}{2(n + 2)} \right|
+			
+			&= \lim_{n \to \infty} |x + 1| \frac{n + 1}{2n + 4}
+			
+			&= \frac{1}{2} |x + 1|.
+		$$
 		
-		&= \lim_{n \to \infty} \left| \frac{(x + 1)(n + 1)}{2(n + 2)} \right|
+		Therefore, this series converges when $r = \frac{1}{2} |x + 1| < 1$. Solving for $x$, we have
 		
-		&= \lim_{n \to \infty} |x + 1| \frac{n + 1}{2n + 4}
+		$$
+			|x + 1| &< 2
+			
+			-2 < x + 1 &< 2
+			
+			-3 < x &< 1.
+		$$
 		
-		&= \frac{1}{2} |x + 1|.
-	$$
-	
-	Therefore, this series converges when $r = \frac{1}{2} |x + 1| < 1$. Solving for $x$, we have
-	
-	$$
-		|x + 1| &< 2
+		So the interval of convergence is at least $(-3, 1)$, but what about the endpoints? That's when $r = 1$ in the ratio test, so we need to try something else. When $x = -3$, the series becomes 
 		
-		-2 < x + 1 &< 2
+		$$
+			\sum_{n = 0}^\infty \frac{(-2)^n}{2^n(n + 1)} = \sum_{n = 0}^\infty \frac{(-1)^n}{n + 1}.
+		$$
 		
-		-3 < x &< 1.
-	$$
-	
-	So the interval of convergence is at least $(-3, 1)$, but what about the endpoints? That's when $r = 1$ in the ratio test, so we need to try something else. When $x = -3$, the series becomes 
-	
-	$$
-		\sum_{n = 0}^\infty \frac{(-2)^n}{2^n(n + 1)} = \sum_{n = 0}^\infty \frac{(-1)^n}{n + 1}.
-	$$
-	
-	That's just the Alternating Harmonic series, which converges. For $x = 1$, though, it's the regular Harmonic series, which diverges. In total, the interval of convergence is $[-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
-	
-	2. The ratio test is also a good choice here:
-	
-	$$
-		r &= \lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{\sqrt{n + 1}}}{\frac{x^n}{\sqrt{n}}} \right|
+		That's just the Alternating Harmonic series, which converges. For $x = 1$, though, it's the regular Harmonic series, which diverges. In total, the interval of convergence is $[-3, 1)$, and the radius is $R = 2$. As a good check, the center of that interval is $-1$, which matches the series containing $(x + 1)^n$.
 		
-		&= \lim_{n \to \infty} \left| \frac{x\sqrt{n}}{\sqrt{n + 1}} \right|
+		2. The ratio test is also a good choice here:
 		
-		&= \lim_{n \to \infty} |x| \sqrt{\frac{n}{n + 1}}
+		$$
+			r &= \lim_{n \to \infty} \left| \frac{\frac{x^{n + 1}}{\sqrt{n + 1}}}{\frac{x^n}{\sqrt{n}}} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{x\sqrt{n}}{\sqrt{n + 1}} \right|
+			
+			&= \lim_{n \to \infty} |x| \sqrt{\frac{n}{n + 1}}
+			
+			&= |x|.
+		$$
 		
-		&= |x|.
-	$$
-	
-	This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Again, the ratio test failed to tell us anything about the endpoints, so we'll have to inspect those manually. When $x = -1$, we have
-	
-	$$
-		\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}},
-	$$
-	
-	which converges by the alternating series test. When $x = 1$, it's a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
-
+		This time, the series converges when $|x| < 1$, or equivalently, when $-1 < x < 1$. Again, the ratio test failed to tell us anything about the endpoints, so we'll have to inspect those manually. When $x = -1$, we have
+		
+		$$
+			\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}},
+		$$
+		
+		which converges by the alternating series test. When $x = 1$, it's a $p$-series with $p = \frac{1}{2} \leq 1$, which diverges. Therefore, the interval of convergence is $[-1, 1)$, and the radius of convergence is $R = 1$.
+	]]
 ]]
 
 
@@ -196,32 +200,32 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 
 	@solution[[
 	
-	First of all, if we're going to use the fact that $\frac{1}{1 - x} = \sum_{n = 0}^\infty x^n$, we'd like our numerator to be equal to $1$. To get us to that point, we'll factor out the $x$ and deal with $\frac{1}{1 + 3x^2}$ on its own. To make it conform to the format we know, the denominator should be $1$ minus something instead of $1$ plus something, so we'll rewrite it as
-	
-	$$
-		\frac{1}{1 - (-3x^2)}.
-	$$
-	
-	Now when $|-3x^2| < 1$, this is equal to
-	
-	$$
-		\sum_{n = 0}^\infty (-3x^2)^n = \sum_{n = 0}^\infty (-3)^n x^{2n}.
-	$$
-	
-	Now we just need to multiply by $x$, which increases the power on $x$ by 1:
-	
-	$$
-		f(x) &= x\sum_{n = 0}^\infty (-3)^n x^{2n}
+		First of all, if we're going to use the fact that $\frac{1}{1 - x} = \sum_{n = 0}^\infty x^n$, we'd like our numerator to be equal to $1$. To get us to that point, we'll factor out the $x$ and deal with $\frac{1}{1 + 3x^2}$ on its own. To make it conform to the format we know, the denominator should be $1$ minus something instead of $1$ plus something, so we'll rewrite it as
 		
-		&= \sum_{n = 0}^\infty (-3)^n x^{2n + 1}.
-	$$
-	
-	So when does this converge? We need $|-3x^2| = 3|x^2| < 1$, so $|x^2| < \frac{1}{3}$. Therefore, $|x| < \frac{1}{\sqrt{3}}$. Our radius of convergence is therefore $\frac{1}{\sqrt{3}}$, and the interval is
-	
-	$$
-		\left( -\frac{1}{\sqrt{3}}, \frac{1}{\sqrt{3}} \right).
-	$$
-
+		$$
+			\frac{1}{1 - (-3x^2)}.
+		$$
+		
+		Now when $|-3x^2| < 1$, this is equal to
+		
+		$$
+			\sum_{n = 0}^\infty (-3x^2)^n = \sum_{n = 0}^\infty (-3)^n x^{2n}.
+		$$
+		
+		Now we just need to multiply by $x$, which increases the power on $x$ by 1:
+		
+		$$
+			f(x) &= x\sum_{n = 0}^\infty (-3)^n x^{2n}
+			
+			&= \sum_{n = 0}^\infty (-3)^n x^{2n + 1}.
+		$$
+		
+		So when does this converge? We need $|-3x^2| = 3|x^2| < 1$, so $|x^2| < \frac{1}{3}$. Therefore, $|x| < \frac{1}{\sqrt{3}}$. Our radius of convergence is therefore $\frac{1}{\sqrt{3}}$, and the interval is
+		
+		$$
+			\left( -\frac{1}{\sqrt{3}}, \frac{1}{\sqrt{3}} \right).
+		$$
+	]]
 ]]
 
 @exc[representing a function as a power series][[
@@ -230,20 +234,20 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 
 	@solution[[
 	
-	As in the example, we'll rewrite this to look like $\frac{1}{1 - x}$:
-	
-	$$
-		\frac{x^3}{2 + x^2} &= \frac{x^3}{2} \frac{1}{1 - \left(-\frac{x^2}{2}\right)}
+		As in the example, we'll rewrite this to look like $\frac{1}{1 - x}$:
 		
-		&= \frac{x^3}{2} \sum_{n = 0}^\infty \left(-\frac{x^2}{2}\right)^n
+		$$
+			\frac{x^3}{2 + x^2} &= \frac{x^3}{2} \frac{1}{1 - \left(-\frac{x^2}{2}\right)}
+			
+			&= \frac{x^3}{2} \sum_{n = 0}^\infty \left(-\frac{x^2}{2}\right)^n
+			
+			&= \frac{x^3}{2} \sum_{n = 0}^\infty (-1)^n 2^{-n} x^{2n}
+			
+			&= \sum_{n = 0}^\infty (-1)^n 2^{-n - 1} x^{2n + 3}.
+		$$
 		
-		&= \frac{x^3}{2} \sum_{n = 0}^\infty (-1)^n 2^{-n} x^{2n}
-		
-		&= \sum_{n = 0}^\infty (-1)^n 2^{-n - 1} x^{2n + 3}.
-	$$
-	
-	This series converges when $\left|-\frac{x^2}{2}\right| < 1$, so we need $x^2 < 2$. Therefore, the interval of convergence is $\left( -\sqrt{2}, \sqrt{2} \right)$, and the radius is $\sqrt{2}$.
-
+		This series converges when $\left|-\frac{x^2}{2}\right| < 1$, so we need $x^2 < 2$. Therefore, the interval of convergence is $\left( -\sqrt{2}, \sqrt{2} \right)$, and the radius is $\sqrt{2}$.
+	]]
 ]]
 
 

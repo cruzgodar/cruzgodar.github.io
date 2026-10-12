@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -56,64 +60,64 @@ The mathematical way to phrase this definition is that an orientation of the sur
 
 	@solution[[
 
-	1. Walking around the inside of the top circle in its oriented direction keeps the surface on our left, so the cylinder needs to be oriented inward.
+		1. Walking around the inside of the top circle in its oriented direction keeps the surface on our left, so the cylinder needs to be oriented inward.
 
-	@desmos{cylinder}
+		@desmos{cylinder}
 
-	On the bottom, walking around the inside of the cylinder only keeps the surface on our left if we walk clockwise when viewed from above --- that means the two boundary circles necessarily have different orientations!
+		On the bottom, walking around the inside of the cylinder only keeps the surface on our left if we walk clockwise when viewed from above --- that means the two boundary circles necessarily have different orientations!
 
-	2. We can try to parameterize $S$ as
+		2. We can try to parameterize $S$ as
 
-	$$
-		\vec{r}(u, \v) = \left< u,\ \v,\ \cos(u) + \cos(\v) + 2 \right>,
-	$$
+		$$
+			\vec{r}(u, \v) = \left< u,\ \v,\ \cos(u) + \cos(\v) + 2 \right>,
+		$$
 
-	which would result in
+		which would result in
 
-	$$
-		\vec{r}_u &= \left< 1, 0, -\sin(u) \right>
+		$$
+			\vec{r}_u &= \left< 1, 0, -\sin(u) \right>
 
-		\vec{r}_{\v} &= \left< 0, 1, -\sin(\v) \right>
+			\vec{r}_{\v} &= \left< 0, 1, -\sin(\v) \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< \sin(u),\ \sin(\v),\ 1 \right>.
-	$$
+			\vec{r}_u \times \vec{r}_{\v} &= \left< \sin(u),\ \sin(\v),\ 1 \right>.
+		$$
 
-	However, that would always have a nonnegative dot product with the field $\vec{F}$, since $S$ lives on or above the $xy$-plane. Therefore, we need to reverse the orientation of $S$, which we can do by swapping the roles of $u$ and $\v$:
+		However, that would always have a nonnegative dot product with the field $\vec{F}$, since $S$ lives on or above the $xy$-plane. Therefore, we need to reverse the orientation of $S$, which we can do by swapping the roles of $u$ and $\v$:
 
-	$$
-		\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
+		$$
+			\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
 
-		\vec{r}_u \times \vec{r}_{\v} &= \left< -\sin(\v),\, -\sin(u),\, -1 \right>,
-	$$
+			\vec{r}_u \times \vec{r}_{\v} &= \left< -\sin(\v),\, -\sin(u),\, -1 \right>,
+		$$
 
-	for $(u, \v) \in #R#^2$ with $u^2 + \v^2 \leq \pi^2$. Now the boundary of $S$ is given by the boundary of the $u\v$-domain: that is, $u^2 + \v^2 = \pi^2$. If the normal vectors to the surface point mostly downward, then we want to walk around the circle with our head roughly pointing downward. To keep $S$ on our left, we need to walk counterclockwise from the perspective of looking up at the circle from below, which is clockwise when viewed from above.
+		for $(u, \v) \in #R#^2$ with $u^2 + \v^2 \leq \pi^2$. Now the boundary of $S$ is given by the boundary of the $u\v$-domain: that is, $u^2 + \v^2 = \pi^2$. If the normal vectors to the surface point mostly downward, then we want to walk around the circle with our head roughly pointing downward. To keep $S$ on our left, we need to walk counterclockwise from the perspective of looking up at the circle from below, which is clockwise when viewed from above.
 
-	@desmos{eggCarton}
+		@desmos{eggCarton}
 
-	Ordinarily, we would want to parameterize the boundary in the $u\v$-plane with
+		Ordinarily, we would want to parameterize the boundary in the $u\v$-plane with
 
-	$$
-		u &= \pi\cos(-t)
+		$$
+			u &= \pi\cos(-t)
 
-		\v &= \pi\sin(-t)
-	$$
+			\v &= \pi\sin(-t)
+		$$
 
-	for $t \in [0, 2\pi]$, with the $-t$ making the circle clockwise. However, since $\v$ is representing the $x$-coordinate and $u$ is representing the $y$-coordinate in $\vec{r}$, we'll want to swap the formulas for $u$ and $\v$:
+		for $t \in [0, 2\pi]$, with the $-t$ making the circle clockwise. However, since $\v$ is representing the $x$-coordinate and $u$ is representing the $y$-coordinate in $\vec{r}$, we'll want to swap the formulas for $u$ and $\v$:
 
-	$$
-		\v &= \pi\cos(-t)
+		$$
+			\v &= \pi\cos(-t)
 
-		u &= \pi\sin(-t)
-	$$
+			u &= \pi\sin(-t)
+		$$
 
-	Then the total parameterization comes from plugging this into $\vec{r}(u, \v)$ to map it onto the surface: $\p S$ is parameterized by
+		Then the total parameterization comes from plugging this into $\vec{r}(u, \v)$ to map it onto the surface: $\p S$ is parameterized by
 
-	$$
-		\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
+		$$
+			\vec{r}(u, \v) &= \left< \v,\ u,\ \cos(\v) + \cos(u) + 2 \right>
 
-		&= \left< \pi\cos(-t),\ \pi\sin(-t),\ \cos(\pi\cos(-t)) + \cos(\pi\sin(-t)) + 2 \right>.
-	$$
-
+			&= \left< \pi\cos(-t),\ \pi\sin(-t),\ \cos(\pi\cos(-t)) + \cos(\pi\sin(-t)) + 2 \right>.
+		$$
+	]]
 ]]
 
 With all of the pieces translated to 3D, we're ready to state the theorem. Happily, there are no extra surprises!
@@ -224,73 +228,74 @@ We'll return to the idea of being able to choose different surfaces to represent
 
 	@solution[[
 
-	1. Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
+		1. Computing that circulation directly is certainly possible, but it would be annoying: each edge would need to be parameterized separately. Instead, let's see if the curl is any nicer. It comes out to
 
-	$$
-		\Gtimes \vec{F} = \left< 5, 2, -2 \right>,
-	$$
+		$$
+			\Gtimes \vec{F} = \left< 5, 2, -2 \right>,
+		$$
 
-	which looks dramatically simpler! We can parameterize the surface by
+		which looks dramatically simpler! We can parameterize the surface by
 
-	$$
-		\vec{r}(u, \v) = \left< u,\, \v,\, 2 - u - \v \right>
-	$$
+		$$
+			\vec{r}(u, \v) = \left< u,\, \v,\, 2 - u - \v \right>
+		$$
 
-	for $(u, \v)$ in the triangle $T$ in the $u\v$-plane with vertices at $(0, 0)$, $(2, 0)$, and $(0, 2)$. Checking our orientation,
+		for $(u, \v)$ in the triangle $T$ in the $u\v$-plane with vertices at $(0, 0)$, $(2, 0)$, and $(0, 2)$. Checking our orientation,
 
-	$$
-		\vec{r}_u = \left< 1, 0, -1 \right>
+		$$
+			\vec{r}_u = \left< 1, 0, -1 \right>
 
-		\vec{r}_{\v} = \left< 0, 1, -1 \right>
+			\vec{r}_{\v} = \left< 0, 1, -1 \right>
 
-		\vec{r}_u \times \vec{r}_{\v} = \left< 1, 1, 1 \right>,
-	$$
+			\vec{r}_u \times \vec{r}_{\v} = \left< 1, 1, 1 \right>,
+		$$
 
-	which points away from the origin. That would make the orientation of the boundary counterclockwise when viewed from the perspective shown above, which isn't right. Rather than reworking our entire parameterization, though, let's just negate the value of the cross product and therefore the surface integral:
+		which points away from the origin. That would make the orientation of the boundary counterclockwise when viewed from the perspective shown above, which isn't right. Rather than reworking our entire parameterization, though, let's just negate the value of the cross product and therefore the surface integral:
 
-	$$
-		\oint_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
+		$$
+			\oint_{\p P} \vec{F} \bullet \vec{T}\,\d s &= \iint_P \left( \Gtimes \vec{F} \right) \bullet \d\vec{\sigma}
 
-		&= \iint_T \left< 5, 2, -2 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
+			&= \iint_T \left< 5, 2, -2 \right> \bullet \left( -\vec{r}_u \times \vec{r}_{\v} \right)\d A
 
-		&= \iint_T \left< 5, 2, -2 \right> \bullet \left< -1, -1, -1 \right>\d A
+			&= \iint_T \left< 5, 2, -2 \right> \bullet \left< -1, -1, -1 \right>\d A
 
-		&= \iint_T -5\,\d A
+			&= \iint_T -5\,\d A
 
-		&= -5 \left| T \right|
+			&= -5 \left| T \right|
 
-		&= -5(2)
+			&= -5(2)
 
-		&= -10.
-	$$
+			&= -10.
+		$$
 
-	2. This one is set up directly for use with Stokes' Theorem, which is somewhat common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
+		2. This one is set up directly for use with Stokes' Theorem, which is somewhat common for problems like this: it's possible, but tedious and difficult, to reverse-engineer a vector field given its curl. Instead, we're often told that we're integrating a curl and given the original field directly.
 
-	Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, 2z - y,\, 2 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
+		Here, the curl evaluates to $\Gtimes \vec{G} = \left< x - 1,\, 2z - y,\, 2 \right>$, and while we could integrate that over the surface, it's nice to avoid unnecessary surface parameterizations and integrals if at all possible, particularly when spheres are involved. Instead, let's look at the boundary of $S$: it's where the hemisphere meets the plane $z = 0$, so it's the unit circle $x^2 + y^2 = 1$ in the $xy$-plane. Since $S$ is oriented downward, we need to walk around the circle clockwise when viewed from above to keep it on our left.
 
-	@desmos{hemisphere}
+		@desmos{hemisphere}
 
-	Now we can use Stokes' Theorem to switch from integrating the curl over the hemisphere to integrating the field itself around the boundary: with
+		Now we can use Stokes' Theorem to switch from integrating the curl over the hemisphere to integrating the field itself around the boundary: with
 
-	$$
-		\vec{r}(t) &= \left< \cos(-t),\ \sin(-t),\ 0 \right>
+		$$
+			\vec{r}(t) &= \left< \cos(-t),\ \sin(-t),\ 0 \right>
 
-		\vec{r}'(t) &= \left< \sin(-t),\, -\cos(-t),\ 0 \right>
-	$$
+			\vec{r}'(t) &= \left< \sin(-t),\, -\cos(-t),\ 0 \right>
+		$$
 
-	parameterizing the unit circle clockwise, we have
+		parameterizing the unit circle clockwise, we have
 
-	$$
-		\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma} &= \oint_{\p S} \vec{G} \bullet \d\vec{r}
+		$$
+			\iint_S \left( \Gtimes \vec{G} \right) \bullet \d\vec{\sigma} &= \oint_{\p S} \vec{G} \bullet \d\vec{r}
 
-		&= \int_0^{2\pi} \left< -\sin(-t),\ \cos(-t),\ \cos(-t)\sin(-t) \right> \bullet \left< \sin(-t),\, -\cos(-t),\ 0 \right>\d t
+			&= \int_0^{2\pi} \left< -\sin(-t),\ \cos(-t),\ \cos(-t)\sin(-t) \right> \bullet \left< \sin(-t),\, -\cos(-t),\ 0 \right>\d t
 
-		&= \int_0^{2\pi} \left( -\sin^2(-t) - \cos^2(-t) \right)\d t
+			&= \int_0^{2\pi} \left( -\sin^2(-t) - \cos^2(-t) \right)\d t
 
-		&= \int_0^{2\pi} -1\,\d t
+			&= \int_0^{2\pi} -1\,\d t
 
-		&= -2\pi.
-	$$
+			&= -2\pi.
+		$$
+	]]
 
 ]]
 
@@ -426,36 +431,36 @@ By Stokes' Theorem, the flux of an incompressible field through any surface depe
 
 	@solution[[
 
-	Since $\Gbullet \vec{F} = 0$, we can replace this surface with any other that has the same boundary. If we choose the annulus $A$ parameterized by
+		Since $\Gbullet \vec{F} = 0$, we can replace this surface with any other that has the same boundary. If we choose the annulus $A$ parameterized by
 
-	$$
-		\vec{r}(u, \v) = \left< u\sin(v),\ 0,\ u\cos(\v) \right>,
-	$$
+		$$
+			\vec{r}(u, \v) = \left< u\sin(v),\ 0,\ u\cos(\v) \right>,
+		$$
 
-	for $u \in [1, 2]$ and $\v \in [0, 2\pi]$, then we'll be able to integrate without too much trouble. We have a normal vector of
-	
-	$$
-		\vec{r}_u \times \vec{r}_{\v} = \left< 0, -u, 0 \right>,
-	$$
+		for $u \in [1, 2]$ and $\v \in [0, 2\pi]$, then we'll be able to integrate without too much trouble. We have a normal vector of
+		
+		$$
+			\vec{r}_u \times \vec{r}_{\v} = \left< 0, -u, 0 \right>,
+		$$
 
-	so
+		so
 
-	$$
-		\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
+		$$
+			\iint_S \vec{F} \bullet \d\vec{\sigma} &= \iint_D \vec{F} \bullet \d\vec{\sigma}
 
-		&= \int_1^2 \!\! \int_0^{2\pi} \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right> \bullet \left< 0, -u, 0 \right>\d\v\,\d u
+			&= \int_1^2 \!\! \int_0^{2\pi} \left< -y,\ -2z + y - 1,\ \ln\left( x^2 + 1 \right) + z \right> \bullet \left< 0, -u, 0 \right>\d\v\,\d u
 
-		&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2z - y + 1 \right)\d\v\,\d u
+			&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2z - y + 1 \right)\d\v\,\d u
 
-		&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2u\cos(\v) + 1 \right)\d\v\,\d u
+			&= \int_1^2 \!\! \int_0^{2\pi} u\left( 2u\cos(\v) + 1 \right)\d\v\,\d u
 
-		&= \int_1^2 2\pi u \,\d u
+			&= \int_1^2 2\pi u \,\d u
 
-		&= 2\pi\left. \left[ \frac{u^2}{2} \right] \right|_1^2
+			&= 2\pi\left. \left[ \frac{u^2}{2} \right] \right|_1^2
 
-		&= 3\pi.
-	$$
-
+			&= 3\pi.
+		$$
+	]]
 ]]
 
 

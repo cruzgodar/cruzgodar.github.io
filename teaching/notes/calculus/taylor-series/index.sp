@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 By now, we've built up a robust theory of series. We know when and where they converge, and in a few special cases, we even know what they converge to. In this section, we'll extend those few special cases to almost every power series we've seen, and by the end, we'll be able to pass from functions to power series and back almost effortlessly.
@@ -68,74 +72,74 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 
 	@solution[[
 	
-	The Maclaurin series is just the Taylor series centered at $0$, so it is $\sum_{n = 0}^\infty c_n x^n$, where
-	
-	$$
-		c_n = \frac{1}{n!} \frac{d^n}{dx^n} [\sin(x)]|_{x = 0}.
-	$$
-	
-	Okay, so what is that massive derivative? Let's list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
-	
-	$$
-		d/dx[\sin(x)] &= \cos(x)
+		The Maclaurin series is just the Taylor series centered at $0$, so it is $\sum_{n = 0}^\infty c_n x^n$, where
 		
-		\frac{\d ^2}{\d x^2}[\sin(x)] &= -\sin(x)
+		$$
+			c_n = \frac{1}{n!} \frac{d^n}{dx^n} [\sin(x)]|_{x = 0}.
+		$$
 		
-		\frac{d^3}{dx^3}[\sin(x)] &= -\cos(x)
+		Okay, so what is that massive derivative? Let's list out a few derivatives of $\sin(x)$ to remind ourselves of the pattern.
 		
-		\frac{d^4}{dx^4}[\sin(x)] &= \sin(x).
-	$$
-	
-	When we plug in $x = 0$, $\sin(0) = 0$ while $\cos(0) = 1$. All of the even derivatives have a $\sin$ in them, so they all vanish. The remaining terms alternate in sign as the derivative flips from $\cos(x)$ to $-\cos(x)$. In total, we wind up with
-	
-	$$
-		x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots.
-	$$
-	
-	It's pretty awkward to write those coefficients as a series if we try to include the missing terms. Instead, let's write this as an alternating series by changing the power on $x$:
-	
-	$$
-		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}.
-	$$
-	
-	The $2n + 1$ is just a nice way of expressing all the odd numbers.
-	
-	Next, let's determine where this series converges. The ratio test is often the best bet for Taylor series, since they're full of factorials and exponents. Evaluating it on this series, we have
-	
-	$$
-		\lim_{n \to \infty} \left| \frac{(-1)^{n + 1} \frac{x^{2(n + 1) + 1}}{(2(n + 1) + 1)!}}{(-1)^n \frac{x^{2n + 1}}{(2n + 1)!}} \right| &= \lim_{n \to \infty} \left| -\frac{x^{2(n + 1) + 1}(2n + 1)!}{x^{2n + 1}(2(n + 1) + 1)!} \right|
+		$$
+			d/dx[\sin(x)] &= \cos(x)
+			
+			\frac{\d ^2}{\d x^2}[\sin(x)] &= -\sin(x)
+			
+			\frac{d^3}{dx^3}[\sin(x)] &= -\cos(x)
+			
+			\frac{d^4}{dx^4}[\sin(x)] &= \sin(x).
+		$$
 		
-		&= \lim_{n \to \infty} \left| \frac{x^{2n + 3}(2n + 1)!}{x^{2n + 1}(2n + 3)!} \right|
+		When we plug in $x = 0$, $\sin(0) = 0$ while $\cos(0) = 1$. All of the even derivatives have a $\sin$ in them, so they all vanish. The remaining terms alternate in sign as the derivative flips from $\cos(x)$ to $-\cos(x)$. In total, we wind up with
 		
-		&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|
+		$$
+			x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots.
+		$$
 		
-		&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|
+		It's pretty awkward to write those coefficients as a series if we try to include the missing terms. Instead, let's write this as an alternating series by changing the power on $x$:
 		
-		&= 0.
-	$$
-	
-	Therefore, the series converges everywhere.
-	
-	The Maclaurin polynomials are just partial sums of this series. Denoting the first six polynomials as $p_0, p_1, ..., p_5$, every $p_N$ should have a highest term of $x^N$. Therefore, we have
-	
-	$$
-		p_0 &= 0
+		$$
+			\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!}.
+		$$
 		
-		p_1 &= x
+		The $2n + 1$ is just a nice way of expressing all the odd numbers.
 		
-		p_2 &= x
+		Next, let's determine where this series converges. The ratio test is often the best bet for Taylor series, since they're full of factorials and exponents. Evaluating it on this series, we have
 		
-		p_3 &= x - \frac{x^3}{3!}
+		$$
+			\lim_{n \to \infty} \left| \frac{(-1)^{n + 1} \frac{x^{2(n + 1) + 1}}{(2(n + 1) + 1)!}}{(-1)^n \frac{x^{2n + 1}}{(2n + 1)!}} \right| &= \lim_{n \to \infty} \left| -\frac{x^{2(n + 1) + 1}(2n + 1)!}{x^{2n + 1}(2(n + 1) + 1)!} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{x^{2n + 3}(2n + 1)!}{x^{2n + 1}(2n + 3)!} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|
+			
+			&= \lim_{n \to \infty} \left| \frac{x^2}{(2n + 3)(2n + 2)} \right|
+			
+			&= 0.
+		$$
 		
-		p_4 &= x - \frac{x^3}{3!}
+		Therefore, the series converges everywhere.
 		
-		p_5 &= x - \frac{x^3}{3!} + \frac{x^5}{5!}.
-	$$
-	
-	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in purple is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
-	
-	@desmos{taylorSeries}
-
+		The Maclaurin polynomials are just partial sums of this series. Denoting the first six polynomials as $p_0, p_1, ..., p_5$, every $p_N$ should have a highest term of $x^N$. Therefore, we have
+		
+		$$
+			p_0 &= 0
+			
+			p_1 &= x
+			
+			p_2 &= x
+			
+			p_3 &= x - \frac{x^3}{3!}
+			
+			p_4 &= x - \frac{x^3}{3!}
+			
+			p_5 &= x - \frac{x^3}{3!} + \frac{x^5}{5!}.
+		$$
+		
+		Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in purple is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
+		
+		@desmos{taylorSeries}
+	]]
 ]]
 
 @exc[finding Taylor series][[
@@ -152,92 +156,92 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	
 	@solution[[
 	
-	1. Let's start by making a list of the first few derivatives. We have
-	
-	$$
-		d/dx[\ln(x)] &= x^{-1}
+		1. Let's start by making a list of the first few derivatives. We have
 		
-		\frac{\d ^2}{\d x^2}[\ln(x)] &= -x^{-2}
+		$$
+			d/dx[\ln(x)] &= x^{-1}
+			
+			\frac{\d ^2}{\d x^2}[\ln(x)] &= -x^{-2}
+			
+			\frac{d^3}{dx^3}[\ln(x)] &= 2x^{-3}
+			
+			\frac{d^4}{dx^4}[\ln(x)] &= -3 \cdot 2 x^{-4}
+			
+			\frac{d^5}{dx^5}[\ln(x)] &= 4 \cdot 3 \cdot 2 x^{-5}
+		$$
 		
-		\frac{d^3}{dx^3}[\ln(x)] &= 2x^{-3}
+		Plugging in $x = 1$ erases the factor involving $x$, so we wind up with
 		
-		\frac{d^4}{dx^4}[\ln(x)] &= -3 \cdot 2 x^{-4}
+		$$
+			c_0 &= \frac{\ln(1)}{0!} = 0
+			
+			c_1 &= \frac{1}{1!} = 1
+			
+			c_2 &= \frac{-1}{2!} = -\frac{1}{2}
+			
+			c_3 &= \frac{2}{3!} = \frac{1}{3}
+			
+			c_4 &= \frac{-3 \cdot 2}{4!} = -\frac{1}{4}
+			
+			c_5 &= \frac{4 \cdot 3 \cdot 2}{5!} = \frac{1}{5}.
+		$$
 		
-		\frac{d^5}{dx^5}[\ln(x)] &= 4 \cdot 3 \cdot 2 x^{-5}
-	$$
-	
-	Plugging in $x = 1$ erases the factor involving $x$, so we wind up with
-	
-	$$
-		c_0 &= \frac{\ln(1)}{0!} = 0
+		From this, we can see that $c_n = (-1)^{n + 1} \frac{1}{n}$, so our series is
 		
-		c_1 &= \frac{1}{1!} = 1
+		$$
+			\sum_{n = 1}^\infty (-1)^{n + 1} \frac{(x - 1)^n}{n}.
+		$$
 		
-		c_2 &= \frac{-1}{2!} = -\frac{1}{2}
+		The first three polynomials have degree zero through two, and they are
 		
-		c_3 &= \frac{2}{3!} = \frac{1}{3}
+		$$
+			0, x - 1, (x - 1) - \frac{(x - 1)^2}{2}.
+		$$
 		
-		c_4 &= \frac{-3 \cdot 2}{4!} = -\frac{1}{4}
+		To determine the interval of convergence, we can apply the ratio test as usual. After simplifying, we have
 		
-		c_5 &= \frac{4 \cdot 3 \cdot 2}{5!} = \frac{1}{5}.
-	$$
-	
-	From this, we can see that $c_n = (-1)^{n + 1} \frac{1}{n}$, so our series is
-	
-	$$
-		\sum_{n = 1}^\infty (-1)^{n + 1} \frac{(x - 1)^n}{n}.
-	$$
-	
-	The first three polynomials have degree zero through two, and they are
-	
-	$$
-		0, x - 1, (x - 1) - \frac{(x - 1)^2}{2}.
-	$$
-	
-	To determine the interval of convergence, we can apply the ratio test as usual. After simplifying, we have
-	
-	$$
-		r = |x - 1|,
-	$$
-	
-	so the interval of convergence is at least $(0, 2)$. Checking the endpoints, $x = 0$ produces the Harmonic series but with all negative terms, which diverges, while $x = 2$ results in the Alternating Harmonic series, which converges. In total, the interval of convergence is $(0, 2]$.
-	
-	2. This is quite a bit simpler: we have $f(2) = 16$, $f'(2) = 8$, $f''(2) = 2$, and all further derivatives of $f$ are zero. The coefficients are therefore $c_0 = 16$, $c_1 = 8$, and $c_2 = 1$, so the series is
-	
-	$$
-		16 + 8(x - 2) + (x - 2)^2.
-	$$
-	
-	This makes sense --- if you expand this out, it's equal to $x^2 + 4x + 4$! The interval of convergence is $(-\infty, \infty)$, since a finite series can never diverge, and the first three Taylor polynomials are $16$, $16 + 8(x - 2)$, and $16 + 8(x - 2) + (x - 2)^2$.
-	
-	3. We already know a series representation of this, but to get a Taylor series, we just take derivatives. We have
-	
-	$$
-		d/dx\left[ \frac{1}{1 + x} \right] &= -(1 + x)^{-2}
+		$$
+			r = |x - 1|,
+		$$
 		
-		\frac{\d ^2}{\d x^2}\left[ \frac{1}{1 + x} \right] &= 2(1 + x)^{-3}
+		so the interval of convergence is at least $(0, 2)$. Checking the endpoints, $x = 0$ produces the Harmonic series but with all negative terms, which diverges, while $x = 2$ results in the Alternating Harmonic series, which converges. In total, the interval of convergence is $(0, 2]$.
 		
-		\frac{d^3}{dx^3}\left[ \frac{1}{1 + x} \right] &= -6(1 + x)^{-4}
+		2. This is quite a bit simpler: we have $f(2) = 16$, $f'(2) = 8$, $f''(2) = 2$, and all further derivatives of $f$ are zero. The coefficients are therefore $c_0 = 16$, $c_1 = 8$, and $c_2 = 1$, so the series is
 		
-		\frac{d^4}{dx^4}\left[ \frac{1}{1 + x} \right] &= 24(1 + x)^{-5}
-	$$
-	
-	Plugging in $1$ and extrapolating, we have $c_n = \frac{(-1)^n}{2^{n + 1}}$, since the $n!$ cancels. The series is just
-	
-	$$
-		\sum_{n = 0}^\infty \frac{(-1)^n}{2^{n + 1}} (x - 1)^n = \frac{1}{2} \sum_{n = 0}^\infty \frac{(-1)^n}{2^n} (x - 1)^n.
-	$$
-	
-	We can apply the ratio test, but the root test is even easier, since we just have $r = \lim_{n \to \infty} \frac{|x - 1|}{2}$. Therefore, the series converges on at least $(-1, 3)$. Plugging in endpoints, we have that $x = -1$ and $x = 3$ both produce divergent series, so $(-1, 3)$ is the total interval of convergence. The first three Taylor polynomials are just $\frac{1}{2}$, $\frac{1}{2} - \frac{1}{4} (x - 1)$, and $\frac{1}{2} - \frac{1}{4} (x - 1) + \frac{1}{8} (x - 1)^2$.
-	
-	4. Since every derivative of $e^x$ is just $e^x$, plugging in $x = 0$ results in $1$ for every term. Therefore, the Maclaurin series is just
-	
-	$$
-		\sum_{n = 0}^\infty \frac{x^n}{n!}.
-	$$
-	
-	Applying the ratio test gives $r = \lim_{n \to \infty} \left| \frac{x}{n + 1} \right| = 0$, so it converges on $(-\infty, \infty)$. The first three Maclaurin polynomials are $1$, $1 + x$, and $1 + x + \frac{x^2}{2}$.
-
+		$$
+			16 + 8(x - 2) + (x - 2)^2.
+		$$
+		
+		This makes sense --- if you expand this out, it's equal to $x^2 + 4x + 4$! The interval of convergence is $(-\infty, \infty)$, since a finite series can never diverge, and the first three Taylor polynomials are $16$, $16 + 8(x - 2)$, and $16 + 8(x - 2) + (x - 2)^2$.
+		
+		3. We already know a series representation of this, but to get a Taylor series, we just take derivatives. We have
+		
+		$$
+			d/dx\left[ \frac{1}{1 + x} \right] &= -(1 + x)^{-2}
+			
+			\frac{\d ^2}{\d x^2}\left[ \frac{1}{1 + x} \right] &= 2(1 + x)^{-3}
+			
+			\frac{d^3}{dx^3}\left[ \frac{1}{1 + x} \right] &= -6(1 + x)^{-4}
+			
+			\frac{d^4}{dx^4}\left[ \frac{1}{1 + x} \right] &= 24(1 + x)^{-5}
+		$$
+		
+		Plugging in $1$ and extrapolating, we have $c_n = \frac{(-1)^n}{2^{n + 1}}$, since the $n!$ cancels. The series is just
+		
+		$$
+			\sum_{n = 0}^\infty \frac{(-1)^n}{2^{n + 1}} (x - 1)^n = \frac{1}{2} \sum_{n = 0}^\infty \frac{(-1)^n}{2^n} (x - 1)^n.
+		$$
+		
+		We can apply the ratio test, but the root test is even easier, since we just have $r = \lim_{n \to \infty} \frac{|x - 1|}{2}$. Therefore, the series converges on at least $(-1, 3)$. Plugging in endpoints, we have that $x = -1$ and $x = 3$ both produce divergent series, so $(-1, 3)$ is the total interval of convergence. The first three Taylor polynomials are just $\frac{1}{2}$, $\frac{1}{2} - \frac{1}{4} (x - 1)$, and $\frac{1}{2} - \frac{1}{4} (x - 1) + \frac{1}{8} (x - 1)^2$.
+		
+		4. Since every derivative of $e^x$ is just $e^x$, plugging in $x = 0$ results in $1$ for every term. Therefore, the Maclaurin series is just
+		
+		$$
+			\sum_{n = 0}^\infty \frac{x^n}{n!}.
+		$$
+		
+		Applying the ratio test gives $r = \lim_{n \to \infty} \left| \frac{x}{n + 1} \right| = 0$, so it converges on $(-\infty, \infty)$. The first three Maclaurin polynomials are $1$, $1 + x$, and $1 + x + \frac{x^2}{2}$.
+	]]
 ]]
 
 
@@ -378,66 +382,66 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 
 	@solution[[
 	
-	First, remember that the Maclaurin series for $\sin(x)$ is
-	
-	$$
-		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
-	$$
-	
-	and in order to determine the remainder, we'll need to bound $\frac{d^{n+1}}{dx^{n+1}} [\sin(x)]$. Every derivative of $\sin(x)$ is either $\pm \sin(x)$ or $\pm \cos(x)$, and so
-	
-	$$
-		\left| \frac{d^{n+1}}{dx^{n+1}} [\sin(x)] \right| \leq 1
-	$$
-	
-	for all $x$. Plugging this into Taylor's remainder formula, we find that
-	
-	$$
-		\left| R_N(x) \right| &\leq \frac{1}{(N + 1)!}|x - a|^{N + 1}
+		First, remember that the Maclaurin series for $\sin(x)$ is
 		
-		&= \frac{|x|^{N + 1}}{(N + 1)!}.
-	$$
-	
-	For example, if we'd like to know how well $p_5(x)$ approximates $\sin\left( \frac{\pi}{2} \right)$, we evaluate
-	
-	$$
-		\left| R_5\left( \frac{\pi}{2} \right) \right| &\leq \frac{\left| \frac{\pi}{2} \right|^6}{6!}
+		$$
+			\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
+		$$
 		
-		&\approx .021.
-	$$
-	
-	Therefore, the approximation is off by at most $.021$ in either direction. This is the upper bound --- if we actually evaluate $p_5\left( \frac{\pi}{2} \right)$, we find
-	
-	$$
-		p_5\left( \frac{\pi}{2} \right) &= \frac{\pi}{2} - \frac{\left( \frac{\pi}{2} \right)^3}{3!} + \frac{\left( \frac{\pi}{2} \right)^5}{5!}
+		and in order to determine the remainder, we'll need to bound $\frac{d^{n+1}}{dx^{n+1}} [\sin(x)]$. Every derivative of $\sin(x)$ is either $\pm \sin(x)$ or $\pm \cos(x)$, and so
 		
-		&\approx 1.0045.
-	$$
-	
-	The actual value of $\sin\left( \frac{\pi}{2} \right)$ is exactly $1$, so in reality, $p_5\left( \frac{\pi}{2} \right)$ is off by only $.0045$.
-	
-	The second part of the example works similarly to this. If we want to approximate $\sin(1)$ with $p_5$, we just evaluate $p_5(1)$:
-	
-	$$
-		p_5(1) &= 1 - \frac{1^3}{3!} + \frac{1^5}{5!}
+		$$
+			\left| \frac{d^{n+1}}{dx^{n+1}} [\sin(x)] \right| \leq 1
+		$$
 		
-		&= \frac{101}{120}
+		for all $x$. Plugging this into Taylor's remainder formula, we find that
 		
-		&\approx .8417.
-	$$
-	
-	By bounding $|R_5(1)|$, we can tell how good of an approximation this is.
-	
-	$$
-		\left| R_5(1) \right| &\leq \frac{\left| 1 \right|^6}{6!}
+		$$
+			\left| R_N(x) \right| &\leq \frac{1}{(N + 1)!}|x - a|^{N + 1}
+			
+			&= \frac{|x|^{N + 1}}{(N + 1)!}.
+		$$
 		
-		&= \frac{1}{720}
+		For example, if we'd like to know how well $p_5(x)$ approximates $\sin\left( \frac{\pi}{2} \right)$, we evaluate
 		
-		&\approx .0013.
-	$$
-	
-	This is actually how calculators and computers compute functions like $\sin(x)$, $\sqrt{x}$, and $\ln(x)$ for values of $x$ that don't have nice expressions: under the hood, it's all Taylor series.
-
+		$$
+			\left| R_5\left( \frac{\pi}{2} \right) \right| &\leq \frac{\left| \frac{\pi}{2} \right|^6}{6!}
+			
+			&\approx .021.
+		$$
+		
+		Therefore, the approximation is off by at most $.021$ in either direction. This is the upper bound --- if we actually evaluate $p_5\left( \frac{\pi}{2} \right)$, we find
+		
+		$$
+			p_5\left( \frac{\pi}{2} \right) &= \frac{\pi}{2} - \frac{\left( \frac{\pi}{2} \right)^3}{3!} + \frac{\left( \frac{\pi}{2} \right)^5}{5!}
+			
+			&\approx 1.0045.
+		$$
+		
+		The actual value of $\sin\left( \frac{\pi}{2} \right)$ is exactly $1$, so in reality, $p_5\left( \frac{\pi}{2} \right)$ is off by only $.0045$.
+		
+		The second part of the example works similarly to this. If we want to approximate $\sin(1)$ with $p_5$, we just evaluate $p_5(1)$:
+		
+		$$
+			p_5(1) &= 1 - \frac{1^3}{3!} + \frac{1^5}{5!}
+			
+			&= \frac{101}{120}
+			
+			&\approx .8417.
+		$$
+		
+		By bounding $|R_5(1)|$, we can tell how good of an approximation this is.
+		
+		$$
+			\left| R_5(1) \right| &\leq \frac{\left| 1 \right|^6}{6!}
+			
+			&= \frac{1}{720}
+			
+			&\approx .0013.
+		$$
+		
+		This is actually how calculators and computers compute functions like $\sin(x)$, $\sqrt{x}$, and $\ln(x)$ for values of $x$ that don't have nice expressions: under the hood, it's all Taylor series.
+	]]
 ]]
 
 @exc[Taylor's Theorem][[
@@ -450,52 +454,52 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 	
 	@solution[[
 	
-	1. Using the series we computed before, the degree-4 Taylor polynomial is
-	
-	$$
-		(x - 1) - \frac{(x - 1)^2}{2} + \frac{(x - 1)^3}{3} - \frac{(x - 1)^4}{4},
-	$$
-	
-	so plugging in $x = 1.5$, we have
-	
-	$$
-		.5 - \frac{(.5)^2}{2} + \frac{(.5)^3}{3} - \frac{(.5)^4}{4} \approx .401.
-	$$
-	
-	In order to bound the remainder, we first look at $\frac{d^5}{dx^5}[\ln(x)]$, the first derviative not part of the polynomial, and try to bound it on an interval centered at $1$ and containing $1.5$. That derivative is $\frac{24}{x^5}$, and a good choice for the interval is $[.5, 1.5]$. Since $\frac{24}{x^5}$ is a decreasing function, the largest it could possibly be in absolute value on that interval is $\frac{24}{(.5)^5} = 768$. Dropping that into the remainder bound, we have
-	
-	$$
-		|R_4(x)| \leq \frac{768}{5!}|x - 1|^5.
-	$$
-	
-	Since $|x - 1| < .5$,
-	
-	$$
-		|R_4(x)| \leq \frac{768}{5!}(.5)^5 = .2.
-	$$
-	
-	Therefore, the approximation is within $.2$ of the actual value.
-	
-	2. This time around, we're using the polynomial $16 + 8(x - 2)$ to approximate, so we use $x = 0$ to get $16 - 16 = 0$. Now the second derivative is always $2$, so that will serve as our value of $M$. Meanwhile, the interval we should probably use is $[0, 4]$, since it's centered at $2$ and contains $0$. Therefore, we have
-	
-	$$
-		|R_1(0)| \leq \frac{2}{2!}(2)^2 = 4.
-	$$
-	
-	Since a degree-$1$ Taylor polynomial is just a tangent line, this is just linear approximation!
-	
-	3. Finally, we want to make the remainder for $e^x$ to be less than $.0001$. We have $x = 1$ and the series is centered at $0$, so a good interval to use is $[-1, 1]$. All derivatives of $e^x$ are just $e^x$, whose maximum absolute value on $[-1, 1]$ is $e$. Therefore, the remainder is bounded by
-	
-	$$
-		|R_N(1)| \leq \frac{e}{(N + 1)!} 1^{N + 1}.
-	$$
-	
-	We need that to be less than $.0001$ --- trying values experimentally, $N = 7$ works. Therefore, our approximation of $e$ is
-	
-	$$
-		1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \cdots + \frac{1}{7!} = 2.71825.
-	$$
-
+		1. Using the series we computed before, the degree-4 Taylor polynomial is
+		
+		$$
+			(x - 1) - \frac{(x - 1)^2}{2} + \frac{(x - 1)^3}{3} - \frac{(x - 1)^4}{4},
+		$$
+		
+		so plugging in $x = 1.5$, we have
+		
+		$$
+			.5 - \frac{(.5)^2}{2} + \frac{(.5)^3}{3} - \frac{(.5)^4}{4} \approx .401.
+		$$
+		
+		In order to bound the remainder, we first look at $\frac{d^5}{dx^5}[\ln(x)]$, the first derviative not part of the polynomial, and try to bound it on an interval centered at $1$ and containing $1.5$. That derivative is $\frac{24}{x^5}$, and a good choice for the interval is $[.5, 1.5]$. Since $\frac{24}{x^5}$ is a decreasing function, the largest it could possibly be in absolute value on that interval is $\frac{24}{(.5)^5} = 768$. Dropping that into the remainder bound, we have
+		
+		$$
+			|R_4(x)| \leq \frac{768}{5!}|x - 1|^5.
+		$$
+		
+		Since $|x - 1| < .5$,
+		
+		$$
+			|R_4(x)| \leq \frac{768}{5!}(.5)^5 = .2.
+		$$
+		
+		Therefore, the approximation is within $.2$ of the actual value.
+		
+		2. This time around, we're using the polynomial $16 + 8(x - 2)$ to approximate, so we use $x = 0$ to get $16 - 16 = 0$. Now the second derivative is always $2$, so that will serve as our value of $M$. Meanwhile, the interval we should probably use is $[0, 4]$, since it's centered at $2$ and contains $0$. Therefore, we have
+		
+		$$
+			|R_1(0)| \leq \frac{2}{2!}(2)^2 = 4.
+		$$
+		
+		Since a degree-$1$ Taylor polynomial is just a tangent line, this is just linear approximation!
+		
+		3. Finally, we want to make the remainder for $e^x$ to be less than $.0001$. We have $x = 1$ and the series is centered at $0$, so a good interval to use is $[-1, 1]$. All derivatives of $e^x$ are just $e^x$, whose maximum absolute value on $[-1, 1]$ is $e$. Therefore, the remainder is bounded by
+		
+		$$
+			|R_N(1)| \leq \frac{e}{(N + 1)!} 1^{N + 1}.
+		$$
+		
+		We need that to be less than $.0001$ --- trying values experimentally, $N = 7$ works. Therefore, our approximation of $e$ is
+		
+		$$
+			1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \cdots + \frac{1}{7!} = 2.71825.
+		$$
+	]]
 ]]
 
 
@@ -510,34 +514,34 @@ There's one final question before our basic theory of Taylor series is complete:
 
 	@solution[[
 	
-	We know from previous examples that the Maclaurin series for $\sin(x)$ is
-	
-	$$
-		\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
-	$$
-	
-	and that the $N$th remainder $R_N(x)$ is bounded by
-	
-	$$
-		\left| R_N(x) \right| \leq \frac{|x|^{N + 1}}{(N + 1)!}.
-	$$
-	
-	Now we can take the limit as $N \to \infty$:
-	
-	$$
-		\lim_{N \to \infty} \left| R_N(x) \right| &\leq \lim_{N \to \infty} \frac{|x|^{N + 1}}{(N + 1)!}
+		We know from previous examples that the Maclaurin series for $\sin(x)$ is
 		
-		&= 0.
-	$$
-	
-	To see why the limit is zero, remember that $x$ is fixed. No matter how big $|x|$ is, for large enough $N$ the denominator will be multiplying by massive integers, while the numerator is multiplying only by $|x|$. In other words, a factorial grows faster than any exponential.
-	
-	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ *everywhere*. This doesn't mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though --- as we've seen from the graph, Taylor polynomials are better approximations closer to where they're centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we're trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let's briefly draw a graph to illustrate this.
-	
-	@desmos{taylorSeriesComparison}
-	
-	Here, the blue and red functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the red function predicts a value of $-.544025$, the blue function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
-
+		$$
+			\sum_{n = 0}^\infty (-1)^n \frac{x^{2n + 1}}{(2n + 1)!},
+		$$
+		
+		and that the $N$th remainder $R_N(x)$ is bounded by
+		
+		$$
+			\left| R_N(x) \right| \leq \frac{|x|^{N + 1}}{(N + 1)!}.
+		$$
+		
+		Now we can take the limit as $N \to \infty$:
+		
+		$$
+			\lim_{N \to \infty} \left| R_N(x) \right| &\leq \lim_{N \to \infty} \frac{|x|^{N + 1}}{(N + 1)!}
+			
+			&= 0.
+		$$
+		
+		To see why the limit is zero, remember that $x$ is fixed. No matter how big $|x|$ is, for large enough $N$ the denominator will be multiplying by massive integers, while the numerator is multiplying only by $|x|$. In other words, a factorial grows faster than any exponential.
+		
+		Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ *everywhere*. This doesn't mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though --- as we've seen from the graph, Taylor polynomials are better approximations closer to where they're centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we're trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let's briefly draw a graph to illustrate this.
+		
+		@desmos{taylorSeriesComparison}
+		
+		Here, the blue and red functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the red function predicts a value of $-.544025$, the blue function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
+	]]
 ]]
 
 

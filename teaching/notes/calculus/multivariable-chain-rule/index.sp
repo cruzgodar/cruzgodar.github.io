@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -34,7 +38,7 @@ $$
 
 that is, we can track the $x$ and $y$ changes *separately*, and then just add them up. As a result, if we change a variable $t$ that both $x$ and $y$ depend on, then we'd expect $\Delta x$ to be roughly $dx/dt$ and $\Delta y$ to be roughly $dy/dt$. While this is only an intuitive explanation, I think it goes a long way toward accepting the actual theorem statement.
 
-### thm -m "The Multivariable Chain Rule for $\mathbf{z = f(x(t), y(t))}$"
+@thm[The Multivariable Chain Rule for $\mathbf{z = f(x(t), y(t))}$][[
 
 	Let $z = f(x, y)$ be a differentiable function, and let $x = x(t)$ and $y = y(t)$ both be functions of the same variable. Then
 
@@ -48,7 +52,7 @@ that is, we can track the $x$ and $y$ changes *separately*, and then just add th
 		\frac{\d f(x, y)}{\d t} = pf/px dx/dt + pf/py dy/dt.
 	$$
 
-###
+]]({ title: "Method" })
 
 That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $pz/px$ and $pz/py$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
 
@@ -58,29 +62,29 @@ That second presentation of the theorem is definitely a little strange, but it's
 
 	@solution[[
 
-	We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable Chain Rule. We have $P = 4\frac{T}{V}$, so
+		We're trying to find $dP/dt$, but since we don't know $V$ or $T$ as functions of $t$, our only method of differentiation is the multivariable Chain Rule. We have $P = 4\frac{T}{V}$, so
 
-	$$
-		dP/dt &= pP/pT dT/dt + pP/pV dV/dt
+		$$
+			dP/dt &= pP/pT dT/dt + pP/pV dV/dt
 
-		&= \left( \frac{4}{V} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
-	$$
+			&= \left( \frac{4}{V} \right) dT/dt + \left( -4\frac{T}{V^2} \right) dV/dt.
+		$$
 
-	And we know all of these, at least at this one moment in time!
+		And we know all of these, at least at this one moment in time!
 
-	$$
-		dP/dt &= \left( \frac{4}{10} \right) \left( 2 \right) + \left( -4\frac{400}{100} \right) \left( 3 \right)
+		$$
+			dP/dt &= \left( \frac{4}{10} \right) \left( 2 \right) + \left( -4\frac{400}{100} \right) \left( 3 \right)
 
-		&= 0.4 - 48.
-	$$
-
+			&= 0.4 - 48.
+		$$
+	]]
 ]]
 
 
 
 This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $pf/pb$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
 
-### image -i graphics/tree-1.webp graphics/tree-2.webp
+@image(["graphics/tree-1.webp", "graphics/tree-2.webp"])(true)
 
 Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable Chain Rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $pz/pb$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
 
@@ -94,17 +98,18 @@ $$
 
 	@solution[[
 
-	We end up with a rather nice-looking diagram:
+		We end up with a rather nice-looking diagram:
 
-	]] image -i graphics/tree-3.webp
+		@image(["graphics/tree-3.webp"])(true)
 
-	The result is that
+		The result is that
 
-	$$
-		pw/ps = pw/px px/pbpb/ps + pw/py dy/db pb/ps + pw/pz pz/pbpb/ps + pw/pz pz/pc dc/ds + pw/pz pz/ps.
-	$$
+		$$
+			pw/ps = pw/px px/pbpb/ps + pw/py dy/db pb/ps + pw/pz pz/pbpb/ps + pw/pz pz/pc dc/ds + pw/pz pz/ps.
+		$$
+	]]
 
-###
+]]
 
 Let's close with one more example that recalls a bit about implicit differentiation at the same time.
 
@@ -144,27 +149,27 @@ Let's close with one more example that recalls a bit about implicit differentiat
 
 	@solution[[
 
-	We have
+		We have
 
-	$$
-		p/py\left[ x^y + \tan(x + y + z) \right] &= p/py\left[ y \right]
+		$$
+			p/py\left[ x^y + \tan(x + y + z) \right] &= p/py\left[ y \right]
 
-		x^y\ln(y) + \sec^2(x + y + z)\left( 1 + pz/py \right) &= 1
+			x^y\ln(y) + \sec^2(x + y + z)\left( 1 + pz/py \right) &= 1
 
-		pz/py &= \frac{1 - x^y\ln(y)}{\sec^2(x + y + z)} - 1.
+			pz/py &= \frac{1 - x^y\ln(y)}{\sec^2(x + y + z)} - 1.
 
-	$$
+		$$
 
-	The next one is more subtle. We need to treat $x$, not $z$, as an implicit function of $y$ and $z$, so have
-		
-	$$
-		p/pz\left[ x^y + \tan(x + y + z) \right] &= p/pz\left[ y \right]
+		The next one is more subtle. We need to treat $x$, not $z$, as an implicit function of $y$ and $z$, so have
+			
+		$$
+			p/pz\left[ x^y + \tan(x + y + z) \right] &= p/pz\left[ y \right]
 
-		yx^{y - 1}px/pz + \sec^2(x + y + z)\left( px/pz + 1 \right) &= 0
+			yx^{y - 1}px/pz + \sec^2(x + y + z)\left( px/pz + 1 \right) &= 0
 
-		px/pz &= -\frac{\sec^2(x + y + z)}{yx^{y - 1} + \sec^2(x + y + z)}.
-	$$
-
+			px/pz &= -\frac{\sec^2(x + y + z)}{yx^{y - 1} + \sec^2(x + y + z)}.
+		$$
+	]]
 ]]
 
 @navButtons

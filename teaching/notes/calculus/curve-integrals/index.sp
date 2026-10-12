@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -164,7 +168,7 @@ In applications like this, there's a quantity intrinsic to the object (like dens
 
 Let's say two river currents meet each other head-on, making the current flow out to either side orthogonally, and we decide to go for a swim in the middle (probably a profoundly bad idea with the potential for rip currents). At position $(x, y)$ in the river, the force of the current is $\vec{F}(x, y) = \left< -y, -x + y \right>$ (in Newtons, although we can mostly ignore units for this example). If we swim from $\left( 1, -\sqrt{3} \right)$ to $\left( 1, \sqrt{3} \right)$ in a straight line, how much does the current help or hinder our **forward** progress?
 
-### melded-desmos swimmingInCurrent
+@meldedDesmos{swimmingInCurrent}
 
 The path we're traveling along is the straight line from the blue point to the red point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impedes our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
 
@@ -312,65 +316,65 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 	3. Evaluate the integral in question 2 and find out.
 
-	]] melded-desmos curveIntegralThroughVectorField
+	@meldedDesmos{curveIntegralThroughVectorField}
 
 	@solution[[
 
-	Let's work through both of them and find out! We can parameterize the straight-line path $L$ as
+		Let's work through both of them and find out! We can parameterize the straight-line path $L$ as
 
-	$$
-		\vec{l}(t) &= \left< -1 + 3t, -1 + 3t \right>, \quad 0 \leq t \leq 1
+		$$
+			\vec{l}(t) &= \left< -1 + 3t, -1 + 3t \right>, \quad 0 \leq t \leq 1
 
-		\vec{l}'(t) &= \left< 3, 3 \right>,
-	$$
+			\vec{l}'(t) &= \left< 3, 3 \right>,
+		$$
 
-	so the curve integral is
+		so the curve integral is
 
-	$$
-		\int_L \vec{F} \bullet \vec{T}\,\d s &= \int_L \vec{F} \bullet \d\vec{l}
+		$$
+			\int_L \vec{F} \bullet \vec{T}\,\d s &= \int_L \vec{F} \bullet \d\vec{l}
 
-		&= \int_0^1 \vec{F}(\vec{l}(t)) \bullet \vec{l}'(t)\,\d t
+			&= \int_0^1 \vec{F}(\vec{l}(t)) \bullet \vec{l}'(t)\,\d t
 
-		&= \int_0^1 \left< \left( -1 + 3t \right)^2, -1 + 3t - 2\left( -1 + 3t \right) \right> \bullet \left< 3, 3 \right>\d t
+			&= \int_0^1 \left< \left( -1 + 3t \right)^2, -1 + 3t - 2\left( -1 + 3t \right) \right> \bullet \left< 3, 3 \right>\d t
 
-		&= \int_0^1 \left< 1 - 6t + 9t^2, 1 - 3t \right> \bullet \left< 3, 3 \right>\d t
+			&= \int_0^1 \left< 1 - 6t + 9t^2, 1 - 3t \right> \bullet \left< 3, 3 \right>\d t
 
-		&= \int_0^1 \left( 6 - 27t + 27t^2 \right)\d t
+			&= \int_0^1 \left( 6 - 27t + 27t^2 \right)\d t
 
-		&= \left. \left[ 6t - \frac{27}{2}t^2 + 9t^3 \right] \right|_0^1
+			&= \left. \left[ 6t - \frac{27}{2}t^2 + 9t^3 \right] \right|_0^1
 
-		&= \frac{3}{2}.
-	$$
+			&= \frac{3}{2}.
+		$$
 
-	There are many ways to parameterize this parabola, but one of the simplest is
+		There are many ways to parameterize this parabola, but one of the simplest is
 
-	$$
-		\vec{p}(t) &= \left< t, t^2 - 2 \right>, \quad -1 \leq t \leq 2
+		$$
+			\vec{p}(t) &= \left< t, t^2 - 2 \right>, \quad -1 \leq t \leq 2
 
-		\vec{p}'(t) &= \left< 1, 2t \right>,
-	$$
+			\vec{p}'(t) &= \left< 1, 2t \right>,
+		$$
 
-	making the curve integral
+		making the curve integral
 
-	$$
-		\int_L \vec{F} \bullet \d\vec{p} &= \int_{-1}^2 \vec{F}(\vec{p}(t)) \bullet \vec{p}'(t)\,\d t
+		$$
+			\int_L \vec{F} \bullet \d\vec{p} &= \int_{-1}^2 \vec{F}(\vec{p}(t)) \bullet \vec{p}'(t)\,\d t
 
-		&= \int_{-1}^2 \left< t^2, t - 2\left( t^2 - 2 \right) \right> \bullet \left< 1, 2t \right>\d t
+			&= \int_{-1}^2 \left< t^2, t - 2\left( t^2 - 2 \right) \right> \bullet \left< 1, 2t \right>\d t
 
-		&= \int_{-1}^2 \left< t^2, t - 2t^2 + 4 \right> \bullet \left< 1, 2t \right>\d t
+			&= \int_{-1}^2 \left< t^2, t - 2t^2 + 4 \right> \bullet \left< 1, 2t \right>\d t
 
-		&= \int_{-1}^2 \left( t^2 + 2t^2 - 4t^3 + 8t \right)\d t
+			&= \int_{-1}^2 \left( t^2 + 2t^2 - 4t^3 + 8t \right)\d t
 
-		&= \int_{-1}^2 \left( 3t^2 - 4t^3 + 8t \right)\d t
+			&= \int_{-1}^2 \left( 3t^2 - 4t^3 + 8t \right)\d t
 
-		&= \left. \left[ t^3 - t^4 + 4t^2 \right] \right|_{-1}^2
+			&= \left. \left[ t^3 - t^4 + 4t^2 \right] \right|_{-1}^2
 
-		&= 6.
-	$$
+			&= 6.
+		$$
 
-	Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
-
-###
+		Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
+	]]
+]]
 
 Before we move on to address the question of path-independence, let's address one important fact about circulation. The formula
 
@@ -494,75 +498,75 @@ We've talked a lot about path-independence, but what does it actually mean? A pa
 
 	Find $$\int_C \vec{F} \bullet \d\vec{r}$$, where $C$ is the path parameterized by $\left< 2\cos(3 \pi t),\  2\sin(4 \pi t) \right>$ for $0 \leq t \leq 3$.
 
-	]] melded-desmos nastyPath
+	@meldedDesmos{nastyPath}
 
 	@solution[[
 
-	Let's first show that this field is conservative. We have
+		Let's first show that this field is conservative. We have
 
-	$$
-		p/py \left[ -2\cos(x)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(x)\, \cos(\sin(x) + \sin(y))\, \cos(y)
+		$$
+			p/py \left[ -2\cos(x)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(x)\, \cos(\sin(x) + \sin(y))\, \cos(y)
 
-		p/px \left[ -2\cos(y)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(y)\, \cos(\sin(x) + \sin(y))\, \cos(x),
-	$$
+			p/px \left[ -2\cos(y)\, \sin(\sin(x) + \sin(y)) \right] &= -2\cos(y)\, \cos(\sin(x) + \sin(y))\, \cos(x),
+		$$
 
-	which are the same. We could also have gleaned this fact from noticing that both components of the field are the same, only with $x$ and $y$ swapped; since we're taking partial derivatives of each with respect to a different variable, they have to be the same.
+		which are the same. We could also have gleaned this fact from noticing that both components of the field are the same, only with $x$ and $y$ swapped; since we're taking partial derivatives of each with respect to a different variable, they have to be the same.
 
-	Now we can construct a potential function. We have
+		Now we can construct a potential function. We have
 
-	$$
-		\int -2\cos(x)\, \sin(\sin(x) + \sin(y))\, \p x &= \int -2\sin(u + \sin(y))\, \p u,
-	$$
+		$$
+			\int -2\cos(x)\, \sin(\sin(x) + \sin(y))\, \p x &= \int -2\sin(u + \sin(y))\, \p u,
+		$$
 
-	where $u = \sin(x)$ and $\d u = \cos(x)\,\d x$. Then
+		where $u = \sin(x)$ and $\d u = \cos(x)\,\d x$. Then
 
-	$$
-		\int -2\sin(u + \sin(y))\, \p u &= 2\cos(u + \sin(y)) + c_1(y)
+		$$
+			\int -2\sin(u + \sin(y))\, \p u &= 2\cos(u + \sin(y)) + c_1(y)
 
-		&= 2\cos(\sin(x) + \sin(y)) + c_1(y).
-	$$
+			&= 2\cos(\sin(x) + \sin(y)) + c_1(y).
+		$$
 
-	That same observation about the variables of the components being swapped lets us skip integrating the second component and just swap the variables after integrating:
+		That same observation about the variables of the components being swapped lets us skip integrating the second component and just swap the variables after integrating:
 
-	$$
-		\int -2\cos(y)\, \sin(\sin(x) + \sin(y))\, \p y &= 2\cos(\sin(x) + \sin(y)) + c_2(x).
-	$$
+		$$
+			\int -2\cos(y)\, \sin(\sin(x) + \sin(y))\, \p y &= 2\cos(\sin(x) + \sin(y)) + c_2(x).
+		$$
 
-	In total, neither $c_1(y)$ and $c_2(x)$ contain any variables, and so our potential function is
+		In total, neither $c_1(y)$ and $c_2(x)$ contain any variables, and so our potential function is
 
-	$$
-		f(x, y) = 2\cos(\sin(x) + \sin(y)) + c.
-	$$
+		$$
+			f(x, y) = 2\cos(\sin(x) + \sin(y)) + c.
+		$$
 
-	Since we're about to evaluate this function at two different points and subtract one from the other, we can take $c = 0$ as always. Now those two points in question are the endpoints of this path --- it might look like a closed loop, but when we plug in $t = 0$ and $t = 3$, we find
+		Since we're about to evaluate this function at two different points and subtract one from the other, we can take $c = 0$ as always. Now those two points in question are the endpoints of this path --- it might look like a closed loop, but when we plug in $t = 0$ and $t = 3$, we find
 
-	$$
-		\vec{r}(0) &= \left< 2\cos(0), 2\sin(0) \right>
+		$$
+			\vec{r}(0) &= \left< 2\cos(0), 2\sin(0) \right>
 
-		&= \left< 2, 0 \right>
+			&= \left< 2, 0 \right>
 
-		\vec{r}(3) &= \left< 2\cos(9 \pi), 2\sin(12 \pi) \right>
+			\vec{r}(3) &= \left< 2\cos(9 \pi), 2\sin(12 \pi) \right>
 
-		&= \left< -2, 0 \right>,
-	$$
+			&= \left< -2, 0 \right>,
+		$$
 
-	so the curve has traced over itself at some point (it turns out it makes a full loop at $t = 2$, so it's traced over an additional half of its graph). In total,
+		so the curve has traced over itself at some point (it turns out it makes a full loop at $t = 2$, so it's traced over an additional half of its graph). In total,
 
-	$$
-		\int_C \vec{F} \bullet \d\vec{r} &= f(-2, 0) - f(2, 0)
+		$$
+			\int_C \vec{F} \bullet \d\vec{r} &= f(-2, 0) - f(2, 0)
 
-		&= 2\cos(\sin(-2) + \sin(0)) - 2\cos(\sin(2) + \sin(0))
+			&= 2\cos(\sin(-2) + \sin(0)) - 2\cos(\sin(2) + \sin(0))
 
-		&= 2\cos(-\sin(2)) - 2\cos(\sin(2))
+			&= 2\cos(-\sin(2)) - 2\cos(\sin(2))
 
-		&= 2\cos(\sin(2)) - 2\cos(\sin(2))
+			&= 2\cos(\sin(2)) - 2\cos(\sin(2))
 
-		&= 0,
-	$$
+			&= 0,
+		$$
 
-	since $\sin$ is an odd function and $\cos$ is even. Even though this path wasn't closed, both it and the were symmetric enough to result in an integral of zero anyway!
-
-###
+		since $\sin$ is an odd function and $\cos$ is even. Even though this path wasn't closed, both it and the were symmetric enough to result in an integral of zero anyway!
+	]]
+]]
 
 Let's close by stating two additional facts about conservative vector fields. We know that their circulation integrals are path-independent, and that that fact means any integral of a conservative vector field along a closed loop is zero, but both statements are actually also true in reverse!
 

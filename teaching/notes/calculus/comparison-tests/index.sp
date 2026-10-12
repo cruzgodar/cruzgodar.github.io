@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Our next test for convergence isn't nearly so complicated. Now that we know the behavior of a few series, like all of the $p$-series, we can also determine how other closely related series behave. The Squeeze Theorem for sequences tells us that if for some integer $N$, $a_n \geq b_n$ whenever $n \geq N$, then $\lim (a_n) \geq \lim (b_n)$ if both limits exist. Applying this to the sequence of partial sums for two series gives us the following straightforward result.
@@ -26,14 +30,14 @@ The idea isn't too tricky: if you start with a convergent series with positive t
 
 	@solution[[
 	
-	While we could use the integral test, it would require trig sub, and that's probably something to be avoided if possible. Instead, this looks a whole lot like $\sum_{n = 1}^\infty \frac{1}{n^2}$, a series we already know converges. Increasing a denominator decreases the overall fraction, so
-	
-	$$
-		\frac{1}{n^2 + 20} \leq \frac{1}{n^2}
-	$$
-	
-	for all $n$. Since all the terms are positive and smaller than a series known to converge, our series $\sum_{n = 1}^\infty \frac{1}{n^2 + 20}$ must also converge by the comparison test.
-	
+		While we could use the integral test, it would require trig sub, and that's probably something to be avoided if possible. Instead, this looks a whole lot like $\sum_{n = 1}^\infty \frac{1}{n^2}$, a series we already know converges. Increasing a denominator decreases the overall fraction, so
+		
+		$$
+			\frac{1}{n^2 + 20} \leq \frac{1}{n^2}
+		$$
+		
+		for all $n$. Since all the terms are positive and smaller than a series known to converge, our series $\sum_{n = 1}^\infty \frac{1}{n^2 + 20}$ must also converge by the comparison test.
+	]]
 ]]
 
 @exc[the comparison test][[
@@ -48,44 +52,44 @@ The idea isn't too tricky: if you start with a convergent series with positive t
 	
 	@solution[[
 	
-	1. The denominator is dominated by $n^4$, so let's try to compare against that. We need
-	
-	$$
-		\frac{1}{n^4 + n^3} &\leq \frac{1}{n^4}
+		1. The denominator is dominated by $n^4$, so let's try to compare against that. We need
 		
-		n^4 + n^3 &\geq n^4
+		$$
+			\frac{1}{n^4 + n^3} &\leq \frac{1}{n^4}
+			
+			n^4 + n^3 &\geq n^4
+			
+			n^3 &\geq 0
+			
+			n^3 &\geq 0,
+		$$
 		
-		n^3 &\geq 0
+		which is always true since $n \geq 1$. Since $\sum_{n = 1}^\infty \frac{1}{n^4}$ is a $p$-series with $p = 4 > 1$, it converges, so by the comparison test, so does $\sum_{n = 1}^\infty \frac{1}{n^4 + n^3}$.
 		
-		n^3 &\geq 0,
-	$$
-	
-	which is always true since $n \geq 1$. Since $\sum_{n = 1}^\infty \frac{1}{n^4}$ is a $p$-series with $p = 4 > 1$, it converges, so by the comparison test, so does $\sum_{n = 1}^\infty \frac{1}{n^4 + n^3}$.
-	
-	2. This one is a little more tricky. We usually want to compare against a $p$-series or geometric series, but this doesn't look like either. However, since $\ln(m)$ is growing incredibly slowly, significantly slower than $m$, we might expect it to diverge. To that end, let's try to compare it to $\sum_{m = 2}^\infty \frac{1}{m}$. For it to succeed, we need
-	
-	$$
-		\frac{1}{\ln(m)} &\geq \frac{1}{m}
+		2. This one is a little more tricky. We usually want to compare against a $p$-series or geometric series, but this doesn't look like either. However, since $\ln(m)$ is growing incredibly slowly, significantly slower than $m$, we might expect it to diverge. To that end, let's try to compare it to $\sum_{m = 2}^\infty \frac{1}{m}$. For it to succeed, we need
 		
-		\ln(m) & \leq m
+		$$
+			\frac{1}{\ln(m)} &\geq \frac{1}{m}
+			
+			\ln(m) & \leq m
+			
+			m &\leq e^m,
+		$$
 		
-		m &\leq e^m,
-	$$
-	
-	which is true for $m \geq 0$. Therefore, the comparison test applies, and since $\sum_{m = 2}^\infty \frac{1}{m}$ is (except for the first term) the Harmonic series, $\sum_{m = 2}^\infty \frac{1}{\ln(m)}$ diverges.
-	
-	3. The denominator is dominated by $2^n$, so let's try comparing against $\sum_{n = 1}^\infty \frac{1}{2^n}$. Since that's a geometric series with base $\frac{1}{2}$, it converges, so we need to show
-	
-	$$
-		\frac{1}{2^n + 3} &\leq \frac{1}{2^n}
+		which is true for $m \geq 0$. Therefore, the comparison test applies, and since $\sum_{m = 2}^\infty \frac{1}{m}$ is (except for the first term) the Harmonic series, $\sum_{m = 2}^\infty \frac{1}{\ln(m)}$ diverges.
 		
-		2^n + 3 &\geq 2^n
+		3. The denominator is dominated by $2^n$, so let's try comparing against $\sum_{n = 1}^\infty \frac{1}{2^n}$. Since that's a geometric series with base $\frac{1}{2}$, it converges, so we need to show
 		
-		3 &\geq 0.
-	$$
-	
-	Therefore, this is always true, and so $\sum_{n = 1}^\infty \frac{1}{2^n + 3}$ converges.
-	
+		$$
+			\frac{1}{2^n + 3} &\leq \frac{1}{2^n}
+			
+			2^n + 3 &\geq 2^n
+			
+			3 &\geq 0.
+		$$
+		
+		Therefore, this is always true, and so $\sum_{n = 1}^\infty \frac{1}{2^n + 3}$ converges.
+	]]
 ]]
 
 
@@ -166,42 +170,42 @@ If we're asked to determine if a given series converges, we'll try the divergenc
 
 	@solution[[
 	
-	Let's run through our list of tests. The divergence test is almost always the easiest, so let's start there. We have
-	
-	$$
-		\lim_{n \to \infty} \frac{2^n + 3^n}{4^n} &= \lim_{n \to \infty} \left( \frac{2^n}{4^n} + \frac{3^n}{4^n} \right)
+		Let's run through our list of tests. The divergence test is almost always the easiest, so let's start there. We have
 		
-		&= \lim_{n \to \infty} \left( \left( \frac{1}{2} \right)^n + \left( \frac{3}{4} \right)^n \right)
+		$$
+			\lim_{n \to \infty} \frac{2^n + 3^n}{4^n} &= \lim_{n \to \infty} \left( \frac{2^n}{4^n} + \frac{3^n}{4^n} \right)
+			
+			&= \lim_{n \to \infty} \left( \left( \frac{1}{2} \right)^n + \left( \frac{3}{4} \right)^n \right)
+			
+			&= 0.
+		$$
 		
-		&= 0.
-	$$
-	
-	Therefore, the test is inconclusive. By the guidance we mentioned earlier, we should now try to apply one of the comparison tests. For large $n$, $3^n$ is much larger than $2^n$, so we'd expect the behavior of the fraction to look like $\frac{3^n}{4^n}$. Unfortunately, this means the regular comparison test is probably out --- to apply it against $\frac{3^n}{4^n}$, we'd need the terms of our series to each be less than $\frac{3^n}{4^n}$, but they're larger. Therefore, let's give the limit comparison test a shot. We divide our terms, $\frac{2^n + 3^n}{4^n}$, by the terms we're comparing against, to get
-	
-	$$
-		\lim_{n \to \infty} \frac{\frac{2^n + 3^n}{4^n}}{\frac{3^n}{4^n}} &= \lim_{n \to \infty} \frac{2^n + 3^n}{3^n}
+		Therefore, the test is inconclusive. By the guidance we mentioned earlier, we should now try to apply one of the comparison tests. For large $n$, $3^n$ is much larger than $2^n$, so we'd expect the behavior of the fraction to look like $\frac{3^n}{4^n}$. Unfortunately, this means the regular comparison test is probably out --- to apply it against $\frac{3^n}{4^n}$, we'd need the terms of our series to each be less than $\frac{3^n}{4^n}$, but they're larger. Therefore, let's give the limit comparison test a shot. We divide our terms, $\frac{2^n + 3^n}{4^n}$, by the terms we're comparing against, to get
 		
-		&= \lim_{n \to \infty} \left( \frac{2^n}{3^n} + 1 \right)
+		$$
+			\lim_{n \to \infty} \frac{\frac{2^n + 3^n}{4^n}}{\frac{3^n}{4^n}} &= \lim_{n \to \infty} \frac{2^n + 3^n}{3^n}
+			
+			&= \lim_{n \to \infty} \left( \frac{2^n}{3^n} + 1 \right)
+			
+			&= \lim_{n \to \infty} \left( \left( \frac{2}{3} \right)^n + 1 \right)
+			
+			&= 0 + 1
+			
+			&= 1.
+		$$
 		
-		&= \lim_{n \to \infty} \left( \left( \frac{2}{3} \right)^n + 1 \right)
+		Since this limit exists and is neither zero nor $\infty$, we know that the behavior of the two series is identical. The series we chose to compare against is a geometric series with a base between $-1$ and $1$, so it converges:
 		
-		&= 0 + 1
+		$$
+			\sum_{n = 1}^\infty \frac{3^n}{4^n} &= -1 + \sum_{n = 0}^\infty \left( \frac{3}{4} \right)^n
+			
+			&= -1 + \frac{1}{1 - \frac{3}{4}}
+			
+			&= 3.
+		$$
 		
-		&= 1.
-	$$
-	
-	Since this limit exists and is neither zero nor $\infty$, we know that the behavior of the two series is identical. The series we chose to compare against is a geometric series with a base between $-1$ and $1$, so it converges:
-	
-	$$
-		\sum_{n = 1}^\infty \frac{3^n}{4^n} &= -1 + \sum_{n = 0}^\infty \left( \frac{3}{4} \right)^n
-		
-		&= -1 + \frac{1}{1 - \frac{3}{4}}
-		
-		&= 3.
-	$$
-	
-	While we don't know what $\sum_{n = 1}^\infty \frac{2^n + 3^n}{4^n}$ converges <em>to</em>, we do know that it must converge.
-	
+		While we don't know what $\sum_{n = 1}^\infty \frac{2^n + 3^n}{4^n}$ converges *to*, we do know that it must converge.
+	]]
 ]]
 
 @exc[the limit comparison test][[
@@ -218,42 +222,42 @@ If we're asked to determine if a given series converges, we'll try the divergenc
 	
 	@solution[[
 	
-	1. In the limit, the terms look like $\frac{2^n}{3^n} = \left(\frac{2}{3}\right)^n$, so we might try comparing against that. It's worth trying the regular comparison test first: since we're subtracting $n$, a positive number, from the numerator, the entire fraction is made smaller, so we have
-	
-	$$
-		\frac{2^n - n}{3^n} \leq \frac{2^n}{3^n}.
-	$$
-	
-	Since $\sum_{n = 1}^\infty \left(\frac{2}{3}\right)^n$ is a geometric series with $r = \frac{2}{3}$, it converges, so the same is true of $\sum_{n = 1}^\infty \frac{2^n - n}{3^n}$ by the comparison test.
-	
-	2. For large $n$, the terms look like $\frac{2}{\sqrt{n}}$. Those form a $p$-series with $p = \frac{1}{2} \leq 1$, which is divergent. To use the regular comparison test, we'd need every term to be larger, but since the denominator is being increased, we have the opposite. Therefore, let's try the limit comparison test. We have
-	
-	$$
-		\lim_{n \to \infty} \frac{\frac{2}{\sqrt{n} + 10}}{\frac{2}{\sqrt{n}}} &= \lim_{n \to \infty} \frac{\sqrt{n}}{\sqrt{n} + 10}
+		1. In the limit, the terms look like $\frac{2^n}{3^n} = \left(\frac{2}{3}\right)^n$, so we might try comparing against that. It's worth trying the regular comparison test first: since we're subtracting $n$, a positive number, from the numerator, the entire fraction is made smaller, so we have
 		
-		&= 1
-	$$
-	
-	by L'H&#244;pital's Rule. The series therefore have the same behavior, so $\sum_{n = 1}^\infty \frac{2}{\sqrt{n} + 10}$ diverges.
-	
-	3. Multiplying out the denominator, these terms look like $\frac{k^2}{k^2} = 1$ in the limit. That's a clue that this series probably fails the divergence test, and so we don't even need to compare against anything. Properly taking the limit of the terms gives us
-	
-	$$
-		\lim_{k \to \infty} \frac{k^2}{k^2 + 3k} = 1 \neq 0
-	$$
-	
-	since it's a ratio of polynomials, and so it does in fact fail, meaning the series must diverge.
-	
-	4. It's possible to get the regular comparison test to work here, but it's a little annoying --- most of the time, $\ln(n) > 1$, so we can compare against the Harmonic series, but that's not true when $n = 1$, since $\ln(1) = 0$. Let's try the limit comparison test just to save ourselves a headache. We have
-	
-	$$
-		\lim_{n \to \infty} \frac{\frac{\ln(n)}{n}}{\frac{1}{n}} &= \lim_{n \to \infty} \ln(n)
+		$$
+			\frac{2^n - n}{3^n} \leq \frac{2^n}{3^n}.
+		$$
 		
-		&= \infty.
-	$$
-	
-	Since we're comparing against a divergent series, our series must be divergent too.
-	
+		Since $\sum_{n = 1}^\infty \left(\frac{2}{3}\right)^n$ is a geometric series with $r = \frac{2}{3}$, it converges, so the same is true of $\sum_{n = 1}^\infty \frac{2^n - n}{3^n}$ by the comparison test.
+		
+		2. For large $n$, the terms look like $\frac{2}{\sqrt{n}}$. Those form a $p$-series with $p = \frac{1}{2} \leq 1$, which is divergent. To use the regular comparison test, we'd need every term to be larger, but since the denominator is being increased, we have the opposite. Therefore, let's try the limit comparison test. We have
+		
+		$$
+			\lim_{n \to \infty} \frac{\frac{2}{\sqrt{n} + 10}}{\frac{2}{\sqrt{n}}} &= \lim_{n \to \infty} \frac{\sqrt{n}}{\sqrt{n} + 10}
+			
+			&= 1
+		$$
+		
+		by L'H&#244;pital's Rule. The series therefore have the same behavior, so $\sum_{n = 1}^\infty \frac{2}{\sqrt{n} + 10}$ diverges.
+		
+		3. Multiplying out the denominator, these terms look like $\frac{k^2}{k^2} = 1$ in the limit. That's a clue that this series probably fails the divergence test, and so we don't even need to compare against anything. Properly taking the limit of the terms gives us
+		
+		$$
+			\lim_{k \to \infty} \frac{k^2}{k^2 + 3k} = 1 \neq 0
+		$$
+		
+		since it's a ratio of polynomials, and so it does in fact fail, meaning the series must diverge.
+		
+		4. It's possible to get the regular comparison test to work here, but it's a little annoying --- most of the time, $\ln(n) > 1$, so we can compare against the Harmonic series, but that's not true when $n = 1$, since $\ln(1) = 0$. Let's try the limit comparison test just to save ourselves a headache. We have
+		
+		$$
+			\lim_{n \to \infty} \frac{\frac{\ln(n)}{n}}{\frac{1}{n}} &= \lim_{n \to \infty} \ln(n)
+			
+			&= \infty.
+		$$
+		
+		Since we're comparing against a divergent series, our series must be divergent too.
+	]]
 ]]
 
 

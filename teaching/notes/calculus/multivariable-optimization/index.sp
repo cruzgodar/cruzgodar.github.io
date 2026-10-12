@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -44,54 +48,53 @@ This function has five critical points; two are local maxima, two are local mini
 
 	@solution[[
 
-	1. Let's start by finding the gradient. We have
+		1. Let's start by finding the gradient. We have
 
-	$$
-		\G f = \left< 3x^2 - 4x + y, 2y + x \right>,
-	$$
+		$$
+			\G f = \left< 3x^2 - 4x + y, 2y + x \right>,
+		$$
 
-	which is zero when both
+		which is zero when both
 
-	$$
-		3x^2 - 4x + y &= 0
+		$$
+			3x^2 - 4x + y &= 0
 
-		2y + x &= 0.
-	$$
+			2y + x &= 0.
+		$$
 
-	We can solve for $y$ in the first equation and plug it into the second to get
+		We can solve for $y$ in the first equation and plug it into the second to get
 
-	$$
-		-6x^2 + 8x + x &= 0
+		$$
+			-6x^2 + 8x + x &= 0
 
-		x(9 - 6x) &= 0
+			x(9 - 6x) &= 0
 
-		x &= 0, \quad x = \frac{3}{2}.
-	$$
+			x &= 0, \quad x = \frac{3}{2}.
+		$$
 
-	Plugging those back in,
+		Plugging those back in,
 
-	$$
-		y &= 0, \quad y = -\frac{3}{4},
-	$$
+		$$
+			y &= 0, \quad y = -\frac{3}{4},
+		$$
 
-	and so our two critical points are $(0, 0)$ and $\left( \frac{3}{2}, -\frac{3}{4} \right)$.
+		and so our two critical points are $(0, 0)$ and $\left( \frac{3}{2}, -\frac{3}{4} \right)$.
 
-	2. This time, the gradient is
+		2. This time, the gradient is
 
-	$$
-		\G g = \left< \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2x), \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2y) \right>,
-	$$
+		$$
+			\G g = \left< \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2x), \frac{1}{2} \left( x^2 + y^2 \right)^{-1/2}(2y) \right>,
+		$$
 
-	which could only possibly be zero when $(x, y) = (0, 0)$, but it's undefined there anyway. That's our single critical point!
+		which could only possibly be zero when $(x, y) = (0, 0)$, but it's undefined there anyway. That's our single critical point!
 
-	3. This time, the gradient is a 3-dimensional vector:
+		3. This time, the gradient is a 3-dimensional vector:
 
-	$$
-		\G h = \left< yz, xz, xy \right>.
-	$$
+		$$
+			\G h = \left< yz, xz, xy \right>.
+		$$
 
-	This is a little more complicated to think through: we need all of those to be zero, but each component only requires one of its factors to be zero. Therefore, we can get away with having $x = y = 0$ but not $z$, or any other combination of two variables. The critical points are exactly the three coordinate axes!
-
+		This is a little more complicated to think through: we need all of those to be zero, but each component only requires one of its factors to be zero. Therefore, we can get away with having $x = y = 0$ but not $z$, or any other combination of two variables. The critical points are exactly the three coordinate axes!
 	]]
 ]]
 
@@ -205,7 +208,7 @@ and as long as $B = f_{xy}(a, b)$ is nonzero, there will *always* be values of $
 
 That's a lot of information! One thing that's immediately clear is that the expression $B^2 - AC$ needs a name, and in fact it tells us almost everything we want to know. Luckily for us, that expression for a quadratic equation already has a name in math: it's called a **discriminant**. We also need to distinguish between a local maximum and local minimum once we know that a critical point is one of the two. We can do that by recognizing that in that case, all cross-sectional graphs have the same concavity (either positive or negative), and so we can just check one graph's concavity, say $f_{xx}(a, b)$. With all that said, let's state the second derivative test!
 
-### thm -m "The second derivative test for a function of two variables"
+@thm[The second derivative test for a function of two variables][[
 
 	Let $f(x, y)$ be a differentiable function of two variables and whose second-order partial derivatives all exist and are continuous near a point $(a, b)$ where $\G f(a, b) = \vec{0}$ (we need the second condition so that we can apply Clairaut's Theorem). The **discriminant** of $f$ is
 
@@ -221,7 +224,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	Otherwise, the test is inconclusive.
 
-###
+]]({ title: "Method" })
 
 @ex[the second derivative test][[
 
@@ -265,40 +268,39 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	@solution[[
 
-	We'll start by finding the critical points, so we need the gradient.
+		We'll start by finding the critical points, so we need the gradient.
 
-	$$
-		\G g = \left< 3x^2 + 2y, -2y + 2x \right>.
-	$$
+		$$
+			\G g = \left< 3x^2 + 2y, -2y + 2x \right>.
+		$$
 
-	This is equal to $\vec{0}$ when $x = y$ and $3x^2 + 2y = 0$, so
+		This is equal to $\vec{0}$ when $x = y$ and $3x^2 + 2y = 0$, so
 
-	$$
-		3x^2 + 2x &= 0
+		$$
+			3x^2 + 2x &= 0
 
-		x\left( 3x + 2 \right) &= 0
+			x\left( 3x + 2 \right) &= 0
 
-		x &= 0, \quad x = -\frac{2}{3}.
-	$$
+			x &= 0, \quad x = -\frac{2}{3}.
+		$$
 
-	The critical points are then at $(0, 0)$ and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, and to classify them, we need the discriminant. Let's compute the second partials we need:
+		The critical points are then at $(0, 0)$ and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, and to classify them, we need the discriminant. Let's compute the second partials we need:
 
-	$$
-		g_{xx}(x, y) &= 6x
+		$$
+			g_{xx}(x, y) &= 6x
 
-		g_{xy}(x, y) &= 2
+			g_{xy}(x, y) &= 2
 
-		g_{yy}(x, y) &= -2
+			g_{yy}(x, y) &= -2
 
-		~
+			~
 
-		D(x, y) &= -12x - 4.
-	$$
+			D(x, y) &= -12x - 4.
+		$$
 
-	So $D(0, 0) = -4 < 0$ and $D\left( -\frac{2}{3}, -\frac{2}{3} \right) = 4 > 0$, which tells us that $(0, 0)$ is a saddle point and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ is a local max, since $g_{yy}\left( -\frac{2}{3}, -\frac{2}{3} \right) = -2$ is negative. Not bad!
+		So $D(0, 0) = -4 < 0$ and $D\left( -\frac{2}{3}, -\frac{2}{3} \right) = 4 > 0$, which tells us that $(0, 0)$ is a saddle point and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ is a local max, since $g_{yy}\left( -\frac{2}{3}, -\frac{2}{3} \right) = -2$ is negative. Not bad!
 
-	@desmos{secondDerivativeTest1}
-
+		@desmos{secondDerivativeTest1}
 	]]
 ]]
 
@@ -322,32 +324,31 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	@solution[[
 
-	1. Each functions has a gradient of
+		1. Each functions has a gradient of
 
-	$$
-		\left< \pm 4x^3, \pm 4y^3 \right>,
-	$$
+		$$
+			\left< \pm 4x^3, \pm 4y^3 \right>,
+		$$
 
-	which is equal to $\vec{0}$ only at $(0, 0)$. That's the unique critical point for each of them.
+		which is equal to $\vec{0}$ only at $(0, 0)$. That's the unique critical point for each of them.
 
-	2. The second partial derivatives vary, but also only by a sign. For $f$,
+		2. The second partial derivatives vary, but also only by a sign. For $f$,
 
-	$$
-		f_{xx}(x, y) &= 12x^2
+		$$
+			f_{xx}(x, y) &= 12x^2
 
-		f_{xy}(x, y) &= 0
+			f_{xy}(x, y) &= 0
 
-		f_{yy}(x, y) &= 12y^2
+			f_{yy}(x, y) &= 12y^2
 
-		D(0, 0) = 0.
-	$$
+			D(0, 0) = 0.
+		$$
 
-	Similarly, $D(0, 0) = 0$ for both $g$ and $h$, so the second derivative test is inconclusive for all three functions.
+		Similarly, $D(0, 0) = 0$ for both $g$ and $h$, so the second derivative test is inconclusive for all three functions.
 
-	3. Much like $z = x^2 + y^2$, $f(x, y) = x^4 + y^4$ has a local minimum at $(0, 0)$, $g$ has a local maximum, and $h$ has a saddle point. The result here is that a discriminant of zero really doesn't tell us anything about the critical point!
+		3. Much like $z = x^2 + y^2$, $f(x, y) = x^4 + y^4$ has a local minimum at $(0, 0)$, $g$ has a local maximum, and $h$ has a saddle point. The result here is that a discriminant of zero really doesn't tell us anything about the critical point!
 
-	@desmos{inconclusiveSecondDerivative}
-
+		@desmos{inconclusiveSecondDerivative}
 	]]
 ]]
 
@@ -437,38 +438,37 @@ Here, the blue point is at the local max of $c = 1$, but the red point at the sa
 
 	@solution[[
 
-	1. Taking the partials,
+		1. Taking the partials,
 
-	$$
-		f_x(x, y) &= 3e^y - 3x^2 = 0
+		$$
+			f_x(x, y) &= 3e^y - 3x^2 = 0
 
-		f_y(x, y) &= 3xe^y - 3e^{3y} = 0.
-	$$
+			f_y(x, y) &= 3xe^y - 3e^{3y} = 0.
+		$$
 
-	The first equation reduces to $x^2 = e^y$, and the second to $x = e^{2y}$. That means $e^{4y} = e^y$, so $4y = y$ and therefore $y = 0$. In all, $(1, 0)$ is our only critical point.
+		The first equation reduces to $x^2 = e^y$, and the second to $x = e^{2y}$. That means $e^{4y} = e^y$, so $4y = y$ and therefore $y = 0$. In all, $(1, 0)$ is our only critical point.
 
-	To classify it, we find the second partials as usual:
+		To classify it, we find the second partials as usual:
 
-	$$
-		f_{xx}(x, y) &= -6x
+		$$
+			f_{xx}(x, y) &= -6x
 
-		f_{xy}(x, y) &= 3e^y
+			f_{xy}(x, y) &= 3e^y
 
-		f_{yy}(x, y) &= -9e^{3y}
+			f_{yy}(x, y) &= -9e^{3y}
 
-		D(1, 0) &= (-6)(-9) - 3^2 = 45 > 0.
-	$$
+			D(1, 0) &= (-6)(-9) - 3^2 = 45 > 0.
+		$$
 
-	Since $f_{xx}(1, 0) = -6 < 0$, $f$ has a local maximum at $(1, 0)$.
+		Since $f_{xx}(1, 0) = -6 < 0$, $f$ has a local maximum at $(1, 0)$.
 
-	2. This is a direct calulation:
-	
-	$$
-		f(1, 0) &= 3 - 1 - 1 = 1
+		2. This is a direct calulation:
+		
+		$$
+			f(1, 0) &= 3 - 1 - 1 = 1
 
-		f(-3, 0) &= -9 - (-27) - 1 = 17.
-	$$
-
+			f(-3, 0) &= -9 - (-27) - 1 = 17.
+		$$
 	]]
 ]]
 

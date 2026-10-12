@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In this final section, we'll use Taylor series to their full extent, solving particularly difficult differential equations and integrals that were previously impossible. We've seen techniques to solve both in Caclulus II, but that was far from a complete description: for example, the differential equation
@@ -110,46 +114,46 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 
 	@solution[[
 	
-	At first glance, we might want to express this as $2^{-1/2}$ and use the Maclaurin series for $(1 + x)^{-1/2}$, but that would require setting $x = 1$, which is just barely outside the interval of convergence. Instead, we can write $\frac{1}{\sqrt{2}}$ as $\left( \frac{1}{2} \right)^{1/2}$. That way, we can use $(1 + x)^{1/2}$ with $x = -\frac{1}{2}$, which is in $(-1, 1)$.
-	
-	Let's calculate the degree-4 Maclaurin polynomial. We have
-	
-	$$
-		&\ \ \ \ \binom{1/2}{0} + \binom{1/2}{1} x + \binom{1/2}{2} x^2 + \binom{1/2}{3} x^3 + \binom{1/2}{4} x^4
+		At first glance, we might want to express this as $2^{-1/2}$ and use the Maclaurin series for $(1 + x)^{-1/2}$, but that would require setting $x = 1$, which is just barely outside the interval of convergence. Instead, we can write $\frac{1}{\sqrt{2}}$ as $\left( \frac{1}{2} \right)^{1/2}$. That way, we can use $(1 + x)^{1/2}$ with $x = -\frac{1}{2}$, which is in $(-1, 1)$.
 		
-		&= 1 + \frac{\frac{1}{2}}{1} x + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)}{2!} x^2 + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)}{3!} x^3 + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)\left(-\frac{5}{2}\right)}{4!} x^4
+		Let's calculate the degree-4 Maclaurin polynomial. We have
 		
-		&= 1 + \frac{1}{2} x - \frac{1}{8} x^2 + \frac{1}{16} x^3 - \frac{5}{128} x^4.
-	$$
-	
-	Plugging in $x = -\frac{1}{2}$ gives us
-	
-	$$
-		1 - \frac{1}{4} - \frac{1}{32} - \frac{1}{128} - \frac{5}{2048} \approx .7085.
-	$$
-	
-	To bound the error, we need to bound $|f^{(5)}(x)|$ on $\left(-\frac{1}{2}, 0\right)$. That derivative evaluates to
-	
-	$$
-		|f^{(5)}(x)| &= \left| \left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)\left(-\frac{5}{2}\right)\left(-\frac{7}{2}\right)(1 + x)^{-9/2} \right|
+		$$
+			&\ \ \ \ \binom{1/2}{0} + \binom{1/2}{1} x + \binom{1/2}{2} x^2 + \binom{1/2}{3} x^3 + \binom{1/2}{4} x^4
+			
+			&= 1 + \frac{\frac{1}{2}}{1} x + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)}{2!} x^2 + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)}{3!} x^3 + \frac{\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)\left(-\frac{5}{2}\right)}{4!} x^4
+			
+			&= 1 + \frac{1}{2} x - \frac{1}{8} x^2 + \frac{1}{16} x^3 - \frac{5}{128} x^4.
+		$$
 		
-		&= \left| \frac{\frac{105}{32}}{(1 + x)^{9/2}} \right|.
-	$$
-	
-	How large can this be? The smaller that $1 + x$ is, the larger the expression will be, so the largest it could possibly get is when $x = -\frac{1}{2}$. Then we have
-	
-	$$
-		|f^{(5)}(x)| \leq \left| \frac{\frac{105}{32}}{\left( \frac{1}{2} \right)^{9/2}} \right| \approx 74.246.
-	$$
-	
-	By Taylor's Theorem, the maximum error is then
-	
-	$$
-		\frac{74.246}{5!} \left|\left(-\frac{1}{2}\right) - 0\right|^5 \approx .0193.
-	$$
-	
-	This looks about right --- the actual value of $\frac{1}{\sqrt{2}}$ is approximately $.7071$, and our estimate was $.7085$, so the error was about $.0014$, which is definitely less than $.0193$.
-	
+		Plugging in $x = -\frac{1}{2}$ gives us
+		
+		$$
+			1 - \frac{1}{4} - \frac{1}{32} - \frac{1}{128} - \frac{5}{2048} \approx .7085.
+		$$
+		
+		To bound the error, we need to bound $|f^{(5)}(x)|$ on $\left(-\frac{1}{2}, 0\right)$. That derivative evaluates to
+		
+		$$
+			|f^{(5)}(x)| &= \left| \left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)\left(-\frac{5}{2}\right)\left(-\frac{7}{2}\right)(1 + x)^{-9/2} \right|
+			
+			&= \left| \frac{\frac{105}{32}}{(1 + x)^{9/2}} \right|.
+		$$
+		
+		How large can this be? The smaller that $1 + x$ is, the larger the expression will be, so the largest it could possibly get is when $x = -\frac{1}{2}$. Then we have
+		
+		$$
+			|f^{(5)}(x)| \leq \left| \frac{\frac{105}{32}}{\left( \frac{1}{2} \right)^{9/2}} \right| \approx 74.246.
+		$$
+		
+		By Taylor's Theorem, the maximum error is then
+		
+		$$
+			\frac{74.246}{5!} \left|\left(-\frac{1}{2}\right) - 0\right|^5 \approx .0193.
+		$$
+		
+		This looks about right --- the actual value of $\frac{1}{\sqrt{2}}$ is approximately $.7071$, and our estimate was $.7085$, so the error was about $.0014$, which is definitely less than $.0193$.
+	]]
 ]]
 
 @exc[the Maclaurin series for $(1 + x)^{3/2}$][[
@@ -157,43 +161,43 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 	Express $$(1 + x)^{3/2}$$ as a Maclaurin series, and then approximate $$1.5^{1.5}$$ with a degree-3 Maclaurin polynomial and bound the error.
 	
 	@solution[[
-	
-	Plugging this directly into the formula gives us
-	
-	$$
-		(1 + x)^{3/2} = \sum_{n = 0}^\infty \binom{3/2}{n} x^n,
-	$$
-	
-	with an interval of convergence of $(-1, 1)$. The degree $3$ polynomial is then
-	
-	$$
-		\binom{3/2}{0} + \binom{3/2}{1} x + \binom{3/2}{2} x^2 + \binom{3/2}{3} x^3.
-	$$
-	
-	We want to use $x = .5$, which is within the interval of convergence, and gives
-	
-	$$
-		1 + \frac{3}{2} (.5) + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)}{2}(.5)^2 + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)}{6}(.5)^3 \approx 1.8359.
-	$$
-	
-	To bound the error, we look at the fourth derivative of $(1 + x)^{3/2}$, which is $\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(1 + x)^{-5/2}$. The largest that can get in absolute value on $[-.5, .5]$ occurs when $x = -.5$, since $(1 + x)^{-5/2}$ is a decreasing function. We wind up with a bound of
-	
-	$$
-		M &= \left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(.5)^{-5/2}
 		
-		&= 3.182.
-	$$
-	
-	Therefore, our bound on the remainder is
-	
-	$$
-		|R_3(x)| &\leq \frac{3.182}{4!}|x - 1|^4
+		Plugging this directly into the formula gives us
 		
-		&\leq \frac{3.182}{4!}(.5)^4
+		$$
+			(1 + x)^{3/2} = \sum_{n = 0}^\infty \binom{3/2}{n} x^n,
+		$$
 		
-		&= .0083.
-	$$
-	
+		with an interval of convergence of $(-1, 1)$. The degree $3$ polynomial is then
+		
+		$$
+			\binom{3/2}{0} + \binom{3/2}{1} x + \binom{3/2}{2} x^2 + \binom{3/2}{3} x^3.
+		$$
+		
+		We want to use $x = .5$, which is within the interval of convergence, and gives
+		
+		$$
+			1 + \frac{3}{2} (.5) + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)}{2}(.5)^2 + \frac{\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)}{6}(.5)^3 \approx 1.8359.
+		$$
+		
+		To bound the error, we look at the fourth derivative of $(1 + x)^{3/2}$, which is $\left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(1 + x)^{-5/2}$. The largest that can get in absolute value on $[-.5, .5]$ occurs when $x = -.5$, since $(1 + x)^{-5/2}$ is a decreasing function. We wind up with a bound of
+		
+		$$
+			M &= \left(\frac{3}{2}\right)\left(\frac{1}{2}\right)\left(-\frac{1}{2}\right)\left(-\frac{3}{2}\right)(.5)^{-5/2}
+			
+			&= 3.182.
+		$$
+		
+		Therefore, our bound on the remainder is
+		
+		$$
+			|R_3(x)| &\leq \frac{3.182}{4!}|x - 1|^4
+			
+			&\leq \frac{3.182}{4!}(.5)^4
+			
+			&= .0083.
+		$$
+	]]
 ]]
 
 
@@ -210,72 +214,72 @@ As we mentioned in section 8, power series have the excellent property of being 
 
 	@solution[[
 	
-	We're trying to solve for $y$ here, so let's take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We're assuming that $y$ *has* a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions actually meet these criteria, most of the ones we care about do, and so it's not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
-	
-	Getting everything in terms of power series tells us that
-	
-	$$
-		\frac{\d ^2}{\d x^2} \sum_{n = 0}^\infty c_n x^n &= x \sum_{n = 0}^\infty c_n x^n
+		We're trying to solve for $y$ here, so let's take a generic power series $y = \sum_{n = 0}^\infty c_n x^n$. We're assuming that $y$ *has* a power series representation in the first place, which requires $y$ to be infinitely differentiable and also not be some sort of pathological case like $e^{-1/x^2}$. While very few functions actually meet these criteria, most of the ones we care about do, and so it's not too much to assume. Plus, the worst that can happen is that we figure out that no such representation exists and have to give up, so we might as well try.
 		
-		\sum_{n = 2}^\infty c_n(n)(n - 1) x^{n - 2} &= \sum_{n = 0}^\infty c_n x^{n + 1}.
-	$$
-	
-	In order to figure out what the $c_n$ should be, it helps to make the powers on $x$ match. To make them both $x^n$, we can start the left sum at $n = 0$ and the right sum at $n = 1$ to get
-	
-	$$
-		\sum_{n = 0}^\infty c_{n + 2}(n + 2)(n + 1) x^n = \sum_{n = 1}^\infty c_{n - 1} x^n.
-	$$
-	
-	Now we can see that $c_{n + 2}(n + 2)(n + 1) = c_{n - 1}$ for $n \geq 1$. For $n = 0$, the right sum has no $x^0$ term, so the equation is just $c_2(2)(1) = 0$. In total, our system of equations looks like this:
-	
-	$$
-		c_2 &= 0
+		Getting everything in terms of power series tells us that
 		
-		c_3 &= \frac{c_0}{3 \cdot 2}
+		$$
+			\frac{\d ^2}{\d x^2} \sum_{n = 0}^\infty c_n x^n &= x \sum_{n = 0}^\infty c_n x^n
+			
+			\sum_{n = 2}^\infty c_n(n)(n - 1) x^{n - 2} &= \sum_{n = 0}^\infty c_n x^{n + 1}.
+		$$
 		
-		c_4 &= \frac{c_1}{4 \cdot 3}
+		In order to figure out what the $c_n$ should be, it helps to make the powers on $x$ match. To make them both $x^n$, we can start the left sum at $n = 0$ and the right sum at $n = 1$ to get
 		
-		c_5 &= \frac{c_2}{5 \cdot 4}
+		$$
+			\sum_{n = 0}^\infty c_{n + 2}(n + 2)(n + 1) x^n = \sum_{n = 1}^\infty c_{n - 1} x^n.
+		$$
 		
-		c_6 &= \frac{c_3}{6 \cdot 5}
+		Now we can see that $c_{n + 2}(n + 2)(n + 1) = c_{n - 1}$ for $n \geq 1$. For $n = 0$, the right sum has no $x^0$ term, so the equation is just $c_2(2)(1) = 0$. In total, our system of equations looks like this:
 		
-		& \ \ \vdots
-	$$
-	
-	This is a little tricky to parse, but it's not too terrible. First of all, every $c_n$ satisfies $c_n = \frac{c_{n - 3}}{n(n-1)}$, so $c_5 = \frac{c_2}{20} = 0$, and similarly, $c_8 = c_{11} = \cdots = 0$. What about the others? Well, nothing tells us anything about $c_0$ or $c_1$, so we'll have to leave those as parameters (more on that in a moment). For $c_3, c_6, c_9$, and so on, we have
-	
-	$$
-		c_3 &= \frac{c_0}{3 \cdot 2}
+		$$
+			c_2 &= 0
+			
+			c_3 &= \frac{c_0}{3 \cdot 2}
+			
+			c_4 &= \frac{c_1}{4 \cdot 3}
+			
+			c_5 &= \frac{c_2}{5 \cdot 4}
+			
+			c_6 &= \frac{c_3}{6 \cdot 5}
+			
+			& \ \ \vdots
+		$$
 		
-		c_6 &= \frac{c_3}{6 \cdot 5} = \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2}
+		This is a little tricky to parse, but it's not too terrible. First of all, every $c_n$ satisfies $c_n = \frac{c_{n - 3}}{n(n-1)}$, so $c_5 = \frac{c_2}{20} = 0$, and similarly, $c_8 = c_{11} = \cdots = 0$. What about the others? Well, nothing tells us anything about $c_0$ or $c_1$, so we'll have to leave those as parameters (more on that in a moment). For $c_3, c_6, c_9$, and so on, we have
 		
-		c_9 &= \frac{c_6}{9 \cdot 8} = \frac{c_0}{9 \cdot 8 \cdot 6 \cdot 5 \cdot 3 \cdot 2}
+		$$
+			c_3 &= \frac{c_0}{3 \cdot 2}
+			
+			c_6 &= \frac{c_3}{6 \cdot 5} = \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2}
+			
+			c_9 &= \frac{c_6}{9 \cdot 8} = \frac{c_0}{9 \cdot 8 \cdot 6 \cdot 5 \cdot 3 \cdot 2}
+			
+			& \ \ \vdots
+		$$
 		
-		& \ \ \vdots
-	$$
-	
-	This is a pretty weird configuration. If we really wanted to, we could express this as a sort of "gappy factorial" by starting with $n!$ and dividing by one more than each multiple of $3$. That's a mess best left avoided, though --- let's look at the pattern for $c_1$ and not worry about getting an explicit formula.
-	
-	$$
-		c_4 &= \frac{c_1}{4 \cdot 3}
+		This is a pretty weird configuration. If we really wanted to, we could express this as a sort of "gappy factorial" by starting with $n!$ and dividing by one more than each multiple of $3$. That's a mess best left avoided, though --- let's look at the pattern for $c_1$ and not worry about getting an explicit formula.
 		
-		c_7 &= \frac{c_4}{7 \cdot 6} = \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3}
+		$$
+			c_4 &= \frac{c_1}{4 \cdot 3}
+			
+			c_7 &= \frac{c_4}{7 \cdot 6} = \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3}
+			
+			c_{10} &= \frac{c_7}{10 \cdot 9} = \frac{c_1}{10 \cdot 9 \cdot 7 \cdot 6 \cdot 4 \cdot 3}
+			
+			& \ \ \vdots
+		$$
 		
-		c_{10} &= \frac{c_7}{10 \cdot 9} = \frac{c_1}{10 \cdot 9 \cdot 7 \cdot 6 \cdot 4 \cdot 3}
+		In total, our power series expression for $y$ is
 		
-		& \ \ \vdots
-	$$
-	
-	In total, our power series expression for $y$ is
-	
-	$$
-		y &= c_0 + c_1 x + \frac{c_0}{3 \cdot 2} x^3 + \frac{c_1}{4 \cdot 3} x^4 + \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2} x^6 + \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3} x^7 + \cdots
+		$$
+			y &= c_0 + c_1 x + \frac{c_0}{3 \cdot 2} x^3 + \frac{c_1}{4 \cdot 3} x^4 + \frac{c_0}{6 \cdot 5 \cdot 3 \cdot 2} x^6 + \frac{c_1}{7 \cdot 6 \cdot 4 \cdot 3} x^7 + \cdots
+			
+			&= c_0 \left( 1 + \frac{x^3}{3 \cdot 2} + \frac{x^6}{6 \cdot 5 \cdot 3 \cdot 2} + \cdots \right) + c_1 \left( x + \frac{x^4}{4 \cdot 3} + \frac{x^7}{7 \cdot 6 \cdot 4 \cdot 3} + \cdots \right).
+		$$
 		
-		&= c_0 \left( 1 + \frac{x^3}{3 \cdot 2} + \frac{x^6}{6 \cdot 5 \cdot 3 \cdot 2} + \cdots \right) + c_1 \left( x + \frac{x^4}{4 \cdot 3} + \frac{x^7}{7 \cdot 6 \cdot 4 \cdot 3} + \cdots \right).
-	$$
-	
-	The presence of the $c_0$ and $c_1$ indicate that there are two free variables --- we can take them to be anything we like, and the equation $y'' = xy$ will still be satisfied. If we're given initial conditions, say $y(0) = 1$ and $y'(0) = 2$, then we can solve for them. In this particular case, we would have $y(0) = c_0 = 1$, and $y'(0) = c_1 = 2$.
-	
+		The presence of the $c_0$ and $c_1$ indicate that there are two free variables --- we can take them to be anything we like, and the equation $y'' = xy$ will still be satisfied. If we're given initial conditions, say $y(0) = 1$ and $y'(0) = 2$, then we can solve for them. In this particular case, we would have $y(0) = c_0 = 1$, and $y'(0) = c_1 = 2$.
+	]]
 ]]
 
 
@@ -292,64 +296,64 @@ We've seen this application before too: power series integrate term-by-term, so 
 
 	@solution[[
 	
-	This is a famously difficult integral --- it's usually the first example of one that isn't expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here --- $u$-sub would want $u = -x^2$, but $du = -2x\,\d x$ isn't present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren't present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
-	
-	$$
-		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!},
-	$$
-	
-	which is valid on $(-\infty, \infty)$, i.e. no matter what $x$ is. We need to to plug $-x^2$ in for $x$, which results in
-	
-	$$
-		e^{-x^2} &= \sum_{n = 0}^\infty \frac{(-x^2)^n}{n!}
+		This is a famously difficult integral --- it's usually the first example of one that isn't expressible in terms of elementary functions. In other words, there is no combination of polynomials, trig functions, exponentials, and logs whose derivative is $e^{-x^2}$. None of the main four integration techniques works here --- $u$-sub would want $u = -x^2$, but $du = -2x\,\d x$ isn't present anywhere, integration by parts needs two things multiplied together to work properly, and trig sub and partial fractions both need setups that aren't present here. Despite all that, $e^{-x^2}$ has a perfectly resaonable Maclaurin series representation, and we can just integrate that. First of all, the series for $e^x$ is
 		
-		&= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!}
+		$$
+			e^x = \sum_{n = 0}^\infty \frac{x^n}{n!},
+		$$
 		
-		&= -1 + x^2 - \frac{x^4}{2!} + \frac{x^6}{3!} - \cdots.
-	$$
-	
-	This series representation is valid whenever $-x^2$ is in the interval of convergence of the original series. Since that was $(-\infty, \infty)$, $-x^2$ is always in the interval of convergence, so the interval of convergence of this new series is also $(-\infty, \infty)$.
-	
-	Now we need to integrate the new series term by term. This amounts to just applying the Power Rule:
-	
-	$$
-		\int e^{-x^2}\,\d x &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\d x
+		which is valid on $(-\infty, \infty)$, i.e. no matter what $x$ is. We need to to plug $-x^2$ in for $x$, which results in
 		
-		&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\,\d x \right) + C
+		$$
+			e^{-x^2} &= \sum_{n = 0}^\infty \frac{(-x^2)^n}{n!}
+			
+			&= \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!}
+			
+			&= -1 + x^2 - \frac{x^4}{2!} + \frac{x^6}{3!} - \cdots.
+		$$
 		
-		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \int x^{2n}\,\d x \right) + C
+		This series representation is valid whenever $-x^2$ is in the interval of convergence of the original series. Since that was $(-\infty, \infty)$, $-x^2$ is always in the interval of convergence, so the interval of convergence of this new series is also $(-\infty, \infty)$.
 		
-		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C.
-	$$
-	
-	We'll finish the problem by evaluating the definite integral, but this is already pretty wild: while it's definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn't affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. We just need to use $x = 0$ and $x = 1$: specifically,
-	
-	$$
-		\int_0^1 e^{-x^2}\,\d x &= \left. \left[ \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C \right] \right|_0^1
+		Now we need to integrate the new series term by term. This amounts to just applying the Power Rule:
 		
-		&= \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1^{2n + 1}}{2n + 1} \right) + C \right) - \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{0^{2n + 1}}{2n + 1} \right) + C \right)
+		$$
+			\int e^{-x^2}\,\d x &= \int \left( \sum_{n = 0}^\infty (-1)^n \frac{x^{2n}}{n!} \right)\d x
+			
+			&= \sum_{n = 0}^\infty \left( \int (-1)^n \frac{x^{2n}}{n!}\,\d x \right) + C
+			
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \int x^{2n}\,\d x \right) + C
+			
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C.
+		$$
 		
-		&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right).
-	$$
-	
-	We can't use Taylor's Theorem to bound the error, since we don't know a closed form of the function that generates this series. However, in a happy coincidence, this is an alternating series with decreasing terms, so we can actually use the alternating series test! The remainder $R_N$ is bounded by
-	
-	$$
-		|R_N| \leq \left| \frac{1}{(N + 1)!} \cdot \frac{1}{2(N + 1) + 1} \right|,
-	$$
-	
-	so if we want that to be less than $.001$, we just need to find a large enough $N$. The factorial makes this tricky to solve explicitly, but plugging in a few values, we find that $N = 4$ bounds $|R_4|$ by $.00076 < .001$. We'll therefore use $S_4$ as our approximation, which is
-	
-	$$
-		S_4 &= \sum_{n = 0}^4 \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right)
+		We'll finish the problem by evaluating the definite integral, but this is already pretty wild: while it's definitely preferable to have a closed form of a function rather than a series representation, we were able to bypass the intractable integral immediately by passing to a Maclaurin series. And since integrating doesn't affect the interval of convergence, this is still equal to $e^{-x^2}$ for all values of $x$. We just need to use $x = 0$ and $x = 1$: specifically,
 		
-		&= \frac{5651}{7560}
+		$$
+			\int_0^1 e^{-x^2}\,\d x &= \left. \left[ \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{x^{2n + 1}}{2n + 1} \right) + C \right] \right|_0^1
+			
+			&= \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1^{2n + 1}}{2n + 1} \right) + C \right) - \left( \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{0^{2n + 1}}{2n + 1} \right) + C \right)
+			
+			&= \sum_{n = 0}^\infty \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right).
+		$$
 		
-		&\approx .7475.
-	$$
-	
-	Sure enough, the actual value is about $.7468$. As an interesting side note, the integral $\int_{-\infty}^\infty e^{-x^2}\,\d x$ is actually equal to $\sqrt{\pi}$, and is also the graph of the Normal distribution in statistics. If you're taking multivariable calculus, you'll see how to compute the $\sqrt{\pi}$ value exactly, and if you take or have taken statistics, you'll see $\sqrt{\pi}$ show up in the formula for Normal distribution functions --- this is a normalization factor that makes the total integral become exactly $1$, which is necessary for probabilities to make sense.
-	
+		We can't use Taylor's Theorem to bound the error, since we don't know a closed form of the function that generates this series. However, in a happy coincidence, this is an alternating series with decreasing terms, so we can actually use the alternating series test! The remainder $R_N$ is bounded by
+		
+		$$
+			|R_N| \leq \left| \frac{1}{(N + 1)!} \cdot \frac{1}{2(N + 1) + 1} \right|,
+		$$
+		
+		so if we want that to be less than $.001$, we just need to find a large enough $N$. The factorial makes this tricky to solve explicitly, but plugging in a few values, we find that $N = 4$ bounds $|R_4|$ by $.00076 < .001$. We'll therefore use $S_4$ as our approximation, which is
+		
+		$$
+			S_4 &= \sum_{n = 0}^4 \left( \frac{(-1)^n}{n!} \frac{1}{2n + 1} \right)
+			
+			&= \frac{5651}{7560}
+			
+			&\approx .7475.
+		$$
+		
+		Sure enough, the actual value is about $.7468$. As an interesting side note, the integral $\int_{-\infty}^\infty e^{-x^2}\,\d x$ is actually equal to $\sqrt{\pi}$, and is also the graph of the Normal distribution in statistics. If you're taking multivariable calculus, you'll see how to compute the $\sqrt{\pi}$ value exactly, and if you take or have taken statistics, you'll see $\sqrt{\pi}$ show up in the formula for Normal distribution functions --- this is a normalization factor that makes the total integral become exactly $1$, which is necessary for probabilities to make sense.
+	]]
 ]]
 
 @exc[evaluating an integral with power series][[

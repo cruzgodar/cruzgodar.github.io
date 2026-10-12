@@ -375,9 +375,14 @@ const notesEnvironmentNames =
 	aside: "Aside"
 };
 
-function notesEnvironment(type, title, body)
+// options is an optional object.
+function notesEnvironment(type, title, body, options)
 {
 	// Avoids awkward things like Theorem: The Fundamental Theorem.
+	if (options?.title)
+	{
+		return /* html */`<div class="notes-${type} notes-environment"><div class="notes-${type}-title notes-title">${options.title}: ${title}</div>${body}</div>`;
+	}
 
 	if (
 		title.toLowerCase().includes(notesEnvironmentNames[type].toLowerCase())
@@ -388,16 +393,16 @@ function notesEnvironment(type, title, body)
 	return /* html */`<div class="notes-${type} notes-environment"><div class="notes-${type}-title notes-title">${notesEnvironmentNames[type]}: ${title}</div>${body}</div>`;
 }
 
-export const ex = (title, body) => notesEnvironment("ex", title, body);
-export const exc = (title, body) => notesEnvironment("exc", title, body);
-export const def = (title, body) => notesEnvironment("def", title, body);
-export const prop = (title, body) => notesEnvironment("prop", title, body);
-export const thm = (title, body) => notesEnvironment("thm", title, body);
-export const cor = (title, body) => notesEnvironment("cor", title, body);
-export const lem = (title, body) => notesEnvironment("lem", title, body);
-export const proof = (title, body) => notesEnvironment("proof", title, body);
-export const axiom = (title, body) => notesEnvironment("axiom", title, body);
-export const aside = (title, body) => notesEnvironment("aside", title, body);
+export const ex = (title, body, options) => notesEnvironment("ex", title, body, options);
+export const exc = (title, body, options) => notesEnvironment("exc", title, body, options);
+export const def = (title, body, options) => notesEnvironment("def", title, body, options);
+export const prop = (title, body, options) => notesEnvironment("prop", title, body, options);
+export const thm = (title, body, options) => notesEnvironment("thm", title, body, options);
+export const cor = (title, body, options) => notesEnvironment("cor", title, body, options);
+export const lem = (title, body, options) => notesEnvironment("lem", title, body, options);
+export const proof = (title, body, options) => notesEnvironment("proof", title, body, options);
+export const axiom = (title, body, options) => notesEnvironment("axiom", title, body, options);
+export const aside = (title, body, options) => notesEnvironment("aside", title, body, options);
 
 
 
@@ -435,4 +440,15 @@ export function canvas(id)
 	{
 		return "<canvas id=\"output-canvas\" class=\"output-canvas\"></canvas>";
 	}
+}
+
+export function meldedDesmos(id)
+{
+	return /* html */`<div class="desmos-border no-stretch" style="position: relative">
+		<canvas id="${id}-canvas" style="width: 100%; height: 100%; border-radius: 16px; background: rgb(0, 0, 0)"></canvas>
+
+		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%">
+			<div id="${id}" class="desmos-container melded"></div>
+		</div>
+	</div>`;
 }

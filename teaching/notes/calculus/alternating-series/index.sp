@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We'll take a brief diversion from general convergence tests to talk about a particular kind of series that will come up frequently in the second half of the course. While most of the series we've considered before have had only positive entries, we'll now allow some entries to be negative --- but to keep things relatively well-behaved, we'll require a strict pattern for *which* entries are negative.
@@ -86,14 +90,14 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 
 	@solution[[
 	
-	As always, we start with the divergence test. Since $\lim_{n \to \infty} \frac{(-1)^n}{\sqrt{n}} = 0$, it's inconclusive. The integral test and both comparison tests require all positive terms, which we don't have, but the terms do alternate due to the factor of $(-1)^n$, so we can apply the alternating series test. With the alternating sign stripped off the terms, we're left with $\frac{1}{\sqrt{n}}$. Since $\sqrt{n + 1} \geq \sqrt{n}$, we have that
-	
-	$$
-		\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}},
-	$$
-	
-	which is the first condition of the alternating series test. We also know that $\sqrt{n} \to \infty$, so $\frac{1}{\sqrt{n}} \to 0$, meeting the second condition. By the alternating series test, $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
-
+		As always, we start with the divergence test. Since $\lim_{n \to \infty} \frac{(-1)^n}{\sqrt{n}} = 0$, it's inconclusive. The integral test and both comparison tests require all positive terms, which we don't have, but the terms do alternate due to the factor of $(-1)^n$, so we can apply the alternating series test. With the alternating sign stripped off the terms, we're left with $\frac{1}{\sqrt{n}}$. Since $\sqrt{n + 1} \geq \sqrt{n}$, we have that
+		
+		$$
+			\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}},
+		$$
+		
+		which is the first condition of the alternating series test. We also know that $\sqrt{n} \to \infty$, so $\frac{1}{\sqrt{n}} \to 0$, meeting the second condition. By the alternating series test, $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
+	]]
 ]]
 
 @exc[the alternating series test][[
@@ -106,16 +110,16 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 	
 	@solution[[
 	
-	1. Here, it's helpful to pull out the minus sign to get $(-1)^i \left( \frac{1}{i^i} \right)$. Since the second factor is always positive, the series is alternating, and we also have that the terms are decreasing. Since it certainly satisfies $\lim_{i \to \infty} \left( \frac{1}{i^i} \right) = 0$, the series converges by the AST.
-	
-	2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denominator says otherwise: it's often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can't apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settles down to any one for large $n$, we must have that
-	
-	$$
-		\lim_{n \to \infty} \frac{(-1)^{n+1}}{\sin(n)}
-	$$
-	
-	does not exist. Therefore, the series diverges.
-
+		1. Here, it's helpful to pull out the minus sign to get $(-1)^i \left( \frac{1}{i^i} \right)$. Since the second factor is always positive, the series is alternating, and we also have that the terms are decreasing. Since it certainly satisfies $\lim_{i \to \infty} \left( \frac{1}{i^i} \right) = 0$, the series converges by the AST.
+		
+		2. While that factor of $(-1)^{n+1}$ makes this look a lot like an alternating series, the $\sin(n)$ in the denominator says otherwise: it's often negative, without any consistent pattern for when (since $n$ is an integer and not a multiple of $\pi$). We can't apply the AST, but we can actually just use the divergence test: since neither the numerator or denominator settles down to any one for large $n$, we must have that
+		
+		$$
+			\lim_{n \to \infty} \frac{(-1)^{n+1}}{\sin(n)}
+		$$
+		
+		does not exist. Therefore, the series diverges.
+	]]
 ]]
 
 
@@ -148,36 +152,36 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 
 	@solution[[
 	
-	First, we need to make sure this satisfies the alternating series test. It is an alternating series, and we also have that
-	
-	$$
-		\lim_{n \to \infty} \frac{1}{n^3} = 0
-	$$
-	
-	and
-	
-	$$
-		\frac{1}{(n + 1)^3} \leq \frac{1}{n^3},
-	$$
-	
-	so all the conditions are met. Our series therefore converges by the alternating series test, and the $N$th remainder $R_N$ is bounded by
-	
-	$$
-		|R_N| \leq \frac{1}{(N + 1)^3}.
-	$$
-	
-	We would like $|R_N| \leq .001 = \frac{1}{1000}$, so $(N + 1)^3 \geq 1000$. Solving for $N$, we find that $N \geq 9$, so our approximation is
-	
-	$$
-		S_9 &= \sum_{n = 1}^9 \frac{(-1)^{n + 1}}{n^3}
+		First, we need to make sure this satisfies the alternating series test. It is an alternating series, and we also have that
 		
-		&= 1 - \frac{1}{8} + \frac{1}{27} - \cdots + \frac{1}{729} 
+		$$
+			\lim_{n \to \infty} \frac{1}{n^3} = 0
+		$$
 		
-		&\approx .9021.
-	$$
-	
-	The actual value turns out to be approximately $.9015$, which is within $.001$ as required!
-
+		and
+		
+		$$
+			\frac{1}{(n + 1)^3} \leq \frac{1}{n^3},
+		$$
+		
+		so all the conditions are met. Our series therefore converges by the alternating series test, and the $N$th remainder $R_N$ is bounded by
+		
+		$$
+			|R_N| \leq \frac{1}{(N + 1)^3}.
+		$$
+		
+		We would like $|R_N| \leq .001 = \frac{1}{1000}$, so $(N + 1)^3 \geq 1000$. Solving for $N$, we find that $N \geq 9$, so our approximation is
+		
+		$$
+			S_9 &= \sum_{n = 1}^9 \frac{(-1)^{n + 1}}{n^3}
+			
+			&= 1 - \frac{1}{8} + \frac{1}{27} - \cdots + \frac{1}{729} 
+			
+			&\approx .9021.
+		$$
+		
+		The actual value turns out to be approximately $.9015$, which is within $.001$ as required!
+	]]
 ]]
 
 @exc[estimating an alternating series][[
@@ -186,44 +190,44 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 	
 	@solution[[
 	
-	Since $\sqrt{n} \geq 1$ for $n \geq 1$, the series is alternating. The terms are also decreasing:
-	
-	$$
-		\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}}
+		Since $\sqrt{n} \geq 1$ for $n \geq 1$, the series is alternating. The terms are also decreasing:
 		
-		\sqrt{n + 1} \geq \sqrt{n}
+		$$
+			\frac{1}{\sqrt{n + 1}} \leq \frac{1}{\sqrt{n}}
+			
+			\sqrt{n + 1} \geq \sqrt{n}
+			
+			n + 1 \geq n
+			
+			1 \geq 0.
+		$$
 		
-		n + 1 \geq n
+		Finally, we have that $\lim_{n \to \infty} \frac{1}{\sqrt{n}} = 0$, so we can in fact apply the AST. The $N$th remainder is bounded by
 		
-		1 \geq 0.
-	$$
-	
-	Finally, we have that $\lim_{n \to \infty} \frac{1}{\sqrt{n}} = 0$, so we can in fact apply the AST. The $N$th remainder is bounded by
-	
-	$$
-		|R_N| < \frac{1}{\sqrt{N + 1}},
-	$$
-	
-	so we want
-	
-	$$
-		\frac{1}{\sqrt{N + 1}} &\leq .2
+		$$
+			|R_N| < \frac{1}{\sqrt{N + 1}},
+		$$
 		
-		\sqrt{N + 1} &\geq 5
+		so we want
 		
-		N + 1 &\geq 25
+		$$
+			\frac{1}{\sqrt{N + 1}} &\leq .2
+			
+			\sqrt{N + 1} &\geq 5
+			
+			N + 1 &\geq 25
+			
+			N &\geq 24.
+		$$
 		
-		N &\geq 24.
-	$$
-	
-	With $N = 24$, the partial sum is
-	
-	$$
-		\sum_{n = 1}^{24} \frac{(-1)^n}{\sqrt{n}} \approx -.504.
-	$$
-	
-	The actual value is about $-.605$ --- not too bad!
-
+		With $N = 24$, the partial sum is
+		
+		$$
+			\sum_{n = 1}^{24} \frac{(-1)^n}{\sqrt{n}} \approx -.504.
+		$$
+		
+		The actual value is about $-.605$ --- not too bad!
+	]]
 ]]
 
 
@@ -302,16 +306,16 @@ Series that converge conditionally have the unfortunate property that they can b
 	
 	@solution[[
 
-	First, let's check for absolute convergence. Since $\ln(k)$ is always positive, the series of absolute values is
-	
-	$$
-		\sum_{k = 2}^\infty \frac{1}{\ln(k)}.
-	$$
-	
-	As we've seen, this series can be compared to the Harmonic series: $\ln(k) \leq k$ for all $k \geq 1$, so $\frac{1}{\ln(k)} \geq \frac{1}{k}$. By the comparison test, $\sum_{k = 2}^\infty \frac{1}{\ln(k)}$ diverges, so the original alternating series does not converge absolutely.
-	
-	Let's try for conditional convergence. Since the series alternates, we can try to apply the alternating series test. Since $\ln(k + 1) \geq \ln(k)$ and $\ln(k) \to \infty$ as $k \to \infty$, we have that $\frac{1}{\ln(k + 1)} < \frac{1}{\ln(k)}$ and $\frac{1}{\ln(k)} \to 0$. Both conditions are met, so the alternating series test guarantees that $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges conditionally.
-
+		First, let's check for absolute convergence. Since $\ln(k)$ is always positive, the series of absolute values is
+		
+		$$
+			\sum_{k = 2}^\infty \frac{1}{\ln(k)}.
+		$$
+		
+		As we've seen, this series can be compared to the Harmonic series: $\ln(k) \leq k$ for all $k \geq 1$, so $\frac{1}{\ln(k)} \geq \frac{1}{k}$. By the comparison test, $\sum_{k = 2}^\infty \frac{1}{\ln(k)}$ diverges, so the original alternating series does not converge absolutely.
+		
+		Let's try for conditional convergence. Since the series alternates, we can try to apply the alternating series test. Since $\ln(k + 1) \geq \ln(k)$ and $\ln(k) \to \infty$ as $k \to \infty$, we have that $\frac{1}{\ln(k + 1)} < \frac{1}{\ln(k)}$ and $\frac{1}{\ln(k)} \to 0$. Both conditions are met, so the alternating series test guarantees that $\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$ converges conditionally.
+	]]
 ]]
 
 @exc[absolute and conditional convergence][[
@@ -320,14 +324,14 @@ Series that converge conditionally have the unfortunate property that they can b
 	
 	@solution[[
 	
-	This isn't an alternating series, since $\sin(k)$ doesn't alternate in sign. However, when we take an absolute value, we have
-	
-	$$
-		0 \leq \frac{|\sin(k)|}{k^2} \leq \frac{1}{k^2},
-	$$
-	
-	and so we can apply the comparison test against $\sum_{k = 1}^\infty \frac{1}{k^2}$ to show that $\sum_{k = 1}^\infty \frac{|\sin(k)|}{k^2}$ converges. Therefore, the original series converges absolutely.
-
+		This isn't an alternating series, since $\sin(k)$ doesn't alternate in sign. However, when we take an absolute value, we have
+		
+		$$
+			0 \leq \frac{|\sin(k)|}{k^2} \leq \frac{1}{k^2},
+		$$
+		
+		and so we can apply the comparison test against $\sum_{k = 1}^\infty \frac{1}{k^2}$ to show that $\sum_{k = 1}^\infty \frac{|\sin(k)|}{k^2}$ converges. Therefore, the original series converges absolutely.
+	]]
 ]]
 
 

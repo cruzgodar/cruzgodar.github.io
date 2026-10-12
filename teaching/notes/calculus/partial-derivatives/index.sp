@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -87,38 +91,38 @@ In fact, this is so accurate to the way that partial derivatives operate that th
 
 	@solution[[
 
-	1. We treat $y$ as if it's a constant, so
-	
-	$$
-		p/px\left[ \sin(x^2 + y) \right] &= \cos(x^2 + y) p/px \left[ x^2 + y \right]
+		1. We treat $y$ as if it's a constant, so
+		
+		$$
+			p/px\left[ \sin(x^2 + y) \right] &= \cos(x^2 + y) p/px \left[ x^2 + y \right]
 
-		&= \cos(x^2 + y) (2x).
-	$$
+			&= \cos(x^2 + y) (2x).
+		$$
 
-	2. While this might seem like a Product Rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
+		2. While this might seem like a Product Rule question, the $e^{2x}$ is an entire constant! We handle it as such and find
 
-	$$
-		p/py\left[ e^{2x}\tan(y) \right] &= e^{2x} p/py\left[ \tan(y) \right]
+		$$
+			p/py\left[ e^{2x}\tan(y) \right] &= e^{2x} p/py\left[ \tan(y) \right]
 
-		&= e^{2x} \sec^2(y).
-	$$
+			&= e^{2x} \sec^2(y).
+		$$
 
-	3. We first need to compute 
+		3. We first need to compute 
 
-	$$
-		p/pz\left[ \sqrt{x^2 + y^2 + z^2} \right] = \frac{1}{2} \left( x^2 + y^2 + z^2 \right)^{-1/2} (2z),
-	$$
+		$$
+			p/pz\left[ \sqrt{x^2 + y^2 + z^2} \right] = \frac{1}{2} \left( x^2 + y^2 + z^2 \right)^{-1/2} (2z),
+		$$
 
-	and then we can set $(x, y, z) = (2, 4, 7)$ to find
+		and then we can set $(x, y, z) = (2, 4, 7)$ to find
 
-	$$
-		g_z(2, 4, 7) &= \frac{1}{2} \left( 2^2 + 4^2 + 7^2 \right)^{-1/2} (14)
+		$$
+			g_z(2, 4, 7) &= \frac{1}{2} \left( 2^2 + 4^2 + 7^2 \right)^{-1/2} (14)
 
-		&= \frac{7}{\sqrt{69}}.
-	$$
+			&= \frac{7}{\sqrt{69}}.
+		$$
 
-	4. This partial derivative is telling us the slope of the graph along the $m$-axis when $l$ is held constant --- so given that the factory is currently using 100 pounds of material and 24 hours of labor (perhaps 3 full-time workers) per day, the additional cost per extra pound of material used per day is *approximately* \$200. It's only approximate, since the actual cost per additional pound of material is the slope of a *secant* line through the points $(100, 24, C(100, 24))$ and $(101, 24, C(101, 24))$, which this only approximates (but probably pretty well!).
-
+		4. This partial derivative is telling us the slope of the graph along the $m$-axis when $l$ is held constant --- so given that the factory is currently using 100 pounds of material and 24 hours of labor (perhaps 3 full-time workers) per day, the additional cost per extra pound of material used per day is *approximately* @{$}200. It's only approximate, since the actual cost per additional pound of material is the slope of a *secant* line through the points $(100, 24, C(100, 24))$ and $(101, 24, C(101, 24))$, which this only approximates (but probably pretty well!).
+	]]
 ]]
 
 
@@ -145,32 +149,32 @@ We call $f_{xy}$ and $f_{yx}$ **mixed partials**. We'll investigate a bit of the
 
 	Compute the mixed partial derivatives of $$f(x, y) = \frac{1}{x}\sin\left( xy^2 \right)$$.
 
-	@solution[[ 
+	@solution[[
 
-	The first-order partials are
+		The first-order partials are
 
-	$$
-		f_x(x, y) &= -x^{-2} \sin\left( xy^2 \right) + x^{-1}\cos\left( xy^2 \right)\left( y^2 \right)
+		$$
+			f_x(x, y) &= -x^{-2} \sin\left( xy^2 \right) + x^{-1}\cos\left( xy^2 \right)\left( y^2 \right)
 
-		f_y(x, y) &= x^{-1}\cos\left( xy^2 \right)(2xy)
+			f_y(x, y) &= x^{-1}\cos\left( xy^2 \right)(2xy)
 
-			&= 2y\cos\left( xy^2 \right),
-	$$
+				&= 2y\cos\left( xy^2 \right),
+		$$
 
-	and so
+		and so
 
-	$$
-		f_{xy}(x, y) &= -x^{-2} \cos\left( xy^2 \right)(2xy) + x^{-1}\left( -\sin\left( xy^2 \right)\left( 2xy \right)\left( y^2 \right) + \cos\left( xy^2 \right)\left( 2y \right) \right)
+		$$
+			f_{xy}(x, y) &= -x^{-2} \cos\left( xy^2 \right)(2xy) + x^{-1}\left( -\sin\left( xy^2 \right)\left( 2xy \right)\left( y^2 \right) + \cos\left( xy^2 \right)\left( 2y \right) \right)
 
-			&= -2x^{-1}y \cos\left( xy^2 \right) -2y^3\sin\left( xy^2 \right) + 2x^{-1}y\cos\left( xy^2 \right)
+				&= -2x^{-1}y \cos\left( xy^2 \right) -2y^3\sin\left( xy^2 \right) + 2x^{-1}y\cos\left( xy^2 \right)
 
-			&= -2y^3\sin\left( xy^2 \right)
+				&= -2y^3\sin\left( xy^2 \right)
 
-		f_{yx}(x, y) &= -2y\sin\left( xy^2 \right)\left( y^2 \right)
+			f_{yx}(x, y) &= -2y\sin\left( xy^2 \right)\left( y^2 \right)
 
-			&= -2y^3\sin\left( xy^2 \right).
-	$$
-
+				&= -2y^3\sin\left( xy^2 \right).
+		$$
+	]]
 ]]
 
 The result is a major hint to a property about partial derivatives!
@@ -273,40 +277,40 @@ That's much nicer! It also looks quite a bit like the single-variable formula fo
 
 	@solution[[
 
-	The partial derivatives are
+		The partial derivatives are
 
-	$$
-		f_x(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-2x)
+		$$
+			f_x(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-2x)
 
-		f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-6y),
-	$$
+			f_y(x, y) &= \frac{1}{2} \left( 20 - x^2 - 3y^2 \right)^{-1/2}(-6y),
+		$$
 
-	so we have
+		so we have
 
-	$$
-		f(1, 1) &= 4
+		$$
+			f(1, 1) &= 4
 
-		f_x(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-2) = -\frac{1}{4}
+			f_x(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-2) = -\frac{1}{4}
 
-		f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-6) = -\frac{3}{4}.
-	$$
+			f_y(1, 1) &= \frac{1}{2} \cdot \frac{1}{4} \cdot (-6) = -\frac{3}{4}.
+		$$
 
-	The tangent plane is then given by
+		The tangent plane is then given by
 
-	$$
-		z = 4 - \frac{1}{4}(x - 1) - \frac{3}{4}(y - 1).
-	$$
+		$$
+			z = 4 - \frac{1}{4}(x - 1) - \frac{3}{4}(y - 1).
+		$$
 
-	@desmos{tangentPlane}
+		@desmos{tangentPlane}
 
-	To approximate $f(1.5, 0.5) = \sqrt{17}$, we evaluate
+		To approximate $f(1.5, 0.5) = \sqrt{17}$, we evaluate
 
-	$$
-		4 - \frac{1}{4}(1.5 - 1) - \frac{3}{4}(0.5 - 1) = 4.25.
-	$$
+		$$
+			4 - \frac{1}{4}(1.5 - 1) - \frac{3}{4}(0.5 - 1) = 4.25.
+		$$
 
-	The actual value is about $4.123$, so that's not too far off!
-
+		The actual value is about $4.123$, so that's not too far off!
+	]]
 ]]
 
 

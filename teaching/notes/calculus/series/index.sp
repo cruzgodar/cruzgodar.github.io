@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 With a strong foundation of sequences built up, let's turn to their main application in this course: infinite series. Where a sequence is an infinite *list* of numbers, a series is an infinite *sum*. Keep in mind the course roadmap: eventually, we'll want to add up not just numbers, but monomials, forming an object that's something like a polynomial with infinitely many terms. To start with, though, we'll stick to numbers only.
@@ -32,30 +36,30 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 
 	@solution[[
 	
-	1. Expanding out the first sum, we have
-	
-	$$
-		\sum_{n = 1}^5 n = 1 + 2 + 3 + 4 + 5 = 15.
-	$$
-	
-	If you've done any programming before, series look a whole lot like `for` loops. If you get into coding in the future, `for` loops will look a lot like series. The idea is very similar to a sequence, except that we don't just write out all the terms --- we add them up, one by one.
-	
-	2. This time, the index variable is $i$, not $n$. We start it at $-2$, increase it by $1$ until it hits $2$, and add up every term we get along the way. That comes out to
-	
-	$$
-		\sum_{i = -2}^2 \frac{1}{i^2 + 1} &= \frac{1}{5} + \frac{1}{2} + 1 + \frac{1}{2} + \frac{1}{5}
+		1. Expanding out the first sum, we have
 		
-		&= \frac{12}{5}.
-	$$
-	
-	3. This one is a little weird. Our index variable is $k$, but it doesn't appear anywhere in the terms we're adding up. Instead, we're supposed to just add up a bunch of $2$s as $k$ increases. Since there are infinitely many values for $k$ to take, there are infinitely many $2$s to add up. So we get
-	
-	$$
-		\sum_{k = 0}^\infty 2 = 2 + 2 + 2 + \cdots.
-	$$
-	
-	It's pretty clear that this won't have any meaningful value, but we don't yet have the language to describe how or why. With that in mind, let's talk about what it means for a series to converge.
-	
+		$$
+			\sum_{n = 1}^5 n = 1 + 2 + 3 + 4 + 5 = 15.
+		$$
+		
+		If you've done any programming before, series look a whole lot like `for` loops. If you get into coding in the future, `for` loops will look a lot like series. The idea is very similar to a sequence, except that we don't just write out all the terms --- we add them up, one by one.
+		
+		2. This time, the index variable is $i$, not $n$. We start it at $-2$, increase it by $1$ until it hits $2$, and add up every term we get along the way. That comes out to
+		
+		$$
+			\sum_{i = -2}^2 \frac{1}{i^2 + 1} &= \frac{1}{5} + \frac{1}{2} + 1 + \frac{1}{2} + \frac{1}{5}
+			
+			&= \frac{12}{5}.
+		$$
+		
+		3. This one is a little weird. Our index variable is $k$, but it doesn't appear anywhere in the terms we're adding up. Instead, we're supposed to just add up a bunch of $2$s as $k$ increases. Since there are infinitely many values for $k$ to take, there are infinitely many $2$s to add up. So we get
+		
+		$$
+			\sum_{k = 0}^\infty 2 = 2 + 2 + 2 + \cdots.
+		$$
+		
+		It's pretty clear that this won't have any meaningful value, but we don't yet have the language to describe how or why. With that in mind, let's talk about what it means for a series to converge.
+	]]
 ]]
 
 
@@ -86,36 +90,36 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 	
 	@solution[[
 	
-	1. The first five terms are $0, 1, 2, 3,$ and $4$, and the relevant partial sums are
-	
-	$$
-		S_1 &= 0
+		1. The first five terms are $0, 1, 2, 3,$ and $4$, and the relevant partial sums are
 		
-		S_3 &= 0 + 1 + 2 = 3
+		$$
+			S_1 &= 0
+			
+			S_3 &= 0 + 1 + 2 = 3
+			
+			S_5 &= 0 + 1 + 2 + 3 + 4 = 10.
+		$$
 		
-		S_5 &= 0 + 1 + 2 + 3 + 4 = 10.
-	$$
-	
-	2. With this series, the terms are $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$, and $\frac{1}{5}$, and the partial sums are
-	
-	$$
-		S_1 &= 1
+		2. With this series, the terms are $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$, and $\frac{1}{5}$, and the partial sums are
 		
-		S_3 &= \frac{11}{6}
+		$$
+			S_1 &= 1
+			
+			S_3 &= \frac{11}{6}
+			
+			S_5 &= \frac{137}{60}.
+		$$
 		
-		S_5 &= \frac{137}{60}.
-	$$
-	
-	3. Finally, we have $\frac{2}{3}, \frac{2}{9}, \frac{2}{27}, \frac{2}{81},$ and $\frac{2}{243}$, and partial sums of
-	
-	$$
-		S_1 &= \frac{2}{3}
+		3. Finally, we have $\frac{2}{3}, \frac{2}{9}, \frac{2}{27}, \frac{2}{81},$ and $\frac{2}{243}$, and partial sums of
 		
-		S_3 &= \frac{26}{27}
-		
-		S_5 &= \frac{242}{243}.
-	$$
-	
+		$$
+			S_1 &= \frac{2}{3}
+			
+			S_3 &= \frac{26}{27}
+			
+			S_5 &= \frac{242}{243}.
+		$$
+	]]
 ]]
 
 
@@ -150,28 +154,28 @@ Notice the difference in notation between sequences and series: if a sequence $(
 
 	@solution[[
 	
-	We start by finding the partial sums. The first few are
-	
-	$$
-		S_1 &= \frac{1}{2} &=& \frac{1}{2}
+		We start by finding the partial sums. The first few are
 		
-		S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}
+		$$
+			S_1 &= \frac{1}{2} &=& \frac{1}{2}
+			
+			S_2 &= \frac{1}{2} + \frac{1}{4} &=& \frac{3}{4}
+			
+			S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}
+			
+			S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}
+		$$
 		
-		S_3 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} &=& \frac{7}{8}
+		Every term we add is half of the previous and also half of what's needed to reach $1$. Therefore, $(S_k) \to 1$, and so
 		
-		S_4 &= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} &=& \frac{15}{16}
-	$$
-	
-	Every term we add is half of the previous and also half of what's needed to reach $1$. Therefore, $(S_k) \to 1$, and so
-	
-	$$
-		\sum_{n = 1}^\infty \frac{1}{2^n} = 1.
-	$$
-	
-	It can be a little counterintuitive that adding up infinitely many numbers, even if they're getting smaller, can ever result in something finite. Conveniently, this sum in particular has a famous visualization that can make it much easier to digest. Begin with a square of side length $1$ and divide it into two equal rectangles of area $\frac{1}{2}$. Shade one and divide the other into two equal squares of area $\frac{1}{4}$. Shade one, divide the other, and repeat. As the number of divisions gets larger and larger, the unshaded area vanishes to zero, and the total area approaches $1$.
-	
-	@desmos{geometricSeries}
-	
+		$$
+			\sum_{n = 1}^\infty \frac{1}{2^n} = 1.
+		$$
+		
+		It can be a little counterintuitive that adding up infinitely many numbers, even if they're getting smaller, can ever result in something finite. Conveniently, this sum in particular has a famous visualization that can make it much easier to digest. Begin with a square of side length $1$ and divide it into two equal rectangles of area $\frac{1}{2}$. Shade one and divide the other into two equal squares of area $\frac{1}{4}$. Shade one, divide the other, and repeat. As the number of divisions gets larger and larger, the unshaded area vanishes to zero, and the total area approaches $1$.
+		
+		@desmos{geometricSeries}
+	]]
 ]]
 
 @exc[convergence of series][[
@@ -186,18 +190,18 @@ Notice the difference in notation between sequences and series: if a sequence $(
 	
 	@solution[[
 
-	1. When $k$ is even, $S_k$ is a sum of equally many $1$s and $-1$s, so $S_k = 0$. When $k$ is odd, there is one more $1$ then $-1$, so $S_k = 1$. Therefore, $(S_k)$ alternates between $0$ and $1$, so $\lim_{k \to \infty} S_k$ doesn't exist and the series diverges.
-	
-	2. Similarly to the example, every term added is $\frac{2}{3}$ of what's required to reach $1$. In symbols, $S_k = \frac{3^k - 1}{3^k}$. Since $\lim_{k \to \infty} S_k = 1$, the series converges to $1$.
-	
-	3. Following the hint, we have
-	
-	$$
-		\sum_{n = 1}^\infty \frac{1}{n} = \left( 1 \right) + \left( \frac{1}{2} \right) + \left( \frac{1}{3} + \frac{1}{4} \right) + \left( \frac{1}{5} + \cdots + \frac{1}{8} \right) + \left( \frac{1}{9} + \cdots + \frac{1}{16} \right) + \cdots.
-	$$
-	
-	in the group that ends in $\frac{1}{4}$, every previous term (just the $\frac{1}{3}$) is larger than $\frac{1}{4}$. There are two terms total, so the group is at least $2 \cdot \frac{1}{4} = \frac{1}{2}$. In the next group, every term is at least $\frac{1}{8}$, so the group is at least $4 \cdot \frac{1}{8} = \frac{1}{2}$. In fact, every group is at least $\frac{1}{2}$, and by doubling the size of each group, we'll never run out of these groups. Therefore, the series is larger than an infinite sum of $\frac{1}{2}$s, and so it diverges.
-	
+		1. When $k$ is even, $S_k$ is a sum of equally many $1$s and $-1$s, so $S_k = 0$. When $k$ is odd, there is one more $1$ then $-1$, so $S_k = 1$. Therefore, $(S_k)$ alternates between $0$ and $1$, so $\lim_{k \to \infty} S_k$ doesn't exist and the series diverges.
+		
+		2. Similarly to the example, every term added is $\frac{2}{3}$ of what's required to reach $1$. In symbols, $S_k = \frac{3^k - 1}{3^k}$. Since $\lim_{k \to \infty} S_k = 1$, the series converges to $1$.
+		
+		3. Following the hint, we have
+		
+		$$
+			\sum_{n = 1}^\infty \frac{1}{n} = \left( 1 \right) + \left( \frac{1}{2} \right) + \left( \frac{1}{3} + \frac{1}{4} \right) + \left( \frac{1}{5} + \cdots + \frac{1}{8} \right) + \left( \frac{1}{9} + \cdots + \frac{1}{16} \right) + \cdots.
+		$$
+		
+		in the group that ends in $\frac{1}{4}$, every previous term (just the $\frac{1}{3}$) is larger than $\frac{1}{4}$. There are two terms total, so the group is at least $2 \cdot \frac{1}{4} = \frac{1}{2}$. In the next group, every term is at least $\frac{1}{8}$, so the group is at least $4 \cdot \frac{1}{8} = \frac{1}{2}$. In fact, every group is at least $\frac{1}{2}$, and by doubling the size of each group, we'll never run out of these groups. Therefore, the series is larger than an infinite sum of $\frac{1}{2}$s, and so it diverges.
+	]]
 ]]
 
 
@@ -324,44 +328,44 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 	
 	@solution[[
 
-	1. Rewriting this to positive $k$ instead of a negative one (so that we can apply the theorem), we have
+		1. Rewriting this to positive $k$ instead of a negative one (so that we can apply the theorem), we have
 
-	$$
-		\sum_{k = -1}^\infty (-3)^{-k} &= \sum_{k = -1}^\infty \left( -\frac{1}{3} \right)^k.
-	$$
+		$$
+			\sum_{k = -1}^\infty (-3)^{-k} &= \sum_{k = -1}^\infty \left( -\frac{1}{3} \right)^k.
+		$$
 
-	We'd once again like to start our series at $k = 0$, so we can just handle the $k = -1$ term separately.
+		We'd once again like to start our series at $k = 0$, so we can just handle the $k = -1$ term separately.
 
-	$$
-		\sum_{k = -1}^\infty \left( -\frac{1}{3} \right)^k &= \left( -\frac{1}{3} \right)^{-1} + \sum_{k = 0}^\infty \left( -\frac{1}{3} \right)^k
+		$$
+			\sum_{k = -1}^\infty \left( -\frac{1}{3} \right)^k &= \left( -\frac{1}{3} \right)^{-1} + \sum_{k = 0}^\infty \left( -\frac{1}{3} \right)^k
 
-		&= -3 + \frac{1}{1 + \frac{1}{3}}
+			&= -3 + \frac{1}{1 + \frac{1}{3}}
 
-		&= -3 + \frac{3}{4}
+			&= -3 + \frac{3}{4}
 
-		&= -\frac{9}{4}.
-	$$
+			&= -\frac{9}{4}.
+		$$
 
-	2. Ideally, we'd like to have just one power of $k$ in our sum so that we can apply the formula for geometric series. By pulling off two factors of $3$, we get
-	
-	$$
-		\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}} &= \frac{1}{3^2}\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k - 1}}
+		2. Ideally, we'd like to have just one power of $k$ in our sum so that we can apply the formula for geometric series. By pulling off two factors of $3$, we get
 		
-		&= \frac{1}{3^2}\sum_{k = 1}^\infty \left( \frac{2}{3} \right)^{k - 1}
+		$$
+			\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k + 1}} &= \frac{1}{3^2}\sum_{k = 1}^\infty \frac{2^{k - 1}}{3^{k - 1}}
+			
+			&= \frac{1}{3^2}\sum_{k = 1}^\infty \left( \frac{2}{3} \right)^{k - 1}
+			
+			&= \frac{1}{3^2}\sum_{k = 0}^\infty \left( \frac{2}{3} \right)^k
+			
+			&= \frac{1}{3^2} \cdot \frac{1}{1 - \frac{2}{3}}
+			
+			&= \frac{1}{3^2} \cdot \frac{1}{\frac{1}{3}}
+			
+			&= \frac{1}{3^2} \cdot 3
+			
+			&= \frac{1}{3}.
+		$$
 		
-		&= \frac{1}{3^2}\sum_{k = 0}^\infty \left( \frac{2}{3} \right)^k
-		
-		&= \frac{1}{3^2} \cdot \frac{1}{1 - \frac{2}{3}}
-		
-		&= \frac{1}{3^2} \cdot \frac{1}{\frac{1}{3}}
-		
-		&= \frac{1}{3^2} \cdot 3
-		
-		&= \frac{1}{3}.
-	$$
-	
-	3. This is a geometric series with $|r| = |e| \geq 1$, so it must diverge. If it did converge, we'd care that the series started at $m = 1$ instead of $m = 0$ to apply the geometric series formula properly, but with a divergent series, it's irrelevant.
-	
+		3. This is a geometric series with $|r| = |e| \geq 1$, so it must diverge. If it did converge, we'd care that the series started at $m = 1$ instead of $m = 0$ to apply the geometric series formula properly, but with a divergent series, it's irrelevant.
+	]]
 ]]
 
 
@@ -410,14 +414,14 @@ $$
 
 	@solution[[
 	
-	This series telescopes: every $\cos \left( \frac{1}{n + 1} \right)$ cancels with the $\cos \left( \frac{1}{n} \right)$ in the next term, making the partial sums take the form
-	
-	$$
-		S_k = \cos \left( \frac{1}{1} \right) - \cos \left( \frac{1}{k + 1} \right)
-	$$
-	
-	Moreover, as $k \to \infty$, $\frac{1}{k + 1} \to 0$, so $\cos \left( \frac{1}{k + 1} \right) \to 1$. Therefore, our sum converges to $\cos(1) - 1$.
-	
+		This series telescopes: every $\cos \left( \frac{1}{n + 1} \right)$ cancels with the $\cos \left( \frac{1}{n} \right)$ in the next term, making the partial sums take the form
+		
+		$$
+			S_k = \cos \left( \frac{1}{1} \right) - \cos \left( \frac{1}{k + 1} \right)
+		$$
+		
+		Moreover, as $k \to \infty$, $\frac{1}{k + 1} \to 0$, so $\cos \left( \frac{1}{k + 1} \right) \to 1$. Therefore, our sum converges to $\cos(1) - 1$.
+	]]
 ]]
 
 @exc[a telescoping series][[
@@ -432,26 +436,26 @@ $$
 	
 	@solution[[
 
-	$$
-		\frac{1}{n(n + 1)} &= \frac{A}{n} + \frac{B}{n + 1}
+		$$
+			\frac{1}{n(n + 1)} &= \frac{A}{n} + \frac{B}{n + 1}
+			
+			1 &= A(n + 1) + Bn
+			
+			1 &= (A + B)n + A.
+		$$
 		
-		1 &= A(n + 1) + Bn
+		Now we can split this up into two equations by equating coefficients on $x$:
 		
-		1 &= (A + B)n + A.
-	$$
-	
-	Now we can split this up into two equations by equating coefficients on $x$:
-	
-	$$
-		&\begin{cases} 0 &= A + B \\ 1 &= A \end{cases}
+		$$
+			&\begin{cases} 0 &= A + B \\ 1 &= A \end{cases}
+			
+			&\begin{cases} A &= 1 \\ B &= -1 \end{cases}
+			
+			\frac{1}{n(n + 1)} &= \frac{1}{n} - \frac{1}{n + 1}.
+		$$
 		
-		&\begin{cases} A &= 1 \\ B &= -1 \end{cases}
-		
-		\frac{1}{n(n + 1)} &= \frac{1}{n} - \frac{1}{n + 1}.
-	$$
-	
-	This is now more clearly telescoping: the limit is $1 - \lim_{n \to \infty} \frac{1}{n + 1} = 1$.
-	
+		This is now more clearly telescoping: the limit is $1 - \lim_{n \to \infty} \frac{1}{n + 1} = 1$.
+	]]
 ]]
 
 

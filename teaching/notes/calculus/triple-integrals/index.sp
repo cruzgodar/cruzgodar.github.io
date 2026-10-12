@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -107,28 +111,28 @@ $$
 
 	@solution[[
 
-	@desmos{parabolaRegion}
+		@desmos{parabolaRegion}
 
-	To set up the integral in the order $\d z\,\d y\,\d x$, we'll again handle the outer two integrals first. The $xy$-bounds are given by $y \geq 0$ and the intersection of $z = x^2 + y$ with $z = 1$; that is, $x^2 + y = 1$. Since the outermost integral is taken $\d x$, we need its limits to be constants, and they're given by the intersection of $x^2 + y = 1$ with $y = 0$, resulting in $x = \pm 1$. Then the limits of the $\d y$ integral are given by solving for $y$ in terms of $x$: the lower bound is $y = 0$, and the upper one is $y = 1 - x^2$. Finally, we can express the $z$ bounds in terms of $x$ and $y$ as integrating from $z = x^2 + y$ to $z = 1$, giving us a final integral of
+		To set up the integral in the order $\d z\,\d y\,\d x$, we'll again handle the outer two integrals first. The $xy$-bounds are given by $y \geq 0$ and the intersection of $z = x^2 + y$ with $z = 1$; that is, $x^2 + y = 1$. Since the outermost integral is taken $\d x$, we need its limits to be constants, and they're given by the intersection of $x^2 + y = 1$ with $y = 0$, resulting in $x = \pm 1$. Then the limits of the $\d y$ integral are given by solving for $y$ in terms of $x$: the lower bound is $y = 0$, and the upper one is $y = 1 - x^2$. Finally, we can express the $z$ bounds in terms of $x$ and $y$ as integrating from $z = x^2 + y$ to $z = 1$, giving us a final integral of
 
-	$$
-		\int_{-1}^1 \int_0^{1 - x^2}\!\! \int_{x^2 + y}^1 (z - 2y)\,\d z\,\d y\,\d x.
-	$$
+		$$
+			\int_{-1}^1 \int_0^{1 - x^2}\!\! \int_{x^2 + y}^1 (z - 2y)\,\d z\,\d y\,\d x.
+		$$
 
-	For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$ (since $-x^2$ is maximized at $x = 0$), and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
+		For the integral taken $\d x\,\d y\,\d z$, we take the same fundamental approach, but this time start with the $yz$-plane. Now the smallest possible value of $z = x^2 + y$ given $y \geq 0$ is $z = 0$, so $z$ runs from $0$ to $1$. Solving for $y$ results in $y = z - x^2$, so the largest possible value of $y$ for a given $z$-value is $y = z$ (since $-x^2$ is maximized at $x = 0$), and therefore $y$ runs from $0$ to $z$. Finally, solving for $x$ in terms of $y$ and $z$ gives us the final bounds $x = \pm \sqrt{z - y}$, resulting in the integral
 
-	$$
-		\int_0^1 \!\! \int_0^z \!\! \int_{-\sqrt{z - y}}^{\sqrt{z - y}} (z - 2y)\,\d x\,\d y\,\d z.
-	$$
+		$$
+			\int_0^1 \!\! \int_0^z \!\! \int_{-\sqrt{z - y}}^{\sqrt{z - y}} (z - 2y)\,\d x\,\d y\,\d z.
+		$$
 
-	Finally, the $\d y\,\d z\,\d x$ integral starts in the $xz$-plane. We already know the $x$ bounds are $-1$ to $1$ from the first integral, and for the $z$ bounds, we also know that the upper one should be $1$. For the lower $z$ bound, we find the smallest $z = x^2 + y$ can be in terms of $x$, which is $x^2$, when $y = 0$. Finally, the $y$-values start at $0$ and end at $y = z - x^2$, so the integral is
+		Finally, the $\d y\,\d z\,\d x$ integral starts in the $xz$-plane. We already know the $x$ bounds are $-1$ to $1$ from the first integral, and for the $z$ bounds, we also know that the upper one should be $1$. For the lower $z$ bound, we find the smallest $z = x^2 + y$ can be in terms of $x$, which is $x^2$, when $y = 0$. Finally, the $y$-values start at $0$ and end at $y = z - x^2$, so the integral is
 
-	$$
-		\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d z\,\d x.
-	$$
+		$$
+			\int_{-1}^1 \int_{x^2}^1 \int_0^{z - x^2} (z - 2y)\,\d y\,\d z\,\d x.
+		$$
 
-	Of all of these, the first and the last look about equally preferable!
-
+		Of all of these, the first and the last look about equally preferable!
+	]]
 ]]
 
 Double integrals computed volume under a surface, but they also let us rather easily compute area of a region $R$ by integrating the function $f(x, y) = 1$ over $R$. Similarly, we can use triple integrals to compute volume.
@@ -207,40 +211,40 @@ $$
 
 	1. What do the following graphs look like in cylindrical coordinates?
 
-	> a) $r = 3$.
+	- $r = 3$.
 
-	> b) $\theta = \frac{\pi}{4}$.
+	- $\theta = \frac{\pi}{4}$.
 
-	> c) $z = 1$.
+	- $z = 1$.
 
 	2. Let $R$ be the region bounded between $z = x^2 + y^2$ and $z = 2x$. Set up the integral of $f(x, y, z) = x + y - \frac{1}{2}z$ in cylindrical coordinates over $R$, but do not solve it.
 
 	@solution[[
 
-	1. These graphs are shown below --- toggle them on one at a time (checking the Extend to 3D checkbox) to see them! The graphs are a cylinder, half-plane, and full plane, respectively.
+		1. These graphs are shown below --- toggle them on one at a time (checking the Extend to 3D checkbox) to see them! The graphs are a cylinder, half-plane, and full plane, respectively.
 
-	@desmos{cylindricalGraphs}
+		@desmos{cylindricalGraphs}
 
-	2. Translating the two $z$ bounds into cylindrical coordinates, we find $z = r^2$ and $z = 2r\cos(\theta)$. Their intersection is the entire bound for $r$ and $\theta$, so we need to solve for it. We have
+		2. Translating the two $z$ bounds into cylindrical coordinates, we find $z = r^2$ and $z = 2r\cos(\theta)$. Their intersection is the entire bound for $r$ and $\theta$, so we need to solve for it. We have
 
-	$$
-		r^2 &= 2r\cos(\theta)
+		$$
+			r^2 &= 2r\cos(\theta)
 
-		r^2 - 2r\cos(\theta) &= 0
+			r^2 - 2r\cos(\theta) &= 0
 
-		r\left(r - 2\cos(\theta) \right) &= 0
+			r\left(r - 2\cos(\theta) \right) &= 0
 
-		r &= 0, \qquad r = 2\cos(\theta)
-	$$
+			r &= 0, \qquad r = 2\cos(\theta)
+		$$
 
-	That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\cos(\theta) = 0$, so $\theta = \pm \frac{\pi}{2}$ is a nice pair of solutions that ensures the curve is traced out completely in-between, while also ensuring $\cos(\theta)$ is always positive (while $\cos$ is periodic with period $2\pi$, its graph in polar coordinates has period only $\pi$, since it traces over itself when its outputs are negative). Our integral then becomes
+		That $r = 0$ solution ended up being important, since it serves as the lower bound. These two curves intersect when $\cos(\theta) = 0$, so $\theta = \pm \frac{\pi}{2}$ is a nice pair of solutions that ensures the curve is traced out completely in-between, while also ensuring $\cos(\theta)$ is always positive (while $\cos$ is periodic with period $2\pi$, its graph in polar coordinates has period only $\pi$, since it traces over itself when its outputs are negative). Our integral then becomes
 
-	$$
-		\int_{-\pi / 2}^{\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
-	$$
+		$$
+			\int_{-\pi / 2}^{\pi / 2} \int_0^{4\cos(\theta)} \int_{r^2}^{2r\cos(\theta)} \left( r\cos(\theta) + r\sin(\theta) - \frac{1}{2}z \right)r\,\d z\,\d r\,\d\theta.
+		$$
 
-	@desmos{cylindricalIntegral}
-
+		@desmos{cylindricalIntegral}
+	]]
 ]]
 
 The change from Cartesian coordinates to polar ones in $#R#^2$ was a profound one, but now that we're comfortable with polar coordinates, moving to cylindrical doesn't feel like as large of a step: it's just replacing two of the three variables with a different coordinate system we're already familiar with. To make an equivalently large jump from Cartesian coordinates on $#R#^3$, we'd need to develop a coordinate system that measured points at least in part by their distance from the origin --- not their distance in the $xy$-plane, like $r$ in cylindrical coordinates, but the full 3D distance. Let's call such a value $\rho$, the Greek counterpart of the letter $r$. Given a value of $\rho = \sqrt{x^2 + y^2 + z^2}$, we've specified the radius of the sphere that the point $(x, y, z)$ lives on. To pinpoint it, we need to indicate *where* on the sphere it lives, ideally with exactly two more variables so that we have three total. But we've already solved that problem: it's parameterizing a sphere! We found that
@@ -323,11 +327,11 @@ That approximation becomes better and better as all three side lengths limit to 
 
 	1. What do the following graphs look like in spherical coordinates?
 
-	> a) $\rho = 3$.
+	- $\rho = 3$.
 
-	> b) $\varphi = \frac{\pi}{6}$.
+	- $\varphi = \frac{\pi}{6}$.
 
-	> c) $\theta = \frac{\pi}{4}$.
+	- $\theta = \frac{\pi}{4}$.
 
 	2. Let $R$ be the region above $\sqrt{x^2 + y^2 + z^2} + z = 1$ and below $x^2 + y^2 + z^2 = 1$. Set up the integral of $f(x, y, z) = 2x - z$ in spherical coordinates over $R$, but do not solve it.
 
@@ -335,58 +339,58 @@ That approximation becomes better and better as all three side lengths limit to 
 
 	@solution[[
 
-	1. These are a sphere, cone, and half plane, respectively. Toggle them all on to see!
+		1. These are a sphere, cone, and half plane, respectively. Toggle them all on to see!
 
-	@desmos{sphericalGraphs}
+		@desmos{sphericalGraphs}
 
-	2. The outer region is $\rho^2 = 1$, so $\rho = 1$, and the inner one is $\rho + \rho\cos(\varphi) = 1$. Solving for $\rho$,
+		2. The outer region is $\rho^2 = 1$, so $\rho = 1$, and the inner one is $\rho + \rho\cos(\varphi) = 1$. Solving for $\rho$,
 
-	$$
-		\rho = \frac{1}{1 + \cos(\varphi)}.
-	$$
+		$$
+			\rho = \frac{1}{1 + \cos(\varphi)}.
+		$$
 
-	To find the other bounds, let's look at the surfaces of intersection. Setting the two functions equal to each other,
+		To find the other bounds, let's look at the surfaces of intersection. Setting the two functions equal to each other,
 
-	$$
-		\frac{1}{1 + \cos(\varphi)} &= 1
+		$$
+			\frac{1}{1 + \cos(\varphi)} &= 1
 
-		1 + \cos(\varphi) &= 1
+			1 + \cos(\varphi) &= 1
 
-		\cos(\varphi) &= 0
+			\cos(\varphi) &= 0
 
-		\varphi &= \frac{\pi}{2},
-	$$
+			\varphi &= \frac{\pi}{2},
+		$$
 
-	which is the equation of a circle with radius $1$ (since $\rho = 1$) in the $xy$-plane. Since our solid lives above that, we're looking for $0 \leq \varphi \leq \frac{\pi}{2}$, and since there are no restrictions on $\theta$, it runs from $0$ to $2\pi$. In total, the integral is
+		which is the equation of a circle with radius $1$ (since $\rho = 1$) in the $xy$-plane. Since our solid lives above that, we're looking for $0 \leq \varphi \leq \frac{\pi}{2}$, and since there are no restrictions on $\theta$, it runs from $0$ to $2\pi$. In total, the integral is
 
-	$$
-		\int_0^{2\pi} \int_0^{\pi / 2} \int_{1/(1 + \cos(\varphi))}^1 \left( 2\rho\sin(\varphi)\cos(\theta) - \rho\cos(\varphi) \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
-	$$
+		$$
+			\int_0^{2\pi} \int_0^{\pi / 2} \int_{1/(1 + \cos(\varphi))}^1 \left( 2\rho\sin(\varphi)\cos(\theta) - \rho\cos(\varphi) \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta.
+		$$
 
-	3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. Plugging in all three spherical expressions for $x$, $y$, and $z$ would work, but we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
+		3. The first surface is $\rho = 2$ in spherical coordinates, but the second is harder. Plugging in all three spherical expressions for $x$, $y$, and $z$ would work, but we can also write it as $z^2 = 3r^2$ in cylindrical coordinates, so that $\frac{r}{z} = \frac{1}{\sqrt{3}}$. Since $\tan\left( \varphi \right) = \frac{r}{z}$, we have
 
-	$$
-		\varphi = \arctan\left( \frac{1}{\sqrt{3}} \right) = \frac{\pi}{6}.
-	$$
+		$$
+			\varphi = \arctan\left( \frac{1}{\sqrt{3}} \right) = \frac{\pi}{6}.
+		$$
 
-	Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$. Finally, if we want to find the volume, we want to integrate the function $1$. In total, the integral becomes
+		Now we can set up the integral. Since we're above the cone $\varphi = \frac{\pi}{6}$, we want $0 \leq \varphi \leq \frac{\pi}{6}$. We have $0 \leq \rho \leq 2$, since $\rho$ can get all the way down to zero on that cone, and $0 \leq \theta \leq \pi$, since only those values have $y \geq 0$. Finally, if we want to find the volume, we want to integrate the function $1$. In total, the integral becomes
 
-	$$
-		\int_0^\pi \int_0^{\pi / 6} \int_0^2 1\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta &= \int_0^\pi \int_0^{\pi / 6} \left. \left[ \frac{\rho^3}{3}\sin(\varphi) \right] \right|_0^2\d\varphi\,\d\theta
+		$$
+			\int_0^\pi \int_0^{\pi / 6} \int_0^2 1\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta &= \int_0^\pi \int_0^{\pi / 6} \left. \left[ \frac{\rho^3}{3}\sin(\varphi) \right] \right|_0^2\d\varphi\,\d\theta
 
-		&= \int_0^\pi \int_0^{\pi / 6} \frac{8}{3}\sin(\varphi)\,\d\varphi\,\d\theta
+			&= \int_0^\pi \int_0^{\pi / 6} \frac{8}{3}\sin(\varphi)\,\d\varphi\,\d\theta
 
-		&= \int_0^\pi \left. \left[ -\frac{8}{3}\cos(\varphi) \right] \right|_0^{\pi / 6}\d\theta
+			&= \int_0^\pi \left. \left[ -\frac{8}{3}\cos(\varphi) \right] \right|_0^{\pi / 6}\d\theta
 
-		&= \int_0^\pi -\frac{8}{3} \left( \frac{\sqrt{3}}{2} - 1 \right)\d\theta
+			&= \int_0^\pi -\frac{8}{3} \left( \frac{\sqrt{3}}{2} - 1 \right)\d\theta
 
-		&= \frac{8\pi}{3} \left( 1 - \frac{\sqrt{3}}{2} \right).
-	$$
+			&= \frac{8\pi}{3} \left( 1 - \frac{\sqrt{3}}{2} \right).
+		$$
 
-	This region looks a little like an ice cream cone cut in half!
+		This region looks a little like an ice cream cone cut in half!
 
-	@desmos{iceCreamCone}
-	
+		@desmos{iceCreamCone}
+	]]
 ]]
 
 

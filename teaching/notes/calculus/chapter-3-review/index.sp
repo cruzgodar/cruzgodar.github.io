@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -128,11 +132,9 @@ We'll be using limits and derivatives heavily throughout the course. I have a fu
 
 
 
-### image-links
-	
-	/teaching/uo/251 "Calculus I Notes"
-	
-###
+@imageLinks([
+	{ url: "/teaching/uo/251", name: "Calculus I Notes" }
+])
 
 
 
@@ -186,34 +188,34 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 
 	@solution[[
 	
-	As an integral, this is 
-	
-	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x.
-	$$
-	
-	Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,\d x$. Present in our integral is $x\,\d x$, not $2x\,\d x$, so we divide by $2$ to get $\frac{1}{2}\,\d u = x\,\d x$, which matches our integral. Now we have
-	
-	$$
-		\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,\d u
+		As an integral, this is 
 		
-		&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,\d u
+		$$
+			\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x.
+		$$
 		
-		&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
+		Since $\sin(x^2)$ is a composition of $\sin(x)$ and $x^2$, let's try $u$-sub. We let $u = x^2$, the inner function, and then differentiate to find that $du = 2x\,\d x$. Present in our integral is $x\,\d x$, not $2x\,\d x$, so we divide by $2$ to get $\frac{1}{2}\,\d u = x\,\d x$, which matches our integral. Now we have
 		
-		&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}
+		$$
+			\int_0^{\sqrt{\pi}} x \sin(x^2)\,\d x &= \int_0^{\sqrt{\pi}} \frac{1}{2} \sin(u)\,\d u
+			
+			&= \frac{1}{2} \int_0^{\sqrt{\pi}} \sin(u)\,\d u
+			
+			&= \frac{1}{2} \left. \left[ -\cos(u) \right] \right|_0^{\sqrt{\pi}}
+			
+			&= \frac{1}{2} \left. \left[ - \cos(x^2) \right] \right|_0^{\sqrt{\pi}}
+			
+			&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)
+			
+			&= \frac{1}{2} \left( -(-1) + 1 \right)
+			
+			&= 1.
+		$$
 		
-		&= \frac{1}{2} \left( -\cos \left( \sqrt{\pi}^2 \right) + \cos(0^2) \right)
+		Therefore, the area under the graph is exactly 1.
 		
-		&= \frac{1}{2} \left( -(-1) + 1 \right)
-		
-		&= 1.
-	$$
-	
-	Therefore, the area under the graph is exactly 1.
-	
-	@desmos{uSubExample}
-
+		@desmos{uSubExample}
+	]]
 ]]
 
 
@@ -222,11 +224,9 @@ The other commonly-used integration techniques are integration by parts, trig su
 
 
 
-### image-links
-	
-	/teaching/uo/252 "Calculus II Notes"
-	
-###
+@imageLinks([
+	{ url: "/teaching/uo/252", name: "Calculus II Notes" }
+])
 
 <div style="height: 64px"></div>
 

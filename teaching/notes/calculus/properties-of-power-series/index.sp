@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 When series only contained numbers, we just had to understand them to the extent of determining whether they converged or not. Now that the terms have variables in them --- in particular, different powers in each term, so that nothing can be combined --- we need to be more comfortable dealing with series as objects in their own right, and not just unresolved sums that may or may not converge.
@@ -36,74 +40,74 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 	@solution[[
 	
-	While we can express this as two series multiplied together, we don't really know how to handle that kind of construction yet. Instead, let's turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
-	
-	Partial fractions tells us that for some numbers $A$ and $B$,
-	
-	$$
-		\frac{5}{(1 - 2x)(1 + x^2)} = \frac{A}{1 - 2x} + \frac{Bx + C}{1 + x^2}.
-	$$
-	
-	In other words,
-	
-	$$
-		5 = A(1 + x^2) + (Bx + C)(1 - 2x) = (A + C) + (B - 2C)x + (A - 2B)x^2.
-	$$
-	
-	We then separate this into three equations by equating the coefficients.
-	
-	$$
-		5 &= A + C
+		While we can express this as two series multiplied together, we don't really know how to handle that kind of construction yet. Instead, let's turn to an old friend: partial fractions. That will let us write $f$ as the sum of two much simpler power series that we understand well, and then we can combine them using the previous proposition.
 		
-		0 &= B - 2C
+		Partial fractions tells us that for some numbers $A$ and $B$,
 		
-		0 &= A - 2B.
-	$$
-	
-	Working this out, we wind up with
-	
-	$$
-		A &= 4
+		$$
+			\frac{5}{(1 - 2x)(1 + x^2)} = \frac{A}{1 - 2x} + \frac{Bx + C}{1 + x^2}.
+		$$
 		
-		B &= 2
+		In other words,
 		
-		C &= 1.
-	$$
-	
-	Therefore, our expansion of the series $f$ becomes
-	
-	$$
-		f(x) = \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}.
-	$$
-	
-	Now all three of these terms have geometric series representations --- we looked at many like them in the last section. First of all,
-	
-	$$
-		\frac{1}{1 - 2x} = \sum_{n = 0}^\infty (2x)^n = \sum_{n = 0}^\infty (2^n x^n),
-	$$
-	
-	which converges when $|2x| < 1$, so $|x| < \frac{1}{2}$. Therefore, the interval of convergence is $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
-	
-	For the other denominator, we have
-	
-	$$
-		\frac{1}{1 + x^2} = \sum_{n = 0}^\infty (-x^2)^n = \sum_{n = 0}^\infty ((-1)^n x^{2n}).
-	$$
-	
-	This series converges when $|-x^2| < 1$, so $|x| < 1$. The interval of convergence is therefore $(-1, 1)$.
-	
-	Let's put it all together. The sum of all three terms becomes
-	
-	$$
-		f(x) &= \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}
+		$$
+			5 = A(1 + x^2) + (Bx + C)(1 - 2x) = (A + C) + (B - 2C)x + (A - 2B)x^2.
+		$$
 		
-		&= 4\sum_{n = 0}^\infty (2^n x^n) + 2x\sum_{n = 0}^\infty ((-1)^n x^{2n}) + \sum_{n = 0}^\infty ((-1)^n x^{2n})
+		We then separate this into three equations by equating the coefficients.
 		
-		&= \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n}).
-	$$
-	
-	The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one --- therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
-
+		$$
+			5 &= A + C
+			
+			0 &= B - 2C
+			
+			0 &= A - 2B.
+		$$
+		
+		Working this out, we wind up with
+		
+		$$
+			A &= 4
+			
+			B &= 2
+			
+			C &= 1.
+		$$
+		
+		Therefore, our expansion of the series $f$ becomes
+		
+		$$
+			f(x) = \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}.
+		$$
+		
+		Now all three of these terms have geometric series representations --- we looked at many like them in the last section. First of all,
+		
+		$$
+			\frac{1}{1 - 2x} = \sum_{n = 0}^\infty (2x)^n = \sum_{n = 0}^\infty (2^n x^n),
+		$$
+		
+		which converges when $|2x| < 1$, so $|x| < \frac{1}{2}$. Therefore, the interval of convergence is $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
+		
+		For the other denominator, we have
+		
+		$$
+			\frac{1}{1 + x^2} = \sum_{n = 0}^\infty (-x^2)^n = \sum_{n = 0}^\infty ((-1)^n x^{2n}).
+		$$
+		
+		This series converges when $|-x^2| < 1$, so $|x| < 1$. The interval of convergence is therefore $(-1, 1)$.
+		
+		Let's put it all together. The sum of all three terms becomes
+		
+		$$
+			f(x) &= \frac{4}{1 - 2x} + \frac{2x}{1 + x^2} + \frac{1}{1 + x^2}
+			
+			&= 4\sum_{n = 0}^\infty (2^n x^n) + 2x\sum_{n = 0}^\infty ((-1)^n x^{2n}) + \sum_{n = 0}^\infty ((-1)^n x^{2n})
+			
+			&= \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n}).
+		$$
+		
+		The two intervals of convergence are $\left( -\frac{1}{2}, \frac{1}{2} \right)$ and $(-1, 1)$, and the overlap of those two is just the first one --- therefore, the interval of convergence of our very complicated series is just $\left( -\frac{1}{2}, \frac{1}{2} \right)$.
+	]]
 ]]
 
 @exc[adding power series][[
@@ -118,46 +122,46 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 	@solution[[
 	
-	First, let's apply partial fractions and split this up. We have
-	
-	$$
-		\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}
+		First, let's apply partial fractions and split this up. We have
 		
-		6 &= A(2-x)(3-x) + B(1-x)(3-x) + C(1-x)(2-x)
+		$$
+			\frac{6}{(1 - x)(2 - x)(3 - x)} &= \frac{A}{1 - x} + \frac{B}{2 - x} + \frac{C}{3 - x}
+			
+			6 &= A(2-x)(3-x) + B(1-x)(3-x) + C(1-x)(2-x)
+			
+			6 &= 6A - 5Ax + Ax^2 + 3B - 4Bx + Bx^2 + 2C - 3Cx + Cx^2.
+		$$
 		
-		6 &= 6A - 5Ax + Ax^2 + 3B - 4Bx + Bx^2 + 2C - 3Cx + Cx^2.
-	$$
-	
-	Equating coefficients,
-	
-	$$
-		0 &= A + B + C
+		Equating coefficients,
 		
-		0 &= -5A - 4B - 3C
+		$$
+			0 &= A + B + C
+			
+			0 &= -5A - 4B - 3C
+			
+			6 &= 6A + 3B + 2C
+		$$
 		
-		6 &= 6A + 3B + 2C
-	$$
-	
-	This results in $A = 3$, $B = -6$, and $C = 3$, so the fraction splits as
-	
-	$$
-		g(x) = \frac{3}{1 - x} - \frac{6}{2 - x} + \frac{3}{3 - x}.
-	$$
-	
-	Rewriting all of them to look like $\frac{1}{1 - x}$ results in
-	
-	$$
-		g(x) &= 3 \left(\frac{1}{1 - x}\right) - 3\left( \frac{1}{1 - \frac{x}{2}} \right) + \frac{1}{1 - \frac{x}{3}}
+		This results in $A = 3$, $B = -6$, and $C = 3$, so the fraction splits as
 		
-		&= 3\sum_{n = 0}^\infty x^n - 3\sum_{n = 0}^\infty \left(\frac{x}{2}\right)^n + \sum_{n = 0}^\infty \left(\frac{x}{3}\right)^n
+		$$
+			g(x) = \frac{3}{1 - x} - \frac{6}{2 - x} + \frac{3}{3 - x}.
+		$$
 		
-		&= \sum_{n = 0}^\infty 3 x^n + \sum_{n = 0}^\infty -\frac{3}{2^n} x^n + \sum_{n = 0}^\infty \frac{1}{3^n}x^n
+		Rewriting all of them to look like $\frac{1}{1 - x}$ results in
 		
-		&= \sum_{n = 0}^\infty \left( 3 - \frac{3}{2^n} + \frac{1}{3^n} \right) x^n.
-	$$
-	
-	These three series have intervals of convergence of $(-1, 1)$, $(-2, 2)$, and $(-3, 3)$, respectively, and so the overlap is just $(-1, 1)$. The radius of convergence is then $R = 1$.
-
+		$$
+			g(x) &= 3 \left(\frac{1}{1 - x}\right) - 3\left( \frac{1}{1 - \frac{x}{2}} \right) + \frac{1}{1 - \frac{x}{3}}
+			
+			&= 3\sum_{n = 0}^\infty x^n - 3\sum_{n = 0}^\infty \left(\frac{x}{2}\right)^n + \sum_{n = 0}^\infty \left(\frac{x}{3}\right)^n
+			
+			&= \sum_{n = 0}^\infty 3 x^n + \sum_{n = 0}^\infty -\frac{3}{2^n} x^n + \sum_{n = 0}^\infty \frac{1}{3^n}x^n
+			
+			&= \sum_{n = 0}^\infty \left( 3 - \frac{3}{2^n} + \frac{1}{3^n} \right) x^n.
+		$$
+		
+		These three series have intervals of convergence of $(-1, 1)$, $(-2, 2)$, and $(-3, 3)$, respectively, and so the overlap is just $(-1, 1)$. The radius of convergence is then $R = 1$.
+	]]
 ]]
 
 
@@ -178,28 +182,28 @@ For many series, we now have the tools to go backward: determine the function it
 
 	@solution[[
 	
-	This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let's rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
-	
-	$$
-		f(x) &= \sum_{n = 1}^\infty \left( \frac{1}{4} \right)^n x^n
+		This looks a bit like a geometric series, but to apply the formula, we need every term to be raised to the power of $n$, not $-2n$. To that end, let's rewrite $2^{-2n}$ as $4^{-n} = \left(\frac{1}{4}\right)^n$, so that the series becomes
 		
-		&= \sum_{n = 1}^\infty \left( \frac{x}{4} \right)^n.
-	$$
-	
-	Now this is very close to a geometric series, but it's starting at $n = 1$ instead of $n = 0$. To remedy that, we'll start it at $0$ and then remove the first term later.
-	
-	$$
-		f(x) &= -\left( \frac{x}{4} \right)^0 + \sum_{n = 0}^\infty \left( \frac{x}{4} \right)^n
+		$$
+			f(x) &= \sum_{n = 1}^\infty \left( \frac{1}{4} \right)^n x^n
+			
+			&= \sum_{n = 1}^\infty \left( \frac{x}{4} \right)^n.
+		$$
 		
-		&= -1 + \frac{1}{1 - \frac{x}{4}}
+		Now this is very close to a geometric series, but it's starting at $n = 1$ instead of $n = 0$. To remedy that, we'll start it at $0$ and then remove the first term later.
 		
-		&= -1 + \frac{1}{\frac{4 - x}{4}}
-		
-		&= -1 + \frac{4}{4 - x}
-		
-		&= \frac{x}{4 - x}.
-	$$
-
+		$$
+			f(x) &= -\left( \frac{x}{4} \right)^0 + \sum_{n = 0}^\infty \left( \frac{x}{4} \right)^n
+			
+			&= -1 + \frac{1}{1 - \frac{x}{4}}
+			
+			&= -1 + \frac{1}{\frac{4 - x}{4}}
+			
+			&= -1 + \frac{4}{4 - x}
+			
+			&= \frac{x}{4 - x}.
+		$$
+	]]
 ]]
 
 
@@ -306,16 +310,16 @@ This is the main result about multiplying power series --- all that's left is de
 
 	@solution[[
 	
-	This is just the series for $\frac{1}{1 - x}$ multiplied by itself. Since all the coefficients are $1$, the product is
-	
-	$$
-		\frac{1}{(1 - x)^2} &= \sum_{n = 0}^\infty \left( \sum_{k = 0}^n 1 \cdot 1 \right) x^n
+		This is just the series for $\frac{1}{1 - x}$ multiplied by itself. Since all the coefficients are $1$, the product is
 		
-		&= \sum_{n = 0}^\infty (n + 1) x^n
-		
-		&= 1 + 2x + 3x^2 + 4x^3 + \cdots.
-	$$
-
+		$$
+			\frac{1}{(1 - x)^2} &= \sum_{n = 0}^\infty \left( \sum_{k = 0}^n 1 \cdot 1 \right) x^n
+			
+			&= \sum_{n = 0}^\infty (n + 1) x^n
+			
+			&= 1 + 2x + 3x^2 + 4x^3 + \cdots.
+		$$
+	]]
 ]]
 
 @exc[multiplying power series][[
@@ -330,50 +334,50 @@ This is the main result about multiplying power series --- all that's left is de
 
 	@solution[[
 	
-	Let's leave the $5$ alone for now and take a look at the other two series. We have
-	
-	$$
-		\frac{1}{1 - 2x} &= \sum_{n = 0}^\infty 2^n x^n
+		Let's leave the $5$ alone for now and take a look at the other two series. We have
 		
-		\frac{1}{1 + x^2} &= \sum_{n = 0}^\infty (-1)^n x^{2n},
-	$$
-	
-	valid on $\left(-\frac{1}{2}, \frac{1}{2}\right)$ and $(-1, 1)$, respectively. The product is a little hard to write down, since the second series has $x^{2n}$ instead of $x^n$, but we can pretty easily evaluate the first six terms:
-	
-	$$
-		2^0(-1)^0 &= 1
+		$$
+			\frac{1}{1 - 2x} &= \sum_{n = 0}^\infty 2^n x^n
+			
+			\frac{1}{1 + x^2} &= \sum_{n = 0}^\infty (-1)^n x^{2n},
+		$$
 		
-		(2^1 (-1)^0)x &= 2x
+		valid on $\left(-\frac{1}{2}, \frac{1}{2}\right)$ and $(-1, 1)$, respectively. The product is a little hard to write down, since the second series has $x^{2n}$ instead of $x^n$, but we can pretty easily evaluate the first six terms:
 		
-		(2^2 (-1)^0 + 2^0 (-1)^1) x^2 &= 3x^2
+		$$
+			2^0(-1)^0 &= 1
+			
+			(2^1 (-1)^0)x &= 2x
+			
+			(2^2 (-1)^0 + 2^0 (-1)^1) x^2 &= 3x^2
+			
+			(2^3 (-1)^0 + 2^1 (-1)^1) x^3 &= 6x^3
+			
+			(2^4 (-1)^0 + 2^2(-1)^1 + 2^0 (-1)^2)x^4 &= 13x^4
+			
+			(2^5 (-1)^0 + 2^3(-1)^1 + 2^1 (-1)^2)x^5 &= 26x^5
+		$$
 		
-		(2^3 (-1)^0 + 2^1 (-1)^1) x^3 &= 6x^3
+		This is the usual product, but we just need to be careful that the coefficients $(-1)^n$ are attached to $x^{2n}$ when figuring out what everything sums to. We also need to multiply everything by $5$, which makes the first six terms of this series become
 		
-		(2^4 (-1)^0 + 2^2(-1)^1 + 2^0 (-1)^2)x^4 &= 13x^4
+		$$
+			5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5.
+		$$
 		
-		(2^5 (-1)^0 + 2^3(-1)^1 + 2^1 (-1)^2)x^5 &= 26x^5
-	$$
-	
-	This is the usual product, but we just need to be careful that the coefficients $(-1)^n$ are attached to $x^{2n}$ when figuring out what everything sums to. We also need to multiply everything by $5$, which makes the first six terms of this series become
-	
-	$$
-		5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5.
-	$$
-	
-	Let's evaluate the explicit formula we found earlier to see if it matches.
-	
-	$$
-		&\ \ \ \ \ \ \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n})
+		Let's evaluate the explicit formula we found earlier to see if it matches.
 		
-		&= (4 + 2x + 1) + (8x - 2x^3 - x^2) + (16x^2 + 2x^5 + x^4) + (32x^3 - 2x^7 - x^6) + (64x^4 + 2x^9 + x^8) + (128x^5 - 2x^{11} - x^{10}) + \cdots
+		$$
+			&\ \ \ \ \ \ \sum_{n = 0}^\infty (4 \cdot 2^n x^n + 2 \cdot (-1)^n x^{2n + 1} + (-1)^n x^{2n})
+			
+			&= (4 + 2x + 1) + (8x - 2x^3 - x^2) + (16x^2 + 2x^5 + x^4) + (32x^3 - 2x^7 - x^6) + (64x^4 + 2x^9 + x^8) + (128x^5 - 2x^{11} - x^{10}) + \cdots
+			
+			&= 5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5 + \cdots.
+		$$
 		
-		&= 5 + 10x + 15x^2 + 30x^3 + 65x^4 + 130x^5 + \cdots.
-	$$
-	
-	We know to stop the partial sum at the term we did, since past that, there are no terms with $x^5$ or lower.
-	
-	It's remarkable that these two sums are equal despite having wildly different descriptions! We'll see more like this on a future homework.
-
+		We know to stop the partial sum at the term we did, since past that, there are no terms with $x^5$ or lower.
+		
+		It's remarkable that these two sums are equal despite having wildly different descriptions! We'll see more like this on a future homework.
+	]]
 ]]
 
 
@@ -406,60 +410,60 @@ Now that we understand how basic algebraic operations work with power series, th
 
 	@solution[[
 	
-	Since we really only know the series $\frac{1}{1 - x}$ at the moment, let's try to work with that. The connection to $\ln(x + 1)$ is that
-	
-	$$
-		\int \frac{1}{1 + x}\,\d x = \ln(1 + x) + C,
-	$$
-	
-	so we want to replace $x$ with $-x$ in $\frac{1}{1 - x}$ and integrate the series term-by-term. We have
-	
-	$$
-		\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,\d x + C
+		Since we really only know the series $\frac{1}{1 - x}$ at the moment, let's try to work with that. The connection to $\ln(x + 1)$ is that
 		
-		&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\d x + C
+		$$
+			\int \frac{1}{1 + x}\,\d x = \ln(1 + x) + C,
+		$$
 		
-		&= C + \sum_{n = 0}^\infty \int (-x)^n\,\d x
+		so we want to replace $x$ with $-x$ in $\frac{1}{1 - x}$ and integrate the series term-by-term. We have
 		
-		&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,\d x
+		$$
+			\ln(1 + x) &= \int \frac{1}{1 - (-x)}\,\d x + C
+			
+			&= \int \left(\sum_{n = 0}^\infty (-x)^n\right)\d x + C
+			
+			&= C + \sum_{n = 0}^\infty \int (-x)^n\,\d x
+			
+			&= C + \sum_{n = 0}^\infty \int (-1)^n x^n\,\d x
+			
+			&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,\d x
+			
+			&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+			
+			&= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots.
+		$$
 		
-		&= C + \sum_{n = 0}^\infty (-1)^n \int x^n\,\d x
+		Now leaving the constant $C$ in our answer is fine if we're asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it's only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we'll figure out what $C$ should be.
 		
-		&= C + \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+		$$
+			\ln(1 + 0) &= C + 0 - \frac{0^2}{2} + \frac{0^3}{3} - \cdots
+			
+			0 &= C.
+		$$
 		
-		&= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots.
-	$$
-	
-	Now leaving the constant $C$ in our answer is fine if we're asked to take the integral of some random function, but in this situation, we know that our answer is equal to $\ln(1 + x)$: it's only true for *one* value of $C$, not any. How can we figure it out? Well, $C$ is the only term of the series without an $x$, so if we plug in $x = 0$, we'll figure out what $C$ should be.
-	
-	$$
-		\ln(1 + 0) &= C + 0 - \frac{0^2}{2} + \frac{0^3}{3} - \cdots
+		Therefore, we can now say that a series representation for $\ln(1 + x)$ is
 		
-		0 &= C.
-	$$
-	
-	Therefore, we can now say that a series representation for $\ln(1 + x)$ is
-	
-	$$
-		\ln(1 + x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+		$$
+			\ln(1 + x) &= \sum_{n = 0}^\infty (-1)^n \frac{x^{n + 1}}{n + 1}
+			
+			&= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n}.
+		$$
 		
-		&= \sum_{n = 1}^\infty (-1)^{n + 1} \frac{x^n}{n}.
-	$$
-	
-	We started with $\frac{1}{1 - x}$, which has an interval of convergence of $(-1, 1)$. Replacing $x$ with $-x$ flips that horizontally, which results in the same interval. Then we integrate, which doesn't change the interval, so we still have $(-1, 1)$ at the end. What about the endpoints? The original series doesn't converge at $1$ or $-1$, but as the theorem mentioned, that doesn't provide any information about what this series does. At $x = -1$, all of the terms become negative, and we wind up with
-	
-	$$
-		\sum_{n = 1}^\infty -\frac{1}{n}.
-	$$
-	
-	That's just the Harmonic series with a minus sign in front of it, so it diverges. On the other hand, plugging in $x = 1$ gives us
-	
-	$$
-		\sum_{n = 1}^\infty (-1)^{n + 1} \frac{1}{n}.
-	$$
-	
-	In contrast, this is the *Alternating* Harmonic series, which does converge, and so the interval of convergence is $(-1, 1]$. This is an especially good example, since it slots beautifully into our existing theory of series: we know the Alternating Harmonic series converges to $\ln(2)$, and this example verifies that in a different way. When we plugged $x = 1$ into the series, the other side of the equation became $\ln(1 + 1) = \ln(2)$.
-
+		We started with $\frac{1}{1 - x}$, which has an interval of convergence of $(-1, 1)$. Replacing $x$ with $-x$ flips that horizontally, which results in the same interval. Then we integrate, which doesn't change the interval, so we still have $(-1, 1)$ at the end. What about the endpoints? The original series doesn't converge at $1$ or $-1$, but as the theorem mentioned, that doesn't provide any information about what this series does. At $x = -1$, all of the terms become negative, and we wind up with
+		
+		$$
+			\sum_{n = 1}^\infty -\frac{1}{n}.
+		$$
+		
+		That's just the Harmonic series with a minus sign in front of it, so it diverges. On the other hand, plugging in $x = 1$ gives us
+		
+		$$
+			\sum_{n = 1}^\infty (-1)^{n + 1} \frac{1}{n}.
+		$$
+		
+		In contrast, this is the *Alternating* Harmonic series, which does converge, and so the interval of convergence is $(-1, 1]$. This is an especially good example, since it slots beautifully into our existing theory of series: we know the Alternating Harmonic series converges to $\ln(2)$, and this example verifies that in a different way. When we plugged $x = 1$ into the series, the other side of the equation became $\ln(1 + 1) = \ln(2)$.
+	]]
 ]]
 
 @exc[calculus on power series][[
@@ -474,22 +478,22 @@ Now that we understand how basic algebraic operations work with power series, th
 
 	@solution[[
 	
-	In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the Chain Rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
-	
-	$$
-		f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.
-	$$
-	
-	We know from before that the interval of convergence should be $(-1, 1)$. To determine that now, we need to use the ratio test, which gives
-	
-	$$
-		r &= \lim_{n \to \infty} \left| \frac{(n + 1)x^n}{nx^{n-1}} \right|
+		In order to make $\frac{1}{1 - x}$ look like $\frac{1}{(1 - x)^2}$ through calculus, we need to differentiate it. If $f(x) = \frac{1}{1 - x}$, then $f'(x) = \frac{1}{(1 - x)^2}$, since the minus sign from bringing down the power of $-1$ cancels with the minus sign from the Chain Rule. So in order to find a series representation for $f'$, we need to differentiate the series for $f$ term-by-term. That results in
 		
-		&= |x|.
-	$$
-	
-	Therefore, the series converges at least when $|x| < 1$, so the interval of convergence is $(-1, 1)$ at the smallest. Since the ratio test is inconclusive at the endpoints, we test those too, but both $\sum_{n = 1}^\infty n(1)^{n - 1}$ and $\sum_{n = 1}^\infty n(-1)^{n - 1}$ are divergent, so the interval of convergence is just $(-1, 1)$, as we expected.
-
+		$$
+			f'(x) = \sum_{n = 1}^\infty nx^{n - 1} = 1 + 2x + 3x^2 + \cdots.
+		$$
+		
+		We know from before that the interval of convergence should be $(-1, 1)$. To determine that now, we need to use the ratio test, which gives
+		
+		$$
+			r &= \lim_{n \to \infty} \left| \frac{(n + 1)x^n}{nx^{n-1}} \right|
+			
+			&= |x|.
+		$$
+		
+		Therefore, the series converges at least when $|x| < 1$, so the interval of convergence is $(-1, 1)$ at the smallest. Since the ratio test is inconclusive at the endpoints, we test those too, but both $\sum_{n = 1}^\infty n(1)^{n - 1}$ and $\sum_{n = 1}^\infty n(-1)^{n - 1}$ are divergent, so the interval of convergence is just $(-1, 1)$, as we expected.
+	]]
 ]]
 
 
@@ -532,46 +536,46 @@ So far, we've got a good handle on how power series work and interact, and we ev
 
 	@solution[[
 	
-	Differentiating this series gives
-	
-	$$
-		c_1 + 2c_2x + 3c_3x^2 + 4c_4x^3 + \cdots.
-	$$
-	
-	Since all the coefficients must be equal, we have
-	
-	$$
-		c_1 &= c_0
+		Differentiating this series gives
 		
-		c_2 &= \frac{c_1}{2}
+		$$
+			c_1 + 2c_2x + 3c_3x^2 + 4c_4x^3 + \cdots.
+		$$
 		
-		c_3 &= \frac{c_2}{3}
+		Since all the coefficients must be equal, we have
 		
-		& \ \ \vdots
+		$$
+			c_1 &= c_0
+			
+			c_2 &= \frac{c_1}{2}
+			
+			c_3 &= \frac{c_2}{3}
+			
+			& \ \ \vdots
+			
+			c_n &= \frac{c_{n - 1}}{n}
+		$$
 		
-		c_n &= \frac{c_{n - 1}}{n}
-	$$
-	
-	This is a recursively-defined sequence! To solve it, we just need to know the initial term $c_0$. Since the series is supposed to equal $e^x$, we have that $e^0 = c_0$, since all higher powers of $x$ cancel out. Therefore, $c_0 = 1$, and so
-	
-	$$
-		c_1 &= 1
+		This is a recursively-defined sequence! To solve it, we just need to know the initial term $c_0$. Since the series is supposed to equal $e^x$, we have that $e^0 = c_0$, since all higher powers of $x$ cancel out. Therefore, $c_0 = 1$, and so
 		
-		c_2 &= \frac{1}{2}
+		$$
+			c_1 &= 1
+			
+			c_2 &= \frac{1}{2}
+			
+			c_3 &= \frac{1}{6}
+			
+			& \ \ \vdots
+			
+			c_n &= \frac{1}{n!}
+		$$
 		
-		c_3 &= \frac{1}{6}
+		In total, we must have that
 		
-		& \ \ \vdots
-		
-		c_n &= \frac{1}{n!}
-	$$
-	
-	In total, we must have that
-	
-	$$
-		e^x = \sum_{n = 0}^\infty \frac{x^n}{n!}.
-	$$
-
+		$$
+			e^x = \sum_{n = 0}^\infty \frac{x^n}{n!}.
+		$$
+	]]
 ]]
 
 

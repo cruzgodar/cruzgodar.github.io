@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -84,108 +88,108 @@ We won't prove the Divergence Theorem, but it's intuitively true for the same re
 
 	@solution[[
 
-	1. Doing this directly requires a different surface integral for each face of the cube, and while the parameterizations look doable, the flux integrals themselves don't look pleasant. Instead, we can integrate the divergence of this field through the solid cube $C$:
+		1. Doing this directly requires a different surface integral for each face of the cube, and while the parameterizations look doable, the flux integrals themselves don't look pleasant. Instead, we can integrate the divergence of this field through the solid cube $C$:
 
-	$$
-		\oiint_{\p C} \vec{G} \bullet \d \vec{\sigma} &= \iiint_C \Gbullet \vec{G}\,\d V
+		$$
+			\oiint_{\p C} \vec{G} \bullet \d \vec{\sigma} &= \iiint_C \Gbullet \vec{G}\,\d V
 
-		&= \int_0^1\int_0^1\int_0^1 \left( 6x + 0 - \pi y\sin(\pi z) \right)\d z\,\d y\,\d x
+			&= \int_0^1\int_0^1\int_0^1 \left( 6x + 0 - \pi y\sin(\pi z) \right)\d z\,\d y\,\d x
 
-		&= \int_0^1\int_0^1 \left[ 6xz + y\cos(\pi z) \right]_0^1\,\d y\,\d x
+			&= \int_0^1\int_0^1 \left[ 6xz + y\cos(\pi z) \right]_0^1\,\d y\,\d x
 
-		&= \int_0^1\int_0^1 \left( 6x - 2y \right)\d y\,\d x
+			&= \int_0^1\int_0^1 \left( 6x - 2y \right)\d y\,\d x
 
-		&= \int_0^1 \left. \left[ 6xy - y^2 \right] \right|_0^1 \d x
+			&= \int_0^1 \left. \left[ 6xy - y^2 \right] \right|_0^1 \d x
 
-		&= \int_0^1 \left( 6x - 1 \right) \d x
+			&= \int_0^1 \left( 6x - 1 \right) \d x
 
-		&= \left. \left[ 3x^2 - x \right] \right|_0^1
+			&= \left. \left[ 3x^2 - x \right] \right|_0^1
 
-		&= 2.
-	$$
+			&= 2.
+		$$
 
-	2. If we did this with a surface integral, we'd have an awful computation ahead of us: we can parameterize that surface into 4 pieces, but then all of those sines and cosines are getting raised to the power of $5$, resulting in an enormous integral. Instead, we can see what the Divergence Theorem has to offer. The triple integral over $R$ involves spheres and cones, so expressing it in spherical coordinates seems like a good idea. The outer sphere is $\rho = 1$, and the cone can be written as $z = \frac{1}{\sqrt{3}}r$ in cylindrical coordinates, meaning $\tan(\varphi) = \frac{r}{z} = \sqrt{3}$. That results in $\varphi = \frac{\pi}{3}$, and finally, the restriction to the first octant gives us $\theta$ bounds of $0$ and $\frac{\pi}{2}$. The integral then becomes
+		2. If we did this with a surface integral, we'd have an awful computation ahead of us: we can parameterize that surface into 4 pieces, but then all of those sines and cosines are getting raised to the power of $5$, resulting in an enormous integral. Instead, we can see what the Divergence Theorem has to offer. The triple integral over $R$ involves spheres and cones, so expressing it in spherical coordinates seems like a good idea. The outer sphere is $\rho = 1$, and the cone can be written as $z = \frac{1}{\sqrt{3}}r$ in cylindrical coordinates, meaning $\tan(\varphi) = \frac{r}{z} = \sqrt{3}$. That results in $\varphi = \frac{\pi}{3}$, and finally, the restriction to the first octant gives us $\theta$ bounds of $0$ and $\frac{\pi}{2}$. The integral then becomes
 
-	$$
-		\oiint_{\p R} \vec{H} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{H}\,\d V
+		$$
+			\oiint_{\p R} \vec{H} \bullet \d \vec{\sigma} &= \iiint_R \Gbullet \vec{H}\,\d V
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\left( x^2 + y^2 + z^2 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+			&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\left( x^2 + y^2 + z^2 \right)\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\rho^2\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+			&= \int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 3\rho^2\,\rho^2\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^4\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
+			&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \int_0^1 \rho^4\sin(\varphi)\,\d\rho\,\d\varphi\,\d\theta
 
-		&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \frac{1}{5}\sin(\varphi)\,\d\varphi\,\d\theta
+			&= 3\int_0^{\pi / 2} \int_0^{\pi / 3} \frac{1}{5}\sin(\varphi)\,\d\varphi\,\d\theta
 
-		&= 3\int_0^{\pi / 2} \frac{1}{5} \left. \left[ -\cos(\varphi) \right] \right|_0^{\pi / 3}\d\theta
+			&= 3\int_0^{\pi / 2} \frac{1}{5} \left. \left[ -\cos(\varphi) \right] \right|_0^{\pi / 3}\d\theta
 
-		&= 3\int_0^{\pi / 2} \frac{1}{5}\left( -\frac{1}{2} + 1 \right)\d\theta
+			&= 3\int_0^{\pi / 2} \frac{1}{5}\left( -\frac{1}{2} + 1 \right)\d\theta
 
-		&= 3\int_0^{\pi / 2} \frac{1}{10}\,\d\theta
+			&= 3\int_0^{\pi / 2} \frac{1}{10}\,\d\theta
 
-		&= \frac{3\pi}{20}.
-	$$
+			&= \frac{3\pi}{20}.
+		$$
 
-	3. This is a lot more challenging! Let's begin by writing down the Divergence Theorem for this region. If $R$ is the region whose volume we're trying to compute and $\vec{F}$ is a vector field with continuous first partials, then
+		3. This is a lot more challenging! Let's begin by writing down the Divergence Theorem for this region. If $R$ is the region whose volume we're trying to compute and $\vec{F}$ is a vector field with continuous first partials, then
 
-	$$
-		\iiint_R \Gbullet \vec{F}\,\d V &= \oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
+		$$
+			\iiint_R \Gbullet \vec{F}\,\d V &= \oiint_{\p R} \vec{F} \bullet \vec{n}\,\d\sigma.
 
-		&= \int_0^\pi \int_0^{2\pi} \vec{F} \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d \v\,\d u.
-	$$
+			&= \int_0^\pi \int_0^{2\pi} \vec{F} \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d \v\,\d u.
+		$$
 
-	Computing those partial derivatives,
+		Computing those partial derivatives,
 
-	$$
-		\vec{r}_u &= \left< \cos(u)\cos(\v),\ \cos(u)\sin(\v),\ -\sin(u) + \frac{1}{2}\sin(u)^{-1/2}\cos(u) \right>
+		$$
+			\vec{r}_u &= \left< \cos(u)\cos(\v),\ \cos(u)\sin(\v),\ -\sin(u) + \frac{1}{2}\sin(u)^{-1/2}\cos(u) \right>
 
-		\vec{r}_{\v} &= \left< -\sin(u)\sin(\v),\ \sin(u)\cos(\v),\ 0 \right>.
-	$$
+			\vec{r}_{\v} &= \left< -\sin(u)\sin(\v),\ \sin(u)\cos(\v),\ 0 \right>.
+		$$
 
-	Now we can begin to consider the structure of the problem. We want that triple integral to have an integrand of $1$, since then it will be computing the volume of $R$, so we need $\vec{F}$ to be a field whose divergence is $1$. Three options that come to mind are $\left< x, 0, 0 \right>$, $\left< 0, y, 0 \right>$, and $\left< 0, 0, z \right>$. Whatever we pick, it will be dotted with $\vec{r}_u \times \vec{r}_{\v}$, and we can see before we compute it that its first two entries will be fairly horrendous: they involve the $\sin(u)^{-1/2}\cos(u)$ term. The $z$-component, though, deals only with the fairly simple first two entries, and so it's a great choice. If we let $\vec{F} = \left< 0, 0, z \right>$, then we can compute only the third term of the cross product:
+		Now we can begin to consider the structure of the problem. We want that triple integral to have an integrand of $1$, since then it will be computing the volume of $R$, so we need $\vec{F}$ to be a field whose divergence is $1$. Three options that come to mind are $\left< x, 0, 0 \right>$, $\left< 0, y, 0 \right>$, and $\left< 0, 0, z \right>$. Whatever we pick, it will be dotted with $\vec{r}_u \times \vec{r}_{\v}$, and we can see before we compute it that its first two entries will be fairly horrendous: they involve the $\sin(u)^{-1/2}\cos(u)$ term. The $z$-component, though, deals only with the fairly simple first two entries, and so it's a great choice. If we let $\vec{F} = \left< 0, 0, z \right>$, then we can compute only the third term of the cross product:
 
-	$$
-		\vec{r}_u \times \vec{r}_{\v} &= \left< -, -, \sin(u)\cos(u)\cos^2(\v) + \sin(u)\cos(u)\sin^2(\v) \right>
+		$$
+			\vec{r}_u \times \vec{r}_{\v} &= \left< -, -, \sin(u)\cos(u)\cos^2(\v) + \sin(u)\cos(u)\sin^2(\v) \right>
 
-		&= \left< -, -, \sin(u)\cos(u) \right>.
-	$$
+			&= \left< -, -, \sin(u)\cos(u) \right>.
+		$$
 
-	Now $\Gbullet \vec{F} = 1$, and so our integral becomes
+		Now $\Gbullet \vec{F} = 1$, and so our integral becomes
 
-	$$
-		\iiint_R 1\,\d V &= \int_0^\pi \int_0^{2\pi} \left< 0, 0, z \right> \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d \v\,\d u
+		$$
+			\iiint_R 1\,\d V &= \int_0^\pi \int_0^{2\pi} \left< 0, 0, z \right> \bullet \left( \vec{r}_u \times \vec{r}_{\v} \right)\d \v\,\d u
 
-		&= \int_0^\pi \int_0^{2\pi} z\left( \sin(u)\cos(u) \right)\d \v\,\d u
+			&= \int_0^\pi \int_0^{2\pi} z\left( \sin(u)\cos(u) \right)\d \v\,\d u
 
-		&= \int_0^\pi \int_0^{2\pi} \left( \cos(u) + \sqrt{\sin(u)} \right)\left( \sin(u)\cos(u) \right)\d \v\,\d u
+			&= \int_0^\pi \int_0^{2\pi} \left( \cos(u) + \sqrt{\sin(u)} \right)\left( \sin(u)\cos(u) \right)\d \v\,\d u
 
-		&= 2\pi \int_0^\pi \left( \cos(u) + \sqrt{\sin(u)} \right)\left( \sin(u)\cos(u) \right)\d u
+			&= 2\pi \int_0^\pi \left( \cos(u) + \sqrt{\sin(u)} \right)\left( \sin(u)\cos(u) \right)\d u
 
-		&= 2\pi \int_0^\pi \left( \sin(u)\cos^2(u) + \sin^{3/2}(u)\cos(u) \right)\d u.
-	$$
+			&= 2\pi \int_0^\pi \left( \sin(u)\cos^2(u) + \sin^{3/2}(u)\cos(u) \right)\d u.
+		$$
 
-	We'll need to handle each of those terms separately, so let's split up the integral:
+		We'll need to handle each of those terms separately, so let's split up the integral:
 
-	$$
-		\iiint_R 1\,\d V &= 2\pi \int_0^\pi \sin(u)\cos^2(u)\,\d u + 2\pi \int_0^\pi \sin^{3/2}(u)\cos(u)\,\d u.
-	$$
+		$$
+			\iiint_R 1\,\d V &= 2\pi \int_0^\pi \sin(u)\cos^2(u)\,\d u + 2\pi \int_0^\pi \sin^{3/2}(u)\cos(u)\,\d u.
+		$$
 
-	For the first, let's let $w = \cos(u)$, so that $\d w = -\sin(u)\,\d u$, and for the second, we can take $t = \sin(u)$ and $\d t = \cos(u)\,\d u$. Then the integrals become
+		For the first, let's let $w = \cos(u)$, so that $\d w = -\sin(u)\,\d u$, and for the second, we can take $t = \sin(u)$ and $\d t = \cos(u)\,\d u$. Then the integrals become
 
-	$$
-		\iiint_R 1\,\d V &= 2\pi \int_0^\pi -w^2\,\d w + 2\pi \int_0^\pi t^{3/2}\,\d t
+		$$
+			\iiint_R 1\,\d V &= 2\pi \int_0^\pi -w^2\,\d w + 2\pi \int_0^\pi t^{3/2}\,\d t
 
-		&= 2\pi \left. \left[ -\frac{w^3}{3} \right] \right|_0^\pi + 2\pi \left. \left[ \frac{t^{5/2}}{5/2} \right] \right|_0^\pi
+			&= 2\pi \left. \left[ -\frac{w^3}{3} \right] \right|_0^\pi + 2\pi \left. \left[ \frac{t^{5/2}}{5/2} \right] \right|_0^\pi
 
-		&= 2\pi \left. \left[ -\frac{\cos^3(u)}{3} \right] \right|_0^\pi + 2\pi \left. \left[ \frac{\sin^{5/2}(u)}{5/2} \right] \right|_0^\pi
+			&= 2\pi \left. \left[ -\frac{\cos^3(u)}{3} \right] \right|_0^\pi + 2\pi \left. \left[ \frac{\sin^{5/2}(u)}{5/2} \right] \right|_0^\pi
 
-		&= 2\pi \left( \frac{2}{3} \right) + 0
+			&= 2\pi \left( \frac{2}{3} \right) + 0
 
-		&= \frac{4\pi}{3}.
-	$$
+			&= \frac{4\pi}{3}.
+		$$
 
-	Remarkably, this shape has exactly the same volume as the unit sphere! The graph includes a slider to remove the $\sqrt{\sin(u)}$ term, and we can see that the transformation of the sphere into this glass droplet shape does appear to be volume-preserving. Proving that would be a profoundly difficult task without calculus!
-
+		Remarkably, this shape has exactly the same volume as the unit sphere! The graph includes a slider to remove the $\sqrt{\sin(u)}$ term, and we can see that the transformation of the sphere into this glass droplet shape does appear to be volume-preserving. Proving that would be a profoundly difficult task without calculus!
+	]]
 ]]
 
 As with the previous theorems, let's take just a moment to place the Divergence Theorem in context with the other results we've established. No other result that we've seen deals with triple integrals, and only one concerns surface integrals: Stokes' Theorem, which only applies to curls of fields. For any oriented surface $S$ with oriented boundary $\p S$,

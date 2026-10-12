@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -88,38 +92,38 @@ In functionally every case, this is how we'll prefer to compute directional deri
 
 	@solution[[
 
-	For both of these, we need to start by finding the partial derivatives. We have
+		For both of these, we need to start by finding the partial derivatives. We have
 
-	$$
-		&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
+		$$
+			&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
 
-		&pf/px(2, 1) = 2 - \frac{\pi}{2}
+			&pf/px(2, 1) = 2 - \frac{\pi}{2}
 
-		&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
+			&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
 
-		&pf/py(2, 1) = 2 - \pi.
-	$$
+			&pf/py(2, 1) = 2 - \pi.
+		$$
 
-	The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
+		The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
 
-	$$
-		D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
-	$$
+		$$
+			D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
+		$$
 
-	The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
+		The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
 
-	$$
-		\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
+		$$
+			\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
 
-		&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
-	$$
+			&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
+		$$
 
-	Now
+		Now
 
-	$$
-		D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
-	$$
-
+		$$
+			D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
+		$$
+	]]
 ]]
 
 
@@ -206,16 +210,16 @@ since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and
 
 	@solution[[
 
-	We can solve all of this with the gradient! We have
+		We can solve all of this with the gradient! We have
 
-	$$
-		\G f &= \left< 2\cos(x), -5\sin(y) \right>
+		$$
+			\G f &= \left< 2\cos(x), -5\sin(y) \right>
 
-		\G f(p) &= \left< 0, -5 \right>.
-	$$
+			\G f(p) &= \left< 0, -5 \right>.
+		$$
 
-	Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
-
+		Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
+	]]
 ]]
 
 We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is orthogonal to the level curve of $f$ at $p$, and that it points in the direction of greatest increase. In just the same way, if $f$ is a function of three variables, then $\G f(p)$ is orthogonal to the level *surface* of $f$ at $p$. We can use that vector to extract an equation for a tangent plane to a level surface!
@@ -262,22 +266,22 @@ We've seen that for a function of two variables $f$, the gradient $\G f(p)$ is o
 
 	@solution[[
 
-	@desmos{tangentPlaneLevelSurface2}
+		@desmos{tangentPlaneLevelSurface2}
 
-	Viewing this as the $w = 0$ level surface of
+		Viewing this as the $w = 0$ level surface of
 
-	$$
-		w = f(x, y, z) = x^4 + y^4 + z^4 - x^2 - y^2 - z^2 + 6xyz,
-	$$
+		$$
+			w = f(x, y, z) = x^4 + y^4 + z^4 - x^2 - y^2 - z^2 + 6xyz,
+		$$
 
-	the gradient is
+		the gradient is
 
-	$$
-		\G w &= \left< 4x^3 - 2x + 6yz,\ 4y^3 - 2y + 6xz,\ 4z^3 - 2z + 6xy \right>
+		$$
+			\G w &= \left< 4x^3 - 2x + 6yz,\ 4y^3 - 2y + 6xz,\ 4z^3 - 2z + 6xy \right>
 
-		\G w(2, -1, 2) &= \left< 16, 22, 16 \right>.
-	$$
-
+			\G w(2, -1, 2) &= \left< 16, 22, 16 \right>.
+		$$
+	]]
 ]]
 
 While this method does produce a tangent plane regardless of how the surface is defined, it certainly doesn't look much like the usual way we make tangent planes! If we'd used this method on an explicit function $z = f(x, y)$ to find a tangent plane at $(a, b, f(a, b))$, we'd gather everything on one side to get $f(x, y) - z = 0$, then differentiate to get a gradient of $\left< pf/px, pf/py, -1 \right>$. The tangent plane would then be

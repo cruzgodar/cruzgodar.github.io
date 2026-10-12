@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -136,24 +140,24 @@ A notion in Calculus II that is occasionally omitted is the **average value** of
 
 	@solution[[
 
-	While neither one of these looks completely appealing, integrating $\d x$ first seems like the better option --- doing $\d y$ first would require integration by parts. Since the area of $R$ is $1$, the average value is just the integral itself:
+		While neither one of these looks completely appealing, integrating $\d x$ first seems like the better option --- doing $\d y$ first would require integration by parts. Since the area of $R$ is $1$, the average value is just the integral itself:
 
-	$$
-		& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\d x\,\d y
+		$$
+			& \quad \int_1^2 \!\!\! \int_{-1}^0 \left( y\sin(\pi xy) + 3x^2 \right)\d x\,\d y
 
-		&= \int_1^2 \left. \left[ -y\cos(\pi xy) \frac{1}{\pi y} + x^3 \right] \right|_{-1}^0\,\d y
+			&= \int_1^2 \left. \left[ -y\cos(\pi xy) \frac{1}{\pi y} + x^3 \right] \right|_{-1}^0\,\d y
 
-		&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\d y
+			&= \int_1^2 \left( -\frac{1}{\pi}\cos(0) + 0^3 + \frac{1}{\pi}\cos(-\pi y) - (-1)^3 \right)\d y
 
-		&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\d y
+			&= \int_1^2 \left( -\frac{1}{\pi} + \frac{1}{\pi}\cos(\pi y) + 1 \right)\d y
 
-		&= \left. \left[ -\frac{1}{\pi}y + \frac{1}{\pi^2}\sin(\pi y) + y \right] \right|_1^2
+			&= \left. \left[ -\frac{1}{\pi}y + \frac{1}{\pi^2}\sin(\pi y) + y \right] \right|_1^2
 
-		&= -\frac{2}{\pi} + \frac{1}{\pi^2}\sin(2\pi) + 2 + \frac{1}{\pi} - \frac{1}{\pi^2}\sin(\pi) - 1
+			&= -\frac{2}{\pi} + \frac{1}{\pi^2}\sin(2\pi) + 2 + \frac{1}{\pi} - \frac{1}{\pi^2}\sin(\pi) - 1
 
-		&= 1 - \frac{1}{\pi}.
-	$$
-
+			&= 1 - \frac{1}{\pi}.
+		$$
+	]]
 ]]
 
 
@@ -200,26 +204,26 @@ In practice, we'll often choose between the two different orders of integration 
 
 	@solution[[
 
-	Let's begin as usual by sketching the region.
+		Let's begin as usual by sketching the region.
 
-	@desmos{regions2dExc}
+		@desmos{regions2dExc}
 
-	While we *could* try to set this integral up $\d x\,\d y$, that is an abominable prospect. Drawing horizontal lines shows us that we'd need four regions total since the bounds change so much: two for the two halves below the $x$-axis, one for the top region (bounded by $x = \arcsin(y - 1)$ and $x = \frac{\pi}{2}$), and one more for the middle segment. Those functions --- particularly the $\arcsin$ --- are bad enough that that integral is probably not even solvable! Let's try $\d y\,\d x$ instead.
+		While we *could* try to set this integral up $\d x\,\d y$, that is an abominable prospect. Drawing horizontal lines shows us that we'd need four regions total since the bounds change so much: two for the two halves below the $x$-axis, one for the top region (bounded by $x = \arcsin(y - 1)$ and $x = \frac{\pi}{2}$), and one more for the middle segment. Those functions --- particularly the $\arcsin$ --- are bad enough that that integral is probably not even solvable! Let's try $\d y\,\d x$ instead.
 
-	This time, the top and bottom bounds are given by $\sin(x) + 1$ and $-x^2$, and the left and right bounds by $x = -\frac{\pi}{2}$ and $x = \frac{\pi}{2}$. In total, the volume is
+		This time, the top and bottom bounds are given by $\sin(x) + 1$ and $-x^2$, and the left and right bounds by $x = -\frac{\pi}{2}$ and $x = \frac{\pi}{2}$. In total, the volume is
 
-	$$
-		\int_{-\pi / 3}^{\pi / 3} \int_{-\sec(x)}^{\sin(x) + 1} \cos(x)\,\d y\,\d x &= \int_{-\pi / 3}^{\pi / 3} \left. \left[ y\cos(x) \right] \right|_{-\sec(x)}^{\sin(x) + 1}\,\d x
+		$$
+			\int_{-\pi / 3}^{\pi / 3} \int_{-\sec(x)}^{\sin(x) + 1} \cos(x)\,\d y\,\d x &= \int_{-\pi / 3}^{\pi / 3} \left. \left[ y\cos(x) \right] \right|_{-\sec(x)}^{\sin(x) + 1}\,\d x
 
-		&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\d x
+			&= \int_{-\pi / 3}^{\pi / 3} \left( \sin(x)\cos(x) + \cos(x) + 1 \right)\d x
 
-		&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\d x
+			&= \int_{-\pi / 3}^{\pi / 3} \left( \frac{1}{2}\sin(2x) + \cos(x) + 1 \right)\d x
 
-		&= \left. \left[ -\frac{1}{4}\cos(2x) + \sin(x) + x \right] \right|_{-\pi / 3}^{\pi / 3}
+			&= \left. \left[ -\frac{1}{4}\cos(2x) + \sin(x) + x \right] \right|_{-\pi / 3}^{\pi / 3}
 
-		&= \sqrt{3} + \frac{2\pi}{3}.
-	$$
-
+			&= \sqrt{3} + \frac{2\pi}{3}.
+		$$
+	]]
 ]]
 
 Sometimes, we'll want to or need to change the order of integration ourselves!
@@ -304,25 +308,26 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 	@solution[[
 
-	Let's begin by sketching the region --- that's generally a good way to approach any problem involving double integrals.
+		Let's begin by sketching the region --- that's generally a good way to approach any problem involving double integrals.
 
-	@desmos{swappingOrder}
+		@desmos{swappingOrder}
 
-	To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the red function to the blue one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
+		To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the red function to the blue one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
 
-	$$
-		x &= \sqrt[3]{y}
+		$$
+			x &= \sqrt[3]{y}
 
-		(x - 2)^2 &= 8 - y
+			(x - 2)^2 &= 8 - y
 
-		x &= 2 \pm \sqrt{8 - y}.
-	$$
+			x &= 2 \pm \sqrt{8 - y}.
+		$$
 
-	We want the negative version, since this graph is extending out toward negative $x$-values. In total, our new integral is
+		We want the negative version, since this graph is extending out toward negative $x$-values. In total, our new integral is
 
-	$$
-		\int_{-1}^8 \int_{\sqrt[3]{y}}^{2 - \sqrt{8 - y}} f(x, y)\,\d x\,\d y
-	$$
+		$$
+			\int_{-1}^8 \int_{\sqrt[3]{y}}^{2 - \sqrt{8 - y}} f(x, y)\,\d x\,\d y
+		$$
+	]]
 ]]
 
 @exc[changing the order of integration][[
@@ -333,17 +338,18 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 	@solution[[
 
-	Similarly to the previous exercise, we can start with the intersection points. We have $(0, 0)$, $(1, 1)$, and $(2, 2)$; $y = \frac{x^2}{2}$ is always the bottom function, but the top function switches at $x = 1$, and so in total we have
+		Similarly to the previous exercise, we can start with the intersection points. We have $(0, 0)$, $(1, 1)$, and $(2, 2)$; $y = \frac{x^2}{2}$ is always the bottom function, but the top function switches at $x = 1$, and so in total we have
 
-	$$
-		\int_0^1 \int_{x^2 / 2}^{\tan\left( \frac{\pi}{4} x \right)} xy\,\d y\,\d x + \int_1^2 \int_{x^2 / 2}^{x} xy\,\d y\,\d x.
-	$$
+		$$
+			\int_0^1 \int_{x^2 / 2}^{\tan\left( \frac{\pi}{4} x \right)} xy\,\d y\,\d x + \int_1^2 \int_{x^2 / 2}^{x} xy\,\d y\,\d x.
+		$$
 
-	To express the same volume as an integral $\d x\,\d y$, we need to express all the bounds as $x$ given by a function of $y$. The only one of those that poses some extra difficulty is $y = \frac{x^2}{2}$: when we solve for $x$, we get $x = \pm\sqrt{2y}$, and we want the positive branch since $x$ is positive (and more importantly, becoming larger over time). Now we have
+		To express the same volume as an integral $\d x\,\d y$, we need to express all the bounds as $x$ given by a function of $y$. The only one of those that poses some extra difficulty is $y = \frac{x^2}{2}$: when we solve for $x$, we get $x = \pm\sqrt{2y}$, and we want the positive branch since $x$ is positive (and more importantly, becoming larger over time). Now we have
 
-	$$
-		\int_0^1 \int_{(4/\pi)\arctan(y)}^{\sqrt{2y}} xy\,\d y\,\d x + \int_1^2 \int_y^{\sqrt{2y}} xy\,\d y\,\d x.
-	$$
+		$$
+			\int_0^1 \int_{(4/\pi)\arctan(y)}^{\sqrt{2y}} xy\,\d y\,\d x + \int_1^2 \int_y^{\sqrt{2y}} xy\,\d y\,\d x.
+		$$
+	]]
 ]]
 
 At this point, we can write down a few useful properties of double integrals --- nothing here is too groundbreaking, but it's good to get our bearings a little.
@@ -500,56 +506,56 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 
 	@solution[[
 
-	1. This region is a polar rectangle:
-	
-	@desmos{polarIntegral1}
-
-	We can directly translate those bounds into integral limits, but the function itself takes a bit more work. By factoring out an $xy$, we find
-
-	$$
-		(xy)\left( x^2 + y^2 \right) &= r\cos(\theta)\,r\sin(\theta)r^2
-
-		&= r^4\cos(\theta)\sin(\theta)
+		1. This region is a polar rectangle:
 		
-		&= \frac{1}{2}r^4\sin(2\theta).
-	$$
+		@desmos{polarIntegral1}
 
-	The integral is then
+		We can directly translate those bounds into integral limits, but the function itself takes a bit more work. By factoring out an $xy$, we find
 
-	$$
-		\int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^4\sin(2\theta)\,r\,\d r\,\d \theta = \int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^5\sin(2\theta)\,\d r\,\d \theta.
-	$$
+		$$
+			(xy)\left( x^2 + y^2 \right) &= r\cos(\theta)\,r\sin(\theta)r^2
 
-	2. This time around, the region is an intersection of two circles.
+			&= r^4\cos(\theta)\sin(\theta)
+			
+			&= \frac{1}{2}r^4\sin(2\theta).
+		$$
 
-	@desmos{polarIntegral2}
+		The integral is then
 
-	They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the red circle $r = \sin(\theta)$ as an upper limit until then, followed by the blue circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
+		$$
+			\int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^4\sin(2\theta)\,r\,\d r\,\d \theta = \int_{\pi / 3}^{7\pi / 6} \int_2^3 \frac{1}{2}r^5\sin(2\theta)\,\d r\,\d \theta.
+		$$
 
-	$$
-		\int_{0}^{\pi/4} \int_0^{\sin(\theta)} r\,\d r\,\d \theta + \int_{\pi/4}^{\pi/2} \int_0^{\cos(\theta)} r\,\d r\,\d \theta.
-	$$
+		2. This time around, the region is an intersection of two circles.
 
-	3. This region is a little bizarre!
+		@desmos{polarIntegral2}
 
-	@desmos{polarIntegral3}
+		They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the red circle $r = \sin(\theta)$ as an upper limit until then, followed by the blue circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
 
-	For each angle $\theta$, we want to integrate from $r = \theta$ to $r = \pi$, and $\theta$ should be between $0$ and $\pi$. As far as the integrand goes, we have
+		$$
+			\int_{0}^{\pi/4} \int_0^{\sin(\theta)} r\,\d r\,\d \theta + \int_{\pi/4}^{\pi/2} \int_0^{\cos(\theta)} r\,\d r\,\d \theta.
+		$$
 
-	$$
-		\frac{x^2 - y^2}{x^2 + y^2} &= \frac{r^2\cos^2(\theta) - r^2\sin^2(\theta)}{r^2}
+		3. This region is a little bizarre!
 
-		&= \cos^2(\theta) - \sin^2(\theta)
+		@desmos{polarIntegral3}
 
-		&= \cos(2\theta),
-	$$
+		For each angle $\theta$, we want to integrate from $r = \theta$ to $r = \pi$, and $\theta$ should be between $0$ and $\pi$. As far as the integrand goes, we have
 
-	so the entire integral is
+		$$
+			\frac{x^2 - y^2}{x^2 + y^2} &= \frac{r^2\cos^2(\theta) - r^2\sin^2(\theta)}{r^2}
 
-	$$
-		\int_0^{\pi} \int_\theta^\pi \cos(2\theta)\,r\,\d r\,\d \theta
-	$$
+			&= \cos^2(\theta) - \sin^2(\theta)
 
+			&= \cos(2\theta),
+		$$
+
+		so the entire integral is
+
+		$$
+			\int_0^{\pi} \int_\theta^\pi \cos(2\theta)\,r\,\d r\,\d \theta
+		$$
+	]]
 ]]
 
 
