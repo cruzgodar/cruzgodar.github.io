@@ -938,6 +938,9 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	
 	/* Some magic that prevents the banner from abruptly resizing on mobile devices on which the size of the url bar changes on scroll. */
 	transform: translate3d(0, 0, 0);
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #banner-small
@@ -1956,6 +1959,9 @@ option
 	align-items: center;
 
 	cursor: pointer;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #header-settings-button.hover
@@ -1968,7 +1974,10 @@ option
 #header-settings-button input
 {
 	height: 100%;
-	
+
+	user-select: none;
+	-webkit-user-select: none;
+
 	filter: invert(var(--theme));
 }
 
@@ -2201,8 +2210,6 @@ option
 	max-width: calc(175px * 6 + 16px * 5);
 	
 	margin-top: 32px;
-	/* margin-left: calc(-8px - var(--contrast) * 4px);
-	margin-right: calc(8px + var(--contrast) * 4px); */
 }
 
 @media (max-width: 1043px)
@@ -2272,6 +2279,9 @@ option
 	border-radius: calc(18% - 2px) calc(18% - 2px) calc(12% - 2px) calc(12% - 2px);
 
 	height: fit-content;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .image-link img
