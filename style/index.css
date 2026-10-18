@@ -291,8 +291,8 @@ img
 	font-size: 125%;
 	color: var(--high-contrast);
 	text-align: center;
-	margin-top: 100px;
-	margin-bottom: 24px;
+	margin-top: 96px;
+	margin-bottom: 16px;
 }
 
 .body-text
@@ -2229,7 +2229,7 @@ option
 	
 	max-width: calc(175px * 6 + 16px * 5);
 	
-	margin-top: 32px;
+	margin-top: 24px;
 }
 
 @media (max-width: 1043px)
