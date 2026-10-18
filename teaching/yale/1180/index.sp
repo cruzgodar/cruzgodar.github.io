@@ -39,6 +39,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	homework-3 -c "Problem Set 3"
 	homework-4 -c "Problem Set 4"
 	homework-5 -c "Problem Set 5"
+	homework-6 -c "Problem Set 6"
 ###
 
 
@@ -49,6 +50,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	exams/midterm-1-note-sheet/midterm-1-note-sheet.pdf "Midterm 1 Formula Sheet"
 	exams/practice-midterm-1/practice-midterm-1.pdf "Practice Midterm 1"
 	exams/practice-midterm-1-solutions/practice-midterm-1-solutions.pdf "Practice Midterm 1 Solutions"
+	exams/midterm-1-solutions/midterm-1-solutions.pdf "Midterm 1 Solutions"
 ###
 
 ### card homework-1 -e
