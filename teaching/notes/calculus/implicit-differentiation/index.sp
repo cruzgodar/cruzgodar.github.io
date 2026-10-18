@@ -64,7 +64,7 @@ $$
 
 That worked like magic! This technique applies to functions of the form $y = f(x)^{g(x)}$ more broadly: by taking $\ln$ of it and then taking the derivative in two different ways, we can solve for its derivative indirectly. Let's introduce a more general, structured way to solve for the derivative that will carry into the next topic.
 
-### thm -m "Method: Logarithmic Differentiation"
+@thm[Logarithmic Differentiation][[
 
 	To differentiate a function of the form $y = f(x)^{g(x)}$, we follow these steps:
 
@@ -90,7 +90,7 @@ That worked like magic! This technique applies to functions of the form $y = f(x
 		dy/dx = f(x)^{g(x)} \cdot d/dx \left[ g(x) \ln(f(x)) \right].
 	$$
 
-###
+]]({ title: "Method" })
 
 This method of using $y$ to represent a function of $x$ symbolically probably seems a little strange! It'll get much more comfortable soon, and logarithmic differentiation is a great place to practice getting used to it before we bring it to other more general contexts.
 

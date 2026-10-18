@@ -1,6 +1,6 @@
 import { compile } from "spruce";
-import { write } from "./file-io.js";
 import { sitemap } from "../scripts/src/sitemap.js";
+import { write } from "./file-io.js";
 
 function getIndexHTML(pageTitle, firstParagraphText, parentFolder)
 {
@@ -166,7 +166,7 @@ export default async function buildSpruceFile({
 		{ filePath: absoluteFilePath, standardLibrary })
 	).replaceAll(/[\t\n]/g, "");
 
-	const matches = html.match(/<p>(.+?)<\/p>/);
+	const matches = html.match(/<p.*?>(.+?)<\/p>/);
 	
 	const title = parentFolder === "/home"
 		? "Cruz Godar"

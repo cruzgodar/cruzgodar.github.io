@@ -1,6 +1,5 @@
 @@@
-	import { imageLinks } from "../../../../build/htmdl/components/image-links.js";
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { clickTap, desmos, imageLinks, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
