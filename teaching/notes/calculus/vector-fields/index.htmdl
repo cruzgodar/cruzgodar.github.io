@@ -116,19 +116,17 @@ The other defining characteristic of the gradient is that it's orthogonal to lev
 
 ### exc "conservative vector fields"
 
-	1. In the previous vector field, why is the flow faster across lines spaced more closely together?
+	1. In the previous vector field, why is the flow faster across lines spaced more closely together? Your answer should relate to the potential function $g$ that we found together.
 
-	2. Going back to $\vec{H} = \left< -y, x \right>$, how could you draw white lines through the field so that the flow was always orthogonal to them? Interpreting these as level curves of a function, do you think the field is conservative?
+	2. Going back to $\vec{H}(x, y) = \left< -y, x \right>$, how can you draw lines through the field so that the flow is always orthogonal to them? Interpreting these as level curves of a function, do you think the field is conservative?
 
-	3. Integrate the field and check for yourself!
+	3. Is the field $\vec{L}(x, y, z) = \left< 2xy+z,\ x^2+1,\ x \right>$ conservative? If so, what is a potential function for it?
 
 	### solution
 
 	1. Since the closely-spaced lines are where the function is steepest, that's very literally where the magnitude of the field is largest!
 
-	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But this doesn't sit well with me: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct.
-
-	3. We have
+	2. We can accomplish this by drawing lines passing through the origin, and there's not really any way to avoid that. But that's an issue: all those level curves intersecting at the origin would somehow mean the function takes on every value there, which means $h$ wouldn't be a function at all, let alone continuous, let *alone* differentiable, which is what we need if we're going to take the gradient of it. Let's get to the integration and see if our hunch is correct. We have
 	
 	$$
 		h(x, y) &= \int -y\,\partial x = -xy + c_1(y)
