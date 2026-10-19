@@ -401,7 +401,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				useButton: true,
 				buttonIconPath: "/graphics/general-icons/xr.png",
 				targetFrameRate: 72,
-				framebufferScale: 0.5,
+				framebufferScale: 1,
 
 				foveation: 2,
 
