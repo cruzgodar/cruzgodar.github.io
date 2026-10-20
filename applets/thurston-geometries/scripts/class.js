@@ -179,6 +179,8 @@ export class ThurstonGeometries extends Applet
 				targetFrameRate: 120,
 				framebufferScale: 1,
 
+				foveation: 2.5,
+
 				onEnter: this.onEnterXR.bind(this),
 				onFrameStart: this.onXRFrameStart.bind(this),
 				renderFrame: this.renderXRFrame.bind(this),
