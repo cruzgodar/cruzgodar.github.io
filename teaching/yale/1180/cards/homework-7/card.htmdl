@@ -89,7 +89,7 @@
 
 	> - An **insurance contract** costs $\$125$ today and pays nothing in a boom, $\$100$ in a normal year, and $\$300$ in a bust.
 
-	You can buy any amount of each asset, including fractions. You can also **short sell**, which means holding a negative amount: you receive the price today and owe the payoff next year. For example, short selling a bond is the same as borrowing $\$95$ today and paying back $\$100$ next year.
+	You can buy any amount of each asset, including fractions. Negative values in a portfolio are allowed and mean short selling: for example, buying $-1$ bond is the same as borrowing $\$95$ today and paying back $\$100$ next year.
 
 	#. Suppose you buy $b$ bonds, $s$ stocks, and $c$ insurance contracts, and
 
