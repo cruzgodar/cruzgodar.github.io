@@ -40,6 +40,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	homework-4 -c "Problem Set 4"
 	homework-5 -c "Problem Set 5"
 	homework-6 -c "Problem Set 6"
+	homework-7 -c "Problem Set 7"
 ###
 
 
