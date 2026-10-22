@@ -224,7 +224,7 @@ That's a lot of information! One thing that's immediately clear is that the expr
 
 	Otherwise, the test is inconclusive.
 
-]]({ title: "Method" })
+]]({ noTitle: true })
 
 @ex[the second derivative test][[
 

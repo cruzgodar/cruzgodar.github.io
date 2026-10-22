@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -66,34 +70,34 @@ A linear combination that equals the zero vector is of the most interest to us: 
 
 	@solution[[
 
-	For the vectors to be linearly *dependent*, we would need scalars $c_1$, $c_2$, and $c_3$ so that
+		For the vectors to be linearly *dependent*, we would need scalars $c_1$, $c_2$, and $c_3$ so that
 
-	$$
-		c_1\vec{v_1} + c_2\vec{v_2} + c_3\vec{v_3} = \vec{0}
-	$$
+		$$
+			c_1\vec{v_1} + c_2\vec{v_2} + c_3\vec{v_3} = \vec{0}
+		$$
 
-	and not all the $c_i$ are zero. A great lesson in math is to use existing theory whenever possible, and this is a great example: this is just a system of linear equations in the $c_i$! Specifically, it corresponds to the augmented matrix
+		and not all the $c_i$ are zero. A great lesson in math is to use existing theory whenever possible, and this is a great example: this is just a system of linear equations in the $c_i$! Specifically, it corresponds to the augmented matrix
 
-	$$
-		[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]].
-	$$
+		$$
+			[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]].
+		$$
 
-	Take a moment to really dig into that and convince yourself of why this is the case. If it doesn't become clear, it's absolutely worth starting with the vectors, multiplying them each by their respective constant, and then adding them together.
+		Take a moment to really dig into that and convince yourself of why this is the case. If it doesn't become clear, it's absolutely worth starting with the vectors, multiplying them each by their respective constant, and then adding them together.
 
-	Now that we have the system as a matrix, we can row-reduce it to solve for the $c_i$:
+		Now that we have the system as a matrix, we can row-reduce it to solve for the $c_i$:
 
-	$$
-		[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]] & 
+		$$
+			[[ 1, 2, 0 | 0 ; 2, 0, 2 | 0 ; -1, 4, -3 | 0 ]] & 
 
-		[[ 1, 2, 0 | 0 ; 0, -4, 2 | 0 ; 0, 6, -3 | 0 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 2\vec{r_1} \\ \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
+			[[ 1, 2, 0 | 0 ; 0, -4, 2 | 0 ; 0, 6, -3 | 0 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 2\vec{r_1} \\ \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
 
-		[[ 1, 2, 0 | 0 ; 0, 2, -1 | 0 ; 0, 2, -1 | 0 ]] & \qquad :: \vec{r_2} \to -\frac{1}{2}\vec{r_2} \\ \vec{r_3} \to \frac{1}{3}\vec{r_3} ::
+			[[ 1, 2, 0 | 0 ; 0, 2, -1 | 0 ; 0, 2, -1 | 0 ]] & \qquad :: \vec{r_2} \to -\frac{1}{2}\vec{r_2} \\ \vec{r_3} \to \frac{1}{3}\vec{r_3} ::
 
-		[[ 1, 0, 1 | 0 ; 0, 2, -1 | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} \\ \vec{r_1} \to \vec{r_1} - \vec{r_2} ::
-	$$
+			[[ 1, 0, 1 | 0 ; 0, 2, -1 | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} \\ \vec{r_1} \to \vec{r_1} - \vec{r_2} ::
+		$$
 
-	Letting $c_3 = t$, we have $c_1 = -t$, $c_2 = \frac{1}{2}t$, and $c_3 = t$. Taking $t = 1$ for example, we have a linear combination that produces $\vec{0}$, so these vectors are linearly dependent. As a gut check, we expect there to be at least one free parameter whenever vectors are linearly dependent, since if we take any linear combination of $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$, we can multiply every coefficient by any number $t$ to produce another linear combination equaling $\vec{0}$. If we had instead been able to row-reduce all the way to the identity matrix, then we would have found that $c_1 = c_2 = c_3 = 0$, meaning that was the only way to make a linear combination equal to $\vec{0}$ --- and so the vectors would be linearly independent.
-
+		Letting $c_3 = t$, we have $c_1 = -t$, $c_2 = \frac{1}{2}t$, and $c_3 = t$. Taking $t = 1$ for example, we have a linear combination that produces $\vec{0}$, so these vectors are linearly dependent. As a gut check, we expect there to be at least one free parameter whenever vectors are linearly dependent, since if we take any linear combination of $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$, we can multiply every coefficient by any number $t$ to produce another linear combination equaling $\vec{0}$. If we had instead been able to row-reduce all the way to the identity matrix, then we would have found that $c_1 = c_2 = c_3 = 0$, meaning that was the only way to make a linear combination equal to $\vec{0}$ --- and so the vectors would be linearly independent.
+	]]
 ]]
 
 @exc[linear independence][[
@@ -102,24 +106,24 @@ A linear combination that equals the zero vector is of the most interest to us: 
 
 	@solution[[
 
-	We set up the matrix as before, placing these vectors as columns, and then row reduce.
+		We set up the matrix as before, placing these vectors as columns, and then row reduce.
 
-	$$
-		[[ 2, -1, 0 ; 0, -1, 1 ; 1, 1, 0 ]] & 
+		$$
+			[[ 2, -1, 0 ; 0, -1, 1 ; 1, 1, 0 ]] & 
 
-		[[ 1, 1, 0 ; 0, 1, -1 ; 2, -1, 0 ]] & \qquad :: \vec{r_1} \leftrightarrow \vec{r_3} ; \vec{r_2} \to -\vec{r_2} ::
+			[[ 1, 1, 0 ; 0, 1, -1 ; 2, -1, 0 ]] & \qquad :: \vec{r_1} \leftrightarrow \vec{r_3} ; \vec{r_2} \to -\vec{r_2} ::
 
-		[[ 1, 1, 0 ; 0, 1, -1 ; 0, -3, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - 2\vec{r_1}
+			[[ 1, 1, 0 ; 0, 1, -1 ; 0, -3, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - 2\vec{r_1}
 
-		[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, -3 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
+			[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, -3 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
 
-		[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_3} \to -\frac{1}{3}\vec{r_3}
+			[[ 1, 1, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_3} \to -\frac{1}{3}\vec{r_3}
 
-		[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - \vec{r_2}
-	$$
+			[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - \vec{r_2}
+		$$
 
-	These vectors are linearly independent! The only solution for the coefficients $c_i$ is $c_1 = c_2 = c_3 = 0$, so there is no nonzero linear combination of the $c_i$ that makes the zero vector.
-
+		These vectors are linearly independent! The only solution for the coefficients $c_i$ is $c_1 = c_2 = c_3 = 0$, so there is no nonzero linear combination of the $c_i$ that makes the zero vector.
+	]]
 ]]
 
 We'll have a lot to say about linear combinations --- most notably, they're a valuable alternate perspective on matrix multiplication. For an example, let's look at the product
@@ -152,12 +156,12 @@ That may be long, but it will more than make up for it in usefulness. As a first
 
 	@solution[[
 
-	1. This is the line through the origin parallel to the vector, which tracks with the formula we already have for lines in $#R#^3$!
+		1. This is the line through the origin parallel to the vector, which tracks with the formula we already have for lines in $#R#^3$!
 
-	2. The span of the zero vector is just the zero vector, and more generally, adding the zero vector to any set of vectors doesn't change its span.
+		2. The span of the zero vector is just the zero vector, and more generally, adding the zero vector to any set of vectors doesn't change its span.
 
-	3. In $#R#^3$, the span of two *linearly independent* vectors is the plane containing them. The span of two linearly dependent vectors is the line containing them both! The same goes in $#R#^2$ --- the span is either all of $#R#^2$ or a line through the origin.
-
+		3. In $#R#^3$, the span of two *linearly independent* vectors is the plane containing them. The span of two linearly dependent vectors is the line containing them both! The same goes in $#R#^2$ --- the span is either all of $#R#^2$ or a line through the origin.
+	]]
 ]]
 
 When a collection of vectors $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ has at least $n$ linearly independent ones, then $\span\{\vec{v_1}, ..., \vec{v_k}\} = #R#^n$: that's because we can take just the $n$ linearly independent vectors and row reduce them as rows in a matrix to get to the identity matrix, so all the vectors $\vec{e_i}$ that are all zero except for a one in the $i$th position are expressible as linear combinations of the $\vec{v_j}$, and every vector in $#R#^n$ is expressible as a linear combination of the $\vec{e_i}$.
@@ -302,18 +306,18 @@ Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1
 
 	@solution[[
 
-	We can actually do both in one step! By arranging $\vec{v_1}$ and $\vec{v_2}$ as columns, augmenting with $\vec{v}$, and row reducing, we can show that the left side row reduces to the identity matrix and get the coefficients to express $\vec{v}$ in this basis at the same time.
+		We can actually do both in one step! By arranging $\vec{v_1}$ and $\vec{v_2}$ as columns, augmenting with $\vec{v}$, and row reducing, we can show that the left side row reduces to the identity matrix and get the coefficients to express $\vec{v}$ in this basis at the same time.
 
-	$$
-		[[ 1, 0 | 3 ; 2, -1 | 8 ]] &
+		$$
+			[[ 1, 0 | 3 ; 2, -1 | 8 ]] &
 
-		[[ 1, 0 | 3 ; 0, -1 | 2 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
+			[[ 1, 0 | 3 ; 0, -1 | 2 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
 
-		[[ 1, 0 | 3 ; 0, 1 | -2 ]] & \qquad \vec{r_2} \to -\vec{r_2}
-	$$
+			[[ 1, 0 | 3 ; 0, 1 | -2 ]] & \qquad \vec{r_2} \to -\vec{r_2}
+		$$
 
-	We therefore have that $\left\{ \vec{v_1}, \vec{v_2} \right\}$ is a basis, and that $\vec{v} = 3\vec{v_1} - 2\vec{v_2}$.
-	
+		We therefore have that $\left\{ \vec{v_1}, \vec{v_2} \right\}$ is a basis, and that $\vec{v} = 3\vec{v_1} - 2\vec{v_2}$.
+	]]
 ]]
 
 

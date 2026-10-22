@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -22,18 +26,18 @@ Our final topic in linear algebra will provide the last large missing piece in t
 
 	@solution[[
 
-	By crossing out the appropriate rows and columns, we get
+		By crossing out the appropriate rows and columns, we get
 
-	$$
-		[[ , ,  ; , 1, 6 ; , -1, 0 ]] \qquad [[ , ,  ; 2, , 6 ; -3, , 0 ]] \qquad [[ , ,  ; 2, 1,  ; -3, -1,  ]],
-	$$
+		$$
+			[[ , ,  ; , 1, 6 ; , -1, 0 ]] \qquad [[ , ,  ; 2, , 6 ; -3, , 0 ]] \qquad [[ , ,  ; 2, 1,  ; -3, -1,  ]],
+		$$
 
-	for the entries in row $1$ and columns $1$, $2$, and $3$, respectively, which are just the $2 \times 2$ matrices
+		for the entries in row $1$ and columns $1$, $2$, and $3$, respectively, which are just the $2 \times 2$ matrices
 
-	$$
-		[[ 1, 6 ; -1, 0 ]] \qquad [[ 2, 6 ; -3, 0 ]] \qquad [[ 2, 1 ; -3, -1 ]].
-	$$
-
+		$$
+			[[ 1, 6 ; -1, 0 ]] \qquad [[ 2, 6 ; -3, 0 ]] \qquad [[ 2, 1 ; -3, -1 ]].
+		$$
+	]]
 ]]
 
 With minors defined, we can finally get to the definition we've (possibly) been waiting for.
@@ -56,22 +60,22 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	@solution[[
 
-	Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
+		Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
 
-	$$
-		1 \cdot \det [[ 5 ]] - 4 \cdot \det [[ 2 ]] = 5 - 8 = -3.
-	$$
+		$$
+			1 \cdot \det [[ 5 ]] - 4 \cdot \det [[ 2 ]] = 5 - 8 = -3.
+		$$
 
-	In fact, this process is nearly identical for a generic $2 \times 2$ matrix:
+		In fact, this process is nearly identical for a generic $2 \times 2$ matrix:
 
-	$$
-		\det [[ a, b ; c, d ]] &= a \cdot \det [[ d ]] - b \cdot \det [[ c ]]
+		$$
+			\det [[ a, b ; c, d ]] &= a \cdot \det [[ d ]] - b \cdot \det [[ c ]]
 
-		&= ad - bc.
-	$$
+			&= ad - bc.
+		$$
 
-	Not only is this a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, but we've seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
-
+		Not only is this a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, but we've seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
+	]]
 ]]
 
 @exc[the determinant][[
@@ -82,16 +86,16 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	@solution[[
 
-	1. There are many ways to go about this, but in general, it's easiest to pick rows or columns with as many zeros as possible. If we choose row 2, for instance, then
+		1. There are many ways to go about this, but in general, it's easiest to pick rows or columns with as many zeros as possible. If we choose row 2, for instance, then
 
-	$$
-		\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]] &= -4\det [[ 2, 3 ; 9, 0 ]] -6\det [[ 1, 2 ; 7, 9 ]]
+		$$
+			\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]] &= -4\det [[ 2, 3 ; 9, 0 ]] -6\det [[ 1, 2 ; 7, 9 ]]
 
-		&= -4(2\cdot0 - 3\cdot9) -6\det (1\cdot9-2\cdot7)
+			&= -4(2\cdot0 - 3\cdot9) -6\det (1\cdot9-2\cdot7)
 
-		&= 108 + 30 = 138
-	$$
-
+			&= 108 + 30 = 138
+		$$
+	]]
 ]]
 
 In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
@@ -102,24 +106,24 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 	@solution[[
 
-	The second row has the most zeros, so let's expand about that, ignoring the zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
+		The second row has the most zeros, so let's expand about that, ignoring the zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
 
-	$$
-		4\det [[ 1, 7, 2 ; 3, 2, 0 ; 1, 3, 4 ]] -5\det [[ 1, 4, 2 ; 3, 1, 0 ; 1, 2, 4 ]],
-	$$
+		$$
+			4\det [[ 1, 7, 2 ; 3, 2, 0 ; 1, 3, 4 ]] -5\det [[ 1, 4, 2 ; 3, 1, 0 ; 1, 2, 4 ]],
+		$$
 
-	and we can expand both of those about row 2 to get
+		and we can expand both of those about row 2 to get
 
-	$$
-		4\left( -3\det [[ 7, 2 ; 3, 4 ]] + 2\det [[ 1, 2 ; 1, 4 ]] \right) - 5 \left( -3 \det [[ 4, 2 ; 2, 4 ]] + \det [[ 1, 2 ; 1, 4 ]] \right).
-	$$
+		$$
+			4\left( -3\det [[ 7, 2 ; 3, 4 ]] + 2\det [[ 1, 2 ; 1, 4 ]] \right) - 5 \left( -3 \det [[ 4, 2 ; 2, 4 ]] + \det [[ 1, 2 ; 1, 4 ]] \right).
+		$$
 
-	Now we can use the $2 \times 2$ determinant formula we just found to turn this into
+		Now we can use the $2 \times 2$ determinant formula we just found to turn this into
 
-	$$
-		4( -3(28 - 6) + 2(4 - 2) ) - 5 ( -3(16 - 4) + (4 - 2) ) = -78.
-	$$
-
+		$$
+			4( -3(28 - 6) + 2(4 - 2) ) - 5 ( -3(16 - 4) + (4 - 2) ) = -78.
+		$$
+	]]
 ]]
 
 @exc[the determinant][[
@@ -128,18 +132,18 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 	@solution[[
 
-	We can begin by expanding about the first column, then the second, and then the third:
+		We can begin by expanding about the first column, then the second, and then the third:
 
-	$$
-		\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]] &= 1\det [[ 4, 2, -1 ; 0, 9, 9 ; 0, 0, -3 ]]
+		$$
+			\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]] &= 1\det [[ 4, 2, -1 ; 0, 9, 9 ; 0, 0, -3 ]]
 
-		&= 4\det [[ 9, 9 ; 0, -3 ]]
+			&= 4\det [[ 9, 9 ; 0, -3 ]]
 
-		&= 4(-27)
+			&= 4(-27)
 
-		&= -108.
-	$$
-
+			&= -108.
+		$$
+	]]
 ]]
 
 With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
@@ -166,38 +170,38 @@ Computing a determinant using the recursive definition is a task that balloons i
 
 	@solution[[
 
-	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
+		This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
 
-	$$
-		[[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -4, 0, 6, -19 ; 3, 0, -5, -12 ]] & \qquad :: \vec{r_3} \me 3\vec{r_2} ; \vec{r_4} \me \vec{r_2} ::,
-	$$
+		$$
+			[[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -4, 0, 6, -19 ; 3, 0, -5, -12 ]] & \qquad :: \vec{r_3} \me 3\vec{r_2} ; \vec{r_4} \me \vec{r_2} ::,
+		$$
 
-	and the determinant of this matrix is the same as the original, since all we've done is add multiples of rows to others. Expanding about column 2, we have that the determinant is
+		and the determinant of this matrix is the same as the original, since all we've done is add multiples of rows to others. Expanding about column 2, we have that the determinant is
 
-	$$
-		-2\det [[ 3, 5, 3 ; -4, 6, -19 ; 3, -5, -12 ]],
-	$$
+		$$
+			-2\det [[ 3, 5, 3 ; -4, 6, -19 ; 3, -5, -12 ]],
+		$$
 
-	and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
+		and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
 
-	$$
-		[[ 3, 5, 3 ; -12, 18, -57 ; 3, -5, -12 ]] & \qquad \vec{r_2} \te 3
+		$$
+			[[ 3, 5, 3 ; -12, 18, -57 ; 3, -5, -12 ]] & \qquad \vec{r_2} \te 3
 
-		[[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] & \qquad :: \vec{r_2} \pe 4\vec{r_1} ; \vec{r_3} \me \vec{r_1} ::
-	$$
+			[[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] & \qquad :: \vec{r_2} \pe 4\vec{r_1} ; \vec{r_3} \me \vec{r_1} ::
+		$$
 
-	We need to be a little careful here: since we multiplied a row by $4$, the determinant of this new matrix will be $4$ times larger than that of the original matrix. On the bright side, this new determinant is as easy as possible to calculate:
+		We need to be a little careful here: since we multiplied a row by $4$, the determinant of this new matrix will be $4$ times larger than that of the original matrix. On the bright side, this new determinant is as easy as possible to calculate:
 
-	$$
-		\det [[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] &= 3\det [[ 38, -45 ; -10, -15 ]]
+		$$
+			\det [[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] &= 3\det [[ 38, -45 ; -10, -15 ]]
 
-		&= 3(38(-15) - (-45)(-10))
+			&= 3(38(-15) - (-45)(-10))
 
-		&= -3060.
-	$$
+			&= -3060.
+		$$
 
-	So the determinant of the original $3 \times 3$ is $\frac{1}{3}(-3060) = -1020$, and finally, the determinant of the $4 \times 4$ is $-2(-1020) = 2040$.
-
+		So the determinant of the original $3 \times 3$ is $\frac{1}{3}(-3060) = -1020$, and finally, the determinant of the $4 \times 4$ is $-2(-1020) = 2040$.
+	]]
 ]]
 
 Next on the list of connections is invertibility, and here, the result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
@@ -290,26 +294,26 @@ This result definitely needs some examples to explain it, so let's start there.
 
 	@solution[[
 
-	First of all, the matrix for $T$ is
+		First of all, the matrix for $T$ is
 
-	$$
-		A = [[ 1, 1 ; 3, -2 ]],
-	$$
+		$$
+			A = [[ 1, 1 ; 3, -2 ]],
+		$$
 
-	and its determinant is $\det A = -5$. The boundary circle of $X$ is given by the points $x = \cos(\theta)$ and $y = \sin(\theta) + 2$ for any value of $\theta$, so the boundary of $T(X)$ is given by 
+		and its determinant is $\det A = -5$. The boundary circle of $X$ is given by the points $x = \cos(\theta)$ and $y = \sin(\theta) + 2$ for any value of $\theta$, so the boundary of $T(X)$ is given by 
 
-	$$
-		x &= \cos(\theta) + \sin(\theta) + 2
+		$$
+			x &= \cos(\theta) + \sin(\theta) + 2
 
-		y &= 3\cos(\theta) - 2(\sin(\theta) + 2)
-	$$
+			y &= 3\cos(\theta) - 2(\sin(\theta) + 2)
+		$$
 
-	obtained by replacing $x$ and $y$ with their images under $T$. Geometrically, $T(X)$ is an ellipse:
+		obtained by replacing $x$ and $y$ with their images under $T$. Geometrically, $T(X)$ is an ellipse:
 
-	@desmos{determinantScaling}
+		@desmos{determinantScaling}
 
-	The area of that ellipse doesn't look pleasant to compute, but since it's the image of the circle under $T$, its area is just the area of the circle times the magnitude of the determinant (i.e. $5$). Since the circle's area is $\pi(1^2) = \pi$, the ellipse has area $5\pi$.
-
+		The area of that ellipse doesn't look pleasant to compute, but since it's the image of the circle under $T$, its area is just the area of the circle times the magnitude of the determinant (i.e. $5$). Since the circle's area is $\pi(1^2) = \pi$, the ellipse has area $5\pi$.
+	]]
 ]]
 
 @exc[the determinant as a scaling factor][[
@@ -330,18 +334,18 @@ This result definitely needs some examples to explain it, so let's start there.
 
 	@solution[[
 
-	The images of these three vectors are the columns of the matrix for $S$:
+		The images of these three vectors are the columns of the matrix for $S$:
 
-	$$
-		[[ 2 ; 1 ; 2 ]], \quad [[ 1 ; 3 ; 1 ]], \quad [[ 0 ; 1 ; 3 ]].
-	$$
+		$$
+			[[ 2 ; 1 ; 2 ]], \quad [[ 1 ; 3 ; 1 ]], \quad [[ 0 ; 1 ; 3 ]].
+		$$
 
-	Drawing these as a shape in $#R#^3$ looks like a 3D parallelogram (the proper term is **parallelepiped**).
+		Drawing these as a shape in $#R#^3$ looks like a 3D parallelogram (the proper term is **parallelepiped**).
 
-	@desmos{parallelepiped}
+		@desmos{parallelepiped}
 
-	Since the determinant of the matrix for $S$ is $6$ and the volume of the original cube was $1$, this new volume is $6 \cdot 1 = 6$.
-
+		Since the determinant of the matrix for $S$ is $6$ and the volume of the original cube was $1$, this new volume is $6 \cdot 1 = 6$.
+	]]
 ]]
 
 

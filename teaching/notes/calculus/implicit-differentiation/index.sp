@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -64,7 +64,7 @@ $$
 
 That worked like magic! This technique applies to functions of the form $y = f(x)^{g(x)}$ more broadly: by taking $\ln$ of it and then taking the derivative in two different ways, we can solve for its derivative indirectly. Let's introduce a more general, structured way to solve for the derivative that will carry into the next topic.
 
-@thm[Logarithmic Differentiation][[
+@method[Logarithmic Differentiation][[
 
 	To differentiate a function of the form $y = f(x)^{g(x)}$, we follow these steps:
 
@@ -90,7 +90,7 @@ That worked like magic! This technique applies to functions of the form $y = f(x
 		dy/dx = f(x)^{g(x)} \cdot d/dx \left[ g(x) \ln(f(x)) \right].
 	$$
 
-]]({ title: "Method" })
+]]
 
 This method of using $y$ to represent a function of $x$ symbolically probably seems a little strange! It'll get much more comfortable soon, and logarithmic differentiation is a great place to practice getting used to it before we bring it to other more general contexts.
 
@@ -188,7 +188,7 @@ we can write a general formula for the slope of a tangent line to $x^2 + y^2 = 1
 
 One of the most striking results of this example is that we differentiated an implicit function, but our final formula is in terms of $x$ and $y$ only. Even though we needed at least two different formulas for $f$ to cover every possible point --- for example, $\sqrt{1 - x^2}$ and $-\sqrt{1 - x^2}$ --- the end result works for all points $(x, y)$ with $x^2 + y^2 = 1$ that have a well-defined tangent line. In fact, we can completely omit $f$ from the outset! Let's write down a better version of this process that works in general and improves the notation.
 
-### thm -m "Method: implicit differentiation"
+@method[implicit differentiation][[
 	
 	To find the derivative $dy/dx$ of a function defined implicitly in terms of $x$ and $y$:
 	
@@ -198,7 +198,7 @@ One of the most striking results of this example is that we differentiated an im
 	
 	3. Factor out $dy/dx$ and divide by whatever is left over.
 	
-###
+]]
 
 Returning to our original example, we can solve it with quite a bit less overhead:
 

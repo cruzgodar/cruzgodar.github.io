@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, method, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -360,7 +360,7 @@ We only found one critical point! Normally, we'd expect at least two, since ther
 
 Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
 
-@thm[Lagrange multipliers][[
+@method[Lagrange multipliers][[
 
 	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
 
@@ -376,7 +376,7 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 	2. Of all the points $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
 
-]]({ title: "Method" })
+]]
 
 Let's now return to the astroid example to see the improvement.
 

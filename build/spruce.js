@@ -368,6 +368,7 @@ const notesEnvironmentNames =
 	def: "Definition",
 	prop: "Proposition",
 	thm: "Theorem",
+	method: "Method",
 	cor: "Corollary",
 	lem: "Lemma",
 	proof: "Proof",
@@ -386,6 +387,7 @@ function notesEnvironment(type, title, body, options)
 
 	if (
 		title.toLowerCase().includes(notesEnvironmentNames[type].toLowerCase())
+		|| options?.noTitle
 	) {
 		return /* html */`<div class="notes-${type} notes-environment"><div class="notes-${type}-title notes-title">${title}</div>${body}</div>`;
 	}
@@ -398,6 +400,7 @@ export const exc = (title, body, options) => notesEnvironment("exc", title, body
 export const def = (title, body, options) => notesEnvironment("def", title, body, options);
 export const prop = (title, body, options) => notesEnvironment("prop", title, body, options);
 export const thm = (title, body, options) => notesEnvironment("thm", title, body, options);
+export const method = (title, body, options) => notesEnvironment("method", title, body, options);
 export const cor = (title, body, options) => notesEnvironment("cor", title, body, options);
 export const lem = (title, body, options) => notesEnvironment("lem", title, body, options);
 export const proof = (title, body, options) => notesEnvironment("proof", title, body, options);

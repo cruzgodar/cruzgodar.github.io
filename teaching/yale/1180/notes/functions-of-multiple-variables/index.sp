@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -28,16 +32,16 @@ On the left, we write the general form an element from the set takes (i.e $(x, y
 
 	@solution[[
 
-	1. We're describing a set in $#R#^3$, so we should begin with $\left\{ (x, y, z) \in #R#^3 \right.$. To be in this solid cylinder, we need the distance to the $y$-axis to be no more than $2$, so $x^2 + z^2 \leq 2^2$. In all, we have
+		1. We're describing a set in $#R#^3$, so we should begin with $\left\{ (x, y, z) \in #R#^3 \right.$. To be in this solid cylinder, we need the distance to the $y$-axis to be no more than $2$, so $x^2 + z^2 \leq 2^2$. In all, we have
 
-	$$
-		\left\{ (x, y, z) \in #R#^3 \mid x^2 + z^2 \leq 4 \right\}.
-	$$
+		$$
+			\left\{ (x, y, z) \in #R#^3 \mid x^2 + z^2 \leq 4 \right\}.
+		$$
 
-	2. This is a filled-in region that is both above the graph of $y = |x|$ and within the unit circle. Both of those conditions need to be true at once, and so we get an overlap (i.e. intersection) of regions:
+		2. This is a filled-in region that is both above the graph of $y = |x|$ and within the unit circle. Both of those conditions need to be true at once, and so we get an overlap (i.e. intersection) of regions:
 
-	@desmos{intersectingRegion}
-
+		@desmos{intersectingRegion}
+	]]
 ]]
 
 
@@ -72,24 +76,24 @@ Let's dig into functions of the form $f(x, y)$. Like functions of one variable, 
 
 	@solution[[
 
-	We can't exactly sell a negative number of birdfeeders, so a reasonable practical domain is $\left\{ (x, y) \in #R#^2 \mid x \geq 0, y \geq 0 \right\}$. We can sketch the wireframes as before, although this time they're a little bit more complicated. The vertical ones are
+		We can't exactly sell a negative number of birdfeeders, so a reasonable practical domain is $\left\{ (x, y) \in #R#^2 \mid x \geq 0, y \geq 0 \right\}$. We can sketch the wireframes as before, although this time they're a little bit more complicated. The vertical ones are
 
-	$$
-		z = 25 - (x-1)^2 - (-2)^2 = 21 - (x-1)^2,
-	$$
+		$$
+			z = 25 - (x-1)^2 - (-2)^2 = 21 - (x-1)^2,
+		$$
 
-	which is a parabola opening downward with a vertex at $(1, 21)$, and the very similar graph of
+		which is a parabola opening downward with a vertex at $(1, 21)$, and the very similar graph of
 
-	$$
-		z = 25 - (-1)^2 - (y-2)^2 = 24 - (y-2)^2.
-	$$
+		$$
+			z = 25 - (-1)^2 - (y-2)^2 = 24 - (y-2)^2.
+		$$
 
-	Careful not to just drop the entire $x$ and $y$ terms, but to actually set each variable to zero! The intersection with $z = 0$ is $(x - 1)^2 + (y - 2)^2 = 25$, which is a circle of radius $5$ centered at $(1, 2)$.
+		Careful not to just drop the entire $x$ and $y$ terms, but to actually set each variable to zero! The intersection with $z = 0$ is $(x - 1)^2 + (y - 2)^2 = 25$, which is a circle of radius $5$ centered at $(1, 2)$.
 
-	@desmos{wireframe2}
+		@desmos{wireframe2}
 
-	The result here is a little bit harder to visualize! It's a 3D parabola-like figure whose horizontal slices are circles. The maximum is when the terms $(x-1)^2$ and $(y-2)^2$ are minimized, so at $(1, 2, 25)$.
-
+		The result here is a little bit harder to visualize! It's a 3D parabola-like figure whose horizontal slices are circles. The maximum is when the terms $(x-1)^2$ and $(y-2)^2$ are minimized, so at $(1, 2, 25)$.
+	]]
 ]]
 
 On the one hand, graphing a function $z = f(x, y)$ is no more difficult than graphing $y = f(x)$: we just plug in points $(x, y)$ and plot the point $(x, y, f(x, y))$ in $#R#^3$. On the other hand, graphing anything at all in 3D is much more challenging than graphs in $#R#^2$, and there's just a lot more that can be going on with a function of multiple variables. We'll quickly want to develop a tool to help us draw and think about graphs in a more systematic manner.
@@ -132,10 +136,10 @@ This map of Cone Peak in the Big Sur wilderness in California conveys the incred
 
 	@solution[[
 
-	1. The area near the top is likely much steeper, since the river is passing through more lines more quickly, and there is also not much of a valley formed by the river, since the lines don't bend toward the river nearly at all. The opposite is true near the bottom!
+		1. The area near the top is likely much steeper, since the river is passing through more lines more quickly, and there is also not much of a valley formed by the river, since the lines don't bend toward the river nearly at all. The opposite is true near the bottom!
 
-	2. Traveling at a right angle to the topo lines is a good bet! If traveling parallel to them keeps us at the same altitude, then traveling orthogonally should make us move uphill/downhill as quickly as possible.
- 
+		2. Traveling at a right angle to the topo lines is a good bet! If traveling parallel to them keeps us at the same altitude, then traveling orthogonally should make us move uphill/downhill as quickly as possible.
+	]]
 ]]
 
 Topo maps let hikers carry the data of terrain and elevation along with them in a 2D form, and we can repurpose the idea to let us more easily graph functions of multiple variables. When we found the intersection of a graph with $z = 0$, there was nothing particularly special about $0$. Repeating that process for $z = c$ lets us define a whole family of intersections:
@@ -160,14 +164,14 @@ Here we can really see what the level curves are doing --- although the closenes
 
 	@solution[[
 
-	The level curves $c = x^2 - \frac{y^2}{4}$ are hyperbolas, opening horizontally when $c < 0$ and vertically when $c > 0$. When $c = 0$, the level curve is $x^2 = \frac{y^2}{4}$, meaning $y = \pm 2x$.
+		The level curves $c = x^2 - \frac{y^2}{4}$ are hyperbolas, opening horizontally when $c < 0$ and vertically when $c > 0$. When $c = 0$, the level curve is $x^2 = \frac{y^2}{4}$, meaning $y = \pm 2x$.
 
-	@desmos{hyperbolas}
+		@desmos{hyperbolas}
 
-	The traces are $z = x^2$ and $z = -\frac{y^2}{4}$, both of which are parabolas. Putting them together, we have the following wireframe, and the graph that fits it is the shape of a saddle.
+		The traces are $z = x^2$ and $z = -\frac{y^2}{4}$, both of which are parabolas. Putting them together, we have the following wireframe, and the graph that fits it is the shape of a saddle.
 
-	@desmos{hyperbolicParabolid}
-
+		@desmos{hyperbolicParabolid}
+	]]
 ]]
 
 @exc[level curves and traces][[
@@ -177,9 +181,8 @@ Here we can really see what the level curves are doing --- although the closenes
 	@desmos{possibleGraphs}
 
 	@solution[[
-
-	@desmos{hyperboloid}
-
+		@desmos{hyperboloid}
+	]]
 ]]
 
 As a note, these intersections with constant-$x$ and -$y$ planes are called **traces**. The information they provide is just as useful for sketching surfaces in $#R#^3$, but we don't often draw a collection of them together like we do for level curves --- that's because if $z = f(x, y)$ is a function, then plotting $f(x, y) = c$ produces a curve that generally doesn't cross other nearby level curves, but traces can and do intersect each other often, so a plot of a number of them together isn't so useful.

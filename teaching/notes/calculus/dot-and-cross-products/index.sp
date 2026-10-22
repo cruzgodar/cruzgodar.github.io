@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -236,7 +236,7 @@ $$
 
 Why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, we have the following fantastically compact result about their cross product!
 
-@thm[computing the cross product][[
+@method[computing the cross product][[
 
 	Let $\vec{a} = \left< a_1, a_2, a_3 \right>$ and $\vec{b} = \left< b_1, b_2, b_3 \right>$ be vectors in $#R#^3$. Then
 
@@ -244,7 +244,7 @@ Why is this relevant to us? By packing two vectors in $#R#^3$ into a matrix, we 
 		\vec{a} \times \vec{b} = \det [[ \vec{i}, \vec{j}, \vec{k} ; a_1, a_2, a_3 ; b_1, b_2, b_3 ]].
 	$$
 
-]]({ title: "Method" })
+]]
 
 @ex[the cross product][[
 

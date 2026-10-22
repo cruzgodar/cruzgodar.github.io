@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -38,7 +38,7 @@ $$
 
 that is, we can track the $x$ and $y$ changes *separately*, and then just add them up. As a result, if we change a variable $t$ that both $x$ and $y$ depend on, then we'd expect $\Delta x$ to be roughly $dx/dt$ and $\Delta y$ to be roughly $dy/dt$. While this is only an intuitive explanation, I think it goes a long way toward accepting the actual theorem statement.
 
-@thm[The Multivariable Chain Rule for $\mathbf{z = f(x(t), y(t))}$][[
+@method[The Multivariable Chain Rule for $\mathbf{z = f(x(t), y(t))}$][[
 
 	Let $z = f(x, y)$ be a differentiable function, and let $x = x(t)$ and $y = y(t)$ both be functions of the same variable. Then
 
@@ -52,7 +52,7 @@ that is, we can track the $x$ and $y$ changes *separately*, and then just add th
 		\frac{\d f(x, y)}{\d t} = pf/px dx/dt + pf/py dy/dt.
 	$$
 
-]]({ title: "Method" })
+]]
 
 That second presentation of the theorem is definitely a little strange, but it's worth digging into for a moment. Writing $f(x, y)$ *looks* like we're evaluating a function completely, but since both $x$ and $y$ are functions of $t$, $f(x, y)$ is actually a function composition --- and in particular, it's a function of *only one variable* (i.e. $t$). That's why it gets the usual $\d$ while the other derivatives get $\partial$ symbols. To make this concrete, let's say $z = f(x, y)$ is a function giving elevation above sea level for a position $(x, y)$, and we're hiking on a path, so $(x, y)$ changes over time as a function of a single variable $t$. When we compute $pz/px$ and $pz/py$, we're finding out how steep the landscape is in the $x$ and $y$ directions, but when we compute $dz/dt$, we're finding how fast *our* elevation changes over time as we hike along our path.
 

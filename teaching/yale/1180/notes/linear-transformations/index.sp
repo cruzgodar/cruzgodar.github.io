@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -80,18 +84,18 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	@solution[[
 
-	Since $T$ is linear, we can expand that last expression quite a bit:
+		Since $T$ is linear, we can expand that last expression quite a bit:
 
-	$$
-		T \left( [[ 3 ; 4 ]] \right) &= 3 T \left( [[ 1 ; 0 ]] \right) + 4 T \left( [[ 0 ; 1 ]] \right)
+		$$
+			T \left( [[ 3 ; 4 ]] \right) &= 3 T \left( [[ 1 ; 0 ]] \right) + 4 T \left( [[ 0 ; 1 ]] \right)
 
-		&= 3 [[ 1 ; 3 ]] + 4 [[ 0 ; -2 ]]
+			&= 3 [[ 1 ; 3 ]] + 4 [[ 0 ; -2 ]]
 
-		&= [[ 3 ; 1 ]].
-	$$
+			&= [[ 3 ; 1 ]].
+		$$
 
-	In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the purple point to $(3, 4)$ to check!
-
+		In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the purple point to $(3, 4)$ to check!
+	]]
 ]]
 
 @exc[linear transformation][[
@@ -110,44 +114,44 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	@solution[[
 
-	We can first find
+		We can first find
 
-	$$
-		S \left( [[ 0 ; 0 ; 1 ]] \right) = S \left( [[ 0 ; 0 ; 1 ]] \right) = [[ 3 ; 1 ]].
-	$$
+		$$
+			S \left( [[ 0 ; 0 ; 1 ]] \right) = S \left( [[ 0 ; 0 ; 1 ]] \right) = [[ 3 ; 1 ]].
+		$$
 
-	Then
+		Then
 
-	$$
-		S \left( [[ 1 ; 0 ; 0 ]] \right) &= S \left( [[ 1 ; 0 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+		$$
+			S \left( [[ 1 ; 0 ; 0 ]] \right) &= S \left( [[ 1 ; 0 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
 
-		&= [[ 1 ; 1 ]] - [[ 3 ; 1 ]]
+			&= [[ 1 ; 1 ]] - [[ 3 ; 1 ]]
 
-		&= [[ -2 ; 0 ]]
+			&= [[ -2 ; 0 ]]
 
-		~
+			~
 
-		S \left( [[ 0 ; 1 ; 0 ]] \right) &= S \left( [[ 0 ; 1 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+			S \left( [[ 0 ; 1 ; 0 ]] \right) &= S \left( [[ 0 ; 1 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
 
-		&= [[ 3 ; 1 ]] - [[ 3 ; 1 ]]
+			&= [[ 3 ; 1 ]] - [[ 3 ; 1 ]]
 
-		&= [[ 0 ; 0 ]].
-	$$
+			&= [[ 0 ; 0 ]].
+		$$
 
-	The matrix for $S$ is then
+		The matrix for $S$ is then
 
-	$$
-		[[ -2, 0, 3 ; 0, 0, 1 ]],
-	$$
+		$$
+			[[ -2, 0, 3 ; 0, 0, 1 ]],
+		$$
 
-	so
+		so
 
-	$$
-		 S\left( [[ 1 ; 2 ; 3 ]] \right) &= [[ -2, 0, 3 ; 0, 0, 1 ]] [[ 1 ; 2 ; 3 ]]
+		$$
+			S\left( [[ 1 ; 2 ; 3 ]] \right) &= [[ -2, 0, 3 ; 0, 0, 1 ]] [[ 1 ; 2 ; 3 ]]
 
-		 &= [[ 7 ; 3 ]]
-	$$
-
+			&= [[ 7 ; 3 ]]
+		$$
+	]]
 ]]
 
 In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
@@ -180,24 +184,24 @@ And so we get to the fundamental result of the section: **linear transformations
 
 	@solution[[
 
-	By evaluating $T$ on $\vec{e_1}$, $\vec{e_2}$, $\vec{e_3}$, we have
+		By evaluating $T$ on $\vec{e_1}$, $\vec{e_2}$, $\vec{e_3}$, we have
 
-	$$
-		T(\vec{e_1}) &= [[ 2 ; 2 ; -1 ]]
+		$$
+			T(\vec{e_1}) &= [[ 2 ; 2 ; -1 ]]
 
-		T(\vec{e_2}) &= [[ 3 ; 1 ; 0 ]]
+			T(\vec{e_2}) &= [[ 3 ; 1 ; 0 ]]
 
-		T(\vec{e_3}) &= [[ 0 ; 0 ; 2 ]],
-	$$
+			T(\vec{e_3}) &= [[ 0 ; 0 ; 2 ]],
+		$$
 
-	and so the matrix for $T$ is
+		and so the matrix for $T$ is
 
-	$$
-		A = [[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]].
-	$$
+		$$
+			A = [[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]].
+		$$
 
-	In other words, $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in #R#^3$. This is the core of the idea that matrices are functions that act by multiplication: on the left is the function, and on the right is the matrix multiplication.
-
+		In other words, $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in #R#^3$. This is the core of the idea that matrices are functions that act by multiplication: on the left is the function, and on the right is the matrix multiplication.
+	]]
 ]]
 
 @exc[linear transformations as matrices][[
@@ -212,32 +216,32 @@ And so we get to the fundamental result of the section: **linear transformations
 
 	@solution[[
 
-	The matrix is given by evaluating $S$ on the standard basis vectors, or equivalently by reading off the coefficients of each variable to find every row:
+		The matrix is given by evaluating $S$ on the standard basis vectors, or equivalently by reading off the coefficients of each variable to find every row:
 
-	$$
-		B = [[ 1, 0, 1 ; 3, -2, 0 ]].
-	$$
+		$$
+			B = [[ 1, 0, 1 ; 3, -2, 0 ]].
+		$$
 
-	Now the product of matrices is
+		Now the product of matrices is
 
-	$$
-		BA &= [[ 1, 0, 1 ; 3, -2, 0 ]][[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]]
+		$$
+			BA &= [[ 1, 0, 1 ; 3, -2, 0 ]][[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]]
 
-		&= [[ 1, 3, 2 ; 2, 7, 0 ]].
-	$$
+			&= [[ 1, 3, 2 ; 2, 7, 0 ]].
+		$$
 
-	On the other hand, the composition of transformations is
+		On the other hand, the composition of transformations is
 
-	$$
-		S\left( T\left( [[ a ; b ; b ]] \right) \right) &= S\left( [[ 2a + 3b ; b + 2a ; 2c - a ]] \right)
+		$$
+			S\left( T\left( [[ a ; b ; b ]] \right) \right) &= S\left( [[ 2a + 3b ; b + 2a ; 2c - a ]] \right)
 
-		&= [[ (2a + 3b) + (2c - a) ; 3(2a + 3b) - 2(b + 2a) ]]
+			&= [[ (2a + 3b) + (2c - a) ; 3(2a + 3b) - 2(b + 2a) ]]
 
-		&= [[ a + 3b + 2c ; 2a + 7b ]],
-	$$
+			&= [[ a + 3b + 2c ; 2a + 7b ]],
+		$$
 
-	whose matrix is exactly $BA$! This is another visceral demonstration of what we mean when we say that matrix multiplication *is* function composition.
-
+		whose matrix is exactly $BA$! This is another visceral demonstration of what we mean when we say that matrix multiplication *is* function composition.
+	]]
 ]]
 
 
@@ -285,8 +289,8 @@ $$
 corresponds to the matrix
 
 $$
-	[[ 2, 1 ; 0, -1 ; 3, 4]]
-$$,
+	[[ 2, 1 ; 0, -1 ; 3, 4]],
+$$
 
 and applying it to a vector results in
 
@@ -325,30 +329,30 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 	@solution[[
 
-	By the previous theorem, we first want to express $T$ as a matrix: it corresponds to
+		By the previous theorem, we first want to express $T$ as a matrix: it corresponds to
 
-	$$
-		A = [[ 2, 3, 5 ; 3, 4, 7 ; 1, -2, -1 ]],
-	$$
+		$$
+			A = [[ 2, 3, 5 ; 3, 4, 7 ; 1, -2, -1 ]],
+		$$
 
-	so we want to row-reduce the matrix whose rows are the columns of $A$.
+		so we want to row-reduce the matrix whose rows are the columns of $A$.
 
-	$$
-		[[ 2, 3, 1 ; 3, 4, -2 ; 5, 7, -1 ]] &
+		$$
+			[[ 2, 3, 1 ; 3, 4, -2 ; 5, 7, -1 ]] &
 
-		[[ 2, 3, 1 ; 6, 8, -4 ; 10, 14, -2 ]] & \qquad :: \vec{r_2} \to 2\vec{r_2} ; \vec{r_2} \to 2\vec{r_2} ::
+			[[ 2, 3, 1 ; 6, 8, -4 ; 10, 14, -2 ]] & \qquad :: \vec{r_2} \to 2\vec{r_2} ; \vec{r_2} \to 2\vec{r_2} ::
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, -1, -7 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 5 \vec{r_1} ::
+			[[ 2, 3, 1 ; 0, -1, -7 ; 0, -1, -7 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 5 \vec{r_1} ::
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
+			[[ 2, 3, 1 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
 
-		[[ 2, 0, 20 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_1} \to \vec{r_1} + 3\vec{r_2}
+			[[ 2, 0, 20 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_1} \to \vec{r_1} + 3\vec{r_2}
 
-		[[ 1, 0, 10 ; 0, 1, 7 ; 0, 0, 0 ]] & \qquad :: \vec{r_1} \to \frac{1}{2}\vec{r_1} ; \vec{r_2} \to -\vec{r_2} ::
-	$$
+			[[ 1, 0, 10 ; 0, 1, 7 ; 0, 0, 0 ]] & \qquad :: \vec{r_1} \to \frac{1}{2}\vec{r_1} ; \vec{r_2} \to -\vec{r_2} ::
+		$$
 
-	In the end, we have two linearly independent rows, so $A$ has only two independent columns. Since not all the columns were independent, $T$ isn't one-to-one, and since there weren't at least three linearly independent columns, $T$ isn't onto. That sentence certainly seems a bit redundant when we write it out, and we'll have more to say on the subject momentarily.
-
+		In the end, we have two linearly independent rows, so $A$ has only two independent columns. Since not all the columns were independent, $T$ isn't one-to-one, and since there weren't at least three linearly independent columns, $T$ isn't onto. That sentence certainly seems a bit redundant when we write it out, and we'll have more to say on the subject momentarily.
+	]]
 ]]
 
 @exc[one-to-one and onto][[
@@ -363,26 +367,26 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 	@solution[[
 
-	We know that $S$ is definitely not one-to-one, because it has more columns than rows. To check if it's onto, we take its matrix, which is
+		We know that $S$ is definitely not one-to-one, because it has more columns than rows. To check if it's onto, we take its matrix, which is
 
-	$$
-		[[ 1, 1, -1 ; 2, 1, -3 ]],
-	$$
+		$$
+			[[ 1, 1, -1 ; 2, 1, -3 ]],
+		$$
 
-	and write its rows as columns before row reducing:
+		and write its rows as columns before row reducing:
 
-	$$
-		[[ 1, 2 ; 1, 1 ; -1, -3 ]] &
+		$$
+			[[ 1, 2 ; 1, 1 ; -1, -3 ]] &
 
-		[[ 1, 2 ; 0, -1 ; 0, -1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_1} ; \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
+			[[ 1, 2 ; 0, -1 ; 0, -1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_1} ; \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
 
-		[[ 1, 0 ; 0, -1 ; 0, 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} ; \vec{r_1} \to \vec{r_1} + 2\vec{r_2} ::
+			[[ 1, 0 ; 0, -1 ; 0, 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} ; \vec{r_1} \to \vec{r_1} + 2\vec{r_2} ::
 
-		[[ 1, 0 ; 0, 1 ; 0, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
-	$$
+			[[ 1, 0 ; 0, 1 ; 0, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
+		$$
 
-	Since we have two nonzero rows, the original matrix had two linearly independent columns, meaning $S$ is onto!
-
+		Since we have two nonzero rows, the original matrix had two linearly independent columns, meaning $S$ is onto!
+	]]
 ]]
 
 
@@ -433,17 +437,17 @@ Our transformation in the previous example isn't invertible by this theorem, whi
 
 At this point, we're finished with the material in the section, but I think it's worth taking a minute to summarize where we are in regard to linear transformations, matrices, and the interplay between them. There are a lot of terms and ideas to digest, and a quick list organizing many of them should help. For all the items in the list, we let $T : #R#^n \to #R#^m$ be a linear transformation and $A$ its corresponding matrix.
 
-> - Evaluation: we evaluate $T(\vec{v})$ by plugging the entries of $\vec{v}$ into a formula for $T$, just like a one-variable function $f(x)$. We evaluate a matrix on a vector by the matrix-vector multiplication $A\vec{v}$.
+- Evaluation: we evaluate $T(\vec{v})$ by plugging the entries of $\vec{v}$ into a formula for $T$, just like a one-variable function $f(x)$. We evaluate a matrix on a vector by the matrix-vector multiplication $A\vec{v}$.
 
-> - Composition: we compose $T$ with another linear map $S: #R#^m \to #R#^k$ to form the map $T \circ S : #R#^n \to #R#^k$ by plugging the formula for the output of $S$ as the input to the formula for $T$. We compose $A$ with an $m \times k$ matrix $B$ to form $AB$ by matrix multiplication.
+- Composition: we compose $T$ with another linear map $S: #R#^m \to #R#^k$ to form the map $T \circ S : #R#^n \to #R#^k$ by plugging the formula for the output of $S$ as the input to the formula for $T$. We compose $A$ with an $m \times k$ matrix $B$ to form $AB$ by matrix multiplication.
 
-> - One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w})$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0})$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
+- One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w})$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0})$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
 
-> - Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
+- Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
 
-> - Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
+- Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
 
-> - Inversion: we don't invert transformations directly with their formulas, only with their matrices. With a matrix $A$, we invert it by augmenting with $I$ and row-reducing.
+- Inversion: we don't invert transformations directly with their formulas, only with their matrices. With a matrix $A$, we invert it by augmenting with $I$ and row-reducing.
 
 We're getting some hints that the bulk of the subject lies with square matrices: they're the only ones that can be invertible, and being one-to-one and onto are identical conditions. And as we'll see in the next section, the next big object we'll want to develop depends on the matrices it takes in being square.
 

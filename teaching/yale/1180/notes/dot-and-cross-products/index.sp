@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -80,40 +84,39 @@ The dot product measures both the magnitudes of its factors and the angle betwee
 
 	@solution[[
 
-	1. We can compute the dot product directly from the formula, since both $\vec{v}$ and $\vec{w}$ are in component form (albeit presented slightly differently):
+		1. We can compute the dot product directly from the formula, since both $\vec{v}$ and $\vec{w}$ are in component form (albeit presented slightly differently):
 
-	$$
-		\vec{v} \bullet \vec{w} = (1)(8) + (5)(-2) + (4)(-10) = -42.
-	$$
+		$$
+			\vec{v} \bullet \vec{w} = (1)(8) + (5)(-2) + (4)(-10) = -42.
+		$$
 
-	To compute the angle $\theta$ between $\vec{v}$ and $\vec{w}$, we know that $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$, and so we need to compute those magnitudes.
+		To compute the angle $\theta$ between $\vec{v}$ and $\vec{w}$, we know that $\vec{v} \bullet \vec{w} = \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)$, and so we need to compute those magnitudes.
 
-	$$
-		\left| \left| \vec{v} \right| \right| &= \sqrt{1^2 + 5^2 + 4^2} = \sqrt{42}
+		$$
+			\left| \left| \vec{v} \right| \right| &= \sqrt{1^2 + 5^2 + 4^2} = \sqrt{42}
 
-		\left| \left| \vec{w} \right| \right| &= \sqrt{8^2 + (-2)^2 + (-10)^2} = \sqrt{168} = 2\sqrt{42}.
-	$$
+			\left| \left| \vec{w} \right| \right| &= \sqrt{8^2 + (-2)^2 + (-10)^2} = \sqrt{168} = 2\sqrt{42}.
+		$$
 
-	Therefore,
+		Therefore,
 
-	$$
-		\vec{v} \bullet \vec{w} &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)
+		$$
+			\vec{v} \bullet \vec{w} &= \left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right| \cos(\theta)
 
-		-42 &= \sqrt{42} \left( 2\sqrt{42} \right) \cos(\theta)
+			-42 &= \sqrt{42} \left( 2\sqrt{42} \right) \cos(\theta)
 
-		\cos(\theta) &= -\frac{1}{2}.
-	$$
+			\cos(\theta) &= -\frac{1}{2}.
+		$$
 
-	Let's briefly review how we solve trigonometric equations like this --- $\cos$ is a periodic function, and any solution to $\cos(\theta) = -\frac{1}{2}$ will be one of infinitely many. A tool to get *one* solution to the equation is to use the $\arccos$ function: $\arccos\left( -\frac{1}{2} \right)$ is the angle in $[0, \pi]$ whose cosine is $-\frac{1}{2}$. We can find the others by first finding the angle in $(\pi, 2\pi)$ whose cosine is also $-\frac{1}{2}$, if that exists, and then adding any multiple of $2\pi$ to those two solutions. However, we're in luck for this particular kind of problem! The angle between any two vectors is always between $0^\circ$ and $180^\circ$ --- we always measure a positive angle, and if we tried to bend the vectors past $180^\circ$, then the angle between the two vectors would be the new smaller one that formed on the opposite side. Therefore, the angle between two vectors can *always* be computed from the dot product using $\arccos$ directly, without having to worry about alternative solutions! In our case,
-	
-	$$
-		\theta = \arccos \left( -\frac{1}{2} \right) = \frac{2\pi}{3} = 120^\circ.
-	$$
+		Let's briefly review how we solve trigonometric equations like this --- $\cos$ is a periodic function, and any solution to $\cos(\theta) = -\frac{1}{2}$ will be one of infinitely many. A tool to get *one* solution to the equation is to use the $\arccos$ function: $\arccos\left( -\frac{1}{2} \right)$ is the angle in $[0, \pi]$ whose cosine is $-\frac{1}{2}$. We can find the others by first finding the angle in $(\pi, 2\pi)$ whose cosine is also $-\frac{1}{2}$, if that exists, and then adding any multiple of $2\pi$ to those two solutions. However, we're in luck for this particular kind of problem! The angle between any two vectors is always between $0^\circ$ and $180^\circ$ --- we always measure a positive angle, and if we tried to bend the vectors past $180^\circ$, then the angle between the two vectors would be the new smaller one that formed on the opposite side. Therefore, the angle between two vectors can *always* be computed from the dot product using $\arccos$ directly, without having to worry about alternative solutions! In our case,
+		
+		$$
+			\theta = \arccos \left( -\frac{1}{2} \right) = \frac{2\pi}{3} = 120^\circ.
+		$$
 
-	2. For this one, we can solve $\left< x, y, z \right> \bullet \left< 1, 5, 4 \right> = 0$, which gives $x + 5y + 4z = 0$. The shape of this object is best determined geometrically: the points orthogonal to $\vec{v}$ is the plane that $\vec{v}$ makes a right angle to:
+		2. For this one, we can solve $\left< x, y, z \right> \bullet \left< 1, 5, 4 \right> = 0$, which gives $x + 5y + 4z = 0$. The shape of this object is best determined geometrically: the points orthogonal to $\vec{v}$ is the plane that $\vec{v}$ makes a right angle to:
 
-	@desmos{orthogonalPlane}
-
+		@desmos{orthogonalPlane}
 	]]
 ]]
 
@@ -247,11 +250,11 @@ This *almost* completely determines everything about $\vec{a} \times \vec{b}$, b
 
 	@solution[[
 
-	We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, 6, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -51, -17, 34 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
+		We need the normal vector to be able to do this! To find it, let's use these points to find two vectors in the plane: the vector from $p$ to $q$ is $\vec{v} = \left< -3, 13, 2 \right>$, and the vector from $p$ to $r$ is $\vec{w} = \left< -4, 6, -3 \right>$. The cross product is $\vec{v} \times \vec{w} = \left< -51, -17, 34 \right>$. That vector is so large because both $\vec{v}$ and $\vec{w}$ are large in magnitude, and we expect the magnitude of $\vec{v} \times \vec{w}$ to be proportional to the product $\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|$. Now using the point-slope form equivalent with $p$, the equation of the plane is
 
-	$$
-		-51(x - 3) - 17(y - 13) + 34(z - 1) = 0.
-	$$
+		$$
+			-51(x - 3) - 17(y - 13) + 34(z - 1) = 0.
+		$$
 
 	]]
 ]]
@@ -297,31 +300,31 @@ Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange v
 
 	@solution[[
 
-	We can find the direction vector by subtracting one point from the other: $\vec{v} = \left< -2, -5, -4 \right>$. The line is then given by
+		We can find the direction vector by subtracting one point from the other: $\vec{v} = \left< -2, -5, -4 \right>$. The line is then given by
 
-	$$
-		\vec{r}(t) = \left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right>.
-	$$
+		$$
+			\vec{r}(t) = \left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right>.
+		$$
 
-	To check if $(-3, -5, -5)$ is on this line, we can solve for the value of $t$ we would need:
+		To check if $(-3, -5, -5)$ is on this line, we can solve for the value of $t$ we would need:
 
-	$$
-		\left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right> &= \left< -3, -5, -5 \right>
+		$$
+			\left< 1, 4, 3 \right> + t\left< -2, -5, -4 \right> &= \left< -3, -5, -5 \right>
 
-		\left< 1 - 2t, 4 - 5t, 3 - 4t \right> &= \left< -3, -5, -5 \right>.
-	$$
+			\left< 1 - 2t, 4 - 5t, 3 - 4t \right> &= \left< -3, -5, -5 \right>.
+		$$
 
-	That tells us that three equations need to be true at once:
+		That tells us that three equations need to be true at once:
 
-	$$
-		1 - 2t &= -3
+		$$
+			1 - 2t &= -3
 
-		4 - 5t &= -5
+			4 - 5t &= -5
 
-		3 - 4t &= -5
-	$$
+			3 - 4t &= -5
+		$$
 
-	The first equation results in $t = 2$, but plugging that into the other two doesn't work: only the third equation is true, not the second. Therefore, we can't solve all three equations at once, and so there is no $t$ that works --- the point is not on the line.
+		The first equation results in $t = 2$, but plugging that into the other two doesn't work: only the third equation is true, not the second. Therefore, we can't solve all three equations at once, and so there is no $t$ that works --- the point is not on the line.
 
 	]]
 ]]

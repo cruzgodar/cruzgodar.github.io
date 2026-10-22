@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, gap, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -16,19 +20,19 @@ If we'd like to bring the Extreme Value Theorem and this surrounding discussion 
 
 ## Compact Sets
 
-### def -m "Informal definition: bounded set"
+@def[bounded set][[
 
 	Let $B$ be a set of points in $#R#^n$. We say that $B$ is **bounded** if it does not extend infinitely far from the origin.
 
-###
+]]({ title: "Informal definition" })
 
 The other property is a bit more subtle, but for our purposes, we're going to engage with it on a more utilitarian level.
 
-### def -m "Informal definition: closed set"
+@def[closed set][[
 
 	A set of points $A$ in $#R#^n$ is **closed** if there is no way to take a path through the set that approaches a point *not* in the set.
 
-###
+]]({ title: "Informal definition" })
 
 For example, the open unit disk
 
@@ -98,51 +102,51 @@ We apply the EVT the same way that we did in single-variable calculus: first, we
 
 	@solution[[
 
-	We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
+		We saw this function in the previous section; its critical points were $(0, 0)$, which was a saddle point, and $\left( -\frac{2}{3}, -\frac{2}{3} \right)$, which was a local max whose value was $f\left( -\frac{2}{3}, -\frac{2}{3} \right) = \frac{4}{27}$. Since the set on which $f$ is defined is compact (it's a closed rectangle), we can evaluate $f$ at all the points along the boundary and determine the smallest and largest value. Compared to plugging in the two endpoints of an interval in single-variable calculus, though, this is quite a bit more work. The boundary of this rectangle consists of the lines $x = -1$ and $x = 0$, both defined for $y \in [-2, 0]$, and similarly, $y = -2$ and $y = 0$ for $x \in [-1, 0]$. Knowing that, we can approach each line separately.
 
-	$x = -1$: starting here, we can literally set $x = -1$ in the equation to find $f(-1, y) = -1 - y^2 - 2y$. We're interested in optimizing this function on the interval $[-2, 0]$, and so we can return to the techniques of single-variable calculus. Taking the derivative and setting it equal to zero,
+		$x = -1$: starting here, we can literally set $x = -1$ in the equation to find $f(-1, y) = -1 - y^2 - 2y$. We're interested in optimizing this function on the interval $[-2, 0]$, and so we can return to the techniques of single-variable calculus. Taking the derivative and setting it equal to zero,
 
-	$$
-		-2y - 2 &= 0
+		$$
+			-2y - 2 &= 0
 
-		y &= -1.
-	$$
+			y &= -1.
+		$$
 
-	The possible points are then $(-1, -2)$, $(-1, -1)$, and $(-1, 0)$. The first and last points there come from the EVT for single-variable functions: we have to include the endpoints of the interval $[0, -2]$ as candidates for global extrema.
+		The possible points are then $(-1, -2)$, $(-1, -1)$, and $(-1, 0)$. The first and last points there come from the EVT for single-variable functions: we have to include the endpoints of the interval $[0, -2]$ as candidates for global extrema.
 
-	$x = 0$: this works identically, but with a different $x$-value. We have $f(0, y) = -y^2$, whose only critical point is $y = 0$, so we also consider the points $(0, -2)$, and $(0, 0)$.
+		$x = 0$: this works identically, but with a different $x$-value. We have $f(0, y) = -y^2$, whose only critical point is $y = 0$, so we also consider the points $(0, -2)$, and $(0, 0)$.
 
-	$y = -2$: we have $f(x, -2) = x^3 - 4 - 4x$, so taking the derivative,
+		$y = -2$: we have $f(x, -2) = x^3 - 4 - 4x$, so taking the derivative,
 
-	$$
-		3x^2 - 4 &= 0
+		$$
+			3x^2 - 4 &= 0
 
-		x &= \pm \sqrt{\frac{4}{3}}.
-	$$
+			x &= \pm \sqrt{\frac{4}{3}}.
+		$$
 
-	We only care about $x \in [-1, 0]$, though, and neither of these $x$-values is in that interval. We add the boundary points $(-1, -2)$ and $(0, -2)$ and move on.
+		We only care about $x \in [-1, 0]$, though, and neither of these $x$-values is in that interval. We add the boundary points $(-1, -2)$ and $(0, -2)$ and move on.
 
-	$y = 0$: finally, $f(x, 0) = x^3$, whose only critical point is at $x = 0$. Adding it and the other boundary point, we have $(-1, 0)$ and $(0, 0)$.
+		$y = 0$: finally, $f(x, 0) = x^3$, whose only critical point is at $x = 0$. Adding it and the other boundary point, we have $(-1, 0)$ and $(0, 0)$.
 
-	Let's summarize! All of this work tells us that the global extrema of $f$ on this interval can *only* live at the critical points inside of its domain (i.e. $(0, 0)$ or $\left( -\frac{2}{3}, -\frac{2}{3} \right)$), or at one of the many points we found afterward on the boundary. To actually find the global min and max, all that's left is to compute their $z$-values one at a time.
+		Let's summarize! All of this work tells us that the global extrema of $f$ on this interval can *only* live at the critical points inside of its domain (i.e. $(0, 0)$ or $\left( -\frac{2}{3}, -\frac{2}{3} \right)$), or at one of the many points we found afterward on the boundary. To actually find the global min and max, all that's left is to compute their $z$-values one at a time.
 
-	$$
-		f(0, 0) &= 0
+		$$
+			f(0, 0) &= 0
 
-		f\left( -\frac{2}{3}, -\frac{2}{3} \right) &= \frac{4}{27}
+			f\left( -\frac{2}{3}, -\frac{2}{3} \right) &= \frac{4}{27}
 
-		f(-1, -2) &= -1
+			f(-1, -2) &= -1
 
-		f(-1, -1) &= 0
+			f(-1, -1) &= 0
 
-		f(-1, 0) &= -1
+			f(-1, 0) &= -1
 
-		f(0, -2) &= -4.
-	$$
+			f(0, -2) &= -4.
+		$$
 
-	And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
+		And that's it! The global max occurs at $\left( -\frac{2}{3}, -\frac{2}{3} \right)$ with a $z$-value of $\frac{4}{27}$, and the global min at $(0, -2)$ with a $z$-value of $-4$.
 
-	@desmos{evt}
+		@desmos{evt}
 
 	]]
 ]]
@@ -233,7 +237,7 @@ We only found one critical point! Normally, we'd expect at least two, since ther
 
 Lagrange multipliers are borderline magic. They let us optimize functions on a boundary without ever needing to parameterize a thing, and they don't just work for finding maxima --- the same logic tells us that we can minimize $f$ on the boundary in this way too. Let's state the method carefully.
 
-### thm -m "Method: Lagrange multipliers"
+@method[Lagrange multipliers][[
 
 	Let $f(x, y)$ be a function of two variables, and let $g(x, y)$ be any function. To optimize $f$ on the curve $g(x, y) = 0$,
 
@@ -249,7 +253,7 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 	2. Of all the points $(x, y)$ in step 1, the largest and smallest values of $f(x, y)$ among those solutions are the values we're looking for. If there is only a single solution $(a, b)$, then it's either a maximum or minimum. To determine which, just plug in another point $(c, d)$ with $g(c, d) = 0$ to see if $f(c, d)$ is larger or smaller than $f(a, b)$.
 
-###
+]]
 
 @exc[Lagrange multipliers][[
 
@@ -320,76 +324,75 @@ Lagrange multipliers are borderline magic. They let us optimize functions on a b
 
 	@solution[[
 
-	With $f(x, y, z) = xyz$ and
+		With $f(x, y, z) = xyz$ and
 
-	$$
-		g(x, y, z) = xy + 4yz + 2xz - 24 = 0
-	$$
+		$$
+			g(x, y, z) = xy + 4yz + 2xz - 24 = 0
+		$$
 
-	(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
+		(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
 
-	$$
-		\G f &= \lambda G g
+		$$
+			\G f &= \lambda G g
 
-		\left< yz, xz, xy \right> &= \lambda \left< y + 2z, x + 4z, 4y + 2x \right>
+			\left< yz, xz, xy \right> &= \lambda \left< y + 2z, x + 4z, 4y + 2x \right>
 
-		~
+			~
 
-		yz &= \lambda(y + 2z)
+			yz &= \lambda(y + 2z)
 
-		xz &= \lambda(x + 4z)
+			xz &= \lambda(x + 4z)
 
-		xy &= \lambda(4y + 2x).
-	$$
+			xy &= \lambda(4y + 2x).
+		$$
 
-	We can eliminate $\lambda$ from the first two equations:
+		We can eliminate $\lambda$ from the first two equations:
 
-	$$
-		\frac{yz}{y + 2z} &= \frac{xz}{x + 4z}
+		$$
+			\frac{yz}{y + 2z} &= \frac{xz}{x + 4z}
 
-		yz(x + 4z) &= xz(y + 2z)
+			yz(x + 4z) &= xz(y + 2z)
 
-		xyz + 4yz^2 &= xyz + 2xz^2
+			xyz + 4yz^2 &= xyz + 2xz^2
 
-		2y &= x.
-	$$
+			2y &= x.
+		$$
 
-	Now eliminating $\lambda$ from the first and third equations,
+		Now eliminating $\lambda$ from the first and third equations,
 
-	$$
-		\frac{yz}{y + 2z} &= \frac{xy}{4y + 2x}
+		$$
+			\frac{yz}{y + 2z} &= \frac{xy}{4y + 2x}
 
-		yz(4y + 2x) &= xy(y + 2z)
+			yz(4y + 2x) &= xy(y + 2z)
 
-		4y^2z + 2xyz &= xy^2 + 2xyz
+			4y^2z + 2xyz &= xy^2 + 2xyz
 
-		4y^2z &= xy^2
+			4y^2z &= xy^2
 
-		4y^2z &= (2y)y^2
+			4y^2z &= (2y)y^2
 
-		2y^2z &= y^3
+			2y^2z &= y^3
 
-		y^3 - 2y^2z &= 0
+			y^3 - 2y^2z &= 0
 
-		y^2(y - 2z) &= 0,
-	$$
+			y^2(y - 2z) &= 0,
+		$$
 
-	so either $y = 0$, which isn't so good for box-building, or $y = 2z$, meaning $x = 4z$. Now in the constraint equation,
+		so either $y = 0$, which isn't so good for box-building, or $y = 2z$, meaning $x = 4z$. Now in the constraint equation,
 
-	$$
-		xy + 4yz + 2xz &= 24
+		$$
+			xy + 4yz + 2xz &= 24
 
-		(4z)(2z) + 4(2z)z + 2(4z)z &= 24
+			(4z)(2z) + 4(2z)z + 2(4z)z &= 24
 
-		8z^2 + 8z^2 + 8z^2 &= 24
+			8z^2 + 8z^2 + 8z^2 &= 24
 
-		z^2 &= 1
+			z^2 &= 1
 
-		z &= \pm 1.
-	$$
+			z &= \pm 1.
+		$$
 
-	We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
-
+		We want the positive version --- the negative one is the minimum on the boundary, and the positive one is the maximum! The box's dimensions are $4\,\text{ft} \times 2\,\text{ft} \times 1\,\text{ft}$.
 	]]
 ]]
 

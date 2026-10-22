@@ -376,7 +376,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 	]]
 ]]
 
-### exc "a vector line integral to compute work"
+@exc[a vector line integral to compute work][[
 
 	Let $\vec{F}$ be the force field
 
@@ -392,29 +392,28 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 
 	at time $t$. Find the work done by the field on the particle between time $t = 0$ and $t = \sqrt{\pi}$.
 
-	### solution
+	@solution[[
+		The derivative $\vec{r}'$ is
 
-	The derivative $\vec{r}'$ is
+		$$
+			\vec{r}'(t) = \left< 1, 2t, 3t^2 \right>,
+		$$
 
-	$$
-		\vec{r}'(t) = \left< 1, 2t, 3t^2 \right>,
-	$$
+		so the work done is
 
-	so the work done is
+		$$
+			\int_C \vec{F} \bullet \d\vec{r} &= \int_0^{\sqrt{\pi}} \vec{F}\left( \vec{r}(t) \right) \bullet \left< 1, 2t, 3t^2 \right>\,\d t
 
-	$$
-		\int_C \vec{F} \bullet \d\vec{r} &= \int_0^{\sqrt{\pi}} \vec{F}\left( \vec{r}(t) \right) \bullet \left< 1, 2t, 3t^2 \right>\,\d t
+			&= \int_0^{\sqrt{\pi}} \left< 2\cos(t),\ \sin\left( t^2 \right),\ 1 \right> \bullet \left< 1, 2t, 3t^2 \right>\,\d t
 
-		&= \int_0^{\sqrt{\pi}} \left< 2\cos(t),\ \sin\left( t^2 \right),\ 1 \right> \bullet \left< 1, 2t, 3t^2 \right>\,\d t
+			&= \int_0^{\sqrt{\pi}} \left( 2\cos(t) + 2t\sin\left( t^2 \right) + 3t^2  \right)\d t
 
-		&= \int_0^{\sqrt{\pi}} \left( 2\cos(t) + 2t\sin\left( t^2 \right) + 3t^2  \right)\d t
+			&= \left. \left[ 2\sin(t) - \cos\left( t^2 \right) + t^3 \right] \right|_0^{\sqrt{\pi}}
 
-		&= \left. \left[ 2\sin(t) - \cos\left( t^2 \right) + t^3 \right] \right|_0^{\sqrt{\pi}}
-
-		&= 2 + \pi^{3/2}.
-	$$
-
-###
+			&= 2 + \pi^{3/2}.
+		$$
+	]]
+]]
 
 Before we move on to address the question of path-independence, let's address one important fact about circulation. The formula
 

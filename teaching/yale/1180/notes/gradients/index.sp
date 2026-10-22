@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -88,38 +92,38 @@ In functionally every case, this is how we'll prefer to compute directional deri
 
 	@solution[[
 
-	For both of these, we need to start by finding the partial derivatives. We have
+		For both of these, we need to start by finding the partial derivatives. We have
 
-	$$
-		&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
+		$$
+			&pf/px = 2 + \frac{\pi}{2}y\cos\left( \frac{\pi}{2}xy \right)
 
-		&pf/px(2, 1) = 2 - \frac{\pi}{2}
+			&pf/px(2, 1) = 2 - \frac{\pi}{2}
 
-		&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
+			&pf/py = 2y + \frac{\pi}{2}x\cos\left( \frac{\pi}{2}xy \right)
 
-		&pf/py(2, 1) = 2 - \pi.
-	$$
+			&pf/py(2, 1) = 2 - \pi.
+		$$
 
-	The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
+		The first value of $\vec{u}$ is already a unit vector, and so we can directly compute
 
-	$$
-		D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
-	$$
+		$$
+			D_{\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>}f(2, 1) &= \frac{1}{2}\left( 2 - \frac{\pi}{2} \right) + \frac{\sqrt{3}}{2}\left( 2 - \pi \right).
+		$$
 
-	The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
+		The second one is slightly trickier, since that's not a unit vector. However, we can normalize it to one by dividing it by its magnitude:
 
-	$$
-		\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
+		$$
+			\frac{\left< 2, -3 \right>}{\left| \left| \left< 2, -3 \right> \right| \right|} &= \frac{\left< 2, -3 \right>}{\sqrt{13}}
 
-		&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
-	$$
+			&= \left< \frac{2}{\sqrt{13}}, \frac{-3}{\sqrt{13}} \right>.
+		$$
 
-	Now
+		Now
 
-	$$
-		D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
-	$$
-
+		$$
+			D_{\left< 2, -3 \right>}f(2, 1) = \frac{2}{\sqrt{13}}\left( 2 - \frac{\pi}{2} \right) - \frac{3}{\sqrt{13}}\left( 2 - \pi \right).
+		$$
+	]]
 ]]
 
 
@@ -206,16 +210,16 @@ since $\vec{u}$ is a unit vector, where $\theta$ is the angle between $\G f$ and
 
 	@solution[[
 
-	We can solve all of this with the gradient! We have
+		We can solve all of this with the gradient! We have
 
-	$$
-		\G f &= \left< 2\cos(x), -5\sin(y) \right>
+		$$
+			\G f &= \left< 2\cos(x), -5\sin(y) \right>
 
-		\G f(p) &= \left< 0, -5 \right>.
-	$$
+			\G f(p) &= \left< 0, -5 \right>.
+		$$
 
-	Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
-
+		Therefore, moving in the direction $\left< 0, -1 \right>$ results in the steepest increase (and the slope is $5$).The steepest decrease must in in exactly the opposite direction, of $\left< 0, 1 \right>$. It might seem like there could be a technicality that results in a different direction being steeper, but this is exactly the smoothness that a function's differentiability at a point guarantees! Moving in either the direction of $\left< 1, 0 \right>$ or $\left< -1, 0 \right>$ keeps us on the level curve.
+	]]
 ]]
 
 

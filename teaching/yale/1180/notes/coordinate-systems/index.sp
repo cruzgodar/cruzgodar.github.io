@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -42,8 +46,8 @@ Our functions of interest, particularly in the second half of the course, will b
 
 	@solution[[
 
-	$T$ takes in a point $(x, y, z)$ in 3D space, so its domain is $#R#^3$. Since temperature is measured by a real number, one choice for its codomain is $#R#$, resulting in $T : #R#^3 \to #R#$. Similarly, $P : #R# \to #R#^3$, since its input is time and its output is a 3D point. Finally, $V : #R#^2 \to #R#^2$, since it takes in both longitude and latitude and outputs both wind speed and direction.
-	
+		$T$ takes in a point $(x, y, z)$ in 3D space, so its domain is $#R#^3$. Since temperature is measured by a real number, one choice for its codomain is $#R#$, resulting in $T : #R#^3 \to #R#$. Similarly, $P : #R# \to #R#^3$, since its input is time and its output is a 3D point. Finally, $V : #R#^2 \to #R#^2$, since it takes in both longitude and latitude and outputs both wind speed and direction.
+	]]
 ]]
 
 
@@ -72,10 +76,10 @@ The plane defined by $x = 0$ is the unique plane that contains the $y$- and $z$-
 
 	@solution[[
 
-	Toggle these graphs on one at a time to see!
+		Toggle these graphs on one at a time to see!
 
-	@desmos{extendTo3d2}
-
+		@desmos{extendTo3d2}
+	]]
 ]]
 
 In this course, you won't need to actually sketch graphs of 3D functions, but you will need to recognize and interpret existing 3D graphs. We'll also occasionally need to plot 3D *points*, which is a much more approachable topic than entire graphs, but it still takes some practice. Since we don't have the luxury of rotating a 3D graph when we draw it on paper, it can be difficult to tell exactly where a plotted point is. To help, we can draw lines to its shadow in the $xy$-plane and to the $z$-axis, as well as from the shadow to the $x$- and $y$-axes --- it gives a surprising amount of perspective.
@@ -89,9 +93,8 @@ This graph also demonstrates something else: the default perspective we use to d
 	Sketch the point $(3, 4, 2)$ in $#R#^3$, using extra lines to indicate its position.
 
 	@solution[[
-
-	@desmos{pointPerspective2}
-
+		@desmos{pointPerspective2}
+	]]
 ]]
 
 We'll talk more about how to find the equations of more general planes in the next section, but for now, let's turn to something a little bit simpler: distance. We can compute the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$ in $#R#^2$ by using the Pythagorean Theorem: it's
@@ -126,18 +129,18 @@ $$
 
 	@solution[[
 
-	1. Just like the unit circle in $#R#^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $#R#^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$.
+		1. Just like the unit circle in $#R#^2$ is given by the equation $x^2 + y^2 = 1$, or in other words the set of all points whose distance from $(0, 0)$ is equal to $1$, the unit sphere in $#R#^3$ is given by the set of all points whose distance to the origin is $1$. Using the distance formula we just saw, that means we want $\sqrt{x^2 + y^2 + z^2} = 1$, so $x^2 + y^2 + z^2 = 1^2$.
 
-	2. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
+		2. Extending that idea to a sphere centered at $(a, b, c)$ and with radius $r$ means applying the distance formula again: this time,
 
-	$$
-		(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
-	$$
+		$$
+			(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2.
+		$$
 
-	3. For the cylinder, there are a few different approaches. We could treat it as the set of points in $#R#^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $#R#^3$ --- also $x^2 + y^2 = 1$.
+		3. For the cylinder, there are a few different approaches. We could treat it as the set of points in $#R#^3$ whose distance to the *$z$-axis* is $1$, meaning it's defined by the equation $x^2 + y^2 = 1$, or alternatively we could think of it as the extension of the unit circle in the $xy$-plane to $#R#^3$ --- also $x^2 + y^2 = 1$.
 
-	@desmos{sphereAndCylinder}
-
+		@desmos{sphereAndCylinder}
+	]]
 ]]
 
 
@@ -198,42 +201,42 @@ Since vectors are quantities with magnitude and direction, we might want notatio
 
 	@solution[[
 
-	1. These are the two copies of the same vector $\vec{v}$ --- the have the same magnitude and direction, so they're equal. The one that starts at $(0, 0)$ is by definition a position vector.
+		1. These are the two copies of the same vector $\vec{v}$ --- the have the same magnitude and direction, so they're equal. The one that starts at $(0, 0)$ is by definition a position vector.
 
-	@desmos{equalVectors}
+		@desmos{equalVectors}
 
-	2. The magnitudes are $\left| \left| \vec{v} \right| \right| = \sqrt{1^2 + (-2)^2} = \sqrt{5}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{14}$.
+		2. The magnitudes are $\left| \left| \vec{v} \right| \right| = \sqrt{1^2 + (-2)^2} = \sqrt{5}$ and $\left| \left| \vec{w} \right| \right| = \sqrt{14}$.
 
-	3. The set of all unit vectors in $#R#^2$ is the set of all $\left< v_1, v_2 \right>$ with $\sqrt{v_1^2 + v_2^2} = 1$, so if we draw all the vectors starting from the origin, then it's a circle! Similarly, the set of all unit vectors in $#R#^3$ is a sphere.
+		3. The set of all unit vectors in $#R#^2$ is the set of all $\left< v_1, v_2 \right>$ with $\sqrt{v_1^2 + v_2^2} = 1$, so if we draw all the vectors starting from the origin, then it's a circle! Similarly, the set of all unit vectors in $#R#^3$ is a sphere.
 
-	4. If the first component is equal to $\frac{1}{2}$ in $#R#^2$, then we can solve
+		4. If the first component is equal to $\frac{1}{2}$ in $#R#^2$, then we can solve
 
-	$$
-		\sqrt{\left( \frac{1}{2} \right)^2 + v_2^2} &= 1
+		$$
+			\sqrt{\left( \frac{1}{2} \right)^2 + v_2^2} &= 1
 
-		\frac{1}{4} + v_2^2 &= 1
+			\frac{1}{4} + v_2^2 &= 1
 
-		v_2 &= \pm \sqrt{\frac{3}{4}}
+			v_2 &= \pm \sqrt{\frac{3}{4}}
 
-		&= \pm \frac{\sqrt{3}}{2}.
-	$$
+			&= \pm \frac{\sqrt{3}}{2}.
+		$$
 
-	Therefore, the only two vectors are $\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\left< \frac{1}{2}, -\frac{\sqrt{3}}{2} \right>$.
+		Therefore, the only two vectors are $\left< \frac{1}{2}, \frac{\sqrt{3}}{2} \right>$ and $\left< \frac{1}{2}, -\frac{\sqrt{3}}{2} \right>$.
 
-	@desmos{unitVectors2d}
+		@desmos{unitVectors2d}
 
-	In $#R#^3$, that same equation results in
+		In $#R#^3$, that same equation results in
 
-	$$
-		\frac{1}{4} + v_2^2 + v_3^2 &= 1
+		$$
+			\frac{1}{4} + v_2^2 + v_3^2 &= 1
 
-		v_2^2 + v_3^2 &= \frac{3}{4},
-	$$
+			v_2^2 + v_3^2 &= \frac{3}{4},
+		$$
 
-	which is a little more complicated: it means that the **2D** vector $\left< v_2, v_3 \right>$ has magnitude $\frac{\sqrt{3}}{2}$. If we still center all our vectors at the origin, then these vectors appear as a circle on the unit sphere at $x = \frac{1}{2}$. We can also think of it as the intersection of the plane $x = \frac{1}{2}$ with the unit sphere!
+		which is a little more complicated: it means that the **2D** vector $\left< v_2, v_3 \right>$ has magnitude $\frac{\sqrt{3}}{2}$. If we still center all our vectors at the origin, then these vectors appear as a circle on the unit sphere at $x = \frac{1}{2}$. We can also think of it as the intersection of the plane $x = \frac{1}{2}$ with the unit sphere!
 
-	@desmos{unitVectors3d}
-
+		@desmos{unitVectors3d}
+	]]
 ]]
 
 Going back to our flight example, the notion of vectors as displacements works nicely if we want to add them together: in a sense, the displacement from Los Angeles to Seattle *combined* with the displacement from Seattle to New York is like taking a two-leg flight, and the total should equal the displacement from Los Angeles to New York. This is exactly the notion of adding vectors geometrically: we place the vectors so that first one ends where the second one starts, and then draw the sum of the two as the vector that stretches from the start of the first to the end of the second.
@@ -264,26 +267,26 @@ With the knowledge of how to add vectors, we can also make sense of **scalar mul
 
 	@solution[[
 
-	Any vector in the same direction as $\vec{v}$ has the form $c\vec{v}$ for some positive number $c$, so if we want $c\vec{v}$ to be a unit vector, we need
+		Any vector in the same direction as $\vec{v}$ has the form $c\vec{v}$ for some positive number $c$, so if we want $c\vec{v}$ to be a unit vector, we need
 
-	$$
-		\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1.
-	$$
+		$$
+			\left| \left| c\vec{v} \right| \right| = |c| \cdot \left| \left| \vec{v} \right| \right| = 1.
+		$$
 
-	That means $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$, and so
+		That means $|c| = \frac{1}{\left| \left| \vec{v} \right| \right|}$, and so
 
-	$$
-		c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}.
-	$$
+		$$
+			c = \pm \frac{1}{\left| \left| \vec{v} \right| \right|}.
+		$$
 
-	The negative version would point in the opposite direction as $\vec{v}$, so we want the positive one; that is, a formula for a unit vector in the same direction as $\vec{v}$ is
+		The negative version would point in the opposite direction as $\vec{v}$, so we want the positive one; that is, a formula for a unit vector in the same direction as $\vec{v}$ is
 
-	$$
-		\frac{v}{\left| \left| \vec{v} \right| \right|}.
-	$$
+		$$
+			\frac{v}{\left| \left| \vec{v} \right| \right|}.
+		$$
 
-	Since the zero vector has zero magnitude, we'd be dividing by zero! Geometrically, the zero vector doesn't have a direction.
-
+		Since the zero vector has zero magnitude, we'd be dividing by zero! Geometrically, the zero vector doesn't have a direction.
+	]]
 ]]
 
 While it might seem like vector multiplication is just a definition away, there are unfortunately unsolvable difficulties with trying to define $\vec{v}\vec{w}$ by multiplying corresponding components. For one, any vector with a zero in any component wouldn't have a multiplicative inverse. We'll look into alternatives that will sort of let us multiply vectors in the next section, but for now, we're going to leave vector multiplication completely undefined.
