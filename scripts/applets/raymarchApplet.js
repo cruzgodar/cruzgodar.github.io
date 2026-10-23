@@ -135,14 +135,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// the same size in meters. This is the value it'd have at a scale of 1.
 	baseMinEpsilon;
 
-	// Time constant of the exponential approach to the target scale, in ms.
-	xrWorldScaleTau = 400;
-
-	// How far off target the scale has to be, as a ratio, before it chases it at all.
-	xrWorldScaleDeadband = Math.log(1.15);
-
-	xrWorldScaleNeedsSnap = false;
-
 	xrFramebufferScaleSlider;
 
 
@@ -932,10 +924,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.sceneOrigin = [-this.defaultDistanceFromOrigin, 0, this.xrInitialZHeight];
 		this.xrOrbitRotation = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
-		// The first frame arrives at whatever scale the last session ended on, and easing
-		// from there would mean starting off uncomfortable.
-		this.xrWorldScaleNeedsSnap = true;
-
 		// The eye viewport isn't known until the first frame arrives, so the resize happens
 		// there instead of here.
 	}
@@ -975,7 +963,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.headPos[1] = this.sceneOrigin[1] + this.headToScene[13] * this.worldScale;
 		this.headPos[2] = this.sceneOrigin[2] + this.headToScene[14] * this.worldScale;
 
-		this.updateWorldScale(deltaTime);
+		this.updateWorldScale();
 
 		// The head replaces theta and phi as the movement basis, so w/a/s/d moves
 		// where the user is looking.
@@ -1130,7 +1118,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	// d / worldScale meters as far as the eyes are concerned. Solving that for the distance
 	// that's actually comfortable to converge on keeps the nearest geometry there no matter
 	// how deep into the fractal the user goes.
-	updateWorldScale(deltaTime)
+	updateWorldScale()
 	{
 		if (!this.useDynamicWorldScale)
 		{
@@ -1145,40 +1133,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.headPos[2]
 		);
 
-		const targetScale = Math.min(
+		const newWorldScale = Math.min(
 			Math.max(distance / this.xrComfortDistance, this.minWorldScale),
 			this.maxWorldScale
 		);
-
-		// Scale is perceived multiplicatively, so everything is smoothed in log space; a step
-		// of 0.1 is the same felt change whether the world is huge or tiny.
-		const error = Math.log(targetScale) - Math.log(this.worldScale);
-
-		let step;
-
-		if (this.xrWorldScaleNeedsSnap)
-		{
-			step = error;
-			this.xrWorldScaleNeedsSnap = false;
-		}
-
-		else
-		{
-			// Without a deadband the scale tracks every flicker of the estimator, and a world
-			// that breathes in and out is its own kind of nausea. Only the excess past the
-			// deadband is chased, so the response is still continuous at the boundary.
-			if (Math.abs(error) < this.xrWorldScaleDeadband)
-			{
-				return;
-			}
-
-			const excess = error - Math.sign(error) * this.xrWorldScaleDeadband;
-
-			// Frame-rate independent exponential approach.
-			step = excess * (1 - Math.exp(-deltaTime / this.xrWorldScaleTau));
-		}
-
-		const newWorldScale = this.worldScale * Math.exp(step);
 
 		// The rescale has to pivot about the head. Leaving sceneOrigin alone would dilate
 		// about the tracking-space origin instead, which slides the world sideways by the
