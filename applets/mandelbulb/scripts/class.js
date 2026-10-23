@@ -1,4 +1,3 @@
-import anime from "/scripts/anime.js";
 import {
 	magnitude,
 	mat3TimesVector,
@@ -9,7 +8,10 @@ import { animate } from "/scripts/src/utils.js";
 export class Mandelbulb extends RaymarchApplet
 {
 	animeLoop;
+	useFountainAnimation = false;
 	fountainFactor = 0;
+	fountainAmount = 0;
+	fountainAnimationSpeed = 1;
 
 	constructor({
 		canvas,
@@ -25,7 +27,7 @@ export class Mandelbulb extends RaymarchApplet
 			
 			for (int iteration = 0; iteration < 16; iteration++)
 			{
-				if (r > 16.0)
+				if (r > 4096.0)
 				{
 					break;
 				}
@@ -150,6 +152,27 @@ export class Mandelbulb extends RaymarchApplet
 
 
 
+	prepareFrame(timeElapsed)
+	{
+		super.prepareFrame(timeElapsed);
+
+		if (this.useFountainAnimation)
+		{
+			this.fountainAmount -= timeElapsed / 50000 * 2 * Math.PI
+				* Math.sqrt(this.distanceToScene)
+				* this.uniforms.power
+				* this.fountainAnimationSpeed;
+
+			this.fountainAmount %= 2 * Math.PI;
+
+			this.setUniforms({
+				fountainAmount: this.fountainAmount * this.fountainFactor,
+			});
+		}
+	}
+
+
+
 	destroy()
 	{
 		super.destroy();
@@ -229,25 +252,12 @@ export class Mandelbulb extends RaymarchApplet
 
 	async setFountainAnimation(enabled)
 	{
+		this.useFountainAnimation = enabled;
+
 		if (enabled)
 		{
-			const dummy = { t: 0 };
-
-			this.animeLoop = anime({
-				targets: dummy,
-				t: -2 * Math.PI,
-				duration: 3000,
-				easing: "linear",
-				loop: true,
-				direction: "forward",
-				update: () =>
-				{
-					this.setUniforms({
-						fountainAmount: dummy.t * this.fountainFactor
-					});
-				},
-			});
-
+			this.fountainAmount = 0;
+			
 			animate((t) =>
 			{
 				this.fountainFactor = t;
@@ -256,22 +266,14 @@ export class Mandelbulb extends RaymarchApplet
 
 		else
 		{
-			if (this.animeLoop)
-			{
-				this.animeLoop.pause();
-			}
-
-			else
-			{
-				return;
-			}
-
-			const startingFountainAmount = this.uniforms.fountainAmount * this.fountainFactor;
+			const startingFountainAmount = this.fountainAmount * this.fountainFactor;
 
 			animate((t) =>
 			{
+				this.fountainAmount = startingFountainAmount * (1 - t) - 2 * Math.PI * t;
+
 				this.setUniforms({
-					fountainAmount: startingFountainAmount * (1 - t) - 2 * Math.PI * t
+					fountainAmount: this.fountainAmount
 				});
 			}, (startingFountainAmount + 2 * Math.PI) * 200, "easeOutQuad");
 		}

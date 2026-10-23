@@ -59,6 +59,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	sceneOrigin; // Formerly cameraPos
 	defaultSceneOrigin;
 
+	// Live updated.
+	distanceToScene;
+
 	lightPos;
 	lightBrightness;
 	useOppositeLight;
@@ -814,10 +817,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// The cap is in scene units, so it has to ride worldScale to stay a fixed speed in
 		// meters; below it, speed is proportional to the estimate and so already tracks the
 		// scale. Outside XR worldScale is 1 and this is what it always was.
-		this.speed = Math.min(
-			this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]),
-			.5 * this.worldScale
-		) * 0.125 * this.speedFactor;
+		this.distanceToScene = this.distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]);
+
+		this.speed = Math.min(this.distanceToScene, .5 * this.worldScale)
+			* 0.125 * this.speedFactor;
 
 		// The camera basis stays orthonormal instead of also encoding the fov,
 		// which lives in the projection matrix now. These only scale movement,

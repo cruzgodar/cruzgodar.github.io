@@ -118,6 +118,16 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const fountainAnimationSpeedSlider = new Slider({
+		element: $("#fountain-animation-speed-slider"),
+		name: "Fountain animation speed",
+		value: 1,
+		min: 0.1,
+		max: 1,
+		logarithmic: true,
+		onInput: onSliderInput
+	});
+
 	const shadowsCheckbox = new Checkbox({
 		element: $("#shadows-checkbox"),
 		name: "Shadows",
@@ -153,6 +163,8 @@ export default function()
 			)
 		});
 
+		applet.fountainAnimationSpeed = fountainAnimationSpeedSlider.value;
+
 		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
 		applet.needNewFrame = true;
@@ -172,15 +184,14 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 		) {
-			if (applet.animeLoop)
-			{
-				applet.animeLoop.pause();
-			}
-
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
 		}
 
-		applet.setFountainAnimation(fountainAnimationCheckbox.checked);
+		if (
+			applet.useFountainAnimation !== fountainAnimationCheckbox.checked
+		) {
+			applet.setFountainAnimation(fountainAnimationCheckbox.checked);
+		}
 	}
 }
