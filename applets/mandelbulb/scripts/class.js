@@ -23,11 +23,16 @@ export class Mandelbulb extends RaymarchApplet
 			vec3 z = pos;
 			
 			float r = length(z);
+			if (r > 3.0)
+			{
+				return r - 2.0;
+			}
+
 			float dr = 1.0;
 			
 			for (int iteration = 0; iteration < 16; iteration++)
 			{
-				if (r > 4096.0)
+				if (r > 16.0)
 				{
 					break;
 				}
@@ -62,6 +67,7 @@ export class Mandelbulb extends RaymarchApplet
 			vec3 z = pos;
 			
 			float r = length(z);
+
 			float dr = 1.0;
 			
 			vec3 color = vec3(1.0, 1.0, 1.0);
@@ -154,8 +160,6 @@ export class Mandelbulb extends RaymarchApplet
 
 	prepareFrame(timeElapsed)
 	{
-		super.prepareFrame(timeElapsed);
-
 		if (this.useFountainAnimation)
 		{
 			this.fountainAmount -= timeElapsed / 50000 * 2 * Math.PI
@@ -165,10 +169,15 @@ export class Mandelbulb extends RaymarchApplet
 
 			this.fountainAmount %= 2 * Math.PI;
 
-			this.setUniforms({
-				fountainAmount: this.fountainAmount * this.fountainFactor,
-			});
+			if (this.fountainAnimationSpeed !== 0)
+			{
+				this.setUniforms({
+					fountainAmount: this.fountainAmount * this.fountainFactor,
+				});
+			}
 		}
+
+		super.prepareFrame(timeElapsed);
 	}
 
 
