@@ -1058,6 +1058,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		stickX = applyDeadzone(stickX, this.xrThumbstickDeadzone);
 		stickY = applyDeadzone(stickY, this.xrThumbstickDeadzone);
 
+		stickX *= Math.min(this.distanceToScene, 1);
+		stickY *= Math.min(this.distanceToScene, 1);
+
 		if (stickX === 0 && stickY === 0)
 		{
 			return;
