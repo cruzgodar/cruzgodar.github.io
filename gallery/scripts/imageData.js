@@ -171,7 +171,7 @@ export const galleryImageData =
 
 	"mandelbulb-power-2":
 	{
-		title: "The Power-2 Madelbulb",
+		title: "The Power-2 Mandelbulb",
 
 		appletLink: "/applets/mandelbulb/?&power-slider=2"
 	},
