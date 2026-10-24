@@ -6,6 +6,7 @@ import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
+import { animate } from "/scripts/src/utils.js";
 
 export default function()
 {
@@ -101,6 +102,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const showCrossSectionCheckbox = new Checkbox({
+		element: $("#show-cross-section-checkbox"),
+		name: "Show cross-section",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	function changeResolution()
@@ -136,6 +143,17 @@ export default function()
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.reloadShader();
+		}
+
+		if (applet.showCrossSection !== showCrossSectionCheckbox.checked)
+		{
+			applet.showCrossSection = showCrossSectionCheckbox.checked;
+
+			animate((t) =>
+			{
+				applet.planeTranslation = applet.showCrossSection ? 1 - t : t;
+				applet.setUniforms({ planeTranslation: applet.planeTranslation });
+			}, 500, applet.showCrossSection ? "easeOutQuad" : "easeInQuad");
 		}
 	}
 }

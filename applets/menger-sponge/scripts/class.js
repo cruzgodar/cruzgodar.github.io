@@ -16,7 +16,19 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 	// and then we can arrange for the xyz values to be in ascending order with some
 	// cheeky min and max business. That ensures that the nearest edge block is the one
 	// with scale center at (0, 1, 1).
+
+	const distanceGlsl = /* glsl */`
+		float spongeDistance = totalDistance / effectiveScale;
+
+		return max(
+			spongeDistance,
+			dot(startPos - normalVector * planeTranslation * 1.75, normalVector)
+		);
+	`;
+
 	return /* glsl */`
+		vec3 startPos = pos;
+		
 		pos = abs(pos);
 		float maxAbsPos = max(max(pos.x, pos.y), pos.z);
 		float minAbsPos = min(min(pos.x, pos.y), pos.z);
@@ -120,13 +132,16 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 			pos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
-		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
+		${useForGetColor ? "return abs(color);" : distanceGlsl}
 	`;
 }
 
 
 export class MengerSponge extends RaymarchApplet
 {
+	showCrossSection = false;
+	planeTranslation;
+
 	rotationAngleX = 0;
 	rotationAngleY = 0;
 	rotationAngleZ = 0;
@@ -140,18 +155,21 @@ export class MengerSponge extends RaymarchApplet
 
 		const addGlsl = /* glsl */`
 			const int maxIterations = 16;
+			const vec3 normalVector = normalize(vec3(-1.0, 1.0, 1.0));
 		`;
 
 		const uniformsGlsl = /* glsl */`
 			uniform float scale;
 			uniform int iterations;
 			uniform mat3 rotationMatrix;
+			uniform float planeTranslation;
 		`;
 
 		const uniforms = {
 			scale: 3,
 			iterations: 16,
 			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+			planeTranslation: 1,
 		};
 
 		super({
@@ -312,6 +330,13 @@ export class MengerSponge extends RaymarchApplet
 			mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
 		}
 
-		return Math.abs(totalDistance) / effectiveScale;
+		const spongeDistance = Math.abs(totalDistance) / effectiveScale;
+
+		return this.planeTranslation === 0
+			? Math.max(
+				spongeDistance,
+				(-x + y + z) / Math.sqrt(3)
+			)
+			: spongeDistance;
 	}
 }
