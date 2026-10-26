@@ -10,6 +10,55 @@ import { raw } from "/scripts/src/main.js";
 export default function()
 {
 	createDesmosGraphs({
+		solutionLine:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.9, 0.36, -0.23, -0.35, -0.93, -0.09, -0.25, 0, 0.97]
+			},
+
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`x + y + 0z = 2`, color: desmosColors.red },
+				{ latex: raw`y + z = 3`, color: desmosColors.blue },
+				{ latex: raw`2x + y - z = 1`, color: desmosColors.purple },
+
+				{ latex: raw`(-1+t, 3-t, t)`, color: desmosColors.orange, parametricDomain: { min: -3, max: 6 } },
+			]
+		},
+
+		solutionLineNormalVectors:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [-0.9, 0.36, -0.23, -0.35, -0.93, -0.09, -0.25, 0, 0.97]
+			},
+
+			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5, zmin: -5, zmax: 5 },
+
+			expressions:
+			[
+				{ latex: raw`x + y + 0z = 2`, color: desmosColors.red },
+				{ latex: raw`y + z = 3`, color: desmosColors.blue },
+				{ latex: raw`2x + y - z = 1`, color: desmosColors.purple },
+
+				{ latex: raw`(0.5, 1.5, 1.5)`, color: desmosColors.orange },
+
+				{ latex: raw`\vector((0.5, 1.5, 1.5), (0.5, 1.5, 1.5) + (1, 1, 0))`, color: desmosColors.red },
+				{ latex: raw`\vector((0.5, 1.5, 1.5) + (1, 1, 0), (0.5, 1.5, 1.5) + 2(1, 1, 0))`, color: desmosColors.red },
+				{ latex: raw`\vector((0.5, 1.5, 1.5) + 2(1, 1, 0), (0.5, 1.5, 1.5) + 2(1, 1, 0) - (0, 1, 1))`, color: desmosColors.blue },
+				{ latex: raw`\vector((0.5, 1.5, 1.5), (0.5, 1.5, 1.5) + (2, 1, -1))`, color: desmosColors.purple },
+			]
+		},
+
 		coordinateSystems:
 		{
 			bounds: { xmin: -5, xmax: 5, ymin: -5, ymax: 5 },
