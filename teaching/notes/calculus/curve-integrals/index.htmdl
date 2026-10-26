@@ -600,7 +600,69 @@ We've talked a lot about path-independence, but what does it actually mean? A pa
 		&= 0,
 	$$
 
-	since $\sin$ is an odd function and $\cos$ is even. Even though this path wasn't closed, both it and the were symmetric enough to result in an integral of zero anyway!
+	since $\sin$ is an odd function and $\cos$ is even. Even though this path wasn't closed, both it and the integrand were symmetric enough to result in an integral of zero anyway!
+
+###
+
+Sometimes, we can show a field is conservative, even if we can't find a formula for its potential function. In that case, we can't use the fundamental theorem directly, but we can still leverage path-independence to our advantage.
+
+### exc "path-independence"
+
+	Let $\vec{F}$ be the field
+
+	$$
+		\vec{F}(x, y) = \left< 2x + y,\ x + e^{y^2} \right>.
+	$$
+
+	1. Show that $\vec{F}$ is conservative.
+
+	2. Explain why it is not possible to write a formula for a potential function for $\vec{F}$ (at least in terms of elementary functions).
+
+	3. Let $C$ be the oriented curve parameterized by
+
+	$$
+		\vec{r}(t) = \left< t^2,\, \sin(\pi t) \right>
+	$$
+
+	for $t \in [0, 2]$. Find $$\int_C \vec{F} \bullet \d\vec{r}$$.
+
+	### solution
+
+	1. Since
+
+	$$
+		p/py \left[ 2x + y \right] = 1 = p/px \left[ x + e^{y^2} \right],
+	$$
+
+	and the domain of $\vec{F}$ is all of $#R#^2$, the field is conservative.
+
+	2. The issue is the $e^{y^2}$, which has no antiderivative (as a function of $y$) in terms of elementary functions, which are functions built from polynomials, exponentials, logarithms, and trig functions.
+
+	3. We can't use the fundamental theorem of curve integrals without a potential function, and we can't integrate this directly because of the $e^{y^2}$. Instead, we can use path-independence to change the path: so long as we integrate along a path with the same start and end points as $C$, the integral will be the same. Those points are
+
+	$$
+		\vec{r}(0) &= \left< 0, 0 \right>
+
+		\vec{r}(2) &= \left< 4, 0 \right>,
+	$$
+
+	so we're looking for a path from $(0, 0)$ to $(4, 0)$ that makes the integral as simple as possible. The simplest by far is the straight-line path, since then $y = 0$ the entire way. If $C_2$ is the curve parameterized by
+
+	$$
+		\vec{r}_2(t) = \left< 4t, 0 \right>
+	$$
+
+	for $t \in [0, 1]$, then
+
+	$$
+		\int_C \vec{F} \bullet \d\vec{r} &= \int_{C_2} \vec{F} \bullet \d\vec{r}
+
+		&= \int_0^1 \left< 8t,\ 4t + 1 \right> \bullet \left< 4, 0 \right> \d t
+
+		&= \int_0^1 32t\,\d t
+
+		&= 16.
+	$$
 
 ###
 
