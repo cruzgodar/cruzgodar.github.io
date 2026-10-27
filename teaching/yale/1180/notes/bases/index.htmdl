@@ -280,11 +280,11 @@ This uniqueness of expression is a valuable consequence of linear independence, 
 
 ###
 
-The previous proposition tells us that any basis for $#R#^n$ must have exactly $n$ vectors: it can't have more, since then the vectors couldn't be linearly independent, and it can't have less, since then they couldn't span $#R#^n$. Moreover, if we're interested in checking if a collection of vectors is a basis, then we can just check if they're linearly independent and have the right number of vectors, since then they'll be guaranteed to span the space too.
+The previous proposition tells us that any basis for $#R#^n$ must have exactly $n$ vectors: it can't have more, since then the vectors couldn't be linearly independent, and it can't have less, since then they couldn't span $#R#^n$. If we want to check whether a given collection of vectors is a basis, then we can just check if they're all linearly independent and have the right number of vectors, since in that case, they'll be guaranteed to span the space too.
 
 ### ex "a basis for $#R#^n$"
 
-	The primordial example of a basis is the vectors
+	The classic example of a basis is the vectors
 
 	$$
 		\vec{e_1} = [[ 1 ; 0 ; 0 ; \vdots ; 0 ]], \vec{e_2} = [[ 0 ; 1 ; 0 ; \vdots ; 0 ]], ..., \vec{e_n} = [[ 0 ; 0 ; \vdots ; 0 ; 1 ]] \in #R#^n.
@@ -294,7 +294,7 @@ The previous proposition tells us that any basis for $#R#^n$ must have exactly $
 
 ###
 
-This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
+This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**.
 
 ### ex "another basis for $#R#^n$"
 
@@ -312,26 +312,28 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 	in this basis.
 	
-	While this is nominally a new kind of task, it just comes down to more row reduction: we know that there is the correct number of vectors for a basis (three) and so we can just check linear independence. As a small extra, let's row reduce these by rows instead of columns: that's perfectly fine to do for showing linear independence, and for interesting reasons that we'll have a chance to explore on the homework.
+	This is nominally a new kind of task, but it comes down to more row reduction: we know that there is the correct number of vectors for a basis (three) and so we can just check linear independence.
 	
 	$$
-		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
+		[[ 3, 1, 0 | 0 ; 1, 0, 2 | 0 ; 2, 1, 1 | 0 ]] &
 
-		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 2, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 3\vec{r_2}
+		[[ 1, 0, 2 | 0 ; 3, 1, 0 | 0 ; 2, 1, 1 | 0 ]] & \qquad \vec{r_1} \leftrightarrow \vec{r_2}
 
-		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 3 ]] & \qquad \vec{r_3} \to \vec{r_3} - 2\vec{r_1}
+		[[ 1, 0, 2 | 0 ; 0, 1, -6 | 0 ; 0, 1, -3 | 0 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 2\vec{r_1} ::
 
-		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad \vec{r_3} \to \frac{1}{3}\vec{r_3}
+		[[ 1, 0, 2 | 0 ; 0, 1, -6 | 0 ; 0, 0, 3 | 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
 
-		[[ 0, 1, 0 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_3} ; \vec{r_1} \to \vec{r_1} + \vec{r_3} ::,
+		[[ 1, 0, 2 | 0 ; 0, 1, -6 | 0 ; 0, 0, 1 | 0 ]] & \qquad \vec{r_3} \to \frac{1}{3}\vec{r_3}
+
+		[[ 1, 0, 0 | 0 ; 0, 1, 0 | 0 ; 0, 0, 1 | 0 ]] & \qquad :: \vec{r_1} \to \vec{r_1} - 2\vec{r_3} ; \vec{r_2} \to \vec{r_2} + 6\vec{r_1} ::
 	$$
 
-	and so all of the vectors are linearly independent and therefore span $#R#^3$.
+	All of the vectors are therefore linearly independent, so they must also span $#R#^3$, and so they form a basis.
 
-	To express $\vec{v}$ in the basis, we're just trying to find a linear combination of the basis vectors that equals $\vec{v}$. We've already solved that type of problem: it's just row reduction once again, this time with the $\vec{v_i}$ as columns.
+	To express $\vec{v}$ in the basis, we're trying to find a linear combination of the basis vectors that equals $\vec{v}$. We've already solved that type of problem: it's just row reduction once again, but this time with $\vec{v}$ as the augmented vector. In fact, we could have used $\vec{v}$ instead of $\vec{0}$ from the outset: if the left side reduces to anything other the identity matrix, then the vectors still don't form a basis, and if they do, then we've solved for the linear combination that produces $\vec{v}$.
 
 	$$
-		[[ 3, 1, 0 | 4 ; 1, 0, 2 | 1 ; 2, 1, 1 | 0 ]] & 
+		[[ 3, 1, 0 | 4 ; 1, 0, 2 | 1 ; 2, 1, 1 | 0 ]] &
 
 		[[ 1, 0, 2 | 1 ; 3, 1, 0 | 4 ; 2, 1, 1 | 0 ]] & \qquad \vec{r_1} \leftrightarrow \vec{r_2}
 
@@ -341,16 +343,14 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 		[[ 1, 0, 2 | 1 ; 0, 1, -6 | 1 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_3} \to \frac{1}{3}\vec{r_3}
 
-		[[ 1, 0, 2 | 1 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 6\vec{r_3}
-
-		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_3}.
+		[[ 1, 0, 0 | 3 ; 0, 1, 0 | -5 ; 0, 0, 1 | -1 ]] & \qquad :: \vec{r_1} \to \vec{r_1} - 2\vec{r_3} ; \vec{r_2} \to \vec{r_2} + 6\vec{r_1} ::
 	$$
 
 	In total, our linear combination is $\vec{v} = 3\vec{v_1} - 5\vec{v_2} - \vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(3, -5, -1)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
 
 ###
 
-Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point. 
+Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point.
 
 ### desmos coordinateSystems
 
