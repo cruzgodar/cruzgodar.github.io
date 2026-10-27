@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 It's hard to overstate just how pervasive linear algebra is in science. It underpins nearly every math course that comes after it in one way or another, and it's so important in other STEM fields that when they talk about math, they often just mean linear algebra. With such an impressive resume, it might be surprising to hear that the subject is no more than a formalized, organized way to solve systems of linear equations --- at least, that's how it gets started. As we'll quickly see, formalizing that process will result in an unreasonably useful set of tools and definitions with applications far beyond what it was designed for.
@@ -13,8 +17,6 @@ This course is a clean break from its prequisites: there isn't much to review th
 		
 		2x_1 - 3x_2 &= 8.
 	$$
-
-	@solution[[
 	
 	We could use substitution by solving the first equation for $x_1$ and substituting it into the second, but let's think critically about that. Substitution doesn't scale well --- if we had $n$ equations and $n$ unknowns, solving by substitution means isolating and plugging in $n - 1$ equations until we finally reach the end, and then we have to do a large amount of back-substitution. That's not to mention the complexity that arises when not every equation contains every variable, and we have to carefully pick and choose our order. We'd like more of a general solving method here, and so we owe it to ourselves to build a better foundation.
 	
@@ -58,24 +60,24 @@ This course is a clean break from its prequisites: there isn't much to review th
 
 	@solution[[
 
-	Adding $2$ times the first equation to the second,
+		Adding $2$ times the first equation to the second,
 
-	$$
-		2x_1 - x_2 &= -6
-		
-		- x_2 &= 0.
-	$$
+		$$
+			2x_1 - x_2 &= -6
+			
+			- x_2 &= 0.
+		$$
 
-	It's a little silly, but adding $-1$ times the second equation to the first,
+		It's a little silly, but adding $-1$ times the second equation to the first,
 
-	$$
-		2x_1 &= -6
-		
-		- x_2 &= 0.
-	$$
+		$$
+			2x_1 &= -6
+			
+			- x_2 &= 0.
+		$$
 
-	Therefore, $x_1 = -3$ and $x_2 = 0$.
-	
+		Therefore, $x_1 = -3$ and $x_2 = 0$.
+	]]
 ]]
 
 Now that we've worked through an example, we're prepared to define linear systems in general.
@@ -182,8 +184,6 @@ Although this is an intense definition, it's thankfully among the most complicat
 	
 	3. $$[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] [[ 5 ; -4 ; 1 ]].$$
 	
-	@solution[[
-	
 	1. Multiplying each row of the matrix with the vector, we have
 	
 	$$
@@ -216,26 +216,26 @@ Although this is an intense definition, it's thankfully among the most complicat
 
 	@solution[[
 
-	1. We have
+		1. We have
 
-	$$
-		[[ 1, 0 ; 0, 1 ]] [[ 5 ; 7 ]] &= [[ 1(5) + 0(7) ; 0(5) + 1(7) ]]
+		$$
+			[[ 1, 0 ; 0, 1 ]] [[ 5 ; 7 ]] &= [[ 1(5) + 0(7) ; 0(5) + 1(7) ]]
 
-		&= [[ 5 ; 7 ]].
-	$$
+			&= [[ 5 ; 7 ]].
+		$$
 
-	More generally, this matrix leaves any vector it multiplies alone.
+		More generally, this matrix leaves any vector it multiplies alone.
 
-	2.
+		2.
 
-	$$
-		[[ 1, 1 ; 2, 1 ; -1, 1 ]] [[ -2 ; 5 ]] &= [[ 1(-2) + 1(5) ; 2(-2) + 1(5) ; -1(-2) + 1(5) ]]
+		$$
+			[[ 1, 1 ; 2, 1 ; -1, 1 ]] [[ -2 ; 5 ]] &= [[ 1(-2) + 1(5) ; 2(-2) + 1(5) ; -1(-2) + 1(5) ]]
 
-		&= [[ 3 ; 1 ; 7 ]].
-	$$
+			&= [[ 3 ; 1 ; 7 ]].
+		$$
 
-	3. This one's undefined! We're trying to multiply a $3 \times 2$ matrix with a $3 \times 1$ vector, and we would need the number of columns of the matrix (i.e. $2$) to equal the number of rows of the vector (i.e. $3$).
-	
+		3. This one's undefined! We're trying to multiply a $3 \times 2$ matrix with a $3 \times 1$ vector, and we would need the number of columns of the matrix (i.e. $2$) to equal the number of rows of the vector (i.e. $3$).
+	]]
 ]]
 
 From these examples, we can see some general properties of matrix-vector multiplication. If $A$ is an $m \times n$ matrix, meaning it has $m$ rows and $n$ columns, then $A\vec{x}$ is defined only if $\vec{x}$ has length $n$ --- in other words, if $\vec{x}$ is $n \times 1$ --- and if so, then the length of $A\vec{x}$ is $m$.
@@ -339,8 +339,6 @@ That was a *lot* of work! Let's turn to some examples to see this in action.
 @ex[matrix multiplication][[
 	
 	Let $$A = [[ 5, 0 ; -2, 1 ]]$$ and $$B = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $AB$.
-
-	@solution[[
 	
 	This is a valid product to take, since the number of columns $A$ and the number of rows of $B$ are the same (i.e. $2$). And the dimensions of $AB$ will be $2 \times 3$, since $A$ has $2$ rows and $B$ has $3$ columns. To get the element $AB_{11}$ --- the top-left entry --- we take the first row of $A$, which is $(5, 0)$, and the first column of $B$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	
@@ -362,44 +360,44 @@ That was a *lot* of work! Let's turn to some examples to see this in action.
 
 	@solution[[
 
-	1. We already know $AB$, so we can compute
+		1. We already know $AB$, so we can compute
 
-	$$
-		(AB)\vec{x} &= [[ 15, 5, -5 ; -7, -2, 4 ]][[ 1 ; 2 ; -1 ]]
+		$$
+			(AB)\vec{x} &= [[ 15, 5, -5 ; -7, -2, 4 ]][[ 1 ; 2 ; -1 ]]
 
-		&= [[ 30 ; -15 ]].
-	$$
+			&= [[ 30 ; -15 ]].
+		$$
 
-	On the other hand,
+		On the other hand,
 
-	$$
-		B\vec{x} &= [[ 3, 1, -1 ; -1, 0, 2 ]][[ 1 ; 2 ; -1 ]]
+		$$
+			B\vec{x} &= [[ 3, 1, -1 ; -1, 0, 2 ]][[ 1 ; 2 ; -1 ]]
 
-		&= [[ 6 ; -3 ]]
+			&= [[ 6 ; -3 ]]
 
-		A(B\vec{x}) &= [[ 5, 0 ; -2, 1 ]] [[ 6 ; -3 ]]
+			A(B\vec{x}) &= [[ 5, 0 ; -2, 1 ]] [[ 6 ; -3 ]]
 
-		&= [[ 30 ; -15 ]].
-	$$
+			&= [[ 30 ; -15 ]].
+		$$
 
-	2. We take rows of the first factor and columns of the second, so the result is a $1 \times 3$ matrix (also called a **row vector**):
+		2. We take rows of the first factor and columns of the second, so the result is a $1 \times 3$ matrix (also called a **row vector**):
 
-	$$
-		[[ 1, 2, 3 ]][[ -1, 0, 4 ; 2, 5, -1 ; 0, 0, 1 ]] = [[ 3, 10, 5 ]].
-	$$
+		$$
+			[[ 1, 2, 3 ]][[ -1, 0, 4 ; 2, 5, -1 ; 0, 0, 1 ]] = [[ 3, 10, 5 ]].
+		$$
 
-	3. This way around is undefined! The dimensions are $3 \times 3$ and $1 \times 3$, and the middle dimensions don't line up.
+		3. This way around is undefined! The dimensions are $3 \times 3$ and $1 \times 3$, and the middle dimensions don't line up.
 
-	4. We have
+		4. We have
 
-	$$
-		AB &= [[ -2, 2 ; -4, 6 ]]
+		$$
+			AB &= [[ -2, 2 ; -4, 6 ]]
 
-		BA &= [[ 6, 8 ; -1, -2 ]],
-	$$
+			BA &= [[ 6, 8 ; -1, -2 ]],
+		$$
 
-	so they're very much different. This is what we'd expect from functions, too: order matters in composition!
-	
+		so they're very much different. This is what we'd expect from functions, too: order matters in composition!
+	]]
 ]]
 
 

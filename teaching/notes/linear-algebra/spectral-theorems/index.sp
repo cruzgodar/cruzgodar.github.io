@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In the first part of the course, we studied bases of eigenvectors, and in the second part, orthonormal bases. These two notions are somewhat in conflict: while we can always construct an orthonormal basis for a vector space with the Gram-Schmidt process, applying that to a basis of eigenvectors for a diagonalizable matrix generally won't preserve the fact that they're eigenvectors. What we'll explore in this last part of the course is the situation in which we can get the best of both worlds --- an orthonormal basis of eigenvectors. Without any more preliminaries, let's state and prove the theorem that characterizes exactly when this is possible.
@@ -155,7 +159,7 @@ Our final lemma is considerably more technical, but it'll let us put all the pie
 
 At long last, we're ready to return to the Spectral Theorem itself.
 
-@proof[[ -m "Proof of the Real Spectral Theorem"
+@proof[Proof of the Real Spectral Theorem][[
 
 	To begin, let's show that if $A$ has an orthonormal basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ of eigenvectors, then it must be symmetric. This is just a direct computation: we know $A = BDB^{-1}$, but $B$ must be a unitary matrix, and so $B^{-1} = B^T$. Then
 
@@ -175,7 +179,7 @@ At long last, we're ready to return to the Spectral Theorem itself.
 
 	We're almost done! We've shown that all the eigenvalues and eigenvectors are real, and that the eigenvectors are also orthogonal. The only substantive thing left to show is that there are enough eigenvectors --- that the algebraic multiplicity of every eigenvalue is the same as the geometric multiplicity. This is where the final lemma comes in. Every matrix is guaranteed to have one eigenvector at the very least (the worst-case scenario is that there's only a single eigenvalue with algebraic multiplicity $n$ and geometric multiplicity $1$). Let's call that guaranteed eigenvector for $A$ $\vec{v_1}$. The third lemma tells us that if we take an orthonormal basis for $\left( \span\left\{ \vec{v_1} \right\} \right)^\perp$, then $A$ is still a symmetric matrix when expressed in that basis. That means it's guaranteed to have another real eigenvector $\vec{v_2}$ that's orthogonal to $\vec{v_1}$, and so we can repeat this process $n$ times until all that's left is a $1 \times 1$ matrix, which is always diagonalizable (since it's diagonal). In total, we have $n$ distinct, orthogonal eigenvectors with real eigenvectors, and to cap off the proof, we can rescale every eigenvector to have magnitude $1$, making them orthonormal.
 
-]]
+]]({ noTitle: true })
 
 That was a ton of work! It's easily the most complicated theorem we'll prove in the course. To wrap up this section, we'll state the more general version for complex matrices for completeness, although we won't have many uses for it in this class.
 

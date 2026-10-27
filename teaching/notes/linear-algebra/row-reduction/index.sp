@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -64,19 +68,19 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 
 	@solution[[
 
-	It's almost in RREF, but not quite! Every row has a leading $1$ or is all zero, but the third row's leading $1$ isn't alone in its column. By adding $-2$ times the third row to the second, we could fix this problem!
-
+		It's almost in RREF, but not quite! Every row has a leading $1$ or is all zero, but the third row's leading $1$ isn't alone in its column. By adding $-2$ times the third row to the second, we could fix this problem!
+	]]
 ]]
 
 A matrix in reduced row echelon form is effectively as good as we can get --- once it's in that form, none of the elementary row operations can clear the columns that don't contain a leading $1$. Instead, we can cash out by converting from a matrix back to equations, and they're very simple to solve. Every one of those leading $1$s is an isolated variable, and the columns we couldn't clear are free parameters. With the goal in mind, let's look at how we get there.
 
-### thm -m "Method: Row Reduction"
+@method[row reduction][[
 	
 	To perform elementary row operations on a matrix $A$ to convert it to reduced row echelon form, first find a row with a nonzero first entry, swap it to the top of the matrix, and then add multiples of that row to all the ones below it to make their first terms zero.
 
 	Now find a row with a nonzero second entry, swap it to the second row down from the top, and add multiples of it to all the rows below it to make their second entries zero. Repeat this with every row --- at the end, you'll have a matrix with a triangular region of zeros in the bottom-left and a strip of $1$s diagonally from the top-left to bottom-right. Now take the bottom row and add multiples of it to every row above it to zero out their entries, and repeat with all of the rows. Finally, divide through by the nonzero entries in each row to make them $1$.
 	
-###
+]]
 
 This is a method best explained with examples, so let's dive right in.
 
@@ -91,8 +95,6 @@ This is a method best explained with examples, so let's dive right in.
 		
 		-6x + z &= -12.
 	$$
-
-	@solution[[
 	
 	To begin, we'll place this into an augmented matrix:
 	
@@ -186,48 +188,48 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 
 	@solution[[
 	
-	Once this is in a matrix, we're off to the races:
-	
-	$$
-		[[ 1, 4, 0, -14 | -11 ; 2, 5, 1, 14 | -15 ; 0, 1, -5, 28 | 7 ]] & 
+		Once this is in a matrix, we're off to the races:
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
+		$$
+			[[ 1, 4, 0, -14 | -11 ; 2, 5, 1, 14 | -15 ; 0, 1, -5, 28 | 7 ]] & 
+			
+			[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \vec{r_2} \to \vec{r_2} - 2\vec{r_1}
+			
+			[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \vec{r_2} \leftrightarrow \vec{r_3}
+			
+			[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
+			
+			[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_3} \to -\frac{1}{14}\vec{r_3}
+			
+			[[ 1, 4, 0, -14 | -11 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_2} \to \vec{r_2} + 5\vec{r_3}
+			
+			[[ 1, 0, 0, 54 | 1 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_1} \to \vec{r_1} - 4\vec{r_2}
+		$$
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \vec{r_2} \leftrightarrow \vec{r_3}
+		The matrix is now fully reduced, even though there are still a bunch of messy-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of a matrix failing to have a solution later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \vec{r_3} \to \vec{r_3} + 3\vec{r_2}
+		On the other hand, a matrix like this, with more columns than rows, means there are extra unknowns --- and in general, we can only solve for as many unknowns as there are equations. A great side effect of matrix reduction is that it's made the extra step of writing the general solution in terms of a parameter a whole lot easier. If we set $t = x_4$, then our equations are
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_3} \to -\frac{1}{14}\vec{r_3}
+		$$
+			x_1 + 54t &= 1
+			
+			x_2 - 17t &= -3
+			
+			x_3 - 9t &= -2,
+		$$
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_2} \to \vec{r_2} + 5\vec{r_3}
+		so the general solution is
 		
-		[[ 1, 0, 0, 54 | 1 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \vec{r_1} \to \vec{r_1} - 4\vec{r_2}
-	$$
-	
-	The matrix is now fully reduced, even though there are still a bunch of messy-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of a matrix failing to have a solution later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
-	
-	On the other hand, a matrix like this, with more columns than rows, means there are extra unknowns --- and in general, we can only solve for as many unknowns as there are equations. A great side effect of matrix reduction is that it's made the extra step of writing the general solution in terms of a parameter a whole lot easier. If we set $t = x_4$, then our equations are
-	
-	$$
-		x_1 + 54t &= 1
+		$$
+			x_1 &= 1 - 54t
+			
+			x_2 &= -3 + 17t
+			
+			x_3 &= -2 + 9t
+		$$
 		
-		x_2 - 17t &= -3
-		
-		x_3 - 9t &= -2,
-	$$
-	
-	so the general solution is
-	
-	$$
-		x_1 &= 1 - 54t
-		
-		x_2 &= -3 + 17t
-		
-		x_3 &= -2 + 9t
-	$$
-	
-	for any value of $t$.
-	
+		for any value of $t$.
+	]]
 ]]
 
 
@@ -255,8 +257,6 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	$$
 	
 	Express it as a matrix equation, then solve it by inverting the matrix.
-
-	@solution[[
 	
 	The matrix equation here is
 	
@@ -336,38 +336,38 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 
 	@solution[[
 
-	The matrix form of this equation is
+		The matrix form of this equation is
 
-	$$
-		[[ 1, 2 ; -2, 3 ]] [[ x ; y ]] = [[ a ; b ]]
-	$$
+		$$
+			[[ 1, 2 ; -2, 3 ]] [[ x ; y ]] = [[ a ; b ]]
+		$$
 
-	so we can invert the left matrix:
+		so we can invert the left matrix:
 
-	$$
-		[[ 1, 2 | 1, 0 ; -2, 3 | 0, 1 ]] &
-		
-		[[ 1, 2 | 1, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 2\vec{r_1}
-		
-		[[ 7, 14 | 7, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to 7\vec{r_1}
-		
-		[[ 7, 0 | 3, -2 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_2}
-	$$
+		$$
+			[[ 1, 2 | 1, 0 ; -2, 3 | 0, 1 ]] &
+			
+			[[ 1, 2 | 1, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_2} \to \vec{r_2} + 2\vec{r_1}
+			
+			[[ 7, 14 | 7, 0 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to 7\vec{r_1}
+			
+			[[ 7, 0 | 3, -2 ; 0, 7 | 2, 1 ]] & \qquad \vec{r_1} \to \vec{r_1} - 2\vec{r_2}
+		$$
 
-	Dividing both rows by $7$ yields
+		Dividing both rows by $7$ yields
 
-	$$
-		\frac{1}{7} [[ 3, -2 ; 2, 1 ]],
-	$$
+		$$
+			\frac{1}{7} [[ 3, -2 ; 2, 1 ]],
+		$$
 
-	and multiplying both sides of the original matrix equation by this tells us
+		and multiplying both sides of the original matrix equation by this tells us
 
-	$$
-		[[ x ; y ]] &= \frac{1}{7} [[ 3, -2 ; 2, 1 ]] [[ a ; b ]]
+		$$
+			[[ x ; y ]] &= \frac{1}{7} [[ 3, -2 ; 2, 1 ]] [[ a ; b ]]
 
-		&= [[ \frac{3}{7}a - \frac{2}{7}b ; \frac{2}{7}a + \frac{1}{7}b ]].
-	$$
-	
+			&= [[ \frac{3}{7}a - \frac{2}{7}b ; \frac{2}{7}a + \frac{1}{7}b ]].
+		$$
+	]]
 ]]
 
 

@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 After the behemoth that was the last section, let's take the opportunity to apply linear algebra to some more concrete problems. When we solve a matrix equation $A\vec{x} = \vec{b}$ currently, there are three different possible outcomes: either there's exactly one solution for $\vec{x}$, there are infinitely many (i.e. the solution contains one or more free parameters), or there are no solutions. Up to this point, we haven't been able to handle that last case beyond saying that we're unable to solve the system, but now that we have the language of the previous section, we're much better prepared to discuss it in more depth. In particular, what's the closest we can get? For any value of $\vec{x}$, $A\vec{x}$ is a linear combination of the columns of $A$ with weights given by the entries of $\vec{x}$, so $A\vec{x} = \vec{b}$ is solvable exactly when $\vec{b} \in \image A$, which is just the span of the columns of $A$. If that's not the case, then the closest vector that *is* in the image is given by a projection. Specifically, the closest output is $\vec{b}'$, where
@@ -62,7 +66,7 @@ In so many symbols, $\ker \left( A^T\!A \right) = \left\{ \vec{0} \right\}$, so 
 		[[ 1, 0 ; 1, 1 ; 2, 1 ]]\vec{x} = [[ 2 ; 1 ; 0 ]].
 	$$
 
-	@solution[[
+
 
 	One advantage of the least-squares approach is that if the matrix equation does actually have a solution, we'll find it anyway, so we don't need to check that before we start the process. Multiplying both sides by the transpose of the coefficient matrix, we have
 

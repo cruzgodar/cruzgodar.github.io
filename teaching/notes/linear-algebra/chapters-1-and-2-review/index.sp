@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Welcome to Math 342! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before most lectures. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
@@ -40,7 +44,7 @@ Intuitively, a vector space is a set of elements that can be added together and 
 	
 	Let $V$ be the vector space $C^0(#R#)$ consisting of continuous functions $f: #R# \to #R#$ and let $X$ be the set of functions $f$ such that $f(1) = 0$. Show that $X$ is a subspace of $V$.
 
-	@solution[[
+
 	
 	To show closure under addition and multiplication at once, we can show that $c\vec{v} + \vec{w} \in X$ for any $\vec{v}, \vec{w} \in X$ and $c \in #R#$. If $f, g \in X$ are functions and $c \in #R#$, then
 	
@@ -100,7 +104,7 @@ The last entry in the list deserves some explanation. Given two vector spaces $V
 	
 	Find the matrix for $T$ and use it to evaluate $T\left( [[ -2 ; 1 ]] \right)$.
 
-	@solution[[
+
 
 	We have $T\left( [[ 1 ; 0 ]] \right) = [[ 1 ; 3 ]]$ and $T\left( [[ 0 ; 1 ]] \right) = [[ -1 ; 2 ]]$, so the matrix for $T$ is
 
@@ -138,7 +142,7 @@ The **kernel** of a linear transformation $T : V \to W$, written $\ker T$, is th
 
 	Let $T$ be the linear transformation defined in the previous example. Find $\ker T$ and $\image T$.
 
-	@solution[[
+
 
 	To find the kernel, we solve $T\left( [[ x ; y ]] \right) = [[ 0 ; 0 ]]$, so we have
 
@@ -182,7 +186,7 @@ The matrix $A$ of a linear transformation $T : V \to W$ tells most of the story 
 		A = [[ 1, 3, 2 ; 0, 3, 1 ; 1, -3, -4 ]].
 	$$
 
-	@solution[[
+
 
 	Let's expand about row 2. For each of the three entries, we cross off its row and column, compute the determinant of the $2 \times 2$ matrix that's left, and then multiply by the entry, possibly with a sign. That sign alternates between $+$ and $-$, starting with $+$ if it's an even row or column and $-$ if it's odd.
 
@@ -235,7 +239,7 @@ The process of changing the basis of a coordinate vector --- effectively convert
 
 	Let $V = \span\{ 1, x, x^2 \}$ be the vector space of polynomials with degree less than 4, let $\mathcal{E} = \{1, x, x^2\}$ be the standard basis for $V$, and let $\mathcal{B} = \{1 + x, x + x^2, -1 + 2x^2\}$ be another basis for $V$. Find the change-of-basis matrix $B$ from $\mathcal{B}$ to $\mathcal{E}$ and use it to express $p = 1 + x + x^2$ in $\mathcal{B}$.
 
-	@solution[[
+
 
 	The matrix $B$ is simple enough: we just write each basis vector in $\mathcal{B}$ as a coordinate vector in $\mathcal{E}$ (i.e. the vector of their coefficients) and place them as columns in a matrix:
 
@@ -291,7 +295,7 @@ In practice, it's often a little cumbersome to find a matrix with respect to a d
 	
 	find the matrix for $T$ with respect to these two bases.
 
-	@solution[[
+
 	
 	The matrix $A$ for $T$ with respect to the standard basis is given by evaluating $T$ on each of the vectors in the standard basis for $V = M_{2 \times 2}(#R#)$ and writing them as coordinate vectors in the standard basis for $W$ (i.e. $\{1, x\}$). We have
 	
@@ -377,9 +381,9 @@ One final but crucial result from linear algebra I is the **Fundamental Theorem 
 
 We've touched on many of the most important concepts, but it's impossible to cover everything. The first homework will help to review more material, but if you're still feeling shaky about a topic, I've written a full set of linear algebra I notes that you might find helpful!
 
-### image-links
-	/teaching/uo/341 "Linear Algebra I Notes"
-###
+@imageLinks([
+	{ url: "/teaching/uo/341", title: "Linear Algebra I Notes" }
+])
 
 <div style="height: 32px"></div>
 

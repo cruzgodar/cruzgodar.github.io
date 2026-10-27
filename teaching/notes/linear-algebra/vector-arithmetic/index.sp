@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -92,7 +96,7 @@ The cases in which a linear combination results in the zero vector are of the mo
 
 	Are the vectors $$\vec{v_1} = [[ 1 ; 2 ; -1 ]]$$, $$\vec{v_2} = [[ 2 ; 0 ; 4 ]]$$, and $$\vec{v_3} = [[ 0 ; 2 ; -3 ]]$$ linearly independent? Why or why not?
 
-	@solution[[
+
 
 	For the vectors to be linearly *dependent*, we would need scalars $c_1$, $c_2$, and $c_3$ so that
 

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Before we dive into more linear algebra, I want to take a step back and look at some of its many applications that motivate devoting two terms to its study. Now that we have the terminology of bases, the definition of a linear map $T : V \to W$ couldn't be much simpler: it's a function that splits across addition and scalar multiplication (i.e. $T(c\vec{v_1} + \vec{v_2}) = cT(\vec{v_1}) + T(\vec{v_2})$) that's completely determined by its action on a basis.
@@ -12,13 +16,13 @@ With $V = #R#^3$ and $W = #R#^2$, there's the classic example of 3D graphics. *R
 
 On the subject of 3D rendering, I completed a project to render the Thurston geometries not too long ago. These are the eight different geometries possible in curved three-dimensional space; as a two-dimensional analogue, the geometry of the sphere is different than that of the plane. Here's a rendering of three-dimensional *hyperbolic* space --- drag on the scene to look around and use WASD or hold down with two fingers on a touchscreen to move.
 
-### canvas h3-geometry
+@canvas{h3-geometry}
 
 Linear algebra is all over this project. All of the geometries are represented as curved spaces in 4-dimensional space, similar to how a sphere is curved in 3-dimensional space, and so the facing of the camera is stored as four vectors in $#R#^4$ that are all perpendicular to one another. Although the scene itself looks like an infinite collection of rooms, there's actually only a single one. The camera casts a ray out to render each pixel, and whenever it passes through one of the room's windows, a linear map (i.e. a $4 \times 4$ matrix) gets applied to its position and rotation to teleport it to the opposite window. By doing the same thing to the camera itself when it passes through windows and keeping careful track of the color changes, we get a perfect illusion of an infinite series of rooms with the rendering cost of just one.
 
 When the domain and codomain are the same, linear maps can be *iterated*: applied over and over to an input. If we take four specific maps from $#R#^2$ to itself (let's call them $A$, $B$, $C$, and $D$), we can repeatedly apply them to a starting point and see where it goes. At each step, we take a random map out of the four and apply it to a starting point of $(0, 0)$, then take a random map and apply it to that point, and so on. We'll plot the points it visits --- the brighter the point, the more frequently it's been there. 
 
-### canvas barnsley-fern
+@canvas{barnsley-fern}
 
 The result for these four maps in particular is called the *Barnsley fern*, named after its creator --- amazingly, with enough iterations (10 million in this example), the picture converges to the same thing, even with the random choices of maps. Strictly speaking, these are *affine* linear maps, which means they multiply by a matrix and then add a vector, but it's a good demonstration nevertheless.
 
@@ -37,15 +41,15 @@ $$
 
 A great way to visualize these is by plotting a field of moving particles, where the velocity of one at $(x, y)$ is given by this formula for $(x', y')$. Coloring the points by their velocity and direction, we get a striking picture.
 
-### canvas vector-field
+@canvas{vector-field}
 
 We'll continue to touch on topics from all of these examples throughout the term. If you'd like to see more from any of them, they come from interactive applets I've written --- have a look!
 
-### image-links
-	/applets/thurston-geometries
-	/applets/barnsley-fern
-	/applets/vector-fields
-###
+@imageLinks([
+	"/applets/thurston-geometries",
+	"/applets/barnsley-fern",
+	"/applets/vector-fields",
+])
 
 
 
@@ -100,8 +104,6 @@ So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch
 	$$
 		A = [[ 5, -3 ; 2, -2 ]].
 	$$
-
-	@solution[[
 	
 	To get the characteristic polynomial, we subtract $\lambda I$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
 	
@@ -235,7 +237,7 @@ One way to quickly put these ideas to use is with *dynamical systems*, a fancy t
 
 	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 25% of the math majors at the university switch to a computer science major, 50% of the physics majors switch to computer science, and 25% of the computer science majors switch to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major in the long run?
 
-	@solution[[
+
 	
 	The three states here are being a math, physics, and computer science major --- if $\vec{x}(t) \in #R#^3$ gives the number of students in each major after $t$ years, then
 

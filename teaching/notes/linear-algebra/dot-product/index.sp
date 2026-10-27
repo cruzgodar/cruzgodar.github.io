@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 So far in linear algebra, we've focused on vectors as fairly abstract concepts. Vectors can look like lists of $n$ numbers in $#R#^n$, polynomials in $#R#[x]$, or even matrices or linear transformations. But largely speaking, we've refrained from talking about the *geometry* of these spaces. Vectors in $#R#^2$, typically represented as arrows in the plane, have notions of length and direction in addition to the component representation we're more familiar with, and there's often a lot to be gained from thinking about vectors in this way. There's also the **dot product**, which takes two vectors and produces a number that measures their lengths and the angle between them, and in $#R#^3$ specifically, there's also the **cross product**, which takes two vectors and produces a third vector that's orthogonal (i.e. perpendicular) to them.
@@ -122,11 +126,11 @@ $$
 
 Since we're defining everything in terms of the dot product, let's do that here too.
 
-### def orthogonality
+@def[orthogonality][[
 
 	Two vectors $\vec{v}, \vec{w} \in #R#^n$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
 
-###
+]]
 
 We can immediately start getting applications of orthogonality: notably, the Pythagorean Theorem can be stated in the language of linear algebra.
 
@@ -154,7 +158,7 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 	Let $X = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; -1 ; 2 ]] \right\}$. Find a basis for $X^\perp$.
 
-	@solution[[
+
 
 	For a vector $\vec{v} = [[ v_1 ; v_2 ; v_3 ]]$ to be in the orthogonal complement, we need
 
@@ -200,7 +204,7 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 When we're asked to come up with a basis for $#R#^n$, there are two generally good choices we've seen at this point: if we have some diagonalizable $n \times n$ matrix $A$ that's relevant to the situation, we might want to choose a basis of eigenvectors of $A$, and otherwise, the standard basis $\left\{ \vec{e_1}, ..., \vec{e_n} \right\}$ is a reliable choice. Let's dig into that a little more and understand *why* it's so reliable. The standard basis has many useful properties, but let's focus on the most relevant:
 
-@def[orthonormal][[
+@def[orthonormal vectors][[
 
 	A collection of vectors $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ is **orthogonal** if $\vec{v_i} \bullet \vec{v_j} = 0$ whenever $i \neq j$, and it is **orthonormal** if additionally, $||\vec{v_i}|| = 1$ for every $\vec{v_i}$.
 
@@ -328,7 +332,7 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 
 Now that we've seen some of the nice properties of orthonormal bases, the natural next question is when we can find them. The good news is that unlike bases of eigenvectors of a matrix, which only exist when the matrix is diagonalizable, orthonormal bases always exist! We'll take a look at the standard process of finding one from a general basis, but in practice, we'll mainly use it to guarantee that an orthonormal basis *exists* rather than actually finding it.
 
-### thm -m "The Gram-Schmidt Process"
+@method[the Gram-Schmidt Process][[
 
 	Let $\left\{ \vec{x_1}, ..., \vec{x_n} \right\}$ be a basis for a subspace $X$ of $#R#^m$. Then an orthogonal basis for $X$ is $\left\{ \vec{y_1}, ..., \vec{y_n} \right\}$, where
 
@@ -344,7 +348,7 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 
 	By normalizing every $\vec{y_i}$, we can also produce an orthonormal basis.
 
-###
+]]
 
 @proof[[
 
@@ -402,7 +406,7 @@ which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown 
 
 	Find an orthonormal basis for $X$.
 
-	@solution[[
+
 
 	Let's call those three basis vectors $\vec{x_1}$, $\vec{x_2}$, and $\vec{x_3}$. We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
 
@@ -522,7 +526,7 @@ Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about the
 
 	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
 
-	@solution[[
+
 
 	We already have an orthonormal basis for $X$, but to produce a basis for $X^\perp$, we need to extend this to a basis for $#R#^4$ and then run the Gram-Schmidt process on the new vectors. To that end, let's start at the step before we normalized the basis vectors:
 
@@ -602,11 +606,11 @@ Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about the
 
 The existence and uniqueness of orthogonal decompositions merits a simpler (and somewhat more descriptive) name:
 
-### def projection
+@def[projection][[
 
 	Given a subspace $X$ of $#R#^n$ and an orthogonal decomposition $\vec{v} = \vec{x} + \vec{x}'$, we say that $\vec{x}$ is the **projection** of $\vec{v}$ onto $X$ and write $\proj_X\left( \vec{v} \right) = \vec{x}$.
 
-###
+]]
 
 The term *projection* calls to mind the same sort of shadow-casting idea that we saw in the Gram-Schmidt process example, and in fact, each step in the Gram-Schmidt process is a projection onto the orthogonal complement of the current basis --- more on this in the homework!
 

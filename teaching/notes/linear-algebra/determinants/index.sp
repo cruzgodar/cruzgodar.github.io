@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -20,7 +24,7 @@ Our final topic in linear algebra will provide the last large missing piece in t
 
 	Find the minors of $$[[ 1, 4, 9 ; 2, 1, 6 ; -3, -1, 0 ]]$$ corresponding to each entry in the first row.
 
-	@solution[[
+
 
 	By crossing out the appropriate rows and columns, we get
 
@@ -33,7 +37,6 @@ Our final topic in linear algebra will provide the last large missing piece in t
 	$$
 		[[ 1, 6 ; -1, 0 ]] \qquad [[ 2, 6 ; -3, 0 ]] \qquad [[ 2, 1 ; -3, -1 ]].
 	$$
-
 ]]
 
 With minors defined, we can finally get to the definition we've (possibly) been waiting for.
@@ -54,7 +57,7 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	Compute $$\det [[ 1, 4 ; 2, 5 ]]$$.
 
-	@solution[[
+
 
 	Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
 
@@ -82,16 +85,16 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 	@solution[[
 
-	1. There are many ways to go about this, but in general, it's easiest to pick rows or columns with as many zeros as possible. If we choose row 2, for instance, then
+		1. There are many ways to go about this, but in general, it's easiest to pick rows or columns with as many zeros as possible. If we choose row 2, for instance, then
 
-	$$
-		\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]] &= -4\det [[ 2, 3 ; 9, 0 ]] -6\det [[ 1, 2 ; 7, 9 ]]
+		$$
+			\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]] &= -4\det [[ 2, 3 ; 9, 0 ]] -6\det [[ 1, 2 ; 7, 9 ]]
 
-		&= -4(2\cdot0 - 3\cdot9) -6\det (1\cdot9-2\cdot7)
+			&= -4(2\cdot0 - 3\cdot9) -6\det (1\cdot9-2\cdot7)
 
-		&= 108 + 30 = 138
-	$$
-
+			&= 108 + 30 = 138
+		$$
+	]]
 ]]
 
 In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
@@ -100,7 +103,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 	Compute $$\det [[ 1, 4, 7, 2 ; 0, 4, 5, 0 ; 3, 1, 2, 0 ; 1, 2, 3, 4 ]]$$.
 
-	@solution[[
+
 
 	The second row has the most zeros, so let's expand about that, ignoring the zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
 
@@ -128,18 +131,18 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 	@solution[[
 
-	We can begin by expanding about the first column, then the second, and then the third:
+		We can begin by expanding about the first column, then the second, and then the third:
 
-	$$
-		\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]] &= 1\det [[ 4, 2, -1 ; 0, 9, 9 ; 0, 0, -3 ]]
+		$$
+			\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]] &= 1\det [[ 4, 2, -1 ; 0, 9, 9 ; 0, 0, -3 ]]
 
-		&= 4\det [[ 9, 9 ; 0, -3 ]]
+			&= 4\det [[ 9, 9 ; 0, -3 ]]
 
-		&= 4(-27)
+			&= 4(-27)
 
-		&= -108.
-	$$
-
+			&= -108.
+		$$
+	]]
 ]]
 
 With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
@@ -163,8 +166,6 @@ Computing a determinant using the recursive definition is a task that balloons i
 @ex[determinants and row operations][[
 
 	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
-
-	@solution[[
 
 	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
 
@@ -288,7 +289,7 @@ This result definitely needs some examples to explain it, so let's start there.
 
 	If $X$ is the solid circle of radius $1$ centered at $(0, 2)$, describe $T(X)$ and find its area.
 
-	@solution[[
+
 
 	First of all, the matrix for $T$ is
 
@@ -330,18 +331,18 @@ This result definitely needs some examples to explain it, so let's start there.
 
 	@solution[[
 
-	The images of these three vectors are the columns of the matrix for $S$:
+		The images of these three vectors are the columns of the matrix for $S$:
 
-	$$
-		[[ 2 ; 1 ; 2 ]], \quad [[ 1 ; 3 ; 1 ]], \quad [[ 0 ; 1 ; 3 ]].
-	$$
+		$$
+			[[ 2 ; 1 ; 2 ]], \quad [[ 1 ; 3 ; 1 ]], \quad [[ 0 ; 1 ; 3 ]].
+		$$
 
-	Drawing these as a shape in $#R#^3$ looks like a 3D parallelogram (the proper term is **parallelepiped**).
+		Drawing these as a shape in $#R#^3$ looks like a 3D parallelogram (the proper term is **parallelepiped**).
 
-	@desmos{parallelepiped}
+		@desmos{parallelepiped}
 
-	Since the determinant of the matrix for $S$ is $6$ and the volume of the original cube was $1$, this new volume is $6 \cdot 1 = 6$.
-
+		Since the determinant of the matrix for $S$ is $6$ and the volume of the original cube was $1$, this new volume is $6 \cdot 1 = 6$.
+	]]
 ]]
 
 

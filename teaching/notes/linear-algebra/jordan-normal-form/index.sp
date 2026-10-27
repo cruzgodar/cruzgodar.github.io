@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 The matrix equation $A\vec{x} = \vec{b}$ isn't always solvable, but when there's no solution, we can still use the least-squares methods of section 5 to find a best approximation. In this section, we'll take a similar approach to diagonalization: if a square matrix $A$ isn't diagonalizable, it's because some eigenvalue $\lambda$ has algebraic multiplicity of $k > 1$, but fewer than $k$ linearly independent eigenvectors with eigenvalue $\lambda$. For example,
@@ -70,7 +74,7 @@ When expressed in such a basis, the matrix for $A$ has all its eigenvalues down 
 
 	Express the matrix $A = [[ -1, -1, -2 ; 1, 1, 1 ; 4, 0, 5 ]]$ in Jordan normal form.
 
-	@solution[[
+
 
 	First, the characteristic polynomial is
 

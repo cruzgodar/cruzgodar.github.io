@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -78,7 +82,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	Find $T \left( [[ 3 ; 4 ]] \right)$.
 
-	@solution[[
+
 
 	Since $T$ is linear, we can expand that last expression quite a bit:
 
@@ -110,44 +114,44 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	@solution[[
 
-	We can first find
+		We can first find
 
-	$$
-		S \left( [[ 0 ; 0 ; 1 ]] \right) = S \left( [[ 0 ; 0 ; 1 ]] \right) = [[ 3 ; 1 ]].
-	$$
+		$$
+			S \left( [[ 0 ; 0 ; 1 ]] \right) = S \left( [[ 0 ; 0 ; 1 ]] \right) = [[ 3 ; 1 ]].
+		$$
 
-	Then
+		Then
 
-	$$
-		S \left( [[ 1 ; 0 ; 0 ]] \right) &= S \left( [[ 1 ; 0 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+		$$
+			S \left( [[ 1 ; 0 ; 0 ]] \right) &= S \left( [[ 1 ; 0 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
 
-		&= [[ 1 ; 1 ]] - [[ 3 ; 1 ]]
+			&= [[ 1 ; 1 ]] - [[ 3 ; 1 ]]
 
-		&= [[ -2 ; 0 ]]
+			&= [[ -2 ; 0 ]]
 
-		~
+			~
 
-		S \left( [[ 0 ; 1 ; 0 ]] \right) &= S \left( [[ 0 ; 1 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
+			S \left( [[ 0 ; 1 ; 0 ]] \right) &= S \left( [[ 0 ; 1 ; 1 ]] \right) - S \left( [[ 0 ; 0 ; 1 ]] \right)
 
-		&= [[ 3 ; 1 ]] - [[ 3 ; 1 ]]
+			&= [[ 3 ; 1 ]] - [[ 3 ; 1 ]]
 
-		&= [[ 0 ; 0 ]].
-	$$
+			&= [[ 0 ; 0 ]].
+		$$
 
-	The matrix for $S$ is then
+		The matrix for $S$ is then
 
-	$$
-		[[ -2, 0, 3 ; 0, 0, 1 ]],
-	$$
+		$$
+			[[ -2, 0, 3 ; 0, 0, 1 ]],
+		$$
 
-	so
+		so
 
-	$$
-		 S\left( [[ 1 ; 2 ; 3 ]] \right) &= [[ -2, 0, 3 ; 0, 0, 1 ]] [[ 1 ; 2 ; 3 ]]
+		$$
+			S\left( [[ 1 ; 2 ; 3 ]] \right) &= [[ -2, 0, 3 ; 0, 0, 1 ]] [[ 1 ; 2 ; 3 ]]
 
-		 &= [[ 7 ; 3 ]]
-	$$
-
+			&= [[ 7 ; 3 ]]
+		$$
+	]]
 ]]
 
 In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
@@ -178,7 +182,7 @@ And so we get to the fundamental result of the section: **linear transformations
 
 	Find the matrix for $T$.
 
-	@solution[[
+
 
 	By evaluating $T$ on $\vec{e_1}$, $\vec{e_2}$, $\vec{e_3}$, we have
 
@@ -212,32 +216,32 @@ And so we get to the fundamental result of the section: **linear transformations
 
 	@solution[[
 
-	The matrix is given by evaluating $S$ on the standard basis vectors, or equivalently by reading off the coefficients of each variable to find every row:
+		The matrix is given by evaluating $S$ on the standard basis vectors, or equivalently by reading off the coefficients of each variable to find every row:
 
-	$$
-		B = [[ 1, 0, 1 ; 3, -2, 0 ]].
-	$$
+		$$
+			B = [[ 1, 0, 1 ; 3, -2, 0 ]].
+		$$
 
-	Now the product of matrices is
+		Now the product of matrices is
 
-	$$
-		BA &= [[ 1, 0, 1 ; 3, -2, 0 ]][[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]]
+		$$
+			BA &= [[ 1, 0, 1 ; 3, -2, 0 ]][[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]]
 
-		&= [[ 1, 3, 2 ; 2, 7, 0 ]].
-	$$
+			&= [[ 1, 3, 2 ; 2, 7, 0 ]].
+		$$
 
-	On the other hand, the composition of transformations is
+		On the other hand, the composition of transformations is
 
-	$$
-		S\left( T\left( [[ a ; b ; b ]] \right) \right) &= S\left( [[ 2a + 3b ; b + 2a ; 2c - a ]] \right)
+		$$
+			S\left( T\left( [[ a ; b ; b ]] \right) \right) &= S\left( [[ 2a + 3b ; b + 2a ; 2c - a ]] \right)
 
-		&= [[ (2a + 3b) + (2c - a) ; 3(2a + 3b) - 2(b + 2a) ]]
+			&= [[ (2a + 3b) + (2c - a) ; 3(2a + 3b) - 2(b + 2a) ]]
 
-		&= [[ a + 3b + 2c ; 2a + 7b ]],
-	$$
+			&= [[ a + 3b + 2c ; 2a + 7b ]],
+		$$
 
-	whose matrix is exactly $BA$! This is another visceral demonstration of what we mean when we say that matrix multiplication *is* function composition.
-
+		whose matrix is exactly $BA$! This is another visceral demonstration of what we mean when we say that matrix multiplication *is* function composition.
+	]]
 ]]
 
 

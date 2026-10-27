@@ -1,3 +1,8 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
+
 @navButtons
 
 For most of the course up to this point, we've focused on square matrices. There's good reason for that --- square matrices are the ones that have eigenvectors and eigenvalues, and the only ones that are possibly diagonalizable. But the framing of diagonalization as a convenient consequence of eigenvectors does a disservice to how useful a concept it is in isolation. In the last section, we saw one way to produce a diagonal-like decomposition that's still extremely useful in its own right, even when the matrix itself wasn't diagonalizable. That required it to be square, though, since we still found ourselves falling back to notions of eigenvectors and eigenvalues eventually. Many "naturally occurring" matrices --- those that come up in real-world applications --- are very much not square, and though they might not have eigenvectors to speak of, they're still worth our time and attention. Let's consider an $m \times n$ matrix $A$ and see what we can do.
@@ -76,7 +81,7 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 	Find a singular value decomposition for $A = [[ 1, 1, 2 ; 1, -1, 1 ]]$.
 
-	@solution[[
+
 
 	We'll start by finding the eigenvectors and eigenvalues for $A^T\!A$. We have
 
@@ -124,11 +129,11 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with a 400 pixel wide, 300 pixel tall image $A$ and see what we can learn from its SVD.
 
-### image graphics/original.webp
+@image(["graphics/original.webp"])
 
 First of all, this doesn't directly translate to a matrix, since each pixel has red, green, and blue components, rather than a single number. Let's account for that by splitting it up into three images --- rather than red, green, and blue components, though, let's use hue, saturation, and value, which are much more perceptually distinct.
 
-### image graphics/h.webp graphics/s.webp graphics/v.webp
+@image(["graphics/h.webp", "graphics/s.webp", "graphics/v.webp"])
 
 Each of these is an $300 \times 400$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
 
@@ -162,11 +167,11 @@ $$
 
 and since all of the $\vec{u_i}$ and $\vec{w_i}$ have length $1$, the singular values (which we've arranged in descending order) are the only part of the data that can effectively change the magnitude. Among all matrices of the form $c\vec{u}\vec{w}^T$, the one closest to $V$ is then $\sigma_1 \vec{u_1}\vec{w_1}^T$. Among all matrices that are the sum of two of these terms, the closest is $\sigma_1 \vec{u_1}\vec{w_1}^T + \sigma_2 \vec{u_2}\vec{w_2}^T$, and so on. This points to a type of image compression we can easily extract: keep a few of the most important terms and throw out lots of the lower ones. That corresponds to deleting some of the right-most columns of $U$ and $W$ --- then we can store something near the data of all of $V$ by storing only a few columns of $U$ and $W$ and a few elements of $\Sigma$. The example below shows an approximation of $V$ with between 1 and 200 terms.
 
-### sliders
-	depth
-###
+@controls({
+	depth: "slider"
+})
 
-### canvas v
+@canvas{v}
 
 That's not bad! It's worth noting that unless we use fewer than half of the number of columns in the original image, we're not actually saving space, since using all the columns means all of $U$ and $V$, which is roughly twice the space of the original image.
 
@@ -180,12 +185,12 @@ To my knowledge, SVD compression isn't actually used by any mainstream formats, 
 
 For one final demo, here's another SVD application. I've taken every graduate student with a directory photo at UO, run a small script to autocrop them all to the face and center the eyes, thrown out a few outliers that weren't taken head-on or were so close to the camera that they couldn't be lined up with the others, and finally scaled them all to $100 \times 100$. Then I placed them as columns in a $30000 \times 44$ matrix and ran an SVD on it, and the result is the faces below. By changing the face and depth, we can see how well the first $n$ eigenvectors approximate any given student, and the first one (called the **principal eigenvector**, or in this case the principal eigenface) is the closest face to every one in the list.
 
-### sliders
-	index
-	depth-2
-###
+@controls({
+	index: "slider",
+	"depth-2": "slider",
+})
 
-### canvas eigenface
+@canvas{eigenface}
 
 That's it for this course! We've had the chance to cover many of linear algebra's most useful and used topics, and it's likely to form the mathematical underpinning of wherever you head next, whether that's more math or another STEM field. Thanks for being a part of the course --- I hope to see you in future ones!
 

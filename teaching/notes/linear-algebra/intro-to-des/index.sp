@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 With the theory of eigenvectors and eigenvalues largely complete, let's return to one of our motivating examples: dynamical systems. As a quick reminder, a **differential equation**, or **DE**, is an equation involving a function $x(t)$ and its derivatives, and a solution is a formula for $x(t)$. For example, $x' = 2t$ has a general solution of $x = t^2 + c$, and $x' = 2x$ has a general solution of $x = ce^{2t}$. We'll be dealing with **linear systems** of DEs, which are those of the form
@@ -28,7 +32,7 @@ has the following vector field plot.
 
 Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
 
-### canvas vector-field
+@canvas{vector-field}
 
 This time, a solution is just the path that one specific particle takes over its lifetime.
 
@@ -48,7 +52,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	
 	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
 
-	@solution[[
+
 	
 	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank. Those rates have units of grams per second, so each one is the liquid flow rate in liters per second times the concentration in grams per liter (which is the mass divided by the total volume).
 	
@@ -216,13 +220,13 @@ $$
 
 is plotted below.
 
-### canvas eigenvector-axes
+@canvas{eigenvector-axes}
 
 If you'd like to see more of this content, consider taking Math 256! Alternatively, I have a full set of notes for the course, including many more of these vector field animations.
 
-### image-links
-	/teaching/uo/256 "Math 256 Notes"
-###
+@imageLinks([
+	{ url: "/teaching/uo/256", title: "Math 256 Notes" }
+])
 
 <div style="height: 32px"></div>
 

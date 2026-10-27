@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last section, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts (from right to left) by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, applies $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
@@ -44,7 +48,7 @@ Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to 
 
 	Find the eigenvectors and eigenvalues of $A$.
 
-	@solution[[
+
 
 	We'll begin as usual by finding the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
 
@@ -263,7 +267,7 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 		A = [[ 3, 0, -3 ; -2, 5, 2 ; -4, -5, 4 ]].
 	$$
 
-	@solution[[
+
 
 	The process of finding $\chi_A(\lambda)$ is the same as always:
 

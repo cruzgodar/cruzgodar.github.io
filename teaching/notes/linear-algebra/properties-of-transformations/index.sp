@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -43,8 +47,8 @@ $$
 corresponds to the matrix
 
 $$
-	[[ 2, 1 ; 0, -1 ; 3, 4]]
-$$,
+	[[ 2, 1 ; 0, -1 ; 3, 4]],
+$$
 
 and applying it to a vector results in
 
@@ -81,7 +85,7 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 	Is $T$ one-to-one? Is it onto?
 
-	@solution[[
+
 
 	By the previous theorem, we first want to express $T$ as a matrix: it corresponds to
 
@@ -121,26 +125,26 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 	@solution[[
 
-	We know that $S$ is definitely not one-to-one, because it has more columns than rows. To check if it's onto, we take its matrix, which is
+		We know that $S$ is definitely not one-to-one, because it has more columns than rows. To check if it's onto, we take its matrix, which is
 
-	$$
-		[[ 1, 1, -1 ; 2, 1, -3 ]],
-	$$
+		$$
+			[[ 1, 1, -1 ; 2, 1, -3 ]],
+		$$
 
-	and write its rows as columns before row reducing:
+		and write its rows as columns before row reducing:
 
-	$$
-		[[ 1, 2 ; 1, 1 ; -1, -3 ]] &
+		$$
+			[[ 1, 2 ; 1, 1 ; -1, -3 ]] &
 
-		[[ 1, 2 ; 0, -1 ; 0, -1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_1} ; \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
+			[[ 1, 2 ; 0, -1 ; 0, -1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_1} ; \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
 
-		[[ 1, 0 ; 0, -1 ; 0, 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} ; \vec{r_1} \to \vec{r_1} + 2\vec{r_2} ::
+			[[ 1, 0 ; 0, -1 ; 0, 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} ; \vec{r_1} \to \vec{r_1} + 2\vec{r_2} ::
 
-		[[ 1, 0 ; 0, 1 ; 0, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
-	$$
+			[[ 1, 0 ; 0, 1 ; 0, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
+		$$
 
-	Since we have two nonzero rows, the original matrix had two linearly independent columns, meaning $S$ is onto!
-
+		Since we have two nonzero rows, the original matrix had two linearly independent columns, meaning $S$ is onto!
+	]]
 ]]
 
 
@@ -191,17 +195,17 @@ Our transformation in the previous example isn't invertible by this theorem, whi
 
 At this point, we're finished with the material in the section, but I think it's worth taking a minute to summarize where we are in regard to linear transformations, matrices, and the interplay between them. There are a lot of terms and ideas to digest, and a quick list organizing many of them should help. For all the items in the list, we let $T : #R#^n \to #R#^m$ be a linear transformation and $A$ its corresponding matrix.
 
-> - Evaluation: we evaluate $T(\vec{v})$ by plugging the entries of $\vec{v}$ into a formula for $T$, just like a one-variable function $f(x)$. We evaluate a matrix on a vector by the matrix-vector multiplication $A\vec{v}$.
+- Evaluation: we evaluate $T(\vec{v})$ by plugging the entries of $\vec{v}$ into a formula for $T$, just like a one-variable function $f(x)$. We evaluate a matrix on a vector by the matrix-vector multiplication $A\vec{v}$.
 
-> - Composition: we compose $T$ with another linear map $S: #R#^m \to #R#^k$ to form the map $T \circ S : #R#^n \to #R#^k$ by plugging the formula for the output of $S$ as the input to the formula for $T$. We compose $A$ with an $m \times k$ matrix $B$ to form $AB$ by matrix multiplication.
+- Composition: we compose $T$ with another linear map $S: #R#^m \to #R#^k$ to form the map $T \circ S : #R#^n \to #R#^k$ by plugging the formula for the output of $S$ as the input to the formula for $T$. We compose $A$ with an $m \times k$ matrix $B$ to form $AB$ by matrix multiplication.
 
-> - One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w})$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0})$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
+- One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w})$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0})$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
 
-> - Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
+- Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
 
-> - Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
+- Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
 
-> - Inversion: we don't invert transformations directly with their formulas, only with their matrices. With a matrix $A$, we invert it by augmenting with $I$ and row-reducing.
+- Inversion: we don't invert transformations directly with their formulas, only with their matrices. With a matrix $A$, we invert it by augmenting with $I$ and row-reducing.
 
 We're getting some hints that the bulk of the subject lies with square matrices: they're the only ones that can be invertible, and being one-to-one and onto are identical conditions. And as we'll see in the next section, the next big object we'll want to develop depends on the matrices it takes in being square.
 

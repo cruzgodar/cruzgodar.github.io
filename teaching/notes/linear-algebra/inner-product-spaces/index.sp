@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 In linear algebra I, we first developed our theory of matrices and linear transformations for $#R#^n$, and then brought them to more general vector spaces. Now that we've seen the dot product in $#R#^n$, we'll do the same to them to bring them to arbitrary vector spaces. The definitions of length, angle, and orthogonality could all be defined in terms of the dot product alone in $#R#^n$, and so we'll start there, trying to keep the definitions and their conditions to a minimum.
@@ -74,7 +78,7 @@ defines an inner product on $#R#^n$ (and in fact these are *all* the possible in
 
 	is an inner product, and find an orthonormal basis for $V$.
 
-	@solution[[
+
 
 	This definition is definitely symmetric. To show bilinearity, we have
 

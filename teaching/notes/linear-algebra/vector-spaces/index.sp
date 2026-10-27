@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -36,7 +40,7 @@ The takeaway from this massive definition is that a vector space looks a lot lik
 
 	is closed under addition and scalar multiplication.
 
-	@solution[[
+
 
 	In practice, these are the only two properties of a set we'll need to check to show it's a vector space. First, to show that $V$ is closed under addition, we take two generic elements of $V$ and add them together, then show that the result is still in $V$.
 
@@ -128,7 +132,7 @@ When $V = #R#^n$ and $W = #R#^m$, we have the linear transformations we're used 
 	
 	Is $D$ a linear transformation? Justify your answer.
 
-	@solution[[
+
 	
 	All this boils down to is checking if the derivative is linear. Since
 	
@@ -188,7 +192,7 @@ so $\vec{v_1} + \vec{v_2} \in \ker T$, and similarly for scalar multiplication. 
 	
 	Let $P$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$ and let $D : P \to P$ be the linear transformation given by differentiation. What are the kernel and image of $P$?
 
-	@solution[[
+
 
 	The kernel of $P$ is the subspace of $P$ of polynomials that differentiate to zero. That's just polynomials consisting of a constant term only, so $\ker P = #R#$ (or alternatively, we could say $\ker P = \span \{ 1 \}$).
 	
@@ -222,7 +226,7 @@ That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in it
 
 	Let $L$ be the subset of $\mathcal{L}(#R#[x], #R#)$ containing only linear transformations $T$ satisfying $T(x^2) = 0$. Show that $L$ is a subspace.
 
-	@solution[[
+
 
 	To check this, we need to show that $L$ is nonempty, that it's closed under addition, and that it's closed under scalar multiplication. To show that it's nonempty, the easiest vector to check is the zero vector (i.e. the zero transformation). The transformation $T : #R#[x] \to #R#$ given by $T(p(x)) = 0$ for all $p(x)$ definitely satisfies $T(x^2) = 0$, so $T \in L$, meaning $L$ isn't empty.
 
@@ -266,15 +270,15 @@ That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in it
 
 As a section wrap-up, let's recap the new notation we've defined. There aren't too many new symbols, but they're all probably unfamiliar, so it's worth gathering them together.
 
-> - $#R#^#R#$: the vector space of all functions (not necessarily linear transformations) $f : #R# \to #R#$.
+- $#R#^#R#$: the vector space of all functions (not necessarily linear transformations) $f : #R# \to #R#$.
 
-> - $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
+- $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
 
-> - $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
+- $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
 
-> - $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
+- $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
 
-> - $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
+- $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
 
 These vector spaces will be the main ones we study over the next few sections --- while there are plenty more, these are among the most important.
 

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -34,7 +38,7 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 
 	Let $V$ be the subspace of $#R#[x]$ consisting of polynomials with degree less than $4$ and let $\mathcal{B} = \{ 1 + x, x + x^2, x - 2x^3, x^3 \}$ be a basis for it. Express $1 + x + x^2 + x^3$ in $\mathcal{B}$.
 
-	@solution[[
+
 
 	To get started, let $\mathcal{E} = \{1, x, x^2, x^3\}$ be the standard basis for $V$. We can assemble the change-of-basis matrix $B$ by taking each of the vectors in $\mathcal{B}$ and expressing them as a coordinate vector in $\mathcal{E}$. Specifically, we have
 
