@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -96,7 +100,7 @@ The main challenge now is just to solve polynomials with high degree, which is a
 	
 	Solve $y^{(4)} + y'' = 0$.
 
-	@solution[[
+
 	
 	Our characteristic equation is
 	
@@ -144,7 +148,7 @@ When the DE is nonhomogeneous --- i.e. $g(t) \neq 0$ --- both of our previous me
 		y''' + 3y'' + 3y' + y = t + 125e^t\sin(t).
 	$$
 
-	@solution[[
+
 	
 	The homogeneous version has a characteristic equation $r^3 + 3r^2 + 3r + 1 = 0$, which factors as $(r + 1)^3$. Therefore, the general solution is
 	

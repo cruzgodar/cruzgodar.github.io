@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 Let's take a moment to summarize where we are in the course so far. First-order DEs are complicated, but we have a handful of results about them. We can solve any first-order linear DE with integrating factors, and there are two special types of first-order nonlinear DEs --- separable and exact --- that we can solve with other methods. As a stark example of the general difficulty of the subject of differential equations, moving just one order higher will force us to narrow our scope drastically. We'll only be considering second-order linear DEs, and even then, it will take us a handful of sections to develop partial solving methods. It may come as little surprise that we will have a relatively small amount to say about third-order and higher DEs --- the difficulty curve is just drastic.
@@ -92,7 +96,7 @@ Let's try using a characteristic equation in a concrete example to see how it wo
 	
 	Solve $y'' + 3y' + 2y = 0$, given $y(0) = 1$ and $y'(0) = 2$.
 
-	@solution[[
+
 	
 	The corresponding characteristic equation is
 	
@@ -257,7 +261,7 @@ Let's (finally) return to an example and put all of this into practice.
 	
 	Solve $y'' + 6y' + 8y = 0$ and verify that you've found all possible solutions.
 
-	@solution[[
+
 	
 	The corresponding characteristic equation is
 	

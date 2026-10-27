@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -140,31 +144,29 @@ Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've
 
 	@solution[[
 
-	Applying the Chain Rule multiple times, we have
-	
-	$$
-		d/dx \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
+		Applying the Chain Rule multiple times, we have
+		
+		$$
+			d/dx \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
 
-		&= -2x \tan\left( x^2 \right).
-	$$
+			&= -2x \tan\left( x^2 \right).
+		$$
 
-	Plugging in $x = \sqrt{3\pi/4}$ results in
+		Plugging in $x = \sqrt{3\pi/4}$ results in
 
-	$$
-		-2\sqrt{3\pi/4} \tan\left( 3\pi / 4 \right) &= 2\sqrt{3\pi/4}.
-	$$
-
+		$$
+			-2\sqrt{3\pi/4} \tan\left( 3\pi / 4 \right) &= 2\sqrt{3\pi/4}.
+		$$
+	]]
 ]]
 
 We'll be using limits and derivatives quite a bit throughout the course --- derivatives are in the title, after all! I have a full set of interactive notes available for Calculus I, so if you're feeling rusty, have a look at those.
 
 
 
-### image-links
-	
-	/teaching/uo/251 "Calculus I Notes"
-	
-###
+@imageLinks([
+	{ url: "/teaching/uo/251", name: "Calculus I Notes" }
+])
 
 
 
@@ -245,7 +247,7 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 	Therefore, the area under the graph is exactly 1.
 	
 	@desmos{uSubExample}
-
+	]]
 ]]
 
 
@@ -254,11 +256,9 @@ The other commonly-used integration techniques are integration by parts, trig su
 
 
 
-### image-links
-	
-	/teaching/uo/252 "Calculus II Notes"
-	
-###
+@imageLinks([
+	{ url: "/teaching/uo/251", name: "Calculus II Notes" }
+])
 
 
 
@@ -268,7 +268,7 @@ While we won't use Calculus III to quite the same extent in this course, it's st
 
 
 
-### thm -m "Series Tests"
+@thm[Series Tests][[
 	
 	Let $$\sum_{n = 1}^\infty a_n$$ be a series.
 	
@@ -286,7 +286,7 @@ While we won't use Calculus III to quite the same extent in this course, it's st
 	
 	7. (The Root Test) Let $$r = \lim_{n \to \infty} \sqrt[n]{|a_n|}$$. If $0 \leq r < 1$, then $$\sum_{n = 1}^\infty a_n$$ converges, and if $r > 1$, then it diverges.
 
-###
+]]({ noTitle: true })
 
 
 
@@ -300,7 +300,7 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 
 
 
-### thm -m "Common Taylor Series"
+@thm[Common Taylor Series][[
 	
 	$$
 		\frac{1}{1 - x} &= \sum_{n = 0}^\infty x^n = 1 + x + x^2 + x^3 + \cdots & (-1, 1)
@@ -316,9 +316,9 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 		(1 + x)^r &= \sum_{n = 0}^\infty \binom{r}{n} x^n = 1 + rx + \frac{r(r - 1)}{2!}x^2 + \frac{r(r - 1)(r - 2)}{3!}x^3 + \cdots & (-1, 1)
 	$$
 	
-###
+]]({ noTitle: true })
 
-
+	
 
 One reason power series are so useful is that both derivatives and integrals often split across them --- in other words, we can differentiate and integrate a power series by just differentiating or integrating its terms, and since those are just polynomials, that's always easy to do. For differential equations or integrals that we can't solve exactly, this approach lets us at least express the solution as a power series.
 
@@ -326,11 +326,9 @@ That's all we'll need from Calculus III. As with the previous two, I have a full
 
 
 
-### image-links
-	
-	/teaching/uo/253 "Calculus III Notes"
-	
-###
+@imageLinks([
+	{ url: "/teaching/uo/253", name: "Calculus III Notes" }
+])
 
 <div style="height: 64px"></div>
 

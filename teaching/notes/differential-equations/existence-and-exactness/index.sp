@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 We've almost finished our discussion of first-order DEs! We'll spend this section looking at the existence and uniqueness of solutions and a third solving method, and then we'll start looking at second-order DEs in the next section.
@@ -94,7 +98,7 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 		y(0) &= 0.
 	$$
 
-	@solution[[
+
 	
 	We have almost no chance of actually solving this thing, but since it's created by arithmetic and composition of elementary functions and is never undefined, it's a continuous function. Since the DE is nonlinear, we need to differentiate with respect to $y$ and show that that function is continuous. By the Quotient Rule, we have
 	
@@ -148,7 +152,7 @@ which is just the Chain Rule from Calculus I.
 	
 	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
 	
-	@solution[[
+
 	
 	Let's find all four pieces on the right side of the equation:
 	
@@ -198,7 +202,7 @@ Equipped with the multivariable Chain Rule, we're ready to dive into our first e
 	
 	Solve the DE $$2t + y^2 + 2tyy' = 0$$.
 
-	@solution[[
+
 	
 	Let's check the methods we know already. This DE isn't linear because of the $y^2$ and the $yy'$, and it's not separable either: if we solve for $y'$, we get
 	
@@ -302,7 +306,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 
 
 
-### thm -m "Method: solving with exactness"
+@method[solving with exactness][[
 	
 	To solve the DE $f(t, y) + g(t, y)y' = 0$ with exactness:
 	
@@ -320,7 +324,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	
 	and integrate both sides $dt$ to get $\psi(t, y) = c$. This is the (implicit) solution to the DE.
 	
-###
+]]
 
 
 
@@ -334,7 +338,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 		y(0) &= 0.
 	$$
 
-	@solution[[
+
 	
 	This is hopelessly nonlinear and nonseparable, so our only hope is exactness. We have
 	

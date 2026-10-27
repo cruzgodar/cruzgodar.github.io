@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -80,7 +84,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 	
 	Evaluate $$\det [[ 1, 4, 7 ; 3, 6, 9 ; 2, 5, 8 ]].$$
 
-	@solution[[
+
 	
 	Let's expand along row $2$. For the entry $3$, crossing off its row and column leaves the following matrix:
 	
@@ -194,7 +198,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 		**A** = [[ 5, -3 ; 2, -2 ]].
 	$$
 
-	@solution[[
+
 	
 	To get the characteristic polynomial, we subtract $\lambda **I**$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
 	

@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -16,23 +20,23 @@ For the final topic of the course, we'll explore **nonlinear** systems of DEs. M
 
 In the field below, the top-right critical point is a source, the bottom-left is a sink, and the other two are saddle points.
 
-### canvas vector-field
+@canvas{vector-field}
 
 Let's recall a bit about the behavior of linear systems from the previous two sections. Let $**A**$ be a $2 \times 2$ matrix with real entries and consider the system $**x**' = **Ax**$. As we touched on in homework 8, the eigenvalues of $**A**$ determine the general behavior of the system --- let's summarize the possibilities here.
 
 If $**A**$ has nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
 
-	> 1. If $\lambda_1$ and $\lambda_2$ are real and positive, then the critical point is a source.
++ If $\lambda_1$ and $\lambda_2$ are real and positive, then the critical point is a source.
 
-	> 2. If $\lambda_1$ and $\lambda_2$ are real and negative, then the critical point is a sink.
++ If $\lambda_1$ and $\lambda_2$ are real and negative, then the critical point is a sink.
 
-	> 3. If $\lambda_1$ and $\lambda_2$ are real and have opposite signs, then the critical point is a saddle point.
++ If $\lambda_1$ and $\lambda_2$ are real and have opposite signs, then the critical point is a saddle point.
 
-	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is zero, then the critical point is a center.
++ If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is zero, then the critical point is a center.
 
-	> 5. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a source about which the field spirals.
++ If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a source about which the field spirals.
 
-	> 6. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
++ If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
 
 
 
@@ -50,7 +54,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 	@desmos{vectorField2}
 
-	@solution[[
+
 	
 	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (since being on a straight-line solution is exactly what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
 	
@@ -110,7 +114,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 	Find and classify the critical points.
 
-	@solution[[
+
 	
 	Since neither $x'$ or $y'$ depends on $t$, this system is autonomous. The Chain Rule says that $dy/dt = dy/dxdx/dt$, so solving for $dy/dx$ gives us
 	
@@ -140,9 +144,9 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 	To find the critical points, we solve $x' = y' = 0$. That means $y^2 = 0$ and $1 - x^2 = 0$, so $y = 0$ and $x = \pm 1$. Classifying them is more complex, and for us, it usually requires inspecting the vector field. Here, we see that both critical points are unstable, since trajectories near the points don't fall into them.
 	
-	]] canvas autonomous-system
+	@canvas{autonomous-system}
 	
-###
+]]
 
 @exc[an autonomous system][[
 	
@@ -232,7 +236,7 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	
 	There is a critical point at $\left(\pi, 0\right)$. Is it stable or unstable?
 
-	@solution[[
+
 	
 	To get started, let's find the Jacobian in general:
 	
@@ -270,9 +274,9 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	
 	Since $\sqrt{17} > 1$, one of those eigenvalues is positive and the other one is negative. Therefore, the critical point in the linear system is a saddle point. Since that's unstable, the critical point in the nonlinear system must be too.
 	
-	]] canvas pendulum
+	@canvas{pendulum}
 	
-###
+]]
 
 @exc[creating a linear approximation][[
 	

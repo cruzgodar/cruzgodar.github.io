@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -50,7 +54,7 @@ As always, we'll begin with a few examples and dig into the general method after
 	
 	Solve the DE $$y'' + 3y' + 2y = e^t$$.
 
-	@solution[[
+
 	
 	Let's begin by solving the homogeneous version $y'' + 3y' + 2y = 0$. We have a characteristic equation of $r^2 + 3r + 2 = 0$, which factors and gives $r = -1$ and $r = -2$. Therefore, the general solution is
 	
@@ -90,7 +94,7 @@ The key part of that method required us to guess that the solution was of the fo
 	
 	Find the general solution to $$y'' + 2y' + y = \cos(t)$$.
 
-	@solution[[
+
 	
 	The homogeneous equation gives us the characteristic equation $r^2 + 2r + 1 = 0$, which factors and gives $r = -1$ as a repeated root. Our general solution is therefore
 	
@@ -140,7 +144,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 
 
 
-### thm -m "Method: Undetermined Coefficients"
+@method[undetermined coefficients][[
 	
 	To find a particular solution $Y$ to a DE of the form
 	
@@ -166,7 +170,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 	
 	Now plug in the value of $Y$ to the DE and solve for all of the undetermined coefficients.
 	
-###
+]]
 
 
 
@@ -174,7 +178,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 	
 	Find the general solution to $$y'' - 6y' + 9y = 6(t + 1)e^{3t}$$.
 
-	@solution[[
+
 	
 	Let's first solve the homogeneous version. We have $r^2 - 6r + 9 = 0$, so $r = 3$ is a repeated root. The general solution is therefore
 	
@@ -248,7 +252,7 @@ Our second method will be more general than undetermined coefficients, but somew
 
 
 
-### thm -m "Method: Variation of Parameters"
+@method[variation of parameters][[
 	
 	Suppose the general solution to $y'' + p(t)y' + q(t)y = 0$ is $y_c = c_1y_1 + c_2y_2$. Then a particular solution to $y'' + p(t)y' + q(t)y = g(t)$ is
 	
@@ -256,7 +260,7 @@ Our second method will be more general than undetermined coefficients, but somew
 		Y = -y_1 \int \frac{y_2(t)g(t)}{W[y_1, y_2]}\,\d t + y_2 \int \frac{y_1(t)g(t)}{W[y_1, y_2]}\,\d t.
 	$$
 	
-###
+]]
 
 
 
@@ -268,7 +272,7 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 	
 	Find the general solution to $$y'' + y = \sec(t)$$.
 
-	@solution[[
+
 	
 	Solving the homogeneous version, we have $r^2 + 1 = 0$, so $r = \pm i$. Therefore, the general solution is
 	

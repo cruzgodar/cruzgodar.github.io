@@ -382,7 +382,7 @@ One final but crucial result from linear algebra I is the **Fundamental Theorem 
 We've touched on many of the most important concepts, but it's impossible to cover everything. The first homework will help to review more material, but if you're still feeling shaky about a topic, I've written a full set of linear algebra I notes that you might find helpful!
 
 @imageLinks([
-	{ url: "/teaching/uo/341", title: "Linear Algebra I Notes" }
+	{ url: "/teaching/uo/341", name: "Linear Algebra I Notes" }
 ])
 
 <div style="height: 32px"></div>

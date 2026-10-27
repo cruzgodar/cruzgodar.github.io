@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -18,70 +22,70 @@ At first glance, our first solving method can seem like some sort of black magic
 
 	@solution[[
 	
-	It's worth pointing out why we can't just solve this directly: to get rid of the derivative on $y$, we'd like to integrate, but we have to integrate $dt$, and solving for $y'$ puts it in terms of $t$ *and* $y$, ruining our chances of integrating. Instead, let's take the (bizarre) step of multiplying both sides by $e^{t^2 / 2}$, which gives us
-	
-	$$
-		e^{t^2 / 2}y' + te^{t^2 / 2}y = te^{t^2 / 2}.
-	$$
-	
-	Now let's take a close look at the left side of the equation. The derivative of $e^{t^2 / 2}$ is
-	
-	$$
-		d/dt \left[ e^{t^2 / 2} \right] = te^{t^2 / 2},
-	$$
-	
-	so if we define a function $\mu$ (a Greek letter pronounced "myu") by $\mu(t) = e^{t^2 / 2}$, then we can rewrite the DE as
-	
-	$$
-		\mu(t)y'(t) + \mu'(t)y(t) = t\mu(t).
-	$$
-	
-	It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the Product Rule! Specifically, we can rewrite it as
-	
-	$$
-		d/dt \left[ \mu(t)y(t) \right] = t\mu(t),
-	$$
-	
-	and since everything is now a function of $t$, we can integrate both sides $dt$ to get
-	
-	$$
-		\mu(t)y(t) &= \int t\mu(t)\,\d t
+		It's worth pointing out why we can't just solve this directly: to get rid of the derivative on $y$, we'd like to integrate, but we have to integrate $dt$, and solving for $y'$ puts it in terms of $t$ *and* $y$, ruining our chances of integrating. Instead, let's take the (bizarre) step of multiplying both sides by $e^{t^2 / 2}$, which gives us
 		
-		&= \int te^{t^2 / 2}\,\d t.
-	$$
-	
-	With $u = \frac{t^2}{2}$ and $du = t\,\d t$, we have
-	
-	$$
-		\mu(t)y(t) &= \int e^u\,\d u
+		$$
+			e^{t^2 / 2}y' + te^{t^2 / 2}y = te^{t^2 / 2}.
+		$$
 		
-		&= e^u + c
+		Now let's take a close look at the left side of the equation. The derivative of $e^{t^2 / 2}$ is
 		
-		&= e^{t^2 / 2} + c.
-	$$
-	
-	To solve for $y$, we just need to divide both sides by $\mu(t) = e^{t^2 / 2}$, so in total, the result is
-	
-	$$
-		y &= \frac{e^{t^2 / 2}}{e^{t^2 / 2}} + \frac{c}{e^{t^2 / 2}}
+		$$
+			d/dt \left[ e^{t^2 / 2} \right] = te^{t^2 / 2},
+		$$
 		
-		&= 1 + ce^{-t^2 / 2}.
-	$$
-	
-	This is the general solution, since we can choose any value for $c$. To solve for the particular solution we're looking for, we plug in $t = 0$ and $y = 3$:
-	
-	$$
-		3 &= 1 + ce^{-0^2 / 2} = 1 + c
+		so if we define a function $\mu$ (a Greek letter pronounced "myu") by $\mu(t) = e^{t^2 / 2}$, then we can rewrite the DE as
 		
-		2 &= c.
-	$$
-	
-	In total, our solution is
-	
-	$$
-		y &= 1 + 2e^{-t^2 / 2}.
-	$$
-	
+		$$
+			\mu(t)y'(t) + \mu'(t)y(t) = t\mu(t).
+		$$
+		
+		It's true that the right side is also equal to $\mu'(t)$, but since that won't end up being the case in general, we'll leave it as $t\mu(t)$ here. Now it's time for a step seemingly out of nowhere: the left side of the DE looks like a derivative that came from the Product Rule! Specifically, we can rewrite it as
+		
+		$$
+			d/dt \left[ \mu(t)y(t) \right] = t\mu(t),
+		$$
+		
+		and since everything is now a function of $t$, we can integrate both sides $dt$ to get
+		
+		$$
+			\mu(t)y(t) &= \int t\mu(t)\,\d t
+			
+			&= \int te^{t^2 / 2}\,\d t.
+		$$
+		
+		With $u = \frac{t^2}{2}$ and $du = t\,\d t$, we have
+		
+		$$
+			\mu(t)y(t) &= \int e^u\,\d u
+			
+			&= e^u + c
+			
+			&= e^{t^2 / 2} + c.
+		$$
+		
+		To solve for $y$, we just need to divide both sides by $\mu(t) = e^{t^2 / 2}$, so in total, the result is
+		
+		$$
+			y &= \frac{e^{t^2 / 2}}{e^{t^2 / 2}} + \frac{c}{e^{t^2 / 2}}
+			
+			&= 1 + ce^{-t^2 / 2}.
+		$$
+		
+		This is the general solution, since we can choose any value for $c$. To solve for the particular solution we're looking for, we plug in $t = 0$ and $y = 3$:
+		
+		$$
+			3 &= 1 + ce^{-0^2 / 2} = 1 + c
+			
+			2 &= c.
+		$$
+		
+		In total, our solution is
+		
+		$$
+			y &= 1 + 2e^{-t^2 / 2}.
+		$$
+	]]
 ]]
 
 
@@ -141,7 +145,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 
 
 
-### thm -m "Method: integrating factors"
+@method[integrating factors][[
 	
 	To solve a first-order linear DE:
 	
@@ -153,7 +157,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	4. Integrate both sides and solve for $y$. If it's possible, evaluate the integral --- if not, then express it as a definite integral with an upper limit or $t$ in order to make initial value problems work correctly. With this integral, make sure *not* to drop the $+c$, since it's part of the solution.
 	
-###
+]]
 
 
 
@@ -161,7 +165,7 @@ This is a pretty great first step for the class --- we now have a method to solv
 	
 	Solve the DE $$ty' + 2y = t^2$$, given $$y(2) = 2$$.
 
-	@solution[[
+
 	
 	This DE is first-order and linear, so we can use integrating factors. First, we need to make sure there's no coefficient on $y'$, so we divide both sides by $t$:
 	
@@ -233,7 +237,7 @@ We have to be able to integrate $p(t)$ to find $\mu(t)$, but we won't always be 
 	
 	Solve the initial value problem $$y' + ty = 1$$, given $$y(1) = 1$$.
 
-	@solution[[
+
 	
 	As usual, we'll solve for $\mu$:
 	
@@ -310,7 +314,7 @@ Our next technique involves quite a bit less sleight of hand --- rather than int
 	
 	Solve $$y' - \frac{2t + \sin(t)}{y^2} = 0$$, given $y(0) = 0$.
 
-	@solution[[
+
 	
 	To get started, we'll isolate $y'$:
 	
@@ -380,7 +384,7 @@ In other words, we need to be able to write $y'$ as a product of only $y$-stuff 
 
 
 
-### thm -m "Method: Separation of Variables"
+@method[Separation of Variables][[
 	
 	To solve a separable DE $y' = f(y)g(t)$:
 	
@@ -394,7 +398,7 @@ In other words, we need to be able to write $y'$ as a product of only $y$-stuff 
 	
 	3. Also solve $f(y) = 0$ for equilibrium solutions, since we had to assume $f(y) \neq 0$ to complete step 1.
 	
-###
+]]
 
 
 
@@ -406,7 +410,7 @@ Not so bad! Let's work through another example.
 	
 	Solve $$y' = \frac{x^2}{e^y(x^2 + 4)}$$, given that $y(0) = 0$.
 
-	@solution[[
+
 	
 	This DE is more or less already separated as is. Moving the $y$s to the left and the $x$s to the right gives us
 	
@@ -476,7 +480,7 @@ Unlike the tank problems from Calculus II that involve finding the work done by 
 	
 	A $1000$ liter tank of water contains $20\,\text{kg}$ of salt dissolved in it. We begin pouring in a brine solution with a salt concentration of $0.1\,\frac{\text{kg}}{\text{L}}$ at a rate of $2\,\frac{\text{L}}{\text{min}}$. At the same time, we begin draining well-mixed solution from the bottom of the tank at the same rate of $2\,\frac{\text{L}}{\text{min}}$. After $30$ minutes, what will the mass of salt in the tank be? What will the long-term mass approach?
 
-	@solution[[
+
 	
 	There's a lot to digest here! It's always a good idea to name some variables so we can start building equations --- to that end, let's let $Q(t)$ be the mass of salt in the tank after $t$ minutes. Since the only information we're given refers to the way in which $Q$ changes, we'll want to find $Q$ in a DE first, then solve that to get an explicit formula.
 	

@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -119,7 +123,7 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 	
 	3. $$[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] [[ 5 ; -4 ; 1 ]].$$
 	
-	@solution[[
+
 
 	1. Turning the vector sideways and multiplying through, we have
 	
@@ -253,7 +257,7 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 	
 	Let $$**A** = [[ 5, 0 ; -2, 1 ]]$$ and $$**B** = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $**AB**$.
 
-	@solution[[
+
 	
 	This is a valid product to take, since the number of columns $**A**$ and the number of rows of $**B**$ are the same ($2$). And the dimensions of $**AB**$ will be $2 \times 3$, since $**A**$ has $2$ rows and $**B**$ has $3$ columns. To get the element $**AB**_{11}$ --- the top-left entry --- we take the first row of $**A**$, which is $(5, 0)$, and the first column of $**B**$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	

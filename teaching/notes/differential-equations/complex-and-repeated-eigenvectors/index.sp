@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -50,7 +54,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	
 	At time $t = 0$, there are $100\,\text{kg}$ of both fish and algae. Find $**p**$ as a function of $t$ and sketch a vector field.
 
-	@solution[[
+
 	
 	This problem proceeds familiarly, but we'll have the added wrinkle of complex eigenvalues. To get started, let's write it as a matrix.
 	
@@ -154,9 +158,9 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	
 	@desmos{vectorField}
 	
-	]] canvas vector-field
+	@canvas{vector-field}
 	
-###
+]]
 
 @exc[complex eigenvalues][[
 	
@@ -294,7 +298,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 	
 	Find the general solution for $**x**$.
 
-	@solution[[
+
 	
 	We'll get started by turning the system into a matrix as usual:
 	

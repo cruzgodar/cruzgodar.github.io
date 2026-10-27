@@ -225,7 +225,7 @@ is plotted below.
 If you'd like to see more of this content, consider taking Math 256! Alternatively, I have a full set of notes for the course, including many more of these vector field animations.
 
 @imageLinks([
-	{ url: "/teaching/uo/256", title: "Math 256 Notes" }
+	{ url: "/teaching/uo/256", name: "Math 256 Notes" }
 ])
 
 <div style="height: 32px"></div>

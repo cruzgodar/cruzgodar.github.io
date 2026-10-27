@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -33,8 +37,6 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 @ex[a simple DE][[
 	
 	A rock falling off a cliff has vertical velocity $v(t) = -10t$ after falling for $t$ seconds. Set up and solve a DE for the function $h(t)$ that gives the vertical height of the rock after $t$ seconds.
-
-	@solution[[
 	
 	We know from Calculus I that $h'(t) = v(t)$, so our DE is $h' = -10t$. We can solve this just by integrating --- in fact, all of Calculus II is really just about solving DEs of the form $y' = f(t)$. Here, we have
 	
@@ -56,12 +58,12 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 
 	@solution[[
 
-	Since $v'(t) = a(t)$, we integrate $a(t)$ to find
-	
-	$$
-		v(t) = \int \cos\left( \frac{t}{5} \right)\d t &= 5\sin\left( \frac{t}{5} \right) + c.
-	$$
-	
+		Since $v'(t) = a(t)$, we integrate $a(t)$ to find
+		
+		$$
+			v(t) = \int \cos\left( \frac{t}{5} \right)\d t &= 5\sin\left( \frac{t}{5} \right) + c.
+		$$
+	]]
 ]]
 
 
@@ -156,15 +158,15 @@ $$
 
 We can visualize this by flooding a grid with particles and moving them all over time according to that formula --- and the result is surprisingly beautiful.
 
-### canvas vector-field
+@canvas{vector-field}
 
 You can pan and zoom on that canvas by dragging, pinching, and scrolling, and the button in the top right opens it in fullscreen. Give it a try!
 
 While direction fields are restricted to always pushing particles to the right, we can extend the idea to what are called **vector fields**, which can freely move particles in any direction. You'll see a lot more of them if you stick around to calculus V, but if you'd like to explore more now, the applet that drew the above field can also draw any vector field you like --- have a look!
 
-### image-links
-	/applets/vector-fields
-###
+@imageLinks([
+	"/applets/vector-fields"
+])
 
 <div style="height: 64px"></div>
 
@@ -198,7 +200,7 @@ In our running example, the equilibria occur at $y = k\pi$ for any integer $k$. 
 	
 	Find the equilibrium solutions to $$y' = \frac{1}{50}(y^2 - 4)\left| y - 4 \right|(t - 3)$$ and classify them as stable, unstable, or neither.
 
-	@solution[[
+
 	
 	When $y' = 0$, we have $y = 2$, $y = -2$, $y = 4$, or $t = 3$. Solutions are always $y$ as a function of $t$ and not $t$ as a function of anything, so we only want the first three. To classify their stability, we'll draw a direction field.
 	

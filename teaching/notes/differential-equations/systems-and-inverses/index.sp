@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -58,11 +62,11 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 
 
 
-### thm -m "Method: Row Reduction"
+@method[row reduction][[
 	
 	To perform elementary row operations on a matrix $**A**$ to convert it to reduced row echelon form, find a row with a nonzero first entry, move it to the top of the matrix, and then add multiples of that row to all the ones below it to make their first terms zero. Now find a row with a nonzero second entry, move it to the second row down from the top, and add multiples of it to all the rows below it to make their second entries zero. Repeat this with every row --- at the end, you'll have a matrix with a triangular region of zeros in the bottom-left and a strip of $1$s diagonally from the top-left to bottom-right. Now take the bottom row and add multiples of it to every row above it to zero out their entries, and repeat with all of the rows. Finally, divide through by the nonzero entries in each row to make them $1$.
 	
-###
+]]
 
 
 
@@ -82,7 +86,7 @@ This is a method best explained with examples, so let's dive right in.
 		-6x + z &= -12.
 	$$
 
-	@solution[[
+
 	
 	To begin, we'll place this into an augmented matrix:
 	
@@ -178,7 +182,7 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 		x_2 - 5x_3 + 28x_4 &= 7.
 	$$
 
-	@solution[[
+
 	
 	Once this is in a matrix, we're off to the races:
 	
@@ -274,7 +278,7 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	
 	Express it as a matrix equation, then solve it by inverting the matrix.
 
-	@solution[[
+
 	
 	The matrix equation here is
 	

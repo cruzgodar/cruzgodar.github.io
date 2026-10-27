@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -76,7 +80,7 @@ Enough abstract work --- let's get to solving some systems! As usual, we'll star
 		x_2' &= -7x_2.
 	$$
 
-	@solution[[
+
 	
 	The matrix form of the DE is
 	
@@ -146,7 +150,7 @@ If all $n$ eigenvalues of $**A**$ are real and different, then it's guaranteed t
 	
 	and verify that you've found the general solution with the Wronskian.
 
-	@solution[[
+
 	
 	First of all, the matrix form is
 	
@@ -234,9 +238,9 @@ If all $n$ eigenvalues of $**A**$ are real and different, then it's guaranteed t
 	
 	It's critical to emphasize that although this looks like a direction field, **neither axis is time**. Both $x_1$ and $x_2$ change over time, but the important thing is that they change based on their own values and each other's values. Curves flowing through this field take a pair of states $x_1$ and $x_2$ independent of $t$ and show how $x_1$ and $x_2$ will change over time. For example, if $x_1 = 0$ and $x_2 = 2$, then both $x_1$ and $x_2$ will eventually grow without bound --- the point gets swept up and to the right. Just like with direction fields, we can visualize the entire field as a flow of thousands of particles, and with more directions available, it's even more beautiful than before.
 	
-	]] canvas vector-field
+	@canvas{vector-field}
 	
-###
+]]
 
 @exc[a first-order system][[
 	
@@ -264,7 +268,7 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	
 	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
 
-	@solution[[
+
 	
 	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank.
 	

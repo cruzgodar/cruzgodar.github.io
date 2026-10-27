@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 To finish our introduction to second-order linear DEs, let's handle the cases when the characteristic equation has complex or repeated roots. Most of our results still apply when the roots are complex, so let's start there.
@@ -103,7 +107,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 	
 	Solve the DE $y'' + 2y' + 5y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = 1$ and $y'(0) = 3$.
 
-	@solution[[
+
 	
 	To get started, the characteristic equation is $r^2 + 2r + 5$. This doesn't factor easily, and we instead turn to the quadratic formula:
 	
@@ -275,7 +279,7 @@ We can now also describe a complete method for solving this type of DE. (Finally
 
 
 
-### thm -m "Method: solving second-order linear constant-coefficient homogeneous DEs"
+@method[solving second-order linear constant-coefficient homogeneous DEs][[
 	
 	To solve $ay'' + by' + cy = 0$, first find the roots $r_1$ and $r_2$ of the corresponding characteristic equation $ar^2 + br + c = 0$.
 	
@@ -297,7 +301,7 @@ We can now also describe a complete method for solving this type of DE. (Finally
 		y = c_1 e^{r_1 t} + c_2 t e^{r_1 t}.
 	$$
 	
-###
+]]
 
 
 
@@ -315,7 +319,7 @@ after following the same process. That's a separable first-order DE in $v'$, and
 	
 	Solve $$y'' + 2y' + y = 0$$, given $y(0) = 1$ and $y'(0) = 0$.
 
-	@solution[[
+
 	
 	The characteristic equation is
 	
@@ -367,7 +371,7 @@ As a final example, we'll look at applying reduction of order to a more complica
 	
 	One fundamental solution to $$t^2y'' - ty' + y = 0$$ is $y = t$. Find the other.
 
-	@solution[[
+
 	
 	Since the coefficients aren't constant, we don't have any way to solve this DE from scratch. But because it's homogeneous and linear, we have a hope of applying reduction of order. To get started, let's set $y_1 = t$ (since it's the first of two fundamental solutions) and assume $y_2 = v(t)y_1$ for some function $v$. If we rewrite the DE as
 	
