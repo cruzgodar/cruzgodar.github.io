@@ -24,6 +24,7 @@ This applet can run in a VR headset! Attach one to a Windows PC or open this pag
 ### checkboxes
 	lock-on-origin
 	shadows
+	show-cross-section
 ###
 
 </div>

@@ -169,12 +169,11 @@ export const galleryImageData =
 		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8"
 	},
 
-	"juliabulb-power-2":
+	"mandelbulb-power-2":
 	{
-		title: "A Juliabulb",
+		title: "The Power-2 Mandelbulb",
 
-		// eslint-disable-next-line max-len
-		appletLink: "/applets/mandelbulb/?switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2&theta=5.54689521175957&phi=1.8096373162567312&sceneOriginX=-2.8020626375238793&sceneOriginY=2.5699101173940653&sceneOriginZ=0.9021621311545615&lockedOnOrigin=0"
+		appletLink: "/applets/mandelbulb/?&power-slider=2"
 	},
 
 	"juliabulb-zoom":

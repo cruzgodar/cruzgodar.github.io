@@ -20,6 +20,7 @@ This applet can run in a VR headset! Attach one to a Windows PC or open this pag
 	c-x
 	c-y
 	c-z
+	fountain-animation-speed
 	xr-framebuffer-scale
 ###
 

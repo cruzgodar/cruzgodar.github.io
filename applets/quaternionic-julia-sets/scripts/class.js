@@ -1,9 +1,11 @@
-import { dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { dotProduct, dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { animate } from "/scripts/src/utils.js";
 
 export class QuaternionicJuliaSets extends RaymarchApplet
 {
 	showCrossSection = false;
+	normalVector;
+	planeTranslation;
 
 	constructor({
 		canvas,
@@ -85,10 +87,13 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			uniform float juliaProportion;
 		`;
 
+		const normalVector = [0, -0.9864180625901592, 0.16425408912985057];
+		const planeTranslation = 1;
+
 		const uniforms = {
 			c: [-0.5439548649797382, -0.11674042108074509, -0.7010775841165977],
-			normalVector: [0, -0.9864180625901592, 0.16425408912985057],
-			planeTranslation: 1,
+			normalVector,
+			planeTranslation,
 			juliaProportion: 1,
 		};
 
@@ -114,6 +119,9 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			coneMarchingScales: [27, 9, 3],
 			coneMarchingMaxMarches: [96, 48, 24],
 		});
+
+		this.normalVector = normalVector;
+		this.planeTranslation = planeTranslation;
 	}
 
 	distanceEstimator(x, y, z)
@@ -148,7 +156,15 @@ export class QuaternionicJuliaSets extends RaymarchApplet
 			mutableZ[2] += ((1 - juliaProportion) * z + juliaProportion * c[2]);
 		}
 
-		return 0.5 * Math.log(r) * r / Math.sqrt(dotProduct4(zPrime, zPrime));
+		r = Math.sqrt(dotProduct4(mutableZ, mutableZ));
+		const juliaSetDistance = 0.5 * Math.log(r) * r / Math.sqrt(dotProduct4(zPrime, zPrime));
+
+		return this.planeTranslation === 0
+			? Math.max(
+				juliaSetDistance,
+				dotProduct([x, y, z], this.normalVector)
+			)
+			: juliaSetDistance;
 	}
 
 

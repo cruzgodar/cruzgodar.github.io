@@ -122,12 +122,12 @@ export default function()
 			rho * Math.sin(phi),
 		];
 
-		const normalVector = normalize(crossProduct(
+		applet.normalVector = normalize(crossProduct(
 			c,
 			phi >= 0 ? [-1, 0, 0] : [1, 0, 0],
 		));
 
-		applet.setUniforms({ c, normalVector });
+		applet.setUniforms({ c, normalVector: applet.normalVector });
 
 		applet.wilson.xrFramebufferScale = xrFramebufferScaleSlider.value;
 
@@ -151,7 +151,8 @@ export default function()
 
 			animate((t) =>
 			{
-				applet.setUniforms({ planeTranslation: applet.showCrossSection ? 1 - t : t });
+				applet.planeTranslation = applet.showCrossSection ? 1 - t : t;
+				applet.setUniforms({ planeTranslation: applet.planeTranslation });
 			}, 500, applet.showCrossSection ? "easeOutQuad" : "easeInQuad");
 		}
 	}

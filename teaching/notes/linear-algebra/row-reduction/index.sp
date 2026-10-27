@@ -317,8 +317,14 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 ]]
 
 @exc[matrix inversion][[
+
+	1. Find
+
+	$$
+		[[ 1, 3, 2 ; -2, -1, 1 ; 1, 8, 7 ]]^{-1}.
+	$$
 	
-	Given the system
+	2. Given the system
 	
 	$$
 		x + 2y &= a
