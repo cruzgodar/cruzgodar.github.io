@@ -235,6 +235,16 @@ export default function()
 			]
 		},
 
+		cubicLoop:
+		{
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4 },
+			
+			expressions:
+			[
+				{ latex: raw`(3t^2 - 3, 5t^3 - 5t)`, color: desmosColors.purple, parametricDomain: { min: -1, max: 1 } },
+			]
+		},
+
 		flux:
 		{
 			alwaysDark: true,

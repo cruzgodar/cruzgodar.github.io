@@ -102,11 +102,11 @@ At long last, we can add all of those curve integrals by writing the boundary of
 
 ### exc "positive oriented boundary"
 
-	1. Draw any region in $#R#^2$ and sketch its oriented boundary. Is the positive orientation clockwise or counterclockwise?
+	1. Sketch any region in $#R#^2$ and its positively oriented boundary. Is the orientation clockwise or counterclockwise?
 
 	2. Do you think that direction will always be the case for any region?
 
-	3. Draw the region
+	3. Sketch the region
 
 	$$
 		\left\{ (x, y) \in #R#^2 \mid 1 \leq x^2 + y^2 \leq 4 \right\}
@@ -178,7 +178,37 @@ as evaluating $f$ on the set $\p [a, b] = \left\{ a, b \right\}$, where the numb
 
 We'll have more to say about the rather strange object $g_x - f_y$ in Green's Theorem a little later on, but right now, we're overdue for some practice.
 
-### exc "Green's theorem"
+### ex "Green's Theorem"
+
+	Compute the circulation integral
+
+	$$
+		\oint_C \left< x - y,\ x^2 + \sin^2(y) \right> \bullet \d\vec{r},
+	$$
+
+	where $C$ is the boundary of the rectangle $R = [1, 2] \times [3, 4]$, oriented clockwise.
+
+	Computing that integral directly would require parameterizing all four sides of the rectangle and integrating over each of them individually, which would be a substantial workload. Instead, Green's Theorem can convert this curve integral into a double integral over the region itself. The only catch is that the rectangle's positively oriented boundary is oriented *countercloskwise*, so Green's Theorem produces the opposite of the answer we're looking for. Adding in that minus sign, we have
+
+	$$
+		\oint_C \left< x - y,\ x^2 + \sin^2(y) \right> \bullet \d\vec{r} &= -\int_1^2\!\!\!\int_3^4 \left( p/px\left[ x^2 + \sin^2(y) \right] - p/py\left[ x - y \right] \right)\d y\,\d x
+
+		&= -\int_1^2\!\!\!\int_3^4 \left( 2x - (-1) \right)\d y\,\d x
+
+		&= -\int_1^2\!\!\!\int_3^4 \left( 2x + 1 \right)\d y\,\d x
+
+		&= -\int_1^2(2x + 1)\,\d x
+
+		&= -\left. \left[ x^2 + x \right] \right|_1^2
+
+		&= -(6 - 2)
+
+		&= -4.
+	$$
+
+###
+
+### exc "Green's Theorem"
 
 	Evaluate the integral
 
@@ -186,11 +216,11 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 		\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r},
 	$$
 
-	where $T$ is the triangle with vertices $(0, 0)$, $(1, 0)$, and $(0, 1)$, oriented clockwise.
+	where $T$ is the triangle with vertices $(0, 0)$, $(1, 0)$, and $(0, 1)$, oriented counterclockwise.
 
 	### solution
 
-	As a curve integral, this looks absolutely horrid, since we'd have to deal with both of those integrands. Instead, though, we can apply Green's Theorem on this triangle! If $R$ is the filled-in triangle with the vertices as given, then $T = -\p R$, since it's oriented clockwise and is on the outside of the region. The integrand in Green's Theorem is
+	As a curve integral, this looks absolutely horrid, since we'd have to deal with both of those integrands. Instead, though, we can apply Green's Theorem on this triangle! If $R$ is the filled-in triangle with the vertices as given, then $T = \p R$, since it's the orientation that keeps the inside of the triangle on the left. The integrand in Green's Theorem is
 
 	$$
 		p/px \left[ 2x + \sin\left( y^2 \right) \right] - p/py \left[ \sqrt{x^3 + 1} \right] &= 2,
@@ -201,21 +231,55 @@ We'll have more to say about the rather strange object $g_x - f_y$ in Green's Th
 	$$
 		\oint_T \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r} &= \oint_{-\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
 		
-		&= -\oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
+		&= \oint_{\p R} \left< \sqrt{x^3 + 1},\ 2x + \sin\left( y^2 \right) \right> \bullet \d\vec{r}
 
-		&= -\iint_R 2\,\d A
+		&= \iint_R 2\,\d A
 
-		&= -\int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
+		&= \int_0^1\!\!\!\int_0^{1-x} 2\,\d y\,\d x
 
-		&= -\int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
+		&= \int_0^1 \left. \left[ 2y \right] \right|_0^{1-x} \,\d x
 
-		&= -\int_0^1 \left( 2-2x \right) \,\d x
+		&= \int_0^1 \left( 2-2x \right) \,\d x
 
-		&= -\left. \left[ 2x - x^2 \right] \right|_0^1
+		&= \left. \left[ 2x - x^2 \right] \right|_0^1
 
-		&= -(2 - 1)
+		&= 2 - 1
 
-		&= -1.
+		&= 1.
+	$$
+
+###
+
+### exc "Green's Theorem"
+
+	Evaluate the circulation integral
+
+	$$
+		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r},
+	$$
+
+	where $C$ is the boundary of the top half of the unit circle: $x^2 + y^2 \leq 1$ and $y \geq 0$, oriented clockwise.
+
+	### solution
+
+	While we could try evaluate that curve integral, it would be full of high powers on trig functions and also a $\sin(t)$ inside of an exponential, which is something we'd really like to avoid. Let's try Green's Theorem instead:
+
+	$$
+		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r} = -\iint_{D} \left( 3x^2 + 3y^2 \right)\d A,
+	$$
+
+	where $D$ is the solid semicircle whose boundary is $C$. Notice the minus sign, which appeared because the boundary was negatively-oriented. Now that disk is not particularly nice to integrate over... unless we switch to polar coordinates! The disk is given by $0 \leq r \leq 1$ for $0 \leq \theta \leq \pi$, and so we have
+
+	$$
+		\iint_{D} \left( 3x^2 + 3y^2 \right)\d A &= \int_0^\pi \!\!\! \int_0^1 3r^2\,r\,\d r\,\d \theta
+
+		&= \int_0^\pi \left. \left[ \frac{3}{4}r^4 \right] \right|_0^1 \d \theta
+
+		&= \int_0^\pi \frac{3}{4}\, \d \theta
+
+		&= \int_0^\pi \frac{3}{4}\, \d \theta
+
+		&= \frac{3}{4}\pi.
 	$$
 
 ###
@@ -236,6 +300,36 @@ While Green's Theorem primarily simplifies circulation integrals into double int
 
 Let's use this to find the area of something that would have previously proven impossible.
 
+### ex "Using Green's Theorem to compute area"
+
+	Compute the area of the ellipse $E$ given by $$\frac{x^2}{9} + \frac{y^2}{4} \leq 1$$.
+
+	Let's begin by parameterizing the boundary:
+
+	$$
+		\vec{r}(t) = \left< 3\cos(t), 2\sin(t) \right>,\quad t \in [0, 2\pi].
+	$$
+
+	Now we can set up the area integral in terms of Green's Theorem, which should hopefully be more pleasant than the double integral. None of the forms of the area integral look more pleasant than any other, so let's just use the first one. We have
+
+	$$
+		|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
+
+		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\d t
+
+		&= \int_0^{2\pi} 6\cos^2(t)\,\d t
+
+		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\d t
+
+		&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
+
+		&= 6\pi + \frac{3}{2}\sin(4\pi)
+
+		&= 6\pi.
+	$$
+
+###
+
 ### ex "area as a circulation integral"
 
 	Find the area of the cycloid between the $x$-axis and the curve $\vec{r}(t) = \left< t - \sin(2 \pi t),\ 1 - \cos(2 \pi t) \right>$ for $0 \leq t \leq 1$.
@@ -250,7 +344,7 @@ Let's use this to find the area of something that would have previously proven i
 		\int_C \left< -y, 0 \right> \bullet \d\vec{r} + \int_L \left< -y, 0 \right> \bullet \d\vec{l}.
 	$$
 
-	While using the integral of $\left< x, 0 \right>$ would work just as well, using this field will cancel out the more complicated first component of $\vec{r}'(t)$, so it might make things slightly easier. We have
+	While using the integral of $\left< 0, x \right>$ would work just as well, using this field will cancel out the more complicated first component of $\vec{r}'(t)$, so it might make things slightly easier. We have
 
 	$$
 		\vec{r}'(t) &= \left< 1 - 2\pi\cos(2 \pi t),\ 2\pi\sin(2 \pi t) \right>
@@ -280,62 +374,42 @@ Let's use this to find the area of something that would have previously proven i
 
 ###
 
-### exc "Green's Theorem"
+### exc "Using Green's Theorem to compute area"
 
-	1. Compute the area of the ellipse $E$ given by $$\frac{x^2}{9} + \frac{y^2}{4} \leq 1$$.
+	Let $\vec{r}(t) = \left< 3t^2 - 3,\ 5t^3 - 5t \right>$ for $t \in [-1, 1]$, which traces out a loop in the plane.
 
-	2. Evaluate the circulation integral
+	### desmos cubicLoop
 
-	$$
-		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r},
-	$$
-
-	where $C$ is the boundary of the top half of the unit circle: $x^2 + y^2 \leq 1$ and $y \geq 0$, oriented counterclockwise.
+	Find the area enclosed by that loop.
 
 	### solution
 
-	1. Let's begin by parameterizing the boundary:
+	Since the $x$ component is somewhat simpler, let's use the area formula of
 
 	$$
-		\vec{r}(t) = \left< 3\cos(t), 2\sin(t) \right>,\quad t \in [0, 2\pi].
+		|R| = \oint_{\p R} \left< 0, x \right> \bullet \d\vec{r},
 	$$
 
-	Now we can set up the area integral in terms of Green's Theorem, which should hopefully be more pleasant than the double integral. None of the forms of the area integral look more pleasant than any other, so let's just use the first one. We have
+	where $R$ is the solid region enclosed by the loop. We have
 
 	$$
-		|E| &= \oint_{\p E} \left< 0, x \right> \bullet \d\vec{r}
-
-		&= \int_0^{2\pi} \left< 0, 3\cos(t) \right> \bullet \left< -3\sin(t), 2\cos(t) \right>\d t
-
-		&= \int_0^{2\pi} 6\cos^2(t)\,\d t
-
-		&= \int_0^{2\pi} \left( 3 + 3\cos(2t) \right)\d t
-
-		&= \left. \left[ 3t + \frac{3}{2}\sin(2t) \right] \right|_0^{2\pi}
-
-		&= 6\pi + \frac{3}{2}\sin(4\pi)
-
-		&= 6\pi.
+		\vec{r}'(t) = \left< 6t, 15t^2 - 5 \right>,
 	$$
 
-	2. While we could try evaluate that curve integral, it would be full of high powers on trig functions and also a $\sin(t)$ inside of an exponential, which is something we'd really like to avoid. Let's try Green's Theorem instead:
+	so the integral becomes
 
 	$$
-		\oint_C \left< e^x - y^3, x^3 \right> \bullet \d\vec{r} = \iint_{D} \left( 3x^2 + 3y^2 \right)\d A,
-	$$
+		|R| &= \int_{-1}^1 \left< 0, 3t^2 - 3 \right> \bullet \left< 6t, 15t^2 - 5 \right>\d t
 
-	where $D$ is the solid semicircle whose boundary is $C$. Now that disk is not particularly nice to integrate over... unless we switch to polar coordinates! That disk is given by $0 \leq r \leq 1$ for $0 \leq \theta \leq \pi$, and so we have
+		&= \int_{-1}^1 \left( 3t^2 - 3 \right)\left( 15t^2 - 5 \right)\d t
 
-	$$
-		\iint_{D} \left( 3x^2 + 3y^2 \right)\d A &= \int_0^\pi \!\!\! \int_0^1 3r^2\,r\,\d r\,\d \theta
+		&= \int_{-1}^1 \left( 45t^4 - 60t^2 + 15 \right)\d t
 
-		&= \int_0^\pi \left. \left[ \frac{3}{4}r^4 \right] \right|_0^1 \d \theta
+		&= \left. \left[ 9t^5 - 20t^3 + 15t \right] \right|_{-1}^1
 
-		&= \int_0^\pi \frac{3}{4}\, \d \theta
+		&= (9 - 20 + 15) - (-9 + 20 - 15)
 
-		&= \int_0^\pi \frac{3}{4}\, \d \theta
-
-		&= \frac{3}{4}\pi.
+		&= 8.
 	$$
 
 ###
