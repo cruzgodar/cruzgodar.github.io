@@ -94,13 +94,13 @@ $$
 
 At long last, we can add all of those curve integrals by writing the boundary of $R$ as a single path. Let's give that some proper notation, and then condense our results.
 
-### def "positive oriented boundary"
+### def "positively oriented boundary"
 
 	Let $R$ be a region in $#R#^2$. The **oriented boundary** of $R$ is the curve $\p R$, oriented so that walking along it keeps $R$ on the left, which we call the **positive orientation**. The negatively oriented boundary is $-\p R$, which is oriented in the opposite direction.
 
 ###
 
-### exc "positive oriented boundary"
+### exc "positively oriented boundary"
 
 	1. Sketch any region in $#R#^2$ and its positively oriented boundary. Is the orientation clockwise or counterclockwise?
 
@@ -112,7 +112,7 @@ At long last, we can add all of those curve integrals by writing the boundary of
 		\left\{ (x, y) \in #R#^2 \mid 1 \leq x^2 + y^2 \leq 4 \right\}
 	$$
 
-	and its positive oriented boundary. Were you right?
+	and its positively oriented boundary. Were you right?
 
 	### solution
 
