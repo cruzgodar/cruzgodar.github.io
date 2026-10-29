@@ -325,7 +325,9 @@ This is just about everything we'll need from Calculus I! The last bit is **L'H&
 That's it! If some or most of this feels unfamiliar, I have a full set of Calculus I notes that I highly recommend you take a look at.
 
 
-@imageLinks({ url: "/teaching/uo/251", name: "Calculus I Notes" })
+@imageLinks([
+	{ url: "/teaching/uo/251", name: "Calculus I Notes" }
+])
 
 @gap
 

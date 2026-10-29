@@ -1,5 +1,5 @@
 @@@
-	import { desmos, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+	import { clickTap, desmos, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
 
 	stdlib[stdlibKeys.document] = body => body;
 @@@

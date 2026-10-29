@@ -62,11 +62,11 @@ $$
 
 As we saw back at the beginning of the course, that's the equation of a line! Geometrically, these three planes intersect in an entire line's worth of solutions.
 
-### desmos solutionLine
+@desmos{solutionLine}
 
 This time around, notice that none of the equations in the system was a multiple of any other. Instead, the issue was two of them could be combined to form the third; geometrically, there is a sum of the red and blue planes' normal vectors that equaled the purple plane's.
 
-### desmos solutionLineNormalVectors
+@desmos{solutionLineNormalVectors}
 
 That purple plane intersects the other two in a line *exactly* when its normal vector can be written as a sum of multiplies of the other two planes' normal vectors. Let's write down a name for these ideas, and then dig into them further.
 
@@ -112,8 +112,6 @@ This situation, where a linear combination is equal to zero, is of the most inte
 
 	Are the vectors $$\vec{v_1} = [[ 1 ; 2 ; -1 ]]$$, $$\vec{v_2} = [[ 2 ; 0 ; 4 ]]$$, and $$\vec{v_3} = [[ 0 ; 2 ; -3 ]]$$ linearly independent? Why or why not?
 
-	@solution[[
-
 		For the vectors to be linearly *dependent*, we would need scalars $c_1$, $c_2$, and $c_3$ so that
 
 		$$
@@ -151,7 +149,6 @@ This situation, where a linear combination is equal to zero, is of the most inte
 		$$
 
 		Therefore, these vectors are linearly dependent. As a gut check, we expect there to be at least one free parameter whenever vectors are linearly dependent, since if we take any linear combination of $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$ that equals the zero vector, we can scale every coefficient $c_i$ by any number $t$ to produce another linear combination that equals $\vec{0}$. If we had instead been able to row reduce all the way to the identity matrix, then we would have found that $c_1 = c_2 = c_3 = 0$ is the only solution, so the vectors would have been linearly independent.
-	]]
 ]]
 
 @exc[linear independence][[

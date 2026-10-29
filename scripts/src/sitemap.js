@@ -2427,16 +2427,5 @@ export const sitemap =
 		"parent": "/debug",
 		
 		"children": []
-	},
-	
-	"/teaching/uo/342/extra/eigenfaces-demo":
-	{
-		"title": "Eigenfaces",
-		
-		"parent": "/home",
-		
-		"children": [],
-
-		"customScript": true
 	}
 };
