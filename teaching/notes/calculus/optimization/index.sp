@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -136,11 +136,11 @@ Here, the red parts of the graph are **concave up**, and the blue are **concave 
 
 Knowing the concavity of the graph helps us classify critical points: intuitively, if a graph is concave up at a critical point, then we'd expect that to be a local minimum, and vice versa. This intuition bears out in practice!
 
-### thm -m "Method: The Second Derivative Test"
+@method[Method: The Second Derivative Test][[
 	
 	Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$, then $x = a$ must be a local maximum. If $f''(a) > 0$, then $x = a$ must be a local minimum. If $f''(a) = 0$, then the test is inconclusive.
 
-###
+]]
 
 
 

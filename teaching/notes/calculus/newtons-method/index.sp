@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -100,11 +100,11 @@ $$
 
 so the process fails to converge to anything at all. We'll give numbers a brightness based on how well they do as a starting guess --- bright means a point converges quickly, like $x = 1$, and dark means it converges slowly or not at all.
 
-### image graphics/newtons-method-line.png
+@image(["graphics/newtons-method-line.png"])
 
 That's not very intuitive! This line is centered at zero, so initial guesses of positive numbers all converge to $x = 1$, while negative numbers sometimes work and sometimes don't. To actually understand what's going on here, we need to look at the bigger picture: there are actually three roots of $x^3 - 1$: there's $x = 1$ but also $x = -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i$. since some of the roots of $x^3 - 1$ are complex, let's consider complex initial guesses too. Without going into too much detail, Newton's method works just as well for complex initial guesses as real ones. Since the complex numbers live on a plane instead of a line, we get an actual image of where the guesses go. We'll still use brightness to indicate how fast a guess converges, but now we'll also use color to indicate which of the three roots of $x^3 - 1$ it actually converges to.
 
-### canvas newtons-method
+@canvas{newtons-method}
 
 What results is a pretty remarkable fractal: the bubble-like pattern repeats however far we zoom in or out. We'd expect Newton's method to take an initial guess and always send it to the closest root, but this picture shows us that's not the case: the points in the bubbles on the left are initial guesses that converge to $x = 1$ despite one of the other two roots being closer.
 
@@ -112,9 +112,9 @@ That image is actually taken from an interactive applet I created and worked on 
 
 
 
-### image-links
-	/applets/newtons-method
-###
+@imageLinks([
+	"/applets/newtons-method"
+])
 
 <div style="height: 64px"></div>
 

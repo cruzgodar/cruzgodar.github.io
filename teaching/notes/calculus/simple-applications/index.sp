@@ -1,3 +1,7 @@
+@@@
+	import { aside, axiom, clickTap, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 With the hardest conceptual work behind us, let's turn to some simple applications of integrals. The first one we've touched on before, and you probably saw plenty of it in calc I: the relationship between position, velocity, and acceleration. Remember that **displacement** means signed distance: if you move $3$ meters right and $2$ left, then your net displacement is only $1$ meter, while your total distance traveled is $5$.
@@ -7,9 +11,7 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 @ex[displacement][[
 	
 	A particle is traveling in a straight line with a velocity of $v(t) = 3t - 5 \frac{m}{s}$ after $t$ seconds. Find the net displacement of the particle over $3$ seconds and its total distance traveled.
-
-	@solution[[
-	
+		
 	Let's start with net displacement, which is just $s(3) - s(0)$. Since $s$ is an antiderivative of $v$, we have that
 	
 	$$
@@ -45,7 +47,7 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 	The particle therefore traveled a total of $\frac{41}{6} \approx 6.83$ meters total.
 	
 	@desmos{displacement}
-	
+
 ]]
 
 @exc[displacement][[
@@ -54,52 +56,52 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 
 	@solution[[
 	
-	The net displacement is
-	
-	$$
-		s(4) - s(0) &= \int_0^4 v(t)\,\d t
+		The net displacement is
 		
-		&= \int_0^4 (4t^2 - 16t + 12)\,\d t
-		
-		&= \left. \left[ 4\frac{t^3}{3} - 8t^2 + 12t \right] \right|_0^4
-		
-		&= \frac{16}{3}.
-	$$
-	
-	The total distance requires integrating $|v(t)|$, so we need to know when $v(t) < 0$. To do that, we solve $v(t) = 0$ to get
-	
-	$$
-		4t^2 - 16t + 12 &= 0
-		
-		t^2 - 4t + 3 &= 0
-		
-		(t - 1)(t - 3) &= 0
-		
-		t = 1, & t = 3.
-	$$
-	
-	Plugging in some test points, $v(0) = 12 > 0$, $v(2) = -4$, and $v(4) = 12$. Therefore, the only region where $v$ is negative is $(1, 3)$, so the absolute value is defined by
-	
-	$$
-		|v(t)| = \begin{cases}
+		$$
+			s(4) - s(0) &= \int_0^4 v(t)\,\d t
 			
-			4t^2 - 16t + 12, & t \leq 1
+			&= \int_0^4 (4t^2 - 16t + 12)\,\d t
 			
-			-(4t^2 - 16t + 12), & 1 \leq t \leq 3
+			&= \left. \left[ 4\frac{t^3}{3} - 8t^2 + 12t \right] \right|_0^4
 			
-			4t^2 - 16t + 12, & 3 \leq t
+			&= \frac{16}{3}.
+		$$
+		
+		The total distance requires integrating $|v(t)|$, so we need to know when $v(t) < 0$. To do that, we solve $v(t) = 0$ to get
+		
+		$$
+			4t^2 - 16t + 12 &= 0
 			
-		\end{cases}.
-	$$
-	
-	In total, the integral is
-	
-	$$
-		\int_0^4 |v(t)|\,\d t = \int_0^1 (4t^2 - 16t + 12)\,\d t + \int_1^3 -(4t^2 - 16t + 12)\,\d t + \int_3^4 (4t^2 - 16t + 12)\,\d t,
-	$$
-	
-	which, after a lot of integration, reduces to exactly $16$.
-	
+			t^2 - 4t + 3 &= 0
+			
+			(t - 1)(t - 3) &= 0
+			
+			t = 1, & t = 3.
+		$$
+		
+		Plugging in some test points, $v(0) = 12 > 0$, $v(2) = -4$, and $v(4) = 12$. Therefore, the only region where $v$ is negative is $(1, 3)$, so the absolute value is defined by
+		
+		$$
+			|v(t)| = \begin{cases}
+				
+				4t^2 - 16t + 12, & t \leq 1
+				
+				-(4t^2 - 16t + 12), & 1 \leq t \leq 3
+				
+				4t^2 - 16t + 12, & 3 \leq t
+				
+			\end{cases}.
+		$$
+		
+		In total, the integral is
+		
+		$$
+			\int_0^4 |v(t)|\,\d t = \int_0^1 (4t^2 - 16t + 12)\,\d t + \int_1^3 -(4t^2 - 16t + 12)\,\d t + \int_3^4 (4t^2 - 16t + 12)\,\d t,
+		$$
+		
+		which, after a lot of integration, reduces to exactly $16$.
+	]]
 ]]
 
 
@@ -172,26 +174,26 @@ This shouldn't be terribly surprising. If a function is even and we're integrati
 
 	@solution[[
 	
-	Since $\sin$ is an odd function and $[-\pi, \pi]$ is centered at zero,
-	
-	$$
-		\int_{-\pi}^\pi \sin(\theta)\,\d \theta = 0.
-	$$
-	
-	Similarly, since $\cos$ is even,
-	
-	$$
-		\int_{-\pi}^\pi \cos(\theta)\,\d \theta &= 2\int_0^\pi \cos(\theta)\,\d \theta
+		Since $\sin$ is an odd function and $[-\pi, \pi]$ is centered at zero,
 		
-		&= 2 \left. \left[ \sin(\theta) \right] \right|_0^\pi
+		$$
+			\int_{-\pi}^\pi \sin(\theta)\,\d \theta = 0.
+		$$
 		
-		&= 2 (\sin(\pi) - \sin(0))
+		Similarly, since $\cos$ is even,
 		
-		&= 0.
-	$$
-	
-	The symmetry of the graph of $\cos$ on $[0, \pi]$ caused its integral to be zero too, even though it wasn't an odd function. 
-	
+		$$
+			\int_{-\pi}^\pi \cos(\theta)\,\d \theta &= 2\int_0^\pi \cos(\theta)\,\d \theta
+			
+			&= 2 \left. \left[ \sin(\theta) \right] \right|_0^\pi
+			
+			&= 2 (\sin(\pi) - \sin(0))
+			
+			&= 0.
+		$$
+		
+		The symmetry of the graph of $\cos$ on $[0, \pi]$ caused its integral to be zero too, even though it wasn't an odd function. 
+	]]
 ]]
 
 

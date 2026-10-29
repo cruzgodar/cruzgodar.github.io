@@ -1,3 +1,4 @@
+import { stdlibKeys } from "spruce";
 import { sitemap } from "../scripts/src/sitemap.js";
 
 export function document(body)
@@ -29,68 +30,71 @@ ${body}
 </main>`;
 }
 
+export default {
+	[stdlibKeys.document](body) { return document(body); },
 
-export function unorderedList(...items)
-{
-	const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
-	return `<ul>${itemsHtml}</ul>`;
-}
-
-export function orderedList(...items)
-{
-	const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
-	return `<ol>${itemsHtml}</ol>`;
-}
-
-export function heading(body, headingNumber)
-{
-	if (headingNumber === "1")
+	[stdlibKeys.unorderedList](...items)
 	{
-		return /* html */`<h1 class="heading-text">${body}</h1>`;
-	}
+		const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
+		return `<ul>${itemsHtml}</ul>`;
+	},
 
-	else if (headingNumber === "2")
+	[stdlibKeys.orderedList](...items)
 	{
-		return /* html */`<h2 class="section-text">${body}</h2>`;
+		const itemsHtml = items.map(item => `<li class="body-text">${item}</li>`).join("");
+		return `<ol>${itemsHtml}</ol>`;
+	},
+
+	[stdlibKeys.heading](body, headingNumber)
+	{
+		if (headingNumber === "1")
+		{
+			return /* html */`<h1 class="heading-text">${body}</h1>`;
+		}
+
+		else if (headingNumber === "2")
+		{
+			return /* html */`<h2 class="section-text">${body}</h2>`;
+		}
+		
+		throw new Error("Trying to use heading level >= 3");
+	},
+
+	[stdlibKeys.paragraph](body)
+	{
+		return /* html */`<p class="body-text">${body}</p>`;
+	},
+
+	[stdlibKeys.displayMath](body)
+	{
+		return String.raw/* html */`<p class="body-text" style="text-align: center; line-height: 0"><span>$$\begin{alignat*}{99}${parseMath(body)}\end{alignat*}$$</span></p>`;
+	},
+
+	[stdlibKeys.math](body)
+	{
+		return String.raw`$${parseMath(body)}$`;
+	},
+
+	[stdlibKeys.inlineDisplayMath](body)
+	{
+		return String.raw`$\displaystyle ${parseMath(body)}$`;
+	},
+
+	[stdlibKeys.text](body)
+	{
+		return body
+			.replaceAll(/(\s)"(\S)/g, (match, $1, $2) => `${$1}&#x201C;${$2}`)
+			.replaceAll(/^"(\S)/g, (match, $1) => `&#x201C;${$1}`)
+			.replaceAll(/"/g, "&#x201D;")
+
+			.replaceAll(/(\s)'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
+			.replaceAll(/^'(\S)/g, (match, $1) => `&#x2018;${$1}`)
+			.replaceAll(/'/g, "&#x2019;")
+
+			.replaceAll(/---/g, "&mdash;")
+			.replaceAll(/--/g, "&ndash;");
 	}
-	
-	throw new Error("Trying to use heading level >= 3");
-}
-
-export function paragraph(body)
-{
-	return /* html */`<p class="body-text">${body}</p>`;
-}
-
-export function displayMath(body)
-{
-	return String.raw/* html */`<p class="body-text" style="text-align: center; line-height: 0"><span>$$\begin{alignat*}{99}${parseMath(body)}\end{alignat*}$$</span></p>`;
-}
-
-export function math(body)
-{
-	return String.raw`$${parseMath(body)}$`;
-}
-
-export function inlineDisplayMath(body)
-{
-	return String.raw`$\displaystyle ${parseMath(body)}$`;
-}
-
-export function text(body)
-{
-	return body
-		.replaceAll(/(\s)"(\S)/g, (match, $1, $2) => `${$1}&#x201C;${$2}`)
-		.replaceAll(/^"(\S)/g, (match, $1) => `&#x201C;${$1}`)
-		.replaceAll(/"/g, "&#x201D;")
-
-		.replaceAll(/(\s)'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
-		.replaceAll(/^'(\S)/g, (match, $1) => `&#x2018;${$1}`)
-		.replaceAll(/'/g, "&#x2019;")
-
-		.replaceAll(/---/g, "&mdash;")
-		.replaceAll(/--/g, "&ndash;");
-}
+};
 
 function parseMath(body)
 {

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -58,7 +62,7 @@ We'll have a lot more to say about particular periodic functions in the next sec
 
 	2. What is a physical interpretation of the period of this graph?
 
-	@solution[[
+
 
 	The numbers in this example are somewhat extreme, but we can sketch a graph as long as we take care to draw the $t$-axis quite small.
 

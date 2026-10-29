@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -11,6 +15,7 @@ Now that we've defined the sine and cosine functions, we can start getting our b
 ]]
 
 Sometimes (though not in our notes), trig functions are written without parentheses, as in $\sin \theta$. To avoid confusion between $(\sin(\theta))^2$ and $\sin\left( \theta^2 \right)$, the first one is very often written $\sin^2(\theta)$. We'll use that notation in our course, and so we can write the Pythagorean identity as
+
 $$
 	\cos^2(\theta) + \sin^2(\theta) = 1.
 $$
@@ -20,6 +25,7 @@ Returning to our goal to find more values of $\sin(\theta)$ and $\cos(\theta)$, 
 @desmos{diagonalTriangle}
 
 Using the Pythagorean identity,
+
 $$
 	\cos^2(\theta) + \sin^2(\theta) &= 1
 
@@ -93,6 +99,7 @@ In the previous graph, the side opposite to the left angle is the rightmost leg,
 @desmos{scaledUpReferenceTriangle}
 
 By rotating a right triangle so that is is a scaled-up version of a reference triangle, like the red triangle in the previous graph, we can express sine and cosine in terms of its side lengths. If the hypotenuse has length $r$ and the angle of the triangle at the origin is $\theta$, then the leg opposite to $\theta$ has length $r \cos(\theta)$ and the adjacent leg has length $r \sin(\theta)$, as we've established. In other words,
+
 $$
 	\text{opposite} &= (\text{hypotenuse})\sin(\theta)
 
@@ -104,12 +111,15 @@ To rearrange this in a way that lets us compute sine and cosine of an angle in a
 @thm[sine and cosine in right triangles][[
 
 	Let $\theta$ be an angle in a right triangle. Then
+
 	$$
 		\sin(\theta) &= \frac{\text{opposite}}{\text{hypotenuse}}
 
 		\cos(\theta) &= \frac{\text{adjacent}}{\text{hypotenuse}},
 	$$
+
 	or abbreviated,
+
 	$$
 		\sin(\theta) &= \frac{\text{opp}}{\text{hyp}}
 
@@ -134,16 +144,18 @@ Returning to the unit circle, if we're trying to compute the coordinates of a po
 
 	@desmos{referenceTriangle2}
 
-	@solution[[
+
 
 	Now's as good of a time as any to emphasize that we always draw reference triangles to the $x$-axis. That way, since the opposite side to the angle formed with the $x$-axis is measured by $\sin$, and the adjacent side is measured by $\cos$, we'll still be able to use $\sin$ for the $y$-coordinate and $\cos$ for the $x$-coordinate.
 
 	In this particular example, the reference triangle makes an angle of $30^\circ$ with the $x$-axis. Since its hypotenuse has length $1$, we have
+
 	$$
 		\sin\left( 30^\circ \right) &= \frac{\text{opp}}{1} = \text{opp}
 
 		\cos\left( 30^\circ \right) &= \frac{\text{adj}}{1} = \text{adj}.
 	$$
+
 	Evaluating the two of those trig functions, the opposite side has length $\frac{1}{2}$ and the adjacent side has length $\frac{\sqrt{3}}{2}$. However, that adjacent side is moving in the negative $x$ direction, and so the coordinates of the point are $\left( -\frac{\sqrt{3}}{2}, \frac{1}{2} \right)$.
 
 ]]
@@ -201,8 +213,6 @@ By transforming the graphs of sine and cosine, we produce what are called **sinu
 	2. How about a geometric explanation for $y = A\cos(x) + k$? Hint: start with $A\cos(x)$ and use the previous part.
 
 ]]
-
-
 
 
 

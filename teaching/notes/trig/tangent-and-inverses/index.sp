@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -47,7 +51,7 @@ Just like we did with sine and cosine, we can use reference triangles to compute
 
 	@desmos{tanReferenceTriangle}
 
-	@solution[[
+
 
 	From this reference triangle, we have a reference angle of $30^\circ$, and so we have $\sin\left( 210^\circ \right) = -\frac{1}{2}$ and $\cos\left( 210^\circ \right) = -\frac{\sqrt{3}}{2}$. The tangent is therefore
 	$$
@@ -120,13 +124,16 @@ Since the trig functions also output ratios in right triangles, the arc function
 
 	@desmos{arcFunctionsTriangle}
 
-	@solution[[
+
 
 	The vertical leg looks to have length $2$, and so to compute the angle at the origin, we can evaluate $\arcsin\left( \frac{2}{4} \right) = 30^\circ$. We can find the other angle by subtracting $30^\circ$ from $90^\circ$ to get $60^\circ$, or we can use the $\arccos$ function: the remaining angle is
+
 	$$
 		\arccos\left( \frac{2}{4} \right) = \arccos\left( \frac{1}{2} \right) = 60^\circ.
 	$$
+
 	Alternatively, the Pythagorean Theorem tells us that the remaining side has length $\sqrt{4^2 - 2^2} = \sqrt{12}$, and so the remaining angle is
+	
 	$$
 		\arcsin\left( \frac{\sqrt{12}}{4} \right) = \arcsin\left( \frac{\sqrt{3}}{2} \right) = 60^\circ.
 	$$

@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -57,9 +61,11 @@ While the idea of there being infinitely many other angles is daunting, it's a c
 @desmos{circleAndLine}
 
 Since it's a horizontal line, the other point is just a reflection of the first point over the $y$-axis, meaning it has an angle of $\pi - \frac{\pi}{6} = \frac{5\pi}{6}$. The only other way to get points with this $y$-coordinate is to add an integer multiple of $2\pi = 360^\circ$ to either of these points, effectively wrapping back around the circle. In other words, the complete solution to $\sin(x) = \frac{1}{2}$ is
+
 $$
 	x = \frac{\pi}{6} + 2\pi k \quad\text{or}\quad \frac{5\pi}{6} + 2\pi k
 $$
+
 for any integer $k$.
 
 We can apply logic like this to solve any equation in which $x$ is stuck inside of a trig function. We solve as usual, and when there's nothing left to do except get rid of the trig function, we take the corresponding arc function of both sides. That gives us one angle (or possibly indicates there's no solutions, if for instance we find ourselves taking $\arcsin(2)$). To find the other angle, we draw a line from the first point --- horizontal for $\sin$, vertical for cosine, and diagonal through the origin for tangent, since those will intersect the unit circle at the other point with the same $y$-coordinate, $x$-coordinate, or slope, respectively. We take those two angles in radians, add $2\pi k$ for a variable $k$ representing any integer, and those are our solutions. If we're asked to find all of the solutions within a certain range, we can plug in different values of $k$ to see which ones fall within our particular range.

@@ -1,10 +1,7 @@
 @@@
 	import { gap, problem as p, problemNumber, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
 
-	function document(body)
-	{
-		return body;
-	}
+	stdlib[stdlibKeys.document] = body => body;
 @@@
 
 # Homework 8

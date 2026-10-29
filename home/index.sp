@@ -1,10 +1,7 @@
 @@@
 	import { imageLinks } from "../build/spruce.js";
 
-	function document(body)
-	{
-		return body;
-	}
+	stdlib[stdlibKeys.document] = body => body;
 @@@
  
 <div id="banner">

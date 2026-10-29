@@ -1,3 +1,7 @@
+@@@
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+@@@
+
 @navButtons
 
 
@@ -26,7 +30,7 @@ $$
 
 This is a surprisingly nice formula! There are a few important things to keep track of with it, and it should also probably get a name, so let's formally write it down.
 
-### prop -m "The Law of Cosines"
+@thm[The Law of Cosines][[
 
 	In *any* triangle with side lengths $a$ and $b$ and angle $\gamma$ between them, the length of side $c$ opposite $\gamma$ satisfies
 
@@ -34,7 +38,7 @@ This is a surprisingly nice formula! There are a few important things to keep tr
 		c^2 = a^2 + b^2 - 2ab\cos(\gamma).
 	$$
 
-###
+]]({ noTitle: true })
 
 This is to say that the Law of Cosines relates all three sides and an angle. It looks a lot like the Pythagorean Theorem, except with a correction term of $2ab\cos(\gamma)$. If $\gamma = \frac{\pi}{2}$, then we're talking about a right triangle, and $a$ and $b$ have to be the legs, since the right angle has to be between them. Then $\cos(\gamma) = \cos\left( \frac{\pi}{2} \right) = 0$, and so the Law of Cosines just says $c^2 = a^2 + b^2$, as we would expect.
 
@@ -51,6 +55,7 @@ The Law of Cosines helps when we either know all three sides and want to find an
 @desmos{lawOfSines}
 
 Drawing an altitude down from the point with angle $\alpha$, we get two right triangles: one with angle $\gamma$ and hypotenuse $b$, and another with angle $\beta$ and hypotenuse $c$. If we call the dashed line $y$, then
+
 $$
 	\sin(\gamma) &= \frac{y}{b}
 
@@ -67,7 +72,7 @@ $$
 
 Doing the exact same thing with different sides, we find
 
-### prop -m "The Law of Sines"
+@thm[The Law of Sines][[
 
 	In *any* triangle with side lengths $a$, $b$, and $c$, and angle $\alpha$, $\beta$, and $\gamma$ opposite them,
 
@@ -75,7 +80,7 @@ Doing the exact same thing with different sides, we find
 		\frac{\sin(\alpha)}{a} = \frac{\sin(\beta)}{b} = \frac{\sin(\gamma)}{c}.
 	$$
 
-###
+]]({ noTitle: true })
 
 The Law of Sines neatly addresses both of the cases that the Law of Cosines misses: if we know two sides and an angle *not* between them, then that angle is opposite one of the sides, so the Law of Sines lets us solve for the sine of the other angle. And if we know two angles and a side, then we actually know all three angles since they have to sum to $\pi$, and so we can solve for both the remaining sides. If all we know is all three angles, we can't solve for any sides because of similar triangles: scaling a triangle up changes all of its side lengths but leaves the angles the same, so knowing only the angles of a triangle doesn't determine its side lengths.
 
@@ -97,7 +102,7 @@ There is one small issue with the Law of Sines that the Law of Cosines doesn't h
 
 	@desmos{lawOfSines3}
 
-	@solution[[
+
 
 	Since the angle of $\frac{\pi}{6}$ isn't in between the two sides we know, we have to use the Law of Sines. It tells us that if $\alpha$ is the angle opposite the side of length $\sqrt{3}$, then
 
@@ -161,7 +166,7 @@ The graph of $y = \sec(x)$ is exactly analogous to $y = \cos(x)$, or equivalentl
 
 In addition to these new functions, there are a number of relationships between trig functions that will be occasionally helpful to us:
 
-### thm -m "The Trigonometric Identities"
+@thm[The Trigonometric Identities][[
 
 	1. The Pythagorean identities:
 
@@ -211,7 +216,7 @@ In addition to these new functions, there are a number of relationships between 
 		\cos(\alpha - \beta) &= \cos(\alpha)\cos(\beta) + \sin(\alpha)\sin(\beta)
 	$$
 
-###
+]]({ noTitle: true })
 
 @proof[[
 
@@ -234,12 +239,6 @@ In addition to these new functions, there are a number of relationships between 
 	$$
 
 	And now all the other formulas follow from these! By plugging in $-\beta$ for $\beta$ and using the fact that $\sin$ is odd and $\cos$ is even, we can produce the difference formulas. By setting $\alpha = \beta$ in the sum formulas, we get the double-angle formulas, and by solving those for $\sin(\theta)$ and $\cos(\theta)$, we can produce the half-angle formulas.
-
-]]
-
-@ex[trig identities][[
-
-	Solve
 
 ]]
 

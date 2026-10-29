@@ -124,7 +124,10 @@ The theory of functions of multiple variables has been around longer than the co
 
 Well, there's one common way that's still very much in use today: **topographical maps**, or just topo maps for short. They work by drawing lines on a 2D map that indicate paths of *constant height*: if you walk along any line in a topo map, you'll be staying at exactly the same height above sea level.
 
-### image graphics/topo.webp graphics/satellite.webp
+@image([
+	"graphics/topo.webp",
+	"graphics/satellite.webp",
+])
 
 This map of Cone Peak in the Big Sur wilderness in California conveys the incredible steepness of the summit: every line crossed is another 100 feet of elevation gained, so the tighter the lines are bunched together, the steeper the slope there is.
 
