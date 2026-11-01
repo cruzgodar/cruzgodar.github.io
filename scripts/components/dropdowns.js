@@ -5,11 +5,11 @@ import { addHoverEvent } from "../src/hoverEvents.js";
 import { addTemporaryParam } from "../src/main.js";
 import { setPersistedState } from "../src/navigation.js";
 import { siteSettings } from "../src/settings.js";
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
 const maxSingleColumnOptions = 7;
 
-export class Dropdown extends InputElement
+export class Dropdown extends AppletControl
 {
 	value;
 	options;

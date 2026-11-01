@@ -4,7 +4,7 @@ import { $$, addTemporaryListener, pageElement } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 import { clamp } from "../src/utils.js";
 import { Checkbox } from "./checkboxes.js";
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
 export let uncapEverything = false;
 
@@ -38,7 +38,7 @@ function splitHtmlBySpaces(element)
 	return nodes;
 }
 
-export class CappedInputElement extends InputElement
+export class CappedInputElement extends AppletControl
 {
 	min;
 	max;

@@ -3,6 +3,7 @@ import { addStyle, addTemporaryListener, addTemporaryParam } from "../src/main.j
 import { setPersistedState } from "../src/navigation.js";
 import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
+import { AppletInputControl } from "./inputElement.js";
 
 const thumbWidth = 24;
 
@@ -500,5 +501,27 @@ function setCaretPosition(el, offset)
 		}
 		
 		charCount = nextCharCount;
+	}
+}
+
+
+
+export class NumberInput extends AppletInputControl
+{
+	constructor({
+		element,
+		name,
+		value,
+		min,
+		max,
+		snapThreshhold = 1 / 50,
+		snapPoints = [],
+		logarithmic = false,
+		integer = false,
+		percent = false,
+		persistState = true,
+		onInput = () => {}
+	}) {
+		super({ element, name, appletControlElement: element });
 	}
 }

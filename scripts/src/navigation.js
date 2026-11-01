@@ -1,5 +1,6 @@
 import { clearCurrentlyLoadedApplets, currentlyLoadedApplets } from "../applets/applet.js";
 import { destroyCarousels } from "../components/carousels.js";
+import { resetExpandedAppletControls } from "../components/inputElement.js";
 import {
 	fadeDownOut,
 	fadeLeftOut,
@@ -512,6 +513,8 @@ function unloadPage()
 	clearDesmosGraphs();
 
 	destroyCarousels();
+
+	resetExpandedAppletControls();
 
 
 

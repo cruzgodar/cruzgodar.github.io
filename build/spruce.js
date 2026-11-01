@@ -196,16 +196,14 @@ function resolveUrl(url)
 
 
 const controlsFunctions = {
-	slider,
-	textarea,
-	button,
+	number,
+	string,
+	boolean,
 	dropdown,
-	fileUpload,
-	checkbox,
-	textBox
+	button,
 };
 
-// data is an object whose keys are IDs and whose values are types.
+// data is an object whose keys are IDs and whose values are types
 export function controls(data)
 {
 	let html = "<div class=\"applet-controls\">";
@@ -225,18 +223,40 @@ export function controls(data)
 	return `${html}</div>`;
 }
 
-function slider(id)
+function boolean(id)
 {
 	return /* html */`
-		<div class="slider-container">
-			<div class="slider-bar"></div>
-			<div id="${id}Slider" class="slider-thumb"></div>
-			<p class="body-text slider-subtext"></p>
+		<div class="checkbox-row">
+			<div class="checkbox-container" tabindex="1">
+				<input type="checkbox" id="${id}Checkbox">
+				<div class="checkbox"></div>
+			</div>
+			
+			<label for="${id}-checkbox" style="margin-left: 10px">
+				<p class="body-text checkbox-subtext"></p>
+			</label>
 		</div>
 	`;
 }
 
-function textarea(id)
+function number(id)
+{
+	return /* html */`
+		<div id="${id}-input" class="applet-input-control">
+			Test
+		</div>
+	`;
+
+	// return /* html */`
+	// 	<div class="slider-container">
+	// 		<div class="slider-bar"></div>
+	// 		<div id="${id}Slider" class="slider-thumb"></div>
+	// 		<p class="body-text slider-subtext"></p>
+	// 	</div>
+	// `;
+}
+
+function string(id)
 {
 	return /* html */`
 		<div class="text-field-container">
@@ -266,44 +286,6 @@ function dropdown(id)
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1"></button>
 				<select id="${id}Dropdown"></select>
 			</div>
-		</div>
-	`;
-}
-
-function fileUpload(id, accept, multiple = "")
-{
-	return /* html */`
-		<div class="text-buttons">
-			<div class="focus-on-child dropdown-container" tabindex="1">
-				<button class="text-button file-upload" type="button" id="${id}-upload-button" tabindex="-1"></button>
-				<input type="file" id="${id}Upload" style="display: none" accept="${accept}" ${multiple}>
-			</div>
-		</div>
-	`;
-}
-
-function checkbox(id)
-{
-	return /* html */`
-		<div class="checkbox-row">
-			<div class="checkbox-container" tabindex="1">
-				<input type="checkbox" id="${id}Checkbox">
-				<div class="checkbox"></div>
-			</div>
-			
-			<label for="${id}-checkbox" style="margin-left: 10px">
-				<p class="body-text checkbox-subtext"></p>
-			</label>
-		</div>
-	`;
-}
-
-function textBox(id)
-{
-	return /* html */`
-		<div class="text-box-container">
-			<input id="${id}Input" class="text-box" type="text" value="" tabindex="1">
-			<p class="body-text text-box-subtext"></p>
 		</div>
 	`;
 }

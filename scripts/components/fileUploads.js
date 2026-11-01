@@ -1,6 +1,6 @@
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
-export class FileUpload extends InputElement
+export class FileUpload extends AppletControl
 {
 	buttonElement;
 	onInput;

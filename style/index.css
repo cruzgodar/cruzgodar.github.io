@@ -1024,43 +1024,43 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	left: 0;
 }
 
-
-/* Adds support for text buttons and text boxes. */
-
-.applet-controls
-{
-	position: relative;
-	display: flex;
-	
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	
-	width: min(100%, var(--text-width));
-	margin: 0 auto;
-	
-	row-gap: 32px;
-	column-gap: 32px;
-	
-	margin-top: 32px;
-}
-
-.applet-controls .dropdown-container
-{
-	margin-top: 0;
-}
-
-.applet-controls .text-field-container
-{
-	margin-top: 0;
-}
-
 .contents-button-container
 {
 	display: flex;
 	justify-content: center;
 	margin-top: -22px;
 	margin-bottom: 32px;
+}
+
+
+
+/* APPLET CONTROLS */
+
+.applet-controls
+{
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
+	grid-auto-rows: 1fr;
+	gap: 16px;
+}
+
+.applet-input-control
+{
+	color: var(--normal-contrast);
+	background-color: var(--background);
+	
+	text-align: center;
+	font-size: 100%;
+
+	border: 2px solid var(--normal-contrast);
+	border-radius: 16px;
+	padding: 8px;
+	
+	cursor: pointer;
+	outline: none;
+
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 

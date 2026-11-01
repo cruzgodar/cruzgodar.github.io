@@ -1,9 +1,9 @@
 import { changeOpacity } from "../src/animation.js";
 import { addTemporaryParam } from "../src/main.js";
 import { setPersistedState } from "../src/navigation.js";
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
-export class Checkbox extends InputElement
+export class Checkbox extends AppletControl
 {
 	checked;
 	persistState;

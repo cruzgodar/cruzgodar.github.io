@@ -1,16 +1,16 @@
 import { changeOpacity } from "../src/animation.js";
 import {
-	$$,
-	addTemporaryListener,
-	addTemporaryParam,
-	pageUrl
+    $$,
+    addTemporaryListener,
+    addTemporaryParam,
+    pageUrl
 } from "../src/main.js";
 import { redirect, setPersistedState } from "../src/navigation.js";
 import { sitemap } from "../src/sitemap.js";
 import { Dropdown } from "./dropdowns.js";
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
-export class Button extends InputElement
+export class Button extends AppletControl
 {
 	linked;
 

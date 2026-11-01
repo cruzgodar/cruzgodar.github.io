@@ -32,6 +32,11 @@ const elementSelectorsWithScale =
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
+	".applet-input-control": {
+		scale: 1.075,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
 	".text-button:not(.dropdown, .nav-button)": {
 		scale: 1.075,
 		addBounceOnTouch: () => true,

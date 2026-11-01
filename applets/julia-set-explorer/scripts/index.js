@@ -1,13 +1,26 @@
 import { JuliaSetExplorer } from "./class.js";
 import { DownloadHighResButton, ToggleButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
-import { Slider } from "/scripts/components/sliders.js";
+import { NumberInput, Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { $ } from "/scripts/src/main.js";
 
 export default function()
 {
+	const numIterationsInput = new NumberInput({
+		element: $("#num-iterations-input"),
+		name: "Iterations",
+		value: 500,
+		min: 100,
+		max: 8000,
+		snapPoints: [500, 1000, 2000],
+		logarithmic: true,
+		integer: true,
+		onInput: () => {}
+	});
+
+	return;
 	const switchJuliaModeButton = new ToggleButton({
 		element: $("#switch-julia-mode-button"),
 		name0: "Pick Julia Set",

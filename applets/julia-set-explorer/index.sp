@@ -1,3 +1,7 @@
+@@@
+	import { canvas, card, clickTap, controls } from "../../build/spruce.js";
+@@@
+
 It's hard to find a fractal more famous than the Mandelbrot set. It falls into a class of fractals called **Iterated Function Systems**, which all revolve around applying functions to points repeatedly and analyzing the output. Here, those points are in the complex plane, and the function is $f(z) = z^2 + c$, where $c$ is fixed at the initial value of the point. For example, the point $-i$ gives
 
 $$
@@ -18,21 +22,11 @@ again. The function will flip-flop between those two numbers forever, and what's
 
 <div id="canvas-landscape-left">
 
-### text-boxes
-	resolution
-###
-
-### checkboxes
-	show-preview-canvas
-###
-
-### sliders
-	num-iterations
-###
-
-### buttons
-	switch-julia-mode
-###
+@controls({
+	"num-iterations": "number",
+	"num-iterations-2": "number",
+	"num-iterations-3": "number"
+})
 
 </div>
 
@@ -41,7 +35,7 @@ again. The function will flip-flop between those two numbers forever, and what's
 <div id="canvas-landscape-middle">
 
 <div style="position: relative; margin-top: 32px">
-	### canvas
+	@canvas
 
 	<canvas id="preview-canvas"></canvas>
 </div>
@@ -52,12 +46,12 @@ again. The function will flip-flop between those two numbers forever, and what's
 
 <div id="canvas-landscape-right">
 
-### dropdown download
+
 
 </div>
 
 </div>
 
-### card applet-controls "Controls"
+@card{applet-controls}[Controls][[
 	Drag on the scene to look around and @clickTap[scroll][pinch] to zoom. @clickTap[Hover][Drag] on the Mandelbrot set to pick a Julia set after @clickTap[clicking][tapping] the button and @clickTap[click][release] to explore that Julia set.
-###
+]]

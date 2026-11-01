@@ -1,8 +1,8 @@
 import { addTemporaryParam } from "../src/main.js";
 import { setPersistedState } from "../src/navigation.js";
-import { InputElement } from "./inputElement.js";
+import { AppletControl } from "./inputElement.js";
 
-export class Textarea extends InputElement
+export class Textarea extends AppletControl
 {
 	defaultValue;
 	overlayElement;
