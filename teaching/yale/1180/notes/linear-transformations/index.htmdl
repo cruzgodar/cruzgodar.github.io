@@ -2,15 +2,15 @@
 
 
 
-A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different. Here, those objects are vectors in $#R#^n$, and the maps will be quite similar to matrices.
+A common pattern in math is to define a new type of object (like a vector), develop some properties about it, and then begin to study functions that operate on those objects. Depending on the structure of the objects, the characteristics of the maps we want to study will be different. Here, the objects are vectors in $#R#^n$, and the maps, as we've already seen, are matrices.
 
-As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : #R#^n \to #R#^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in #R#^n$,
+We've seen how an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and output length-$m$ ones, so we can write $A : #R#^n \to #R#^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in #R#^n$,
 
 $$
 	A(\vec{v} + \vec{w}) = A\vec{v} + A\vec{w},
 $$
 
-and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties, let's look at functions that are *defined* this way: ones that factor through addition and scalar multiplication of vectors.
+and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties, let's look at functions that are *defined* by having these nice properties.
 
 ### def "linear transformation"
 	
@@ -22,28 +22,28 @@ and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties
 	
 ###
 
-First of all, one immediate property of any linear transformation $T$ is that it must send the zero vector to itself:
+We don't know from the outset how much linear transformations are like matrices, only that they share these two properties --- that is, all matrices are linear transformations, but not necessarily vice versa. To get to know linear transformations better, one immediate property of any linear transformation $T$ is that it must send the zero vector to itself:
 
 $$
 	T(\vec{0}) = T(0 \cdot \vec{0}) = 0 \cdot T(\vec{0}) = \vec{0}.
 $$
 
-Linear transformations from $#R#$ to $#R#$ aren't very exciting: if $T$ is such a linear transformation, then
+Linear transformations from $#R#$ to $#R#$ aren't too exciting: if $T : #R# \to #R#$, then
 
 $$
 	T(x) = T(x \cdot 1) = x T(1),
 $$
 
-so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $#R# \to #R#$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.
+so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $#R# \to #R#$ are just lines through the origin. Let's actually take the time to graph these.
 
 ### desmos 1dLinearTransformation
 
-Here, the input vector (i.e. the number $1$) is colored purple, and the output vector colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
+Here, the input vector (i.e. the number $1$) is colored purple, and the output vector is colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, we're about to look at transformations from $#R#^2$ to $#R#^2$, so we'll need both axes for input and output. It also reflects the fact that we don't *need* to see other input-output pairs to completely understand the effects of a linear transformation. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear transformation.
 
-When we're not confined to a single input and output variable, linear transformations become much more interesting. Let's take a linear map $T : #R#^2 \to #R#^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
+When we're not confined to a single input and output variable, linear transformations become more interesting. Let's take a linear transformation $T : #R#^2 \to #R#^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
 
 $$
-	T\left( [[ a  ; b ]] \right) &= T\left( [[ a ; 0 ]] + [[ 0 ; b ]] \right)
+	T\left( [[ a ; b ]] \right) &= T\left( [[ a ; 0 ]] + [[ 0 ; b ]] \right)
 
 	&= T\left( [[ a ; 0 ]] \right) + T \left( [[ 0 ; b ]] \right)
 
@@ -56,7 +56,7 @@ So as soon as we know where $T$ sends $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, finding w
 
 ### desmos 2dLinearTransformation
 
-There's a lot going on in this graph, so let's go through it carefully. The red and blue vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
+There's a lot going on in this graph, so let's go through it carefully. The red and blue vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs of $T$ --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
 
 $$
 	T \left( [[ 1 ; 0 ]] \right) &= [[ a_{11} ; a_{21} ]]
@@ -78,8 +78,6 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 	Find $T \left( [[ 3 ; 4 ]] \right)$.
 
-	### solution
-
 	Since $T$ is linear, we can expand that last expression quite a bit:
 
 	$$
@@ -93,6 +91,8 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 	In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the purple point to $(3, 4)$ to check!
 
 ###
+
+In words, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
 
 ### exc "linear transformation"
 
@@ -150,8 +150,6 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 ###
 
-In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
-
 Let's fully work the $2 \times 2$ case through in general. We've already given names to all three relevant vectors: the results of $T$ applied to the two unit coordinate vectors, and the generic purple input vector. Applying $T$ to it, we have
 
 $$
@@ -166,7 +164,7 @@ $$
 	T \left( [[ x_1 ; x_2 ]] \right) = [[ a_{11}, a_{12} ; a_{21}, a_{22} ]] [[ x_1 ; x_2 ]].
 $$
 
-And so we get to the fundamental result of the section: **linear transformations from $#R#^n$ to $#R#^m$ are just $m \times n$ matrices**. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
+And so we get to the fundamental result of the section: linear transformations from $#R#^n$ to $#R#^m$ **are** just $m \times n$ matrices. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
 
 ### ex "linear transformations as matrices"
 
@@ -254,29 +252,39 @@ With the foundation of matrices, inverses, linear transformations, and linear in
 
 In simple terms, one-to-one functions are those that pass the horizontal line test, and onto ones are those whose image (i.e. range) is equal to their codomain.
 
-This first definition of one-to-one is unfortunately a little too clunky to work with directly most of the time. Instead, we'll use an equivalent one that's quite a bit more streamlined.
+This first definition of one-to-one is unfortunately too clunky to work with directly most of the time. Instead, we'll use an equivalent definition that's more streamlined.
 
 ### prop "an equivalent one-to-one definition"
 
-	A linear transformation $T : #R#^n \to #R#^m$ is one-to-one exactly when the only vector $\vec{v} \in #R#^n$ for which $T(\vec{v}) = \vec{0}$ is $\vec{v} = \vec{0}$.
+	A linear transformation $T : #R#^n \to #R#^m$ is one-to-one if and only if when the only vector $\vec{v} \in #R#^n$ for which $T(\vec{v}) = \vec{0}$ is $\vec{v} = \vec{0}$.
 
 ###
 
 ### pf
 
-	Let's very briefly sketch the reasoning behind this proposition. First of all, if $T$ sends a vector $\vec{v} \neq \vec{0}$ to $\vec{0}$, then $T(\vec{v}) = \vec{0} = T(\vec{0})$, so $T$ isn't one-to-one. On the other hand, if the only vector $T$ sends to $\vec{0}$ is $\vec{0}$, then whenever we have $T(\vec{v}) = T(\vec{w})$, we can rearrange it to get
+	Let's briefly sketch the reasoning behind this result. If $T$ if one-to-one, then it never sends two different inputs to the same output, so if $\vec{v} \neq \vec{0}$, then
 
 	$$
-		T(\vec{w}) - T(\vec{w}) = T(\vec{v} - \vec{w}) = \vec{0},
+		T(\vec{v}) \neq T(\vec{0}) = \vec{0}.
 	$$
 
-	And under the assumption, that means $\vec{v} - \vec{w} = \vec{0}$, so $\vec{v} = \vec{w}$, meaning $T$ is one-to-one.
+	On the other hand, suppose the only vector $T$ sends to $\vec{0}$ is $\vec{v} = \vec{0}$. Then if $T(\vec{v}) = T(\vec{w})$, we can rearrange it:
+
+	$$
+		T(\vec{v}) &= T(\vec{w})
+
+		T(\vec{w}) - T(\vec{w}) &= \vec{0}
+
+		T(\vec{v} - \vec{w}) &= \vec{0},
+	$$
+
+	And under the assumption, that means $\vec{v} - \vec{w} = \vec{0}$, so $\vec{v} = \vec{w}$. Therefore, $T$ is one-to-one.
 
 ###
 
-It's important to note that this alternate definition works *only* with linear transformations, not functions in general. For example, $f(x) = x^2$ isn't one-to-one, since $f(1) = f(-1)$, but the only $x$ with $f(x) = 0$ is $x = 0$.
+Be careful: this alternate definition works *only* with linear transformations, not functions in general. For example, $f(x) = x^2$ isn't one-to-one, since $f(1) = f(-1)$, but the only $x$ with $f(x) = 0$ is $x = 0$.
 
-Similarly, we'll want to use a different definition of onto when we're actually working with transformations. Recall that applying a linear transformation to a vector results in taking a linear combination of the columns of the linear transformation's matrix, where the coefficients are given by the vector (this is just restating matrix-vector multiplication). For example, the transformation $T : #R#^2 \to #R#^3$ defined by
+We'll similarly want to use a more convenient definition of onto. Recall that applying a linear transformation to a vector means taking a linear combination of the columns of the linear transformation's matrix, where the coefficients of the combination are given by the vector; for example, the transformation $T : #R#^2 \to #R#^3$ defined by
 
 $$
 	T\left( [[ x ; y ]] \right) = [[ 2x + y ; -y ; 3x + 4y ]]
@@ -295,93 +303,123 @@ $$
 	[[ 2, 1 ; 0, -1 ; 3, 4]] [[ x ; y ]] = [[ 2 ; 0 ; 3 ]]x + [[ 1 ; -1 ; 4 ]]y.
 $$
 
-Since we can plug in whatever we like for $x$ and $y$, the image of $T$ --- the set of outputs that actually occur --- is the *span of the columns of the matrix corresponding to $T$*. That's absolutely a mouthful, so let's give it a more concise name.
+Since we can plug in whatever we like for $x$ and $y$, the image of $T$ --- the set of outputs that actually occur --- is the *span of the columns of the matrix corresponding to $T$*. That's a mouthful, so let's give it a more concise name.
 
 ### def "column space"
 
-	Let $T$ be a linear transformation. The **column space** of $T$ is the span of the columns of the matrix corresponding to $T$. The column space of $T$ is equal to $\image T$, so we don't need extra notation to distinguish it.
+	Let $T$ be a linear transformation. The **column space** of $T$ is the span of the columns of the matrix corresponding to $T$. This is sometimes written $\operatorname{col} T$, but since the column space of $T$ is equal to $\image T$, we won't use that extra notation.
 
 ###
 
-Let's finally bring it all together. For a linear transformation $T : #R#^n \to #R#^m$ to be onto --- that is, for its column space to be equal to $#R#^m$ --- we need the columns of the matrix for $T$ to have at least $m$ linearly independent vectors among them. On the other hand, for $T$ to be one-to-one, we need *all* the columns to be linearly independent --- if there's any linear dependence, then two different inputs will get sent to the same output. It's tempting to say that being one-to-one is a stronger condition than being onto, but this actually isn't always the case, as we'll shortly see. For now, though, we can state the result that will let us properly evaluate individual transformations.
+For a linear transformation $T : #R#^n \to #R#^m$ to be onto --- that is, for $\image T$ to equal $#R#^m$ --- we need the columns of the matrix for $T$ to have at least $m$ linearly independent vectors among them. On the other hand, for $T$ to be one-to-one, we need *all* the columns to be linearly independent --- if there's any linear dependence, then two different inputs will get sent to the same output.
 
 ### thm "criteria for one-to-one and onto"
 
-	Let $T : #R#^n \to #R#^m$ be a linear transformation and let $A$ be the $m \times n$ matrix corresponding to it. Then $T$ is one-to-one exactly when all the columns of $A$ are linearly independent, and $T$ is onto exactly when there are at least $m$ linearly independent columns of $A$.
+	Let $T : #R#^n \to #R#^m$ be a linear transformation and let $A$ be the $m \times n$ matrix corresponding to $T$. Then $T$ is one-to-one if and only if all the columns of $A$ are linearly independent, and $T$ is onto if and only if there are at least $m$ linearly independent columns of $A$.
 
 ###
 
-To check how many vectors in a set (e.g. the columns of a matrix) are linearly independent, the simplest method is to place them all as *rows* in a matrix and reduce it. That's because row operations replace rows with linear combinations of other rows, with the goal of making them zero if possible. When we're done reducing, the number of nonzero rows left is the number of linearly independent vectors in the set we started with.
+It's tempting to say that being one-to-one is a stronger condition than being onto, but that actually isn't always true, which we'll see shortly. To check how many columns of a matrix are linearly independent, the simplest method is to row reduce the matrix; any non-pivot columns (i.e. the ones that become free parameters) are exactly the columns we could have removed to make the remaining ones linearly independent. Let's see this in an example.
 
 ### ex "one-to-one and onto"
 	
 	Let $T : #R#^3 \to #R#^3$ be defined by
 
 	$$
-		T\left( [[ x ; y ; z ]] \right) = [[ 2x + 3y + 5z ; 3x + 4y + 7z ; x - 2y - z ]].
+		T\left( [[ x ; y ; z ]] \right) = [[ 2x + 3y - 6z ; 3x + 4y - 8z ; x - 2y - 4z ]].
 	$$
 
-	Is $T$ one-to-one? Is it onto?
+	Is $T$ one-to-one? Is it onto? Find a basis for $\image T$.
 
 	### solution
 
 	By the previous theorem, we first want to express $T$ as a matrix: it corresponds to
 
 	$$
-		A = [[ 2, 3, 5 ; 3, 4, 7 ; 1, -2, -1 ]],
+		A = [[ 2, 3, 6 ; 3, 4, 8 ; 1, -2, -4 ]],
 	$$
 
-	so we want to row-reduce the matrix whose rows are the columns of $A$.
+	so we can row reduce it:
 
 	$$
-		[[ 2, 3, 1 ; 3, 4, -2 ; 5, 7, -1 ]] &
+		[[ 2, 3, 6 ; 3, 4, 8 ; 1, -2, -4 ]] &
 
-		[[ 2, 3, 1 ; 6, 8, -4 ; 10, 14, -2 ]] & \qquad :: \vec{r_2} \to 2\vec{r_2} ; \vec{r_2} \to 2\vec{r_2} ::
+		[[ 1, -2, -4 ; 3, 4, 8 ; 2, 3, 6 ]] & \qquad \vec{r_1} \leftrightarrow \vec{r_3}
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, -1, -7 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 5 \vec{r_1} ::
+		[[ 1, -2, -4 ; 0, 10, 20 ; 0, 7, 14 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - 3\vec{r_1} ; \vec{r_3} \to \vec{r_3} - 2 \vec{r_1} ::
 
-		[[ 2, 3, 1 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
+		[[ 1, -2, -4 ; 0, 1, 2 ; 0, 1, 2 ]] & \qquad :: \vec{r_2} \to \frac{1}{10}\vec{r_2} ; \vec{r_3} \to \frac{1}{7}\vec{r_3} ::
 
-		[[ 2, 0, 20 ; 0, -1, -7 ; 0, 0, 0 ]] & \qquad \vec{r_1} \to \vec{r_1} + 3\vec{r_2}
+		[[ 1, -2, -4 ; 0, 1, 2 ; 0, 0, 0 ]] & \qquad \vec{r_3} \to \vec{r_3} - \vec{r_2}
 
-		[[ 1, 0, 10 ; 0, 1, 7 ; 0, 0, 0 ]] & \qquad :: \vec{r_1} \to \frac{1}{2}\vec{r_1} ; \vec{r_2} \to -\vec{r_2} ::
+		[[ 1, 0, 0 ; 0, 1, 2 ; 0, 0, 0 ]] & \qquad \vec{r_1} \to \vec{r_1} + 2\vec{r_2}
 	$$
 
-	In the end, we have two linearly independent rows, so $A$ has only two independent columns. Since not all the columns were independent, $T$ isn't one-to-one, and since there weren't at least three linearly independent columns, $T$ isn't onto. That sentence certainly seems a bit redundant when we write it out, and we'll have more to say on the subject momentarily.
+	That means the columns of $T$ are not all linearly independent, so $T$ is not one-to-one. It's also not onto, since there would need to be at least 3 linearly independent columns. To find a basis, we can use the fact that the third column was a free parameter: this row reduction result means that if $z = t$, and therefore $x = 0$ and $y = -2t$, then
+
+	$$
+		T\left( [[ 0 ; -2t ; t ]] \right) = [[ 2 ; 3 ; 1 ]]\cdot 0 + [[ 3 ; 4 ; -2 ]](-2t) + [[ 6 ; 8 ; -4 ]]t &= \vec{0},
+	$$
+
+	or in other words,
+
+	$$
+		T\left( [[ 0 ; -2 ; 0 ]] \right) + T\left( [[ 0 ; 0 ; 1 ]] \right) &= \vec{0}
+
+		-2T\left( [[ 0 ; 1 ; 0 ]] \right) + T\left( [[ 0 ; 0 ; 1 ]] \right) &= \vec{0}
+	$$
+
+	To find a basis for $\image T$, we're looking for a set of linearly independent columns whose span is still equal to the span of the columns of the matrix for $T$; that is, we want to start with
+
+	$$
+		\left\{ [[ 2 ; 3 ; 1 ]], [[ 3 ; 4 ; -2 ]], [[ 6 ; 8 ; -4 ]] \right\}
+	$$
+
+	and remove only the vectors that are linearly dependent with others. The row reduction we just did tells us which to remove! Since
+
+	$$
+		-2T\left( [[ 0 ; 1 ; 0 ]] \right) + T\left( [[ 0 ; 0 ; 1 ]] \right) &= \vec{0},
+	$$
+
+	the second and third columns of the matrix linearly dependent, so including the third column doesn't make the span any bigger. If we remove the third column, we know the first two must be linearly dependent: the row-reduced matrix would then be
+
+	$$
+		[[ 1, 0 ; 0, 1 ; 0, 0 ]],
+	$$
+
+	and both columns have leading ones. A basis for $\image T$ is therefore
+
+	$$
+		\left\{ [[ 2 ; 3 ; 1 ]], [[ 3 ; 4 ; -2 ]] \right\}.
+	$$
 
 ###
 
+In general, to find a basis for the image of a transformation $T$, first row reduce its matrix $A$. Then a basis for $\image T$ is all the columns of $A$ that resulted in pivot columns after reducing.
+
 ### exc "one-to-one and onto"
 
-	Let $S : #R#^3 \to #R#^2$ be defined by
+	Let $S : #R#^5 \to #R#^3$ be defined by
 
 	$$
-		S\left( [[ x ; y ; z ]] \right) = [[ x + y - z ; 2x + y - 3z ]].
+		S\left( [[ a ; b ; c ; d ; e ]] \right) = [[ -3a + 2b - 13c - 3d - 4e ; 3a + 9c + d + 2e ; -6b + 12c + d - 3e ]].
 	$$
 
-	Is $S$ one-to-one? Is it onto?
+	The matrix for $S$ row reduces to
+
+	$$
+		[[1, 0, 3, 0, 0 ; 0, 1, -2, 0, 1 ; 0, 0, 0, 1, 2]].
+	$$
+
+	Is $S$ one-to-one? Is it onto? Find a basis for $\image S$. 
 
 	### solution
 
-	We know that $S$ is definitely not one-to-one, because it has more columns than rows. To check if it's onto, we take its matrix, which is
+	We know that $S$ is definitely not one-to-one, because it has more columns than rows. But it is onto, since there are three pivot columns. Therefore, we could just take the standard basis for $#R#^3$, or more generally, we could take the columns corresponding to the pivot columns of the matrix:
 
 	$$
-		[[ 1, 1, -1 ; 2, 1, -3 ]],
+		\left\{ [[ -3 ; 3 ; 0 ]], [[ 2 ; 0 ; -6 ]], [[  -3 ; 1 ; 1 ]] \right\}.
 	$$
-
-	and write its rows as columns before row reducing:
-
-	$$
-		[[ 1, 2 ; 1, 1 ; -1, -3 ]] &
-
-		[[ 1, 2 ; 0, -1 ; 0, -1 ]] & \qquad :: \vec{r_2} \to \vec{r_2} - \vec{r_1} ; \vec{r_3} \to \vec{r_3} + \vec{r_1} ::
-
-		[[ 1, 0 ; 0, -1 ; 0, 0 ]] & \qquad :: \vec{r_3} \to \vec{r_3} - \vec{r_2} ; \vec{r_1} \to \vec{r_1} + 2\vec{r_2} ::
-
-		[[ 1, 0 ; 0, 1 ; 0, 0 ]] & \qquad \vec{r_2} \to -\vec{r_2}
-	$$
-
-	Since we have two nonzero rows, the original matrix had two linearly independent columns, meaning $S$ is onto!
 
 ###
 
