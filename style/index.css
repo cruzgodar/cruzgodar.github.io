@@ -1039,9 +1039,14 @@ body > .WILSON_fullscreen-container .wilson-help-button
 .applet-controls
 {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(100px, 200px));
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 	grid-auto-rows: 1fr;
 	gap: 16px;
+}
+
+.applet-controls > *
+{
+	max-width: 200px;
 }
 
 .applet-input-control
