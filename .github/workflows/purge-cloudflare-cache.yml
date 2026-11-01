@@ -12,6 +12,14 @@ on:
   # from the previous build and make the staleness worse.
   deployment_status:
 
+  # stage.cruzgodar.com isn't GitHub Pages at all --- it's Cloudflare Pages,
+  # which never creates a GitHub deployment. All it leaves behind is a
+  # "Cloudflare Pages" check run on the pushed commit, so that's the signal that
+  # a stage build is live. (Like every check_run workflow, this only fires from
+  # the copy of this file on main.)
+  check_run:
+    types: [completed]
+
   # Manual escape hatch, for when a purge is needed without a deploy.
   workflow_dispatch:
 
@@ -25,11 +33,15 @@ concurrency:
 jobs:
   purge:
     # deployment_status fires for every state (queued, in_progress, failure,
-    # ...), so filter down to a Pages deploy that actually succeeded.
+    # ...), so filter down to a Pages deploy that actually succeeded. Cloudflare
+    # Pages also builds main, but nothing serves that build, so only stage counts.
     if: >-
       github.event_name == 'workflow_dispatch'
       || (github.event.deployment_status.state == 'success'
           && github.event.deployment.environment == 'github-pages')
+      || (github.event.check_run.app.slug == 'cloudflare-workers-and-pages'
+          && github.event.check_run.conclusion == 'success'
+          && github.event.check_run.check_suite.head_branch == 'stage')
 
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -39,12 +51,19 @@ jobs:
         # Pages sits behind Fastly, which can still serve the previous response
         # for a moment after the deployment is marked successful. Purging inside
         # that window would re-cache the old files for a full edge TTL.
+        if: github.event_name != 'check_run'
         run: sleep 30
 
-      - name: Purge everything
+      - name: Purge
         env:
           ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # A stage deploy only purges stage, so it doesn't throw away the
+          # production cache every time stage is pushed.
+          PURGE_BODY: >-
+            ${{ github.event_name == 'check_run'
+              && '{"hosts":["stage.cruzgodar.com"]}'
+              || '{"purge_everything":true}' }}
         run: |
           set -euo pipefail
 
@@ -53,11 +72,13 @@ jobs:
             exit 1
           fi
 
+          echo "Purging with ${PURGE_BODY}"
+
           status=$(curl -sS -o response.json -w '%{http_code}' \
             -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
             -H "Authorization: Bearer ${API_TOKEN}" \
             -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}')
+            --data "${PURGE_BODY}")
 
           echo "HTTP ${status}"
           cat response.json
