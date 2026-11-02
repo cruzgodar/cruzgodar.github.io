@@ -414,6 +414,8 @@ Let's use this to find the area of something that would have previously proven i
 
 ###
 
+It's also possible to use Green's Theorem even if we're integrating along a non-closed curve.
+
 Let's reflect on Green's Theorem just a bit now that we've gotten our bearings with it. First of all, we *just* talked about another theorem involving curve integrals in the previous section, and so we should clarify how the two theorems interact. And... they effectively don't! The Fundamental Theorem of Curve Integrals only applies to conservative vector fields (in both $#R#^2$ and $#R#^3$), and Green's Theorem applies to any vector field in $#R#^2$ that's integrated along a closed path. The overlap between these two theorems is conservative fields in $#R#^2$, which are those of the form $\left< f, g \right>$ with $g_x = f_y$. But that means the double integral in Green's Theorem is integrating $g_x - f_y = 0$! In other words, Green's Theorem just gives us a second way to verify that the integral of a conservative vector field around a closed loop in $#R#^2$ is zero, and so these theorems have effectively no meaningful interaction.
 
 
