@@ -245,6 +245,75 @@ export default function()
 			]
 		},
 
+		parabola:
+		{
+			bounds: { xmin: -3, xmax: 3, ymin: -1, ymax: 5 },
+			
+			expressions:
+			[
+				{ latex: raw`f(x)=4-x^2`, hidden: true },
+				{ latex: raw`y = f(x)\{y \geq 0\}`, color: desmosColors.purple },
+
+				...getDesmosVector({
+					from: ["1.3", "f(1.3)"],
+					to: ["1.3 - 0.001", "f(1.3) - 0.001f'(1.3)"],
+					color: desmosColors.purple,
+					arrowSize: "0.15",
+				}),
+
+				...getDesmosVector({
+					from: ["-1.3 - 0.06", "f(-1.3 - 0.06)"],
+					to: ["-1.3 - 0.06 - 0.001", "f(-1.3 - 0.06) - 0.001f'(-1.3 - 0.06)"],
+					color: desmosColors.purple,
+					arrowSize: "0.15",
+				}),
+
+				{ latex: raw`y = 0\{-2 \leq x \leq 2 \}`, color: desmosColors.blue },
+
+				...getDesmosVector({
+					from: ["0.075", "0"],
+					to: ["0.075 + 0.001", "0"],
+					color: desmosColors.blue,
+					arrowSize: "0.15",
+				}),
+			]
+		},
+
+		circleArc:
+		{
+			bounds: { xmin: -2, xmax: 2, ymin: -2, ymax: 2 },
+			
+			expressions:
+			[
+				{ latex: raw`x^2+y^2 = 2\{ x \leq 1 \}`, color: desmosColors.purple },
+
+				...getDesmosVector({
+					from: ["-1", "-1"],
+					to: ["-1 - 0.001", "-1 + 0.001"],
+					color: desmosColors.purple,
+					arrowSize: "0.1",
+				}),
+
+				...getDesmosVector({
+					from: ["-1", "1"],
+					to: ["-1 + 0.001", "1 + 0.001"],
+					color: desmosColors.purple,
+					arrowSize: "0.1",
+				}),
+
+				{ latex: raw`x = 1\{-1 \leq y \leq 1 \}`, color: desmosColors.blue },
+
+				...getDesmosVector({
+					from: ["1", "-0.05"],
+					to: ["1", "-0.05 - 0.001"],
+					color: desmosColors.blue,
+					arrowSize: "0.1",
+				}),
+
+				{ latex: raw`y = [1, -1]x\{ 0 \leq x \leq 1 \}`, color: desmosColors.red, hidden: true },
+			]
+		},
+
 		flux:
 		{
 			alwaysDark: true,
