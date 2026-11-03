@@ -490,7 +490,7 @@ The zero vector is always in the kernel of any linear transformation, and a kern
 	This time, we just act as though we were solving a system of equations, so we let non-pivot columns be free parameters: the general solution is
 
 	$$
-		[[ -3t ; 2t - s ; -2s ]] \right\}
+		[[ -3t ; 2t - s ; -2s ]],
 	$$
 
 	so a basis is
