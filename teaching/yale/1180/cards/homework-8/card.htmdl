@@ -69,4 +69,15 @@
 
 	> e) Let $R_\theta : #R#^2 \to #R#^2$ be the linear transformation that rotates its inputs an angle $\theta$ counterclockwise, where $\theta$ is a variable. Find a matrix for $R_\theta$.
 
+	- - -
+
+	Problems 4# concern the following situation. A beekeeper keeps $h$ beehives next to an orchard with $a$ acres of apple trees, and the two businesses help one another synergistically. For the amount of production these businesses are considering, the function $T$ sending $[[ h ; a ]]$ to $[[ \text{pounds of honey} ; \text{bushels of apples} ]]$ is a linear transformation.
+
+	#. For these two businesses, $10$ hives and $20$ acres produce $500$ pounds of honey and $1040$ bushels of apples, and $20$ hives and $10$ acres produce $700$ pounds of honey and $580$ bushels of apples. Use this to find the matrix for $T$ and interpret each of its four entries in context.
+
+	#. The columns of the matrix for $T$ form a basis for $#R#^2$ (you don't need to show this). The two businesses would like to produce exactly $1000$ pounds of honey and $2080$ bushels of apples next year. Express that vector in this basis, and interpret what the two coefficients mean.
+
+	#. Honey sells for $\$5$ per pound and apples for $\$20$ per bushel. Since expanding operations means using less ideal terrain, maintaining $h$ hives costs the beekeeper $5h^2$ dollars per year, and maintaining $a$ acres costs the apple farmer $5a^2$ dollars per year. Find the beekeeper's profit $\pi_B(h, a)$ and the orchard's profit $\pi_O(h, a)$. If each business chooses only its own variable to maximize its own profit, how many hives and acres will there be?
+	
+	#. Find the values of $h$ and $a$ that maximize the combined profit $\pi_B + \pi_O$, using the second derivative test to verify it's a maximum. Which business ends up too small when they act separately, and why?
 ###
