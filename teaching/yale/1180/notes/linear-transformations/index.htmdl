@@ -475,7 +475,7 @@ The zero vector is always in the kernel of any linear transformation, and a kern
 		S\left( [[ a ; b ; c ; d ; e ]] \right) = [[ -3a + 2b - 13c - 3d - 4e ; 3a + 9c + d + 2e ; -6b + 12c + d - 3e ]],
 	$$
 
-	where they matrix for $S$ row reduces to
+	where the matrix for $S$ row reduces to
 
 	$$
 		[[1, 0, 3, 0, 0 ; 0, 1, -2, 0, 1 ; 0, 0, 0, 1, 2]].
