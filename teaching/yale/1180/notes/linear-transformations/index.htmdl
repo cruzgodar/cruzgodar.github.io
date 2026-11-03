@@ -256,7 +256,7 @@ This first definition of one-to-one is unfortunately too clunky to work with dir
 
 ### prop "an equivalent one-to-one definition"
 
-	A linear transformation $T : #R#^n \to #R#^m$ is one-to-one if and only if when the only vector $\vec{v} \in #R#^n$ for which $T(\vec{v}) = \vec{0}$ is $\vec{v} = \vec{0}$.
+	A linear transformation $T : #R#^n \to #R#^m$ is one-to-one if and only if the only vector $\vec{v} \in #R#^n$ for which $T(\vec{v}) = \vec{0}$ is $\vec{v} = \vec{0}$.
 
 ###
 
@@ -305,7 +305,7 @@ $$
 
 Since we can plug in whatever we like for $x$ and $y$, the image of $T$ --- the set of outputs that actually occur --- is the *span of the columns of the matrix corresponding to $T$*. That's a mouthful, so let's give it a more concise name.
 
-### def "column space"
+### def "image / column space"
 
 	Let $T$ be a linear transformation. The **column space** of $T$ is the span of the columns of the matrix corresponding to $T$. This is sometimes written $\operatorname{col} T$, but since the column space of $T$ is equal to $\image T$, we won't use that extra notation.
 
@@ -423,25 +423,89 @@ In general, to find a basis for the image of a transformation $T$, first row red
 
 ###
 
+Expressing the image of a linear transformation as a span of columns might sound familiar, and indeed it's very similar to something we've already seen: in a matrix equation $A\vec{x} = \vec{0}$, the solutions for $\vec{x}$ are in terms of some number of free parameters, which look a lot like a span. Revisiting the previous example, in which
+
+$$
+	T\left( [[ x ; y ; z ]] \right) = [[ 2x + 3y - 6z ; 3x + 4y - 8z ; x - 2y - 4z ]],
+$$
+
+we row reduced its matrix to
+
+$$
+	[[ 1, 0, 0 ; 0, 1, 2 ; 0, 0, 0 ]],
+$$
+
+and so if we had been augmenting it with a column of zeros the entire time, then the row-reduced form would have been
+
+$$
+	[[ 1, 0, 0 | 0 ; 0, 1, 2 | 0 ; 0, 0, 0 | 0 ]],
+$$
+
+making a general solution
+
+$$
+	\vec{x} = \left[ 0 ; -2t ; t \right] = \left[ 0 ; -2 ; 1 \right]t.
+$$
+
+In other words, the set of solutions is
+
+$$
+	\span\left\{ \left[ 0 ; -2 ; -1 \right] \right\}.
+$$
+
+Just like the column space, we'll have a similar name and interpretation for this set.
+
+### def "kernel / null space"
+
+	Let $T : #R#^n \to #R#^m$ be a linear transformation. The **kernel** of $T$, also called its **null space**, is the set
+
+	$$
+		\ker T = \left\{ \vec{v} \in #R#^n \mid T\left( \vec{v} \right) = \vec{0} \right\}.
+	$$
+
+###
+
+The zero vector is always in the kernel of any linear transformation, and a kernel is always the span of some set of vectors --- as an aside, we say the span of the empty set is just the set containing the zero vector, so even if $\ker T = \left\{ \vec{0} \right\}$, $\ker T = \span \left\{ \right\}$.
+
+### exc "one-to-one and onto"
+
+	Again, let $S : #R#^5 \to #R#^3$ be defined by
+
+	$$
+		S\left( [[ a ; b ; c ; d ; e ]] \right) = [[ -3a + 2b - 13c - 3d - 4e ; 3a + 9c + d + 2e ; -6b + 12c + d - 3e ]],
+	$$
+
+	where they matrix for $S$ row reduces to
+
+	$$
+		[[1, 0, 3, 0, 0 ; 0, 1, -2, 0, 1 ; 0, 0, 0, 1, 2]].
+	$$
+
+	1. Find a basis for $\ker S$.
+
+	2. The number of vectors in a basis for a space $V$ is called that space's **dimension**, written $\dim V$. Explain why $\dim \ker S + \dim \image S = \dim #R#^5$, where $#R#^5$ is the domain of $S$. Do you think this will remain true for any linear transformation?
+
+	### solution
+
+	This time, we just act as though we were solving a system of equations, so we let non-pivot columns be free parameters: the general solution is
+
+	$$
+		[[ -3t ; 2t - s ; -2s ]] \right\}
+	$$
+
+	so a basis is
+
+	$$
+		\left\{ [[ -3 ; 2 ; 0 ]], [[ 0 ; -1 ; -2 ]] \right\}.
+	$$
+
+###
+
 
 
 ## Invertibility
 
-Let's consider, for yet another time, a linear transformation $T : #R#^n \to #R#^m$. If $n > m$, then there are more columns than rows in the matrix corresponding to $T$, and so the columns can't all possibly be linearly independent. That's because when we place them as rows in an $n \times m$ matrix and row-reduce it, the best that the process could go is if none of the first $m$ reduce to rows of all zeros --- but then we could use those reduced rows to clear all of the others. For example, consider the matrix
-
-$$
-	A = [[ 1, 3, 5 ; -1, 4, 2 ]].
-$$
-
-Placing the rows of $A$ as columns in a new matrix and partially row-reducing, we get
-
-$$
-	[[ 1, 1 ; 3, 4 ; 5, 2 ]] & 
-
-	[[ 1, 1 ; 0, 1 ; 5, 2 ]] & \qquad \vec{r_2} \me 3\vec{r_1}.
-$$
-
-Since neither of the first two rows is all zero, we're going to be able to reduce the third row to zero no matter what its entries are. Geometrically, if we already have two linearly independent vectors in $#R#^2$, there's no third vector in $#R#^2$ that's linearly independent with them both.
+Let's consider, for yet another time, a linear transformation $T : #R#^n \to #R#^m$. If $n > m$, then there are more columns than rows in the matrix corresponding to $T$, and so the columns can't all possibly be linearly independent. As a geometric example, if we already have two linearly independent vectors in $#R#^2$, there's no third vector in $#R#^2$ that's linearly independent with them both.
 
 On the other hand, if $n < m$, then there are more rows than columns. This case is a lot simpler: for $T$ to be onto, there need to be at least $m$ linearly independent columns, but there are only $n$ columns at all, linearly independent or not. We can sum up our findings in far fewer words:
 
@@ -478,6 +542,10 @@ At this point, we're finished with the material in the section, but I think it's
 > - One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w})$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0})$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
 
 > - Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
+
+> - Kernel: The kernel (or null space) of $T$ is the set of all vectors it sends to $\vec{0}$. $T$ is one-to-one if and only if $\ker T = \left\{ \vec{0} \right\}$.
+
+> - Image: The image (or column space) of $T$ is the set of all vectors it can output. $T$ is one-to-one if and only if $\image T = #R#^m$.
 
 > - Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
 
