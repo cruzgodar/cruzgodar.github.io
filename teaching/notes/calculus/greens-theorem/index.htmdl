@@ -666,7 +666,7 @@ Use the dropdown to color this vector field by (the $z$-component of) its curl a
 
 	2. Let $f(x, y, z) = 3xy + 2y\sin(z) + z^2$. Find $\Gtimes \G f$. Does this match with our previous understanding of gradients and curl?
 
-	3. Give an example of a non-constant vector field $\vec{G}$ in $#R#^2$ (not $#R#^3$) with $\Gtimes \vec{G} = \vec{0}$ but $\G \bullet \vec{G} \neq 0$, and a non-constant field $\vec{H}$ with $\Gbullet \vec{H} = \vec{0}$ but $\Gtimes \vec{H} \neq 0$.
+	3. Give an example of a non-constant vector field $\vec{G}$ in $#R#^2$ (not $#R#^3$) with $\operatorname{curl} \vec{G} = \vec{0}$ but $\operatorname{div} \vec{G} \neq 0$, and a non-constant field $\vec{H}$ with $\operatorname{div} \vec{H} = 0$ but $\operatorname{curl} \vec{H} \neq \vec{0}$.
 	
 	### solution
 

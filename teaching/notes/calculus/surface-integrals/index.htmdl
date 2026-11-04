@@ -68,7 +68,7 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 
 ### exc "plotting a parametric surface"
 
-	1. Describe and roughly sketch the following parametric surfaces:
+	1. Describe the following parametric surfaces:
 
 	$$
 		\vec{r}(u, \v) &= \left< 0, 0, 1 \right>\ +\ u\left< -1, -2, 1 \right>\ +\ \v\left< 1, 0, -1 \right>, \quad -2 \leq u \leq 2,\ -2 \leq \v \leq 2
