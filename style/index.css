@@ -785,6 +785,15 @@ mjx-container
 	border-bottom-right-radius: 12px;
 }
 
+/*
+	iOS Safari colors its status bar from a fixed element at the top of the screen,
+	even when the fullscreen container is covering it.
+*/
+body:has(> .WILSON_fullscreen-container.WILSON_fullscreen) .header-container
+{
+	display: none;
+}
+
 .WILSON_fullscreen-container.WILSON_fullscreen-fill-screen .fps-canvas
 {
 	view-transition-name: unset !important;
