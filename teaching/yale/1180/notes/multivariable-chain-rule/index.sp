@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -84,7 +84,7 @@ That second presentation of the theorem is definitely a little strange, but it's
 
 This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $pf/pb$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
 
-@image([
+@images([
 	"graphics/tree-1.webp",
 	"graphics/tree-2.webp",
 ])
@@ -103,7 +103,7 @@ $$
 
 		We end up with a rather nice-looking diagram:
 
-		@image([
+		@images([
 			"graphics/tree-3.webp",
 		])
 

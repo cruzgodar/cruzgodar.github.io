@@ -1,5 +1,5 @@
 @@@
-	import { bannerDocument as document, carousel, customLink } from "../build/spruce.js";
+	import { bannerDocument as document, carousel, link } from "../build/spruce.js";
 @@@
 
 <div class="justify">
@@ -101,7 +101,7 @@ Teaching Assistant:
 
 **[Immersive Thurston Geometry Applet](/applets/thurston-geometries)** (February 2024). A WebGL renderer to experience the perspective of living inside any possible curved space.
 
-**@customLink({ displayText: "Lapsa", url: "/projects/lapsa", inNewTab: true })** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
+**@link({ displayText: "Lapsa", url: "/projects/lapsa", inNewTab: true })** (January 2023). A simple and elegant HTML-based presentation engine written in TypeScript.
 
 **[Interactive Class Notes](/teaching)** (January 2022--Present). Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
 

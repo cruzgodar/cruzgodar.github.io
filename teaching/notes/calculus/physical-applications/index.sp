@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -226,7 +226,7 @@ The last type of problem we'll explore in this section has to do with the work d
 	
 	A tank in the shape of a cylinder has radius $4$ meters. It's $10$ meters tall and is filled with water up to $8$ meters, and the weight density of water is $9800\,\frac{N}{m^3}$. Find the work done by pumping out all the water out over the top of the tank.
 	
-	@image(["graphics/cylindrical-tank.png"])
+	@images(["graphics/cylindrical-tank.png"])
 
 	@solution[[
 	
@@ -251,13 +251,13 @@ The last type of problem we'll explore in this section has to do with the work d
 	
 	A tank in the shape of a square pyramid has height $6$ and a base with side length $5$, and it's completely full of a liquid with weight density $1000\,\frac{N}{m^3}$. Find the work done by pumping it all out.
 	
-	@image(["graphics/pyramid-tank.png"])
+	@images(["graphics/pyramid-tank.png"])
 
 	@solution[[
 
 		This time, the cross-sections are squares, and their area changes as we move up the tank. To figure out how that size depends on the slice location, let's look at this thing from the side.
 		
-		@image(["graphics/pyramid-cross-section.png"])
+		@images(["graphics/pyramid-cross-section.png"])
 		
 		If we take a slice at height $y$, then we cut the triangle and create a smaller triangle at the bottom. Since these two triangles have the same angles, they're **similar.** That means the ratios of corresponding sides are the same: specifically, $\frac{y}{6} = \frac{b}{5}$. Therefore, $b = \frac{5}{6} y$, and $b$ is the side length of the square cross-section, so the area is $b^2 = \frac{25}{36} y^2$. Now the integral takes the same form as before:
 		

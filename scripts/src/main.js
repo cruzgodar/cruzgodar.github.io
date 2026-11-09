@@ -6,6 +6,7 @@ import { pageLayoutReady } from "./loadPage.js";
 import { redirect } from "./navigation.js";
 import {
 	initDarkTheme,
+	initDistinguishColors,
 	initIncreaseContrast,
 	initReduceMotion,
 	setScroll,
@@ -103,6 +104,7 @@ export async function loadSite(url = pageUrl)
 	await initDarkTheme(url);
 	initReduceMotion();
 	initIncreaseContrast();
+	initDistinguishColors();
 	
 	pageElement.classList.add("page");
 

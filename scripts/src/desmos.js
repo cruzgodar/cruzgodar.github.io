@@ -73,7 +73,7 @@ function getDesmosHue(color)
 	return siteSettings.distinguishColors ? 45 : 30;
 }
 
-function getDesmosColor(color, is3d, alwaysDark, highContrast)
+export function getDesmosColor(color, is3d, alwaysDark, highContrast)
 {
 	if (color === desmosColors.black)
 	{

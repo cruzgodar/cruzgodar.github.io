@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, image, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -106,13 +106,13 @@ $$
 
 @desmos{distance}
 
-Once again, instead of trying to reprove something like the Pythagorean Theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
+Once again, instead of trying to reprove something like the Pythagorean Theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the @color[purple] point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
 
 $$
 	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
 $$
 
-Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean Theorem tells us that its hypotenuse has length
+Now the remainder of the distance is the vertical line from the @color[purple] point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean Theorem tells us that its hypotenuse has length
 
 $$
 	d = \sqrt{d^2 + |z_2 - z_1|^2} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}.
@@ -244,7 +244,7 @@ Going back to our flight example, the notion of vectors as displacements works n
 
 @desmos{vectorAddition}
 
-Here, the sum of the red and blue vectors is the purple one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
+Here, the sum of the red and blue vectors is the @color[purple] one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
 
 Vector addition also plays nicely with components. If $\vec{v} = \left< v_1, v_2, v_3 \right>$ and $\vec{w} = \left< w_1, w_2, w_3 \right>$, then the combination $\vec{v} + \vec{w}$ moves a total of $v_1 + w_1$ in the $x$-direction and so on, meaning
 

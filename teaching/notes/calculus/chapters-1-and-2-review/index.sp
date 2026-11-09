@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, imageLinks, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -34,7 +34,7 @@ There's a sense in which that function is poorly behaved at $x = 0$. "Nice" func
 
 
 
-Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined --- we need that in the definition so that $f(a)$ makes sense to write. In the example below, the purple function $f(x)$ is continuous while the blue function $g(x)$ is not.
+Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined --- we need that in the definition so that $f(a)$ makes sense to write. In the example below, the @color[purple] function $f(x)$ is continuous while the blue function $g(x)$ is not.
 
 @desmos{continuityExample}
 
@@ -84,7 +84,7 @@ $$
 
 More generally, if $f(x)$ is a differentiable function whose input variable $x$ is measured in unit $A$ and whose output is in unit $B$, then $f'(x)$ has units $\frac{B}{A}$ and is approximately equal to $f(x + 1) - f(x)$.
 
-Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the blue point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
+Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The @color[purple] function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the blue point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
 
 @desmos{derivativeExample}
 

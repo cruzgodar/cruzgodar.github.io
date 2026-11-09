@@ -17,7 +17,7 @@ export function bannerDocument(body)
 
 
 
-export function customLink({ displayText, url, inNewTab = false })
+export function link({ displayText, url, inNewTab = false })
 {
 	const inNewTabHtml = inNewTab ? " data-in-new-tab=\"1\"" : "";
 
@@ -206,6 +206,7 @@ const controlsFunctions = {
 // data is an object whose keys are IDs and whose values are types
 export function controls(data)
 {
+	return;
 	let html = "<div class=\"applet-controls\">";
 
 	for (const [id, type] of Object.entries(data))
@@ -398,7 +399,30 @@ export function solution(body)
 
 
 
-export function image(urls, invertible = false)
+export function color(text)
+{
+	const colors = {
+		purple: "purple",
+		blue: "blue",
+		red: "red",
+		orange: "orange",
+		black: "black",
+		gray: "black",
+	};
+
+	const normalizedColor = colors[text.toLowerCase()];
+
+	if (!normalizedColor)
+	{
+		throw new Error(`Unrecognized color: ${text}`);
+	}
+
+	return /* html */`<span class="distinguished-color-text ${normalizedColor}">${text}</span>`;
+}
+
+
+
+export function images(urls, invertible = false)
 {
 	const invertibleString = invertible ? " invertible" : "";
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -124,7 +124,7 @@ The theory of functions of multiple variables has been around longer than the co
 
 Well, there's one common way that's still very much in use today: **topographical maps**, or just topo maps for short. They work by drawing lines on a 2D map that indicate paths of *constant height*: if you walk along any line in a topo map, you'll be staying at exactly the same height above sea level.
 
-@image([
+@images([
 	"graphics/topo.webp",
 	"graphics/satellite.webp",
 ])

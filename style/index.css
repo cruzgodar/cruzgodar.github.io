@@ -2812,3 +2812,10 @@ to hide them in that case. */
 	background-color: rgb(87.18% 41.03% 57.63%);
 	background-color: lch(60% 50 360);
 }
+
+
+
+.distinguished-color-text
+{
+	transition: color 200ms ease-out, font-weight 200ms ease-out;
+}

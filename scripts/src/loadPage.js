@@ -30,7 +30,7 @@ import {
 	setCurrentlyRedirecting
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
-import { siteSettings } from "./settings.js";
+import { initDistinguishColors, siteSettings } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 import { animate, asyncFetch, sleep } from "./utils.js";
 
@@ -80,6 +80,8 @@ export async function loadPage(noFadeIn = false)
 	initPageContents();
 
 	initCarousels();
+
+	initDistinguishColors();
 
 	loadImages();
 

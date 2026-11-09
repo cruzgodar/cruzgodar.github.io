@@ -1,7 +1,7 @@
 import anime from "../anime.js";
 import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardContainer, cardIsOpen } from "./cards.js";
-import { recreateDesmosGraphs } from "./desmos.js";
+import { desmosColors, getDesmosColor, recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
 	addStyle,
@@ -489,9 +489,68 @@ export async function toggleDistinguishColors({
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
+	setDistinguishedColors();
+
 	if (!noAnimation)
 	{
 		recreateDesmosGraphs();
+	}
+}
+
+export async function setDistinguishedColors()
+{
+	if (!siteSettings.distinguishColors)
+	{
+		for (const element of document.body.querySelectorAll(".distinguished-color-text"))
+		{
+			element.style.removeProperty("color");
+			element.style.removeProperty("font-weight");
+		}
+
+		return;
+	}
+	
+
+
+	const purple = getDesmosColor(desmosColors.purple, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.purple"))
+	{
+		element.style.color = purple;
+		element.style.fontWeight = 900;
+	}
+
+	const blue = getDesmosColor(desmosColors.blue, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.blue"))
+	{
+		element.style.color = blue;
+		element.style.fontWeight = 900;
+	}
+
+	const red = getDesmosColor(desmosColors.red, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.red"))
+	{
+		element.style.color = red;
+		element.style.fontWeight = 900;
+	}
+
+	const orange = getDesmosColor(desmosColors.orange, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.orange"))
+	{
+		element.style.color = orange;
+		element.style.fontWeight = 900;
+	}
+
+	const black = getDesmosColor(desmosColors.black, false, false, true);
+
+	for (const element of document.body.querySelectorAll(
+		".distinguished-color-text:is(.black, .gray)"
+	)) {
+		element.style.color = black;
+		element.style.fontWeight = 900;
 	}
 }
 

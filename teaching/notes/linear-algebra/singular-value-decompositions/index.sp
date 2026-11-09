@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images, canvas, controls, imageLinks } from "../../../../build/spruce.js";
 @@@
 
 
@@ -129,11 +129,11 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with a 400 pixel wide, 300 pixel tall image $A$ and see what we can learn from its SVD.
 
-@image(["graphics/original.webp"])
+@images(["graphics/original.webp"])
 
 First of all, this doesn't directly translate to a matrix, since each pixel has red, green, and blue components, rather than a single number. Let's account for that by splitting it up into three images --- rather than red, green, and blue components, though, let's use hue, saturation, and value, which are much more perceptually distinct.
 
-@image(["graphics/h.webp", "graphics/s.webp", "graphics/v.webp"])
+@images(["graphics/h.webp", "graphics/s.webp", "graphics/v.webp"])
 
 Each of these is an $300 \times 400$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
 

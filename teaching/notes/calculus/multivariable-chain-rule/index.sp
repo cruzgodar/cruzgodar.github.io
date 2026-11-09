@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, images, imageLinks, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -84,7 +84,7 @@ That second presentation of the theorem is definitely a little strange, but it's
 
 This tells us how to handle functions of two variables, where each of those two variables depends on a third, but that's far from the only situation we can find ourselves in. Maybe $x$ is a function $x(a, b, c)$ and $y$ is a function $y(b, d)$, and further, $c$ is a function $c(t)$. How do we evaluate $df/dt$ or $pf/pb$? The complexity threatens to spiral out of control here, so to get a better handle on the structure, let's draw the variables in a diagram.
 
-@image(["graphics/tree-1.webp", "graphics/tree-2.webp"])(true)
+@images(["graphics/tree-1.webp", "graphics/tree-2.webp"])(true)
 
 Here, variables are connected by lines to the inputs they directly depend on --- the first diagram is the situation we already described in the previous statement of this theorem, and the second is the hypothetical complex scenario we just mentioned. The multivariable Chain Rule in its full generality becomes much easier to state in terms of these tree diagrams! Rather than state it as a proper theorem, we'll just present it intuitively: to take the derivative of one variable with respect to another lower down in the diagram, first find *every* path from the top to the bottom. For each path, move down one segment at a time to build up a factor of partial derivatives of the top of each segment with respect to the bottom. Then add all of those factors up. For example, we can compute $pz/pb$ by following the paths from $z$ to $b$: one through $x$ and one through $y$. The result is
 
@@ -100,7 +100,7 @@ $$
 
 		We end up with a rather nice-looking diagram:
 
-		@image(["graphics/tree-3.webp"])(true)
+		@images(["graphics/tree-3.webp"])(true)
 
 		The result is that
 

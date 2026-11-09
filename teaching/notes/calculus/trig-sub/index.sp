@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image } from "../../../../build/spruce.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -60,7 +60,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 		
 		Now it's time to back-substitute. Since $x = 3\sin(\theta)$, $\sin(\theta) = \frac{x}{3}$, which isn't too bad. We still need to handle the $\theta$ and the $\cos(\theta)$, though. For the former, we can solve $\sin(\theta) = \frac{x}{3}$ for $\theta$ to get $\theta = \sin^{-1}\left( \frac{x}{3} \right)$. The cosine is going to be slightly harder, though. Let's draw a right triangle to help figure it out.
 
-		@image(["graphics/triangle-1.png"])
+		@images(["graphics/triangle-1.png"])
 		
 		In a right triangle with an angle $\theta$, $\sin(\theta)$ is the ratio of the opposite side to the hypotenuse, so to get a right triangle that works for us, we can draw one with opposite side $x$ and hypotenuse $3$. Let's call the third side $b$ for now. We're trying to find $\cos(\theta)$ in terms of $x$ --- since $\cos(\theta) = \frac{b}{3}$, we just need to find $b$. By the Pythagorean Theorem, $x^2 + b^2 = 3^2$, so $b = \sqrt{9 - x^2}$. Therefore, $\cos(\theta) = \frac{1}{3}\sqrt{9 - x^2}$. Now we finally have all the necessary information, and we can back-substitute.
 		
@@ -190,7 +190,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 		
 		Now we back-substitute. We know $t = 2\tan(\theta)$, so $\tan(\theta) = \frac{t}{2}$. That leaves us to solve for $\sec(\theta)$ with a right triangle.
 
-		@image(["graphics/triangle-2.png"])
+		@images(["graphics/triangle-2.png"])
 		
 		This time, we have an opposite side of $t$ and an adjacent side of $2$. If we call the hypotenuse $c$, then the Pythagorean Theorem tells us that $c = \sqrt{t^2 + 2^2}$, so
 		
