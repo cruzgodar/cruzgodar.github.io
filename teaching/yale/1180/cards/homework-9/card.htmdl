@@ -2,17 +2,102 @@
 	
 	*Due Sunday, November 23rd at 11:59 PM*
 	
-	Complete the following problems and submit them as a pdf to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. If you collaborate with any classmates, please include a statement on your assignment acknowledging with whom you collaborated.
-
-	At this point, please feel free to do row reduction with technology --- note that you should still be doing the setup and all the rest of the problem on your own.
-
-	### buttons
-		download-homework-9-pdf
-		download-homework-9-tex
-	###
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
 
 	- - -
 
-	
+	In problems 5#, do the following:
+
+	> a) Find the matrix for the given transformation $T$.
+
+	> b) Determine if $T$ is one-to-one. If it is not, find a basis for $\ker T$.
+
+	> c) Determine if $T$ is onto and find a basis for $\image T$.
+
+	> d) If $T$ is invertible, find a formula for $T^{-1}$.
+
+	#.
+
+	$$
+		T\left( [[ x ; y ]] \right) = [[ -2x + y ; -5x + 3y ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ a ; b ; c ; d ]] \right) = [[ a + 2b - c ; 2b + c - d ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ x ; y ; z ]] \right) = [[ 2x + y - z ; -3x - y ; y - 3z ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ x ]] \right) = [[ x ; 2x ; 3x ; 0 ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ x ; y ; z ; w ]] \right) = x + 2y + 3z
+	$$
+
+	- - -
+
+	Problems 2# concern the following situation. In a **market** for a good, the **demand curve** records how much of the good buyers want to purchase at each price, and the **supply curve** records how much sellers want to sell at each price. Buyers want more when the price is low and sellers want to sell more when the price is high, so the market settles at the price where the two quantities agree, called the **equilibrium**. In a city's market for coffee beans, when the price is $p$ dollars per pound, buyers want to purchase
+
+	$$
+		q = 10 - p + d
+	$$
+
+	thousand pounds per week, and sellers want to sell
+
+	$$
+		q = p - 2 + s
+	$$
+
+	thousand pounds per week. The variables $d$ and $s$ are called **shocks**: $d > 0$ means buyers want $d$ thousand more pounds than usual at every price (for example, because a new café opened), and $s > 0$ means sellers are willing to sell $s$ thousand more pounds at every price (for example, because of a good harvest). Negative values mean the opposite. In the graph below, quantity is on the $x$-axis and price is on the $y$-axis. The demand curve is blue, the supply curve is red, the dashed lines are the curves when $d = s = 0$, and the purple point is the equilibrium.
+
+	### desmos supplyDemandShocks
+
+	#. Find the equilibrium price and quantity in terms of $d$ and $s$. Let $T : #R#^2 \to #R#^2$ send $[[ d ; s ]]$ to $[[ \Delta p ; \Delta q ]]$, the change in the equilibrium price and quantity from their values when $d = s = 0$. Find the matrix for $T$, show that $T$ is invertible, and find $T^{-1}$. An economist can't observe shocks directly, only prices and quantities. This year, the price of coffee beans rose by $\$1$ per pound and the quantity sold fell by $3$ thousand pounds per week. What shocks occurred? Set the sliders to your answer to check.
+
+	**Solution:** Setting the two quantities equal,
+
+	$$
+		10 - p + d &= p - 2 + s
+
+		2p &= 12 + d - s
+
+		p &= 6 + \frac{d - s}{2},
+	$$
+
+	and plugging back into the demand equation gives $q = 4 + \frac{d + s}{2}$. When $d = s = 0$, the equilibrium is $p = 6$ and $q = 4$, so
+
+	$$
+		T\left( [[ d ; s ]] \right) = \frac{1}{2} [[ 1, -1 ; 1, 1 ]] [[ d ; s ]].
+	$$
+
+	Row reducing this matrix augmented with $I$ gives
+
+	$$
+		T^{-1}\left( [[ \Delta p ; \Delta q ]] \right) = [[ 1, 1 ; -1, 1 ]] [[ \Delta p ; \Delta q ]] = [[ \Delta p + \Delta q ; \Delta q - \Delta p ]].
+	$$
+
+	With $\Delta p = 1$ and $\Delta q = -3$, we get $d = -2$ and $s = -4$: buyers want $2$ thousand fewer pounds at every price, and sellers want to sell $4$ thousand fewer. Both shocks lower the quantity, but the supply shock is larger, so the price goes up.
+
+	#. Suppose the economist only has data on quantities, not prices. Let $Q : #R#^2 \to #R#$ send $[[ d ; s ]]$ to $\Delta q$. Find the matrix for $Q$, determine whether $Q$ is one-to-one, and find a basis for $\ker Q$. Explain in context what the kernel means for the economist. This difficulty is called the **identification problem**: we can only work out causes from observed effects when the map from causes to effects is one-to-one.
+
+	**Solution:** $Q$ is the second row of $T$, so its matrix is $[[ \frac{1}{2}, \frac{1}{2} ]]$. It has two columns but only one row, so it can't be one-to-one. Solving $\frac{1}{2}d + \frac{1}{2}s = 0$ with $s = t$ gives $d = -t$, so a basis for $\ker Q$ is
+
+	$$
+		\left\{ [[ -1 ; 1 ]] \right\}.
+	$$
+
+	A drop in demand combined with an equal rise in supply leaves the quantity unchanged. (The price still drops by $\$1$, which you can check on the graph.) An economist who only sees quantities can't tell that apart from nothing happening at all, and more generally, any two pairs of shocks that differ by a vector in $\ker Q$ produce the same data.
 
 ###
