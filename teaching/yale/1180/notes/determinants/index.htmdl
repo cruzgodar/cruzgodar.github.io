@@ -2,7 +2,7 @@
 
 
 
-Our final topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ (so the domain and codomain are equal), we have the possibility of the matrix (and therefore transformation) being invertible. But there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+Our final topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tells us if it's one-to-one and/or onto. In the particular case when $n = m$ (so the domain and codomain are equal), we have the possibility of the matrix (and therefore transformation) being invertible. But there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed: when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is exactly the same shape as $\vec{v}$, and so the two can be directly compared to one another.
 
 ### def "linear operator"
 
@@ -36,7 +36,7 @@ Our final topic in linear algebra will provide the last large missing piece in t
 
 ###
 
-With minors defined, we can finally get to the definition we've (possibly) been waiting for.
+With minors defined, we can finally get to the main definition of the section.
 
 ### def "determinant"
 
@@ -48,7 +48,7 @@ With minors defined, we can finally get to the definition we've (possibly) been 
 
 ###
 
-Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it at all. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
+Let's be clear: this is a ridiculous definition, and it seems like shouldn't have any use at all. Even the language used to describe it is a bit clunky, and we need to work through some examples to see how to compute it at all. It's one of the most surprising facts in the course that not only is the determinant useful, but it will continue to show up in seemingly unrelated topics.
 
 ### ex "the determinant"
 
@@ -70,7 +70,7 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 		&= ad - bc.
 	$$
 
-	Not only is this a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, but we've seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
+	This a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, and we've also seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
 
 ###
 
@@ -142,65 +142,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 ###
 
-With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
-
-### thm "determinants and row operations"
-
-	Let $A$ be an $n \times n$ matrix.
-
-	1. If $B$ is obtained from $A$ by swapping two rows, then $\det B = -\det A$.
-
-	2. If $B$ is obtained from $A$ by multiplying a row by a constant $c$, then $\det B = c\det A$.
-
-	3. If $B$ is obtained from $A$ by adding a multiple of one row to another, then $\det B = \det A$.
-
-###
-
-There are a few neat connections we can make immediately. First of all, we've seen from the recursive determinant formula that if a matrix $A$ has a single row of all zeros, then we can expand about it to find that $\det A = 0$. On the other hand, a row of all zeros can be scaled by any number $c$ and stay identical, so $\det A = c\det A$ for any number $c$. That's only true when $\det A = 0$, so at the very least, the theorem is consistent with something we already know.
-
-Computing a determinant using the recursive definition is a task that balloons in scope as the size of the matrix grows, and this theorem lets us bypass that quite a bit. Part 3 in particular is the most useful: to begin computing a large determinant, we can use one entry to clear all the others in its column, and then just expand about that column. If we haven't multiplied by any constants or swapped rows, then the determinant of the resulting matrix will be identical, and we've just saved a massive amount of work.
-
-### ex "determinants and row operations"
-
-	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
-
-	### solution
-
-	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
-
-	$$
-		[[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -4, 0, 6, -19 ; 3, 0, -5, -12 ]] & \qquad :: \vec{r_3} \me 3\vec{r_2} ; \vec{r_4} \me \vec{r_2} ::,
-	$$
-
-	and the determinant of this matrix is the same as the original, since all we've done is add multiples of rows to others. Expanding about column 2, we have that the determinant is
-
-	$$
-		-2\det [[ 3, 5, 3 ; -4, 6, -19 ; 3, -5, -12 ]],
-	$$
-
-	and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
-
-	$$
-		[[ 3, 5, 3 ; -12, 18, -57 ; 3, -5, -12 ]] & \qquad \vec{r_2} \te 3
-
-		[[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] & \qquad :: \vec{r_2} \pe 4\vec{r_1} ; \vec{r_3} \me \vec{r_1} ::
-	$$
-
-	We need to be a little careful here: since we multiplied a row by $4$, the determinant of this new matrix will be $4$ times larger than that of the original matrix. On the bright side, this new determinant is as easy as possible to calculate:
-
-	$$
-		\det [[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] &= 3\det [[ 38, -45 ; -10, -15 ]]
-
-		&= 3(38(-15) - (-45)(-10))
-
-		&= -3060.
-	$$
-
-	So the determinant of the original $3 \times 3$ is $\frac{1}{3}(-3060) = -1020$, and finally, the determinant of the $4 \times 4$ is $-2(-1020) = 2040$.
-
-###
-
-Next on the list of connections is invertibility, and here, the result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
+Now we can begin to connect determinants to the other topics we've learned; we'll start with invertibility. The result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
 
 ### thm "determinants and invertibility"
 
@@ -222,7 +164,7 @@ $$
 	[[ 1, 4, 5 ; -4, 2, 0 ]]^T = [[ 1, -4 ; 4, 2 ; 5, 0 ]].
 $$
 
-Transposing a matrix is an operation substantially more complicated than any row operation, and we'll have to wait quite a while before we have the language and tools to understand its effect from a linear transformation perspective. For now, though, we can relate it to the determinant: when we expand a square matrix $A$ about a row to find its determinant, we can expand $A^T$ about that column, and vice versa, to get exactly the same result. Therefore,
+Transposing a matrix is an operation substantially more complicated than any row operation, it's out of the scope of our class to understand its effect from a linear transformation perspective. But we can relate it to the determinant: when we expand a square matrix $A$ about a row to find its determinant, we can expand $A^T$ about that column, and vice versa, to get exactly the same result. Therefore,
 
 ### prop "determinants and transposes"
 
@@ -230,7 +172,7 @@ Transposing a matrix is an operation substantially more complicated than any row
 
 ###
 
-The primary usefulness of this to us currently is that $A^T$ is invertible exactly when $A$ is, and the columns of $A^T$ are the rows of $A$, so we can add a few more items to our ever-growing list of equivalent conditions for a square matrix.
+This result means $A^T$ is invertible exactly when $A$ is, and the columns of $A^T$ are the rows of $A$, so we can add a few more items to our ever-growing list of equivalent conditions for a square matrix.
 
 ### prop "invertibility conditions"
 
@@ -268,7 +210,7 @@ The determinant also interacts nicely with matrix multiplication: it's a multipl
 
 ###
 
-The proof of this theorem is a little out of scope for our class, but the gist is that for invertible matrices $A$ and $B$, we can write both as a product of elementary matrices --- the ones from homework 2 that apply the row operations by multiplication. The way each one changes the determinant of the matrix they act on is by multiplying by their own determinant, and we can build the result up from there. We'll have more to say about the transpose and multiplicativity of the determinant on the homework, but for now, let's look at one final connection with prior material: an interpretation in the language of linear transformations.
+We'll have more to say about the transpose and multiplicativity of the determinant on the homework, but for now, let's look at one final connection with prior material: an interpretation in the language of linear transformations.
 
 ### thm "the determinant as a scaling factor"
 
@@ -276,7 +218,7 @@ The proof of this theorem is a little out of scope for our class, but the gist i
 
 ###
 
-This result definitely needs some examples to explain it, so let's start there.
+This result needs some examples to explain it, so let's start there.
 
 ### ex "the determinant as a scaling factor"
 
@@ -286,7 +228,7 @@ This result definitely needs some examples to explain it, so let's start there.
 		T\left( [[ x ; y ]] \right) = [[ x + y ; 3x - 2y ]].
 	$$
 
-	If $X$ is the solid circle of radius $1$ centered at $(0, 2)$, describe $T(X)$ and find its area.
+	Let $X$ is the solid circle of radius $1$ centered at $(0, 2)$. Describe $T(X)$ and find its area.
 
 	### solution
 
