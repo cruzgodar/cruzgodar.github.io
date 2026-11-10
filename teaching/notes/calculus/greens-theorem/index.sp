@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -586,7 +586,7 @@ It can be a little overwhelming to keep the notions of circulation, flux, curl, 
 
 @canvas{divergence-curl}
 
-Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and purple negative ones. The curl is positive at points about which the field is rotating counterclockwise, negative at points where the rotation is clockwise, and zero where there is no total rotation. Similarly, divergence is positive where the field is expanding, negative where it's being compressed, and zero where its area is remaining constant.
+Use the dropdown to color this vector field by (the $z$-component of) its curl and by its divergence; like with the colored curves through vector fields, green indicates positive values and @color[purple] negative ones. The curl is positive at points about which the field is rotating counterclockwise, negative at points where the rotation is clockwise, and zero where there is no total rotation. Similarly, divergence is positive where the field is expanding, negative where it's being compressed, and zero where its area is remaining constant.
 
 @exc[curl and divergence][[
 

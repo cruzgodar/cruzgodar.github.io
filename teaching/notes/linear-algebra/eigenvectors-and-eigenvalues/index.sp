@@ -1,12 +1,12 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
 
 Before we dive into more linear algebra, I want to take a step back and look at some of its many applications that motivate devoting two terms to its study. Now that we have the terminology of bases, the definition of a linear map $T : V \to W$ couldn't be much simpler: it's a function that splits across addition and scalar multiplication (i.e. $T(c\vec{v_1} + \vec{v_2}) = cT(\vec{v_1}) + T(\vec{v_2})$) that's completely determined by its action on a basis.
 
-With $V = #R#^3$ and $W = #R#^2$, there's the classic example of 3D graphics. *Raster* graphics, the technology underlying most 3D video games, works by modeling 3D shapes as a massive collection of triangles, then projecting each onto the 2D screen by a linear map determined by the position and rotation of the camera. The projection of a 3D triangle is a 2D triangle (this takes a little thought!), and so the result is a collection of triangles in the image plane. We can then test every pixel to see if it's in the interior of a triangle, and color it accordingly if so. At the time of writing, there's no Desmos 3D API I can use to embed a graph directly in the notes, but here's [a small demonstration I put together](https://www.desmos.com/3d/947d6c19bf). The gray lines connecting the vertices of the red triangle in the world to its blue rendered image are projections from the ambient space onto the camera's image plane.
+With $V = #R#^3$ and $W = #R#^2$, there's the classic example of 3D graphics. *Raster* graphics, the technology underlying most 3D video games, works by modeling 3D shapes as a massive collection of triangles, then projecting each onto the 2D screen by a linear map determined by the position and rotation of the camera. The projection of a 3D triangle is a 2D triangle (this takes a little thought!), and so the result is a collection of triangles in the image plane. We can then test every pixel to see if it's in the interior of a triangle, and color it accordingly if so. At the time of writing, there's no Desmos 3D API I can use to embed a graph directly in the notes, but here's [a small demonstration I put together](https://www.desmos.com/3d/947d6c19bf). The gray lines connecting the vertices of the @color[red] triangle in the world to its @color[blue] rendered image are projections from the ambient space onto the camera's image plane.
 
 @exc[3D rendering][[
 
@@ -187,7 +187,7 @@ $$
 	A = [[ 4, -2 ; 1, 1 ]]
 $$
 
-has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and orange ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
+has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the @color[purple] and @color[blue] vectors are $\vec{v_1}$ and $\vec{v_2}$, and the @color[red] and @color[orange] ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
 
 @desmos{areaScaling}
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -68,7 +68,7 @@ We'll have a lot more to say about particular periodic functions in the next sec
 
 	@desmos{carEngine}
 
-	Since the function is periodic with a period equal to the width of this interval, we can extend it to produce a graph of the entire function (graphed in blue). To address the physical meaning, this is a car engine whose noise level is repeating 600 times a second --- that's reasonable for the rate at which an engine rotates, particularly at idle! It's fair to say that this function is periodic because the physical state of the engine is periodic.
+	Since the function is periodic with a period equal to the width of this interval, we can extend it to produce a graph of the entire function (graphed in @color[blue]). To address the physical meaning, this is a car engine whose noise level is repeating 600 times a second --- that's reasonable for the rate at which an engine rotates, particularly at idle! It's fair to say that this function is periodic because the physical state of the engine is periodic.
 
 ]]
 
@@ -130,7 +130,7 @@ While this theorem applies to all triangles, right triangles in particular have 
 
 	@desmos{pythagoreanTheorem}
 
-	Here, we have a right triangle with legs $a$ and $b$ (colored red and blue, respectively), and a purple hypotenuse $c$. By drawing three more rotated copies of the triangle, we can surround the purple square. Its side length is $c$, so its area must be $c^2$. But if we rearrange the triangles (drag the $s$ slider in the expressions list) then we can instead fill exactly the same area with two smaller squares with areas $a^2$ and $b^2$, respectively. Since both versions of the diagram have four copies of the triangle, the non-triangle area must be the same: in other words, $a^2 + b^2 = c^2$.
+	Here, we have a right triangle with legs $a$ and $b$ (colored @color[red] and @color[blue], respectively), and a @color[purple] hypotenuse $c$. By drawing three more rotated copies of the triangle, we can surround the @color[purple] square. Its side length is $c$, so its area must be $c^2$. But if we rearrange the triangles (drag the $s$ slider in the expressions list) then we can instead fill exactly the same area with two smaller squares with areas $a^2$ and $b^2$, respectively. Since both versions of the diagram have four copies of the triangle, the non-triangle area must be the same: in other words, $a^2 + b^2 = c^2$.
 
 ]]
 
@@ -146,7 +146,7 @@ One last geometric notion we'll need to recall is that of **similar triangles**,
 
 @desmos{similarTriangles}
 
-In this graph, the purple and blue triangles are similar, since we can rotate one $180^\circ$ and scale it to match the other. Doing that makes the two horizontal sides lie on top of one another, and so they're corresponding sides. Before rotating and scaling, the purple side is twice as long as the blue one, and so every other purple side must be exactly twice as long as its corresponding blue side.
+In this graph, the @color[purple] and @color[blue] triangles are similar, since we can rotate one $180^\circ$ and scale it to match the other. Doing that makes the two horizontal sides lie on top of one another, and so they're corresponding sides. Before rotating and scaling, the @color[purple] side is twice as long as the @color[blue] one, and so every other @color[purple] side must be exactly twice as long as its corresponding @color[blue] side.
 
 @exc[similar triangles][[
 
@@ -174,7 +174,7 @@ We'll have much, much more to say about the unit circle in the next section, but
 
 ]]
 
-These types of questions let us convert $x$-coordinates to $y$-coordinates and vice versa, but it doesn't let us connect the points with the angles they make. For example, the purple point in the previous graph makes an angle of $30^\circ$ with the positive $x$-axis, and its $y$-coordinate is $\frac{1}{2}$, but there isn't an obvious way to go back and forth. All sorts of physical phenomena can be modeled at least in part with circles and angles, and so having a way to convert between the angle of a point and its $x$- and $y$-coordinates would be useful. Let's define two of our core functions now that will help us do just that, and then explore a little bit about them.
+These types of questions let us convert $x$-coordinates to $y$-coordinates and vice versa, but it doesn't let us connect the points with the angles they make. For example, the @color[purple] point in the previous graph makes an angle of $30^\circ$ with the positive $x$-axis, and its $y$-coordinate is $\frac{1}{2}$, but there isn't an obvious way to go back and forth. All sorts of physical phenomena can be modeled at least in part with circles and angles, and so having a way to convert between the angle of a point and its $x$- and $y$-coordinates would be useful. Let's define two of our core functions now that will help us do just that, and then explore a little bit about them.
 
 @def[cosine and sine][[
 

@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, gap, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, gap, images, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -18,7 +18,7 @@ To figure out how to compute that angle with the minimum possible notational bur
 
 @desmos{dotProductMotivation}
 
-Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
+Here, the @color[red] vector is $\vec{v}$, the @color[blue] one is $\vec{w}$, and the @color[purple] one is $\vec{v} - \vec{w}$. Now
 
 $$
 	\vec{v} - \vec{w} &= \left( a - c \right)\vec{i} + \left( b - d \right)\vec{j}
@@ -291,7 +291,7 @@ It might seem pretty strange that we're outputting a vector from this function! 
 
 @desmos{vectorValuedLine}
 
-Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
+Here, the @color[blue] vector is $\vec{r_0}$, the @color[red] one is $\vec{v}$, and the @color[orange] vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
 
 
 @exc[lines in $#R#^3$][[

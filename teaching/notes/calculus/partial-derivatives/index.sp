@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -207,7 +207,7 @@ $$
 
 Making this intuitive explanation precise means introducing limits instead of these approximations, and at some point changing the order of the limits from $x$ first to $y$ first, which is allowed exactly when the conditions of Clairaut's Theorem are satisfied.
 
-This approximation is useful for geometric intuition, though. Drawing the four relevant points, we can produce a quadrilateral, and the two expressions are the change in slope between same-colored lines (red for $f_{xy}$ and blue for $f_{yx}$).
+This approximation is useful for geometric intuition, though. Drawing the four relevant points, we can produce a quadrilateral, and the two expressions are the change in slope between same-colored lines (@color[red] for $f_{xy}$ and @color[blue] for $f_{yx}$).
 
 @desmos{clairautsTheorem}
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, gap, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -105,13 +105,13 @@ $$
 
 @desmos{distance}
 
-Once again, instead of trying to reprove something like the Pythagorean Theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the blue point $(x_1, y_1, z_1)$ in the graph above to the red point $(x_2, y_2, z_2)$, we can first find the distance to the purple point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
+Once again, instead of trying to reprove something like the Pythagorean Theorem in 3D, we're best off just using it verbatim to extend the distance result to $#R#^3$. To travel from the @color[blue] point $(x_1, y_1, z_1)$ in the graph above to the @color[red] point $(x_2, y_2, z_2)$, we can first find the distance to the @color[purple] point $(x_2, y_2, z_1)$. That's contained in the plane $z = z_1$, and so the distance formula from $#R#^2$ applies: the distance is
 
 $$
 	d' = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}.
 $$
 
-Now the remainder of the distance is the vertical line from the purple point to the red one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean Theorem tells us that its hypotenuse has length
+Now the remainder of the distance is the vertical line from the @color[purple] point to the @color[red] one, and that distance is just $|z_2 - z_1|$. The resulting gray triangle that we form is a right triangle, and the Pythagorean Theorem tells us that its hypotenuse has length
 
 $$
 	d = \sqrt{d^2 + |z_2 - z_1|^2} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}.
@@ -157,11 +157,11 @@ A natural way to think about points in $#R#^2$ or $#R#^3$ is as locations: a poi
 
 For example, the displacement $\vec{v}$ from Los Angeles to Seattle is a vector, but that vector doesn't have anything to do with Los Angeles or Seattle specifically. In fact, $\vec{v}$ is *also* equal to the displacement from Seattle to somewhere in the Yukon Territories (when treating those locations as being on a 2D map, at least).
 
-We usually draw vectors as arrows, which indicate both their magnitude and direction. As we just saw, though, the tail of the arrow doesn't affect the value of the vector, so in the below example, dragging the red point never changes the vector; only dragging the blue point does.
+We usually draw vectors as arrows, which indicate both their magnitude and direction. As we just saw, though, the tail of the arrow doesn't affect the value of the vector, so in the below example, dragging the @color[red] point never changes the vector; only dragging the @color[blue] point does.
 
 @desmos{vectors}
 
-While vectors are fundamentally different from points, there's definitely a close similarity between them. In that previous graph, every position of the blue point corresponds to a vector, and vice versa. Specifically, the vector can be determined either by a magnitude and direction, or by an amount to move parallel to the $x$-axis, then an amount to move parallel to the $y$-axis (the orange dashed lines in the graph). In fact, if we place the red point at the origin, then the blue point's coordinates *tell* us those amounts. This is very often an easier way to work with vectors, especially when we need a more algebraic presentation of them, so let's write down some notation for it.
+While vectors are fundamentally different from points, there's definitely a close similarity between them. In that previous graph, every position of the @color[blue] point corresponds to a vector, and vice versa. Specifically, the vector can be determined either by a magnitude and direction, or by an amount to move parallel to the $x$-axis, then an amount to move parallel to the $y$-axis (the @color[orange] dashed lines in the graph). In fact, if we place the @color[red] point at the origin, then the @color[blue] point's coordinates *tell* us those amounts. This is very often an easier way to work with vectors, especially when we need a more algebraic presentation of them, so let's write down some notation for it.
 
 @def[components of a vector and the zero vector][[
 
@@ -243,7 +243,7 @@ Going back to our flight example, the notion of vectors as displacements works n
 
 @desmos{vectorAddition}
 
-Here, the sum of the red and blue vectors is the purple one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
+Here, the sum of the @color[red] and @color[blue] vectors is the @color[purple] one --- and notice that we can add the vectors in either order to get the same result! That's a concise visual justification that **vector addition is commutative**.
 
 Vector addition also plays nicely with components. If $\vec{v} = \left< v_1, v_2, v_3 \right>$ and $\vec{w} = \left< w_1, w_2, w_3 \right>$, then the combination $\vec{v} + \vec{w}$ moves a total of $v_1 + w_1$ in the $x$-direction and so on, meaning
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -184,7 +184,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 
 @ex[signed area][[
 	
-	$$\int_{-2}^2 x^3\,\d x = 0$$, since the areas above (red) and below (blue) the $x$-axis are equal.
+	$$\int_{-2}^2 x^3\,\d x = 0$$, since the areas above (@color[red]) and below (@color[blue]) the $x$-axis are equal.
 	
 	@desmos{signedArea}
 	

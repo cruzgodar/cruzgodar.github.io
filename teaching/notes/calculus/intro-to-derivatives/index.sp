@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -118,7 +118,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 		
 		@desmos{derivativeExample}
 		
-		Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
+		Where the @color[blue] function is negative, the slope of the @color[purple] function is negative, and vice versa. Where the @color[blue] function is zero, the slope of the @color[purple] function is flat.
 	]]
 ]]
 
@@ -138,7 +138,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 	@solution[[
 		
-		Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (@clickTap[click][tap] the circle next to $f'(x)$ to see it).
+		Whenever the @color[purple] graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the @color[blue] graph (@clickTap[click][tap] the circle next to $f'(x)$ to see it).
 	]]	
 ]]
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -14,7 +14,7 @@ The slope of a line is its rise over its run, and if the run is $1$, that means 
 
 @desmos{secantLines}
 
-Let's look at that blue line: if we draw it to pass through the two points we're looking at on the purple curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is $-1$, since $f(0) = 2 - 0^2 = 2$ and $f(1) = 2 - 1^2 = 1$. Therefore, the slope of that blue line is $\frac{-1}{1} = -1$. If $f$ is giving the position of an object after $t$ seconds (say, a falling ball), then this line's slope has an important name:
+Let's look at that @color[blue] line: if we draw it to pass through the two points we're looking at on the @color[purple] curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is $-1$, since $f(0) = 2 - 0^2 = 2$ and $f(1) = 2 - 1^2 = 1$. Therefore, the slope of that @color[blue] line is $\frac{-1}{1} = -1$. If $f$ is giving the position of an object after $t$ seconds (say, a falling ball), then this line's slope has an important name:
 
 @def[average velocity][[
 

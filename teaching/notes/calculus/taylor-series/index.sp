@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -136,7 +136,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 			p_5 &= x - \frac{x^3}{3!} + \frac{x^5}{5!}.
 		$$
 		
-		Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in purple is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
+		Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in @color[purple] is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
 		
 		@desmos{taylorSeries}
 	]]
@@ -540,7 +540,7 @@ There's one final question before our basic theory of Taylor series is complete:
 		
 		@desmos{taylorSeriesComparison}
 		
-		Here, the blue and red functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the red function predicts a value of $-.544025$, the blue function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
+		Here, the @color[blue] and @color[red] functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the @color[red] function predicts a value of $-.544025$, the @color[blue] function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
 	]]
 ]]
 

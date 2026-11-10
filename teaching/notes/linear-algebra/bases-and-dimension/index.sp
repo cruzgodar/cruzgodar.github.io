@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, clickTap, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -128,7 +128,7 @@ Let's dig into that coordinate system idea a little more. In $#R#^2$, the standa
 
 @desmos{coordinateSystems}
 
-Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
+Here, the @color[purple] grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The @color[blue] point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
 
 @exc[another basis for $#R#^n$][[
 	

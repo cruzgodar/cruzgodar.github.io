@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -30,7 +30,7 @@ has the following vector field plot.
 
 @desmos{vectorField}
 
-Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
+Solutions to the system are curves that follow the field at every point, like the @color[blue] curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
 
 @canvas{vector-field}
 

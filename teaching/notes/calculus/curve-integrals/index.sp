@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -170,7 +170,7 @@ Let's say two river currents meet each other head-on, making the current flow ou
 
 @meldedDesmos{swimmingInCurrent}
 
-The path we're traveling along is the straight line from the blue point to the red point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impedes our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
+The path we're traveling along is the straight line from the @color[blue] point to the @color[red] point, and it doesn't look like the most pleasant swim --- we start off with the current strongly against us, and even when that lets up toward the end, there's some side-to-side force that might make things difficult. The word *forward* in the question is doing a lot of work, though: since we're always moving vertically in this picture, we're being asked only how much the current impedes our vertical motion, and so we can ignore any horizontal component of the field. With that in mind, we'll parameterize the straight line, as is becoming typical, and integrate the function given by the $y$-component of the field $\vec{F}$ over that path.
 
 Let's parameterize the line $L$ by
 
@@ -196,7 +196,7 @@ $$
 	&= -2\sqrt{3}.
 $$
 
-It's reasonable that the result is negative --- since the current was working against us nearly the entire time, that $y$-component was negative for most of the integral. On the graph, this is indicated by the color of the path: purple where the current is hindering our swimming, green where it's helping, and white where it's orthogonal and we're considering it to have no effect.
+It's reasonable that the result is negative --- since the current was working against us nearly the entire time, that $y$-component was negative for most of the integral. On the graph, this is indicated by the color of the path: @color[purple] where the current is hindering our swimming, @color[green] where it's helping, and white where it's orthogonal and we're considering it to have no effect.
 
 This example was good to ease ourselves into the notion of integrating through a vector field, but things become a little more complicated when we don't take so simple of a path. Let's now consider swimming along the other path in the picture: the circular arc $C$. How can we compute the amount the current is helping us --- that is, the amount it is flowing in our direction --- at a given point along the path? Well, it matters what "our direction" is, and that's a changing quantity. The direction in which we're traveling in while on a path $\vec{r}(t)$ is given by $\vec{r}'(t)$, and so we want to find the component of $\vec{F}(x, y)$, where $x$ and $y$ are given by $\vec{r}(t)$, in the direction of $\vec{r}'(t)$. That's a projection, and so we could compute
 
@@ -304,7 +304,7 @@ $$
 	&= -2\sqrt{3}
 $$
 
-That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some red flags. For all their fancy presentation, circulation integrals are just regular curve integrals of a particular dot product, and we just discussed how curve integrals are path-dependent. The only thing that's specific to a circulation integral is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
+That's the same result we got from the straight-line path! Rather unsurprisingly, we'll soon be able to explain why this was no coincidence, but the very idea might well raise some @color[red] flags. For all their fancy presentation, circulation integrals are just regular curve integrals of a particular dot product, and we just discussed how curve integrals are path-dependent. The only thing that's specific to a circulation integral is the function we integrate, not the path we take, and so if we're going to conclude that some of these integrals are path-independent, *it will have to be a property of the integrand*. We'll get there momentarily, but we're in desperate need of practice right now.
 
 @exc[circulation][[
 
@@ -372,7 +372,7 @@ That's the same result we got from the straight-line path! Rather unsurprisingly
 			&= 6.
 		$$
 
-		Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the purple at the start and faintly at the end), combined with a large stretch of help in the middle.
+		Not the same result! This seems fairly reasonable based on the graph, too: along $L$, the field is either barely present at all or slightly helping our motion (the faint green tint), whereas $P$ experiences a moderate amount of hindrance (the @color[purple] at the start and faintly at the end), combined with a large stretch of help in the middle.
 	]]
 ]]
 

@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -78,7 +78,7 @@ Again, this is exactly the usual distance between points in $#R#^n$.
 
 @desmos{vectorSubtraction}
 
-Here, the purple vector is $\vec{v} = [[ 3 ; 2 ]]$, the blue one is $\vec{w} = [[ -2 ; 1 ]]$, and the distance between them is the magnitude of the red vector, which is
+Here, the @color[purple] vector is $\vec{v} = [[ 3 ; 2 ]]$, the @color[blue] one is $\vec{w} = [[ -2 ; 1 ]]$, and the distance between them is the magnitude of the @color[red] vector, which is
 
 $$
 	\vec{v} - \vec{w} = [[ 3 - (-2) ; 2 - 1 ]] = [[ 5 ; 1 ]].
@@ -382,7 +382,7 @@ Intuitively, every step of the Gram-Schmidt process begins with $\vec{x_i}$ and 
 
 @desmos{gramSchmidt}
 
-In this Desmos graph, the purple and blue vectors are
+In this Desmos graph, the @color[purple] and @color[blue] vectors are
 
 $$
 	\vec{x_1} = [[ 3 ; 2 ]], \quad \vec{x_2} = [[ -3 ; 1 ]],
@@ -394,7 +394,7 @@ $$
 	\frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1} &= -\frac{7}{13}[[ 3 ; 2 ]],
 $$
 
-which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in red. The final vector $\vec{y_2}$ is in orange, drawn both as the geometric subtraction between the blue and red vectors, and again from the origin to highlight how it's orthogonal to the purple vector $\vec{x_1} = \vec{y_1}$. Notice how the red vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
+which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in @color[red]. The final vector $\vec{y_2}$ is in @color[orange], drawn both as the geometric subtraction between the @color[blue] and @color[red] vectors, and again from the origin to highlight how it's orthogonal to the @color[purple] vector $\vec{x_1} = \vec{y_1}$. Notice how the @color[red] vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
 
 @ex[the Gram-Schmidt process][[
 
@@ -466,13 +466,13 @@ $$
 	\vec{v} = c_1 \vec{e_1} + c_2 \vec{e_2} + c_3 \vec{e_3},
 $$
 
-we can think about the vector $c_1 \vec{e_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{e_1} + c_3 \vec{e_3}$ is the vector in $\span\left\{ \vec{e_1}, \vec{e_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. [This 3D Desmos graph](https://www.desmos.com/3d/d1f12d74a5) shows the red vector
+we can think about the vector $c_1 \vec{e_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{e_1} + c_3 \vec{e_3}$ is the vector in $\span\left\{ \vec{e_1}, \vec{e_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. [This 3D Desmos graph](https://www.desmos.com/3d/d1f12d74a5) shows the @color[red] vector
 
 $$
 	\vec{v} = [[ 2 ; 1 ; 3 ]] \in #R#^3
 $$
 
-and the closest vector in $\span\left\{ \vec{e_1}, \vec{e_2} \right\}$, colored blue. Toggling on the surface $d(x, y)$ shows a 3D plot of the distances to the red vector, where the height of the surface at $(x, y)$ is the distance to $\vec{v}$ from the vector
+and the closest vector in $\span\left\{ \vec{e_1}, \vec{e_2} \right\}$, colored @color[blue]. Toggling on the surface $d(x, y)$ shows a 3D plot of the distances to the @color[red] vector, where the height of the surface at $(x, y)$ is the distance to $\vec{v}$ from the vector
 
 $$
 	\vec{w} = [[ x ; y ; 0 ]].

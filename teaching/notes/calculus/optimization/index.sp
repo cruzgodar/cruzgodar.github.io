@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, clickTap, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -132,7 +132,7 @@ This is a fine start, but we really ought to know whether critical points are lo
 	
 @desmos{concavity}
 
-Here, the red parts of the graph are **concave up**, and the blue are **concave down**, corresponding to the places where $f''(x)$ is positive and negative, respectively. @clickTap[Click][Tap] the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
+Here, the @color[red] parts of the graph are **concave up**, and the @color[blue] are **concave down**, corresponding to the places where $f''(x)$ is positive and negative, respectively. @clickTap[Click][Tap] the empty circle next to $f''(x)$ in the Desmos shelf to plot it.
 
 Knowing the concavity of the graph helps us classify critical points: intuitively, if a graph is concave up at a critical point, then we'd expect that to be a local minimum, and vice versa. This intuition bears out in practice!
 

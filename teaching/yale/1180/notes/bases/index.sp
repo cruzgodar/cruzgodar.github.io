@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, gap, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -64,11 +64,11 @@ As we saw back at the beginning of the course, that's the equation of a line! Ge
 
 @desmos{solutionLine}
 
-This time around, notice that none of the equations in the system was a multiple of any other. Instead, the issue was two of them could be combined to form the third; geometrically, there is a sum of the red and blue planes' normal vectors that equaled the purple plane's.
+This time around, notice that none of the equations in the system was a multiple of any other. Instead, the issue was two of them could be combined to form the third; geometrically, there is a sum of the @color[red] and @color[blue] planes' normal vectors that equaled the @color[purple] plane's.
 
 @desmos{solutionLineNormalVectors}
 
-That purple plane intersects the other two in a line *exactly* when its normal vector can be written as a sum of multiplies of the other two planes' normal vectors. Let's write down a name for these ideas, and then dig into them further.
+That @color[purple] plane intersects the other two in a line *exactly* when its normal vector can be written as a sum of multiplies of the other two planes' normal vectors. Let's write down a name for these ideas, and then dig into them further.
 
 @def[linear combination][[
 
@@ -355,7 +355,7 @@ Let's dig into that coordinate system idea a little more. In $#R#^2$, the standa
 
 @desmos{coordinateSystems}
 
-Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
+Here, the @color[purple] grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The @color[blue] point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
 
 @exc[another basis for $#R#^n$][[
 	

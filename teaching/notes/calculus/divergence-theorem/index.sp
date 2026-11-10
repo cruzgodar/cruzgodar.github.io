@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -218,7 +218,7 @@ If $S$ weren't closed, though, we could still make the theorem work; let's see t
 
 	Let's call that surface $S$. The flux integral would be extraordinary difficult to compute, if not impossible, and the surface isn't closed, so we can't apply the Divergence Theorem. Stokes' Theorem also isn't of much help: the divergence of $\vec{F}$ is $\Gbullet \vec{F} = 3 + 1 + 0 = 4$, so $\vec{F}$ isn't incompressible, and that means we can't freely change the surface while keeping the boundary the same. However, we can do the next-best thing. If we can patch up the hole in the bottom of the sphere, we'll have a closed surface over which we can use the Divergence Theorem; we'll just need to handle the orientation carefully, as always.
 
-	The boundary of $S$ is the blue unit circle plotted above, oriented counterclockwise when viewed from above. To patch the hole and form a closed surface, we can add in the solid unit disk --- since its normal vectors are all vertical and the $z$-component of $\vec{F}$ is particularly simple, that's a great choice. Let's call that disk $D$; since the entire surface needs to have one coherent orientation, $D$ must be oriented *downward* to match the orientation of $S$. If $R$ is the solid hemisphere that $S$ and $D$ jointly enclose, then the Divergence Theorem tells us
+	The boundary of $S$ is the @color[blue] unit circle plotted above, oriented counterclockwise when viewed from above. To patch the hole and form a closed surface, we can add in the solid unit disk --- since its normal vectors are all vertical and the $z$-component of $\vec{F}$ is particularly simple, that's a great choice. Let's call that disk $D$; since the entire surface needs to have one coherent orientation, $D$ must be oriented *downward* to match the orientation of $S$. If $R$ is the solid hemisphere that $S$ and $D$ jointly enclose, then the Divergence Theorem tells us
 
 	$$
 		\iiint_R \Gbullet \vec{F}\,\d V &= \oiint_{\p R} \vec{F} \bullet \d\vec{\sigma}

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -224,15 +224,15 @@ In addition to these new functions, there are a number of relationships between 
 
 	@desmos{sumFormulas}
 
-	Labeling every angle and side length in this diagram would make it nearly unreadable, so let's discuss it one bit at a time. The purple triangle has an angle of $\alpha$ at the origin and the blue triangle has an angle of $\beta$. The orange triangle then has an angle of $\alpha + \beta$ at the origin, and its hypotenuse has length $1$, so the right and bottom legs of the orange triangle have lengths $\sin(\alpha + \beta)$ and $\cos(\alpha + \beta)$, respectively. Since the blue triangle *also* has hypotenuse $1$, its rightmost leg has length $\sin(\beta)$ and its bottommost one has length $\cos(\beta)$. On the other hand, the purple triangle's hypotenuse is the blue triangle's bottom leg, and so it has length $\cos(\beta)$. Therefore, the purple triangle's right and bottom legs have lengths $\cos(\beta)\sin(\alpha)$ and $\cos(\beta)\cos(\alpha)$.
+	Labeling every angle and side length in this diagram would make it nearly unreadable, so let's discuss it one bit at a time. The @color[purple] triangle has an angle of $\alpha$ at the origin and the @color[blue] triangle has an angle of $\beta$. The @color[orange] triangle then has an angle of $\alpha + \beta$ at the origin, and its hypotenuse has length $1$, so the right and bottom legs of the @color[orange] triangle have lengths $\sin(\alpha + \beta)$ and $\cos(\alpha + \beta)$, respectively. Since the @color[blue] triangle *also* has hypotenuse $1$, its rightmost leg has length $\sin(\beta)$ and its bottommost one has length $\cos(\beta)$. On the other hand, the @color[purple] triangle's hypotenuse is the @color[blue] triangle's bottom leg, and so it has length $\cos(\beta)$. Therefore, the @color[purple] triangle's right and bottom legs have lengths $\cos(\beta)\sin(\alpha)$ and $\cos(\beta)\cos(\alpha)$.
 
-	Now the red triangle has a bottom angle *also* equal to $\alpha$: the top angle of the purple triangle is $\frac{\pi}{2} - \alpha$, and together with the right angle of the blue triangle and the bottom angle of the red one, it sums to $\pi$. Just like with the purple triangle, the red one has a hypotenuse of $\sin(\beta)$, so the top leg of the red triangle has length $\sin(\beta)\sin(\alpha)$ and the right leg has length $\sin(\beta)\cos(\alpha)$. Putting it all together, the right leg of the orange triangle is the sum of the right legs of the purple and red triangles, so
+	Now the @color[red] triangle has a bottom angle *also* equal to $\alpha$: the top angle of the @color[purple] triangle is $\frac{\pi}{2} - \alpha$, and together with the right angle of the @color[blue] triangle and the bottom angle of the @color[red] one, it sums to $\pi$. Just like with the @color[purple] triangle, the @color[red] one has a hypotenuse of $\sin(\beta)$, so the top leg of the @color[red] triangle has length $\sin(\beta)\sin(\alpha)$ and the right leg has length $\sin(\beta)\cos(\alpha)$. Putting it all together, the right leg of the @color[orange] triangle is the sum of the right legs of the @color[purple] and @color[red] triangles, so
 
 	$$
 		\sin(\alpha + \beta) &= \sin(\alpha)\cos(\beta) + \cos(\alpha)\sin(\beta).
 	$$
 
-	Similarly, the bottom leg of the orange triangle is the bottom leg of the purple one minus the top leg of the red one, so
+	Similarly, the bottom leg of the @color[orange] triangle is the bottom leg of the @color[purple] one minus the top leg of the @color[red] one, so
 
 	$$
 		\cos(\alpha + \beta) &= \cos(\alpha)\cos(\beta) - \sin(\alpha)\sin(\beta).

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, images, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, imageLinks, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -130,7 +130,7 @@ This map of Cone Peak in the Big Sur wilderness in California conveys the incred
 
 @exc[topo maps][[
 
-	1. Using the topo map, what do you think the area around the blue river looks like near the summit? What about the area around the river near the bottom of the map?
+	1. Using the topo map, what do you think the area around the @color[blue] river looks like near the summit? What about the area around the river near the bottom of the map?
 
 	2. Pick any point on the map. In which direction do you need to travel to make your path as steep as possible? How do you know?
 

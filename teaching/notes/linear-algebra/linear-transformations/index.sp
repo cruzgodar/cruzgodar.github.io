@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -42,7 +42,7 @@ so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a 
 
 @desmos{1dLinearTransformation}
 
-Here, the input vector (i.e. the number $1$) is colored purple, and the output vector colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
+Here, the input vector (i.e. the number $1$) is colored @color[purple], and the output vector colored @color[blue]. The value of $a$ is given by the @color[red] point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
 
 When we're not confined to a single input and output variable, linear transformations become much more interesting. Let's take a linear map $T : #R#^2 \to #R#^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
 
@@ -60,7 +60,7 @@ So as soon as we know where $T$ sends $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, finding w
 
 @desmos{2dLinearTransformation}
 
-There's a lot going on in this graph, so let's go through it carefully. The red and blue vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
+There's a lot going on in this graph, so let's go through it carefully. The @color[red] and @color[blue] vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
 
 $$
 	T \left( [[ 1 ; 0 ]] \right) &= [[ a_{11} ; a_{21} ]]
@@ -68,7 +68,7 @@ $$
 	T \left( [[ 0 ; 1 ]] \right) &= [[ a_{12} ; a_{22} ]].
 $$
 
-As we just figured out, the entire behavior of $T$ is determined once those four values are chosen. The draggable purple vector $[[ x_1 ; x_2 ]]$ is fed into $T$, and the output is the non-draggable purple vector. To make this all a lot more concrete, let's work through an example.
+As we just figured out, the entire behavior of $T$ is determined once those four values are chosen. The draggable @color[purple] vector $[[ x_1 ; x_2 ]]$ is fed into $T$, and the output is the non-draggable @color[purple] vector. To make this all a lot more concrete, let's work through an example.
 
 @ex[linear transformation][[
 
@@ -94,7 +94,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 		&= [[ 3 ; 1 ]].
 	$$
 
-	In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the purple point to $(3, 4)$ to check!
+	In the previous graph, setting $a_{11} = 1$, $a_{21} = 3$, $a_{12} = 0$, and $a_{22} = -2$ results in a linear map $T$ that sends $[[ 3 ; 4 ]]$ to $[[ 3 ; 1 ]]$. Drag the @color[purple] point to $(3, 4)$ to check!
 
 ]]
 
@@ -156,7 +156,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 In so many symbols, sending a vector $[[ x_1 ; x_2 ]]$ through $T$ results in a linear combination of $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. In fact, that's what it means for $T$ to be a linear map in the first place.
 
-Let's fully work the $2 \times 2$ case through in general. We've already given names to all three relevant vectors: the results of $T$ applied to the two unit coordinate vectors, and the generic purple input vector. Applying $T$ to it, we have
+Let's fully work the $2 \times 2$ case through in general. We've already given names to all three relevant vectors: the results of $T$ applied to the two unit coordinate vectors, and the generic @color[purple] input vector. Applying $T$ to it, we have
 
 $$
 	T \left( [[ x_1 ; x_2 ]] \right) &= x_1 T \left( [[ 1 ; 0 ]] \right) + x_2 T \left( [[ 0 ; 1 ]] \right)

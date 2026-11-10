@@ -552,6 +552,15 @@ export async function setDistinguishedColors()
 		element.style.color = black;
 		element.style.fontWeight = 900;
 	}
+
+	const green = "#32cc32";
+
+	for (const element of document.body.querySelectorAll(
+		".distinguished-color-text.green"
+	)) {
+		element.style.color = green;
+		element.style.fontWeight = 900;
+	}
 }
 
 

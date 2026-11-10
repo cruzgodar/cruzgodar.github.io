@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -272,7 +272,7 @@ $$
 	\end{array}
 $$
 
-To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients' subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. light blue) diagonal is
+To extract the coefficient of $x^n$ in $fg$, we need to sum the $n$th diagonal. Now all of the terms $a_n x^n$ and $b_n x^n$ have the convenient property that their coefficients' subscripts match the exponent on $x$, and multiplying two terms together makes the exponents add together. Therefore, the terms in the $n$th diagonal of our infinite table are the products of terms whose subscripts add to $n$. For instance, the sum of the $n = 3$ (i.e. light @color[blue]) diagonal is
 
 $$
 	(a_0 b_3 + a_1 b_2 + a_2 b_1 + a_3 b_0) x^3,

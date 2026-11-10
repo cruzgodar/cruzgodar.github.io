@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, images, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, imageLinks, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -72,7 +72,7 @@ This process is called **Newton's method**, named after the same Newton that dis
 		
 		After only three iterations, this is strikingly close to the actual value of $\sqrt{2} = 1.41422...$.
 		
-		Here's what this process actually looks like --- drag the blue point to change the initial guess.
+		Here's what this process actually looks like --- drag the @color[blue] point to change the initial guess.
 		
 		@desmos{newtonsMethod}
 		

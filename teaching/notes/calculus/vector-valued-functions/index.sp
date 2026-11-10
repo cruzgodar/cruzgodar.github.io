@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -57,7 +57,7 @@ One place vector-valued functions arise is in the intersection of two surfaces -
 		\left( -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t) \right).
 	$$
 
-	This is effectively the shadow that the red circle casts on the $xy$-plane. To lift it up to where it lives in $#R#^3$, we just need to put back in the $z$-coordinate, which is $x + 4$:
+	This is effectively the shadow that the @color[red] circle casts on the $xy$-plane. To lift it up to where it lives in $#R#^3$, we just need to put back in the $z$-coordinate, which is $x + 4$:
 
 	$$
 		\vec{r}(t) = \left< -2 + \frac{1}{\sqrt{2}} \cos(t),\ \sin(t),\ 2 + \frac{1}{\sqrt{2}} \cos(t) \right>.
@@ -249,7 +249,7 @@ We can use our newfound ability to differentiate position vectors to compute the
 
 @desmos{arcLength}
 
-Here, we can see the position vector in blue and the derivative vector in red. By turning on the points in the Desmos sidebar and increasing $a$, we can see a successive approximation of arc length. At each red point, we take a tangent line to the graph, scaled down so that the total amount the parameter moves across those lines remains constant. For a given number of lines $n$, a line segment tangent to the point $p$ has a tangent line of $\vec{l}(t) = \vec{r}(p) + t\vec{r}'(p)$. If we're trying to compute the arc length of $\vec{r}(t)$ between $t = a$ and $t = b$, then each of these line segments allows $t$ to move a total of $\frac{b - a}{n}$, the resulting length of the line segment is given by the distance formula, measuring the length of the vector from the start of the line segment to the end. The denominators of $2n$ are due to the line segment being centered at $\vec{r}(p)$: $t$ can only move half of the total amount in each direction.
+Here, we can see the position vector in @color[blue] and the derivative vector in @color[red]. By turning on the points in the Desmos sidebar and increasing $a$, we can see a successive approximation of arc length. At each @color[red] point, we take a tangent line to the graph, scaled down so that the total amount the parameter moves across those lines remains constant. For a given number of lines $n$, a line segment tangent to the point $p$ has a tangent line of $\vec{l}(t) = \vec{r}(p) + t\vec{r}'(p)$. If we're trying to compute the arc length of $\vec{r}(t)$ between $t = a$ and $t = b$, then each of these line segments allows $t$ to move a total of $\frac{b - a}{n}$, the resulting length of the line segment is given by the distance formula, measuring the length of the vector from the start of the line segment to the end. The denominators of $2n$ are due to the line segment being centered at $\vec{r}(p)$: $t$ can only move half of the total amount in each direction.
 
 $$
 	\left| \left| \left( \vec{r}(p) + \frac{b - a}{2n}\vec{r}'(p) \right) - \left( \vec{r}(p) - \frac{b - a}{2n}\vec{r}'(p) \right) \right| \right| &= \left| \left| \frac{b - a}{n}\vec{r}'(p) \right| \right|

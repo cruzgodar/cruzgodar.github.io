@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, cor, def, desmos, ex, exc, image, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, lem, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -18,7 +18,7 @@ To figure out how to compute that angle with the minimum possible notational bur
 
 @desmos{dotProductMotivation}
 
-Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
+Here, the @color[red] vector is $\vec{v}$, the @color[blue] one is $\vec{w}$, and the @color[purple] one is $\vec{v} - \vec{w}$. Now
 
 $$
 	\vec{v} - \vec{w} &= \left( a - c \right)\vec{i} + \left( b - d \right)\vec{j}
@@ -164,7 +164,7 @@ Sometimes, we might find ourselves interested in the (minimum) distance from a p
 
 @desmos{distanceToPlane}
 
-Here, the orange vector $\vec{n}$ is the gray plane's normal vector, and the red vector is the shortest path from the orange point to the plane. To find that red vector, we can start with any other vector from the plane to the point, like the purple one --- then the three of them form a right triangle, where the third side is the path in the plane from the red vector to the purple one (here, colored blue). That blue vector is necessarily orthogonal to the red one, since it stays in the gray plane by definition, and so we've effectively decomposed the purple vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
+Here, the @color[orange] vector $\vec{n}$ is the gray plane's normal vector, and the @color[red] vector is the shortest path from the @color[orange] point to the plane. To find that @color[red] vector, we can start with any other vector from the plane to the point, like the @color[purple] one --- then the three of them form a right triangle, where the third side is the path in the plane from the @color[red] vector to the @color[purple] one (here, colored @color[blue]). That @color[blue] vector is necessarily orthogonal to the @color[red] one, since it stays in the gray plane by definition, and so we've effectively decomposed the @color[purple] vector into the sum of a vector parallel to $\vec{n}$ and a vector orthogonal to it. This process is always possible when given two vectors, and after some trigonometry, it even has a convenient formula.
 
 @prop[projections][[
 
@@ -182,7 +182,7 @@ Let's work through this example to find the distance we're interested in.
 
 	What is the minimum distance from the plane $x + 3z = 4$ to the point $p = (2, -1, 3)$?
 
-	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the purple one above) is
+	We have a normal vector of $\vec{n} = \left< 1, 0, 3 \right>$, so to use the projection formula, we need to find any point in the plane in order to get a vector to $\vec{p}$ to project. If $x = 1$, then $z = 1$ satisfies the equation, and $y$ can be anything; let's just take $y = 1$ too. Then that vector (the @color[purple] one above) is
 
 	$$
 		\vec{w} = \left< 2, -1, 3 \right> - \left< 1, 1, 1 \right> = \left< 1, -2, 2 \right>,
@@ -328,7 +328,7 @@ It might seem pretty strange that we're outputting a vector from this function! 
 
 @desmos{vectorValuedLine}
 
-Here, the blue vector is $\vec{r_0}$, the red one is $\vec{v}$, and the orange vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
+Here, the @color[blue] vector is $\vec{r_0}$, the @color[red] one is $\vec{v}$, and the @color[orange] vectors are outputs of $\vec{r}(a)$ for different values of $t = a$.
 
 
 @exc[lines in $#R#^3$][[

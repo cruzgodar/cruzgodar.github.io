@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -15,7 +15,7 @@ We'll close out the term with a brief introduction to vectors. We often talk abo
 
 @desmos{vectors}
 
-Here, dragging the red point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$. We also denote the **zero vector** as $\vec{0}$, which is the unique vector with length zero. We write the magnitude of $\vec{v}$ as $\left| \left| \vec{v} \right| \right|$ (similar to how absolute value is the distance of a number from $0$).
+Here, dragging the @color[red] point **doesn't change the vector**. Since vectors are determined by their direction and length, moving one around doesn't change it. Standard notation for vectors is to use letters with arrows above them, as in $\vec{v}$ or $\vec{w}$. We also denote the **zero vector** as $\vec{0}$, which is the unique vector with length zero. We write the magnitude of $\vec{v}$ as $\left| \left| \vec{v} \right| \right|$ (similar to how absolute value is the distance of a number from $0$).
 
 
 
@@ -25,7 +25,7 @@ Suppose the displacement from Eugene to Portland is given by $\vec{v}$, and the 
 
 @desmos{vectorAddition}
 
-Here, the blue and red vectors are added together to give the purple one. The dashed vectors are the same, but added in a different order, giving the exact same result. With our previous example, if we first traveled from Eugene along the vector from Portland to Bend, we'd end up somewhere around Crater lake; if we then traveled from there along the vector from Eugene to Portland, we'd arrive exactly in Bend.
+Here, the @color[blue] and @color[red] vectors are added together to give the @color[purple] one. The dashed vectors are the same, but added in a different order, giving the exact same result. With our previous example, if we first traveled from Eugene along the vector from Portland to Bend, we'd end up somewhere around Crater lake; if we then traveled from there along the vector from Eugene to Portland, we'd arrive exactly in Bend.
 
 @exc[vector addition][[
 
@@ -43,7 +43,7 @@ Adding a vector $\vec{v}$ to itself should result in a vector $\vec{v} + \vec{v}
 
 @exc[vector arithmetic][[
 
-	In the following diagram, the purple vector is $\vec{v}$ and the blue one is $\vec{w}$. Draw $2\vec{v}$, $-3\vec{w}$, $\vec{v} + \vec{w}$, and $\vec{v} - \vec{w}$.
+	In the following diagram, the @color[purple] vector is $\vec{v}$ and the @color[blue] one is $\vec{w}$. Draw $2\vec{v}$, $-3\vec{w}$, $\vec{v} + \vec{w}$, and $\vec{v} - \vec{w}$.
 
 	@desmos{vectorArithmeticExercise}
 
@@ -118,7 +118,7 @@ If we know the unit vector decomposition of a vector $\vec{v}$, then we can use 
 
 @desmos{dotProductMotivation}
 
-Here, the red vector is $\vec{v}$, the blue one is $\vec{w}$, and the purple one is $\vec{v} - \vec{w}$. Now
+Here, the @color[red] vector is $\vec{v}$, the @color[blue] one is $\vec{w}$, and the @color[purple] one is $\vec{v} - \vec{w}$. Now
 
 $$
 	\vec{v} - \vec{w} &= \left( a - c \right)\vec{i} + \left( b - d \right)\vec{j}

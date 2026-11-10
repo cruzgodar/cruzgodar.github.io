@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, method, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { clickTap, desmos, navButtons, ex, exc, def, thm, method, lem, cor, prop, proof, aside, axiom, solution, images, canvas, imageLinks } from "../../../../build/spruce.js";
 @@@
 
 @navButtons

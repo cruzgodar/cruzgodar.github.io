@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -36,7 +36,7 @@ which is the area under the curve of $f$ between $x$ and $x + 1$.
 
 @desmos{ftcPart1}
 
-To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it's aproximately equal to $\int_x^{x + 1} f(t)\,\d t$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they're equal.
+To put it concisely, the @color[red] rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it's aproximately equal to $\int_x^{x + 1} f(t)\,\d t$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they're equal.
 
 
 
@@ -190,7 +190,7 @@ In that example, we calculated our antiderivative with the constant $C$, but it 
 
 **Caution!** Dropping $C$ is **only** correct when taking a definite integral. When a problem requires an indefinite integral, the $C$ must be there.
 
-Just like the geometric interpretation of a derivative is the slope of a tangent line, the geometric interpretation of an antiderivative is a function that gives the area under the curve when two successive values are subtracted. In the graph below, the difference in $y$-values of the two blue points is equal to the area of the shaded purplr region. Remember that area below the $x$-axis counts as negative!
+Just like the geometric interpretation of a derivative is the slope of a tangent line, the geometric interpretation of an antiderivative is a function that gives the area under the curve when two successive values are subtracted. In the graph below, the difference in $y$-values of the two @color[blue] points is equal to the area of the shaded purplr region. Remember that area below the $x$-axis counts as negative!
 
 @desmos{ftcPart2}
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -62,11 +62,11 @@ We'll have more to say about those partial derivatives, but let's turn to exampl
 
 	where $u \in [0, 2\pi]$ and $\v \in [-2, 2]$
 
-	We often thought about functions of two variables in terms of their level curves by holding $z$ fixed and plotting an implicit equation of $x$ and $y$. In much the same way, we can get an impression of a surface by holding either $u$ or $\v$ fixed and plotting the parametric curve that results from letting the other one vary. Here, fixing $\v$ produces circles parallel to the $yz$-plane (plotted in blue), while fixing $u$ gives lines with direction vector $\left< 1, 0, 0 \right>$ passing through those circles (plotted in red):
+	We often thought about functions of two variables in terms of their level curves by holding $z$ fixed and plotting an implicit equation of $x$ and $y$. In much the same way, we can get an impression of a surface by holding either $u$ or $\v$ fixed and plotting the parametric curve that results from letting the other one vary. Here, fixing $\v$ produces circles parallel to the $yz$-plane (plotted in @color[blue]), while fixing $u$ gives lines with direction vector $\left< 1, 0, 0 \right>$ passing through those circles (plotted in @color[red]):
 
 	@desmos{parametricSurface}
 
-	The result, plotted in purple, is a cylinder parallel to the $x$-axis.
+	The result, plotted in @color[purple], is a cylinder parallel to the $x$-axis.
 
 ]]
 
@@ -214,7 +214,7 @@ A condition for a parameterized curve being smooth was that its normal vector wa
 			\left( \vec{s}_u \times \vec{s}_{\v} \right)\left( 0, \frac{\pi}{2} \right) &= \left< -1, -1, 2 \right>.
 		$$
 
-		The first tangent plane is perfectly horizontal, which looks right for the purple point. The second one is undefined, and since the blue point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, \v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of the tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
+		The first tangent plane is perfectly horizontal, which looks right for the @color[purple] point. The second one is undefined, and since the @color[blue] point is at a cusp, that also makes sense. The third one takes a bit more parsing: the surface is intersecting itself there, which makes it look like the tangent plane should be undefined! However, the intersection is due to multiple $(u, \v)$ pairs producing the same output point, and since we're only considering one of those pairs, there is no ambiguity in the direction of the tangent plane. The same wouldn't be true if we were given an explicit formula for this surface and asked to find the tangent plane at the origin!
 	]]
 ]]
 
@@ -482,7 +482,7 @@ Just like with curve integrals, we can slightly adapt surface integrals to be of
 
 There's one new subtlety that appears with surfaces when we try to assign a normal vector to each point. With curves, knowing a parameterization $\vec{r}(t)$ provided an orientation to the curve, so long as $\vec{r}'(t)$ was defined and nonzero: the positive direction was given by $\vec{r}'(t)$ at each point. Since we effectively defined the normal vector to a curve in terms of the tangent vector, there were no problems there, either.
 
-Have a look at this surface, though --- it's the famous **Möbius strip**, constructed by gluing a strip of paper into a loop with a $180^\circ$ twist. The red vector is normal to the surface; change the value of $a$ to slide it along until it's eventually at the same point where it started.
+Have a look at this surface, though --- it's the famous **Möbius strip**, constructed by gluing a strip of paper into a loop with a $180^\circ$ twist. The @color[red] vector is normal to the surface; change the value of $a$ to slide it along until it's eventually at the same point where it started.
 
 @desmos{mobiusStrip}
 
@@ -502,9 +502,9 @@ It's upside-down! This surface has the remarkable property that it's impossible 
 
 	@desmos{orientabilityAllegory}
 
-	Since the definition of orientability wants direction as a function of coordinates on the curve or surface, not parameters, the purple curve *itself* isn't orientable, strictly speaking. If we forget the parameterization, we have no idea what direction to assign the origin, even with notions like positive orientation. That's due in part to the self-intersection, but if we remove it by only defining the purple curve for $t \in \left[ \frac{1}{4}, \frac{3}{4} \right]$ (try adjusting $a$ and $b$), then we can still see the issue: there's a cusp at the origin, so we're not going to be able to vary the unit tangent vector smoothly. In effect, there is no way to join up one end of a smooth curve to another in a way that makes the unit tangent vectors (and therefore the unit normal vectors) discontinuous without that discontinuity showing up in the curve itself.
+	Since the definition of orientability wants direction as a function of coordinates on the curve or surface, not parameters, the @color[purple] curve *itself* isn't orientable, strictly speaking. If we forget the parameterization, we have no idea what direction to assign the origin, even with notions like positive orientation. That's due in part to the self-intersection, but if we remove it by only defining the @color[purple] curve for $t \in \left[ \frac{1}{4}, \frac{3}{4} \right]$ (try adjusting $a$ and $b$), then we can still see the issue: there's a cusp at the origin, so we're not going to be able to vary the unit tangent vector smoothly. In effect, there is no way to join up one end of a smooth curve to another in a way that makes the unit tangent vectors (and therefore the unit normal vectors) discontinuous without that discontinuity showing up in the curve itself.
 
-	The Möbius strip is a lot like this curve. It's effectively intersecting itself at the point where the red vector flips, and there's a sense in which it should be drawn an entire second time to complete the parameterization and return to its original orientation. In that sense, the *parameterization* of the Möbius strip has a well-defined normal vector at pair of parameters $(u, \v)$, but not the surface itself. And the difference between surfaces and curves is that the extra parameter in surfaces affords them room to rotate and do what curves cannot: reconnect with themselves in a way that breaks the continuity of the normal vectors, but not the surface itself.
+	The Möbius strip is a lot like this curve. It's effectively intersecting itself at the point where the @color[red] vector flips, and there's a sense in which it should be drawn an entire second time to complete the parameterization and return to its original orientation. In that sense, the *parameterization* of the Möbius strip has a well-defined normal vector at pair of parameters $(u, \v)$, but not the surface itself. And the difference between surfaces and curves is that the extra parameter in surfaces affords them room to rotate and do what curves cannot: reconnect with themselves in a way that breaks the continuity of the normal vectors, but not the surface itself.
 
 ]]
 

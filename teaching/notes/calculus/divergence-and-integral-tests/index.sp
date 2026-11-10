@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -86,25 +86,25 @@ You may remember from Calculus II that a Riemann sum is allowed to sample its fu
 
 @desmos{riemannSum2}
 
-Here the function $f(x)$ is shown in purple, the rectangles of a left Riemann sum on $[1, \infty)$ in red, and the rectangles of a right Riemann sum on $[0, \infty)$ in blue. Here's the crucial takeaway: Since $\frac{1}{x + 4}$ is a decreasing function for $x \geq 0$, the left endpoint of every interval is where $f$ reaches its maximum on that interval, and the right endpoint is where it reaches its minimum. Therefore, the blue rectangles are always below the graph of the function, and the red rectangles are always above. But because of the way the two Riemann sums are staggered, with the red starting at $x = 1$ and the blue at $x = 0$, they both have exactly the same total area --- namely,
+Here the function $f(x)$ is shown in @color[purple], the rectangles of a left Riemann sum on $[1, \infty)$ in @color[red], and the rectangles of a right Riemann sum on $[0, \infty)$ in @color[blue]. Here's the crucial takeaway: Since $\frac{1}{x + 4}$ is a decreasing function for $x \geq 0$, the left endpoint of every interval is where $f$ reaches its maximum on that interval, and the right endpoint is where it reaches its minimum. Therefore, the @color[blue] rectangles are always below the graph of the function, and the @color[red] rectangles are always above. But because of the way the two Riemann sums are staggered, with the @color[red] starting at $x = 1$ and the @color[blue] at $x = 0$, they both have exactly the same total area --- namely,
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4}.
 $$
 
-Since the red rectangles are always an overapproximation of the actual area,
+Since the @color[red] rectangles are always an overapproximation of the actual area,
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4} \geq \int_1^\infty \frac{1}{x + 4}\,\d x.
 $$
 
-And similarly, since the blue rectangles are always an underapproximation,
+And similarly, since the @color[blue] rectangles are always an underapproximation,
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4} \leq \int_0^\infty \frac{1}{x + 4}\,\d x.
 $$
 
-By treating the leftmost blue rectangle separately and starting our sum at $n = 2$, we can rewrite this as
+By treating the leftmost @color[blue] rectangle separately and starting our sum at $n = 2$, we can rewrite this as
 
 $$
 	\sum_{n = 1}^\infty \frac{1}{n + 4} = \frac{1}{5} + \sum_{n = 2}^\infty \frac{1}{n + 4} \leq \frac{1}{5} + \int_1^\infty \frac{1}{x + 4}\,\d x.

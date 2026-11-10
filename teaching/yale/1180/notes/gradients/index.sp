@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, gap, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -50,15 +50,15 @@ In fact, directional derivatives are related to partial derivatives even more cl
 
 @desmos{directionalDerivative}
 
-Take some time to interact with this graph. The red point lives on the purple surface $z = f(x, y)$, and by changing $s$, we change the direction of the gray plane that intersects it. The result is the orange cross-sectional graph, and just like with partial derivatives, we can find its tangent line (the first hidden equation at the bottom of the list --- @clickTap[click][tap] the empty circle to show it). The slope of that line is the directional derivative $D_{\vec{u}}f(a, b)$, where $\vec{u}$ points in the direction of the tangent plane (that is, $D_{\vec{u}}f(a, b)$ is positive if the tangent line slopes upward in the direction of $\vec{u}$ and negative if it slopes downward).
+Take some time to interact with this graph. The @color[red] point lives on the @color[purple] surface $z = f(x, y)$, and by changing $s$, we change the direction of the gray plane that intersects it. The result is the @color[orange] cross-sectional graph, and just like with partial derivatives, we can find its tangent line (the first hidden equation at the bottom of the list --- @clickTap[click][tap] the empty circle to show it). The slope of that line is the directional derivative $D_{\vec{u}}f(a, b)$, where $\vec{u}$ points in the direction of the tangent plane (that is, $D_{\vec{u}}f(a, b)$ is positive if the tangent line slopes upward in the direction of $\vec{u}$ and negative if it slopes downward).
 
-Since the orange curve is the graph of $z = f(x, y)$, if we parameterize the path that just $x$ and $y$ take along it, we can solve for $z$. Luckily, that $xy$-path is just a straight line from $(a, b)$ in the direction of $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$, so we have the line 
+Since the @color[orange] curve is the graph of $z = f(x, y)$, if we parameterize the path that just $x$ and $y$ take along it, we can solve for $z$. Luckily, that $xy$-path is just a straight line from $(a, b)$ in the direction of $\vec{u} = \left< \cos(\theta), \sin(\theta) \right>$, so we have the line 
 
 $$
 	\left< a, b \right> + t\left< \cos(\theta), \sin(\theta) \right> = \left< a + t\cos(\theta),\quad b + t\sin(\theta) \right>,
 $$
 
-and therefore the orange curve $\vec{r}(t)$ given by
+and therefore the @color[orange] curve $\vec{r}(t)$ given by
 
 $$
 	\vec{r}(t) = \left< a + t\cos(\theta),\quad b + t\sin(\theta),\quad f\left( a + t\cos(\theta), b + t\sin(\theta) \right) \right>.

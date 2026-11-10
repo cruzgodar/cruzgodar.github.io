@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution } from "../../../../build/spruce.js";
+	import { aside, axiom, clickTap, color, cor, def, desmos, ex, exc, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -30,11 +30,11 @@ Fundamentally, definite integrals calculate area under curves. If you stick arou
 
 Our goal is to find the volume of these things. We'll have two ways to do this --- like we alluded to before, one will end up with an integral $\d x$, and the other with an integral $\d y$. Let's start with the simplest one first, which is called the **disk method**.
 
-When we rotate a graph about the $x$-axis, cross sections of the solid taken perpendicular to the $x$-axis are always circles. The example below highlights those cross sections in red --- slide $x_0$ to change which cross section is shown.
+When we rotate a graph about the $x$-axis, cross sections of the solid taken perpendicular to the $x$-axis are always circles. The example below highlights those cross sections in @color[red] --- slide $x_0$ to change which cross section is shown.
 
 @desmos{diskMethodXAxis2}
 
-Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we'll get the volume of that region. And what is that red area? Well, it's a circle, so we just need its radius. But we can see from the picture that the radius is given by the height of the function, which is $f(x)$, and so the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
+Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we'll get the volume of that region. And what is that @color[red] area? Well, it's a circle, so we just need its radius. But we can see from the picture that the radius is given by the height of the function, which is $f(x)$, and so the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
 
 
 
@@ -322,7 +322,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 		
 		@desmos{aDifferentAxis1}
 		
-		Let's start with the disk method. Plotted in purple is the region, in red a slice taken $\d y$, and in orange the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
+		Let's start with the disk method. Plotted in @color[purple] is the region, in @color[red] a slice taken $\d y$, and in @color[orange] the line we're revolving about. As usual, that @color[red] line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $\d y$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
 		
 		$$
 			\int_0^{16} \left( \pi\left(6 - \sqrt{y}\right)^2 - \pi(6 - 4)^2 \right)\d y.
@@ -334,7 +334,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 		
 		@desmos{aDifferentAxis2}
 		
-		These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the orange one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
+		These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the @color[red] line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the @color[red] line to the @color[orange] one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
 		
 		$$
 			2\pi(6 - x)(x^2),

@@ -408,6 +408,7 @@ export function color(text)
 		orange: "orange",
 		black: "black",
 		gray: "black",
+		green: "green",
 	};
 
 	const normalizedColor = colors[text.toLowerCase()];

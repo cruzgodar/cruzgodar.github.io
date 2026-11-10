@@ -1,5 +1,5 @@
 @@@
-	import { aside, axiom, canvas, clickTap, controls, cor, def, desmos, ex, exc, image, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, method, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -44,7 +44,7 @@ These six possibilities are explored thoroughly in homework 8, but it'd be nice 
 
 @desmos{vectorField}
 
-Drag the red point to change the eigenvalues and eigenvectors. The blue curves are sample solutions, and the ones marked in black are the two fundamental solutions --- all together, we call this a **phase portrait** of the system.
+Drag the @color[red] point to change the eigenvalues and eigenvectors. The @color[blue] curves are sample solutions, and the ones marked in black are the two fundamental solutions --- all together, we call this a **phase portrait** of the system.
 
 
 

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -12,7 +12,7 @@ Of course, it goes without saying that not all functions are polynomials. $\sin(
 
 @desmos{taylorSeries}
 
-Drag the blue point around, and try increasing $N$. The blue function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as we only look near the blue point. As $N$ increases, so does the length of the interval where the two functions nearly agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become *exactly* equal to one another. So $\sin$ may not be a polynomial, but it is a *limit* of polynomials. This is a different kind of limit from the one we're used to, though: rather than a sequence of numbers approaching another number, what we have here is a sequence of *functions* approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ --- and many, many other more complicated functions --- will be substantially easier.
+Drag the @color[blue] point around, and try increasing $N$. The @color[blue] function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as we only look near the @color[blue] point. As $N$ increases, so does the length of the interval where the two functions nearly agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become *exactly* equal to one another. So $\sin$ may not be a polynomial, but it is a *limit* of polynomials. This is a different kind of limit from the one we're used to, though: rather than a sequence of numbers approaching another number, what we have here is a sequence of *functions* approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ --- and many, many other more complicated functions --- will be substantially easier.
 
 We'll spend the first half of the course building tools and machinery in order to understand the ideas of adding together infinitely many *numbers*. In the second half, we'll move to the specific kind of sums that approximate functions, like we just did informally here with $\sin$. While many of the topics we cover will be interesting in their own right, it's good to keep this rough roadmap in mind as we move from one to the next.
 

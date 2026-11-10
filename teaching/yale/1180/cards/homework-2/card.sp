@@ -1,5 +1,5 @@
 @@@
-	import { desmos, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
+	import { color, desmos, gap, problem as p, problemNumberNextRange as next, problemNumberPreviousRange as prev, problemNumberRange as range } from "../../../../../build/spruce.js";
 
 	stdlib[stdlibKeys.document] = body => body;
 @@@
@@ -28,13 +28,13 @@ Toggle each on using the expressions in the sidebar and match each function to i
 
 **Solution:**
 
-+ Purple
++ @color[Purple]
 
-+ Orange
++ @color[Orange]
 
-+ Blue
++ @color[Blue]
 
-+ Red
++ @color[Red]
 
 @gap
 
@@ -148,7 +148,7 @@ In questions @next(3), determine whether the statement is true or false, where a
 
 Let's try to find the general form of a unit vector in $#R#^3$: rather than describing it as a vector $\vec{u} = \left< u_1, u_2, u_3 \right>$ with $u_1^2 + u_2^2 + u_3^2 = 1$, it can be useful to have two parameters that we can freely vary instead of three parameters with a restriction. We'll find such a form in the next two questions.
 
-@p[Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in red, find a general formula for $\vec{u}$ in terms of its angle $\theta$.]
+@p[Suppose $u_3 = 0$, so that if $\vec{u}$ is drawn with its tail at the origin, then the tip of $\vec{u}$ is in the $xy$-plane, as in the graph below. If $\theta$ is its angle measured counterclockwise from the positive $x$-axis, drawn in @color[red], find a general formula for $\vec{u}$ in terms of its angle $\theta$.]
 
 @desmos{unitVectorsSpherical}
 
@@ -160,7 +160,7 @@ $$
 
 @p[Now suppose $u_3 \neq 0$. We can think of $\vec{u}$ as being rotated up or down from the $xy$-plane by some angle $\varphi$; change the perspective on the graph and adjust $\varphi_0$ to see this in action. Hold $\theta$ fixed and look at the half-disk from the side, so that the problem effectively becomes 2D again. Use your answer to question #-1 and this perspective to find an expression for $\vec{u}$ in terms of $\theta$ and $\varphi$.]
 
-**Solution:** Looking at the half-disk from the side, $\vec{u}$ is the hypotenuse of a right triangle with length $1$ and an angle of $\varphi$ with the $xy$-plane. ($\vec{u}$ is drawn in purple.) The gray vertical leg of that triangle has length $\sin(\varphi)$, and the orange horizontal leg --- the shadow of $\vec{u}$ in the $xy$-plane --- has length $\cos(\varphi)$.
+**Solution:** Looking at the half-disk from the side, $\vec{u}$ is the hypotenuse of a right triangle with length $1$ and an angle of $\varphi$ with the $xy$-plane. ($\vec{u}$ is drawn in @color[purple].) The gray vertical leg of that triangle has length $\sin(\varphi)$, and the @color[orange] horizontal leg --- the shadow of $\vec{u}$ in the $xy$-plane --- has length $\cos(\varphi)$.
 
 @desmos{unitVectorsSphericalSolution}
 

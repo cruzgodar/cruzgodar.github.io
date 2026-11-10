@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -92,7 +92,7 @@ We can combine both types of vertical transformations by applying both a factor 
 
 	@solution[[
 
-		Beginning with $y = e^x$ (in purple below), we might choose the points $(0, 1)$ and $(1, e)$ to plot. First, we vertically stretch the graph by a factor of $\frac{1}{5}$, producing the graph in blue and the points $\left( 0, \frac{1}{5} \right)$ and $\left( 1, \frac{e}{5} \right) \approx \left( 1, 0.5436 \right)$. Finally, we shift the graph down $2$ units, producing the red graph and the points $\left( 0, \frac{1}{5} - 2 \right)$ and $\left( 1, \frac{e}{5} - 2 \right) \approx \left( 1, -1.4564 \right)$.
+		Beginning with $y = e^x$ (in @color[purple] below), we might choose the points $(0, 1)$ and $(1, e)$ to plot. First, we vertically stretch the graph by a factor of $\frac{1}{5}$, producing the graph in @color[blue] and the points $\left( 0, \frac{1}{5} \right)$ and $\left( 1, \frac{e}{5} \right) \approx \left( 1, 0.5436 \right)$. Finally, we shift the graph down $2$ units, producing the @color[red] graph and the points $\left( 0, \frac{1}{5} - 2 \right)$ and $\left( 1, \frac{e}{5} - 2 \right) \approx \left( 1, -1.4564 \right)$.
 
 		@desmos{combinedTransformations}
 	]]

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -291,21 +291,21 @@ The Riemann sum adds up a function value times the volume of each little chunk i
 
 @desmos{sphericalRiemannSumChunk}
 
-Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\Delta \rho$, $\Delta \varphi$, and $\Delta \theta$, indicated with purple, blue, and red edges, respectively. As all three changes approach zero, the region approaches a rectangular box, and so we can approximate the volume by multiplying the three colored edge lengths.
+Plotted above is a spherical box at $(\rho, \varphi, \theta)$, with changes $\Delta \rho$, $\Delta \varphi$, and $\Delta \theta$, indicated with @color[purple], @color[blue], and @color[red] edges, respectively. As all three changes approach zero, the region approaches a rectangular box, and so we can approximate the volume by multiplying the three colored edge lengths.
 
-Let's start with the purple edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the blue edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the blue edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small blue angle between the gray lines, and so the blue edge length is $\rho \,\Delta \varphi$.
+Let's start with the @color[purple] edge; its length is equal to $\Delta \rho$, since $\rho$ is a distance. For the @color[blue] edge, given by a change in $\varphi$, we can't directly use $\Delta \varphi$, since $\varphi$ isn't a distance --- it's an angle. Instead, we can use the same logic that worked for polar rectangles: the @color[blue] edge is an arc of a circle with radius $\rho$ and angle $\Delta \varphi$, drawn as the small @color[blue] angle between the gray lines, and so the @color[blue] edge length is $\rho \,\Delta \varphi$.
 
 @desmos{sphericalRiemannSumChunkTheta}
 
-The red edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is the red angle in the $xy$-plane between the two orange lines, *not* the angle between the two blue radii spanning the red arc. They look similar, but if we used the length $\rho \,\Delta \theta$, we wouldn't get the red arc length, but rather the incorrect purple one that lies farther out, connected by the blue arcs (since they lie on the sphere of radius $\rho$).
+The @color[red] edge is more complicated. Intuitively, it seems like it should be equal to $\rho \,\Delta \theta$ by the same logic, but there's an issue: $\theta$ is the @color[red] angle in the $xy$-plane between the two @color[orange] lines, *not* the angle between the two @color[blue] radii spanning the @color[red] arc. They look similar, but if we used the length $\rho \,\Delta \theta$, we wouldn't get the @color[red] arc length, but rather the incorrect @color[purple] one that lies farther out, connected by the @color[blue] arcs (since they lie on the sphere of radius $\rho$).
 
-That purple length is less and less accurate as $\varphi$ shrinks, and so we really do need to account for it. To find the actual red length, we could try to solve the angle between the blue radii, but an easier path is to find the orange lines' length instead; then we can still use the arc length formula, since the red arc that the orange lines trace out is exact the same length as the red edge length on the spherical region above it. That orange line lives in a right triangle with blue hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ between the blue and orange sides (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the orange leg has length $a$, then
+That @color[purple] length is less and less accurate as $\varphi$ shrinks, and so we really do need to account for it. To find the actual @color[red] length, we could try to solve the angle between the @color[blue] radii, but an easier path is to find the @color[orange] lines' length instead; then we can still use the arc length formula, since the @color[red] arc that the @color[orange] lines trace out is exact the same length as the @color[red] edge length on the spherical region above it. That @color[orange] line lives in a right triangle with @color[blue] hypotenuse $\rho$ and an angle of $\frac{\pi}{2} - \varphi$ between the @color[blue] and @color[orange] sides (since $\varphi$ is the angle from the $z$-axis down to the hypotenuse), and so if the @color[orange] leg has length $a$, then
 
 $$
 	\cos\left( \frac{\pi}{2} - \varphi \right) = \frac{a}{\rho}.
 $$
 
-Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi)$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the red side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
+Solving for $a$ and using the fact that $\cos\left( \frac{\pi}{2} - \varphi \right) = \sin(\varphi)$, we find $a = \rho\sin(\varphi)$. Plugging that into the arc length formula, the @color[red] side of the spherical box has length $\rho\sin(\varphi)\,\Delta\theta$, making the entire volume approximately
 
 $$
 	\left( \Delta\rho \right)\left( \rho \,\Delta \varphi \right)\left( \rho\sin(\varphi)\,\Delta\theta \right) = \rho^2\sin(\varphi)\,\Delta\rho\,\Delta\varphi\,\Delta\theta.

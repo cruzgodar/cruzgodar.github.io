@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -72,7 +72,7 @@ That's our first new value! We have $\cos\left( 45^\circ \right) = \sin\left( 45
 
 ## Sine and Cosine in Right Triangles
 
-When we compute the coordinates of a point with angle $\theta$ on the unit circle, we draw a right triangle whose bottom leg lies on the $x$-axis and whose vertical leg is parallel to the $y$-axis, as in the previous example. We'll call this the **reference triangle** for $\theta$, and in the particular case where $\theta$ is between $0^\circ$ and $90^\circ$, we can use it to apply $\sin$ and $\cos$ to right triangles in general. With the discussion of similar triangles from the last section, any right triangle is similar to a right triangle whose hypotenuse has length exactly $1$ --- we can just scale it down or up until the hypotenuse is the right length. Also, any right triangle with hypotenuse $1$ occurs as a reference triangle for some angle $\theta$ with $0^\circ < \theta < 90^\circ$: we can place it so that one of the legs is on the positive $x$-axis. In the following graph, for example, the red triangle has hypotenuse 3 and is similar to the reference triangle drawn in the unit circle.
+When we compute the coordinates of a point with angle $\theta$ on the unit circle, we draw a right triangle whose bottom leg lies on the $x$-axis and whose vertical leg is parallel to the $y$-axis, as in the previous example. We'll call this the **reference triangle** for $\theta$, and in the particular case where $\theta$ is between $0^\circ$ and $90^\circ$, we can use it to apply $\sin$ and $\cos$ to right triangles in general. With the discussion of similar triangles from the last section, any right triangle is similar to a right triangle whose hypotenuse has length exactly $1$ --- we can just scale it down or up until the hypotenuse is the right length. Also, any right triangle with hypotenuse $1$ occurs as a reference triangle for some angle $\theta$ with $0^\circ < \theta < 90^\circ$: we can place it so that one of the legs is on the positive $x$-axis. In the following graph, for example, the @color[red] triangle has hypotenuse 3 and is similar to the reference triangle drawn in the unit circle.
 
 @desmos{referenceTriangle}
 
@@ -98,7 +98,7 @@ In the previous graph, the side opposite to the left angle is the rightmost leg,
 
 @desmos{scaledUpReferenceTriangle}
 
-By rotating a right triangle so that is is a scaled-up version of a reference triangle, like the red triangle in the previous graph, we can express sine and cosine in terms of its side lengths. If the hypotenuse has length $r$ and the angle of the triangle at the origin is $\theta$, then the leg opposite to $\theta$ has length $r \cos(\theta)$ and the adjacent leg has length $r \sin(\theta)$, as we've established. In other words,
+By rotating a right triangle so that is is a scaled-up version of a reference triangle, like the @color[red] triangle in the previous graph, we can express sine and cosine in terms of its side lengths. If the hypotenuse has length $r$ and the angle of the triangle at the origin is $\theta$, then the leg opposite to $\theta$ has length $r \cos(\theta)$ and the adjacent leg has length $r \sin(\theta)$, as we've established. In other words,
 
 $$
 	\text{opposite} &= (\text{hypotenuse})\sin(\theta)

@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -46,7 +46,7 @@ The last object to consider is the curve integral on the left side. While the in
 
 ]]
 
-For example, this cap of a sphere oriented so the convex side points outward has a boundary oriented as shown. If we reversed the orientation, so that the red vectors pointed inward instead, the orientation of the blue boundary would be reversed.
+For example, this cap of a sphere oriented so the convex side points outward has a boundary oriented as shown. If we reversed the orientation, so that the @color[red] vectors pointed inward instead, the orientation of the @color[blue] boundary would be reversed.
 
 @desmos{sphereCap}
 

@@ -34,7 +34,7 @@ There's a sense in which that function is poorly behaved at $x = 0$. "Nice" func
 
 
 
-Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined --- we need that in the definition so that $f(a)$ makes sense to write. In the example below, the @color[purple] function $f(x)$ is continuous while the blue function $g(x)$ is not.
+Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined --- we need that in the definition so that $f(a)$ makes sense to write. In the example below, the @color[purple] function $f(x)$ is continuous while the @color[blue] function $g(x)$ is not.
 
 @desmos{continuityExample}
 
@@ -84,7 +84,7 @@ $$
 
 More generally, if $f(x)$ is a differentiable function whose input variable $x$ is measured in unit $A$ and whose output is in unit $B$, then $f'(x)$ has units $\frac{B}{A}$ and is approximately equal to $f(x + 1) - f(x)$.
 
-Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The @color[purple] function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the blue point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
+Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The @color[purple] function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the @color[blue] point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
 
 @desmos{derivativeExample}
 
@@ -210,9 +210,9 @@ Some notational quirks to remember: $d/dx$ means derivative with respect to $x$,
 
 
 
-Derivatives are often used to find **extrema** of functions, which are local maxima or minima. To do this, we find all of a function's critical points: the $x$-values that make the derivative zero or undefined. All extrema are critical points, but the reverse isn't necessarily true, so our work isn't finished. To determine whether a critical point is a maximum, a minimum, or neither, we can use the **second derivative test**: since $f''(x)$ measures concavity, if $f''(a) > 0$ for a critical point $a$, then $a$ is a local minimum, and if $f''(a) &lt; 0$, then it's a local maximum. The graph below has the critical points marked in blue and the second derivative graphed in red.
+Derivatives are often used to find **extrema** of functions, which are local maxima or minima. To do this, we find all of a function's critical points: the $x$-values that make the derivative zero or undefined. All extrema are critical points, but the reverse isn't necessarily true, so our work isn't finished. To determine whether a critical point is a maximum, a minimum, or neither, we can use the **second derivative test**: since $f''(x)$ measures concavity, if $f''(a) > 0$ for a critical point $a$, then $a$ is a local minimum, and if $f''(a) &lt; 0$, then it's a local maximum. The graph below has the critical points marked in @color[blue] and the second derivative graphed in @color[red].
 
-Speaking of the second derivative, $x$-values that make *it* zero are called **inflection points**, and indicate a potential change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in red) and concave up to the right of it.
+Speaking of the second derivative, $x$-values that make *it* zero are called **inflection points**, and indicate a potential change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in @color[red]) and concave up to the right of it.
 
 @desmos{secondDerivativeTest}
 

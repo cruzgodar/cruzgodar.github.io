@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks, gap } from "../../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, gap, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -405,7 +405,7 @@ Multivariable optimization has a habit of cropping up all over the place, just l
 
 	so $\left( \frac{6}{7}, 0 \right)$ is a local minimum. In general, a function having a single local minimum is *not enough* to conclude that it's the global minimum in general (we'll discuss this in the next exercise), but since $E$ is a quadratic, we can confidently conclude that this critical point is indeed the global minimum.
 
-	Visually, the line does a good job of approximating these points! Drag the red point around to see how the best-fit line changes.
+	Visually, the line does a good job of approximating these points! Drag the @color[red] point around to see how the best-fit line changes.
 
 	@desmos{bestFitLine}
 
@@ -425,7 +425,7 @@ Let's dig in more to that example's remark about local and global extrema. Let $
 
 @desmos{meanValueTheorem}
 
-Here, the blue point is at the local max of $c = 1$, but the red point at the same $y$-value guarantees a critical point somewhere in between; here, the orange point. In effect, if a differentiable function has a local max, then having any part of its graph lie *above* that local max requires another critical point where the graph turns around. For a function of two variables, however, this isn't true!
+Here, the @color[blue] point is at the local max of $c = 1$, but the @color[red] point at the same $y$-value guarantees a critical point somewhere in between; here, the @color[orange] point. In effect, if a differentiable function has a local max, then having any part of its graph lie *above* that local max requires another critical point where the graph turns around. For a function of two variables, however, this isn't true!
 
 @exc[functions of two variables and critical points][[
 
@@ -480,7 +480,7 @@ To see what's happening here, let's look at the graph.
 
 @desmos{misleadingCriticalPoint}
 
-The local maximum is the blue point on the left, and the point higher than it is on the right. Here we can see that our single-variable logic fails in two places: first, while the Mean Value Theorem guarantees that the orange curve connecting the two points has a critical point somewhere in the middle, that does *not* imply a critical point of $f(x, y)$; only that $f_x$ is zero there. Second, while we might still feel a critical point must be lurking somewhere else, we can see that this function has found a way to hide it: while the partial derivatives *limit* to zero along the $y$-axis as $y \to -\infty$, they never actually reach zero. In effect, the extra room of a $2$-dimensional domain allows functions to push an additional critical point infinitely far away.
+The local maximum is the @color[blue] point on the left, and the point higher than it is on the right. Here we can see that our single-variable logic fails in two places: first, while the Mean Value Theorem guarantees that the @color[orange] curve connecting the two points has a critical point somewhere in the middle, that does *not* imply a critical point of $f(x, y)$; only that $f_x$ is zero there. Second, while we might still feel a critical point must be lurking somewhere else, we can see that this function has found a way to hide it: while the partial derivatives *limit* to zero along the $y$-axis as $y \to -\infty$, they never actually reach zero. In effect, the extra room of a $2$-dimensional domain allows functions to push an additional critical point infinitely far away.
 
 We've gone a long way toward bringing the second derivative test to functions of multiple variables! In the next section, we'll finish the job by finding an analogue to optimizing a function on a closed interval, and in the one after that, we'll conclude our discussion of multivariable calculus by considering more complicated constraints a function can have that bound its domain.
 

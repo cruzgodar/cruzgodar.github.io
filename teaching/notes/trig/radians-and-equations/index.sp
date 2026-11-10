@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -36,7 +36,7 @@ We'll come to see that many, *many* formulas are better expressed in radians rat
 
 @prop[arc length and sector area][[
 
-	Let $\theta$ be an angle measured in radians in a circle of radius $r$. The arc length cut out by $\theta$ (in purple below) is $r\theta$, and the sector area (in blue) is $\frac{1}{2} r^2 \theta$.
+	Let $\theta$ be an angle measured in radians in a circle of radius $r$. The arc length cut out by $\theta$ (in @color[purple] below) is $r\theta$, and the sector area (in @color[blue]) is $\frac{1}{2} r^2 \theta$.
 
 	@desmos{arcLengthEtc}
 

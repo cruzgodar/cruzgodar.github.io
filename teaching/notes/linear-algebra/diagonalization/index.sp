@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -367,7 +367,7 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 
 	@desmos{rotationMatrix}
 
-	Here, the blue vector is the output of multiplying the purple one by this matrix.
+	Here, the @color[blue] vector is the output of multiplying the @color[purple] one by this matrix.
 
 ]]
 

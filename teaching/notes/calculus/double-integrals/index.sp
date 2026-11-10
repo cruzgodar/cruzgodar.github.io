@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, cor, def, desmos, ex, exc, images, imageLinks, lem, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -106,7 +106,7 @@ We evaluate nested integrals like these from the inside out; without any further
 
 	@desmos{areaCrosssections}
 
-	Graphed in purple here is $f(x, y)$, and the red and blue area below is the $\d y$ integral that we just computed. Changing $x_0$ changes where the slice is taken, and the gray graph nearby plots the area of each slice as a function of $x$ --- and sure enough, it's a parabola, as our computation so far suggested. To finish our the problem, we just need to integrate $\d x$ as we're used to already.
+	Graphed in @color[purple] here is $f(x, y)$, and the @color[red] and @color[blue] area below is the $\d y$ integral that we just computed. Changing $x_0$ changes where the slice is taken, and the gray graph nearby plots the area of each slice as a function of $x$ --- and sure enough, it's a parabola, as our computation so far suggested. To finish our the problem, we just need to integrate $\d x$ as we're used to already.
 
 	$$
 		\int_{-2}^2 \left( 2x^2 + \frac{2}{3}x - 2 \right)\d x &= \left. \left[ \frac{2}{3}x^3 + \frac{1}{3}x^2 - 2x \right] \right|_{-2}^2
@@ -176,11 +176,11 @@ of $f(x, y)$ on $R = [a, b] \times [c, d]$, we're taking slices of $f$ parallel 
 
 @desmos{regions2d}
 
-We're lightly shading the whole rectangle here, but the areas of focus are the colored line segments. When we change $x_0$, we're moving the purple slice --- it represents a single cross-sectional area under the graph of $f$. The inner integral (the $\d y$ one) computes that area in terms of $x$, and then the outer $\d x$ integral adds those areas up to find the volume.
+We're lightly shading the whole rectangle here, but the areas of focus are the colored line segments. When we change $x_0$, we're moving the @color[purple] slice --- it represents a single cross-sectional area under the graph of $f$. The inner integral (the $\d y$ one) computes that area in terms of $x$, and then the outer $\d x$ integral adds those areas up to find the volume.
 
-As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in Calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the blue lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the blue lines left and right, but we can't change the fact that they're straight.
+As far as that outer integral is concerned, though, the inside integral is a black box. It might as well be a function $A(x)$ that gives out area in any other way that we integrate as $\int_a^b A(x)\,\d x$. (If you computed the volumes of solids of revolution in Calculus II, that's exactly what you did then!) In fact, the outer integral has no idea that the function it's integrating measures area at all! It's for these reasons that the outer integral --- and therefore the @color[blue] lines in the graph --- are quite inflexible. We can change the limits of integration, which slides the @color[blue] lines left and right, but we can't change the fact that they're straight.
 
-On the other hand, the red lines are only lines because every integral we take $\d y$ has *exactly the same bounds*. We take a different integral for every different value of $x$, but every one runs from $y = c$ to $y = d$. And here's the one degree of freedom available to us: we can't change the fact that we're integrating a cross-section of the graph between two $y$-values, but we can pick different $y$-values depending on the $x$-value.
+On the other hand, the @color[red] lines are only lines because every integral we take $\d y$ has *exactly the same bounds*. We take a different integral for every different value of $x$, but every one runs from $y = c$ to $y = d$. And here's the one degree of freedom available to us: we can't change the fact that we're integrating a cross-section of the graph between two $y$-values, but we can pick different $y$-values depending on the $x$-value.
 
 Picking different $y$-values depending on the $x$-value is a very long-winded way of saying we can make the limits of integration functions of $x$, say $c(x)$ and $d(x)$, to form the double integral
 
@@ -276,7 +276,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 		y &= \pm 1
 	$$
 
-	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, due to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the blue horizontal lines?
+	Before we get to integrating, it's worth saying just a bit more about the shape of the region. Previously, we had functions defining the top and bottom of a region, while the left and right sides were straight lines, due to the outside $\d x$ integral leaving no room for nuance on those boundaries. Here, we'd expect the same to happen for $y$: where are the @color[blue] horizontal lines?
 
 	Well, they're there, but when we take our bounds to be the points of intersection, they conveniently have length zero. Set $c = -1$ and $d = 1$ in the Desmos graph to see!
 
@@ -312,7 +312,7 @@ Sometimes, we'll want to or need to change the order of integration ourselves!
 
 		@desmos{swappingOrder}
 
-		To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the red function to the blue one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
+		To write this as an integral $\d x\,\d y$, we need to find the limits of integration. We were given the points of intersection of these two curves, and the $x$-values match the outer limits of integration in the original integral, so we were genuinely integrating over the region bounded by both curves. As an integral $\d x\,\d y$, the outer integral will now run from $y = -1$ to $y = 8$, and the inner integral will run from the @color[red] function to the @color[blue] one (i.e. left to right), both expressed as $x$ in terms of $y$. Solving both for $y$, we have
 
 		$$
 			x &= \sqrt[3]{y}
@@ -406,7 +406,7 @@ Our primary use for polar coordinates, though, is to draw regions with them and 
 
 Here, we can see a so-called **polar rectangle** --- and before you object to the name, have a look at all four of its angles --- and a slice taken by holding $\theta$ fixed and varying $r$. Increase $m$ and $n$ to see the result of slicing up the region into many tiny polar rectangles. But here we need to pause, because there's a problem that we didn't have to deal with when we were slicing up Cartesian rectangles: those little chunks don't have constant area! We can see that changing $\theta$ leaves the area constant, but the farther we are away from the origin, the larger the area of each little rectangle, even though each one has the same total change in $r$ and $\theta$.
 
-While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those red circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its red side length times its blue side length. The blue side length is just $\Delta r$, but the red side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the red side length is $r_0\Delta \theta$, and so the entire rectangle's area is *approximately* $r_0 \Delta r \Delta \theta$. That approximation gets better and better as $\Delta \theta \to 0$, though, and so to integrate a function of $r$ and $\theta$ over a polar region $R$, we find the following result:
+While we could pin this down completely rigorously, I think this is one of many cases where an intuitive explanation is far more useful. Like any differentiable curve, those @color[red] circles of constant $r$ and varying $\theta$ look like straight lines when we only consider a tiny portion of their length (set $m = n = 10$ in the previous graph, for example). With that in mind, if we slice a region into polar rectangles of dimension $\Delta r$ by $\Delta \theta$, then we can approximate each one's area by its @color[red] side length times its @color[blue] side length. The @color[blue] side length is just $\Delta r$, but the @color[red] side lengths vary. Let's fix one in particular --- it's a tiny arc of a circle with some radius, say $r = r_0$. A formula for arc length tells us that the @color[red] side length is $r_0\Delta \theta$, and so the entire rectangle's area is *approximately* $r_0 \Delta r \Delta \theta$. That approximation gets better and better as $\Delta \theta \to 0$, though, and so to integrate a function of $r$ and $\theta$ over a polar region $R$, we find the following result:
 
 @thm[double integrals in polar coordinates][[
  
@@ -530,7 +530,7 @@ In general, we'll prefer using polar coordinates whenever the regions we're inte
 
 		@desmos{polarIntegral2}
 
-		They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the red circle $r = \sin(\theta)$ as an upper limit until then, followed by the blue circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
+		They intersect when $\theta = \frac{\pi}{4}$, and so we want to use the @color[red] circle $r = \sin(\theta)$ as an upper limit until then, followed by the @color[blue] circle $r = \cos(\theta)$ until $\theta = \frac{\pi}{2}$, at which point we reach the origin. To find the area of a region, we just integrate $1$, and so the integral is
 
 		$$
 			\int_{0}^{\pi/4} \int_0^{\sin(\theta)} r\,\d r\,\d \theta + \int_{\pi/4}^{\pi/2} \int_0^{\cos(\theta)} r\,\d r\,\d \theta.

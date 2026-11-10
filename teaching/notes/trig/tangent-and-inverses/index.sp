@@ -1,5 +1,5 @@
 @@@
-	import { clickTap, desmos, meldedDesmos, navButtons, ex, exc, def, thm, lem, cor, prop, proof, aside, axiom, solution, image, canvas, controls, imageLinks } from "../../../../build/spruce.js";
+	import { aside, axiom, canvas, clickTap, color, controls, cor, def, desmos, ex, exc, images, imageLinks, lem, meldedDesmos, navButtons, proof, prop, solution, thm } from "../../../../build/spruce.js";
 @@@
 
 @navButtons
@@ -72,7 +72,7 @@ Secondly, this graph has **asymptotes** --- at $90^\circ$, $270^\circ$, and any 
 
 	1. Sketch a graph of $y = \tan\left( \frac{1}{2}x \right) - 1$ by transforming the graph of $y = \tan(x)$.
 
-	2. A **tangent** line to a curve is a line that touches the curve at only one point, only barely grazing it. For example, the tangent line to the unit circle at $(1, 0)$ is the vertical line $x = 1$. If we extend that line to meet the line from the origin through $(\cos(\theta), \sin(\theta))$, as in the following graph, then what is the length of the portion of the tangent line (the orange one)?
+	2. A **tangent** line to a curve is a line that touches the curve at only one point, only barely grazing it. For example, the tangent line to the unit circle at $(1, 0)$ is the vertical line $x = 1$. If we extend that line to meet the line from the origin through $(\cos(\theta), \sin(\theta))$, as in the following graph, then what is the length of the portion of the tangent line (the @color[orange] one)?
 
 	@desmos{tangentLines}
 
