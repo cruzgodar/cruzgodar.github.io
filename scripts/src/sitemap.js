@@ -1537,7 +1537,7 @@ export const sitemap =
 	
 	"/teaching/notes/linear-algebra/ftla":
 	{
-		"title": "Section 2.4: The Fundamental Theorem of Linear Algebra",
+		"title": "Section 2.3: The Fundamental Theorem of Linear Algebra",
 		
 		"parent": "/teaching/notes/linear-algebra",
 		

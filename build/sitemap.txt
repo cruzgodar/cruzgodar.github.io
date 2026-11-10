@@ -133,7 +133,7 @@ home Cruz Godar
 
 			vector-spaces Section 2.1: Intro to Vector Spaces
 			bases-and-dimension Section 2.2: Bases and Dimension
-			ftla Section 2.4: The Fundamental Theorem of Linear Algebra
+			ftla Section 2.3: The Fundamental Theorem of Linear Algebra
 			intro-to-markov-chains Section 2.4: Intro to Markov Chains
 			chapters-1-and-2-review Chapters 1 and 2 Review
 

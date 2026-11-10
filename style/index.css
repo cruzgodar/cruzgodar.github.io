@@ -2606,6 +2606,11 @@ to hide them in that case. */
 	max-width: min(calc(var(--text-width) * 1.5), 100%);
 }
 
+.card .notes-images
+{
+	max-width: min(var(--text-width), 100vw);
+}
+
 .notes-image
 {
 	max-width: min(var(--text-width), 100%, 500px);
