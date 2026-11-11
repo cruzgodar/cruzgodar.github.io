@@ -23,7 +23,6 @@ import {
 	pageUrl,
 	updatePageElement
 } from "./main.js";
-import { typesetMath } from "./math.js";
 import {
 	navigationTransitionType,
 	redirect,
@@ -84,8 +83,6 @@ export async function loadPage(noFadeIn = false)
 	initDistinguishColors();
 
 	loadImages();
-
-	promises.push(typesetMath());
 
 	initCards();
 

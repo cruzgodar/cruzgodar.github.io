@@ -3,7 +3,6 @@ import { galleryFullResUrl, galleryImageData } from "./imageData.js";
 import { openZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
-import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
@@ -70,8 +69,6 @@ export default function()
 		element.parentNode.insertBefore(highResImageElement, element);
 		element.remove();
 
-		typesetMath();
-
 		highResImageElement.onload = () =>
 		{
 			setTimeout(() => openZoomCard({
@@ -82,8 +79,6 @@ export default function()
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;
-
-		typesetMath();
 	}
 
 

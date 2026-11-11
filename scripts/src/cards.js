@@ -4,7 +4,6 @@ import { addHoverEvent } from "./hoverEvents.js";
 import { loadImages } from "./images.js";
 import { updateTapClickElements } from "./interaction.js";
 import { $$, pageElement, pageUrl } from "./main.js";
-import { typesetMath } from "./math.js";
 import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, setScroll, siteSettings } from "./settings.js";
 import { animate, asyncFetch, sleep } from "./utils.js";
@@ -134,7 +133,6 @@ export async function openCard({
 		currentCard.innerHTML = dataInnards;
 		
 		await Promise.all([
-			typesetMath(),
 			loadImages(),
 			updateTapClickElements(),
 		]);

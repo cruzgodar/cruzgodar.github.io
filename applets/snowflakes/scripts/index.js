@@ -2,7 +2,6 @@ import { Snowflakes } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
@@ -85,8 +84,6 @@ export default function()
 		maxValue: 2,
 		onEnter: run
 	});
-
-	typesetMath();
 
 	new GenerateButton({
 		element: $("#generate-button"),

@@ -5,7 +5,6 @@ import { Checkbox } from "/scripts/components/checkboxes.js";
 import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
@@ -148,8 +147,6 @@ export default function()
 		onInput: onCheckboxInput,
 		persistState: false
 	});
-
-	typesetMath();
 
 	function onSliderInput()
 	{

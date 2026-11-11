@@ -70,6 +70,7 @@ const warnings =
 	noCoverSource: [],
 	notP3: [],
 	tooSmall: [],
+	unrenderedMath: [],
 };
 
 function printWarnings()
@@ -257,7 +258,7 @@ async function buildFile(file)
 		{
 			console.log(file);
 
-			await buildSpruceFile({
+			const html = await buildSpruceFile({
 				source: text,
 				absoluteFilePath: root + file,
 				parentFolder: "/" + file.slice(0, lastSlashIndex - 1),
@@ -265,6 +266,8 @@ async function buildFile(file)
 			});
 
 			warnMissingCover(file);
+
+			warnUnrenderedMath(file, html);
 		}
 	}
 
@@ -463,6 +466,25 @@ function warnMissingCover(file)
 	if (!excludeFromCoverWarning.includes(folder.slice(0, -1)))
 	{
 		warnings.noCover.push(`No cover image in ${folder || "/"} --- link previews will fall back to the favicon`);
+	}
+}
+
+// Math is rendered to SVG at build time, so a $...$ still sitting in a page's
+// text is one spruce didn't parse as math --- a $$ fence with trailing
+// whitespace after it, say, or a \$ inside math, which its rule can't hold.
+// The client-side typesetter used to pick those up regardless of what spruce
+// made of them; nothing does now, so they'd ship as literal dollar signs.
+function warnUnrenderedMath(file, html)
+{
+	const text = html
+		.replace(/<mjx-container.*?<\/mjx-container>/gs, "")
+		.replace(/<[^>]*>/g, "");
+
+	const count = (text.match(/\$[^$]{1,200}\$/g) ?? []).length;
+
+	if (count !== 0)
+	{
+		warnings.unrenderedMath.push(`${count} unrendered $...$ in ${file}`);
 	}
 }
 

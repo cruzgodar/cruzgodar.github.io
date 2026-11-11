@@ -1,7 +1,8 @@
 import { stdlibKeys } from "spruce";
 import { sitemap } from "../scripts/src/sitemap.js";
+import { renderMath, renderMathInText } from "./renderMath.js";
 
-export function document(body)
+export async function document(body)
 {
 	const repoPath = globalThis.filePath.replace(/^.+?cruzgodar\.github\.io/, "");
 	const pageUrl = repoPath.slice(0, repoPath.lastIndexOf("/"));
@@ -22,7 +23,7 @@ export function document(body)
 	
 	<div style="height: 20px"></div>
 	
-	<h1 class="heading-text">${title}</h1>
+	<h1 class="heading-text">${await renderMathInText(title)}</h1>
 </header>
 
 <main>
@@ -65,19 +66,21 @@ export default {
 		return /* html */`<p class="body-text">${body}</p>`;
 	},
 
-	[stdlibKeys.displayMath](body)
+	async [stdlibKeys.displayMath](body)
 	{
-		return String.raw/* html */`<p class="body-text" style="text-align: center; line-height: 0"><span>$$\begin{alignat*}{99}${parseMath(body)}\end{alignat*}$$</span></p>`;
+		const tex = String.raw`\begin{alignat*}{99}${parseMath(body)}\end{alignat*}`;
+
+		return /* html */`<p class="body-text" style="text-align: center; line-height: 0"><span>${await renderMath(tex, true)}</span></p>`;
 	},
 
-	[stdlibKeys.math](body)
+	async [stdlibKeys.math](body)
 	{
-		return String.raw`$${parseMath(body)}$`;
+		return renderMath(parseMath(body), false);
 	},
 
-	[stdlibKeys.inlineDisplayMath](body)
+	async [stdlibKeys.inlineDisplayMath](body)
 	{
-		return String.raw`$\displaystyle ${parseMath(body)}$`;
+		return renderMath(String.raw`\displaystyle ${parseMath(body)}`, false);
 	},
 
 	[stdlibKeys.text](body)

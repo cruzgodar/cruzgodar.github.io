@@ -14,7 +14,6 @@ import { Slider } from "/scripts/components/sliders.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
-import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
@@ -123,7 +122,7 @@ export default function()
 		onInput: onDropdownInput
 	});
 
-	typesetMath().then(() => geometriesDropdown.updateSizing());
+	geometriesDropdown.updateSizing();
 
 	function run()
 	{

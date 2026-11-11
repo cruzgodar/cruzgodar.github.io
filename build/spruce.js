@@ -1,7 +1,8 @@
 import { sitemap } from "../scripts/src/sitemap.js";
+import { renderMathInText } from "./renderMath.js";
 import { document } from "./spruceStdlib.js";
 
-export function bannerDocument(body)
+export async function bannerDocument(body)
 {
 	return /* html */`<div id="banner">
 	<div id="banner-small"></div>
@@ -10,7 +11,7 @@ export function bannerDocument(body)
 
 <div id="content-container">
 	<div id="content">
-		${document(body)}
+		${await document(body)}
 	</div>
 </div>`;
 }
@@ -84,9 +85,9 @@ export function galleryBlock(...data)
 //   coverPath: string
 // },
 // or alternately strings, in which case they're just treated as urls.
-export function imageLinks(data)
+export async function imageLinks(data)
 {
-	const html = data.map(item =>
+	const html = (await Promise.all(data.map(async item =>
 	{
 		if (typeof item === "string")
 		{
@@ -108,6 +109,10 @@ export function imageLinks(data)
 
 		const name = item.name ?? sitemap[url].title;
 
+		// A title can contain math ("Section 3.6: $u$-Substitution"), which has
+		// to be rendered where it's shown but left as written in the alt text.
+		const displayName = await renderMathInText(name);
+
 		if (item.forCard)
 		{
 			const slicedUrl = url.slice(0, url.lastIndexOf("/"));
@@ -116,8 +121,8 @@ export function imageLinks(data)
 			return /* html */`
 				<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" class="image-link">
 					<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? src}" alt="${name}" tabindex="1" />
-					
-					<p class="image-link-subtext">${name}</p>
+
+					<p class="image-link-subtext">${displayName}</p>
 				</a>
 			`;
 		}
@@ -130,10 +135,10 @@ export function imageLinks(data)
 		return /* html */`
 		<a href="${url}"${item.inNewTab ? " data-in-new-tab=\"1\"" : ""} class="image-link">
 			<img src="/graphics/general-icons/placeholder.png" data-src="${item.coverPath ?? imgSrc}" alt="${name}" tabindex="1" />
-			
-			<p class="image-link-subtext">${name}</p>
+
+			<p class="image-link-subtext">${displayName}</p>
 		</a>`;
-	}).join("");
+	}))).join("");
 
 	return /* html */`<div style="display: flex; justify-content: center; width: 100%;">
 	<div class="image-links">${html}</div>

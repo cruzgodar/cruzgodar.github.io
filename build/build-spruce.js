@@ -180,7 +180,9 @@ export default async function buildSpruceFile({
 	if (sitemap[parentFolder])
 	{
 		const indexHtml = getIndexHTML(title, firstParagraphText, parentFolder);
-		
+
 		await write(`${parentFolder}/index.html`, indexHtml);
 	}
+
+	return html;
 }

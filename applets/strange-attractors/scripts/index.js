@@ -3,7 +3,6 @@ import { DownloadButton, GenerateButton } from "/scripts/components/buttons.js";
 import { Checkbox } from "/scripts/components/checkboxes.js";
 import { TextBox } from "/scripts/components/textBoxes.js";
 import { $ } from "/scripts/src/main.js";
-import { typesetMath } from "/scripts/src/math.js";
 
 export default function()
 {
@@ -55,8 +54,6 @@ export default function()
 		maxValue: 3.6,
 		onEnter: run
 	});
-
-	typesetMath();
 
 	const maximumSpeedCheckbox = new Checkbox({
 		element: $("#maximum-speed-checkbox"),

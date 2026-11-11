@@ -343,6 +343,38 @@ mjx-container
 	width: fit-content;
 }
 
+/* Math is rendered to SVG at build time, so MathJax no longer runs here to
+   inject its own stylesheet --- these are the rules from it that its output
+   depends on. The browser's default for an inline svg is overflow: hidden,
+   which clips whatever a glyph hangs outside its box. The margin here loses to
+   the !important above, exactly as it did when MathJax was supplying it. */
+mjx-container[jax="SVG"]
+{
+	direction: ltr;
+	white-space: nowrap;
+}
+
+mjx-container[jax="SVG"] > svg
+{
+	overflow: visible;
+	min-height: 1px;
+	min-width: 1px;
+}
+
+mjx-container[display]
+{
+	display: block;
+	text-align: center;
+	justify-content: center;
+	margin: .7em 0;
+	padding: .3em 2px;
+}
+
+mjx-container[display][width="full"]
+{
+	display: flex;
+}
+
 .tex-holder
 {
 	position: relative;
