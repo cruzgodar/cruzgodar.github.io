@@ -444,7 +444,7 @@ Let's now return to the astroid example to see the improvement.
 
 @exc[Lagrange multipliers][[
 
-	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $\$2$ per square foot, while the other two sides and base will be made out of wood, costing $\$1$ per square foot. You have a budget of $\$24$ --- how large of a box can you build?
+	You've been tasked with building a rectangular beaver transport box. Since beavers can't jump, the box will have no lid. However, the front and back of the box must be protected from chewing and tail impacts, so they'll be made out of metal, costing $@$2$ per square foot, while the other two sides and base will be made out of wood, costing $@$1$ per square foot. You have a budget of $@$24$ --- how large of a box can you build?
 
 	@solution[[
 
@@ -454,7 +454,7 @@ Let's now return to the astroid example to see the improvement.
 			g(x, y, z) = xy + 4yz + 2xz - 24 = 0
 		$$
 
-		(assuming the area measured by $yz$ is what costs $\$2$ per square foot), we have
+		(assuming the area measured by $yz$ is what costs $@$2$ per square foot), we have
 
 		$$
 			\G f &= \lambda G g
@@ -583,7 +583,7 @@ $$
 $$
 
 That means that the value of $\mathcal{L}$ *is* the optimal value of $f$! We can finally conclude with our interpretation of $\lambda$: it's the rate of increase of the optimal value of $f$, relative to the constrant value $c$. If $f$ gives the profit to a company and $g(x, y) = c$ is its budget, both in dollars, then $\lambda$ is approximately the additional profit per additional dollar in the budget.
-
+ 
 
 
 @navButtons

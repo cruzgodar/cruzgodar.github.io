@@ -202,7 +202,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 	
 	$$
 		\int_a^b f(x)\,\d x = \left. \left[ \int f(x)\,\d x \right] \right|_a^b = F(b) - F(a).
-	$$	
+	$$
 	
 ]]
 
@@ -272,7 +272,7 @@ While we won't use Calculus III to quite the same extent in this course, it's st
 	
 	Let $$\sum_{n = 1}^\infty a_n$$ be a series.
 	
-	1. (The Divergence Test) If $$\lim_{n \to \infty} a_n \neq 0$, then $\sum_{n = 1}^\infty a_n$$ diverges.
+	1. (The Divergence Test) If $$\lim_{n \to \infty} a_n \neq 0$$, then $$\sum_{n = 1}^\infty a_n$$ diverges.
 	
 	2. (The Integral Test) If $a_n = f(n)$ for a positive, decreasing, integrable function $f$, then $$\sum_{n = 1}^\infty a_n$$ converges if and only if $$\int_1^\infty f(x)\,\d x$$ does.
 	

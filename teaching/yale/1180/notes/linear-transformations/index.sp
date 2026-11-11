@@ -418,11 +418,12 @@ In general, to find a basis for the image of a transformation $T$, first row red
 
 	@solution[[
 
-	We know that $S$ is definitely not one-to-one, because it has more columns than rows. But it is onto, since there are three pivot columns. Therefore, we could just take the standard basis for $#R#^3$, or more generally, we could take the columns corresponding to the pivot columns of the matrix:
+		We know that $S$ is definitely not one-to-one, because it has more columns than rows. But it is onto, since there are three pivot columns. Therefore, we could just take the standard basis for $#R#^3$, or more generally, we could take the columns corresponding to the pivot columns of the matrix:
 
-	$$
-		\left\{ [[ -3 ; 3 ; 0 ]], [[ 2 ; 0 ; -6 ]], [[  -3 ; 1 ; 1 ]] \right\}.
-	$$
+		$$
+			\left\{ [[ -3 ; 3 ; 0 ]], [[ 2 ; 0 ; -6 ]], [[  -3 ; 1 ; 1 ]] \right\}.
+		$$
+	]]
 
 ]]
 

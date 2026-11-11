@@ -52,7 +52,7 @@ It's the final section! We'll depart from the previous topics to examine a commo
 		y' + 3y &= -3e^{-3x} + 2 + 3e^{-3x} + 6x + 9
 		
 		&= 6x + 11.
-	$$	
+	$$
 	
 ]]
 
