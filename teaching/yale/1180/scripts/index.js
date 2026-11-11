@@ -287,6 +287,37 @@ export default async function load()
 				{ latex: raw`(16, 81, Y(16, 81))`, color: desmosColors.red, secret: true },
 			]
 		},
+
+		supplyDemandShocks:
+		{
+			bounds: { xmin: -1, xmax: 12, ymin: -1, ymax: 14 },
+
+			options: { expressionsCollapsed: false },
+
+			expressions:
+			[
+				...getDesmosSlider({ expression: "d = 0", min: -4, max: 4, step: 0.5, secret: false }),
+				...getDesmosSlider({ expression: "s = 0", min: -4, max: 4, step: 0.5, secret: false }),
+
+				{ latex: raw`y = 10 - x \{x \geq 0\} \{y \geq 0\}`, color: desmosColors.blue, lineStyle: "DASHED", secret: true },
+				{ latex: raw`y = x + 2 \{x \geq 0\} \{y \geq 0\}`, color: desmosColors.red, lineStyle: "DASHED", secret: true },
+
+				{ latex: raw`y = 10 + d - x \{x \geq 0\} \{y \geq 0\}`, color: desmosColors.blue, secret: true },
+				{ latex: raw`y = x + 2 - s \{x \geq 0\} \{y \geq 0\}`, color: desmosColors.red, secret: true },
+
+				...getDesmosPoint({
+					point: [4, 6],
+					color: desmosColors.black,
+					dragMode: desmosDragModes.NONE
+				}),
+
+				...getDesmosPoint({
+					point: [raw`4 + \frac{d + s}{2}`, raw`6 + \frac{d - s}{2}`],
+					color: desmosColors.purple,
+					dragMode: desmosDragModes.NONE
+				}),
+			]
+		},
 	});
 
 
