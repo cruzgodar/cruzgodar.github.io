@@ -568,7 +568,7 @@ $$
 
 That means $\lambda = \frac{\p \mathcal{L}}{\p c}$, so increasing $c$ by $1$ increases the value of $\mathcal{L}$ approximately $\lambda$. That means we've reduced the problem to understanding what the value of $\mathcal{L}$ actually means!
 
-To understand $mathcal{L}$, let's begin by thinking about a solution to the system $\G \mathcal{L} = \vec{0}$, say $(x^*, y^*)$. That solution depends on $c$ (for example, as a budget changes, so does the optimal way to spend it), so let's write $(x^*(c), y^*(c))$. Plugging it into $\mathcal{L}$, we have
+To understand $\mathcal{L}$, let's begin by thinking about a solution to the system $\G \mathcal{L} = \vec{0}$, say $(x^*, y^*)$. That solution depends on $c$ (for example, as a budget changes, so does the optimal way to spend it), so let's write $(x^*(c), y^*(c))$. Plugging it into $\mathcal{L}$, we have
 
 $$
 	\mathcal{L}(x^*(c), y^*(c), \lambda) &= f(x^*(c), y^*(c)) - \lambda (g(x^*(c), y^*(c)) - c)
