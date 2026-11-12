@@ -934,6 +934,19 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 /* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. */
 
+/*
+	Safari with edge-to-edge toolbars covers fixed elements that touch the edge of
+	the viewport with a flat sampled color where they'd show under the toolbars,
+	instead of drawing them. It doesn't do that for fixed elements inside an
+	ancestor that has (or is about to have) opacity, which is why the banner
+	showed under the toolbars only mid-transition. This keeps it showing there
+	all the time, without actually making anything translucent.
+*/
+.page:has(#banner)
+{
+	will-change: opacity;
+}
+
 #banner, #banner-small, #banner-large
 {
 	position: fixed;
