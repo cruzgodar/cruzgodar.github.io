@@ -106,6 +106,14 @@ function updateScrollDrivenBanner(minPadding, additionalPadding)
 		contentElement.parentElement.style.marginRight = `-${maxPadding}px`;
 		contentElement.parentElement.style.marginTop
 			= `calc(100vh - ${likelyWindowChromeHeight + 40 + minPadding}px)`;
+
+		// Until the card is fully expanded, it's shifted down by up to
+		// minPadding, so it would hang off the bottom of the page. That makes
+		// .page (whose overflow-x: hidden makes it a scroll container) actually
+		// overflow, and WebKit then clips the fixed banner to .page's box, which
+		// opens a strip of background next to the banner whenever a lateral
+		// page transition slides .page sideways. This leaves room for it.
+		contentElement.parentElement.style.paddingBottom = `${minPadding}px`;
 	}
 
 	setScrollDrivenClasses(true);
@@ -150,7 +158,6 @@ function updateScrollDrivenBanner(minPadding, additionalPadding)
 		#content-container.banner-scroll-driven::after
 		{
 			width: ${width}px;
-			left: calc(50% - ${width / 2}px);
 		}
 
 		@keyframes banner-card
@@ -228,6 +235,7 @@ function updateBanner()
 
 		contentElement.parentElement.style.marginTop
 			= `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+		contentElement.parentElement.style.removeProperty("padding-bottom");
 
 		delete contentElement.dataset.bannerLayout;
 	}
