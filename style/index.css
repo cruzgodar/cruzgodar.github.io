@@ -988,6 +988,87 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, .35);
 }
 
+/*
+	Scroll-driven banner. While the browser chrome is animating (notably iOS
+	Safari's toolbar collapsing), the main thread only learns the scroll position
+	a handful of times per second, so anything driven from a requestAnimationFrame
+	loop that reads scrollY stutters badly no matter how cheap it is. Instead, the
+	banner fade and the card expansion run as CSS scroll-driven animations of
+	opacity and transform, which the browser drives from the real scroll position.
+
+	The card's layout stays fixed at its fully expanded state (see banners.js),
+	and its background and shadow are drawn by pseudo-elements on the container
+	that start shrunk and grow to fill it. Their geometry and the scroll range
+	live in a generated stylesheet, since they depend on the window size.
+*/
+
+@keyframes banner-overlay-fade
+{
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+#banner.banner-scroll-driven::after
+{
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 20;
+	background: var(--background);
+	pointer-events: none;
+	animation-name: banner-overlay-fade;
+}
+
+#content-container.banner-scroll-driven
+{
+	position: relative;
+	isolation: isolate;
+}
+
+#content-container.banner-scroll-driven > #content
+{
+	background: none;
+	box-shadow: none;
+}
+
+#content-container.banner-scroll-driven::before,
+#content-container.banner-scroll-driven::after
+{
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	z-index: -1;
+	border-radius: 16px;
+	pointer-events: none;
+	transform-origin: 50% 0;
+	will-change: transform, opacity;
+}
+
+#content-container.banner-scroll-driven::before
+{
+	box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, .35);
+	animation-name: banner-card-shadow;
+}
+
+#content-container.banner-scroll-driven::after
+{
+	background: var(--background);
+	animation-name: banner-card;
+}
+
+#banner.banner-scroll-driven::after,
+#content-container.banner-scroll-driven::before,
+#content-container.banner-scroll-driven::after
+{
+	animation-duration: auto;
+	animation-fill-mode: both;
+	/* easeInOutQuad, matching the JS fallback. */
+	animation-timing-function: cubic-bezier(.45, 0, .55, 1);
+	animation-timeline: scroll(root block);
+	animation-range: normal var(--banner-scroll-range, 50vh);
+}
+
 #height-measurer
 {
 	height: 1vh;

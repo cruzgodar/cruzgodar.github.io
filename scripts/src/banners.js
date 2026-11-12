@@ -38,6 +38,135 @@ let bannerLoopRunning = false;
 
 let lastT = 0;
 
+
+
+// When the browser supports scroll-driven animations, the banner fade and card
+// expansion are left to CSS (see the banner-scroll-driven rules in index.css)
+// instead of being written here every frame. That isn't about the cost of this
+// loop -- it's tiny -- but about its input: while the browser chrome animates
+// (iOS Safari collapsing its toolbar, for instance), scrollY only updates a few
+// times a second, so anything computed from it here visibly crawls along at
+// that rate while the page itself scrolls smoothly. CSS scroll timelines are
+// driven from the real scroll position.
+const supportsScrollDrivenAnimations = typeof CSS !== "undefined"
+	&& CSS.supports?.("animation-timeline: scroll()");
+
+export function bannerIsScrollDriven()
+{
+	return supportsScrollDrivenAnimations && !siteSettings.reduceMotion;
+}
+
+// The content element the JS fallback last styled, so that switching to the
+// scroll-driven mode (e.g. turning reduce motion off) knows to undo it.
+let jsStyledContentElement = null;
+
+let scrollDrivenStyleElement = null;
+let scrollDrivenStyleKey = "";
+
+function setScrollDrivenClasses(enabled)
+{
+	bannerElement.classList.toggle("banner-scroll-driven", enabled);
+	contentElement.parentElement.classList.toggle("banner-scroll-driven", enabled);
+}
+
+function updateScrollDrivenBanner(minPadding, additionalPadding)
+{
+	const maxPadding = minPadding + additionalPadding;
+
+	if (jsStyledContentElement === contentElement)
+	{
+		jsStyledContentElement = null;
+
+		bannerElement.style.opacity = 1;
+		contentElement.style.removeProperty("box-shadow");
+		nameTextOpacity = 1;
+	}
+
+	// The layout is pinned at its fully expanded state -- because the
+	// container's negative margins grow exactly as fast as the content's
+	// padding, the text inside never actually moved, so only the card's
+	// background and shadow need to animate. The extra top padding used to be
+	// added as the card expanded; it's now there from the start, so the card is
+	// pulled up by that much to keep the text where it was.
+	//
+	// What was last written is remembered in a data attribute rather than read
+	// back from the style, which the browser is free to reserialize, so this
+	// only touches the layout when something has actually changed.
+	const layoutKey = `${minPadding},${additionalPadding},${likelyWindowChromeHeight}`;
+
+	if (contentElement.dataset.bannerLayout !== layoutKey)
+	{
+		contentElement.dataset.bannerLayout = layoutKey;
+
+		contentElement.style.paddingLeft = `${maxPadding}px`;
+		contentElement.style.paddingRight = `${maxPadding}px`;
+		contentElement.style.paddingTop = `${2 * minPadding}px`;
+
+		contentElement.parentElement.style.marginLeft = `-${maxPadding}px`;
+		contentElement.parentElement.style.marginRight = `-${maxPadding}px`;
+		contentElement.parentElement.style.marginTop
+			= `calc(100vh - ${likelyWindowChromeHeight + 40 + minPadding}px)`;
+	}
+
+	setScrollDrivenClasses(true);
+
+	const width = contentElement.offsetWidth;
+	const scrollRange = bannerMaxScroll / 1.3;
+
+	const key = `${width},${minPadding},${additionalPadding},${scrollRange}`;
+
+	// Not laid out yet, so there's nothing to scale.
+	if (!width)
+	{
+		return;
+	}
+
+	if (key === scrollDrivenStyleKey && scrollDrivenStyleElement?.isConnected)
+	{
+		return;
+	}
+
+	scrollDrivenStyleKey = key;
+
+	if (!scrollDrivenStyleElement?.isConnected)
+	{
+		scrollDrivenStyleElement = document.createElement("style");
+		document.head.appendChild(scrollDrivenStyleElement);
+	}
+
+	// At the start, the card is inset by additionalPadding on each side and
+	// minPadding on top, just like the JS version at t = 0. Scale and
+	// translation are both linear in t, so interpolating them with the same
+	// easing reproduces it exactly.
+	const startTransform = `translateY(${minPadding}px) scaleX(${(width - 2 * additionalPadding) / width})`;
+
+	scrollDrivenStyleElement.textContent = `
+		:root
+		{
+			--banner-scroll-range: ${scrollRange}px;
+		}
+
+		#content-container.banner-scroll-driven::before,
+		#content-container.banner-scroll-driven::after
+		{
+			width: ${width}px;
+			left: calc(50% - ${width / 2}px);
+		}
+
+		@keyframes banner-card
+		{
+			from { transform: ${startTransform}; }
+			to { transform: none; }
+		}
+
+		@keyframes banner-card-shadow
+		{
+			from { transform: ${startTransform}; opacity: 1; }
+			to { transform: none; opacity: 0; }
+		}
+	`;
+}
+
 function easeInOutQuad(x)
 {
 	return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
@@ -81,6 +210,29 @@ function updateBanner()
 		),
 		16
 	);
+
+	if (bannerIsScrollDriven())
+	{
+		updateScrollDrivenBanner(minPadding, additionalPadding);
+
+		updateBannerMarginBottom();
+
+		requestAnimationFrame(updateBanner);
+
+		return;
+	}
+
+	if (contentElement.parentElement.classList.contains("banner-scroll-driven"))
+	{
+		setScrollDrivenClasses(false);
+
+		contentElement.parentElement.style.marginTop
+			= `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+
+		delete contentElement.dataset.bannerLayout;
+	}
+
+	jsStyledContentElement = contentElement;
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
@@ -140,24 +292,31 @@ function updateBanner()
 
 
 
-	if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
-	{
-		contentElement.parentElement.style.marginBottom =
-			`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
-
-		// setTimeout(() => onResize(), 16);
-	}
-
-	else
-	{
-		contentElement.parentElement.style.marginBottom = 0;
-	}
+	updateBannerMarginBottom();
 
 
 
 	lastT = t;
 
 	requestAnimationFrame(updateBanner);
+}
+
+function updateBannerMarginBottom()
+{
+	const headerHeight = headerElement.offsetHeight;
+	const contentHeight = contentElement.offsetHeight;
+
+	const marginBottom = contentHeight < viewportHeight - headerHeight - 32
+		? `${(viewportHeight - headerHeight - contentHeight) / 2}px`
+		: "0px";
+
+	const container = contentElement.parentElement;
+
+	if (container.dataset.bannerMarginBottom !== marginBottom)
+	{
+		container.dataset.bannerMarginBottom = marginBottom;
+		container.style.marginBottom = marginBottom;
+	}
 }
 
 
@@ -249,6 +408,8 @@ async function loadBanner({
 	{
 		contentElement.parentElement.style.marginTop
 			= `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+
+		delete contentElement.dataset.bannerLayout;
 	}
 
 	setBannerFilepath(url, large);
