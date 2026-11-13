@@ -48,8 +48,22 @@ let lastT = 0;
 // times a second, so anything computed from it here visibly crawls along at
 // that rate while the page itself scrolls smoothly. CSS scroll timelines are
 // driven from the real scroll position.
+//
+// Desktop WebKit (macOS Safari, as of 27.2) supports them but doesn't draw them
+// properly: getComputedStyle reports values that track the scroll exactly, but
+// what reaches the screen lags far behind and snaps between stale values, so the
+// fade looks choppy and often stops short. The JS version is smooth there, and
+// desktop browsers don't have the collapsing-toolbar problem anyway, so it
+// stays on the JS version. Every iOS browser is WebKit too, and draws them
+// fine; iPadOS reports a Mac user agent, so touch points tell them apart.
+const isDesktopWebKit = typeof navigator !== "undefined"
+	&& /AppleWebKit/.test(navigator.userAgent)
+	&& !/Chrome|Chromium|Android/.test(navigator.userAgent)
+	&& navigator.maxTouchPoints === 0;
+
 const supportsScrollDrivenAnimations = typeof CSS !== "undefined"
-	&& CSS.supports?.("animation-timeline: scroll()");
+	&& CSS.supports?.("animation-timeline: scroll()")
+	&& !isDesktopWebKit;
 
 export function bannerIsScrollDriven()
 {

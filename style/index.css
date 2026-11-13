@@ -941,8 +941,14 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	ancestor that has (or is about to have) opacity, which is why the banner
 	showed under the toolbars only mid-transition. This keeps it showing there
 	all the time, without actually making anything translucent.
+
+	It has to go on body rather than .page: .page is a scroll container (its
+	overflow-x: hidden), and promoting it to a layer makes WebKit clip the fixed
+	banner to it, which shows up as the top of the banner being cut off while
+	iOS rubberbands past the top of the page, and as choppy scrolling in macOS
+	Safari.
 */
-.page:has(#banner)
+body:has(#banner)
 {
 	will-change: opacity;
 }
@@ -1041,6 +1047,12 @@ body > .WILSON_fullscreen-container .wilson-help-button
 #content-container.banner-scroll-driven
 {
 	display: grid;
+	/*
+		The pseudo-elements have a fixed width copied from #content, and with an
+		auto column that width would hold the column (and so #content) open,
+		keeping the card from ever getting narrower when the window shrinks.
+	*/
+	grid-template-columns: minmax(0, 1fr);
 	justify-items: center;
 	isolation: isolate;
 }
