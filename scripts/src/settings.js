@@ -1,7 +1,6 @@
-import anime from "../anime.js";
 import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardContainer, cardIsOpen } from "./cards.js";
-import { recreateDesmosGraphs } from "./desmos.js";
+import { hideDesmosGraphs, recreateDesmosGraphs, showDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
 	addStyle,
@@ -21,6 +20,89 @@ export const metaThemeColorElement = document.querySelector("#theme-color-meta")
 
 
 let themeToggles = 0;
+
+
+
+const settingsAnimationEasing = "cubic-bezier(.25, .1, .25, 1)";
+
+const runningRootVariableAnimations = {};
+
+let transitionsDisabledCount = 0;
+let transitionsDisabledStyle = null;
+
+// Animates one of the root's numeric CSS variables (--theme or --contrast,
+// which index.css registers as numbers so that they interpolate) from its
+// current value to newValue. Every theme color is derived from them, so this
+// animates the whole page without a view transition. The page's own CSS
+// transitions are turned off meanwhile so that nothing lags behind.
+async function animateRootVariable(name, newValue, duration)
+{
+	// Read before canceling, so that interrupting an animation picks up from
+	// wherever it had gotten to.
+	const oldValue = parseFloat(getComputedStyle(rootElement).getPropertyValue(name)) || 0;
+
+	runningRootVariableAnimations[name]?.cancel();
+
+	// The animation runs on top of this, and it's what's left once the
+	// animation is done.
+	rootElement.style.setProperty(name, newValue);
+
+	transitionsDisabledCount++;
+
+	if (!transitionsDisabledStyle)
+	{
+		transitionsDisabledStyle = addStyle(`
+			*:not(.page, #banner, .desmos-container)
+			{
+				transition: none !important;
+			}
+		`);
+	}
+
+	const animation = rootElement.animate(
+		[{ [name]: oldValue }, { [name]: newValue }],
+		{ duration, easing: settingsAnimationEasing }
+	);
+
+	runningRootVariableAnimations[name] = animation;
+
+	try
+	{
+		await animation.finished;
+	}
+
+	catch
+	{
+		// Canceled by a newer animation of the same variable, which takes it
+		// from here.
+	}
+
+	if (runningRootVariableAnimations[name] === animation)
+	{
+		delete runningRootVariableAnimations[name];
+	}
+
+	transitionsDisabledCount--;
+
+	if (transitionsDisabledCount === 0)
+	{
+		transitionsDisabledStyle.remove();
+		transitionsDisabledStyle = null;
+	}
+}
+
+// The browser toolbars are tinted with the theme-color meta tag, which isn't
+// something a CSS animation can reach, so this keeps it in step with --theme.
+function updateMetaThemeColor()
+{
+	const theme = parseFloat(getComputedStyle(rootElement).getPropertyValue("--theme")) || 0;
+
+	const channel = Math.round(255 + (24 - 255) * theme)
+		.toString(16)
+		.padStart(2, "0");
+
+	metaThemeColorElement.setAttribute("content", `#${channel}${channel}${channel}`);
+}
 
 
 const params = new URLSearchParams(window.location.search);
@@ -353,53 +435,47 @@ export async function toggleDarkTheme({
 		newChecked: siteSettings.darkTheme
 	});
 
-	recreateDesmosGraphs();
-
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
 	onThemeChange();
 
-	if (noAnimation || !document.startViewTransition)
+	if (noAnimation)
 	{
-		metaThemeColorElement.setAttribute(
-			"content",
-			siteSettings.darkTheme ? "#181818" : "#ffffff"
-		);
-
 		rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+
+		updateMetaThemeColor();
+
+		recreateDesmosGraphs();
+
+		return;
 	}
 
-	else
+	// The graphs can't follow the theme as it animates, so they fade out
+	// alongside it and are only recreated (and faded back in) once it's done.
+	const graphsHidden = hideDesmosGraphs();
+
+	let animating = true;
+
+	requestAnimationFrame(function syncMetaThemeColor()
 	{
-		anime({
-			targets: metaThemeColorElement,
-			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-			duration,
-			easing: "cubicBezier(.25, .1, .25, 1)",
-		}).finished.then(() =>
-		{
-			metaThemeColorElement.setAttribute(
-				"content",
-				siteSettings.darkTheme ? "#181818" : "#ffffff"
-			);
-		});
-		
-		const element = addStyle(`
-			::view-transition-old(root),
-			::view-transition-new(root)
-			{
-				animation-duration: ${duration}ms;
-				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
-			}
-		`);
+		updateMetaThemeColor();
 
-		document.startViewTransition(() =>
+		if (animating)
 		{
-			rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
-		});
+			requestAnimationFrame(syncMetaThemeColor);
+		}
+	});
 
-		setTimeout(() => element.remove(), duration);
-	}
+	await Promise.all([
+		animateRootVariable("--theme", siteSettings.darkTheme ? 1 : 0, duration),
+		graphsHidden
+	]);
+
+	animating = false;
+
+	updateMetaThemeColor();
+
+	recreateDesmosGraphs().then(showDesmosGraphs);
 }
 
 
@@ -455,28 +531,14 @@ export async function toggleIncreaseContrast({
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (noAnimation || !document.startViewTransition)
+	if (noAnimation)
 	{
 		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
 	}
 
 	else
 	{
-		const element = addStyle(`
-			::view-transition-old(root),
-			::view-transition-new(root)
-			{
-				animation-duration: ${duration}ms;
-				animation-timing-function: cubic-bezier(.25, .1, .25, 1);
-			}
-		`);
-
-		document.startViewTransition(() =>
-		{
-			rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
-		});
-
-		setTimeout(() => element.remove(), duration);
+		await animateRootVariable("--contrast", siteSettings.increaseContrast ? 1 : 0, duration);
 	}
 }
 
@@ -491,7 +553,9 @@ export async function toggleDistinguishColors({
 
 	if (!noAnimation)
 	{
-		recreateDesmosGraphs();
+		await hideDesmosGraphs();
+		await recreateDesmosGraphs();
+		await showDesmosGraphs();
 	}
 }
 

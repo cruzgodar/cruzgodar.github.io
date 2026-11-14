@@ -1038,18 +1038,32 @@ function onScroll()
 
 
 
-// Animates out and back in all the Desmos graphs. Used when switching themes.
+// Graphs are drawn with the theme and color settings baked in, so changing
+// either means recreating them. That's done hidden: hide them, recreate them,
+// then show them again.
+
+function getDesmosContainers()
+{
+	return Array.from(document.body.querySelectorAll(".desmos-container"));
+}
+
+export async function hideDesmosGraphs()
+{
+	await Promise.all(getDesmosContainers().map(element => changeOpacity({ element, opacity: 0 })));
+}
+
+export async function showDesmosGraphs()
+{
+	await Promise.all(getDesmosContainers().map(element => changeOpacity({ element, opacity: 1 })));
+}
+
 export async function recreateDesmosGraphs()
 {
-	const elements = Array.from(document.body.querySelectorAll(".desmos-container"));
-
-	if (elements)
+	// Recreating them isn't free even when there aren't any -- it costs a long
+	// frame -- so skip it entirely on pages without them.
+	if (getDesmosContainers().length)
 	{
-		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
-
 		await createDesmosGraphs(desmosData, true);
-
-		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}
 }
 

@@ -1,3 +1,22 @@
+/*
+	Registered as numbers so that they interpolate: the theme and contrast
+	toggles animate them directly with Element.animate (see settings.js), and
+	every color below is derived from them.
+*/
+@property --theme
+{
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 0;
+}
+
+@property --contrast
+{
+	syntax: "<number>";
+	inherits: true;
+	initial-value: 0;
+}
+
 :root
 {
 	--theme: 0;
