@@ -6,13 +6,48 @@
 	
 	At this point, please feel free to do row reduction with technology, like <a href="https://www.wolframalpha.com/">Wolfram Alpha</a> --- note that you should still be doing the setup and all the rest of the problem on your own.
 
-	In problems 3#, determine if the vectors are linearly dependent or independent. If they are dependent, find a nontrivial linear combination (meaning at least one coefficients is nonzero) equal to $\vec{0}$.
+	In problems 3#, determine if the vectors are linearly dependent or independent. If they are dependent, find a nontrivial linear combination (meaning at least one coefficient is nonzero) equal to $\vec{0}$.
 
 	#. $\vec{v_1} = [[ 1 ; 2 ; 3 ]], \ \vec{v_2} = [[ 1 ; 0 ; 2 ]], \ \vec{v_3} = [[ 1 ; 4 ; 4 ]]$.
 
+	**Solution:** Row reducing the matrix with these vectors as columns results in
+
+	$$
+		[[ 1, 0, 2 ; 0, 1, -1 ; 0, 0, 0 ]],
+	$$
+
+	and the lack of a third pivot column means these are linearly dependent. With $c_3 = t$, we have $c_1 = -2t$ and $c_2 = t$, so if $t = 1$,
+
+	$$
+		-2[[ 1 ; 2 ; 3 ]] + [[ 1 ; 0 ; 2 ]] + [[ 1 ; 4 ; 4 ]] = [[ 0 ; 0 ; 0 ]].
+	$$
+
 	#. $\vec{v_1} = [[ 1 ; 1 ; 2 ]], \ \vec{v_2} = [[ 2 ; 0 ; 3 ]], \ \vec{v_3} = [[ 4 ; - 1 ; 2 ]]$.
 
+	**Solution:** This time, the matrix reduces to the identity, so the only solution is $c_1 = c_2 = c_3 = 0$, and the vectors are linearly independent.
+
+	#. $\vec{v_1} = [[ 1 ; -1 ; 1 ]], \ \vec{v_2} = [[ 2 ; -9 ; 1 ]], \ \vec{v_3} = [[ 1 ; 1 ; 1 ]], \ \vec{v_4} = [[ 2 ; 0 ; 3 ]]$.
+
+	**Solution:** Since these are four vectors in $#R#^3$, they must be linearly dependent, but we still need to row reduce to find the linear combination. The matrix reduces to
+
+	$$
+		[[ 1, 0, 0, \frac{13}{2} ; 0, 1, 0, -1 ; 0, 0, 1, -\frac{5}{2} ]]
+	$$
+
+	The fourth column has no leading $1$, so we let $c_4 = t$, and with $t = 2$,
+
+	$$
+		-13[[ 1 ; -1 ; 1 ]] + 2[[ 2 ; -9 ; 1 ]] + 5[[ 1 ; 1 ; 1 ]] + 2[[ 2 ; 0 ; 3 ]] = [[ 0 ; 0 ; 0 ]].
+	$$
+
 	#. $\vec{v_1} = [[ 1 ; 5 ; 6 ; -10 ; \frac{17}{2} ]], \ \vec{v_2} = [[ 3 ; 1 ; 7 ; -100 ; 0]], \ \vec{v_3} = [[ 0 ; 0 ; 0 ; 0 ; 0 ]], \ \vec{v_4} = [[ 4 ; 1 ; 2 ; 0 ; 89 ]]$. (Please do this without technology!)
+
+	**Solution:** No row reduction necessary here! Since $\vec{v_3} = \vec{0}$, we can put a nonzero coefficient on it and zero on everything else:
+
+	$$
+		0\vec{v_1} + 0\vec{v_2} + 1\vec{v_3} + 0\vec{v_4} = \vec{0}.
+	$$
+
 
 
 	- - -
@@ -21,9 +56,35 @@
 
 	#. $\vec{v_1} = [[ 1 ; 2 ; 2 ]], \ \vec{v_2} = [[ 2 ; -1 ; 0 ]], \ \vec{v_3} = [[ 3 ; 1 ; 1 ]]$, and $\vec{w} = [[ 1 ; 2 ; 3 ]]$.
 
+	**Solution:** We can check both at once by placing the $\vec{v_i}$ as columns and augmenting with $\vec{w}$.
+
+	$$
+		[[ 1, 2, 3 | 1 ; 2, -1, 1 | 2 ; 2, 0, 1 | 3 ]]
+	$$
+
+	this row reduces to
+	
+	$$
+		[[ 1, 0, 0 | 2 ; 0, 1, 0 | 1 ; 0, 0, 1 | -1 ]];
+	$$
+
+	since the left side reduced to the identity, the vectors are linearly independent, and since there are three of them in $#R#^3$, that means the form a basis. Then the coefficients are
+
+	$$
+		\vec{w} = 2\vec{v_1} + \vec{v_2} - \vec{v_3}.
+	$$
+
 	#. $\vec{v_1} = [[ -1 ; 3 ; 0 ]], \ \vec{v_2} = [[ 1 ; 1 ; 1 ]], \ \vec{v_3} = [[ 2 ; 6 ; 3 ]]$, and $\vec{w} = [[ 1 ; 2 ; 3 ]]$.
 
-	
+	**Solution:** The matrix reduces to
+
+	$$
+		[[ 1, 0, 1 | \frac{1}{4} ; 0, 1, 3 | \frac{5}{4} ; 0, 0, 0 | \frac{7}{4} ]],
+	$$
+
+	so the vectors don't form a basis. Notably, the last row says $0 = \frac{7}{4}$, so $\vec{w}$ is not in the span of the $\vec{v}_i$.
+
+
 
 	- - -
 
@@ -35,13 +96,21 @@
 
 	> c) Draw a vector that is linearly dependent with both $\vec{v}$ and $\vec{w}$, but not with either of them alone.
 
-	
+	**Solution:**
+
+	> b) Vectors linearly dependent with $\vec{v}$ are a scalar multiples of it, so we want a multiple of $\vec{v}$, like $2\vec{v} = [[ 2 ; 6 ]]$. Any nonzero multiple of $\vec{v}$ points along the same line as $\vec{v}$, which isn't the line through $\vec{w}$, so it's linearly independent with $\vec{w}$. (The zero vector doesn't work, since it's linearly dependent with everything.)
+
+	> c) We want a vector $\vec{u}$ so that $\vec{u}$, $\vec{v}$, and $\vec{w}$ together are linearly dependent, but $\vec{u}$ isn't a multiple of $\vec{v}$ or of $\vec{w}$. One way to do that is
+
+	$$
+		\vec{u} = \vec{v} + \vec{w} = [[ 0 ; 4 ]],
+	$$
+
+	and any three vectors in $#R#^2$ are linearly dependent, so this works.
 
 	- - -
 
 	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : #R# \to #R#$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
-
-	
 
 	- - -
 
@@ -49,9 +118,75 @@
 
 	#. $T\left( [[ 1 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 3 ; 4 ]]$, $T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 3 ; 9 ]]$, and $\vec{v} = [[ 2 ; 3 ; 2 ]]$.
 
+	**Solution:** The columns of the matrix are $T(\vec{e_1})$, $T(\vec{e_2})$, and $T(\vec{e_3})$, so we need to write each $\vec{e_i}$ in terms of the inputs we know. We're given $T(\vec{e_2})$, and using linearity for the others,
+
+	$$
+		T\left( [[ 1 ; 0 ; 0 ]] \right) &= T\left( [[ 1 ; 1 ; 0 ]] \right) - T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]] - [[ 3 ; 4 ]] = [[ -2 ; -3 ]]
+
+		T\left( [[ 0 ; 0 ; 1 ]] \right) &= \frac{1}{3}T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 1 ; 3 ]],
+	$$
+
+	so the matrix for $T$ is
+
+	$$
+		A = [[ -2, 3, 1 ; -3, 4, 3 ]].
+	$$
+
+	Then
+
+	$$
+		T(\vec{v}) = [[ -2, 3, 1 ; -3, 4, 3 ]] [[ 2 ; 3 ; 2 ]] = [[ -4 + 9 + 2 ; -6 + 12 + 6 ]] = [[ 7 ; 12 ]].
+	$$
+
 	#. $T\left( [[ 1 ; 1 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 1 ; -1 ]] \right) = [[ -1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ]]$.
 
+	**Solution:** Adding and subtracting the two inputs gives
+
+	$$
+		[[ 1 ; 0 ]] &= \frac{1}{2}\left( [[ 1 ; 1 ]] + [[ 1 ; -1 ]] \right)
+
+		[[ 0 ; 1 ]] &= \frac{1}{2}\left( [[ 1 ; 1 ]] - [[ 1 ; -1 ]] \right),
+	$$
+
+	so by linearity,
+
+	$$
+		T\left( [[ 1 ; 0 ]] \right) &= \frac{1}{2}\left( [[ 1 ; 1 ]] + [[ -1 ; 1 ]] \right) = [[ 0 ; 1 ]]
+
+		T\left( [[ 0 ; 1 ]] \right) &= \frac{1}{2}\left( [[ 1 ; 1 ]] - [[ -1 ; 1 ]] \right) = [[ 1 ; 0 ]].
+	$$
+
+	The matrix for $T$ is then
+
+	$$
+		A = [[ 0, 1 ; 1, 0 ]],
+	$$
+
+	and
+
+	$$
+		T(\vec{v}) = [[ 0, 1 ; 1, 0 ]] [[ 2 ; 3 ]] = [[ 3 ; 2 ]].
+	$$
+
 	#. $T\left( [[ 0 ; 1 ]] \right) = 2$, $T\left( [[ 1 ; 3 ]] \right) = 7$, and $\vec{v} = [[ 2 ; 1 ]]$.
+
+	**Solution:** Since $T : #R#^2 \to #R#$, its matrix is $1 \times 2$. We already know $T(\vec{e_2}) = 2$, and
+
+	$$
+		T\left( [[ 1 ; 0 ]] \right) = T\left( [[ 1 ; 3 ]] \right) - 3T\left( [[ 0 ; 1 ]] \right) = 7 - 3 \cdot 2 = 1.
+	$$
+
+	The matrix for $T$ is therefore
+
+	$$
+		A = [[ 1, 2 ]],
+	$$
+
+	and
+
+	$$
+		T(\vec{v}) = [[ 1, 2 ]] [[ 2 ; 1 ]] = 4.
+	$$
 
 	- - -
 
@@ -67,17 +202,151 @@
 
 	> e) Let $R_\theta : #R#^2 \to #R#^2$ be the linear transformation that rotates its inputs an angle $\theta$ counterclockwise, where $\theta$ is a variable. Find a matrix for $R_\theta$.
 
+	**Solution:**
+
+	> a)
+
+	$$
+		R(\vec{v}) &= [[ -1 ; 1 ]]
+
+		R(\vec{w}) &= [[ -3 ; 2 ]].
+	$$
+
+	> b) Yes:
+
+	$$
+		R(3\vec{v}) = R\left( [[ 3 ; 3 ]] \right) = [[ -3 ; 3 ]] = 3[[ -1 ; 1 ]] = 3R(\vec{v}).
+	$$
+
+	Geometrically, stretching a vector and then rotating it gives the same result as rotating it and then stretching it.
+
+	> c) Yes:
+
+	$$
+		R(\vec{v} + \vec{w}) = R\left( [[ 3 ; 4 ]] \right) = [[ -4 ; 3 ]] = [[ -1 ; 1 ]] + [[ -3 ; 2 ]] = R(\vec{v}) + R(\vec{w}).
+	$$
+
+	Geometrically, rotating the whole parallelogram formed by $\vec{v}$ and $\vec{w}$ rotates its diagonal along with it.
+
+	> d) We're already given $R(\vec{e_1}) = [[ 0 ; 1 ]]$, and rotating $\vec{e_2}$ by $90^\circ$ gives $R(\vec{e_2}) = [[ -1 ; 0 ]]$. Placing these as columns, the matrix is
+
+	$$
+		[[ 0, -1 ; 1, 0 ]].
+	$$
+
+	> e) Rotating $\vec{e_1}$ counterclockwise by $\theta$ lands on the point of the unit circle at angle $\theta$, so $R_\theta(\vec{e_1}) = [[ \cos(\theta) ; \sin(\theta) ]]$. Similar logic for $\vec{e_2}$ gives that
+
+	$$
+		R_\theta(\vec{e_2}) = [[ -\sin(\theta) ; \cos(\theta) ]],
+	$$
+
+	so the matrix is
+
+	$$
+		[[ \cos(\theta), -\sin(\theta) ; \sin(\theta), \cos(\theta) ]].
+	$$
+
+	As a check, plugging in $\theta = 0$ gives the identity matrix, and $\theta = \frac{\pi}{2}$ gives exactly the matrix from part d.
+
 	- - -
 
 	Problems 4# concern the following situation. A beekeeper keeps $h$ beehives next to an orchard with $a$ acres of apple trees, and the two businesses help one another synergistically. For the amount of production these businesses are considering, the function $T$ sending $[[ h ; a ]]$ to $[[ \text{pounds of honey} ; \text{bushels of apples} ]]$ is a linear transformation.
 
 	#. For these two businesses, $10$ hives and $20$ acres produce $500$ pounds of honey and $1040$ bushels of apples, and $20$ hives and $10$ acres produce $700$ pounds of honey and $580$ bushels of apples. Use this to find the matrix for $T$ and interpret each of its four entries in context.
 
+	**Solution:** We're given $T$ on $[[ 10 ; 20 ]]$ and $[[ 20 ; 10 ]]$, so we need to combine those to get multiples of $\vec{e_1}$ and $\vec{e_2}$. Since $2[[ 20 ; 10 ]] - [[ 10 ; 20 ]] = [[ 30 ; 0 ]]$ and $2[[ 10 ; 20 ]] - [[ 20 ; 10 ]] = [[ 0 ; 30 ]]$,
+
+	$$
+		T\left( [[ 30 ; 0 ]] \right) &= 2[[ 700 ; 580 ]] - [[ 500 ; 1040 ]] = [[ 900 ; 120 ]]
+
+		T\left( [[ 0 ; 30 ]] \right) &= 2[[ 500 ; 1040 ]] - [[ 700 ; 580 ]] = [[ 300 ; 1500 ]].
+	$$
+
+	so
+
+	$$
+		T\left( [[ 1 ; 0 ]] \right) &= [[ 30 ; 4 ]]
+
+		T\left( [[ 0 ; 1 ]] \right) &= [[ 10 ; 50 ]].
+	$$
+
+	The matrix for $T$ is
+
+	$$
+		[[ 30, 10 ; 4, 50 ]].
+	$$
+
+	The first column means each hive produces $30$ pounds of honey and also adds $4$ bushels of apples to the orchard's harvest. The second column mean each acre of trees produces $50$ bushels of apples and also adds $10$ pounds to the beekeeper's honey. The diagonal entries are what each business produces on its own, and the off-diagonal entries are the ways each one helps the other.
+
 	#. The columns of the matrix for $T$ form a basis for $#R#^2$ (you don't need to show this). The two businesses would like to produce exactly $1000$ pounds of honey and $2080$ bushels of apples next year. Express that vector in this basis, and interpret what the two coefficients mean.
 
-	#. Honey sells for $\$5$ per pound and apples for $\$20$ per bushel. Since expanding operations means using less ideal terrain, maintaining $h$ hives costs the beekeeper $5h^2$ dollars per year, and maintaining $a$ acres costs the apple farmer $5a^2$ dollars per year. Find the beekeeper's profit $\pi_B(h, a)$ and the apple farmer's profit $\pi_A(h, a)$. Suppose the beekeeper maximizes $\pi_B(h, a)$ and uses the value of $h$ to determine the amount of hives to keep, and the apple farmer maximizes $\pi_A(h, a)$ and uses the value of $a$ to determine the amount of acres to plant. Find the total profit of both businesses.
+	**Solution:** We row reduce
 
-	#. Find the values of $h$ and $a$ that maximize the combined profit $\pi_B + \pi_A$, using the second derivative test to verify it's a maximum.
+	$$
+		[[ 30, 10 | 1000 ; 4, 50 | 2080 ]]
+	$$
+
+	to find
+
+	$$
+		[[ 1, 0 | 20 ; 0, 1 | 40 ]],
+	$$
+
+	so $20$ hives and $40$ acres of trees.
+
+	#. Honey sells for $\$5$ per pound and apples for $\$20$ per bushel. Since expanding operations means using less ideal terrain, maintaining $h$ hives costs the beekeeper $5h^2$ dollars per year, and maintaining $a$ acres costs the apple farmer $5a^2$ dollars per year. Find the beekeeper's profit $\pi_B(h, a)$ and the apple farmer's profit $\pi_A(h, a)$. Suppose the beekeeper maximizes $\pi_B(h, a)$ by treating $a$ as a constant and uses the value of $h$ to determine the amount of hives to keep, and the apple farmer maximizes $\pi_A(h, a)$ by treating $h$ as a constant and uses the value of $a$ to determine the amount of acres to plant. Find the total profit of both businesses.
+
+	**Solution:** By the previous problem, the beekeeper makes $30h + 10a$ pounds of honey and the orchard grows $4h + 50a$ bushels of apples. Each profit is revenue minus cost:
+
+	$$
+		\pi_B(h, a) &= 5(30h + 10a) - 5h^2 = 150h + 50a - 5h^2
+
+		\pi_A(h, a) &= 20(4h + 50a) - 5a^2 = 80h + 1000a - 5a^2.
+	$$
+
+	The critical points are
+
+	$$
+		p/ph \left[ \pi_B(h, a) \right] = 150 - 10h = 0,
+	$$
+
+	so $h = 15$, and
+
+	$$
+		p/pa \left[ \pi_A(h, a) \right] = 1000 - 10a = 0,
+	$$
+
+	so $a = 100$.
+
+	#. Now suppose the businesses cooperate. Find the values of $h$ and $a$ that maximize the combined profit $\pi_B + \pi_A$, using the second derivative test to verify it's a maximum.
+
+	**Solution:** The combined profit is
+
+	$$
+		\pi(h, a) = \pi_B(h, a) + \pi_A(h, a) = 230h + 1050a - 5h^2 - 5a^2,
+	$$
+
+	with gradient
+
+	$$
+		\G \pi = \left< 230 - 10h,\ 1050 - 10a \right>.
+	$$
+
+	That's zero only at $(h, a) = (23, 105)$. The second partials are $\pi_{hh} = -10$, $\pi_{aa} = -10$, and $\pi_{ha} = 0$, so
+
+	$$
+		D = (-10)(-10) - 0^2 = 100 > 0,
+	$$
+
+	and since $\pi_{hh} < 0$, the critical point is a local maximum. It's the only critical point of a function defined on all of $#R#^2$ whose graph is a downward-opening paraboloid, so it's the absolute maximum too. The combined profits are
+
+	$$
+		\Pi(15, 100) &= 57{,}325
+
+		\Pi(23, 105) &= 57{,}770,
+	$$
+
+	so coordinating earns the two businesses $\$445$ more per year in total.
 
 	- - -
 
