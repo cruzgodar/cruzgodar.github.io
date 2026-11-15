@@ -233,16 +233,13 @@ pre code.highlightable
 	-o-tab-size: 4;
 }
 
-
-
-img
-{
-	transform: translateZ(0);
-	perspective: 1000;
-	
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-}
+/*
+	Don't force images onto their own compositing layers (e.g. with translateZ(0)
+	and backface-visibility: hidden). That was once a fix for images flickering
+	on iOS, but since iOS 26, WebKit doesn't give offscreen layers a backing store
+	until they're nearly visible, so fast scrolling shows blank images (shadows
+	and all) that pop in a moment late.
+*/
 
 
 
