@@ -7,7 +7,9 @@ import {
 	desmosPointStyles,
 	getDesmosPoint,
 	getDesmosSlider,
-	recreateDesmosGraphs
+	hideDesmosGraphs,
+	recreateDesmosGraphs,
+	showDesmosGraphs
 } from "/scripts/src/desmos.js";
 import { addHoverEventWithScale } from "/scripts/src/hoverEvents.js";
 import { pageUrl, raw } from "/scripts/src/main.js";
@@ -293,7 +295,12 @@ export default async function load()
 
 	setOnLoadExternalCard((card, id) =>
 	{
-		setTimeout(recreateDesmosGraphs, 600);
+		setTimeout(async () =>
+		{
+			await hideDesmosGraphs();
+			await recreateDesmosGraphs();
+			await showDesmosGraphs();
+		}, 600);
 
 		const buttons = card.querySelectorAll(".text-button");
 

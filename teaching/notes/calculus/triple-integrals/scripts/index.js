@@ -1,7 +1,6 @@
 import {
 	createDesmosGraphs,
 	desmosColors,
-	getColorLatexExpressions,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -48,7 +47,11 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f_R(x, y, z) \geq 0 : 1 - P(x, y, z), f_R(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f_R(x, y, z) \leq 0 : 1 - P(x, y, z), f_R(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R", blue: "B", purple: "P" },
+					secret: true
+				},
 			]
 		},
 
@@ -69,7 +72,15 @@ export default function()
 
 				{ latex: raw`x^3 - 1 \leq z \leq y - x^3 \{ x \geq 0 \} \{ y \leq 1 \}`, colorLatex: "C" },
 
-				...getColorLatexExpressions()
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
@@ -90,7 +101,15 @@ export default function()
 
 				{ latex: raw`x^2 + y \leq z \leq 1 \{y \geq 0\}`, colorLatex: "C" },
 
-				...getColorLatexExpressions()
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
@@ -111,7 +130,15 @@ export default function()
 
 				{ latex: raw`x - 1 \leq z \leq 6 - x^2 - y^2 \{ x^2 + y^2 \leq 4 \}`, colorLatex: "C" },
 
-				...getColorLatexExpressions()
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
@@ -193,7 +220,15 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = x + y - \frac{1}{2}z`, hidden: true },
 
-				...getColorLatexExpressions()
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
@@ -324,7 +359,11 @@ export default function()
 				{ latex: raw`R(x, y, z) = \{ f_R(x, y, z) \geq 0 : 1 - P(x, y, z), f_R(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B(x, y, z) = \{ f_R(x, y, z) \leq 0 : 1 - P(x, y, z), f_R(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R", blue: "B", purple: "P" },
+					secret: true
+				},
 			]
 		},
 

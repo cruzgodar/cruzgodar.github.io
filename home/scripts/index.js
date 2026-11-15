@@ -1,6 +1,6 @@
 import { disableLinks } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
-import { nameTextOpacity } from "/scripts/src/banners.js";
+import { bannerIsScrollDriven, nameTextOpacity } from "/scripts/src/banners.js";
 import {
 	$
 } from "/scripts/src/main.js";
@@ -21,8 +21,20 @@ export default function()
 			return;
 		}
 
-		cruzTextElement.parentNode.style.opacity = nameTextOpacity;
-		godarTextElement.parentNode.style.opacity = nameTextOpacity;
+		// When the banner is scroll-driven, so is the name text (see the
+		// home page's stylesheet) -- setting it from here would lag behind
+		// the scroll while the browser chrome animates.
+		const scrollDriven = bannerIsScrollDriven();
+
+		for (const element of [cruzTextElement, godarTextElement])
+		{
+			element.parentNode.classList.toggle("banner-scroll-driven", scrollDriven);
+
+			if (!scrollDriven)
+			{
+				element.parentNode.style.opacity = nameTextOpacity;
+			}
+		}
 
 		requestAnimationFrame(updateNameTextOpacity);
 	}

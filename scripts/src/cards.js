@@ -63,6 +63,129 @@ export let scrollBeforeCard = 0;
 
 
 
+// iOS Safari only re-tints its status bar when an opaque fixed element is added or
+// removed, and it briefly shows that element's color while it's there. This adds
+// one for a couple of frames in the current html background color, which is what
+// the status bar should become, and blends it so that it doesn't change the page.
+// It sits under the card and stops halfway down, since one that reaches the bottom
+// shows its color in the toolbar too.
+function refreshBrowserBarTint()
+{
+	if (!browserIsIos)
+	{
+		return;
+	}
+
+	const element = document.createElement("div");
+	element.style.cssText = `
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 50%;
+		z-index: 1999;
+		pointer-events: none;
+		mix-blend-mode: ${siteSettings.darkTheme ? "lighten" : "darken"};
+	`;
+	element.style.backgroundColor = getComputedStyle(document.documentElement).backgroundColor;
+	document.body.appendChild(element);
+
+	requestAnimationFrame(() => requestAnimationFrame(() => element.remove()));
+}
+
+
+
+// The height of the screen in the current orientation. iOS keeps screen.width and
+// screen.height in portrait, and outerHeight doesn't reliably include all of the
+// window chrome on devices.
+function getScreenHeight()
+{
+	const portrait = window.innerHeight >= window.innerWidth;
+
+	return portrait
+		? Math.max(window.screen.width, window.screen.height)
+		: Math.min(window.screen.width, window.screen.height);
+}
+
+// On iOS, fixed elements are cut off where the bottom toolbar starts, so the card
+// container is absolutely positioned over the current scroll position instead.
+// It keeps the size the fixed version would have so that the card scrolls within
+// the same bounds, and padding extends it under the toolbar without changing them.
+let cardContainerTop = 0;
+
+function positionCardContainer()
+{
+	cardContainerTop = 0;
+
+	if (!browserIsIos)
+	{
+		return;
+	}
+
+	resetCardContainerPosition();
+	cardContainer.style.top = "0";
+
+	const rect = cardContainer.getBoundingClientRect();
+
+	cardContainerTop = window.scrollY + rect.top;
+
+	cardContainer.style.position = "absolute";
+	cardContainer.style.marginTop = "0";
+	cardContainer.style.height = `${rect.height}px`;
+	cardContainer.style.paddingBottom = `${Math.max(getScreenHeight() - rect.bottom, 0)}px`;
+	cardContainer.style.overscrollBehavior = "contain";
+
+	// Stops things like tapping the status bar from scrolling the page out from under it.
+	document.documentElement.style.overflow = "hidden";
+}
+
+// How far the container has to move down to be entirely off-screen. On iOS, it
+// reaches under the toolbar, past the bottom of the viewport.
+function getCardOffscreenDistance()
+{
+	return browserIsIos ? getScreenHeight() : window.innerHeight;
+}
+
+// The window chrome can grow or shrink while a card is open, which changes the size
+// the fixed container would have. Resizes during the opening animation are handled
+// once it's done.
+let cardContainerNeedsUpdate = false;
+
+function updateOpenCardContainer()
+{
+	if (!browserIsIos || !cardIsOpen)
+	{
+		cardContainerNeedsUpdate = false;
+		return;
+	}
+
+	if (cardIsAnimating)
+	{
+		cardContainerNeedsUpdate = true;
+		return;
+	}
+
+	cardContainerNeedsUpdate = false;
+
+	const scroll = cardContainer.scrollTop;
+
+	positionCardContainer();
+	cardContainer.style.top = `${cardContainerTop}px`;
+	cardContainer.scrollTop = scroll;
+}
+
+function resetCardContainerPosition()
+{
+	cardContainer.style.position = "";
+	cardContainer.style.marginTop = "";
+	cardContainer.style.height = "";
+	cardContainer.style.paddingBottom = "";
+	cardContainer.style.overscrollBehavior = "";
+	document.documentElement.style.overflow = "";
+}
+
+
+
 export function initCards()
 {
 	for (const element of $$("[data-card-id]"))
@@ -144,7 +267,8 @@ export async function openCard({
 
 	cardContainer.style.display = "flex";
 	cardContainer.style.opacity = 1;
-	cardContainer.style.top = "100vh";
+	positionCardContainer();
+	cardContainer.style.top = `${cardContainerTop + getCardOffscreenDistance()}px`;
 	cardContainer.style.transform = "";
 
 
@@ -228,13 +352,13 @@ export async function openCard({
 	if (siteSettings.reduceMotion)
 	{
 		cardContainer.style.opacity = 0;
-		cardContainer.style.top = 0;
+		cardContainer.style.top = `${cardContainerTop}px`;
 	}
 
 	await Promise.all([
 		anime({
 			targets: cardContainer,
-			top: 0,
+			top: cardContainerTop,
 			opacity: 1,
 			duration: animationTime,
 			easing: openEasing,
@@ -271,7 +395,13 @@ export async function openCard({
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
 	cardContainer.scrollTo(0, 0);
+	refreshBrowserBarTint();
 	cardIsAnimating = false;
+
+	if (cardContainerNeedsUpdate)
+	{
+		updateOpenCardContainer();
+	}
 
 	setScroll();
 }
@@ -306,7 +436,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 	}
 
 	const containerOldScroll = cardContainer.scrollTop;
-	const totalHeightToMove = containerOldScroll + window.innerHeight + 32;
+	const totalHeightToMove = containerOldScroll + getCardOffscreenDistance() + 32;
 
 	const hidePromise = siteSettings.reduceMotion
 		? anime({
@@ -322,7 +452,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 			cardContainer.scrollTo(0, scroll);
 
 			const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
-			cardContainer.style.top = `${remainingHeight}px`;
+			cardContainer.style.top = `${cardContainerTop + remainingHeight}px`;
 		}, animationTime, closeEasing);
 
 	await Promise.all([
@@ -367,6 +497,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 	document.documentElement.style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
+	resetCardContainerPosition();
 
 	pageElement.appendChild(currentCard);
 
@@ -380,6 +511,7 @@ export async function closeCard(animationTime = cardAnimationTime)
 	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
 	document.documentElement.removeEventListener("pointerup", handlePointerUpEvent);
 
+	refreshBrowserBarTint();
 	cardIsAnimating = false;
 
 	setScroll();
@@ -456,7 +588,8 @@ export async function openZoomCard({
 
 	cardContainer.style.display = "flex";
 	cardContainer.style.opacity = 0.002;
-	cardContainer.style.top = 0;
+	positionCardContainer();
+	cardContainer.style.top = `${cardContainerTop}px`;
 	cardContainer.style.transform = "";
 
 	currentCard = document.querySelector(`#${id}-card`);
@@ -592,7 +725,13 @@ export async function openZoomCard({
 	currentCard.setAttribute("tabindex", "0");
 	currentCard.focus();
 	cardContainer.scrollTo(0, 0);
+	refreshBrowserBarTint();
 	cardIsAnimating = false;
+
+	if (cardContainerNeedsUpdate)
+	{
+		updateOpenCardContainer();
+	}
 }
 
 export async function closeZoomCard(animationTime = cardAnimationTime * .75)
@@ -672,6 +811,7 @@ export async function closeZoomCard(animationTime = cardAnimationTime * .75)
 	document.documentElement.style.backgroundColor = "var(--background)";
 
 	cardContainer.style.display = "none";
+	resetCardContainerPosition();
 
 	pageElement.appendChild(currentCard);
 
@@ -685,6 +825,7 @@ export async function closeZoomCard(animationTime = cardAnimationTime * .75)
 	document.documentElement.removeEventListener("pointerdown", handlePointerDownEvent);
 	document.documentElement.removeEventListener("pointerup", handlePointerUpEventZoom);
 
+	refreshBrowserBarTint();
 	cardIsAnimating = false;
 }
 
@@ -721,6 +862,8 @@ function handlePointerUpEventZoom(e)
 
 export function resizeCard()
 {
+	updateOpenCardContainer();
+
 	if (cardIsOpen)
 	{
 		const rect = currentCard.getBoundingClientRect();

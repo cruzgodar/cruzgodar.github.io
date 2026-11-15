@@ -1,4 +1,4 @@
-import { hsvToHex } from "../applets/applet.js";
+import { hexToRgb, hsvToHex } from "../applets/applet.js";
 import { changeOpacity } from "./animation.js";
 import { cardContainer } from "./cards.js";
 import { enterFullscreen, exitFullscreen, isFullscreen } from "./fullscreen.js";
@@ -366,6 +366,21 @@ export async function createDesmosGraphs(desmosDataInitializer = desmosData, rec
 
 		for (const expression of data[key].expressions)
 		{
+			if (expression.type)
+			{
+				if (expression.type === "colorLatex")
+				{
+					expression.latex = getDesmosColorLatex(expression.data);
+					delete expression.type;
+					delete expression.data;
+				}
+
+				else
+				{
+					throw new Error("Unknown special constructor type");
+				}
+			}
+
 			if (expression.color && Object.values(desmosColors).includes(expression.color))
 			{
 				expression.color = getDesmosColor(
@@ -1023,18 +1038,32 @@ function onScroll()
 
 
 
-// Animates out and back in all the Desmos graphs. Used when switching themes.
+// Graphs are drawn with the theme and color settings baked in, so changing
+// either means recreating them. That's done hidden: hide them, recreate them,
+// then show them again.
+
+function getDesmosContainers()
+{
+	return Array.from(document.body.querySelectorAll(".desmos-container"));
+}
+
+export async function hideDesmosGraphs()
+{
+	await Promise.all(getDesmosContainers().map(element => changeOpacity({ element, opacity: 0 })));
+}
+
+export async function showDesmosGraphs()
+{
+	await Promise.all(getDesmosContainers().map(element => changeOpacity({ element, opacity: 1 })));
+}
+
 export async function recreateDesmosGraphs()
 {
-	const elements = Array.from(document.body.querySelectorAll(".desmos-container"));
-
-	if (elements)
+	// Recreating them isn't free even when there aren't any -- it costs a long
+	// frame -- so skip it entirely on pages without them.
+	if (getDesmosContainers().length)
 	{
-		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
-
 		await createDesmosGraphs(desmosData, true);
-
-		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}
 }
 
@@ -1321,13 +1350,15 @@ export function getColored3DCurve({
 
 
 
-export function getColorLatexExpressions(expressionName = "C")
-{
-	return [
-		{ latex: raw`P(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
-		{ latex: raw`R(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
-		{ latex: raw`B(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+function getDesmosColorLatex({
+	expressionName,
+	red,
+	blue,
+	purple,
+}) {
+	const redRgb = hexToRgb(getDesmosColor(desmosColors.red, true, false, false));
+	const blueRgb = hexToRgb(getDesmosColor(desmosColors.blue, true, false, false));
+	const purpleRgb = hexToRgb(getDesmosColor(desmosColors.purple, true, false, false));
 
-		{ latex: raw`${expressionName} = \rgb(204R(x, y, z) + 40B(x, y, z) + 122P(x, y, z), 40R(x, y, z) + 122B(x, y, z) + 40P(x, y, z), 40R(x, y, z) + 204B(x, y, z) + 205P(x, y, z))`, secret: true },
-	];
+	return raw`${expressionName} = \rgb(${redRgb[0]}${red}(x, y, z) + ${blueRgb[0]}${blue}(x, y, z) + ${purpleRgb[0]}${purple}(x, y, z), ${redRgb[1]}${red}(x, y, z) + ${blueRgb[1]}${blue}(x, y, z) + ${purpleRgb[1]}${purple}(x, y, z), ${redRgb[2]}${red}(x, y, z) + ${blueRgb[2]}${blue}(x, y, z) + ${purpleRgb[2]}${purple}(x, y, z))`;
 }

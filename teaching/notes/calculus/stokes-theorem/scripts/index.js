@@ -258,7 +258,11 @@ export default function()
 				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
 				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
 
-				{ latex: raw`C = \rgb(204R_1(x, y, z) + 40B_1(x, y, z) + 122P_1(x, y, z), 40R_1(x, y, z) + 122B_1(x, y, z) + 40P_1(x, y, z), 40R_1(x, y, z) + 204B_1(x, y, z) + 205P_1(x, y, z))`, secret: true },
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 

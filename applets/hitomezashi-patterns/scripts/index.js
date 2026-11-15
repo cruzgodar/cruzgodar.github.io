@@ -58,7 +58,7 @@ export default function()
 	const drawBoundariesCheckbox = new Checkbox({
 		element: $("#draw-boundaries-checkbox"),
 		name: "Draw boundaries",
-		checked: true,
+		checked: false,
 		onInput: onCheckDrawBoundariesCheckbox
 	});
 

@@ -1,0 +1,84 @@
+### card homework-9 "Homework 9"
+	
+	*Due Sunday, November 23rd at 11:59 PM*
+	
+	Complete the following problems and submit them as a PDF to Gradescope. You should show enough work that there is no question about the mathematical process used to obtain your answers, and so that your peers in the class could easily follow along. I encourage you to collaborate with your classmates, so long as you write up your solutions independently. Using AI tools to assist with the homework is not permitted.
+
+	- - -
+
+	In problems 4#, do the following:
+
+	> a) Find the matrix for the given transformation $T$.
+
+	> b) Determine if $T$ is one-to-one. If it is not, find a basis for $\ker T$.
+
+	> c) Determine if $T$ is onto and find a basis for $\image T$.
+
+	> d) If $T$ is invertible, find a formula for $T^{-1}$.
+
+	#.
+
+	$$
+		T\left( [[ x ; y ]] \right) = [[ -2x + y ; -5x + 3y ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ a ; b ; c ; d ]] \right) = [[ a + 2b - c ; 2b + c - d ]].
+	$$
+
+	#.
+
+	$$
+		T\left( [[ x ; y ; z ]] \right) = [[ 2x + y - z ; -3x - y ; y - 3z ]].
+	$$
+
+	#.
+
+	$$
+		T\left( x \right) = [[ x ; 2x ; 3x ; 0 ]].
+	$$
+
+	- - -
+
+	Problems 4# concern the following situation. Suppose when pizzas sell for $p$ dollars each, New Haven residents want to buy
+	$$
+		q = 10 - p + d
+	$$
+	
+	thousand pizzas per week, and pizza restaurants want to sell
+	
+	$$
+		q = p - 2 + s
+	$$
+
+	thousand pizzas per week. The market settles at the equilibrium price, i.e. the one where these two expressions for $q$ are equal. The variables $d$ and $s$ are called **shocks**. If $d > 0$, buyers demand $d$ thousand more pizzas than usual, regardless of price (for example, because a new restaurant opened). If $s > 0$, restaurants are willing to sell $s$ thousand more pizzas, regardless of price. Both $d$ and $s$ can be negative.
+
+	#. Find the equilibrium price $p(d, s)$ and quantity $q(d, s)$ of pizzas sold (in thousands), both in terms of $d$ and $s$.
+	
+	#. Let $T : #R#^2 \to #R#^2$ be given by
+	
+	$$
+		T\left( [[ d ; s ]] \right) = \left[ \begin{array}{c} p(d, s) - p(0, 0) \\ q(d, s) - q(0, 0) \end{array} \right],
+	$$
+	
+	i.e. the change in the equilibrium price and quantity when there are shocks $d$ and $s$. Find the matrix $A$ for $T$, and then find $A^{-1}$.
+	
+	#. Economists typically can't observe shocks directly, only prices and quantities. If the price of pizza in New Haven rose by $\$1$ last week and the number of pizzas sold fell by 3 thousand, what shocks occurred?
+	
+	#. Suppose you only have data on quantities, not prices. Let $Q : #R#^2 \to #R#$ be defined by
+	
+	$$
+		Q\left( [[ d ; s ]] \right) = q(d, s) - q(0, 0),
+	$$
+	
+	so its matrix is just the second row of the matrix for $T$. Find a basis for $\ker Q$. Explain in context what the kernel means, and specifically why it is a problem for determining shocks.
+
+	- - -
+
+	#. How do you feel about this material and these questions? Is there anything in particular that you would like to focus on going forward?
+
+	#. Choose up to three questions (and at least one) on which you would like detailed feedback.
+
+###

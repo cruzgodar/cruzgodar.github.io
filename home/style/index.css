@@ -15,6 +15,36 @@ header
 	-webkit-user-select: none;
 }
 
+/*
+	The name fades out over the first part of the banner's scroll range, the
+	same curve as the JS fallback's 1 - min(1.5t, 1) with t eased by
+	easeInOutQuad, sampled since it isn't a single cubic.
+*/
+@keyframes name-text-fade
+{
+	0% { opacity: 1; }
+	10% { opacity: .989; }
+	20% { opacity: .958; }
+	30% { opacity: .905; }
+	40% { opacity: .832; }
+	50% { opacity: .737; }
+	60% { opacity: .622; }
+	70% { opacity: .485; }
+	80% { opacity: .328; }
+	90% { opacity: .155; }
+	100% { opacity: 0; }
+}
+
+.name-text-container.banner-scroll-driven
+{
+	animation-name: name-text-fade;
+	animation-duration: auto;
+	animation-fill-mode: both;
+	animation-timing-function: linear;
+	animation-timeline: scroll(root block);
+	animation-range: normal calc(var(--banner-scroll-range, 50vh) * .5918);
+}
+
 
 .name-text
 {

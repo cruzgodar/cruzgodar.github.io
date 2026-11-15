@@ -45,6 +45,8 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	{ url: "homework-5", forCard: true, name: "Problem Set 5" },
 	{ url: "homework-6", forCard: true, name: "Problem Set 6" },
 	{ url: "homework-7", forCard: true, name: "Problem Set 7" },
+	{ url: "homework-8", forCard: true, name: "Problem Set 8" },
+	{ url: "homework-9", forCard: true, name: "Problem Set 9" },
 ])
 
 
@@ -56,6 +58,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	{ url: "exams/practice-midterm-1/practice-midterm-1.pdf", name: "Practice Midterm 1" },
 	{ url: "exams/practice-midterm-1-solutions/practice-midterm-1-solutions.pdf", name: "Practice Midterm 1 Solutions" },
 	{ url: "exams/midterm-1-solutions/midterm-1-solutions.pdf", name: "Midterm 1 Solutions" },
+	{ url: "exams/practice-midterm-2/practice-midterm-2.pdf", name: "Practice Midterm 2" },
 ])
 
 @externalCard{homework-1}
