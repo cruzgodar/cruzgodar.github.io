@@ -459,7 +459,7 @@ $$
 
 Just like the column space, we'll have a similar name and interpretation for this set.
 
-### def "kernel / null space"
+@def[kernel / null space][[
 
 	Let $T : #R#^n \to #R#^m$ be a linear transformation. The **kernel** of $T$, also called its **null space**, is the set
 
@@ -467,11 +467,11 @@ Just like the column space, we'll have a similar name and interpretation for thi
 		\ker T = \left\{ \vec{v} \in #R#^n \mid T\left( \vec{v} \right) = \vec{0} \right\}.
 	$$
 
-###
+]]
 
 The zero vector is always in the kernel of any linear transformation, and a kernel is always the span of some set of vectors --- as an aside, we say the span of the empty set is just the set containing the zero vector, so even if $\ker T = \left\{ \vec{0} \right\}$, $\ker T = \span \left\{ \right\}$.
 
-### exc "one-to-one and onto"
+@exc[one-to-one and onto][[
 
 	Again, let $S : #R#^5 \to #R#^3$ be defined by
 
@@ -489,20 +489,20 @@ The zero vector is always in the kernel of any linear transformation, and a kern
 
 	2. The number of vectors in a basis for a space $V$ is called that space's **dimension**, written $\dim V$. Explain why $\dim \ker S + \dim \image S = \dim #R#^5$, where $#R#^5$ is the domain of $S$. Do you think this will remain true for any linear transformation?
 
-	### solution
+	@solution[[
 
-	This time, we just act as though we were solving a system of equations, so we let non-pivot columns be free parameters: the general solution is
+		This time, we just act as though we were solving a system of equations, so we let non-pivot columns be free parameters: the general solution is
 
-	$$
-		[[ -3t ; 2t - s ; -2s ]],
-	$$
+		$$
+			[[ -3t ; 2t - s ; -2s ]],
+		$$
 
-	so a basis is
+		so a basis is
 
-	$$
-		\left\{ [[ -3 ; 2 ; 0 ]], [[ 0 ; -1 ; -2 ]] \right\}.
-	$$
-
+		$$
+			\left\{ [[ -3 ; 2 ; 0 ]], [[ 0 ; -1 ; -2 ]] \right\}.
+		$$
+	]]
 ]]
 
 
