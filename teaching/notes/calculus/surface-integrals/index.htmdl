@@ -618,7 +618,13 @@ using $S$ for the surface, $S$ for the surface area, and $\vec{S}$ for the scale
 
 	where $\vec{H}(x, y, z) = \left< x, y, z^2 \right>$.
 
-	4. Let $S_3$ be the portion of the negatively-oriented unit sphere in the first octant. Is the flux of the field $\left< 1 + xyz, z^3, x^2 + y^2 \right>$, through $S_3$ positive or negative?
+	4. Let $S_3$ be the portion of the negatively-oriented unit sphere in the first octant. Is the flux of the field
+	
+	$$
+		\left< 1 + xyz,\ z^3,\ x^2 + y^2 \right>
+	$$
+	
+	through $S_3$ positive or negative?
 
 	### solution
 
