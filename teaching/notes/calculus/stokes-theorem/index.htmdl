@@ -130,7 +130,7 @@ With all of the pieces translated to 3D, we're ready to state the theorem. Happi
 
 ###
 
-Stokes' Theorem is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that this was correct.
+While the right side of Stokes' Theorem is technically a flux integral, I don't recommend thinking about it as one. Instead, recall that  is intuitively true for the same reason Green's Theorem is: dotting the curl vector $\Gtimes \vec{F}$ with the surface's normal vector $\vec{n}$ gives the infinitesimal circulation of $\vec{F}$ in the surface at each point, and when we integrate those infinitesimal circulations, interior ones cancel out, leaving only the circulation on the boundary. If there's one new thing we can take from Stokes' theorem, it's that we made a good choice with the generalization of curl to $#R#^3$; it may be unusual that it became a vector while divergence remained a scalar, but this theorem provides strong evidence that this was correct.
 
 ### ex "Stokes' Theorem"
 
