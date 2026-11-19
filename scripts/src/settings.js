@@ -1,6 +1,12 @@
 import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardContainer, cardIsOpen } from "./cards.js";
-import { hideDesmosGraphs, recreateDesmosGraphs, showDesmosGraphs } from "./desmos.js";
+import {
+	desmosColors,
+	getDesmosColor,
+	hideDesmosGraphs,
+	recreateDesmosGraphs,
+	showDesmosGraphs
+} from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
 	addStyle,
@@ -551,11 +557,86 @@ export async function toggleDistinguishColors({
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (!noAnimation)
+	setDistinguishedColors();
+
+	if (noAnimation)
+	{
+		await recreateDesmosGraphs();
+	}
+
+	else
 	{
 		await hideDesmosGraphs();
 		await recreateDesmosGraphs();
 		await showDesmosGraphs();
+	}
+}
+
+
+
+export function setDistinguishedColors()
+{
+	if (!siteSettings.distinguishColors)
+	{
+		for (const element of document.body.querySelectorAll(".distinguished-color-text"))
+		{
+			element.style.removeProperty("color");
+			element.style.removeProperty("font-weight");
+		}
+
+		return;
+	}
+	
+
+
+	const purple = getDesmosColor(desmosColors.purple, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.purple"))
+	{
+		element.style.color = purple;
+		element.style.fontWeight = 900;
+	}
+
+	const blue = getDesmosColor(desmosColors.blue, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.blue"))
+	{
+		element.style.color = blue;
+		element.style.fontWeight = 900;
+	}
+
+	const red = getDesmosColor(desmosColors.red, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.red"))
+	{
+		element.style.color = red;
+		element.style.fontWeight = 900;
+	}
+
+	const orange = getDesmosColor(desmosColors.orange, true, false, true);
+
+	for (const element of document.body.querySelectorAll(".distinguished-color-text.orange"))
+	{
+		element.style.color = orange;
+		element.style.fontWeight = 900;
+	}
+
+
+	for (const element of document.body.querySelectorAll(
+		".distinguished-color-text:is(.black, .gray)"
+	)) {
+		// These don't get their color set since text is already gray,
+		// and dark mode becomes difficult.
+		element.style.fontWeight = 900;
+	}
+
+	const green = "#32cc32";
+
+	for (const element of document.body.querySelectorAll(
+		".distinguished-color-text.green"
+	)) {
+		element.style.color = green;
+		element.style.fontWeight = 900;
 	}
 }
 
