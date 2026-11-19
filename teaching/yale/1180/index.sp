@@ -58,7 +58,10 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	{ url: "exams/practice-midterm-1/practice-midterm-1.pdf", name: "Practice Midterm 1" },
 	{ url: "exams/practice-midterm-1-solutions/practice-midterm-1-solutions.pdf", name: "Practice Midterm 1 Solutions" },
 	{ url: "exams/midterm-1-solutions/midterm-1-solutions.pdf", name: "Midterm 1 Solutions" },
+
+	{ url: "exams/midterm-2-note-sheet/midterm-2-note-sheet.pdf", name: "Midterm 2 Formula Sheet" },
 	{ url: "exams/practice-midterm-2/practice-midterm-2.pdf", name: "Practice Midterm 2" },
+	{ url: "exams/practice-midterm-2-solutions/practice-midterm-2-solutions.pdf", name: "Practice Midterm 2 Solutions" },
 ])
 
 @externalCard{homework-1}

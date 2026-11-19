@@ -104,9 +104,9 @@ export default function()
 				{ latex: raw`T = [\frac{\pi}{8}, \frac{3\pi}{8}, ..., \frac{15\pi}{8}]`, secret: true },
 				{ latex: raw`\vector(s(T), s(T) + 0.5\frac{s'(T)}{\left| s'(T) \right|})`, lineWidth: 10, color: desmosColors.blue, secret: true },
 
-				{ latex: raw`P = [(i\cos(j), i\sin(j), \cos(i\cos(j)) + \cos(i\sin(j)) + 2) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+				{ latex: raw`P = [(i\cos(j), i\sin(j), \cos(i\cos(j)) + \cos(i\sin(j)) + 2) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
-				{ latex: raw`Q = [(-\sin(i\cos(j)), -\sin(i\sin(j)), -1) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: false },
+				{ latex: raw`Q = [(-\sin(i\cos(j)), -\sin(i\sin(j)), -1) \for i = [0.5, 1.5, 2.5], j = [0, \frac{\pi}{4}, ..., 2\pi]]`, hidden: true, secret: true },
 
 				{ latex: raw`\vector(P - (0, 0, 0.01), P + 0.8\frac{Q}{\left|Q\right|})`, color: desmosColors.red, secret: true },
 			]

@@ -351,6 +351,74 @@ export default function()
 				}),
 			]
 		},
+
+		geometricCurl:
+		{
+			use3d: true,
+
+			options: {
+				showPlane3D: false,
+				translucentSurfaces: true,
+				worldRotation3D: [0.5, -0.85, 0.19, 0.79, 0.53, 0.31, -0.36, 0, 0.93]
+			},
+
+			bounds: { xmin: -4, xmax: 4, ymin: -4, ymax: 4, zmin: -4, zmax: 4 },
+
+			expressions:
+			[
+				{ latex: raw`P(x, y, z) = x - y^2`, secret: true, hidden: true },
+				{ latex: raw`Q(x, y, z) = y^2 + z^3`, secret: true, hidden: true },
+				{ latex: raw`R(x, y, z) = x^2 - z^2`, secret: true, hidden: true },
+				{ latex: raw`C_1(x, y, z) = -3z^2`, secret: true, hidden: true },
+				{ latex: raw`C_2(x, y, z) = -2x`, secret: true, hidden: true },
+				{ latex: raw`C_3(x, y, z) = 2y`, secret: true, hidden: true },
+
+				...getDesmosSlider({
+					expression: "a = 1",
+					min: -2,
+					max: 2,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "b = 1",
+					min: -2,
+					max: 2,
+					secret: false
+				}),
+
+				...getDesmosSlider({
+					expression: "c = -1",
+					min: -2,
+					max: 2,
+					secret: false
+				}),
+
+				{ latex: raw`(a, b, c)`, color: desmosColors.purple },
+				{ latex: raw`C = (C_1(a, b, c), C_2(a, b, c), C_3(a, b, c))`, hidden: true, secret: true },
+				{ latex: raw`\vector((a, b, c), (a, b, c) + 3\frac{C}{\left| C \right|})`, color: desmosColors.red, secret: true },
+				{ latex: raw`C_1(a, b, c)(x - a) + C_2(a, b, c)(y - b) + C_3(a, b, c)(z - c) = 0\{ \distance((x, y, z), (a, b, c)) < 3 \}`, color: desmosColors.gray, secret: true },
+
+				{ latex: raw`C_1(a, b, c)(x - a) + C_2(a, b, c)(y - b) + C_3(a, b, c)(z - c) = 0\{ \distance((x, y, z), (a, b, c)) < 3 \}`, color: desmosColors.gray, secret: true },
+
+				{ latex: raw`r_0 = [0.75, 1.5, 2.25]`, color: desmosColors.gray, secret: true },
+				{ latex: raw`\theta_0 = [0, \frac{\pi}{4}, ..., \frac{7\pi}{4}]`, color: desmosColors.gray, secret: true },
+
+				{ latex: raw`v_1 = (C_1(a, b, c), C_2(a, b, c), C_3(a, b, c))`, hidden: true, secret: true },
+				{ latex: raw`v_2 = (-C_2(a, b, c), C_1(a, b, c), 0)`, hidden: true, secret: true },
+				{ latex: raw`v_3 = v_1 \times v_2`, hidden: true, secret: true },
+				{ latex: raw`V_2 = \frac{v_2}{\left|v_2\right|}`, hidden: true, secret: true },
+				{ latex: raw`V_3 = \frac{v_3}{\left|v_3\right|}`, hidden: true, secret: true },
+
+				{ latex: raw`I = [1, ..., \count(r_0)\count(\theta_0)]`, secret: true },
+
+				{ latex: raw`p = (a, b, c) + r_0[\floor(\frac{I - 1}{\count(\theta_0)}) + 1] V_2 \cos(\theta_0[\mod(I - 1, \count(\theta_0)) + 1]) + r_0[\floor(\frac{I - 1}{\count(\theta_0)}) + 1] V_3 \sin(\theta_0[\mod(I - 1, \count(\theta_0)) + 1])`, hidden: true, secret: true },
+
+				{ latex: raw`v = (P(p.x, p.y, p.z), Q(p.x, p.y, p.z), R(p.x, p.y, p.z))`, hidden: true, secret: true },
+
+				{ latex: raw`\vector(p, p + \frac{v}{\left| v \right|})`, color: desmosColors.blue, secret: true },
+			]
+		}
 	});
 
 	

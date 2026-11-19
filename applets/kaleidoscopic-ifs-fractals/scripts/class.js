@@ -193,15 +193,9 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		const power = (scale - minScale) / (2 - minScale)
 			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
 
-		// Interpolate from 44 at 8/3 to 56 at 2.
-		const numIterations = Math.floor(
-			44 - (56 - 44) * (scale - 8 / 3) / (8 / 3 - 2)
-		);
-
 		this.setUniforms({
 			scale,
 			minEpsilon: minScaleEpsilon / Math.pow(10, power),
-			numIterations,
 		});
 	}
 
@@ -212,12 +206,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		});
 	}
 
-
-
-	drawFrame()
+	updateNumIterations()
 	{
-		super.drawFrame();
-
 		const distance = this.distanceEstimator(
 			this.sceneOrigin[0],
 			this.sceneOrigin[1],
@@ -242,6 +232,22 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 		}
 
 		this.setUniforms({ numIterations });
+	}
+
+
+
+	drawFrame()
+	{
+		this.updateNumIterations();
+
+		super.drawFrame();
+	}
+
+	onXRFrameStart()
+	{
+		this.updateNumIterations();
+
+		super.onXRFrameStart();
 	}
 
 
