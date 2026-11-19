@@ -211,7 +211,6 @@ const controlsFunctions = {
 // data is an object whose keys are IDs and whose values are types
 export function controls(data)
 {
-	return;
 	let html = "<div class=\"applet-controls\">";
 
 	for (const [id, type] of Object.entries(data))
@@ -249,7 +248,8 @@ function number(id)
 {
 	return /* html */`
 		<div id="${id}-input" class="applet-input-control">
-			Test
+			<div id="${id}-value" class="applet-input-control-value" contenteditable="true"></div>
+			<div id="${id}-name" class="applet-input-control-name"></div>
 		</div>
 	`;
 

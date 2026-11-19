@@ -1231,14 +1231,26 @@ body:has(#banner)
 	font-size: 100%;
 
 	border: 2px solid var(--normal-contrast);
-	border-radius: 16px;
-	padding: 8px;
+	border-radius: 12px;
+	padding: 6px;
 	
 	cursor: pointer;
 	outline: none;
 
 	user-select: none;
 	-webkit-user-select: none;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	line-height: normal;
+}
+
+.applet-input-control-value
+{
+	font-family: Menlo, Monaco, Consolas, monospace;
+	cursor: text;
 }
 
 

@@ -522,6 +522,12 @@ export class NumberInput extends AppletInputControl
 		persistState = true,
 		onInput = () => {}
 	}) {
-		super({ element, name, appletControlElement: element });
+		super({
+			element,
+			name,
+			value,
+			appletControlElement: element,
+			onInput,
+		});
 	}
 }

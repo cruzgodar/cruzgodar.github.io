@@ -32,23 +32,40 @@ export function resetExpandedAppletControls()
 export class AppletInputControl extends AppletControl
 {
 	appletControlElement;
-	isOpen = false;
-	boundClose;
+	valueElement;
+	value;
+	defaultValue;
+	#isOpen = false;
+	#boundClose;
+	onInput;
 
 	constructor({
 		element,
 		name,
+		value,
+		onInput = () => {},
 		appletControlElement
 	}) {
 		super({ element, name });
 
 		this.appletControlElement = appletControlElement;
+		this.valueElement = this.appletControlElement.firstElementChild;
 
-		this.boundClose = () => this.close();
+		const nameElement = this.appletControlElement.lastElementChild;
+		nameElement.innerHTML = name;
+
+		this.value = value;
+		this.defaultValue = value;
+		this.setValue({
+			value: this.value,
+			callOnInput: false,
+		});
+
+		this.#boundClose = () => this.close();
 
 		this.appletControlElement.addEventListener("click", () =>
 		{
-			if (!this.isOpen)
+			if (!this.#isOpen)
 			{
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
@@ -65,14 +82,50 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async open(animationTime = 150)
+	setValue({
+		value,
+		callOnInput = true
+	}) {
+		this.value = value;
+
+		if (isNaN(this.value))
+		{
+			this.value = this.defaultValue;
+		}
+
+		// const sliderProportion = this.logarithmic
+		// 	? (Math.log(this.value) - this.logMin) / (this.logMax - this.logMin)
+		// 	: (this.value - this.min) / (this.max - this.min);
+
+		// const clampedSliderProportion = clamp(sliderProportion, 0, 1);
+
+		// void(this.trackElement.offsetWidth);
+
+		// const trackRect = this.trackElement.getBoundingClientRect();
+		// const maxX = trackRect.width - thumbWidth - 2.5 * 2;
+		// this.element.style.left = `${clampedSliderProportion * maxX}px`;
+
+		this.updateDisplayValue();
+
+		this.valueElement.textContent = this.displayValue;
+	}
+
+	// Overridden by subclasses if they need to edit the displayed value.
+	updateDisplayValue()
 	{
-		if (this.isOpen)
+		this.displayValue = this.value;
+	}
+
+
+
+	async open(animationTime = 160)
+	{
+		if (this.#isOpen)
 		{
 			return;
 		}
 
-		this.isOpen = true;
+		this.#isOpen = true;
 
 		this.appletControlElement.classList.add("expanded");
 		this.appletControlElement.classList.add("no-hover");
@@ -129,12 +182,12 @@ export class AppletInputControl extends AppletControl
 			{ left: "0px", width: `${screenWidth}px`, height: `${finalHeight}px`, transform: "none", scale: "none" }
 		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" }).finished;
 
-		document.documentElement.addEventListener("click", this.boundClose);
+		document.documentElement.addEventListener("click", this.#boundClose);
 	}
 
 	async close()
 	{
-		if (this.isOpen)
+		if (this.#isOpen)
 		{
 			if (document.startViewTransition && siteSettings.reduceMotion)
 			{
@@ -148,7 +201,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #close(animationTime = 150)
+	async #close(animationTime = 160)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -162,8 +215,7 @@ export class AppletInputControl extends AppletControl
 
 		const { placeholder, originalCssText } = expandedData;
 
-		// The placeholder is still in the original grid cell, so it's the destination
-		// even if the page has scrolled or reflowed since opening.
+		// Assumes the placeholder is still in the original grid cell, so it's the destination.
 		const startRect = this.appletControlElement.getBoundingClientRect();
 		const endRect = placeholder.getBoundingClientRect();
 
@@ -206,14 +258,15 @@ export class AppletInputControl extends AppletControl
 		placeholder.remove();
 		animation.cancel();
 
-		this.isOpen = false;
+		this.#isOpen = false;
 
-		document.documentElement.removeEventListener("click", this.boundClose);
+		document.documentElement.removeEventListener("click", this.#boundClose);
 	}
 }
 
 
 
+// Gets the bounding client rect of the element without any transitions or transforms.
 function getLayoutRect(element)
 {
 	const { transform, scale, transition } = element.style;
