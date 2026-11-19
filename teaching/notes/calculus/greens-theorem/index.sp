@@ -724,19 +724,19 @@ We'll again omit the proof, but draw a parallel to the very similar fact that $\
 
 One question that we might now have is about the curl vector specifically. We know it encoding data about the rotation of the field about each axis in the three components of $\Gtimes \vec{F}$, but the vector as a whole is something of a mystery. Just as we encoded partial derivative data in the components of the gradient but produced a vector that had additional structure --- specifically, the gradient points in the direction of fastest increase of the function --- so too does the entire curl vector have significance.
 
-### prop "a geometric interpretation of curl"
+@prop[a geometric interpretation of curl][[
 
 	Let $\vec{F}$ be a continuous vector field on $#R#^3$. Then at any point $(a, b, c) \in #R#^3$, $\Gtimes \vec{F}(a, b, c)$ points in the direction of the axis of fastest rotation, and $\left| \left| \Gtimes \vec{F}(a, b, c) \right| \right|$ is the rate of that rotation.
 	
 	Moreover, if $\vec{u} \in #R#^3$ is a unit vector, then $\Gtimes \vec{F}(a, b, c) \bullet \vec{u}$ is the rate of rotation about the axis parallel to $\vec{u}$.
 
-###
+]]
 
 In other words, if we place a tiny flat wheel that can spin while fixed in place into the field $\vec{F}$, then the wheel will spin the fastest when its axis is parallel to $\Gtimes \vec{F}$.
 
-### desmos geometricCurl
+@desmos{geometricCurl}
 
-This graph shows the curl vector at a point in red, the orthogonal plane in gray, and the vectors in the field in that plane in blue. At each point, this plane is the maximum (most counterclockwise) rotation of any possible plane we could choose.
+This graph shows the curl vector at a point in @color[red], the orthogonal plane in @color[gray], and the vectors in the field in that plane in @color[blue]. At each point, this plane is the maximum (most counterclockwise) rotation of any possible plane we could choose.
 
 With divergence and curl in hand, we can finally phrase both forms of Green's Theorem in these fancy new terms.
 
