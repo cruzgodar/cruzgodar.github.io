@@ -1231,8 +1231,8 @@ body:has(#banner)
 	font-size: 100%;
 
 	border: 2px solid var(--normal-contrast);
-	border-radius: 12px;
-	padding: 6px;
+	border-radius: 8px;
+	padding: 4px;
 	
 	cursor: pointer;
 	outline: none;
