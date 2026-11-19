@@ -1,7 +1,6 @@
 import {
 	createDesmosGraphs,
 	desmosColors,
-	getColorLatexExpressions,
 	getDesmosSlider
 } from "/scripts/src/desmos.js";
 import { raw } from "/scripts/src/main.js";
@@ -33,7 +32,15 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 1.5(x^4+y^4+z^4)`, secret: true, hidden: true, },
 
-				...getColorLatexExpressions(),
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
@@ -61,7 +68,15 @@ export default function()
 
 				{ latex: raw`f(x, y, z) = 1.25z`, secret: true, hidden: true, },
 
-				...getColorLatexExpressions(),
+				{ latex: raw`P_1(x, y, z) = e^{-f(x, y, z)^2}`, secret: true },
+				{ latex: raw`R_1(x, y, z) = \{ f(x, y, z) \geq 0 : 1 - P_1(x, y, z), f(x, y, z) < 0: 0 \}`, secret: true },
+				{ latex: raw`B_1(x, y, z) = \{ f(x, y, z) \leq 0 : 1 - P_1(x, y, z), f(x, y, z) > 0: 0 \}`, secret: true },
+
+				{
+					type: "colorLatex",
+					data: { expressionName: "C", red: "R_1", blue: "B_1", purple: "P_1" },
+					secret: true
+				},
 			]
 		},
 
