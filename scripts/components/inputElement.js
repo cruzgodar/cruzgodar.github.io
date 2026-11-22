@@ -36,7 +36,8 @@ export class AppletInputControl extends AppletControl
 	value;
 	defaultValue;
 	#isOpen = false;
-	#boundClose;
+	#boundOnPointerdown;
+	#boundOnKeydown;
 	onInput;
 
 	constructor({
@@ -61,7 +62,21 @@ export class AppletInputControl extends AppletControl
 			callOnInput: false,
 		});
 
-		this.#boundClose = () => this.close();
+		this.#boundOnPointerdown = (e) =>
+		{
+			if (!e.composedPath().includes(this.appletControlElement))
+			{
+				this.contract();
+			}
+		};
+
+		this.#boundOnKeydown = (e) =>
+		{
+			if (e.key === "Escape")
+			{
+				this.contract();
+			}
+		};
 
 		this.appletControlElement.addEventListener("click", () =>
 		{
@@ -69,12 +84,12 @@ export class AppletInputControl extends AppletControl
 			{
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
-					document.startViewTransition(() => this.open(0));
+					document.startViewTransition(() => this.expand(0));
 				}
 
 				else
 				{
-					this.open();
+					this.expand();
 				}
 			}
 		});
@@ -118,7 +133,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async open(animationTime = 160)
+	async expand(animationTime = 160)
 	{
 		if (this.#isOpen)
 		{
@@ -157,13 +172,15 @@ export class AppletInputControl extends AppletControl
 			originalCssText: this.appletControlElement.style.cssText,
 		});
 
-		const screenWidth = document.documentElement.clientWidth;
+
+		// Now find the expanded rect.
+		const { left, width } = this.getExpandedRectSize();
 
 		Object.assign(this.appletControlElement.style, {
 			position: "absolute",
 			top: `${rect.top + window.scrollY}px`,
-			left: "0px",
-			width: `${screenWidth}px`,
+			left: `${left}px`,
+			width: `${width}px`,
 			maxWidth: "none",
 			height: "auto",
 			margin: "0",
@@ -179,29 +196,40 @@ export class AppletInputControl extends AppletControl
 
 		await this.appletControlElement.animate([
 			{ left: `${rect.left}px`, width: `${rect.width}px`, height: `${rect.height}px`, transform: originalTransform, scale: originalScale },
-			{ left: "0px", width: `${screenWidth}px`, height: `${finalHeight}px`, transform: "none", scale: "none" }
+			{ left: `${left}px`, width: `${width}px`, height: `${finalHeight}px`, transform: "none", scale: "none" }
 		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" }).finished;
 
-		document.documentElement.addEventListener("click", this.#boundClose);
+		document.documentElement.addEventListener("pointerdown", this.#boundOnPointerdown);
+		document.documentElement.addEventListener("keydown", this.#boundOnKeydown);
 	}
 
-	async close()
+	getExpandedRectSize()
+	{
+		const rect = this.appletControlElement.parentElement.getBoundingClientRect();
+
+		return {
+			left: rect.left,
+			width: rect.width,
+		};
+	}
+
+	async contract()
 	{
 		if (this.#isOpen)
 		{
 			if (document.startViewTransition && siteSettings.reduceMotion)
 			{
-				document.startViewTransition(() => this.#close(0));
+				document.startViewTransition(() => this.#contract(0));
 			}
 
 			else
 			{
-				this.#close();
+				this.#contract();
 			}
 		}
 	}
 
-	async #close(animationTime = 160)
+	async #contract(animationTime = 160)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -260,7 +288,8 @@ export class AppletInputControl extends AppletControl
 
 		this.#isOpen = false;
 
-		document.documentElement.removeEventListener("click", this.#boundClose);
+		document.documentElement.removeEventListener("pointerdown", this.#boundOnPointerdown);
+		document.documentElement.removeEventListener("keydown", this.#boundOnKeydown);
 	}
 }
 

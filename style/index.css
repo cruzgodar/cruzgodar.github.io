@@ -924,34 +924,6 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 
 
-#canvas-landscape
-{
-	display: flex;
-	flex-direction: column;
-	
-	width: 100%;
-	
-	justify-content: space-between;
-	
-	align-items: center;
-
-	line-height: 0;
-}
-
-#canvas-landscape-left, #canvas-landscape-right
-{
-	width: 100%;
-
-	line-height: 0;
-}
-
-#canvas-landscape-middle
-{
-	width: 60%;
-
-	line-height: 0;
-}
-
 .desmos-border .output-canvas
 {
 	border: none;
@@ -971,51 +943,6 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	top: 6px;
 }
 
-
-
-@media (max-aspect-ratio: 12/16)
-{
-	#canvas-landscape-middle
-	{
-		width: 80%;
-	}
-}
-
-
-@media (max-aspect-ratio: 9/16)
-{
-	#canvas-landscape-middle
-	{
-		width: 100%;
-	}
-}
-
-
-
-@media (min-aspect-ratio: 1/1) and (min-width: 750px)
-{
-	
-	#canvas-landscape
-	{
-		flex-direction: row;
-	}
-	
-	#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
-	{
-		width: 33.33%;
-	}
-
-	#canvas-landscape-middle
-	{
-		margin-left: 16px;
-		margin-right: 16px;
-	}
-	
-	#canvas-landscape-left .body-text, #canvas-landscape-left .section-text, #canvas-landscape-middle .body-text, #canvas-landscape-middle .section-text, #canvas-landscape-right .body-text, #canvas-landscape-right .section-text
-	{
-		width: 70%;
-	}
-}
 
 /* Provides suppport for full-page, parallax banners at the top of the page, complete with scroll buttons. */
 
@@ -1209,12 +1136,53 @@ body:has(#banner)
 
 /* APPLET CONTROLS */
 
+#canvas-and-controls
+{
+	display: flex;
+	flex-direction: column;
+	
+	width: 100%;
+	
+	justify-content: center;
+	
+	align-items: center;
+
+	line-height: 0;
+}
+
+#canvas-and-controls > *:last-child
+{
+	width: 100%;
+	max-width: 65vh;
+}
+
 .applet-controls
 {
+	width: 100%;
+	max-width: var(--text-width);
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 	grid-auto-rows: 1fr;
-	gap: 16px;
+	gap: 8px;
+}
+
+@media (min-aspect-ratio: 1/1)
+{
+	#canvas-and-controls
+	{
+		flex-direction: row;
+	}
+
+	#canvas-and-controls > *:last-child
+	{
+		max-width: 75vh;
+	}
+
+	.applet-controls
+	{
+		max-width: 450px;
+		margin-right: 32px;
+	}
 }
 
 .applet-controls > *

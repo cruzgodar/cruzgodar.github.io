@@ -18,38 +18,18 @@ again. The function will flip-flop between those two numbers forever, and what's
 
  
 
-<div id="canvas-landscape">
+<div id="canvas-and-controls">
+	@controls({
+		"num-iterations": "number",
+		"num-iterations-2": "number",
+		"num-iterations-3": "number"
+	})
 
-<div id="canvas-landscape-left">
+	<div style="position: relative; margin-top: 32px">
+		@canvas
 
-@controls({
-	"num-iterations": "number",
-	"num-iterations-2": "number",
-	"num-iterations-3": "number"
-})
-
-</div>
-
-
-
-<div id="canvas-landscape-middle">
-
-<div style="position: relative; margin-top: 32px">
-	@canvas
-
-	<canvas id="preview-canvas"></canvas>
-</div>
-
-</div>
-
-
-
-<div id="canvas-landscape-right">
-
-
-
-</div>
-
+		<canvas id="preview-canvas"></canvas>
+	</div>
 </div>
 
 @card{applet-controls}[Controls][[
