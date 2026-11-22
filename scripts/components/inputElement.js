@@ -221,7 +221,7 @@ export class AppletInputControl extends AppletControl
 
 		
 
-		const expandControlAnimation = this.appletControlElement.animate([
+		const expandAppletControlAnimation = this.appletControlElement.animate([
 			{ left: `${appletControlRect.left}px`, width: `${appletControlRect.width}px`, height: `${appletControlRect.height}px`, transform: originalTransform, scale: originalScale },
 			{ left: `${controlContainerRect.left}px`, width: `${controlContainerRect.width}px`, height: `${expandedAppletControlHeight}px`, transform: "none", scale: "none" }
 		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
@@ -232,7 +232,7 @@ export class AppletInputControl extends AppletControl
 		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
 
 		await Promise.all([
-			expandControlAnimation.finished,
+			expandAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
 		]);
 
@@ -256,7 +256,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 1600)
+	async #contract(animationTime = 160)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -269,10 +269,14 @@ export class AppletInputControl extends AppletControl
 		expandedElements.delete(this.appletControlElement);
 
 		const appletControlRect = this.appletControlElement.getBoundingClientRect();
+		const nameValueElementRect = this.nameValueElement.getBoundingClientRect();
 
 		const { placeholder, originalCssText } = expandedData;
 
+		// First measure where everything should go.
 		placeholder.remove();
+
+		const cssText = this.appletControlElement.style.cssText;
 
 		this.appletControlElement.style.cssText = originalCssText;
 		this.appletControlElement.style.transform = "";
@@ -280,8 +284,14 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.style.transition = "";
 
 		const appletControlFinalRect = this.appletControlElement.getBoundingClientRect();
+		const nameValueElementFinalRect = this.nameValueElement.getBoundingClientRect();
 
-		const animation = this.appletControlElement.animate([
+		const nameValueElementDistance = nameValueElementFinalRect.left - nameValueElementRect.left;
+
+		// Now put it all back so the animation works.
+		this.appletControlElement.style.cssText = cssText;
+
+		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
 				left: `${appletControlRect.left}px`,
 				width: `${appletControlRect.width}px`,
@@ -297,7 +307,20 @@ export class AppletInputControl extends AppletControl
 			fill: "forwards"
 		});
 
-		await animation.finished;
+		const moveNameValueElementAnimation = this.nameValueElement.animate([
+			{ transform: "translateX(0)" },
+			{ transform: `translateX(${nameValueElementDistance}px)` }
+		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
+
+		await Promise.all([
+			contractAppletControlAnimation.finished,
+			moveNameValueElementAnimation.finished,
+		]);
+
+		await contractAppletControlAnimation.finished;
+
+		// And finally restore the inline styles.
+		this.appletControlElement.style.cssText = originalCssText;
 
 		this.appletControlElement.classList.remove(
 			"expanded",
@@ -307,7 +330,7 @@ export class AppletInputControl extends AppletControl
 		);
 
 		
-		animation.cancel();
+		contractAppletControlAnimation.cancel();
 
 		this.#isOpen = false;
 
