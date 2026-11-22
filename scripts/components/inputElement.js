@@ -205,6 +205,7 @@ export class AppletInputControl extends AppletControl
 			boxSizing: "border-box",
 			zIndex: "1000",
 			justifyContent: "flex-start",
+			boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
 			transition: "none",
 			transform: "none",
 			scale: "none",
@@ -224,8 +225,22 @@ export class AppletInputControl extends AppletControl
 		
 
 		const expandAppletControlAnimation = this.appletControlElement.animate([
-			{ left: `${appletControlRect.left}px`, width: `${appletControlRect.width}px`, height: `${appletControlRect.height}px`, transform: originalTransform, scale: originalScale },
-			{ left: `${controlContainerRect.left}px`, width: `${controlContainerRect.width}px`, height: `${expandedAppletControlHeight}px`, transform: "none", scale: "none" }
+			{
+				left: `${appletControlRect.left}px`,
+				width: `${appletControlRect.width}px`,
+				height: `${appletControlRect.height}px`,
+				boxShadow: "none",
+				transform: originalTransform,
+				scale: originalScale
+			},
+			{
+				left: `${controlContainerRect.left}px`,
+				width: `${controlContainerRect.width}px`,
+				height: `${expandedAppletControlHeight}px`,
+				boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
+				transform: "none",
+				scale: "none"
+			}
 		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
 
 		const moveNameValueElementAnimation = this.nameValueElement.animate([
@@ -300,10 +315,12 @@ export class AppletInputControl extends AppletControl
 			{
 				left: `${appletControlRect.left}px`,
 				width: `${appletControlRect.width}px`,
+				boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
 			},
 			{
 				left: `${appletControlFinalRect.left}px`,
 				width: `${appletControlFinalRect.width}px`,
+				boxShadow: "none",
 			}
 		], {
 			duration: animationTime,
