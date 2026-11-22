@@ -290,6 +290,7 @@ export class AppletInputControl extends AppletControl
 
 		// Now put it all back so the animation works.
 		this.appletControlElement.style.cssText = cssText;
+		this.appletControlElement.before(placeholder);
 
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
@@ -321,6 +322,7 @@ export class AppletInputControl extends AppletControl
 
 		// And finally restore the inline styles.
 		this.appletControlElement.style.cssText = originalCssText;
+		placeholder.remove();
 
 		this.appletControlElement.classList.remove(
 			"expanded",
