@@ -39,7 +39,7 @@ export class AppletInputControl extends AppletControl
 
 	value;
 	defaultValue;
-	#isOpen = false;
+	#isExpanded = false;
 	#boundOnPointerdown;
 	#boundOnKeydown;
 	onInput;
@@ -91,7 +91,7 @@ export class AppletInputControl extends AppletControl
 
 		this.appletControlElement.addEventListener("click", () =>
 		{
-			if (!this.#isOpen)
+			if (!this.#isExpanded)
 			{
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
@@ -103,6 +103,20 @@ export class AppletInputControl extends AppletControl
 					this.expand();
 				}
 			}
+		});
+
+		this.appletControlElement.addEventListener("mouseenter", () =>
+		{
+			if (!this.#isExpanded)
+			{
+				// Ensure that the element is always above the one that's expanded.
+				this.appletControlElement.style.zIndex = 100;
+			}
+		});
+
+		this.appletControlElement.addEventListener("mouseleave", () =>
+		{
+			this.appletControlElement.style.zIndex = this.#isExpanded ? 50 : 0;
 		});
 	}
 
@@ -144,14 +158,14 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(animationTime = 160)
+	async expand(animationTime = 1600)
 	{
-		if (this.#isOpen)
+		if (this.#isExpanded || expandedElements.size > 0)
 		{
 			return;
 		}
 
-		this.#isOpen = true;
+		this.#isExpanded = true;
 
 		this.appletControlElement.classList.add("expanded");
 		this.appletControlElement.classList.add("no-hover");
@@ -203,7 +217,7 @@ export class AppletInputControl extends AppletControl
 			height: "auto",
 			margin: "0",
 			boxSizing: "border-box",
-			zIndex: "1000",
+			zIndex: "50",
 			justifyContent: "flex-start",
 			boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
 			transition: "none",
@@ -214,6 +228,11 @@ export class AppletInputControl extends AppletControl
 		// Natural height at full width.
 		const expandedAppletControlHeight = this.appletControlElement
 			.getBoundingClientRect().height;
+
+		// Move the expanded rect above the rest of the controls, including the 8px padding.
+		const finalTop = controlContainerRect.top + window.scrollY
+			- expandedAppletControlHeight - 8;
+		this.appletControlElement.style.top = `${finalTop}px`;
 
 		// Move the name-value element to its final position.
 
@@ -226,6 +245,7 @@ export class AppletInputControl extends AppletControl
 
 		const expandAppletControlAnimation = this.appletControlElement.animate([
 			{
+				top: `${appletControlRect.top + window.scrollY}px`,
 				left: `${appletControlRect.left}px`,
 				width: `${appletControlRect.width}px`,
 				height: `${appletControlRect.height}px`,
@@ -234,6 +254,7 @@ export class AppletInputControl extends AppletControl
 				scale: originalScale
 			},
 			{
+				top: `${finalTop}px`,
 				left: `${controlContainerRect.left}px`,
 				width: `${controlContainerRect.width}px`,
 				height: `${expandedAppletControlHeight}px`,
@@ -259,7 +280,7 @@ export class AppletInputControl extends AppletControl
 
 	async contract()
 	{
-		if (this.#isOpen)
+		if (this.#isExpanded)
 		{
 			if (document.startViewTransition && siteSettings.reduceMotion)
 			{
@@ -273,7 +294,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 160)
+	async #contract(animationTime = 1600)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -313,11 +334,13 @@ export class AppletInputControl extends AppletControl
 
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
+				top: `${appletControlRect.top + window.scrollY}px`,
 				left: `${appletControlRect.left}px`,
 				width: `${appletControlRect.width}px`,
 				boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
 			},
 			{
+				top: `${appletControlFinalRect.top + window.scrollY}px`,
 				left: `${appletControlFinalRect.left}px`,
 				width: `${appletControlFinalRect.width}px`,
 				boxShadow: "none",
@@ -343,6 +366,7 @@ export class AppletInputControl extends AppletControl
 
 		// And finally restore the inline styles.
 		this.appletControlElement.style.cssText = originalCssText;
+		this.appletControlElement.style.zIndex = 0;
 		placeholder.remove();
 
 		this.appletControlElement.classList.remove(
@@ -355,7 +379,7 @@ export class AppletInputControl extends AppletControl
 		
 		contractAppletControlAnimation.cancel();
 
-		this.#isOpen = false;
+		this.#isExpanded = false;
 
 		document.documentElement.removeEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.removeEventListener("keydown", this.#boundOnKeydown);
