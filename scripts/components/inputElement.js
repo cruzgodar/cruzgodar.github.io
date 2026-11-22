@@ -1,3 +1,4 @@
+import { addTemporaryListener } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 
 // Includes both input elements and buttons
@@ -103,6 +104,12 @@ export class AppletInputControl extends AppletControl
 					this.expand();
 				}
 			}
+		});
+
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: () => this.onResize()
 		});
 	}
 
@@ -375,5 +382,29 @@ export class AppletInputControl extends AppletControl
 
 		document.documentElement.removeEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.removeEventListener("keydown", this.#boundOnKeydown);
+	}
+
+	onResize()
+	{
+		if (!this.#isExpanded)
+		{
+			return;
+		}
+		
+		const controlContainerRect = this.appletControlElement.parentElement
+			.getBoundingClientRect();
+
+		Object.assign(this.appletControlElement.style, {
+			left: `${controlContainerRect.left}px`,
+			width: `${controlContainerRect.width}px`,
+			height: "auto",
+		});
+
+		const expandedAppletControlHeight = this.appletControlElement
+			.getBoundingClientRect().height;
+
+		const finalTop = controlContainerRect.top + window.scrollY
+			- expandedAppletControlHeight - 8;
+		this.appletControlElement.style.top = `${finalTop}px`;
 	}
 }
