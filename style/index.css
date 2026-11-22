@@ -1202,7 +1202,6 @@ body:has(#banner)
 	border-radius: 8px;
 	padding: 4px;
 	
-	cursor: pointer;
 	outline: none;
 
 	user-select: none;
@@ -1211,9 +1210,14 @@ body:has(#banner)
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: center;
 
 	line-height: normal;
+}
+
+.applet-input-control:not(.expanded)
+{
+	cursor: pointer;
 }
 
 .applet-input-control .name-value

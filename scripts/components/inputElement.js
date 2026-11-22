@@ -32,7 +32,11 @@ export function resetExpandedAppletControls()
 export class AppletInputControl extends AppletControl
 {
 	appletControlElement;
+
+	nameElement;
 	valueElement;
+	nameValueElement;
+
 	value;
 	defaultValue;
 	#isOpen = false;
@@ -51,17 +55,16 @@ export class AppletInputControl extends AppletControl
 
 		this.appletControlElement = appletControlElement;
 		this.valueElement = this.appletControlElement.querySelector(".applet-input-control-value");
+		this.nameElement = this.appletControlElement.querySelector(".applet-input-control-name");
 
-		const nameElement = this.appletControlElement.querySelector(".applet-input-control-name");
+		this.nameValueElement = this.appletControlElement.querySelector(".name-value");
 
-		if (!this.valueElement || !nameElement)
+		if (!this.valueElement || !this.nameElement)
 		{
 			throw new Error("Cannot initialize an input control without a name and value");
 		}
 
-		nameElement.innerHTML = name;
-
-		console.log(this.valueElement, nameElement);
+		this.nameElement.innerHTML = name;
 
 		this.value = value;
 		this.defaultValue = value;
@@ -161,17 +164,22 @@ export class AppletInputControl extends AppletControl
 		const originalTransform = computed.transform;
 		const originalScale = computed.scale;
 
+		this.appletControlElement.style.transition = "none";
+		this.appletControlElement.style.transform = "none";
+		this.appletControlElement.style.scale = "none";
+
 		// Stop a pending changeScale from resetting the transition mid-animation.
 		clearTimeout(this.appletControlElement.getAttribute("data-scale-timeout-id"));
 
-		const rect = getLayoutRect(this.appletControlElement);
+		const appletControlRect = this.appletControlElement.getBoundingClientRect();
+		const nameValueElementRect = this.nameValueElement.getBoundingClientRect();
 		
 
 		// Holds the element's grid cell and row height so nothing reflows.
 		const placeholder = document.createElement("div");
 		placeholder.style.gridColumn = computed.gridColumn;
 		placeholder.style.gridRow = computed.gridRow;
-		placeholder.style.height = `${rect.height}px`;
+		placeholder.style.height = `${appletControlRect.height}px`;
 		placeholder.style.visibility = "hidden";
 		this.appletControlElement.before(placeholder);
 
@@ -182,43 +190,54 @@ export class AppletInputControl extends AppletControl
 
 
 		// Now find the expanded rect.
-		const { left, width } = this.getExpandedRectSize();
+		const controlContainerRect = this.appletControlElement.parentElement
+			.getBoundingClientRect();
 
 		Object.assign(this.appletControlElement.style, {
 			position: "absolute",
-			top: `${rect.top + window.scrollY}px`,
-			left: `${left}px`,
-			width: `${width}px`,
+			top: `${appletControlRect.top + window.scrollY}px`,
+			left: `${controlContainerRect.left}px`,
+			width: `${controlContainerRect.width}px`,
 			maxWidth: "none",
 			height: "auto",
 			margin: "0",
 			boxSizing: "border-box",
 			zIndex: "1000",
+			justifyContent: "flex-start",
 			transition: "none",
 			transform: "none",
-			scale: "none"
+			scale: "none",
 		});
 
 		// Natural height at full width.
-		const finalHeight = this.appletControlElement.getBoundingClientRect().height;
+		const expandedAppletControlHeight = this.appletControlElement
+			.getBoundingClientRect().height;
 
-		await this.appletControlElement.animate([
-			{ left: `${rect.left}px`, width: `${rect.width}px`, height: `${rect.height}px`, transform: originalTransform, scale: originalScale },
-			{ left: `${left}px`, width: `${width}px`, height: `${finalHeight}px`, transform: "none", scale: "none" }
-		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" }).finished;
+		// Move the name-value element to its final position.
+
+		const nameValueElementFinalRect = this.nameValueElement.getBoundingClientRect();
+
+		const nameValueElementDistance = nameValueElementRect.left - nameValueElementFinalRect.left;
+
+		
+
+		const expandControlAnimation = this.appletControlElement.animate([
+			{ left: `${appletControlRect.left}px`, width: `${appletControlRect.width}px`, height: `${appletControlRect.height}px`, transform: originalTransform, scale: originalScale },
+			{ left: `${controlContainerRect.left}px`, width: `${controlContainerRect.width}px`, height: `${expandedAppletControlHeight}px`, transform: "none", scale: "none" }
+		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
+
+		const moveNameValueElementAnimation = this.nameValueElement.animate([
+			{ transform: `translateX(${nameValueElementDistance}px)` },
+			{ transform: "translateX(0)" }
+		], { duration: animationTime, easing: "cubic-bezier(0.5, 1, 0.89, 1)" });
+
+		await Promise.all([
+			expandControlAnimation.finished,
+			moveNameValueElementAnimation.finished,
+		]);
 
 		document.documentElement.addEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.addEventListener("keydown", this.#boundOnKeydown);
-	}
-
-	getExpandedRectSize()
-	{
-		const rect = this.appletControlElement.parentElement.getBoundingClientRect();
-
-		return {
-			left: rect.left,
-			width: rect.width,
-		};
 	}
 
 	async contract()
@@ -237,7 +256,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 160)
+	async #contract(animationTime = 1600)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -249,24 +268,27 @@ export class AppletInputControl extends AppletControl
 		// Removing this immediately prevents a second close from starting mid-animation.
 		expandedElements.delete(this.appletControlElement);
 
+		const appletControlRect = this.appletControlElement.getBoundingClientRect();
+
 		const { placeholder, originalCssText } = expandedData;
 
-		// Assumes the placeholder is still in the original grid cell, so it's the destination.
-		const startRect = this.appletControlElement.getBoundingClientRect();
-		const endRect = placeholder.getBoundingClientRect();
+		placeholder.remove();
+
+		this.appletControlElement.style.cssText = originalCssText;
+		this.appletControlElement.style.transform = "";
+		this.appletControlElement.style.scale = "";
+		this.appletControlElement.style.transition = "";
+
+		const appletControlFinalRect = this.appletControlElement.getBoundingClientRect();
 
 		const animation = this.appletControlElement.animate([
 			{
-				top: `${startRect.top + window.scrollY}px`,
-				left: `${startRect.left}px`,
-				width: `${startRect.width}px`,
-				height: `${startRect.height}px`
+				left: `${appletControlRect.left}px`,
+				width: `${appletControlRect.width}px`,
 			},
 			{
-				top: `${endRect.top + window.scrollY}px`,
-				left: `${endRect.left}px`,
-				width: `${endRect.width}px`,
-				height: `${endRect.height}px`
+				left: `${appletControlFinalRect.left}px`,
+				width: `${appletControlFinalRect.width}px`,
 			}
 		], {
 			duration: animationTime,
@@ -277,13 +299,6 @@ export class AppletInputControl extends AppletControl
 
 		await animation.finished;
 
-		// The original inline styles include any hover scale it had when it was opened,
-		// so that's cleared to return it at scale 1.
-		this.appletControlElement.style.cssText = originalCssText;
-		this.appletControlElement.style.transform = "";
-		this.appletControlElement.style.scale = "";
-		this.appletControlElement.style.transition = "";
-
 		this.appletControlElement.classList.remove(
 			"expanded",
 			"no-hover",
@@ -291,7 +306,7 @@ export class AppletInputControl extends AppletControl
 			"hover-reduce-motion"
 		);
 
-		placeholder.remove();
+		
 		animation.cancel();
 
 		this.#isOpen = false;
@@ -299,24 +314,4 @@ export class AppletInputControl extends AppletControl
 		document.documentElement.removeEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.removeEventListener("keydown", this.#boundOnKeydown);
 	}
-}
-
-
-
-// Gets the bounding client rect of the element without any transitions or transforms.
-function getLayoutRect(element)
-{
-	const { transform, scale, transition } = element.style;
-
-	element.style.transition = "none";
-	element.style.transform = "none";
-	element.style.scale = "none";
-
-	const rect = element.getBoundingClientRect();
-
-	element.style.transform = transform;
-	element.style.scale = scale;
-	element.style.transition = transition;
-
-	return rect;
 }

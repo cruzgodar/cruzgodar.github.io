@@ -106,6 +106,7 @@ export default [{
 		"no-duplicate-imports": ["warn"],
 		"no-new-native-nonconstructor": ["error"],
 		"no-self-compare": ["warn"],
+		"no-unreachable": ["warn"],
 		"no-unmodified-loop-condition": ["warn"],
 		"@stylistic/spaced-comment": ["warn", "always"],
 	},
