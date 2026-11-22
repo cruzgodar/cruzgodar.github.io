@@ -248,8 +248,10 @@ function number(id)
 {
 	return /* html */`
 		<div id="${id}-input" class="applet-input-control">
-			<div id="${id}-value" class="applet-input-control-value" contenteditable="true"></div>
-			<div id="${id}-name" class="applet-input-control-name"></div>
+			<div class="name-value">
+				<div id="${id}-value" class="applet-input-control-value" contenteditable="true"></div>
+				<div id="${id}-name" class="applet-input-control-name"></div>
+			</div>
 		</div>
 	`;
 

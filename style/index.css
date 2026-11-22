@@ -1209,10 +1209,18 @@ body:has(#banner)
 	-webkit-user-select: none;
 
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
+	justify-content: flex-start;
 
 	line-height: normal;
+}
+
+.applet-input-control .name-value
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .applet-input-control-value

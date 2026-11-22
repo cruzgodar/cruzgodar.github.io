@@ -50,10 +50,18 @@ export class AppletInputControl extends AppletControl
 		super({ element, name });
 
 		this.appletControlElement = appletControlElement;
-		this.valueElement = this.appletControlElement.firstElementChild;
+		this.valueElement = this.appletControlElement.querySelector(".applet-input-control-value");
 
-		const nameElement = this.appletControlElement.lastElementChild;
+		const nameElement = this.appletControlElement.querySelector(".applet-input-control-name");
+
+		if (!this.valueElement || !nameElement)
+		{
+			throw new Error("Cannot initialize an input control without a name and value");
+		}
+
 		nameElement.innerHTML = name;
+
+		console.log(this.valueElement, nameElement);
 
 		this.value = value;
 		this.defaultValue = value;
