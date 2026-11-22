@@ -373,3 +373,37 @@ export function listenForWilsonButtons()
 		}
 	});
 }
+
+
+// The element which would hold the caret following a click at (x, y).
+function caretElementAt(x, y)
+{
+	const node = document.caretPositionFromPoint
+		? document.caretPositionFromPoint(x, y)?.offsetNode
+		: document.caretRangeFromPoint?.(x, y)?.startContainer;
+
+	return node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+}
+
+document.addEventListener("mousedown", (e) =>
+{
+	// Walk up the DOM tree to find the nearest contenteditable ancestor.
+	// If the click was somewhere not editable, then caretElementAt returned null,
+	// so this doesn't do anything.
+
+	const editable = caretElementAt(e.clientX, e.clientY)
+		?.closest("[contenteditable='true']");
+
+	// Refuse to put the caret in a contenteditable element if the caret would land
+	// in a contenteditable element, but the element actually clicked isn't a child of it.
+	if (editable && !editable.contains(e.target))
+	{
+		e.preventDefault();
+
+		// Clicking empty space should still unfocus a focused value.
+		if (document.activeElement?.isContentEditable)
+		{
+			document.activeElement.blur();
+		}
+	}
+}, { capture: true });

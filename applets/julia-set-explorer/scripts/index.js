@@ -20,6 +20,30 @@ export default function()
 		onInput: () => {}
 	});
 
+	const numIterationsInput2 = new NumberInput({
+		element: $("#num-iterations-2-input"),
+		name: "Iterations",
+		value: 500,
+		min: 100,
+		max: 8000,
+		snapPoints: [500, 1000, 2000],
+		logarithmic: true,
+		integer: true,
+		onInput: () => {}
+	});
+
+	const numIterationsInput3 = new NumberInput({
+		element: $("#num-iterations-3-input"),
+		name: "Iterations",
+		value: 500,
+		min: 100,
+		max: 8000,
+		snapPoints: [500, 1000, 2000],
+		logarithmic: true,
+		integer: true,
+		onInput: () => {}
+	});
+
 	return;
 	const switchJuliaModeButton = new ToggleButton({
 		element: $("#switch-julia-mode-button"),

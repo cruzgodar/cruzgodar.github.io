@@ -172,7 +172,8 @@ export class AppletInputControl extends AppletControl
 		clearTimeout(this.appletControlElement.getAttribute("data-scale-timeout-id"));
 
 		const appletControlRect = this.appletControlElement.getBoundingClientRect();
-		const nameValueElementRect = this.nameValueElement.getBoundingClientRect();
+		const nameValueElementLeft = this.nameValueElement.getBoundingClientRect().left
+			- appletControlRect.left;
 		
 
 		// Holds the element's grid cell and row height so nothing reflows.
@@ -215,9 +216,10 @@ export class AppletInputControl extends AppletControl
 
 		// Move the name-value element to its final position.
 
-		const nameValueElementFinalRect = this.nameValueElement.getBoundingClientRect();
+		const nameValueElementFinalLeft = this.nameValueElement.getBoundingClientRect().left
+			- controlContainerRect.left;
 
-		const nameValueElementDistance = nameValueElementRect.left - nameValueElementFinalRect.left;
+		const nameValueElementDistance = nameValueElementLeft - nameValueElementFinalLeft;
 
 		
 
@@ -269,7 +271,8 @@ export class AppletInputControl extends AppletControl
 		expandedElements.delete(this.appletControlElement);
 
 		const appletControlRect = this.appletControlElement.getBoundingClientRect();
-		const nameValueElementRect = this.nameValueElement.getBoundingClientRect();
+		const nameValueElementLeft = this.nameValueElement.getBoundingClientRect().left
+			- appletControlRect.left;
 
 		const { placeholder, originalCssText } = expandedData;
 
@@ -284,9 +287,10 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.style.transition = "";
 
 		const appletControlFinalRect = this.appletControlElement.getBoundingClientRect();
-		const nameValueElementFinalRect = this.nameValueElement.getBoundingClientRect();
+		const nameValueElementFinalLeft = this.nameValueElement.getBoundingClientRect().left
+			- appletControlFinalRect.left;
 
-		const nameValueElementDistance = nameValueElementFinalRect.left - nameValueElementRect.left;
+		const nameValueElementDistance = nameValueElementFinalLeft - nameValueElementLeft;
 
 		// Now put it all back so the animation works.
 		this.appletControlElement.style.cssText = cssText;
