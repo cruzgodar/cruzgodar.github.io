@@ -104,20 +104,6 @@ export class AppletInputControl extends AppletControl
 				}
 			}
 		});
-
-		this.appletControlElement.addEventListener("mouseenter", () =>
-		{
-			if (!this.#isExpanded)
-			{
-				// Ensure that the element is always above the one that's expanded.
-				this.appletControlElement.style.zIndex = 100;
-			}
-		});
-
-		this.appletControlElement.addEventListener("mouseleave", () =>
-		{
-			this.appletControlElement.style.zIndex = this.#isExpanded ? 50 : 0;
-		});
 	}
 
 
@@ -158,7 +144,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(animationTime = 1600)
+	async expand(animationTime = 160)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -217,7 +203,7 @@ export class AppletInputControl extends AppletControl
 			height: "auto",
 			margin: "0",
 			boxSizing: "border-box",
-			zIndex: "50",
+			zIndex: 51,
 			justifyContent: "flex-start",
 			boxShadow: "0px 0px 16px 0px rgba(0, 0, 0, .25)",
 			transition: "none",
@@ -240,6 +226,8 @@ export class AppletInputControl extends AppletControl
 			- controlContainerRect.left;
 
 		const nameValueElementDistance = nameValueElementLeft - nameValueElementFinalLeft;
+
+		this.appletControlElement.style.pointerEvents = "none";
 
 		
 
@@ -274,6 +262,8 @@ export class AppletInputControl extends AppletControl
 			moveNameValueElementAnimation.finished,
 		]);
 
+		this.appletControlElement.style.pointerEvents = "auto";
+
 		document.documentElement.addEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.addEventListener("keydown", this.#boundOnKeydown);
 	}
@@ -294,7 +284,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 1600)
+	async #contract(animationTime = 160)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -332,6 +322,9 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.style.cssText = cssText;
 		this.appletControlElement.before(placeholder);
 
+		this.appletControlElement.style.pointerEvents = "none";
+		this.appletControlElement.style.zIndex = 50;
+
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
 				top: `${appletControlRect.top + window.scrollY}px`,
@@ -366,7 +359,6 @@ export class AppletInputControl extends AppletControl
 
 		// And finally restore the inline styles.
 		this.appletControlElement.style.cssText = originalCssText;
-		this.appletControlElement.style.zIndex = 0;
 		placeholder.remove();
 
 		this.appletControlElement.classList.remove(
