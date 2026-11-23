@@ -1199,8 +1199,8 @@ body:has(#banner)
 	font-size: 100%;
 
 	border: 2px solid var(--normal-contrast);
-	border-radius: 8px;
-	padding: 4px;
+	border-radius: 10px;
+	padding: 6px;
 	
 	outline: none;
 
@@ -1230,7 +1230,19 @@ body:has(#banner)
 .applet-input-control-value
 {
 	font-family: Menlo, Monaco, Consolas, monospace;
-	cursor: text;
+
+	border-radius: 4px;
+	margin-top: 2px;
+
+	padding-left: 2px;
+	margin-left: -2px;
+	padding-right: 2px;
+	margin-right: -2px;
+
+	padding-top: 2px;
+	margin-top: -2px;
+	padding-bottom: 2px;
+	margin-bottom: -2px;
 }
 
 

@@ -6,7 +6,8 @@ import { siteSettings } from "./settings.js";
 
 const elementSelectors = [
 	["a:not(.image-link)", 1, () => false],
-	[".carousel-dot", 1, () => false]
+	[".carousel-dot", 1, () => false],
+	[".applet-input-control-value", 1, () => false]
 ];
 
 // These elements need to have their scale increased when hovered.
