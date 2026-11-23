@@ -1,5 +1,7 @@
+import { headerElement } from "../src/header.js";
 import { addTemporaryListener } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
+import { clamp } from "../src/utils.js";
 
 // Includes both input elements and buttons
 export class AppletControl
@@ -228,9 +230,8 @@ export class AppletInputControl extends AppletControl
 			.getBoundingClientRect().height;
 
 		// Move the expanded rect above the rest of the controls, including the 8px padding.
-		const finalTop = controlContainerRect.top + window.scrollY
+		const expandedAppletControlTop = controlContainerRect.top + window.scrollY
 			- expandedAppletControlHeight - 8;
-		this.appletControlElement.style.top = `${finalTop}px`;
 
 		// Move the name-value element to its final position.
 
@@ -240,6 +241,19 @@ export class AppletInputControl extends AppletControl
 		const nameValueElementDistance = nameValueElementLeft - nameValueElementFinalLeft;
 
 		this.appletControlElement.style.pointerEvents = "none";
+
+
+
+		// Account for the header to guarantee the expanded element is on-screen.
+		const headerHeight = headerElement.getBoundingClientRect().height;
+
+		const expandedAppletControlTopClamped = clamp(
+			expandedAppletControlTop,
+			window.scrollY + headerHeight + 8,
+			window.scrollY + window.innerHeight - 8
+		);
+
+		this.appletControlElement.style.top = `${expandedAppletControlTopClamped}px`;
 
 		
 
@@ -254,7 +268,7 @@ export class AppletInputControl extends AppletControl
 				scale: originalScale
 			},
 			{
-				top: `${finalTop}px`,
+				top: `${expandedAppletControlTopClamped}px`,
 				left: `${controlContainerRect.left}px`,
 				width: `${controlContainerRect.width}px`,
 				height: `${expandedAppletControlHeight}px`,
