@@ -3,7 +3,7 @@ import { addStyle, addTemporaryListener, addTemporaryParam } from "../src/main.j
 import { setPersistedState } from "../src/navigation.js";
 import { clamp } from "../src/utils.js";
 import { CappedInputElement, uncapEverything } from "./cappedInputElement.js";
-import { AppletInputControl } from "./inputElement.js";
+import { AppletInputControl, appletControlEasing } from "./inputElement.js";
 
 const thumbWidth = 24;
 
@@ -508,6 +508,10 @@ function setCaretPosition(el, offset)
 
 export class NumberInput extends AppletInputControl
 {
+	sliderContainerElement;
+	sliderTrackElement;
+	sliderThumbElement;
+
 	constructor({
 		element,
 		name,
@@ -529,5 +533,72 @@ export class NumberInput extends AppletInputControl
 			appletControlElement: element,
 			onInput,
 		});
+
+		this.sliderContainerElement = this.appletControlElement.querySelector(".slider-container");
+		this.sliderTrackElement = this.sliderContainerElement.querySelector(".slider-track");
+		this.sliderThumbElement = this.sliderContainerElement.querySelector(".slider-thumb");
+
+		if (!this.sliderContainerElement || !this.sliderTrackElement || !this.sliderThumbElement)
+		{
+			throw new Error("Cannot find slider elements");
+		}
+	}
+
+	beforeExpand()
+	{
+		Object.assign(this.sliderContainerElement.style, {
+			width: "100%",
+			margin: "12px",
+			transform: "translateX(0)"
+		});
+	}
+
+	async onExpand(animationTime)
+	{
+		const showSliderAnimation = this.sliderContainerElement.animate([
+			{
+				width: "0",
+				margin: "0",
+				transform: "translateX(12px)"
+			},
+			{
+				width: "100%",
+				margin: "12px",
+				transform: "translateX(0)"
+			}
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
+
+		await showSliderAnimation.finished;
+
+		showSliderAnimation.cancel();
+	}
+
+	beforeContract()
+	{
+		Object.assign(this.sliderContainerElement.style, {
+			width: "0",
+			margin: "0",
+			transform: "translateX(12px)"
+		});
+	}
+
+	async onContract(animationTime)
+	{
+		const hideSliderAnimation = this.sliderContainerElement.animate([
+			{
+				width: "100%",
+				margin: "12px",
+				transform: "translateX(0)"
+			},
+			{
+				width: "0",
+				margin: "0",
+				transform: "translateX(12px)"
+			}
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
+
+		await hideSliderAnimation.finished;
+
+		hideSliderAnimation.cancel();
 	}
 }

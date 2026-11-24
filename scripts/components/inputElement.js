@@ -21,13 +21,13 @@ export class AppletControl
 }
 
 const expandedControlBoxShadow = "0px 0px 16px 0px rgba(0, 0, 0, .25)";
-// Inset black shadow in light mode, small white shadow in dark mode
-// eslint-disable-next-line max-len
+
 const valueElementBoxShadow = "0px 0px 4px 0px inset rgba(0, 0, 0, calc(1 - var(--theme)))";
 const valueElementBoxShadowOff = "0px 0px 4px 0px inset rgba(0, 0, 0, 0)";
 const valueElementOutline = "1px solid rgba(255, 255, 255, var(--theme))";
 const valueElementOutlineOff = "1px solid rgba(255, 255, 255, 0)";
-const expandEasing = "cubic-bezier(0.5, 1, 0.89, 1)";
+
+export const appletControlEasing = "cubic-bezier(0.5, 1, 0.89, 1)";
 
 // The base class for number, string, boolean, and dropdown inputs. Those all handle the specifics
 // of what elements they put in, what events they listen for, etc. This class handles the resizing.
@@ -97,6 +97,12 @@ export class AppletInputControl extends AppletControl
 			{
 				this.contract();
 			}
+
+			else if (e.key === "Enter" && e.composedPath().includes(this.valueElement))
+			{
+				e.preventDefault();
+				this.contract();
+			}
 		};
 
 		this.appletControlElement.addEventListener("click", (e) =>
@@ -160,7 +166,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(focus = false, animationTime = 160)
+	async expand(focus = false, animationTime = 3600)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -249,6 +255,8 @@ export class AppletInputControl extends AppletControl
 			paddingBottom: "2px",
 		});
 
+		this.beforeExpand();
+
 		// Natural height at full width.
 		const expandedAppletControlHeight = this.appletControlElement
 			.getBoundingClientRect().height;
@@ -300,12 +308,12 @@ export class AppletInputControl extends AppletControl
 				transform: "none",
 				scale: "none"
 			}
-		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		const moveNameValueElementAnimation = this.nameValueElement.animate([
 			{ transform: `translateX(${nameValueElementDistance}px)` },
 			{ transform: "translateX(0)" }
-		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		const expandValueElementAnimation = this.valueElement.animate([
 			{
@@ -324,17 +332,20 @@ export class AppletInputControl extends AppletControl
 				paddingTop: "2px",
 				paddingBottom: "2px",
 			},
-		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await Promise.all([
 			expandAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
-			expandValueElementAnimation.finished
+			expandValueElementAnimation.finished,
+			this.onExpand(animationTime),
 		]);
 
 		expandAppletControlAnimation.cancel();
 		moveNameValueElementAnimation.cancel();
 		expandValueElementAnimation.cancel();
+
+		this.afterExpand();
 
 		this.appletControlElement.style.pointerEvents = "auto";
 
@@ -360,7 +371,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 160)
+	async #contract(animationTime = 3600)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -411,6 +422,8 @@ export class AppletInputControl extends AppletControl
 			paddingBottom: "0",
 		});
 
+		this.beforeContract();
+
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
 				top: `${appletControlRect.top + window.scrollY}px`,
@@ -426,15 +439,14 @@ export class AppletInputControl extends AppletControl
 			}
 		], {
 			duration: animationTime,
-			easing: expandEasing,
-			// Holds the final frame until the inline styles are restored, so there's no flash.
+			easing: appletControlEasing,
 			fill: "forwards"
 		});
 
 		const moveNameValueElementAnimation = this.nameValueElement.animate([
 			{ transform: "translateX(0)" },
 			{ transform: `translateX(${nameValueElementDistance}px)` }
-		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		const contractValueElementAnimation = this.valueElement.animate([
 			{
@@ -453,12 +465,13 @@ export class AppletInputControl extends AppletControl
 				paddingTop: "0",
 				paddingBottom: "0",
 			}
-		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
+		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await Promise.all([
 			contractAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
-			contractValueElementAnimation.finished
+			contractValueElementAnimation.finished,
+			this.onContract(animationTime)
 		]);
 
 		// And finally restore the inline styles.
@@ -479,9 +492,22 @@ export class AppletInputControl extends AppletControl
 
 		this.#isExpanded = false;
 
+		this.afterContract();
+
 		document.documentElement.removeEventListener("pointerdown", this.#boundOnPointerdown);
 		document.documentElement.removeEventListener("keydown", this.#boundOnKeydown);
 	}
+
+	// Classes that extend this can use these to add additional logic before/after the animation,
+	// or additional animations entirely.
+
+	beforeExpand() {}
+	async onExpand(_animationTime) {}
+	afterExpand() {}
+
+	beforeContract() {}
+	async onContract(_animationTime) {}
+	afterContract() {}
 
 	onResize()
 	{

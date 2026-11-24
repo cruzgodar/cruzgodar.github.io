@@ -16,7 +16,7 @@ $$
 
 again. The function will flip-flop between those two numbers forever, and what's relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequences grow --- bright for slow and dark for fast. Using the same $c$ for every point results in a related type of fractal called a **Julia Set**, which resembles the Mandelbrot set at that point.
 
- 
+
 
 <div id="canvas-and-controls">
 	@controls({

@@ -54,6 +54,7 @@ export default [{
 
 		"no-unused-vars": ["warn", {
 			args: "after-used",
+			argsIgnorePattern: "^_"
 		}],
 
 		"prefer-const": ["warn", {

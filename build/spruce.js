@@ -252,16 +252,13 @@ function number(id)
 				<div id="${id}-value" class="applet-input-control-value"></div>
 				<div id="${id}-name" class="applet-input-control-name"></div>
 			</div>
+
+			<div class="slider-container">
+				<div class="slider-track"></div>
+				<div class="slider-thumb"></div>
+			</div>
 		</div>
 	`;
-
-	// return /* html */`
-	// 	<div class="slider-container">
-	// 		<div class="slider-bar"></div>
-	// 		<div id="${id}Slider" class="slider-thumb"></div>
-	// 		<p class="body-text slider-subtext"></p>
-	// 	</div>
-	// `;
 }
 
 function string(id)
