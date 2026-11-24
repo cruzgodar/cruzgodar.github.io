@@ -29,64 +29,46 @@ let themeToggles = 0;
 
 
 
-const settingsAnimationEasing = "cubic-bezier(.25, .1, .25, 1)";
-
-const runningRootVariableAnimations = {};
+const runningRootVariableAnimations = new Set();
 
 let transitionsDisabledCount = 0;
 let transitionsDisabledStyle = null;
 
-// Animates one of the root's numeric CSS variables (--theme or --contrast,
-// which index.css registers as numbers so that they interpolate) from its
-// current value to newValue. Every theme color is derived from them, so this
-// animates the whole page without a view transition. The page's own CSS
-// transitions are turned off meanwhile so that nothing lags behind.
-async function animateRootVariable(name, newValue, duration)
+async function animateRootVariable(name, newValue, duration, easing)
 {
+	if (runningRootVariableAnimations.has(name))
+	{
+		return;
+	}
+
+	runningRootVariableAnimations.add(name);
+
 	// Read before canceling, so that interrupting an animation picks up from
 	// wherever it had gotten to.
 	const oldValue = parseFloat(getComputedStyle(rootElement).getPropertyValue(name)) || 0;
 
 	runningRootVariableAnimations[name]?.cancel();
 
-	// The animation runs on top of this, and it's what's left once the
-	// animation is done.
-	rootElement.style.setProperty(name, newValue);
-
 	transitionsDisabledCount++;
 
 	if (!transitionsDisabledStyle)
 	{
 		transitionsDisabledStyle = addStyle(`
-			*:not(.page, #banner, .desmos-container)
+			*:not(.checkbox, .desmos-container)
 			{
 				transition: none !important;
 			}
 		`);
 	}
 
-	const animation = rootElement.animate(
-		[{ [name]: oldValue }, { [name]: newValue }],
-		{ duration, easing: settingsAnimationEasing }
-	);
-
-	runningRootVariableAnimations[name] = animation;
-
-	try
+	await animate((t) =>
 	{
-		await animation.finished;
-	}
+		rootElement.style.setProperty(name, (1 - t) * oldValue + t * newValue);
+	}, duration, easing);
 
-	catch
-	{
-		// Canceled by a newer animation of the same variable, which takes it
-		// from here.
-	}
+	runningRootVariableAnimations.delete(name);
 
-	if (runningRootVariableAnimations[name] === animation)
-	{
-		delete runningRootVariableAnimations[name];
-	}
+
 
 	transitionsDisabledCount--;
 
@@ -423,7 +405,7 @@ export function setOnThemeChange(callback)
 export async function toggleDarkTheme({
 	noAnimation = false,
 	force = false,
-	duration = 500
+	duration = 400
 }) {
 	if (!force && pageUrl in forceThemePages)
 	{
@@ -458,7 +440,7 @@ export async function toggleDarkTheme({
 
 	// The graphs can't follow the theme as it animates, so they fade out
 	// alongside it and are only recreated (and faded back in) once it's done.
-	const graphsHidden = hideDesmosGraphs();
+	const hideGraphs = hideDesmosGraphs();
 
 	let animating = true;
 
@@ -472,9 +454,19 @@ export async function toggleDarkTheme({
 		}
 	});
 
+	// Ideally this would use startViewTransition, but that makes iOS freak out and blank
+	// out the URL bar background while transitioning, which is unacceptable since this happens
+	// automatically while going to and from the gallery. I would then want to use the Web Animation
+	// API, but that makes Chrome break previously-visited links' animations. So instead it uses
+	// JS-based animation.
 	await Promise.all([
-		animateRootVariable("--theme", siteSettings.darkTheme ? 1 : 0, duration),
-		graphsHidden
+		animateRootVariable(
+			"--theme",
+			siteSettings.darkTheme ? 1 : 0,
+			duration,
+			siteSettings.darkTheme ? "easeOutQuad" : "easeInOutQuad",
+		),
+		hideGraphs
 	]);
 
 	animating = false;
@@ -531,20 +523,26 @@ export async function toggleReduceMotion()
 
 export async function toggleIncreaseContrast({
 	noAnimation = false,
-	duration = 250
 }) {
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (noAnimation)
+	if (!noAnimation && document.startViewTransition)
 	{
-		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+		document.startViewTransition(() =>
+		{
+			rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+
+			history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+		});
 	}
 
 	else
 	{
-		await animateRootVariable("--contrast", siteSettings.increaseContrast ? 1 : 0, duration);
+		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+
+		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	}
 }
 

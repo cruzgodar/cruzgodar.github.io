@@ -22,11 +22,61 @@
 		T\left( [[ x ; y ]] \right) = [[ -2x + y ; -5x + 3y ]].
 	$$
 
+	**Solution:** The matrix is
+	
+	$$
+		A = [[ -2, 1 ; -5, 3 ]],
+	$$
+
+	which row reduces to the identity. Therefore, $$T$$ is one-to-one and onto, and a basis for the image is
+
+	$$
+		\left\{ [[ -2 ; -5 ]], [[ 1 ; 3 ]] \right\}.
+	$$
+
+	The inverse matrix is
+
+	$$
+		A^{-1} = [[ -3, 1 ; -5, 2 ]],
+	$$
+
+	so a formula for $T^{-1}$ is
+
+	$$
+		T^{-1}\left( [[ x ; y ]] \right) = [[ -3x + y ; -5x + 2y ]].
+	$$
+
 	#.
 
 	$$
 		T\left( [[ a ; b ; c ; d ]] \right) = [[ a + 2b - c ; 2b + c - d ]].
 	$$
+
+	**Solution:** The matrix is
+	
+	$$
+		A = [[ 1, 2, -1, 0 ; 0, 2, 1, -1 ]],
+	$$
+
+	which row reduces to
+
+	$$
+		[[ 1, 0, -2, 1 ; 0, 1, \frac{1}{2}, -\frac{1}{2} ]].
+	$$
+
+	Therefore, $$T$$ is not one-to-one, but it is onto. A basis for the kernel is
+
+	$$
+		\left\{ [[ 2 ; -\frac{1}{2} ; 1 ; 0 ]], [[ -1, \frac{1}{2}, 0, 1 ]] \right\},.
+	$$
+
+	and a basis for the image is
+
+	$$
+		\left\{ [[ 1 ; 0 ]], [[ 2 ; 2 ]] \right\}.
+	$$
+
+	The matrix isn't invertible since it isn't square, so $T$ isn't invertible either.
 
 	#.
 
@@ -34,15 +84,62 @@
 		T\left( [[ x ; y ; z ]] \right) = [[ 2x + y - z ; -3x - y ; y - 3z ]].
 	$$
 
+	**Solution:** The matrix is
+	
+	$$
+		A = [[ 2, 1, -1 ; -3, -1, 0 ; 0, 1, -3 ]],
+	$$
+
+	which row reduces to
+
+	$$
+		[[ 1, 0, 1 ; 0, 1, -3 ; 0, 0, 0 ]].
+	$$
+
+	Therefore, $$T$$ is neither one-to-one nor onto. A basis for the kernel is
+
+	$$
+		\left\{ [[ -1 ; 3 ; 1 ]] \right\},
+	$$
+
+	and a basis for the image is
+
+	$$
+		\left\{ [[ 2 ; -3 ; 0 ]], [[ 1 ; -1 ; 1 ]] \right\}.
+	$$
+
+	The matrix isn't invertible, so neither is $T$.
+
 	#.
 
 	$$
 		T\left( x \right) = [[ x ; 2x ; 3x ; 0 ]].
 	$$
 
+	**Solution:** The matrix is
+
+	$$
+		A = [[ 1 ; 2 ; 3 ; 0 ]],
+	$$
+
+	which row reduces to
+
+	$$
+		[[ 1 ; 0 ; 0 ; 0 ]].
+	$$
+
+	Therefore, $$T$$ is one-to-one, but not onto, and a basis for the image is
+
+	$$
+		\left\{ [[ 1 ; 2 ; 3 ; 0 ]] \right\}.
+	$$
+
+	The matrix isn't invertible since it isn't square, so $T$ isn't invertible either.
+
 	- - -
 
 	Problems 4# concern the following situation. Suppose when pizzas sell for $p$ dollars each, New Haven residents want to buy
+
 	$$
 		q = 10 - p + d
 	$$
@@ -56,6 +153,24 @@
 	thousand pizzas per week. The market settles at the equilibrium price, i.e. the one where these two expressions for $q$ are equal. The variables $d$ and $s$ are called **shocks**. If $d > 0$, buyers demand $d$ thousand more pizzas than usual, regardless of price (for example, because a new restaurant opened). If $s > 0$, restaurants are willing to sell $s$ thousand more pizzas, regardless of price. Both $d$ and $s$ can be negative.
 
 	#. Find the equilibrium price $p(d, s)$ and quantity $q(d, s)$ of pizzas sold (in thousands), both in terms of $d$ and $s$.
+
+	**Solution:** Like the problem statement says, we set the two expressions for $q$ equal:
+
+	$$
+		10 - p + d &= p - 2 + s
+
+		2p &= 12 + d - s
+
+		p &= 6 + \frac{d}{2} - \frac{s}{2},
+	$$
+
+	and so
+
+	$$
+		q &= p - 2 + s
+
+		&= 4 + \frac{d}{2} + \frac{s}{2}.
+	$$
 	
 	#. Let $T : #R#^2 \to #R#^2$ be given by
 	
@@ -64,8 +179,44 @@
 	$$
 	
 	i.e. the change in the equilibrium price and quantity when there are shocks $d$ and $s$. Find the matrix $A$ for $T$, and then find $A^{-1}$.
+
+	**Solution:** The actual formula for $T$ is
+
+	$$
+		T\left( [[ d ; s ]] \right) &= [[ 6 + \frac{d}{2} - \frac{s}{2} - 6 ; 4 + \frac{d}{2} + \frac{s}{2} - 4 ]]
+
+		&= \frac{1}{2} [[ d - s ; d + s ]],
+	$$
+
+	so its matrix is
+
+	$$
+		A = \frac{1}{2} [[ 1, -1 ; 1, 1 ]].
+	$$
+
+	The inverse matrix is
+
+	$$
+		A^{-1} = [[ 1, 1 ; -1, 1 ]].
+	$$
 	
 	#. Economists typically can't observe shocks directly, only prices and quantities. If the price of pizza in New Haven rose by $\$1$ last week and the number of pizzas sold fell by 3 thousand, what shocks occurred?
+
+	**Solution:** This is solving the equation
+
+	$$
+		A[[ d ; s ]] = [[ 1 ; -3 ]],
+	$$
+
+	so
+
+	$$
+		[[ d ; s ]] &= A^{-1} [[ 1 ; -3 ]]
+
+		&= [[ -2 ; -4 ]].
+	$$
+
+	Restaurants were willing to sell 4000 fewer pizzas this week than usual, and buyers were willing to buy 2000 fewer.
 	
 	#. Suppose you only have data on quantities, not prices. Let $Q : #R#^2 \to #R#$ be defined by
 	
@@ -74,6 +225,28 @@
 	$$
 	
 	so its matrix is just the second row of the matrix for $T$. Find a basis for $\ker Q$. Explain in context what the kernel means, and specifically why it is a problem for determining shocks.
+
+	**Solution:** The matrix for $$Q$$ is
+
+	$$
+		B = [[ \frac{1}{2}, \frac{1}{2} ]],
+	$$
+
+	which is already row-reduced (with only one row, there are no row operations to perform). Therefore, a basis for $\ker Q$ is
+
+	$$
+		\left\{ [[ -1 ; 1 ]] \right\}.
+	$$
+
+	The kernel is the set of all shocks $(d, s)$ for which the equilibrium quantity sold doesn't change. Having a nontrivial kernel is an issue for determining shocks, because it's exactly the changes in shocks that are not detectable if we can only measure the equilibrium quantity: since
+
+	$$
+		Q\left( [[ d ; s ]] + [[ -1 ; 1 ]]t \right) &= Q\left( [[ d ; s ]] \right) + Q\left([[ -1 ; 1 ]]t \right)
+
+		&= Q\left( [[ d ; s ]] \right)
+	$$
+
+	for any $t$, an opposite supply and demand shock will not change $q$, and so we cannot completely determine the shocks from quantity alone.
 
 	- - -
 
