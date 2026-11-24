@@ -23,7 +23,10 @@ export class AppletControl
 const expandedControlBoxShadow = "0px 0px 16px 0px rgba(0, 0, 0, .25)";
 // Inset black shadow in light mode, small white shadow in dark mode
 // eslint-disable-next-line max-len
-const valueElementBoxShadow = "0px 0px calc(4px * (1 - var(--theme))) 0px inset var(--high-contrast), 0px 0px calc(2px * var(--theme)) calc(var(--theme) * 1px) var(--high-contrast)";
+const valueElementBoxShadow = "0px 0px 4px 0px inset rgba(0, 0, 0, calc(1 - var(--theme)))";
+const valueElementBoxShadowOff = "0px 0px 4px 0px inset rgba(0, 0, 0, 0)";
+const valueElementOutline = "1px solid rgba(255, 255, 255, var(--theme))";
+const valueElementOutlineOff = "1px solid rgba(255, 255, 255, 0)";
 const expandEasing = "cubic-bezier(0.5, 1, 0.89, 1)";
 
 // The base class for number, string, boolean, and dropdown inputs. Those all handle the specifics
@@ -96,18 +99,18 @@ export class AppletInputControl extends AppletControl
 			}
 		};
 
-		this.appletControlElement.addEventListener("click", () =>
+		this.appletControlElement.addEventListener("click", (e) =>
 		{
 			if (!this.#isExpanded)
 			{
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
-					document.startViewTransition(() => this.expand(0));
+					document.startViewTransition(() => this.expand(e.pointerType === "mouse", 0));
 				}
 
 				else
 				{
-					this.expand();
+					this.expand(e.pointerType === "mouse");
 				}
 			}
 		});
@@ -157,7 +160,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(animationTime = 160)
+	async expand(focus = false, animationTime = 160)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -169,6 +172,18 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.classList.add("expanded");
 		this.appletControlElement.classList.add("no-hover");
 		this.valueElement.setAttribute("contenteditable", "true");
+
+		if (focus)
+		{
+			this.valueElement.focus();
+
+			const range = document.createRange();
+			range.selectNodeContents(this.valueElement);
+
+			const selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+		}
 
 
 		const computed = getComputedStyle(this.appletControlElement);
@@ -225,6 +240,15 @@ export class AppletInputControl extends AppletControl
 			scale: "none",
 		});
 
+		Object.assign(this.valueElement.style, {
+			boxShadow: valueElementBoxShadow,
+			outline: valueElementOutline,
+			paddingLeft: "4px",
+			paddingRight: "4px",
+			paddingTop: "2px",
+			paddingBottom: "2px",
+		});
+
 		// Natural height at full width.
 		const expandedAppletControlHeight = this.appletControlElement
 			.getBoundingClientRect().height;
@@ -254,7 +278,7 @@ export class AppletInputControl extends AppletControl
 		);
 
 		this.appletControlElement.style.top = `${expandedAppletControlTopClamped}px`;
-
+		
 		
 
 		const expandAppletControlAnimation = this.appletControlElement.animate([
@@ -283,22 +307,34 @@ export class AppletInputControl extends AppletControl
 			{ transform: "translateX(0)" }
 		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
 
-		const addBoxShadowAnimation = this.valueElement.animate([
-			{ boxShadow: "none" },
-			{ boxShadow: valueElementBoxShadow }
-		], { duration: animationTime / 2, easing: expandEasing, fill: "forwards" });
+		const expandValueElementAnimation = this.valueElement.animate([
+			{
+				boxShadow: valueElementBoxShadowOff,
+				outline: valueElementOutlineOff,
+				paddingLeft: "0",
+				paddingRight: "0",
+				paddingTop: "0",
+				paddingBottom: "0",
+			},
+			{
+				boxShadow: valueElementBoxShadow,
+				outline: valueElementOutline,
+				paddingLeft: "4px",
+				paddingRight: "4px",
+				paddingTop: "2px",
+				paddingBottom: "2px",
+			},
+		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
 
 		await Promise.all([
 			expandAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
-			addBoxShadowAnimation.finished
+			expandValueElementAnimation.finished
 		]);
 
 		expandAppletControlAnimation.cancel();
 		moveNameValueElementAnimation.cancel();
-		addBoxShadowAnimation.cancel();
-
-		this.valueElement.style.boxShadow = valueElementBoxShadow;
+		expandValueElementAnimation.cancel();
 
 		this.appletControlElement.style.pointerEvents = "auto";
 
@@ -366,6 +402,15 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.style.zIndex = 50;
 		this.valueElement.setAttribute("contenteditable", "false");
 
+		Object.assign(this.valueElement.style, {
+			boxShadow: valueElementBoxShadowOff,
+			outline: valueElementOutlineOff,
+			paddingLeft: "0",
+			paddingRight: "0",
+			paddingTop: "0",
+			paddingBottom: "0",
+		});
+
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
 				top: `${appletControlRect.top + window.scrollY}px`,
@@ -391,15 +436,29 @@ export class AppletInputControl extends AppletControl
 			{ transform: `translateX(${nameValueElementDistance}px)` }
 		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
 
-		const removeBoxShadowAnimation = this.valueElement.animate([
-			{ boxShadow: valueElementBoxShadow },
-			{ boxShadow: "none" }
-		], { duration: animationTime / 2, easing: expandEasing, fill: "forwards" });
+		const contractValueElementAnimation = this.valueElement.animate([
+			{
+				boxShadow: valueElementBoxShadow,
+				outline: valueElementOutline,
+				paddingLeft: "4px",
+				paddingRight: "4px",
+				paddingTop: "2px",
+				paddingBottom: "2px",
+			},
+			{
+				boxShadow: valueElementBoxShadowOff,
+				outline: valueElementOutlineOff,
+				paddingLeft: "0",
+				paddingRight: "0",
+				paddingTop: "0",
+				paddingBottom: "0",
+			}
+		], { duration: animationTime, easing: expandEasing, fill: "forwards" });
 
 		await Promise.all([
 			contractAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
-			removeBoxShadowAnimation.finished
+			contractValueElementAnimation.finished
 		]);
 
 		// And finally restore the inline styles.
@@ -413,12 +472,10 @@ export class AppletInputControl extends AppletControl
 			"hover-reduce-motion"
 		);
 
-		this.valueElement.style.boxShadow = "none";
-
 		
 		contractAppletControlAnimation.cancel();
 		moveNameValueElementAnimation.cancel();
-		removeBoxShadowAnimation.cancel();
+		contractValueElementAnimation.cancel();
 
 		this.#isExpanded = false;
 

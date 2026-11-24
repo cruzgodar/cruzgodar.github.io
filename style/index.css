@@ -1198,7 +1198,7 @@ body:has(#banner)
 
 	border: 2px solid var(--normal-contrast);
 	border-radius: 10px;
-	padding: 6px;
+	padding: 4px;
 	
 	outline: none;
 
@@ -1225,22 +1225,16 @@ body:has(#banner)
 	align-items: center;
 }
 
+.applet-input-control-name
+{
+	margin-top: 2px;
+}
+
 .applet-input-control-value
 {
 	font-family: Menlo, Monaco, Consolas, monospace;
 
 	border-radius: 4px;
-	margin-top: 2px;
-
-	padding-left: 2px;
-	margin-left: -2px;
-	padding-right: 2px;
-	margin-right: -2px;
-
-	padding-top: 2px;
-	margin-top: -2px;
-	padding-bottom: 2px;
-	margin-bottom: -2px;
 }
 
 
