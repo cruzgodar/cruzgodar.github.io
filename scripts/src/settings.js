@@ -23,15 +23,20 @@ let themeToggles = 0;
 
 
 
-const settingsAnimationEasing = "cubic-bezier(.25, .1, .25, 1)";
-
-const runningRootVariableAnimations = {};
+const runningRootVariableAnimations = new Set();
 
 let transitionsDisabledCount = 0;
 let transitionsDisabledStyle = null;
 
-async function animateRootVariable(name, newValue, duration)
+async function animateRootVariable(name, newValue, duration, easing)
 {
+	if (runningRootVariableAnimations.has(name))
+	{
+		return;
+	}
+
+	runningRootVariableAnimations.add(name);
+
 	// Read before canceling, so that interrupting an animation picks up from
 	// wherever it had gotten to.
 	const oldValue = parseFloat(getComputedStyle(rootElement).getPropertyValue(name)) || 0;
@@ -50,33 +55,14 @@ async function animateRootVariable(name, newValue, duration)
 		`);
 	}
 
-	console.log(oldValue, newValue);
-
-	const animation = rootElement.animate(
-		[{ [name]: oldValue }, { [name]: newValue }],
-		{ duration, easing: settingsAnimationEasing, fill: "forwards" }
-	);
-
-	runningRootVariableAnimations[name] = animation;
-
-	try
+	await animate((t) =>
 	{
-		await animation.finished;
+		rootElement.style.setProperty(name, (1 - t) * oldValue + t * newValue);
+	}, duration, easing);
 
-		animation.cancel();
-		rootElement.style.setProperty(name, newValue);
-	}
+	runningRootVariableAnimations.delete(name);
 
-	catch
-	{
-		// Canceled by a newer animation of the same variable, which takes it
-		// from here.
-	}
 
-	if (runningRootVariableAnimations[name] === animation)
-	{
-		delete runningRootVariableAnimations[name];
-	}
 
 	transitionsDisabledCount--;
 
@@ -413,7 +399,7 @@ export function setOnThemeChange(callback)
 export async function toggleDarkTheme({
 	noAnimation = false,
 	force = false,
-	duration = 500
+	duration = 400
 }) {
 	if (!force && pageUrl in forceThemePages)
 	{
@@ -462,8 +448,18 @@ export async function toggleDarkTheme({
 		}
 	});
 
+	// Ideally this would use startViewTransition, but that makes iOS freak out and blank
+	// out the URL bar background while transitioning, which is unacceptable since this happens
+	// automatically while going to and from the gallery. I would then want to use the Web Animation
+	// API, but that makes Chrome break previously-visited links' animations. So instead it uses
+	// JS-based animation.
 	await Promise.all([
-		animateRootVariable("--theme", siteSettings.darkTheme ? 1 : 0, duration),
+		animateRootVariable(
+			"--theme",
+			siteSettings.darkTheme ? 1 : 0,
+			duration,
+			siteSettings.darkTheme ? "easeOutQuad" : "easeInOutQuad",
+		),
 		hideGraphs
 	]);
 
@@ -521,20 +517,26 @@ export async function toggleReduceMotion()
 
 export async function toggleIncreaseContrast({
 	noAnimation = false,
-	duration = 250
 }) {
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	if (noAnimation)
+	if (!noAnimation && document.startViewTransition)
 	{
-		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+		document.startViewTransition(() =>
+		{
+			rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+
+			history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+		});
 	}
 
 	else
 	{
-		await animateRootVariable("--contrast", siteSettings.increaseContrast ? 1 : 0, duration);
+		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+
+		history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	}
 }
 
