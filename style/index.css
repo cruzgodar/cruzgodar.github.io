@@ -152,8 +152,6 @@ header
 {
 	margin-top: calc(80px + env(safe-area-inset-top));
 	margin-bottom: 32px;
-
-	transition: margin-top 0.3s cubic-bezier(0.3, 1, 0.4, 1);
 }
 
 #banner ~ #content-container header
@@ -1619,7 +1617,7 @@ body:has(#banner)
 	height: 2.5px;
 	border-radius: 2.5px;
 
-	transition: background 0.25s ease-out;
+	transition: background-color 0.25s ease-out;
 }
 
 .slider-tick
@@ -1632,7 +1630,7 @@ body:has(#banner)
 	position: absolute;
 	top: 0px;
 
-	transition: top 0.125s ease-in-out, height 0.125s ease-in-out, background 0.25s ease-out;
+	transition: top 0.125s ease-in-out, height 0.125s ease-in-out, background-color 0.25s ease-out;
 }
 
 .slider-thumb
@@ -1909,24 +1907,6 @@ option
 	transform-origin: 50% 100vh;
 
 	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, calc(.2 + var(--theme) * .2));
-
-	transition: opacity .3s cubic-bezier(.3, 1, .4, 1);
-}
-
-#header-blur
-{
-	height: 80px;
-	width: calc(100% + 96px);
-	max-width: calc(var(--text-width) + 96px);
-	backdrop-filter: blur(32px);
-	mask-image:
-		linear-gradient(to top,	transparent, black 32px),
-		linear-gradient(to right,  transparent, black 48px),
-		linear-gradient(to left,   transparent, black 48px);
-	mask-composite: intersect;
-	opacity: 0;
-
-	transition: opacity .3s cubic-bezier(.3, 1, .4, 1);
 }
 
 
@@ -2003,8 +1983,6 @@ option
 	margin-bottom: 4px;
 	
 	cursor: pointer;
-	
-	transition: none;
 	
 	height: calc(100% - 16px);
 	
@@ -2450,7 +2428,6 @@ option
 	width: calc(100% + 10px);
 	margin-left: -5px;
 	
-	transition: color 0.125s ease-out;
 	color: var(--normal-contrast);
 	text-align: center;
 	font-size: 100%;

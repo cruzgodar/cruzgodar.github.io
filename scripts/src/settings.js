@@ -30,11 +30,6 @@ const runningRootVariableAnimations = {};
 let transitionsDisabledCount = 0;
 let transitionsDisabledStyle = null;
 
-// Animates one of the root's numeric CSS variables (--theme or --contrast,
-// which index.css registers as numbers so that they interpolate) from its
-// current value to newValue. Every theme color is derived from them, so this
-// animates the whole page without a view transition. The page's own CSS
-// transitions are turned off meanwhile so that nothing lags behind.
 async function animateRootVariable(name, newValue, duration)
 {
 	// Read before canceling, so that interrupting an animation picks up from
@@ -43,25 +38,23 @@ async function animateRootVariable(name, newValue, duration)
 
 	runningRootVariableAnimations[name]?.cancel();
 
-	// The animation runs on top of this, and it's what's left once the
-	// animation is done.
-	rootElement.style.setProperty(name, newValue);
-
 	transitionsDisabledCount++;
 
 	if (!transitionsDisabledStyle)
 	{
 		transitionsDisabledStyle = addStyle(`
-			*:not(.page, #banner, .desmos-container)
+			*:not(.checkbox, .desmos-container)
 			{
 				transition: none !important;
 			}
 		`);
 	}
 
+	console.log(oldValue, newValue);
+
 	const animation = rootElement.animate(
 		[{ [name]: oldValue }, { [name]: newValue }],
-		{ duration, easing: settingsAnimationEasing }
+		{ duration, easing: settingsAnimationEasing, fill: "forwards" }
 	);
 
 	runningRootVariableAnimations[name] = animation;
@@ -69,6 +62,9 @@ async function animateRootVariable(name, newValue, duration)
 	try
 	{
 		await animation.finished;
+
+		animation.cancel();
+		rootElement.style.setProperty(name, newValue);
 	}
 
 	catch
@@ -452,7 +448,7 @@ export async function toggleDarkTheme({
 
 	// The graphs can't follow the theme as it animates, so they fade out
 	// alongside it and are only recreated (and faded back in) once it's done.
-	const graphsHidden = hideDesmosGraphs();
+	const hideGraphs = hideDesmosGraphs();
 
 	let animating = true;
 
@@ -468,7 +464,7 @@ export async function toggleDarkTheme({
 
 	await Promise.all([
 		animateRootVariable("--theme", siteSettings.darkTheme ? 1 : 0, duration),
-		graphsHidden
+		hideGraphs
 	]);
 
 	animating = false;
