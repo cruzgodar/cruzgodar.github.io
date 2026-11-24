@@ -62,6 +62,7 @@ Welcome to Math 1180! We'll use this page for all of the homework and any other 
 	{ url: "exams/midterm-2-note-sheet/midterm-2-note-sheet.pdf", name: "Midterm 2 Formula Sheet" },
 	{ url: "exams/practice-midterm-2/practice-midterm-2.pdf", name: "Practice Midterm 2" },
 	{ url: "exams/practice-midterm-2-solutions/practice-midterm-2-solutions.pdf", name: "Practice Midterm 2 Solutions" },
+	{ url: "exams/midterm-2-solutions/midterm-2-solutions.pdf", name: "Midterm 2 Solutions" },
 ])
 
 @externalCard{homework-1}
