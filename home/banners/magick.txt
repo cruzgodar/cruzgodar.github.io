@@ -1,0 +1,1 @@
+magick source.jpg -quality 85 large.webp; magick source.jpg -resize 800x -quality 85 small.webp
