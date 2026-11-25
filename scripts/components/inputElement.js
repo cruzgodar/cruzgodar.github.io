@@ -166,7 +166,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(focus = false, animationTime = 3600)
+	async expand(focus = false, animationTime = 200)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -174,6 +174,10 @@ export class AppletInputControl extends AppletControl
 		}
 
 		this.#isExpanded = true;
+
+		this.beforeExpand();
+
+
 
 		this.appletControlElement.classList.add("expanded");
 		this.appletControlElement.classList.add("no-hover");
@@ -192,10 +196,8 @@ export class AppletInputControl extends AppletControl
 		}
 
 
+		// Cache any current tranform
 		const computed = getComputedStyle(this.appletControlElement);
-
-		// The computed style is live, so these need to be captured before they're overwritten.
-		// This includes any in-progress hover scale transition.
 		const originalTransform = computed.transform;
 		const originalScale = computed.scale;
 
@@ -255,7 +257,7 @@ export class AppletInputControl extends AppletControl
 			paddingBottom: "2px",
 		});
 
-		this.beforeExpand();
+		this.resetToExpandedState();
 
 		// Natural height at full width.
 		const expandedAppletControlHeight = this.appletControlElement
@@ -338,7 +340,7 @@ export class AppletInputControl extends AppletControl
 			expandAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
 			expandValueElementAnimation.finished,
-			this.onExpand(animationTime),
+			this.onExpand(animationTime, nameValueElementDistance),
 		]);
 
 		expandAppletControlAnimation.cancel();
@@ -371,7 +373,7 @@ export class AppletInputControl extends AppletControl
 		}
 	}
 
-	async #contract(animationTime = 3600)
+	async #contract(animationTime = 200)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 
@@ -379,6 +381,10 @@ export class AppletInputControl extends AppletControl
 		{
 			return;
 		}
+
+		this.beforeContract();
+
+
 
 		// Removing this immediately prevents a second close from starting mid-animation.
 		expandedElements.delete(this.appletControlElement);
@@ -399,6 +405,21 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.style.scale = "";
 		this.appletControlElement.style.transition = "";
 
+		Object.assign(this.valueElement.style, {
+			boxShadow: valueElementBoxShadowOff,
+			outline: valueElementOutlineOff,
+			paddingLeft: "0",
+			paddingRight: "0",
+			paddingTop: "0",
+			paddingBottom: "0",
+		});
+
+		this.valueElement.setAttribute("contenteditable", "false");
+
+		this.resetToContractedState();
+
+
+
 		const appletControlFinalRect = this.appletControlElement.getBoundingClientRect();
 		const nameValueElementFinalLeft = this.nameValueElement.getBoundingClientRect().left
 			- appletControlFinalRect.left;
@@ -411,18 +432,6 @@ export class AppletInputControl extends AppletControl
 
 		this.appletControlElement.style.pointerEvents = "none";
 		this.appletControlElement.style.zIndex = 50;
-		this.valueElement.setAttribute("contenteditable", "false");
-
-		Object.assign(this.valueElement.style, {
-			boxShadow: valueElementBoxShadowOff,
-			outline: valueElementOutlineOff,
-			paddingLeft: "0",
-			paddingRight: "0",
-			paddingTop: "0",
-			paddingBottom: "0",
-		});
-
-		this.beforeContract();
 
 		const contractAppletControlAnimation = this.appletControlElement.animate([
 			{
@@ -471,7 +480,7 @@ export class AppletInputControl extends AppletControl
 			contractAppletControlAnimation.finished,
 			moveNameValueElementAnimation.finished,
 			contractValueElementAnimation.finished,
-			this.onContract(animationTime)
+			this.onContract(animationTime, nameValueElementDistance)
 		]);
 
 		// And finally restore the inline styles.
@@ -502,11 +511,13 @@ export class AppletInputControl extends AppletControl
 	// or additional animations entirely.
 
 	beforeExpand() {}
-	async onExpand(_animationTime) {}
+	resetToExpandedState() {}
+	async onExpand(_animationTime, _nameValueElementDistance) {}
 	afterExpand() {}
 
 	beforeContract() {}
-	async onContract(_animationTime) {}
+	resetToContractedState() {}
+	async onContract(_animationTime, _nameValueElementDistance) {}
 	afterContract() {}
 
 	onResize()

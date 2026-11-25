@@ -511,6 +511,7 @@ export class NumberInput extends AppletInputControl
 	sliderContainerElement;
 	sliderTrackElement;
 	sliderThumbElement;
+	#expandedSliderWidth;
 
 	constructor({
 		element,
@@ -544,61 +545,88 @@ export class NumberInput extends AppletInputControl
 		}
 	}
 
-	beforeExpand()
+	resetToExpandedState()
 	{
 		Object.assign(this.sliderContainerElement.style, {
 			width: "100%",
 			margin: "12px",
-			transform: "translateX(0)"
+			transform: "translateX(0)",
 		});
+
+		this.#expandedSliderWidth = this.sliderContainerElement.getBoundingClientRect().width;
 	}
 
-	async onExpand(animationTime)
+	async onExpand(animationTime, nameValueElementDistance)
 	{
+		Object.assign(this.sliderContainerElement.style, {
+			// We explicitly *don't* animate width here, since it should start at full width and be
+			// progressively revealed.
+			width: `${this.#expandedSliderWidth}px`,
+			// This ensures the whole width is present, so it appears to be revealed rather than
+			// expanded.
+			flexShrink: 0,
+		});
+
+		// The 40px translate is initially there from the CSS and ensures the slider is always
+		// offscreen when contracted. The additional nameValueElementDistance is because this
+		// whole thing is expanded with absolute positioning and transforms, and the initial
+		// transform on the name-value element is nameValueElementDistance.
 		const showSliderAnimation = this.sliderContainerElement.animate([
-			{
-				width: "0",
-				margin: "0",
-				transform: "translateX(12px)"
-			},
-			{
-				width: "100%",
-				margin: "12px",
-				transform: "translateX(0)"
-			}
+			{ transform: `translateX(${40 + nameValueElementDistance}px)` },
+			{ transform: "translateX(0)" }
 		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await showSliderAnimation.finished;
 
 		showSliderAnimation.cancel();
+
+		// Make it resizable again.
+		Object.assign(this.sliderContainerElement.style, {
+			width: "100%",
+			flexShrink: 1,
+		});
 	}
 
 	beforeContract()
 	{
+		this.#expandedSliderWidth = this.sliderContainerElement.getBoundingClientRect().width;
+	}
+
+	resetToContractedState()
+	{
+		// We need to make the element disappear here so the measurements taken are correct.
 		Object.assign(this.sliderContainerElement.style, {
 			width: "0",
 			margin: "0",
-			transform: "translateX(12px)"
+			transform: "translateX(40px)",
+			flexShrink: 1,
 		});
 	}
 
-	async onContract(animationTime)
+	async onContract(animationTime, nameValueElementDistance)
 	{
+		Object.assign(this.sliderContainerElement.style, {
+			width: `${this.#expandedSliderWidth}px`,
+			margin: "12px",
+			transform: "translateX(0)",
+			flexShrink: 0,
+		});
+
 		const hideSliderAnimation = this.sliderContainerElement.animate([
-			{
-				width: "100%",
-				margin: "12px",
-				transform: "translateX(0)"
-			},
-			{
-				width: "0",
-				margin: "0",
-				transform: "translateX(12px)"
-			}
+			{ transform: "translateX(0)" },
+			{ transform: `translateX(${40 + nameValueElementDistance}px)` },
 		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await hideSliderAnimation.finished;
 
 		hideSliderAnimation.cancel();
+
+		// Make it gone.
+		Object.assign(this.sliderContainerElement.style, {
+			width: "0",
+			margin: "0",
+			transform: "translateX(40px)",
+			flexShrink: 1,
+		});
 	}
 }
