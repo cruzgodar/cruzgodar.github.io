@@ -193,6 +193,7 @@ home Cruz Godar
 			notes/bases Section 11: Linear Independence and Bases
 			notes/linear-transformations Section 12: Linear Transformations
 			notes/determinants Section 13: The Determinant
+			notes/least-squares Section 14: Least-Squares Approximations
 
 		yale/1110 Math 1110
 		
