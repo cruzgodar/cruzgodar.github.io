@@ -182,7 +182,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(focus = false, animationTime = 2000)
+	async expand(focus = false, animationTime = 200)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -373,7 +373,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async contract(animationTime = 2000)
+	async contract(animationTime = 200)
 	{
 		if (this.#isExpanded)
 		{
