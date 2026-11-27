@@ -1248,7 +1248,7 @@ body:has(#banner)
 {
 	width: 0;
 	margin: 0;
-	transform: translateX(40px);
+	display: none;
 	position: relative;
 }
 

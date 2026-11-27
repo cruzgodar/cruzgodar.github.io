@@ -105,18 +105,34 @@ export class AppletInputControl extends AppletControl
 			}
 		};
 
-		this.appletControlElement.addEventListener("click", (e) =>
+		this.appletControlElement.addEventListener("mouseup", (e) =>
 		{
 			if (!this.#isExpanded)
 			{
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
-					document.startViewTransition(() => this.expand(e.pointerType === "mouse", 0));
+					document.startViewTransition(() => this.expand(true, 0));
 				}
 
 				else
 				{
-					this.expand(e.pointerType === "mouse");
+					this.expand(true);
+				}
+			}
+		});
+
+		this.appletControlElement.addEventListener("touchend", (e) =>
+		{
+			if (!this.#isExpanded)
+			{
+				if (document.startViewTransition && siteSettings.reduceMotion)
+				{
+					document.startViewTransition(() => this.expand(false, 0));
+				}
+
+				else
+				{
+					this.expand(false);
 				}
 			}
 		});
@@ -166,7 +182,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async expand(focus = false, animationTime = 200)
+	async expand(focus = false, animationTime = 2000)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -357,7 +373,7 @@ export class AppletInputControl extends AppletControl
 
 
 
-	async contract()
+	async contract(animationTime = 2000)
 	{
 		if (this.#isExpanded)
 		{
@@ -368,12 +384,12 @@ export class AppletInputControl extends AppletControl
 
 			else
 			{
-				this.#contract();
+				this.#contract(animationTime);
 			}
 		}
 	}
 
-	async #contract(animationTime = 200)
+	async #contract(animationTime)
 	{
 		const expandedData = expandedElements.get(this.appletControlElement);
 

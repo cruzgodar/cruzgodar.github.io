@@ -550,6 +550,7 @@ export class NumberInput extends AppletInputControl
 		Object.assign(this.sliderContainerElement.style, {
 			width: "100%",
 			margin: "12px",
+			display: "block",
 			transform: "translateX(0)",
 		});
 
@@ -565,15 +566,15 @@ export class NumberInput extends AppletInputControl
 			// This ensures the whole width is present, so it appears to be revealed rather than
 			// expanded.
 			flexShrink: 0,
+			opacity: 1,
 		});
 
-		// The 40px translate is initially there from the CSS and ensures the slider is always
-		// offscreen when contracted. The additional nameValueElementDistance is because this
+		// The nameValueElementDistance transform is because this
 		// whole thing is expanded with absolute positioning and transforms, and the initial
 		// transform on the name-value element is nameValueElementDistance.
 		const showSliderAnimation = this.sliderContainerElement.animate([
-			{ transform: `translateX(${40 + nameValueElementDistance}px)` },
-			{ transform: "translateX(0)" }
+			{ transform: `translateX(${nameValueElementDistance}px)`, opacity: 0 },
+			{ transform: "translateX(0)", opacity: 1 }
 		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await showSliderAnimation.finished;
@@ -598,7 +599,7 @@ export class NumberInput extends AppletInputControl
 		Object.assign(this.sliderContainerElement.style, {
 			width: "0",
 			margin: "0",
-			transform: "translateX(40px)",
+			transform: "translateX(0)",
 			flexShrink: 1,
 		});
 	}
@@ -613,8 +614,8 @@ export class NumberInput extends AppletInputControl
 		});
 
 		const hideSliderAnimation = this.sliderContainerElement.animate([
-			{ transform: "translateX(0)" },
-			{ transform: `translateX(${40 + nameValueElementDistance}px)` },
+			{ transform: "translateX(0)", opacity: 1 },
+			{ transform: `translateX(${nameValueElementDistance}px)`, opacity: 0 },
 		], { duration: animationTime, easing: appletControlEasing, fill: "forwards" });
 
 		await hideSliderAnimation.finished;
@@ -625,7 +626,8 @@ export class NumberInput extends AppletInputControl
 		Object.assign(this.sliderContainerElement.style, {
 			width: "0",
 			margin: "0",
-			transform: "translateX(40px)",
+			display: "none",
+			transform: "translateX(0)",
 			flexShrink: 1,
 		});
 	}
