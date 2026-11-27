@@ -1148,7 +1148,8 @@ body:has(#banner)
 	line-height: 0;
 }
 
-#canvas-and-controls > *:last-child
+/* The canvas or container */
+#canvas-and-controls > *:first-child
 {
 	width: 100%;
 	max-width: 65vh;
@@ -1162,6 +1163,7 @@ body:has(#banner)
 	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 	grid-auto-rows: 1fr;
 	gap: 8px;
+	margin-top: 16px;
 }
 
 @media (min-aspect-ratio: 1/1)
@@ -1171,7 +1173,7 @@ body:has(#banner)
 		flex-direction: row;
 	}
 
-	#canvas-and-controls > *:last-child
+	#canvas-and-controls > *:first-child
 	{
 		max-width: 75vh;
 	}
@@ -1179,7 +1181,8 @@ body:has(#banner)
 	.applet-controls
 	{
 		max-width: 450px;
-		margin-right: 32px;
+		margin-left: 32px;
+		margin-top: 0;
 	}
 }
 

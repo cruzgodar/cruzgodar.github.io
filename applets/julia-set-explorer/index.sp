@@ -19,17 +19,17 @@ again. The function will flip-flop between those two numbers forever, and what's
 
 
 <div id="canvas-and-controls">
-	@controls({
-		"num-iterations": "number",
-		"num-iterations-2": "number",
-		"num-iterations-3": "number"
-	})
-
 	<div style="position: relative; margin-top: 32px">
 		@canvas
 
 		<canvas id="preview-canvas"></canvas>
 	</div>
+
+	@controls({
+		"num-iterations": "number",
+		"num-iterations-2": "number",
+		"num-iterations-3": "number"
+	})
 </div>
 
 @card{applet-controls}[Controls][[

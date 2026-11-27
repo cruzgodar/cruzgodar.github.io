@@ -227,13 +227,17 @@ export class AppletInputControl extends AppletControl
 		});
 
 
-		// Now find the expanded rect.
+		// Now find the expanded rect: below the control rect
 		const controlContainerRect = this.appletControlElement.parentElement
 			.getBoundingClientRect();
 
+		// Move the expanded rect beow the rest of the controls, including the 8px padding.
+		const expandedAppletControlTop = window.scrollY + appletControlRect.top
+			+ appletControlRect.height + 8;
+
 		Object.assign(this.appletControlElement.style, {
 			position: "absolute",
-			top: `${appletControlRect.top + window.scrollY}px`,
+			top: `${expandedAppletControlTop}px`,
 			left: `${controlContainerRect.left}px`,
 			width: `${controlContainerRect.width}px`,
 			maxWidth: "none",
@@ -263,10 +267,6 @@ export class AppletInputControl extends AppletControl
 		const expandedAppletControlHeight = this.appletControlElement
 			.getBoundingClientRect().height;
 
-		// Move the expanded rect above the rest of the controls, including the 8px padding.
-		const expandedAppletControlTop = controlContainerRect.top + window.scrollY
-			- expandedAppletControlHeight - 8;
-
 		// Move the name-value element to its final position.
 
 		const nameValueElementFinalLeft = this.nameValueElement.getBoundingClientRect().left
@@ -284,7 +284,7 @@ export class AppletInputControl extends AppletControl
 		const expandedAppletControlTopClamped = clamp(
 			expandedAppletControlTop,
 			window.scrollY + headerHeight + 8,
-			window.scrollY + window.innerHeight - 8
+			window.scrollY + window.innerHeight - expandedAppletControlHeight - 8
 		);
 
 		this.appletControlElement.style.top = `${expandedAppletControlTopClamped}px`;
