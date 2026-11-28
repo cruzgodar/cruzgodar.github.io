@@ -1230,13 +1230,10 @@ body:has(#banner)
 	align-items: center;
 }
 
-.applet-input-control-name
-{
-	margin-top: 2px;
-}
-
 .applet-input-control-value
 {
+	margin-top: 2px;
+	
 	font-family: Menlo, Monaco, Consolas, monospace;
 
 	border-radius: 4px;

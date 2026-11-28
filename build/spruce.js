@@ -228,29 +228,13 @@ export function controls(data)
 	return `${html}</div>`;
 }
 
-function boolean(id)
-{
-	return /* html */`
-		<div class="checkbox-row">
-			<div class="checkbox-container" tabindex="1">
-				<input type="checkbox" id="${id}Checkbox">
-				<div class="checkbox"></div>
-			</div>
-			
-			<label for="${id}-checkbox" style="margin-left: 10px">
-				<p class="body-text checkbox-subtext"></p>
-			</label>
-		</div>
-	`;
-}
-
 function number(id)
 {
 	return /* html */`
 		<div id="${id}-input" class="applet-input-control">
 			<div class="name-value">
-				<div id="${id}-value" class="applet-input-control-value"></div>
 				<div id="${id}-name" class="applet-input-control-name"></div>
+				<div id="${id}-value" class="applet-input-control-value"></div>
 			</div>
 
 			<div class="slider-container">
@@ -274,11 +258,18 @@ function string(id)
 	`;
 }
 
-function button(id)
+function boolean(id)
 {
 	return /* html */`
-		<div class="focus-on-child" tabindex="1">
-			<button class="text-button" type="button" id="${id}Button" tabindex="-1"></button>
+		<div class="checkbox-row">
+			<div class="checkbox-container" tabindex="1">
+				<input type="checkbox" id="${id}Checkbox">
+				<div class="checkbox"></div>
+			</div>
+			
+			<label for="${id}-checkbox" style="margin-left: 10px">
+				<p class="body-text checkbox-subtext"></p>
+			</label>
 		</div>
 	`;
 }
@@ -291,6 +282,15 @@ function dropdown(id)
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1"></button>
 				<select id="${id}Dropdown"></select>
 			</div>
+		</div>
+	`;
+}
+
+function button(id)
+{
+	return /* html */`
+		<div class="focus-on-child" tabindex="1">
+			<button class="text-button" type="button" id="${id}Button" tabindex="-1"></button>
 		</div>
 	`;
 }

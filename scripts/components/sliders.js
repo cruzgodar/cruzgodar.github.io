@@ -513,6 +513,8 @@ export class NumberInput extends AppletInputControl
 	sliderThumbElement;
 	#expandedSliderWidth;
 
+	focusValueOnTouch = true;
+
 	constructor({
 		element,
 		name,

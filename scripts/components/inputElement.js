@@ -49,10 +49,16 @@ export class AppletInputControl extends AppletControl
 
 	value;
 	defaultValue;
+	focusValueOnTouch = false;
+
+	onInput;
+
+	#lastPointerType;
 	#isExpanded = false;
+	#isAnimating = false;
+	#movedFocusToValueElement;
 	#boundOnPointerdown;
 	#boundOnKeydown;
-	onInput;
 
 	constructor({
 		element,
@@ -105,37 +111,56 @@ export class AppletInputControl extends AppletControl
 			}
 		};
 
-		this.appletControlElement.addEventListener("mouseup", (e) =>
+
+
+		this.appletControlElement.addEventListener("pointerdown", (e) =>
+		{
+			this.#lastPointerType = e.pointerType;
+		});
+
+		this.appletControlElement.addEventListener("click", () =>
 		{
 			if (!this.#isExpanded)
 			{
+				if (this.#lastPointerType === "mouse")
+				{
+					this.focusEntireValueElement();
+				}
+
 				if (document.startViewTransition && siteSettings.reduceMotion)
 				{
-					document.startViewTransition(() => this.expand(true, 0));
+					document.startViewTransition(
+						() => this.expand(0)
+					);
 				}
 
 				else
 				{
-					this.expand(true);
+					this.expand();
 				}
 			}
 		});
 
-		this.appletControlElement.addEventListener("touchend", (e) =>
+
+
+		this.valueElement.addEventListener("pointerdown", () =>
 		{
-			if (!this.#isExpanded)
-			{
-				if (document.startViewTransition && siteSettings.reduceMotion)
-				{
-					document.startViewTransition(() => this.expand(false, 0));
-				}
+			this.#movedFocusToValueElement = document.activeElement !== this.valueElement;
+		});
 
-				else
-				{
-					this.expand(false);
-				}
+		this.valueElement.addEventListener("click", () =>
+		{
+			if (
+				this.#isExpanded
+				&& !this.#isAnimating
+				&& this.#lastPointerType === "touch"
+				&& this.focusValueOnTouch
+			) {
+				this.focusEntireValueElement();
 			}
 		});
+
+
 
 		addTemporaryListener({
 			object: window,
@@ -180,9 +205,24 @@ export class AppletInputControl extends AppletControl
 		this.displayValue = this.value;
 	}
 
+	
 
+	focusEntireValueElement()
+	{
+		this.valueElement.focus();
 
-	async expand(focus = false, animationTime = 200)
+		setTimeout(() =>
+		{
+			const range = document.createRange();
+			range.selectNodeContents(this.valueElement);
+
+			const selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+		}, 0);
+	}
+
+	async expand(animationTime = 200)
 	{
 		if (this.#isExpanded || expandedElements.size > 0)
 		{
@@ -190,6 +230,7 @@ export class AppletInputControl extends AppletControl
 		}
 
 		this.#isExpanded = true;
+		this.#isAnimating = true;
 
 		this.beforeExpand();
 
@@ -198,18 +239,6 @@ export class AppletInputControl extends AppletControl
 		this.appletControlElement.classList.add("expanded");
 		this.appletControlElement.classList.add("no-hover");
 		this.valueElement.setAttribute("contenteditable", "true");
-
-		if (focus)
-		{
-			this.valueElement.focus();
-
-			const range = document.createRange();
-			range.selectNodeContents(this.valueElement);
-
-			const selection = window.getSelection();
-			selection.removeAllRanges();
-			selection.addRange(range);
-		}
 
 
 		// Cache any current tranform
@@ -365,6 +394,8 @@ export class AppletInputControl extends AppletControl
 
 		this.afterExpand();
 
+		this.#isAnimating = false;
+
 		this.appletControlElement.style.pointerEvents = "auto";
 
 		document.documentElement.addEventListener("pointerdown", this.#boundOnPointerdown);
@@ -397,6 +428,8 @@ export class AppletInputControl extends AppletControl
 		{
 			return;
 		}
+
+		this.#isAnimating = true;
 
 		this.beforeContract();
 
@@ -516,6 +549,7 @@ export class AppletInputControl extends AppletControl
 		contractValueElementAnimation.cancel();
 
 		this.#isExpanded = false;
+		this.#isAnimating = false;
 
 		this.afterContract();
 
